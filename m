@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-34507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF15893FA1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE61894145
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C282E1C20908
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59E201F227DD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9A84778E;
-	Mon,  1 Apr 2024 16:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64603BBC3;
+	Mon,  1 Apr 2024 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1Au1+Bh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWzkDLTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D17C1CA8F;
-	Mon,  1 Apr 2024 16:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25121E86C;
+	Mon,  1 Apr 2024 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988353; cv=none; b=gvvFITKndhiVYILbtvDvlX5jBDoQS9tLhB5RPl/YWwHwjueicaZfl24cpQE4ivCFOT6yYmdSAtHurjR2bF9HRMQ383Ksb3X8tGWaU5mT53BRaYyEp4Zsp6UYZ9XI+bd3AeCvR6xujcLA+yof/yj+6+lwKrxL595iLPzHjK/J2cI=
+	t=1711989601; cv=none; b=VtYUwvBwLdeRgf61zBULzDM/HsRsDgTw4onX0iJSx597TtYJIGofmR3s3Udb9hgIFK12XkNgal646i+5uyv/Jfh1hk6t87jiJEgGYRa7BSumho7Q7WIYJjkWzCSFnvzjPHQz49nJAoQuVWkZv2ZzYGwcgRmmTREM4lf+SgLHop8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988353; c=relaxed/simple;
-	bh=8RKXXLwDZgo3ltLOIt21xNtjzh+/Dugp3tOUd0jQx0M=;
+	s=arc-20240116; t=1711989601; c=relaxed/simple;
+	bh=gHYTFgSjMCiKQ/RNt9Ru4OUmavjjayEdqEuk9gQrP8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OwWPpLqncQ9vyUG0i6msFFK9x0xG410x4SU3tCGUln0CM7kbUwRLfyrkYDyXsLzMscY/6HPpJa20qWFM/wc0NLRQ4hdcJ087bFJeo8fnm0a1igUm1w1X2lEBN5i67RzzoiIclC0AUcfJczwnxObKQ72to3MgqvmDEXOwYS3JZdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1Au1+Bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4958C433F1;
-	Mon,  1 Apr 2024 16:19:12 +0000 (UTC)
+	 MIME-Version; b=puVxvz+FLLKmZQuMzqj+FDdRjh9CzT3LzWcr21weuwSEbHnYH+N53Jy+iDydyLhpBihsbG+HHrxOIDDtRSEHSX6VklL1hcUqapOwDWWdf8Y8RS0x+xisQcHZigUfiV+DaTlIdALLFSYW9+6XbVn22xHjv9zdYchSRfI1I7sqIIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWzkDLTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A00C433F1;
+	Mon,  1 Apr 2024 16:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988353;
-	bh=8RKXXLwDZgo3ltLOIt21xNtjzh+/Dugp3tOUd0jQx0M=;
+	s=korg; t=1711989601;
+	bh=gHYTFgSjMCiKQ/RNt9Ru4OUmavjjayEdqEuk9gQrP8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1Au1+BheNU+WDZnVSBzTesQ2uSOyL9j9IxdiyRMTjcg1iXyPhXl9Vs6D/DcMcwMH
-	 UvKtY4YhnyvFvYBUUge7FkGlV1z1IuCaswxkr9ajo5I0bvpyJdIFuaEcIyz0FiChFl
-	 FyMDeesqc/B1sZEsDZQ0kQ1VrRJpxPAY1/HsE73U=
+	b=lWzkDLTJQthKFX7wl9/76DQeA1Y4I2MP3ohQAl8qa0pvP9+Qm8iFHCHMEjufioyk7
+	 rEGhtjuyOwoMhBPs8IWIzzSeqIpZohvcbnPCRXGXpH3tjGRL2A5Grxwe85oiq/t689
+	 Ci5LfanMVoZkwHW/dlxBvzmd6cpYmQE/RXmCYayg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Tony Battersby <tonyb@cybernetics.com>,
+	Greg Edwards <gedwards@ddn.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 159/432] ring-buffer: Fix full_waiters_pending in poll
-Date: Mon,  1 Apr 2024 17:42:26 +0200
-Message-ID: <20240401152557.883167975@linuxfoundation.org>
+Subject: [PATCH 6.6 098/396] block: Fix page refcounts for unaligned buffers in __bio_release_pages()
+Date: Mon,  1 Apr 2024 17:42:27 +0200
+Message-ID: <20240401152550.844216763@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,140 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit 8145f1c35fa648da662078efab299c4467b85ad5 ]
+[ Upstream commit 38b43539d64b2fa020b3b9a752a986769f87f7a6 ]
 
-If a reader of the ring buffer is doing a poll, and waiting for the ring
-buffer to hit a specific watermark, there could be a case where it gets
-into an infinite ping-pong loop.
+Fix an incorrect number of pages being released for buffers that do not
+start at the beginning of a page.
 
-The poll code has:
-
-  rbwork->full_waiters_pending = true;
-  if (!cpu_buffer->shortest_full ||
-      cpu_buffer->shortest_full > full)
-         cpu_buffer->shortest_full = full;
-
-The writer will see full_waiters_pending and check if the ring buffer is
-filled over the percentage of the shortest_full value. If it is, it calls
-an irq_work to wake up all the waiters.
-
-But the code could get into a circular loop:
-
-	CPU 0					CPU 1
-	-----					-----
- [ Poll ]
-   [ shortest_full = 0 ]
-   rbwork->full_waiters_pending = true;
-					  if (rbwork->full_waiters_pending &&
-					      [ buffer percent ] > shortest_full) {
-					         rbwork->wakeup_full = true;
-					         [ queue_irqwork ]
-
-   cpu_buffer->shortest_full = full;
-
-					  [ IRQ work ]
-					  if (rbwork->wakeup_full) {
-					        cpu_buffer->shortest_full = 0;
-					        wakeup poll waiters;
-  [woken]
-   if ([ buffer percent ] > full)
-      break;
-   rbwork->full_waiters_pending = true;
-					  if (rbwork->full_waiters_pending &&
-					      [ buffer percent ] > shortest_full) {
-					         rbwork->wakeup_full = true;
-					         [ queue_irqwork ]
-
-   cpu_buffer->shortest_full = full;
-
-					  [ IRQ work ]
-					  if (rbwork->wakeup_full) {
-					        cpu_buffer->shortest_full = 0;
-					        wakeup poll waiters;
-  [woken]
-
- [ Wash, rinse, repeat! ]
-
-In the poll, the shortest_full needs to be set before the
-full_pending_waiters, as once that is set, the writer will compare the
-current shortest_full (which is incorrect) to decide to call the irq_work,
-which will reset the shortest_full (expecting the readers to update it).
-
-Also move the setting of full_waiters_pending after the check if the ring
-buffer has the required percentage filled. There's no reason to tell the
-writer to wake up waiters if there are no waiters.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240312131952.630922155@goodmis.org
-
+Fixes: 1b151e2435fc ("block: Remove special-casing of compound pages")
 Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Tested-by: Greg Edwards <gedwards@ddn.com>
+Link: https://lore.kernel.org/r/86e592a9-98d4-4cff-a646-0c0084328356@cybernetics.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ block/bio.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 59f8eb20e5e87..df4fe1447e5f2 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1112,16 +1112,32 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 		poll_wait(filp, &rbwork->full_waiters, poll_table);
+diff --git a/block/bio.c b/block/bio.c
+index 270f6b99926ea..62419aa09d731 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1149,7 +1149,7 @@ void __bio_release_pages(struct bio *bio, bool mark_dirty)
  
- 		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
--		rbwork->full_waiters_pending = true;
- 		if (!cpu_buffer->shortest_full ||
- 		    cpu_buffer->shortest_full > full)
- 			cpu_buffer->shortest_full = full;
- 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
--	} else {
--		poll_wait(filp, &rbwork->waiters, poll_table);
--		rbwork->waiters_pending = true;
-+		if (full_hit(buffer, cpu, full))
-+			return EPOLLIN | EPOLLRDNORM;
-+		/*
-+		 * Only allow full_waiters_pending update to be seen after
-+		 * the shortest_full is set. If the writer sees the
-+		 * full_waiters_pending flag set, it will compare the
-+		 * amount in the ring buffer to shortest_full. If the amount
-+		 * in the ring buffer is greater than the shortest_full
-+		 * percent, it will call the irq_work handler to wake up
-+		 * this list. The irq_handler will reset shortest_full
-+		 * back to zero. That's done under the reader_lock, but
-+		 * the below smp_mb() makes sure that the update to
-+		 * full_waiters_pending doesn't leak up into the above.
-+		 */
-+		smp_mb();
-+		rbwork->full_waiters_pending = true;
-+		return 0;
+ 	bio_for_each_folio_all(fi, bio) {
+ 		struct page *page;
+-		size_t done = 0;
++		size_t nr_pages;
+ 
+ 		if (mark_dirty) {
+ 			folio_lock(fi.folio);
+@@ -1157,10 +1157,11 @@ void __bio_release_pages(struct bio *bio, bool mark_dirty)
+ 			folio_unlock(fi.folio);
+ 		}
+ 		page = folio_page(fi.folio, fi.offset / PAGE_SIZE);
++		nr_pages = (fi.offset + fi.length - 1) / PAGE_SIZE -
++			   fi.offset / PAGE_SIZE + 1;
+ 		do {
+ 			bio_release_page(bio, page++);
+-			done += PAGE_SIZE;
+-		} while (done < fi.length);
++		} while (--nr_pages != 0);
  	}
- 
-+	poll_wait(filp, &rbwork->waiters, poll_table);
-+	rbwork->waiters_pending = true;
-+
- 	/*
- 	 * There's a tight race between setting the waiters_pending and
- 	 * checking if the ring buffer is empty.  Once the waiters_pending bit
-@@ -1137,9 +1153,6 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 	 */
- 	smp_mb();
- 
--	if (full)
--		return full_hit(buffer, cpu, full) ? EPOLLIN | EPOLLRDNORM : 0;
--
- 	if ((cpu == RING_BUFFER_ALL_CPUS && !ring_buffer_empty(buffer)) ||
- 	    (cpu != RING_BUFFER_ALL_CPUS && !ring_buffer_empty_cpu(buffer, cpu)))
- 		return EPOLLIN | EPOLLRDNORM;
+ }
+ EXPORT_SYMBOL_GPL(__bio_release_pages);
 -- 
 2.43.0
 
