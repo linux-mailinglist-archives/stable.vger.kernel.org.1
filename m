@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-35090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0419B894260
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:52:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB17894059
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60288B222F1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:52:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A1271F222A4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F4B1DFF4;
-	Mon,  1 Apr 2024 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1772447A62;
+	Mon,  1 Apr 2024 16:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoz/b9tf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeB1hHLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9387D41232;
-	Mon,  1 Apr 2024 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9553C129;
+	Mon,  1 Apr 2024 16:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990303; cv=none; b=ZYISnV2I6M5IKaf/n3fA96lwS0BhPK8qWTc+fvu/Ywu63bYn5fMYXUmtkD2zVlht8wUBRzWfG3xhKm8pAfuiwbRrwzaAcgnZZcN1myX3Dm9KK0KxxWfDDgaMEUUe2fS9yZ3FZa+zIIZTUUmBKQVscb4dv0FoZk4MQ4mS748O4Z8=
+	t=1711988934; cv=none; b=RKzkBP4WGoW4mI4iqpZrMpFzqM98gWVNA6fO+s4+P3WzX/NTatt1U2nYiaCdY/eVVnKySuE/SbxXtDmSCoHg09vJ5802r4bzgV2jns1W+3NYTy9dGRH5xgBjlsrrszyDyk0eYgPZvuPNMM5A1OWSYa+YsqpdNxNq6LffYqnvZ74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990303; c=relaxed/simple;
-	bh=e603Jd+vGH25Sg0SJewTyCinvPDkr+H6C74rbQkHoRc=;
+	s=arc-20240116; t=1711988934; c=relaxed/simple;
+	bh=GHTD6mv2zqBX16VZD2qTqNr7Kq1ZdzjP3kS66esVt8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWlCO3ewOMQyApMJMyWM/sRymc9urk/4Zcp49m5NfCiaPTpcZlIN5Q1aP/ekuRzzcPTiZ4OrAC9r0QOPGFHC4JaUDI6q2Yi91MvQTy5nBconxaOe4SxTAljpEvqdng5Y7suCnyjOK17IlUOI9as9VKR0sjREN1EsBhkHh/WrR6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoz/b9tf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A308C433F1;
-	Mon,  1 Apr 2024 16:51:42 +0000 (UTC)
+	 MIME-Version; b=fp666tgcTiWUFy49n7ijUi+axVM0dIynGOmCMJa38RdqWhpNddFWQTIsD6e+YgbxupD510ntlq5Iro7nmZC42ASsG3ZWTJ7McHMDZrDNZyKEq77Lt2XIYgqPZqG8Dp0if5O5Eels3WdpBPo76BTqG4ruVt8WnrM6YgQUyTI9SKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeB1hHLq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C6AC43394;
+	Mon,  1 Apr 2024 16:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990303;
-	bh=e603Jd+vGH25Sg0SJewTyCinvPDkr+H6C74rbQkHoRc=;
+	s=korg; t=1711988934;
+	bh=GHTD6mv2zqBX16VZD2qTqNr7Kq1ZdzjP3kS66esVt8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qoz/b9tf4JUZvpVsgnCqhMnXxzZqZ7F5Ijgmb1IryMfe/2xhpYO7T0dfmHKniPFTK
-	 roSjlxNitlSW0BMAmVelWk8TxrPwArOXZeHKf1+mkAl6p9dgrE/TYB3grC5E/XVUmn
-	 FaPT6NpokMW3QljTg9Aisihv/lJ7dsHg/Q7OrG0w=
+	b=MeB1hHLqlV24UscvpfVVjs9lrIv//cGfZmy8Q7WdUfKlaxdTJrCegREeh7oZF4prF
+	 oTDyHZn86wGwGsD/w47RbqYWd5oDA6I9I0Hbf+/LpOIs7rfpUobJCKOtUjH7z0R1g/
+	 ZW23eGCbwHg9DYZbx+lY+1xqS4Yw3tdGt5Cyx19I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	Long Li <leo.lilong@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 271/396] xfs: add lock protection when remove perag from radix tree
+	Gergo Koteles <soyer@irl.hu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 333/432] ALSA: hda/tas2781: add locks to kcontrols
 Date: Mon,  1 Apr 2024 17:45:20 +0200
-Message-ID: <20240401152555.992420168@linuxfoundation.org>
+Message-ID: <20240401152603.144345797@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +61,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-commit 07afd3173d0c6d24a47441839a835955ec6cf0d4 upstream.
+commit 15bc3066d2378eef1b45254be9df23b0dd7f1667 upstream.
 
-Take mp->m_perag_lock for deletions from the perag radix tree in
-xfs_initialize_perag to prevent racing with tagging operations.
-Lookups are fine - they are RCU protected so already deal with the
-tree changing shape underneath the lookup - but tagging operations
-require the tree to be stable while the tags are propagated back up
-to the root.
+The rcabin.profile_cfg_id, cur_prog, cur_conf, force_fwload_status
+variables are acccessible from multiple threads and therefore require
+locking.
 
-Right now there's nothing stopping radix tree tagging from operating
-while a growfs operation is progress and adding/removing new entries
-into the radix tree.
-
-Hence we can have traversals that require a stable tree occurring at
-the same time we are removing unused entries from the radix tree which
-causes the shape of the tree to change.
-
-Likely this hasn't caused a problem in the past because we are only
-doing append addition and removal so the active AG part of the tree
-is not changing shape, but that doesn't mean it is safe. Just making
-the radix tree modifications serialise against each other is obviously
-correct.
-
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Message-ID: <e35b867f6fe5fa1f869dd658a0a1f2118b737f57.1711469583.git.soyer@irl.hu>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_ag.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/hda/tas2781_hda_i2c.c |   50 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 48 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_ag.c
-+++ b/fs/xfs/libxfs/xfs_ag.c
-@@ -424,13 +424,17 @@ xfs_initialize_perag(
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -179,8 +179,12 @@ static int tasdevice_get_profile_id(stru
+ {
+ 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
  
- out_remove_pag:
- 	xfs_defer_drain_free(&pag->pag_intents_drain);
-+	spin_lock(&mp->m_perag_lock);
- 	radix_tree_delete(&mp->m_perag_tree, index);
-+	spin_unlock(&mp->m_perag_lock);
- out_free_pag:
- 	kmem_free(pag);
- out_unwind_new_pags:
- 	/* unwind any prior newly initialized pags */
- 	for (index = first_initialised; index < agcount; index++) {
-+		spin_lock(&mp->m_perag_lock);
- 		pag = radix_tree_delete(&mp->m_perag_tree, index);
-+		spin_unlock(&mp->m_perag_lock);
- 		if (!pag)
- 			break;
- 		xfs_buf_hash_destroy(pag);
++	mutex_lock(&tas_priv->codec_lock);
++
+ 	ucontrol->value.integer.value[0] = tas_priv->rcabin.profile_cfg_id;
+ 
++	mutex_unlock(&tas_priv->codec_lock);
++
+ 	return 0;
+ }
+ 
+@@ -194,11 +198,15 @@ static int tasdevice_set_profile_id(stru
+ 
+ 	val = clamp(nr_profile, 0, max);
+ 
++	mutex_lock(&tas_priv->codec_lock);
++
+ 	if (tas_priv->rcabin.profile_cfg_id != val) {
+ 		tas_priv->rcabin.profile_cfg_id = val;
+ 		ret = 1;
+ 	}
+ 
++	mutex_unlock(&tas_priv->codec_lock);
++
+ 	return ret;
+ }
+ 
+@@ -235,8 +243,12 @@ static int tasdevice_program_get(struct
+ {
+ 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+ 
++	mutex_lock(&tas_priv->codec_lock);
++
+ 	ucontrol->value.integer.value[0] = tas_priv->cur_prog;
+ 
++	mutex_unlock(&tas_priv->codec_lock);
++
+ 	return 0;
+ }
+ 
+@@ -251,11 +263,15 @@ static int tasdevice_program_put(struct
+ 
+ 	val = clamp(nr_program, 0, max);
+ 
++	mutex_lock(&tas_priv->codec_lock);
++
+ 	if (tas_priv->cur_prog != val) {
+ 		tas_priv->cur_prog = val;
+ 		ret = 1;
+ 	}
+ 
++	mutex_unlock(&tas_priv->codec_lock);
++
+ 	return ret;
+ }
+ 
+@@ -264,8 +280,12 @@ static int tasdevice_config_get(struct s
+ {
+ 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+ 
++	mutex_lock(&tas_priv->codec_lock);
++
+ 	ucontrol->value.integer.value[0] = tas_priv->cur_conf;
+ 
++	mutex_unlock(&tas_priv->codec_lock);
++
+ 	return 0;
+ }
+ 
+@@ -280,11 +300,15 @@ static int tasdevice_config_put(struct s
+ 
+ 	val = clamp(nr_config, 0, max);
+ 
++	mutex_lock(&tas_priv->codec_lock);
++
+ 	if (tas_priv->cur_conf != val) {
+ 		tas_priv->cur_conf = val;
+ 		ret = 1;
+ 	}
+ 
++	mutex_unlock(&tas_priv->codec_lock);
++
+ 	return ret;
+ }
+ 
+@@ -294,8 +318,15 @@ static int tas2781_amp_getvol(struct snd
+ 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+ 	struct soc_mixer_control *mc =
+ 		(struct soc_mixer_control *)kcontrol->private_value;
++	int ret;
+ 
+-	return tasdevice_amp_getvol(tas_priv, ucontrol, mc);
++	mutex_lock(&tas_priv->codec_lock);
++
++	ret = tasdevice_amp_getvol(tas_priv, ucontrol, mc);
++
++	mutex_unlock(&tas_priv->codec_lock);
++
++	return ret;
+ }
+ 
+ static int tas2781_amp_putvol(struct snd_kcontrol *kcontrol,
+@@ -304,9 +335,16 @@ static int tas2781_amp_putvol(struct snd
+ 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+ 	struct soc_mixer_control *mc =
+ 		(struct soc_mixer_control *)kcontrol->private_value;
++	int ret;
++
++	mutex_lock(&tas_priv->codec_lock);
+ 
+ 	/* The check of the given value is in tasdevice_amp_putvol. */
+-	return tasdevice_amp_putvol(tas_priv, ucontrol, mc);
++	ret = tasdevice_amp_putvol(tas_priv, ucontrol, mc);
++
++	mutex_unlock(&tas_priv->codec_lock);
++
++	return ret;
+ }
+ 
+ static int tas2781_force_fwload_get(struct snd_kcontrol *kcontrol,
+@@ -314,10 +352,14 @@ static int tas2781_force_fwload_get(stru
+ {
+ 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+ 
++	mutex_lock(&tas_priv->codec_lock);
++
+ 	ucontrol->value.integer.value[0] = (int)tas_priv->force_fwload_status;
+ 	dev_dbg(tas_priv->dev, "%s : Force FWload %s\n", __func__,
+ 			tas_priv->force_fwload_status ? "ON" : "OFF");
+ 
++	mutex_unlock(&tas_priv->codec_lock);
++
+ 	return 0;
+ }
+ 
+@@ -327,6 +369,8 @@ static int tas2781_force_fwload_put(stru
+ 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+ 	bool change, val = (bool)ucontrol->value.integer.value[0];
+ 
++	mutex_lock(&tas_priv->codec_lock);
++
+ 	if (tas_priv->force_fwload_status == val)
+ 		change = false;
+ 	else {
+@@ -336,6 +380,8 @@ static int tas2781_force_fwload_put(stru
+ 	dev_dbg(tas_priv->dev, "%s : Force FWload %s\n", __func__,
+ 		tas_priv->force_fwload_status ? "ON" : "OFF");
+ 
++	mutex_unlock(&tas_priv->codec_lock);
++
+ 	return change;
+ }
+ 
 
 
 
