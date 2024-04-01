@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-35424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716668943DF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D72D6894298
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5522829FA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91DED283274
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43B9482F6;
-	Mon,  1 Apr 2024 17:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C6F487BC;
+	Mon,  1 Apr 2024 16:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eE5KCnaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpegzF1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822E947A5D;
-	Mon,  1 Apr 2024 17:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAB863E;
+	Mon,  1 Apr 2024 16:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991353; cv=none; b=cGU88u/6m7symdTyqygACYm75dmqRMLivb1eYQVLR5DDzk6C0HDSKYcitFvggLvgTplImfs16tQmYr79sNMauFRziDWA+fKKgHHl8SlhOYpBvCFY326m8pkiKPOD04SmApWHYcRrYQwzWaavm4MCldH15U+TTv/tODkFZfbQt2g=
+	t=1711990440; cv=none; b=PiRF+RwSHfFjhmhrR3uCdcxl3nNbvojc9h8RB0aEO6Q4kebWWSfbWC4g9YvD2xsscLtM9Jc3dqzHZAL8NQEij/FTEd139PxXVt++IpYVAdsLKnARenzvUI92+ejNsMO0TfqfiAd+LaeUDBaPqAdozu9szM08oT4vu6kzcccjmSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991353; c=relaxed/simple;
-	bh=eSo3IKlA+zREdDvBaG1kr1cJjQkhuHSfc/9EH5YaHOo=;
+	s=arc-20240116; t=1711990440; c=relaxed/simple;
+	bh=jwhJiLk6twmUVf/L02gB/A+o6ITLxPsWZN70+59VzIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQPdqbJov+M7KSXZPbflnt2gqsMpHO3SAZGeJHHbh6Diet1aXeA80/BbFMcs3RnXU8ke+euz1nbfbJsM2oqRnJE4B1E4OJi797o1eyD4yXCEI4LvpOKOZCHUQ6S9pl6qP4L8K+YWgdoS1Ux/VdeUnHkWfuk9rMaTZEyHetDUZjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eE5KCnaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02116C433F1;
-	Mon,  1 Apr 2024 17:09:12 +0000 (UTC)
+	 MIME-Version; b=baJMKY7STS0uCtmQnig4RZcT2K8IWeD5fwi4EbWpshrvhBNvoWAmcmXXkNlMF70qyM8gxJ8asdUkvNXkKbkg6vo01uCTKb2v4bwVDJEYFDjXV2MN3lobmEOb+i2580CY1WrnJlktV/m/f81zOwRKB9YpTdXudubOrnmBggNO4iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpegzF1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F3CC433C7;
+	Mon,  1 Apr 2024 16:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991353;
-	bh=eSo3IKlA+zREdDvBaG1kr1cJjQkhuHSfc/9EH5YaHOo=;
+	s=korg; t=1711990439;
+	bh=jwhJiLk6twmUVf/L02gB/A+o6ITLxPsWZN70+59VzIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eE5KCnafdgVZi8ZT7TsPrJSb20w60Z+cRsHds+SatlC9po7TfP03QYNEa6QafThZg
-	 7fqrj+PHmI1q6Pq9BDMbd4yaaz07670UzFCZRwSrw/eBjbd/mHuf6JBZ1z/qSt2PU+
-	 d2p7W1peBfKvOZIxx/OSyhF5k34iOwHtz5eXjr70=
+	b=VpegzF1EbfSZOIj70JT1+UPpTb6eoP71PaVRLnWkeIwSMnFq5DxFK6vUimJaSX/Uc
+	 l5jptS9Q62mhHFmj2reIPIL59FaNCKutngEBc7R1X12+sM/LodZfLlacAhqEVhsfz/
+	 mcCrwJkwfli1gBa/U8QLID5NxmbUKcCT+ayC1hkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 212/272] efi/libstub: Cast away type warning in use of max()
+	Dillon Varone <dillon.varone@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 353/396] drm/amd/display: Disconnect phantom pipe OPP from OPTC being disabled
 Date: Mon,  1 Apr 2024 17:46:42 +0200
-Message-ID: <20240401152537.550993533@linuxfoundation.org>
+Message-ID: <20240401152558.446091398@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,35 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: George Shen <george.shen@amd.com>
 
-commit 61d130f261a3c15ae2c4b6f3ac3517d5d5b78855 upstream.
+[ Upstream commit 7bdbfb4e36e34eb788e44f27666bf0a2b3b90803 ]
 
-Avoid a type mismatch warning in max() by switching to max_t() and
-providing the type explicitly.
+[Why]
+If an OPP is used for a different OPTC without first being disconnected
+from the previous OPTC, unexpected behaviour can occur. This also
+applies to phantom pipes, which is what the current logic missed.
 
-Fixes: 3cb4a4827596abc82e ("efi/libstub: fix efi_random_alloc() ...")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[How]
+Disconnect OPPs from OPTC for phantom pipes before disabling OTG master.
+
+Also move the disconnection to before the OTG master disable, since the
+register is double buffered.
+
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: b4e05bb1dec5 ("drm/amd/display: Clear OPTC mem select on disable")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/randomalloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -119,7 +119,7 @@ efi_status_t efi_random_alloc(unsigned l
- 			continue;
- 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+index b1fcc91b65a32..93592e8051fb7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+@@ -142,12 +142,6 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
+ {
+ 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
  
--		target = round_up(max(md->phys_addr, alloc_min), align) + target_slot * align;
-+		target = round_up(max_t(u64, md->phys_addr, alloc_min), align) + target_slot * align;
- 		pages = size / EFI_PAGE_SIZE;
+-	/* disable otg request until end of the first line
+-	 * in the vertical blank region
+-	 */
+-	REG_UPDATE(OTG_CONTROL,
+-			OTG_MASTER_EN, 0);
+-
+ 	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
+ 			OPTC_SEG0_SRC_SEL, 0xf,
+ 			OPTC_SEG1_SRC_SEL, 0xf,
+@@ -155,6 +149,12 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
+ 			OPTC_SEG3_SRC_SEL, 0xf,
+ 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
  
- 		status = efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS,
++	/* disable otg request until end of the first line
++	 * in the vertical blank region
++	 */
++	REG_UPDATE(OTG_CONTROL,
++			OTG_MASTER_EN, 0);
++
+ 	REG_UPDATE(CONTROL,
+ 			VTG0_ENABLE, 0);
+ 
+@@ -181,6 +181,13 @@ static void optc32_disable_phantom_otg(struct timing_generator *optc)
+ {
+ 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
+ 
++	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
++			OPTC_SEG0_SRC_SEL, 0xf,
++			OPTC_SEG1_SRC_SEL, 0xf,
++			OPTC_SEG2_SRC_SEL, 0xf,
++			OPTC_SEG3_SRC_SEL, 0xf,
++			OPTC_NUM_OF_INPUT_SEGMENT, 0);
++
+ 	REG_UPDATE(OTG_CONTROL, OTG_MASTER_EN, 0);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
