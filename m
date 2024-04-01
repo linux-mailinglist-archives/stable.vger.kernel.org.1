@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-35288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8E1894347
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6C589403E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7620428379A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA47B280F1D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5D6482CA;
-	Mon,  1 Apr 2024 17:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5626045BE4;
+	Mon,  1 Apr 2024 16:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7ElrpkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2nwBhLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2231C0DE7;
-	Mon,  1 Apr 2024 17:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16025C129;
+	Mon,  1 Apr 2024 16:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990908; cv=none; b=ipb5tIKgQ8ZH8KenYTqjSdqlAaONDGye136eqCizYQtNXklYAnD397C8BEAYKRXjnKWHfoEHWp7OofxE19yd6ovj1Kj78jmxbAY6fQjJ4c8VwMVzOioGK+KTRVWkdbkOTTXkcWXYy60WsXAGAEr3xy+yAdeUQRvOrHpTCv7qpmA=
+	t=1711988852; cv=none; b=qfFv09thKuyBoGltSfTStJpZyIheS5W0KV2675s5m95xwkvk2iWWuhmCxquAn3gkGdbG2BjTS2TKW3MCN85JzNJ+POwa0Se+89hlSZYQ39IAVaFrjMTAG4+7BVg4yPQ7uUI8mw+JPL2JRzsSXNZBMwubGpIlHySoIb4hNCn7lIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990908; c=relaxed/simple;
-	bh=kmNIvFGsWInwoshYbbaP/j7BPpzDKalnXzA4aBHiZh4=;
+	s=arc-20240116; t=1711988852; c=relaxed/simple;
+	bh=2eDDBvULM18W2uvLSlZOXdc/OH8YWcYEX6155EOzTaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vkj2n3lwF4qwTMQoxbpA3kubjKV1XZ+DwPmhTIOEsEhFVBmlqt3X/hpy35FBgjIda51998ixbHIQEyRLkGLri7BIqnwwU43vqGi+ZSCZWE0iFbrCXNEgtAWF6Klsja6w5oqcQ+WtjjevfU3frk09yWNd7jksru0IJvGHcRaDecQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7ElrpkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D311C433C7;
-	Mon,  1 Apr 2024 17:01:47 +0000 (UTC)
+	 MIME-Version; b=qqyuOdr1blYej85LKbYvNfv/FPbogyJFqtx0bBg4yVQX6DA7F62Z+8+yj0Vpcgs5KukQr+H7Hl8SZqF/gU4ZHSdvCg4XFsD4SdXyI4rDVZptRJwaHXd9VHkijUww8cLT9SGgzU+8JFyYD+/4zR6N7DUKUy7qvNXoVHX4aEHDDZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2nwBhLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8215BC433F1;
+	Mon,  1 Apr 2024 16:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990908;
-	bh=kmNIvFGsWInwoshYbbaP/j7BPpzDKalnXzA4aBHiZh4=;
+	s=korg; t=1711988852;
+	bh=2eDDBvULM18W2uvLSlZOXdc/OH8YWcYEX6155EOzTaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7ElrpkX2y/vE5tvow3gxdDze2eKraVciCoEtme7s9qON9vwee0X8+pn2LHJB3YNn
-	 SRHuYxwEP8nlS3xVHOIDpwIqYjYiaoL57qJWaGt/g6gKauyKE0sRdS3/meZAXc2vnp
-	 BTTDl4SVa9rXs9i10vSsDhZOmpD5o/0SPGM3zZRA=
+	b=G2nwBhLTKZFdkuc/7Uxs+tllc3Gnitj0yZO8DCN65G4bQCPKwkfy2b0pjDl5+5959
+	 rimwVg8y0wj0irIdPL2fi8wcN/Iv0dH/ggNi78dzMz5YHyGQxXScK03fHoWWyUV2NX
+	 fh7oMc1SZF+DFw+rnZBbuRCqfYocBvm4k42y8ZSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/272] vfio/pci: Remove negative check on unsigned vector
-Date: Mon,  1 Apr 2024 17:44:53 +0200
-Message-ID: <20240401152533.857237213@linuxfoundation.org>
+Subject: [PATCH 6.7 307/432] irqchip/renesas-rzg2l: Implement restriction when writing ISCR register
+Date: Mon,  1 Apr 2024 17:44:54 +0200
+Message-ID: <20240401152602.346321938@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinette Chatre <reinette.chatre@intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 6578ed85c7d63693669bfede01e0237d0e24211a ]
+[ Upstream commit ef88eefb1a81a8701eabb7d5ced761a66a465a49 ]
 
-User space provides the vector as an unsigned int that is checked
-early for validity (vfio_set_irqs_validate_and_prepare()).
+The RZ/G2L manual (chapter "IRQ Status Control Register (ISCR)") describes
+the operation to clear interrupts through the ISCR register as follows:
 
-A later negative check of the provided vector is not necessary.
+[Write operation]
 
-Remove the negative check and ensure the type used
-for the vector is consistent as an unsigned int.
+  When "Falling-edge detection", "Rising-edge detection" or
+  "Falling/Rising-edge detection" is set in IITSR:
 
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/28521e1b0b091849952b0ecb8c118729fc8cdc4f.1683740667.git.reinette.chatre@intel.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Stable-dep-of: fe9a7082684e ("vfio/pci: Disable auto-enable of exclusive INTx IRQ")
+    - In case ISTAT is 1
+	0: IRQn interrupt detection status is cleared.
+	1: Invalid to write.
+    - In case ISTAT is 0
+	Invalid to write.
+
+  When "Low-level detection" is set in IITSR.:
+        Invalid to write.
+
+Take the interrupt type into account when clearing interrupts through the
+ISCR register to avoid writing the ISCR when the interrupt type is level.
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231120111820.87398-6-claudiu.beznea.uj@bp.renesas.com
+Stable-dep-of: 9eec61df55c5 ("irqchip/renesas-rzg2l: Flush posted write in irq_eoi()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 6a9c6a143cc3a..258de57ef9564 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -317,14 +317,14 @@ static int vfio_msi_enable(struct vfio_pci_core_device *vdev, int nvec, bool msi
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index fe8d516f36149..3dc2b3867f219 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -72,11 +72,17 @@ static void rzg2l_irq_eoi(struct irq_data *d)
+ 	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 	u32 bit = BIT(hw_irq);
+-	u32 reg;
++	u32 iitsr, iscr;
+ 
+-	reg = readl_relaxed(priv->base + ISCR);
+-	if (reg & bit)
+-		writel_relaxed(reg & ~bit, priv->base + ISCR);
++	iscr = readl_relaxed(priv->base + ISCR);
++	iitsr = readl_relaxed(priv->base + IITSR);
++
++	/*
++	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
++	 * falling/rising-edge.
++	 */
++	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
++		writel_relaxed(iscr & ~bit, priv->base + ISCR);
  }
  
- static int vfio_msi_set_vector_signal(struct vfio_pci_core_device *vdev,
--				      int vector, int fd, bool msix)
-+				      unsigned int vector, int fd, bool msix)
- {
- 	struct pci_dev *pdev = vdev->pdev;
- 	struct eventfd_ctx *trigger;
- 	int irq, ret;
- 	u16 cmd;
- 
--	if (vector < 0 || vector >= vdev->num_ctx)
-+	if (vector >= vdev->num_ctx)
- 		return -EINVAL;
- 
- 	irq = pci_irq_vector(pdev, vector);
-@@ -399,7 +399,8 @@ static int vfio_msi_set_vector_signal(struct vfio_pci_core_device *vdev,
- static int vfio_msi_set_block(struct vfio_pci_core_device *vdev, unsigned start,
- 			      unsigned count, int32_t *fds, bool msix)
- {
--	int i, j, ret = 0;
-+	unsigned int i, j;
-+	int ret = 0;
- 
- 	if (start >= vdev->num_ctx || start + count > vdev->num_ctx)
- 		return -EINVAL;
-@@ -410,8 +411,8 @@ static int vfio_msi_set_block(struct vfio_pci_core_device *vdev, unsigned start,
- 	}
- 
- 	if (ret) {
--		for (--j; j >= (int)start; j--)
--			vfio_msi_set_vector_signal(vdev, j, -1, msix);
-+		for (i = start; i < j; i++)
-+			vfio_msi_set_vector_signal(vdev, i, -1, msix);
- 	}
- 
- 	return ret;
-@@ -420,7 +421,7 @@ static int vfio_msi_set_block(struct vfio_pci_core_device *vdev, unsigned start,
- static void vfio_msi_disable(struct vfio_pci_core_device *vdev, bool msix)
- {
- 	struct pci_dev *pdev = vdev->pdev;
--	int i;
-+	unsigned int i;
- 	u16 cmd;
- 
- 	for (i = 0; i < vdev->num_ctx; i++) {
-@@ -542,7 +543,7 @@ static int vfio_pci_set_msi_trigger(struct vfio_pci_core_device *vdev,
- 				    unsigned index, unsigned start,
- 				    unsigned count, uint32_t flags, void *data)
- {
--	int i;
-+	unsigned int i;
- 	bool msix = (index == VFIO_PCI_MSIX_IRQ_INDEX) ? true : false;
- 
- 	if (irq_is(vdev, index) && !count && (flags & VFIO_IRQ_SET_DATA_NONE)) {
+ static void rzg2l_tint_eoi(struct irq_data *d)
 -- 
 2.43.0
 
