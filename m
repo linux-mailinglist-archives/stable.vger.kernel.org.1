@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CE9894345
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B93189422D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6294FB220DE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D13B1C21A9F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D3B48CDD;
-	Mon,  1 Apr 2024 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8E547A6B;
+	Mon,  1 Apr 2024 16:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQ9Wf9MW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzn8Q+LI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B59C482F6;
-	Mon,  1 Apr 2024 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2F23BBC3;
+	Mon,  1 Apr 2024 16:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990892; cv=none; b=LFhOO0zTMQ2u7T9/8GUkXwNxd3bZmToKs/D7Ik1L702IP6680jDrb7t6pHzLLS7gJsVCKlxa6it2wJOODqZdK9R/gsTpmekuozdbXoDZfJkO0AmUrxQjiJrwNuj6P6kx97vmU12uqlI6W/c5KjfhA50gcdhxk3+8Tc/7sTX1DVs=
+	t=1711990206; cv=none; b=Z2ph4AloR7c9CNj0ZVlto2b2PJ9XYV6IxE0U4vUDzEcn7eing8+WEAXOX4p10TkZdLz2dCHA1FFiakFlaUARiDI5HDO+o2nYyMV4yKbZAcd6WQaulLEXvrsIoJpYWAjAaG1ZrBWx2wKq2cRREsAy8qkJj7CeMna4eUbNo0BqVQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990892; c=relaxed/simple;
-	bh=7LbvErFZlfVB4dQPQmvA5HLDMKmdGevuQb5LRQULIKo=;
+	s=arc-20240116; t=1711990206; c=relaxed/simple;
+	bh=vp+K3nraCnwleMkYyy2YWU0P/17pcdgxr23KaFQsKmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E2s0aRoVP5eK/vmqWAJ6yp/FYU9QXu0CxxwVYrXYsE24pRhC3h63v3IfKZt2svdEQusqkLQRIXvFJyCj97dHFXpsFGS7TVK7zCILNa6nwFeocjZtc0gl+wzqGuGxmsLnm1F1q5IuiTlK6OdVeqHZGOHPqyCpttzVGHrPWg/hfyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQ9Wf9MW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3F4C433C7;
-	Mon,  1 Apr 2024 17:01:31 +0000 (UTC)
+	 MIME-Version; b=cDW5PcuxMT2ru7A3TLdxiELR8esyKlJk8a34akfoPRDjVD1H6pwWZy8AwNWRoSEYwsR3oHljQzMMuu5vdu4WPUG2wXtudpKpScXQVGgazEgZce4z/eKj66XgKQEfOA1W4JoFuwMkvCvYVtru7AJ8MyJ4vfcr1GwVfLv1HChAzwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzn8Q+LI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E4CC433C7;
+	Mon,  1 Apr 2024 16:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990892;
-	bh=7LbvErFZlfVB4dQPQmvA5HLDMKmdGevuQb5LRQULIKo=;
+	s=korg; t=1711990205;
+	bh=vp+K3nraCnwleMkYyy2YWU0P/17pcdgxr23KaFQsKmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQ9Wf9MW2dKrnYwsmAfIBRerL9mLPVgwY27OfqZIufDonqq38uNJl2+/j5QQS6XdG
-	 +mH9SiAnXHMgFMKRNrnzYmZgK7b4jwPrmvfcSlrL8VwNxbL2qkvdFzgtvmMp1HEYLK
-	 STizdH1VjIdDb8G1RSDISuOODMB8lLUbLwo6bCJE=
+	b=tzn8Q+LIvrN+9aSAhfIHOfGr/e7ZAEWUwutvuAUhyto11S1tvtrsGA1WapIpaYE6v
+	 r9YaiywIaCZxsDcX3y5olU2UcTGaasJfplqHSmZhcV38kgRbGrlBPMVCzeAJ9MJ1DZ
+	 AJvDjXsGKcu6/CedjROsutf5g0a/7HHpj020CT6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/272] PCI: dwc: endpoint: Fix advertised resizable BAR size
-Date: Mon,  1 Apr 2024 17:44:49 +0200
-Message-ID: <20240401152533.720928031@linuxfoundation.org>
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 241/396] arm64: dts: qcom: sc8280xp-x13s: limit pcie4 link speed
+Date: Mon,  1 Apr 2024 17:44:50 +0200
+Message-ID: <20240401152555.098793391@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 72e34b8593e08a0ee759b7a038e0b178418ea6f8 ]
+commit 7a1c6a8bf47b0b290c79b9cc3ba6ee68be5522e8 upstream.
 
-The commit message in commit fc9a77040b04 ("PCI: designware-ep: Configure
-Resizable BAR cap to advertise the smallest size") claims that it modifies
-the Resizable BAR capability to only advertise support for 1 MB size BARs.
+Limit the WiFi PCIe link speed to Gen2 speed (500 MB/s), which is the
+speed that the boot firmware has brought up the link at (and that
+Windows uses).
 
-However, the commit writes all zeroes to PCI_REBAR_CAP (the register which
-contains the possible BAR sizes that a BAR be resized to).
+This is specifically needed to avoid a large amount of link errors when
+restarting the link during boot (but which are currently not reported).
 
-According to the spec, it is illegal to not have a bit set in
-PCI_REBAR_CAP, and 1 MB is the smallest size allowed.
+This also appears to fix intermittent failures to download the ath11k
+firmware during boot which can be seen when there is a longer delay
+between restarting the link and loading the WiFi driver (e.g. when using
+full disk encryption).
 
-Set bit 4 in PCI_REBAR_CAP, so that we actually advertise support for a
-1 MB BAR size.
-
-Before:
-        Capabilities: [2e8 v1] Physical Resizable BAR
-                BAR 0: current size: 1MB
-                BAR 1: current size: 1MB
-                BAR 2: current size: 1MB
-                BAR 3: current size: 1MB
-                BAR 4: current size: 1MB
-                BAR 5: current size: 1MB
-After:
-        Capabilities: [2e8 v1] Physical Resizable BAR
-                BAR 0: current size: 1MB, supported: 1MB
-                BAR 1: current size: 1MB, supported: 1MB
-                BAR 2: current size: 1MB, supported: 1MB
-                BAR 3: current size: 1MB, supported: 1MB
-                BAR 4: current size: 1MB, supported: 1MB
-                BAR 5: current size: 1MB, supported: 1MB
-
-Fixes: fc9a77040b04 ("PCI: designware-ep: Configure Resizable BAR cap to advertise the smallest size")
-Link: https://lore.kernel.org/linux-pci/20240307111520.3303774-1-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: 123b30a75623 ("arm64: dts: qcom: sc8280xp-x13s: enable WiFi controller")
+Cc: stable@vger.kernel.org      # 6.2
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20240223152124.20042-8-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 4086a7818981a..506d6d061d4cd 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -669,8 +669,13 @@ int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep)
- 		nbars = (reg & PCI_REBAR_CTRL_NBAR_MASK) >>
- 			PCI_REBAR_CTRL_NBAR_SHIFT;
+--- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
++++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+@@ -721,6 +721,8 @@
+ };
  
-+		/*
-+		 * PCIe r6.0, sec 7.8.6.2 require us to support at least one
-+		 * size in the range from 1 MB to 512 GB. Advertise support
-+		 * for 1 MB BAR size only.
-+		 */
- 		for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL)
--			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, 0x0);
-+			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, BIT(4));
- 	}
+ &pcie4 {
++	max-link-speed = <2>;
++
+ 	perst-gpios = <&tlmm 141 GPIO_ACTIVE_LOW>;
+ 	wake-gpios = <&tlmm 139 GPIO_ACTIVE_LOW>;
  
- 	dw_pcie_setup(pci);
--- 
-2.43.0
-
 
 
 
