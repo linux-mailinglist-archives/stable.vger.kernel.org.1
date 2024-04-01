@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A1A893F74
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBE5894122
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F53E1C2161E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 813471C21059
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9541C47F60;
-	Mon,  1 Apr 2024 16:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D528343AD6;
+	Mon,  1 Apr 2024 16:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aS7poltx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeXon29T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B13A3E47B;
-	Mon,  1 Apr 2024 16:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9475910A3B;
+	Mon,  1 Apr 2024 16:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988210; cv=none; b=eX/oYGCNCqi5FqomWeK14nbXTOhqNv4jl6uegqGVBJePY+j0gC2Gop5yjRnt3dkXe3xI/YYsXwayhuwXN0gJvygTWezEEvnn9/atvu29uEAkHIO0qxsch/3+WtxzkMnLorhCGkLpvz5RGFinip44eYiACMu6fN/rsW7K/33Sjas=
+	t=1711989484; cv=none; b=nVUU6lDEb+gkNLWG6T5ZBj4JW5UfftAgDR3GBbsA0VmVfJs/N+cgBEhCnfzg9DiNz878eJVFN1f6r4aKlO8iX8WV5bENpPrAhkQLhdvgg61wtbXjBNxLlKJyKa+/LmijbpVE/19a+VTLHHuV3O409UVDyro01/T4oz82a+2s4pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988210; c=relaxed/simple;
-	bh=3QwW1pWqyyvMGTUhY94zD48xnQAdTzsgFx3RyH/UH1g=;
+	s=arc-20240116; t=1711989484; c=relaxed/simple;
+	bh=5klAgxT2xARHADCgT7xwrki/nQfMwE7ONuSjUsShKYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Smt0NH1Y+nSmfSWEf1xlhgT1u1qNk6RO+v8bReIiIrRCiWO0wZOPKagOCd2ini8sZvFxGDVgYrt3qEEUesiEK3FcqauU6tGxpVHzrFY5HZcaJwaCA8nZf4/kC2LHazNQDjcv4TukyHvait62W8HPQKFa5UVTaHNZLF1Eq5K2/kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aS7poltx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC77C433F1;
-	Mon,  1 Apr 2024 16:16:49 +0000 (UTC)
+	 MIME-Version; b=L50MaRJEkLo9YLzxxZSh+CmsUWjncfkL3ny+8q59Lkpc956SjzKKiMJP+cYrpQx8gqUVnrpVIkFWuRR79C9CybjV2NtRPt01h6STJiTvapKJ5YTOk00GYN5MnXow3hTDT47STK7QzMCypwhMHF9ukFWK3Do7iL/nG5aNgjvsbRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeXon29T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E2CC433C7;
+	Mon,  1 Apr 2024 16:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988209;
-	bh=3QwW1pWqyyvMGTUhY94zD48xnQAdTzsgFx3RyH/UH1g=;
+	s=korg; t=1711989484;
+	bh=5klAgxT2xARHADCgT7xwrki/nQfMwE7ONuSjUsShKYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aS7poltxERsalPYC1fPmsYHKP1Lp4C6YsGBgDJ/xz4i+UT5ZmhYoO/RC6vwB1kqQj
-	 SyaoCGTdgov+xPZgHs9TyrJXIMeagQ8ATVJBSFV+IrempgLgb716KlivSgjS6dv0tJ
-	 5VALItVrdBzPplBl/R3jWohrxeBDsgHwjMeoYFpE=
+	b=xeXon29TdWAkhCWUh2QtiE5DjwZQ55ne7wW5rgRMAj9yTsEIskf5A+u3TxzduNf5p
+	 ekU4TwJevMWASmtc18Ls7u0CGtyh20c/V8df3bzahsxgN6NMtuqENvsEwkUSuCbOXx
+	 vNynvH4N3uJII3L7HQG1aYQb6Wo+cbHfav1iVa8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 117/432] landlock: Warn once if a Landlock action is requested while disabled
+Subject: [PATCH 6.6 055/396] parisc: Fix ip_fast_csum
 Date: Mon,  1 Apr 2024 17:41:44 +0200
-Message-ID: <20240401152556.615244779@linuxfoundation.org>
+Message-ID: <20240401152549.567244961@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 782191c74875cc33b50263e21d76080b1411884d ]
+[ Upstream commit a2abae8f0b638c31bb9799d9dd847306e0d005bd ]
 
-Because sandboxing can be used as an opportunistic security measure,
-user space may not log unsupported features.  Let the system
-administrator know if an application tries to use Landlock but failed
-because it isn't enabled at boot time.  This may be caused by boot
-loader configurations with outdated "lsm" kernel's command-line
-parameter.
+IP checksum unit tests report the following error when run on hppa/hppa64.
 
+    # test_ip_fast_csum: ASSERTION FAILED at lib/checksum_kunit.c:463
+    Expected ( u64)csum_result == ( u64)expected, but
+        ( u64)csum_result == 33754 (0x83da)
+        ( u64)expected == 10946 (0x2ac2)
+    not ok 4 test_ip_fast_csum
+
+0x83da is the expected result if the IP header length is 20 bytes. 0x2ac2
+is the expected result if the IP header length is 24 bytes. The test fails
+with an IP header length of 24 bytes. It appears that ip_fast_csum()
+always returns the checksum for a 20-byte header, no matter how long
+the header actually is.
+
+Code analysis shows a suspicious assembler sequence in ip_fast_csum().
+
+ "      addc            %0, %3, %0\n"
+ "1:    ldws,ma         4(%1), %3\n"
+ "      addib,<         0, %2, 1b\n"	<---
+
+While my understanding of HPPA assembler is limited, it does not seem
+to make much sense to subtract 0 from a register and to expect the result
+to ever be negative. Subtracting 1 from the length parameter makes more
+sense. On top of that, the operation should be repeated if and only if
+the result is still > 0, so change the suspicious instruction to
+ "      addib,>         -1, %2, 1b\n"
+
+The IP checksum unit test passes after this change.
+
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: 265885daf3e5 ("landlock: Add syscall implementations")
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
-Link: https://lore.kernel.org/r/20240227110550.3702236-2-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/syscalls.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ arch/parisc/include/asm/checksum.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
-index 898358f57fa08..6788e73b6681b 100644
---- a/security/landlock/syscalls.c
-+++ b/security/landlock/syscalls.c
-@@ -33,6 +33,18 @@
- #include "ruleset.h"
- #include "setup.h"
- 
-+static bool is_initialized(void)
-+{
-+	if (likely(landlock_initialized))
-+		return true;
-+
-+	pr_warn_once(
-+		"Disabled but requested by user space. "
-+		"You should enable Landlock at boot time: "
-+		"https://docs.kernel.org/userspace-api/landlock.html#boot-time-configuration\n");
-+	return false;
-+}
-+
- /**
-  * copy_min_struct_from_user - Safe future-proof argument copying
-  *
-@@ -173,7 +185,7 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
- 	/* Build-time checks. */
- 	build_check_abi();
- 
--	if (!landlock_initialized)
-+	if (!is_initialized())
- 		return -EOPNOTSUPP;
- 
- 	if (flags) {
-@@ -398,7 +410,7 @@ SYSCALL_DEFINE4(landlock_add_rule, const int, ruleset_fd,
- 	struct landlock_ruleset *ruleset;
- 	int err;
- 
--	if (!landlock_initialized)
-+	if (!is_initialized())
- 		return -EOPNOTSUPP;
- 
- 	/* No flag for now. */
-@@ -458,7 +470,7 @@ SYSCALL_DEFINE2(landlock_restrict_self, const int, ruleset_fd, const __u32,
- 	struct landlock_cred_security *new_llcred;
- 	int err;
- 
--	if (!landlock_initialized)
-+	if (!is_initialized())
- 		return -EOPNOTSUPP;
- 
- 	/*
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index 3c43baca7b397..f705e5dd10742 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -40,7 +40,7 @@ static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
+ "	addc		%0, %5, %0\n"
+ "	addc		%0, %3, %0\n"
+ "1:	ldws,ma		4(%1), %3\n"
+-"	addib,<		0, %2, 1b\n"
++"	addib,>		-1, %2, 1b\n"
+ "	addc		%0, %3, %0\n"
+ "\n"
+ "	extru		%0, 31, 16, %4\n"
 -- 
 2.43.0
 
