@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE8C893FA3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F6C89412C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D37D11F21914
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3FA8283426
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6764845BE4;
-	Mon,  1 Apr 2024 16:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059F14596E;
+	Mon,  1 Apr 2024 16:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sm03jjIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bf1hKnUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271D41CA8F;
-	Mon,  1 Apr 2024 16:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAD11E86C;
+	Mon,  1 Apr 2024 16:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988360; cv=none; b=EgkAkawT7BOANi410EET/q6Y4S9lFb2+XbboutKeYMirPFp81+4FRZDL5J7RVYM3cGCFILZ/alJjYLxTndhO6YF72G9kH5USmwb3Cxz6UDR46c+ya+f9empzuTJVhBNkloBCpYz7ORHQylAQCjphun1lOvzFcqgMShSUfttFWy0=
+	t=1711989517; cv=none; b=M+ZswP/8o/yC/KzSPKmjUPCCk9z31Gs79+VuEqDeOXIbdLgqx8v/CNMv9+GE4Y/BMXbrYpMcbkCNRI4Q+Aaf9eZBAC4xd31yqWJLirlP0LcsI57oDD19WothRPkeLbHk8AuQwZOxhSuRWWQ18SgmvKQr96kN4QF4Bda1lfjKgOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988360; c=relaxed/simple;
-	bh=uXRFj5m50KVclAc05+uvmqpoa7LgjGb7rRfLzzLfFzY=;
+	s=arc-20240116; t=1711989517; c=relaxed/simple;
+	bh=UZAm8W/HhUHetzB6gxul5PrTbP5oE3rNfH4pWWJ4poI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mw4muZdbzVkMxgE2d/kKi7oW5s3c7qSi6Yg4ZI+1y4HE66tDqlyByuklYKiXXfcDQAvFIsY7RT8vX8IImRolQvR13iFe4KYywh4UpfYZsjAcwi6cEvuTWPiGzBmJZuR7ahcT7ZGqXL07Of+qpGV2w0bD983brPzOOiw0QTwtymk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sm03jjIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56517C433C7;
-	Mon,  1 Apr 2024 16:19:19 +0000 (UTC)
+	 MIME-Version; b=JDNH5JbJo75gIlCOGX+5pS7f/qEESxO+10youp0Qs3z8prmMuqFAJ53RKVerb53msPb77aQtwa+QaO82l4ToTaWZeC0z3Z6Yzi9zv52LfxMti+uqZ8aY65AOquInfIHfqcy38wuqIC3fHLkVZCTT0HQdm6+YS+MADjVAcFW2ZCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bf1hKnUp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1B9C433F1;
+	Mon,  1 Apr 2024 16:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988360;
-	bh=uXRFj5m50KVclAc05+uvmqpoa7LgjGb7rRfLzzLfFzY=;
+	s=korg; t=1711989517;
+	bh=UZAm8W/HhUHetzB6gxul5PrTbP5oE3rNfH4pWWJ4poI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sm03jjINSvPAzTuFZA29HOY1XJV8GMJN+cHTCVx2t05W+tOewFHJVonqV4nVb2cSY
-	 AJJ9dFzp8vSxsrgeC+5mHDfy7ofAo9KDR2uMb4/RyBwmGhfvYd7n9HMGM+2Exp5pAv
-	 d7YLOaQIg8W/neKpnj7BGf797Hxm3KeRd+yiab/I=
+	b=Bf1hKnUp1EPmFlzo0AwdfUZG2UI39oUw8kocSfBzJW7z1TaXPqJdeigs+sTkSUYOU
+	 I6H4iODgqppHAF1V4qR+WoJ0KYjBwsoC2TidJ3snfvXeRrIoxUM2ifhEbpuhPsZIg8
+	 hgewAKjaZbKKTHym8y0aZgGb/2AZT8nNHXDDtC10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jeffery <djeffery@redhat.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Dave Wysochanski <dwysocha@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jan-Benedict Glaw <jbglaw@lug-owl.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 134/432] NFS: Read unlock folio on nfs_page_create_from_folio() error
-Date: Mon,  1 Apr 2024 17:42:01 +0200
-Message-ID: <20240401152557.129245616@linuxfoundation.org>
+Subject: [PATCH 6.6 073/396] powerpc/fsl: Fix mfpmr build errors with newer binutils
+Date: Mon,  1 Apr 2024 17:42:02 +0200
+Message-ID: <20240401152550.097628182@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 11974eec839c167362af685aae5f5e1baaf979eb ]
+[ Upstream commit 5f491356b7149564ab22323ccce79c8d595bfd0c ]
 
-The netfs conversion lost a folio_unlock() for the case where
-nfs_page_create_from_folio() returns an error (usually -ENOMEM).  Restore
-it.
+Binutils 2.38 complains about the use of mfpmr when building
+ppc6xx_defconfig:
 
-Reported-by: David Jeffery <djeffery@redhat.com>
-Cc: <stable@vger.kernel.org> # 6.4+
-Fixes: 000dbe0bec05 ("NFS: Convert buffered read paths to use netfs when fscache is enabled")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Acked-by: Dave Wysochanski <dwysocha@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+    CC      arch/powerpc/kernel/pmc.o
+  {standard input}: Assembler messages:
+  {standard input}:45: Error: unrecognized opcode: `mfpmr'
+  {standard input}:56: Error: unrecognized opcode: `mtpmr'
+
+This is because by default the kernel is built with -mcpu=powerpc, and
+the mt/mfpmr instructions are not defined.
+
+It can be avoided by enabling CONFIG_E300C3_CPU, but just adding that to
+the defconfig will leave open the possibility of randconfig failures.
+
+So add machine directives around the mt/mfpmr instructions to tell
+binutils how to assemble them.
+
+Cc: stable@vger.kernel.org
+Reported-by: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240229122521.762431-3-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/read.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/include/asm/reg_fsl_emb.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/read.c b/fs/nfs/read.c
-index 7dc21a48e3e7b..a142287d86f68 100644
---- a/fs/nfs/read.c
-+++ b/fs/nfs/read.c
-@@ -305,6 +305,8 @@ int nfs_read_add_folio(struct nfs_pageio_descriptor *pgio,
- 	new = nfs_page_create_from_folio(ctx, folio, 0, aligned_len);
- 	if (IS_ERR(new)) {
- 		error = PTR_ERR(new);
-+		if (nfs_netfs_folio_unlock(folio))
-+			folio_unlock(folio);
- 		goto out;
- 	}
+diff --git a/arch/powerpc/include/asm/reg_fsl_emb.h b/arch/powerpc/include/asm/reg_fsl_emb.h
+index a21f529c43d96..8359c06d92d9f 100644
+--- a/arch/powerpc/include/asm/reg_fsl_emb.h
++++ b/arch/powerpc/include/asm/reg_fsl_emb.h
+@@ -12,9 +12,16 @@
+ #ifndef __ASSEMBLY__
+ /* Performance Monitor Registers */
+ #define mfpmr(rn)	({unsigned int rval; \
+-			asm volatile("mfpmr %0," __stringify(rn) \
++			asm volatile(".machine push; " \
++				     ".machine e300; " \
++				     "mfpmr %0," __stringify(rn) ";" \
++				     ".machine pop; " \
+ 				     : "=r" (rval)); rval;})
+-#define mtpmr(rn, v)	asm volatile("mtpmr " __stringify(rn) ",%0" : : "r" (v))
++#define mtpmr(rn, v)	asm volatile(".machine push; " \
++				     ".machine e300; " \
++				     "mtpmr " __stringify(rn) ",%0; " \
++				     ".machine pop; " \
++				     : : "r" (v))
+ #endif /* __ASSEMBLY__ */
  
+ /* Freescale Book E Performance Monitor APU Registers */
 -- 
 2.43.0
 
