@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-34335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B33D893EEA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B011389405E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B7291C214FE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505501F222F7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CA1446AC;
-	Mon,  1 Apr 2024 16:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF75547A74;
+	Mon,  1 Apr 2024 16:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2Kve6C2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njy8Id3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77856487BC;
-	Mon,  1 Apr 2024 16:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAD14087B;
+	Mon,  1 Apr 2024 16:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987773; cv=none; b=SPd237lThatSk22GBjNcVBGSQhbPISc4NYW6O5pNQdx9/8a8hKzrKpY9/xoAXfxHZ+W1jw3cXWGcqKCfFRmaE3Bax0HR3QbrclUT+uMZRFE88rQdtwx7YbnjQOlsEyTxRs+SrZuG8wqMHKzUVK0teWdBxzT+IzperwwJAn3JzLE=
+	t=1711988948; cv=none; b=fKKFn/EmXGtcv0KUqkYTCH93stV2SgtIbnEppGeJwiA18Hzux/vGpM1laB4yHciFZ5JR1gXqhXOeQZ0r5Vr7XRqNB0dKo2Vi998zwTg543K+qisnuaMEByk0m1+hcqGlcufOEWJoCAgQeVhA3MXTD1Qe5HPZgzasqYMpiIN+cZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987773; c=relaxed/simple;
-	bh=KZfD5IkmslF7YEBU5z+HYG048FwkgAtmvZaLsJsHVOI=;
+	s=arc-20240116; t=1711988948; c=relaxed/simple;
+	bh=+gyTwv+iQzN/oKQVVGYnt/Qbb7tnPqyU4rky8B0Fw3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0ErkKGzNSzN5Mq7PGrT1O2i8YCYfYlOepEKlCDOkoWzBSweBBKZdZfH5rXCM4a5LkdB0I6StWmqCxq/hkEoFk4YpY0ln4efLheg4d07x6DNUEv9VHlKDbQenhD3LcRc/l4aNH7xUUKhAENlcOVYIc9fyLcKSlYTQAi9XpM55QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2Kve6C2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD013C43390;
-	Mon,  1 Apr 2024 16:09:32 +0000 (UTC)
+	 MIME-Version; b=dNGC1udxC1J3eyd1NAEK4Gx4SoVWEK/QGJtZRhA1rUJZwzE982Eufkf0A0iCFotRU5liE8kWfdnDZlg4aQxHrQWNdU6Mjw/LlBKDTmW+vOCeTMxjq4QUX2+EnPARztKnroXzNDJQ723NeH8hkOkDNMparUL3Ky8QuirH52X+iiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njy8Id3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE517C43399;
+	Mon,  1 Apr 2024 16:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987773;
-	bh=KZfD5IkmslF7YEBU5z+HYG048FwkgAtmvZaLsJsHVOI=;
+	s=korg; t=1711988948;
+	bh=+gyTwv+iQzN/oKQVVGYnt/Qbb7tnPqyU4rky8B0Fw3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M2Kve6C2odXQ1rWH6cmYjm1IvxgOdA2PQPiudmvudnyEys/qOx0JJGxsDKIkGORo0
-	 OhQsf5UjqZbnGbPTg1A3mthGerT2lBV1SiGL/+OBTIcFgtxZQwnhfjb4CKBgmAfldg
-	 FlW9RlmpWnUllHPywfjOspboCO5p8YyIvdPGHIYU=
+	b=njy8Id3daP241FzcYWN01HIlKDVMvzOrxRiEMBQJZmlTxHHR9jGtk7qmkCWw//djC
+	 Q/CNimlea1+dbGUWBCDOU+HIAZj0CL3SMbW6ZMuNIWVI/fpevUW4DIJpq1jhB2gfh6
+	 IvwIZ6IdkCRevJpi29glBbsQqGTXt9qmrjkwF1gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.8 358/399] USB: core: Fix deadlock in usb_deauthorize_interface()
+	Radek Podgorny <radek@podgorny.cz>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.7 337/432] x86/efistub: Reinstate soft limit for initrd loading
 Date: Mon,  1 Apr 2024 17:45:24 +0200
-Message-ID: <20240401152559.857379216@linuxfoundation.org>
+Message-ID: <20240401152603.276340979@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 80ba43e9f799cbdd83842fc27db667289b3150f5 upstream.
+commit decd347c2a75d32984beb8807d470b763a53b542 upstream.
 
-Among the attribute file callback routines in
-drivers/usb/core/sysfs.c, the interface_authorized_store() function is
-the only one which acquires a device lock on an ancestor device: It
-calls usb_deauthorize_interface(), which locks the interface's parent
-USB device.
+Commit
 
-The will lead to deadlock if another process already owns that lock
-and tries to remove the interface, whether through a configuration
-change or because the device has been disconnected.  As part of the
-removal procedure, device_del() waits for all ongoing sysfs attribute
-callbacks to complete.  But usb_deauthorize_interface() can't complete
-until the device lock has been released, and the lock won't be
-released until the removal has finished.
+  8117961d98fb2 ("x86/efi: Disregard setup header of loaded image")
 
-The mechanism provided by sysfs to prevent this kind of deadlock is
-to use the sysfs_break_active_protection() function, which tells sysfs
-not to wait for the attribute callback.
+dropped the memcopy of the image's setup header into the boot_params
+struct provided to the core kernel, on the basis that EFI boot does not
+need it and should rely only on a single protocol to interface with the
+boot chain. It is also a prerequisite for being able to increase the
+section alignment to 4k, which is needed to enable memory protections
+when running in the boot services.
 
-Reported-and-tested by: Yue Sun <samsun1006219@gmail.com>
-Reported by: xingwei lee <xrivendell7@gmail.com>
+So only the setup_header fields that matter to the core kernel are
+populated explicitly, and everything else is ignored. One thing was
+overlooked, though: the initrd_addr_max field in the setup_header is not
+used by the core kernel, but it is used by the EFI stub itself when it
+loads the initrd, where its default value of INT_MAX is used as the soft
+limit for memory allocation.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/linux-usb/CAEkJfYO6jRVC8Tfrd_R=cjO0hguhrV31fDPrLrNOOHocDkPoAA@mail.gmail.com/#r
-Fixes: 310d2b4124c0 ("usb: interface authorization: SysFS part of USB interface authorization")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1c37eea1-9f56-4534-b9d8-b443438dc869@rowland.harvard.edu
+This means that, in the old situation, the initrd was virtually always
+loaded in the lower 2G of memory, but now, due to initrd_addr_max being
+0x0, the initrd may end up anywhere in memory. This should not be an
+issue principle, as most systems can deal with this fine. However, it
+does appear to tickle some problems in older UEFI implementations, where
+the memory ends up being corrupted, resulting in errors when unpacking
+the initramfs.
+
+So set the initrd_addr_max field to INT_MAX like it was before.
+
+Fixes: 8117961d98fb2 ("x86/efi: Disregard setup header of loaded image")
+Reported-by: Radek Podgorny <radek@podgorny.cz>
+Closes: https://lore.kernel.org/all/a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/sysfs.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/core/sysfs.c
-+++ b/drivers/usb/core/sysfs.c
-@@ -1168,14 +1168,24 @@ static ssize_t interface_authorized_stor
- {
- 	struct usb_interface *intf = to_usb_interface(dev);
- 	bool val;
-+	struct kernfs_node *kn;
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -487,6 +487,7 @@ efi_status_t __efiapi efi_pe_entry(efi_h
+ 	hdr->vid_mode	= 0xffff;
  
- 	if (kstrtobool(buf, &val) != 0)
- 		return -EINVAL;
+ 	hdr->type_of_loader = 0x21;
++	hdr->initrd_addr_max = INT_MAX;
  
--	if (val)
-+	if (val) {
- 		usb_authorize_interface(intf);
--	else
--		usb_deauthorize_interface(intf);
-+	} else {
-+		/*
-+		 * Prevent deadlock if another process is concurrently
-+		 * trying to unregister intf.
-+		 */
-+		kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+		if (kn) {
-+			usb_deauthorize_interface(intf);
-+			sysfs_unbreak_active_protection(kn);
-+		}
-+	}
- 
- 	return count;
- }
+ 	/* Convert unicode cmdline to ascii */
+ 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
 
 
 
