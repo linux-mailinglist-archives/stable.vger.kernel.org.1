@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC195894396
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0024893EF3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9661528383F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA02928288F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B62481B8;
-	Mon,  1 Apr 2024 17:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9D947A74;
+	Mon,  1 Apr 2024 16:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkyX8mHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDjqQQhM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083A71DFF4;
-	Mon,  1 Apr 2024 17:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3534A47A66;
+	Mon,  1 Apr 2024 16:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991136; cv=none; b=LHvEZKVBqobBzHm3t3xlPYclVrqIbWRAkceN7NpXgjbYhxO552pmf6bvmO7ZG7VImlGSqoIxcXXgiatFsYTxzNuvLGSoWUxOR1KAVPN73ir5e57vOqZLTNBhB2fNKXqa7XMYSDOxWwDQBeG5JUV5gYnSYIdX12xWa+Bj63c8KTs=
+	t=1711987804; cv=none; b=FeFMsBmFIKYoNUZs+FQPoqjAwujPypi1nDy78ORzLf23K+OgrIpeJduJbxewkqGyr9KLg/xuEMY4jM5lbv4paPXHc8Xgt0CHFXjKAVYJyr0xr9I4BA2mleXwzdwEi1+3vcDGIweNWXqwdT/2jv3D748r/EOgWP6KGDo6tGpByH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991136; c=relaxed/simple;
-	bh=XAtt1RdGWmQyUf+Dj3W4WjTJGHZS59yOtUB+dFmSo9Q=;
+	s=arc-20240116; t=1711987804; c=relaxed/simple;
+	bh=5kbZiIGYpQxlzQebjf/9TdVCXLcE+DL4waaVK5sNIYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RwNe1ofooou88TRJX5UxTwEv8lllvGNyg/sYSxJvKp7LJa6EZin27o7nnelEhUu1jT5tqvbh2hKsbwKqEBJOHWIe/qkQGeZnTqUj+W7DJUT0uK7KGZtP8Ksaat+vVnBymuCrjunx/npdh7xRyzS0xLzLgYuIpI3RAqKLQJXnJmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkyX8mHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA78C433F1;
-	Mon,  1 Apr 2024 17:05:35 +0000 (UTC)
+	 MIME-Version; b=DqW2YWhwiQtgrTssadRIiOudUOzOXIyxxTVDs3jpSL6Klo7x5lM0G9vV8pfVUTRI72xTxjXIFouVGu4ZTpbUCiweWnT1bFcGzIAAm9s/PL/PnFeVEO58RBjJA1k1ZAqXWq67jkZYqgGJ/exvn/RsnpvpWeOi4zMe7COkZvnfBAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDjqQQhM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5A5C433F1;
+	Mon,  1 Apr 2024 16:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991135;
-	bh=XAtt1RdGWmQyUf+Dj3W4WjTJGHZS59yOtUB+dFmSo9Q=;
+	s=korg; t=1711987803;
+	bh=5kbZiIGYpQxlzQebjf/9TdVCXLcE+DL4waaVK5sNIYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkyX8mHsgOW8gan3YhqsFJ1q5VIoGExfezZvzKkyOF9pP3AKYkcSmjJkXcpsQAqqN
-	 eK+/OxNeb4ggK2WJFwnYyWs9RvVageYKd8wt5Y7c5S6l9PssFfmVcTDlOVBhAm/GoU
-	 xV7aDAOcQO6qTxYZU5HKAaXBZwf73Y1AdzMSEKig=
+	b=qDjqQQhMvKyvbEraSOOgHFu1/2FMSrGGpVmXZkz8TWbRAleGBHJsqny30JFhOXzhI
+	 fCqsehxUJ4OYQXKodic3zgJwV7dbi0m2FAaxrm633Ay+X/7FNZR0dt/t1lvn6w/Q8W
+	 UBrqLno6z4tb4QMx7dni2z29Ge8MZ6JX6NrRz4lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH 6.1 173/272] i2c: i801: Avoid potential double call to gpiod_remove_lookup_table
+	Sandipan Das <sandipan.das@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ian Rogers <irogers@google.com>
+Subject: [PATCH 6.8 397/399] perf/x86/amd/core: Update and fix stalled-cycles-* events for Zen 2 and later
 Date: Mon,  1 Apr 2024 17:46:03 +0200
-Message-ID: <20240401152536.170590319@linuxfoundation.org>
+Message-ID: <20240401152601.032616293@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Sandipan Das <sandipan.das@amd.com>
 
-commit ceb013b2d9a2946035de5e1827624edc85ae9484 upstream.
+commit c7b2edd8377be983442c1344cb940cd2ac21b601 upstream.
 
-If registering the platform device fails, the lookup table is
-removed in the error path. On module removal we would try to
-remove the lookup table again. Fix this by setting priv->lookup
-only if registering the platform device was successful.
-In addition free the memory allocated for the lookup table in
-the error path.
+AMD processors based on Zen 2 and later microarchitectures do not
+support PMCx087 (instruction pipe stalls) which is used as the backing
+event for "stalled-cycles-frontend" and "stalled-cycles-backend".
 
-Fixes: d308dfbf62ef ("i2c: mux/i801: Switch to use descriptor passing")
-Cc: stable@vger.kernel.org
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Use PMCx0A9 (cycles where micro-op queue is empty) instead to count
+frontend stalls and remove the entry for backend stalls since there
+is no direct replacement.
+
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Fixes: 3fe3331bb285 ("perf/x86/amd: Add event map for AMD Family 17h")
+Link: https://lore.kernel.org/r/03d7fc8fa2a28f9be732116009025bdec1b3ec97.1711352180.git.sandipan.das@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-i801.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/events/amd/core.c |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -1422,7 +1422,6 @@ static void i801_add_mux(struct i801_pri
- 		lookup->table[i] = GPIO_LOOKUP(mux_config->gpio_chip,
- 					       mux_config->gpios[i], "mux", 0);
- 	gpiod_add_lookup_table(lookup);
--	priv->lookup = lookup;
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -250,7 +250,7 @@ static const u64 amd_perfmon_event_map[P
+ /*
+  * AMD Performance Monitor Family 17h and later:
+  */
+-static const u64 amd_f17h_perfmon_event_map[PERF_COUNT_HW_MAX] =
++static const u64 amd_zen1_perfmon_event_map[PERF_COUNT_HW_MAX] =
+ {
+ 	[PERF_COUNT_HW_CPU_CYCLES]		= 0x0076,
+ 	[PERF_COUNT_HW_INSTRUCTIONS]		= 0x00c0,
+@@ -262,10 +262,24 @@ static const u64 amd_f17h_perfmon_event_
+ 	[PERF_COUNT_HW_STALLED_CYCLES_BACKEND]	= 0x0187,
+ };
  
- 	/*
- 	 * Register the mux device, we use PLATFORM_DEVID_NONE here
-@@ -1436,7 +1435,10 @@ static void i801_add_mux(struct i801_pri
- 				sizeof(struct i2c_mux_gpio_platform_data));
- 	if (IS_ERR(priv->mux_pdev)) {
- 		gpiod_remove_lookup_table(lookup);
-+		devm_kfree(dev, lookup);
- 		dev_err(dev, "Failed to register i2c-mux-gpio device\n");
-+	} else {
-+		priv->lookup = lookup;
- 	}
++static const u64 amd_zen2_perfmon_event_map[PERF_COUNT_HW_MAX] =
++{
++	[PERF_COUNT_HW_CPU_CYCLES]		= 0x0076,
++	[PERF_COUNT_HW_INSTRUCTIONS]		= 0x00c0,
++	[PERF_COUNT_HW_CACHE_REFERENCES]	= 0xff60,
++	[PERF_COUNT_HW_CACHE_MISSES]		= 0x0964,
++	[PERF_COUNT_HW_BRANCH_INSTRUCTIONS]	= 0x00c2,
++	[PERF_COUNT_HW_BRANCH_MISSES]		= 0x00c3,
++	[PERF_COUNT_HW_STALLED_CYCLES_FRONTEND]	= 0x00a9,
++};
++
+ static u64 amd_pmu_event_map(int hw_event)
+ {
+-	if (boot_cpu_data.x86 >= 0x17)
+-		return amd_f17h_perfmon_event_map[hw_event];
++	if (cpu_feature_enabled(X86_FEATURE_ZEN2) || boot_cpu_data.x86 >= 0x19)
++		return amd_zen2_perfmon_event_map[hw_event];
++
++	if (cpu_feature_enabled(X86_FEATURE_ZEN1))
++		return amd_zen1_perfmon_event_map[hw_event];
+ 
+ 	return amd_perfmon_event_map[hw_event];
  }
- 
 
 
 
