@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-34576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCA6893FEA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEED1894178
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1350B2110F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CBA01C21707
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2979A47A62;
-	Mon,  1 Apr 2024 16:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284FA4AED7;
+	Mon,  1 Apr 2024 16:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdSjqVEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUajMU5Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC00C129;
-	Mon,  1 Apr 2024 16:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C24487BC;
+	Mon,  1 Apr 2024 16:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988584; cv=none; b=ZnfYMOjwN1MWUsioqrZZ3oDXxCzf2Flk7+JrHTO9nwdXh0iPokBA7ffEe9vrbNifjfojXQeUstGSkxXelSC/+4pBQinMP1t5TnRYLkQUSk5rB2VLgT9PQgN5mal1sQW1TCy4jd/0Ao6jBG8ki2s28ZKZvaWkA82CXD2PUqQpmpI=
+	t=1711989740; cv=none; b=o/N7WOwadwQNjtnxNP122nub8xmpSPGWfK4MSQ2tkFGeH2Ox9x3CbkZ4BbRNw5ZXIMAU4BSNi3N2oGUVCRfrpU6A3j4aC5hGqWiuS8JpqvgimoYxmZv/b4iBlhvZ9SiPWUZ28rpAovqqTg5VdNStA8NBWjjfKHfQsrZUaxM8bzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988584; c=relaxed/simple;
-	bh=wawCy+jAIrNWYj1JV9UCkJHnsR4GWVebJx8Al5FlCjo=;
+	s=arc-20240116; t=1711989740; c=relaxed/simple;
+	bh=yTW6fQpzueHcY+8JEPSXn4T38TX2GnKaqnNiD52j8ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XF3wAJka0dyf0hYrsStDqqzIlJ/8+qsJ6rAvVliob0d86FBSj0HU5dxVqlAAO3QHZO3hGdtXu9vwZVZMbiWFQAQQwRfuKrjly+rxxP4i2gBNwWPBD5m1sAY4BHeYqcVSZ2iyLuwL//Kay34M3n1uvZhqv3QhTo08yr3JCUTLHVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdSjqVEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7D1C433F1;
-	Mon,  1 Apr 2024 16:23:03 +0000 (UTC)
+	 MIME-Version; b=hyRpjo7riPiGZZ3JxrU7vYew1rleecmo7s3qja3vDD84L4CSCBYoDvaWyk0VYaUz+IGdYTSsnxQXN5GPHRxDKEKvI4dibAMRrS5Zf/8Ca32Kuhs9KuYZ57fxaPWqZq8faDJXzF1Fei8k8meleFZcevTyHu9T4pSyFgCUtdiKWWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUajMU5Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0D9C433C7;
+	Mon,  1 Apr 2024 16:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988583;
-	bh=wawCy+jAIrNWYj1JV9UCkJHnsR4GWVebJx8Al5FlCjo=;
+	s=korg; t=1711989740;
+	bh=yTW6fQpzueHcY+8JEPSXn4T38TX2GnKaqnNiD52j8ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdSjqVEBWyv1LtHCYLiet2ga7UxjJbcQREDekIMy+UssQfxU5+xUqhkXcfAkWTvqF
-	 2SX0JF7/qhvSpywHgZUj4chtqn1OJNFzv9mUVz8P+E895Dfi2MWSN3kO8veZPhyJsh
-	 WHmTon1cABG/y/A0k6E0XKzoqMBn5U0XNgZQgo4s=
+	b=hUajMU5ZARRVv8NYIW23MSbLM/eRpNsHZ9W63yvnoz02kGchA0Cg6v9/H9Zrb4wm/
+	 uFZJl4QEbCD5DOqz0YdzeAAtgmFNNBMdXmcrbuiTwSHyYiAU1WwOo842c2DSKXP9SG
+	 kDh9MSOyj9W8xSa6qUJB4y9MFwYUnR1Tz220y3H0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaotian Wu <wuxiaotian@loongson.cn>,
-	Miao Wang <shankerwangmiao@gmail.com>,
-	Xing Li <lixing@loongson.cn>,
-	Hongchen Zhang <zhanghongchen@loongson.cn>,
-	Rui Wang <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linke li <lilinke99@qq.com>,
+	Rabin Vincent <rabin@rab.in>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 199/432] LoongArch: Change __my_cpu_offset definition to avoid mis-optimization
-Date: Mon,  1 Apr 2024 17:43:06 +0200
-Message-ID: <20240401152559.073796495@linuxfoundation.org>
+Subject: [PATCH 6.6 138/396] ring-buffer: Fix resetting of shortest_full
+Date: Mon,  1 Apr 2024 17:43:07 +0200
+Message-ID: <20240401152552.029442371@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +68,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit c87e12e0e8c1241410e758e181ca6bf23efa5b5b ]
+[ Upstream commit 68282dd930ea38b068ce2c109d12405f40df3f93 ]
 
->From GCC commit 3f13154553f8546a ("df-scan: remove ad-hoc handling of
-global regs in asms"), global registers will no longer be forced to add
-to the def-use chain. Then current_thread_info(), current_stack_pointer
-and __my_cpu_offset may be lifted out of the loop because they are no
-longer treated as "volatile variables".
+The "shortest_full" variable is used to keep track of the waiter that is
+waiting for the smallest amount on the ring buffer before being woken up.
+When a tasks waits on the ring buffer, it passes in a "full" value that is
+a percentage. 0 means wake up on any data. 1-100 means wake up from 1% to
+100% full buffer.
 
-This optimization is still correct for the current_thread_info() and
-current_stack_pointer usages because they are associated to a thread.
-However it is wrong for __my_cpu_offset because it is associated to a
-CPU rather than a thread: if the thread migrates to a different CPU in
-the loop, __my_cpu_offset should be changed.
+As all waiters are on the same wait queue, the wake up happens for the
+waiter with the smallest percentage.
 
-Change __my_cpu_offset definition to treat it as a "volatile variable",
-in order to avoid such a mis-optimization.
+The problem is that the smallest_full on the cpu_buffer that stores the
+smallest amount doesn't get reset when all the waiters are woken up. It
+does get reset when the ring buffer is reset (echo > /sys/kernel/tracing/trace).
+
+This means that tasks may be woken up more often then when they want to
+be. Instead, have the shortest_full field get reset just before waking up
+all the tasks. If the tasks wait again, they will update the shortest_full
+before sleeping.
+
+Also add locking around setting of shortest_full in the poll logic, and
+change "work" to "rbwork" to match the variable name for rb_irq_work
+structures that are used in other places.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240308202431.948914369@goodmis.org
 
 Cc: stable@vger.kernel.org
-Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
-Reported-by: Miao Wang <shankerwangmiao@gmail.com>
-Signed-off-by: Xing Li <lixing@loongson.cn>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Rui Wang <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linke li <lilinke99@qq.com>
+Cc: Rabin Vincent <rabin@rab.in>
+Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 8145f1c35fa6 ("ring-buffer: Fix full_waiters_pending in poll")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/percpu.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include/asm/percpu.h
-index 9b36ac003f890..8f290e5546cf7 100644
---- a/arch/loongarch/include/asm/percpu.h
-+++ b/arch/loongarch/include/asm/percpu.h
-@@ -29,7 +29,12 @@ static inline void set_my_cpu_offset(unsigned long off)
- 	__my_cpu_offset = off;
- 	csr_write64(off, PERCPU_BASE_KS);
- }
--#define __my_cpu_offset __my_cpu_offset
-+
-+#define __my_cpu_offset					\
-+({							\
-+	__asm__ __volatile__("":"+r"(__my_cpu_offset));	\
-+	__my_cpu_offset;				\
-+})
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index a3315d569e2bf..a8ad5141d7ba3 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -902,8 +902,19 @@ static void rb_wake_up_waiters(struct irq_work *work)
  
- #define PERCPU_OP(op, asm_op, c_op)					\
- static __always_inline unsigned long __percpu_##op(void *ptr,		\
+ 	wake_up_all(&rbwork->waiters);
+ 	if (rbwork->full_waiters_pending || rbwork->wakeup_full) {
++		/* Only cpu_buffer sets the above flags */
++		struct ring_buffer_per_cpu *cpu_buffer =
++			container_of(rbwork, struct ring_buffer_per_cpu, irq_work);
++
++		/* Called from interrupt context */
++		raw_spin_lock(&cpu_buffer->reader_lock);
+ 		rbwork->wakeup_full = false;
+ 		rbwork->full_waiters_pending = false;
++
++		/* Waking up all waiters, they will reset the shortest full */
++		cpu_buffer->shortest_full = 0;
++		raw_spin_unlock(&cpu_buffer->reader_lock);
++
+ 		wake_up_all(&rbwork->full_waiters);
+ 	}
+ }
+@@ -1082,28 +1093,33 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
+ 			  struct file *filp, poll_table *poll_table, int full)
+ {
+ 	struct ring_buffer_per_cpu *cpu_buffer;
+-	struct rb_irq_work *work;
++	struct rb_irq_work *rbwork;
+ 
+ 	if (cpu == RING_BUFFER_ALL_CPUS) {
+-		work = &buffer->irq_work;
++		rbwork = &buffer->irq_work;
+ 		full = 0;
+ 	} else {
+ 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
+ 			return EPOLLERR;
+ 
+ 		cpu_buffer = buffer->buffers[cpu];
+-		work = &cpu_buffer->irq_work;
++		rbwork = &cpu_buffer->irq_work;
+ 	}
+ 
+ 	if (full) {
+-		poll_wait(filp, &work->full_waiters, poll_table);
+-		work->full_waiters_pending = true;
++		unsigned long flags;
++
++		poll_wait(filp, &rbwork->full_waiters, poll_table);
++
++		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
++		rbwork->full_waiters_pending = true;
+ 		if (!cpu_buffer->shortest_full ||
+ 		    cpu_buffer->shortest_full > full)
+ 			cpu_buffer->shortest_full = full;
++		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 	} else {
+-		poll_wait(filp, &work->waiters, poll_table);
+-		work->waiters_pending = true;
++		poll_wait(filp, &rbwork->waiters, poll_table);
++		rbwork->waiters_pending = true;
+ 	}
+ 
+ 	/*
 -- 
 2.43.0
 
