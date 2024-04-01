@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-35380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7C88943AF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFF28940A8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A76B1C21C7A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87A9CB21AEB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13FF487BE;
-	Mon,  1 Apr 2024 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097BC3613C;
+	Mon,  1 Apr 2024 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUcRDArL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CosMqmdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2EE482DF;
-	Mon,  1 Apr 2024 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7BD1C0DE7;
+	Mon,  1 Apr 2024 16:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991208; cv=none; b=m/YQq72vjjtuMv1lypByOAPav8oa5ksWp50I5smx10K9mUdfmmJC4BApqghf2+2qGOtoLAqNtCR+WgVCwgXUXBiIz/xu4AaGDOF+CgooCa84uc7Th5yq1GpAHAOFZbaaPwc3VGwpvmfRqqm8UiPzCYlH8fJOCefRF23NZJp5Txw=
+	t=1711989158; cv=none; b=JxZIB8eYm2tDc+A2HUNtcS0f5idlHs1cSZxadMfarcAyroPBjeTuavwPgXNjUajxFQLEk9HfjXKfm2HyaurlufMGiqB69Mfnn6suEleOrM4uNybGO/qKtwPdKLAqgFwR9XRuB5IYX6bkvjp78dqwhNQcIRZQugeI50my21cHRl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991208; c=relaxed/simple;
-	bh=LvefC8e+G82DIq1Zv71Uay3GTG9naCloffJfyZ1gJfs=;
+	s=arc-20240116; t=1711989158; c=relaxed/simple;
+	bh=gvkVaundUxO7kvqINgp43annPjcaUIOz4tKulh7amGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hfKdWjXg1TeFFVKQWx7UbCW5WWKrWAtxo4BEbNFzdNGMi+WXMtJI11OMirdlHfbM+6AXn9xSkRGACBXvnRZOZLBnUs3h1wX2FJcr3aGw8PyN94pheMmahzAEiv22QqKgWi7pgaflk6pcyTeQFXbdzU8Wo7uz0Cc2RfqZs5kYHEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUcRDArL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7963C433F1;
-	Mon,  1 Apr 2024 17:06:47 +0000 (UTC)
+	 MIME-Version; b=CS6FJtLR7b40qbPQZK68PXdshKXE7Zr+Vb24tYxuKlZHgFFcmsHWFeGV3oxK6bq4bXb8c+SOCq76i2y10bUSM31ORR5KaY8FtfV/S64ZDG1wKGKqQP9/0HGBorwjJa1Is+/hI3xf+hInGmif+0yYsKlT7vLBYJ10LL1onpAqDUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CosMqmdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE7CC433C7;
+	Mon,  1 Apr 2024 16:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991208;
-	bh=LvefC8e+G82DIq1Zv71Uay3GTG9naCloffJfyZ1gJfs=;
+	s=korg; t=1711989158;
+	bh=gvkVaundUxO7kvqINgp43annPjcaUIOz4tKulh7amGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUcRDArLjbO+ogxACyPq8cPA/+Hg7v8olU0S0utzyhllkQhs5A02w3d25abKaOnla
-	 lnmuiCgCikUxV6eRAIedKCdL81VE6Kxz1hlbyI7hkiqklN7qCUXZiXZuhNnDv3x7wE
-	 /uZnC9yV0YNMSC98ocAZ00U+VcNGrOqGcLkdEUEI=
+	b=CosMqmdTXV/fazuS2UEQOr6BpIxJpl+xDiEX+TBmAy9cxB/Cbq9PgBlh1MzpRMp+q
+	 yOhGsNk4F2isAJi7i++z3vFzLtJxytwLiAkXTKFt5rhsS6LYe0uuIygGWlZyQhVvCz
+	 DJNFIphPRIOU9+epsLN5+Lf6H9SepVWuM5nfS4v4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Rickard x Andersson <rickaran@axis.com>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Subject: [PATCH 6.1 196/272] tty: serial: imx: Fix broken RS485
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 6.7 399/432] usb: dwc2: host: Fix remote wakeup from hibernation
 Date: Mon,  1 Apr 2024 17:46:26 +0200
-Message-ID: <20240401152537.001532776@linuxfoundation.org>
+Message-ID: <20240401152605.264305523@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rickard x Andersson <rickaran@axis.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit 672448ccf9b6a676f96f9352cbf91f4d35f4084a upstream.
+commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
 
-When about to transmit the function imx_uart_start_tx is called and in
-some RS485 configurations this function will call imx_uart_stop_rx. The
-problem is that imx_uart_stop_rx will enable loopback in order to
-release the RS485 bus, but when loopback is enabled transmitted data
-will just be looped to RX.
+Starting from core v4.30a changed order of programming
+GPWRDN_PMUACTV to 0 in case of exit from hibernation on
+remote wakeup signaling from device.
 
-This patch fixes the above problem by not enabling loopback when about
-to transmit.
-
-This driver now works well when used for RS485 half duplex master
-configurations.
-
-Fixes: 79d0224f6bf2 ("tty: serial: imx: Handle RS485 DE signal active high")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Rickard x Andersson <rickaran@axis.com>
-Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Link: https://lore.kernel.org/r/20240221115304.509811-1-rickaran@axis.com
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/imx.c |   22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ drivers/usb/dwc2/core.h |    1 +
+ drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -496,8 +496,7 @@ static void imx_uart_stop_tx(struct uart
- 	}
- }
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -1086,6 +1086,7 @@ struct dwc2_hsotg {
+ 	bool needs_byte_swap;
  
--/* called with port.lock taken and irqs off */
--static void imx_uart_stop_rx(struct uart_port *port)
-+static void imx_uart_stop_rx_with_loopback_ctrl(struct uart_port *port, bool loopback)
- {
- 	struct imx_port *sport = (struct imx_port *)port;
- 	u32 ucr1, ucr2, ucr4, uts;
-@@ -519,7 +518,7 @@ static void imx_uart_stop_rx(struct uart
- 	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
- 	if (port->rs485.flags & SER_RS485_ENABLED &&
- 	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
--	    sport->have_rtscts && !sport->have_rtsgpio) {
-+	    sport->have_rtscts && !sport->have_rtsgpio && loopback) {
- 		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
- 		uts |= UTS_LOOP;
- 		imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-@@ -532,6 +531,16 @@ static void imx_uart_stop_rx(struct uart
- }
+ 	/* DWC OTG HW Release versions */
++#define DWC2_CORE_REV_4_30a	0x4f54430a
+ #define DWC2_CORE_REV_2_71a	0x4f54271a
+ #define DWC2_CORE_REV_2_72a     0x4f54272a
+ #define DWC2_CORE_REV_2_80a	0x4f54280a
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5610,10 +5610,12 @@ int dwc2_host_exit_hibernation(struct dw
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
  
- /* called with port.lock taken and irqs off */
-+static void imx_uart_stop_rx(struct uart_port *port)
-+{
-+	/*
-+	 * Stop RX and enable loopback in order to make sure RS485 bus
-+	 * is not blocked. Se comment in imx_uart_probe().
-+	 */
-+	imx_uart_stop_rx_with_loopback_ctrl(port, true);
-+}
-+
-+/* called with port.lock taken and irqs off */
- static void imx_uart_enable_ms(struct uart_port *port)
- {
- 	struct imx_port *sport = (struct imx_port *)port;
-@@ -719,8 +728,13 @@ static void imx_uart_start_tx(struct uar
- 				imx_uart_rts_inactive(sport, &ucr2);
- 			imx_uart_writel(sport, ucr2, UCR2);
+ 	/* De-assert Wakeup Logic */
+-	gpwrdn = dwc2_readl(hsotg, GPWRDN);
+-	gpwrdn &= ~GPWRDN_PMUACTV;
+-	dwc2_writel(hsotg, gpwrdn, GPWRDN);
+-	udelay(10);
++	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++		gpwrdn = dwc2_readl(hsotg, GPWRDN);
++		gpwrdn &= ~GPWRDN_PMUACTV;
++		dwc2_writel(hsotg, gpwrdn, GPWRDN);
++		udelay(10);
++	}
  
-+			/*
-+			 * Since we are about to transmit we can not stop RX
-+			 * with loopback enabled because that will make our
-+			 * transmitted data being just looped to RX.
-+			 */
- 			if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
--				imx_uart_stop_rx(port);
-+				imx_uart_stop_rx_with_loopback_ctrl(port, false);
+ 	hprt0 = hr->hprt0;
+ 	hprt0 |= HPRT0_PWR;
+@@ -5638,6 +5640,13 @@ int dwc2_host_exit_hibernation(struct dw
+ 		hprt0 |= HPRT0_RES;
+ 		dwc2_writel(hsotg, hprt0, HPRT0);
  
- 			sport->tx_state = WAIT_AFTER_RTS;
- 
++		/* De-assert Wakeup Logic */
++		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++			gpwrdn = dwc2_readl(hsotg, GPWRDN);
++			gpwrdn &= ~GPWRDN_PMUACTV;
++			dwc2_writel(hsotg, gpwrdn, GPWRDN);
++			udelay(10);
++		}
+ 		/* Wait for Resume time and then program HPRT again */
+ 		mdelay(100);
+ 		hprt0 &= ~HPRT0_RES;
 
 
 
