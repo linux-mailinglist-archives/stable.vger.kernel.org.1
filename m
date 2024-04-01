@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-34630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E079894025
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0655389432B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47EBC28101A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC5CC2835D8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F6F4778E;
-	Mon,  1 Apr 2024 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF22482E4;
+	Mon,  1 Apr 2024 17:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egZdm3xd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMegNtUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F011CA8F;
-	Mon,  1 Apr 2024 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB2B47A6B;
+	Mon,  1 Apr 2024 17:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988768; cv=none; b=Y1EwSl0JFYMSGA6KYs9BuKZb0h/7vc+Io7gsy1KGTS8rU2UyzWU73StQVhufCHpuzGSnVMHdkJ5J7fnVdhT5W4HzbxfzG8nkwhYr/8suuxMNYrcfTpe31NULhTxXCIn2g8CObb0DhFl/Y+tQdUfjvIFcyk6MDhUnYhOpFAdw3Fo=
+	t=1711990831; cv=none; b=tYFKpwoe/ipp2WjDoh4OI29c+FDg1F15ca//AIk7WqDlCPXwdbqZC4FoMsvRkAs1hsmHnXLL4WWSHtyaSqjMqA+fIQ5RodiV6FhqZxPukrYdUqLG4n6ZSk0c6Fu3tduWgd0jdLPfO5CokqdQxNHa+w9I1fIJ3uxc9kpEJzSj/3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988768; c=relaxed/simple;
-	bh=XXgdSpDoWhEFKeSLmM/1QIU/4CeCBzWVDUxWWo4BcCg=;
+	s=arc-20240116; t=1711990831; c=relaxed/simple;
+	bh=uSdgOFWn+ecV603exf60U++SXgIoFd4uPd9EjD/pfUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpR5fXkD5YMhz7TzfmPtbW6Ctq22rxWulxogzaWNBXTV0IVKq9Pum80Vregec7KfRd7PFSu+gB4YFMpNROs5/kJuJnRDeKHZrq+hjzNHMyaSeH1oUyAc5tv7xSrgRAy1i0cWxX8W/tQhFKhp2Gtr8I4yz7hnVLPS2Lqx1IX6LkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egZdm3xd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17AAC433C7;
-	Mon,  1 Apr 2024 16:26:07 +0000 (UTC)
+	 MIME-Version; b=G9RSN1EGZRHI0+TCDkp9eosZ8pPa4VGn2Dzyw8Bkip3kRf061rIM3TgocqBadwT+l+28oa2xQqGjxGwwHdbt9EfhSFF6otWvFNKeGC22x86P4RztEPGaer+uXbsQpQx95/1jtCp9amU26faZmq80hAt5//7m44nH4W9xP9bsPyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMegNtUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C3EC433F1;
+	Mon,  1 Apr 2024 17:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988768;
-	bh=XXgdSpDoWhEFKeSLmM/1QIU/4CeCBzWVDUxWWo4BcCg=;
+	s=korg; t=1711990831;
+	bh=uSdgOFWn+ecV603exf60U++SXgIoFd4uPd9EjD/pfUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=egZdm3xdbis0vwIH4L/Q3DbPtDqgsyHA49dJ7X14nsFSRX4MnvWb97JOHeCSdC6iV
-	 XSm74rEeIPzWIJC7IbXPy4jZAJRR9G0xYNJk6VGLQ/Jqwir3tzARTbRgnj7/uVkRCd
-	 DnHeOwjJiPeflV+C6herEwcF6RwbB+yYxqRw+FkM=
+	b=tMegNtUsH3gbn8Zj7q6wG5URL9drbjgczvjMdRwGNJqgV/534dU5qvw5cMKiYn7lf
+	 ffejACon8ZngS7u0V4JuZwCjLqw1Nqh6aov1ZHlrLwjHlaqaJvu9/wTAD8H/oOr3OK
+	 0mcrlOIQnhErkl/pjvKuiO2W+fn/Yv+cJ8H+TZXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.7 282/432] iio: accel: adxl367: fix DEVID read after reset
+	"Huang, Ying" <ying.huang@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	"Chris Li (Google)" <chrisl@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Yang Shi <shy828301@gmail.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 079/272] swap: comments get_swap_device() with usage rule
 Date: Mon,  1 Apr 2024 17:44:29 +0200
-Message-ID: <20240401152601.585434617@linuxfoundation.org>
+Message-ID: <20240401152533.057644896@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +73,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Huang Ying <ying.huang@intel.com>
 
-commit 1b926914bbe4e30cb32f268893ef7d82a85275b8 upstream.
+[ Upstream commit a95722a047724ef75567381976a36f0e44230bd9 ]
 
-regmap_read_poll_timeout() will not sleep before reading,
-causing the first read to return -ENXIO on I2C, since the
-chip does not respond to it while it is being reset.
+The general rule to use a swap entry is as follows.
 
-The datasheet specifies that a soft reset operation has a
-latency of 7.5ms.
+When we get a swap entry, if there aren't some other ways to prevent
+swapoff, such as the folio in swap cache is locked, page table lock is
+held, etc., the swap entry may become invalid because of swapoff.
+Then, we need to enclose all swap related functions with
+get_swap_device() and put_swap_device(), unless the swap functions
+call get/put_swap_device() by themselves.
 
-Add a 15ms sleep between reset and reading the DEVID register,
-and switch to a simple regmap_read() call.
+Add the rule as comments of get_swap_device().
 
-Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240207033657.206171-1-demonsingur@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20230529061355.125791-6-ying.huang@intel.com
+Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
+Reviewed-by: Chris Li (Google) <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 82b1c07a0af6 ("mm: swap: fix race between free_swap_and_cache() and swapoff()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/adxl367.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/swapfile.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/accel/adxl367.c
-+++ b/drivers/iio/accel/adxl367.c
-@@ -1429,9 +1429,11 @@ static int adxl367_verify_devid(struct a
- 	unsigned int val;
- 	int ret;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index cca9fda9d036f..324844f98d67c 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1222,6 +1222,13 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
+ }
  
--	ret = regmap_read_poll_timeout(st->regmap, ADXL367_REG_DEVID, val,
--				       val == ADXL367_DEVID_AD, 1000, 10000);
-+	ret = regmap_read(st->regmap, ADXL367_REG_DEVID, &val);
- 	if (ret)
-+		return dev_err_probe(st->dev, ret, "Failed to read dev id\n");
-+
-+	if (val != ADXL367_DEVID_AD)
- 		return dev_err_probe(st->dev, -ENODEV,
- 				     "Invalid dev id 0x%02X, expected 0x%02X\n",
- 				     val, ADXL367_DEVID_AD);
-@@ -1510,6 +1512,8 @@ int adxl367_probe(struct device *dev, co
- 	if (ret)
- 		return ret;
- 
-+	fsleep(15000);
-+
- 	ret = adxl367_verify_devid(st);
- 	if (ret)
- 		return ret;
+ /*
++ * When we get a swap entry, if there aren't some other ways to
++ * prevent swapoff, such as the folio in swap cache is locked, page
++ * table lock is held, etc., the swap entry may become invalid because
++ * of swapoff.  Then, we need to enclose all swap related functions
++ * with get_swap_device() and put_swap_device(), unless the swap
++ * functions call get/put_swap_device() by themselves.
++ *
+  * Check whether swap entry is valid in the swap device.  If so,
+  * return pointer to swap_info_struct, and keep the swap entry valid
+  * via preventing the swap device from being swapoff, until
+@@ -1230,9 +1237,8 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
+  * Notice that swapoff or swapoff+swapon can still happen before the
+  * percpu_ref_tryget_live() in get_swap_device() or after the
+  * percpu_ref_put() in put_swap_device() if there isn't any other way
+- * to prevent swapoff, such as page lock, page table lock, etc.  The
+- * caller must be prepared for that.  For example, the following
+- * situation is possible.
++ * to prevent swapoff.  The caller must be prepared for that.  For
++ * example, the following situation is possible.
+  *
+  *   CPU1				CPU2
+  *   do_swap_page()
+-- 
+2.43.0
+
 
 
 
