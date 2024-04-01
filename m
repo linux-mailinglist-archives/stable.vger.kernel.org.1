@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EE38943CA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80AF58942A0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90360283A03
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B25371C21E36
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06ED487BC;
-	Mon,  1 Apr 2024 17:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E0E482DF;
+	Mon,  1 Apr 2024 16:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H67jJtr4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KO+wvUKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D79E482E4;
-	Mon,  1 Apr 2024 17:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CBA40876;
+	Mon,  1 Apr 2024 16:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991284; cv=none; b=cwflQLzJrfa24nLJUPZA9BOgsvDd7CPtFiSiSNDezqcJyhw8j0+xwCnXENmLuWZ1v4HZ0joOkouoa5j8Pw0seO1deuNkHXpjzoH5DKuPUcqEMhrSGpyqIKENjJyDoWTciyxn9AJEc9u5k63caY+vXMvCyK3f6hARsArlJYG9eXU=
+	t=1711990461; cv=none; b=Ev3grevclTNuPUwvaLLCbAlA346K9HpRT5fYTN1MdeESNEBT89Rzge9dB+rNBDidugfQdx3HWsILIEGxZq3YzmjzKYpQiMl0ZEMnFFOUzB1yJuNXemlTWvNfDTPDF0ywZNT6Ff6+l9cswAMU/SFGgnavfLE/Lspnn/nj/mIcJ5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991284; c=relaxed/simple;
-	bh=fv5C0MmlGQt6YNd50Yc9Vsec7WGjJBt2clK8qsKPjgU=;
+	s=arc-20240116; t=1711990461; c=relaxed/simple;
+	bh=titBK7qWzKOgSnc3ileeSI0iwHwREh4VMfFhY0SQt7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYTTYFuiRCafujyZEmlnhws9omo3Q/RkFNgBacLBf7bZy0Womki6PgayXF/lCBj5abYTnp9GXNJ7lI8j57fhOZwppoB8NkWYPRKBaVOA2J+h3/8znua98GHlFmv+gyHs9vT+R4YQRPsjCeMMLIug1Q9BXJDSqxmIuDZN1l9i7OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H67jJtr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E370C433C7;
-	Mon,  1 Apr 2024 17:08:03 +0000 (UTC)
+	 MIME-Version; b=feBaNkCr9eqnGyLuRmDpHJCc9RAgkYeSuwwn+WwcO5MZm/X9WkuP/itOpf2GZfdLIaFxxgz9U/Q+h1bxmN22CCe5mVDOokeWbS8hSAVSBn4IPTVN3DL33SCzfgDUf9a+sUBO8jwPJsiR8KX/D7FL6S6XYZ9M2RXjhLl70INbce4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO+wvUKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C944C433C7;
+	Mon,  1 Apr 2024 16:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991283;
-	bh=fv5C0MmlGQt6YNd50Yc9Vsec7WGjJBt2clK8qsKPjgU=;
+	s=korg; t=1711990461;
+	bh=titBK7qWzKOgSnc3ileeSI0iwHwREh4VMfFhY0SQt7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H67jJtr4TYFdeyev4fBzP4yu6pB3crQ0Nz0IUdpkTFtG5igUGf4b+CPS63cZPGt6s
-	 qFB2J+X7vuqLf0gNeYxMNJPUkaMsur0KVh6CWg1dhrkF0FCccqAQNjWrzMBYI8TWR0
-	 8XfepYtV3EaGSIo6TwXNCdoZxMph6cFLs229W2u8=
+	b=KO+wvUKWKs+LpBGyhnLZbST0BJhgwy7R8m1/t1/q+pgtIm0MqKLVr4gln8exFsE2M
+	 pNEU151NReyW7UnvQEJx9bo3fFG2caWRnLmYAUjD5oraPBVqtnK+YXHkRMQXW/fj7O
+	 WvbR97KwjeT3AKWdP0Ae+9183m6x/7q1d8K8C0Io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Romain Naour <romain.naour@skf.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 219/272] mmc: sdhci-omap: re-tuning is needed after a pm transition to support emmc HS200 mode
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.6 360/396] staging: vc04_services: changen strncpy() to strscpy_pad()
 Date: Mon,  1 Apr 2024 17:46:49 +0200
-Message-ID: <20240401152537.773740448@linuxfoundation.org>
+Message-ID: <20240401152558.654744412@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Romain Naour <romain.naour@skf.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit f9e2a5b00a35f2c064dc679808bc8db5cc779ed6 upstream.
+commit ef25725b7f8aaffd7756974d3246ec44fae0a5cf upstream.
 
-"PM runtime functions" was been added in sdhci-omap driver in commit
-f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions") along
-with "card power off and enable aggressive PM" in commit 3edf588e7fe0
-("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM").
+gcc-14 warns about this strncpy() that results in a non-terminated
+string for an overflow:
 
-Since then, the sdhci-omap driver doesn't work using mmc-hs200 mode
-due to the tuning values being lost during a pm transition.
+In file included from include/linux/string.h:369,
+                 from drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:20:
+In function 'strncpy',
+    inlined from 'create_component' at drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:940:2:
+include/linux/fortify-string.h:108:33: error: '__builtin_strncpy' specified bound 128 equals destination size [-Werror=stringop-truncation]
 
-As for the sdhci_am654 driver, request a new tuning sequence before
-suspend (sdhci_omap_runtime_suspend()), otherwise the device will
-trigger cache flush error:
+Change it to strscpy_pad(), which produces a properly terminated and
+zero-padded string.
 
-  mmc1: cache flush error -110 (ETIMEDOUT)
-  mmc1: error -110 doing aggressive suspend
-
-followed by I/O errors produced by fdisk -l /dev/mmcblk1boot1:
-
-  I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
-  prio class 2
-  I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
-  prio class 2
-  I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
-  prio class 2
-  Buffer I/O error on dev mmcblk1boot1, logical block 8048, async page read
-  I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
-  prio class 2
-  Buffer I/O error on dev mmcblk1boot0, logical block 8048, async page read
-
-Don't re-tune if auto retuning is supported in HW (when SDHCI_TUNING_MODE_3
-is available).
-
-Link: https://lore.kernel.org/all/2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr
-Fixes: f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions")
-Signed-off-by: Romain Naour <romain.naour@skf.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240315234444.816978-1-romain.naour@smile.fr
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240313163712.224585-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-omap.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -1442,6 +1442,9 @@ static int __maybe_unused sdhci_omap_run
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+--- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
+@@ -937,8 +937,8 @@ static int create_component(struct vchiq
+ 	/* build component create message */
+ 	m.h.type = MMAL_MSG_TYPE_COMPONENT_CREATE;
+ 	m.u.component_create.client_component = component->client_component;
+-	strncpy(m.u.component_create.name, name,
+-		sizeof(m.u.component_create.name));
++	strscpy_pad(m.u.component_create.name, name,
++		    sizeof(m.u.component_create.name));
  
-+	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
-+		mmc_retune_needed(host->mmc);
-+
- 	if (omap_host->con != -EINVAL)
- 		sdhci_runtime_suspend_host(host);
- 
+ 	ret = send_synchronous_mmal_msg(instance, &m,
+ 					sizeof(m.u.component_create),
 
 
 
