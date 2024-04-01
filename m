@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623A6894218
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8441894072
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93B5F1C219CC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9CFB1C20FD9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48939481C4;
-	Mon,  1 Apr 2024 16:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583783A1C2;
+	Mon,  1 Apr 2024 16:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxaLzSuF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aua8++Gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05D11C0DE7;
-	Mon,  1 Apr 2024 16:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B911E49E;
+	Mon,  1 Apr 2024 16:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990160; cv=none; b=HrigC471V7R3zKj8IpAIWGfXdBspLkgVBXtjdf0VyOCJROFhm7yd411EX02dreS5D1pL32EPYAhG5S/yNj5OoaWyjkdZ/LUYFXycvynLe/5CWOZ1pvzkXe+CzhvHRY6kph9oxVidNB072VIpGC6y3MBzgm7jApN3MmScoyF2YRM=
+	t=1711989013; cv=none; b=R6n5CpPIMNDKfBz3aIpe/CPyFeRX/UPye9saZG8rcSFBKtYEFVf+YaMDBEZnumNpAjUa/5t6+6tPLLIGxPFSITf+9yS2Em6UN9mreLVCCZzNVWvo7TmIB8KJJdy9C/tKiiQUbeN1TIbfco/P1uM71t/3Mx2JUE00W7ETUU+0IZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990160; c=relaxed/simple;
-	bh=idlhxL3YJdkllj+fy4JcdQgpylzSgEU9bIeOJ9u+x2w=;
+	s=arc-20240116; t=1711989013; c=relaxed/simple;
+	bh=oKNATy29I/Af5vnUoWO2FYMV9zoiB82q7HlP9iPVYrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wdt5JV6PgOPN+RF2L1QyrAZa1f0fw3Cb3T3xGFGbw1/ytgaRhNUMR2E9QhXjDo8YO/igxfWA3QhdTJ0G3I+sr1DGNpI3BsmF/ihZAoTx64m0gIboYUTH0/oKFpgaUS4EqQNkNKLtO5iNULPVhwAGfCpJgdungvhADxFRvOkWh74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxaLzSuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C26C433C7;
-	Mon,  1 Apr 2024 16:49:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K2JNYmzBlsIsA5xmLYOrmXbsV2M8QVF5pTMMJ0JSxS22DXJemVwWDZCzBR5CNAi9BVG0W9Eq0lYzmTaIZ2MUQArb2A2rJoZtT+kJS+Jh1VCcCNqulWiIqAnOjzYm3Neyjivxr8ke+cQKl6LrFjJwUf46toe1OfwAVrrTD7ryUoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aua8++Gr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AED5C433C7;
+	Mon,  1 Apr 2024 16:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990159;
-	bh=idlhxL3YJdkllj+fy4JcdQgpylzSgEU9bIeOJ9u+x2w=;
+	s=korg; t=1711989012;
+	bh=oKNATy29I/Af5vnUoWO2FYMV9zoiB82q7HlP9iPVYrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxaLzSuFPlDCyAUslTcuB0VVxyLBzx7wt5Hh3lvCFSpcGPfQUoefbdYviiKlIYdJX
-	 JhyOaNFUKERKt7OYFBXAwwWdVQG/v5i8M763ViI0f8SLSUxbo4tlTMt6LnYc7VbDXe
-	 pehU+1oamTS6yKsJ6MNgac/wnZHgWPnL0NBhahGU=
+	b=Aua8++GrHleDIhoptVbPGCv7vBW+X37P+uKZId8naBgfMFmaOuti3vAeQTEYIiGHj
+	 IyQVuzFVBHLmTo9uf/gDWFCYw0IGbdxDHYy7WrxRjS66uGVZ+cDCAWpaFMUS9cetVi
+	 9jJbqfmTu3Cxh7mVAYrKrLFWC/Dfftsj6SBKvDDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 264/396] xfs: remove unused fields from struct xbtree_ifakeroot
-Date: Mon,  1 Apr 2024 17:45:13 +0200
-Message-ID: <20240401152555.776803665@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Mika Kahola <mika.kahola@intel.com>
+Subject: [PATCH 6.7 327/432] drm/i915: Replace a memset() with zero initialization
+Date: Mon,  1 Apr 2024 17:45:14 +0200
+Message-ID: <20240401152602.967947028@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 4c8ecd1cfdd01fb727121035014d9f654a30bdf2 upstream.
+commit 92b47c3b8b242a1f1b73d5c1181d5b678ac1382b upstream.
 
-Remove these unused fields since nobody uses them.  They should have
-been removed years ago in a different cleanup series from Christoph
-Hellwig.
+Declaring a struct and immediately zeroing it with memset()
+seems a bit silly to me. Just zero initialize the struct
+when declaring it.
 
-Fixes: daf83964a3681 ("xfs: move the per-fork nextents fields into struct xfs_ifork")
-Fixes: f7e67b20ecbbc ("xfs: move the fork format fields into struct xfs_ifork")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231124082735.25470-2-ville.syrjala@linux.intel.com
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_btree_staging.h |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_btree_staging.h
-+++ b/fs/xfs/libxfs/xfs_btree_staging.h
-@@ -37,12 +37,6 @@ struct xbtree_ifakeroot {
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -4466,12 +4466,10 @@ verify_single_dpll_state(struct drm_i915
+ 			 struct intel_crtc *crtc,
+ 			 const struct intel_crtc_state *new_crtc_state)
+ {
+-	struct intel_dpll_hw_state dpll_hw_state;
++	struct intel_dpll_hw_state dpll_hw_state = {};
+ 	u8 pipe_mask;
+ 	bool active;
  
- 	/* Number of bytes available for this fork in the inode. */
- 	unsigned int		if_fork_size;
+-	memset(&dpll_hw_state, 0, sizeof(dpll_hw_state));
 -
--	/* Fork format. */
--	unsigned int		if_format;
--
--	/* Number of records. */
--	unsigned int		if_extents;
- };
+ 	drm_dbg_kms(&i915->drm, "%s\n", pll->info->name);
  
- /* Cursor interactions with fake roots for inode-rooted btrees. */
+ 	active = intel_dpll_get_hw_state(i915, pll, &dpll_hw_state);
 
 
 
