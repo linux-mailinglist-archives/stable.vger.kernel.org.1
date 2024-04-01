@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-34306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D58893EC9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 178A0894228
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5361CB22192
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48E161C219E7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6863F8F4;
-	Mon,  1 Apr 2024 16:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB9141232;
+	Mon,  1 Apr 2024 16:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfjhUK8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omwWhnvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980534776F;
-	Mon,  1 Apr 2024 16:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7E88F5C;
+	Mon,  1 Apr 2024 16:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987676; cv=none; b=Ei3/4PqKWrSXM+vCIp0BQTV7YT8/t8/VrNTbWfmv7FfVm7B9ISgTI9wuBlkSn4tjRW+Pfzn2K0qKazkDksPTQKRPDgP1snpJwx/6tnbShflllNRrjNi24avjn6QsNOex+O31UWy/Gj7g9SSoLADoc+xNb6Tpck2NosQ8ISYEw+4=
+	t=1711990193; cv=none; b=Py8Afit2fIujVWNqaF3NO/iQoczwQdItGNovzWnGxJV/lQTCQ2J8zdnHJZzPDUl1N7B6il4OKnFCTM/laci2R8STXXTSdLN/6TMT8q+YuqXEVHbTdNPI4c73CNSYpnEY4kf+6LfYCTGsa00k9ztkaOcF5ECaasUmXXyo6garJkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987676; c=relaxed/simple;
-	bh=DCBj5XhR9MBYu86wxVHAzUq7mCLhHDHfPJD9A6zxdOw=;
+	s=arc-20240116; t=1711990193; c=relaxed/simple;
+	bh=cqNUJb6iJHZQxBbdTOp2eR4ZtxurUoZRKC09Y1RPpTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMwsna2GRjcOLdNcyO1ODPiOUBkJN5ZKSn4BN/4MwzAvdK1ckJmHWTmf0LVMNQ7r1e5izWk6Ej1K5TjXkEpOTmDKySqUlUXFGXQdPeGAg/iJ7999uoGZvM+6/5JaVH4igtuj2DyixI9DHxzeL2Znc52BYhYLkwh2W5RyeI9lvms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfjhUK8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5F0C433F1;
-	Mon,  1 Apr 2024 16:07:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aoT4uc27s4jVLZqdFsXUTr9+yuhhug/OhENjbXxaNHdL1R7PospxzRHvMsRk93DKKNEIyyBCA7+2a2QKCqdXU0t3ewnlgT/5APSVG2imW9ix8AGYb68ssLWhu46YjgJXDv83RxQbCiz0OzR4tylRuKU7DRQvWVvxsksigil2qd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omwWhnvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3ECAC433C7;
+	Mon,  1 Apr 2024 16:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987676;
-	bh=DCBj5XhR9MBYu86wxVHAzUq7mCLhHDHfPJD9A6zxdOw=;
+	s=korg; t=1711990193;
+	bh=cqNUJb6iJHZQxBbdTOp2eR4ZtxurUoZRKC09Y1RPpTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfjhUK8cEAqZTYXYlBelBLWF8JGzkYKSQf9r0rfpd/W9vg6/Y4olotzIS1atEXRtM
-	 wh+t5AthoL8dnKjdjVHR+i3/22SGS0Oo1GQfWbTbJ8vjIx4NBC0pR/ud4Jub10p/sS
-	 bNVzCTj/1AkL4aSIkKd33MjzKWLpwvH90vSdFmCo=
+	b=omwWhnvD0i6PjomJLQTTLJub8eaOhsAkhKSTj1LIRUjTPKWhsPIdtNC/XM9TZhYSv
+	 7qUWkMGvZdypgQfFVsbCqK/+vj/goUDjx5OGT46pF9OHF5KZIECzSWrQWol0A95G7k
+	 JOnfpEJufIOQuW0JbNVU4uHG9WHuE87CzvpDdp5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jun Lei <jun.lei@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Xi Liu <xi.liu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.8 329/399] drm/amd/display: Set DCN351 BB and IP the same as DCN35
-Date: Mon,  1 Apr 2024 17:44:55 +0200
-Message-ID: <20240401152558.999029290@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.6 247/396] drm/i915: Dont explode when the dig port we dont have an AUX CH
+Date: Mon,  1 Apr 2024 17:44:56 +0200
+Message-ID: <20240401152555.277114977@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +60,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Liu <xi.liu@amd.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 0ccc2b30f4feadc0b1a282dbcc06e396382e5d74 upstream.
+commit 0b385be4c3ccd5636441923d7cad5eda6b4651cb upstream.
 
-[WHY & HOW]
-DCN351 and DCN35 should use the same bounding box and IP settings.
+The icl+ power well code currently assumes that every AUX power
+well maps to an encoder which is using said power well. That is
+by no menas guaranteed as we:
+- only register encoders for ports declared in the VBT
+- combo PHY HDMI-only encoder no longer get an AUX CH since
+  commit 9856308c94ca ("drm/i915: Only populate aux_ch if really needed")
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+However we have places such as intel_power_domains_sanitize_state()
+that blindly traverse all the possible power wells. So these bits
+of code may very well encounbter an aux power well with no associated
+encoder.
+
+In this particular case the BIOS seems to have left one AUX power
+well enabled even though we're dealing with a HDMI only encoder
+on a combo PHY. We then proceed to turn off said power well and
+explode when we can't find a matching encoder. As a short term fix
+we should be able to just skip the PHY related parts of the power
+well programming since we know this situation can only happen with
+combo PHYs.
+
+Another option might be to go back to always picking an AUX CH for
+all encoders. However I'm a bit wary about that since we might in
+theory end up conflicting with the VBT AUX CH assignment. Also
+that wouldn't help with encoders not declared in the VBT, should
+we ever need to poke the corresponding power wells.
+
+Longer term we need to figure out what the actual relationship
+is between the PHY vs. AUX CH vs. AUX power well. Currently this
+is entirely unclear.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Xi Liu <xi.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 9856308c94ca ("drm/i915: Only populate aux_ch if really needed")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10184
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240223203216.15210-1-ville.syrjala@linux.intel.com
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+(cherry picked from commit 6a8c66bf0e565c34ad0a18f820e0bb17951f7f91)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ .../drm/i915/display/intel_display_power_well.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -228,17 +228,13 @@ void dml2_init_socbb_params(struct dml2_
- 		break;
+diff --git a/drivers/gpu/drm/i915/display/intel_display_power_well.c b/drivers/gpu/drm/i915/display/intel_display_power_well.c
+index 47cd6bb04366..06900ff307b2 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
+@@ -246,7 +246,14 @@ static enum phy icl_aux_pw_to_phy(struct drm_i915_private *i915,
+ 	enum aux_ch aux_ch = icl_aux_pw_to_ch(power_well);
+ 	struct intel_digital_port *dig_port = aux_ch_to_digital_port(i915, aux_ch);
  
- 	case dml_project_dcn35:
-+	case dml_project_dcn351:
- 		out->num_chans = 4;
- 		out->round_trip_ping_latency_dcfclk_cycles = 106;
- 		out->smn_latency_us = 2;
- 		out->dispclk_dppclk_vco_speed_mhz = 3600;
- 		break;
+-	return intel_port_to_phy(i915, dig_port->base.port);
++	/*
++	 * FIXME should we care about the (VBT defined) dig_port->aux_ch
++	 * relationship or should this be purely defined by the hardware layout?
++	 * Currently if the port doesn't appear in the VBT, or if it's declared
++	 * as HDMI-only and routed to a combo PHY, the encoder either won't be
++	 * present at all or it will not have an aux_ch assigned.
++	 */
++	return dig_port ? intel_port_to_phy(i915, dig_port->base.port) : PHY_NONE;
+ }
  
--	case dml_project_dcn351:
--		out->num_chans = 16;
--		out->round_trip_ping_latency_dcfclk_cycles = 1100;
--		out->smn_latency_us = 2;
--		break;
- 	}
- 	/* ---Overrides if available--- */
- 	if (dml2->config.bbox_overrides.dram_num_chan)
+ static void hsw_wait_for_power_well_enable(struct drm_i915_private *dev_priv,
+@@ -414,7 +421,8 @@ icl_combo_phy_aux_power_well_enable(struct drm_i915_private *dev_priv,
+ 
+ 	intel_de_rmw(dev_priv, regs->driver, 0, HSW_PWR_WELL_CTL_REQ(pw_idx));
+ 
+-	if (DISPLAY_VER(dev_priv) < 12)
++	/* FIXME this is a mess */
++	if (phy != PHY_NONE)
+ 		intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy),
+ 			     0, ICL_LANE_ENABLE_AUX);
+ 
+@@ -437,7 +445,10 @@ icl_combo_phy_aux_power_well_disable(struct drm_i915_private *dev_priv,
+ 
+ 	drm_WARN_ON(&dev_priv->drm, !IS_ICELAKE(dev_priv));
+ 
+-	intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy), ICL_LANE_ENABLE_AUX, 0);
++	/* FIXME this is a mess */
++	if (phy != PHY_NONE)
++		intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy),
++			     ICL_LANE_ENABLE_AUX, 0);
+ 
+ 	intel_de_rmw(dev_priv, regs->driver, HSW_PWR_WELL_CTL_REQ(pw_idx), 0);
+ 
+-- 
+2.44.0
+
 
 
 
