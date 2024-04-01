@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-33967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DB1893D1D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B29893D2A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8128B281324
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:49:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C69D2830D4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC0346551;
-	Mon,  1 Apr 2024 15:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78FA47A64;
+	Mon,  1 Apr 2024 15:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKf840sN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czK/NutA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7865E3FE2D;
-	Mon,  1 Apr 2024 15:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F51A46420;
+	Mon,  1 Apr 2024 15:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711986579; cv=none; b=bJUVElGCOphHzqjcJnZin0aQgfsJXTCi9rP7xv8xx1rWfToExnInAlkM06bYYsgUjIUPyW2Hs6qIRt6k/X0cCoV17TeQ0xBov4hAib5qeOTh4tkGoKY7m1LnHATMLiyiE6CT401b/Jr7a0i3chGHnYC4fgJ9MZRXlT93V6egGf4=
+	t=1711986615; cv=none; b=qWjNK2/rS3/s2xIfyIC58BKxWvXutIsaP2QSKXljfd9PZYP7puEJ6W45qXgfTcOCluYNSOfn08BMqnVvZ91nq+cvRbVrgN2LX38KdQd+qrvOvfXHjIPxXSfUSxvMzAtI2PY0B5rnksvacyQ09WJWOSfmkad2pfEjQyXHSYQ3o08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711986579; c=relaxed/simple;
-	bh=MSSNTBK5W0kl/cPVILrS4Saj9Dzm1FyN93uD5glxQ3M=;
+	s=arc-20240116; t=1711986615; c=relaxed/simple;
+	bh=EUx4k95MuGDwof6lqxYH7eRj4hnh7L9ACjVlgAv49Ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTgtrVIrewv8++pN/LVYXBVStCXS3Fw+jQG4gri8dLbmRK9Y4yTRNdWdorMVxL1OFUMj0T7L71WO1eC9XodMUinCf0ctBkl3+atdP9LZrw2BojkBHWV6WcLFAf2Y64PYN3660wMYeaztJjYLPI/XaFE8hj97J2In8QK4l2gFeYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKf840sN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE154C433C7;
-	Mon,  1 Apr 2024 15:49:38 +0000 (UTC)
+	 MIME-Version; b=AgLXD/0Cekq1q+WBkSLa05wvzoZitZUck6q/dOW2RLxMZXjE0xW3T0CEDAr5LHuc4w98vAbAEJSiVdm7DwPYfFeMyjCZZcjd5TjhR9OXHGMBbtddkUwFa05Y258J1pVQ9icRt+BslscYyYcgmSIe3+tOIW9BHDEoQ3pdslE6Mtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czK/NutA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866FFC433C7;
+	Mon,  1 Apr 2024 15:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711986579;
-	bh=MSSNTBK5W0kl/cPVILrS4Saj9Dzm1FyN93uD5glxQ3M=;
+	s=korg; t=1711986614;
+	bh=EUx4k95MuGDwof6lqxYH7eRj4hnh7L9ACjVlgAv49Ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKf840sN79ElvHKcGGSCZRdk6BCVo1b/2h67galUyIH3ib4UtdCvTdkJh2hezHlT5
-	 vtP9mjuPwNVpksg7676hBM8+vlfk3kuF9l+TJhFnU8WG5rC5kCPjO4fqqn/AJ7CiRe
-	 GUwujQcVCNG4+u+OsplMS1yI+tMweRnDMpK2B6Yk=
+	b=czK/NutA2FF5/Qq+G0vilDPeMDQutAp+W8oxMTGAZzxFxDFTK/am48mn2paO6BB4+
+	 izZP8HKGIsABYsNTiDGz8SjmjqsH/gSLt5tfKF0K5oiEpBk08AjOSJfdF3Wr4ryLdU
+	 vwx3Gwd+PjIJ/dwYpkGTcDAb4fk6a5WF0nQMAkkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
 	Arend van Spriel <arend.vanspriel@broadcom.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 002/399] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
-Date: Mon,  1 Apr 2024 17:39:28 +0200
-Message-ID: <20240401152549.210134002@linuxfoundation.org>
+Subject: [PATCH 6.8 003/399] wifi: brcmfmac: avoid invalid list operation when vendor attach fails
+Date: Mon,  1 Apr 2024 17:39:29 +0200
+Message-ID: <20240401152549.240020131@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -67,75 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-[ Upstream commit 0f7352557a35ab7888bc7831411ec8a3cbe20d78 ]
+[ Upstream commit b822015a1f57268f5b2ff656736dc4004e7097da ]
 
-This is the candidate patch of CVE-2023-47233 :
-https://nvd.nist.gov/vuln/detail/CVE-2023-47233
+When the brcmf_fwvid_attach() fails the driver instance is not added
+to the vendor list. Hence we should not try to delete it from that
+list when the brcmf_fwvid_detach() function is called in cleanup path.
 
-In brcm80211 driver,it starts with the following invoking chain
-to start init a timeout worker:
-
-->brcmf_usb_probe
-  ->brcmf_usb_probe_cb
-    ->brcmf_attach
-      ->brcmf_bus_started
-        ->brcmf_cfg80211_attach
-          ->wl_init_priv
-            ->brcmf_init_escan
-              ->INIT_WORK(&cfg->escan_timeout_work,
-		  brcmf_cfg80211_escan_timeout_worker);
-
-If we disconnect the USB by hotplug, it will call
-brcmf_usb_disconnect to make cleanup. The invoking chain is :
-
-brcmf_usb_disconnect
-  ->brcmf_usb_disconnect_cb
-    ->brcmf_detach
-      ->brcmf_cfg80211_detach
-        ->kfree(cfg);
-
-While the timeout woker may still be running. This will cause
-a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
-
-Fix it by deleting the timer and canceling the worker in
-brcmf_cfg80211_detach.
-
-Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Cc: stable@vger.kernel.org
-[arend.vanspriel@broadcom.com: keep timer delete as is and cancel work just before free]
+Cc: stable@vger.kernel.org # 6.2.x
+Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240107072504.392713-1-arend.vanspriel@broadcom.com
+Link: https://msgid.link/20240106103835.269149-3-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 1a5d7494f5e80..0c9581a3a67f2 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1179,8 +1179,7 @@ s32 brcmf_notify_escan_complete(struct brcmf_cfg80211_info *cfg,
- 	scan_request = cfg->scan_request;
- 	cfg->scan_request = NULL;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
+index 86eafdb405419..f610818c2b059 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
+@@ -187,9 +187,10 @@ void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr)
  
--	if (timer_pending(&cfg->escan_timeout))
--		del_timer_sync(&cfg->escan_timeout);
-+	timer_delete_sync(&cfg->escan_timeout);
+ 	mutex_lock(&fwvid_list_lock);
  
- 	if (fw_abort) {
- 		/* Do a scan abort to stop the driver's scan engine */
-@@ -8440,6 +8439,7 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
- 	brcmf_btcoex_detach(cfg);
- 	wiphy_unregister(cfg->wiphy);
- 	wl_deinit_priv(cfg);
-+	cancel_work_sync(&cfg->escan_timeout_work);
- 	brcmf_free_wiphy(cfg->wiphy);
- 	kfree(cfg);
+-	drvr->vops = NULL;
+-	list_del(&drvr->bus_if->list);
+-
++	if (drvr->vops) {
++		drvr->vops = NULL;
++		list_del(&drvr->bus_if->list);
++	}
+ 	mutex_unlock(&fwvid_list_lock);
  }
+ 
 -- 
 2.43.0
 
