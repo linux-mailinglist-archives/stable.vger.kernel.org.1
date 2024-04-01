@@ -1,197 +1,147 @@
-Return-Path: <stable+bounces-33940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E26893B90
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:39:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3736C893BB0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D7ECB20A81
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 13:39:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 691561C20DF6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 13:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B02F3F9C1;
-	Mon,  1 Apr 2024 13:38:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/yYCy3t"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA263FBAA;
+	Mon,  1 Apr 2024 13:59:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B04A8F40
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 13:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 13FAE3FB1E
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 13:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711978737; cv=none; b=rALN1uWRU4bhYYzYiWiIpGtBqn0IENWt/TlicqPRd6vy9+j1GmkIadCn1u2xJxFF9afi6KNv2jeOqzCIlgYYwonEhIRrD2bbUG+7RrE233pXOkQ8qk6aw2JlwUlIbs8T6Nu9zg2mTgyN2gR7kHt1RnFTcpLttV1BbdqGRgCcb2U=
+	t=1711979964; cv=none; b=cBJhgc3HhhmDLInnW/1DLoG3oowSPPUJ0mYCGTzaycnXzfVkgOL9/CvlwB36upSa5eywudLUOmporeobLDWasFfAYSeYnJinLolwn/1bXTKBbQ2QEHOSwI+PmClilwUpX49KnDJdT1qYDJyOXntrG/oBjBQREBxCqvEEdOrbFxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711978737; c=relaxed/simple;
-	bh=8kT2nY5ZtSAKbB1vfMNzM7NbvW4WOAlfLqzvEDEPO7w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=T1XLYWNZ9LQhO0rkniArrw/pTuuia6rcHVKoKA4aeS2/9unYzTSvdKFOBJc/5htroLC0a1b7j7Kz5veWU5B+TGCan8lUH+2ZT5WPRSOewCtSRgt6x4YxS7Sl20QZVm2fNjHqzlAR45B/YeRCWtuZFLI14zHb+puEMvEf8lgmtto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/yYCy3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CF3C433C7;
-	Mon,  1 Apr 2024 13:38:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711978736;
-	bh=8kT2nY5ZtSAKbB1vfMNzM7NbvW4WOAlfLqzvEDEPO7w=;
-	h=Subject:To:Cc:From:Date:From;
-	b=x/yYCy3ttEF7etyjqaG9A9U6rZ22QhQ5JlTJzpuLxJbAHOAEUWAvFDkhd8tHlm77J
-	 8DUv1uvFVponKSiZEFad2iTTjuQXXKb7Lp7eoMx60dOwne9zP6mju59h/0CHPMFIdS
-	 hY6y9tv27BUVyZKKzTiIFPFQ5cs0Zd4C0V7mP190=
-Subject: FAILED: patch "[PATCH] perf/x86/amd/lbr: Use freeze based on availability" failed to apply to 6.7-stable tree
-To: sandipan.das@amd.com,mingo@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Apr 2024 15:38:53 +0200
-Message-ID: <2024040153-joyfully-negate-6062@gregkh>
+	s=arc-20240116; t=1711979964; c=relaxed/simple;
+	bh=c2EyeQBx9NYtRbJIdnzM4J73JGosmuHOGsuvEIFB0Xc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WiIbF/8wUmj+E3B53+OfffHkEyP+L+8fDriLq/suJ2BUzPQgysaZVpO9oMg+BJYbLQ/sDDPOAyQICdK1alBjANNp8Z87sNT1/q5jLYiItI/AWVecaEkXOBr4vAAMNo8fkxiUbxAZEhbS7a47oXOZdIrwISyDAhUXjNiNpt3AR3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 1082225 invoked by uid 1000); 1 Apr 2024 09:59:14 -0400
+Date: Mon, 1 Apr 2024 09:59:14 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, samsun1006219@gmail.com, xrivendell7@gmail.com
+Subject: Re: FAILED: patch "[PATCH] USB: core: Fix deadlock in
+ usb_deauthorize_interface()" failed to apply to 4.19-stable tree
+Message-ID: <40fa743b-97cc-4172-96eb-1d55a54784aa@rowland.harvard.edu>
+References: <2024040157-entrench-clicker-d3df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024040157-entrench-clicker-d3df@gregkh>
 
+On Mon, Apr 01, 2024 at 11:42:57AM +0200, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 4.19-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 80ba43e9f799cbdd83842fc27db667289b3150f5
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040157-entrench-clicker-d3df@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> 80ba43e9f799 ("USB: core: Fix deadlock in usb_deauthorize_interface()")
+> 
+> thanks,
+> 
+> greg k-h
 
-The patch below does not apply to the 6.7-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Here is the back-ported version of the patch.  It was necessary to change
+kstrtobool to strtobool.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This should apply to the -stable kernels from 4.19 up to 6.1.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
-git checkout FETCH_HEAD
-git cherry-pick -x 598c2fafc06fe5c56a1a415fb7b544b31453d637
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040153-joyfully-negate-6062@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+Alan Stern
 
-Possible dependencies:
+-----------------------------------------------
 
-598c2fafc06f ("perf/x86/amd/lbr: Use freeze based on availability")
+From 80ba43e9f799cbdd83842fc27db667289b3150f5 Mon Sep 17 00:00:00 2001
+From: Alan Stern <stern@rowland.harvard.edu>
+Date: Tue, 12 Mar 2024 11:48:23 -0400
+Subject: [PATCH] USB: core: Fix deadlock in usb_deauthorize_interface()
 
-thanks,
+Among the attribute file callback routines in
+drivers/usb/core/sysfs.c, the interface_authorized_store() function is
+the only one which acquires a device lock on an ancestor device: It
+calls usb_deauthorize_interface(), which locks the interface's parent
+USB device.
 
-greg k-h
+The will lead to deadlock if another process already owns that lock
+and tries to remove the interface, whether through a configuration
+change or because the device has been disconnected.  As part of the
+removal procedure, device_del() waits for all ongoing sysfs attribute
+callbacks to complete.  But usb_deauthorize_interface() can't complete
+until the device lock has been released, and the lock won't be
+released until the removal has finished.
 
------------------- original commit in Linus's tree ------------------
+The mechanism provided by sysfs to prevent this kind of deadlock is
+to use the sysfs_break_active_protection() function, which tells sysfs
+not to wait for the attribute callback.
 
-From 598c2fafc06fe5c56a1a415fb7b544b31453d637 Mon Sep 17 00:00:00 2001
-From: Sandipan Das <sandipan.das@amd.com>
-Date: Mon, 25 Mar 2024 13:01:45 +0530
-Subject: [PATCH] perf/x86/amd/lbr: Use freeze based on availability
+Reported-and-tested by: Yue Sun <samsun1006219@gmail.com>
+Reported by: xingwei lee <xrivendell7@gmail.com>
 
-Currently, the LBR code assumes that LBR Freeze is supported on all processors
-when X86_FEATURE_AMD_LBR_V2 is available i.e. CPUID leaf 0x80000022[EAX]
-bit 1 is set. This is incorrect as the availability of the feature is
-additionally dependent on CPUID leaf 0x80000022[EAX] bit 2 being set,
-which may not be set for all Zen 4 processors.
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/CAEkJfYO6jRVC8Tfrd_R=cjO0hguhrV31fDPrLrNOOHocDkPoAA@mail.gmail.com/#r
+Fixes: 310d2b4124c0 ("usb: interface authorization: SysFS part of USB interface authorization")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/1c37eea1-9f56-4534-b9d8-b443438dc869@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Define a new feature bit for LBR and PMC freeze and set the freeze enable bit
-(FLBRI) in DebugCtl (MSR 0x1d9) conditionally.
-
-It should still be possible to use LBR without freeze for profile-guided
-optimization of user programs by using an user-only branch filter during
-profiling. When the user-only filter is enabled, branches are no longer
-recorded after the transition to CPL 0 upon PMI arrival. When branch
-entries are read in the PMI handler, the branch stack does not change.
-
-E.g.
-
-  $ perf record -j any,u -e ex_ret_brn_tkn ./workload
-
-Since the feature bit is visible under flags in /proc/cpuinfo, it can be
-used to determine the feasibility of use-cases which require LBR Freeze
-to be supported by the hardware such as profile-guided optimization of
-kernels.
-
-Fixes: ca5b7c0d9621 ("perf/x86/amd/lbr: Add LbrExtV2 branch record support")
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/69a453c97cfd11c6f2584b19f937fe6df741510f.1711091584.git.sandipan.das@amd.com
-
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index aec16e581f5b..5692e827afef 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -904,8 +904,8 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 	if (!status)
- 		goto done;
+diff --git a/drivers/usb/core/sysfs.c b/drivers/usb/core/sysfs.c
+index f98263e21c2a..d83231d6736a 100644
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -1217,14 +1217,24 @@ static ssize_t interface_authorized_store(struct device *dev,
+ {
+ 	struct usb_interface *intf = to_usb_interface(dev);
+ 	bool val;
++	struct kernfs_node *kn;
  
--	/* Read branch records before unfreezing */
--	if (status & GLOBAL_STATUS_LBRS_FROZEN) {
-+	/* Read branch records */
-+	if (x86_pmu.lbr_nr) {
- 		amd_pmu_lbr_read();
- 		status &= ~GLOBAL_STATUS_LBRS_FROZEN;
- 	}
-diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
-index 4a1e600314d5..5149830c7c4f 100644
---- a/arch/x86/events/amd/lbr.c
-+++ b/arch/x86/events/amd/lbr.c
-@@ -402,10 +402,12 @@ void amd_pmu_lbr_enable_all(void)
- 		wrmsrl(MSR_AMD64_LBR_SELECT, lbr_select);
- 	}
+ 	if (strtobool(buf, &val) != 0)
+ 		return -EINVAL;
  
--	rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
--	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
-+	if (cpu_feature_enabled(X86_FEATURE_AMD_LBR_PMC_FREEZE)) {
-+		rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
-+		wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
+-	if (val)
++	if (val) {
+ 		usb_authorize_interface(intf);
+-	else
+-		usb_deauthorize_interface(intf);
++	} else {
++		/*
++		 * Prevent deadlock if another process is concurrently
++		 * trying to unregister intf.
++		 */
++		kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
++		if (kn) {
++			usb_deauthorize_interface(intf);
++			sysfs_unbreak_active_protection(kn);
++		}
 +	}
  
--	wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
- 	wrmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg | DBG_EXTN_CFG_LBRV2EN);
+ 	return count;
  }
- 
-@@ -418,10 +420,12 @@ void amd_pmu_lbr_disable_all(void)
- 		return;
- 
- 	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
--	rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
--
- 	wrmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg & ~DBG_EXTN_CFG_LBRV2EN);
--	wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl & ~DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+
-+	if (cpu_feature_enabled(X86_FEATURE_AMD_LBR_PMC_FREEZE)) {
-+		rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
-+		wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl & ~DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+	}
- }
- 
- __init int amd_pmu_lbr_init(void)
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 4d850a780f7e..a38f8f9ba657 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -459,6 +459,14 @@
- #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* "" MSR_PRED_CMD[IBPB] flushes all branch type predictions */
- #define X86_FEATURE_SRSO_NO		(20*32+29) /* "" CPU is not affected by SRSO */
- 
-+/*
-+ * Extended auxiliary flags: Linux defined - for features scattered in various
-+ * CPUID levels like 0x80000022, etc.
-+ *
-+ * Reuse free bits when adding new feature flags!
-+ */
-+#define X86_FEATURE_AMD_LBR_PMC_FREEZE	(21*32+ 0) /* AMD LBR and PMC Freeze */
-+
- /*
-  * BUG word(s)
-  */
-diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-index 0dad49a09b7a..a515328d9d7d 100644
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -49,6 +49,7 @@ static const struct cpuid_bit cpuid_bits[] = {
- 	{ X86_FEATURE_BMEC,		CPUID_EBX,  3, 0x80000020, 0 },
- 	{ X86_FEATURE_PERFMON_V2,	CPUID_EAX,  0, 0x80000022, 0 },
- 	{ X86_FEATURE_AMD_LBR_V2,	CPUID_EAX,  1, 0x80000022, 0 },
-+	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
- 	{ 0, 0, 0, 0, 0 }
- };
- 
-
 
