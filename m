@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-35088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DFB89425B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:52:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D75893EF0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C311B1F25374
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:52:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54462B21ADC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA30863E;
-	Mon,  1 Apr 2024 16:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61BE446AC;
+	Mon,  1 Apr 2024 16:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6v2lFUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXTyNzzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884A24653C;
-	Mon,  1 Apr 2024 16:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7526E3F8F4;
+	Mon,  1 Apr 2024 16:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990297; cv=none; b=BKoMz3ABIcwsJXHA3JyUHqizXYQeezhokQVp6w0tr7XXsNrJjyH9IGNqcieELPpN1j3wZdowA3lSVUM0MY+CB/6wdtZg8+E104FvEwak3aTuBCyYl60aNojlPeusvZ1cAZ3XtABTXajAtY9o5M6UQPGMnZ2hhNy/Gp6MrYs6i3I=
+	t=1711987790; cv=none; b=BrrrAAgNrOAHfrAskXGq6ICBhq5i456Yl1sV+qryry2REo4bKWBYXD5/gJ9/HhZYnakn1WtKKZAswBN5scP2gVU/07aHh7hGfJlKg6rHuw6XytsfGwRcAb7qut07bJoasiyi/R30KuWZE/35SSutyLadSA4i2K2VYy+dxgfVoBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990297; c=relaxed/simple;
-	bh=qtj/VkyRj1ryjcuy930SLmPQHBfaINwQbi51d7/0BFM=;
+	s=arc-20240116; t=1711987790; c=relaxed/simple;
+	bh=ewSGNp8s7YKbeULCTC22VuHDkINIJPBYj6NOlhOQ6I0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFjM5+9OKls74sOCw1UzTu/7gC9+48/tkAD3HYKczCk8vdKDlX1h4aZ5gnKsh1ezjxSi6CXlxHhsVobmoxHsCs9GD0qIDLNJpI3FIEESWJm6+gmcpjIHX4iyqounHRitImblFzT74VbHPxuFbjciH0hTQE73NhCO1az42Bpmleg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6v2lFUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9652C433C7;
-	Mon,  1 Apr 2024 16:51:36 +0000 (UTC)
+	 MIME-Version; b=BzxDzkBMp1U9tyMND1Vl7G4z6XtgEJarny5e5BxCcHwvHl1PX1AbdOYK6QlZPdYI3HeQvSb9rnTCYDZKyyAPxR7apnaPgnGJE8nh99FYNIH5GETffuprQgUGxPw7qWkfXq5bkFf+85C9JeGzLQjECti7HmMCjagRE4s/e0y5OWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXTyNzzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF85C433F1;
+	Mon,  1 Apr 2024 16:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990297;
-	bh=qtj/VkyRj1ryjcuy930SLmPQHBfaINwQbi51d7/0BFM=;
+	s=korg; t=1711987790;
+	bh=ewSGNp8s7YKbeULCTC22VuHDkINIJPBYj6NOlhOQ6I0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6v2lFUB8Osqf3oeKJaHlS4gV1H9GCtvHsbkTMBkMRPyY/rEwdTvrGws8EpZLE/KF
-	 6w4I1WQryx3ElnBE06qWhDE2O7a5BUCOcBGwcfXJaOObhAKH2aY50e0OZOqBk5pH4E
-	 jYoa9Zz4l+miZW00mRpKe2vuhVIhl0hW8jAM4wwY=
+	b=cXTyNzzb3jFkz3tWnPLqDry8VIRbV4wt4ykFx1YCXnfsgYuP+lPvWP1AlTbn51qRd
+	 mD9god6iWFK87angiPMsrJsHFPTinjm1vL2QF40sy/LSiM52IIk/0rMw4v62YMdGvC
+	 K27pJqmBd1/4rG85N9+3OohxqMiI1oal1VGl0grc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.6 279/396] vfio/pci: Create persistent INTx handler
-Date: Mon,  1 Apr 2024 17:45:28 +0200
-Message-ID: <20240401152556.228597538@linuxfoundation.org>
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 6.8 363/399] usb: dwc2: host: Fix ISOC flow in DDMA mode
+Date: Mon,  1 Apr 2024 17:45:29 +0200
+Message-ID: <20240401152600.002263907@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,271 +60,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit 18c198c96a815c962adc2b9b77909eec0be7df4d upstream.
+commit b258e42688501cadb1a6dd658d6f015df9f32d8f upstream.
 
-A vulnerability exists where the eventfd for INTx signaling can be
-deconfigured, which unregisters the IRQ handler but still allows
-eventfds to be signaled with a NULL context through the SET_IRQS ioctl
-or through unmask irqfd if the device interrupt is pending.
+Fixed ISOC completion flow in DDMA mode. Added isoc
+descriptor actual length value and update urb's start_frame
+value.
+Fixed initialization of ISOC DMA descriptors flow.
 
-Ideally this could be solved with some additional locking; the igate
-mutex serializes the ioctl and config space accesses, and the interrupt
-handler is unregistered relative to the trigger, but the irqfd path
-runs asynchronous to those.  The igate mutex cannot be acquired from the
-atomic context of the eventfd wake function.  Disabling the irqfd
-relative to the eventfd registration is potentially incompatible with
-existing userspace.
-
-As a result, the solution implemented here moves configuration of the
-INTx interrupt handler to track the lifetime of the INTx context object
-and irq_type configuration, rather than registration of a particular
-trigger eventfd.  Synchronization is added between the ioctl path and
-eventfd_signal() wrapper such that the eventfd trigger can be
-dynamically updated relative to in-flight interrupts or irqfd callbacks.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-Reported-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-5-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 56f5b1cff22a ("staging: Core files for the DWC2 driver")
+Fixes: 20f2eb9c4cf8 ("staging: dwc2: add microframe scheduler from downstream Pi kernel")
+Fixes: c17b337c1ea4 ("usb: dwc2: host: program descriptor for next frame")
+Fixes: dc4c76e7b22c ("staging: HCD descriptor DMA support for the DWC2 driver")
+Fixes: 762d3a1a9cd7 ("usb: dwc2: host: process all completed urbs")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/a8b1e1711cc6cabfb45d92ede12e35445c66f06c.1708944698.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c |  145 ++++++++++++++++++++------------------
- 1 file changed, 78 insertions(+), 67 deletions(-)
+ drivers/usb/dwc2/hcd.c      |   12 ++++++++++--
+ drivers/usb/dwc2/hcd_ddma.c |   17 +++++++++++------
+ drivers/usb/dwc2/hw.h       |    2 +-
+ 3 files changed, 22 insertions(+), 9 deletions(-)
 
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -90,11 +90,15 @@ static void vfio_send_intx_eventfd(void
- 
- 	if (likely(is_intx(vdev) && !vdev->virq_disabled)) {
- 		struct vfio_pci_irq_ctx *ctx;
-+		struct eventfd_ctx *trigger;
- 
- 		ctx = vfio_irq_ctx_get(vdev, 0);
- 		if (WARN_ON_ONCE(!ctx))
- 			return;
--		eventfd_signal(ctx->trigger, 1);
-+
-+		trigger = READ_ONCE(ctx->trigger);
-+		if (likely(trigger))
-+			eventfd_signal(trigger, 1);
- 	}
- }
- 
-@@ -253,100 +257,100 @@ static irqreturn_t vfio_intx_handler(int
- 	return ret;
- }
- 
--static int vfio_intx_enable(struct vfio_pci_core_device *vdev)
-+static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
-+			    struct eventfd_ctx *trigger)
- {
-+	struct pci_dev *pdev = vdev->pdev;
- 	struct vfio_pci_irq_ctx *ctx;
-+	unsigned long irqflags;
-+	char *name;
-+	int ret;
- 
- 	if (!is_irq_none(vdev))
- 		return -EINVAL;
- 
--	if (!vdev->pdev->irq)
-+	if (!pdev->irq)
- 		return -ENODEV;
- 
-+	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
-+	if (!name)
-+		return -ENOMEM;
-+
- 	ctx = vfio_irq_ctx_alloc(vdev, 0);
- 	if (!ctx)
- 		return -ENOMEM;
- 
-+	ctx->name = name;
-+	ctx->trigger = trigger;
-+
- 	/*
--	 * If the virtual interrupt is masked, restore it.  Devices
--	 * supporting DisINTx can be masked at the hardware level
--	 * here, non-PCI-2.3 devices will have to wait until the
--	 * interrupt is enabled.
-+	 * Fill the initial masked state based on virq_disabled.  After
-+	 * enable, changing the DisINTx bit in vconfig directly changes INTx
-+	 * masking.  igate prevents races during setup, once running masked
-+	 * is protected via irqlock.
-+	 *
-+	 * Devices supporting DisINTx also reflect the current mask state in
-+	 * the physical DisINTx bit, which is not affected during IRQ setup.
-+	 *
-+	 * Devices without DisINTx support require an exclusive interrupt.
-+	 * IRQ masking is performed at the IRQ chip.  Again, igate protects
-+	 * against races during setup and IRQ handlers and irqfds are not
-+	 * yet active, therefore masked is stable and can be used to
-+	 * conditionally auto-enable the IRQ.
-+	 *
-+	 * irq_type must be stable while the IRQ handler is registered,
-+	 * therefore it must be set before request_irq().
- 	 */
- 	ctx->masked = vdev->virq_disabled;
--	if (vdev->pci_2_3)
--		pci_intx(vdev->pdev, !ctx->masked);
-+	if (vdev->pci_2_3) {
-+		pci_intx(pdev, !ctx->masked);
-+		irqflags = IRQF_SHARED;
-+	} else {
-+		irqflags = ctx->masked ? IRQF_NO_AUTOEN : 0;
-+	}
- 
- 	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
- 
-+	ret = request_irq(pdev->irq, vfio_intx_handler,
-+			  irqflags, ctx->name, vdev);
-+	if (ret) {
-+		vdev->irq_type = VFIO_PCI_NUM_IRQS;
-+		kfree(name);
-+		vfio_irq_ctx_free(vdev, ctx, 0);
-+		return ret;
-+	}
-+
- 	return 0;
- }
- 
--static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
-+static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev,
-+				struct eventfd_ctx *trigger)
- {
- 	struct pci_dev *pdev = vdev->pdev;
--	unsigned long irqflags = IRQF_SHARED;
- 	struct vfio_pci_irq_ctx *ctx;
--	struct eventfd_ctx *trigger;
--	unsigned long flags;
--	int ret;
-+	struct eventfd_ctx *old;
- 
- 	ctx = vfio_irq_ctx_get(vdev, 0);
- 	if (WARN_ON_ONCE(!ctx))
- 		return -EINVAL;
- 
--	if (ctx->trigger) {
--		free_irq(pdev->irq, vdev);
--		kfree(ctx->name);
--		eventfd_ctx_put(ctx->trigger);
--		ctx->trigger = NULL;
--	}
--
--	if (fd < 0) /* Disable only */
--		return 0;
-+	old = ctx->trigger;
- 
--	ctx->name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)",
--			      pci_name(pdev));
--	if (!ctx->name)
--		return -ENOMEM;
-+	WRITE_ONCE(ctx->trigger, trigger);
- 
--	trigger = eventfd_ctx_fdget(fd);
--	if (IS_ERR(trigger)) {
--		kfree(ctx->name);
--		return PTR_ERR(trigger);
-+	/* Releasing an old ctx requires synchronizing in-flight users */
-+	if (old) {
-+		synchronize_irq(pdev->irq);
-+		vfio_virqfd_flush_thread(&ctx->unmask);
-+		eventfd_ctx_put(old);
- 	}
- 
--	ctx->trigger = trigger;
--
--	/*
--	 * Devices without DisINTx support require an exclusive interrupt,
--	 * IRQ masking is performed at the IRQ chip.  The masked status is
--	 * protected by vdev->irqlock. Setup the IRQ without auto-enable and
--	 * unmask as necessary below under lock.  DisINTx is unmodified by
--	 * the IRQ configuration and may therefore use auto-enable.
--	 */
--	if (!vdev->pci_2_3)
--		irqflags = IRQF_NO_AUTOEN;
--
--	ret = request_irq(pdev->irq, vfio_intx_handler,
--			  irqflags, ctx->name, vdev);
--	if (ret) {
--		ctx->trigger = NULL;
--		kfree(ctx->name);
--		eventfd_ctx_put(trigger);
--		return ret;
--	}
--
--	spin_lock_irqsave(&vdev->irqlock, flags);
--	if (!vdev->pci_2_3 && !ctx->masked)
--		enable_irq(pdev->irq);
--	spin_unlock_irqrestore(&vdev->irqlock, flags);
--
- 	return 0;
- }
- 
- static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
- {
-+	struct pci_dev *pdev = vdev->pdev;
- 	struct vfio_pci_irq_ctx *ctx;
- 
- 	ctx = vfio_irq_ctx_get(vdev, 0);
-@@ -354,10 +358,13 @@ static void vfio_intx_disable(struct vfi
- 	if (ctx) {
- 		vfio_virqfd_disable(&ctx->unmask);
- 		vfio_virqfd_disable(&ctx->mask);
-+		free_irq(pdev->irq, vdev);
-+		if (ctx->trigger)
-+			eventfd_ctx_put(ctx->trigger);
-+		kfree(ctx->name);
-+		vfio_irq_ctx_free(vdev, ctx, 0);
- 	}
--	vfio_intx_set_signal(vdev, -1);
- 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
--	vfio_irq_ctx_free(vdev, ctx, 0);
- }
- 
- /*
-@@ -641,19 +648,23 @@ static int vfio_pci_set_intx_trigger(str
- 		return -EINVAL;
- 
- 	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
-+		struct eventfd_ctx *trigger = NULL;
- 		int32_t fd = *(int32_t *)data;
- 		int ret;
- 
-+		if (fd >= 0) {
-+			trigger = eventfd_ctx_fdget(fd);
-+			if (IS_ERR(trigger))
-+				return PTR_ERR(trigger);
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -2701,8 +2701,11 @@ enum dwc2_transaction_type dwc2_hcd_sele
+ 			hsotg->available_host_channels--;
+ 		}
+ 		qh = list_entry(qh_ptr, struct dwc2_qh, qh_list_entry);
+-		if (dwc2_assign_and_init_hc(hsotg, qh))
++		if (dwc2_assign_and_init_hc(hsotg, qh)) {
++			if (hsotg->params.uframe_sched)
++				hsotg->available_host_channels++;
+ 			break;
 +		}
-+
- 		if (is_intx(vdev))
--			return vfio_intx_set_signal(vdev, fd);
-+			ret = vfio_intx_set_signal(vdev, trigger);
-+		else
-+			ret = vfio_intx_enable(vdev, trigger);
  
--		ret = vfio_intx_enable(vdev);
--		if (ret)
--			return ret;
--
--		ret = vfio_intx_set_signal(vdev, fd);
--		if (ret)
--			vfio_intx_disable(vdev);
-+		if (ret && trigger)
-+			eventfd_ctx_put(trigger);
+ 		/*
+ 		 * Move the QH from the periodic ready schedule to the
+@@ -2735,8 +2738,11 @@ enum dwc2_transaction_type dwc2_hcd_sele
+ 			hsotg->available_host_channels--;
+ 		}
  
- 		return ret;
+-		if (dwc2_assign_and_init_hc(hsotg, qh))
++		if (dwc2_assign_and_init_hc(hsotg, qh)) {
++			if (hsotg->params.uframe_sched)
++				hsotg->available_host_channels++;
+ 			break;
++		}
+ 
+ 		/*
+ 		 * Move the QH from the non-periodic inactive schedule to the
+@@ -4143,6 +4149,8 @@ void dwc2_host_complete(struct dwc2_hsot
+ 			 urb->actual_length);
+ 
+ 	if (usb_pipetype(urb->pipe) == PIPE_ISOCHRONOUS) {
++		if (!hsotg->params.dma_desc_enable)
++			urb->start_frame = qtd->qh->start_active_frame;
+ 		urb->error_count = dwc2_hcd_urb_get_error_count(qtd->urb);
+ 		for (i = 0; i < urb->number_of_packets; ++i) {
+ 			urb->iso_frame_desc[i].actual_length =
+--- a/drivers/usb/dwc2/hcd_ddma.c
++++ b/drivers/usb/dwc2/hcd_ddma.c
+@@ -559,7 +559,7 @@ static void dwc2_init_isoc_dma_desc(stru
+ 	idx = qh->td_last;
+ 	inc = qh->host_interval;
+ 	hsotg->frame_number = dwc2_hcd_get_frame_number(hsotg);
+-	cur_idx = dwc2_frame_list_idx(hsotg->frame_number);
++	cur_idx = idx;
+ 	next_idx = dwc2_desclist_idx_inc(qh->td_last, inc, qh->dev_speed);
+ 
+ 	/*
+@@ -866,6 +866,8 @@ static int dwc2_cmpl_host_isoc_dma_desc(
+ {
+ 	struct dwc2_dma_desc *dma_desc;
+ 	struct dwc2_hcd_iso_packet_desc *frame_desc;
++	u16 frame_desc_idx;
++	struct urb *usb_urb = qtd->urb->priv;
+ 	u16 remain = 0;
+ 	int rc = 0;
+ 
+@@ -878,8 +880,11 @@ static int dwc2_cmpl_host_isoc_dma_desc(
+ 				DMA_FROM_DEVICE);
+ 
+ 	dma_desc = &qh->desc_list[idx];
++	frame_desc_idx = (idx - qtd->isoc_td_first) & (usb_urb->number_of_packets - 1);
+ 
+-	frame_desc = &qtd->urb->iso_descs[qtd->isoc_frame_index_last];
++	frame_desc = &qtd->urb->iso_descs[frame_desc_idx];
++	if (idx == qtd->isoc_td_first)
++		usb_urb->start_frame = dwc2_hcd_get_frame_number(hsotg);
+ 	dma_desc->buf = (u32)(qtd->urb->dma + frame_desc->offset);
+ 	if (chan->ep_is_in)
+ 		remain = (dma_desc->status & HOST_DMA_ISOC_NBYTES_MASK) >>
+@@ -900,7 +905,7 @@ static int dwc2_cmpl_host_isoc_dma_desc(
+ 		frame_desc->status = 0;
  	}
+ 
+-	if (++qtd->isoc_frame_index == qtd->urb->packet_count) {
++	if (++qtd->isoc_frame_index == usb_urb->number_of_packets) {
+ 		/*
+ 		 * urb->status is not used for isoc transfers here. The
+ 		 * individual frame_desc status are used instead.
+@@ -1005,11 +1010,11 @@ static void dwc2_complete_isoc_xfer_ddma
+ 				return;
+ 			idx = dwc2_desclist_idx_inc(idx, qh->host_interval,
+ 						    chan->speed);
+-			if (!rc)
++			if (rc == 0)
+ 				continue;
+ 
+-			if (rc == DWC2_CMPL_DONE)
+-				break;
++			if (rc == DWC2_CMPL_DONE || rc == DWC2_CMPL_STOP)
++				goto stop_scan;
+ 
+ 			/* rc == DWC2_CMPL_STOP */
+ 
+--- a/drivers/usb/dwc2/hw.h
++++ b/drivers/usb/dwc2/hw.h
+@@ -698,7 +698,7 @@
+ #define TXSTS_QTOP_TOKEN_MASK		(0x3 << 25)
+ #define TXSTS_QTOP_TOKEN_SHIFT		25
+ #define TXSTS_QTOP_TERMINATE		BIT(24)
+-#define TXSTS_QSPCAVAIL_MASK		(0xff << 16)
++#define TXSTS_QSPCAVAIL_MASK		(0x7f << 16)
+ #define TXSTS_QSPCAVAIL_SHIFT		16
+ #define TXSTS_FSPCAVAIL_MASK		(0xffff << 0)
+ #define TXSTS_FSPCAVAIL_SHIFT		0
 
 
 
