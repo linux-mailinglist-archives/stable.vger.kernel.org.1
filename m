@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-35468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEBF89441E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:16:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA78894423
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19DD628330B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:16:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F7A41F23C38
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556EB4AEFA;
-	Mon,  1 Apr 2024 17:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0996B4AEFA;
+	Mon,  1 Apr 2024 17:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ifF7LEh2"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="M4z9E9VL"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE06D482DF
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 17:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F094AEC3;
+	Mon,  1 Apr 2024 17:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991808; cv=none; b=a/eiTnHTJ8Gmg2zQJ7H0HLy6FaJkd4pZw6usf1VZXuW1LXg5a61dxs2y3XEFyGB6CDAs+5vN/NQsGvs0gumcJGPgY23jhhniui5qXq8g5jJrsXyt7kUs8JKgBvGX+OVGxfkO85KkQ3p3Fp9h1nOLlJSZ5DCf2qj20/30eKX6UTE=
+	t=1711991872; cv=none; b=UcLZbL4n1YMsZHa2LMrVd2MHVhFI+Mjda3kxPXFFZg180r1DvdThkM11PvKsuvaObK35BAA/33UuftGlQXQw4zx8gu0xTxSaUyvE92zSgvC5pngdHOiWFAjjldvPnmGIzPYScjGiV9bUjjJGRrLEu9yZzrt8OzTiNpZ//DObfoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991808; c=relaxed/simple;
-	bh=oA/XnSGPM/zTFEG1vP9MCwsA88QcnXZe9haFS+aiefA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YI6C5GfCpsNXFDAJgssPdojGrf/FFjAT3+kwSUAv1XNOB5T+GHAaLleA3fEI6q6Zy9pXtQkO3JV0wHIWCjNGaBzS9J/MRdYFelLlPJOtlvFB76Bzids6ZW4JrOhcghJVVFLAQJ3L5FOXHuyZYn+xJgyXyw+OxeOqnY7A4Q4lwQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ifF7LEh2; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.64.193.111] (unknown [20.29.225.195])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 2FD642085CE4;
-	Mon,  1 Apr 2024 10:16:46 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2FD642085CE4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1711991806;
-	bh=3m23lwO20r+YWkieSxiB8VHUDLf75Iije7ummqYP6Ks=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ifF7LEh2rhbn7jR1pdBzEHJowXzCz7CGjLdoJ5+Zc4spOxcjIyH7EmJQIzPOFLMLp
-	 mhn50HyY7UB/NOKWg/LdoD7NPYcjBDeU38eC89QIxTu6pzm49SKY8un9xInTWC12s5
-	 8bRJ5LTOeJcq0/HuMRgUEmeozu2lqXTPKuTIZyAs=
-Message-ID: <4fabd250-bfa8-4482-b2f2-b787844aeb0b@linux.microsoft.com>
-Date: Mon, 1 Apr 2024 10:16:46 -0700
+	s=arc-20240116; t=1711991872; c=relaxed/simple;
+	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=m3ZFACCgklpCCe7EBesUa2un1+NWQps60GlObZFk4Q47X2nbL+sPqZMkpLMOLHBH4ZHyjWDRyEIYshMFSTK43krTkAy+3wN3MXFS1C/cCExTb9YS78Y0TKkV8+Rwk0RmONkMVsJh1skpg1uRS76y3G+fvvsCI02AxXT/VC7w7yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=M4z9E9VL; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1711991868; x=1712596668; i=rwarsow@gmx.de;
+	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+	b=M4z9E9VLxvPdBzm6z28MHUwkS8dpe9so9VDXd5iFXIN10SYitVlyWB8DyCb57mUn
+	 kMsjSymBzaufWDm8jaKOILVa2D2exiS6cAMM7JxGrPGIPUevxJ4kpiA4CrdHfCqwR
+	 F0bdhjSISD8E4n8OQh2cQ63uJN5RvL+x08iDHJpyKpAutHVhvUn1edGEA2MYRFtQf
+	 esbo1HUXxJ5BNv/9GewFiB2P9eJ6siAS+W+BX519HkI4jRyJ3YAZ9vobNGulnv0E1
+	 DPilnaX4fMdkWweRR+kMgfQlrBUUweeEOuxLqQEMFZXTjwUTj6mH+Q3RFyiSZRvJK
+	 7WpfcxCmdusUQKo8tQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.32.244]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MaJ3n-1sNQUQ47hF-00WG7y; Mon, 01
+ Apr 2024 19:17:48 +0200
+Message-ID: <696f6729-553c-4174-9856-9ec74078ddce@gmx.de>
+Date: Mon, 1 Apr 2024 19:17:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,40 +53,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.8 102/399] ACPI: CPPC: Use access_width over bit_width
- for system memory accesses
+From: Ronald Warsow <rwarsow@gmx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Jarred White <jarredwhite@linux.microsoft.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Sasha Levin <sashal@kernel.org>
-References: <20240401152549.131030308@linuxfoundation.org>
- <20240401152552.230440447@linuxfoundation.org>
-Content-Language: en-CA
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-In-Reply-To: <20240401152552.230440447@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.8 000/399] 6.8.3-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:xkIAcyrO5PfImxFqqzJ7V5umtbsi7dWYYC7CR4tYwSK81FZV+7t
+ aM6cLqtBOJOmCkSlWJW5QQdreeu65hrr6nGaazAhKA4BoA3Co6aNCLbdArv/txYLeGv3WAV
+ WPyMhdlaD5zoHWm42zfKP8wmgbGLdHhMm5CWr9Cc+TrqUxsM02Y1So/ziYgFPB1OBFAE6xu
+ kdMIVPjmyCZadO6aqRCnw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:LBs1RXI6p/w=;aMocLxlPVQBWzBzWluQOni3PH9e
+ S2djmnDUKULVY2iGLrzbnkUEfCGWY3gxWoDwi4ccAtnt5RCDqgXhV0c2yvDNI+zCHm0v/mE0d
+ IwPzitoqTbg7xKx/g3+017TDc9v7Cva5Jm5R6ZM/dyJAdqudyjINgSjdXUfRPzfywlfORVmqU
+ 2sG5cwENNSutNdIUUOJFMiAbe5lxL7ZKkZnHfdcjGjqC1XjqZQn+HcfW9vr++F06BNbbia5n/
+ 5j3f1AV6OK7fd2aLVLfEqz93Q2l1pwTcUDpiwuZwN+Sxd3DdFYm9DVbMbOw3uzYZZ6sWvfEfW
+ F1pBURriLv09YY+aeU93ZbGMII18uTcAep3o9wywirkwCCf/tGamZRPvjLlm3VnVStJYoZZlZ
+ +HJfulWmvP5bp8uqF/kLJUSeBPWgpuoRjXOIXvVIRKn3krQ/c6Oh5lhWSEIvgPMuWgT5JayRk
+ xDpJDginE3FH+iA2AuhhXys5lXC2HuaeAgN+/StIdfQLkbT0VGSquJ7e2gRO9lGgOyu5L7CA6
+ E9LaqOjBsXMtDYDqyLuwevkx7JBu1Z9CdzOQVkNOvg54DeAaqe7syOlBnAcOyt5/XgMTLZTri
+ zYm7GncZGjzdes18IZ3Z77UplJfa47L04aql3/VeUmwYS9l+2/jmfCTkmdMWYAmuIqs9WTey0
+ DzMiZnbdwZltwSrlenOVpccAQeZVYKekrrp+m1Bn7+onqFA5CVnXGiNTBCBiOo+Ee4sicDXr2
+ cLpZUWBKtL6/HYT+7g93g7UaKuGttQvk3Pr1Md/I4rZX01P/nxTIAYw1nyxvSRG4Xa/XrQHw/
+ LHw7T7XbM2XrjWYF5IVInVCuZ1isEXaFqRvdLTivyvXyc=
 
-On 4/1/2024 8:41 AM, Greg Kroah-Hartman wrote:
-> 6.8-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Jarred White <jarredwhite@linux.microsoft.com>
-> 
-> [ Upstream commit 2f4a4d63a193be6fd530d180bb13c3592052904c ]
-> 
-> To align with ACPI 6.3+, since bit_width can be any 8-bit value, it
-> cannot be depended on to be always on a clean 8b boundary. This was
-> uncovered on the Cobalt 100 platform.
-> 
+Hi Greg
 
-Hi Greg,
+*no* regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-Please drop this patch from all stable kernels as we seem to have a regression reported
-on AmpereOne systems: https://lore.kernel.org/all/20240329220054.1205596-1-vanshikonda@os.amperecomputing.com/
+Thanks
 
-Thanks,
-Easwar
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
 
