@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C1F9893FAB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503C2894133
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D55992851D3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5819B20408
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274994778E;
-	Mon,  1 Apr 2024 16:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8AB3BBC3;
+	Mon,  1 Apr 2024 16:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8oG31sq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3KpF0GF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE221CA8F;
-	Mon,  1 Apr 2024 16:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF051E86C;
+	Mon,  1 Apr 2024 16:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988383; cv=none; b=duWoAA0Khv/hJ0FFUNPYR4BcyfiibrrDYp9g0/GCao58qbYIU4LIZKgnuanNBNFN5EQ6ubkgCbXdReGP792XW7vZOuqAG/sAr4v4Fg7s58BbRPdGZtkkx9niazoTvqTAz+OepfaiG0dgTJI/k3Ro6x6Cz6LYrv2s09KjNJ8FVLg=
+	t=1711989541; cv=none; b=Vpl370FuFxE/4N4myeLoH/aSIUMEwoMOtN/n6VEuMkqNIYH6V756h1YCXw+zyzVUxR2TwSbHUfJk/IXGO+stI6LGQjjipXQIilBEBnR5MfTDaXZZLBkgjAU8ZNWyVhNdsLhhEk6rjX7ksmjzpAOdBHW0eMnK9e70Xh4TGW1i/yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988383; c=relaxed/simple;
-	bh=ym/58p+/P4JdU8lOmQMwqJ8RHN33wmzI6/V94Su2WZ8=;
+	s=arc-20240116; t=1711989541; c=relaxed/simple;
+	bh=PVjJgtWMrt0SqM0Js8+gRIBh0y6af2xDj/qspcR7rj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXgXIIa8F4R6pK8d1tWz/SPBFTKK9G1Vc01sM6OnCWtr+Hqari1/IT7r+q4npEvfkmVMveibn+934CcQxfvEkGwjYiu1MDkwO+6qPIo1J3MH6rAL/ujmLuM/ax40Em7ExQAAjQTH5KjQNIyK6pmlGpy3VF/K5evCB9pO05H0IVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8oG31sq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E2DC433C7;
-	Mon,  1 Apr 2024 16:19:42 +0000 (UTC)
+	 MIME-Version; b=qtLcVua/4w9KkstlTAb5cd9AvnpjWqzMpJj6BA6lGa7xzARkSdMYKBPAFYSpaHN2GQ9NwY7tg7Y13FG1ik7a9xElWj06T6x5zZWtjMtGEXLGu3o07heMGT8Qfy4xILQNbEstP1gb1/g1Nl0JkDracp38SSFMn/KQq7TXqvMnWT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3KpF0GF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3B9C433C7;
+	Mon,  1 Apr 2024 16:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988383;
-	bh=ym/58p+/P4JdU8lOmQMwqJ8RHN33wmzI6/V94Su2WZ8=;
+	s=korg; t=1711989541;
+	bh=PVjJgtWMrt0SqM0Js8+gRIBh0y6af2xDj/qspcR7rj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8oG31sqwXo+Xp1D1eWA9SdOWeLqX8NbUmvJaid0yKXqdrlDSJplYwVzyAjwzQvQs
-	 7h3P1KroIqX4CRAbIfLT0TXj85vOde7JstR6n3QDgd45sNNXQxqpCOsnG7i05OJhzH
-	 T4SXrTZLRu7aJA8cM6k+488Llw06QBoZDAXq9u40=
+	b=l3KpF0GFCX4U7NqI7BB9aWvrwLRaCxHdo9kd+PhubHPuxIaoqaUZg/2uk+UAO9eeq
+	 7PpxzyoPImKbWoktJMHLvVtdjt2o4VAMIxH5h1AOtFruWTbUjvxl8V1cO1PDPTW/Nw
+	 t1/SVIKSS/2zmaHWAcBU4sKBhKoQXTesl7nHccC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Toru Katagiri <Toru.Katagiri@tdk.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 140/432] cifs: prevent updating file size from server if we have a read/write lease
-Date: Mon,  1 Apr 2024 17:42:07 +0200
-Message-ID: <20240401152557.313717689@linuxfoundation.org>
+Subject: [PATCH 6.6 079/396] USB: serial: cp210x: add pid/vid for TDK NC0110013M and MM0110113M
+Date: Mon,  1 Apr 2024 17:42:08 +0200
+Message-ID: <20240401152550.272583812@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Toru Katagiri <Toru.Katagiri@tdk.com>
 
-[ Upstream commit e4b61f3b1c67f5068590965f64ea6e8d5d5bd961 ]
+[ Upstream commit b1a8da9ff1395c4879b4bd41e55733d944f3d613 ]
 
-In cases of large directories, the readdir operation may span multiple
-round trips to retrieve contents. This introduces a potential race
-condition in case of concurrent write and readdir operations. If the
-readdir operation initiates before a write has been processed by the
-server, it may update the file size attribute to an older value.
-Address this issue by avoiding file size updates from readdir when we
-have read/write lease.
+TDK NC0110013M and MM0110113M have custom USB IDs for CP210x,
+so we need to add them to the driver.
 
-Scenario:
-1) process1: open dir xyz
-2) process1: readdir instance 1 on xyz
-3) process2: create file.txt for write
-4) process2: write x bytes to file.txt
-5) process2: close file.txt
-6) process2: open file.txt for read
-7) process1: readdir 2 - overwrites file.txt inode size to 0
-8) process2: read contents of file.txt - bug, short read with 0 bytes
-
+Signed-off-by: Toru Katagiri <Toru.Katagiri@tdk.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsproto.h |  6 ++++--
- fs/smb/client/file.c      |  8 +++++---
- fs/smb/client/inode.c     | 13 +++++++------
- fs/smb/client/readdir.c   |  2 +-
- 4 files changed, 17 insertions(+), 12 deletions(-)
+ drivers/usb/serial/cp210x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 9516f57323246..6945551ea166d 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -144,7 +144,8 @@ extern int cifs_reconnect(struct TCP_Server_Info *server,
- extern int checkSMB(char *buf, unsigned int len, struct TCP_Server_Info *srvr);
- extern bool is_valid_oplock_break(char *, struct TCP_Server_Info *);
- extern bool backup_cred(struct cifs_sb_info *);
--extern bool is_size_safe_to_change(struct cifsInodeInfo *, __u64 eof);
-+extern bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 eof,
-+				   bool from_readdir);
- extern void cifs_update_eof(struct cifsInodeInfo *cifsi, loff_t offset,
- 			    unsigned int bytes_written);
- extern struct cifsFileInfo *find_writable_file(struct cifsInodeInfo *, int);
-@@ -201,7 +202,8 @@ extern void cifs_unix_basic_to_fattr(struct cifs_fattr *fattr,
- 				     struct cifs_sb_info *cifs_sb);
- extern void cifs_dir_info_to_fattr(struct cifs_fattr *, FILE_DIRECTORY_INFO *,
- 					struct cifs_sb_info *);
--extern int cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr);
-+extern int cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
-+			       bool from_readdir);
- extern struct inode *cifs_iget(struct super_block *sb,
- 			       struct cifs_fattr *fattr);
- 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index c156460eb5587..c711d5eb2987e 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -329,7 +329,7 @@ int cifs_posix_open(const char *full_path, struct inode **pinode,
- 		}
- 	} else {
- 		cifs_revalidate_mapping(*pinode);
--		rc = cifs_fattr_to_inode(*pinode, &fattr);
-+		rc = cifs_fattr_to_inode(*pinode, &fattr, false);
- 	}
- 
- posix_open_ret:
-@@ -4766,12 +4766,14 @@ static int is_inode_writable(struct cifsInodeInfo *cifs_inode)
-    refreshing the inode only on increases in the file size
-    but this is tricky to do without racing with writebehind
-    page caching in the current Linux kernel design */
--bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 end_of_file)
-+bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 end_of_file,
-+			    bool from_readdir)
- {
- 	if (!cifsInode)
- 		return true;
- 
--	if (is_inode_writable(cifsInode)) {
-+	if (is_inode_writable(cifsInode) ||
-+		((cifsInode->oplock & CIFS_CACHE_RW_FLG) != 0 && from_readdir)) {
- 		/* This inode is open for write at least once */
- 		struct cifs_sb_info *cifs_sb;
- 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 471abc99bbf02..cb9e719e67ae2 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -147,7 +147,8 @@ cifs_nlink_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
- 
- /* populate an inode with info from a cifs_fattr struct */
- int
--cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
-+cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
-+		    bool from_readdir)
- {
- 	struct cifsInodeInfo *cifs_i = CIFS_I(inode);
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
-@@ -199,7 +200,7 @@ cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
- 	 * Can't safely change the file size here if the client is writing to
- 	 * it due to potential races.
- 	 */
--	if (is_size_safe_to_change(cifs_i, fattr->cf_eof)) {
-+	if (is_size_safe_to_change(cifs_i, fattr->cf_eof, from_readdir)) {
- 		i_size_write(inode, fattr->cf_eof);
- 
- 		/*
-@@ -368,7 +369,7 @@ static int update_inode_info(struct super_block *sb,
- 		CIFS_I(*inode)->time = 0; /* force reval */
- 		return -ESTALE;
- 	}
--	return cifs_fattr_to_inode(*inode, fattr);
-+	return cifs_fattr_to_inode(*inode, fattr, false);
- }
- 
- #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
-@@ -403,7 +404,7 @@ cifs_get_file_info_unix(struct file *filp)
- 	} else
- 		goto cifs_gfiunix_out;
- 
--	rc = cifs_fattr_to_inode(inode, &fattr);
-+	rc = cifs_fattr_to_inode(inode, &fattr, false);
- 
- cifs_gfiunix_out:
- 	free_xid(xid);
-@@ -928,7 +929,7 @@ cifs_get_file_info(struct file *filp)
- 	fattr.cf_uniqueid = CIFS_I(inode)->uniqueid;
- 	fattr.cf_flags |= CIFS_FATTR_NEED_REVAL;
- 	/* if filetype is different, return error */
--	rc = cifs_fattr_to_inode(inode, &fattr);
-+	rc = cifs_fattr_to_inode(inode, &fattr, false);
- cgfi_exit:
- 	cifs_free_open_info(&data);
- 	free_xid(xid);
-@@ -1467,7 +1468,7 @@ cifs_iget(struct super_block *sb, struct cifs_fattr *fattr)
- 		}
- 
- 		/* can't fail - see cifs_find_inode() */
--		cifs_fattr_to_inode(inode, fattr);
-+		cifs_fattr_to_inode(inode, fattr, false);
- 		if (sb->s_flags & SB_NOATIME)
- 			inode->i_flags |= S_NOATIME | S_NOCMTIME;
- 		if (inode->i_state & I_NEW) {
-diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
-index 520c490e844b5..56033e4e4bae9 100644
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -148,7 +148,7 @@ cifs_prime_dcache(struct dentry *parent, struct qstr *name,
- 						rc = -ESTALE;
- 					}
- 				}
--				if (!rc && !cifs_fattr_to_inode(inode, fattr)) {
-+				if (!rc && !cifs_fattr_to_inode(inode, fattr, true)) {
- 					dput(dentry);
- 					return;
- 				}
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index 2169b6549a260..21fd26609252b 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -56,6 +56,8 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x0471, 0x066A) }, /* AKTAKOM ACE-1001 cable */
+ 	{ USB_DEVICE(0x0489, 0xE000) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
+ 	{ USB_DEVICE(0x0489, 0xE003) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
++	{ USB_DEVICE(0x04BF, 0x1301) }, /* TDK Corporation NC0110013M - Network Controller */
++	{ USB_DEVICE(0x04BF, 0x1303) }, /* TDK Corporation MM0110113M - i3 Micro Module */
+ 	{ USB_DEVICE(0x0745, 0x1000) }, /* CipherLab USB CCD Barcode Scanner 1000 */
+ 	{ USB_DEVICE(0x0846, 0x1100) }, /* NetGear Managed Switch M4100 series, M5300 series, M7100 series */
+ 	{ USB_DEVICE(0x08e6, 0x5501) }, /* Gemalto Prox-PU/CU contactless smartcard reader */
 -- 
 2.43.0
 
