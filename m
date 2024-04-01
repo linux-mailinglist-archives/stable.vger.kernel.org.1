@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DC7894305
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2D1893E85
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 595BF1F26EFF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E189CB20A12
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3DA47A6B;
-	Mon,  1 Apr 2024 16:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2254D47A6A;
+	Mon,  1 Apr 2024 16:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdowHDXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ai5lp7r9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0EC1E86C;
-	Mon,  1 Apr 2024 16:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FD1481C0;
+	Mon,  1 Apr 2024 16:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990717; cv=none; b=X1KEENf8AIIKzvriMu+f33yv0Av7Ot+RAtOyK12aBKdlj20/26h35+xX+ZrtDGQF7HTxICGOX/hCDt3W9lqaW+8bAIWVwRcNQRfTwtjjbLfhubCpVztNMFIHxG2VO52ErnoO4BCafwQ17oGcnPFLBRBkLGc+Qlgs9f5fXJdfAIQ=
+	t=1711987468; cv=none; b=Lau/ZiBcioW4rxOYrUEv5Je9Lv5/Pfyg1Mh9HbUZS5p9P1sQOwno04Z/kTKu4qcyOVgxKqpPhPFmZkh6zMp5alYYwbR6PI82G0jmAwgreCHijAuz5CRq7cb1ZS7BsbmjZVT8SVAn/IkMALcUYvOabyRi7GiN0UkQAZ0atymnmU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990717; c=relaxed/simple;
-	bh=LLxOVD+Iko8MczvrXpEZoK6g2DT51793yKXgBj6Q9Co=;
+	s=arc-20240116; t=1711987468; c=relaxed/simple;
+	bh=j5QyFTavSqyyOZ9atTWw+BtkpVQoZpsdWgskeqlqTRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJVBZXzWrZhI3zqW5i8agdxcMr+nZweIv5YFM7AG4HsEtuYPzjwi33BuWO+tJImkV3eZhVJUshdYRlgTBm89EdBM2ze3eHLgfa/FlSIKlwAGVR8Drja8mn+Ky0EQtYNnCkgwpqlcvQJ2g6bL0QJOfrpxoa6Du05oVvHdRwPMTco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdowHDXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6E0C433F1;
-	Mon,  1 Apr 2024 16:58:36 +0000 (UTC)
+	 MIME-Version; b=pVAEnCNnMJsEfsFBNk/JEWzZUr9ApxitrjdIjI7Jt197172aATOvlTjtFQPKB286AqRduQ5urQrVe9IRVByiFcdnAeZtPNtB6YaVhizqdb6NKfFX7aGz+2+5NNRWMPH//jybFKHeoOnEjCI4We0o6CBo2wnlbSFerHo2aQsaUq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ai5lp7r9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58751C433C7;
+	Mon,  1 Apr 2024 16:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990717;
-	bh=LLxOVD+Iko8MczvrXpEZoK6g2DT51793yKXgBj6Q9Co=;
+	s=korg; t=1711987468;
+	bh=j5QyFTavSqyyOZ9atTWw+BtkpVQoZpsdWgskeqlqTRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdowHDXBkaEmfWF7s8wdEm8CKWEoxK/hhsNcwIk8FUQnrpv947q1IOJpDZ/w3mPl0
-	 E6eoHbleJpzVzcksf++3zi54a0ruLoPRYull1KfA5bpzcsN8nW6cxO6iNYdqQGEEIP
-	 QgqfUSYOQ4bGMMTnbRyKuvc6Abz1b44bwjyaW73M=
+	b=ai5lp7r9ttqS7Xe5SjJxLBCa1Ku1bgQMdE8lfQDjEYXS2A7YWXe863WqwscaBFEWs
+	 9kjbmQ/Rtxjvr7wv9jz1bReKDjPP6DDPeLGMDXZYsLi4Fk7eFM+ZlcCCm/W90iCM5m
+	 E5WucWALm4AszbN/m/Gy3whRE2IKjkxzJnUrCv6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Guenter Roeck <linux@roeck-us.net>,
-	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/272] parisc/unaligned: Rewrite 64-bit inline assembly of emulate_ldd()
+Subject: [PATCH 6.8 268/399] x86/mpparse: Register APIC address only once
 Date: Mon,  1 Apr 2024 17:43:54 +0200
-Message-ID: <20240401152531.776546462@linuxfoundation.org>
+Message-ID: <20240401152557.185828558@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit e5db6a74571a8baf87a116ea39aab946283362ff ]
+[ Upstream commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 ]
 
-Convert to use real temp variables instead of clobbering processor
-registers. This aligns the 64-bit inline assembly code with the 32-bit
-assembly code which was rewritten with commit 427c1073a2a1
-("parisc/unaligned: Rewrite 32-bit inline assembly of emulate_ldd()").
+The APIC address is registered twice. First during the early detection and
+afterwards when actually scanning the table for APIC IDs. The APIC and
+topology core warn about the second attempt.
 
-While at it, fix comment in 32-bit rewrite code. Temporary variables are
-now used for both 32-bit and 64-bit code, so move their declarations
-to the function header.
+Restrict it to the early detection call.
 
-No functional change intended.
-
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org # v6.0+
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 81287ad65da5 ("x86/apic: Sanitize APIC address setup")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240322185305.297774848@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/unaligned.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ arch/x86/kernel/mpparse.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
-index 8a8e7d7224a26..782ee05e20889 100644
---- a/arch/parisc/kernel/unaligned.c
-+++ b/arch/parisc/kernel/unaligned.c
-@@ -167,6 +167,7 @@ static int emulate_ldw(struct pt_regs *regs, int toreg, int flop)
- static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
- {
- 	unsigned long saddr = regs->ior;
-+	unsigned long shift, temp1;
- 	__u64 val = 0;
- 	ASM_EXCEPTIONTABLE_VAR(ret);
+diff --git a/arch/x86/kernel/mpparse.c b/arch/x86/kernel/mpparse.c
+index b223922248e9f..15c700d358700 100644
+--- a/arch/x86/kernel/mpparse.c
++++ b/arch/x86/kernel/mpparse.c
+@@ -196,12 +196,12 @@ static int __init smp_read_mpc(struct mpc_table *mpc, unsigned early)
+ 	if (!smp_check_mpc(mpc, oem, str))
+ 		return 0;
  
-@@ -178,25 +179,22 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
+-	/* Initialize the lapic mapping */
+-	if (!acpi_lapic)
+-		register_lapic_address(mpc->lapic);
+-
+-	if (early)
++	if (early) {
++		/* Initialize the lapic mapping */
++		if (!acpi_lapic)
++			register_lapic_address(mpc->lapic);
+ 		return 1;
++	}
  
- #ifdef CONFIG_64BIT
- 	__asm__ __volatile__  (
--"	depd,z	%3,60,3,%%r19\n"		/* r19=(ofs&7)*8 */
--"	mtsp	%4, %%sr1\n"
--"	depd	%%r0,63,3,%3\n"
--"1:	ldd	0(%%sr1,%3),%0\n"
--"2:	ldd	8(%%sr1,%3),%%r20\n"
--"	subi	64,%%r19,%%r19\n"
--"	mtsar	%%r19\n"
--"	shrpd	%0,%%r20,%%sar,%0\n"
-+"	depd,z	%2,60,3,%3\n"		/* shift=(ofs&7)*8 */
-+"	mtsp	%5, %%sr1\n"
-+"	depd	%%r0,63,3,%2\n"
-+"1:	ldd	0(%%sr1,%2),%0\n"
-+"2:	ldd	8(%%sr1,%2),%4\n"
-+"	subi	64,%3,%3\n"
-+"	mtsar	%3\n"
-+"	shrpd	%0,%4,%%sar,%0\n"
- "3:	\n"
- 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
- 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
--	: "=r" (val), "+r" (ret)
--	: "0" (val), "r" (saddr), "r" (regs->isr)
--	: "r19", "r20" );
-+	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
-+	: "r" (regs->isr) );
- #else
--    {
--	unsigned long shift, temp1;
- 	__asm__ __volatile__  (
--"	zdep	%2,29,2,%3\n"		/* r19=(ofs&3)*8 */
-+"	zdep	%2,29,2,%3\n"		/* shift=(ofs&3)*8 */
- "	mtsp	%5, %%sr1\n"
- "	dep	%%r0,31,2,%2\n"
- "1:	ldw	0(%%sr1,%2),%0\n"
-@@ -212,7 +210,6 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
- 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b, "%1")
- 	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
- 	: "r" (regs->isr) );
--    }
- #endif
- 
- 	DPRINTF("val = 0x%llx\n", val);
+ 	/* Now process the configuration blocks. */
+ 	while (count < mpc->length) {
 -- 
 2.43.0
 
