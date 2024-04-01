@@ -1,127 +1,120 @@
-Return-Path: <stable+bounces-35489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4B2894579
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 21:28:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C50894582
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 21:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0CB81C216AC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:28:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E6DEB21712
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901E3524C4;
-	Mon,  1 Apr 2024 19:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F5353390;
+	Mon,  1 Apr 2024 19:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Cd+rwCHl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E35VxLZy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C147742056
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 19:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD7F524DF;
+	Mon,  1 Apr 2024 19:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711999697; cv=none; b=p0fC1XgvXXowzI8TNhUysYopiZglskBckxlGxer55oh9N+VgEKwaKnQm87uzSgGEjgccU96l+PKkxlwPs1oK86vwNqAQNjKhi1FI0J3IT5PY9qhTnJZzvRgTCvz9yweaK+etedIoxwhdts5bCQXC7bFc9+csQfsJ6FKpuF8lVXQ=
+	t=1712000050; cv=none; b=EgeetumiPKQf+q4BSO/cakCkmUXinRGijhNjIFt+kGKDSuPwx+Li0yQwKnZWl7pCLkFQJWksjcrjkKplGx4sSI/AuOdzJxQFKJQS+xt+QtkPVNPlV5UhXUOIG5jHJnqAPVR+PsEQ76KvU3ASeCnHfssZL8TCdaxlzvbbkV5TQPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711999697; c=relaxed/simple;
-	bh=FtZFlGzW0MUxmZa/IKg7XcCyUtT2vw1AULuLvoBCx/g=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EcZRyzVYQfO+i98/3maW5b76vuWqR2TL4fUbQzIRxJ2pUdhAJ/jWgT7bNEulHt9KWif0wi7fotJZfA56zxzrSaYcJ9eDWTv3cuhwc2DOAWVqNuSVfcXJgpL8tObkB6eZaOic9z86sYgozdup+utT+hvQ/AybEEWkQf5IU7cJ9CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Cd+rwCHl; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=wclaxxtrgfhp5fwlzubutvdnoi.protonmail; t=1711999686; x=1712258886;
-	bh=a6gs8Co461eG3wpA5ckHsQcQV9C3iIwIFI/gKjKHzRo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Cd+rwCHlBl14MRIpQhRV9HbmzaYxp/tFS5svfZDZDwebUa2Aa9wHWHXQGHEFF1hbv
-	 4rull/MuQxtGHt1O5EjUEwUfcMSynpPf3WF9HiXOfp9USq8Qyytk4mz1CUNV7cwvSv
-	 f6/wZNwtJUny4v11TYz0Tp7QR+G1qx2qxFOSUNtrOUvt5HO+9tsEien0xhhNxY8G4X
-	 tNxRNFgZEXzuPd9+fkqcmv5BFrbXR0rxZyB5kwP4ehApq4tIMS/rdDyrJt18MjlUDG
-	 X7iMhQXdsEGFYxBrlTdRni77tVGRefpp1nWHk6BYOscBAKHX2p3cu6r/352HMgq1vP
-	 PDh4axXklOC5A==
-Date: Mon, 01 Apr 2024 19:27:52 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Finn Behrens <me@kloenk.dev>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, Daniel Xu <dxu@dxuuu.xyz>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: macros: fix soundness issue in `module!` macro
-Message-ID: <06d5ccdb-a5c3-4630-9f97-9a7bdf7b7a48@proton.me>
-In-Reply-To: <CANeycqr_AkxTj2iNdnjRFrC-C8npsBtS34V4hNy35RpQHszG9w@mail.gmail.com>
-References: <20240327160346.22442-1-benno.lossin@proton.me> <CANeycqp0o-HKBx6nuGCy9DD6mAwoGWzTR6bm5ceajsUhKcZuQg@mail.gmail.com> <d41d123e-d682-4685-88f5-e45567cc1975@proton.me> <CANeycqr_AkxTj2iNdnjRFrC-C8npsBtS34V4hNy35RpQHszG9w@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	s=arc-20240116; t=1712000050; c=relaxed/simple;
+	bh=aj0nrVkwljzrKd/TB28KkZj1TBXQPoxF8qMtTI4WX/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WemYsTu1Ckst/K2+a59D4w1WnjtA8sbWM/XdpoCvqLDAOc0rhLKaxiukfzPUWxdTeJ1HdbXNwKBRLftgbmaDuPpFapP1iFkUf55W90QUXsUbTgUbISIXYt7iJVvOvFJIo/tMzRkFdmmLPJt3Q15nWSUyg582QLnwNtlbKZepi+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E35VxLZy; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5a4f7a648dbso2852753eaf.3;
+        Mon, 01 Apr 2024 12:34:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712000048; x=1712604848; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wLDV/ht2C0Yhmxp9JcDfzPNyFlnI0fQ6zYIEoeG3/fc=;
+        b=E35VxLZylV2pIsIewERIScS94L9xXg3MEu5M4moke+4mkGNten4wv4cWr9D4KqAi0v
+         e1OHhJMTnYw3pJuu5bH7Zr/N5YVDsg7pVdyPCkebNUHWgzbeIU3rzljyfPhHwNuoAQAW
+         ciX51vJNl0vMkf75UlxNyq8le5+/2Pztyitvv+0zyAL30oyLHRMFHl5Df0upoXNGeVDz
+         9FQECQHtkwcrpkRn38RWtJ2qqpoSFzWMu6rc+YzCVMNikpERkw+WkuIS1VGe4So5oLCI
+         DfcIevfuX8SE/DtrR+xtG+p61pXDacW4H6Mwtn0wvrky0t3rJ9bQOKZNv/VxiTMBmBMt
+         Ij/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712000048; x=1712604848;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wLDV/ht2C0Yhmxp9JcDfzPNyFlnI0fQ6zYIEoeG3/fc=;
+        b=R2a+61ZQkUgDmd7GC8GlTrbXQTclCI0n3HIn6UxYtZ1OEe0K5J+CRYGOMw1ODJflpi
+         Sbj5bv5e7EcA1PiXa1Q8xoGgSBq4Zh6mXHPMZ0g087b+f+HqnDenZbhkQyjIrpYx+hAZ
+         6e4vZII5RJsROIbdKZsBpAF3jTfwQR7mhYhbAYAe6M1uEjRdL8iQspWDvAWLvtMl07mL
+         Rc0z5DbRYoyNMmLiaK97mFoZV7mrFb7GqIWohDZ6WpIXb1k7b+mgR4Rjy9gfh1Aoteif
+         DaqBL8KR3QnE/PLnuU1FcJaB8+Dhs/YXy6sC3VwpzdBO4JNqf18KYjYpsJ9tGwCTcA5S
+         nK3w==
+X-Forwarded-Encrypted: i=1; AJvYcCVsSZHZvDQLqFl/a+75rtsagsRcCDgLI387hksPUxMoXO+M7z9gKRConS+KV1Da59j8Ruj5EwHlclOmHtTkb1PYLfIRiz4c0qizduEgkIoRkvEDw5ZLGipz+vm4h6X2VGjUUVMg
+X-Gm-Message-State: AOJu0YynStAaLO4rUbYgZ5UmMmi2SBnPsZ3e90J4DHRUdhl4fBkUpXga
+	IlQDltzt+O45wPC779OS9/AsfQTCIxtK460Bz6TUsuwMFm5qQzCv
+X-Google-Smtp-Source: AGHT+IE3k8RINM6GcRHexQWUs5+L6aBvMDILTRqjzVJLOriiaxe4APNK3WoZMLuuc7QaH/1VNw01jA==
+X-Received: by 2002:a05:6359:4c19:b0:181:65b4:f99c with SMTP id kj25-20020a0563594c1900b0018165b4f99cmr13803416rwc.19.1712000047846;
+        Mon, 01 Apr 2024 12:34:07 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id t1-20020a63b241000000b005cfc1015befsm8194438pgo.89.2024.04.01.12.34.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Apr 2024 12:34:06 -0700 (PDT)
+Message-ID: <9c62616a-2706-44d1-a4a9-08f150f11c7a@gmail.com>
+Date: Mon, 1 Apr 2024 12:34:00 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/272] 6.1.84-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240401152530.237785232@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 01.04.24 21:10, Wedson Almeida Filho wrote:
-> On Sun, 31 Mar 2024 at 07:27, Benno Lossin <benno.lossin@proton.me> wrote=
-:
->>
->> On 31.03.24 03:00, Wedson Almeida Filho wrote:
->>> On Wed, 27 Mar 2024 at 13:04, Benno Lossin <benno.lossin@proton.me> wro=
-te:
->>>> -            fn __init() -> core::ffi::c_int {{
->>>> -                match <{type_} as kernel::Module>::init(&THIS_MODULE)=
- {{
->>>> -                    Ok(m) =3D> {{
->>>> +                    /// # Safety
->>>> +                    ///
->>>> +                    /// This function must
->>>> +                    /// - only be called once,
->>>> +                    /// - be called after `__init`,
->>>> +                    /// - not be called concurrently with `__init`.
->>>
->>> The second item is incomplete: it must be called after `__init` *succee=
-ds*.
->>
->> Indeed.
->>
->>>
->>> With that added (which is a different precondition), I think the third
->>> item can be dropped because if you have to wait to see whether
->>> `__init` succeeded or failed before you can call `__exit`, then
->>> certainly you cannot call it concurrently with `__init`.
->>
->> I would love to drop that requirement, but I am not sure we can. With
->> that requirement, I wanted to ensure that no data race on `__MOD` can
->> happen. If you need to verify that `__init` succeeded, one might think
->> that it is not possible to call `__exit` such that a data race occurs,
->> but I think it could theoretically be done if the concrete `Module`
->> implementation never failed.
->=20
-> I see. If you're concerned about compiler reordering, then we need
-> compiler barriers.
->=20
->> Do you have any suggestion for what I could add to the "be called after
->> `__init` was called and returned `0`" requirement to make a data race
->> impossible?
->=20
-> If you're concerned with reordering from the processor as well, then
-> we need cpu barriers. You'd have to say that the cpu/thread executing
-> `__init` must have a release barrier after `__init` completes, and the
-> thread/cpu doing `__exit` must have an acquire barrier before starting
-> `__exit`.
->=20
-> But I'm not sure we need to go that far. Mostly because C is going to
-> guarantee that ordering for us, so I'd say we can just omit this or
-> perhaps say "This function must only be called from the exit module
-> implementation".
+On 4/1/24 08:43, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.84 release.
+> There are 272 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.84-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Yeah, though I do not exactly know where or what the "exit module
-implementation" is. If you are happy with v2, then I think we can go
-with that. This piece of code is also not really something people will
-need to read.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
---=20
-Cheers,
-Benno
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
