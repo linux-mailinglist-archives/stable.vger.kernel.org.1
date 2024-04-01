@@ -1,101 +1,150 @@
-Return-Path: <stable+bounces-35503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F678946CA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 23:54:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75124894725
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 00:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27F7D1F21F6D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 21:54:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A07671C216BA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 22:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7246954744;
-	Mon,  1 Apr 2024 21:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0549C55C3E;
+	Mon,  1 Apr 2024 22:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="Jk6yobiL"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="M7YwW7N2"
 X-Original-To: stable@vger.kernel.org
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7303F535B7
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 21:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712008492; cv=pass; b=MouNXD4rdhN+BWG1drIMfmiGTPGYpKFo+ijiK62roQPitpMFjwU6yaa3lQc04OHn2Ff0LD5sZv4k9GF9TMWtxgpwyb9S2tKm0Jhp8lIbnIW99LzEa72oLpxng0eXr8CE2CqVJ8t0AUMzrDJsSikDg8PfFodddJ5vIRX39P6GaP0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712008492; c=relaxed/simple;
-	bh=ZaV2XdIdXXgfbvyLJ86RFMi7lqiINDbol4NjQwBVF1U=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=WCnOaoHXdpu0uZvYjseYOZIMAvwLG7Rqo2D566URe/ClmUdAr1n2suuu3v+IIlWb7nKlJlmkTYlPE8O3LLCXPJyQKypLzivCsZzjTcu6xiXKkgF6e0VqPlGOW8/zLphG8ehrQJduslg/EHG6vSPJBoTydqEQ+spHGUDjCVUMJXY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=Jk6yobiL; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from darkstar.musicnaut.iki.fi (85-76-140-31-nat.elisa-mobile.fi [85.76.140.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aaro.koskinen)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4V7lD70ZTfz49Py3
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 00:54:47 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1712008487;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=Mn8bJl3NFyQtwMBOkdGvS3lwI8lw3E5zb48HP4oCIPQ=;
-	b=Jk6yobiLJDaRfz+oPSY9cbLK4KB2nW/3nepwl9RQuG4q4XDaDng5VcnBVjmwi1dQkNYeTM
-	Pd5JGeXQv1yS1bcpLIthAdZcyPzqiqFbXJZ623IvPakTjtL89+t35pLMLMkqAoX/jYdGLz
-	Rsl6Ynwc106+xF4D4YExRiHvkRbTq1FixaE+Ta3Rbs2KjpyH17AVLbsdEy5luYNfFdxMcF
-	NN5Vik/9S0gug1FDL8tmNgm4eXk8JFNrefWcJ5k3c/P4uyupRMWC33eGqOqhIhyzvBpvJO
-	k4LzoXlaA4e/EyJm97n8rPDlfWfGuig8jE4133e5HanubWStR7KkoFlAeZET6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1712008487;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=Mn8bJl3NFyQtwMBOkdGvS3lwI8lw3E5zb48HP4oCIPQ=;
-	b=cyFzFXna2+Yx8WW/xnEaukoQwLq0ifmqOxEGsu/CeFpSfTZQYTeGIFMCocDONTA89vWek8
-	OwdZ7kWJyR03p+zx6QYCdlbP3Y+JK/wlO/Aa4uhhMdQArw3wrFpkAN5YK9elryBEVKCixl
-	vIbBFSXH/5PqNUydLNh8Ttp6t/XKoyFw1P3UVkDNmPTdae8vfEcZrQRQyeAq4HLLBpE7pq
-	MfRV4EbPGkAztIomV6WtUcH/qCVJR7EasoyBYR1xJZj3pTSr237TFwN/ArHu3biJepZdnH
-	iAfyUUu/eBenAknTNSAIptgq8P7BA3iBrgnARZ+MGOt/Sl99FN4XR7KchKvCYg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1712008487; a=rsa-sha256;
-	cv=none;
-	b=RR9DHjzfkdgFyuLiVELV+xTEsRNDgoFamMuh2F1vTFlKKVfazXYaz/B0HuYpoFZi2ZKTgS
-	Gz3NnyuOMadhvgmnC+fdLH6+bSEpdttj5tMYl8IRlbBrSCQpIbE5OPpn4yUf9FbjKNECUe
-	tclgDL1h25+fphpjs0ymUJZdGNDy/DkiiVvRBffqr3XMJ/NLkUWVSO+h7s0YzbDjzAB+nQ
-	+nhJCM92RGb3QMTycIxcGVjKrgQVumFod+z9EurbG3F20F/GbPsz+FfadOit1HdxKsSQY7
-	F999u2i6F0NMexQt3R9LudtQ2180f5PD8GePPFQncWLcDY9OKVDV7yj10GjNmQ==
-Date: Tue, 2 Apr 2024 00:54:45 +0300
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-To: stable@vger.kernel.org
-Subject: Request to cherry-pick a patch for v5.15 (locking/rwsem: Disable
- preemption while trying for rwsem lock)
-Message-ID: <20240401215445.GA91663@darkstar.musicnaut.iki.fi>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826DB53814;
+	Mon,  1 Apr 2024 22:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712008905; cv=none; b=SOlbILNcCq2KoA3bOhVodJ67+RevGaXJjF61gjHAupte/cFGtdOQ6pRAngyL0hYhaqPSzdh/8p7Hll1Su+o4mWVKMN5QqUO3lRcSyZ0JhRKEXjoG28bPGqUSZA4SAl/ZTgmHSw8Ybk+xLQ91ucdoqMJ3MntUa8MiCvDi9wZkaRM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712008905; c=relaxed/simple;
+	bh=8vXG12fvbvKQwoT6Od/Q4JR+28AixGCeVdIJLD1KP1w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CnWBz9InjrAqKKuzER46085Jofh7fgDLUaIximNCtw6S4di/W2soflUtCOpP9ooHhlX+cXiEtQeN/KLYCPJ4SCpHpQ0DO+dYSsXSrsFfFuub3ZTqMh91jj0nQhmWL4Sx5iLYSwrp4CIQfGg79CsyEgOwcX7hwoSzOB7NtXyRbMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=M7YwW7N2; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1712008900; x=1712268100;
+	bh=fCpVJzb7a5fIyG0vdKN2cT5x5fpMk91PsLEh8JmpbLk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=M7YwW7N28CQzWE9px+Kgd3YIaME7NuyGoF1F8TB02+f1Af+USlw6cSS05RpVDQkj6
+	 s4J2RyFiB+pT0oxidrm/nWU86iAdpH29HpIh2zI2ope2A8YzoO0dKn/bYKQsRtgv/b
+	 PgNHc6yUa8p5Jv5lSEZSZDU+X/qePqd29rUzD6GUagvfuDjit/hyU+ykRTxyCiKNzv
+	 02d2xc95SJaWdINMESiQr0OVUKa7U1sPwz15W2yKbkZFY2E+K8Oxnc8I1O5CMTlIxU
+	 nm2nOCHIBulBZfe5V4RF2AZPnKXA7yjvG+GJls8txJZKqCB9YHNlgBQgNPsGoZoe/9
+	 eGwde2q/a/7Fg==
+Date: Mon, 01 Apr 2024 22:01:34 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
+Message-ID: <20fcbbd0-4a7a-49b1-a383-f8b388153066@proton.me>
+In-Reply-To: <Zgsiumknfshjbi9J@boqun-archlinux>
+References: <20240401185222.12015-1-benno.lossin@proton.me> <Zgsiumknfshjbi9J@boqun-archlinux>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Dear stable team,
+On 01.04.24 23:10, Boqun Feng wrote:
+> On Mon, Apr 01, 2024 at 06:52:50PM +0000, Benno Lossin wrote:
+> [...]
+>> +            // Double nested modules, since then nobody can access the =
+public items inside.
+>> +            mod __module_init {{
+>> +                mod __module_init {{
+>> +                    use super::super::{type_};
+>> +
+>> +                    /// The \"Rust loadable module\" mark.
+>> +                    //
+>> +                    // This may be best done another way later on, e.g.=
+ as a new modinfo
+>> +                    // key or a new section. For the moment, keep it si=
+mple.
+>> +                    #[cfg(MODULE)]
+>> +                    #[doc(hidden)]
+>> +                    #[used]
+>> +                    static __IS_RUST_MODULE: () =3D ();
+>> +
+>> +                    static mut __MOD: Option<{type_}> =3D None;
+>> +
+>> +                    // SAFETY: `__this_module` is constructed by the ke=
+rnel at load time and will not be
+>> +                    // freed until the module is unloaded.
+>> +                    #[cfg(MODULE)]
+>> +                    static THIS_MODULE: kernel::ThisModule =3D unsafe {=
+{
+>> +                        kernel::ThisModule::from_ptr(&kernel::bindings:=
+:__this_module as *const _ as *mut _)
+>=20
+> While we're at it, probably we want the following as well? I.e. using
+> `Opaque` and extern block, because __this_module is certainly something
+> interior mutable and !Unpin.
+>=20
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index 293beca0a583..8aa4eed6578c 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -219,7 +219,11 @@ mod __module_init {{
+>                       // freed until the module is unloaded.
+>                       #[cfg(MODULE)]
+>                       static THIS_MODULE: kernel::ThisModule =3D unsafe {=
+{
+> -                        kernel::ThisModule::from_ptr(&kernel::bindings::=
+__this_module as *const _ as *mut _)
+> +                        extern \"C\" {{
+> +                            static __this_module: kernel::types::Opaque<=
+kernel::bindings::module>;
+> +                        }}
+> +
+> +                        kernel::ThisModule::from_ptr(__this_module.get()=
+)
+>                       }};
+>                       #[cfg(not(MODULE))]
+>                       static THIS_MODULE: kernel::ThisModule =3D unsafe {=
+{
+>=20
+> Thoughts?
 
-Would you please cherry-pick the following patch into v5.15 stable:
+I am not sure we need it. Bindgen generates
 
-  locking/rwsem: Disable preemption while trying for rwsem lock
+     extern "C" {
+         pub static mut __this_module: module;
+     }
 
-  commit 48dfb5d2560d36fb16c7d430c229d1604ea7d185
+And the `mut` should take care of the "it might be modified by other
+threads".
+The only thing that sticks out to me is the borrow, it should probably
+be using `addr_of_mut!` instead. Then we don't need to re-import it
+again manually.
 
-Earlier discussion:
+I think it should be a separate patch though.
 
-  https://marc.info/?l=linux-kernel&m=170965048500766&w=2
+--=20
+Cheers,
+Benno
 
-Thank you,
+>=20
+> Note this requires `Opaque::get` to be `const`, which I will send out
+> shortly, I think it's a good change regardless of the usage here.
+>=20
+> Regards,
+> Boqun
+>=20
 
-A.
 
