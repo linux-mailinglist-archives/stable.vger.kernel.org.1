@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6984A893F6B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8FD8940F2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24BF1284210
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FA9DB20B19
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923D2481D0;
-	Mon,  1 Apr 2024 16:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A28B47A76;
+	Mon,  1 Apr 2024 16:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Spa3CU2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqwEez8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFEC47A79;
-	Mon,  1 Apr 2024 16:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED30546B9F;
+	Mon,  1 Apr 2024 16:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988180; cv=none; b=t3YL6Sbj5mOBKWNFsbxehbIkuJD2XiUfdMvrJ6QdkPS/adTt1vO+YBW4St+VDtd6e9KqZKoWUFa5OfTYx8MTGKhojF8UfgWhoI7Bk0aVAX3wKZd//o9gYfywbItcZ3bp8brcr15s+Q5LEQYSEP9dtrOKVP/D3A1uqvFH6USYG3s=
+	t=1711989371; cv=none; b=NHCff7YfGHsDUQunE8E4VnDE/s1gXfRsABDRnJBDvTxhGHoUebLZX3A0XAFEmvTr02msjUsnqtc5IeOuyGJ4fsfI1ApjSqGlhEd6yh4fPfXEYjpQg1l1NVKxoqNHFDc5eKzlbfb3ZSN3v1G+z1cNYb2JKcIzyMso4xd9uGjtc28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988180; c=relaxed/simple;
-	bh=lgrqI0NJMVYYxFkX1oaja+dVMsKHUlakwJPaCQW5qOU=;
+	s=arc-20240116; t=1711989371; c=relaxed/simple;
+	bh=fzAIMy9t3J0h7iX8Gx4+tqjfMbVKDxlfrluMly4pLTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njHIcFHruZ8Lerke2CJRk6lpyWBQo59gIIDebbQrvGJME7X2v8NWp7i4HrvO4VPaYmdYDNOlD64Tfo3V0ewiOPSjQk4G9Gu3/c9lJ+sr/X3YRp7MmIfHDGxChpZdh7eq9HBXmduzIQt1Phc7EeSbi6tXBmV+PEtCGHBIRpUDknQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Spa3CU2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2047DC433F1;
-	Mon,  1 Apr 2024 16:16:18 +0000 (UTC)
+	 MIME-Version; b=hj2thl2FDgHXJu/LMCAQ0lhKUNSZjr1FqdCts5Xr+Q78d6/eLUJ8BJRXXKbpToZuUX1rk7mqvJ2t6Y8ROTSWUNJjqLXOEdFGm2wolwtuVhJHEAgpPgTrzB9LCe6ea2ciDMHYowRYePBjFXGQypHwR7RpvCOnB9BwzNBIJ4/6nwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqwEez8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C18C43399;
+	Mon,  1 Apr 2024 16:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988179;
-	bh=lgrqI0NJMVYYxFkX1oaja+dVMsKHUlakwJPaCQW5qOU=;
+	s=korg; t=1711989370;
+	bh=fzAIMy9t3J0h7iX8Gx4+tqjfMbVKDxlfrluMly4pLTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Spa3CU2ySmiQJnqnDMS3OtL6NEvDeBnSsedM1X82ilcfEDHWQT2T+HXTBXNz0wIWG
-	 tG0IhLdX9nrs6HWKG4v7qfKZaSCXcyYwvDnGn9mn2+Y1dWUP5JbVe0l4J8be7RpTvZ
-	 LdLR2sv8MrnRGMd2On6OWIwStcAqO/qRgOY9YLWc=
+	b=ZqwEez8vyi8jrco8lWIELQbBJsigalFAb5bVc8KOKNcrGOO0/a871WCeD7tomhHyZ
+	 0vo4RzqOz+jnthA+j9vakF9d8gEOJ2VqWQhwK1YTXYkgpjEFljXdZQtCxg7yQq99nc
+	 c5M5U+K/VMraupoJEzz20ZLa/wT8bY27WU/80+8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 070/432] clk: qcom: gcc-ipq6018: fix terminating of frequency table arrays
+Subject: [PATCH 6.6 008/396] remoteproc: virtio: Fix wdg cannot recovery remote processor
 Date: Mon,  1 Apr 2024 17:40:57 +0200
-Message-ID: <20240401152555.212415272@linuxfoundation.org>
+Message-ID: <20240401152548.130454552@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Joakim Zhang <joakim.zhang@cixtech.com>
 
-[ Upstream commit cdbc6e2d8108bc47895e5a901cfcaf799b00ca8d ]
+[ Upstream commit b327c72753d6a78de37aed6c35756f2ef62897ee ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+Recovery remote processor failed when wdg irq received:
+[    0.842574] remoteproc remoteproc0: crash detected in cix-dsp-rproc: type watchdog
+[    0.842750] remoteproc remoteproc0: handling crash #1 in cix-dsp-rproc
+[    0.842824] remoteproc remoteproc0: recovering cix-dsp-rproc
+[    0.843342] remoteproc remoteproc0: stopped remote processor cix-dsp-rproc
+[    0.847901] rproc-virtio rproc-virtio.0.auto: Failed to associate buffer
+[    0.847979] remoteproc remoteproc0: failed to probe subdevices for cix-dsp-rproc: -16
 
-Only compile tested.
+The reason is that dma coherent mem would not be released when
+recovering the remote processor, due to rproc_virtio_remove()
+would not be called, where the mem released. It will fail when
+it try to allocate and associate buffer again.
 
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Releasing reserved memory from rproc_virtio_dev_release(), instead of
+rproc_virtio_remove().
+
+Fixes: 1d7b61c06dc3 ("remoteproc: virtio: Create platform device for the remoteproc_virtio")
+Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Acked-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-2-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20231217053659.3245745-1-joakim.zhang@cixtech.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/remoteproc/remoteproc_virtio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq6018.c b/drivers/clk/qcom/gcc-ipq6018.c
-index b366912cd6480..ef1e2ce4804d2 100644
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -1554,6 +1554,7 @@ static struct clk_regmap_div nss_ubi0_div_clk_src = {
+diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
+index 83d76915a6ad6..25b66b113b695 100644
+--- a/drivers/remoteproc/remoteproc_virtio.c
++++ b/drivers/remoteproc/remoteproc_virtio.c
+@@ -351,6 +351,9 @@ static void rproc_virtio_dev_release(struct device *dev)
  
- static const struct freq_tbl ftbl_pcie_aux_clk_src[] = {
- 	F(24000000, P_XO, 1, 0, 0),
-+	{ }
- };
+ 	kfree(vdev);
  
- static const struct clk_parent_data gcc_xo_gpll0_core_pi_sleep_clk[] = {
-@@ -1734,6 +1735,7 @@ static const struct freq_tbl ftbl_sdcc_ice_core_clk_src[] = {
- 	F(160000000, P_GPLL0, 5, 0, 0),
- 	F(216000000, P_GPLL6, 5, 0, 0),
- 	F(308570000, P_GPLL6, 3.5, 0, 0),
-+	{ }
- };
++	of_reserved_mem_device_release(&rvdev->pdev->dev);
++	dma_release_coherent_memory(&rvdev->pdev->dev);
++
+ 	put_device(&rvdev->pdev->dev);
+ }
  
- static const struct clk_parent_data gcc_xo_gpll0_gpll6_gpll0_div2[] = {
+@@ -584,9 +587,6 @@ static void rproc_virtio_remove(struct platform_device *pdev)
+ 	rproc_remove_subdev(rproc, &rvdev->subdev);
+ 	rproc_remove_rvdev(rvdev);
+ 
+-	of_reserved_mem_device_release(&pdev->dev);
+-	dma_release_coherent_memory(&pdev->dev);
+-
+ 	put_device(&rproc->dev);
+ }
+ 
 -- 
 2.43.0
 
