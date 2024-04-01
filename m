@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-35365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25AC89439D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F12894241
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DB1C283918
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B7052835A5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BACB482CA;
-	Mon,  1 Apr 2024 17:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD6B4A99C;
+	Mon,  1 Apr 2024 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNz0cWZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFQCclWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF92C1DFF4;
-	Mon,  1 Apr 2024 17:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5557263E;
+	Mon,  1 Apr 2024 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991158; cv=none; b=RzhGOlmVvADkqVVa9w2/82tmIbTx40SDXb5xAKC4syG1JvdRo1CITRpPU81eLthmDmJtvQuKxEVAPjhobeCsQ5K6GjJJLbgId+zOvtJK+FETahKHNivRRPnxXhBK0xW5iptghWVOQqCaGLkqN3ht2Gb/gXXVWjca7K73ymlFTyY=
+	t=1711990253; cv=none; b=EoGII9p0BvRl26cOTUd6/3QhGTkaYNgWyTk8WK3RWruN61JNXivtR1fJG79aNvQnYbgRU/1dpYTTi33OjLaqRKbEDT+x+XjMFZpfmM27wHWWPQ9i1wf+NyK0T0vT/OxnhOdb0JXYFalYUYc5w+NTH4jrOpZ9ohbx9uT6EY5p01A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991158; c=relaxed/simple;
-	bh=eLj4EarOgHKJ+7TmZ1g/Exr5RskA14in5GNS4htonZQ=;
+	s=arc-20240116; t=1711990253; c=relaxed/simple;
+	bh=GSXeu6m9dIiKdjj9DkDEP0ZdM2h+XkmJJbAdeT9+HQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzgecyPMYfdaPq3HBH4R9KksZsmIk3d0vQ+ND0mutlAxok8EZgaqBJM1IiYalgo1/TwLl78oIpw4ZgVkIj07YLPrc1fUhUZllw+7Tk7ISODdSs50RHHg9zGCFSniBjHt3zHqpHT04MRpU7fAZvzSd3EN47r6Yde5o7G+xs9jNvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNz0cWZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6F4C433F1;
-	Mon,  1 Apr 2024 17:05:57 +0000 (UTC)
+	 MIME-Version; b=oHqxAEr1E7+Y0vsH5UvhsCEcsimvDyYh1VlMSe+mlpXQTcV7cvNtwHPuZX23+81Nhf9IS9ioD+Tvqg10tnYbNUvamcWZYQwUZCLASouye/V6rlndlf8GwsfqcH9eag8o+vrMqaBGpyxg6iKf3cQjo6PBQ44+zonNK8dMh3cBKCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFQCclWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE43BC433F1;
+	Mon,  1 Apr 2024 16:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991158;
-	bh=eLj4EarOgHKJ+7TmZ1g/Exr5RskA14in5GNS4htonZQ=;
+	s=korg; t=1711990253;
+	bh=GSXeu6m9dIiKdjj9DkDEP0ZdM2h+XkmJJbAdeT9+HQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNz0cWZzq0v7xcqG1HDFdUSeDExMd2Sj1PMpkvSqJqeMNBJnSDQUyF2IFHuIx7tjP
-	 8w9zYBrqwjZ//SaWG+pfGD3dYz8jQ64YxZ0HB5/QNFMhHJheA8FcJSwYM3dBpxtGcs
-	 xc5Q/u0ZviF1adDB8GHqoetuAhaO2wTRludnHNR4=
+	b=AFQCclWwz4uEkgFLTlGfWRQhWA0I9eDC6kuTNyhp5CQU93jzgGvT+pHLOySm3gR7m
+	 iXbX8J+10/SSClQKjB0PnN3YMxISRYo1V/nbmy2IYm2Xx9rHF+IK8F3kCCcf8apqWH
+	 9fNr1+240Dop8pvsx3hT6rAccBp3s6WUHD6qvqf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabe Kirkpatrick <gkirkpatrick@google.com>,
-	Josh Eads <josheads@google.com>,
-	Peter Gonda <pgonda@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 152/272] KVM: SVM: Flush pages under kvm->lock to fix UAF in svm_register_enc_region()
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 293/396] irqchip/renesas-rzg2l: Implement restriction when writing ISCR register
 Date: Mon,  1 Apr 2024 17:45:42 +0200
-Message-ID: <20240401152535.455794394@linuxfoundation.org>
+Message-ID: <20240401152556.639402630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 5ef1d8c1ddbf696e47b226e11888eaf8d9e8e807 upstream.
+[ Upstream commit ef88eefb1a81a8701eabb7d5ced761a66a465a49 ]
 
-Do the cache flush of converted pages in svm_register_enc_region() before
-dropping kvm->lock to fix use-after-free issues where region and/or its
-array of pages could be freed by a different task, e.g. if userspace has
-__unregister_enc_region_locked() already queued up for the region.
+The RZ/G2L manual (chapter "IRQ Status Control Register (ISCR)") describes
+the operation to clear interrupts through the ISCR register as follows:
 
-Note, the "obvious" alternative of using local variables doesn't fully
-resolve the bug, as region->pages is also dynamically allocated.  I.e. the
-region structure itself would be fine, but region->pages could be freed.
+[Write operation]
 
-Flushing multiple pages under kvm->lock is unfortunate, but the entire
-flow is a rare slow path, and the manual flush is only needed on CPUs that
-lack coherency for encrypted memory.
+  When "Falling-edge detection", "Rising-edge detection" or
+  "Falling/Rising-edge detection" is set in IITSR:
 
-Fixes: 19a23da53932 ("Fix unsynchronized access to sev members through svm_register_enc_region")
-Reported-by: Gabe Kirkpatrick <gkirkpatrick@google.com>
-Cc: Josh Eads <josheads@google.com>
-Cc: Peter Gonda <pgonda@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20240217013430.2079561-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    - In case ISTAT is 1
+	0: IRQn interrupt detection status is cleared.
+	1: Invalid to write.
+    - In case ISTAT is 0
+	Invalid to write.
+
+  When "Low-level detection" is set in IITSR.:
+        Invalid to write.
+
+Take the interrupt type into account when clearing interrupts through the
+ISCR register to avoid writing the ISCR when the interrupt type is level.
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231120111820.87398-6-claudiu.beznea.uj@bp.renesas.com
+Stable-dep-of: 9eec61df55c5 ("irqchip/renesas-rzg2l: Flush posted write in irq_eoi()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1958,20 +1958,22 @@ int sev_mem_enc_register_region(struct k
- 		goto e_free;
- 	}
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 96f4e322ed6b7..8e0b15c7fe7f1 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -72,11 +72,17 @@ static void rzg2l_irq_eoi(struct irq_data *d)
+ 	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 	u32 bit = BIT(hw_irq);
+-	u32 reg;
++	u32 iitsr, iscr;
  
--	region->uaddr = range->addr;
--	region->size = range->size;
--
--	list_add_tail(&region->list, &sev->regions_list);
--	mutex_unlock(&kvm->lock);
--
- 	/*
- 	 * The guest may change the memory encryption attribute from C=0 -> C=1
- 	 * or vice versa for this memory range. Lets make sure caches are
- 	 * flushed to ensure that guest data gets written into memory with
--	 * correct C-bit.
-+	 * correct C-bit.  Note, this must be done before dropping kvm->lock,
-+	 * as region and its array of pages can be freed by a different task
-+	 * once kvm->lock is released.
- 	 */
- 	sev_clflush_pages(region->pages, region->npages);
- 
-+	region->uaddr = range->addr;
-+	region->size = range->size;
+-	reg = readl_relaxed(priv->base + ISCR);
+-	if (reg & bit)
+-		writel_relaxed(reg & ~bit, priv->base + ISCR);
++	iscr = readl_relaxed(priv->base + ISCR);
++	iitsr = readl_relaxed(priv->base + IITSR);
 +
-+	list_add_tail(&region->list, &sev->regions_list);
-+	mutex_unlock(&kvm->lock);
-+
- 	return ret;
++	/*
++	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
++	 * falling/rising-edge.
++	 */
++	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
++		writel_relaxed(iscr & ~bit, priv->base + ISCR);
+ }
  
- e_free:
+ static void rzg2l_tint_eoi(struct irq_data *d)
+-- 
+2.43.0
+
 
 
 
