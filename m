@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-35349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6F689438D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A111389427B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E2241C21D6D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 433C7B2231B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F229C446B6;
-	Mon,  1 Apr 2024 17:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12922487BE;
+	Mon,  1 Apr 2024 16:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLOJeJv3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkxSvI0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27171DFF4;
-	Mon,  1 Apr 2024 17:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C366863E;
+	Mon,  1 Apr 2024 16:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991105; cv=none; b=YnNEkB5lJWZYN+0S/g6/qB5vdxDxuPX2i/yngveM/lF8eG+jnHq8nXLNXRrIIi3MFvto0vh4q5cZetVuFxhyLmsHGN5p1AGmJVJmuf82G5D1cwn+XRSs2qpnEvfWl3I/3vhiE1F5cc+q/I2j4zWjU9ICAPB2wSsdppfIE9LZDn0=
+	t=1711990380; cv=none; b=ktlTNbyldw34SEz4ngiu8tJ5Aa+AxfO/OJQESv3s7yXDNrchkUFQmMApcRhju24roY5jE+z9cqLyRdWhsWABJOTz6ZB3KwhXe9zDx0c8hSRBxR+lkx0on1UI8h/1pIxLF2AtCMuBwkQPQV2EuH0wRx5zZ9WwttSjtBk4WAewt0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991105; c=relaxed/simple;
-	bh=TnCMbPSB/+2u6D9lBE9GlsBRztQQlxhTLUCaOqTfX5w=;
+	s=arc-20240116; t=1711990380; c=relaxed/simple;
+	bh=3F+klxm6IHghZwYHtxoHJxgUwMzFeBAY/pjfusVvntM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6hFB7EHp0GOYTrQZ+u9LTjwxR0mxdW5ZVxoHTpgqflDLrCVBiDAFXZ7ABXi+iLcbX3uj8qZuaDM9Pu1VJuHOVaz/7tglo8pU2x+uQSdKvhhITRRRjvB5u3VVjxWTgnuIp6sTeBPbuk2OsjjI+kYoTfXAC15SMYwARWgcqrUtYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLOJeJv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B88C433F1;
-	Mon,  1 Apr 2024 17:05:04 +0000 (UTC)
+	 MIME-Version; b=c2Yi3fQi3ZvTQHthFkkLgrPuq1sQGXtJ56Ox9aP8G084TE2ny+x/w+XgrfmaOAUAiOEMsFed3EwTchEYi0r1gYLx/lFr8QJ59XZbhakyYV7nP+s5LEfzMLaZ+wa/z9zWz/6RW4fwEMdwpWtiu0xU0/5Nf2pGzRxUdQRtErF2++k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkxSvI0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B64DC433C7;
+	Mon,  1 Apr 2024 16:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991105;
-	bh=TnCMbPSB/+2u6D9lBE9GlsBRztQQlxhTLUCaOqTfX5w=;
+	s=korg; t=1711990380;
+	bh=3F+klxm6IHghZwYHtxoHJxgUwMzFeBAY/pjfusVvntM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLOJeJv3s8kQHZZIBK6teySOoqKG+lRplsbhz5zxogu+dHy19bvlN47QufOuazxn6
-	 5eELJyxBtK6Hwq90SIfWapB5ta04b7WZKQ+iQ6zXqBkxvufBn/rFLuV556uf14vS9S
-	 a2RD6lCLemZoVvGo1xiUeJfCtMmKCBgiViTKpExI=
+	b=HkxSvI0r5DnKgyav4F5AMlNg/tfEvtjpprKQldug1nYAKWR+8uvbjxplBqbVqRxBF
+	 cq8f/cZZekxl7xLdahE6TXzfc5cW6a63HCx+wxnHxa4oDvz/N5pL/DCmRA5frm6JJp
+	 1zYlprQLQs96nfhiFkd6ltO+r2mI0Vbrznf5ZuvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Pitre <nico@fluxnic.net>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 165/272] vt: fix unicode buffer corruption when deleting characters
+	Vitaly Chikunov <vt@altlinux.org>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Yang Shi <shy828301@gmail.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 306/396] selftests/mm: Fix build with _FORTIFY_SOURCE
 Date: Mon,  1 Apr 2024 17:45:55 +0200
-Message-ID: <20240401152535.894234962@linuxfoundation.org>
+Message-ID: <20240401152557.038730673@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +69,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Pitre <nico@fluxnic.net>
+From: Vitaly Chikunov <vt@altlinux.org>
 
-commit 1581dafaf0d34bc9c428a794a22110d7046d186d upstream.
+[ Upstream commit 8b65ef5ad4862904e476a8f3d4e4418c950ddb90 ]
 
-This is the same issue that was fixed for the VGA text buffer in commit
-39cdb68c64d8 ("vt: fix memory overlapping when deleting chars in the
-buffer"). The cure is also the same i.e. replace memcpy() with memmove()
-due to the overlaping buffers.
+Add missing flags argument to open(2) call with O_CREAT.
 
-Signed-off-by: Nicolas Pitre <nico@fluxnic.net>
-Fixes: 81732c3b2fed ("tty vt: Fix line garbage in virtual console on command line edition")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/sn184on2-3p0q-0qrq-0218-895349s4753o@syhkavp.arg
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Some tests fail to compile if _FORTIFY_SOURCE is defined (to any valid
+value) (together with -O), resulting in similar error messages such as:
+
+  In file included from /usr/include/fcntl.h:342,
+                   from gup_test.c:1:
+  In function 'open',
+      inlined from 'main' at gup_test.c:206:10:
+  /usr/include/bits/fcntl2.h:50:11: error: call to '__open_missing_mode' declared with attribute error: open with O_CREAT or O_TMPFILE in second argument needs 3 arguments
+     50 |           __open_missing_mode ();
+        |           ^~~~~~~~~~~~~~~~~~~~~~
+
+_FORTIFY_SOURCE is enabled by default in some distributions, so the
+tests are not built by default and are skipped.
+
+open(2) man-page warns about missing flags argument: "if it is not
+supplied, some arbitrary bytes from the stack will be applied as the
+file mode."
+
+Link: https://lkml.kernel.org/r/20240318023445.3192922-1-vt@altlinux.org
+Fixes: aeb85ed4f41a ("tools/testing/selftests/vm/gup_benchmark.c: allow user specified file")
+Fixes: fbe37501b252 ("mm: huge_memory: debugfs for file-backed THP split")
+Fixes: c942f5bd17b3 ("selftests: soft-dirty: add test for mprotect")
+Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mm/gup_test.c             | 2 +-
+ tools/testing/selftests/mm/soft-dirty.c           | 2 +-
+ tools/testing/selftests/mm/split_huge_page_test.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -398,7 +398,7 @@ static void vc_uniscr_delete(struct vc_d
- 		char32_t *ln = uniscr->lines[vc->state.y];
- 		unsigned int x = vc->state.x, cols = vc->vc_cols;
+diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
+index cbe99594d319b..18a49c70d4c63 100644
+--- a/tools/testing/selftests/mm/gup_test.c
++++ b/tools/testing/selftests/mm/gup_test.c
+@@ -203,7 +203,7 @@ int main(int argc, char **argv)
+ 	ksft_print_header();
+ 	ksft_set_plan(nthreads);
  
--		memcpy(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
-+		memmove(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
- 		memset32(&ln[cols - nr], ' ', nr);
+-	filed = open(file, O_RDWR|O_CREAT);
++	filed = open(file, O_RDWR|O_CREAT, 0664);
+ 	if (filed < 0)
+ 		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
+ 
+diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+index cc5f144430d4d..7dbfa53d93a05 100644
+--- a/tools/testing/selftests/mm/soft-dirty.c
++++ b/tools/testing/selftests/mm/soft-dirty.c
+@@ -137,7 +137,7 @@ static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
+ 		if (!map)
+ 			ksft_exit_fail_msg("anon mmap failed\n");
+ 	} else {
+-		test_fd = open(fname, O_RDWR | O_CREAT);
++		test_fd = open(fname, O_RDWR | O_CREAT, 0664);
+ 		if (test_fd < 0) {
+ 			ksft_test_result_skip("Test %s open() file failed\n", __func__);
+ 			return;
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 0e74635c8c3d9..dff3be23488b4 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -253,7 +253,7 @@ void split_file_backed_thp(void)
+ 		goto cleanup;
  	}
- }
+ 
+-	fd = open(testfile, O_CREAT|O_WRONLY);
++	fd = open(testfile, O_CREAT|O_WRONLY, 0664);
+ 	if (fd == -1) {
+ 		perror("Cannot open testing file\n");
+ 		goto cleanup;
+-- 
+2.43.0
+
 
 
 
