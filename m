@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC8B89411B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B4A893F5C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D47591F2277D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B47CB2046E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C967433DA;
-	Mon,  1 Apr 2024 16:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF7847A79;
+	Mon,  1 Apr 2024 16:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zABx2aj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPbX6KuJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8EC1E525;
-	Mon,  1 Apr 2024 16:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674DB47A76;
+	Mon,  1 Apr 2024 16:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989468; cv=none; b=BNB1cgO9AK3Pto7W2LES19BzL9KZCBxciKFom8+CYW2HLgCBdnixdRJwzfwZwqp1czC4gLh61xgHK9vbN42P7znhaMtPVGEsdXrgDJ05NVBFKal1Nu4qYsghAWGzHY0vH8pWE1sDTXF7YL/XyKk3NSqEz93q1RHyzkKZrCHJP0g=
+	t=1711988125; cv=none; b=Hq7+IjyjPp5cqFwGdZGejMhEtSxucJCdL6cJpntHeKJieRUk9zPQuB1mlBuZSlXlP7OkBNEBF7zL03SDL0VTJw/12g0jLFNWtMtLTj4b6lPudxXr5Bs5EMVzuO/VN55VjyZV+fP3/1yP8TzH5hbhH5nhmqnnPB8L/0P1klQ4gug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989468; c=relaxed/simple;
-	bh=JDSWNQ2FvrFcrp+jfq3d8KPj5qg8zPGUjYrczqUrs+4=;
+	s=arc-20240116; t=1711988125; c=relaxed/simple;
+	bh=CSlI9hoty/O2jVCnQNOSrmxmhuQb2GvKMdiapVhLjjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ujMfV6lFUy41NELvIUrdeJ3BpyVaLwv9kDHzAa5mE/10WCSpTm0vGhjaCEGm/oM/IAAzvBs+EhiCyhlWZrm0ZHJgGPue/euwDXHNllWxFzxiYroAxtMurMB59xHQnQ+bD1XDrrN2QsDZpHd6u0GNArSz6r5nou/uzvfzCdmyFEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zABx2aj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD92C433F1;
-	Mon,  1 Apr 2024 16:37:47 +0000 (UTC)
+	 MIME-Version; b=OB1ZLywATlS6k41PRuO96+vz08nfgq9ahsS4b1JKVROsZ8i+bS9noi2nhE9NRs+imharfRVxNamxZ0gj7bpnbDp8Wev6Duy7mmWobzPw1IuWi++y8GYmhS9kSksXrCpnJ1nO7e4rrO/VGJFHcSCFEECTbsCZ2ZfjGPR0sg+6/Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPbX6KuJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85486C433F1;
+	Mon,  1 Apr 2024 16:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989468;
-	bh=JDSWNQ2FvrFcrp+jfq3d8KPj5qg8zPGUjYrczqUrs+4=;
+	s=korg; t=1711988125;
+	bh=CSlI9hoty/O2jVCnQNOSrmxmhuQb2GvKMdiapVhLjjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zABx2aj058QJECC9W0Fo+HZXOLW1hAYEczvKVZc6ohIpbe1qDXL6uvOosRKqSRt7Z
-	 Z/xH3bKFM7iQesj9bv+GNcXzksgJzP1++VevrkQ02Emu0GO4PsQL6hXCwgC3jEapMB
-	 i0DJGZOnTfbaakn+xmddhY2GEUbLC0681qfLyu5I=
+	b=DPbX6KuJnvHLM6R/XO320vCasyzsWAOR1pxohsvZ0rwijT49twdCUiwwtVkvGTTgT
+	 ZZgJyCa0EMRHqKx9+i0jDXhl9DZsj0kH3Hd+gg1leaWKWyk+Ll641XfhogvpiU1F/Y
+	 c6AEGf/M2W+Vj5FAYHg/7o/b8LlFsKZZzlRiJv84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Roger Quadros <rogerq@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/396] thermal/intel: Fix intel_tcc_get_temp() to support negative CPU temperature
+Subject: [PATCH 6.7 091/432] usb: dwc3-am62: Disable wakeup at remove
 Date: Mon,  1 Apr 2024 17:41:18 +0200
-Message-ID: <20240401152548.773913259@linuxfoundation.org>
+Message-ID: <20240401152555.839004017@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 7251b9e8a007ddd834aa81f8c7ea338884629fec ]
+[ Upstream commit 4ead695e6b3cac06543d7bc7241ab75aee4ea6a6 ]
 
-CPU temperature can be negative in some cases. Thus the negative CPU
-temperature should not be considered as a failure.
+Disable wakeup at remove.
+Fixes the below warnings on module unload and reload.
 
-Fix intel_tcc_get_temp() and its users to support negative CPU
-temperature.
+> dwc3-am62 f900000.dwc3-usb: couldn't enable device as a wakeup source: -17
+> dwc3-am62 f910000.dwc3-usb: couldn't enable device as a wakeup source: -17
 
-Fixes: a3c1f066e1c5 ("thermal/intel: Introduce Intel TCC library")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Cc: 6.3+ <stable@vger.kernel.org> # 6.3+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 4e3972b589da ("usb: dwc3-am62: Enable as a wakeup source by default")
+Cc: stable@vger.kernel.org # v6.4+
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20240227-for-v6-9-am62-usb-errata-3-0-v4-2-0ada8ddb0767@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/int340x_thermal/processor_thermal_device.c |  8 ++++----
- drivers/thermal/intel/intel_tcc.c                    | 12 ++++++------
- drivers/thermal/intel/x86_pkg_temp_thermal.c         |  8 ++++----
- include/linux/intel_tcc.h                            |  2 +-
- 4 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/usb/dwc3/dwc3-am62.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-index 3ca0a2f5937f2..cdf88cadfc4f1 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-@@ -113,14 +113,14 @@ static int proc_thermal_get_zone_temp(struct thermal_zone_device *zone,
- 					 int *temp)
- {
- 	int cpu;
--	int curr_temp;
-+	int curr_temp, ret;
+diff --git a/drivers/usb/dwc3/dwc3-am62.c b/drivers/usb/dwc3/dwc3-am62.c
+index f85603b7f7c5e..ea6e29091c0c9 100644
+--- a/drivers/usb/dwc3/dwc3-am62.c
++++ b/drivers/usb/dwc3/dwc3-am62.c
+@@ -274,6 +274,7 @@ static void dwc3_ti_remove(struct platform_device *pdev)
+ 	u32 reg;
  
- 	*temp = 0;
+ 	pm_runtime_get_sync(dev);
++	device_init_wakeup(dev, false);
+ 	of_platform_depopulate(dev);
  
- 	for_each_online_cpu(cpu) {
--		curr_temp = intel_tcc_get_temp(cpu, false);
--		if (curr_temp < 0)
--			return curr_temp;
-+		ret = intel_tcc_get_temp(cpu, &curr_temp, false);
-+		if (ret < 0)
-+			return ret;
- 		if (!*temp || curr_temp > *temp)
- 			*temp = curr_temp;
- 	}
-diff --git a/drivers/thermal/intel/intel_tcc.c b/drivers/thermal/intel/intel_tcc.c
-index 2e5c741c41ca0..5e8b7f34b3951 100644
---- a/drivers/thermal/intel/intel_tcc.c
-+++ b/drivers/thermal/intel/intel_tcc.c
-@@ -103,18 +103,19 @@ EXPORT_SYMBOL_NS_GPL(intel_tcc_set_offset, INTEL_TCC);
- /**
-  * intel_tcc_get_temp() - returns the current temperature
-  * @cpu: cpu that the MSR should be run on, nagative value means any cpu.
-+ * @temp: pointer to the memory for saving cpu temperature.
-  * @pkg: true: Package Thermal Sensor. false: Core Thermal Sensor.
-  *
-  * Get the current temperature returned by the CPU core/package level
-  * thermal sensor, in degrees C.
-  *
-- * Return: Temperature in degrees C on success, negative error code otherwise.
-+ * Return: 0 on success, negative error code otherwise.
-  */
--int intel_tcc_get_temp(int cpu, bool pkg)
-+int intel_tcc_get_temp(int cpu, int *temp, bool pkg)
- {
- 	u32 low, high;
- 	u32 msr = pkg ? MSR_IA32_PACKAGE_THERM_STATUS : MSR_IA32_THERM_STATUS;
--	int tjmax, temp, err;
-+	int tjmax, err;
- 
- 	tjmax = intel_tcc_get_tjmax(cpu);
- 	if (tjmax < 0)
-@@ -131,9 +132,8 @@ int intel_tcc_get_temp(int cpu, bool pkg)
- 	if (!(low & BIT(31)))
- 		return -ENODATA;
- 
--	temp = tjmax - ((low >> 16) & 0x7f);
-+	*temp = tjmax - ((low >> 16) & 0x7f);
- 
--	/* Do not allow negative CPU temperature */
--	return temp >= 0 ? temp : -ENODATA;
-+	return 0;
- }
- EXPORT_SYMBOL_NS_GPL(intel_tcc_get_temp, INTEL_TCC);
-diff --git a/drivers/thermal/intel/x86_pkg_temp_thermal.c b/drivers/thermal/intel/x86_pkg_temp_thermal.c
-index 11a7f8108bbbf..61c3d450ee605 100644
---- a/drivers/thermal/intel/x86_pkg_temp_thermal.c
-+++ b/drivers/thermal/intel/x86_pkg_temp_thermal.c
-@@ -108,11 +108,11 @@ static struct zone_device *pkg_temp_thermal_get_dev(unsigned int cpu)
- static int sys_get_curr_temp(struct thermal_zone_device *tzd, int *temp)
- {
- 	struct zone_device *zonedev = thermal_zone_device_priv(tzd);
--	int val;
-+	int val, ret;
- 
--	val = intel_tcc_get_temp(zonedev->cpu, true);
--	if (val < 0)
--		return val;
-+	ret = intel_tcc_get_temp(zonedev->cpu, &val, true);
-+	if (ret < 0)
-+		return ret;
- 
- 	*temp = val * 1000;
- 	pr_debug("sys_get_curr_temp %d\n", *temp);
-diff --git a/include/linux/intel_tcc.h b/include/linux/intel_tcc.h
-index f422612c28d6b..8ff8eabb4a987 100644
---- a/include/linux/intel_tcc.h
-+++ b/include/linux/intel_tcc.h
-@@ -13,6 +13,6 @@
- int intel_tcc_get_tjmax(int cpu);
- int intel_tcc_get_offset(int cpu);
- int intel_tcc_set_offset(int cpu, int offset);
--int intel_tcc_get_temp(int cpu, bool pkg);
-+int intel_tcc_get_temp(int cpu, int *temp, bool pkg);
- 
- #endif /* __INTEL_TCC_H__ */
+ 	/* Clear mode valid bit */
 -- 
 2.43.0
 
