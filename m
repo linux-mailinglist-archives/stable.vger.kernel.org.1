@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-34783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA298940D4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F05E6894299
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F4157B21FF7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:34:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB6A283675
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A006A481B3;
-	Mon,  1 Apr 2024 16:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464D84C61B;
+	Mon,  1 Apr 2024 16:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bu/+aYxo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUQj3TKn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0BB41C89;
-	Mon,  1 Apr 2024 16:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F008E4C60C;
+	Mon,  1 Apr 2024 16:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989282; cv=none; b=bVbWBrc6YNtwAOjAusXjeXflhn4BoUG59B93sQYOTMEFUnBwjUQQXpYyV4dBvtpNG9Ot9bhUBRcKcfusXtbvhLSnw3ceGCX0YAr8dXbtq4mQhCrcuzWxQxop66LeNcxnBtcPPXQyohoIBy3gnOuOTxaFt0IInuNQdLXVyuIV/Ts=
+	t=1711990443; cv=none; b=RubwpWXT94RkqJOtg2XnG/MPLqU1xu7M0XWYqITle2sIOdPU4Pdf95RRE4LTsJGJ32/nkXeyzNOC5w7Wlcs/UjyPlI17BtDM9kFRFCVO8s98MAZOqulZS57GkxVBJYkpavhK//unYAh4b1IogMAPx34VA7Crs6IISATvYGfmapo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989282; c=relaxed/simple;
-	bh=ZZdV9Uxg7DBTLYPAM4ycDxpeibIJ9A12eD8iRkAZx6I=;
+	s=arc-20240116; t=1711990443; c=relaxed/simple;
+	bh=DFh01i2s/ozI67DgPhoDj0W4jyAaveeqyAGehYibEgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klrGqf1XWea6i3a6w5g5xSKHvNiVLZkffmNYlsNjRC+ZfqVIY18meEIaNAYq8NV0aipVrHeuzJfjMSblYcJMCFd/LbGeim5TBfw2c7+uMcQXtD6+Ucck98qTjB42tW5JSG+MdDXoLQKJmSeB0AS8yaD8x525ZxYXIKSigtyoVcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bu/+aYxo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1148C433F1;
-	Mon,  1 Apr 2024 16:34:41 +0000 (UTC)
+	 MIME-Version; b=YnFliedBhmH2CkXqBxyXYCkitugAL1h062shfQgWbb8OiPGMRHEoBd2UjwYiBexi/zEZ6zfGo+MG4sQMJuIfOSJ7okhwwCPwZvvy5hK+UBAu6QObNXi91mbaubGMB024+SMl4P2oUrEZtf0MLVE4Pk4YNU6ZD3nIGMUO6/5BySo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUQj3TKn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73205C433C7;
+	Mon,  1 Apr 2024 16:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989282;
-	bh=ZZdV9Uxg7DBTLYPAM4ycDxpeibIJ9A12eD8iRkAZx6I=;
+	s=korg; t=1711990442;
+	bh=DFh01i2s/ozI67DgPhoDj0W4jyAaveeqyAGehYibEgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bu/+aYxo5nanDka+wy6AO9FHF9zOXDJCHmVhoptBvFEr+55sOwEaPkvbS43f6+/rG
-	 Lh7p5pKgwxIim+Yf1Y6PULli7N7CNB7xD7tZLBZL8rrf1kdsNBPjtRsPJZ23EYtOum
-	 z6yCB0U8a8HktD7ophkF4QGha7K7QwKbR0TApxu8=
+	b=WUQj3TKnVufyVldCPrkEy27NRGJqT9OQAnqYsgeOmgPXI/kqUs3CnKW/hAj1BVhNh
+	 YFhhG9F77pBONknYOm0JCSfGu+vONdqRZi1L+JI0WA2ZOdinr/UeMl0jQ2BTTlA1R5
+	 6uaRHNfjIPWCkY7WCljYGKrciEZ1DNG/+4z/7+Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.7 416/432] scsi: qla2xxx: NVME|FCP prefer flag not being honored
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Ilya Bakoulin <ilya.bakoulin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 354/396] drm/amd/display: Clear OPTC mem select on disable
 Date: Mon,  1 Apr 2024 17:46:43 +0200
-Message-ID: <20240401152605.816931788@linuxfoundation.org>
+Message-ID: <20240401152558.478316342@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +66,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Ilya Bakoulin <ilya.bakoulin@amd.com>
 
-commit 69aecdd410106dc3a8f543a4f7ec6379b995b8d0 upstream.
+[ Upstream commit b4e05bb1dec53fe28c3c88425aded824498666e5 ]
 
-Changing of [FCP|NVME] prefer flag in flash has no effect on driver. For
-device that supports both FCP + NVMe over the same connection, driver
-continues to connect to this device using the previous successful login
-mode.
+[Why]
+Not clearing the memory select bits prior to OPTC disable can cause DSC
+corruption issues when attempting to reuse a memory instance for another
+OPTC that enables ODM.
 
-On completion of flash update, adapter will be reset. Driver will
-reset the prefer flag based on setting from flash.
+[How]
+Clear the memory select bits prior to disabling an OPTC.
 
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -7501,6 +7501,7 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
- 	struct scsi_qla_host *vp, *tvp;
- 	struct req_que *req = ha->req_q_map[0];
- 	unsigned long flags;
-+	fc_port_t *fcport;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+index 93592e8051fb7..e817fa4efeee5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+@@ -149,6 +149,9 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
+ 			OPTC_SEG3_SRC_SEL, 0xf,
+ 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
  
- 	if (vha->flags.online) {
- 		qla2x00_abort_isp_cleanup(vha);
-@@ -7569,6 +7570,15 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
- 			       "ISP Abort - ISP reg disconnect post nvmram config, exiting.\n");
- 			return status;
- 		}
++	REG_UPDATE(OPTC_MEMORY_CONFIG,
++			OPTC_MEM_SEL, 0);
 +
-+		/* User may have updated [fcp|nvme] prefer in flash */
-+		list_for_each_entry(fcport, &vha->vp_fcports, list) {
-+			if (NVME_PRIORITY(ha, fcport))
-+				fcport->do_prli_nvme = 1;
-+			else
-+				fcport->do_prli_nvme = 0;
-+		}
-+
- 		if (!qla2x00_restart_isp(vha)) {
- 			clear_bit(RESET_MARKER_NEEDED, &vha->dpc_flags);
- 
-@@ -7639,6 +7649,14 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
- 				atomic_inc(&vp->vref_count);
- 				spin_unlock_irqrestore(&ha->vport_slock, flags);
- 
-+				/* User may have updated [fcp|nvme] prefer in flash */
-+				list_for_each_entry(fcport, &vp->vp_fcports, list) {
-+					if (NVME_PRIORITY(ha, fcport))
-+						fcport->do_prli_nvme = 1;
-+					else
-+						fcport->do_prli_nvme = 0;
-+				}
-+
- 				qla2x00_vp_abort_isp(vp);
- 
- 				spin_lock_irqsave(&ha->vport_slock, flags);
+ 	/* disable otg request until end of the first line
+ 	 * in the vertical blank region
+ 	 */
+-- 
+2.43.0
+
 
 
 
