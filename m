@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-34541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE74893FC6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEED7894168
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B55E01F2203C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A6FB282F5E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB51A4778E;
-	Mon,  1 Apr 2024 16:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A44482DF;
+	Mon,  1 Apr 2024 16:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywOrotEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/ozkISZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5FE3D961;
-	Mon,  1 Apr 2024 16:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCD747A6B;
+	Mon,  1 Apr 2024 16:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988468; cv=none; b=p6/qW8unT6mlBhT6XIGrENA17UM4vP7Vf8OZtqVqBQx5RcYmJB7StULDKlDdB+LexYQy8Vdeui69T5bfR8jxmX2ws6Nu0LCyTOpZ4xu03BFegdpqmtZLTkH7hYo7XIi8idLInvFc5ENGSjDDeq0cwrjJAon4FOx0p/2qBWzvGy8=
+	t=1711989709; cv=none; b=aV2daIIxHDrQZXneUiTJQnCGemdAodvAuprZl41PetcS8pzteid4A4U9WRZMhO6j6s0yRF0kNB620SBpP1ufkmQ3NNL84kAtRImUkTSx2opDKD59dkDYsLnYH41a8BNba60muRWp1fL5nERCjlwOutr+7BL2wZWRWhyNilvpFZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988468; c=relaxed/simple;
-	bh=xq92jJWb8st25qJ1haVWZZSm61JrJk4n2qUDsu3MRZs=;
+	s=arc-20240116; t=1711989709; c=relaxed/simple;
+	bh=7Dk+a5JHMW8zgo/n5uVBAZvIYD28SN/PCoImZgRDKvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8JY3mFLqO5dDivw0fTzGJIAmNfnXmi4+BP0dcTRvhCjlYICfvXE/XEtRvH9TKUUvwmoyEXcZTDHFrzcbm85Oo6zYTDkFpMv235kxCMUpDNiXLOCAe2U2s9xHYn+0RT70lPOr5RBuMzd5MQog3+I0lJ8kf0VWkd0xACmavgBYWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywOrotEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FE6C433C7;
-	Mon,  1 Apr 2024 16:21:07 +0000 (UTC)
+	 MIME-Version; b=LcouGK8PjJ9RTWA9B/qTPci2Fs45CKNREi2fOGT1Z7xIoZCaW3yuacfdBPhBQHtnv0Y38pd8MF5rivlRc4bJGpeldS9wdsiMXkKJ9Lmz6SBCJGdWal795zAmBmgrYMbovDlLYGt2EkTJbr4eHHScf8cJqjTL+pkf7cKSAzjht2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/ozkISZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02A9C43390;
+	Mon,  1 Apr 2024 16:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988468;
-	bh=xq92jJWb8st25qJ1haVWZZSm61JrJk4n2qUDsu3MRZs=;
+	s=korg; t=1711989709;
+	bh=7Dk+a5JHMW8zgo/n5uVBAZvIYD28SN/PCoImZgRDKvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywOrotEwDesyFIPEHFsU/mXWfQmo6ikOpiqbb4YG9G6DDyVxlDns6UovO1vDbehy2
-	 jxHCI0ceaccwTAtWnZ/mQXVIxnFtK8c6kXOgmi/OFYvxNrgetVgmAQSMQKxWHs59El
-	 s/pgeG6OSHh6HASdnBm98fy8nDZHs1nK4T/MkMq8=
+	b=j/ozkISZXh6yJzO2zzulShSgzwmk7Gfmz4JIE4zPEdVQ8TkbFDGkKXU7jx35wmMF+
+	 nz1+FMHc1lT2lQQnYWcO1ZEuKnFH1444BFPcn/08dJNyKDiEPUaWzcPN6n8LUpkB9r
+	 2OHW7r0IXrnQDDCGOXl3q0O3Fz2aWD8VLrST7e70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Brown <neilb@suse.de>,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 192/432] NFSD: Fix nfsd_clid_class use of __string_len() macro
+Subject: [PATCH 6.6 130/396] tpm,tpm_tis: Avoid warning splat at shutdown
 Date: Mon,  1 Apr 2024 17:42:59 +0200
-Message-ID: <20240401152558.864736045@linuxfoundation.org>
+Message-ID: <20240401152551.793422290@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,59 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit 9388a2aa453321bcf1ad2603959debea9e6ab6d4 ]
+[ Upstream commit b7ab4bbd0188f3985b821fa09456b11105a8dedf ]
 
-I'm working on restructuring the __string* macros so that it doesn't need
-to recalculate the string twice. That is, it will save it off when
-processing __string() and the __assign_str() will not need to do the work
-again as it currently does.
+If interrupts are not activated the work struct 'free_irq_work' is not
+initialized. This results in a warning splat at module shutdown.
 
-Currently __string_len(item, src, len) doesn't actually use "src", but my
-changes will require src to be correct as that is where the __assign_str()
-will get its value from.
+Fix this by always initializing the work regardless of whether interrupts
+are activated or not.
 
-The event class nfsd_clid_class has:
-
-  __string_len(name, name, clp->cl_name.len)
-
-But the second "name" does not exist and causes my changes to fail to
-build. That second parameter should be: clp->cl_name.data.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240222122828.3d8d213c@gandalf.local.home
-
-Cc: Neil Brown <neilb@suse.de>
-Cc: Olga Kornievskaia <kolga@netapp.com>
-Cc: Dai Ngo <Dai.Ngo@oracle.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: stable@vger.kernel.org
-Fixes: d27b74a8675ca ("NFSD: Use new __string_len C macros for nfsd_clid_class")
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+cc: stable@vger.kernel.org
+Fixes: 481c2d14627d ("tpm,tpm_tis: Disable interrupts after 1000 unhandled IRQs")
+Reported-by: Jarkko Sakkinen <jarkko@kernel.org>
+Closes: https://lore.kernel.org/all/CX32RFOMJUQ0.3R4YCL9MDCB96@kernel.org/
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/tpm/tpm_tis_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index fbc0ccb404241..4c7a296c4189d 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -843,7 +843,7 @@ DECLARE_EVENT_CLASS(nfsd_clid_class,
- 		__array(unsigned char, addr, sizeof(struct sockaddr_in6))
- 		__field(unsigned long, flavor)
- 		__array(unsigned char, verifier, NFS4_VERIFIER_SIZE)
--		__string_len(name, name, clp->cl_name.len)
-+		__string_len(name, clp->cl_name.data, clp->cl_name.len)
- 	),
- 	TP_fast_assign(
- 		__entry->cl_boot = clp->cl_clientid.cl_boot;
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 1b350412d8a6b..64c875657687d 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -919,8 +919,6 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+ 	int rc;
+ 	u32 int_status;
+ 
+-	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+-
+ 	rc = devm_request_threaded_irq(chip->dev.parent, irq, NULL,
+ 				       tis_int_handler, IRQF_ONESHOT | flags,
+ 				       dev_name(&chip->dev), chip);
+@@ -1132,6 +1130,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+ 	priv->phy_ops = phy_ops;
+ 	priv->locality_count = 0;
+ 	mutex_init(&priv->locality_count_mutex);
++	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+ 
+ 	dev_set_drvdata(&chip->dev, priv);
+ 
 -- 
 2.43.0
 
