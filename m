@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAB1893EB2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 828BE89420A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E68F1F21DCC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A66401C21826
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D552B4596E;
-	Mon,  1 Apr 2024 16:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C133A481D7;
+	Mon,  1 Apr 2024 16:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1fxRmYP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8zWU/2c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958951CA8F;
-	Mon,  1 Apr 2024 16:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B10F8F5C;
+	Mon,  1 Apr 2024 16:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987616; cv=none; b=h4EfEAOn2yD3lxjk5UOLdc5Fi35whGaZrRfgj/RWzVbR3FINIzGLm94197W464dB0hHPJ7f2+2Opi9mSy8S/ggvZ5x+fAZDUIzYy6LapfnuGQ4MRLRw5cVpWnFWp/c0Ibuw2yKcTDCkLWlUTZq9asqJ/Rb+Az3FddDV1z7CUrN8=
+	t=1711990136; cv=none; b=Fk1lJuR4ZdTDxA8YijJSlR8G4qimDcaa1/UG9oQeAgSvhRbj2NTOX3J23hmGIkPN3HJ9unJIjfHkIas5OQ7CoMzQ6bkmeFfiymeuu5+c8a9Y0Ba5DC0QtOqCuOuowPhXE75A0S4wm2wnknFEwIxbHyd+p9tAx4SpWPnm5PZremo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987616; c=relaxed/simple;
-	bh=EPe03qv3NFEoSBCeR769xWLm2Hoi5dX/NdnsfSgzQRw=;
+	s=arc-20240116; t=1711990136; c=relaxed/simple;
+	bh=Cdcgk/h/HpkAfUFFiA97EH2rXNRCFE7vdl3rQiST2vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obFGh+04b/iHiRbZ3yB0V9zkwgC8HCqzj/qTW+F/i5FWgAQu/ljfxTTmAx03tQeHwFo50EiwEF4/8HhFRtThO7yPOzFnKMyvpQ8TY91HIdXTcAUe+3Ch93t8bqBcxGtK+UpxBIf39Xc0Luybr4Dd0Xz7wquxouBZwN62smwmMbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1fxRmYP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15E3C433C7;
-	Mon,  1 Apr 2024 16:06:55 +0000 (UTC)
+	 MIME-Version; b=GBT112fS30mAiSV+lOTIS8d00GI77UckVY6YXoFwfRHwCJRvghdQNjRoJ3R3p1z125RIfkIAbRMN7LgntzLyGnOE2Mkuowv+6Gv12JDBIZ68WIPu02xtAihY5pwc5Ez8Su5hPsRjadjoCjhJI8rqob0qyFfA6+mPyjvV5xnM/aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8zWU/2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE88FC433C7;
+	Mon,  1 Apr 2024 16:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987616;
-	bh=EPe03qv3NFEoSBCeR769xWLm2Hoi5dX/NdnsfSgzQRw=;
+	s=korg; t=1711990136;
+	bh=Cdcgk/h/HpkAfUFFiA97EH2rXNRCFE7vdl3rQiST2vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1fxRmYP9du9LnjqZdyqPNpxI68C5zXaBK7yHeB/PMg9U3m583GIGyZaf6f+sWxnR
-	 wqWtvZBrNJUo5qLNa4atvEPY0+hFQx+zq2gbuVsKoi02pAFC4vbpJX6E1fNOv7i2TJ
-	 RObkW0Bbf6pVWe/Fsbm0vD7jnhSWJ7fWNIdqYYho=
+	b=D8zWU/2cX7BF1pySmkWZdY7a4m1gyPhr/8/S7ykf37mJvWW61cz6fh8BpkHt0JFJI
+	 TKR0R2a3+yZJekAILv6gZDn2lqGlgSlxBJ9wfXoEhSoZ4RDRzP3wzQ9RoPPZlAxVwF
+	 fZyQlPPD65bQ1+XyFQ1mav35lfG/1hoittfHRlWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ezra Buehler <ezra.buehler@husqvarnagroup.com>,
-	Martin Kurbanov <mmkurbanov@salutedevices.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 6.8 341/399] mtd: spinand: Add support for 5-byte IDs
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 258/396] xfs: pass the xfs_defer_pending object to iop_recover
 Date: Mon,  1 Apr 2024 17:45:07 +0200
-Message-ID: <20240401152559.352734404@linuxfoundation.org>
+Message-ID: <20240401152555.600298115@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 34a956739d295de6010cdaafeed698ccbba87ea4 upstream.
+commit a050acdfa8003a44eae4558fddafc7afb1aef458 upstream.
 
-E.g. ESMT chips will return an identification code with a length of 5
-bytes. In order to prevent ambiguity, flash chips would actually need to
-return IDs that are up to 17 or more bytes long due to JEDEC's
-continuation scheme. I understand that if a manufacturer ID is located
-in bank N of JEDEC's database (there are currently 16 banks), N - 1
-continuation codes (7Fh) need to be added to the identification code
-(comprising of manufacturer ID and device ID). However, most flash chip
-manufacturers don't seem to implement this (correctly).
+Now that log intent item recovery recreates the xfs_defer_pending state,
+we should pass that into the ->iop_recover routines so that the intent
+item can finish the recreation work.
 
-Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-Reviewed-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-Tested-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240125200108.24374-2-ezra@easyb.ch
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mtd/spinand.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_attr_item.c     |    3 ++-
+ fs/xfs/xfs_bmap_item.c     |    3 ++-
+ fs/xfs/xfs_extfree_item.c  |    3 ++-
+ fs/xfs/xfs_log_recover.c   |    2 +-
+ fs/xfs/xfs_refcount_item.c |    3 ++-
+ fs/xfs/xfs_rmap_item.c     |    3 ++-
+ fs/xfs/xfs_trans.h         |    4 +++-
+ 7 files changed, 14 insertions(+), 7 deletions(-)
 
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -169,7 +169,7 @@
- struct spinand_op;
- struct spinand_device;
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -545,9 +545,10 @@ xfs_attri_validate(
+  */
+ STATIC int
+ xfs_attri_item_recover(
+-	struct xfs_log_item		*lip,
++	struct xfs_defer_pending	*dfp,
+ 	struct list_head		*capture_list)
+ {
++	struct xfs_log_item		*lip = dfp->dfp_intent;
+ 	struct xfs_attri_log_item	*attrip = ATTRI_ITEM(lip);
+ 	struct xfs_attr_intent		*attr;
+ 	struct xfs_mount		*mp = lip->li_log->l_mp;
+--- a/fs/xfs/xfs_bmap_item.c
++++ b/fs/xfs/xfs_bmap_item.c
+@@ -486,11 +486,12 @@ xfs_bui_validate(
+  */
+ STATIC int
+ xfs_bui_item_recover(
+-	struct xfs_log_item		*lip,
++	struct xfs_defer_pending	*dfp,
+ 	struct list_head		*capture_list)
+ {
+ 	struct xfs_bmap_intent		fake = { };
+ 	struct xfs_trans_res		resv;
++	struct xfs_log_item		*lip = dfp->dfp_intent;
+ 	struct xfs_bui_log_item		*buip = BUI_ITEM(lip);
+ 	struct xfs_trans		*tp;
+ 	struct xfs_inode		*ip = NULL;
+--- a/fs/xfs/xfs_extfree_item.c
++++ b/fs/xfs/xfs_extfree_item.c
+@@ -657,10 +657,11 @@ xfs_efi_validate_ext(
+  */
+ STATIC int
+ xfs_efi_item_recover(
+-	struct xfs_log_item		*lip,
++	struct xfs_defer_pending	*dfp,
+ 	struct list_head		*capture_list)
+ {
+ 	struct xfs_trans_res		resv;
++	struct xfs_log_item		*lip = dfp->dfp_intent;
+ 	struct xfs_efi_log_item		*efip = EFI_ITEM(lip);
+ 	struct xfs_mount		*mp = lip->li_log->l_mp;
+ 	struct xfs_efd_log_item		*efdp;
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2583,7 +2583,7 @@ xlog_recover_process_intents(
+ 		 * The recovery function can free the log item, so we must not
+ 		 * access lip after it returns.
+ 		 */
+-		error = ops->iop_recover(lip, &capture_list);
++		error = ops->iop_recover(dfp, &capture_list);
+ 		if (error) {
+ 			trace_xlog_intent_recovery_failed(log->l_mp, error,
+ 					ops->iop_recover);
+--- a/fs/xfs/xfs_refcount_item.c
++++ b/fs/xfs/xfs_refcount_item.c
+@@ -474,10 +474,11 @@ xfs_cui_validate_phys(
+  */
+ STATIC int
+ xfs_cui_item_recover(
+-	struct xfs_log_item		*lip,
++	struct xfs_defer_pending	*dfp,
+ 	struct list_head		*capture_list)
+ {
+ 	struct xfs_trans_res		resv;
++	struct xfs_log_item		*lip = dfp->dfp_intent;
+ 	struct xfs_cui_log_item		*cuip = CUI_ITEM(lip);
+ 	struct xfs_cud_log_item		*cudp;
+ 	struct xfs_trans		*tp;
+--- a/fs/xfs/xfs_rmap_item.c
++++ b/fs/xfs/xfs_rmap_item.c
+@@ -504,10 +504,11 @@ xfs_rui_validate_map(
+  */
+ STATIC int
+ xfs_rui_item_recover(
+-	struct xfs_log_item		*lip,
++	struct xfs_defer_pending	*dfp,
+ 	struct list_head		*capture_list)
+ {
+ 	struct xfs_trans_res		resv;
++	struct xfs_log_item		*lip = dfp->dfp_intent;
+ 	struct xfs_rui_log_item		*ruip = RUI_ITEM(lip);
+ 	struct xfs_rud_log_item		*rudp;
+ 	struct xfs_trans		*tp;
+--- a/fs/xfs/xfs_trans.h
++++ b/fs/xfs/xfs_trans.h
+@@ -66,6 +66,8 @@ struct xfs_log_item {
+ 	{ (1u << XFS_LI_DIRTY),		"DIRTY" }, \
+ 	{ (1u << XFS_LI_WHITEOUT),	"WHITEOUT" }
  
--#define SPINAND_MAX_ID_LEN	4
-+#define SPINAND_MAX_ID_LEN	5
- /*
-  * For erase, write and read operation, we got the following timings :
-  * tBERS (erase) 1ms to 4ms
++struct xfs_defer_pending;
++
+ struct xfs_item_ops {
+ 	unsigned flags;
+ 	void (*iop_size)(struct xfs_log_item *, int *, int *);
+@@ -78,7 +80,7 @@ struct xfs_item_ops {
+ 	xfs_lsn_t (*iop_committed)(struct xfs_log_item *, xfs_lsn_t);
+ 	uint (*iop_push)(struct xfs_log_item *, struct list_head *);
+ 	void (*iop_release)(struct xfs_log_item *);
+-	int (*iop_recover)(struct xfs_log_item *lip,
++	int (*iop_recover)(struct xfs_defer_pending *dfp,
+ 			   struct list_head *capture_list);
+ 	bool (*iop_match)(struct xfs_log_item *item, uint64_t id);
+ 	struct xfs_log_item *(*iop_relog)(struct xfs_log_item *intent,
 
 
 
