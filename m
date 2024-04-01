@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-34560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AFC893FDA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E96689416F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7DC828514D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E822A1F2369D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D85447A57;
-	Mon,  1 Apr 2024 16:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8384AEFA;
+	Mon,  1 Apr 2024 16:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eczy/J2H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ry1uef9a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0BCC129;
-	Mon,  1 Apr 2024 16:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9A4481DB;
+	Mon,  1 Apr 2024 16:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988532; cv=none; b=gSuWqFUaLZadf17a6jR7isxQCQa4RHG5vN2gGh8n6grIQwYzq8RD9N9E6DjPCF38ARFFIQNz5LCrZYdg3/Ng2RR9pHm6Rx8FH9zoSyew6L1BvIhxkExIt1AWNsv6pHe4sY/SdYnsnNDnYBuUXLwWp/nx9xcgIAoERuV+tV+Nvek=
+	t=1711989720; cv=none; b=i4elPLNoNh2kmah4SiMrw7wmAsaPSldVf6lEMRy6C9KeKNC7LFG2R2RE7D7Vu1I/fu19f5ph6vTI9Z0gWrnP9RqMprlyHc9EnPXvhBXp/1V6yD0ldCRHC6/W6RzdkXGplWdU9vfc/LzumOnV0GTDr2KPorVdeWmPIjza8UcOzlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988532; c=relaxed/simple;
-	bh=yU8J3Y3T/sjfwtNI7Wv61S6ZBHvjvTNOUZ4B9zB2Kfw=;
+	s=arc-20240116; t=1711989720; c=relaxed/simple;
+	bh=IefdcLszcTYQxawuvRjFNn9Wee+bOt06ubXblE9PL1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lMJz64E7usCzrgo9KojGMyDrlPmOaXTiOIZpzN1Y5JiK7uW3Ie4uB+s9yUhQzH2ZuVib3yBuBFgG0r8ZSvYIPzDB4tzm+jVmocCtSCmsSwikSFdhC/rWMDFpA4vsp8Tkgi+2A/Djd4zdYfqmMQzxUHpJnO4f2BGn3tiTgk7yIH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eczy/J2H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58777C433F1;
-	Mon,  1 Apr 2024 16:22:11 +0000 (UTC)
+	 MIME-Version; b=keubNq4NPRQbhdaGHMe0htgTiyPLXI8EpAH1q/0+3vStqXXUTt11zKgTSvICWJDyck3CNVK0cFLGKz6tDdpOssci45y7JvdWA877QbciDBSJEwKO0tmhnC+GdQjZv2AvhmLb77dGSnlgbmyXtBPNQiCreKvl7GFzAsS5PNWmevY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ry1uef9a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2DAC433C7;
+	Mon,  1 Apr 2024 16:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988531;
-	bh=yU8J3Y3T/sjfwtNI7Wv61S6ZBHvjvTNOUZ4B9zB2Kfw=;
+	s=korg; t=1711989720;
+	bh=IefdcLszcTYQxawuvRjFNn9Wee+bOt06ubXblE9PL1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eczy/J2HOiGR08/mLP3ZDUBz0qhy1hmKfyNX9tsZklGeJWTJ9O3uoEkbs85q9b/4b
-	 HfQ5wotzW4O5P0L2+SHhqnw7JvQSVmiDBZvjFzl8S/M+f8f9RRlFhMGyuviQkwUXqH
-	 5EVtPrMzz2atOhMC49/KzjaFOwhY4kh1d7VB7RjY=
+	b=Ry1uef9aylEXoFoxMQaK2Op4HDJyJTeWM1C/LSC7ZbKiT+PITUC6HkFtBgoej1jlg
+	 JhbK3ql3WVd69f6X0/W01e87Di2IWH7VPnZNzhFmtxfD1P5lvFUBIjSlSHmDVD6IIZ
+	 QksIMa1oRD8jaeVZACHTI3jM2ZTCwv2U0rv6q7Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 195/432] cxl/trace: Properly initialize cxl_poison region name
+Subject: [PATCH 6.6 133/396] ksmbd: retrieve number of blocks using vfs_getattr in set_file_allocation_info
 Date: Mon,  1 Apr 2024 17:43:02 +0200
-Message-ID: <20240401152558.957086115@linuxfoundation.org>
+Message-ID: <20240401152551.881604389@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,91 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-[ Upstream commit 6c871260965255a1c142fb77ccee58b172d1690b ]
+[ Upstream commit 34cd86b6632718b7df3999d96f51e63de41c5e4f ]
 
-The TP_STRUCT__entry that gets assigned the region name, or an
-empty string if no region is present, is erroneously initialized
-to the cxl_region pointer. It needs to be properly initialized
-otherwise it's length is wrong and garbage chars can appear in
-the kernel trace output: /sys/kernel/tracing/trace
+Use vfs_getattr() to retrieve stat information, rather than make
+assumptions about how a filesystem fills inode structs.
 
-The bad initialization was due in part to a naming conflict with
-the parameter: struct cxl_region *region. The field 'region' is
-already exposed externally as the region name, so changing that
-to something logical, like 'region_name' is not an option. Instead
-rename the internal only struct cxl_region to the commonly used
-'cxlr'.
-
-Impact is that tooling depending on that trace data can miss
-picking up a valid event when searching by region name. The
-TP_printk() output, if enabled, does emit the correct region
-names in the dmesg log.
-
-This was found during testing of the cxl-list option to report
-media-errors for a region.
-
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
 Cc: stable@vger.kernel.org
-Fixes: ddf49d57b841 ("cxl/trace: Add TRACE support for CXL media-error records")
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Acked-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/trace.h | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/smb/server/smb2pdu.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-index a0b5819bc70b3..f01d0709c9c32 100644
---- a/drivers/cxl/core/trace.h
-+++ b/drivers/cxl/core/trace.h
-@@ -642,18 +642,18 @@ u64 cxl_trace_hpa(struct cxl_region *cxlr, struct cxl_memdev *memdev, u64 dpa);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index f6cc5d2730ffb..199c31c275e5b 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5809,15 +5809,21 @@ static int set_file_allocation_info(struct ksmbd_work *work,
  
- TRACE_EVENT(cxl_poison,
+ 	loff_t alloc_blks;
+ 	struct inode *inode;
++	struct kstat stat;
+ 	int rc;
  
--	TP_PROTO(struct cxl_memdev *cxlmd, struct cxl_region *region,
-+	TP_PROTO(struct cxl_memdev *cxlmd, struct cxl_region *cxlr,
- 		 const struct cxl_poison_record *record, u8 flags,
- 		 __le64 overflow_ts, enum cxl_poison_trace_type trace_type),
+ 	if (!(fp->daccess & FILE_WRITE_DATA_LE))
+ 		return -EACCES;
  
--	TP_ARGS(cxlmd, region, record, flags, overflow_ts, trace_type),
-+	TP_ARGS(cxlmd, cxlr, record, flags, overflow_ts, trace_type),
++	rc = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			 AT_STATX_SYNC_AS_STAT);
++	if (rc)
++		return rc;
++
+ 	alloc_blks = (le64_to_cpu(file_alloc_info->AllocationSize) + 511) >> 9;
+ 	inode = file_inode(fp->filp);
  
- 	TP_STRUCT__entry(
- 		__string(memdev, dev_name(&cxlmd->dev))
- 		__string(host, dev_name(cxlmd->dev.parent))
- 		__field(u64, serial)
- 		__field(u8, trace_type)
--		__string(region, region)
-+		__string(region, cxlr ? dev_name(&cxlr->dev) : "")
- 		__field(u64, overflow_ts)
- 		__field(u64, hpa)
- 		__field(u64, dpa)
-@@ -673,10 +673,10 @@ TRACE_EVENT(cxl_poison,
- 		__entry->source = cxl_poison_record_source(record);
- 		__entry->trace_type = trace_type;
- 		__entry->flags = flags;
--		if (region) {
--			__assign_str(region, dev_name(&region->dev));
--			memcpy(__entry->uuid, &region->params.uuid, 16);
--			__entry->hpa = cxl_trace_hpa(region, cxlmd,
-+		if (cxlr) {
-+			__assign_str(region, dev_name(&cxlr->dev));
-+			memcpy(__entry->uuid, &cxlr->params.uuid, 16);
-+			__entry->hpa = cxl_trace_hpa(cxlr, cxlmd,
- 						     __entry->dpa);
- 		} else {
- 			__assign_str(region, "");
+-	if (alloc_blks > inode->i_blocks) {
++	if (alloc_blks > stat.blocks) {
+ 		smb_break_all_levII_oplock(work, fp, 1);
+ 		rc = vfs_fallocate(fp->filp, FALLOC_FL_KEEP_SIZE, 0,
+ 				   alloc_blks * 512);
+@@ -5825,7 +5831,7 @@ static int set_file_allocation_info(struct ksmbd_work *work,
+ 			pr_err("vfs_fallocate is failed : %d\n", rc);
+ 			return rc;
+ 		}
+-	} else if (alloc_blks < inode->i_blocks) {
++	} else if (alloc_blks < stat.blocks) {
+ 		loff_t size;
+ 
+ 		/*
 -- 
 2.43.0
 
