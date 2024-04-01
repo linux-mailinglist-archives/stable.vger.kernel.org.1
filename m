@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32CF68940EC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:36:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F5D893F40
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7D42B21B8D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCC44282723
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D881E525;
-	Mon,  1 Apr 2024 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855EC47A62;
+	Mon,  1 Apr 2024 16:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjG/fRd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xw1vFLhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151ED1C0DE7;
-	Mon,  1 Apr 2024 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E2C446AC;
+	Mon,  1 Apr 2024 16:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989357; cv=none; b=SsfmTS6JcDkbepUNgpPz1SqEagYAmcnuup+lRN+WUkCqKpXdQQQk5bWvw1q90L89O/LlGWo6rDPNQfdL7F98FzIUiRS9oljNiHDQBH6/88yZMwcski84T/5jOOqGMkv5/f3dqB3zhSpnZW2ew4yr6q5t51YHUg/SALFkjtF2tt4=
+	t=1711988040; cv=none; b=jC5E1hHEyGbfg8pBO69LjjRgq7QDBVehJDaKaxUbCCimOvVraNNpd+0eRoL0B8sg15jwG4Q6Ig737P8N0obXwvylXmYt8aDpaLE5XtTu5heWGWb26RAST+naIydkcUq786MaYQg00sNSDV50vfpU87FM6ih72n8RpcUOqH+bzZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989357; c=relaxed/simple;
-	bh=lNk1Y2BJpFYC561+4uuidI1DecAObrP2Z2QGBJtkRMo=;
+	s=arc-20240116; t=1711988040; c=relaxed/simple;
+	bh=UZTgFgDBltt43wF76bSkWnFcOe210tMdqxurbMak2po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mdNJ5BdulzZ3WMjsjCahioeTY/FTk8lm8xrvmg3Srpl1/LIuu0pVot1bgFeFdCdhfQXPAiorA7oQImnjrJOQ/YUpGGAADmZZXOMfdpYCuDk9BGzuVrzXvv4nLFE2IyYwebDxoxYo3tmW0Z8Qax3q+OIxQe5xwOfGaPfuYyPzYTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjG/fRd6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DB7C433F1;
-	Mon,  1 Apr 2024 16:35:56 +0000 (UTC)
+	 MIME-Version; b=Xebgy2/T0wvduvCMhvBgn8x0DixPxSSsIm0mbl+f3EZamxAQ50nVY3YyuX2dK1CrCkCozU4Uy52rM9ToQJgmalKcwPOWKyHB+Dp7EHzIl2MP169/tBfd/KHwALmmZFzULf8XfmAqre2H+a+l1OkVXcMWnVI2MH0uRtY2rov4Da0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xw1vFLhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DD6C43390;
+	Mon,  1 Apr 2024 16:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989357;
-	bh=lNk1Y2BJpFYC561+4uuidI1DecAObrP2Z2QGBJtkRMo=;
+	s=korg; t=1711988040;
+	bh=UZTgFgDBltt43wF76bSkWnFcOe210tMdqxurbMak2po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjG/fRd6X5Ey/5SHKYbCDgBxTg6Jk+duYxgTlUO81Ey97Z5JIWwweFoyBrvah1Par
-	 pSN9Ov1q/PCZwMmS4TszRVJ3oqi0K55w13JPfCFT2NmoizwDVh6JLMp2NR1YdRhaGH
-	 gDVBb5/b+hb5Yww+M7XlieusWyfCoR3DGmk9HukY=
+	b=xw1vFLhea8YB9X6LWIj3foExmsSo8tuReYLYGR7NUxAyOy9o38n67lk/8gWSOOPNv
+	 5IPrmplRd0P3WsR4TwqqOq+ClwdJnb9u/ofKVD6sNCdHJLlJBqrVgsug6F2nVDfIn/
+	 vTzFYjKLurSQ3rSwaO0NgUdTPd8jLq2mxvDq/1bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Shivnandan Kumar <quic_kshivnan@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/396] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
+Subject: [PATCH 6.7 066/432] cpufreq: Limit resolving a frequency to policy min/max
 Date: Mon,  1 Apr 2024 17:40:53 +0200
-Message-ID: <20240401152548.009470063@linuxfoundation.org>
+Message-ID: <20240401152555.094150104@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Shivnandan Kumar <quic_kshivnan@quicinc.com>
 
-[ Upstream commit 0f7352557a35ab7888bc7831411ec8a3cbe20d78 ]
+[ Upstream commit d394abcb12bb1a6f309c1221fdb8e73594ecf1b4 ]
 
-This is the candidate patch of CVE-2023-47233 :
-https://nvd.nist.gov/vuln/detail/CVE-2023-47233
+Resolving a frequency to an efficient one should not transgress
+policy->max (which can be set for thermal reason) and policy->min.
 
-In brcm80211 driver,it starts with the following invoking chain
-to start init a timeout worker:
+Currently, there is possibility where scaling_cur_freq can exceed
+scaling_max_freq when scaling_max_freq is an inefficient frequency.
 
-->brcmf_usb_probe
-  ->brcmf_usb_probe_cb
-    ->brcmf_attach
-      ->brcmf_bus_started
-        ->brcmf_cfg80211_attach
-          ->wl_init_priv
-            ->brcmf_init_escan
-              ->INIT_WORK(&cfg->escan_timeout_work,
-		  brcmf_cfg80211_escan_timeout_worker);
+Add a check to ensure that resolving a frequency will respect
+policy->min/max.
 
-If we disconnect the USB by hotplug, it will call
-brcmf_usb_disconnect to make cleanup. The invoking chain is :
-
-brcmf_usb_disconnect
-  ->brcmf_usb_disconnect_cb
-    ->brcmf_detach
-      ->brcmf_cfg80211_detach
-        ->kfree(cfg);
-
-While the timeout woker may still be running. This will cause
-a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
-
-Fix it by deleting the timer and canceling the worker in
-brcmf_cfg80211_detach.
-
-Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Cc: stable@vger.kernel.org
-[arend.vanspriel@broadcom.com: keep timer delete as is and cancel work just before free]
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240107072504.392713-1-arend.vanspriel@broadcom.com
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: 1f39fa0dccff ("cpufreq: Introducing CPUFREQ_RELATION_E")
+Signed-off-by: Shivnandan Kumar <quic_kshivnan@quicinc.com>
+[ rjw: Whitespace adjustment, changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/cpufreq.h | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index df9c26593dbe1..567e3a0675d88 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1179,8 +1179,7 @@ s32 brcmf_notify_escan_complete(struct brcmf_cfg80211_info *cfg,
- 	scan_request = cfg->scan_request;
- 	cfg->scan_request = NULL;
- 
--	if (timer_pending(&cfg->escan_timeout))
--		del_timer_sync(&cfg->escan_timeout);
-+	timer_delete_sync(&cfg->escan_timeout);
- 
- 	if (fw_abort) {
- 		/* Do a scan abort to stop the driver's scan engine */
-@@ -8441,6 +8440,7 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
- 	brcmf_btcoex_detach(cfg);
- 	wiphy_unregister(cfg->wiphy);
- 	wl_deinit_priv(cfg);
-+	cancel_work_sync(&cfg->escan_timeout_work);
- 	brcmf_free_wiphy(cfg->wiphy);
- 	kfree(cfg);
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index 1c5ca92a0555f..90f8bd1736a2c 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -1021,6 +1021,18 @@ static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
+ 						   efficiencies);
  }
+ 
++static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy, int idx)
++{
++	unsigned int freq;
++
++	if (idx < 0)
++		return false;
++
++	freq = policy->freq_table[idx].frequency;
++
++	return freq == clamp_val(freq, policy->min, policy->max);
++}
++
+ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 						 unsigned int target_freq,
+ 						 unsigned int relation)
+@@ -1054,7 +1066,8 @@ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 		return 0;
+ 	}
+ 
+-	if (idx < 0 && efficiencies) {
++	/* Limit frequency index to honor policy->min/max */
++	if (!cpufreq_is_in_limits(policy, idx) && efficiencies) {
+ 		efficiencies = false;
+ 		goto retry;
+ 	}
 -- 
 2.43.0
 
