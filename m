@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA89894095
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B21893EDD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 815941C21628
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0EE728341B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B275938DE5;
-	Mon,  1 Apr 2024 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40384446AC;
+	Mon,  1 Apr 2024 16:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joeb4JSe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1mdZ2ql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706201C0DE7;
-	Mon,  1 Apr 2024 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04D01CA8F;
+	Mon,  1 Apr 2024 16:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989110; cv=none; b=PCsZr//pgcRxBVX75fK3Pk9mWQLA/1CujpZUzf+coyqkjg2ODrs6+hnoAc+mIDrrjjKk98XLZ5EBp3XWAObIfBXGtBHEJXReWo5osU3wLbmlGQy7e0uJpTBhvpxAnVLuWiF7Fw1zDgm2I1yv2SBozkn2Jzsk9XFQCH1MKX01Ylg=
+	t=1711987740; cv=none; b=I5AlXa/6jFC45HoX3tqRpJiFsXtieZjGA2l1wt5bUdxaLIXm4kxUUs3LaQd3UUYW2UCe6sUZbxN5/teBWsE3roT68gSrORKdb7UYtuJyaJyfXZtaJ6eNlAYG3UaebdUo2Hif5U6bOX/jjra6k4J4Cx2heN7Ya+iKmOe086ZwC7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989110; c=relaxed/simple;
-	bh=yDAdTphUbZj/6lrTr6EF+oWf9jqvvzvk04L9Wipt9gY=;
+	s=arc-20240116; t=1711987740; c=relaxed/simple;
+	bh=Sz0Kend4wYD2kKjq7dBH/CW7GGxtZMrbW9Gylyp8DoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VL5b4szbV6268njr+01qRO/VJBiUFNYfaJcc12+Rs1sNCUQFfDSJ5xCZ6vcgi/t3Ce/jBc2x87tki/HzSgFgY18PVFa1x4k+7jI4vQ2+3eCmU53pvGgFfkYwPsuj3eqVYm2i8s7YbDGee7cGKGvo7u8NkwFJylPlaUfF3eqF8Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joeb4JSe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1F7C433F1;
-	Mon,  1 Apr 2024 16:31:49 +0000 (UTC)
+	 MIME-Version; b=WbRzkhA1p1cvh7mtCOnspkqFtElafk0JlTXay7ZUFhjNOnQ9G4yicT3ezFlQCcPA7FJLwiY3f95el7diby8Ojd5aNHXD01gLhtGvKbUP4AYio6xY5ig0EnPvonGmSJ/CelLo93u2Y+mr1xs3asv5f+HxDts6w4sGlAHjQAQ58Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1mdZ2ql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6571FC433C7;
+	Mon,  1 Apr 2024 16:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989110;
-	bh=yDAdTphUbZj/6lrTr6EF+oWf9jqvvzvk04L9Wipt9gY=;
+	s=korg; t=1711987739;
+	bh=Sz0Kend4wYD2kKjq7dBH/CW7GGxtZMrbW9Gylyp8DoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joeb4JSeJ+tamzyLBesmJoyAYK/VCQzqm3Ayk1feKk+rqU141U7nXSLKzT3/RkyE9
-	 tBAbZCVZEbHvFTXfjWYoWAKYIoimRO1q0pajcWG0UpecszjGDTJkufs/IOSSV9w56d
-	 YlpReeyczc9vCYyOw+H6xS55l55xd8ss73/6tzOQ=
+	b=e1mdZ2qlilw+AB1N3OE9oLilwHUdze0ZUJfK0x6e2DEXffQt/ocSHZpn6LPJQP/wv
+	 dkV0V/qr4rjCKS0gXDB0kKI2zY7Cpuz5c7/yIIW68xq0eqXJUIlfli/OnsAi0BErA8
+	 gXCetMXhdu5EJyWiRN4m5byK4uqqICjf/cQWgBqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Liaw <edliaw@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 355/432] selftests/mm: sigbus-wp test requires UFFD_FEATURE_WP_HUGETLBFS_SHMEM
-Date: Mon,  1 Apr 2024 17:45:42 +0200
-Message-ID: <20240401152603.839917737@linuxfoundation.org>
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.8 377/399] scsi: qla2xxx: Prevent command send on chip reset
+Date: Mon,  1 Apr 2024 17:45:43 +0200
+Message-ID: <20240401152600.433957893@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 105840ebd76d8dbc1a7d734748ae320076f3201e upstream.
+commit 4895009c4bb72f71f2e682f1e7d2c2d96e482087 upstream.
 
-The sigbus-wp test requires the UFFD_FEATURE_WP_HUGETLBFS_SHMEM flag for
-shmem and hugetlb targets.  Otherwise it is not backwards compatible with
-kernels <5.19 and fails with EINVAL.
+Currently IOCBs are allowed to push through while chip reset could be in
+progress. During chip reset the outstanding_cmds array is cleared
+twice. Once when any command on this array is returned as failed and
+secondly when the array is initialize to zero. If a command is inserted on
+to the array between these intervals, then the command will be lost.  Check
+for chip reset before sending IOCB.
 
-Link: https://lkml.kernel.org/r/20240321232023.2064975-1-edliaw@google.com
-Fixes: 73c1ea939b65 ("selftests/mm: move uffd sig/events tests into uffd unit tests")
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Peter Xu <peterx@redhat.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-2-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/uffd-unit-tests.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_init.c |    8 ++++++--
+ drivers/scsi/qla2xxx/qla_iocb.c |   33 +++++++++++++++++++++++++++++++--
+ 2 files changed, 37 insertions(+), 4 deletions(-)
 
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -1219,7 +1219,8 @@ uffd_test_case_t uffd_tests[] = {
- 		.uffd_fn = uffd_sigbus_wp_test,
- 		.mem_targets = MEM_ALL,
- 		.uffd_feature_required = UFFD_FEATURE_SIGBUS |
--		UFFD_FEATURE_EVENT_FORK | UFFD_FEATURE_PAGEFAULT_FLAG_WP,
-+		UFFD_FEATURE_EVENT_FORK | UFFD_FEATURE_PAGEFAULT_FLAG_WP |
-+		UFFD_FEATURE_WP_HUGETLBFS_SHMEM,
- 	},
- 	{
- 		.name = "events",
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -1193,8 +1193,12 @@ int qla24xx_async_gnl(struct scsi_qla_ho
+ 	return rval;
+ 
+ done_free_sp:
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++	/*
++	 * use qla24xx_async_gnl_sp_done to purge all pending gnl request.
++	 * kref_put is call behind the scene.
++	 */
++	sp->u.iocb_cmd.u.mbx.in_mb[0] = MBS_COMMAND_ERROR;
++	qla24xx_async_gnl_sp_done(sp, QLA_COMMAND_ERROR);
+ 	fcport->flags &= ~(FCF_ASYNC_SENT);
+ done:
+ 	fcport->flags &= ~(FCF_ASYNC_ACTIVE);
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -2587,6 +2587,33 @@ void
+ qla2x00_sp_release(struct kref *kref)
+ {
+ 	struct srb *sp = container_of(kref, struct srb, cmd_kref);
++	struct scsi_qla_host *vha = sp->vha;
++
++	switch (sp->type) {
++	case SRB_CT_PTHRU_CMD:
++		/* GPSC & GFPNID use fcport->ct_desc.ct_sns for both req & rsp */
++		if (sp->u.iocb_cmd.u.ctarg.req &&
++			(!sp->fcport ||
++			 sp->u.iocb_cmd.u.ctarg.req != sp->fcport->ct_desc.ct_sns)) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp &&
++			(!sp->fcport ||
++			 sp->u.iocb_cmd.u.ctarg.rsp != sp->fcport->ct_desc.ct_sns)) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
++		break;
++	default:
++		break;
++	}
+ 
+ 	sp->free(sp);
+ }
+@@ -2692,7 +2719,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	 */
+ 	sp = qla2x00_get_sp(vha, fcport, GFP_KERNEL);
+ 	if (!sp) {
+-		kfree(fcport);
++		qla2x00_free_fcport(fcport);
+ 		ql_log(ql_log_info, vha, 0x70e6,
+ 		 "SRB allocation failed\n");
+ 		return -ENOMEM;
+@@ -2747,6 +2774,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	if (rval != QLA_SUCCESS) {
+ 		/* ref: INIT */
+ 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
++		qla2x00_free_fcport(fcport);
+ 		return QLA_FUNCTION_FAILED;
+ 	}
+ 
+@@ -2756,6 +2784,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
+ 
+ 	wait_for_completion(&elsio->u.els_logo.comp);
++	qla2x00_free_fcport(fcport);
+ 
+ 	/* ref: INIT */
+ 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+@@ -3918,7 +3947,7 @@ qla2x00_start_sp(srb_t *sp)
+ 		return -EAGAIN;
+ 	}
+ 
+-	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
++	pkt = qla2x00_alloc_iocbs_ready(sp->qpair, sp);
+ 	if (!pkt) {
+ 		rval = -EAGAIN;
+ 		ql_log(ql_log_warn, vha, 0x700c,
 
 
 
