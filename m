@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25768943EC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FEE8942C7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CFE2835A5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4DAC28376D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB55482CA;
-	Mon,  1 Apr 2024 17:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE3F4C601;
+	Mon,  1 Apr 2024 16:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mV3W183v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUAQgkOc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B86847A5D;
-	Mon,  1 Apr 2024 17:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C8B4C3C3;
+	Mon,  1 Apr 2024 16:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991393; cv=none; b=rSdiffXw/Pz4IbC4FIltrgqArCckFwK0T0PYfUirrynjfHepO6QttPqLySVlJNYcZRzFgFI8uY3gTgJhQBLWhyFD3CSwX5Hk8bE1CiUp710/km1oTqk0ec62+rkqdC3iNfRfK9lblCDBRTXRFDoCjtXYf+HEtI25CJCzgWeOcSE=
+	t=1711990561; cv=none; b=PBUr7EMc/IOWGsOGRWLWMYegOlJrSGbzy0Z45oUarrJpuhkEn+uEM2cX4gxSjj1X46LN9jTeKR8nyLiZgkMXuYkRwdUtnDuPSyMSIksV/bJOex8FpMOZW86fepJCnC4RL5jFH1/9cWmiQ/IiRIVe2F4CZIaWwsBvuajYauq24Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991393; c=relaxed/simple;
-	bh=49Dp2efPSpy2c0cbg5vZtWfuN5+6MYrP0uu70c40JiA=;
+	s=arc-20240116; t=1711990561; c=relaxed/simple;
+	bh=6t/eOv2WzQQudqPLpEXYx08r2PveDcTInCMPyII0VZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TE83JUNvspxdIE+lYf81lL8otdOfpH3kHnurR0xA97LEzTY1S+5ozS3EvQRNrXDAhmB5042y002ihIMqbufC1EIobuwGGsbqKWGpGvfLrNwWeogHCxjkYMUckdrGE/UAVIsBP4YH/ClU93IDKNfdBahbeMAiFBCpW27/CI7ugiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mV3W183v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBACCC433F1;
-	Mon,  1 Apr 2024 17:09:52 +0000 (UTC)
+	 MIME-Version; b=Eq9iaonKDHIkiFHQiQlLhNWQZClXBgZiDuniK8JWBnNUdHnQSZ/f5K5nlsdam8tSx8upA3YEkJ8gxnaKlqd2Hqkteu+mUD/iUW4ShveEH2V+DFjbDYpeZCv2z4doeBz9IIkkAuAcW0+4syAska+3TzbQtgJ9hQm3I8dCkLIuh3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUAQgkOc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9345AC433F1;
+	Mon,  1 Apr 2024 16:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991393;
-	bh=49Dp2efPSpy2c0cbg5vZtWfuN5+6MYrP0uu70c40JiA=;
+	s=korg; t=1711990561;
+	bh=6t/eOv2WzQQudqPLpEXYx08r2PveDcTInCMPyII0VZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mV3W183vFsV3wABe/Q6gwO1R7jmnJbZ51aJ0zcZ0UcAOjFubSvv+v9Hjk9AmhqNaH
-	 YyFygD7nRBbPQFwix9VBDQ8zdM5gg6gg2UV2hi8hqmSVQZ9if4Aict3tTWqL9K6XPZ
-	 82/Z8OK0Y4ZFpY9vY2vcB2FpJap5fdpUAGz/3vhg=
+	b=EUAQgkOc2t6iSsCMOoDgZBwD6zbXp0YdVg17fpUkB3jbRGpQ+kUddkZHQ6lL9lvgi
+	 jN4p6QsNCJ/6uYCR6UAC5UbmaKqAbESrYnfaXn87PE7SbJqd4Qrslo1p8eYTVWtvqf
+	 3/TO9dtToisw0HtOAFnIi9UXDgIaXAse/mx4FfYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.1 251/272] usb: typec: ucsi: Check for notifications after init
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Justin Tee <justintee8345@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 392/396] scsi: lpfc: Correct size for wqe for memset()
 Date: Mon,  1 Apr 2024 17:47:21 +0200
-Message-ID: <20240401152538.859016197@linuxfoundation.org>
+Message-ID: <20240401152559.597485913@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
+commit 28d41991182c210ec1654f8af2e140ef4cc73f20 upstream.
 
-The completion notification for the final SET_NOTIFICATION_ENABLE
-command during initialization can include a connector change
-notification.  However, at the time this completion notification is
-processed, the ucsi struct is not ready to handle this notification.
-As a result the notification is ignored and the controller
-never sends an interrupt again.
+The wqe is of type lpfc_wqe128. It should be memset with the same type.
 
-Re-check CCI for a pending connector state change after
-initialization is complete. Adjust the corresponding debug
-message accordingly.
-
-Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
+Fixes: 6c621a2229b0 ("scsi: lpfc: Separate NVMET RQ buffer posting from IO resources SGL/iocbq/context")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240304090649.833953-1-usama.anjum@collabora.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Justin Tee <justintee8345@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -851,7 +851,7 @@ void ucsi_connector_change(struct ucsi *
- 	struct ucsi_connector *con = &ucsi->connector[num - 1];
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1586,7 +1586,7 @@ lpfc_nvmet_setup_io_context(struct lpfc_
+ 		wqe = &nvmewqe->wqe;
  
- 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
--		dev_dbg(ucsi->dev, "Bogus connector change event\n");
-+		dev_dbg(ucsi->dev, "Early connector change event\n");
- 		return;
- 	}
+ 		/* Initialize WQE */
+-		memset(wqe, 0, sizeof(union lpfc_wqe));
++		memset(wqe, 0, sizeof(*wqe));
  
-@@ -1210,6 +1210,7 @@ static int ucsi_init(struct ucsi *ucsi)
- {
- 	struct ucsi_connector *con, *connector;
- 	u64 command, ntfy;
-+	u32 cci;
- 	int ret;
- 	int i;
- 
-@@ -1262,6 +1263,13 @@ static int ucsi_init(struct ucsi *ucsi)
- 
- 	ucsi->connector = connector;
- 	ucsi->ntfy = ntfy;
-+
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret)
-+		return ret;
-+	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
-+		ucsi_connector_change(ucsi, cci);
-+
- 	return 0;
- 
- err_unregister:
+ 		ctx_buf->iocbq->cmd_dmabuf = NULL;
+ 		spin_lock(&phba->sli4_hba.sgl_list_lock);
 
 
 
