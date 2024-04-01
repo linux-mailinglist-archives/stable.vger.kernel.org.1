@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B201A894036
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C118941ED
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39CC8B22093
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 589A9B224A2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93CF446AC;
-	Mon,  1 Apr 2024 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F9C4644C;
+	Mon,  1 Apr 2024 16:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWy2jXkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTIJ/JZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783061CA8F;
-	Mon,  1 Apr 2024 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BAB1E525;
+	Mon,  1 Apr 2024 16:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988826; cv=none; b=E2Yd0n5iV/MxDdQm3yEeUkGX3Fn3FnsmCK6Jp8nAyaQp69DNb/v1j8kgq4TG+vPUu53iUxWNIf8qHrQ2NbsIA8CFwTS8BBrK0raoGDr2jLFTYGB9AD16hfPppolv4lN8Bs9zt57snqf0z2lMWzDYeTSTXDQ0tp1uYh9JOvluR6M=
+	t=1711990074; cv=none; b=QW72b5fHrFcODumpQrApFAALsGapfIk7St4s+gDIWJ8Yynv6QKGmX8rYzIC6Ffv9VmejmD8OKp8FTyWd5TuauhUtH3u3Sw8vZm6xI3qWylzJ1AAZ0+7XipRPudkp0qpn7efZgSMz8o+x1PmdcpAxdRFnecTawysfg3Tm2qjtkC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988826; c=relaxed/simple;
-	bh=rTJNyIfz3p6iZBWRubuwA7qpRIxiPNyz5PykmbRwgcY=;
+	s=arc-20240116; t=1711990074; c=relaxed/simple;
+	bh=u0o7zJt6HPCbYtN3xtIH5qeFw1KQ/wm8LgXIGbZcdK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=um3Ua/OFBU6FcFt3FDaBAx2JXHRgWMaHUReUNlXtQou6lP3/KeKOy9GOHYcs8CXX9t+sc1vZr7f9Rf/oSvEJSLrJs+267m1QZIx4uOdNwXO4pj/bujBR47x7fTe/oa+KPhhEt1a603duARFWl1vuWFG0HXu4+FkJz8GDFNZRtAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWy2jXkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30E3C433F1;
-	Mon,  1 Apr 2024 16:27:05 +0000 (UTC)
+	 MIME-Version; b=kqC9ElpDauAEt7r/r0vezKeIsFlUsLsguQy3VaHK3S0xNm7BY31DuJrk+uTyzeRfCOfHsY/Xbidk6a7ZwgvoxWxhyKQi4fRo/+KSYnCWyZ1yrnwVwRmfsFpTkn8Z9jkkVvi/laGcO3Udmh3kIqMsahnaMv766Hio0BcWeIfpCIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTIJ/JZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B90C433C7;
+	Mon,  1 Apr 2024 16:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988826;
-	bh=rTJNyIfz3p6iZBWRubuwA7qpRIxiPNyz5PykmbRwgcY=;
+	s=korg; t=1711990074;
+	bh=u0o7zJt6HPCbYtN3xtIH5qeFw1KQ/wm8LgXIGbZcdK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cWy2jXkDoehXiggX8oX0Ui5y3w9VUz0uWKo9X6e/hIFHIlP8FRfw3s+RSAn2wzo6l
-	 ivPMtQO73gsqnK1Axvbw43Q53/cnPTf1QN55e3ZMAAD0cFZf9a6KHj+WzJk8TKZ2nX
-	 E4Su/jFgjZB8K0/VTvdwh28o2F9ldJ5xXSjqY+1Y=
+	b=RTIJ/JZKPACu0V2XXZYJjtcvmKeUhQc2YP36MUC5zV9+WCo/0/sQSy5TDn/eYrxz8
+	 GY0D8BJ0DxOTwwVBvUS1fuQ5f/6PMeO00Bv0Muplj7HjCnnx23OoCI6yM0qmtqgrP2
+	 eAhkikam+a95/FqjJlmdAwdKhvs88P9yG3o8kwMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Rapoport <rppt@linux.ibm.com>,
-	Yongqiang Liu <liuyongqiang13@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 300/432] ARM: 9359/1: flush: check if the folio is reserved for no-mapping addresses
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.6 238/396] tee: optee: Fix kernel panic caused by incorrect error handling
 Date: Mon,  1 Apr 2024 17:44:47 +0200
-Message-ID: <20240401152602.135270032@linuxfoundation.org>
+Message-ID: <20240401152555.009998005@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongqiang Liu <liuyongqiang13@huawei.com>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-[ Upstream commit 0c66c6f4e21cb22220cbd8821c5c73fc157d20dc ]
+commit 95915ba4b987cf2b222b0f251280228a1ff977ac upstream.
 
-Since commit a4d5613c4dc6 ("arm: extend pfn_valid to take into account
-freed memory map alignment") changes the semantics of pfn_valid() to check
-presence of the memory map for a PFN. A valid page for an address which
-is reserved but not mapped by the kernel[1], the system crashed during
-some uio test with the following memory layout:
+The error path while failing to register devices on the TEE bus has a
+bug leading to kernel panic as follows:
 
- node   0: [mem 0x00000000c0a00000-0x00000000cc8fffff]
- node   0: [mem 0x00000000d0000000-0x00000000da1fffff]
- the uio layout is：0xc0900000, 0x100000
+[   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
+[   15.406913] Mem abort info:
+[   15.409722]   ESR = 0x0000000096000005
+[   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   15.418814]   SET = 0, FnV = 0
+[   15.421878]   EA = 0, S1PTW = 0
+[   15.425031]   FSC = 0x05: level 1 translation fault
+[   15.429922] Data abort info:
+[   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
+[   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
+[   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
 
-the crash backtrace like:
+Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+lead to the introduction of this bug. So fix it appropriately.
 
-  Unable to handle kernel paging request at virtual address bff00000
-  [...]
-  CPU: 1 PID: 465 Comm: startapp.bin Tainted: G           O      5.10.0 #1
-  Hardware name: Generic DT based system
-  PC is at b15_flush_kern_dcache_area+0x24/0x3c
-  LR is at __sync_icache_dcache+0x6c/0x98
-  [...]
-   (b15_flush_kern_dcache_area) from (__sync_icache_dcache+0x6c/0x98)
-   (__sync_icache_dcache) from (set_pte_at+0x28/0x54)
-   (set_pte_at) from (remap_pfn_range+0x1a0/0x274)
-   (remap_pfn_range) from (uio_mmap+0x184/0x1b8 [uio])
-   (uio_mmap [uio]) from (__mmap_region+0x264/0x5f4)
-   (__mmap_region) from (__do_mmap_mm+0x3ec/0x440)
-   (__do_mmap_mm) from (do_mmap+0x50/0x58)
-   (do_mmap) from (vm_mmap_pgoff+0xfc/0x188)
-   (vm_mmap_pgoff) from (ksys_mmap_pgoff+0xac/0xc4)
-   (ksys_mmap_pgoff) from (ret_fast_syscall+0x0/0x5c)
-  Code: e0801001 e2423001 e1c00003 f57ff04f (ee070f3e)
-  ---[ end trace 09cf0734c3805d52 ]---
-  Kernel panic - not syncing: Fatal exception
-
-So check if PG_reserved was set to solve this issue.
-
-[1]: https://lore.kernel.org/lkml/Zbtdue57RO0QScJM@linux.ibm.com/
-
-Fixes: a4d5613c4dc6 ("arm: extend pfn_valid to take into account freed memory map alignment")
-Suggested-by: Mike Rapoport <rppt@linux.ibm.com>
-Signed-off-by: Yongqiang Liu <liuyongqiang13@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
+Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mm/flush.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tee/optee/device.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mm/flush.c b/arch/arm/mm/flush.c
-index d19d140a10c7d..0749cf8a66371 100644
---- a/arch/arm/mm/flush.c
-+++ b/arch/arm/mm/flush.c
-@@ -296,6 +296,9 @@ void __sync_icache_dcache(pte_t pteval)
- 		return;
+--- a/drivers/tee/optee/device.c
++++ b/drivers/tee/optee/device.c
+@@ -90,13 +90,14 @@ static int optee_register_device(const u
+ 	if (rc) {
+ 		pr_err("device registration failed, err: %d\n", rc);
+ 		put_device(&optee_device->dev);
++		return rc;
+ 	}
  
- 	folio = page_folio(pfn_to_page(pfn));
-+	if (folio_test_reserved(folio))
-+		return;
-+
- 	if (cache_is_vipt_aliasing())
- 		mapping = folio_flush_mapping(folio);
- 	else
--- 
-2.43.0
-
+ 	if (func == PTA_CMD_GET_DEVICES_SUPP)
+ 		device_create_file(&optee_device->dev,
+ 				   &dev_attr_need_supplicant);
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ static int __optee_enumerate_devices(u32 func)
 
 
 
