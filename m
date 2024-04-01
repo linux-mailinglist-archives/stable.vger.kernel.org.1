@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800D389428E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FB88940B1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219091F25F50
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E48302833F9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94A54EB24;
-	Mon,  1 Apr 2024 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960E33613C;
+	Mon,  1 Apr 2024 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7kDJzEi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvHGmc8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CC04D9F6;
-	Mon,  1 Apr 2024 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553B61C0DE7;
+	Mon,  1 Apr 2024 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990411; cv=none; b=RN9MXfQO0m+o60MJp6cXgrvOIZDKEfeOmmDHUW5I6HZWXaF004AZESQDo2d4nA2zIbThoR9HlADFSiwQfdQ7odcGFf1zATSWfqC3uU/2CgWYSBd/tfjk4EGbp+dB5dobJ4fhRyJBcUGQhZj3ywsWKQLX6sTt7fed6GNpkUh+tEA=
+	t=1711989187; cv=none; b=crohKElNmAjfwvFC+SUPfXofNKKRbOhXcMjvcx6VCYOuJJzxuQZhXeLUSRD+tckYfSCTj/yngWSjTz8RDUuUa740ENbWTkbP228mVvqoudAK2yxdXi58h9dMHw9qzny1wgRCmH2zGMsfhUhyIHsBY1xYamqRW+Xl251VRxI+HYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990411; c=relaxed/simple;
-	bh=3Z6iiYY9lX3Q+6lKbfcehWlMXpiAYuTJclcAmjr3Heo=;
+	s=arc-20240116; t=1711989187; c=relaxed/simple;
+	bh=OshI82HHhj3GaZYSUK1v6nfix6Qryt3GeWZnj5NwXI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W33eFDxMaQxL3sUOzw1RB79bFZ+0Zuk8Yc7mjr/9tR+F09sx6XyFfxY+4zMmwYfun/Kz2E2jvr3TxwZe+pHZEIsypFhgtQOtqYLQk1+bU3iFagc+VIPk/THL4xCXtuvoutN9LlR3WC6bQi4QRVKXsxr5MFG/F0EzUYwwDUbmoIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7kDJzEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB333C433F1;
-	Mon,  1 Apr 2024 16:53:30 +0000 (UTC)
+	 MIME-Version; b=ZWueUX6nFgHWECfxohy2yTuFEcgrunw9J/BS8NsbrTNvEs1eSBkcRbVIgPPM5FLSvd1x6WH1JvsABQD5XsO0LRTEZteQcAeqGE6qAj7unkY5xhrSKoboDEBEDoOvGHcc4ja7YCGiE5zRHe9rMTwdJsuwE8krwpwTDjBXChyMWZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvHGmc8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1713C433F1;
+	Mon,  1 Apr 2024 16:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990411;
-	bh=3Z6iiYY9lX3Q+6lKbfcehWlMXpiAYuTJclcAmjr3Heo=;
+	s=korg; t=1711989187;
+	bh=OshI82HHhj3GaZYSUK1v6nfix6Qryt3GeWZnj5NwXI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7kDJzEiof02+hChZphUzhhzeg0KrFAnYhY3F5uJkVYzj2OM6nVHVVNcdzYRNHyBN
-	 4ZjH5hTXnL5A4L9pd2qwFgab0XSFipdAmBdqEx9/5a6iI9EOcbzBWW9whN27/QNE3K
-	 pDMRDkuh4mn+QUG2l5Ldg759wQA5BdEAyYjwuwQY=
+	b=IvHGmc8B175L0QEmPDq572U0BwrN3QpK9g8Ww76V/XZVEWQtV5huuV2V5Mw2bFet3
+	 YQc90YEUvE2g4V++kRbByCJ5U+bHDuZ3awb3SRnuwoRINAu1pXWySTJeIHHDdtdzyE
+	 2+DcMFX4aklwE2XVbNa5VaHpSQ5x1i5hrq+CzQRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathon Hall <jonathon.hall@puri.sm>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.6 345/396] drm/i915: Do not match JSL in ehl_combo_pll_div_frac_wa_needed()
+	stable <stable@kernel.org>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.7 407/432] usb: typec: ucsi: Clear EVENT_PENDING under PPM lock
 Date: Mon,  1 Apr 2024 17:46:34 +0200
-Message-ID: <20240401152558.203188486@linuxfoundation.org>
+Message-ID: <20240401152605.525375578@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathon Hall <jonathon.hall@puri.sm>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit e41d769f1a7a1dc533c35ef7b366be3dbf432a1c upstream.
+commit 15b2e71b4653b3e13df34695a29ebeee237c5af2 upstream.
 
-Since commit 0c65dc062611 ("drm/i915/jsl: s/JSL/JASPERLAKE for
-platform/subplatform defines"), boot freezes on a Jasper Lake tablet
-(Librem 11), usually with graphical corruption on the eDP display,
-but sometimes just a black screen.  This commit was included in 6.6 and
-later.
+Suppose we sleep on the PPM lock after clearing the EVENT_PENDING
+bit because the thread for another connector is executing a command.
+In this case the command completion of the other command will still
+report the connector change for our connector.
 
-That commit was intended to refactor EHL and JSL macros, but the change
-to ehl_combo_pll_div_frac_wa_needed() started matching JSL incorrectly
-when it was only intended to match EHL.
+Clear the EVENT_PENDING bit under the PPM lock to avoid another
+useless call to ucsi_handle_connector_change() in this case.
 
-It replaced:
-	return ((IS_PLATFORM(i915, INTEL_ELKHARTLAKE) &&
-		 IS_JSL_EHL_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
-with:
-	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
-		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
-
-Remove IS_JASPERLAKE() to fix the regression.
-
-Signed-off-by: Jonathon Hall <jonathon.hall@puri.sm>
-Cc: stable@vger.kernel.org
-Fixes: 0c65dc062611 ("drm/i915/jsl: s/JSL/JASPERLAKE for platform/subplatform defines")
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240313135424.3731410-1-jonathon.hall@puri.sm
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 1ef48859317b2a77672dea8682df133abf9c44ed)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: c9aed03a0a68 ("usb: ucsi: Add missing ppm_lock")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-2-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-+++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-@@ -2462,7 +2462,7 @@ static void icl_wrpll_params_populate(st
- static bool
- ehl_combo_pll_div_frac_wa_needed(struct drm_i915_private *i915)
- {
--	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
-+	return ((IS_ELKHARTLAKE(i915) &&
- 		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
- 		 IS_TIGERLAKE(i915) || IS_ALDERLAKE_S(i915) || IS_ALDERLAKE_P(i915)) &&
- 		 i915->display.dpll.ref_clks.nssc == 38400;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -933,11 +933,11 @@ static void ucsi_handle_connector_change
+ 	if (con->status.change & UCSI_CONSTAT_CAM_CHANGE)
+ 		ucsi_partner_task(con, ucsi_check_altmodes, 1, 0);
+ 
+-	clear_bit(EVENT_PENDING, &con->ucsi->flags);
+-
+ 	mutex_lock(&ucsi->ppm_lock);
++	clear_bit(EVENT_PENDING, &con->ucsi->flags);
+ 	ret = ucsi_acknowledge_connector_change(ucsi);
+ 	mutex_unlock(&ucsi->ppm_lock);
++
+ 	if (ret)
+ 		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
+ 
 
 
 
