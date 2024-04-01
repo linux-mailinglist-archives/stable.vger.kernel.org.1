@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-35249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF88B894319
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA398941CD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AACA8283570
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE3F328315F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618DF481C6;
-	Mon,  1 Apr 2024 16:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753DF495F0;
+	Mon,  1 Apr 2024 16:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiuRZSW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPCb4fUR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1EABA3F;
-	Mon,  1 Apr 2024 16:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320E147A6B;
+	Mon,  1 Apr 2024 16:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990782; cv=none; b=IYjLEs2gnPX0RRnRXWmjF2DYKlHr7D36bOrv4Wd9pEk4xMXAMRGPjGXhWM2/Q0bZsFve1dwzvSHMyeagFobTpW669Ix0nIcLN9M+N58+IgwuAOymdA2czqcehxAOJMLBJ2Ge4zWKFCvWVHfgpSf5zHTn0QqWA9tDn4PTw709CrA=
+	t=1711989970; cv=none; b=Bm76viUG2zkj0ZFgVHAvTPItG/Uz0WBEn03JmrSBK8NEIL35nkxcfrlcr7lMV7QJUATRxfL/pwedSJwBhzQfY6nHRzML0B+9hhKNP6tnB7KjOOvxrRSvrZznXf3HrFNN5UtXyXvH3kx5H6LJMrpU3LGQ17I9EqFbb443DKfo8ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990782; c=relaxed/simple;
-	bh=IU4Se+ckKuxOz8FOBruNrTJeVF/7DxoDefhS62/C1hM=;
+	s=arc-20240116; t=1711989970; c=relaxed/simple;
+	bh=Fgg/plg3JU3GKrE5u7P0XNU4IPppAhQ9X+xoM9NVOlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAXdsUbPoYQ8qHAu5NH+zDr2CEEI8stRep/KcQP2P13rFkRmqhuZMC5ID0D/A95SfSovZETndBg9CzXoCfkH2Fi1/ryxVEiE+xoROjpiC2MGw7gcRZq3oQtVh/nNVJr7C1PDukxHcv7kohtrKZWKbuyecJh/ejGk5AsPa2hTy68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiuRZSW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81008C43390;
-	Mon,  1 Apr 2024 16:59:41 +0000 (UTC)
+	 MIME-Version; b=EkxDzAHWoa/TM/3JgB+D+WTKX6fKVNmq2Ic3IF4KU9K57d8m7OTZt0a0hFXKaQJHDh/yQZZf5K3IRLGdeC3qq+TPFZL70EgRV2no+AV6eLPYluTaVOAKQzsxJ9jzqSqG1+EsZGgM7Z/Yc/KkQiLeYbgRrD3VDKR9P22slryUuME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPCb4fUR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53D8C433F1;
+	Mon,  1 Apr 2024 16:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990782;
-	bh=IU4Se+ckKuxOz8FOBruNrTJeVF/7DxoDefhS62/C1hM=;
+	s=korg; t=1711989970;
+	bh=Fgg/plg3JU3GKrE5u7P0XNU4IPppAhQ9X+xoM9NVOlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DiuRZSW4e0+8jAjVlV6omiDZXWgv/2y2WiD0tasrEUqRHdt5PiyCIvFAB5BYvOf8w
-	 bdn9dvFAFLYxT6ZgoESg0TrAJreQhn/wmzMkyBTPu30k4RphgMhnLpXiZKiScPGyEP
-	 kV4dD94l8aofj2n8ftWrlJngGjxu8X8HRzBGeotM=
+	b=GPCb4fUR0GbfJs4qm0KAWxS+B5So/iASZ4ED60W6Y0g3+Rt+eVJ77nj7sKNtDvmrE
+	 wRa/X37JS91LybZBxwqPmQl0Mr8XjjwdpJCK+0pOAKrfZ9qDcvbqgCyAh/8dL2NxSa
+	 /Li85uzerrL3wh7OPW3XPNy8rKk9LF4RqAdtm2wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhruva Gole <d-gole@ti.com>,
-	Qingliang Li <qingliang.li@mediatek.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/272] PM: sleep: wakeirq: fix wake irq warning in system suspend
-Date: Mon,  1 Apr 2024 17:44:15 +0200
-Message-ID: <20240401152532.585061878@linuxfoundation.org>
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 207/396] selftests: mptcp: diag: return KSFT_FAIL not test_cnt
+Date: Mon,  1 Apr 2024 17:44:16 +0200
+Message-ID: <20240401152554.101456903@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingliang Li <qingliang.li@mediatek.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit e7a7681c859643f3f2476b2a28a494877fd89442 ]
+commit 45bcc0346561daa3f59e19a753cc7f3e08e8dff1 upstream.
 
-When driver uses pm_runtime_force_suspend() as the system suspend callback
-function and registers the wake irq with reverse enable ordering, the wake
-irq will be re-enabled when entering system suspend, triggering an
-'Unbalanced enable for IRQ xxx' warning. In this scenario, the call
-sequence during system suspend is as follows:
-  suspend_devices_and_enter()
-    -> dpm_suspend_start()
-      -> dpm_run_callback()
-        -> pm_runtime_force_suspend()
-          -> dev_pm_enable_wake_irq_check()
-          -> dev_pm_enable_wake_irq_complete()
+The test counter 'test_cnt' should not be returned in diag.sh, e.g. what
+if only the 4th test fail? Will do 'exit 4' which is 'exit ${KSFT_SKIP}',
+the whole test will be marked as skipped instead of 'failed'!
 
-    -> suspend_enter()
-      -> dpm_suspend_noirq()
-        -> device_wakeup_arm_wake_irqs()
-          -> dev_pm_arm_wake_irq()
+So we should do ret=${KSFT_FAIL} instead.
 
-To fix this issue, complete the setting of WAKE_IRQ_DEDICATED_ENABLED flag
-in dev_pm_enable_wake_irq_complete() to avoid redundant irq enablement.
-
-Fixes: 8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Qingliang Li <qingliang.li@mediatek.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
+Cc: stable@vger.kernel.org
+Fixes: 42fb6cddec3b ("selftests: mptcp: more stable diag tests")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/wakeirq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/diag.sh |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
-index afd094dec5ca3..ca0c092ba47fb 100644
---- a/drivers/base/power/wakeirq.c
-+++ b/drivers/base/power/wakeirq.c
-@@ -362,8 +362,10 @@ void dev_pm_enable_wake_irq_complete(struct device *dev)
- 		return;
- 
- 	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED &&
--	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE)
-+	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE) {
- 		enable_irq(wirq->irq);
-+		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
-+	}
- }
- 
- /**
--- 
-2.43.0
-
+--- a/tools/testing/selftests/net/mptcp/diag.sh
++++ b/tools/testing/selftests/net/mptcp/diag.sh
+@@ -69,7 +69,7 @@ __chk_nr()
+ 		else
+ 			echo "[ fail ] expected $expected found $nr"
+ 			mptcp_lib_result_fail "${msg}"
+-			ret=$test_cnt
++			ret=${KSFT_FAIL}
+ 		fi
+ 	else
+ 		echo "[  ok  ]"
+@@ -115,11 +115,11 @@ wait_msk_nr()
+ 	if [ $i -ge $timeout ]; then
+ 		echo "[ fail ] timeout while expecting $expected max $max last $nr"
+ 		mptcp_lib_result_fail "${msg} # timeout"
+-		ret=$test_cnt
++		ret=${KSFT_FAIL}
+ 	elif [ $nr != $expected ]; then
+ 		echo "[ fail ] expected $expected found $nr"
+ 		mptcp_lib_result_fail "${msg} # unexpected result"
+-		ret=$test_cnt
++		ret=${KSFT_FAIL}
+ 	else
+ 		echo "[  ok  ]"
+ 		mptcp_lib_result_pass "${msg}"
 
 
 
