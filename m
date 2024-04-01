@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE5E893F7D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D28489413D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED23D1C20D64
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4702E280F27
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BB747A79;
-	Mon,  1 Apr 2024 16:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E7C3F8F4;
+	Mon,  1 Apr 2024 16:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNh86Iar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3GuI8l5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F23D47A57;
-	Mon,  1 Apr 2024 16:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B571E86C;
+	Mon,  1 Apr 2024 16:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988234; cv=none; b=K6kGNheJpuyumsa0L3sok7Ql5bt2WgWo1ZQvYOyF5nXT6JbqmQa4R1E2Pbg/XBH/fh7Y3/1U1rN3BPvlz9YFJWWu1Ch73DgK+4VIxCwYXWVorm4QwdGFqZPjWQEBt1LoNjnPvX05QtVuwBrIMH1YMfwfWBhjeQADqhRVuLWtvXY=
+	t=1711989574; cv=none; b=S5bDE3R4KcJ9m/ls3IqWa+R/NVhMQWbMpNbccAEACY1htSk2pwOIAREByCHMooxoSUN93i0GHXEVEB14nKLiFrTPJWbh5Vklzk/FdI3G4vNHl6CzKahYQiMRYJtfZ7xnZtU3pccZOJPrGGJTGu8/SjFHg/yy8EA1kU7XvK3vx7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988234; c=relaxed/simple;
-	bh=oOSX2HZOG5GQNlF00JeCIeUXLpuQs6uhcjXGtvLeYa8=;
+	s=arc-20240116; t=1711989574; c=relaxed/simple;
+	bh=OiHroSHK2Q+yytq06RWKY5G+gC4+q3386C6wntv0kWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8/ZRAFTe1HE5ViWxbhPDoHEyDjsmaCFYuPM2nbYhSOgO0IWR28/M1VTbDoJZPEl3fWkBdfcnq2V4HnZXkoEcc1loN5Crt82/iBcNO8BCl4LZ8TLO4GTtFb4L0tMR0m7nEcbLmwxElovrvp/h8Tdn8U4MhwA3V+oXi59+a4Az/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNh86Iar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B10C433C7;
-	Mon,  1 Apr 2024 16:17:13 +0000 (UTC)
+	 MIME-Version; b=F93tTllTRwg6lUruaQRTx9/Q2+ohz8iCF00rzy69emieqqpUDJNqfpsWlXjPbsP6H4VITJqQ9gNDPvKdCNNgAssAbLwaalClVdYgBRglJJZjRi5w3YOLzxzTojfKFDHl71E/jzpt7LuCFW8s6oqyOTfrqyZkWzJ+4Q17XhIUkLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3GuI8l5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B64C433F1;
+	Mon,  1 Apr 2024 16:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988233;
-	bh=oOSX2HZOG5GQNlF00JeCIeUXLpuQs6uhcjXGtvLeYa8=;
+	s=korg; t=1711989574;
+	bh=OiHroSHK2Q+yytq06RWKY5G+gC4+q3386C6wntv0kWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNh86Iar4p6wLTaq4G0Np/cXkYB50YuLI/WO/NwA9V5xyVTucmZCmA2kM9coA88pX
-	 SG3pAzpcCCe0fOQJdFE34zHUmzMn0xetsg3TFhxRGDydxg7NdlSiB+rHs9OSw0/Ir+
-	 2giMIMyRzQy/YsM6oSP4stfonMUYlZfjVyletYL8=
+	b=D3GuI8l5RsHqwl1hG3UzPtuPjZxmx6nei6DcS5tGm3oQvVJ/sJI4+F31Lu1S32NPC
+	 2rOFbR41pCsTNo8f4if3abNvEkq6iQSSajnFt0T4qKfAeZHZe2/TieM3vzHOU7LO/I
+	 vQU66J6ZgQRubuCg1dqjCXJ84q8KSR2r15AKzdSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Stable@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 123/432] slimbus: core: Remove usage of the deprecated ida_simple_xx() API
+Subject: [PATCH 6.6 061/396] iio: adc: rockchip_saradc: use mask for write_enable bitfield
 Date: Mon,  1 Apr 2024 17:41:50 +0200
-Message-ID: <20240401152556.789643293@linuxfoundation.org>
+Message-ID: <20240401152549.743146314@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-[ Upstream commit 89ffa4cccec54467446f141a79b9e36893079fb8 ]
+[ Upstream commit 5b4e4b72034f85f7a0cdd147d3d729c5a22c8764 ]
 
-ida_alloc() and ida_free() should be preferred to the deprecated
-ida_simple_get() and ida_simple_remove().
+Some of the registers on the SARADCv2 have bits write protected except
+if another bit is set. This is usually done by having the lowest 16 bits
+store the data to write and the highest 16 bits specify which of the 16
+lowest bits should have their value written to the hardware block.
 
-Note that the upper limit of ida_simple_get() is exclusive, but the one of
-ida_alloc_range() is inclusive. So change this change allows one more
-device. Previously address 0xFE was never used.
+The write_enable mask for the channel selection was incorrect because it
+was just the value shifted by 16 bits, which means it would only ever
+write bits and never clear them. So e.g. if someone starts a conversion
+on channel 5, the lowest 4 bits would be 0x5, then starts a conversion
+on channel 0, it would still be 5.
 
-Fixes: 46a2bb5a7f7e ("slimbus: core: Add slim controllers support")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240224114137.85781-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead of shifting the value by 16 as the mask, let's use the OR'ing of
+the appropriate masks shifted by 16.
+
+Note that this is not an issue currently because the only SARADCv2
+currently supported has a reset defined in its Device Tree, that reset
+resets the SARADC controller before starting a conversion on a channel.
+However, this reset is handled as optional by the probe function and
+thus proper masking should be used in the event an SARADCv2 without a
+reset ever makes it upstream.
+
+Fixes: 757953f8ec69 ("iio: adc: rockchip_saradc: Add support for RK3588")
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20240223-saradcv2-chan-mask-v1-2-84b06a0f623a@theobroma-systems.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/slimbus/core.c | 4 ++--
+ drivers/iio/adc/rockchip_saradc.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/slimbus/core.c b/drivers/slimbus/core.c
-index d43873bb5fe6d..01cbd46219810 100644
---- a/drivers/slimbus/core.c
-+++ b/drivers/slimbus/core.c
-@@ -436,8 +436,8 @@ static int slim_device_alloc_laddr(struct slim_device *sbdev,
- 		if (ret < 0)
- 			goto err;
- 	} else if (report_present) {
--		ret = ida_simple_get(&ctrl->laddr_ida,
--				     0, SLIM_LA_MANAGER - 1, GFP_KERNEL);
-+		ret = ida_alloc_max(&ctrl->laddr_ida,
-+				    SLIM_LA_MANAGER - 1, GFP_KERNEL);
- 		if (ret < 0)
- 			goto err;
+diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+index 2da8d6f3241a1..1c0042fbbb548 100644
+--- a/drivers/iio/adc/rockchip_saradc.c
++++ b/drivers/iio/adc/rockchip_saradc.c
+@@ -102,12 +102,12 @@ static void rockchip_saradc_start_v2(struct rockchip_saradc *info, int chn)
+ 	writel_relaxed(0xc, info->regs + SARADC_T_DAS_SOC);
+ 	writel_relaxed(0x20, info->regs + SARADC_T_PD_SOC);
+ 	val = FIELD_PREP(SARADC2_EN_END_INT, 1);
+-	val |= val << 16;
++	val |= SARADC2_EN_END_INT << 16;
+ 	writel_relaxed(val, info->regs + SARADC2_END_INT_EN);
+ 	val = FIELD_PREP(SARADC2_START, 1) |
+ 	      FIELD_PREP(SARADC2_SINGLE_MODE, 1) |
+ 	      FIELD_PREP(SARADC2_CONV_CHANNELS, chn);
+-	val |= val << 16;
++	val |= (SARADC2_START | SARADC2_SINGLE_MODE | SARADC2_CONV_CHANNELS) << 16;
+ 	writel(val, info->regs + SARADC2_CONV_CON);
+ }
  
 -- 
 2.43.0
