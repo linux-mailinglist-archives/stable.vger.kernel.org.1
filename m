@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF759893F59
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3A48940DB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 900361F228CB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BC201C2172A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446B84778E;
-	Mon,  1 Apr 2024 16:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DCE41C89;
+	Mon,  1 Apr 2024 16:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEbykxwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rn8W1wIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89A61DFFC;
-	Mon,  1 Apr 2024 16:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27D91E525;
+	Mon,  1 Apr 2024 16:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988119; cv=none; b=TeUN5Isi7sp7m/HGJMnIluBvtzcn12jn/3XQcqFTfcLD5TFA+LTj6llqMzUW3SB0getMnxD/bLz+4WfNhaD/J13nW576YNRKxTB2i7CiNtTXpC3mYVTi7HkTx8VYl7iwkxSWpMWrmF/d/LZ+Lx+iKQ2abQUv0YfyiWIrQfoA+Z0=
+	t=1711989306; cv=none; b=LXocOYt/0F4uRu2Wk2k2UXkVrq9MJOLxPXQ9cpiUCpDQh8NEw8epxVOMNPJgFIYnOUWLfVcj3S9quNuCL2AK9ykJuft/qvcCEW1HgyqVefkiXdDdCny+xUgtlwgPYUtvb5HWxHv6oPMS0gAOF4c77TtiJjVDu/zzIRxtEDmM7x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988119; c=relaxed/simple;
-	bh=6BtBkf4T0UOoD9cqQ9bGTF0VNALIUK2vo3GDedAHhk0=;
+	s=arc-20240116; t=1711989306; c=relaxed/simple;
+	bh=oFAdhbkMsGDK7IJlxDjI/ZeDgklq9sbfsVs0ahlHEF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrB8qk6OF7IB761RzxbLLKzep3Z4Bv+M1m/G7uLeJ7WxegKQtZ68hzkXn9cb2ZXTnAmls97s81FLAwpKAFAkxoj/VmR/y/jOnOru9ZtAsXhVSf37FCO7Kzfrv3g8kDCB0a61Z8DF3Ydm+er0AKVgE4QDY/VB0U/NLg6d0C0OV1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEbykxwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FC6C433F1;
-	Mon,  1 Apr 2024 16:15:17 +0000 (UTC)
+	 MIME-Version; b=qd7t1nRGk6si2DvJt+/u/PpjtFIH3f2KY11ptk4HAGhQlTdacyJxczYrTpAdhRMJdfEMLpeTbgf75Iqxx/OXkjML8TZMN42iEOrY1sJr5tyXhh/H1bLJUEykQkhFa6lJNle9saH+/lvg1Xrk70RHqAc6nmX8He81E3Coa6nk3p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rn8W1wIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5194EC43390;
+	Mon,  1 Apr 2024 16:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988118;
-	bh=6BtBkf4T0UOoD9cqQ9bGTF0VNALIUK2vo3GDedAHhk0=;
+	s=korg; t=1711989305;
+	bh=oFAdhbkMsGDK7IJlxDjI/ZeDgklq9sbfsVs0ahlHEF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YEbykxwFMcX55Bjic19W5rmgpGpJG86UL9u7rvdtmyOAqZNtW0HmAS9++86cF6KaG
-	 JMt8eAAIJNIoBwBq7IFBEftVlF3c84f4N7B0h0NIzzGMajMjVm81re44mzZK5eRrrW
-	 UdvB9GyyoE0y3vRkQG0ebfHTkOjsvRuqtOSn2mpQ=
+	b=rn8W1wIfVwpjWpDKB8k8GJC2GxchSe5smu7lnlCcnAXALaoP1CmDc7jkYeQBo//Qi
+	 OKQECg0UPHL0+RPNK5W8EEv+rXSGziU29dkL7Aoye+MWi8ElI08bawpzcWeHNHrh5Z
+	 0D8HVpkKA/n8sKGD7BTTnIQ8ULDz79FTN/FBsfLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 072/432] clk: qcom: gcc-ipq9574: fix terminating of frequency table arrays
+Subject: [PATCH 6.6 010/396] smack: Set SMACK64TRANSMUTE only for dirs in smack_inode_setxattr()
 Date: Mon,  1 Apr 2024 17:40:59 +0200
-Message-ID: <20240401152555.272110432@linuxfoundation.org>
+Message-ID: <20240401152548.191731952@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit bd2b6395671d823caa38d8e4d752de2448ae61e1 ]
+[ Upstream commit 9c82169208dde516510aaba6bbd8b13976690c5d ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+Since the SMACK64TRANSMUTE xattr makes sense only for directories, enforce
+this restriction in smack_inode_setxattr().
 
-Only compile tested.
-
-Fixes: d75b82cff488 ("clk: qcom: Add Global Clock Controller driver for IPQ9574")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-4-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq9574.c | 1 +
- 1 file changed, 1 insertion(+)
+ security/smack/smack_lsm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq9574.c b/drivers/clk/qcom/gcc-ipq9574.c
-index e8190108e1aef..0a3f846695b80 100644
---- a/drivers/clk/qcom/gcc-ipq9574.c
-+++ b/drivers/clk/qcom/gcc-ipq9574.c
-@@ -2082,6 +2082,7 @@ static struct clk_branch gcc_sdcc1_apps_clk = {
- static const struct freq_tbl ftbl_sdcc_ice_core_clk_src[] = {
- 	F(150000000, P_GPLL4, 8, 0, 0),
- 	F(300000000, P_GPLL4, 4, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 sdcc1_ice_core_clk_src = {
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 1f1ea8529421f..0fe3ccec62a52 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -1312,7 +1312,8 @@ static int smack_inode_setxattr(struct mnt_idmap *idmap,
+ 		check_star = 1;
+ 	} else if (strcmp(name, XATTR_NAME_SMACKTRANSMUTE) == 0) {
+ 		check_priv = 1;
+-		if (size != TRANS_TRUE_SIZE ||
++		if (!S_ISDIR(d_backing_inode(dentry)->i_mode) ||
++		    size != TRANS_TRUE_SIZE ||
+ 		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
+ 			rc = -EINVAL;
+ 	} else
 -- 
 2.43.0
 
