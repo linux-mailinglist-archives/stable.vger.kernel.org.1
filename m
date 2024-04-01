@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-34894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415B3894156
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA438893FB3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4205282ECA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80BFA28513E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7528F47A76;
-	Mon,  1 Apr 2024 16:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A3447A76;
+	Mon,  1 Apr 2024 16:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBbmP8qc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hryu3Bm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3374B1E86C;
-	Mon,  1 Apr 2024 16:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8817C129;
+	Mon,  1 Apr 2024 16:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989655; cv=none; b=Sl+GODzUnEQZpDaGHiJTqdEqiWAF9Dqj4sC98dM1PI/V34yWsk3wC81AqELhHTeVX+7rz/EzbA9puSNmFcosZ3IseYn0yUk/QPviRB37ZYIdedh+HMrg/lhv/efoDmlP7VUaKMxf7eqNnQLojkAsAnwFP8z7xUu1zZWGQKG86LQ=
+	t=1711988403; cv=none; b=H2xbUUhRD5ZWErEEOIXUbud0LlH84P2phbSWDArFTJIZ7SctwrhtWWKKlykfB5O0mKMFjihLEhmqml4q4mjR37ck68WHka0jZ2TXjWIu0asIOR5lzC9dA1Ok4EFN7Nvtt+JBgnOD3NM9dp0pY8DrqEED+Zfs+QH3PoGe9wxq1pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989655; c=relaxed/simple;
-	bh=ssTNBemGqxNPhr321yvkLQgmo8RSJmZkwtlEQOTguqk=;
+	s=arc-20240116; t=1711988403; c=relaxed/simple;
+	bh=CXkm5qSC8ryBrS7yL3GvTRVslWbERkrMGvDPE8W9isg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhNqMAd1Sgd7mPeluNwdEaGnaTupkHkPSXjrMuWkxx6GWCleWxi/nw1B2no5JKGd8EaEao3Xuo7tqnsBAv9ch1qhCbd+MbJQGvuyhqbTlaxq/SsEZL7YxjB0ge7tS2s5YK1tIY3nYrnU7lJY4xjLgkCAi1smWms44tMhBwvS1Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBbmP8qc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98378C433F1;
-	Mon,  1 Apr 2024 16:40:54 +0000 (UTC)
+	 MIME-Version; b=MnbM78kTt94TI0K2Ga6HUwB0flbFMxN4AZNljLWyVrHT5l4psGZTnnl0Jcmkwh3ZLrcqKpKNkJLyvob9FEP0QIFNZiin2dVx8txpOlEfnaJ4RfVlAxUj7UdCL3IpilGBUvwSuqEun24Iyrib6U25JS1rPBzfwX1RktQmWemSG+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hryu3Bm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450C2C433C7;
+	Mon,  1 Apr 2024 16:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989655;
-	bh=ssTNBemGqxNPhr321yvkLQgmo8RSJmZkwtlEQOTguqk=;
+	s=korg; t=1711988403;
+	bh=CXkm5qSC8ryBrS7yL3GvTRVslWbERkrMGvDPE8W9isg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBbmP8qca1uoyi7PPTtNA6cPWY6ZbK1hKI/GbeZDssZRs0BNo5dbxEWFrLsavbqTT
-	 nKvsNn7IHk+AEMcF2yUuLum/2kEn9o0xLppQ2qupf+8WkvsaVkhg7w55Sn+eAKgRi6
-	 nhr/WnBVdJaWp5Ydj/iYX3H0WwhaPD96Oq/TJEKw=
+	b=Hryu3Bm+7C/uAb1dvt1Nw13FmidlWL5j2KSuJxwicN81mQpz7IeM7SwmMBIjOGhNt
+	 WJcQSbwJu24LUYp0fpMxpxcu04+tAq95mkNRXgvhnnARetR6dOTht8TXe4topfCbzY
+	 Xb2QYB0moB/Tm04m9tWhARB/2yQ77p5YK2jKLokg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+cfed5b56649bddf80d6e@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/396] PCI/AER: Block runtime suspend when handling errors
+Subject: [PATCH 6.7 175/432] nilfs2: fix failure to detect DAT corruption in btree and direct mappings
 Date: Mon,  1 Apr 2024 17:42:42 +0200
-Message-ID: <20240401152551.289650212@linuxfoundation.org>
+Message-ID: <20240401152558.368283105@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 002bf2fbc00e5c4b95fb167287e2ae7d1973281e ]
+[ Upstream commit f2f26b4a84a0ef41791bd2d70861c8eac748f4ba ]
 
-PM runtime can be done simultaneously with AER error handling.  Avoid that
-by using pm_runtime_get_sync() before and pm_runtime_put() after reset in
-pcie_do_recovery() for all recovering devices.
+Patch series "nilfs2: fix kernel bug at submit_bh_wbc()".
 
-pm_runtime_get_sync() will increase dev->power.usage_count counter to
-prevent any possible future request to runtime suspend a device.  It will
-also resume a device, if it was previously in D3hot state.
+This resolves a kernel BUG reported by syzbot.  Since there are two
+flaws involved, I've made each one a separate patch.
 
-I tested with igc device by doing simultaneous aer_inject and rpm
-suspend/resume via /sys/bus/pci/devices/PCI_ID/power/control and can
-reproduce:
+The first patch alone resolves the syzbot-reported bug, but I think
+both fixes should be sent to stable, so I've tagged them as such.
 
-  igc 0000:02:00.0: not ready 65535ms after bus reset; giving up
-  pcieport 0000:00:1c.2: AER: Root Port link has been reset (-25)
-  pcieport 0000:00:1c.2: AER: subordinate device reset failed
-  pcieport 0000:00:1c.2: AER: device recovery failed
-  igc 0000:02:00.0: Unable to change power state from D3hot to D0, device inaccessible
+This patch (of 2):
 
-The problem disappears when this patch is applied.
+Syzbot has reported a kernel bug in submit_bh_wbc() when writing file data
+to a nilfs2 file system whose metadata is corrupted.
 
-Link: https://lore.kernel.org/r/20240212120135.146068-1-stanislaw.gruszka@linux.intel.com
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+There are two flaws involved in this issue.
+
+The first flaw is that when nilfs_get_block() locates a data block using
+btree or direct mapping, if the disk address translation routine
+nilfs_dat_translate() fails with internal code -ENOENT due to DAT metadata
+corruption, it can be passed back to nilfs_get_block().  This causes
+nilfs_get_block() to misidentify an existing block as non-existent,
+causing both data block lookup and insertion to fail inconsistently.
+
+The second flaw is that nilfs_get_block() returns a successful status in
+this inconsistent state.  This causes the caller __block_write_begin_int()
+or others to request a read even though the buffer is not mapped,
+resulting in a BUG_ON check for the BH_Mapped flag in submit_bh_wbc()
+failing.
+
+This fixes the first issue by changing the return value to code -EINVAL
+when a conversion using DAT fails with code -ENOENT, avoiding the
+conflicting condition that leads to the kernel bug described above.  Here,
+code -EINVAL indicates that metadata corruption was detected during the
+block lookup, which will be properly handled as a file system error and
+converted to -EIO when passing through the nilfs2 bmap layer.
+
+Link: https://lkml.kernel.org/r/20240313105827.5296-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240313105827.5296-2-konishi.ryusuke@gmail.com
+Fixes: c3a7abf06ce7 ("nilfs2: support contiguous lookup of blocks")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+cfed5b56649bddf80d6e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cfed5b56649bddf80d6e
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/err.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ fs/nilfs2/btree.c  | 9 +++++++--
+ fs/nilfs2/direct.c | 9 +++++++--
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index 59c90d04a609a..705893b5f7b09 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -13,6 +13,7 @@
- #define dev_fmt(fmt) "AER: " fmt
- 
- #include <linux/pci.h>
-+#include <linux/pm_runtime.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/errno.h>
-@@ -85,6 +86,18 @@ static int report_error_detected(struct pci_dev *dev,
- 	return 0;
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 13592e82eaf68..65659fa0372e6 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -724,7 +724,7 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
+ 		dat = nilfs_bmap_get_dat(btree);
+ 		ret = nilfs_dat_translate(dat, ptr, &blocknr);
+ 		if (ret < 0)
+-			goto out;
++			goto dat_error;
+ 		ptr = blocknr;
+ 	}
+ 	cnt = 1;
+@@ -743,7 +743,7 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
+ 			if (dat) {
+ 				ret = nilfs_dat_translate(dat, ptr2, &blocknr);
+ 				if (ret < 0)
+-					goto out;
++					goto dat_error;
+ 				ptr2 = blocknr;
+ 			}
+ 			if (ptr2 != ptr + cnt || ++cnt == maxblocks)
+@@ -781,6 +781,11 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
+  out:
+ 	nilfs_btree_free_path(path);
+ 	return ret;
++
++ dat_error:
++	if (ret == -ENOENT)
++		ret = -EINVAL;  /* Notify bmap layer of metadata corruption */
++	goto out;
  }
  
-+static int pci_pm_runtime_get_sync(struct pci_dev *pdev, void *data)
-+{
-+	pm_runtime_get_sync(&pdev->dev);
-+	return 0;
-+}
-+
-+static int pci_pm_runtime_put(struct pci_dev *pdev, void *data)
-+{
-+	pm_runtime_put(&pdev->dev);
-+	return 0;
-+}
-+
- static int report_frozen_detected(struct pci_dev *dev, void *data)
- {
- 	return report_error_detected(dev, pci_channel_io_frozen, data);
-@@ -207,6 +220,8 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	else
- 		bridge = pci_upstream_bridge(dev);
- 
-+	pci_walk_bridge(bridge, pci_pm_runtime_get_sync, NULL);
-+
- 	pci_dbg(bridge, "broadcast error_detected message\n");
- 	if (state == pci_channel_io_frozen) {
- 		pci_walk_bridge(bridge, report_frozen_detected, &status);
-@@ -251,10 +266,15 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 		pcie_clear_device_status(dev);
- 		pci_aer_clear_nonfatal_status(dev);
+ static void nilfs_btree_promote_key(struct nilfs_bmap *btree,
+diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
+index 4c85914f2abc3..893ab36824cc2 100644
+--- a/fs/nilfs2/direct.c
++++ b/fs/nilfs2/direct.c
+@@ -66,7 +66,7 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
+ 		dat = nilfs_bmap_get_dat(direct);
+ 		ret = nilfs_dat_translate(dat, ptr, &blocknr);
+ 		if (ret < 0)
+-			return ret;
++			goto dat_error;
+ 		ptr = blocknr;
  	}
-+
-+	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
-+
- 	pci_info(bridge, "device recovery successful\n");
- 	return status;
  
- failed:
-+	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
+@@ -79,7 +79,7 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
+ 		if (dat) {
+ 			ret = nilfs_dat_translate(dat, ptr2, &blocknr);
+ 			if (ret < 0)
+-				return ret;
++				goto dat_error;
+ 			ptr2 = blocknr;
+ 		}
+ 		if (ptr2 != ptr + cnt)
+@@ -87,6 +87,11 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
+ 	}
+ 	*ptrp = ptr;
+ 	return cnt;
 +
- 	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
++ dat_error:
++	if (ret == -ENOENT)
++		ret = -EINVAL;  /* Notify bmap layer of metadata corruption */
++	return ret;
+ }
  
- 	/* TODO: Should kernel panic here? */
+ static __u64
 -- 
 2.43.0
 
