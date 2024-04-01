@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-35240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F672894311
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C680894007
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4069428353C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32F531F21E44
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE132481C6;
-	Mon,  1 Apr 2024 16:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF34345BE4;
+	Mon,  1 Apr 2024 16:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYlOUV8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xs02YMt7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D05FBA3F;
-	Mon,  1 Apr 2024 16:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D64A1CA8F;
+	Mon,  1 Apr 2024 16:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990753; cv=none; b=X+PkY0QcqRa8Z+ou1CtPytKUYruYjbGSE4NXQbwr7Fd5q2nVzIvEpkvOPkbSAK7BCFdHE3GeLnPFe2uAskRsasHXuQUnSB698kO3BviOTvJ5RAQQEcTOQwqgZ1Z8J8d8dqQHIHAqChVAordyW6uPYmN5fmJiKlWJa6DY5yOJU8k=
+	t=1711988682; cv=none; b=NNMDCvLCxY0Pcp7JQ+YmyKtek8DlKzgiWYwkd0QnELY4d2ZQv5wT+32oOOmBqJp1y6LsjE0ZZqk+QyNlbCZpt3KhGTeWEDSNMzZjp7XIFpCrt9mtDs8rPfxgQH0tWKNiS0XaXNX7XlV9EbGmbv7mJUYgHAuIolYdWad/YgMM++8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990753; c=relaxed/simple;
-	bh=DKJ3YCFdQsOXboa1Olu4nzaZHjA8DZWbBRaP7gFYUGw=;
+	s=arc-20240116; t=1711988682; c=relaxed/simple;
+	bh=yFqR0c0fq9LVLHl3TpUrzK/IRiSnVHFQ0CF9NvifqrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFhOnLjPtiA5sdV3juILhWjqhxwPbZ3S++vAOFOw2RX4+upXLWdmtKn4JXrq83GSqn6FnOV6agAzusfu3IGZ63wEvVOtNKAY4hMk01ROw4DHcIcZFso61l4xDX3bDarwlrFAHhClb07Jnu6Kd6qqtpPTmrjI0C883S2U2aN8h2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYlOUV8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145A4C433C7;
-	Mon,  1 Apr 2024 16:59:12 +0000 (UTC)
+	 MIME-Version; b=SaZj8Ui2Jm8/DF+Welh/QSF57yBdUyImtz8G7U0KPw1WMge4eqhECCh0q5aIWo1+SKY/gfrSy9rF64eIR/dhWEJOEHQuhNswGZ5DKzgrf2NZifFVmIM2vEXbeUkPtfJy+wI+mGgghaPmLIdvLujASkIbw4JOB7e3ZMrW38TEW4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xs02YMt7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF21DC433C7;
+	Mon,  1 Apr 2024 16:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990753;
-	bh=DKJ3YCFdQsOXboa1Olu4nzaZHjA8DZWbBRaP7gFYUGw=;
+	s=korg; t=1711988682;
+	bh=yFqR0c0fq9LVLHl3TpUrzK/IRiSnVHFQ0CF9NvifqrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYlOUV8rlA1T6zj4YKbwtuP7nlTglAwsbRJ5cOSrlm5dHIMSii3ptRRg2DkOy1ya1
-	 lPCSupjzJ9QH5xwWdNgDRT51UB5dDT6qS7mZIQzD6RZ6yt7qjfiuLlOJ/iI0bNB1c9
-	 PDGQ7EdUUWxS2jL/JFFpQKN1+Gw+boJNvIUpe2xU=
+	b=xs02YMt7Zlb/EDuyFoVr6O7I+PEesB01egT139exRB6ka+VcV1ZKK87FKjMWNeBsv
+	 gIwzJggfmP+tmY1B6Fxmr0NAdhrMNlScWoUe934KjCVsGcp5L35NeBCblx9Z8OJeh1
+	 Sbt7rzjGlroP0/uqJdgfZRi1a28+oyoGwpSNkuso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Matlack <dmatlack@google.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Adrien Grassein <adrien.grassein@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/272] KVM: Always flush async #PF workqueue when vCPU is being destroyed
+Subject: [PATCH 6.7 229/432] drm/bridge: lt8912b: use drm_bridge_edid_read()
 Date: Mon,  1 Apr 2024 17:43:36 +0200
-Message-ID: <20240401152531.177668703@linuxfoundation.org>
+Message-ID: <20240401152559.964561093@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,184 +68,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 3d75b8aa5c29058a512db29da7cbee8052724157 ]
+[ Upstream commit 60d1fe1a7f302cc1151b155ac2d134db59bb1420 ]
 
-Always flush the per-vCPU async #PF workqueue when a vCPU is clearing its
-completion queue, e.g. when a VM and all its vCPUs is being destroyed.
-KVM must ensure that none of its workqueue callbacks is running when the
-last reference to the KVM _module_ is put.  Gifting a reference to the
-associated VM prevents the workqueue callback from dereferencing freed
-vCPU/VM memory, but does not prevent the KVM module from being unloaded
-before the callback completes.
+Prefer using the struct drm_edid based functions.
 
-Drop the misguided VM refcount gifting, as calling kvm_put_kvm() from
-async_pf_execute() if kvm_put_kvm() flushes the async #PF workqueue will
-result in deadlock.  async_pf_execute() can't return until kvm_put_kvm()
-finishes, and kvm_put_kvm() can't return until async_pf_execute() finishes:
-
- WARNING: CPU: 8 PID: 251 at virt/kvm/kvm_main.c:1435 kvm_put_kvm+0x2d/0x320 [kvm]
- Modules linked in: vhost_net vhost vhost_iotlb tap kvm_intel kvm irqbypass
- CPU: 8 PID: 251 Comm: kworker/8:1 Tainted: G        W          6.6.0-rc1-e7af8d17224a-x86/gmem-vm #119
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
- Workqueue: events async_pf_execute [kvm]
- RIP: 0010:kvm_put_kvm+0x2d/0x320 [kvm]
- Call Trace:
-  <TASK>
-  async_pf_execute+0x198/0x260 [kvm]
-  process_one_work+0x145/0x2d0
-  worker_thread+0x27e/0x3a0
-  kthread+0xba/0xe0
-  ret_from_fork+0x2d/0x50
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
- ---[ end trace 0000000000000000 ]---
- INFO: task kworker/8:1:251 blocked for more than 120 seconds.
-       Tainted: G        W          6.6.0-rc1-e7af8d17224a-x86/gmem-vm #119
- "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- task:kworker/8:1     state:D stack:0     pid:251   ppid:2      flags:0x00004000
- Workqueue: events async_pf_execute [kvm]
- Call Trace:
-  <TASK>
-  __schedule+0x33f/0xa40
-  schedule+0x53/0xc0
-  schedule_timeout+0x12a/0x140
-  __wait_for_common+0x8d/0x1d0
-  __flush_work.isra.0+0x19f/0x2c0
-  kvm_clear_async_pf_completion_queue+0x129/0x190 [kvm]
-  kvm_arch_destroy_vm+0x78/0x1b0 [kvm]
-  kvm_put_kvm+0x1c1/0x320 [kvm]
-  async_pf_execute+0x198/0x260 [kvm]
-  process_one_work+0x145/0x2d0
-  worker_thread+0x27e/0x3a0
-  kthread+0xba/0xe0
-  ret_from_fork+0x2d/0x50
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
-
-If kvm_clear_async_pf_completion_queue() actually flushes the workqueue,
-then there's no need to gift async_pf_execute() a reference because all
-invocations of async_pf_execute() will be forced to complete before the
-vCPU and its VM are destroyed/freed.  And that in turn fixes the module
-unloading bug as __fput() won't do module_put() on the last vCPU reference
-until the vCPU has been freed, e.g. if closing the vCPU file also puts the
-last reference to the KVM module.
-
-Note that kvm_check_async_pf_completion() may also take the work item off
-the completion queue and so also needs to flush the work queue, as the
-work will not be seen by kvm_clear_async_pf_completion_queue().  Waiting
-on the workqueue could theoretically delay a vCPU due to waiting for the
-work to complete, but that's a very, very small chance, and likely a very
-small delay.  kvm_arch_async_page_present_queued() unconditionally makes a
-new request, i.e. will effectively delay entering the guest, so the
-remaining work is really just:
-
-        trace_kvm_async_pf_completed(addr, cr2_or_gpa);
-
-        __kvm_vcpu_wake_up(vcpu);
-
-        mmput(mm);
-
-and mmput() can't drop the last reference to the page tables if the vCPU is
-still alive, i.e. the vCPU won't get stuck tearing down page tables.
-
-Add a helper to do the flushing, specifically to deal with "wakeup all"
-work items, as they aren't actually work items, i.e. are never placed in a
-workqueue.  Trying to flush a bogus workqueue entry rightly makes
-__flush_work() complain (kudos to whoever added that sanity check).
-
-Note, commit 5f6de5cbebee ("KVM: Prevent module exit until all VMs are
-freed") *tried* to fix the module refcounting issue by having VMs grab a
-reference to the module, but that only made the bug slightly harder to hit
-as it gave async_pf_execute() a bit more time to complete before the KVM
-module could be unloaded.
-
-Fixes: af585b921e5d ("KVM: Halt vcpu if page it tries to access is swapped out")
-Cc: stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20240110011533.503302-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+cc: Adrien Grassein <adrien.grassein@gmail.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Robert Foss <rfoss@kernel.org>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: Jonas Karlman <jonas@kwiboo.se>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/32c9b52fe6fa7cbad6bfd0ff00041876977e02ea.1706038510.git.jani.nikula@intel.com
+Stable-dep-of: 171b711b26cc ("drm/bridge: lt8912b: do not return negative values from .get_modes()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/async_pf.c | 31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/virt/kvm/async_pf.c b/virt/kvm/async_pf.c
-index 9bfe1d6f6529a..adaf6f141804f 100644
---- a/virt/kvm/async_pf.c
-+++ b/virt/kvm/async_pf.c
-@@ -88,7 +88,27 @@ static void async_pf_execute(struct work_struct *work)
- 	__kvm_vcpu_wake_up(vcpu);
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index 03532efb893bb..491c08306f81a 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -429,16 +429,16 @@ lt8912_connector_mode_valid(struct drm_connector *connector,
  
- 	mmput(mm);
--	kvm_put_kvm(vcpu->kvm);
-+}
-+
-+static void kvm_flush_and_free_async_pf_work(struct kvm_async_pf *work)
-+{
-+	/*
-+	 * The async #PF is "done", but KVM must wait for the work item itself,
-+	 * i.e. async_pf_execute(), to run to completion.  If KVM is a module,
-+	 * KVM must ensure *no* code owned by the KVM (the module) can be run
-+	 * after the last call to module_put().  Note, flushing the work item
-+	 * is always required when the item is taken off the completion queue.
-+	 * E.g. even if the vCPU handles the item in the "normal" path, the VM
-+	 * could be terminated before async_pf_execute() completes.
-+	 *
-+	 * Wake all events skip the queue and go straight done, i.e. don't
-+	 * need to be flushed (but sanity check that the work wasn't queued).
-+	 */
-+	if (work->wakeup_all)
-+		WARN_ON_ONCE(work->work.func);
-+	else
-+		flush_work(&work->work);
-+	kmem_cache_free(async_pf_cache, work);
- }
+ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ {
+-	struct edid *edid;
++	const struct drm_edid *drm_edid;
+ 	int ret = -1;
+ 	int num = 0;
+ 	struct lt8912 *lt = connector_to_lt8912(connector);
+ 	u32 bus_format = MEDIA_BUS_FMT_RGB888_1X24;
  
- void kvm_clear_async_pf_completion_queue(struct kvm_vcpu *vcpu)
-@@ -115,7 +135,6 @@ void kvm_clear_async_pf_completion_queue(struct kvm_vcpu *vcpu)
- #else
- 		if (cancel_work_sync(&work->work)) {
- 			mmput(work->mm);
--			kvm_put_kvm(vcpu->kvm); /* == work->vcpu->kvm */
- 			kmem_cache_free(async_pf_cache, work);
- 		}
- #endif
-@@ -127,7 +146,10 @@ void kvm_clear_async_pf_completion_queue(struct kvm_vcpu *vcpu)
- 			list_first_entry(&vcpu->async_pf.done,
- 					 typeof(*work), link);
- 		list_del(&work->link);
--		kmem_cache_free(async_pf_cache, work);
-+
-+		spin_unlock(&vcpu->async_pf.lock);
-+		kvm_flush_and_free_async_pf_work(work);
-+		spin_lock(&vcpu->async_pf.lock);
+-	edid = drm_bridge_get_edid(lt->hdmi_port, connector);
+-	if (edid) {
+-		drm_connector_update_edid_property(connector, edid);
+-		num = drm_add_edid_modes(connector, edid);
++	drm_edid = drm_bridge_edid_read(lt->hdmi_port, connector);
++	if (drm_edid) {
++		drm_edid_connector_update(connector, drm_edid);
++		num = drm_edid_connector_add_modes(connector);
+ 	} else {
+ 		return ret;
  	}
- 	spin_unlock(&vcpu->async_pf.lock);
+@@ -448,7 +448,7 @@ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ 	if (ret)
+ 		num = ret;
  
-@@ -152,7 +174,7 @@ void kvm_check_async_pf_completion(struct kvm_vcpu *vcpu)
- 
- 		list_del(&work->queue);
- 		vcpu->async_pf.queued--;
--		kmem_cache_free(async_pf_cache, work);
-+		kvm_flush_and_free_async_pf_work(work);
- 	}
+-	kfree(edid);
++	drm_edid_free(drm_edid);
+ 	return num;
  }
- 
-@@ -187,7 +209,6 @@ bool kvm_setup_async_pf(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 	work->arch = *arch;
- 	work->mm = current->mm;
- 	mmget(work->mm);
--	kvm_get_kvm(work->vcpu->kvm);
- 
- 	INIT_WORK(&work->work, async_pf_execute);
  
 -- 
 2.43.0
