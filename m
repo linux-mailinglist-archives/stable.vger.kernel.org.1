@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23CA89413F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C97893F7F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B96F282EBB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30F4C1F21E13
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102E64596E;
-	Mon,  1 Apr 2024 16:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29F247A76;
+	Mon,  1 Apr 2024 16:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCnzTOdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbY/jLAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C108C1E86C;
-	Mon,  1 Apr 2024 16:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFD34778C;
+	Mon,  1 Apr 2024 16:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989581; cv=none; b=dv4IStNDV8o/ihyV0RhGT9JfBG1OfyP+HUw74MGMdlW0++gMJwIxN2Kv2gVBKazjow22T3zSrrSu94X2lfVMxot4EfStQJ4Typ+hiOCWsCjI1Ixgvt7wwP3R0250c4CVn1OFOLbavanWqszC6N3Dj+BadcW8aG3ccmFWAgGbRvI=
+	t=1711988240; cv=none; b=AIYGtv3+rMxBkB56V9tR3yGdFtRy4eKJtNyclVG5auQOPklEQD6E9SvzfElt7KGPczqKiklkeyNfroY51kofYdJyFiXKlf8AMVvNw1X7CcokKHzgkEN86SxVh2z8r/jeiVoiToh+u/aguXA16ODzzqpjpIT6GW376AfF/G1vcZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989581; c=relaxed/simple;
-	bh=yQo07kxyelPTYQkQTF1ebvU/j7XkjCr9vwtpfycP1Zc=;
+	s=arc-20240116; t=1711988240; c=relaxed/simple;
+	bh=Gf1jCzqlkHElEEyCnItgmc7gV2ZBk3st2zet0ExsWYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnP9CRLFD0iqJCPmsFq6wOPiMW4yiVZa/nZVgJ2x+ULiSAQVOmTmXH8oUZclqCfTKOwplIqJPmvKlv0k7C9j3+HAcV/Rpv9gpyuVErZ8bGg2NlZcOag1fmdafBy61yeE/zlDn8vsbJj4C1fkUcqGih9ge75G40HI2xGQOE/igAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCnzTOdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DECC433C7;
-	Mon,  1 Apr 2024 16:39:41 +0000 (UTC)
+	 MIME-Version; b=RKGkz8N2ak5M+Mx8MPD8yXftctcNMu2fmJuDLMaQnHtV+MEoUWLl7Key1Q7QziAf2ADTjWahCJas+rf6GIPgEqMui6OAX46P+ZUbwYhdivG2XfyNnNi1w4xxwps6y1IR3dgnvtlgrKKz4ExurRzqb45SmvWC6uIPP1Rx3KtlRpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbY/jLAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04B3C433C7;
+	Mon,  1 Apr 2024 16:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989581;
-	bh=yQo07kxyelPTYQkQTF1ebvU/j7XkjCr9vwtpfycP1Zc=;
+	s=korg; t=1711988240;
+	bh=Gf1jCzqlkHElEEyCnItgmc7gV2ZBk3st2zet0ExsWYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCnzTOdA0vAbF/gX3/cODjGnRAjenquw8UjQw4xixskxsnIQwS9RVhYQKbKBk/sMP
-	 B6Vff2ohTDLyBgkxlGMTvIRy6s9BWAQMXLMiN1MRqJ2z7yNG5KaeavfBuyZcZM/eaA
-	 4jLKdllyIWsVUpUYEDoOw6tfAB63qSyYj0J5EGeo=
+	b=XbY/jLAEXwawgsL9I4vlB26TzHu2bm57oBHLnNO093uz4LaaWQv9XOWmEGNT9d4DM
+	 xl6eAkaH6/N1VTm/4ID1hizKZeVcJmBrCDrEZxSW/Xs6VOzffeBPyD2h77As+m/tEK
+	 Mff6QWLgFRDkl28rlrzvTUWwW7WRLlxARatnOejA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivnandan Kumar <quic_kshivnan@quicinc.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/396] cpufreq: Limit resolving a frequency to policy min/max
+Subject: [PATCH 6.7 125/432] usb: gadget: tegra-xudc: Fix USB3 PHY retrieval logic
 Date: Mon,  1 Apr 2024 17:41:52 +0200
-Message-ID: <20240401152549.802478287@linuxfoundation.org>
+Message-ID: <20240401152556.849002076@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivnandan Kumar <quic_kshivnan@quicinc.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit d394abcb12bb1a6f309c1221fdb8e73594ecf1b4 ]
+[ Upstream commit 84fa943d93c31ee978355e6c6c69592dae3c9f59 ]
 
-Resolving a frequency to an efficient one should not transgress
-policy->max (which can be set for thermal reason) and policy->min.
+This commit resolves an issue in the tegra-xudc USB gadget driver that
+incorrectly fetched USB3 PHY instances. The problem stemmed from the
+assumption of a one-to-one correspondence between USB2 and USB3 PHY
+names and their association with physical USB ports in the device tree.
 
-Currently, there is possibility where scaling_cur_freq can exceed
-scaling_max_freq when scaling_max_freq is an inefficient frequency.
+Previously, the driver associated USB3 PHY names directly with the USB3
+instance number, leading to mismatches when mapping the physical USB
+ports. For instance, if using USB3-1 PHY, the driver expect the
+corresponding PHY name as 'usb3-1'. However, the physical USB ports in
+the device tree were designated as USB2-0 and USB3-0 as we only have
+one device controller, causing a misalignment.
 
-Add a check to ensure that resolving a frequency will respect
-policy->min/max.
+This commit rectifies the issue by adjusting the PHY naming logic.
+Now, the driver correctly correlates the USB2 and USB3 PHY instances,
+allowing the USB2-0 and USB3-1 PHYs to form a physical USB port pair
+while accurately reflecting their configuration in the device tree by
+naming them USB2-0 and USB3-0, respectively.
 
-Cc: All applicable <stable@vger.kernel.org>
-Fixes: 1f39fa0dccff ("cpufreq: Introducing CPUFREQ_RELATION_E")
-Signed-off-by: Shivnandan Kumar <quic_kshivnan@quicinc.com>
-[ rjw: Whitespace adjustment, changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The change ensures that the PHY and PHY names align appropriately,
+resolving the mismatch between physical USB ports and their associated
+names in the device tree.
+
+Fixes: b4e19931c98a ("usb: gadget: tegra-xudc: Support multiple device modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20240307030328.1487748-3-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cpufreq.h | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/udc/tegra-xudc.c | 39 ++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index 71d186d6933a5..3a4cefb25ba61 100644
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -1021,6 +1021,18 @@ static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
- 						   efficiencies);
- }
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index cb85168fd00c2..7aa46d426f31b 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -3491,8 +3491,8 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
  
-+static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy, int idx)
-+{
-+	unsigned int freq;
-+
-+	if (idx < 0)
-+		return false;
-+
-+	freq = policy->freq_table[idx].frequency;
-+
-+	return freq == clamp_val(freq, policy->min, policy->max);
-+}
-+
- static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
- 						 unsigned int target_freq,
- 						 unsigned int relation)
-@@ -1054,7 +1066,8 @@ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
- 		return 0;
+ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ {
+-	int err = 0, usb3;
+-	unsigned int i;
++	int err = 0, usb3_companion_port;
++	unsigned int i, j;
+ 
+ 	xudc->utmi_phy = devm_kcalloc(xudc->dev, xudc->soc->num_phys,
+ 					   sizeof(*xudc->utmi_phy), GFP_KERNEL);
+@@ -3520,7 +3520,7 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		if (IS_ERR(xudc->utmi_phy[i])) {
+ 			err = PTR_ERR(xudc->utmi_phy[i]);
+ 			dev_err_probe(xudc->dev, err,
+-				      "failed to get usb2-%d PHY\n", i);
++				"failed to get PHY for phy-name usb2-%d\n", i);
+ 			goto clean_up;
+ 		} else if (xudc->utmi_phy[i]) {
+ 			/* Get usb-phy, if utmi phy is available */
+@@ -3539,19 +3539,30 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		}
+ 
+ 		/* Get USB3 phy */
+-		usb3 = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
+-		if (usb3 < 0)
++		usb3_companion_port = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
++		if (usb3_companion_port < 0)
+ 			continue;
+ 
+-		snprintf(phy_name, sizeof(phy_name), "usb3-%d", usb3);
+-		xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
+-		if (IS_ERR(xudc->usb3_phy[i])) {
+-			err = PTR_ERR(xudc->usb3_phy[i]);
+-			dev_err_probe(xudc->dev, err,
+-				      "failed to get usb3-%d PHY\n", usb3);
+-			goto clean_up;
+-		} else if (xudc->usb3_phy[i])
+-			dev_dbg(xudc->dev, "usb3-%d PHY registered", usb3);
++		for (j = 0; j < xudc->soc->num_phys; j++) {
++			snprintf(phy_name, sizeof(phy_name), "usb3-%d", j);
++			xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
++			if (IS_ERR(xudc->usb3_phy[i])) {
++				err = PTR_ERR(xudc->usb3_phy[i]);
++				dev_err_probe(xudc->dev, err,
++					"failed to get PHY for phy-name usb3-%d\n", j);
++				goto clean_up;
++			} else if (xudc->usb3_phy[i]) {
++				int usb2_port =
++					tegra_xusb_padctl_get_port_number(xudc->utmi_phy[i]);
++				int usb3_port =
++					tegra_xusb_padctl_get_port_number(xudc->usb3_phy[i]);
++				if (usb3_port == usb3_companion_port) {
++					dev_dbg(xudc->dev, "USB2 port %d is paired with USB3 port %d for device mode port %d\n",
++					 usb2_port, usb3_port, i);
++					break;
++				}
++			}
++		}
  	}
  
--	if (idx < 0 && efficiencies) {
-+	/* Limit frequency index to honor policy->min/max */
-+	if (!cpufreq_is_in_limits(policy, idx) && efficiencies) {
- 		efficiencies = false;
- 		goto retry;
- 	}
+ 	return err;
 -- 
 2.43.0
 
