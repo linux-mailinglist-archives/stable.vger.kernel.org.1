@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12438942C3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292F38943EB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D556B20B97
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59A601C21AF3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48584653C;
-	Mon,  1 Apr 2024 16:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688D5487BC;
+	Mon,  1 Apr 2024 17:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdwzKUIP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyNZ6701"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D5B63E;
-	Mon,  1 Apr 2024 16:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AEC47A64;
+	Mon,  1 Apr 2024 17:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990558; cv=none; b=aq5r2HkW00GesDZWjOR0y7HiGsua+j/d+FqR3qdOZ4e0pNUKWTMGp4hZOGea3vSfA3H4oPfrOW5CB3kZ8j7wWq3uf1drt1Uw5Nl8p+YBo0N3ZRiaKbyKxl4756tP6U4ld3ElkUIq4ZlKkXGFEguRWj/xB3KzS2KoP3uQ/nZAp2Q=
+	t=1711991389; cv=none; b=QHZ51Ag80vEq7eYQs0YPEfBLPWscTeQsotrXn0QyiwwXhvWfTZ/d6+8J+vHaw+2A2ptMraREd2O5pyq27+fBrzV0wJJY6LFKgxbUpTZRlvDx7JIydbdEUpwqWW6+wmgzuXlirE4cE7Mes0Up02jiNgNaStGoSqrb8b9iKAiT2n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990558; c=relaxed/simple;
-	bh=Mzi30M9E/Ie2zhlr5jtbM4pEMZWHiceVFhrxjHIrfLA=;
+	s=arc-20240116; t=1711991389; c=relaxed/simple;
+	bh=1gBeHkQi8aDLTIqWe1/h9O8NbhKTRqthnIIWjN4lMl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ep+hCSMxLUvt2h///HoYPi8uAstjeBBveAKDyXJcMMTT73WsOaIi4Du6ucCYoOeEAm5FutcWJMe5wV/9wWEQg0a6FHxMXXxyxDbOPW4yJGg7paiBVuGQDX+g8Ku3SZwA65rst57ybwp40a0qvqM7A5fH1U+HUiIPRTRxUG3sZzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdwzKUIP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E742C433C7;
-	Mon,  1 Apr 2024 16:55:57 +0000 (UTC)
+	 MIME-Version; b=eb2bpMiszTw2fL8GwCXEz7mBa+6hekEwg7Ia5t4PB/0CeERdNb5SfNwN2aSJRUIm8wAE3Gk8PduVGy10pp8mcYnzAoyfezcUGaDg063C8lrW3KnJT/5A8xxpyPHzbxynDUNxe7u/AJmlt7yKRbKW+yRQVMQ/zbnqG/wqNJnoBk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyNZ6701; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F357C433C7;
+	Mon,  1 Apr 2024 17:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990557;
-	bh=Mzi30M9E/Ie2zhlr5jtbM4pEMZWHiceVFhrxjHIrfLA=;
+	s=korg; t=1711991389;
+	bh=1gBeHkQi8aDLTIqWe1/h9O8NbhKTRqthnIIWjN4lMl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SdwzKUIPfZyn0Mtk/tdV2PRcW7zP8fSlMHMHZYGHJDqdBBKa/sSjhzMkWj2nR4X8s
-	 06ja1Qz8pq36HxM8d1JQ1jnSAsGb24StmTdQzqXbL72lN7R5QpPW7zoW1l23I0LPbE
-	 iXQET/+89d05gzRLcstW0Id2ZQ92LSgmuwogRVZM=
+	b=OyNZ6701lm5CdYHrhao2b8ROxHSJegtcmDcDl7eQllk8wYnAuaF5QE/bIzucJ1p9d
+	 l5XL/RuGLPltIycnIItyJabrbEahwpcQV/pFMPmBBNEB5DZoL0hr8QucG9dH7CIlJL
+	 6cQgbk+5YORFMG83lJugkShmG3e2qJZWIhXxTzAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 391/396] scsi: lpfc: Correct size for cmdwqe/rspwqe for memset()
+	stable <stable@kernel.org>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 250/272] usb: typec: ucsi: Clear EVENT_PENDING under PPM lock
 Date: Mon,  1 Apr 2024 17:47:20 +0200
-Message-ID: <20240401152559.568225160@linuxfoundation.org>
+Message-ID: <20240401152538.826205758@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 16cc2ba71b9f6440805aef7f92ba0f031f79b765 upstream.
+commit 15b2e71b4653b3e13df34695a29ebeee237c5af2 upstream.
 
-The cmdwqe and rspwqe are of type lpfc_wqe128. They should be memset() with
-the same type.
+Suppose we sleep on the PPM lock after clearing the EVENT_PENDING
+bit because the thread for another connector is executing a command.
+In this case the command completion of the other command will still
+report the connector change for our connector.
 
-Fixes: 61910d6a5243 ("scsi: lpfc: SLI path split: Refactor CT paths")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240304091119.847060-1-usama.anjum@collabora.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Clear the EVENT_PENDING bit under the PPM lock to avoid another
+useless call to ucsi_handle_connector_change() in this case.
+
+Fixes: c9aed03a0a68 ("usb: ucsi: Add missing ppm_lock")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-2-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_bsg.c |    4 ++--
+ drivers/usb/typec/ucsi/ucsi.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/lpfc/lpfc_bsg.c
-+++ b/drivers/scsi/lpfc/lpfc_bsg.c
-@@ -3169,10 +3169,10 @@ lpfc_bsg_diag_loopback_run(struct bsg_jo
- 	}
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -829,11 +829,11 @@ static void ucsi_handle_connector_change
+ 	if (con->status.change & UCSI_CONSTAT_CAM_CHANGE)
+ 		ucsi_partner_task(con, ucsi_check_altmodes, 1, 0);
  
- 	cmdwqe = &cmdiocbq->wqe;
--	memset(cmdwqe, 0, sizeof(union lpfc_wqe));
-+	memset(cmdwqe, 0, sizeof(*cmdwqe));
- 	if (phba->sli_rev < LPFC_SLI_REV4) {
- 		rspwqe = &rspiocbq->wqe;
--		memset(rspwqe, 0, sizeof(union lpfc_wqe));
-+		memset(rspwqe, 0, sizeof(*rspwqe));
- 	}
+-	clear_bit(EVENT_PENDING, &con->ucsi->flags);
+-
+ 	mutex_lock(&ucsi->ppm_lock);
++	clear_bit(EVENT_PENDING, &con->ucsi->flags);
+ 	ret = ucsi_acknowledge_connector_change(ucsi);
+ 	mutex_unlock(&ucsi->ppm_lock);
++
+ 	if (ret)
+ 		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
  
- 	INIT_LIST_HEAD(&head);
 
 
 
