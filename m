@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-34559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09D1893FD9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F0C8941AC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B933285100
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FBFBB2299A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB4B46B9F;
-	Mon,  1 Apr 2024 16:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3286B487BE;
+	Mon,  1 Apr 2024 16:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deAB3KBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzE3P7Iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF994C129;
-	Mon,  1 Apr 2024 16:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18CD481DA;
+	Mon,  1 Apr 2024 16:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988529; cv=none; b=auCE7K7YA9pR59XDRPDeuzywDzr9i+JBYLmDzA9UFj/YQ+/bnyOwP3RFoHz/rfpVhmGFQIjJgyyE0N7n+ct2RN/7y9N1yk99Cgx3Q6ksT8Lv/ZQwk/0+6r5gPdEn6YB84U1tv2ohxszjDBDYUk0g9WLSz654vrPDSuQLVFw2+So=
+	t=1711989877; cv=none; b=UR2St9CpBS69bZKes1KxTjdZKQmQ+nSPr16ffze6gXQM54shKDsz85PltyRRg+WjizaVFeohJIxTW0pcikKJTojW8lLEqwp6tS7bOsku0e85vmLGwEGQM9fapmUXjjmUJkn/M+3jGbbjfcCj9KdGNtIn93rSYGGda/v8lyR4hys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988529; c=relaxed/simple;
-	bh=B/7ep8UT5KudqA8CX+fv/ZoCRkJMIwlsJzS8IBKc5ZQ=;
+	s=arc-20240116; t=1711989877; c=relaxed/simple;
+	bh=bni2oreh2FKEObmaTucp12nLPfvOLx66qrWYUZaiTMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ff2z4Fm0YXxhb0GW24yV0tLB62mgsW42bgiyBJk+EA7WMQJDd0vG3WLaBdXHutYqVVmcK4fOLJ8dbczBaqaNYv3ggtvLB8blvJMdw64VEIzoLP4Nle/inbCy1AAo4SJ4KAcJwb389R5Ru2EUwSnu57nJFS+Tsvir9LiQBuGHtoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deAB3KBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC53C433C7;
-	Mon,  1 Apr 2024 16:22:08 +0000 (UTC)
+	 MIME-Version; b=HVj824QtwcYl4Io6J9vz7/dSp3VRFrNTQEZzCQFV7udiuOhY1mO0MYXsfdqDbHkTnbqaeXWHoeayNqSbcQLad+bxca4bSIRGuZcKkNnkwEfCJsdaysZSdFqtjvWuPmzdl9j801W3y2p5RShGx96vD748RKWbpeQOFuJyQnh2YcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzE3P7Iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E79FC433C7;
+	Mon,  1 Apr 2024 16:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988528;
-	bh=B/7ep8UT5KudqA8CX+fv/ZoCRkJMIwlsJzS8IBKc5ZQ=;
+	s=korg; t=1711989876;
+	bh=bni2oreh2FKEObmaTucp12nLPfvOLx66qrWYUZaiTMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deAB3KBFTdaJI3HhXoJ/QtO9GZEv5XiuP0obBsLRg+FSqPv9rfGxkZl8Kr+qkc/BH
-	 AKGspBmkNHoaiDlYTa1b1nTkAkJh/D3sYExLkx0dzRG279GiNBYPnl6HYnsV4rRAqT
-	 YpZsHPkKBjR26ubTH0AyYvV4WOqkbJyzU/AqiR8I=
+	b=BzE3P7Iz+0KUBW5Yd4rHCPm1LF9JJrYhA9SSWqRP0tQUjlPeElRwbuJqsXbXs9ee5
+	 xKDr8RUfCunsY0AX3N2IHuL7Ic5z4gJI4nuRFJhiWVnvGKYl5xYeEqzji2VQ8xwiB7
+	 1aUxb9W8p7qfhIOT+caHV2KM/u7PNamQNIGwMat4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Sohaib Nadeem <sohaib.nadeem@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Zhiguo Niu <Zhiguo.Niu@unisoc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 212/432] drm/amd/display: Override min required DCFCLK in dml1_validate
-Date: Mon,  1 Apr 2024 17:43:19 +0200
-Message-ID: <20240401152559.465827079@linuxfoundation.org>
+Subject: [PATCH 6.6 151/396] Revert "block/mq-deadline: use correct way to throttling write requests"
+Date: Mon,  1 Apr 2024 17:43:20 +0200
+Message-ID: <20240401152552.447025364@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sohaib Nadeem <sohaib.nadeem@amd.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 26fbcb3da77efc77bd7327b7916338d773cca484 ]
+[ Upstream commit 256aab46e31683d76d45ccbedc287b4d3f3e322b ]
 
-[WHY]:
-Increasing min DCFCLK addresses underflow issues that occur when phantom
-pipe is turned on for some Sub-Viewport configs
+The code "max(1U, 3 * (1U << shift)  / 4)" comes from the Kyber I/O
+scheduler. The Kyber I/O scheduler maintains one internal queue per hwq
+and hence derives its async_depth from the number of hwq tags. Using
+this approach for the mq-deadline scheduler is wrong since the
+mq-deadline scheduler maintains one internal queue for all hwqs
+combined. Hence this revert.
 
-[HOW]:
-dcn32_override_min_req_dcfclk is added to override DCFCLK value in
-dml1_validate when subviewport is being used.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Zhiguo Niu <Zhiguo.Niu@unisoc.com>
+Fixes: d47f9717e5cf ("block/mq-deadline: use correct way to throttling write requests")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240313214218.1736147-1-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c       | 1 +
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h       | 3 +++
- .../gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c   | 6 ++++++
- 3 files changed, 10 insertions(+)
+ block/mq-deadline.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-index e940dd0f92b73..3d335b1ca1089 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-@@ -1866,6 +1866,7 @@ static bool dml1_validate(struct dc *dc, struct dc_state *context, bool fast_val
- 	dc->res_pool->funcs->calculate_wm_and_dlg(dc, context, pipes, pipe_cnt, vlevel);
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index f958e79277b8b..02a916ba62ee7 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -646,9 +646,8 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
+ 	struct request_queue *q = hctx->queue;
+ 	struct deadline_data *dd = q->elevator->elevator_data;
+ 	struct blk_mq_tags *tags = hctx->sched_tags;
+-	unsigned int shift = tags->bitmap_tags.sb.shift;
  
- 	dcn32_override_min_req_memclk(dc, context);
-+	dcn32_override_min_req_dcfclk(dc, context);
+-	dd->async_depth = max(1U, 3 * (1U << shift)  / 4);
++	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
  
- 	BW_VAL_TRACE_END_WATERMARKS();
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-index 58943835fb638..351c8a28438c3 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-@@ -41,6 +41,7 @@
- #define SUBVP_HIGH_REFRESH_LIST_LEN 4
- #define DCN3_2_MAX_SUBVP_PIXEL_RATE_MHZ 1800
- #define DCN3_2_VMIN_DISPCLK_HZ 717000000
-+#define MIN_SUBVP_DCFCLK_KHZ 400000
- 
- #define TO_DCN32_RES_POOL(pool)\
- 	container_of(pool, struct dcn32_resource_pool, base)
-@@ -185,6 +186,8 @@ bool dcn32_subvp_vblank_admissable(struct dc *dc, struct dc_state *context, int
- 
- void dcn32_update_dml_pipes_odm_policy_based_on_context(struct dc *dc, struct dc_state *context, display_e2e_pipe_params_st *pipes);
- 
-+void dcn32_override_min_req_dcfclk(struct dc *dc, struct dc_state *context);
-+
- /* definitions for run time init of reg offsets */
- 
- /* CLK SRC */
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
-index c80d6485f6ffa..1f89428499f76 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
-@@ -804,3 +804,9 @@ void dcn32_update_dml_pipes_odm_policy_based_on_context(struct dc *dc, struct dc
- 		pipe_cnt++;
- 	}
+ 	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
  }
-+
-+void dcn32_override_min_req_dcfclk(struct dc *dc, struct dc_state *context)
-+{
-+	if (dcn32_subvp_in_use(dc, context) && context->bw_ctx.bw.dcn.clk.dcfclk_khz <= MIN_SUBVP_DCFCLK_KHZ)
-+		context->bw_ctx.bw.dcn.clk.dcfclk_khz = MIN_SUBVP_DCFCLK_KHZ;
-+}
 -- 
 2.43.0
 
