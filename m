@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-35041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F6689420F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 077D7894344
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDFA91C219CB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28C871C21E6F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B990481C4;
-	Mon,  1 Apr 2024 16:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D00481C6;
+	Mon,  1 Apr 2024 17:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYKRPnpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4FjY9e2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4B31C0DE7;
-	Mon,  1 Apr 2024 16:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41ACE1C0DE7;
+	Mon,  1 Apr 2024 17:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990146; cv=none; b=QQOtKuAVlUEhtMhGvaQL3tQmNikQxnYvRY2ls5N602YR/sORaES1tYPN5eQCp2GlYfOXXYUU0dvjHVXIgvEOVYFvPX8gR4AywGewp5Dzz7hL+En0PsDevr1mP4fras5nkA2Xt0g/g91LiLvau+hUEX6LaTfiAHinOUTsGF8d8B8=
+	t=1711990902; cv=none; b=IVQ3+Q0bTa14LoRu4KmJW+Gkrd3VHKDVESyH5uyMd3Jtn1v33uA/ynkQsFvWPilqNVXYcY+qQPDggsrvsIWjEUaUBO8UeT5Tghx0bYT6q/L02HHo7he+tPpcFRHcrZbsTd7/S07fVhcLufHjV6QGqAATKKJzYynUlDiOdnJKGjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990146; c=relaxed/simple;
-	bh=gZdzKc+qkRdMmJWXQvT+MUF0BIZqaQDUCre7x/m++GE=;
+	s=arc-20240116; t=1711990902; c=relaxed/simple;
+	bh=Prt8DmzcFDskio+QCEBYPET610Yxwzok4xLRmQjmx7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWBdpxwK4BGtjlwKQLpbOkdGQ36KrwgQXjU/2h7pBWbq2ZdEhdv25INpet7k+JY7Q76afB9jmw+cm7j6X76TMZ1v5ZceeGt0S8IEKgtdFxQAG+RCutXq8ALxyx8YzLKqCz7mwYLcuv666w8UeRD0WVuKBcuCXx29T7fGjoJhctM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYKRPnpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9C1C433C7;
-	Mon,  1 Apr 2024 16:49:05 +0000 (UTC)
+	 MIME-Version; b=FrRiuJPjiwTaFgs00v7yf/kswtNzsMDALveTmkE3mA4Jppu8EuxM8TWCQ7biIkxBUrWaYmfZbl63jsNVGSOna3uXymx8DMJxuSbo41mgxZm77uqMyNrY9IHSJszko59upeP6JXF0wb3ejmDA7og6dMrvvvPAM0LfleqATeSsJDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4FjY9e2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D847C433C7;
+	Mon,  1 Apr 2024 17:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990146;
-	bh=gZdzKc+qkRdMmJWXQvT+MUF0BIZqaQDUCre7x/m++GE=;
+	s=korg; t=1711990902;
+	bh=Prt8DmzcFDskio+QCEBYPET610Yxwzok4xLRmQjmx7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYKRPnpLkcM+yn4Vm8UYCaMmHcLgMrzxZG8ZZS7rONzI8LVG8zluDcwd4Afqc/KRb
-	 XseMPtVJBeZ5VTxkuyLWVX6nKgsgSRw9xIybCYrFHGvR9fTovAW9qBpizWNnhwgNPI
-	 AH05nXcKimfSd4mIVh5SI1ZqDeRy4KHLkSuseiQU=
+	b=q4FjY9e2tBZ6NpJzCoHjeMLJzQQ4cLoJVT5IP8y/9sx+SdQnMpio8lrnKNsYxgEi2
+	 TOsbxx89t4iaH2OfVCqKj3Q6uPTXtHkQ0sMIlnCfJkcW+6FQYzxYWOdT28d1c7NE5B
+	 htaHb7INJIXG4Q8rGmzC01Hix/3PDYDcDEtXa7jM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 243/396] iio: accel: adxl367: fix I2C FIFO data register
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 102/272] vfio/pci: Consolidate irq cleanup on MSI/MSI-X disable
 Date: Mon,  1 Apr 2024 17:44:52 +0200
-Message-ID: <20240401152555.158513251@linuxfoundation.org>
+Message-ID: <20240401152533.827966700@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-commit 11dadb631007324c7a8bcb2650eda88ed2b9eed0 upstream.
+[ Upstream commit a65f35cfd504e5135540939cffd4323083190b36 ]
 
-As specified in the datasheet, the I2C FIFO data register is
-0x18, not 0x42. 0x42 was used by mistake when adapting the
-ADXL372 driver.
+vfio_msi_disable() releases all previously allocated state
+associated with each interrupt before disabling MSI/MSI-X.
 
-Fix this mistake.
+vfio_msi_disable() iterates twice over the interrupt state:
+first directly with a for loop to do virqfd cleanup, followed
+by another for loop within vfio_msi_set_block() that removes
+the interrupt handler and its associated state using
+vfio_msi_set_vector_signal().
 
-Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240207033657.206171-2-demonsingur@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Simplify interrupt cleanup by iterating over allocated interrupts
+once.
+
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/837acb8cbe86a258a50da05e56a1f17c1a19abbe.1683740667.git.reinette.chatre@intel.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Stable-dep-of: fe9a7082684e ("vfio/pci: Disable auto-enable of exclusive INTx IRQ")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/adxl367_i2c.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/iio/accel/adxl367_i2c.c
-+++ b/drivers/iio/accel/adxl367_i2c.c
-@@ -11,7 +11,7 @@
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index bffb0741518b9..6a9c6a143cc3a 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -426,10 +426,9 @@ static void vfio_msi_disable(struct vfio_pci_core_device *vdev, bool msix)
+ 	for (i = 0; i < vdev->num_ctx; i++) {
+ 		vfio_virqfd_disable(&vdev->ctx[i].unmask);
+ 		vfio_virqfd_disable(&vdev->ctx[i].mask);
++		vfio_msi_set_vector_signal(vdev, i, -1, msix);
+ 	}
  
- #include "adxl367.h"
- 
--#define ADXL367_I2C_FIFO_DATA	0x42
-+#define ADXL367_I2C_FIFO_DATA	0x18
- 
- struct adxl367_i2c_state {
- 	struct regmap *regmap;
+-	vfio_msi_set_block(vdev, 0, vdev->num_ctx, NULL, msix);
+-
+ 	cmd = vfio_pci_memory_lock_and_enable(vdev);
+ 	pci_free_irq_vectors(pdev);
+ 	vfio_pci_memory_unlock_and_restore(vdev, cmd);
+-- 
+2.43.0
+
 
 
 
