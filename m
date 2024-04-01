@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-35338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6D2894382
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D490C893EAF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25561F254E6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8959A282320
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD31446B6;
-	Mon,  1 Apr 2024 17:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB7C4596E;
+	Mon,  1 Apr 2024 16:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkUrS9Ux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrcwtdE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E981DFF4;
-	Mon,  1 Apr 2024 17:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAF51CA8F;
+	Mon,  1 Apr 2024 16:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991069; cv=none; b=Vji3tledr9jA8sHaqGl/8+v0R7+HdqVpHGUieQT/wZL1CtrxHe4WjyjbKIOtwbardTwlQ1L2GJXTlc5LSekTgY2jlsQXpP6VkSbtDIwu27wTGQUG0UhvQk4wYKxw/n3jbK7JewZbwSDzKbqz2jxYuhaQ+HEPs+I4KP/3g0Mci04=
+	t=1711987607; cv=none; b=Ug1YeTU24FsI1069SqO2HW0RW981vP+B5wJm9IbbYTdbDPzHWS8Zgfu9bGItr1cyPTKgRxWF0ow9pbLpYyT7/bU3tDqmcHRHScXIzDiHm+V2pYy5zozEgzEfEBV5IzZKfBvvDENPCisLmYYrWrN9YoESX9Tc2GSHVW7rktYvn3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991069; c=relaxed/simple;
-	bh=0r16cOtfPXzlLnTDyI+yegOZcmePCAnKiea44tOxCBQ=;
+	s=arc-20240116; t=1711987607; c=relaxed/simple;
+	bh=pDDa8LleV4ol8X7xnZl+xXMUJhSUezt7VKvNz1EoEmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sj1/BsYC5MiWefs42zcKMUyHrp3XX1FPrm69QmsGlTLOfiAmaYoFESOTXNCCvMflKPaCpCoLQUM7vLEPZU/QKn5A8JOxCQtU8bbxSe8c33OCQhhf96l3DvnnPGEPK/RF2OztoIaaA/OFcP1UHjAssRO1I/gYNU/LjyWYe+6sul8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkUrS9Ux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FECFC433F1;
-	Mon,  1 Apr 2024 17:04:28 +0000 (UTC)
+	 MIME-Version; b=up1W1ZNhJ+mK2aGKjUNP5std5pHqbs7/Y2y6mh1k4ncTtd/d0V8WWcrrbQuJOlaVzg3HBwfrojhShilR/CuOQ5BtfnS+MKROUe/MO6pY8cfYNOrmtLZx8tdvuWeVW/jHFjLsKlY2/U97uyQiWGeK/nxskPgDaAwZwg/EcUCclRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrcwtdE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3033C433C7;
+	Mon,  1 Apr 2024 16:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991069;
-	bh=0r16cOtfPXzlLnTDyI+yegOZcmePCAnKiea44tOxCBQ=;
+	s=korg; t=1711987606;
+	bh=pDDa8LleV4ol8X7xnZl+xXMUJhSUezt7VKvNz1EoEmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkUrS9UxnK7L+zvWwWOaFzJub2PZvMQjk87bFeq7raZ9d7RgrYKdXc8RiznyR67lb
-	 NOq/yIgfY5D0IaX7QI7rkqmXekgcGbIH9gbqeKUAnLZ1NsRLuxILl+BQhOW+5zhCUF
-	 HQ1VfyOyZNlstiGcp4MQyeeXThtlDqXgU+oQTrP4=
+	b=PrcwtdE+/c6PTRv9HS557yNjRbztMWY126nmV0wRfT0YUPNEUxyRApFad9mhj9ThC
+	 pSPMoqRU0ijb1ShWiv5n+L7DxrfRfefK6MaI8aHazn/YQ5WM+Jw2Nkn7reC9zDTUnV
+	 mu4lHuT3eIzkVz6E1wNKs1Hc3leUa785spetKPgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/272] s390/zcrypt: fix reference counting on zcrypt card objects
+	Chris Wilson <chris@chris-wilson.co.uk>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH 6.8 338/399] drm/i915/gt: Reset queue_priority_hint on parking
 Date: Mon,  1 Apr 2024 17:45:04 +0200
-Message-ID: <20240401152534.218954811@linuxfoundation.org>
+Message-ID: <20240401152559.264088577@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-[ Upstream commit 50ed48c80fecbe17218afed4f8bed005c802976c ]
+commit 4a3859ea5240365d21f6053ee219bb240d520895 upstream.
 
-Tests with hot-plugging crytpo cards on KVM guests with debug
-kernel build revealed an use after free for the load field of
-the struct zcrypt_card. The reason was an incorrect reference
-handling of the zcrypt card object which could lead to a free
-of the zcrypt card object while it was still in use.
+Originally, with strict in order execution, we could complete execution
+only when the queue was empty. Preempt-to-busy allows replacement of an
+active request that may complete before the preemption is processed by
+HW. If that happens, the request is retired from the queue, but the
+queue_priority_hint remains set, preventing direct submission until
+after the next CS interrupt is processed.
 
-This is an example of the slab message:
+This preempt-to-busy race can be triggered by the heartbeat, which will
+also act as the power-management barrier and upon completion allow us to
+idle the HW. We may process the completion of the heartbeat, and begin
+parking the engine before the CS event that restores the
+queue_priority_hint, causing us to fail the assertion that it is MIN.
 
-    kernel: 0x00000000885a7512-0x00000000885a7513 @offset=1298. First byte 0x68 instead of 0x6b
-    kernel: Allocated in zcrypt_card_alloc+0x36/0x70 [zcrypt] age=18046 cpu=3 pid=43
-    kernel:  kmalloc_trace+0x3f2/0x470
-    kernel:  zcrypt_card_alloc+0x36/0x70 [zcrypt]
-    kernel:  zcrypt_cex4_card_probe+0x26/0x380 [zcrypt_cex4]
-    kernel:  ap_device_probe+0x15c/0x290
-    kernel:  really_probe+0xd2/0x468
-    kernel:  driver_probe_device+0x40/0xf0
-    kernel:  __device_attach_driver+0xc0/0x140
-    kernel:  bus_for_each_drv+0x8c/0xd0
-    kernel:  __device_attach+0x114/0x198
-    kernel:  bus_probe_device+0xb4/0xc8
-    kernel:  device_add+0x4d2/0x6e0
-    kernel:  ap_scan_adapter+0x3d0/0x7c0
-    kernel:  ap_scan_bus+0x5a/0x3b0
-    kernel:  ap_scan_bus_wq_callback+0x40/0x60
-    kernel:  process_one_work+0x26e/0x620
-    kernel:  worker_thread+0x21c/0x440
-    kernel: Freed in zcrypt_card_put+0x54/0x80 [zcrypt] age=9024 cpu=3 pid=43
-    kernel:  kfree+0x37e/0x418
-    kernel:  zcrypt_card_put+0x54/0x80 [zcrypt]
-    kernel:  ap_device_remove+0x4c/0xe0
-    kernel:  device_release_driver_internal+0x1c4/0x270
-    kernel:  bus_remove_device+0x100/0x188
-    kernel:  device_del+0x164/0x3c0
-    kernel:  device_unregister+0x30/0x90
-    kernel:  ap_scan_adapter+0xc8/0x7c0
-    kernel:  ap_scan_bus+0x5a/0x3b0
-    kernel:  ap_scan_bus_wq_callback+0x40/0x60
-    kernel:  process_one_work+0x26e/0x620
-    kernel:  worker_thread+0x21c/0x440
-    kernel:  kthread+0x150/0x168
-    kernel:  __ret_from_fork+0x3c/0x58
-    kernel:  ret_from_fork+0xa/0x30
-    kernel: Slab 0x00000372022169c0 objects=20 used=18 fp=0x00000000885a7c88 flags=0x3ffff00000000a00(workingset|slab|node=0|zone=1|lastcpupid=0x1ffff)
-    kernel: Object 0x00000000885a74b8 @offset=1208 fp=0x00000000885a7c88
-    kernel: Redzone  00000000885a74b0: bb bb bb bb bb bb bb bb                          ........
-    kernel: Object   00000000885a74b8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a74c8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a74d8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a74e8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a74f8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
-    kernel: Object   00000000885a7508: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 68 4b 6b 6b 6b a5  kkkkkkkkkkhKkkk.
-    kernel: Redzone  00000000885a7518: bb bb bb bb bb bb bb bb                          ........
-    kernel: Padding  00000000885a756c: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a              ZZZZZZZZZZZZ
-    kernel: CPU: 0 PID: 387 Comm: systemd-udevd Not tainted 6.8.0-HF #2
-    kernel: Hardware name: IBM 3931 A01 704 (KVM/Linux)
-    kernel: Call Trace:
-    kernel:  [<00000000ca5ab5b8>] dump_stack_lvl+0x90/0x120
-    kernel:  [<00000000c99d78bc>] check_bytes_and_report+0x114/0x140
-    kernel:  [<00000000c99d53cc>] check_object+0x334/0x3f8
-    kernel:  [<00000000c99d820c>] alloc_debug_processing+0xc4/0x1f8
-    kernel:  [<00000000c99d852e>] get_partial_node.part.0+0x1ee/0x3e0
-    kernel:  [<00000000c99d94ec>] ___slab_alloc+0xaf4/0x13c8
-    kernel:  [<00000000c99d9e38>] __slab_alloc.constprop.0+0x78/0xb8
-    kernel:  [<00000000c99dc8dc>] __kmalloc+0x434/0x590
-    kernel:  [<00000000c9b4c0ce>] ext4_htree_store_dirent+0x4e/0x1c0
-    kernel:  [<00000000c9b908a2>] htree_dirblock_to_tree+0x17a/0x3f0
-    kernel:  [<00000000c9b919dc>] ext4_htree_fill_tree+0x134/0x400
-    kernel:  [<00000000c9b4b3d0>] ext4_dx_readdir+0x160/0x2f0
-    kernel:  [<00000000c9b4bedc>] ext4_readdir+0x5f4/0x760
-    kernel:  [<00000000c9a7efc4>] iterate_dir+0xb4/0x280
-    kernel:  [<00000000c9a7f1ea>] __do_sys_getdents64+0x5a/0x120
-    kernel:  [<00000000ca5d6946>] __do_syscall+0x256/0x310
-    kernel:  [<00000000ca5eea10>] system_call+0x70/0x98
-    kernel: INFO: lockdep is turned off.
-    kernel: FIX kmalloc-96: Restoring Poison 0x00000000885a7512-0x00000000885a7513=0x6b
-    kernel: FIX kmalloc-96: Marking all objects used
+<3>[  166.210729] __engine_park:283 GEM_BUG_ON(engine->sched_engine->queue_priority_hint != (-((int)(~0U >> 1)) - 1))
+<0>[  166.210781] Dumping ftrace buffer:
+<0>[  166.210795] ---------------------------------
+...
+<0>[  167.302811] drm_fdin-1097      2..s1. 165741070us : trace_ports: 0000:00:02.0 rcs0: promote { ccid:20 1217:2 prio 0 }
+<0>[  167.302861] drm_fdin-1097      2d.s2. 165741072us : execlists_submission_tasklet: 0000:00:02.0 rcs0: preempting last=1217:2, prio=0, hint=2147483646
+<0>[  167.302928] drm_fdin-1097      2d.s2. 165741072us : __i915_request_unsubmit: 0000:00:02.0 rcs0: fence 1217:2, current 0
+<0>[  167.302992] drm_fdin-1097      2d.s2. 165741073us : __i915_request_submit: 0000:00:02.0 rcs0: fence 3:4660, current 4659
+<0>[  167.303044] drm_fdin-1097      2d.s1. 165741076us : execlists_submission_tasklet: 0000:00:02.0 rcs0: context:3 schedule-in, ccid:40
+<0>[  167.303095] drm_fdin-1097      2d.s1. 165741077us : trace_ports: 0000:00:02.0 rcs0: submit { ccid:40 3:4660* prio 2147483646 }
+<0>[  167.303159] kworker/-89       11..... 165741139us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence c90:2, current 2
+<0>[  167.303208] kworker/-89       11..... 165741148us : __intel_context_do_unpin: 0000:00:02.0 rcs0: context:c90 unpin
+<0>[  167.303272] kworker/-89       11..... 165741159us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence 1217:2, current 2
+<0>[  167.303321] kworker/-89       11..... 165741166us : __intel_context_do_unpin: 0000:00:02.0 rcs0: context:1217 unpin
+<0>[  167.303384] kworker/-89       11..... 165741170us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence 3:4660, current 4660
+<0>[  167.303434] kworker/-89       11d..1. 165741172us : __intel_context_retire: 0000:00:02.0 rcs0: context:1216 retire runtime: { total:56028ns, avg:56028ns }
+<0>[  167.303484] kworker/-89       11..... 165741198us : __engine_park: 0000:00:02.0 rcs0: parked
+<0>[  167.303534]   <idle>-0         5d.H3. 165741207us : execlists_irq_handler: 0000:00:02.0 rcs0: semaphore yield: 00000040
+<0>[  167.303583] kworker/-89       11..... 165741397us : __intel_context_retire: 0000:00:02.0 rcs0: context:1217 retire runtime: { total:325575ns, avg:0ns }
+<0>[  167.303756] kworker/-89       11..... 165741777us : __intel_context_retire: 0000:00:02.0 rcs0: context:c90 retire runtime: { total:0ns, avg:0ns }
+<0>[  167.303806] kworker/-89       11..... 165742017us : __engine_park: __engine_park:283 GEM_BUG_ON(engine->sched_engine->queue_priority_hint != (-((int)(~0U >> 1)) - 1))
+<0>[  167.303811] ---------------------------------
+<4>[  167.304722] ------------[ cut here ]------------
+<2>[  167.304725] kernel BUG at drivers/gpu/drm/i915/gt/intel_engine_pm.c:283!
+<4>[  167.304731] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+<4>[  167.304734] CPU: 11 PID: 89 Comm: kworker/11:1 Tainted: G        W          6.8.0-rc2-CI_DRM_14193-gc655e0fd2804+ #1
+<4>[  167.304736] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
+<4>[  167.304738] Workqueue: i915-unordered retire_work_handler [i915]
+<4>[  167.304839] RIP: 0010:__engine_park+0x3fd/0x680 [i915]
+<4>[  167.304937] Code: 00 48 c7 c2 b0 e5 86 a0 48 8d 3d 00 00 00 00 e8 79 48 d4 e0 bf 01 00 00 00 e8 ef 0a d4 e0 31 f6 bf 09 00 00 00 e8 03 49 c0 e0 <0f> 0b 0f 0b be 01 00 00 00 e8 f5 61 fd ff 31 c0 e9 34 fd ff ff 48
+<4>[  167.304940] RSP: 0018:ffffc9000059fce0 EFLAGS: 00010246
+<4>[  167.304942] RAX: 0000000000000200 RBX: 0000000000000000 RCX: 0000000000000006
+<4>[  167.304944] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000009
+<4>[  167.304946] RBP: ffff8881330ca1b0 R08: 0000000000000001 R09: 0000000000000001
+<4>[  167.304947] R10: 0000000000000001 R11: 0000000000000001 R12: ffff8881330ca000
+<4>[  167.304948] R13: ffff888110f02aa0 R14: ffff88812d1d0205 R15: ffff88811277d4f0
+<4>[  167.304950] FS:  0000000000000000(0000) GS:ffff88844f780000(0000) knlGS:0000000000000000
+<4>[  167.304952] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4>[  167.304953] CR2: 00007fc362200c40 CR3: 000000013306e003 CR4: 0000000000770ef0
+<4>[  167.304955] PKRU: 55555554
+<4>[  167.304957] Call Trace:
+<4>[  167.304958]  <TASK>
+<4>[  167.305573]  ____intel_wakeref_put_last+0x1d/0x80 [i915]
+<4>[  167.305685]  i915_request_retire.part.0+0x34f/0x600 [i915]
+<4>[  167.305800]  retire_requests+0x51/0x80 [i915]
+<4>[  167.305892]  intel_gt_retire_requests_timeout+0x27f/0x700 [i915]
+<4>[  167.305985]  process_scheduled_works+0x2db/0x530
+<4>[  167.305990]  worker_thread+0x18c/0x350
+<4>[  167.305993]  kthread+0xfe/0x130
+<4>[  167.305997]  ret_from_fork+0x2c/0x50
+<4>[  167.306001]  ret_from_fork_asm+0x1b/0x30
+<4>[  167.306004]  </TASK>
 
-The fix is simple: Before use of the queue not only the queue object
-but also the card object needs to increase it's reference count
-with a call to zcrypt_card_get(). Similar after use of the queue
-not only the queue but also the card object's reference count is
-decreased with zcrypt_card_put().
+It is necessary for the queue_priority_hint to be lower than the next
+request submission upon waking up, as we rely on the hint to decide when
+to kick the tasklet to submit that first request.
 
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 22b7a426bbe1 ("drm/i915/execlists: Preempt-to-busy")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/10154
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.4+
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318135906.716055-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 98850e96cf811dc2d0a7d0af491caff9f5d49c1e)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/zcrypt_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/i915/gt/intel_engine_pm.c            |    3 ---
+ drivers/gpu/drm/i915/gt/intel_execlists_submission.c |    3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
-index 28e34d155334b..6f44963d34bbf 100644
---- a/drivers/s390/crypto/zcrypt_api.c
-+++ b/drivers/s390/crypto/zcrypt_api.c
-@@ -617,6 +617,7 @@ static inline struct zcrypt_queue *zcrypt_pick_queue(struct zcrypt_card *zc,
+--- a/drivers/gpu/drm/i915/gt/intel_engine_pm.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_pm.c
+@@ -279,9 +279,6 @@ static int __engine_park(struct intel_wa
+ 	intel_engine_park_heartbeat(engine);
+ 	intel_breadcrumbs_park(engine->breadcrumbs);
+ 
+-	/* Must be reset upon idling, or we may miss the busy wakeup. */
+-	GEM_BUG_ON(engine->sched_engine->queue_priority_hint != INT_MIN);
+-
+ 	if (engine->park)
+ 		engine->park(engine);
+ 
+--- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
++++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+@@ -3272,6 +3272,9 @@ static void execlists_park(struct intel_
  {
- 	if (!zq || !try_module_get(zq->queue->ap_dev.device.driver->owner))
- 		return NULL;
-+	zcrypt_card_get(zc);
- 	zcrypt_queue_get(zq);
- 	get_device(&zq->queue->ap_dev.device);
- 	atomic_add(weight, &zc->load);
-@@ -636,6 +637,7 @@ static inline void zcrypt_drop_queue(struct zcrypt_card *zc,
- 	atomic_sub(weight, &zq->load);
- 	put_device(&zq->queue->ap_dev.device);
- 	zcrypt_queue_put(zq);
-+	zcrypt_card_put(zc);
- 	module_put(mod);
+ 	cancel_timer(&engine->execlists.timer);
+ 	cancel_timer(&engine->execlists.preempt);
++
++	/* Reset upon idling, or we may delay the busy wakeup. */
++	WRITE_ONCE(engine->sched_engine->queue_priority_hint, INT_MIN);
  }
  
--- 
-2.43.0
-
+ static void add_to_engine(struct i915_request *rq)
 
 
 
