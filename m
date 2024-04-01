@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15CD48941D1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158D9893FFD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C514B28305C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABCCDB210B0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9187D47A6B;
-	Mon,  1 Apr 2024 16:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F4D4778E;
+	Mon,  1 Apr 2024 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJ2sr+E8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEA3Ta2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0251C0DE7;
-	Mon,  1 Apr 2024 16:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C51C129;
+	Mon,  1 Apr 2024 16:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989987; cv=none; b=l4eGdiTlH+Z63y7TzM5W8kr9LYSFUMnDZoI2/cMaoL2WIRlGQ+gQ9EM+55+uozv8U10tEpnngYOp+6OlL/vlTBuRKKhQmBJoQW20/X/Enbc6NXyRynB9kdYhkiytSmAYMlS8zMnCcuRXuzs1EJxAZZb6gywVKZdeQVeSzgivc44=
+	t=1711988648; cv=none; b=PCI8pIFD7ea3laTmfqPYb5MVCbK+rC7cuWaFl0K/UqywB2aO4HRp6ybWtPdYAOlRBdhE3TsABY/TABz4X9F/exIvxFkLo8EfK/v+HNRXZeRIHNZvxCqRuO1IUSpe1WYbToRu5jl46JP+YwntG2NxsTcvoTbHfh4O0OStc9S6hOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989987; c=relaxed/simple;
-	bh=8bPielUPj091FCau8e63UmZh/qWE0FXC+4JoN0WwcB8=;
+	s=arc-20240116; t=1711988648; c=relaxed/simple;
+	bh=J8lN1RWai3rEFGlsv/J/21gMvC3p3Bv3ygrtyp4Vzas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=El9iJPVDscc46i/Oo0kCtOsDqsOcf+AgSecPldHCA9QZ4dTKSdql2MqxyOk4X1ZPdNa5b9Ds8HuMxfZta1o+YxDHA50gSsUqu7dKkrhzbXPXJkaZ+yKnQYOdWWRIvQ5IdhYKjhi7PSsvYUkfuShgJpdp6tim4fclwXJqE8iC+p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJ2sr+E8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD69CC433F1;
-	Mon,  1 Apr 2024 16:46:26 +0000 (UTC)
+	 MIME-Version; b=m/ezZJ1NnZK/tzWCoJ9pe2WjOpV2OunixTRce7lXE0Cr3g6SD3SB8IVtCFhUozzMgU0K6xH7URejJuDl5wNCyU/rmCd/3V1t0pskDIxRvMA7GnVpDnSRmFwYrEK0FonG1cPiewbgZlZzQcuACPpKrukKyiNh7zH+7Gu8i9EfIHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEA3Ta2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65403C433F1;
+	Mon,  1 Apr 2024 16:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989987;
-	bh=8bPielUPj091FCau8e63UmZh/qWE0FXC+4JoN0WwcB8=;
+	s=korg; t=1711988647;
+	bh=J8lN1RWai3rEFGlsv/J/21gMvC3p3Bv3ygrtyp4Vzas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJ2sr+E8yQ4CAKCPfoeGU8zC2jYV6aqagDUcjc6pC9wGZeW6ueIL6bbkIeL99mUdV
-	 0usA/ac0kG8GTTSiU3oO6PBRAzwqdoFQNcDsQ7Ap8PP0UdULOQQsmo41TPcT2ZIi9h
-	 DND/m2IdWaAzLCvOUGXpI4ouPOqCKVe+BdBOhnLo=
+	b=SEA3Ta2ELoz87sKk98uW/UMIaGQtKGw/AoMnIn1MNM66aJuukKnC20p08Y0qhUWIF
+	 e35YZa98K6w8eW7gPhkWXXQkeyoQw++Y4oIAeCGjie+RMVf9NPYKolJVxE74dtuyQa
+	 Gwn1WhDNaVA1azyOPDDF9TWQHWQmIz2CcR+B0nlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Pittman <jpittman@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/396] dm snapshot: fix lockup in dm_exception_table_exit
-Date: Mon,  1 Apr 2024 17:43:53 +0200
-Message-ID: <20240401152553.426683007@linuxfoundation.org>
+	Olliver Schinagl <oliver@schinagl.nl>,
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.7 247/432] thunderbolt: Fix NULL pointer dereference in tb_port_update_credits()
+Date: Mon,  1 Apr 2024 17:43:54 +0200
+Message-ID: <20240401152600.507108778@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 6e7132ed3c07bd8a6ce3db4bb307ef2852b322dc ]
+commit d3d17e23d1a0d1f959b4fa55b35f1802d9c584fa upstream.
 
-There was reported lockup when we exit a snapshot with many exceptions.
-Fix this by adding "cond_resched" to the loop that frees the exceptions.
+Olliver reported that his system crashes when plugging in Thunderbolt 1
+device:
 
-Reported-by: John Pittman <jpittman@redhat.com>
+ BUG: kernel NULL pointer dereference, address: 0000000000000020
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:tb_port_do_update_credits+0x1b/0x130 [thunderbolt]
+ Call Trace:
+  <TASK>
+  ? __die+0x23/0x70
+  ? page_fault_oops+0x171/0x4e0
+  ? exc_page_fault+0x7f/0x180
+  ? asm_exc_page_fault+0x26/0x30
+  ? tb_port_do_update_credits+0x1b/0x130
+  ? tb_switch_update_link_attributes+0x83/0xd0
+  tb_switch_add+0x7a2/0xfe0
+  tb_scan_port+0x236/0x6f0
+  tb_handle_hotplug+0x6db/0x900
+  process_one_work+0x171/0x340
+  worker_thread+0x27b/0x3a0
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xe5/0x120
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x31/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1b/0x30
+  </TASK>
+
+This is due the fact that some Thunderbolt 1 devices only have one lane
+adapter. Fix this by checking for the lane 1 before we read its credits.
+
+Reported-by: Olliver Schinagl <oliver@schinagl.nl>
+Closes: https://lore.kernel.org/linux-usb/c24c7882-6254-4e68-8f22-f3e8f65dc84f@schinagl.nl/
+Fixes: 81af2952e606 ("thunderbolt: Add support for asymmetric link")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Gil Fine <gil.fine@linux.intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-snap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/switch.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
-index bf7a574499a34..0ace06d1bee38 100644
---- a/drivers/md/dm-snap.c
-+++ b/drivers/md/dm-snap.c
-@@ -684,8 +684,10 @@ static void dm_exception_table_exit(struct dm_exception_table *et,
- 	for (i = 0; i < size; i++) {
- 		slot = et->table + i;
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -1265,6 +1265,9 @@ int tb_port_update_credits(struct tb_por
+ 	ret = tb_port_do_update_credits(port);
+ 	if (ret)
+ 		return ret;
++
++	if (!port->dual_link_port)
++		return 0;
+ 	return tb_port_do_update_credits(port->dual_link_port);
+ }
  
--		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list)
-+		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list) {
- 			kmem_cache_free(mem, ex);
-+			cond_resched();
-+		}
- 	}
- 
- 	kvfree(et->table);
--- 
-2.43.0
-
 
 
 
