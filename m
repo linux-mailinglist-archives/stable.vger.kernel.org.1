@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3356E8942CC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E05D8943F0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64CD21C21D34
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1433F1F275A0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1D9487BC;
-	Mon,  1 Apr 2024 16:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48CE47A5D;
+	Mon,  1 Apr 2024 17:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHcg0aaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itNcA5GU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10022EB0B;
-	Mon,  1 Apr 2024 16:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618F6481B8;
+	Mon,  1 Apr 2024 17:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990576; cv=none; b=SX7hqQgdL/onXtYra/6CKFtIAfNgIXVb4cX1f2nSXYxaW4y3tE0zCQGvkTXmlIKlqIvpQ2gR9RXuVE/tO+d+enuM6+tOyxXrYVOHPIrcpdRs4Ljv+fJJuIl4roOzINxKT2N6cmwSkhay9/1EL0qs0hGwtaWPWgKTbS+Fq9Ev0uM=
+	t=1711991406; cv=none; b=Xc/zel3pgHmPZNTv3TWo4Yx4YfkN81mmnCX5i7jcwTBwYwNQ9xHGDQZZhCqdXcekme7WRNP9nEL+XZy91w3wmlFk3F80YMTe9hPZxxIAf5IaB+FFZLmiov4WNyNVlADH9hbFRWuABRkuWfb+qwuaAcozwdqg/BA2InUWawv/Sjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990576; c=relaxed/simple;
-	bh=LrmVH51FR6QhZxMhX0jtqLDLx+e0ljejZi+3yh6/Sh4=;
+	s=arc-20240116; t=1711991406; c=relaxed/simple;
+	bh=KV0AuWvSt5Gfhyd74RD3hasfWqoozLw7xE4YCKMwmAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyCS7ZB0SUBgk/zYQRGI1jBA6OS5NYtfsz1tF/Ym6z/U65tiH7Y02D8m++a4YT9BB5ePIky5IwiaMyFmcylhesm0/ohJ8pDWIXxPNQpq1gQpJermuNSIxN+opioC6HQCWQWajzwC7r51YsdaTDfKyItKYL2jyDkAeTBZehVqgBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHcg0aaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07844C433C7;
-	Mon,  1 Apr 2024 16:56:15 +0000 (UTC)
+	 MIME-Version; b=hrmLXX/n4l4ccxnSSmeb42RdtFI+uZLslyFzvMHtb0Wfl6trKrBHmKXFLd4FYUFzklTTUTek+COT7/964i1rNVQdRwp+DG4uP1GAO2Bdbhv2m1nrnZ0pk+WyqvtwUSJ/7cvmIbeEpWqm2YNW3izdqCueOMiqTdgCWFT9fxCiBgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itNcA5GU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FC0C433C7;
+	Mon,  1 Apr 2024 17:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990576;
-	bh=LrmVH51FR6QhZxMhX0jtqLDLx+e0ljejZi+3yh6/Sh4=;
+	s=korg; t=1711991406;
+	bh=KV0AuWvSt5Gfhyd74RD3hasfWqoozLw7xE4YCKMwmAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHcg0aaUT+m9oYrj7oI9vy2uqNeOjztYtZeyyk3gRBQCKSxkTDEVRHzxCCydwCG/2
-	 YRNq9YG6Eqg21NilHBZ2wrTKF5ovYg7U227rQRihKmZzEkhvLyNyLj/eAKGhPlYjkS
-	 1gBudwvaHZCt6pL+lDYX+1EX2hOByyL3MNB8B+ZY=
+	b=itNcA5GUp+KlYAgusk4mnpXY966U+bxZLOCXuY8RSGew71ycjRmz0TkhtRtEV/qeq
+	 P29vWfRHWdBFQ0HAOiKgAp/RPOuN3WqeFYgNhPvtJzwlfMWA5RA+X+7CRwRZs5u7Q2
+	 7Wmv8pilFbBqiZZLmzamhoe8MscKqUIExJI2UoQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Natanael Copa <ncopa@alpinelinux.org>,
-	Greg Thelen <gthelen@google.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 396/396] tools/resolve_btfids: fix build with musl libc
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 255/272] scsi: qla2xxx: Prevent command send on chip reset
 Date: Mon,  1 Apr 2024 17:47:25 +0200
-Message-ID: <20240401152559.713284729@linuxfoundation.org>
+Message-ID: <20240401152539.004196036@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Natanael Copa <ncopa@alpinelinux.org>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 62248b22d01e96a4d669cde0d7005bd51ebf9e76 upstream.
+commit 4895009c4bb72f71f2e682f1e7d2c2d96e482087 upstream.
 
-Include the header that defines u32.
-This fixes build of 6.6.23 and 6.1.83 kernels for Alpine Linux, which
-uses musl libc. I assume that GNU libc indirecly pulls in linux/types.h.
+Currently IOCBs are allowed to push through while chip reset could be in
+progress. During chip reset the outstanding_cmds array is cleared
+twice. Once when any command on this array is returned as failed and
+secondly when the array is initialize to zero. If a command is inserted on
+to the array between these intervals, then the command will be lost.  Check
+for chip reset before sending IOCB.
 
-Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with types from btf_ids.h")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218647
 Cc: stable@vger.kernel.org
-Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
-Tested-by: Greg Thelen <gthelen@google.com>
-Link: https://lore.kernel.org/r/20240328110103.28734-1-ncopa@alpinelinux.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-2-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/linux/btf_ids.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/qla2xxx/qla_init.c |    8 ++++++--
+ drivers/scsi/qla2xxx/qla_iocb.c |   33 +++++++++++++++++++++++++++++++--
+ 2 files changed, 37 insertions(+), 4 deletions(-)
 
---- a/tools/include/linux/btf_ids.h
-+++ b/tools/include/linux/btf_ids.h
-@@ -3,6 +3,8 @@
- #ifndef _LINUX_BTF_IDS_H
- #define _LINUX_BTF_IDS_H
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -1187,8 +1187,12 @@ int qla24xx_async_gnl(struct scsi_qla_ho
+ 	return rval;
  
-+#include <linux/types.h> /* for u32 */
+ done_free_sp:
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++	/*
++	 * use qla24xx_async_gnl_sp_done to purge all pending gnl request.
++	 * kref_put is call behind the scene.
++	 */
++	sp->u.iocb_cmd.u.mbx.in_mb[0] = MBS_COMMAND_ERROR;
++	qla24xx_async_gnl_sp_done(sp, QLA_COMMAND_ERROR);
+ 	fcport->flags &= ~(FCF_ASYNC_SENT);
+ done:
+ 	fcport->flags &= ~(FCF_ASYNC_ACTIVE);
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -2588,6 +2588,33 @@ void
+ qla2x00_sp_release(struct kref *kref)
+ {
+ 	struct srb *sp = container_of(kref, struct srb, cmd_kref);
++	struct scsi_qla_host *vha = sp->vha;
 +
- struct btf_id_set {
- 	u32 cnt;
- 	u32 ids[];
++	switch (sp->type) {
++	case SRB_CT_PTHRU_CMD:
++		/* GPSC & GFPNID use fcport->ct_desc.ct_sns for both req & rsp */
++		if (sp->u.iocb_cmd.u.ctarg.req &&
++			(!sp->fcport ||
++			 sp->u.iocb_cmd.u.ctarg.req != sp->fcport->ct_desc.ct_sns)) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp &&
++			(!sp->fcport ||
++			 sp->u.iocb_cmd.u.ctarg.rsp != sp->fcport->ct_desc.ct_sns)) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
++		break;
++	default:
++		break;
++	}
+ 
+ 	sp->free(sp);
+ }
+@@ -2693,7 +2720,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	 */
+ 	sp = qla2x00_get_sp(vha, fcport, GFP_KERNEL);
+ 	if (!sp) {
+-		kfree(fcport);
++		qla2x00_free_fcport(fcport);
+ 		ql_log(ql_log_info, vha, 0x70e6,
+ 		 "SRB allocation failed\n");
+ 		return -ENOMEM;
+@@ -2748,6 +2775,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	if (rval != QLA_SUCCESS) {
+ 		/* ref: INIT */
+ 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
++		qla2x00_free_fcport(fcport);
+ 		return QLA_FUNCTION_FAILED;
+ 	}
+ 
+@@ -2757,6 +2785,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
+ 
+ 	wait_for_completion(&elsio->u.els_logo.comp);
++	qla2x00_free_fcport(fcport);
+ 
+ 	/* ref: INIT */
+ 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+@@ -3916,7 +3945,7 @@ qla2x00_start_sp(srb_t *sp)
+ 		return -EAGAIN;
+ 	}
+ 
+-	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
++	pkt = qla2x00_alloc_iocbs_ready(sp->qpair, sp);
+ 	if (!pkt) {
+ 		rval = -EAGAIN;
+ 		ql_log(ql_log_warn, vha, 0x700c,
 
 
 
