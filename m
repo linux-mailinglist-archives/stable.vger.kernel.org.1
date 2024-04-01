@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-35199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBF88942DD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07060893FE1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49F7DB22737
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BF20B20F72
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFADD47A6B;
-	Mon,  1 Apr 2024 16:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4BF47A57;
+	Mon,  1 Apr 2024 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W948eBP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7NlF08t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE7DBA3F;
-	Mon,  1 Apr 2024 16:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12E8C129;
+	Mon,  1 Apr 2024 16:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990621; cv=none; b=hIACA/Jpc68u1FtnBivbGhIor5ZFBufg7SxMSjL4zvbrqwAptg60MqC14dq4nUF99CBNAQlNy6N/uCg92oQu7MFhw1y1dZoAZlA57fkM3pOflw3/OnhFW0dfGcaoKR699E36hNkB8EhztFuFfhciqgykNUqVe+swrMAe0tnEu+0=
+	t=1711988551; cv=none; b=kRT3dupNys1e/lG5v7TLzFFzun0p8W3sCA8JWocfjWgIFtQt4gA4xFXw7KZ6Cms7HJw2yJTvHhyC1SFFCEecZVKF4GbjN3qmCq9Oadz5LbtLmGZ1kd0gh5DHpBix7O/CPN6rtN28C8djb0kh0iIg+SdKYQQdUl2N5xnppPpAqc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990621; c=relaxed/simple;
-	bh=gU5Lly2vyXGtBxlPoBCQ9wCa/5tf7dRugPWAw5kN2ZE=;
+	s=arc-20240116; t=1711988551; c=relaxed/simple;
+	bh=7ZTjC1aM6TRLqGLagC/ZT8TU1gKPIp5XifsV2xNZ82Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvQFRzZxHGneA7m0oMKGjuGeQlmbUWqJ7H/bLBbjnfUKUQkEU0QAgZ8SXmvDvAqvEhESfg/BLfiwZr3DRmjSNgAclxIpQXe/VvdBT6UmUt6zmENb7UFmOCzJVKjbspfDZvzF5DZykYh93Rbnrec5bwSGRltwg3QnXldQf5OVPxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W948eBP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5C0C433F1;
-	Mon,  1 Apr 2024 16:57:00 +0000 (UTC)
+	 MIME-Version; b=qxshCQ8htjueUZcEKOUKTdhPviCP26IBl95YvocVfjQ5Cfnx/5yj/WSMmOrfzmgRB0Db1F+FlqWwM38XujeK+LTA7H/JX2l7oNMdVAe5KPnT3xttRc1uHR2KUEyzdPE/eGMJDNpmAW6h7IaHfI/ZziGfWFj+MwrupxrnPWFIxOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7NlF08t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CA6C433F1;
+	Mon,  1 Apr 2024 16:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990621;
-	bh=gU5Lly2vyXGtBxlPoBCQ9wCa/5tf7dRugPWAw5kN2ZE=;
+	s=korg; t=1711988550;
+	bh=7ZTjC1aM6TRLqGLagC/ZT8TU1gKPIp5XifsV2xNZ82Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W948eBP9VBYQlmU1bg8KGpMFMpJwq6Ecj4WOuYaUeHRkY7aYD/fxVpe4g0cHKjZlw
-	 VnPzS5Dfcyd6jp0FpgRB0QMX6uBCClYsEAxX8ml0n+Dx6XUAUhuGmzX4M+MMM/DMcv
-	 I3NKXyPrzzJXtmeCnTMNqpw79UDc4KTEObgHnmLM=
+	b=R7NlF08tBYRnWBZvrbPpOiMbmF4SsHlxAGyfp+E7xu2KNBcFEElZMlRIaFM9DQ4DE
+	 t5L3V+UA1JTThaAiJV5/s9llX19xLDeg8w9LSV5UHmqOHM8ed1cLzptFQ7aZjpb8MZ
+	 hHWDKT/hCI4o5W6EHfQmoAN95kSl9avxI4mEBkDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/272] smack: Handle SMACK64TRANSMUTE in smack_inode_setsecurity()
+Subject: [PATCH 6.7 218/432] drm/amd/display: Return the correct HDCP error code
 Date: Mon,  1 Apr 2024 17:43:25 +0200
-Message-ID: <20240401152530.771176172@linuxfoundation.org>
+Message-ID: <20240401152559.641584634@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit ac02f007d64eb2769d0bde742aac4d7a5fc6e8a5 ]
+[ Upstream commit e64b3f55e458ce7e2087a0051f47edabf74545e7 ]
 
-If the SMACK64TRANSMUTE xattr is provided, and the inode is a directory,
-update the in-memory inode flags by setting SMK_INODE_TRANSMUTE.
+[WHY & HOW]
+If the display is null when creating an HDCP session, return a proper
+error code.
 
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 07f7351148ecf..feba69549d086 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -2783,6 +2783,15 @@ static int smack_inode_setsecurity(struct inode *inode, const char *name,
- 	if (value == NULL || size > SMK_LONGLABEL || size == 0)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+index ee67a35c2a8ed..ff930a71e496a 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -513,6 +513,9 @@ enum mod_hdcp_status mod_hdcp_hdcp2_create_session(struct mod_hdcp *hdcp)
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
+ 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
  
-+	if (strcmp(name, XATTR_SMACK_TRANSMUTE) == 0) {
-+		if (!S_ISDIR(inode->i_mode) || size != TRANS_TRUE_SIZE ||
-+		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
-+			return -EINVAL;
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
 +
-+		nsp->smk_flags |= SMK_INODE_TRANSMUTE;
-+		return 0;
-+	}
-+
- 	skp = smk_import_entry(value, size);
- 	if (IS_ERR(skp))
- 		return PTR_ERR(skp);
+ 	hdcp_cmd->in_msg.hdcp2_create_session_v2.display_handle = display->index;
+ 
+ 	if (hdcp->connection.link.adjust.hdcp2.force_type == MOD_HDCP_FORCE_TYPE_0)
 -- 
 2.43.0
 
