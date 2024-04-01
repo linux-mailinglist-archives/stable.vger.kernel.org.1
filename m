@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677B1894191
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D59FF8942E0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08F6AB22927
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10FAA1C215C5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D93482DF;
-	Mon,  1 Apr 2024 16:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763724653C;
+	Mon,  1 Apr 2024 16:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5ap9f+b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wn0Vjn9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F04E47A76;
-	Mon,  1 Apr 2024 16:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A8A2EB0B;
+	Mon,  1 Apr 2024 16:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989806; cv=none; b=EiTYIslT5mNHAdgJ2b+7JAN5qj5JWTIXs3e0MVERaTS+jU7JOUmzQ12o5tJv4/AARpndE5JBefu8x7gsMPB1WM1FeEE1PLG/S1Iv0HMhMsY9r1fsNmiktT7/Dc2QbEmMJ0YQVI+H6WrgDi/cfFOG371e2AgszC4RoLTi9uuWH8A=
+	t=1711990631; cv=none; b=PPb6grpMmWv82VDdopFyTB9irW7ICF1GxCx3UtKfI9GkvukxwqGm7WLeaTtlF1ouXaZTnDqA82he+9ifp0mhWQ4Ms/SdqicslfDVhF8Ry1T1emYYnEE7GI9XUL+gSEbaQKjuspaocRnyFBzpliW3U6i4wmt+IW2w2rNQML4UlnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989806; c=relaxed/simple;
-	bh=/Ji4Eur922rMJ30Oa18uYyvW/dXSKtWN4tCBkmB6b60=;
+	s=arc-20240116; t=1711990631; c=relaxed/simple;
+	bh=AWR5Kp1QmDzMqKlxsqvdAYV776EXloY2MU2mLnP6A5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKB2H7NAlp4rkpcrIRIZR+kVPmZSwOg7VihK++I69Qa/cexK2r+aMCgT7tC7aywT6Xu60lKhBbHptWpzmKtCoyptVUQButltyP0WyiuoRWSDcL6P4JPdWEgWHNWixMhKmidadNzN1Pz1lJl9nsd215wItmcrL9f0thWJMRvc1G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5ap9f+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26C9C433F1;
-	Mon,  1 Apr 2024 16:43:25 +0000 (UTC)
+	 MIME-Version; b=Urrpjqe8jVKcv07MbQp518sgeztoDlSN67OflSjg3cV5+c3UzHPo4zlt5ZyxxkbKu6V+88HF4Yo0DIdftbUxKrHg8EhufXwTNLPVaX7hrMRH8WGu5rTfC/0Otnii1XXgwvqJxBs+SW+aD0a161+VVNlg7Buak2uYOFxAhhMFJa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wn0Vjn9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9011DC433F1;
+	Mon,  1 Apr 2024 16:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989806;
-	bh=/Ji4Eur922rMJ30Oa18uYyvW/dXSKtWN4tCBkmB6b60=;
+	s=korg; t=1711990631;
+	bh=AWR5Kp1QmDzMqKlxsqvdAYV776EXloY2MU2mLnP6A5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j5ap9f+blqUQK8W9yz3/jc59g/VDESYeVC/jJ20JDD5YbrPS9pscKA++1jrBsH8NK
-	 dGc3PoYimzMSpbwMXFmgZbpKKuV9bfm6x74Gv43AzPg7CVgmfp5ceNC7KlQL2XTjbH
-	 qf+v4f2jWr0sroeNThHXXWFh/kj9f/ld1XhKY5Ok=
+	b=wn0Vjn9hdforFnvSgfCvKdAJdRzXG3SnUBY8ZC6qLdJlXUgIBI0yIeA1kcVA250Ti
+	 igLqNyopMQSnhwUoLs0VkIxj/4Es/dnTYG/sEcwpcSCDINv9TceQ9nTdVfdjp7jL7Q
+	 lmB+G0RuOC4ltkv3TMWioAZX2tFcUHI/Jl0oFg0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Steve French <stfrench@microsoft.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/396] cifs: delete unnecessary NULL checks in cifs_chan_update_iface()
+Subject: [PATCH 6.1 018/272] serial: max310x: fix NULL pointer dereference in I2C instantiation
 Date: Mon,  1 Apr 2024 17:43:28 +0200
-Message-ID: <20240401152552.683095555@linuxfoundation.org>
+Message-ID: <20240401152530.890393603@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit c3a11c0ec66c1e0652e3a2bb4f5cc74eea0ba486 ]
+[ Upstream commit 0d27056c24efd3d63a03f3edfbcfc4827086b110 ]
 
-We return early if "iface" is NULL so there is no need to check here.
-Delete those checks.
+When trying to instantiate a max14830 device from userspace:
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 16a57d768111 ("cifs: reduce warning log level for server not advertising interfaces")
+    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
+
+we get the following error:
+
+    Unable to handle kernel NULL pointer dereference at virtual address...
+    ...
+    Call trace:
+        max310x_i2c_probe+0x48/0x170 [max310x]
+        i2c_device_probe+0x150/0x2a0
+    ...
+
+Add check for validity of devtype to prevent the error, and abort probe
+with a meaningful error message.
+
+Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240118152213.2644269-2-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c | 26 +++++++++++---------------
- 1 file changed, 11 insertions(+), 15 deletions(-)
+ drivers/tty/serial/max310x.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 0d76757528e49..8dadb21292d16 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -464,27 +464,23 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 			 &old_iface->sockaddr);
- 	} else if (!chan_index) {
- 		/* special case: update interface for primary channel */
--		if (iface) {
--			cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
--				 &iface->sockaddr);
--			iface->num_channels++;
--			iface->weight_fulfilled++;
--		}
-+		cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
-+			 &iface->sockaddr);
-+		iface->num_channels++;
-+		iface->weight_fulfilled++;
- 	}
- 	spin_unlock(&ses->iface_lock);
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index 444f89eb2d4b7..d409ef3887212 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1633,13 +1633,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
  
--	if (iface) {
--		spin_lock(&ses->chan_lock);
--		chan_index = cifs_ses_get_chan_index(ses, server);
--		if (chan_index == CIFS_INVAL_CHAN_INDEX) {
--			spin_unlock(&ses->chan_lock);
--			return 0;
--		}
--
--		ses->chans[chan_index].iface = iface;
-+	spin_lock(&ses->chan_lock);
-+	chan_index = cifs_ses_get_chan_index(ses, server);
-+	if (chan_index == CIFS_INVAL_CHAN_INDEX) {
- 		spin_unlock(&ses->chan_lock);
-+		return 0;
- 	}
+ static int max310x_i2c_probe(struct i2c_client *client)
+ {
+-	const struct max310x_devtype *devtype =
+-			device_get_match_data(&client->dev);
++	const struct max310x_devtype *devtype;
+ 	struct i2c_client *port_client;
+ 	struct regmap *regmaps[4];
+ 	unsigned int i;
+ 	u8 port_addr;
  
-+	ses->chans[chan_index].iface = iface;
-+	spin_unlock(&ses->chan_lock);
++	devtype = device_get_match_data(&client->dev);
++	if (!devtype)
++		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
 +
- 	return rc;
- }
- 
+ 	if (client->addr < devtype->slave_addr.min ||
+ 		client->addr > devtype->slave_addr.max)
+ 		return dev_err_probe(&client->dev, -EINVAL,
 -- 
 2.43.0
 
