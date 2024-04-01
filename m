@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-35080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6A4894248
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A3C894078
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 487C8283599
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B32041C21514
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4138481C4;
-	Mon,  1 Apr 2024 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E68D38DD8;
+	Mon,  1 Apr 2024 16:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgDsIix0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cL8fyYJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6144B433DA;
-	Mon,  1 Apr 2024 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D69517FD;
+	Mon,  1 Apr 2024 16:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990272; cv=none; b=kruZaoAhkchE5liVynuHv2pEgMQsFFw8hcAZTEtA2+3kNpbd8jhfKVxhm2IilcWZb0NuV12fO1woGNp12zdNLEyksjKPfsFCy02bEzyn1nRxgCsYZQ3HfictkmDgDdX1rxfLUPfB5afUsTr6qcjCDc8SDAoxGczD9mhIJGhdP1A=
+	t=1711989030; cv=none; b=NZpnl8EhkU3m2plL/cVVdoYSjizfQHWl4ojU0BgBgHGvkxMfdcp/MQ9goukY3QXsTyjEY87QGYxZelkAdS9z2j3Bj7hACG0cd4J2uQPKZdqc9FBfhnlx0l48YSUeLnW4vJV6JxK/KWLbpZgq/qlIgzlydayNeQ0VY0fA3enGW/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990272; c=relaxed/simple;
-	bh=8177oaSMrqbfZeyZgVb5tCaRqTrD6NTB/n60l2TALnY=;
+	s=arc-20240116; t=1711989030; c=relaxed/simple;
+	bh=Nld9IgLRx81dBnt5tvwa4R8slsi6jk6OAAXkAMqZmqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcX3LPWS/29KUfECq2vMJ4f9y78lTzrmb6xxh7dV1nTJKET66+Er6NFAXF3oq6JblSC1LmJDUSe3fGQ4fMtGiHgSEui14Jnr9TnulT0WyMk6x624+BEZHXD/00eZTT8SemLOiGufULvy7nXhtROu5qQuH73jPNqnAfUlQKPDips=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgDsIix0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC7AC433F1;
-	Mon,  1 Apr 2024 16:51:11 +0000 (UTC)
+	 MIME-Version; b=uW0vVo87cgbswi6VcCuzld3jfnxIOdBnc21SwZ+dV2mId2EG1+5zzowiWmpliQtI/ML2JOZHiS1oVrnvU0bio6CjvIHuvasQyztgu6sztKtXWXp1LoxeNNHKWyzpfn48YF1bq89oZ6RFise/b8mVaM8GjJl0MKOseCeRkgqD+4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cL8fyYJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B470C433C7;
+	Mon,  1 Apr 2024 16:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990272;
-	bh=8177oaSMrqbfZeyZgVb5tCaRqTrD6NTB/n60l2TALnY=;
+	s=korg; t=1711989029;
+	bh=Nld9IgLRx81dBnt5tvwa4R8slsi6jk6OAAXkAMqZmqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WgDsIix0BctyA5cwbprm3l5XKfVr2toK3doa2tyjiuZy8gROAetHtDxAtYROp1i26
-	 u+iQfhyhEp3ob0NQrBEiwQRi5BssG9kchfe/zeinbaZYLLEKrghBbKFZ/V876r1GjX
-	 9pncmM09us50+haNpDwYpusTUek4R7bo1UyIFvK0=
+	b=cL8fyYJF3qEgiJ196u0FJw830sDPFs3WlAmx/EY6tybUgQR/pCWA/S00tsAJTJoz4
+	 klXT0Ob68Wq+OvuEYXmT3lAak41C5wQkJMu8QKhqq7eokwSwpnoYylN0d8Y970L4AJ
+	 Ejs5tonSuh/InfyGb29RP3jL2yI0W3/A1ixxXQIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <zzqq0103.hey@gmail.com>,
-	Jinghao Jia <jinghao7@illinois.edu>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 299/396] kprobes/x86: Use copy_from_kernel_nofault() to read from unsafe address
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.7 361/432] block: Do not force full zone append completion in req_bio_endio()
 Date: Mon,  1 Apr 2024 17:45:48 +0200
-Message-ID: <20240401152556.815928619@linuxfoundation.org>
+Message-ID: <20240401152604.034503379@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 4e51653d5d871f40f1bd5cf95cc7f2d8b33d063b ]
+commit 55251fbdf0146c252ceff146a1bb145546f3e034 upstream.
 
-Read from an unsafe address with copy_from_kernel_nofault() in
-arch_adjust_kprobe_addr() because this function is used before checking
-the address is in text or not. Syzcaller bot found a bug and reported
-the case if user specifies inaccessible data area,
-arch_adjust_kprobe_addr() will cause a kernel panic.
+This reverts commit 748dc0b65ec2b4b7b3dbd7befcc4a54fdcac7988.
 
-[ mingo: Clarified the comment. ]
+Partial zone append completions cannot be supported as there is no
+guarantees that the fragmented data will be written sequentially in the
+same manner as with a full command. Commit 748dc0b65ec2 ("block: fix
+partial zone append completion handling in req_bio_endio()") changed
+req_bio_endio() to always advance a partially failed BIO by its full
+length, but this can lead to incorrect accounting. So revert this
+change and let low level device drivers handle this case by always
+failing completely zone append operations. With this revert, users will
+still see an IO error for a partially completed zone append BIO.
 
-Fixes: cc66bb914578 ("x86/ibt,kprobes: Cure sym+0 equals fentry woes")
-Reported-by: Qiang Zhang <zzqq0103.hey@gmail.com>
-Tested-by: Jinghao Jia <jinghao7@illinois.edu>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/171042945004.154897.2221804961882915806.stgit@devnote2
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 748dc0b65ec2 ("block: fix partial zone append completion handling in req_bio_endio()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240328004409.594888-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/kprobes/core.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ block/blk-mq.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-index a0ce46c0a2d88..a6a3475e1d609 100644
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -335,7 +335,16 @@ static int can_probe(unsigned long paddr)
- kprobe_opcode_t *arch_adjust_kprobe_addr(unsigned long addr, unsigned long offset,
- 					 bool *on_func_entry)
- {
--	if (is_endbr(*(u32 *)addr)) {
-+	u32 insn;
-+
-+	/*
-+	 * Since 'addr' is not guaranteed to be safe to access, use
-+	 * copy_from_kernel_nofault() to read the instruction:
-+	 */
-+	if (copy_from_kernel_nofault(&insn, (void *)addr, sizeof(u32)))
-+		return NULL;
-+
-+	if (is_endbr(insn)) {
- 		*on_func_entry = !offset || offset == 4;
- 		if (*on_func_entry)
- 			offset = 4;
--- 
-2.43.0
-
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -772,16 +772,11 @@ static void req_bio_endio(struct request
+ 		/*
+ 		 * Partial zone append completions cannot be supported as the
+ 		 * BIO fragments may end up not being written sequentially.
+-		 * For such case, force the completed nbytes to be equal to
+-		 * the BIO size so that bio_advance() sets the BIO remaining
+-		 * size to 0 and we end up calling bio_endio() before returning.
+ 		 */
+-		if (bio->bi_iter.bi_size != nbytes) {
++		if (bio->bi_iter.bi_size != nbytes)
+ 			bio->bi_status = BLK_STS_IOERR;
+-			nbytes = bio->bi_iter.bi_size;
+-		} else {
++		else
+ 			bio->bi_iter.bi_sector = rq->__sector;
+-		}
+ 	}
+ 
+ 	bio_advance(bio, nbytes);
 
 
 
