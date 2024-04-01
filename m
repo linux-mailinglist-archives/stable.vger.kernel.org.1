@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-35379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21FF8943AE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 856778942A6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52297283993
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6E091C21D91
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BFE481B8;
-	Mon,  1 Apr 2024 17:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F6740876;
+	Mon,  1 Apr 2024 16:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlSk24ik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3OHCMpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B3482EF;
-	Mon,  1 Apr 2024 17:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86F263E;
+	Mon,  1 Apr 2024 16:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991205; cv=none; b=mFygj/Ku0pUZTP01TVxdNKN4fTGSbufXDEcHD/F0hiptSedBbLIG6bg4W0YnXyQexXoTrx1GOgY0TPf57KsOyL3dZLxspyZPzzFcR5zvkVj9vFmS/isw+9oV9wz3wZhDKMYi2eSuF83GPKTg1epseFcmrUgxKM6ZW4J0YJWqeFc=
+	t=1711990480; cv=none; b=IVIpD98YDK/0d2ne4zBqP3oQ24jouxmRNQ7mMVfbHEuq2Q4PNpf+iswtlBigT0MpGqJuKahI+uvfHbnKNjLGC3MvfqT/C8XgywL8N5O0ssQExiC/8Hqr0TQIb7OM0orTg3lFZozK5lMX49XN79MB67ceRtqmJgSANmzpd7uBfHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991205; c=relaxed/simple;
-	bh=6J+rEjYKoW2OoU2uN8Z9EPlxnT39Qv+op2asA9dqi+Q=;
+	s=arc-20240116; t=1711990480; c=relaxed/simple;
+	bh=B2cpJnooL38kJcI245iDpG4ZePx5VvZYisg71wlNK5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iy/eiplT8LaUjOJsIL8Lsx/W6bOzqfSA9zudjHUlHKkt+tYpMAB29jOrUWf3TyB+tgQru8edq22N1RH8VyA9iyVyhPE2sp+vNqojYhfpu4agiE0oYCPrZ3Hn8kWPAt58C3oI0RZ0AAqh4FrGUCisSQqGoua3F7VO2SL7KEp8uvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlSk24ik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB69CC433C7;
-	Mon,  1 Apr 2024 17:06:44 +0000 (UTC)
+	 MIME-Version; b=nHAJ/QUoRPvbEAHHHPBmN1khSXvD5SlsscTxQNfEsjtZYSfT4UKAJo0gZXGQrfow3sMsbUHP0ACCsgsI805FQeG+awo4RrNRuWS3Zrd8z573GYOc54mpuHOOGpVzPrQ5WgjQ/anV5JSFPDzoXXvjioWvPjRixoCQlAuvN0UPCuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3OHCMpY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EFEC433F1;
+	Mon,  1 Apr 2024 16:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991205;
-	bh=6J+rEjYKoW2OoU2uN8Z9EPlxnT39Qv+op2asA9dqi+Q=;
+	s=korg; t=1711990480;
+	bh=B2cpJnooL38kJcI245iDpG4ZePx5VvZYisg71wlNK5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlSk24ikQaO/I4jsNjk1ym9hW4gYAhgkAnGu0hN5eE8D+cnVj0Fn0xnghxQiLqSp1
-	 sqvYhtA2mq1rRAsolvSkljSkr1jGtKJ3jw8C6jM0Ka7WkJ2Oe839zRj3TCKCuLNlBO
-	 DIYfK+SEIOBknxo8lbYfjNZwZHQe3Lm+D1x8eKaI=
+	b=e3OHCMpYVQUHjkA408+bWpRmD++sWX7pMlJuNASQGzG4V91+SrgTrbArSuIAMErUD
+	 cIKzofw9r41gtIrWcsNwO9U2UBSGL0viRufAqSbfy+IipdhX53k6LjAgkSbzf43VLu
+	 HyJo11DXADZahC0SumvqnTU2pHB45cbqlbvFCQUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoltan HERPAI <wigyori@uid0.hu>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 195/272] pwm: img: fix pwm clock lookup
-Date: Mon,  1 Apr 2024 17:46:25 +0200
-Message-ID: <20240401152536.970950331@linuxfoundation.org>
+	Danilo Krummrich <dakr@redhat.com>,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH 6.6 337/396] nouveau/dmem: handle kcalloc() allocation failure
+Date: Mon,  1 Apr 2024 17:46:26 +0200
+Message-ID: <20240401152557.959659348@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zoltan HERPAI <wigyori@uid0.hu>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 9eb05877dbee03064d3d3483cd6702f610d5a358 ]
+commit 16e87fe23d4af6df920406494ced5c0f4354567b upstream.
 
-22e8e19 has introduced a regression in the imgchip->pwm_clk lookup, whereas
-the clock name has also been renamed to "imgchip". This causes the driver
-failing to load:
+The kcalloc() in nouveau_dmem_evict_chunk() will return null if
+the physical memory has run out. As a result, if we dereference
+src_pfns, dst_pfns or dma_addrs, the null pointer dereference bugs
+will happen.
 
-[    0.546905] img-pwm 18101300.pwm: failed to get imgchip clock
-[    0.553418] img-pwm: probe of 18101300.pwm failed with error -2
+Moreover, the GPU is going away. If the kcalloc() fails, we could not
+evict all pages mapping a chunk. So this patch adds a __GFP_NOFAIL
+flag in kcalloc().
 
-Fix this lookup by reverting the clock name back to "pwm".
+Finally, as there is no need to have physically contiguous memory,
+this patch switches kcalloc() to kvcalloc() in order to avoid
+failing allocations.
 
-Signed-off-by: Zoltan HERPAI <wigyori@uid0.hu>
-Link: https://lore.kernel.org/r/20240320083602.81592-1-wigyori@uid0.hu
-Fixes: 22e8e19a46f7 ("pwm: img: Rename variable pointing to driver private data")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: <stable@vger.kernel.org> # v6.1
+Fixes: 249881232e14 ("nouveau/dmem: evict device private memory during release")
+Suggested-by: Danilo Krummrich <dakr@redhat.com>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240306050104.11259-1-duoming@zju.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-img.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_dmem.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pwm/pwm-img.c b/drivers/pwm/pwm-img.c
-index 0fccf061ab958..8ce6c453adf07 100644
---- a/drivers/pwm/pwm-img.c
-+++ b/drivers/pwm/pwm-img.c
-@@ -289,9 +289,9 @@ static int img_pwm_probe(struct platform_device *pdev)
- 		return PTR_ERR(imgchip->sys_clk);
- 	}
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -378,9 +378,9 @@ nouveau_dmem_evict_chunk(struct nouveau_
+ 	dma_addr_t *dma_addrs;
+ 	struct nouveau_fence *fence;
  
--	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "imgchip");
-+	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "pwm");
- 	if (IS_ERR(imgchip->pwm_clk)) {
--		dev_err(&pdev->dev, "failed to get imgchip clock\n");
-+		dev_err(&pdev->dev, "failed to get pwm clock\n");
- 		return PTR_ERR(imgchip->pwm_clk);
- 	}
+-	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
+-	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
+-	dma_addrs = kcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL);
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dma_addrs = kvcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL | __GFP_NOFAIL);
  
--- 
-2.43.0
-
+ 	migrate_device_range(src_pfns, chunk->pagemap.range.start >> PAGE_SHIFT,
+ 			npages);
+@@ -406,11 +406,11 @@ nouveau_dmem_evict_chunk(struct nouveau_
+ 	migrate_device_pages(src_pfns, dst_pfns, npages);
+ 	nouveau_dmem_fence_done(&fence);
+ 	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ 	for (i = 0; i < npages; i++)
+ 		dma_unmap_page(chunk->drm->dev->dev, dma_addrs[i], PAGE_SIZE, DMA_BIDIRECTIONAL);
+-	kfree(dma_addrs);
++	kvfree(dma_addrs);
+ }
+ 
+ void
 
 
 
