@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD37894014
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C77589431D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF1E2282E72
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FC3F1C202CD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6A1481AB;
-	Mon,  1 Apr 2024 16:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971604AED7;
+	Mon,  1 Apr 2024 16:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dymOVy/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPTjtw71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955B6446AC;
-	Mon,  1 Apr 2024 16:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F5DBA3F;
+	Mon,  1 Apr 2024 16:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988720; cv=none; b=r7lCVndQBXpV8F/eaoDm9psJaDRexOiSwRjBJfDv6UaQTd0AaYWVoyq8huCs18CUYkGEoqMRB/05U8M4swfHucB17xKHoQ+LPj9dw5l1Oiv6n1fjkbeGRFZPGoNXrGJyJ0NYK97o0qUhRUAr/5aI/l/jDxYOs9HfAR2D/nV1MPs=
+	t=1711990789; cv=none; b=j6BpEmE6k1EzyfS3qV8QQkmLBoDqLX0oYaFp/sCyeBAIwJFy59oDQJ6CxHIWkKOs/rZ9x+3EJ0ndvw2542vTPirUpv8cJbJ0Lu2C4G1JHS+e+gKdSD0YXyXV8HDbT8/Qqui3Ww3uraCyo+aJHqm+HiSd4zuYKljh/m7YqpI3nYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988720; c=relaxed/simple;
-	bh=onjLmPUQcnDtjxYGkiHANtoijQ8rTD7QqloIY/bIwpQ=;
+	s=arc-20240116; t=1711990789; c=relaxed/simple;
+	bh=YZDZhhIF07EP+Wx1/vlvEl/lK0mCE27DiiEPjo1gOQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tx4AydWvnfFlvMSuav0XrvDMvcNtQUn49SAmpnZEhma/fXwz1CamzkpN9slc5jXQkIsF6lEsx3PUpzM6ePQqWqTVDXCRt6vxQMSH8497h6A2+zyA26FK+y1kdUwYfKHagXnB+IJJF72FRynrwMPg3u5lMu9ZVeBUtsmdMVv2Xhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dymOVy/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4437C433C7;
-	Mon,  1 Apr 2024 16:25:19 +0000 (UTC)
+	 MIME-Version; b=nFekB+REdQfKgXCK+gt85RYm8QvIXySrdCwWv/HDb5gOPtgpTZcdH50c1hWxqjHuRFRXrCZrtBamz3ZNh7vgacN+oMxHsHTqUk8NVpCNszrSnLFGx6yo3YKtgUf45fM8GEqaFtrizz3laSbJbIPbZaY09SXq8VCxkYZEv5gHhDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPTjtw71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6488BC433A6;
+	Mon,  1 Apr 2024 16:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988720;
-	bh=onjLmPUQcnDtjxYGkiHANtoijQ8rTD7QqloIY/bIwpQ=;
+	s=korg; t=1711990788;
+	bh=YZDZhhIF07EP+Wx1/vlvEl/lK0mCE27DiiEPjo1gOQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dymOVy/WrZWkyhFoWTnikHonaRc2jMSbyrMqBfl5Tg8aGxF2kgEAf2Sg+cVubTTXM
-	 2QpqevgGo5mduT703ujPpdj9vO+3Z8k1FC45FrHfcaWusOrH/BR3HKmw0bDUnYawfT
-	 /+IzopTxNt1y/OtF3H4IQK3QxIVuZ2tBGoqjcpIs=
+	b=cPTjtw71uba9JU3SbKK7B95fLM0IJ7hwUQtNfHsZ/JtVzdGVJ7Ry0RvuE+vOQKnLu
+	 ck1TqeA0ncXVy2vTYxcaHk3IO/dYGCw7BiXqW9BELoXAwhZtfkhCL0rRTbnW+EcceG
+	 6SOrTmIcw/32pPU/+fb5v9+xu3RLmdiB+i2lPsdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.7 269/432] misc: fastrpc: Pass proper arguments to scm call
-Date: Mon,  1 Apr 2024 17:44:16 +0200
-Message-ID: <20240401152601.199160752@linuxfoundation.org>
+	Antonio SJ Musumeci <trapexit@spawn.link>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 067/272] fuse: fix root lookup with nonzero generation
+Date: Mon,  1 Apr 2024 17:44:17 +0200
+Message-ID: <20240401152532.647589578@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit a283d7f179ff83976af27bcc71f7474cb4d7c348 upstream.
+[ Upstream commit 68ca1b49e430f6534d0774a94147a823e3b8b26e ]
 
-For CMA memory allocation, ownership is assigned to DSP to make it
-accessible by the PD running on the DSP. With current implementation
-HLOS VM is stored in the channel structure during rpmsg_probe and
-this VM is passed to qcom_scm call as the source VM.
+The root inode has a fixed nodeid and generation (1, 0).
 
-The qcom_scm call will overwrite the passed source VM with the next
-VM which would cause a problem in case the scm call is again needed.
-Adding a local copy of source VM whereever scm call is made to avoid
-this problem.
+Prior to the commit 15db16837a35 ("fuse: fix illegal access to inode with
+reused nodeid") generation number on lookup was ignored.  After this commit
+lookup with the wrong generation number resulted in the inode being
+unhashed.  This is correct for non-root inodes, but replacing the root
+inode is wrong and results in weird behavior.
 
-Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240224114247.85953-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by reverting to the old behavior if ignoring the generation for the
+root inode, but issuing a warning in dmesg.
+
+Reported-by: Antonio SJ Musumeci <trapexit@spawn.link>
+Closes: https://lore.kernel.org/all/CAOQ4uxhek5ytdN8Yz2tNEOg5ea4NkBb4nk0FGPjPk_9nz-VG3g@mail.gmail.com/
+Fixes: 15db16837a35 ("fuse: fix illegal access to inode with reused nodeid")
+Cc: <stable@vger.kernel.org> # v5.14
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/fuse/dir.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -263,7 +263,6 @@ struct fastrpc_channel_ctx {
- 	int domain_id;
- 	int sesscount;
- 	int vmcount;
--	u64 perms;
- 	struct qcom_scm_vmperm vmperms[FASTRPC_MAX_VMIDS];
- 	struct rpmsg_device *rpdev;
- 	struct fastrpc_session_ctx session[FASTRPC_MAX_SESSIONS];
-@@ -1279,9 +1278,11 @@ static int fastrpc_init_create_static_pr
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index 5e408e7ec4c6b..936a24b646cef 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -399,6 +399,10 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid, const struct qstr *name
+ 		goto out_put_forget;
+ 	if (fuse_invalid_attr(&outarg->attr))
+ 		goto out_put_forget;
++	if (outarg->nodeid == FUSE_ROOT_ID && outarg->generation != 0) {
++		pr_warn_once("root generation should be zero\n");
++		outarg->generation = 0;
++	}
  
- 		/* Map if we have any heap VMIDs associated with this ADSP Static Process. */
- 		if (fl->cctx->vmcount) {
-+			u64 src_perms = BIT(QCOM_SCM_VMID_HLOS);
-+
- 			err = qcom_scm_assign_mem(fl->cctx->remote_heap->phys,
- 							(u64)fl->cctx->remote_heap->size,
--							&fl->cctx->perms,
-+							&src_perms,
- 							fl->cctx->vmperms, fl->cctx->vmcount);
- 			if (err) {
- 				dev_err(fl->sctx->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d",
-@@ -1915,8 +1916,10 @@ static int fastrpc_req_mmap(struct fastr
- 
- 	/* Add memory to static PD pool, protection thru hypervisor */
- 	if (req.flags == ADSP_MMAP_REMOTE_HEAP_ADDR && fl->cctx->vmcount) {
-+		u64 src_perms = BIT(QCOM_SCM_VMID_HLOS);
-+
- 		err = qcom_scm_assign_mem(buf->phys, (u64)buf->size,
--			&fl->cctx->perms, fl->cctx->vmperms, fl->cctx->vmcount);
-+			&src_perms, fl->cctx->vmperms, fl->cctx->vmcount);
- 		if (err) {
- 			dev_err(fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
- 					buf->phys, buf->size, err);
-@@ -2290,7 +2293,6 @@ static int fastrpc_rpmsg_probe(struct rp
- 
- 	if (vmcount) {
- 		data->vmcount = vmcount;
--		data->perms = BIT(QCOM_SCM_VMID_HLOS);
- 		for (i = 0; i < data->vmcount; i++) {
- 			data->vmperms[i].vmid = vmids[i];
- 			data->vmperms[i].perm = QCOM_SCM_PERM_RWX;
+ 	*inode = fuse_iget(sb, outarg->nodeid, outarg->generation,
+ 			   &outarg->attr, entry_attr_timeout(outarg),
+-- 
+2.43.0
+
 
 
 
