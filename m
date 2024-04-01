@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-35330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9B689437B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA4A894235
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BEA7B2235D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5326A1F22816
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EFD4AEFD;
-	Mon,  1 Apr 2024 17:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9A141232;
+	Mon,  1 Apr 2024 16:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Faz8H6Ty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMhp02Rk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DBF1DFF4;
-	Mon,  1 Apr 2024 17:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC868F5C;
+	Mon,  1 Apr 2024 16:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991043; cv=none; b=AtxUK7xkAAs9SLySfBL36+33rth+3fhMCkoYVTWox7c76o9r/ji5SO8av/h5EXyo1jfNl9qdnnvzKAuLkmdjIKCTr4eaFr4ykWXKh9GfGAAXlGGpsaEhoqKanG58WLFC7KJNgkZOinRgAOOuKB9JlhD1WLUqpHh9YKC0WrzY0H0=
+	t=1711990228; cv=none; b=Z2fYPD3VmLKNEKGy9m9AnKU5SV9TfqnY4WVM7YwDRKMILGHdxQddwjUlh9tEWSEnD0TKWyBAFzgmrVPRaedeDdcOLFX/OfbGi701YokCQTDxdgVQpgWWyID18mW8JSlg57WAFVIGnGH8v4HUjVSoHMrIoY68dPNXW1eQte/cKi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991043; c=relaxed/simple;
-	bh=HA3zKyGplIXILVAs3tL+JiCM/AcTfRJyAEC9XNE5mxk=;
+	s=arc-20240116; t=1711990228; c=relaxed/simple;
+	bh=KqfnW2k/QWselBQYZacYYscbYIcVau2/MYm4fYDjazA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=emMDWF9x0fa2iDSELnzsFL2TR6gAx7khqGg+wSEM0+/R13Mc9gtOp413ClssaJdrxY5wZWP54eZNv475KlnfeEpEl92640sBVZyRZruVouIxD2LyCWv7Vcv6hQtk2DN5WcY7CHnJRQ9tIxZGVxU43BLkK+ZxfcwRXJVJDNC/97w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Faz8H6Ty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA240C433C7;
-	Mon,  1 Apr 2024 17:04:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m4bKG0822KjKCTGheAezOTU+VaqnlW1cejJBC/3mdtjopCsentih5JuNpfz0emMemdTIxhNAqyaZ0RfpQ7fL/eIKKgS4ZuXifrLzQzgwr55o/3yq6YUB6A+py/7IbAqQOB0J+KXt7q4DBUdet+Z4slZ1e9hTG3NRgpI2VbswZ2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMhp02Rk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4B7C433C7;
+	Mon,  1 Apr 2024 16:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991043;
-	bh=HA3zKyGplIXILVAs3tL+JiCM/AcTfRJyAEC9XNE5mxk=;
+	s=korg; t=1711990228;
+	bh=KqfnW2k/QWselBQYZacYYscbYIcVau2/MYm4fYDjazA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Faz8H6TyO9gl3R3E20Nt0PQ7CXGvQmhmDmA3hn5pZZi+c+bjXvxbHZhjcPCvbaQCB
-	 1ss8eFV3HsCp6ILBYtM1F58gVNRVdLdgzhTrAlA34a19q2z8Hg7hprbpl+DHzd5RwM
-	 Q4AWAmsmt4WdOJdGzWgaJsm6JW1UdPb8SftxbV64=
+	b=bMhp02Rkh/5zcOjIpJti0OfJBGeb0TXz4kARcXj7cZMpz+TMgHxz7QRlVaoVTdd8k
+	 tCgM4fr5Pn3Ut/SMJuM4iTa+kCZeUKaEmcMmPQw+4mt4jwTebo2cwmxC6o5FSKAgB+
+	 Ja9GZc/pqR6mq7HBN+6O5Ndn1bcWdVdDDxye0nxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	valis <sec@valis.email>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 144/272] tls: fix race between tx work scheduling and socket close
-Date: Mon,  1 Apr 2024 17:45:34 +0200
-Message-ID: <20240401152535.180080613@linuxfoundation.org>
+	Mike Rapoport <rppt@linux.ibm.com>,
+	Yongqiang Liu <liuyongqiang13@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 286/396] ARM: 9359/1: flush: check if the folio is reserved for no-mapping addresses
+Date: Mon,  1 Apr 2024 17:45:35 +0200
+Message-ID: <20240401152556.434036404@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Yongqiang Liu <liuyongqiang13@huawei.com>
 
-commit e01e3934a1b2d122919f73bc6ddbe1cdafc4bbdb upstream.
+[ Upstream commit 0c66c6f4e21cb22220cbd8821c5c73fc157d20dc ]
 
-Similarly to previous commit, the submitting thread (recvmsg/sendmsg)
-may exit as soon as the async crypto handler calls complete().
-Reorder scheduling the work before calling complete().
-This seems more logical in the first place, as it's
-the inverse order of what the submitting thread will do.
+Since commit a4d5613c4dc6 ("arm: extend pfn_valid to take into account
+freed memory map alignment") changes the semantics of pfn_valid() to check
+presence of the memory map for a PFN. A valid page for an address which
+is reserved but not mapped by the kernel[1], the system crashed during
+some uio test with the following memory layout:
 
-Reported-by: valis <sec@valis.email>
-Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[Lee: Fixed merge-conflict in Stable branches linux-6.1.y and older]
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ node   0: [mem 0x00000000c0a00000-0x00000000cc8fffff]
+ node   0: [mem 0x00000000d0000000-0x00000000da1fffff]
+ the uio layout is：0xc0900000, 0x100000
+
+the crash backtrace like:
+
+  Unable to handle kernel paging request at virtual address bff00000
+  [...]
+  CPU: 1 PID: 465 Comm: startapp.bin Tainted: G           O      5.10.0 #1
+  Hardware name: Generic DT based system
+  PC is at b15_flush_kern_dcache_area+0x24/0x3c
+  LR is at __sync_icache_dcache+0x6c/0x98
+  [...]
+   (b15_flush_kern_dcache_area) from (__sync_icache_dcache+0x6c/0x98)
+   (__sync_icache_dcache) from (set_pte_at+0x28/0x54)
+   (set_pte_at) from (remap_pfn_range+0x1a0/0x274)
+   (remap_pfn_range) from (uio_mmap+0x184/0x1b8 [uio])
+   (uio_mmap [uio]) from (__mmap_region+0x264/0x5f4)
+   (__mmap_region) from (__do_mmap_mm+0x3ec/0x440)
+   (__do_mmap_mm) from (do_mmap+0x50/0x58)
+   (do_mmap) from (vm_mmap_pgoff+0xfc/0x188)
+   (vm_mmap_pgoff) from (ksys_mmap_pgoff+0xac/0xc4)
+   (ksys_mmap_pgoff) from (ret_fast_syscall+0x0/0x5c)
+  Code: e0801001 e2423001 e1c00003 f57ff04f (ee070f3e)
+  ---[ end trace 09cf0734c3805d52 ]---
+  Kernel panic - not syncing: Fatal exception
+
+So check if PG_reserved was set to solve this issue.
+
+[1]: https://lore.kernel.org/lkml/Zbtdue57RO0QScJM@linux.ibm.com/
+
+Fixes: a4d5613c4dc6 ("arm: extend pfn_valid to take into account freed memory map alignment")
+Suggested-by: Mike Rapoport <rppt@linux.ibm.com>
+Signed-off-by: Yongqiang Liu <liuyongqiang13@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ arch/arm/mm/flush.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -449,7 +449,6 @@ static void tls_encrypt_done(crypto_comp
- 	struct scatterlist *sge;
- 	struct sk_msg *msg_en;
- 	struct tls_rec *rec;
--	bool ready = false;
- 	struct sock *sk;
+diff --git a/arch/arm/mm/flush.c b/arch/arm/mm/flush.c
+index d19d140a10c7d..0749cf8a66371 100644
+--- a/arch/arm/mm/flush.c
++++ b/arch/arm/mm/flush.c
+@@ -296,6 +296,9 @@ void __sync_icache_dcache(pte_t pteval)
+ 		return;
  
- 	rec = container_of(aead_req, struct tls_rec, aead_req);
-@@ -486,19 +485,16 @@ static void tls_encrypt_done(crypto_comp
- 		/* If received record is at head of tx_list, schedule tx */
- 		first_rec = list_first_entry(&ctx->tx_list,
- 					     struct tls_rec, list);
--		if (rec == first_rec)
--			ready = true;
-+		if (rec == first_rec) {
-+			/* Schedule the transmission */
-+			if (!test_and_set_bit(BIT_TX_SCHEDULED,
-+					      &ctx->tx_bitmask))
-+				schedule_delayed_work(&ctx->tx_work.work, 1);
-+		}
- 	}
- 
- 	if (atomic_dec_and_test(&ctx->encrypt_pending))
- 		complete(&ctx->async_wait.completion);
--
--	if (!ready)
--		return;
--
--	/* Schedule the transmission */
--	if (!test_and_set_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask))
--		schedule_delayed_work(&ctx->tx_work.work, 1);
- }
- 
- static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
+ 	folio = page_folio(pfn_to_page(pfn));
++	if (folio_test_reserved(folio))
++		return;
++
+ 	if (cache_is_vipt_aliasing())
+ 		mapping = folio_flush_mapping(folio);
+ 	else
+-- 
+2.43.0
+
 
 
 
