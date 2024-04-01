@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-34636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDA089402B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7110F8941C5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E25B1C21021
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B4C3283241
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B159F47A6B;
-	Mon,  1 Apr 2024 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01C23613C;
+	Mon,  1 Apr 2024 16:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jxOOI6k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxsL3wX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE103F8F4;
-	Mon,  1 Apr 2024 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDEA481DA;
+	Mon,  1 Apr 2024 16:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988789; cv=none; b=qgYwEjwyPwBq+BI1nsd9Mgx4WRFu7jRs0rSV3/LOTrgpppOTA8njrryNspBkiMWrxYyk9W15jMTVUCBSXJCVMUbtJ1wIjHtIKbVwAb7iNqLWoz3tuOkHmrlozTE+kfVvVzbCDdDMFzM27gVyT3r5diWv6lKku/O2GDyN7bP8YLg=
+	t=1711989944; cv=none; b=s6uCVaBkP9OyInRPUW2ODxVEu29P++jPOEUCSZiPuQx0IvqidDraA6bjpu0BljxD+1i72fCzhcue8+j2grj9CxUil9BReNqPCq/qdzTZGPIYlazp3LXHxnXdELb3rMCuYM2PjjHMUs6/0BjJiZ006rJci6Y5cagJaqoFEMOQsdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988789; c=relaxed/simple;
-	bh=F0wlZ9fWo6JR6wZS6WUDCS8YiSs06u0d/0DF5TfS1XU=;
+	s=arc-20240116; t=1711989944; c=relaxed/simple;
+	bh=QvTqWfOkL6mxHm6qlhHkU95z4tIv8GZMAo6wDewa+FA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItCPVSSPGeotZM9UjaptDllFKpuM9tLofmigPBMasPVa8nSd9Q84B6tsuwXVKcpg8hxUAglT5C5lTctokub7JxcAVbGt/iW5mWTXf+GbYa0xhWkX7JQapCK5AOi0OaWSy2WvanXZj4HxEkR6kteYNlJ2TAQAihDoANVbsIAEz4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jxOOI6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98C0C433F1;
-	Mon,  1 Apr 2024 16:26:28 +0000 (UTC)
+	 MIME-Version; b=V/2OXryGag2BqOEaMDQG9Y3lYVs6GWh6gib4MNYHH9UeLhVbhJIKqQ0gakyjYfr0gwAxp2hBLvdO8VeDG/I/obFU4/J4YzFwpp+kwanDwgvcuQHBG97Li2Ol7NSMv8F284R6vhcp2+cUI7thEpXiqCVfZ3vGcEeRIEJKnxYAlaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxsL3wX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889CAC433C7;
+	Mon,  1 Apr 2024 16:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988789;
-	bh=F0wlZ9fWo6JR6wZS6WUDCS8YiSs06u0d/0DF5TfS1XU=;
+	s=korg; t=1711989944;
+	bh=QvTqWfOkL6mxHm6qlhHkU95z4tIv8GZMAo6wDewa+FA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jxOOI6k6I8pMBvHjf9i2OkiP0o9RyNlTl3pembtPa/7eAanea7EHdlEeGWw6dVjF
-	 UTxD6ehDqDXkUEY7hPPGHALkD6Q8aVMjjYNKSpooaPPehSEFmk7PrnpATU0ES4WBf6
-	 PwyJChOcDe6I1Kj8tyHmafjprPB5KLyKNQEPbpwM=
+	b=hxsL3wX3a1/SKAjwHpGZu4/vGop62IhL4t0RZkdAdNNpdKZTJR10af7T4uyOVuf1F
+	 DwkFV8zDtC+sdUMAKo99qMKgDZjxTfMqD4SRE7o+y0pn3GhO1hyLkuPCPS4d5muFhD
+	 NwOmbpjSQD+/RKr4krgEt5tdevOCsRiSQ/n1gqe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 260/432] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
-Date: Mon,  1 Apr 2024 17:44:07 +0200
-Message-ID: <20240401152600.903966038@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 199/396] netfilter: nf_tables: reject constant set with timeout
+Date: Mon,  1 Apr 2024 17:44:08 +0200
+Message-ID: <20240401152553.866618964@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
+commit 5f4fc4bd5cddb4770ab120ce44f02695c4505562 upstream.
 
-Headset Mic will no show at resume back.
-This patch will fix this issue.
+This set combination is weird: it allows for elements to be
+added/deleted, but once bound to the rule it cannot be updated anymore.
+Eventually, all elements expire, leading to an empty set which cannot
+be updated anymore. Reject this flags combination.
 
-Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11735,8 +11735,7 @@ static void alc897_hp_automute_hook(stru
- 
- 	snd_hda_gen_hp_automute(codec, jack);
- 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
--	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
--			    vref);
-+	snd_hda_set_pin_ctl(codec, 0x1b, vref);
- }
- 
- static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
-@@ -11745,6 +11744,10 @@ static void alc897_fixup_lenovo_headset_
- 	struct alc_spec *spec = codec->spec;
- 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
- 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
-+		spec->no_shutup_pins = 1;
-+	}
-+	if (action == HDA_FIXUP_ACT_PROBE) {
-+		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4945,6 +4945,9 @@ static int nf_tables_newset(struct sk_bu
+ 		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
+ 			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
+ 			return -EOPNOTSUPP;
++		if ((flags & (NFT_SET_CONSTANT | NFT_SET_TIMEOUT)) ==
++			     (NFT_SET_CONSTANT | NFT_SET_TIMEOUT))
++			return -EOPNOTSUPP;
  	}
- }
  
+ 	desc.dtype = 0;
 
 
 
