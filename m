@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E43A893FB9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D9B894182
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3571E1F21E7A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B351A1C20D06
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B52745BE4;
-	Mon,  1 Apr 2024 16:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C974482F6;
+	Mon,  1 Apr 2024 16:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPkWTPFX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDbcQ9h2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588EBC129;
-	Mon,  1 Apr 2024 16:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199914778C;
+	Mon,  1 Apr 2024 16:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988424; cv=none; b=VXID8sOTJV1SgZqw6G69KXcW5fmx9nRsf7I3NHEiqYG9svn+E1BDW5kJ/QJ/bKcJuU0NTeR30iobdhhUAdSwRyd1V8CwCtE/TOdYuLs6PqawFoUJMhNbG3BfAycmVenMHQL7eaud9lV0Hu0a+NgFbU2r22SQxBLNVg510U6P4hE=
+	t=1711989767; cv=none; b=lx420FTOu8QrOGpsSLRRuNE1MV+5+zKAE3R60UCD1L6nz2kNgY+HAwkRvrgTsEsIup20mD5ODorJ2DW586k38A3i2pYosMIxXEfJxqw35SLIGr7ba2XBpfKtKqTx55Z2QRrr2PUwEg4ABsG04XxqrP9IymKa3JgWTv21Hm96rVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988424; c=relaxed/simple;
-	bh=5z1fErpRDQUcKd6+bsBslOG/wKP3ZoOokV7DR6fIhiU=;
+	s=arc-20240116; t=1711989767; c=relaxed/simple;
+	bh=Reeh3kXSSA8I9FUIpQPfaQUTbwgSGKWJ1v5h5KfalNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NPxGHcwnIRLvZmB7bHxssjuCBArDPmnxJ211Ono94uBjrrP2534cvFPOwFLlQmgoI1fDGXBttGXs6l0IvBC8qWD1lqtfl/nkoDBLvib1gWgeqGfXhX9iQFK9+oDEu5x1lb/a3gHrY0ddUqCUH11YPjUwPffSIqHRrLK+CYuweDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPkWTPFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA643C433C7;
-	Mon,  1 Apr 2024 16:20:23 +0000 (UTC)
+	 MIME-Version; b=ktlOVrBKFrqriNlaG9dbnuVveHjOSMdrporFIw3T28moWyMs1+3WtM+QXoHfmaHSqZkE8VQTpf4hrP4P4sET2KlO98u+61XzBONXl9uPs2ubHCghW5Cev5SXwdMvDp92sPxD0ciQxIVu1M+x6U1ulkICtzcegmfSKWy5FJDjdJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDbcQ9h2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B8CC433C7;
+	Mon,  1 Apr 2024 16:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988424;
-	bh=5z1fErpRDQUcKd6+bsBslOG/wKP3ZoOokV7DR6fIhiU=;
+	s=korg; t=1711989766;
+	bh=Reeh3kXSSA8I9FUIpQPfaQUTbwgSGKWJ1v5h5KfalNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPkWTPFX2Lo7Xif5JKAB29wRXU9uAWvSFRnUjFUfcFhZFyFJmhK1I4iGmI736U3yP
-	 HEdg8zO8w+N7ScU5XbX7L6H33FzIMpCqvkmEkAcei/PPviDbl7LN4xpS+Ope43nfH+
-	 5QDkWdWAYwpxc7WSdhex7G5M94PD3qyytZiTSS6Y=
+	b=WDbcQ9h2hLCmRsdJz1Bd+weQv5NRZI7064RxH5QvsraSYtRh+a36dq0jUAie1HifQ
+	 eFgCobkz2CgALjrcR5q4yGnqmhrqCo8xurEwHxykKEyFdFYteX4GsdYRhla7pIlKde
+	 lPmZ8RMdg0owKZG/G/Jtl6lOfxmLBiaSG+9ox8jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Korenevsky <ekorenevsky@astralinux.ru>,
-	Steve French <stfrench@microsoft.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 181/432] cifs: open_cached_dir(): add FILE_READ_EA to desired access
+Subject: [PATCH 6.6 119/396] kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1
 Date: Mon,  1 Apr 2024 17:42:48 +0200
-Message-ID: <20240401152558.542729979@linuxfoundation.org>
+Message-ID: <20240401152551.466892035@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Korenevsky <ekorenevsky@astralinux.ru>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit f1b8224b4e6ed59e7e6f5c548673c67410098d8d ]
+[ Upstream commit 75b5ab134bb5f657ef7979a59106dce0657e8d87 ]
 
-Since smb2_query_eas() reads EA and uses cached directory,
-open_cached_dir() should request FILE_READ_EA access.
+Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
+under -Wenum-conversion. A recent change in Clang strengthened these
+warnings and they appear frequently in common builds, primarily due to
+several instances in common headers but there are quite a few drivers
+that have individual instances as well.
 
-Otherwise listxattr() and getxattr() will fail with EACCES
-(0xc0000022 STATUS_ACCESS_DENIED SMB status).
+  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+    509 |                            item];
+        |                            ~~~~
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218543
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
+        |                                      ^ ~~~~~~~~~~~~~~~~~~
+    956 |                           : IWL_MAC_BEACON_CCK_V1;
+        |                             ~~~~~~~~~~~~~~~~~~~~~
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+   1120 |                                                0) > 10 ?
+        |                                                        ^
+   1121 |                         IWL_MAC_BEACON_FILS :
+        |                         ~~~~~~~~~~~~~~~~~~~
+   1122 |                         IWL_MAC_BEACON_FILS_V1;
+        |                         ~~~~~~~~~~~~~~~~~~~~~~
+
+Doing arithmetic between or returning two different types of enums could
+be a bug, so each of the instance of the warning needs to be evaluated.
+Unfortunately, as mentioned above, there are many instances of this
+warning in many different configurations, which can break the build when
+CONFIG_WERROR is enabled.
+
+To avoid introducing new instances of the warnings while cleaning up the
+disruption for the majority of users, disable these warnings for the
+default build while leaving them on for W=1 builds.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Eugene Korenevsky <ekorenevsky@astralinux.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
+Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cached_dir.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/Makefile.extrawarn | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index 5730c65ffb40d..15e1215bc4e5a 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -233,7 +233,8 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
- 		.tcon = tcon,
- 		.path = path,
- 		.create_options = cifs_create_options(cifs_sb, CREATE_NOT_FILE),
--		.desired_access =  FILE_READ_DATA | FILE_READ_ATTRIBUTES,
-+		.desired_access =  FILE_READ_DATA | FILE_READ_ATTRIBUTES |
-+				   FILE_READ_EA,
- 		.disposition = FILE_OPEN,
- 		.fid = pfid,
- 	};
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 2fe6f2828d376..16c750bb95faf 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -143,6 +143,8 @@ KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
+ KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
+ KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
+ KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
++KBUILD_CFLAGS += -Wno-enum-compare-conditional
++KBUILD_CFLAGS += -Wno-enum-enum-conversion
+ endif
+ 
+ endif
 -- 
 2.43.0
 
