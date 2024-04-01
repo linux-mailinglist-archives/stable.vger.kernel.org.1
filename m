@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-34194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECF1893E4A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:01:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA256893E4D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 392831F223F2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:01:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64E02282301
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A409443AD6;
-	Mon,  1 Apr 2024 16:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA009446AC;
+	Mon,  1 Apr 2024 16:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlVRWSyu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vYUQOOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600A21CA8F;
-	Mon,  1 Apr 2024 16:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A581CA8F;
+	Mon,  1 Apr 2024 16:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987304; cv=none; b=i4bZrJjZtZ2jEEV1vrE3LWgGm53CdmeCcqADwwzynZUbfEeUBzieR9cwXCz4qBHeE6mFgJ+zyxWEoPOZAdi1GpJoo+oSV0EfWBJScPlJIusjUvqg36Jc24zfg3Tv1sgihniqdd7JpPaS/awVBtXFE+mNvASLjxGWN2Z1wRoROOo=
+	t=1711987310; cv=none; b=YeZDS2+JomzISNHdw4fGOYByh2akmb6g+2C/y88JMRoHzwDPwKCsnSiUWsYFM/FlHnRTvbr6xOFebX80PU8CND9N8hl+6AF/7q+DECoGNR6SqzGgrXNx1l8ZhbXJWH/7GnwRj0g/UP/x5+598iZsafQreHUNlIA+Q+RHeWsM6H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987304; c=relaxed/simple;
-	bh=U3/gVHTySuJgd529OXymTKEhnhI8buRA9ukNrozqHVU=;
+	s=arc-20240116; t=1711987310; c=relaxed/simple;
+	bh=ULQD9+D/G35WUrDgyhK+EULijTsmCmR1xfss97MnWn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBC4XWVjhso5FYYbzhgRroKMKZY863Wr3nftX/2GnNoK5MenIepMaPnTQnGUDCaI09erktCRy4IQsUEIAbFTBgvc4SQKWr8pV23OFLa8Fk/eJjlbUbhxx8xbjYAkTFzlAeyCpBCNzLszbhOUmjrWoTHpHHC316ZPUKOI7pknq3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlVRWSyu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2755C433F1;
-	Mon,  1 Apr 2024 16:01:43 +0000 (UTC)
+	 MIME-Version; b=PNLXbFUDzR7HV+fOTaEXtaYF+IwARyMRQlqsDB/FWZuO2BMlLrKw4EXPYCrBxShfXd9VAvYeMWx0BXbMaDcb7CeAz45yaKHYxIQLC+3Be2v8DUyr3zyXPDLAlneUhSscBR1o3JvuW3bhhsO08blkmdvnWX6gYwWroPNwpok39XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vYUQOOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA4AC433F1;
+	Mon,  1 Apr 2024 16:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987304;
-	bh=U3/gVHTySuJgd529OXymTKEhnhI8buRA9ukNrozqHVU=;
+	s=korg; t=1711987310;
+	bh=ULQD9+D/G35WUrDgyhK+EULijTsmCmR1xfss97MnWn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlVRWSyutQfLEn2ZGHcAajS0D0vNscq8+f8qAaPfqFITDE/tzQgaP/2PRiwolJh36
-	 EPUsl8Ooxn1w/radfJIHNiy8atQ75dkk1/GBzoeHr83E3ew79nZvUceFrRPbRgf9Sz
-	 KinU4hHg/2eP+5pe+ziKUljTbzh/RP3RL9lYohyU=
+	b=2vYUQOOUeWeToTBR8j4jVtf4vRC+bclv6J4AoQr6ytd4R+9/o5ehcXvog/syldFZN
+	 eSMEV7qEoWGPsAQhQbgg8yqaiCW+WDn2t9RF5beprEkDbjLKUt9ejFHY7xyOFyTkWo
+	 q0FM/VOhT+DlcH9HgULejXo7TuhVERgXjv6G9FwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jiawei Wang <me@jwang.link>,
-	Mark Brown <broonie@kernel.org>,
-	Luca Stefani <luca.stefani.ge1@gmail.com>
-Subject: [PATCH 6.8 247/399] ASoC: amd: yc: Revert "Fix non-functional mic on Lenovo 21J2"
-Date: Mon,  1 Apr 2024 17:43:33 +0200
-Message-ID: <20240401152556.545836448@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 248/399] ASoC: amd: yc: Revert "add new YC platform variant (0x63) support"
+Date: Mon,  1 Apr 2024 17:43:34 +0200
+Message-ID: <20240401152556.573976129@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -68,51 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiawei Wang <me@jwang.link>
 
-commit 861b3415e4dee06cc00cd1754808a7827b9105bf upstream.
+commit 37bee1855d0e3b6dbeb8de71895f6f68cad137be upstream.
 
-This reverts commit ed00a6945dc32462c2d3744a3518d2316da66fcc,
-which added a quirk entry to enable the Yellow Carp (YC)
-driver for the Lenovo 21J2 laptop.
+This reverts commit 316a784839b21b122e1761cdca54677bb19a47fa,
+that enabled Yellow Carp (YC) driver for PCI revision id 0x63.
 
-Although the microphone functioned with the YC driver, it
-resulted in incorrect driver usage. The Lenovo 21J2 is not a
-Yellow Carp platform, but a Pink Sardine platform, which
-already has an upstreamed driver.
-
-The microphone on the Lenovo 21J2 operates correctly with the
-CONFIG_SND_SOC_AMD_PS flag enabled and does not require the
-quirk entry. So this patch removes the quirk entry.
-
-Thanks to Mukunda Vijendar [1] for pointing this out.
+Mukunda Vijendar [1] points out that revision 0x63 is Pink
+Sardine platform, not Yellow Carp. The YC driver should not
+be enabled for this platform. This patch prevents the YC
+driver from being incorrectly enabled.
 
 Link: https://lore.kernel.org/linux-sound/023092e1-689c-4b00-b93f-4092c3724fb6@amd.com/ [1]
 
 Signed-off-by: Jiawei Wang <me@jwang.link>
-Link: https://lore.kernel.org/linux-sound/023092e1-689c-4b00-b93f-4092c3724fb6@amd.com/ [1]
-Link: https://msgid.link/r/20240313015853.3573242-2-me@jwang.link
+Link: https://msgid.link/r/20240313015853.3573242-3-me@jwang.link
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Luca Stefani <luca.stefani.ge1@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 -------
- 1 file changed, 7 deletions(-)
+ sound/soc/amd/yc/pci-acp6x.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -203,13 +203,6 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "21J2"),
--		}
--	},
--	{
--		.driver_data = &acp6x_card,
--		.matches = {
--			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21J0"),
- 		}
- 	},
+--- a/sound/soc/amd/yc/pci-acp6x.c
++++ b/sound/soc/amd/yc/pci-acp6x.c
+@@ -162,7 +162,6 @@ static int snd_acp6x_probe(struct pci_de
+ 	/* Yellow Carp device check */
+ 	switch (pci->revision) {
+ 	case 0x60:
+-	case 0x63:
+ 	case 0x6f:
+ 		break;
+ 	default:
 
 
 
