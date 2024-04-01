@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-34959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB2E8941AB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F068942FD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B318B2293E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 252901C21B01
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F03481D0;
-	Mon,  1 Apr 2024 16:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003364AED7;
+	Mon,  1 Apr 2024 16:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmnLdWV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHZg1UWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F544654F;
-	Mon,  1 Apr 2024 16:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E3448CDD;
+	Mon,  1 Apr 2024 16:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989873; cv=none; b=N3bGvXiesqTm43k9z2yWGaxrzrUz99zKyedAE8L4GcOBnJQ9sasRqRBblPryeERmkfAbVfnH1H7KGv2PwphKQAKZknd3MbWnT5+r6/ezlH5slEZ+KFc4/7kVlWETa/xaxcZOffNFEO4T1cowS9DgfOhzK0SI8wwkWbVUy5FOgcc=
+	t=1711990691; cv=none; b=J3tkRFLpDOFHfx0f55ui1bAHJ3h8cZLNBlbyQdraj293gxbvZawo/zYfLgQXQH14kRkowvf0ojLozn4rDz+6OivZDS8E2gaUMOiadXgsXqGHPGoJBo5kXpfKgoOH9ai4LtLzgTFi5uztOFir+lKxm/K2HXdE28qkbK9xkglV88I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989873; c=relaxed/simple;
-	bh=soeq7qXeCXQ6aUjA4srX62hXoW2fCRex5HeZHbm5bIk=;
+	s=arc-20240116; t=1711990691; c=relaxed/simple;
+	bh=QdHPO5SyAGOm/iGPTvRg5tmC9CtBuBUZLiKNuQDPoYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5TB+RhNJIezLeX7Vneeu6i7RlvU7UpESamUOO8NuCM7/mZS+hKLD+kI6rz+wnKo/DcoI/kEFt5Lh+1t2XoyWFl5/f5OLPJ69/KRhmxP+hRVbtn6WHkZNRue6i3/KAMwLrC3LRoqfkMxOHPArQuWg+Trggwwsf0OmI0Pf2PF6mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmnLdWV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E630BC433F1;
-	Mon,  1 Apr 2024 16:44:32 +0000 (UTC)
+	 MIME-Version; b=pn9bf6KCv1mlZv8WKRT8iZ3G7sC+5VJ1J2pe6s3rqn8BQQrEtSgehVIkrbYyXKCELsjwYU9sr+daJYNXY9H9h96NGCdITNdUrmSrchboZK3yEJoAkxkcluAYxL2++sIf5vILvB98GUkPs9o8+aqeBQEAmrTD0IO6PIz7EskLaSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHZg1UWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C36C433C7;
+	Mon,  1 Apr 2024 16:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989873;
-	bh=soeq7qXeCXQ6aUjA4srX62hXoW2fCRex5HeZHbm5bIk=;
+	s=korg; t=1711990691;
+	bh=QdHPO5SyAGOm/iGPTvRg5tmC9CtBuBUZLiKNuQDPoYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DmnLdWV3HjvNn9z2OSDtg7kqo+9uEmTyJ+sMnJBZnUyJpOzFc1WLXPz+kYrofn/9b
-	 DIMBdaFqUieIx4Ie6uzOHUf1Qf9d+kM1zjjIxez4cPyzMQ9SF7K/4vbchTbNVZdd1U
-	 2EEK+kFxBM9hdX458UGapbjhjktlJ+aZC3E0aenc=
+	b=wHZg1UWHFtqiFU167id+A0xziv92XtVreT4eDlnlDT2WGqwT78Bd9kOhDLVEOoMj8
+	 4OyGqSRK3dEicKk3+SASf3kaA/QfvfQeNXGIXIt3jIhkfjlaGRZjSMFJG/Ckn2LXLN
+	 Nqs1mDxqZKLViZiySIAQtOXAdw3no2s5tOtUAcBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/396] wireguard: netlink: access device through ctx instead of peer
-Date: Mon,  1 Apr 2024 17:43:46 +0200
-Message-ID: <20240401152553.221135902@linuxfoundation.org>
+Subject: [PATCH 6.1 037/272] kasan/test: avoid gcc warning for intentional overflow
+Date: Mon,  1 Apr 2024 17:43:47 +0200
+Message-ID: <20240401152531.537015867@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +68,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 71cbd32e3db82ea4a74e3ef9aeeaa6971969c86f ]
+[ Upstream commit e10aea105e9ed14b62a11844fec6aaa87c6935a3 ]
 
-The previous commit fixed a bug that led to a NULL peer->device being
-dereferenced. It's actually easier and faster performance-wise to
-instead get the device from ctx->wg. This semantically makes more sense
-too, since ctx->wg->peer_allowedips.seq is compared with
-ctx->allowedips_seq, basing them both in ctx. This also acts as a
-defence in depth provision against freed peers.
+The out-of-bounds test allocates an object that is three bytes too short
+in order to validate the bounds checking.  Starting with gcc-14, this
+causes a compile-time warning as gcc has grown smart enough to understand
+the sizeof() logic:
 
-Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+mm/kasan/kasan_test.c: In function 'kmalloc_oob_16':
+mm/kasan/kasan_test.c:443:14: error: allocation of insufficient size '13' for type 'struct <anonymous>' with size '16' [-Werror=alloc-size]
+  443 |         ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
+      |              ^
+
+Hide the actual computation behind a RELOC_HIDE() that ensures
+the compiler misses the intentional bug.
+
+Link: https://lkml.kernel.org/r/20240212111609.869266-1-arnd@kernel.org
+Fixes: 3f15801cdc23 ("lib: add kasan test module")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireguard/netlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/kasan/kasan_test.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index 12d80306ff3bc..a6661c9500d40 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -164,8 +164,8 @@ get_peer(struct wg_peer *peer, struct sk_buff *skb, struct dump_ctx *ctx)
- 	if (!allowedips_node)
- 		goto no_allowedips;
- 	if (!ctx->allowedips_seq)
--		ctx->allowedips_seq = peer->device->peer_allowedips.seq;
--	else if (ctx->allowedips_seq != peer->device->peer_allowedips.seq)
-+		ctx->allowedips_seq = ctx->wg->peer_allowedips.seq;
-+	else if (ctx->allowedips_seq != ctx->wg->peer_allowedips.seq)
- 		goto no_allowedips;
+diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test.c
+index 0d59098f08761..cef683a2e0d2e 100644
+--- a/mm/kasan/kasan_test.c
++++ b/mm/kasan/kasan_test.c
+@@ -415,7 +415,8 @@ static void kmalloc_oob_16(struct kunit *test)
+ 	/* This test is specifically crafted for the generic mode. */
+ 	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
  
- 	allowedips_nest = nla_nest_start(skb, WGPEER_A_ALLOWEDIPS);
+-	ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
++	/* RELOC_HIDE to prevent gcc from warning about short alloc */
++	ptr1 = RELOC_HIDE(kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL), 0);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr1);
+ 
+ 	ptr2 = kmalloc(sizeof(*ptr2), GFP_KERNEL);
 -- 
 2.43.0
 
