@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-34481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71FD4893F87
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE65989410D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A32DB1C20FFF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E05CE1C213E1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104084778C;
-	Mon,  1 Apr 2024 16:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D903F8F4;
+	Mon,  1 Apr 2024 16:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unCn8OoN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlVyRruY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AA83D961;
-	Mon,  1 Apr 2024 16:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E5147A76;
+	Mon,  1 Apr 2024 16:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988266; cv=none; b=c2JVwMYZf2xgrtmqQx4YyUA1I8EkObkFD47PSl6uWi23FJnzeJf87W9LVcBF8Ewy/7+njyB4yL9nWYLYIZxGPQXqIgLJR0CplGsxYnGoiBTdX2d2hLrDBfShpddTmVuwSbWM15tc2oUvQlZM+Y77NWxpG6W2ahqWBL9d//VJR6s=
+	t=1711989423; cv=none; b=DXZku86jAlkyWn68Joju+yVJxIPEJICdPgUhFozC+FUgH7jxB9xmLN5JetwaUUMxhNqw0Tf9HrDi4opoFJZaTdJIq1BalVjex7Q8sA+KVcHztIrHdA83qlnGKHpdW5g/ZlDhtrnVo/us5aWUYkIBP9HKmmP0RKOfrMgOwfd4kKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988266; c=relaxed/simple;
-	bh=PtjRDYGZShHzgnvcgSR0nqTBF3BMePFaDgukh/wrASM=;
+	s=arc-20240116; t=1711989423; c=relaxed/simple;
+	bh=RdwGiSpSU8erjI4bOYhFV8zSPyZpah2moG0RWtNvIgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCWtfjR5ZQWIu0el2h3sKvddt+g34pKsHZ1fv0eh++E2KvD3R+xZ2A0k1OrBNkaBqy/Iaz2V9tM6Ropvn//W9jWHEvh77nszvP9c1mp3okvvBeXkH3SkfAkdcAJHyVtBzbDc0I+5zVzjRbpGWQM+IQIH2hdAAkNlIuEsDgFvDlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unCn8OoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D26DEC433C7;
-	Mon,  1 Apr 2024 16:17:45 +0000 (UTC)
+	 MIME-Version; b=HIGYoWKAZ0a+sEGQm5qhPYoj/DjiWfZHaj10KoIEPS0YFJ68v22hvpfhxihxaTRu6LSjTEKhvhmLo0lejRznswLkXTqleKKgFoOcDbBbObxbcbl6y112gY5KG/jKI7X0b/2MvIFatWtw0qhALHNKTyLs6gxJ1oCmr+5uT6h/zEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlVyRruY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7624C433F1;
+	Mon,  1 Apr 2024 16:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988266;
-	bh=PtjRDYGZShHzgnvcgSR0nqTBF3BMePFaDgukh/wrASM=;
+	s=korg; t=1711989423;
+	bh=RdwGiSpSU8erjI4bOYhFV8zSPyZpah2moG0RWtNvIgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=unCn8OoN/9DL+895xz9H10uto4GivbxnkXqiM5kTmUL8tG3XuhtNViNZVcqpTMPH8
-	 AQxraXsZFILkQw87a+zLdSkdQdalPC6g1wMEQXYbw35n9EBx7RmkAAz7WNVn+L4vfN
-	 y6La10J59L/oJ7C7UClSMg/yFJekNfSuyrTxYXXk=
+	b=XlVyRruYhPcG7oG0tGy/2bGN+cpUKb2QkFIJcJ9Gj/fayZ6zlPENftdqWf+G0PZRr
+	 L7aycMYZbXtOeFwkUNfFixCvk/xmK2PMXMlByh6IxtruejQETNV3ZIqJ6KcX5PuO8N
+	 sGYDZlge35T/SHzTFD3fhKtBrZnQKDgk/n53gjnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Song Liu <song@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 105/432] md/dm-raid: dont call md_reap_sync_thread() directly
+Subject: [PATCH 6.6 043/396] kasan/test: avoid gcc warning for intentional overflow
 Date: Mon,  1 Apr 2024 17:41:32 +0200
-Message-ID: <20240401152556.259503571@linuxfoundation.org>
+Message-ID: <20240401152549.213251730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +68,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit cd32b27a66db8776d8b8e82ec7d7dde97a8693b0 ]
+[ Upstream commit e10aea105e9ed14b62a11844fec6aaa87c6935a3 ]
 
-Currently md_reap_sync_thread() is called from raid_message() directly
-without holding 'reconfig_mutex', this is definitely unsafe because
-md_reap_sync_thread() can change many fields that is protected by
-'reconfig_mutex'.
+The out-of-bounds test allocates an object that is three bytes too short
+in order to validate the bounds checking.  Starting with gcc-14, this
+causes a compile-time warning as gcc has grown smart enough to understand
+the sizeof() logic:
 
-However, hold 'reconfig_mutex' here is still problematic because this
-will cause deadlock, for example, commit 130443d60b1b ("md: refactor
-idle/frozen_sync_thread() to fix deadlock").
+mm/kasan/kasan_test.c: In function 'kmalloc_oob_16':
+mm/kasan/kasan_test.c:443:14: error: allocation of insufficient size '13' for type 'struct <anonymous>' with size '16' [-Werror=alloc-size]
+  443 |         ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
+      |              ^
 
-Fix this problem by using stop_sync_thread() to unregister sync_thread,
-like md/raid did.
+Hide the actual computation behind a RELOC_HIDE() that ensures
+the compiler misses the intentional bug.
 
-Fixes: be83651f0050 ("DM RAID: Add message/status support for changing sync action")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Acked-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240305072306.2562024-7-yukuai1@huaweicloud.com
+Link: https://lkml.kernel.org/r/20240212111609.869266-1-arnd@kernel.org
+Fixes: 3f15801cdc23 ("lib: add kasan test module")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ mm/kasan/kasan_test.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index fff9336fee767..8d38cdb221453 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -3719,6 +3719,7 @@ static int raid_message(struct dm_target *ti, unsigned int argc, char **argv,
- {
- 	struct raid_set *rs = ti->private;
- 	struct mddev *mddev = &rs->md;
-+	int ret = 0;
+diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test.c
+index b61cc6a42541a..0119075d2e58e 100644
+--- a/mm/kasan/kasan_test.c
++++ b/mm/kasan/kasan_test.c
+@@ -450,7 +450,8 @@ static void kmalloc_oob_16(struct kunit *test)
+ 	/* This test is specifically crafted for the generic mode. */
+ 	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
  
- 	if (!mddev->pers || !mddev->pers->sync_request)
- 		return -EINVAL;
-@@ -3726,17 +3727,24 @@ static int raid_message(struct dm_target *ti, unsigned int argc, char **argv,
- 	if (test_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags))
- 		return -EBUSY;
+-	ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
++	/* RELOC_HIDE to prevent gcc from warning about short alloc */
++	ptr1 = RELOC_HIDE(kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL), 0);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr1);
  
--	if (!strcasecmp(argv[0], "frozen"))
--		set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
--	else
--		clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
-+	if (!strcasecmp(argv[0], "frozen")) {
-+		ret = mddev_lock(mddev);
-+		if (ret)
-+			return ret;
- 
--	if (!strcasecmp(argv[0], "idle") || !strcasecmp(argv[0], "frozen")) {
--		if (mddev->sync_thread) {
--			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
--			md_reap_sync_thread(mddev);
--		}
--	} else if (decipher_sync_action(mddev, mddev->recovery) != st_idle)
-+		md_frozen_sync_thread(mddev);
-+		mddev_unlock(mddev);
-+	} else if (!strcasecmp(argv[0], "idle")) {
-+		ret = mddev_lock(mddev);
-+		if (ret)
-+			return ret;
-+
-+		md_idle_sync_thread(mddev);
-+		mddev_unlock(mddev);
-+	}
-+
-+	clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
-+	if (decipher_sync_action(mddev, mddev->recovery) != st_idle)
- 		return -EBUSY;
- 	else if (!strcasecmp(argv[0], "resync"))
- 		; /* MD_RECOVERY_NEEDED set below */
+ 	ptr2 = kmalloc(sizeof(*ptr2), GFP_KERNEL);
 -- 
 2.43.0
 
