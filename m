@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-35103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0F089426F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 650BC8943C1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3844B21335
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F55D283930
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2254F200;
-	Mon,  1 Apr 2024 16:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9882482E4;
+	Mon,  1 Apr 2024 17:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRg5czjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpElKnT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4724E1D6;
-	Mon,  1 Apr 2024 16:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8617A40876;
+	Mon,  1 Apr 2024 17:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990343; cv=none; b=d9DLl5R2/DZQTIMLdAKpfvipcfXFQjn6GW7Y2mHsRbY41xI929kAFWxfv259bclwa7nN6zz7SUWiwqfeUdIuJy6st8abeE3h20qlPOTqI2ScXvGEeiZLDWc9IIFabSMFk513/EZhNZKkEiZzs9M3EyXDb3ac3ZkfdhkpluF4G3U=
+	t=1711991260; cv=none; b=XSqo3zqTT8e42t98nj1u1i//38x/4izU8fOossgCwHlE3Dp/ifJuPvEJoo3AiapLzs7pUnP/VD5ZahPHCMmB/bCE7PmxlFS4TjMtoNmIwJNTuYFblkRz2x4RI8mohIe4JDCiQfe5gYJIIriOStft3bbxsTRVRdDZVGw0sZfwOuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990343; c=relaxed/simple;
-	bh=o0a3fu1UgUvmYE+JWRv7ok1x6UEihRcM5NAaSW76cZM=;
+	s=arc-20240116; t=1711991260; c=relaxed/simple;
+	bh=3aqVHnoDRkNYGC5eyLAqIoLQTEdl1oQ3THHRrVPCDjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyTUx3JNUsGLE7NbY7VEdzYULGvUYklmOoWCPJklAibvyZcHNgId4hZ/p4CO2mjtclS3IjctqTI8hZXMychJd2/7T3TCVql8f5m/k+O+sM6xdJSnoUWjrqaVH5R+SIvinZyQUzGRiOFRbbPPCHcGo8mHFvJ99IVs6N0whq0ZN7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRg5czjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A7EC433F1;
-	Mon,  1 Apr 2024 16:52:22 +0000 (UTC)
+	 MIME-Version; b=qfdIQSRnxw4R41sSufkdXtAsxUDLZMqJgpD+nFX3goaN7hyK83A+GToV6GSNwRTHHeRzOdiqbTHz9f5n02RxgZxXItIYYwU/DUXs8OfH6gCCe8U/96CaTCSigtgcUqTeY8oMGhMTWaLylV9B7CwEj2mAj8um777V5OPph7oSrvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpElKnT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2E6C433F1;
+	Mon,  1 Apr 2024 17:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990343;
-	bh=o0a3fu1UgUvmYE+JWRv7ok1x6UEihRcM5NAaSW76cZM=;
+	s=korg; t=1711991260;
+	bh=3aqVHnoDRkNYGC5eyLAqIoLQTEdl1oQ3THHRrVPCDjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRg5czjj1yUYuWxWFNSOClqkA2aC0zI2cFJgJjCmWJhI+QNbrzKux+0hytHdUT3cf
-	 tig6ei7fOMuWdT33lTuK7Dsu5FNCa7cQUAtQr1RGKjtyfOQkKTQsFnwpVYlg6e9oJT
-	 /9XKfxa7kTre052xOVJJJXbMwFOD2RCKogke2bQk=
+	b=tpElKnT8Z3IFYFARrOg8j1/zAZRCGhNLPqtkBjwAyCBsOlCvYr698vUq1u9EpP65r
+	 N0wzxwcy9e2Y8hIzG9e0zGGYJxem4x84kOHTR3q6I9pFQbrDfISfhFSONhndh2HXQd
+	 3AlCKWRemTQ/HxJCfVTgRz0hv6pnpFAgru02A0fY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 322/396] wifi: iwlwifi: mvm: disable MLO for the time being
-Date: Mon,  1 Apr 2024 17:46:11 +0200
-Message-ID: <20240401152557.515524071@linuxfoundation.org>
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 182/272] swiotlb: Fix alignment checks when both allocation and DMA masks are present
+Date: Mon,  1 Apr 2024 17:46:12 +0200
+Message-ID: <20240401152536.498310354@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Will Deacon <will@kernel.org>
 
-commit 5f404005055304830bbbee0d66af2964fc48f29e upstream.
+[ Upstream commit 51b30ecb73b481d5fac6ccf2ecb4a309c9ee3310 ]
 
-MLO ended up not really fully stable yet, we want to make
-sure it works well with the ecosystem before enabling it.
-Thus, remove the flag, but set WIPHY_FLAG_DISABLE_WEXT so
-we don't get wireless extensions back until we enable MLO
-for this hardware.
+Nicolin reports that swiotlb buffer allocations fail for an NVME device
+behind an IOMMU using 64KiB pages. This is because we end up with a
+minimum allocation alignment of 64KiB (for the IOMMU to map the buffer
+safely) but a minimum DMA alignment mask corresponding to a 4KiB NVME
+page (i.e. preserving the 4KiB page offset from the original allocation).
+If the original address is not 4KiB-aligned, the allocation will fail
+because swiotlb_search_pool_area() erroneously compares these unmasked
+bits with the 64KiB-aligned candidate allocation.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240314110951.d6ad146df98d.I47127e4fdbdef89e4ccf7483641570ee7871d4e6@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tweak swiotlb_search_pool_area() so that the DMA alignment mask is
+reduced based on the required alignment of the allocation.
+
+Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+Link: https://lore.kernel.org/r/cover.1707851466.git.nicolinc@nvidia.com
+Reported-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/dma/swiotlb.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -318,7 +318,7 @@ int iwl_mvm_mac_setup_register(struct iw
- 	if (mvm->mld_api_is_used && mvm->nvm_data->sku_cap_11be_enable &&
- 	    !iwlwifi_mod_params.disable_11ax &&
- 	    !iwlwifi_mod_params.disable_11be)
--		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
-+		hw->wiphy->flags |= WIPHY_FLAG_DISABLE_WEXT;
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index ad6333c3fe1ff..db89ac94e7db4 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -654,8 +654,7 @@ static int swiotlb_do_find_slots(struct device *dev, int area_index,
+ 	dma_addr_t tbl_dma_addr =
+ 		phys_to_dma_unencrypted(dev, mem->start) & boundary_mask;
+ 	unsigned long max_slots = get_max_slots(boundary_mask);
+-	unsigned int iotlb_align_mask =
+-		dma_get_min_align_mask(dev) & ~(IO_TLB_SIZE - 1);
++	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
+ 	unsigned int nslots = nr_slots(alloc_size), stride;
+ 	unsigned int index, wrap, count = 0, i;
+ 	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
+@@ -666,6 +665,14 @@ static int swiotlb_do_find_slots(struct device *dev, int area_index,
+ 	BUG_ON(!nslots);
+ 	BUG_ON(area_index >= mem->nareas);
  
- 	/* With MLD FW API, it tracks timing by itself,
- 	 * no need for any timing from the host
++	/*
++	 * Ensure that the allocation is at least slot-aligned and update
++	 * 'iotlb_align_mask' to ignore bits that will be preserved when
++	 * offsetting into the allocation.
++	 */
++	alloc_align_mask |= (IO_TLB_SIZE - 1);
++	iotlb_align_mask &= ~alloc_align_mask;
++
+ 	/*
+ 	 * For mappings with an alignment requirement don't bother looping to
+ 	 * unaligned slots once we found an aligned one.  For allocations of
+-- 
+2.43.0
+
 
 
 
