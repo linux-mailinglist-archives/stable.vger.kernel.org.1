@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-35368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED848943A1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F291894244
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EF39B21309
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7126E1C21A21
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6079482E4;
-	Mon,  1 Apr 2024 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DCB4653C;
+	Mon,  1 Apr 2024 16:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OesLGJpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/WWmr2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9560A38DE5;
-	Mon,  1 Apr 2024 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A9E63E;
+	Mon,  1 Apr 2024 16:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991168; cv=none; b=quKqs4imrdySFXKMwweIsefBTQDAjQWBfOqh655S3uBQECYHFmYrdCtPdcF4rwgOzKY7CbbECg6gDHWrEhTEGL6/V378hVjht6yLTlAWfohCAd6cAus7NQzICYpAzw09ddK9X8HpGIrmGASaWTZq4bxeBoGv6pwLupzqabcrUZM=
+	t=1711990262; cv=none; b=ih7luCiVdcHjqo67qpmuzQ9QWtv3coIsCj+8WSNhowhN497926Q0g9a7tl5rpM7htYwchOBfr5g+vMZ7OhHtevVjjEhI+9ecsU4vVtdNLuSBcyXUWgVs6JgGwaJTPf87kHZ5KU7pSZSBlSz47GV8sOv7BZK/DVFqoLH0cHQLV+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991168; c=relaxed/simple;
-	bh=Mnwek2ccX+5EtknIU0vdJFjyCVDv+3cD3tY9AO/ltbQ=;
+	s=arc-20240116; t=1711990262; c=relaxed/simple;
+	bh=dtih0+ozksseOakGBhA7/T+2YqsWQqLjZsOut7vp2XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QohQ8cX8UTTgbE6+GHgK72E7V8zL9TCLDmZymaMvBDZT/g451t0wEoStczrDpry1I8eZ2eulzQ2KgbiZJpU7JN7SXMuFA9qAn76riQ+cStkzP3FBMS+EyZkUw03BEfRYEHGl2HcS1ZGXMBciayL5PPqA9Kss0YpePpe1mXgzsM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OesLGJpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032FFC433C7;
-	Mon,  1 Apr 2024 17:06:07 +0000 (UTC)
+	 MIME-Version; b=XYKXXKxUxlDB5Plw8Pm+gKqsGUHvdygW2sYz4PBunnA6hk5kkvYfpsxLZmwiRp14LsAbOBA388JPXKYIVz/1pD8MHeR2Smd74SOUFOoZxapFdWn9/tQqlLxsOaKBNMNe0gPfpE5oGAqGaPPdKBZzUTce4lqr9JGPNo4cQ4SuZbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/WWmr2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1BFC433F1;
+	Mon,  1 Apr 2024 16:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991168;
-	bh=Mnwek2ccX+5EtknIU0vdJFjyCVDv+3cD3tY9AO/ltbQ=;
+	s=korg; t=1711990262;
+	bh=dtih0+ozksseOakGBhA7/T+2YqsWQqLjZsOut7vp2XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OesLGJpLuowiHEbDk9YdmJ0T+TgMVy585X0uqtuQeEsTgwuY4kNjyX2hWNKsM1D8m
-	 IvG/SwN3Cu4apMMJxBsXHW4n/aTR+gd99d2Gd+p1q1ja905uCaP4GKhYCokGuhUuD+
-	 2wiGJct0d24AsBNs6pLCoIGHUGawZAJjNXhwi3Ws=
+	b=c/WWmr2E7TAGM3dAALV8Cq/BvcLZTPtne81h0SoNnpkv8QSXjANz+WnANSq/sZKyq
+	 Ognr+EgiTAEPQk6KL30HsJCLUerFIwPJgY/60erALVmu84wf+m66aoq8F+GC6kU4aL
+	 2iBE0wyizH2bY0Sd2uwHHRNfZPKZjMfW4CTNpR0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Shawn Lee <shawn.c.lee@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.1 155/272] drm/i915: Check before removing mm notifier
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 296/396] irqchip/renesas-rzg2l: Rename rzg2l_tint_eoi()
 Date: Mon,  1 Apr 2024 17:45:45 +0200
-Message-ID: <20240401152535.546798734@linuxfoundation.org>
+Message-ID: <20240401152556.729024419@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 01bb1ae35006e473138c90711bad1a6b614a1823 upstream.
+[ Upstream commit 7cb6362c63df233172eaecddaf9ce2ce2f769112 ]
 
-Error in mmu_interval_notifier_insert() can leave a NULL
-notifier.mm pointer. Catch that and return early.
+Rename rzg2l_tint_eoi()->rzg2l_clear_tint_int() and simplify the code by
+removing redundant priv and hw_irq local variables.
 
-Fixes: ed29c2691188 ("drm/i915: Fix userptr so we do not have to worry about obj->mm.lock, v7.")
-Cc: <stable@vger.kernel.org> # v5.13+
-[tursulin: Added Fixes and cc stable.]
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Shawn Lee <shawn.c.lee@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240219125047.28906-1-nirmoy.das@intel.com
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-(cherry picked from commit db7bbd13f08774cde0332c705f042e327fe21e73)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_userptr.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_userptr.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_userptr.c
-@@ -378,6 +378,9 @@ i915_gem_userptr_release(struct drm_i915
- {
- 	GEM_WARN_ON(obj->userptr.page_ref);
- 
-+	if (!obj->userptr.notifier.mm)
-+		return;
-+
- 	mmu_interval_notifier_remove(&obj->userptr.notifier);
- 	obj->userptr.notifier.mm = NULL;
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 6e81b5945d21b..2fcd63bfb44d2 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -90,11 +90,9 @@ static void rzg2l_irq_eoi(struct irq_data *d)
+ 	}
  }
+ 
+-static void rzg2l_tint_eoi(struct irq_data *d)
++static void rzg2l_clear_tint_int(struct rzg2l_irqc_priv *priv, unsigned int hwirq)
+ {
+-	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_TINT_START;
+-	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+-	u32 bit = BIT(hw_irq);
++	u32 bit = BIT(hwirq - IRQC_TINT_START);
+ 	u32 reg;
+ 
+ 	reg = readl_relaxed(priv->base + TSCR);
+@@ -117,7 +115,7 @@ static void rzg2l_irqc_eoi(struct irq_data *d)
+ 	if (hw_irq >= IRQC_IRQ_START && hw_irq <= IRQC_IRQ_COUNT)
+ 		rzg2l_irq_eoi(d);
+ 	else if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ)
+-		rzg2l_tint_eoi(d);
++		rzg2l_clear_tint_int(priv, hw_irq);
+ 	raw_spin_unlock(&priv->lock);
+ 	irq_chip_eoi_parent(d);
+ }
+-- 
+2.43.0
+
 
 
 
