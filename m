@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C0A8943E3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160038940D3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56FA71C21AC8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47C601C21747
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A9C4AEE0;
-	Mon,  1 Apr 2024 17:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CCC47A6B;
+	Mon,  1 Apr 2024 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHKQvEQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dovbPUCh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BBD495F0;
-	Mon,  1 Apr 2024 17:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D54DF6B;
+	Mon,  1 Apr 2024 16:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991367; cv=none; b=O2sI0LxgbxOE0u5utoxNS6sNBiIfKMQv6W0w4NP0W0ygv8BQZWqYgvOhu7icj+JbwEYf1qDOggoPCoKAsBZn8K2L2npb3TIx0UZUYNaZbkQoGdN3EWpg2R8xYIguewRmum5la57lcLUpnPOFL1yIk1VRyDK2aDyzor8w2aVI0Ks=
+	t=1711989289; cv=none; b=mcDVw6s7GLg59yJjEBUeVjmGU42WvrEl1V/EpRYB3OUYaBa5XdUKY1y2i2DjgcxHlvz+TKC0U8JIr042gxzfuuxu/NYcy+Uyla925HlgkmZSIuVX29pNkMl53/qZz+8/bvLpP/Nff9iWRv0mN406OF7bbLaHsPUGt6ZQuix/+8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991367; c=relaxed/simple;
-	bh=2VVGgtAegL5qrdrobAE93z3/bnXJulR6uM7ND425zcs=;
+	s=arc-20240116; t=1711989289; c=relaxed/simple;
+	bh=lwlg5WwYN9zeIOM8lW78qAakPjP9S29C5faUumREsKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Quc4RJn354hpiAZYgP03lCVGCdVwKD6hk59WEzTVYHfbZTDIUiqVhEopBZQtqaUsiSICcWlzKGAk3GDInFn8iY1KI+2X2IXDPz3mAxrigj8puyg4w5PNKcJbocjYiW5u+wDxoLx2Wku+bwhB+8WpN5vKHKS/D0J8h3LA1EWosGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHKQvEQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17658C433F1;
-	Mon,  1 Apr 2024 17:09:26 +0000 (UTC)
+	 MIME-Version; b=H0N65DlD8MlOgcyxHe8WX5bADBgRiO+H2qTcmbKtlWV8N4aQlN7b/c5ZOfa60JS+C7SoSkuXuYpWbrzGdnwinImCCkFGnzhBcj9LUNKJyOiNa7QTYlKav/ID1lpDEj8eyKJPpN9+0NKiGnB+nQTYUfAaz0QPSIzd18Ujn21J6l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dovbPUCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDE0C433C7;
+	Mon,  1 Apr 2024 16:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991367;
-	bh=2VVGgtAegL5qrdrobAE93z3/bnXJulR6uM7ND425zcs=;
+	s=korg; t=1711989288;
+	bh=lwlg5WwYN9zeIOM8lW78qAakPjP9S29C5faUumREsKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHKQvEQ3O6fAktT9v1Z4duikc16DhDA+8F47hyYwsI+hCTeCB1YpfoY59DwLmUw6o
-	 e8OBMU83MWVw3fwa1uWHDGwGMRcleyb07UF+3xQffxK8ym77dKT+bPtuagEEd+VIv/
-	 VMAfr/2oKq45txXpoB9QaSpivjCcg0oZITbcxlw8=
+	b=dovbPUChSWEa6+hKRnu0IaanWzsaVxyJeMEj0DGSW1+JALk2U7zEMXAn1DQcyUrQg
+	 NcKLv4q8ZG/hdnRFlWf4tyM3TZMPGm+t8Gd4M6SH5V2r0Z7HEJHc5SfPUsrioarUPw
+	 O/Jjj0+y9wAtOZOEiar4nYn9HZgJz+vl82TdNgvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ranygh@riseup.net,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 215/272] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 418/432] scsi: qla2xxx: Fix double free of the ha->vp_map pointer
 Date: Mon,  1 Apr 2024 17:46:45 +0200
-Message-ID: <20240401152537.644698985@linuxfoundation.org>
+Message-ID: <20240401152605.876253552@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
+commit e288285d47784fdcf7c81be56df7d65c6f10c58b upstream.
 
-When moving a station out of a VLAN and deleting the VLAN afterwards, the
-fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
-use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
-after the VLAN change.
+Coverity scan reported potential risk of double free of the pointer
+ha->vp_map.  ha->vp_map was freed in qla2x00_mem_alloc(), and again freed
+in function qla2x00_mem_free(ha).
+
+Assign NULL to vp_map and kfree take care of NULL.
 
 Cc: stable@vger.kernel.org
-Reported-by: ranygh@riseup.net
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_os.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2075,15 +2075,14 @@ static int ieee80211_change_station(stru
- 		}
- 
- 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
--		    sta->sdata->u.vlan.sta) {
--			ieee80211_clear_fast_rx(sta);
-+		    sta->sdata->u.vlan.sta)
- 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
--		}
- 
- 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
- 			ieee80211_vif_dec_num_mcast(sta->sdata);
- 
- 		sta->sdata = vlansdata;
-+		ieee80211_check_fast_rx(sta);
- 		ieee80211_check_fast_xmit(sta);
- 
- 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -4602,6 +4602,7 @@ fail_free_init_cb:
+ 	ha->init_cb_dma = 0;
+ fail_free_vp_map:
+ 	kfree(ha->vp_map);
++	ha->vp_map = NULL;
+ fail:
+ 	ql_log(ql_log_fatal, NULL, 0x0030,
+ 	    "Memory allocation failure.\n");
 
 
 
