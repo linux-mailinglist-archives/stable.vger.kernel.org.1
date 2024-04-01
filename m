@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E618589435B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B676893E9A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231621C21E55
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3EDFB22484
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDCF481C6;
-	Mon,  1 Apr 2024 17:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462184596E;
+	Mon,  1 Apr 2024 16:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LikL4vlC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDUhIFVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B23F1C0DE7;
-	Mon,  1 Apr 2024 17:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061261CA8F;
+	Mon,  1 Apr 2024 16:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990962; cv=none; b=HZm4jZFnsyodYJhZJ7trnBV3whPzESvkjxPdV7LIpgCm4eITdqkF7glbXa18NvkphATLLZ9+DHFeTQGGpAbEQV8zgZga7/Ej0+zaYNopWi15aRcRByZSNs8sBiiCbQewUBy9ThJebohLiPibx8m5SVkBMKeJa29QSIFnko4Hcac=
+	t=1711987539; cv=none; b=LwLFZiHWWUXXjwv3xauOFLs6lMCm7UFTkOM94Jo2P8C9MNpG9SrxB+kysJ+j8kjseEoSFmE3G1wNZZDf+2ymcBmZznpmxW/OCMO0g5eE1/+LzEPLvBtxn9gVRhYDKBWAIxwZP7/lsPwpBMuQCYKgl1czIjw8ohzNRZNIUJ9gwKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990962; c=relaxed/simple;
-	bh=q8iHN/HzVjHL0CPSLRYlrke3elk0GE3T85ZhUfSWWb0=;
+	s=arc-20240116; t=1711987539; c=relaxed/simple;
+	bh=yMvSsFSwst0w1inWkxeP4YUzIIu/LuPXpLE11eikMk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ft+yL6kkbANlNBQzEaNfuVxRxMbgGvT9FmSVST/3CLmGaZiFnk5E0gtcOUzWmSga24rQKGWYYug4YU5uriJUY5qJLqoyLyi83Qf+3glbzw9M3kzndPDN4cLnEgdbd4u34duXWfD/aqVOLF4Gbu5GHbGF33n95TTA13MrYiLdKg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LikL4vlC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD135C433C7;
-	Mon,  1 Apr 2024 17:02:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PRQrotmCq6U53qGLk2fIvJADtwbPeUFVrEMtSbQ+8JjLUJCAX/27szqvtt+Jjj6CxhVAhxiZVHYxwepK7CLchj3mWXWxW4dwVV29Fkc2uoeLzOj/eYMXNfykMD2cUhfmbkdpLR93AKNRj3hMNMDgDd68Kt6/aHy2NxkrFDs9oyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDUhIFVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62766C433F1;
+	Mon,  1 Apr 2024 16:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990962;
-	bh=q8iHN/HzVjHL0CPSLRYlrke3elk0GE3T85ZhUfSWWb0=;
+	s=korg; t=1711987538;
+	bh=yMvSsFSwst0w1inWkxeP4YUzIIu/LuPXpLE11eikMk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LikL4vlCsp5pe6rBsqkqwpH2Fd7N+cTchG26/FFSgVvh7UBGdiqg5cW9ty+V3xAeR
-	 qv/9qnKQWsIoSWAoX5xbvvR/EkFpIkwY0xQuAhSWVU7BC1rGdR5Z3nNaq6tb28ujJ2
-	 TcOVxZvbpL9YHcDPNZXrgV9kluxWi3RmdA2GYtRo=
+	b=IDUhIFVP/C+22W/Ztiw9/e+hSmMH/x4r1Qxp20HF4GjNzuRa7HD7zqafbXiK1NF3L
+	 P82eJARxT9JgTbzPNF1g9HCBpxv6becRAbXFtNChsEBEqIkD9/PuXhZHyC4MwxF0uV
+	 GTODcp8nBKu8ehUz+ssZugFa4lUShFu67N8fJsIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/272] io_uring/net: correctly handle multishot recvmsg retry setup
-Date: Mon,  1 Apr 2024 17:44:42 +0200
-Message-ID: <20240401152533.509468759@linuxfoundation.org>
+	Ye Zhang <ye.zhang@rock-chips.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.8 317/399] thermal: devfreq_cooling: Fix perf state when calculate dfc res_util
+Date: Mon,  1 Apr 2024 17:44:43 +0200
+Message-ID: <20240401152558.645532715@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Ye Zhang <ye.zhang@rock-chips.com>
 
-[ Upstream commit deaef31bc1ec7966698a427da8c161930830e1cf ]
+commit a26de34b3c77ae3a969654d94be49e433c947e3b upstream.
 
-If we loop for multishot receive on the initial attempt, and then abort
-later on to wait for more, we miss a case where we should be copying the
-io_async_msghdr from the stack to stable storage. This leads to the next
-retry potentially failing, if the application had the msghdr on the
-stack.
+The issue occurs when the devfreq cooling device uses the EM power model
+and the get_real_power() callback is provided by the driver.
 
-Cc: stable@vger.kernel.org
-Fixes: 9bb66906f23e ("io_uring: support multishot in recvmsg")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The EM power table is sorted ascending，can't index the table by cooling
+device state，so convert cooling state to performance state by
+dfc->max_state - dfc->capped_state.
+
+Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/thermal/devfreq_cooling.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 0d4ee3d738fbf..b1b564c04d1e7 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -876,7 +876,8 @@ int io_recvmsg(struct io_kiocb *req, unsigned int issue_flags)
- 			kfree(kmsg->free_iov);
- 		io_netmsg_recycle(req, issue_flags);
- 		req->flags &= ~REQ_F_NEED_CLEANUP;
--	}
-+	} else if (ret == -EAGAIN)
-+		return io_setup_async_msg(req, kmsg, issue_flags);
+--- a/drivers/thermal/devfreq_cooling.c
++++ b/drivers/thermal/devfreq_cooling.c
+@@ -201,7 +201,7 @@ static int devfreq_cooling_get_requested
  
- 	return ret;
- }
--- 
-2.43.0
-
+ 		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
+ 		if (!res) {
+-			state = dfc->capped_state;
++			state = dfc->max_state - dfc->capped_state;
+ 
+ 			/* Convert EM power into milli-Watts first */
+ 			dfc->res_util = dfc->em_pd->table[state].power;
 
 
 
