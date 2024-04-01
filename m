@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-35256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF6A894323
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874F5893EA1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 383C3B20A7A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8EAD1C211D1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB32481C6;
-	Mon,  1 Apr 2024 17:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC51B4778B;
+	Mon,  1 Apr 2024 16:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhJsO6O9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJ03pUHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D203D47A64;
-	Mon,  1 Apr 2024 17:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9241CA8F;
+	Mon,  1 Apr 2024 16:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990804; cv=none; b=SLRmv8/CiXMGbnmpmAapl9CXWPNxjh6ChyBKwpYxfzG56onyB1U7Wh4Vm1lZvHfc8oj/UuSW5dtA8Y/Muf02h7gbYCXYr9gR6hDKsNb2p7yC+/2kylbkoXX9eBU0CSYyRnUmXJgEIffzA0i1GdCH6ER9mchqq1eDgIwZyrp358k=
+	t=1711987562; cv=none; b=iuOlfALIE0EmI4KbGSL6G9NCUlGkTWTRDgCtM/8O9etq1inv7egYg+VddTT2spUY/EqVPIcq0lUCZ57fECIc/lP0yYNIZ1S/V7j7wRh/YJDrTOEGteYrnuAbcHIhkeMFY+/9m2/9gPQ05imxWDn7w7H+ufOjqkSOmcsuUZvN/mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990804; c=relaxed/simple;
-	bh=7j2pdZ2R1I/+clyHNTa2o4MMp1JR+fWeUvEEXej+XCY=;
+	s=arc-20240116; t=1711987562; c=relaxed/simple;
+	bh=wb+K7Ockx7SFzbrl0qhXLSDE/stAkgHpCRCWRqtG1ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ser/H3uSkEQYO0g7zM4yDEj6aFp/IlCNjIEO0MnpWl1ujYU174X10JK6WSQTdGaPPG5QgdrbdoKGeBC3foKZR0Zwq8AFIW+o0o8y16Ez07OY1Phnk7eHlDvwp9xTuPZCRLDqBvuA9sPdUMhP0Ck9GZ+FjiRTZ+Z2WbQpyavzXj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhJsO6O9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A059C433C7;
-	Mon,  1 Apr 2024 17:00:04 +0000 (UTC)
+	 MIME-Version; b=oSx62ZCF56Ej/hFF/lfuEXe7uSokFUwYQZQ6r1XvVYqIMlNNGdgX8LjlyWF32G38TU455fosAYIAi29dSFnr/zodLq7bGIIVqzR/D5nGg2OpySs3zK8+z8AUxIusYamOcGLN0h8tEPp+PBfJeP6x+YAcSzuJK9d+ykDHmaK5NvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJ03pUHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CA3C433C7;
+	Mon,  1 Apr 2024 16:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990804;
-	bh=7j2pdZ2R1I/+clyHNTa2o4MMp1JR+fWeUvEEXej+XCY=;
+	s=korg; t=1711987562;
+	bh=wb+K7Ockx7SFzbrl0qhXLSDE/stAkgHpCRCWRqtG1ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AhJsO6O91jS2X93RIHTPMfYDo/EdkLvfmsnjIXz2Lmw7+MDgtwK3uSpkZnPFkK8o6
-	 6SPZnQ7vg77IOOS7+rWbhIWbHSx1Pxq4fIFt6xYVpcdwzjC8F9jxxADwyBQJq1uzZG
-	 wTlW9n446w5aseqd0Y7X2Jb/z5sJX5FobNTURBoI=
+	b=tJ03pUHDjEIkcz2K3aCJW6tD7g8yvRE9I44HLHlfjrWTBe6dExCZdHLLsGP04wkXs
+	 O0ulXy1iro3CG/5DS8NdcFF+fxUnMVuwxgGzaVv9jQP24Q0HJea98Z8O8yI3HGmt3j
+	 HrtO3e942KXlP83OZsa0MZSHoKRvqiIrWRseX6rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabian Vogt <fvogt@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
 	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/272] btrfs: qgroup: always free reserved space for extent records
+	Christoph Hellwig <hch@lst.de>,
+	Tavian Barnes <tavianator@tavianator.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.8 295/399] btrfs: fix race in read_extent_buffer_pages()
 Date: Mon,  1 Apr 2024 17:44:21 +0200
-Message-ID: <20240401152532.780887472@linuxfoundation.org>
+Message-ID: <20240401152557.994118386@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Tavian Barnes <tavianator@tavianator.com>
 
-[ Upstream commit d139ded8b9cdb897bb9539eb33311daf9a177fd2 ]
+commit ef1e68236b9153c27cb7cf29ead0c532870d4215 upstream.
 
-[BUG]
-If qgroup is marked inconsistent (e.g. caused by operations needing full
-subtree rescan, like creating a snapshot and assign to a higher level
-qgroup), btrfs would immediately start leaking its data reserved space.
+There are reports from tree-checker that detects corrupted nodes,
+without any obvious pattern so possibly an overwrite in memory.
+After some debugging it turns out there's a race when reading an extent
+buffer the uptodate status can be missed.
 
-The following script can easily reproduce it:
+To prevent concurrent reads for the same extent buffer,
+read_extent_buffer_pages() performs these checks:
 
-  mkfs.btrfs -O quota -f $dev
-  mount $dev $mnt
-  btrfs subvolume create $mnt/subv1
-  btrfs qgroup create 1/0 $mnt
+    /* (1) */
+    if (test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))
+        return 0;
 
-  # This snapshot creation would mark qgroup inconsistent,
-  # as the ownership involves different higher level qgroup, thus
-  # we have to rescan both source and snapshot, which can be very
-  # time consuming, thus here btrfs just choose to mark qgroup
-  # inconsistent, and let users to determine when to do the rescan.
-  btrfs subv snapshot -i 1/0 $mnt/subv1 $mnt/snap1
+    /* (2) */
+    if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
+        goto done;
 
-  # Now this write would lead to qgroup rsv leak.
-  xfs_io -f -c "pwrite 0 64k" $mnt/file1
+At this point, it seems safe to start the actual read operation. Once
+that completes, end_bbio_meta_read() does
 
-  # And at unmount time, btrfs would report 64K DATA rsv space leaked.
-  umount $mnt
+    /* (3) */
+    set_extent_buffer_uptodate(eb);
 
-And we would have the following dmesg output for the unmount:
+    /* (4) */
+    clear_bit(EXTENT_BUFFER_READING, &eb->bflags);
 
-  BTRFS info (device dm-1): last unmount of filesystem 14a3d84e-f47b-4f72-b053-a8a36eef74d3
-  BTRFS warning (device dm-1): qgroup 0/5 has unreleased space, type 0 rsv 65536
+Normally, this is enough to ensure only one read happens, and all other
+callers wait for it to finish before returning.  Unfortunately, there is
+a racey interleaving:
 
-[CAUSE]
-Since commit e15e9f43c7ca ("btrfs: introduce
-BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING to skip qgroup accounting"),
-we introduce a mode for btrfs qgroup to skip the timing consuming
-backref walk, if the qgroup is already inconsistent.
+    Thread A | Thread B | Thread C
+    ---------+----------+---------
+       (1)   |          |
+             |    (1)   |
+       (2)   |          |
+       (3)   |          |
+       (4)   |          |
+             |    (2)   |
+             |          |    (1)
 
-But this skip also covered the data reserved freeing, thus the qgroup
-reserved space for each newly created data extent would not be freed,
-thus cause the leakage.
+When this happens, thread B kicks of an unnecessary read. Worse, thread
+C will see UPTODATE set and return immediately, while the read from
+thread B is still in progress.  This race could result in tree-checker
+errors like this as the extent buffer is concurrently modified:
 
-[FIX]
-Make the data extent reserved space freeing mandatory.
+    BTRFS critical (device dm-0): corrupted node, root=256
+    block=8550954455682405139 owner mismatch, have 11858205567642294356
+    expect [256, 18446744073709551360]
 
-The qgroup reserved space handling is way cheaper compared to the
-backref walking part, and we always have the super sensitive leak
-detector, thus it's definitely worth to always free the qgroup
-reserved data space.
+Fix it by testing UPTODATE again after setting the READING bit, and if
+it's been set, skip the unnecessary read.
 
-Reported-by: Fabian Vogt <fvogt@suse.com>
-Fixes: e15e9f43c7ca ("btrfs: introduce BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING to skip qgroup accounting")
-CC: stable@vger.kernel.org # 6.1+
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1216196
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+Fixes: d7172f52e993 ("btrfs: use per-buffer locking for extent_buffer reading")
+Link: https://lore.kernel.org/linux-btrfs/CAHk-=whNdMaN9ntZ47XRKP6DBes2E5w7fi-0U3H2+PS18p+Pzw@mail.gmail.com/
+Link: https://lore.kernel.org/linux-btrfs/f51a6d5d7432455a6a858d51b49ecac183e0bbc9.1706312914.git.wqu@suse.com/
+Link: https://lore.kernel.org/linux-btrfs/c7241ea4-fcc6-48d2-98c8-b5ea790d6c89@gmx.com/
+CC: stable@vger.kernel.org # 6.5+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Tavian Barnes <tavianator@tavianator.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ minor update of changelog ]
 Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/btrfs/extent_io.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index b3472bf6b288f..c14d4f70e84bd 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -2800,11 +2800,6 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
- 					goto cleanup;
- 			}
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -4319,6 +4319,19 @@ int read_extent_buffer_pages(struct exte
+ 	if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
+ 		goto done;
  
--			/* Free the reserved data space */
--			btrfs_qgroup_free_refroot(fs_info,
--					record->data_rsv_refroot,
--					record->data_rsv,
--					BTRFS_QGROUP_RSV_DATA);
- 			/*
- 			 * Use BTRFS_SEQ_LAST as time_seq to do special search,
- 			 * which doesn't lock tree or delayed_refs and search
-@@ -2826,6 +2821,11 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
- 			record->old_roots = NULL;
- 			new_roots = NULL;
- 		}
-+		/* Free the reserved data space */
-+		btrfs_qgroup_free_refroot(fs_info,
-+				record->data_rsv_refroot,
-+				record->data_rsv,
-+				BTRFS_QGROUP_RSV_DATA);
- cleanup:
- 		ulist_free(record->old_roots);
- 		ulist_free(new_roots);
--- 
-2.43.0
-
++	/*
++	 * Between the initial test_bit(EXTENT_BUFFER_UPTODATE) and the above
++	 * test_and_set_bit(EXTENT_BUFFER_READING), someone else could have
++	 * started and finished reading the same eb.  In this case, UPTODATE
++	 * will now be set, and we shouldn't read it in again.
++	 */
++	if (unlikely(test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))) {
++		clear_bit(EXTENT_BUFFER_READING, &eb->bflags);
++		smp_mb__after_atomic();
++		wake_up_bit(&eb->bflags, EXTENT_BUFFER_READING);
++		return 0;
++	}
++
+ 	clear_bit(EXTENT_BUFFER_READ_ERR, &eb->bflags);
+ 	eb->read_mirror = 0;
+ 	check_buffer_tree_ref(eb);
 
 
 
