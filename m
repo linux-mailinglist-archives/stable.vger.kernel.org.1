@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629B6894010
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8618941BE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91B101C212FE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E8561C2123C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CAA481DA;
-	Mon,  1 Apr 2024 16:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9111F4AED1;
+	Mon,  1 Apr 2024 16:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5jZj6fV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pR8WjY3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CAF481CE;
-	Mon,  1 Apr 2024 16:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD88495F0;
+	Mon,  1 Apr 2024 16:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988706; cv=none; b=RADCbg3ZO9TKXzX8tPFx/U8ZS4IhcFfNEb8zRGLD8+sCWXZJLlzJ3gEfErwacAgmYV8mzIzzdg30Stp9Xj0MST1NPQZ8xqz7b+/majKkgwxVt5nGXXTE727XRlvYlarHVdxEU3ujl2UgNnOGhMvVkyH5jJsOF3qy1CPbBjZ1Bf8=
+	t=1711989927; cv=none; b=cC/BmgJLq7baOcNs6kHUmz0Mb0DRf5anOsVE16dJmZD/QsSSsv8KGuZwZodHVCEV+Bot73AqL65HnCWJ6d9nplJ52Y9i0NyC3dYemtIEUJXBnAXQxbwkm1MnODAEAtQsyFrJMffn9cel/MKDv28+x/YFMrj7LNm7O87niktkNjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988706; c=relaxed/simple;
-	bh=gjnNLe7NtbSxvwCM4AEqLcYs0p4hAX3+4V5G2SsRqnk=;
+	s=arc-20240116; t=1711989927; c=relaxed/simple;
+	bh=Zt1NRuVuXcuovdgA+BU8ApqsZdxrOpxhGya+B8oQaq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYz6UcIOHZ/vXPsVuiouwmQMcOKUB2QzKIV3tmanU3rOGSaKTGpXnbxGqsMH/GSP/izLAfmD9ynKBgt80bhX48FG1uSD8iRODYAlQq5VELLU+6RYC6YX6HPIA2eIhlLkpWdtbCvZl5uZRmNfi0BHzN97kpMu5YDwyEiNn/aqGYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5jZj6fV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1472FC43390;
-	Mon,  1 Apr 2024 16:25:05 +0000 (UTC)
+	 MIME-Version; b=kmlOd73YuDyM9F672WHLzcV0edFxxCv3BL4id7P6BrP1MdPt+uCu2PtIL8HeY5na9pu9bDQRD2fJxTsQRsrSeNfmRKZnl+AaNJdXN9X0rF85D1ap1ZMZsAZEJQ/7frpQCYINmew4PBqePlU2y/jHh65HE0Bl1MPR4UCVODO0+rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pR8WjY3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BF2C43142;
+	Mon,  1 Apr 2024 16:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988706;
-	bh=gjnNLe7NtbSxvwCM4AEqLcYs0p4hAX3+4V5G2SsRqnk=;
+	s=korg; t=1711989927;
+	bh=Zt1NRuVuXcuovdgA+BU8ApqsZdxrOpxhGya+B8oQaq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5jZj6fVq4acrt5yO78U4lYc0pSwfByTKz/0JRSEe+JL504V3LvY75MZN793+kpB4
-	 0VxDV5yyKB6Yror7zT/VClFlSf4qtYgZZtrCq4jmoumgRYxWcnmhKTKfeX5EWodDy9
-	 luYe0aIggA34ao4SZQKX7RBDSnICdQrPj241saAQ=
+	b=pR8WjY3EHPgwgBkUBYKN46Rs13GLe6N8m2oeBnQXruhJ5NY783wjmMKmZEcpRCxqx
+	 yppI0t7r/1tcad1vTQPWWsntGVuAzB9hGY4Oj5/GCqnPR1GhRMwATURRiqXzDDhKEw
+	 bSORX0Mo0BAjQySvMb+XdNhfa6q7Ib4IiRMoJ/aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 257/432] drm/amdgpu/pm: Fix the error of pwm1_enable setting
+Subject: [PATCH 6.6 195/396] drm/amd/display: Use freesync when `DRM_EDID_FEATURE_CONTINUOUS_FREQ` found
 Date: Mon,  1 Apr 2024 17:44:04 +0200
-Message-ID: <20240401152600.805986717@linuxfoundation.org>
+Message-ID: <20240401152553.750604080@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 0dafaf659cc463f2db0af92003313a8bc46781cd upstream.
+commit 2f14c0c8cae8e9e3b603a3f91909baba66540027 upstream.
 
-Fix the pwm_mode value error which used for
-pwm1_enable setting
+The monitor shipped with the Framework 16 supports VRR [1], but it's not
+being advertised.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+This is because the detailed timing block doesn't contain
+`EDID_DETAIL_MONITOR_RANGE` which amdgpu looks for to find min and max
+frequencies.  This check however is superfluous for this case because
+update_display_info() calls drm_get_monitor_range() to get these ranges
+already.
+
+So if the `DRM_EDID_FEATURE_CONTINUOUS_FREQ` EDID feature is found then
+turn on freesync without extra checks.
+
+v2: squash in fix from Harry
+
+Closes: https://www.reddit.com/r/framework/comments/1b4y2i5/no_variable_refresh_rate_on_the_framework_16_on/
+Closes: https://www.reddit.com/r/framework/comments/1b6vzcy/framework_16_variable_refresh_rate/
+Closes: https://community.frame.work/t/resolved-no-vrr-freesync-with-amd-version/42338
+Link: https://gist.github.com/superm1/e8fbacfa4d0f53150231d3a3e0a13faf
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_pm.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-@@ -2518,6 +2518,7 @@ static ssize_t amdgpu_hwmon_set_pwm1_ena
- {
- 	struct amdgpu_device *adev = dev_get_drvdata(dev);
- 	int err, ret;
-+	u32 pwm_mode;
- 	int value;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10746,18 +10746,24 @@ void amdgpu_dm_update_freesync_caps(stru
+ 	if (!adev->dm.freesync_module)
+ 		goto update;
  
- 	if (amdgpu_in_reset(adev))
-@@ -2529,13 +2530,22 @@ static ssize_t amdgpu_hwmon_set_pwm1_ena
- 	if (err)
- 		return err;
+-	if (sink->sink_signal == SIGNAL_TYPE_DISPLAY_PORT
+-		|| sink->sink_signal == SIGNAL_TYPE_EDP) {
++	if (edid && (sink->sink_signal == SIGNAL_TYPE_DISPLAY_PORT ||
++		     sink->sink_signal == SIGNAL_TYPE_EDP)) {
+ 		bool edid_check_required = false;
  
-+	if (value == 0)
-+		pwm_mode = AMD_FAN_CTRL_NONE;
-+	else if (value == 1)
-+		pwm_mode = AMD_FAN_CTRL_MANUAL;
-+	else if (value == 2)
-+		pwm_mode = AMD_FAN_CTRL_AUTO;
-+	else
-+		return -EINVAL;
-+
- 	ret = pm_runtime_get_sync(adev_to_drm(adev)->dev);
- 	if (ret < 0) {
- 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
- 		return ret;
- 	}
+-		if (edid) {
+-			edid_check_required = is_dp_capable_without_timing_msa(
+-						adev->dm.dc,
+-						amdgpu_dm_connector);
++		if (is_dp_capable_without_timing_msa(adev->dm.dc,
++						     amdgpu_dm_connector)) {
++			if (edid->features & DRM_EDID_FEATURE_CONTINUOUS_FREQ) {
++				freesync_capable = true;
++				amdgpu_dm_connector->min_vfreq = connector->display_info.monitor_range.min_vfreq;
++				amdgpu_dm_connector->max_vfreq = connector->display_info.monitor_range.max_vfreq;
++			} else {
++				edid_check_required = edid->version > 1 ||
++						      (edid->version == 1 &&
++						       edid->revision > 1);
++			}
+ 		}
  
--	ret = amdgpu_dpm_set_fan_control_mode(adev, value);
-+	ret = amdgpu_dpm_set_fan_control_mode(adev, pwm_mode);
+-		if (edid_check_required == true && (edid->version > 1 ||
+-		   (edid->version == 1 && edid->revision > 1))) {
++		if (edid_check_required) {
+ 			for (i = 0; i < 4; i++) {
  
- 	pm_runtime_mark_last_busy(adev_to_drm(adev)->dev);
- 	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+ 				timing	= &edid->detailed_timings[i];
 
 
 
