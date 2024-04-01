@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BC5893EA8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3CE889422B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BFF9282320
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F0A628347F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21C34596E;
-	Mon,  1 Apr 2024 16:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED0840876;
+	Mon,  1 Apr 2024 16:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNLf3PMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoHSqHxG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07621CA8F;
-	Mon,  1 Apr 2024 16:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0BE8F5C;
+	Mon,  1 Apr 2024 16:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987586; cv=none; b=ePon7EaRKCWtJLwAj/H6cMU30E7fW0Ghds3DgZKsf/ac22KGDSUXqmOCBWjpEG2l4B6ke6Sx+OMA6MLCZe2Ngr/4k+s77gcIUn9lddC3mWvXX73C9gkUc7PCI8ahdEH2QKbWg5tMvFc9jTka9USiPX7HFjR9FnRLOof5nv315fE=
+	t=1711990199; cv=none; b=Xw4tDj+jreCsJ4wyjkzw12jIfh8T+APA35luWmGjm6sObMLoX9miMFcDdEIbfMXuDRfRaDUN4JeDmnPCnQopAKtf15/iP1KIH0wAzmpPH8WF941YJqbwIs20uSbT/5HZ1ToeS3uAnhGMD/lgxqIJM1RQ9KCZLV8DIcUCa53bCPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987586; c=relaxed/simple;
-	bh=rHhE3d1+Ftz8Scrylh0ADebtcs6el7WJTQigHPjw9Bc=;
+	s=arc-20240116; t=1711990199; c=relaxed/simple;
+	bh=GbWOvFu8n35qZchcdnGWlr91SuB7PIDMGOsxudtCyWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hjuXrCbuC9FLbpAbmqoWe8Qfmi7hjk+h32kKpxuIwUaGAwiJA9nFXOZFm0/CJyGTUO04szkdj3Xughc47C6B8DhIhasu88JToPUA9oXvPJUFlBZ0cTcR62QqVB1JvhNVFwaWNxjIl2ghEtjpu67GDrNpUs+rLQJaiiiOzswF2a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNLf3PMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5DBC433C7;
-	Mon,  1 Apr 2024 16:06:25 +0000 (UTC)
+	 MIME-Version; b=OiCwSl+VDxf9x38YwMHE1Z6H5acvPojEg7h463UBItgAvgovahMRyte1FEiM2q65TuqX3Y3tTrClMt03kDnveJizBOhtkJ6+p/NY99LabZR/O4sQVQj3x2g32fn+YgrvpdlK3RaedaA8TDaOtR98Jg4DYQFZ6xLQUagbEDGvwRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoHSqHxG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47045C433F1;
+	Mon,  1 Apr 2024 16:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987586;
-	bh=rHhE3d1+Ftz8Scrylh0ADebtcs6el7WJTQigHPjw9Bc=;
+	s=korg; t=1711990199;
+	bh=GbWOvFu8n35qZchcdnGWlr91SuB7PIDMGOsxudtCyWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oNLf3PMn7vgif7YyOXgTzmVLKMIJ6jZY9iVriRFRJkYZcerhBR2Sg/iwa0FqSRnIG
-	 ptq9nF6sLx/wmf/qt//jw3CdX8hsqwyPx0Hz2Ds06uHnaDH9esYlfbGj166qt0Svae
-	 r4UwyFCRk4mToXPx2SIBrkSnwO4AAc1Ro0b3KXw0=
+	b=UoHSqHxG/ZPypTjkGAfWRuXP/MNd488HHZoR+5//AebnFnrCItSKyz4QK0WLTLt0G
+	 iQPYncv7HsssG2m8gNSlqep9PlDPFlDn44Tguz/gxSfcVXrVCI55ZEmUasne4vwCRB
+	 1h44JTK82vwJXh+mrxw9daVf4paVRUmj6UxogmKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.8 332/399] drm/i915/bios: Tolerate devdata==NULL in intel_bios_encoder_supports_dp_dual_mode()
+	Ard Biesheuvel <ardb@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 249/396] x86/efistub: Call mixed mode boot services on the firmwares stack
 Date: Mon,  1 Apr 2024 17:44:58 +0200
-Message-ID: <20240401152559.088450492@linuxfoundation.org>
+Message-ID: <20240401152555.335288588@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 32e39bab59934bfd3f37097d4dd85ac5eb0fd549 upstream.
+commit cefcd4fe2e3aaf792c14c9e56dab89e3d7a65d02 upstream.
 
-If we have no VBT, or the VBT didn't declare the encoder
-in question, we won't have the 'devdata' for the encoder.
-Instead of oopsing just bail early.
+Normally, the EFI stub calls into the EFI boot services using the stack
+that was live when the stub was entered. According to the UEFI spec,
+this stack needs to be at least 128k in size - this might seem large but
+all asynchronous processing and event handling in EFI runs from the same
+stack and so quite a lot of space may be used in practice.
 
-We won't be able to tell whether the port is DP++ or not,
-but so be it.
+In mixed mode, the situation is a bit different: the bootloader calls
+the 32-bit EFI stub entry point, which calls the decompressor's 32-bit
+entry point, where the boot stack is set up, using a fixed allocation
+of 16k. This stack is still in use when the EFI stub is started in
+64-bit mode, and so all calls back into the EFI firmware will be using
+the decompressor's limited boot stack.
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10464
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240319092443.15769-1-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 26410896206342c8a80d2b027923e9ee7d33b733)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Due to the placement of the boot stack right after the boot heap, any
+stack overruns have gone unnoticed. However, commit
+
+  5c4feadb0011983b ("x86/decompressor: Move global symbol references to C code")
+
+moved the definition of the boot heap into C code, and now the boot
+stack is placed right at the base of BSS, where any overruns will
+corrupt the end of the .data section.
+
+While it would be possible to work around this by increasing the size of
+the boot stack, doing so would affect all x86 systems, and mixed mode
+systems are a tiny (and shrinking) fraction of the x86 installed base.
+
+So instead, record the firmware stack pointer value when entering from
+the 32-bit firmware, and switch to this stack every time a EFI boot
+service call is made.
+
+Cc: <stable@kernel.org> # v6.1+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_bios.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/boot/compressed/efi_mixed.S |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_bios.c
-+++ b/drivers/gpu/drm/i915/display/intel_bios.c
-@@ -3344,6 +3344,9 @@ bool intel_bios_encoder_supports_dp_dual
- {
- 	const struct child_device_config *child = &devdata->child;
- 
-+	if (!devdata)
-+		return false;
+--- a/arch/x86/boot/compressed/efi_mixed.S
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -49,6 +49,11 @@ SYM_FUNC_START(startup_64_mixed_mode)
+ 	lea	efi32_boot_args(%rip), %rdx
+ 	mov	0(%rdx), %edi
+ 	mov	4(%rdx), %esi
 +
- 	if (!intel_bios_encoder_supports_dp(devdata) ||
- 	    !intel_bios_encoder_supports_hdmi(devdata))
- 		return false;
++	/* Switch to the firmware's stack */
++	movl	efi32_boot_sp(%rip), %esp
++	andl	$~7, %esp
++
+ #ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+ 	mov	8(%rdx), %edx		// saved bootparams pointer
+ 	test	%edx, %edx
+@@ -254,6 +259,9 @@ SYM_FUNC_START_LOCAL(efi32_entry)
+ 	/* Store firmware IDT descriptor */
+ 	sidtl	(efi32_boot_idt - 1b)(%ebx)
+ 
++	/* Store firmware stack pointer */
++	movl	%esp, (efi32_boot_sp - 1b)(%ebx)
++
+ 	/* Store boot arguments */
+ 	leal	(efi32_boot_args - 1b)(%ebx), %ebx
+ 	movl	%ecx, 0(%ebx)
+@@ -318,5 +326,6 @@ SYM_DATA_END(efi32_boot_idt)
+ 
+ SYM_DATA_LOCAL(efi32_boot_cs, .word 0)
+ SYM_DATA_LOCAL(efi32_boot_ds, .word 0)
++SYM_DATA_LOCAL(efi32_boot_sp, .long 0)
+ SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
+ SYM_DATA(efi_is64, .byte 1)
 
 
 
