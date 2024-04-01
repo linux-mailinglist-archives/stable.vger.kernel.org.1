@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-34758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1097D8940B4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3DA489426B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81F128341C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B0FC1F258E8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6872D38DD8;
-	Mon,  1 Apr 2024 16:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE29F4D9FC;
+	Mon,  1 Apr 2024 16:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a23LSm6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWyr7FWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285411C0DE7;
-	Mon,  1 Apr 2024 16:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0244D9EF;
+	Mon,  1 Apr 2024 16:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989197; cv=none; b=WHovVikMn49aMw++xNiq349/Z5TkWdbLV7Lj6bxKnd7qZtkXpWeNN3AvXJrGDX7kkSgPv2zJsGBuK7r1jvRrfkXvHxpMbZkrWTXoKQGQpheLgMY5FcfjZxPBPgpGuB2Q2qNyowU4V3QU5iOhiW4PrLVr5KyCqcgomDp+0JRKNN0=
+	t=1711990337; cv=none; b=FYyXDclfxysbFaLCJBMZU/RKyvvradLzgH9b8ztKHpSz6e0JEEgkPPjgpUhFb2T4XeETPRbh3as6V7jVPSPUNFkSaUi1JUYat8s7qeNaWvdG1BsjFU5eEPFcBlKs4/fTc2BkzynWWJsw8QQc62xhYPoE/mRNqJN5znEPnp0vmfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989197; c=relaxed/simple;
-	bh=K38CXqQlGDo8NmJJ3LPvXkhpHBunnn3mJsoSwNsXLeo=;
+	s=arc-20240116; t=1711990337; c=relaxed/simple;
+	bh=ZTkaVG/QUTpCDvarCwbkRUA0mlInjxWu0Q5y/cN20wM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKWipMSdYWCwvRtD26PxGlmqiQd32Z7omPJ2qzRpJ2CyL/ZU4NDj6XOW3BZPdhU1BrzzcYBFFdW8LWKCjJCs15ORMOxf78aZrhAjkZBuqy4KZ7kpmH5jg3+9FZfMosBjs9ag0SPt7RAAXSb3RHUNr7RSCo2MNpRbIAj62R5/sQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a23LSm6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFBCC433F1;
-	Mon,  1 Apr 2024 16:33:16 +0000 (UTC)
+	 MIME-Version; b=NKBWZk5ZGAJxJSgSb4JcBkZhk/DHpJhOpQvWSVne1DTkSRMiNBDKjMTspPRCbOpkGa+cQ2VyIYXXeMd5Nk0WvHTKDWHbHJT4BCiXZqPd3Mxi0nDcqFR2M6/JfxLrxEDo27eo+rq1aq09A/kNlmTvqzGvr6T/3F+fKP6Mb7AEWg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWyr7FWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A4EC433F1;
+	Mon,  1 Apr 2024 16:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989197;
-	bh=K38CXqQlGDo8NmJJ3LPvXkhpHBunnn3mJsoSwNsXLeo=;
+	s=korg; t=1711990337;
+	bh=ZTkaVG/QUTpCDvarCwbkRUA0mlInjxWu0Q5y/cN20wM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a23LSm6wnzqpCxf7TrSNcY/1k6xNk9MMs//SeSD3BNXa8Ej7tys70AY+nScjoa34b
-	 Aj4lIayPszoZTjqC0n0YphDSoVXFyv06j093YwoZo4KrmdLPRyPcJCDGwqHV5J11oL
-	 2CUNXyd7p5ogHkKAhsyjFUaLf0mG18Rab6J46CYI=
+	b=pWyr7FWJxC4Kt99a4b3hGDyoWvbI2udp3o2i1MaZekSReSVHQZ0eSyAdEJWsrdZ6c
+	 c6TKdBcSKHRcLQ9wgkcOOapdiSQ5pUdQsbcd2ZiL/uYeoCX9NmL/+Mhe9sXRHU7LbE
+	 uUoADH1eWpEq4ZaQ+8T6IOkpccfcqdsEH2TaL+fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Subject: [PATCH 6.7 383/432] USB: UAS: return ENODEV when submit urbs fail with device not attached
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 321/396] wifi: cfg80211: add a flag to disable wireless extensions
 Date: Mon,  1 Apr 2024 17:46:10 +0200
-Message-ID: <20240401152604.722165025@linuxfoundation.org>
+Message-ID: <20240401152557.483743114@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +60,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit cd5432c712351a3d5f82512908f5febfca946ca6 upstream.
+commit be23b2d7c3b7c8bf57b1cf0bf890bd65df9d0186 upstream.
 
-In the scenario of entering hibernation with udisk in the system, if the
-udisk was gone or resume fail in the thaw phase of hibernation. Its state
-will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
-and can't not handle disconnect event. Next, in the poweroff phase of
-hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
-when poweroff this scsi device, which will cause uas_submit_urbs to be
-called to submit URB for sense/data/cmd pipe. However, these URBs will
-submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
-will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
-the SCSI layer go into an ugly loop and system fail to go into hibernation.
+Wireless extensions are already disabled if MLO is enabled,
+given that we cannot support MLO there with all the hard-
+coded assumptions about BSSID etc.
 
-On the other hand, when we specially check for -ENODEV in function
-uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
-poweroff fail and system shutdown instead of entering hibernation.
+However, the WiFi7 ecosystem is still stabilizing, and some
+devices may need MLO disabled while that happens. In that
+case, we might end up with a device that supports wext (but
+not MLO) in one kernel, and then breaks wext in the future
+(by enabling MLO), which is not desirable.
 
-To fix this issue, let uas_submit_urbs to return original generic error
-when submitting URB failed. At the same time, we need to translate -ENODEV
-to DID_NOT_CONNECT for the SCSI layer.
+Add a flag to let such drivers/devices disable wext even if
+MLO isn't yet enabled.
 
-Suggested-by: Oliver Neukum <oneukum@suse.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Link: https://lore.kernel.org/r/20240306180814.4897-1-WeitaoWang-oc@zhaoxin.com
+Link: https://msgid.link/20240314110951.b50f1dc4ec21.I656ddd8178eedb49dc5c6c0e70f8ce5807afb54f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/uas.c |   28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ include/net/cfg80211.h   |    2 ++
+ net/wireless/wext-core.c |    7 +++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -533,7 +533,7 @@ static struct urb *uas_alloc_cmd_urb(str
-  * daft to me.
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -4816,6 +4816,7 @@ struct cfg80211_ops {
+  * @WIPHY_FLAG_SUPPORTS_EXT_KCK_32: The device supports 32-byte KCK keys.
+  * @WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER: The device could handle reg notify for
+  *	NL80211_REGDOM_SET_BY_DRIVER.
++ * @WIPHY_FLAG_DISABLE_WEXT: disable wireless extensions for this device
   */
- 
--static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
-+static int uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
- {
- 	struct uas_dev_info *devinfo = cmnd->device->hostdata;
- 	struct urb *urb;
-@@ -541,30 +541,28 @@ static struct urb *uas_submit_sense_urb(
- 
- 	urb = uas_alloc_sense_urb(devinfo, gfp, cmnd);
- 	if (!urb)
--		return NULL;
-+		return -ENOMEM;
- 	usb_anchor_urb(urb, &devinfo->sense_urbs);
- 	err = usb_submit_urb(urb, gfp);
- 	if (err) {
- 		usb_unanchor_urb(urb);
- 		uas_log_cmd_state(cmnd, "sense submit err", err);
- 		usb_free_urb(urb);
--		return NULL;
+ enum wiphy_flags {
+ 	WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK		= BIT(0),
+@@ -4827,6 +4828,7 @@ enum wiphy_flags {
+ 	WIPHY_FLAG_4ADDR_STATION		= BIT(6),
+ 	WIPHY_FLAG_CONTROL_PORT_PROTOCOL	= BIT(7),
+ 	WIPHY_FLAG_IBSS_RSN			= BIT(8),
++	WIPHY_FLAG_DISABLE_WEXT			= BIT(9),
+ 	WIPHY_FLAG_MESH_AUTH			= BIT(10),
+ 	WIPHY_FLAG_SUPPORTS_EXT_KCK_32          = BIT(11),
+ 	/* use hole at 12 */
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -4,6 +4,7 @@
+  * Authors :	Jean Tourrilhes - HPL - <jt@hpl.hp.com>
+  * Copyright (c) 1997-2007 Jean Tourrilhes, All Rights Reserved.
+  * Copyright	2009 Johannes Berg <johannes@sipsolutions.net>
++ * Copyright (C) 2024 Intel Corporation
+  *
+  * (As all part of the Linux kernel, this file is GPL)
+  */
+@@ -662,7 +663,8 @@ struct iw_statistics *get_wireless_stats
+ 	    dev->ieee80211_ptr->wiphy->wext &&
+ 	    dev->ieee80211_ptr->wiphy->wext->get_wireless_stats) {
+ 		wireless_warn_cfg80211_wext();
+-		if (dev->ieee80211_ptr->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)
++		if (dev->ieee80211_ptr->wiphy->flags & (WIPHY_FLAG_SUPPORTS_MLO |
++							WIPHY_FLAG_DISABLE_WEXT))
+ 			return NULL;
+ 		return dev->ieee80211_ptr->wiphy->wext->get_wireless_stats(dev);
  	}
--	return urb;
-+	return err;
- }
- 
- static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 			   struct uas_dev_info *devinfo)
- {
- 	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
--	struct urb *urb;
- 	int err;
- 
- 	lockdep_assert_held(&devinfo->lock);
- 	if (cmdinfo->state & SUBMIT_STATUS_URB) {
--		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
--		if (!urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
-+		if (err)
-+			return err;
- 		cmdinfo->state &= ~SUBMIT_STATUS_URB;
- 	}
- 
-@@ -572,7 +570,7 @@ static int uas_submit_urbs(struct scsi_c
- 		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
- 							cmnd, DMA_FROM_DEVICE);
- 		if (!cmdinfo->data_in_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
- 	}
- 
-@@ -582,7 +580,7 @@ static int uas_submit_urbs(struct scsi_c
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->data_in_urb);
- 			uas_log_cmd_state(cmnd, "data in submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
- 		cmdinfo->state |= DATA_IN_URB_INFLIGHT;
-@@ -592,7 +590,7 @@ static int uas_submit_urbs(struct scsi_c
- 		cmdinfo->data_out_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
- 							cmnd, DMA_TO_DEVICE);
- 		if (!cmdinfo->data_out_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_DATA_OUT_URB;
- 	}
- 
-@@ -602,7 +600,7 @@ static int uas_submit_urbs(struct scsi_c
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->data_out_urb);
- 			uas_log_cmd_state(cmnd, "data out submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
- 		cmdinfo->state |= DATA_OUT_URB_INFLIGHT;
-@@ -611,7 +609,7 @@ static int uas_submit_urbs(struct scsi_c
- 	if (cmdinfo->state & ALLOC_CMD_URB) {
- 		cmdinfo->cmd_urb = uas_alloc_cmd_urb(devinfo, GFP_ATOMIC, cmnd);
- 		if (!cmdinfo->cmd_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_CMD_URB;
- 	}
- 
-@@ -621,7 +619,7 @@ static int uas_submit_urbs(struct scsi_c
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->cmd_urb);
- 			uas_log_cmd_state(cmnd, "cmd submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->cmd_urb = NULL;
- 		cmdinfo->state &= ~SUBMIT_CMD_URB;
-@@ -698,7 +696,7 @@ static int uas_queuecommand_lck(struct s
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
--		set_host_byte(cmnd, DID_ERROR);
-+		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
+@@ -704,7 +706,8 @@ static iw_handler get_handler(struct net
+ #ifdef CONFIG_CFG80211_WEXT
+ 	if (dev->ieee80211_ptr && dev->ieee80211_ptr->wiphy) {
+ 		wireless_warn_cfg80211_wext();
+-		if (dev->ieee80211_ptr->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)
++		if (dev->ieee80211_ptr->wiphy->flags & (WIPHY_FLAG_SUPPORTS_MLO |
++							WIPHY_FLAG_DISABLE_WEXT))
+ 			return NULL;
+ 		handlers = dev->ieee80211_ptr->wiphy->wext;
  	}
 
 
