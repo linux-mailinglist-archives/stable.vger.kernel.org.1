@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-34893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9683B894155
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD1D893FB2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C59C21C21743
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711001F2203C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3585A47A6B;
-	Mon,  1 Apr 2024 16:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC9347A57;
+	Mon,  1 Apr 2024 16:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHjxsFOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqKAzMcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61321EB37;
-	Mon,  1 Apr 2024 16:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1A0C129;
+	Mon,  1 Apr 2024 16:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989652; cv=none; b=gjFt+RV0ftjCWCvYUqcRefq6i4GLU1rWB3CQekp5H9MKzlI+LDx6DLR8dkjEhp7s7CQ4Q4YSk0nMUOMxhe7UlxuvWUNG5O+zsQK3NmDYHkzVVYItSja4L9ugoGu7/hRpvOqiJLwfXgMqDa6pPWkMLoD3xpWdD66+/aEDQcrpt9s=
+	t=1711988400; cv=none; b=J+IL7xOmUVQBcIJztMTX2MB/3AYRgc1O0bqI8mNJJADGuGrDJawEmQWzUf8FKLX5mTJgY+oZjfyuERQAaZ/KjUb2GHddNJBNSuHKLa7YiA/LM8cS4NMJ1W9bWApbC4NtCRu/9RnvIljMqQYRgMpxVLoUYs54XIpnq9RFWKvIht8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989652; c=relaxed/simple;
-	bh=49tOJ96YpV7elQuNdrozKJE5E8mux7XO4WVPdqmSvNA=;
+	s=arc-20240116; t=1711988400; c=relaxed/simple;
+	bh=xxs6g4ucjxhOeVER1SkPPciyKRlrUCIP54JV7Xl17aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBGXOLUukqvvr7IsqevEzRO8alJZeyQ5doGmNipKHSTJ/dXKERSqPVA0kJpJIlBSnovexag1y71O9jVQlJBOur0NdslX/SkZpfi7SyECDd7hMVNUigcH5TEZEz286/PDnefBkRtJHhCnOAFwtBfLV0XaYEzWfOSx4iotOp8nsU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHjxsFOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552C2C433F1;
-	Mon,  1 Apr 2024 16:40:51 +0000 (UTC)
+	 MIME-Version; b=iNZchnj7TPmC+lpybrENi+e/Iwg/XEYCZv08tSN4i1Qot/MIgSAOptcwvQz+/CMfkqoduS/Pmq4cmhN/dB71bIN1Jl7uz5Q1JGPw1jUVq3VAkdCJIcHdz+j/3FSz1Onxe7UioLXycFtRhABSpSEwPErTgCgUZjehtfQ4spo1Znk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqKAzMcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4221C433F1;
+	Mon,  1 Apr 2024 16:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989651;
-	bh=49tOJ96YpV7elQuNdrozKJE5E8mux7XO4WVPdqmSvNA=;
+	s=korg; t=1711988400;
+	bh=xxs6g4ucjxhOeVER1SkPPciyKRlrUCIP54JV7Xl17aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHjxsFOXhR+VIKsvJCBx757TPLMErKvfMwnUeujj849uoQOQjb9Y2Fo07KsY+A26v
-	 It9+Rsj4zclAeSfTgaIV8djmZ0xy6ek7vY/XkEoVqxp2wYA3cLCbOIPHXtfRbA/FVO
-	 izVGiaHtuzY+HvaMFJitS9to/dBnRVSUY6Ve4OvY=
+	b=oqKAzMcZj0Va9QmedkYL5FG5+DrJ+jbJVoorEtZCwzQiqQHPshCfwwJ0/1AibJA3S
+	 SVHCc9gT7C/A4ANMPZEmcnSweCIgprbJzvTEXOM8F9hmfr4o5k7zWFrYm7AIycbRFr
+	 s+gWxrJCZ2YdnQR4zXA21HrgMQ1X+pwy0fRGJWO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Thibault <samuel.thibault@ens-lyon.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/396] speakup: Fix 8bit characters from direct synth
+Subject: [PATCH 6.7 174/432] f2fs: truncate page cache before clearing flags when aborting atomic write
 Date: Mon,  1 Apr 2024 17:42:41 +0200
-Message-ID: <20240401152551.260103039@linuxfoundation.org>
+Message-ID: <20240401152558.337226443@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Thibault <samuel.thibault@ens-lyon.org>
+From: Sunmin Jeong <s_min.jeong@samsung.com>
 
-[ Upstream commit b6c8dafc9d86eb77e502bb018ec4105e8d2fbf78 ]
+[ Upstream commit 74b0ebcbdde4c7fe23c979e4cfc2fdbf349c39a3 ]
 
-When userland echoes 8bit characters to /dev/synth with e.g.
+In f2fs_do_write_data_page, FI_ATOMIC_FILE flag selects the target inode
+between the original inode and COW inode. When aborting atomic write and
+writeback occur simultaneously, invalid data can be written to original
+inode if the FI_ATOMIC_FILE flag is cleared meanwhile.
 
-echo -e '\xe9' > /dev/synth
+To prevent the problem, let's truncate all pages before clearing the flag
 
-synth_write would get characters beyond 0x7f, and thus negative when
-char is signed.  When given to synth_buffer_add which takes a u16, this
-would sign-extend and produce a U+ffxy character rather than U+xy.
-Users thus get garbled text instead of accents in their output.
+Atomic write thread              Writeback thread
+  f2fs_abort_atomic_write
+    clear_inode_flag(inode, FI_ATOMIC_FILE)
+                                  __writeback_single_inode
+                                    do_writepages
+                                      f2fs_do_write_data_page
+                                        - use dn of original inode
+    truncate_inode_pages_final
 
-Let's fix this by making sure that we read unsigned characters.
-
-Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Fixes: 89fc2ae80bb1 ("speakup: extend synth buffer to 16bit unicode characters")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240204155736.2oh4ot7tiaa2wpbh@begin
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
+Cc: stable@vger.kernel.org #v5.19+
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accessibility/speakup/synth.c | 4 +++-
+ fs/f2fs/segment.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/accessibility/speakup/synth.c b/drivers/accessibility/speakup/synth.c
-index eea2a2fa4f015..45f9061031338 100644
---- a/drivers/accessibility/speakup/synth.c
-+++ b/drivers/accessibility/speakup/synth.c
-@@ -208,8 +208,10 @@ void spk_do_flush(void)
- 	wake_up_process(speakup_task);
- }
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index dfc7fd8aa1e8f..7a0143825e19d 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -192,6 +192,9 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
+ 	if (!f2fs_is_atomic_file(inode))
+ 		return;
  
--void synth_write(const char *buf, size_t count)
-+void synth_write(const char *_buf, size_t count)
- {
-+	const unsigned char *buf = (const unsigned char *) _buf;
++	if (clean)
++		truncate_inode_pages_final(inode->i_mapping);
 +
- 	while (count--)
- 		synth_buffer_add(*buf++);
- 	synth_start();
+ 	release_atomic_write_cnt(inode);
+ 	clear_inode_flag(inode, FI_ATOMIC_COMMITTED);
+ 	clear_inode_flag(inode, FI_ATOMIC_REPLACE);
+@@ -201,7 +204,6 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
+ 	F2FS_I(inode)->atomic_write_task = NULL;
+ 
+ 	if (clean) {
+-		truncate_inode_pages_final(inode->i_mapping);
+ 		f2fs_i_size_write(inode, fi->original_i_size);
+ 		fi->original_i_size = 0;
+ 	}
 -- 
 2.43.0
 
