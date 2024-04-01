@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-34322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80806893EDA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5C689439A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363A02813F0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBE9028370C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E5B4778E;
-	Mon,  1 Apr 2024 16:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB50482CA;
+	Mon,  1 Apr 2024 17:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1AN62Sf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qR4b7Hnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30C71CA8F;
-	Mon,  1 Apr 2024 16:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCB11DFF4;
+	Mon,  1 Apr 2024 17:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987729; cv=none; b=gTgX552bbl3G7fGsv2WuDbBfAXgyfh6OXwAMHAY+38ZBJ1uYiWw9xv4O10ufdBUYagHX4wVrjzpuOEcm4K9rrqNL8wVnHMWH+qZkKyplcfhEOhUVxitWOsD2B1WAIdvvK09M1buCn9WNU5D/y1ZQ9yZokRapZb1obQiz6ef8LdU=
+	t=1711991152; cv=none; b=sdOuFliKbx44BVxsnvwGWw/sJgkE0hYr1ZjXRGcnRajs2cRPS5pQimIs7dGX3UkKO1XkLLwnIobBwowaX7QW8L1qGQAIcU6LnQwZ9obKXToA3/I01CC3uZdvqRflzjoqXA7VkeIp7Lc8BfuTD5Zt1NYouH1t6TrXt+5l1d/38AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987729; c=relaxed/simple;
-	bh=Ny/gUgl22oRPBQrE6gVVevWb1aLLeF5pDuy0DlHebB8=;
+	s=arc-20240116; t=1711991152; c=relaxed/simple;
+	bh=+oJLAjKb9soYZZX/prvsCFXe3LHAYFmeHwqRJSX/NwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/waNag7OmgHGydABqW0kF0KdutbrWdofOFQcf6BSBBFq6Fe1W/4kptxz29Oil6SUPQ9iZ+fi8XG56qBoLxgSbRL1+AEpGt1qOXnDJZrz4+4M7SCdM9daAhq1UGs9sBZNFrjcGwvmRfSlSmjudL/Ie2fWQsXbvqm6U6W81a1GXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1AN62Sf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FD7C433F1;
-	Mon,  1 Apr 2024 16:08:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J9q1Td13aCnVfhP9OaA6jDz7ywqlUZKNMEeAr6hgbTYbTdNw4TPzEfEW1YDufK/XHzHECfhYkxyYdMIWOrrfsGnNtPhavJIpzJWEfz52x0EnX+E7n8FK9WxSyiajOZafn7iZy4nGI2e+PbaLOw0bS44ilpsIFdK/LwogJeV+5iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qR4b7Hnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B555C433C7;
+	Mon,  1 Apr 2024 17:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987729;
-	bh=Ny/gUgl22oRPBQrE6gVVevWb1aLLeF5pDuy0DlHebB8=;
+	s=korg; t=1711991152;
+	bh=+oJLAjKb9soYZZX/prvsCFXe3LHAYFmeHwqRJSX/NwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1AN62SfRHfHlyrrjhNRTIAmK6SJlzzv/BaVEcGerWygYElj3bLhiE8T2AtgtJmpp
-	 nj9w81iHdRagqS9ym0t3YUSRzrXJzZMrqyxv6Zryadv2vRCpagBNW3c90kRaGaMGiz
-	 i3nDuWL9VC5K7tbOdPq1raNAv41jKlDUbeMxAOek=
+	b=qR4b7HnlxQ5lEzlPP5xyf7rVufqVcKe7IpGfFujALdkN/M0S7ybRFgiTzPH5Trcxh
+	 6xodswoTjpgtHBvKLyY03gELHS1AA5rXUhtgyWXzFWonQs3ccYloBeRbOLkRb7go61
+	 dALGRMN7OZt9oigQ0NYUQv3HKdHHUvMVWmbkNZZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.8 374/399] usb: typec: ucsi: Ack unsupported commands
+	Lu Yao <yaolu@kylinos.cn>,
+	Kees Cook <keescook@chromium.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 150/272] init/Kconfig: lower GCC version check for -Warray-bounds
 Date: Mon,  1 Apr 2024 17:45:40 +0200
-Message-ID: <20240401152600.343309330@linuxfoundation.org>
+Message-ID: <20240401152535.387716413@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +72,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Kees Cook <keescook@chromium.org>
 
-commit 6b5c85ddeea77d18c4b69e3bda60e9374a20c304 upstream.
+commit 3e00f5802fabf2f504070a591b14b648523ede13 upstream.
 
-If a command completes the OPM must send an ack. This applies
-to unsupported commands, too.
+We continue to see false positives from -Warray-bounds even in GCC 10,
+which is getting reported in a few places[1] still:
 
-Send the required ACK for unsupported commands.
+security/security.c:811:2: warning: `memcpy' offset 32 is out of the bounds [0, 0] [-Warray-bounds]
 
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-4-lk@c--e.de
+Lower the GCC version check from 11 to 10.
+
+Link: https://lkml.kernel.org/r/20240223170824.work.768-kees@kernel.org
+Reported-by: Lu Yao <yaolu@kylinos.cn>
+Closes: https://lore.kernel.org/lkml/20240117014541.8887-1-yaolu@kylinos.cn/
+Link: https://lore.kernel.org/linux-next/65d84438.620a0220.7d171.81a7@mx.google.com [1]
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Paul Moore <paul@paul-moore.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Marc Aurèle La France <tsi@tuyoix.net>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ init/Kconfig |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -138,8 +138,12 @@ static int ucsi_exec_command(struct ucsi
- 	if (!(cci & UCSI_CCI_COMMAND_COMPLETE))
- 		return -EIO;
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -902,14 +902,14 @@ config CC_IMPLICIT_FALLTHROUGH
+ 	default "-Wimplicit-fallthrough=5" if CC_IS_GCC && $(cc-option,-Wimplicit-fallthrough=5)
+ 	default "-Wimplicit-fallthrough" if CC_IS_CLANG && $(cc-option,-Wunreachable-code-fallthrough)
  
--	if (cci & UCSI_CCI_NOT_SUPPORTED)
-+	if (cci & UCSI_CCI_NOT_SUPPORTED) {
-+		if (ucsi_acknowledge_command(ucsi) < 0)
-+			dev_err(ucsi->dev,
-+				"ACK of unsupported command failed\n");
- 		return -EOPNOTSUPP;
-+	}
+-# Currently, disable gcc-11+ array-bounds globally.
++# Currently, disable gcc-10+ array-bounds globally.
+ # It's still broken in gcc-13, so no upper bound yet.
+-config GCC11_NO_ARRAY_BOUNDS
++config GCC10_NO_ARRAY_BOUNDS
+ 	def_bool y
  
- 	if (cci & UCSI_CCI_ERROR) {
- 		if (cmd == UCSI_GET_ERROR_STATUS)
+ config CC_NO_ARRAY_BOUNDS
+ 	bool
+-	default y if CC_IS_GCC && GCC_VERSION >= 110000 && GCC11_NO_ARRAY_BOUNDS
++	default y if CC_IS_GCC && GCC_VERSION >= 100000 && GCC10_NO_ARRAY_BOUNDS
+ 
+ #
+ # For architectures that know their GCC __int128 support is sound
 
 
 
