@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-34639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850DF89402E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B498941C8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F89928020A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A67C5B20B3A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E1247A74;
-	Mon,  1 Apr 2024 16:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1758481C4;
+	Mon,  1 Apr 2024 16:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm1q+1NB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NufphIyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8BE1CA8F;
-	Mon,  1 Apr 2024 16:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F35947A76;
+	Mon,  1 Apr 2024 16:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988799; cv=none; b=ma2TOyN9RrS2tyCpoCsC5QDxRX/ql6OtlrbG7Nar7PigdTwmDGql+LNKDSA0vZ9ed5bkTQjk3lgqCxop0ACDiSNfYL1wDd6l4S0BF0nuQCEs905u4I786xFHPzjrqCqjN1ki28ktYhy25wqKQoAWhdYxwSQcpfy1QHbX3PQnvUw=
+	t=1711989950; cv=none; b=KTC5ep9RQ26IeGjd+xNJay/TRn0J/F+4rZ4gch9tuIbamyJEWh0vJxLUVoAeRMAnyK48wV2AgC6d+CdlXBfYmtCHk6MbTRWG0dlQJLJciVIygpOfWP0LYvbsAPerd+/AbdiQBdkhrGVxlvzz3rY48i6Ibm12VEqvHRJUsl9uFrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988799; c=relaxed/simple;
-	bh=vboLf7Z/7UueYYP30tYYonJBoISuHxE+FTsQbzJbnLI=;
+	s=arc-20240116; t=1711989950; c=relaxed/simple;
+	bh=gJ0/73h8H1C/IZxLI0TTSquDGNY+kPew/ArfBMvrVl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KX7ye30Mr6M5m/fc4OXyJ6wIWSFTS1qs2HycmRkhfkk23zD5AMDS4jUTki4wrVp2Qqmbur/A+8K8WQ+dLp9bbTxXt35SOfwY+UeGRIap0G5Nma7j4Krckq975fphYfjP9Zqp4BY5CMUMsaY8SdbWBHh6kfFLE6EocH/HuDkqDXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm1q+1NB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD05C433C7;
-	Mon,  1 Apr 2024 16:26:38 +0000 (UTC)
+	 MIME-Version; b=gz6LT1ntYmAC6PW9DTgn0XO+tA+a2hiO4YfFyP6uWfRapdS1Fyno760dviQvAn9wCtJPCbUM1QNvTxv94LNZPLizfnhTR84XNlSBerkYNEmXGbOK8n+L4nTyVOWI1Je09rtUmmoZ3qNm7YJ3eoygTPcKurIwz+yqmmU9CMXViVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NufphIyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBD0C433F1;
+	Mon,  1 Apr 2024 16:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988799;
-	bh=vboLf7Z/7UueYYP30tYYonJBoISuHxE+FTsQbzJbnLI=;
+	s=korg; t=1711989950;
+	bh=gJ0/73h8H1C/IZxLI0TTSquDGNY+kPew/ArfBMvrVl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fm1q+1NBVurJAAAoiRhum9R6Bf3zl+cLZASyJB+9HLfeAzSxl9+8IHtPO96B2U5Mt
-	 rT7/UGz4+HlFNGO511qRQaROvP+CdveIVH6sFaZMRnwCjj7h/t5ckSRqFw7aPSJKQw
-	 M7p1lnvIE+yod1hMeRShs6HwU4igct+nSz1thM7Y=
+	b=NufphIyj1Jv8X+EaDINaFU97nxWvw8cE7X7EgLcLux0bswQImVdlfQXSAARa5SDKl
+	 RENpO9PXu5+LNDmD9tLzvQZp47BufqU0pDElzNnQsCs8bN17zdbCmh9SjErj7vBVGO
+	 Fk2ucCcxqrE68FtyTBCNbfspzWR8su32S5I3KMLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
-Subject: [PATCH 6.7 263/432] usb: gadget: ncm: Fix handling of zero block length packets
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 6.6 201/396] nouveau: lock the client object tree.
 Date: Mon,  1 Apr 2024 17:44:10 +0200
-Message-ID: <20240401152600.995977071@linuxfoundation.org>
+Message-ID: <20240401152553.924028250@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +58,208 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Dave Airlie <airlied@redhat.com>
 
-commit f90ce1e04cbcc76639d6cba0fdbd820cd80b3c70 upstream.
+commit b7cc4ff787a572edf2c55caeffaa88cd801eb135 upstream.
 
-While connecting to a Linux host with CDC_NCM_NTB_DEF_SIZE_TX
-set to 65536, it has been observed that we receive short packets,
-which come at interval of 5-10 seconds sometimes and have block
-length zero but still contain 1-2 valid datagrams present.
+It appears the client object tree has no locking unless I've missed
+something else. Fix races around adding/removing client objects,
+mostly vram bar mappings.
 
-According to the NCM spec:
+ 4562.099306] general protection fault, probably for non-canonical address =
+0x6677ed422bceb80c: 0000 [#1] PREEMPT SMP PTI
+[ 4562.099314] CPU: 2 PID: 23171 Comm: deqp-vk Not tainted 6.8.0-rc6+ #27
+[ 4562.099324] Hardware name: Gigabyte Technology Co., Ltd. Z390 I AORUS PR=
+O WIFI/Z390 I AORUS PRO WIFI-CF, BIOS F8 11/05/2021
+[ 4562.099330] RIP: 0010:nvkm_object_search+0x1d/0x70 [nouveau]
+[ 4562.099503] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f =
+1f 44 00 00 48 89 f8 48 85 f6 74 39 48 8b 87 a0 00 00 00 48 85 c0 74 12 <48=
+> 8b 48 f8 48 39 ce 73 15 48 8b 40 10 48 85 c0 75 ee 48 c7 c0 fe
+[ 4562.099506] RSP: 0000:ffffa94cc420bbf8 EFLAGS: 00010206
+[ 4562.099512] RAX: 6677ed422bceb814 RBX: ffff98108791f400 RCX: ffff9810f26=
+b8f58
+[ 4562.099517] RDX: 0000000000000000 RSI: ffff9810f26b9158 RDI: ffff9810879=
+1f400
+[ 4562.099519] RBP: ffff9810f26b9158 R08: 0000000000000000 R09: 00000000000=
+00000
+[ 4562.099521] R10: ffffa94cc420bc48 R11: 0000000000000001 R12: ffff9810f02=
+a7cc0
+[ 4562.099526] R13: 0000000000000000 R14: 00000000000000ff R15: 00000000000=
+00007
+[ 4562.099528] FS:  00007f629c5017c0(0000) GS:ffff98142c700000(0000) knlGS:=
+0000000000000000
+[ 4562.099534] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 4562.099536] CR2: 00007f629a882000 CR3: 000000017019e004 CR4: 00000000003=
+706f0
+[ 4562.099541] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
+00000
+[ 4562.099542] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
+00400
+[ 4562.099544] Call Trace:
+[ 4562.099555]  <TASK>
+[ 4562.099573]  ? die_addr+0x36/0x90
+[ 4562.099583]  ? exc_general_protection+0x246/0x4a0
+[ 4562.099593]  ? asm_exc_general_protection+0x26/0x30
+[ 4562.099600]  ? nvkm_object_search+0x1d/0x70 [nouveau]
+[ 4562.099730]  nvkm_ioctl+0xa1/0x250 [nouveau]
+[ 4562.099861]  nvif_object_map_handle+0xc8/0x180 [nouveau]
+[ 4562.099986]  nouveau_ttm_io_mem_reserve+0x122/0x270 [nouveau]
+[ 4562.100156]  ? dma_resv_test_signaled+0x26/0xb0
+[ 4562.100163]  ttm_bo_vm_fault_reserved+0x97/0x3c0 [ttm]
+[ 4562.100182]  ? __mutex_unlock_slowpath+0x2a/0x270
+[ 4562.100189]  nouveau_ttm_fault+0x69/0xb0 [nouveau]
+[ 4562.100356]  __do_fault+0x32/0x150
+[ 4562.100362]  do_fault+0x7c/0x560
+[ 4562.100369]  __handle_mm_fault+0x800/0xc10
+[ 4562.100382]  handle_mm_fault+0x17c/0x3e0
+[ 4562.100388]  do_user_addr_fault+0x208/0x860
+[ 4562.100395]  exc_page_fault+0x7f/0x200
+[ 4562.100402]  asm_exc_page_fault+0x26/0x30
+[ 4562.100412] RIP: 0033:0x9b9870
+[ 4562.100419] Code: 85 a8 f7 ff ff 8b 8d 80 f7 ff ff 89 08 e9 18 f2 ff ff =
+0f 1f 84 00 00 00 00 00 44 89 32 e9 90 fa ff ff 0f 1f 84 00 00 00 00 00 <44=
+> 89 32 e9 f8 f1 ff ff 0f 1f 84 00 00 00 00 00 66 44 89 32 e9 e7
+[ 4562.100422] RSP: 002b:00007fff9ba2dc70 EFLAGS: 00010246
+[ 4562.100426] RAX: 0000000000000004 RBX: 000000000dd65e10 RCX: 000000fff00=
+00000
+[ 4562.100428] RDX: 00007f629a882000 RSI: 00007f629a882000 RDI: 00000000000=
+00066
+[ 4562.100432] RBP: 00007fff9ba2e570 R08: 0000000000000000 R09: 0000000123d=
+df000
+[ 4562.100434] R10: 0000000000000001 R11: 0000000000000246 R12: 000000007ff=
+fffff
+[ 4562.100436] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
+00000
+[ 4562.100446]  </TASK>
+[ 4562.100448] Modules linked in: nf_conntrack_netbios_ns nf_conntrack_broa=
+dcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_rej=
+ect_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack=
+ nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables libcrc32c nfnetlink cmac bn=
+ep sunrpc iwlmvm intel_rapl_msr intel_rapl_common snd_sof_pci_intel_cnl x86=
+_pkg_temp_thermal intel_powerclamp snd_sof_intel_hda_common mac80211 corete=
+mp snd_soc_acpi_intel_match kvm_intel snd_soc_acpi snd_soc_hdac_hda snd_sof=
+_pci snd_sof_xtensa_dsp snd_sof_intel_hda_mlink snd_sof_intel_hda snd_sof k=
+vm snd_sof_utils snd_soc_core snd_hda_codec_realtek libarc4 snd_hda_codec_g=
+eneric snd_compress snd_hda_ext_core vfat fat snd_hda_intel snd_intel_dspcf=
+g irqbypass iwlwifi snd_hda_codec snd_hwdep snd_hda_core btusb btrtl mei_hd=
+cp iTCO_wdt rapl mei_pxp btintel snd_seq iTCO_vendor_support btbcm snd_seq_=
+device intel_cstate bluetooth snd_pcm cfg80211 intel_wmi_thunderbolt wmi_bm=
+of intel_uncore snd_timer mei_me snd ecdh_generic i2c_i801
+[ 4562.100541]  ecc mei i2c_smbus soundcore rfkill intel_pch_thermal acpi_p=
+ad zram nouveau drm_ttm_helper ttm gpu_sched i2c_algo_bit drm_gpuvm drm_exe=
+c mxm_wmi drm_display_helper drm_kms_helper drm crct10dif_pclmul crc32_pclm=
+ul nvme e1000e crc32c_intel nvme_core ghash_clmulni_intel video wmi pinctrl=
+_cannonlake ip6_tables ip_tables fuse
+[ 4562.100616] ---[ end trace 0000000000000000 ]---
 
-"If wBlockLength = 0x0000, the block is terminated by a
-short packet. In this case, the USB transfer must still
-be shorter than dwNtbInMaxSize or dwNtbOutMaxSize. If
-exactly dwNtbInMaxSize or dwNtbOutMaxSize bytes are sent,
-and the size is a multiple of wMaxPacketSize for the
-given pipe, then no ZLP shall be sent.
-
-wBlockLength= 0x0000 must be used with extreme care, because
-of the possibility that the host and device may get out of
-sync, and because of test issues.
-
-wBlockLength = 0x0000 allows the sender to reduce latency by
-starting to send a very large NTB, and then shortening it when
-the sender discovers that there’s not sufficient data to justify
-sending a large NTB"
-
-However, there is a potential issue with the current implementation,
-as it checks for the occurrence of multiple NTBs in a single
-giveback by verifying if the leftover bytes to be processed is zero
-or not. If the block length reads zero, we would process the same
-NTB infintely because the leftover bytes is never zero and it leads
-to a crash. Fix this by bailing out if block length reads zero.
-
+Signed-off-by: Dave Airlie <airlied@redhat.com>
 Cc: stable@vger.kernel.org
-Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Link: https://lore.kernel.org/r/20240228115441.2105585-1-quic_kriskura@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/include/nvkm/core/client.h |    1=20
+ drivers/gpu/drm/nouveau/nvkm/core/client.c         |    1=20
+ drivers/gpu/drm/nouveau/nvkm/core/object.c         |   26 ++++++++++++++++=
+-----
+ 3 files changed, 22 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1333,7 +1333,7 @@ parse_ntb:
- 	if (to_process == 1 &&
- 	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
- 		to_process--;
--	} else if (to_process > 0) {
-+	} else if ((to_process > 0) && (block_len != 0)) {
- 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
- 		goto parse_ntb;
+--- a/drivers/gpu/drm/nouveau/include/nvkm/core/client.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/core/client.h
+@@ -11,6 +11,7 @@ struct nvkm_client {
+ 	u32 debug;
+=20
+ 	struct rb_root objroot;
++	spinlock_t obj_lock;
+=20
+ 	void *data;
+ 	int (*event)(u64 token, void *argv, u32 argc);
+--- a/drivers/gpu/drm/nouveau/nvkm/core/client.c
++++ b/drivers/gpu/drm/nouveau/nvkm/core/client.c
+@@ -180,6 +180,7 @@ nvkm_client_new(const char *name, u64 de
+ 	client->device =3D device;
+ 	client->debug =3D nvkm_dbgopt(dbg, "CLIENT");
+ 	client->objroot =3D RB_ROOT;
++	spin_lock_init(&client->obj_lock);
+ 	client->event =3D event;
+ 	INIT_LIST_HEAD(&client->umem);
+ 	spin_lock_init(&client->lock);
+--- a/drivers/gpu/drm/nouveau/nvkm/core/object.c
++++ b/drivers/gpu/drm/nouveau/nvkm/core/object.c
+@@ -30,8 +30,10 @@ nvkm_object_search(struct nvkm_client *c
+ 		   const struct nvkm_object_func *func)
+ {
+ 	struct nvkm_object *object;
++	unsigned long flags;
+=20
+ 	if (handle) {
++		spin_lock_irqsave(&client->obj_lock, flags);
+ 		struct rb_node *node =3D client->objroot.rb_node;
+ 		while (node) {
+ 			object =3D rb_entry(node, typeof(*object), node);
+@@ -40,9 +42,12 @@ nvkm_object_search(struct nvkm_client *c
+ 			else
+ 			if (handle > object->object)
+ 				node =3D node->rb_right;
+-			else
++			else {
++				spin_unlock_irqrestore(&client->obj_lock, flags);
+ 				goto done;
++			}
+ 		}
++		spin_unlock_irqrestore(&client->obj_lock, flags);
+ 		return ERR_PTR(-ENOENT);
+ 	} else {
+ 		object =3D &client->object;
+@@ -57,30 +62,39 @@ done:
+ void
+ nvkm_object_remove(struct nvkm_object *object)
+ {
++	unsigned long flags;
++
++	spin_lock_irqsave(&object->client->obj_lock, flags);
+ 	if (!RB_EMPTY_NODE(&object->node))
+ 		rb_erase(&object->node, &object->client->objroot);
++	spin_unlock_irqrestore(&object->client->obj_lock, flags);
+ }
+=20
+ bool
+ nvkm_object_insert(struct nvkm_object *object)
+ {
+-	struct rb_node **ptr =3D &object->client->objroot.rb_node;
++	struct rb_node **ptr;
+ 	struct rb_node *parent =3D NULL;
++	unsigned long flags;
+=20
++	spin_lock_irqsave(&object->client->obj_lock, flags);
++	ptr =3D &object->client->objroot.rb_node;
+ 	while (*ptr) {
+ 		struct nvkm_object *this =3D rb_entry(*ptr, typeof(*this), node);
+ 		parent =3D *ptr;
+-		if (object->object < this->object)
++		if (object->object < this->object) {
+ 			ptr =3D &parent->rb_left;
+-		else
+-		if (object->object > this->object)
++		} else if (object->object > this->object) {
+ 			ptr =3D &parent->rb_right;
+-		else
++		} else {
++			spin_unlock_irqrestore(&object->client->obj_lock, flags);
+ 			return false;
++		}
  	}
+=20
+ 	rb_link_node(&object->node, parent, ptr);
+ 	rb_insert_color(&object->node, &object->client->objroot);
++	spin_unlock_irqrestore(&object->client->obj_lock, flags);
+ 	return true;
+ }
+=20
 
 
 
