@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-34821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476AC894109
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9CC893F86
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6F61F216EB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B985928497E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B57482DF;
-	Mon,  1 Apr 2024 16:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0564596E;
+	Mon,  1 Apr 2024 16:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scOzdKyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPazzkWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C0B481D7;
-	Mon,  1 Apr 2024 16:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0503D961;
+	Mon,  1 Apr 2024 16:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989412; cv=none; b=KirKK8NETj+aohSS6M/Crz+xOABGS5/N2gLtVTuGwDRNqBh209U3eG5jbg/Vyoxm70QcgpVx8Dog0Krzf931tZ0MKBr6EnXzqPFOlwWBkV7m2zFyE/yfPa4spljUXZ2bPNdO4tqhSfXEhzrvo53bZrd4Jw2ek8nHiqHVnBitYRo=
+	t=1711988263; cv=none; b=kD3G6rwlmPENnBUaIGfnRsN5sJhtl0HFpYUolU1sZNqgYlS0YM3mW0M5luo6KwbAX1dPVgYwBmTqO9Ndd1w40e6cWjff81EeifPfJJTwwD0eXdrP4tn1628Axh6X4dScwvGqAowhx41pVbMKVFXfp62XeMrZomU9YUyTfEA4GHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989412; c=relaxed/simple;
-	bh=GhJHPcDGxWR6R128J92y7074dw3sbm3gjCnsfxq+G3o=;
+	s=arc-20240116; t=1711988263; c=relaxed/simple;
+	bh=TvsPM8USJ1B3pLcs5GG2Nj5l1LE7Lug1IWVhRkuHDCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k10z00j3/a307cppTyz/duTwVcsUJrhW/dRAJ81uJNkSID2uSr2DsMFvazzG5yXleIWZjp+y4g2nrVfhMiLlJPwtisJhbbLpHYGKzTFbrnSv0FAX1HWAvCOPiGk9QzQfIe5yDqfMvTVCydfVs+krVb8ZvFdtyyAybe2uF6D5tSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scOzdKyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52AB7C433F1;
-	Mon,  1 Apr 2024 16:36:51 +0000 (UTC)
+	 MIME-Version; b=A4y+aRXLriuqOhdmST2gQwn38OTRujuyvAg5ILgeNl2LWczVEzpqzhK5VHJem9ejBe8ljEQodL2rTzLCISq5c8BIlPCNkAnr9Yy7d0tK4uQP4WbUraOmn+n/expBPs6HcSgUWe8iU2+BQxvVd4OpxIxDUkn2LrnSojCOKpR9GIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPazzkWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8B6C433C7;
+	Mon,  1 Apr 2024 16:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989411;
-	bh=GhJHPcDGxWR6R128J92y7074dw3sbm3gjCnsfxq+G3o=;
+	s=korg; t=1711988263;
+	bh=TvsPM8USJ1B3pLcs5GG2Nj5l1LE7Lug1IWVhRkuHDCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scOzdKyYlzP/IP8rIu6gx3ew5KCTvDABTr7XcHTLLc7A0ioUQHnjn+GwPJbNYNumO
-	 cuxET1WLsMXYoe5ZvlouWkZznJtohjbHscxvcVgIVAMifQMC2VFnZA2j98yuzuJZ7L
-	 9pgiyiMzuGwGdX3i3ADsZLawiDEsCKqmaW39i6fU=
+	b=gPazzkWRrUZq4pXUzWBKujYRwgmHrcfworfgF18sKG/a1S+cTIs+kXQwLZTNx47vE
+	 fhVa7fq9WUqBSFijtYOuc3mxUoutwffIBbQv9O99j165jwrOUOcqAufkaxAD3jcwSm
+	 nxyWEtMVHOs8scj25KQq0uaymBZfWhJv5T/Lly4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	yangerkun <yangerkun@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/396] ext4: correct best extent lstart adjustment logic
-Date: Mon,  1 Apr 2024 17:41:30 +0200
-Message-ID: <20240401152549.154735132@linuxfoundation.org>
+Subject: [PATCH 6.7 104/432] dm-raid: really frozen sync_thread during suspend
+Date: Mon,  1 Apr 2024 17:41:31 +0200
+Message-ID: <20240401152556.229464882@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +65,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 4fbf8bc733d14bceb16dda46a3f5e19c6a9621c5 ]
+[ Upstream commit 16c4770c75b1223998adbeb7286f9a15c65fba73 ]
 
-When yangerkun review commit 93cdf49f6eca ("ext4: Fix best extent lstart
-adjustment logic in ext4_mb_new_inode_pa()"), it was found that the best
-extent did not completely cover the original request after adjusting the
-best extent lstart in ext4_mb_new_inode_pa() as follows:
+1) commit f52f5c71f3d4 ("md: fix stopping sync thread") remove
+   MD_RECOVERY_FROZEN from __md_stop_writes() and doesn't realize that
+   dm-raid relies on __md_stop_writes() to frozen sync_thread
+   indirectly. Fix this problem by adding MD_RECOVERY_FROZEN in
+   md_stop_writes(), and since stop_sync_thread() is only used for
+   dm-raid in this case, also move stop_sync_thread() to
+   md_stop_writes().
+2) The flag MD_RECOVERY_FROZEN doesn't mean that sync thread is frozen,
+   it only prevent new sync_thread to start, and it can't stop the
+   running sync thread; In order to frozen sync_thread, after seting the
+   flag, stop_sync_thread() should be used.
+3) The flag MD_RECOVERY_FROZEN doesn't mean that writes are stopped, use
+   it as condition for md_stop_writes() in raid_postsuspend() doesn't
+   look correct. Consider that reentrant stop_sync_thread() do nothing,
+   always call md_stop_writes() in raid_postsuspend().
+4) raid_message can set/clear the flag MD_RECOVERY_FROZEN at anytime,
+   and if MD_RECOVERY_FROZEN is cleared while the array is suspended,
+   new sync_thread can start unexpected. Fix this by disallow
+   raid_message() to change sync_thread status during suspend.
 
-  original request: 2/10(8)
-  normalized request: 0/64(64)
-  best extent: 0/9(9)
+Note that after commit f52f5c71f3d4 ("md: fix stopping sync thread"), the
+test shell/lvconvert-raid-reshape.sh start to hang in stop_sync_thread(),
+and with previous fixes, the test won't hang there anymore, however, the
+test will still fail and complain that ext4 is corrupted. And with this
+patch, the test won't hang due to stop_sync_thread() or fail due to ext4
+is corrupted anymore. However, there is still a deadlock related to
+dm-raid456 that will be fixed in following patches.
 
-When we check if best ex can be kept at start of goal, ac_o_ex.fe_logical
-is 2 less than the adjusted best extent logical end 9, so we think the
-adjustment is done. But obviously 0/9(9) doesn't cover 2/10(8), so we
-should determine here if the original request logical end is less than or
-equal to the adjusted best extent logical end.
-
-In addition, add a comment stating when adjusted best_ex will not cover
-the original request, and remove the duplicate assertion because adjusting
-lstart makes no change to b_ex.fe_len.
-
-Link: https://lore.kernel.org/r/3630fa7f-b432-7afd-5f79-781bc3b2c5ea@huawei.com
-Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
-Cc:  <stable@kernel.org>
-Signed-off-by: yangerkun <yangerkun@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240201141845.1879253-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: Mikulas Patocka <mpatocka@redhat.com>
+Closes: https://lore.kernel.org/all/e5e8afe2-e9a8-49a2-5ab0-958d4065c55e@redhat.com/
+Fixes: 1af2048a3e87 ("dm raid: fix deadlock caused by premature md_stop_writes()")
+Fixes: 9dbd1aa3a81c ("dm raid: add reshaping support to the target")
+Fixes: f52f5c71f3d4 ("md: fix stopping sync thread")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240305072306.2562024-6-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/md/dm-raid.c | 25 +++++++++++++++----------
+ drivers/md/md.c      |  3 ++-
+ 2 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index ea5ac2636632b..257b70c5ded45 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5184,10 +5184,16 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 			.fe_len = ac->ac_orig_goal_len,
- 		};
- 		loff_t orig_goal_end = extent_logical_end(sbi, &ex);
-+		loff_t o_ex_end = extent_logical_end(sbi, &ac->ac_o_ex);
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index 13eb47b997f94..fff9336fee767 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -3240,11 +3240,12 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+ 	rs->md.ro = 1;
+ 	rs->md.in_sync = 1;
  
--		/* we can't allocate as much as normalizer wants.
--		 * so, found space must get proper lstart
--		 * to cover original request */
+-	/* Keep array frozen until resume. */
+-	set_bit(MD_RECOVERY_FROZEN, &rs->md.recovery);
+-
+ 	/* Has to be held on running the array */
+ 	mddev_suspend_and_lock_nointr(&rs->md);
++
++	/* Keep array frozen until resume. */
++	md_frozen_sync_thread(&rs->md);
++
+ 	r = md_run(&rs->md);
+ 	rs->md.in_sync = 0; /* Assume already marked dirty */
+ 	if (r) {
+@@ -3722,6 +3723,9 @@ static int raid_message(struct dm_target *ti, unsigned int argc, char **argv,
+ 	if (!mddev->pers || !mddev->pers->sync_request)
+ 		return -EINVAL;
+ 
++	if (test_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags))
++		return -EBUSY;
++
+ 	if (!strcasecmp(argv[0], "frozen"))
+ 		set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+ 	else
+@@ -3796,10 +3800,11 @@ static void raid_postsuspend(struct dm_target *ti)
+ 	struct raid_set *rs = ti->private;
+ 
+ 	if (!test_and_set_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
+-		/* Writes have to be stopped before suspending to avoid deadlocks. */
+-		if (!test_bit(MD_RECOVERY_FROZEN, &rs->md.recovery))
+-			md_stop_writes(&rs->md);
+-
 +		/*
-+		 * We can't allocate as much as normalizer wants, so we try
-+		 * to get proper lstart to cover the original request, except
-+		 * when the goal doesn't cover the original request as below:
-+		 *
-+		 * orig_ex:2045/2055(10), isize:8417280 -> normalized:0/2048
-+		 * best_ex:0/200(200) -> adjusted: 1848/2048(200)
++		 * sync_thread must be stopped during suspend, and writes have
++		 * to be stopped before suspending to avoid deadlocks.
 +		 */
- 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
- 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
- 
-@@ -5199,7 +5205,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 		 * 1. Check if best ex can be kept at end of goal (before
- 		 *    cr_best_avail trimmed it) and still cover original start
- 		 * 2. Else, check if best ex can be kept at start of goal and
--		 *    still cover original start
-+		 *    still cover original end
- 		 * 3. Else, keep the best ex at start of original request.
- 		 */
- 		ex.fe_len = ac->ac_b_ex.fe_len;
-@@ -5209,7 +5215,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 			goto adjust_bex;
- 
- 		ex.fe_logical = ac->ac_g_ex.fe_logical;
--		if (ac->ac_o_ex.fe_logical < extent_logical_end(sbi, &ex))
-+		if (o_ex_end <= extent_logical_end(sbi, &ex))
- 			goto adjust_bex;
- 
- 		ex.fe_logical = ac->ac_o_ex.fe_logical;
-@@ -5217,7 +5223,6 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 		ac->ac_b_ex.fe_logical = ex.fe_logical;
- 
- 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
--		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
- 		BUG_ON(extent_logical_end(sbi, &ex) > orig_goal_end);
++		md_stop_writes(&rs->md);
+ 		mddev_suspend(&rs->md, false);
+ 	}
+ }
+@@ -4012,8 +4017,6 @@ static int raid_preresume(struct dm_target *ti)
  	}
  
+ 	/* Check for any resize/reshape on @rs and adjust/initiate */
+-	/* Be prepared for mddev_resume() in raid_resume() */
+-	set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+ 	if (mddev->recovery_cp && mddev->recovery_cp < MaxSector) {
+ 		set_bit(MD_RECOVERY_REQUESTED, &mddev->recovery);
+ 		mddev->resync_min = mddev->recovery_cp;
+@@ -4055,10 +4058,12 @@ static void raid_resume(struct dm_target *ti)
+ 		if (mddev->delta_disks < 0)
+ 			rs_set_capacity(rs);
+ 
++		WARN_ON_ONCE(!test_bit(MD_RECOVERY_FROZEN, &mddev->recovery));
++		WARN_ON_ONCE(test_bit(MD_RECOVERY_RUNNING, &mddev->recovery));
+ 		mddev_lock_nointr(mddev);
+-		clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+ 		mddev->ro = 0;
+ 		mddev->in_sync = 0;
++		md_unfrozen_sync_thread(mddev);
+ 		mddev_unlock_and_resume(mddev);
+ 	}
+ }
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index bae513018849a..c052edeb21606 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -6369,7 +6369,6 @@ static void md_clean(struct mddev *mddev)
+ 
+ static void __md_stop_writes(struct mddev *mddev)
+ {
+-	stop_sync_thread(mddev, true, false);
+ 	del_timer_sync(&mddev->safemode_timer);
+ 
+ 	if (mddev->pers && mddev->pers->quiesce) {
+@@ -6394,6 +6393,8 @@ static void __md_stop_writes(struct mddev *mddev)
+ void md_stop_writes(struct mddev *mddev)
+ {
+ 	mddev_lock_nointr(mddev);
++	set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
++	stop_sync_thread(mddev, true, false);
+ 	__md_stop_writes(mddev);
+ 	mddev_unlock(mddev);
+ }
 -- 
 2.43.0
 
