@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-34411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6B1893F3D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:13:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49768940E6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82B6280DCC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:13:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D705282707
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7783E47A64;
-	Mon,  1 Apr 2024 16:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F3538DD8;
+	Mon,  1 Apr 2024 16:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDAIAUDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNeAvtST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36293446AC;
-	Mon,  1 Apr 2024 16:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA8B1C0DE7;
+	Mon,  1 Apr 2024 16:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988030; cv=none; b=MLANw22SSFxto73F1/e5v4pdex9lZEnAhFaxSkLNP1XIOTbOMehlik0WF1vnotsOk/cECjWHIOKViE7iIHGNC0AOeYxGj1BlQJJbSPWNBB0y0QbD8Ar0cc6SP/MPkVoFDxWt43WNaD3+FKseZKqeMCZI9ZrXCO+IVNqeK/PgAog=
+	t=1711989339; cv=none; b=tbeTI2shm2oLCH+kBn9FQcj4ePb31jQn+nse6qah4ukPOdZdkJ7F75NNDmiz48W+qI6ls/AyZnMlsR9HrJpnPfCcff4VtaIyZNwKn3ephkddq+UlBWrAYu0D9AqBRZiL+0As32FfiyKRMwhUbdFvvizR0mnlQ4p1+2hZbN64gIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988030; c=relaxed/simple;
-	bh=5J3pgt3avzoWrfBuOuCdaNrl6Dg1SSIycPElvGHC2Ks=;
+	s=arc-20240116; t=1711989339; c=relaxed/simple;
+	bh=g0f9+WxAkjp93oEdVx1j6MoJwJsPwyNWwg3D0Uczs1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udn0B8Nd8VOq+nXBfoSk1FYgOIWCuWnvBQhvvKShqFfCSgylKgOaVl4A7wRR+Ww+iZCWN9ZKYJ+P5SFagyY+g2jTHpcr+vj4u9C0RlrdL2U1+B6o7m8S8gboqZlYMIR1Nr7bkVK9+GGv2/kualNsKPlLoax7VA+4GuRTn2/tRE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDAIAUDf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9729AC433C7;
-	Mon,  1 Apr 2024 16:13:49 +0000 (UTC)
+	 MIME-Version; b=Or06G5OJbkV0bGFIxKCOf4jdy2BxKXZzLCM9LdZ3dJNjljvHaM/qGzrmG2c/3do1s0IQUHDcgehgcGlMNKqLCSQ5eJFRgXnQSUxQrD5jUm7OWjmtS0PRkvdp+7cmOIxx7yh9FIo2su35rPnUh5gkNAZUqi81t35i8fXplk8xyI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNeAvtST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DF5C433C7;
+	Mon,  1 Apr 2024 16:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988030;
-	bh=5J3pgt3avzoWrfBuOuCdaNrl6Dg1SSIycPElvGHC2Ks=;
+	s=korg; t=1711989339;
+	bh=g0f9+WxAkjp93oEdVx1j6MoJwJsPwyNWwg3D0Uczs1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDAIAUDfypY0MOOvbT3yGLaGf2Pb0U/YIs9JFh1IQ3+UxSmfiuEX6comHUlvHZmPj
-	 Gl1AjJ5O45Lgij+WNDRwN0B00iJedu70b2Sd3z5xn6QCotdy2dGxQzTFi+8anmNEcV
-	 LaTQI9MHj/UvpogVGxHqmH1N3y6QzzV2jIbAAb9I=
+	b=yNeAvtSTB0dnKpLl2cFJ0uC0fe/iAXVM7kdzAqdFv/lVoxcG1LgJ7MkQwfsn2dvXO
+	 I26ZUBwGDcU1+xOQkjKt+QDvtlf3sp2/6xCn2b0V0zCpLOj0Kkoko0r1dImHGQu0JC
+	 r6yj58suxZIyS8HkzBDM6ZaZKoj1BiRk6/rxf/eU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 063/432] iio: adc: rockchip_saradc: fix bitmask for channels on SARADCv2
-Date: Mon,  1 Apr 2024 17:40:50 +0200
-Message-ID: <20240401152555.005121689@linuxfoundation.org>
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 002/396] KVM: x86: Use a switch statement and macros in __feature_translate()
+Date: Mon,  1 Apr 2024 17:40:51 +0200
+Message-ID: <20240401152547.948509012@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Jim Mattson <jmattson@google.com>
 
-[ Upstream commit b0a4546df24a4f8c59b2d05ae141bd70ceccc386 ]
+commit 80c883db87d9ffe2d685e91ba07a087b1c246c78 upstream.
 
-The SARADCv2 on RK3588 (the only SoC currently supported that has an
-SARADCv2) selects the channel through the channel_sel bitfield which is
-the 4 lowest bits, therefore the mask should be GENMASK(3, 0) and not
-GENMASK(15, 0).
+Use a switch statement with macro-generated case statements to handle
+translating feature flags in order to reduce the probability of runtime
+errors due to copy+paste goofs, to make compile-time errors easier to
+debug, and to make the code more readable.
 
-Fixes: 757953f8ec69 ("iio: adc: rockchip_saradc: Add support for RK3588")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20240223-saradcv2-chan-mask-v1-1-84b06a0f623a@theobroma-systems.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+E.g. the compiler won't directly generate an error for duplicate if
+statements
+
+	if (x86_feature == X86_FEATURE_SGX1)
+		return KVM_X86_FEATURE_SGX1;
+	else if (x86_feature == X86_FEATURE_SGX2)
+		return KVM_X86_FEATURE_SGX1;
+
+and so instead reverse_cpuid_check() will fail due to the untranslated
+entry pointing at a Linux-defined leaf, which provides practically no
+hint as to what is broken
+
+  arch/x86/kvm/reverse_cpuid.h:108:2: error: call to __compiletime_assert_450 declared with 'error' attribute:
+                                      BUILD_BUG_ON failed: x86_leaf == CPUID_LNX_4
+          BUILD_BUG_ON(x86_leaf == CPUID_LNX_4);
+          ^
+whereas duplicate case statements very explicitly point at the offending
+code:
+
+  arch/x86/kvm/reverse_cpuid.h:125:2: error: duplicate case value '361'
+          KVM_X86_TRANSLATE_FEATURE(SGX2);
+          ^
+  arch/x86/kvm/reverse_cpuid.h:124:2: error: duplicate case value '360'
+          KVM_X86_TRANSLATE_FEATURE(SGX1);
+          ^
+
+And without macros, the opposite type of copy+paste goof doesn't generate
+any error at compile-time, e.g. this yields no complaints:
+
+        case X86_FEATURE_SGX1:
+                return KVM_X86_FEATURE_SGX1;
+        case X86_FEATURE_SGX2:
+                return KVM_X86_FEATURE_SGX1;
+
+Note, __feature_translate() is forcibly inlined and the feature is known
+at compile-time, so the code generation between an if-elif sequence and a
+switch statement should be identical.
+
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20231024001636.890236-2-jmattson@google.com
+[sean: use a macro, rewrite changelog]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/rockchip_saradc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/reverse_cpuid.h |   25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index dd94667a623bd..2da8d6f3241a1 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -52,7 +52,7 @@
- #define SARADC2_START			BIT(4)
- #define SARADC2_SINGLE_MODE		BIT(5)
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -116,20 +116,19 @@ static __always_inline void reverse_cpui
+  */
+ static __always_inline u32 __feature_translate(int x86_feature)
+ {
+-	if (x86_feature == X86_FEATURE_SGX1)
+-		return KVM_X86_FEATURE_SGX1;
+-	else if (x86_feature == X86_FEATURE_SGX2)
+-		return KVM_X86_FEATURE_SGX2;
+-	else if (x86_feature == X86_FEATURE_SGX_EDECCSSA)
+-		return KVM_X86_FEATURE_SGX_EDECCSSA;
+-	else if (x86_feature == X86_FEATURE_CONSTANT_TSC)
+-		return KVM_X86_FEATURE_CONSTANT_TSC;
+-	else if (x86_feature == X86_FEATURE_PERFMON_V2)
+-		return KVM_X86_FEATURE_PERFMON_V2;
+-	else if (x86_feature == X86_FEATURE_RRSBA_CTRL)
+-		return KVM_X86_FEATURE_RRSBA_CTRL;
++#define KVM_X86_TRANSLATE_FEATURE(f)	\
++	case X86_FEATURE_##f: return KVM_X86_FEATURE_##f
  
--#define SARADC2_CONV_CHANNELS GENMASK(15, 0)
-+#define SARADC2_CONV_CHANNELS GENMASK(3, 0)
+-	return x86_feature;
++	switch (x86_feature) {
++	KVM_X86_TRANSLATE_FEATURE(SGX1);
++	KVM_X86_TRANSLATE_FEATURE(SGX2);
++	KVM_X86_TRANSLATE_FEATURE(SGX_EDECCSSA);
++	KVM_X86_TRANSLATE_FEATURE(CONSTANT_TSC);
++	KVM_X86_TRANSLATE_FEATURE(PERFMON_V2);
++	KVM_X86_TRANSLATE_FEATURE(RRSBA_CTRL);
++	default:
++		return x86_feature;
++	}
+ }
  
- struct rockchip_saradc;
- 
--- 
-2.43.0
-
+ static __always_inline u32 __feature_leaf(int x86_feature)
 
 
 
