@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332FC8940BF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EE38943CA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E13B8282503
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90360283A03
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE083613C;
-	Mon,  1 Apr 2024 16:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06ED487BC;
+	Mon,  1 Apr 2024 17:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q16toa6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H67jJtr4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C08F38F84;
-	Mon,  1 Apr 2024 16:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D79E482E4;
+	Mon,  1 Apr 2024 17:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989235; cv=none; b=bDaVFb23CONBwv5Vf/0J+F8lD/SS9uMQatYNXG+hIzyMQAP5OhjpEb6BRg7ChySuEc5AjjDrVCLya/kMkp07hTcOfhY/4HJDAQrWvaTqcr+BAaXG1+KBkGHzazi3mSX4VvLJ1e7qX0C4JCBIr252QX/9+B+KVssRFTSTHXyWoU4=
+	t=1711991284; cv=none; b=cwflQLzJrfa24nLJUPZA9BOgsvDd7CPtFiSiSNDezqcJyhw8j0+xwCnXENmLuWZ1v4HZ0joOkouoa5j8Pw0seO1deuNkHXpjzoH5DKuPUcqEMhrSGpyqIKENjJyDoWTciyxn9AJEc9u5k63caY+vXMvCyK3f6hARsArlJYG9eXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989235; c=relaxed/simple;
-	bh=Y+DhQ7+a9IzLQK1Z1PsEVFgG2tM1QyJ4M7sf1qUBAys=;
+	s=arc-20240116; t=1711991284; c=relaxed/simple;
+	bh=fv5C0MmlGQt6YNd50Yc9Vsec7WGjJBt2clK8qsKPjgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIwNhKO3a3jG8GFPqDFsQgTwFZLJJBQkmsfgcdzgAEkHIa0VjuxCvIXZeEWRSSizUHLnGv81g7Et+ltYLveN5hRJJhAjuOqbk18DjZS2Wjk1iIVOw4hOgMqStzVrHZWLLQQ3fYZR41Ll3oJDjAb6prGXmNo1/yzRSpD5XDgwnQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q16toa6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF7AC433C7;
-	Mon,  1 Apr 2024 16:33:54 +0000 (UTC)
+	 MIME-Version; b=JYTTYFuiRCafujyZEmlnhws9omo3Q/RkFNgBacLBf7bZy0Womki6PgayXF/lCBj5abYTnp9GXNJ7lI8j57fhOZwppoB8NkWYPRKBaVOA2J+h3/8znua98GHlFmv+gyHs9vT+R4YQRPsjCeMMLIug1Q9BXJDSqxmIuDZN1l9i7OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H67jJtr4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E370C433C7;
+	Mon,  1 Apr 2024 17:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989234;
-	bh=Y+DhQ7+a9IzLQK1Z1PsEVFgG2tM1QyJ4M7sf1qUBAys=;
+	s=korg; t=1711991283;
+	bh=fv5C0MmlGQt6YNd50Yc9Vsec7WGjJBt2clK8qsKPjgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q16toa6whIRx0lSxRThKhJHJYxo6u3PtJS4TR8IVG38m40YeoO4TgRDLCQRJvw1rj
-	 cOTjgmfVPGFUzobLGmiykAScdMY8EOFfClYmmuik+Qs1FJSuNcLxNRfUA8e/KsQGzS
-	 MvbC6KIL4h1qINpwvgKi4PxwH9XOEZQdEc86nNpQ=
+	b=H67jJtr4TYFdeyev4fBzP4yu6pB3crQ0Nz0IUdpkTFtG5igUGf4b+CPS63cZPGt6s
+	 qFB2J+X7vuqLf0gNeYxMNJPUkaMsur0KVh6CWg1dhrkF0FCccqAQNjWrzMBYI8TWR0
+	 8XfepYtV3EaGSIo6TwXNCdoZxMph6cFLs229W2u8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.7 422/432] x86/bugs: Fix the SRSO mitigation on Zen3/4
+	Romain Naour <romain.naour@skf.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 219/272] mmc: sdhci-omap: re-tuning is needed after a pm transition to support emmc HS200 mode
 Date: Mon,  1 Apr 2024 17:46:49 +0200
-Message-ID: <20240401152606.002408454@linuxfoundation.org>
+Message-ID: <20240401152537.773740448@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Romain Naour <romain.naour@skf.com>
 
-commit 4535e1a4174c4111d92c5a9a21e542d232e0fcaa upstream.
+commit f9e2a5b00a35f2c064dc679808bc8db5cc779ed6 upstream.
 
-The original version of the mitigation would patch in the calls to the
-untraining routines directly.  That is, the alternative() in UNTRAIN_RET
-will patch in the CALL to srso_alias_untrain_ret() directly.
+"PM runtime functions" was been added in sdhci-omap driver in commit
+f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions") along
+with "card power off and enable aggressive PM" in commit 3edf588e7fe0
+("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM").
 
-However, even if commit e7c25c441e9e ("x86/cpu: Cleanup the untrain
-mess") meant well in trying to clean up the situation, due to micro-
-architectural reasons, the untraining routine srso_alias_untrain_ret()
-must be the target of a CALL instruction and not of a JMP instruction as
-it is done now.
+Since then, the sdhci-omap driver doesn't work using mmc-hs200 mode
+due to the tuning values being lost during a pm transition.
 
-Reshuffle the alternative macros to accomplish that.
+As for the sdhci_am654 driver, request a new tuning sequence before
+suspend (sdhci_omap_runtime_suspend()), otherwise the device will
+trigger cache flush error:
 
-Fixes: e7c25c441e9e ("x86/cpu: Cleanup the untrain mess")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+  mmc1: cache flush error -110 (ETIMEDOUT)
+  mmc1: error -110 doing aggressive suspend
+
+followed by I/O errors produced by fdisk -l /dev/mmcblk1boot1:
+
+  I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
+  prio class 2
+  I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
+  prio class 2
+  I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
+  prio class 2
+  Buffer I/O error on dev mmcblk1boot1, logical block 8048, async page read
+  I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
+  prio class 2
+  Buffer I/O error on dev mmcblk1boot0, logical block 8048, async page read
+
+Don't re-tune if auto retuning is supported in HW (when SDHCI_TUNING_MODE_3
+is available).
+
+Link: https://lore.kernel.org/all/2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr
+Fixes: f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions")
+Signed-off-by: Romain Naour <romain.naour@skf.com>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240315234444.816978-1-romain.naour@smile.fr
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/asm-prototypes.h |    1 +
- arch/x86/include/asm/nospec-branch.h  |   21 ++++++++++++++++-----
- arch/x86/lib/retpoline.S              |   11 ++++++-----
- 3 files changed, 23 insertions(+), 10 deletions(-)
+ drivers/mmc/host/sdhci-omap.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/include/asm/asm-prototypes.h
-+++ b/arch/x86/include/asm/asm-prototypes.h
-@@ -13,6 +13,7 @@
- #include <asm/preempt.h>
- #include <asm/asm.h>
- #include <asm/gsseg.h>
-+#include <asm/nospec-branch.h>
+--- a/drivers/mmc/host/sdhci-omap.c
++++ b/drivers/mmc/host/sdhci-omap.c
+@@ -1442,6 +1442,9 @@ static int __maybe_unused sdhci_omap_run
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
  
- #ifndef CONFIG_X86_CMPXCHG64
- extern void cmpxchg8b_emu(void);
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -271,11 +271,20 @@
- .Lskip_rsb_\@:
- .endm
- 
-+/*
-+ * The CALL to srso_alias_untrain_ret() must be patched in directly at
-+ * the spot where untraining must be done, ie., srso_alias_untrain_ret()
-+ * must be the target of a CALL instruction instead of indirectly
-+ * jumping to a wrapper which then calls it. Therefore, this macro is
-+ * called outside of __UNTRAIN_RET below, for the time being, before the
-+ * kernel can support nested alternatives with arbitrary nesting.
-+ */
-+.macro CALL_UNTRAIN_RET
- #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO)
--#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
--#else
--#define CALL_UNTRAIN_RET	""
-+	ALTERNATIVE_2 "", "call entry_untrain_ret", X86_FEATURE_UNRET, \
-+		          "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
- #endif
-+.endm
- 
- /*
-  * Mitigate RETBleed for AMD/Hygon Zen uarch. Requires KERNEL CR3 because the
-@@ -291,8 +300,8 @@
- .macro __UNTRAIN_RET ibpb_feature, call_depth_insns
- #if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
- 	VALIDATE_UNRET_END
--	ALTERNATIVE_3 "",						\
--		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-+	CALL_UNTRAIN_RET
-+	ALTERNATIVE_2 "",						\
- 		      "call entry_ibpb", \ibpb_feature,			\
- 		     __stringify(\call_depth_insns), X86_FEATURE_CALL_DEPTH
- #endif
-@@ -351,6 +360,8 @@ extern void retbleed_return_thunk(void);
- static inline void retbleed_return_thunk(void) {}
- #endif
- 
-+extern void srso_alias_untrain_ret(void);
++	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
++		mmc_retune_needed(host->mmc);
 +
- #ifdef CONFIG_CPU_SRSO
- extern void srso_return_thunk(void);
- extern void srso_alias_return_thunk(void);
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -163,6 +163,7 @@ SYM_CODE_START_NOALIGN(srso_alias_untrai
- 	lfence
- 	jmp srso_alias_return_thunk
- SYM_FUNC_END(srso_alias_untrain_ret)
-+__EXPORT_THUNK(srso_alias_untrain_ret)
- 	.popsection
- 
- 	.pushsection .text..__x86.rethunk_safe
-@@ -224,10 +225,12 @@ SYM_CODE_START(srso_return_thunk)
- SYM_CODE_END(srso_return_thunk)
- 
- #define JMP_SRSO_UNTRAIN_RET "jmp srso_untrain_ret"
--#define JMP_SRSO_ALIAS_UNTRAIN_RET "jmp srso_alias_untrain_ret"
- #else /* !CONFIG_CPU_SRSO */
- #define JMP_SRSO_UNTRAIN_RET "ud2"
--#define JMP_SRSO_ALIAS_UNTRAIN_RET "ud2"
-+/* Dummy for the alternative in CALL_UNTRAIN_RET. */
-+SYM_CODE_START(srso_alias_untrain_ret)
-+	RET
-+SYM_FUNC_END(srso_alias_untrain_ret)
- #endif /* CONFIG_CPU_SRSO */
- 
- #ifdef CONFIG_CPU_UNRET_ENTRY
-@@ -319,9 +322,7 @@ SYM_FUNC_END(retbleed_untrain_ret)
- #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO)
- 
- SYM_FUNC_START(entry_untrain_ret)
--	ALTERNATIVE_2 JMP_RETBLEED_UNTRAIN_RET,				\
--		      JMP_SRSO_UNTRAIN_RET, X86_FEATURE_SRSO,		\
--		      JMP_SRSO_ALIAS_UNTRAIN_RET, X86_FEATURE_SRSO_ALIAS
-+	ALTERNATIVE JMP_RETBLEED_UNTRAIN_RET, JMP_SRSO_UNTRAIN_RET, X86_FEATURE_SRSO
- SYM_FUNC_END(entry_untrain_ret)
- __EXPORT_THUNK(entry_untrain_ret)
+ 	if (omap_host->con != -EINVAL)
+ 		sdhci_runtime_suspend_host(host);
  
 
 
