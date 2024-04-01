@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190FF893EC0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE244894054
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A64C1C2136A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8F41C2156D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BBC446AC;
-	Mon,  1 Apr 2024 16:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E10146B9F;
+	Mon,  1 Apr 2024 16:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZbZIVNu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYKma3jh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60539383BA;
-	Mon,  1 Apr 2024 16:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A11DC129;
+	Mon,  1 Apr 2024 16:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987647; cv=none; b=rIU3QufEaXU+jwQjL+G5Elu6/ayQQXJlqXDjMurL0pTzb0O9FPU5s0ke78lKxjtj40vR1wluI87HzRPPzfyNhfbXvj3ey52IX651BT0tyox96ULZbJH5yFC+r96fH7mbHEH4VhHP0PZjitQNQ6tpILrprmBvpA1TUugkhckSvcs=
+	t=1711988918; cv=none; b=EdQHatiRZf4yg247Kb38vurIwNTHiNUxnEI6QB7neBqCvgymHKxl0bok5FjDrFBynctnjfXnpmrr0N0KpTUbdnBfdkeqmr4n8sRCNvekInFJ+tDZztzu+63XbfQ8o4yl7RkO4dAYVdAYUsQnvaKXjpwA7NNzNnyp2DLUnDZVHaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987647; c=relaxed/simple;
-	bh=hZJX9EOFi5QHxuethHeWnkeyC2xRud4piLE6tcHiM1s=;
+	s=arc-20240116; t=1711988918; c=relaxed/simple;
+	bh=JQIZIxPQquaVzwh1RPJmLB2ZgLco//fp5qLLRJazhj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jaISLsB+5tPNOSl2yXJ/QlrS5k4kkuy6kqhBD3qpiLecFrLbEUTjNQCXj12Uf5A9vcn4l7OojxF9qgD/be8P9DdBbyc64h9KLVmarGD9LiHEGC7fZKMZuZI0+v7StqTWJHXF8ILgDH9NGzSZsPLHe8sY5fKckTlqG8utW/X1S7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZbZIVNu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 062FAC433C7;
-	Mon,  1 Apr 2024 16:07:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UnTGBdXNRh3VEdGfLBjifYiDJqtx7hMp6E/rcXWLjGAmcQFxpyYsL6L8R8tBSk3x8XbKkJj18Wg0eJkjojQz3OI3E7G4/cyTGIaGW+y/9x814E1hyBXdo5URQ7oB253EsFQnVSI0zOawhumULWRWZWTDacsAHEpWEyOtfoDBg8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYKma3jh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D5CC433F1;
+	Mon,  1 Apr 2024 16:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987647;
-	bh=hZJX9EOFi5QHxuethHeWnkeyC2xRud4piLE6tcHiM1s=;
+	s=korg; t=1711988917;
+	bh=JQIZIxPQquaVzwh1RPJmLB2ZgLco//fp5qLLRJazhj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZbZIVNuA3N8opjkQsNfDBlfLkpO5xRWTzGq9dfb8UKZJbJPkGO+qr66Ai+PiTTXd
-	 lKuMmIySRZSgPwecvZfLqWWMjX2YZY6Pg5dDbQlt/OqKAWUvJGVIwDhb9x67jeX2Qn
-	 7R0HQGul/hFHtfH2g/KCUF63Op6+LQFH0ElBFIIw=
+	b=eYKma3jhVitYoT5/Z643+I/g6ojI3Q7pR8Ggx6DTMdtvkKJ+X5muCQpIh+8h1A+bj
+	 jadmRD6Ld/DAP07HBnz332d4CoHm2qWopzsrzRoaCVJMyWLTl7vm7+an3HZz8XfFpE
+	 w8U2bvx8rW23vOhwmiqlEB9TjWonomHhglrK8eHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 6.8 349/399] ALSA: sh: aica: reorder cleanup operations to avoid UAF bugs
+	Imre Deak <imre.deak@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Subject: [PATCH 6.7 328/432] drm/i915: Try to preserve the current shared_dpll for fastset on type-c ports
 Date: Mon,  1 Apr 2024 17:45:15 +0200
-Message-ID: <20240401152559.592870415@linuxfoundation.org>
+Message-ID: <20240401152602.997130203@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,102 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 051e0840ffa8ab25554d6b14b62c9ab9e4901457 upstream.
+commit ba407525f8247ee4c270369f3371b9994c27bfda upstream.
 
-The dreamcastcard->timer could schedule the spu_dma_work and the
-spu_dma_work could also arm the dreamcastcard->timer.
+Currently icl_compute_tc_phy_dplls() assumes that the active
+PLL will be the TC PLL (as opposed to the TBT PLL). The actual
+PLL will be selected during the modeset enable sequence, but
+we need to put *something* into the crtc_state->shared_dpll
+already during compute_config().
 
-When the snd_pcm_substream is closing, the aica_channel will be
-deallocated. But it could still be dereferenced in the worker
-thread. The reason is that del_timer() will return directly
-regardless of whether the timer handler is running or not and
-the worker could be rescheduled in the timer handler. As a result,
-the UAF bug will happen. The racy situation is shown below:
+The downside of assuming one PLL or the other is that we'll
+fail to fastset if the assumption doesn't match what was in
+use previously. So let's instead keep the same PLL that was
+in use previously (assuming there was one). This should allow
+fastset to work again when using TBT PLL, at least in the
+steady state.
 
-      (Thread 1)                 |      (Thread 2)
-snd_aicapcm_pcm_close()          |
- ...                             |  run_spu_dma() //worker
-                                 |    mod_timer()
-  flush_work()                   |
-  del_timer()                    |  aica_period_elapsed() //timer
-  kfree(dreamcastcard->channel)  |    schedule_work()
-                                 |  run_spu_dma() //worker
-  ...                            |    dreamcastcard->channel-> //USE
+Now, assuming we want keep the same PLL may not be entirely
+correct either. But we should be covered by the type-c link
+reset handling which will force a full modeset by flagging
+connectors_changed=true which means the resulting modeset
+can't be converted into a fastset even if the full crtc state
+looks identical.
 
-In order to mitigate this bug and other possible corner cases,
-call mod_timer() conditionally in run_spu_dma(), then implement
-PCM sync_stop op to cancel both the timer and worker. The sync_stop
-op will be called from PCM core appropriately when needed.
-
-Fixes: 198de43d758c ("[ALSA] Add ALSA support for the SEGA Dreamcast PCM device")
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Message-ID: <20240326094238.95442-1-duoming@zju.edu.cn>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240118142436.25928-1-ville.syrjala@linux.intel.com
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/sh/aica.c |   17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/sound/sh/aica.c
-+++ b/sound/sh/aica.c
-@@ -278,7 +278,8 @@ static void run_spu_dma(struct work_stru
- 		dreamcastcard->clicks++;
- 		if (unlikely(dreamcastcard->clicks >= AICA_PERIOD_NUMBER))
- 			dreamcastcard->clicks %= AICA_PERIOD_NUMBER;
--		mod_timer(&dreamcastcard->timer, jiffies + 1);
-+		if (snd_pcm_running(dreamcastcard->substream))
-+			mod_timer(&dreamcastcard->timer, jiffies + 1);
- 	}
- }
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -3288,6 +3288,8 @@ static int icl_compute_tc_phy_dplls(stru
+ 	struct drm_i915_private *i915 = to_i915(state->base.dev);
+ 	struct intel_crtc_state *crtc_state =
+ 		intel_atomic_get_new_crtc_state(state, crtc);
++	const struct intel_crtc_state *old_crtc_state =
++		intel_atomic_get_old_crtc_state(state, crtc);
+ 	struct icl_port_dpll *port_dpll =
+ 		&crtc_state->icl_port_dplls[ICL_PORT_DPLL_DEFAULT];
+ 	struct skl_wrpll_params pll_params = {};
+@@ -3306,7 +3308,11 @@ static int icl_compute_tc_phy_dplls(stru
+ 		return ret;
  
-@@ -290,6 +291,8 @@ static void aica_period_elapsed(struct t
- 	/*timer function - so cannot sleep */
- 	int play_period;
- 	struct snd_pcm_runtime *runtime;
-+	if (!snd_pcm_running(substream))
-+		return;
- 	runtime = substream->runtime;
- 	dreamcastcard = substream->pcm->private_data;
- 	/* Have we played out an additional period? */
-@@ -350,12 +353,19 @@ static int snd_aicapcm_pcm_open(struct s
- 	return 0;
- }
+ 	/* this is mainly for the fastset check */
+-	icl_set_active_port_dpll(crtc_state, ICL_PORT_DPLL_MG_PHY);
++	if (old_crtc_state->shared_dpll &&
++	    old_crtc_state->shared_dpll->info->id == DPLL_ID_ICL_TBTPLL)
++		icl_set_active_port_dpll(crtc_state, ICL_PORT_DPLL_DEFAULT);
++	else
++		icl_set_active_port_dpll(crtc_state, ICL_PORT_DPLL_MG_PHY);
  
-+static int snd_aicapcm_pcm_sync_stop(struct snd_pcm_substream *substream)
-+{
-+	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
-+
-+	del_timer_sync(&dreamcastcard->timer);
-+	cancel_work_sync(&dreamcastcard->spu_dma_work);
-+	return 0;
-+}
-+
- static int snd_aicapcm_pcm_close(struct snd_pcm_substream
- 				 *substream)
- {
- 	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
--	flush_work(&(dreamcastcard->spu_dma_work));
--	del_timer(&dreamcastcard->timer);
- 	dreamcastcard->substream = NULL;
- 	kfree(dreamcastcard->channel);
- 	spu_disable();
-@@ -401,6 +411,7 @@ static const struct snd_pcm_ops snd_aica
- 	.prepare = snd_aicapcm_pcm_prepare,
- 	.trigger = snd_aicapcm_pcm_trigger,
- 	.pointer = snd_aicapcm_pcm_pointer,
-+	.sync_stop = snd_aicapcm_pcm_sync_stop,
- };
- 
- /* TO DO: set up to handle more than one pcm instance */
+ 	crtc_state->port_clock = icl_ddi_mg_pll_get_freq(i915, NULL,
+ 							 &port_dpll->hw_state);
 
 
 
