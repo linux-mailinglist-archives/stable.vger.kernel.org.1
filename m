@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-35196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4858942DA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293168941AE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5629F28376E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE3F2B229FD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E134653C;
-	Mon,  1 Apr 2024 16:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D09481D5;
+	Mon,  1 Apr 2024 16:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sXqJekMw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwO8zHzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F292EB0B;
-	Mon,  1 Apr 2024 16:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FA24654F;
+	Mon,  1 Apr 2024 16:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990611; cv=none; b=TPV0ZkfhFN4ARKoCwpq4VmA7gdmMkC05uoQUJcHvuXvDjLubqv6C3NyCO9S6IgHGyOgFGJ7TaNiK48QUz1Srp+4YInDTMFXhmBZIE26T3Wi7Iyst4RCVDkKPVxoz8mrUAMLnA+aPOHTyeXl/AkAfFZzT++a1dbhg6/MB4KINutM=
+	t=1711989883; cv=none; b=M0lB1QsDbR58uCq/M6nxwdT9OM1ErPwrkzjRgDErTK50dInXmrPJkSFqKnAx3B65hYAndz62LrelaIGnKrAsVsqOHUrVgEiGMF6EespHxxVGBej1bgC6Dh3MheJeL6cRZ5pQSF/KmKw3uqX23Ro9j3gtpUgMmOZ6RQ8dipp7WP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990611; c=relaxed/simple;
-	bh=xTIjC541EgTtDHOGNGOTDEuMJ/rQuZaYHE6LsQKy4lk=;
+	s=arc-20240116; t=1711989883; c=relaxed/simple;
+	bh=jsCMF4SiWQ4U0SGd1Pzw2jLhQ7RWMM03BbYokbEUQn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvi6oJlZWrixvXNOKMh0cuWbAMrrTNrcPnR9SIA7oSr1BdkEQt14zpS9jbwvuQCAYP7QuZeCqVhU5hCAxZ42ify1y5r3wYctQXjCnsx00vJSoUW5/aVHQwjpv/dxZdPQw7HQcVhGym3nvuV83Ql9BPnToR4y5B590tIlcbEzJiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sXqJekMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D22C433C7;
-	Mon,  1 Apr 2024 16:56:50 +0000 (UTC)
+	 MIME-Version; b=o8Kzd3jJB+xa6+iUDVFxRi7TYvq2Dabt74ZUYqszRxP8QA9faok7iFv2/R3zRorIpBsi3is3/WDKNbheaUfj1xO5qVY3YS/Ql5X37OqfTBS8Ake7pQcV06jg2aC5zXOhgre/ge7NNcdaPbNogWg2gCZCDrh38yDJg2CRxJi3NIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwO8zHzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F68C43390;
+	Mon,  1 Apr 2024 16:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990611;
-	bh=xTIjC541EgTtDHOGNGOTDEuMJ/rQuZaYHE6LsQKy4lk=;
+	s=korg; t=1711989883;
+	bh=jsCMF4SiWQ4U0SGd1Pzw2jLhQ7RWMM03BbYokbEUQn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sXqJekMwa5ViIMSxN49dT0mEQobtvRQwru/qadm1YUzOYDejPgb8gaRGidYhHglvm
-	 QXkXNO8is4DxjibxULbMzY/Zo447xFQatWuZ9s4bM32JVXT8JshQrYuXV6S+zZPgtd
-	 OU+Ebke7em41IOYmqliDFPwSgV8UvptfWDeluRpM=
+	b=FwO8zHzh3op8S42Vlt1wHeLzOzZRI8R1YZiPzogzwO/PMwEMW9klqPOHLz2LZNOs4
+	 6nqWHKi2XmQQbCfYf/oAC6ADlV0Ak38llqDy4piUP489iFzqmrtQQeIY+rF1ua54DZ
+	 LEUdwfsnZ1PPZhqnJdVC5uZ4XW+DABTqApvjDULw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/272] remoteproc: virtio: Fix wdg cannot recovery remote processor
+Subject: [PATCH 6.6 153/396] f2fs: truncate page cache before clearing flags when aborting atomic write
 Date: Mon,  1 Apr 2024 17:43:22 +0200
-Message-ID: <20240401152530.678005556@linuxfoundation.org>
+Message-ID: <20240401152552.507208851@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Zhang <joakim.zhang@cixtech.com>
+From: Sunmin Jeong <s_min.jeong@samsung.com>
 
-[ Upstream commit b327c72753d6a78de37aed6c35756f2ef62897ee ]
+[ Upstream commit 74b0ebcbdde4c7fe23c979e4cfc2fdbf349c39a3 ]
 
-Recovery remote processor failed when wdg irq received:
-[    0.842574] remoteproc remoteproc0: crash detected in cix-dsp-rproc: type watchdog
-[    0.842750] remoteproc remoteproc0: handling crash #1 in cix-dsp-rproc
-[    0.842824] remoteproc remoteproc0: recovering cix-dsp-rproc
-[    0.843342] remoteproc remoteproc0: stopped remote processor cix-dsp-rproc
-[    0.847901] rproc-virtio rproc-virtio.0.auto: Failed to associate buffer
-[    0.847979] remoteproc remoteproc0: failed to probe subdevices for cix-dsp-rproc: -16
+In f2fs_do_write_data_page, FI_ATOMIC_FILE flag selects the target inode
+between the original inode and COW inode. When aborting atomic write and
+writeback occur simultaneously, invalid data can be written to original
+inode if the FI_ATOMIC_FILE flag is cleared meanwhile.
 
-The reason is that dma coherent mem would not be released when
-recovering the remote processor, due to rproc_virtio_remove()
-would not be called, where the mem released. It will fail when
-it try to allocate and associate buffer again.
+To prevent the problem, let's truncate all pages before clearing the flag
 
-Releasing reserved memory from rproc_virtio_dev_release(), instead of
-rproc_virtio_remove().
+Atomic write thread              Writeback thread
+  f2fs_abort_atomic_write
+    clear_inode_flag(inode, FI_ATOMIC_FILE)
+                                  __writeback_single_inode
+                                    do_writepages
+                                      f2fs_do_write_data_page
+                                        - use dn of original inode
+    truncate_inode_pages_final
 
-Fixes: 1d7b61c06dc3 ("remoteproc: virtio: Create platform device for the remoteproc_virtio")
-Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Acked-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231217053659.3245745-1-joakim.zhang@cixtech.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
+Cc: stable@vger.kernel.org #v5.19+
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/remoteproc_virtio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/f2fs/segment.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
-index 0e95525c11581..ab5e4f02ab225 100644
---- a/drivers/remoteproc/remoteproc_virtio.c
-+++ b/drivers/remoteproc/remoteproc_virtio.c
-@@ -351,6 +351,9 @@ static void rproc_virtio_dev_release(struct device *dev)
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 0edd9feff6185..4549964819731 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -192,6 +192,9 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
+ 	if (!f2fs_is_atomic_file(inode))
+ 		return;
  
- 	kfree(vdev);
- 
-+	of_reserved_mem_device_release(&rvdev->pdev->dev);
-+	dma_release_coherent_memory(&rvdev->pdev->dev);
++	if (clean)
++		truncate_inode_pages_final(inode->i_mapping);
 +
- 	put_device(&rvdev->pdev->dev);
- }
+ 	release_atomic_write_cnt(inode);
+ 	clear_inode_flag(inode, FI_ATOMIC_COMMITTED);
+ 	clear_inode_flag(inode, FI_ATOMIC_REPLACE);
+@@ -201,7 +204,6 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
+ 	F2FS_I(inode)->atomic_write_task = NULL;
  
-@@ -584,9 +587,6 @@ static int rproc_virtio_remove(struct platform_device *pdev)
- 	rproc_remove_subdev(rproc, &rvdev->subdev);
- 	rproc_remove_rvdev(rvdev);
- 
--	of_reserved_mem_device_release(&pdev->dev);
--	dma_release_coherent_memory(&pdev->dev);
--
- 	put_device(&rproc->dev);
- 
- 	return 0;
+ 	if (clean) {
+-		truncate_inode_pages_final(inode->i_mapping);
+ 		f2fs_i_size_write(inode, fi->original_i_size);
+ 		fi->original_i_size = 0;
+ 	}
 -- 
 2.43.0
 
