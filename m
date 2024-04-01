@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508E28942DB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3AE8941AD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82C841C21E6E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA259283161
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF8B433DA;
-	Mon,  1 Apr 2024 16:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650F448CE0;
+	Mon,  1 Apr 2024 16:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij0MUsbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KVxCq1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E96CBA3F;
-	Mon,  1 Apr 2024 16:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F69F3F8F4;
+	Mon,  1 Apr 2024 16:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990615; cv=none; b=moFjt/QSW1UWztWXrrRlQErvKExHrvkC/U6wKc1ZEWeT6lNyi1vrHNrNXdRTiupSKqe+v3QQtodg2baYDD3pOud8pTEInUQ32DRxueB6ck0sG2n7xqC+BS3A8xeENtgA0KKebVWXUPycniVvQAwP1UU7qjhBbWa1VfwjKzrMw5k=
+	t=1711989887; cv=none; b=IfLi3hWg7j4AKBDu8xrECVoCjVh6SnCPfVV/GwcX1fqkJhmKPJJUV5FszHmU7Biu1gziJ7K+7jXJDfiN/dxGFlKjUbD6O/BQmBvSMIvrLRdT2LThaWKqdAfCKOYFTSXfBaA8jdN+IsE8OXyKq9OoUgwygUzaTdepFYAR0OBYLak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990615; c=relaxed/simple;
-	bh=mFiUKKuzTgirS1twEx1T5Li7uA1DVqAYf/1KAmklCgI=;
+	s=arc-20240116; t=1711989887; c=relaxed/simple;
+	bh=p2Sfy1lI26AY5SfS46L3a22k6rc9LKF6f/OyP0BrEws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onlblgE61aYUkH+bMDkG1qdqXSA3FcrPl3hs/mcPSBAZBWcqbTAfbdpWu9XsrL1Q2E/98IQR5U5yWbjUXcrUIlHVqOse9jUG2wa62qytjTa0G0QMMgrxGYV7ksJezVRRk/tOUtB1POKonLgq9xlcYMSeTp5PgTCnD8+7H0Bsyng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij0MUsbx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653D4C433F1;
-	Mon,  1 Apr 2024 16:56:54 +0000 (UTC)
+	 MIME-Version; b=uDV9+pDDpm+BglE30XUm+8XUBA0tT7sPR1SbJ6DuMRRgD/3p4Ik1L5zQayLellXcst56GpeZQklVgIPi7Ai2Vr1CTVJpeX7FLFNE/PwFSuzvBmGYc2Pw54DEQLCq79Zvmxl9G+O2TbJVjciORspM7M2JTqfOxtdN5jE6i5q7iGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KVxCq1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84979C433C7;
+	Mon,  1 Apr 2024 16:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990614;
-	bh=mFiUKKuzTgirS1twEx1T5Li7uA1DVqAYf/1KAmklCgI=;
+	s=korg; t=1711989887;
+	bh=p2Sfy1lI26AY5SfS46L3a22k6rc9LKF6f/OyP0BrEws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ij0MUsbx+eYhUXSo/l1snIeNfPqZ3AGmCb4WN2S9m5FTDArFK/nGRoD8d9q8rwpzD
-	 uqbFvgVi8dxACT8kRqC7DYoHz1/ceVrSub8soh+ifI7B4HNkAAONCGaVuqMVu//NA8
-	 8tF8G17SJuOvWLrKZOizDu0ubQdkMYKFlmn0kAMc=
+	b=2KVxCq1FA1pXdt/GRzgyWPtCoAehlg41ukGPLCatRA4ZjWRJCmQPrzpB79fOlF1yt
+	 tXXoOBMEY/f7WDzLT+7ipelDXFPf9rQgqCCrJFK5NJn3D6qk0ZZhyYQzE+2CzlSuSU
+	 KLwqfAtd3L/7ecNoh1SEv/dp979caK73okzcWIfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Amit Pundir <amit.pundir@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+cfed5b56649bddf80d6e@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/272] clk: qcom: gcc-sdm845: Add soft dependency on rpmhpd
+Subject: [PATCH 6.6 154/396] nilfs2: fix failure to detect DAT corruption in btree and direct mappings
 Date: Mon,  1 Apr 2024 17:43:23 +0200
-Message-ID: <20240401152530.708616041@linuxfoundation.org>
+Message-ID: <20240401152552.537041342@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Pundir <amit.pundir@linaro.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 1d9054e3a4fd36e2949e616f7360bdb81bcc1921 ]
+[ Upstream commit f2f26b4a84a0ef41791bd2d70861c8eac748f4ba ]
 
-With the addition of RPMh power domain to the GCC node in
-device tree, we noticed a significant delay in getting the
-UFS driver probed on AOSP which futher led to mount failures
-because Android do not support rootwait. So adding a soft
-dependency on RPMh power domain which informs modprobe to
-load rpmhpd module before gcc-sdm845.
+Patch series "nilfs2: fix kernel bug at submit_bh_wbc()".
 
-Cc: stable@vger.kernel.org # v5.4+
-Fixes: 4b6ea15c0a11 ("arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC")
-Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240123062814.2555649-1-amit.pundir@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This resolves a kernel BUG reported by syzbot.  Since there are two
+flaws involved, I've made each one a separate patch.
+
+The first patch alone resolves the syzbot-reported bug, but I think
+both fixes should be sent to stable, so I've tagged them as such.
+
+This patch (of 2):
+
+Syzbot has reported a kernel bug in submit_bh_wbc() when writing file data
+to a nilfs2 file system whose metadata is corrupted.
+
+There are two flaws involved in this issue.
+
+The first flaw is that when nilfs_get_block() locates a data block using
+btree or direct mapping, if the disk address translation routine
+nilfs_dat_translate() fails with internal code -ENOENT due to DAT metadata
+corruption, it can be passed back to nilfs_get_block().  This causes
+nilfs_get_block() to misidentify an existing block as non-existent,
+causing both data block lookup and insertion to fail inconsistently.
+
+The second flaw is that nilfs_get_block() returns a successful status in
+this inconsistent state.  This causes the caller __block_write_begin_int()
+or others to request a read even though the buffer is not mapped,
+resulting in a BUG_ON check for the BH_Mapped flag in submit_bh_wbc()
+failing.
+
+This fixes the first issue by changing the return value to code -EINVAL
+when a conversion using DAT fails with code -ENOENT, avoiding the
+conflicting condition that leads to the kernel bug described above.  Here,
+code -EINVAL indicates that metadata corruption was detected during the
+block lookup, which will be properly handled as a file system error and
+converted to -EIO when passing through the nilfs2 bmap layer.
+
+Link: https://lkml.kernel.org/r/20240313105827.5296-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240313105827.5296-2-konishi.ryusuke@gmail.com
+Fixes: c3a7abf06ce7 ("nilfs2: support contiguous lookup of blocks")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+cfed5b56649bddf80d6e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cfed5b56649bddf80d6e
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sdm845.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nilfs2/btree.c  | 9 +++++++--
+ fs/nilfs2/direct.c | 9 +++++++--
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
-index 6af08e0ca8475..ef15e8f114027 100644
---- a/drivers/clk/qcom/gcc-sdm845.c
-+++ b/drivers/clk/qcom/gcc-sdm845.c
-@@ -4038,3 +4038,4 @@ module_exit(gcc_sdm845_exit);
- MODULE_DESCRIPTION("QTI GCC SDM845 Driver");
- MODULE_LICENSE("GPL v2");
- MODULE_ALIAS("platform:gcc-sdm845");
-+MODULE_SOFTDEP("pre: rpmhpd");
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 13592e82eaf68..65659fa0372e6 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -724,7 +724,7 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
+ 		dat = nilfs_bmap_get_dat(btree);
+ 		ret = nilfs_dat_translate(dat, ptr, &blocknr);
+ 		if (ret < 0)
+-			goto out;
++			goto dat_error;
+ 		ptr = blocknr;
+ 	}
+ 	cnt = 1;
+@@ -743,7 +743,7 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
+ 			if (dat) {
+ 				ret = nilfs_dat_translate(dat, ptr2, &blocknr);
+ 				if (ret < 0)
+-					goto out;
++					goto dat_error;
+ 				ptr2 = blocknr;
+ 			}
+ 			if (ptr2 != ptr + cnt || ++cnt == maxblocks)
+@@ -781,6 +781,11 @@ static int nilfs_btree_lookup_contig(const struct nilfs_bmap *btree,
+  out:
+ 	nilfs_btree_free_path(path);
+ 	return ret;
++
++ dat_error:
++	if (ret == -ENOENT)
++		ret = -EINVAL;  /* Notify bmap layer of metadata corruption */
++	goto out;
+ }
+ 
+ static void nilfs_btree_promote_key(struct nilfs_bmap *btree,
+diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
+index 4c85914f2abc3..893ab36824cc2 100644
+--- a/fs/nilfs2/direct.c
++++ b/fs/nilfs2/direct.c
+@@ -66,7 +66,7 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
+ 		dat = nilfs_bmap_get_dat(direct);
+ 		ret = nilfs_dat_translate(dat, ptr, &blocknr);
+ 		if (ret < 0)
+-			return ret;
++			goto dat_error;
+ 		ptr = blocknr;
+ 	}
+ 
+@@ -79,7 +79,7 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
+ 		if (dat) {
+ 			ret = nilfs_dat_translate(dat, ptr2, &blocknr);
+ 			if (ret < 0)
+-				return ret;
++				goto dat_error;
+ 			ptr2 = blocknr;
+ 		}
+ 		if (ptr2 != ptr + cnt)
+@@ -87,6 +87,11 @@ static int nilfs_direct_lookup_contig(const struct nilfs_bmap *direct,
+ 	}
+ 	*ptrp = ptr;
+ 	return cnt;
++
++ dat_error:
++	if (ret == -ENOENT)
++		ret = -EINVAL;  /* Notify bmap layer of metadata corruption */
++	return ret;
+ }
+ 
+ static __u64
 -- 
 2.43.0
 
