@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-35409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81A28943D0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8E78942AD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84D56283968
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE57F1F263A6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38234482DF;
-	Mon,  1 Apr 2024 17:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42297433DA;
+	Mon,  1 Apr 2024 16:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJxmPCNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmcfyq7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E976840876;
-	Mon,  1 Apr 2024 17:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E3963E;
+	Mon,  1 Apr 2024 16:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991304; cv=none; b=bbQv7uEuAFwiVZgHonMwrI+kXErhDn0zmP/r+y5fIFS1v+1l7fzEcWb0GdZx9VvzZMvgOhuhTPBK6yo9iW3dI3G7FUWCgy/6n6uA6IyciiGe2+8iAl/FPsL32xhxMjzZ9UFFGbu7DRMTFqBo4UrnxrnWbTv2XXClMDDs9w0vw4A=
+	t=1711990502; cv=none; b=mTT0WACPtPvIs49CBT28tfbBonSYWfGYi7UFfUzmTgUEFkVQRsuJDAqa2dGGl79YYPLUVwc1jL0kfnTMLuMKgYS5Wp8BGhA18arw2p+kXSog5Febg7rukYP8mvFN6YW8eFV/x+Jnjqzn0iHRrYX3gdIxzetjNIywGGAwaoUj7vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991304; c=relaxed/simple;
-	bh=wE995doWIxzIowIf05Z7VrI/hrgMU8qsfEkijAckbeU=;
+	s=arc-20240116; t=1711990502; c=relaxed/simple;
+	bh=Yus/QkRM4ZkDhz1OVUOnakFXZAASW5hFNz4huozV+gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BK8+LodeWy3HH7/KJXNF5u/WU5lgO7tMgkHygbuZD81aOt0VlPFaZ5JXvvYmoqHJGfwey2Ga68rmy1B5fhuyBscIz6DaieVN7v7Eahe9I04VjJTITbFYYNeG7OUm0OrQfvgDVVs6Z5ZhnoMZQnDxTNVDV/ximBXqjAudRT/zgFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJxmPCNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72475C433F1;
-	Mon,  1 Apr 2024 17:08:23 +0000 (UTC)
+	 MIME-Version; b=hJJspwVwKd4QX6IBY1IffUuZ7qtEcO6lh2QiejVahhSqI75m2KQWrN3UXN40vX0lBY5S4/FBvYxdk6461vBJEXEZDqF1iNYcWwlLG+/wChxsF80LMX8EmEA4R/mURk22gD5IYWBsWDomtajUOEXE/l0FNMdM3urcwrbYry5gEys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmcfyq7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B583C43390;
+	Mon,  1 Apr 2024 16:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991303;
-	bh=wE995doWIxzIowIf05Z7VrI/hrgMU8qsfEkijAckbeU=;
+	s=korg; t=1711990501;
+	bh=Yus/QkRM4ZkDhz1OVUOnakFXZAASW5hFNz4huozV+gA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJxmPCNTvg/Un3Us/fgInUjo3JVGiP9iAEjbv/OpLHAdBTBoVUhofeXBxAcxlCJja
-	 s+O2121RiXWvT4YAEBulRmRwFY2zmXfYoLv2GZ/artLw+NRx0mvPVRhJv5Qjs9AV68
-	 gdt1N9i1vBKKVzxWqcSq2OWciFKCM009iSf6c9uE=
+	b=nmcfyq7bm7TiEkwzAritk6ljXX4sIRSiVB6I46QgcrLDJMi2mGxx1wtDt55tim7FC
+	 3KV+PGmT2iWyAUht6CEmwJEySC+gIpxwcKIYnfm79FQtoXbqwipJX/8ajTG7FYztTw
+	 O/2uJ4HIu13cL6ibgGXAmHBC7EzepDWBVogq2aq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claus Hansen Ries <chr@terma.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 225/272] net: ll_temac: platform_get_resource replaced by wrong function
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 6.6 366/396] usb: dwc2: host: Fix remote wakeup from hibernation
 Date: Mon,  1 Apr 2024 17:46:55 +0200
-Message-ID: <20240401152537.979691389@linuxfoundation.org>
+Message-ID: <20240401152558.829436163@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claus Hansen Ries <chr@terma.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit 3a38a829c8bc27d78552c28e582eb1d885d07d11 upstream.
+commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
 
-The function platform_get_resource was replaced with
-devm_platform_ioremap_resource_byname and is called using 0 as name.
+Starting from core v4.30a changed order of programming
+GPWRDN_PMUACTV to 0 in case of exit from hibernation on
+remote wakeup signaling from device.
 
-This eventually ends up in platform_get_resource_byname in the call
-stack, where it causes a null pointer in strcmp.
-
-	if (type == resource_type(r) && !strcmp(r->name, name))
-
-It should have been replaced with devm_platform_ioremap_resource.
-
-Fixes: bd69058f50d5 ("net: ll_temac: Use devm_platform_ioremap_resource_byname()")
-Signed-off-by: Claus Hansen Ries <chr@terma.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/cca18f9c630a41c18487729770b492bb@terma.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/ll_temac_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc2/core.h |    1 +
+ drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1445,7 +1445,7 @@ static int temac_probe(struct platform_d
- 	}
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -1086,6 +1086,7 @@ struct dwc2_hsotg {
+ 	bool needs_byte_swap;
  
- 	/* map device registers */
--	lp->regs = devm_platform_ioremap_resource_byname(pdev, 0);
-+	lp->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(lp->regs)) {
- 		dev_err(&pdev->dev, "could not map TEMAC registers\n");
- 		return -ENOMEM;
+ 	/* DWC OTG HW Release versions */
++#define DWC2_CORE_REV_4_30a	0x4f54430a
+ #define DWC2_CORE_REV_2_71a	0x4f54271a
+ #define DWC2_CORE_REV_2_72a     0x4f54272a
+ #define DWC2_CORE_REV_2_80a	0x4f54280a
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5610,10 +5610,12 @@ int dwc2_host_exit_hibernation(struct dw
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
+ 
+ 	/* De-assert Wakeup Logic */
+-	gpwrdn = dwc2_readl(hsotg, GPWRDN);
+-	gpwrdn &= ~GPWRDN_PMUACTV;
+-	dwc2_writel(hsotg, gpwrdn, GPWRDN);
+-	udelay(10);
++	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++		gpwrdn = dwc2_readl(hsotg, GPWRDN);
++		gpwrdn &= ~GPWRDN_PMUACTV;
++		dwc2_writel(hsotg, gpwrdn, GPWRDN);
++		udelay(10);
++	}
+ 
+ 	hprt0 = hr->hprt0;
+ 	hprt0 |= HPRT0_PWR;
+@@ -5638,6 +5640,13 @@ int dwc2_host_exit_hibernation(struct dw
+ 		hprt0 |= HPRT0_RES;
+ 		dwc2_writel(hsotg, hprt0, HPRT0);
+ 
++		/* De-assert Wakeup Logic */
++		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++			gpwrdn = dwc2_readl(hsotg, GPWRDN);
++			gpwrdn &= ~GPWRDN_PMUACTV;
++			dwc2_writel(hsotg, gpwrdn, GPWRDN);
++			udelay(10);
++		}
+ 		/* Wait for Resume time and then program HPRT again */
+ 		mdelay(100);
+ 		hprt0 &= ~HPRT0_RES;
 
 
 
