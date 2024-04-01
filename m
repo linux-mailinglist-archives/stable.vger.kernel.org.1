@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-34325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B21893EDD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0C489439E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0EE728341B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7580F2838CC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40384446AC;
-	Mon,  1 Apr 2024 16:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D30482DF;
+	Mon,  1 Apr 2024 17:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1mdZ2ql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTlrrVj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04D01CA8F;
-	Mon,  1 Apr 2024 16:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92C31DFF4;
+	Mon,  1 Apr 2024 17:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987740; cv=none; b=I5AlXa/6jFC45HoX3tqRpJiFsXtieZjGA2l1wt5bUdxaLIXm4kxUUs3LaQd3UUYW2UCe6sUZbxN5/teBWsE3roT68gSrORKdb7UYtuJyaJyfXZtaJ6eNlAYG3UaebdUo2Hif5U6bOX/jjra6k4J4Cx2heN7Ya+iKmOe086ZwC7A=
+	t=1711991161; cv=none; b=sSBjFWOHcimzAgyxF54QGT5aiqJea7d+HwCgDpMNQYmGw2//0nc5RJEr5E5vIdNCUodlN4++SSrHwi03h+m1jXqkjixnVUge287mBdlmMmoQ3Zs8oIROg3eXEi/8+p/U/KA6A28m9AHLKGLsT9ICL2ZLlDpihuWlzFCrGYZcKsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987740; c=relaxed/simple;
-	bh=Sz0Kend4wYD2kKjq7dBH/CW7GGxtZMrbW9Gylyp8DoA=;
+	s=arc-20240116; t=1711991161; c=relaxed/simple;
+	bh=bwOhjQD9ZNQ7VZxttmMEnNxCgw0A4tRP+N4Ci++CAP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbRzkhA1p1cvh7mtCOnspkqFtElafk0JlTXay7ZUFhjNOnQ9G4yicT3ezFlQCcPA7FJLwiY3f95el7diby8Ojd5aNHXD01gLhtGvKbUP4AYio6xY5ig0EnPvonGmSJ/CelLo93u2Y+mr1xs3asv5f+HxDts6w4sGlAHjQAQ58Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1mdZ2ql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6571FC433C7;
-	Mon,  1 Apr 2024 16:08:59 +0000 (UTC)
+	 MIME-Version; b=aEuPJNlKFuIZVDtOVqNh2klaRqujDk/p+85Pv7JRNlbw48QooXYThwVXIg+Bm0/TCzOhNDeQ4Rh4FGRBYanw4Jv7olXjQVUz7Bcw67aehq80iAz7hApOE6x7TdrZfGFyIfTednIKnJL3aoZU8Vz0+JlojsFv34zNP25+wCBYnoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTlrrVj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E170C433F1;
+	Mon,  1 Apr 2024 17:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987739;
-	bh=Sz0Kend4wYD2kKjq7dBH/CW7GGxtZMrbW9Gylyp8DoA=;
+	s=korg; t=1711991161;
+	bh=bwOhjQD9ZNQ7VZxttmMEnNxCgw0A4tRP+N4Ci++CAP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1mdZ2qlilw+AB1N3OE9oLilwHUdze0ZUJfK0x6e2DEXffQt/ocSHZpn6LPJQP/wv
-	 dkV0V/qr4rjCKS0gXDB0kKI2zY7Cpuz5c7/yIIW68xq0eqXJUIlfli/OnsAi0BErA8
-	 gXCetMXhdu5EJyWiRN4m5byK4uqqICjf/cQWgBqg=
+	b=fTlrrVj6JPthKgxOhdHALluq+2cDB8g8Wo0cdZ8sjwSbdGOTelZ9z1Bj9zAAT1vQe
+	 lHoZH8Brn5DpR837ewR4Z5cwSyj1Y7ACkOkLQyA5CbawUobrKyJT2QApHhVkeP9INJ
+	 sqMPvcS7GRs3+Bd4Pg0eZaZp/7yMZ+8Ghp53RxO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 377/399] scsi: qla2xxx: Prevent command send on chip reset
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linke li <lilinke99@qq.com>,
+	Rabin Vincent <rabin@rab.in>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 153/272] tracing: Use .flush() call to wake up readers
 Date: Mon,  1 Apr 2024 17:45:43 +0200
-Message-ID: <20240401152600.433957893@linuxfoundation.org>
+Message-ID: <20240401152535.485954802@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +67,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 4895009c4bb72f71f2e682f1e7d2c2d96e482087 upstream.
+commit e5d7c1916562f0e856eb3d6f569629fcd535fed2 upstream.
 
-Currently IOCBs are allowed to push through while chip reset could be in
-progress. During chip reset the outstanding_cmds array is cleared
-twice. Once when any command on this array is returned as failed and
-secondly when the array is initialize to zero. If a command is inserted on
-to the array between these intervals, then the command will be lost.  Check
-for chip reset before sending IOCB.
+The .release() function does not get called until all readers of a file
+descriptor are finished.
+
+If a thread is blocked on reading a file descriptor in ring_buffer_wait(),
+and another thread closes the file descriptor, it will not wake up the
+other thread as ring_buffer_wake_waiters() is called by .release(), and
+that will not get called until the .read() is finished.
+
+The issue originally showed up in trace-cmd, but the readers are actually
+other processes with their own file descriptors. So calling close() would wake
+up the other tasks because they are blocked on another descriptor then the
+one that was closed(). But there's other wake ups that solve that issue.
+
+When a thread is blocked on a read, it can still hang even when another
+thread closed its descriptor.
+
+This is what the .flush() callback is for. Have the .flush() wake up the
+readers.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240308202432.107909457@goodmis.org
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-2-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linke li <lilinke99@qq.com>
+Cc: Rabin Vincent <rabin@rab.in>
+Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    8 ++++++--
- drivers/scsi/qla2xxx/qla_iocb.c |   33 +++++++++++++++++++++++++++++++--
- 2 files changed, 37 insertions(+), 4 deletions(-)
+ kernel/trace/trace.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -1193,8 +1193,12 @@ int qla24xx_async_gnl(struct scsi_qla_ho
- 	return rval;
- 
- done_free_sp:
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+	/*
-+	 * use qla24xx_async_gnl_sp_done to purge all pending gnl request.
-+	 * kref_put is call behind the scene.
-+	 */
-+	sp->u.iocb_cmd.u.mbx.in_mb[0] = MBS_COMMAND_ERROR;
-+	qla24xx_async_gnl_sp_done(sp, QLA_COMMAND_ERROR);
- 	fcport->flags &= ~(FCF_ASYNC_SENT);
- done:
- 	fcport->flags &= ~(FCF_ASYNC_ACTIVE);
---- a/drivers/scsi/qla2xxx/qla_iocb.c
-+++ b/drivers/scsi/qla2xxx/qla_iocb.c
-@@ -2587,6 +2587,33 @@ void
- qla2x00_sp_release(struct kref *kref)
- {
- 	struct srb *sp = container_of(kref, struct srb, cmd_kref);
-+	struct scsi_qla_host *vha = sp->vha;
-+
-+	switch (sp->type) {
-+	case SRB_CT_PTHRU_CMD:
-+		/* GPSC & GFPNID use fcport->ct_desc.ct_sns for both req & rsp */
-+		if (sp->u.iocb_cmd.u.ctarg.req &&
-+			(!sp->fcport ||
-+			 sp->u.iocb_cmd.u.ctarg.req != sp->fcport->ct_desc.ct_sns)) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.req,
-+			    sp->u.iocb_cmd.u.ctarg.req_dma);
-+			sp->u.iocb_cmd.u.ctarg.req = NULL;
-+		}
-+		if (sp->u.iocb_cmd.u.ctarg.rsp &&
-+			(!sp->fcport ||
-+			 sp->u.iocb_cmd.u.ctarg.rsp != sp->fcport->ct_desc.ct_sns)) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.rsp,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
-+			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
- 
- 	sp->free(sp);
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8278,6 +8278,20 @@ tracing_buffers_read(struct file *filp,
+ 	return size;
  }
-@@ -2692,7 +2719,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	 */
- 	sp = qla2x00_get_sp(vha, fcport, GFP_KERNEL);
- 	if (!sp) {
--		kfree(fcport);
-+		qla2x00_free_fcport(fcport);
- 		ql_log(ql_log_info, vha, 0x70e6,
- 		 "SRB allocation failed\n");
- 		return -ENOMEM;
-@@ -2747,6 +2774,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	if (rval != QLA_SUCCESS) {
- 		/* ref: INIT */
- 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		qla2x00_free_fcport(fcport);
- 		return QLA_FUNCTION_FAILED;
- 	}
  
-@@ -2756,6 +2784,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
++static int tracing_buffers_flush(struct file *file, fl_owner_t id)
++{
++	struct ftrace_buffer_info *info = file->private_data;
++	struct trace_iterator *iter = &info->iter;
++
++	iter->wait_index++;
++	/* Make sure the waiters see the new wait_index */
++	smp_wmb();
++
++	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
++
++	return 0;
++}
++
+ static int tracing_buffers_release(struct inode *inode, struct file *file)
+ {
+ 	struct ftrace_buffer_info *info = file->private_data;
+@@ -8289,12 +8303,6 @@ static int tracing_buffers_release(struc
  
- 	wait_for_completion(&elsio->u.els_logo.comp);
-+	qla2x00_free_fcport(fcport);
+ 	__trace_array_put(iter->tr);
  
- 	/* ref: INIT */
- 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-@@ -3918,7 +3947,7 @@ qla2x00_start_sp(srb_t *sp)
- 		return -EAGAIN;
- 	}
- 
--	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
-+	pkt = qla2x00_alloc_iocbs_ready(sp->qpair, sp);
- 	if (!pkt) {
- 		rval = -EAGAIN;
- 		ql_log(ql_log_warn, vha, 0x700c,
+-	iter->wait_index++;
+-	/* Make sure the waiters see the new wait_index */
+-	smp_wmb();
+-
+-	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
+-
+ 	if (info->spare)
+ 		ring_buffer_free_read_page(iter->array_buffer->buffer,
+ 					   info->spare_cpu, info->spare);
+@@ -8508,6 +8516,7 @@ static const struct file_operations trac
+ 	.read		= tracing_buffers_read,
+ 	.poll		= tracing_buffers_poll,
+ 	.release	= tracing_buffers_release,
++	.flush		= tracing_buffers_flush,
+ 	.splice_read	= tracing_buffers_splice_read,
+ 	.unlocked_ioctl = tracing_buffers_ioctl,
+ 	.llseek		= no_llseek,
 
 
 
