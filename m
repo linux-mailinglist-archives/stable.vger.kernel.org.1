@@ -1,55 +1,72 @@
-Return-Path: <stable+bounces-35252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FA189431F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08FE893E92
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3B42B20C6A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86D7B1F2167A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8026B481C6;
-	Mon,  1 Apr 2024 16:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF0B4776F;
+	Mon,  1 Apr 2024 16:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFTtWmgZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0WFmbjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6B7BA3F;
-	Mon,  1 Apr 2024 16:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5451CA8F;
+	Mon,  1 Apr 2024 16:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990792; cv=none; b=QlqF8qcaLnoPbk4oY2LWPoEyTqgT4zraX0C6aLsvOpzzey6K10wr8nHis66SmTH9zmSMJsc1MzqyxKfHiQE5EZw9ns5LWqPZQKItjrAYl2/MGI/eY7bEL1oBNoMBeHlLVpNT9epGgwnfMkf7+THDl2RokPmSJchec8Cned2U70Q=
+	t=1711987512; cv=none; b=kFJKXRaV4Op4GJ1nAIiZRohQ9xBUyYi8yBvNcz/9M/IL1EY/niIHM0O/VE+bEysDHgpeZaUCFNVry93x6jCU0GA/jmyL0+KM8FfjvPNGS4AMqtnylxansuAWY1v6g/PzLt3ZuxE4dh2ayHoarNCuIQzmOZsLVlwi6Rvt/TZLR5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990792; c=relaxed/simple;
-	bh=cTCoFfwk3PwJ5fhDBB7LTYpp/sXGfZUy/ULUbIfCX98=;
+	s=arc-20240116; t=1711987512; c=relaxed/simple;
+	bh=ZK4ATIthivDUUeJM+j6m4LZmFrnnR7Ki52u3oIe3/2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0AsY9Fla2bAZfY1IKEg4uPvd/Jqn070RCPqcIYV9FQ/9QxFtWSVPO05L7e8tPzTD7qpE7uKW+yR7Q97kNrUXwh7je4XfMhSbEUpQQeIgoc1LFbkqHuCJb27hdWIC/nTEdVZvOXX1Qe0s3jTJaF01cdwwrT/p3F+5+R77Xqofhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFTtWmgZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A20C433C7;
-	Mon,  1 Apr 2024 16:59:51 +0000 (UTC)
+	 MIME-Version; b=oAleCs6TwwOJYS5IRYm/7PpDxT3/bq43VadHxqMVSs7u3TTEUndn5VqWkRG/X3aG33VQRNHgr0xMIyU+YhpMQ0c83Aq4UXZ1mEfrdovSfqjbnAtc79asmvTuuImM/EFzFyyVAJpAs4KEUiuo3QAvKIbl2h17CmzuZZ4BiRy2SWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0WFmbjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9517C433F1;
+	Mon,  1 Apr 2024 16:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990792;
-	bh=cTCoFfwk3PwJ5fhDBB7LTYpp/sXGfZUy/ULUbIfCX98=;
+	s=korg; t=1711987512;
+	bh=ZK4ATIthivDUUeJM+j6m4LZmFrnnR7Ki52u3oIe3/2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFTtWmgZ6Iz7bWRkVWRl0H3RSQlq31wbdGZiNODzAMbxOCaXZMIJ0aZWDzCU1UEGr
-	 2T+8waHTu66EohVB4jVamTQmObXmQjbkfUMTMRh9g7E/9iyYvcsZHtNoyhvetgNu8X
-	 aFCGVPog+L0B5KzXUvEzWWLFj0+voGw81zYvZAVE=
+	b=C0WFmbjHIAiKgB8Joj/zRBQLklRHhGRNVmR28975zp3IzDHdKCKDstQLvMbqGkv1d
+	 Wi6+DzmBU/b+rm5UYnCB6X+usmadofST2xRfMYrMpYYXpeeoPrSmS6dNN4NUeh/xIM
+	 dEUzOAk552MSOU/7uLMuyuSWz9nduauXrAYkvMBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/272] fuse: dont unhash root
+	Zev Weiss <zev@bewilderbeest.net>,
+	Borislav Petkov <bp@alien8.de>,
+	David Hildenbrand <david@redhat.com>,
+	Florent Revest <revest@chromium.org>,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Kees Cook <keescook@chromium.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Sam James <sam@gentoo.org>,
+	Stefan Roesch <shr@devkernel.io>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yin Fengwei <fengwei.yin@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 292/399] ARM: prctl: reject PR_SET_MDWE on pre-ARMv6
 Date: Mon,  1 Apr 2024 17:44:18 +0200
-Message-ID: <20240401152532.687669777@linuxfoundation.org>
+Message-ID: <20240401152557.902261301@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +78,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Zev Weiss <zev@bewilderbeest.net>
 
-[ Upstream commit b1fe686a765e6c0d71811d825b5a1585a202b777 ]
+commit 166ce846dc5974a266f6c2a2896dbef5425a6f21 upstream.
 
-The root inode is assumed to be always hashed.  Do not unhash the root
-inode even if it is marked BAD.
+On v5 and lower CPUs we can't provide MDWE protection, so ensure we fail
+any attempt to enable it via prctl(PR_SET_MDWE).
 
-Fixes: 5d069dbe8aaf ("fuse: fix bad inode")
-Cc: <stable@vger.kernel.org> # v5.11
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Previously such an attempt would misleadingly succeed, leading to any
+subsequent mmap(PROT_READ|PROT_WRITE) or execve() failing unconditionally
+(the latter somewhat violently via force_fatal_sig(SIGSEGV) due to
+READ_IMPLIES_EXEC).
+
+Link: https://lkml.kernel.org/r/20240227013546.15769-6-zev@bewilderbeest.net
+Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
+Cc: <stable@vger.kernel.org>	[6.3+]
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Florent Revest <revest@chromium.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: Sam James <sam@gentoo.org>
+Cc: Stefan Roesch <shr@devkernel.io>
+Cc: Yang Shi <yang@os.amperecomputing.com>
+Cc: Yin Fengwei <fengwei.yin@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/fuse_i.h | 1 -
- fs/fuse/inode.c  | 7 +++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ arch/arm/include/asm/mman.h |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+ create mode 100644 arch/arm/include/asm/mman.h
 
-diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-index a9681fecbd91f..253b9b78d6f13 100644
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -923,7 +923,6 @@ static inline bool fuse_stale_inode(const struct inode *inode, int generation,
- 
- static inline void fuse_make_bad(struct inode *inode)
- {
--	remove_inode_hash(inode);
- 	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
- }
- 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index f81000d968875..367e3b276092f 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -445,8 +445,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
- 	} else if (fuse_stale_inode(inode, generation, attr)) {
- 		/* nodeid was reused, any I/O on the old inode should fail */
- 		fuse_make_bad(inode);
--		iput(inode);
--		goto retry;
-+		if (inode != d_inode(sb->s_root)) {
-+			remove_inode_hash(inode);
-+			iput(inode);
-+			goto retry;
-+		}
- 	}
- 	fi = get_fuse_inode(inode);
- 	spin_lock(&fi->lock);
--- 
-2.43.0
-
+--- /dev/null
++++ b/arch/arm/include/asm/mman.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_MMAN_H__
++#define __ASM_MMAN_H__
++
++#include <asm/system_info.h>
++#include <uapi/asm/mman.h>
++
++static inline bool arch_memory_deny_write_exec_supported(void)
++{
++	return cpu_architecture() >= CPU_ARCH_ARMv6;
++}
++#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
++
++#endif /* __ASM_MMAN_H__ */
 
 
 
