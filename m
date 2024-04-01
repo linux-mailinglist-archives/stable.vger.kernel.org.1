@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-35370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775C78943A2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16AF2894269
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3151B2838D0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C67C1283650
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FB6482CA;
-	Mon,  1 Apr 2024 17:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B154D108;
+	Mon,  1 Apr 2024 16:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBO89rZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0N73C4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B44438DE5;
-	Mon,  1 Apr 2024 17:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F854CDF9;
+	Mon,  1 Apr 2024 16:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991175; cv=none; b=XojNw+Ej95lnu5npbwfXs7Gnf4QE7Tihjw5C2jLiw5waNO9n9S5oYwjLwPNhSiSV8OIqoK4P3sRI9Oc9yZvH8q253tgYOr/zkdjHi5Gdr6oBNHcqRkma228A0cSyUm6/dr6aVuzhfAWsPdR/Vq73IPUJlLo0tt9PCBdXvPxum2E=
+	t=1711990331; cv=none; b=IakZ30uThjJZpQqlyBP+enyM74aGtAe54XMFZt7kzqyVtUgACWD8E9IV4/HO7LQjwkN3hRP/8uRAChSAIWafAzcloTyERLkXRx9scHwyIoTfxY5PeiVTZ7TYhrEAztnhsDRHZC73FsF/amBC8qEmaEUkF++GnFQe40XVJewCTl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991175; c=relaxed/simple;
-	bh=WYFNX9S9Dc5FKKG1whSuqGrQ/0Z3g6THAiRZEoIDZKM=;
+	s=arc-20240116; t=1711990331; c=relaxed/simple;
+	bh=moWJcJoh29Dlc43wEdEuZDQ/eqQTZ5ybRLj0Yo04Q2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGY8Y11ffg1tDv7Xl4iI6ysTiQO4HacPgsZfo0bOeoJRqFXwyiDuH/Unb57iEAu3hkj04Q2zljST1YAdXkf8vOSVxeWPO2tHrauhCzCcCTidlCoNLUwcA5p0ePew8zeCORE+QOPA/PiL83fDUdfCr1OD5p+tqqxd1pJwan/erU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBO89rZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D459AC433C7;
-	Mon,  1 Apr 2024 17:06:14 +0000 (UTC)
+	 MIME-Version; b=Lywni711LJgu+wFtGkAvglHHL3BUPnxwqvTTvxHzbcSQnm2FbV5ijU9nbSErE/HBA6Y7BcRwXdloc8rPTFM3i+2m5ciFOPujxdn4u2dSDkGaQvbp3BjnrjT0cizuZ4/Zkty0bobT4BsObOPHaGqcV0u1D2eOholGZtOZZhHz1DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0N73C4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BDCC433F1;
+	Mon,  1 Apr 2024 16:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991175;
-	bh=WYFNX9S9Dc5FKKG1whSuqGrQ/0Z3g6THAiRZEoIDZKM=;
+	s=korg; t=1711990331;
+	bh=moWJcJoh29Dlc43wEdEuZDQ/eqQTZ5ybRLj0Yo04Q2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JBO89rZ/mHtMteMF3g7CA9PqMFMWGQX9YRslPTJEWYuy+YOai+6GHxTjK2TawYXHN
-	 l6O5f9kBvPrIGGGlvB2tSiA5q+z91erVKAe60rxQIy1CBhBIftEvcyJhn3KpuU7jcj
-	 TMy90ZYowsceCE0pPtHpENBKjufwvxcXOJ4Bg/7I=
+	b=E0N73C4SXCOuAv22K25kTlIGLDqhBIwP7sLUMOYctW5xmiS+a3sDJZ5fHL1hF0gbP
+	 Hk8rlGe/C/T27ieF89yosAE+6+P1v2KttO+Nu9CL0ZZxvf0cApTQfx/2ZnAC3Y52jp
+	 ETSnyWJgIt/R76Zud+IQEh5jBSzdwlhtbSUXp4Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	Nikhil V <quic_nprakash@quicinc.com>
-Subject: [PATCH 6.1 178/272] iommu: Avoid races around default domain allocations
+	WA AM <waautomata@gmail.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 319/396] btrfs: zoned: use zone aware sb location for scrub
 Date: Mon,  1 Apr 2024 17:46:08 +0200
-Message-ID: <20240401152536.344429916@linuxfoundation.org>
+Message-ID: <20240401152557.423281189@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charan Teja Kalla <quic_charante@quicinc.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-This fix is applicable for LTS kernel, 6.1.y. In latest kernels, this race
-issue is fixed by the patch series [1] and [2]. The right thing to do here
-would have been propagating these changes from latest kernel to the stable
-branch, 6.1.y. However, these changes seems too intrusive to be picked for
-stable branches. Hence, the fix proposed can be taken as an alternative
-instead of backporting the patch series.
-[1] https://lore.kernel.org/all/0-v8-81230027b2fa+9d-iommu_all_defdom_jgg@nvidia.com/
-[2] https://lore.kernel.org/all/0-v5-1b99ae392328+44574-iommu_err_unwind_jgg@nvidia.com/
+commit 74098a989b9c3370f768140b7783a7aaec2759b3 upstream.
 
-Issue:
-A race condition is observed when arm_smmu_device_probe and
-modprobe of client devices happens in parallel. This results
-in the allocation of a new default domain for the iommu group
-even though it was previously allocated and the respective iova
-domain(iovad) was initialized. However, for this newly allocated
-default domain, iovad will not be initialized. As a result, for
-devices requesting dma allocations, this uninitialized iovad will
-be used, thereby causing NULL pointer dereference issue.
+At the moment scrub_supers() doesn't grab the super block's location via
+the zoned device aware btrfs_sb_log_location() but via btrfs_sb_offset().
 
-Flow:
-- During arm_smmu_device_probe, bus_iommu_probe() will be called
-as part of iommu_device_register(). This results in the device probe,
-__iommu_probe_device().
+This leads to checksum errors on 'scrub' as we're not accessing the
+correct location of the super block.
 
-- When the modprobe of the client device happens in parallel, it
-sets up the DMA configuration for the device using of_dma_configure_id(),
-which inturn calls iommu_probe_device(). Later, default domain is
-allocated and attached using iommu_alloc_default_domain() and
-__iommu_attach_device() respectively. It then ends up initializing a
-mapping domain(IOVA domain) and rcaches for the device via
-arch_setup_dma_ops()->iommu_setup_dma_ops().
+So use btrfs_sb_log_location() for getting the super blocks location on
+scrub.
 
-- Now, in the bus_iommu_probe() path, it again tries to allocate
-a default domain via probe_alloc_default_domain(). This results in
-allocating a new default domain(along with IOVA domain) via
-__iommu_domain_alloc(). However, this newly allocated IOVA domain
-will not be initialized.
-
-- Now, when the same client device tries dma allocations via
-iommu_dma_alloc(), it ends up accessing the rcaches of the newly
-allocated IOVA domain, which is not initialized. This results
-into NULL pointer dereferencing.
-
-Fix this issue by adding a check in probe_alloc_default_domain()
-to see if the iommu_group already has a default domain allocated
-and initialized.
-
-Cc: <stable@vger.kernel.org> # see patch description, fix applicable only for 6.1.y
-Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Co-developed-by: Nikhil V <quic_nprakash@quicinc.com>
-Signed-off-by: Nikhil V <quic_nprakash@quicinc.com>
+Reported-by: WA AM <waautomata@gmail.com>
+Link: http://lore.kernel.org/linux-btrfs/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/scrub.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -1741,6 +1741,9 @@ static void probe_alloc_default_domain(s
- {
- 	struct __group_domain_type gtype;
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -2739,7 +2739,17 @@ static noinline_for_stack int scrub_supe
+ 		gen = fs_info->last_trans_committed;
  
-+	if (group->default_domain)
-+		return;
+ 	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
+-		bytenr = btrfs_sb_offset(i);
++		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
++		if (ret == -ENOENT)
++			break;
 +
- 	memset(&gtype, 0, sizeof(gtype));
- 
- 	/* Ask for default domain requirements of all devices in the group */
++		if (ret) {
++			spin_lock(&sctx->stat_lock);
++			sctx->stat.super_errors++;
++			spin_unlock(&sctx->stat_lock);
++			continue;
++		}
++
+ 		if (bytenr + BTRFS_SUPER_INFO_SIZE >
+ 		    scrub_dev->commit_total_bytes)
+ 			break;
 
 
 
