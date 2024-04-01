@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB658940A6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834C88942A3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 614431F22045
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13091B20BF4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0422D38DE5;
-	Mon,  1 Apr 2024 16:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898374653C;
+	Mon,  1 Apr 2024 16:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSqmgXAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvPfdtc8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AC41C0DE7;
-	Mon,  1 Apr 2024 16:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4761ABA3F;
+	Mon,  1 Apr 2024 16:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989155; cv=none; b=OfPchhibAyLYeQ49gjmSLw9pmhO43Wcm8atjjBp8M7davSagcLPI2UDZYHABtxdMeaz8iPYxJEB4f5j7s9b2UR8LRImOTYhXLYgZQwx2UX6KYdR5EUYDPaWdK1GeGSTPHK/1cmdUTzXcejr59Ma8b8Ac0wYV3E99uWk4sJNoPXk=
+	t=1711990471; cv=none; b=LJe7jvFfzoDmEZGX/czE6z0p/T7jJDWXmqYFHk3eG9JG0yjwXTSBYaQvQYSSStkWrFQEsmsvdZitrBMRV/MUAsIZwzhY5GMOj+MndgTVk/sjlTKB70pi+w3MYNIEmRJPN1FZZHbOfqNpwrleTCMkLRUIFnjGVfgKwHQb3z08qPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989155; c=relaxed/simple;
-	bh=t6NJ9JV9eZkGWzAWly/j4EiU37ZW49p1+747FNrnye8=;
+	s=arc-20240116; t=1711990471; c=relaxed/simple;
+	bh=Nu6jhG8HXYHZQxDZ37wS9AGvnKVAonawCM9v1/U5luw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cbJCPqKmxWE0anM+ca8epkYxzI5K4SFT9yNOY7CsBITA3MYhWXAUPik8b65dvNQ/t6treWBeRUIZWhFkbV45C9DxkKaVRIAhaQdyUlAXYJ9RiZY3VzLsJyxvr6sQtORa+H719novPp+JY5rcEp/xOSja7yJeOOM4RkzqPn6vyEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSqmgXAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C419C43390;
-	Mon,  1 Apr 2024 16:32:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A4nKjA2iU3JmLKPFgSwjqFygxcRa0HjpU5Y93n6ZEvwPd61vRJic6FpwPtE8/YM33LlULiKiCsrVBtkvOVw1uqejOpmV6iqUHG9oV2F5XE127Zx8Da2KMtY9QVvpB1lkLF8mzCx78apqcZgllanA9qFsC4DKyFscp2rwGKwRS3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvPfdtc8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28C8C433F1;
+	Mon,  1 Apr 2024 16:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989155;
-	bh=t6NJ9JV9eZkGWzAWly/j4EiU37ZW49p1+747FNrnye8=;
+	s=korg; t=1711990471;
+	bh=Nu6jhG8HXYHZQxDZ37wS9AGvnKVAonawCM9v1/U5luw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSqmgXADG0pxBkByljbPOSYEwMojt434tDxXaXcxepadMiZwHWGNAfbajH2ItVH83
-	 n6yMzAhHdV+gMBW3pjszPQFYBK6pBy1OtOotjAePbPOkrm66uyl1I749e2eWZEI2FI
-	 re019il8OmA+icKysLTQ0wtozHOEC3SlZbuXMluc=
+	b=uvPfdtc8G0u8PdHj6iQMdOs/MZAVjV14sLPsyx5yk5nO36ig7ePq0R0abUunq3AE9
+	 UsuDgzamcXgJ3sycbe5b49gVHKkfo0tOEcyDvLrm/8LEv/w9dh5JwFJRFvnwZGXl0+
+	 FG4ioqtF8A6LEDa8LRsNcuZujpiLa0xbf3Lc1pkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.7 398/432] USB: core: Fix deadlock in port "disable" sysfs attribute
+	Ye Zhang <ye.zhang@rock-chips.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 336/396] thermal: devfreq_cooling: Fix perf state when calculate dfc res_util
 Date: Mon,  1 Apr 2024 17:46:25 +0200
-Message-ID: <20240401152605.228709524@linuxfoundation.org>
+Message-ID: <20240401152557.929783788@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,130 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Ye Zhang <ye.zhang@rock-chips.com>
 
-commit f4d1960764d8a70318b02f15203a1be2b2554ca1 upstream.
+commit a26de34b3c77ae3a969654d94be49e433c947e3b upstream.
 
-The show and store callback routines for the "disable" sysfs attribute
-file in port.c acquire the device lock for the port's parent hub
-device.  This can cause problems if another process has locked the hub
-to remove it or change its configuration:
+The issue occurs when the devfreq cooling device uses the EM power model
+and the get_real_power() callback is provided by the driver.
 
-	Removing the hub or changing its configuration requires the
-	hub interface to be removed, which requires the port device
-	to be removed, and device_del() waits until all outstanding
-	sysfs attribute callbacks for the ports have returned.  The
-	lock can't be released until then.
+The EM power table is sorted ascending，can't index the table by cooling
+device state，so convert cooling state to performance state by
+dfc->max_state - dfc->capped_state.
 
-	But the disable_show() or disable_store() routine can't return
-	until after it has acquired the lock.
-
-The resulting deadlock can be avoided by calling
-sysfs_break_active_protection().  This will cause the sysfs core not
-to wait for the attribute's callback routine to return, allowing the
-removal to proceed.  The disadvantage is that after making this call,
-there is no guarantee that the hub structure won't be deallocated at
-any moment.  To prevent this, we have to acquire a reference to it
-first by calling hub_get().
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/f7a8c135-a495-4ce6-bd49-405a45e7ea9a@rowland.harvard.edu
+Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |   38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ drivers/thermal/devfreq_cooling.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -55,11 +55,22 @@ static ssize_t disable_show(struct devic
- 	u16 portstatus, unused;
- 	bool disabled;
- 	int rc;
-+	struct kernfs_node *kn;
+--- a/drivers/thermal/devfreq_cooling.c
++++ b/drivers/thermal/devfreq_cooling.c
+@@ -201,7 +201,7 @@ static int devfreq_cooling_get_requested
  
-+	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
--		return rc;
-+		goto out_hub_get;
+ 		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
+ 		if (!res) {
+-			state = dfc->capped_state;
++			state = dfc->max_state - dfc->capped_state;
  
-+	/*
-+	 * Prevent deadlock if another process is concurrently
-+	 * trying to unregister hdev.
-+	 */
-+	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+	if (!kn) {
-+		rc = -ENODEV;
-+		goto out_autopm;
-+	}
- 	usb_lock_device(hdev);
- 	if (hub->disconnected) {
- 		rc = -ENODEV;
-@@ -69,9 +80,13 @@ static ssize_t disable_show(struct devic
- 	usb_hub_port_status(hub, port1, &portstatus, &unused);
- 	disabled = !usb_port_is_power_on(hub, portstatus);
- 
--out_hdev_lock:
-+ out_hdev_lock:
- 	usb_unlock_device(hdev);
-+	sysfs_unbreak_active_protection(kn);
-+ out_autopm:
- 	usb_autopm_put_interface(intf);
-+ out_hub_get:
-+	hub_put(hub);
- 
- 	if (rc)
- 		return rc;
-@@ -89,15 +104,26 @@ static ssize_t disable_store(struct devi
- 	int port1 = port_dev->portnum;
- 	bool disabled;
- 	int rc;
-+	struct kernfs_node *kn;
- 
- 	rc = kstrtobool(buf, &disabled);
- 	if (rc)
- 		return rc;
- 
-+	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
--		return rc;
-+		goto out_hub_get;
- 
-+	/*
-+	 * Prevent deadlock if another process is concurrently
-+	 * trying to unregister hdev.
-+	 */
-+	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+	if (!kn) {
-+		rc = -ENODEV;
-+		goto out_autopm;
-+	}
- 	usb_lock_device(hdev);
- 	if (hub->disconnected) {
- 		rc = -ENODEV;
-@@ -118,9 +144,13 @@ static ssize_t disable_store(struct devi
- 	if (!rc)
- 		rc = count;
- 
--out_hdev_lock:
-+ out_hdev_lock:
- 	usb_unlock_device(hdev);
-+	sysfs_unbreak_active_protection(kn);
-+ out_autopm:
- 	usb_autopm_put_interface(intf);
-+ out_hub_get:
-+	hub_put(hub);
- 
- 	return rc;
- }
+ 			/* Convert EM power into milli-Watts first */
+ 			dfc->res_util = dfc->em_pd->table[state].power;
 
 
 
