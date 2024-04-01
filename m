@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-35194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4748942D8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848A88941AA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B68D283780
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B00EB1C217D5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED98481B8;
-	Mon,  1 Apr 2024 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA82481DB;
+	Mon,  1 Apr 2024 16:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPli7NWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFgdOiyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8D1433DA;
-	Mon,  1 Apr 2024 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE761C0DE7;
+	Mon,  1 Apr 2024 16:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990605; cv=none; b=WsTB/9c5vodzFArJdDzqZJzi8eKXwnLkVCMv1RTFOwko+dK0ZO/pB4YSSpzJyZfR3IRYRfn35KO26ppgZuepsCWxci8mFSh2FICt9GtQE32jsXwrpkfVrh51b9Eh45TimufcNsawlMIiwVxFCCu/7NaK0rLXYNIjHLyBUuIgar8=
+	t=1711989880; cv=none; b=YY+qgxZIzZJJ/MjLsp0Oe3btYBywo+nywod1rSr7+f3KQzl2BizoZvaXco2NPYHB/32R05xDjvzD4fHrSfxTRRhTFNkxRdyq06n8XTAQagqzkHfWImP+b8XhXCIjG9RX7SXt38gBgPNsnH2uT7BfDw9OhV7JbaxwXSqh9u7TOxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990605; c=relaxed/simple;
-	bh=yNMPjIGextGtzeLeS32vfI+xnb7+iXZext/EISCr3sI=;
+	s=arc-20240116; t=1711989880; c=relaxed/simple;
+	bh=Scfna2I1SLL45tJw3cgVoVuIa5nza2zcsyqF8sro+jU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=racMvYlLLqgghczyhqtVA9Gl0GY7DcQJkXGW+v1LuIkTnEn+x5pL68haV0/G8OhGPjf993NVaDsTbpQ3qVGgUqTlHdY6wvSmux7F2CAKV3UE6MqYXl0+ly7DXFe3Wlv0MzCQM7vroUvSgFfS8xSa6Rzqoyj0YAT3c5w8FLfbtRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPli7NWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2C6C433C7;
-	Mon,  1 Apr 2024 16:56:44 +0000 (UTC)
+	 MIME-Version; b=ivvMCa03RDld3inJDOhMs4gd1k0fr95bopfqlYrTvsuAOos5evqpnJTt72ErMtiMxe/WWn2NledEloRv/w/9K0K/JBFEY+zFSJo8Y03rOPf4MFQg2KqoDQ8rqksYh4X1NJRXQDyjdmycEoABDqlNag3WvIMGpNgOamIfH4y291o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFgdOiyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927A1C433F1;
+	Mon,  1 Apr 2024 16:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990605;
-	bh=yNMPjIGextGtzeLeS32vfI+xnb7+iXZext/EISCr3sI=;
+	s=korg; t=1711989880;
+	bh=Scfna2I1SLL45tJw3cgVoVuIa5nza2zcsyqF8sro+jU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPli7NWZ+QQsqlWFmEhsS8ZVmPqbZaFEMn+6vlVu84YxIUUMwQ4H9/gzwgzCnjQ/6
-	 jcU4+31l166mS28n3ax3ZlIR1PR3PBrX3nJlZkshIp4wyv6FvOb+IVElweY2oDESsT
-	 ixsGsJDjTYvpfqCiTgT9GEf73GcQF9x7j4Jvdt+g=
+	b=BFgdOiyFbnZ0HXo7IVSCjAloLTBUo/rqhHUnnPTwl2bDTVWQnUX0kI2tAfphA7QoP
+	 aNLtKAJfRt7QmDeo1QE3aLZH8udppUhoQDTkbqOrW2xiPlGfczmqJpnI+PlEI5I9cp
+	 1le6QP+4bo+xwu1jzpXRszXOgNtDdg2whdLlfSCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hidenori Kobayashi <hidenorik@chromium.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/272] media: staging: ipu3-imgu: Set fields before media_entity_pads_init()
-Date: Mon,  1 Apr 2024 17:43:20 +0200
-Message-ID: <20240401152530.615829713@linuxfoundation.org>
+Subject: [PATCH 6.6 152/396] f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag
+Date: Mon,  1 Apr 2024 17:43:21 +0200
+Message-ID: <20240401152552.476864995@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hidenori Kobayashi <hidenorik@chromium.org>
+From: Sunmin Jeong <s_min.jeong@samsung.com>
 
-[ Upstream commit 87318b7092670d4086bfec115a0280a60c51c2dd ]
+[ Upstream commit 4bf78322346f6320313683dc9464e5423423ad5c ]
 
-The imgu driver fails to probe with the following message because it
-does not set the pad's flags before calling media_entity_pads_init().
+In f2fs_update_inode, i_size of the atomic file isn't updated until
+FI_ATOMIC_COMMITTED flag is set. When committing atomic write right
+after the writeback of the inode, i_size of the raw inode will not be
+updated. It can cause the atomicity corruption due to a mismatch between
+old file size and new data.
 
-[   14.596315] ipu3-imgu 0000:00:05.0: failed initialize subdev media entity (-22)
-[   14.596322] ipu3-imgu 0000:00:05.0: failed to register subdev0 ret (-22)
-[   14.596327] ipu3-imgu 0000:00:05.0: failed to register pipes (-22)
-[   14.596331] ipu3-imgu 0000:00:05.0: failed to create V4L2 devices (-22)
+To prevent the problem, let's mark inode dirty for FI_ATOMIC_COMMITTED
 
-Fix the initialization order so that the driver probe succeeds. The ops
-initialization is also moved together for readability.
+Atomic write thread                   Writeback thread
+                                        __writeback_single_inode
+                                          write_inode
+                                            f2fs_update_inode
+                                              - skip i_size update
+  f2fs_ioc_commit_atomic_write
+    f2fs_commit_atomic_write
+      set_inode_flag(inode, FI_ATOMIC_COMMITTED)
+    f2fs_do_sync_file
+      f2fs_fsync_node_pages
+        - skip f2fs_update_inode since the inode is clean
 
-Fixes: a0ca1627b450 ("media: staging/intel-ipu3: Add v4l2 driver based on media framework")
-Cc: <stable@vger.kernel.org> # 6.7
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hidenori Kobayashi <hidenorik@chromium.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
+Cc: stable@vger.kernel.org #v5.19+
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/ipu3/ipu3-v4l2.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/f2fs/f2fs.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/staging/media/ipu3/ipu3-v4l2.c b/drivers/staging/media/ipu3/ipu3-v4l2.c
-index e530767e80a5d..55cc44a401bc4 100644
---- a/drivers/staging/media/ipu3/ipu3-v4l2.c
-+++ b/drivers/staging/media/ipu3/ipu3-v4l2.c
-@@ -1069,6 +1069,11 @@ static int imgu_v4l2_subdev_register(struct imgu_device *imgu,
- 	struct imgu_media_pipe *imgu_pipe = &imgu->imgu_pipe[pipe];
- 
- 	/* Initialize subdev media entity */
-+	imgu_sd->subdev.entity.ops = &imgu_media_ops;
-+	for (i = 0; i < IMGU_NODE_NUM; i++) {
-+		imgu_sd->subdev_pads[i].flags = imgu_pipe->nodes[i].output ?
-+			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
-+	}
- 	r = media_entity_pads_init(&imgu_sd->subdev.entity, IMGU_NODE_NUM,
- 				   imgu_sd->subdev_pads);
- 	if (r) {
-@@ -1076,11 +1081,6 @@ static int imgu_v4l2_subdev_register(struct imgu_device *imgu,
- 			"failed initialize subdev media entity (%d)\n", r);
- 		return r;
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 5c87f472da3d3..f37907f015873 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3024,6 +3024,7 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
+ 	case FI_INLINE_DOTS:
+ 	case FI_PIN_FILE:
+ 	case FI_COMPRESS_RELEASED:
++	case FI_ATOMIC_COMMITTED:
+ 		f2fs_mark_inode_dirty_sync(inode, true);
  	}
--	imgu_sd->subdev.entity.ops = &imgu_media_ops;
--	for (i = 0; i < IMGU_NODE_NUM; i++) {
--		imgu_sd->subdev_pads[i].flags = imgu_pipe->nodes[i].output ?
--			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
--	}
- 
- 	/* Initialize subdev */
- 	v4l2_subdev_init(&imgu_sd->subdev, &imgu_subdev_ops);
-@@ -1177,15 +1177,15 @@ static int imgu_v4l2_node_setup(struct imgu_device *imgu, unsigned int pipe,
- 	}
- 
- 	/* Initialize media entities */
-+	node->vdev_pad.flags = node->output ?
-+		MEDIA_PAD_FL_SOURCE : MEDIA_PAD_FL_SINK;
-+	vdev->entity.ops = NULL;
- 	r = media_entity_pads_init(&vdev->entity, 1, &node->vdev_pad);
- 	if (r) {
- 		dev_err(dev, "failed initialize media entity (%d)\n", r);
- 		mutex_destroy(&node->lock);
- 		return r;
- 	}
--	node->vdev_pad.flags = node->output ?
--		MEDIA_PAD_FL_SOURCE : MEDIA_PAD_FL_SINK;
--	vdev->entity.ops = NULL;
- 
- 	/* Initialize vbq */
- 	vbq->type = node->vdev_fmt.type;
+ }
 -- 
 2.43.0
 
