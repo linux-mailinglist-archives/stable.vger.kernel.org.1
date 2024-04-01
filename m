@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58233894019
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A51468941F5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8C31F21F0D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 469A7B228CF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886E846B9F;
-	Mon,  1 Apr 2024 16:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051704AEF6;
+	Mon,  1 Apr 2024 16:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+U40MGp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXiohZWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C931CA8F;
-	Mon,  1 Apr 2024 16:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83324AEF0;
+	Mon,  1 Apr 2024 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988737; cv=none; b=imQkbgzglPtxRWmGu2KDgfrIWCa3x8IoQGq2UOTjvqL2JJ4gzB8htBPcSF+EFFy7NhMg6TUCoGeuVKKNhtvpvjE5x8SNHhkrciUcGd2TE+Ws1EQ6pp5LfFe8W81YHSHk9SSsSUNafzrDqUBi1/FimY4GDThUZXW6P/htWOfg1fo=
+	t=1711990087; cv=none; b=eCbwXtgSW2dg4GwHUEyI1m8rek/jyo2xa3vvpz9ADMCoHJMwMmTq4WZxCzAqoeLsiUWrIVHWuEHoasdRVr5Q/Xp5WKFdYRCzA2wKQDvpTS4dh471TzlRtUIMXf+qQd+m5gESqF43yyd+gfDfkqfrCGSsS1bp7LlK4ZEyU6tHiqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988737; c=relaxed/simple;
-	bh=PIi5Kskv6CRGssBIVLh7vcv6KoJ9tjgcNSoOeMN9D+0=;
+	s=arc-20240116; t=1711990087; c=relaxed/simple;
+	bh=MHpKqYXcCCE5y8esbMXHkm2z1eW6XxgSIrjS0hH88JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y49WVrR9asq/FqSrEpe+RMAxW/FldDBVnDccVMDHL6Q5y2f3J2iOaOPEuIeL5CLST9jHtZvxZCd2XupsUyNg9LfA2nwl6zz1XH2Nb9eo+7h1HJnFPGsjh+TcTwTgxW+cx1dPfQCeRJ36VDwgX/pwv9hGCMEm0WTN1hDLeYMfTRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+U40MGp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5728C433F1;
-	Mon,  1 Apr 2024 16:25:36 +0000 (UTC)
+	 MIME-Version; b=LJ5PdSWc54KTLW3wX7xYoqrlegabYN0Zmv+4Cch/2e7csiNSDJ45qS/9HuiQqeKilTFNf6x6gAzLMsOUn9GLOCwGQGhUjSacPw5QfHAGbhpzvQOHU+2F6f2py5z92qSclefu3iPXAFXtwQr3I8nGks58AexbHBLiEXZOkNhBZSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXiohZWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290B1C43390;
+	Mon,  1 Apr 2024 16:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988737;
-	bh=PIi5Kskv6CRGssBIVLh7vcv6KoJ9tjgcNSoOeMN9D+0=;
+	s=korg; t=1711990087;
+	bh=MHpKqYXcCCE5y8esbMXHkm2z1eW6XxgSIrjS0hH88JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+U40MGphYwLtBrst7ooN98/fmg0Lf91kg+kq1gdhKKiOcC4aLgrz0vDN2s8kZDev
-	 AdFF9vJb2d3PQmZ2cPxfJc162n4bwwpHWmOJ9NqXN9woW4ob4VZFPrIYX3iA9/IKVt
-	 6slugcQYt2PcDCC5XeVpfqgDof6dYuVqcgwW1P44=
+	b=zXiohZWKOd+gDEzMlRAO+e7Eu7bB+I2VDMiFbcmG/0yy3SUtEqc3hGWngFiKhPzMy
+	 qjILlcMUf+O1csJu4snnnxAcfvNcsLtdu9ocZH820jf+mbx0QifR2d7UTly/k27yS1
+	 oSLbClk2QIfXtEcpcnEscNpvY5d9TC6NFvSzyQ50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.7 274/432] Revert "tty: serial: simplify qcom_geni_serial_send_chunk_fifo()"
-Date: Mon,  1 Apr 2024 17:44:21 +0200
-Message-ID: <20240401152601.347025783@linuxfoundation.org>
+	David Matlack <dmatlack@google.com>,
+	Pasha Tatashin <tatashin@google.com>,
+	Michael Krebs <mkrebs@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 213/396] KVM: x86: Mark target gfn of emulated atomic instruction as dirty
+Date: Mon,  1 Apr 2024 17:44:22 +0200
+Message-ID: <20240401152554.275656128@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 3d9319c27ceb35fa3d2c8b15508967f3fc7e5b78 upstream.
+commit 910c57dfa4d113aae6571c2a8b9ae8c430975902 upstream.
 
-This reverts commit 5c7e105cd156fc9adf5294a83623d7a40c15f9b9.
+When emulating an atomic access on behalf of the guest, mark the target
+gfn dirty if the CMPXCHG by KVM is attempted and doesn't fault.  This
+fixes a bug where KVM effectively corrupts guest memory during live
+migration by writing to guest memory without informing userspace that the
+page is dirty.
 
-As identified by KASAN, the simplification done by the cleanup patch
-was not legal.
+Marking the page dirty got unintentionally dropped when KVM's emulated
+CMPXCHG was converted to do a user access.  Before that, KVM explicitly
+mapped the guest page into kernel memory, and marked the page dirty during
+the unmap phase.
 
->From tracing through the code, it can be seen that we're transmitting
-from a 4096-byte circular buffer. We copy anywhere from 1-4 bytes from
-it each time. The simplification runs into trouble when we get near
-the end of the circular buffer. For instance, we might start out with
-xmit->tail = 4094 and we want to transfer 4 bytes. With the code
-before simplification this was no problem. We'd read buf[4094],
-buf[4095], buf[0], and buf[1]. With the new code we'll do a
-memcpy(&buf[4094], 4) which reads 2 bytes past the end of the buffer
-and then skips transmitting what's at buf[0] and buf[1].
+Mark the page dirty even if the CMPXCHG fails, as the old data is written
+back on failure, i.e. the page is still written.  The value written is
+guaranteed to be the same because the operation is atomic, but KVM's ABI
+is that all writes are dirty logged regardless of the value written.  And
+more importantly, that's what KVM did before the buggy commit.
 
-KASAN isn't 100% consistent at reporting this for me, but to be extra
-confident in the analysis, I added traces of the tail and tx_bytes and
-then wrote a test program:
+Huge kudos to the folks on the Cc list (and many others), who did all the
+actual work of triaging and debugging.
 
-  while true; do
-    echo -n "abcdefghijklmnopqrstuvwxyz0" > /dev/ttyMSM0
-    sleep .1
-  done
-
-I watched the traces over SSH and saw:
-  qcom_geni_serial_send_chunk_fifo: 4093 4
-  qcom_geni_serial_send_chunk_fifo: 1 3
-
-Which indicated that one byte should be missing. Sure enough the
-output that should have been:
-
-  abcdefghijklmnopqrstuvwxyz0
-
-In one case was actually missing a byte:
-
-  abcdefghijklmnopqrstuvwyz0
-
-Running "ls -al" on large directories also made the missing bytes
-obvious since columns didn't line up.
-
-While the original code may not be the most elegant, we only talking
-about copying up to 4 bytes here. Let's just go back to the code that
-worked.
-
-Fixes: 5c7e105cd156 ("tty: serial: simplify qcom_geni_serial_send_chunk_fifo()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Jiri Slaby <jirislaby@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240304174952.1.I920a314049b345efd1f69d708e7f74d2213d0b49@changeid
+Fixes: 1c2361f667f3 ("KVM: x86: Use __try_cmpxchg_user() to emulate atomic accesses")
+Cc: stable@vger.kernel.org
+Cc: David Matlack <dmatlack@google.com>
+Cc: Pasha Tatashin <tatashin@google.com>
+Cc: Michael Krebs <mkrebs@google.com>
+base-commit: 6769ea8da8a93ed4630f1ce64df6aafcaabfce64
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20240215010004.1456078-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kvm/x86.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -851,19 +851,21 @@ static void qcom_geni_serial_stop_tx(str
- }
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -7840,6 +7840,16 @@ static int emulator_cmpxchg_emulated(str
  
- static void qcom_geni_serial_send_chunk_fifo(struct uart_port *uport,
--					     unsigned int remaining)
-+					     unsigned int chunk)
- {
- 	struct qcom_geni_serial_port *port = to_dev_port(uport);
- 	struct circ_buf *xmit = &uport->state->xmit;
--	unsigned int tx_bytes;
-+	unsigned int tx_bytes, c, remaining = chunk;
- 	u8 buf[BYTES_PER_FIFO_WORD];
- 
- 	while (remaining) {
- 		memset(buf, 0, sizeof(buf));
- 		tx_bytes = min(remaining, BYTES_PER_FIFO_WORD);
- 
--		memcpy(buf, &xmit->buf[xmit->tail], tx_bytes);
--		uart_xmit_advance(uport, tx_bytes);
-+		for (c = 0; c < tx_bytes ; c++) {
-+			buf[c] = xmit->buf[xmit->tail];
-+			uart_xmit_advance(uport, 1);
-+		}
- 
- 		iowrite32_rep(uport->membase + SE_GENI_TX_FIFOn, buf, 1);
+ 	if (r < 0)
+ 		return X86EMUL_UNHANDLEABLE;
++
++	/*
++	 * Mark the page dirty _before_ checking whether or not the CMPXCHG was
++	 * successful, as the old value is written back on failure.  Note, for
++	 * live migration, this is unnecessarily conservative as CMPXCHG writes
++	 * back the original value and the access is atomic, but KVM's ABI is
++	 * that all writes are dirty logged, regardless of the value written.
++	 */
++	kvm_vcpu_mark_page_dirty(vcpu, gpa_to_gfn(gpa));
++
+ 	if (r)
+ 		return X86EMUL_CMPXCHG_FAILED;
  
 
 
