@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B418B893ECC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5788941EF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4169EB22275
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17EAB1C2030A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6761147A64;
-	Mon,  1 Apr 2024 16:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B314481D0;
+	Mon,  1 Apr 2024 16:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjaffVL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAxfscLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2322A47A5D;
-	Mon,  1 Apr 2024 16:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2286447A6B;
+	Mon,  1 Apr 2024 16:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987686; cv=none; b=qUEbqCccD7YrMd8q/8V1Y2FKHCmhYwSS4AiTu0dVUlUB1gB2MQU4nb6jSi5Zb8Rn2cLONkzBfafa6dA3Ii5rJ7vEiMJvShIFXTUDXY3Rp+C1ldk9ygc12Vz1u8Bm53/wF2+v3Rmh+WgrnolDzZ8MlMZPAVGUMhUsqtSMDWoOV98=
+	t=1711990081; cv=none; b=Uan6i7T+JfXJz3w0OPIk5/jIOONelssby1WJyM9TF0b6k30T6A7zwlq2yy45u1R+GGZZ+ggAz4Kb+/puNXaRWh7O6ZMoflBXbcsYgK8Lbb5jtcH0CZ27+/0BX+oXh3YqyvTzAQVDv6Enyil8xuepy/1pUTEHhPOCsjpCal63a1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987686; c=relaxed/simple;
-	bh=AziIWuca8i4Y4oMawj8/KbfL3KmR7A5Jhg7eDj/NUKg=;
+	s=arc-20240116; t=1711990081; c=relaxed/simple;
+	bh=X4dG82xYU0mvuI9WtvvDGpIPHVHsuTem51br0XSyugQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzKQEiBZOiFyxOsmM9FL5XEPV2AzhW6NiPBU9EQhw+QFAoOiXTfDxDGpC6O6E3d4Yv/9HyGLy72foqwGiXhOq/ObIBusaYTM5xbuTUe7uDM5y8z1o/wGaD6XWn2DY4AYsjrsRLvF1rFm8b4A7/uYeZ9KoxmW9DAMiKtR9g5HSkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjaffVL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FECEC433C7;
-	Mon,  1 Apr 2024 16:08:05 +0000 (UTC)
+	 MIME-Version; b=MDfx1FI2dUBgyxWXhr4fkWAukG+Q0itjybrLQxaTEJa8TUOXozxPN2kzxW/v5XIjZijKAOyeF1UlTjbKiBSQ+jnYtN5KQwi+copatyuComg4QitgEZWQMFi0wf6xng1dR6U9mrfbuT/ih5QYwJGzWcj7wDyUD52Nh+TQ3L13kAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAxfscLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99020C433F1;
+	Mon,  1 Apr 2024 16:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987686;
-	bh=AziIWuca8i4Y4oMawj8/KbfL3KmR7A5Jhg7eDj/NUKg=;
+	s=korg; t=1711990081;
+	bh=X4dG82xYU0mvuI9WtvvDGpIPHVHsuTem51br0XSyugQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wjaffVL6wUCDkMO8v2GfgxEkb7OJNqyitoBZTGvQqej9tS4anzF4w9j7R+clAbXjG
-	 k74qFIvV9Dxq63NiybiUXZlWqlTwgPTtaME9xSU2HloRROWxvGjK0JVfVAuYBoz+I2
-	 uDCVACgKCOdzB+N9vgzVpaEojyetjpgj7iZU+Qmo=
+	b=ZAxfscLZD711X08Na23pJUi2mmoUIixYmgpKr5djyICP/hGYHwJqxG1nFbO8FjwEL
+	 SPCOSG5OEu/iLl2QBM1jEyS+beVUlD5FjTSWt528Lfj4mIJW7/U/6RVOFWUReLO1eM
+	 ClqC6zKKzKVQnjBj+d82WvRxWuiwD+JpRW3YtF0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Wortel <wwortel@dorpstraat.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.8 322/399] net: phy: qcom: at803x: fix kernel panic with at8031_probe
+	Fabio Estevam <festevam@denx.de>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.6 239/396] ARM: imx_v6_v7_defconfig: Restore CONFIG_BACKLIGHT_CLASS_DEVICE
 Date: Mon,  1 Apr 2024 17:44:48 +0200
-Message-ID: <20240401152558.793088519@linuxfoundation.org>
+Message-ID: <20240401152555.039451629@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit 6a4aee277740d04ac0fd54cfa17cc28261932ddc upstream.
+commit 2b0a5a8a397c0ae8f8cd25e7d3857c749239ceb8 upstream.
 
-On reworking and splitting the at803x driver, in splitting function of
-at803x PHYs it was added a NULL dereference bug where priv is referenced
-before it's actually allocated and then is tried to write to for the
-is_1000basex and is_fiber variables in the case of at8031, writing on
-the wrong address.
+Since commit bfac19e239a7 ("fbdev: mx3fb: Remove the driver") backlight
+is no longer functional.
 
-Fix this by correctly setting priv local variable only after
-at803x_probe is called and actually allocates priv in the phydev struct.
+The fbdev mx3fb driver used to automatically select
+CONFIG_BACKLIGHT_CLASS_DEVICE.
 
-Reported-by: William Wortel <wwortel@dorpstraat.com>
-Cc: <stable@vger.kernel.org>
-Fixes: 25d2ba94005f ("net: phy: at803x: move specific at8031 probe mode check to dedicated probe")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240325190621.2665-1-ansuelsmth@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Now that the mx3fb driver has been removed, enable the
+CONFIG_BACKLIGHT_CLASS_DEVICE option so that backlight can still work
+by default.
+
+Tested on a imx6dl-sabresd board.
+
+Cc: stable@vger.kernel.org
+Fixes: bfac19e239a7 ("fbdev: mx3fb: Remove the driver")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com> # Toradex Colibri iMX7
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/at803x.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/phy/at803x.c
-+++ b/drivers/net/phy/at803x.c
-@@ -1503,7 +1503,7 @@ static int at8031_parse_dt(struct phy_de
- 
- static int at8031_probe(struct phy_device *phydev)
- {
--	struct at803x_priv *priv = phydev->priv;
-+	struct at803x_priv *priv;
- 	int mode_cfg;
- 	int ccr;
- 	int ret;
-@@ -1512,6 +1512,8 @@ static int at8031_probe(struct phy_devic
- 	if (ret)
- 		return ret;
- 
-+	priv = phydev->priv;
-+
- 	/* Only supported on AR8031/AR8033, the AR8030/AR8035 use strapping
- 	 * options.
- 	 */
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 0a90583f9f01..8f9dbe8d9029 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -297,6 +297,7 @@ CONFIG_FB_MODE_HELPERS=y
+ CONFIG_LCD_CLASS_DEVICE=y
+ CONFIG_LCD_L4F00242T03=y
+ CONFIG_LCD_PLATFORM=y
++CONFIG_BACKLIGHT_CLASS_DEVICE=y
+ CONFIG_BACKLIGHT_PWM=y
+ CONFIG_BACKLIGHT_GPIO=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+-- 
+2.44.0
+
 
 
 
