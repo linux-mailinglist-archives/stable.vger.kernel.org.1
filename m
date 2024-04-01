@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE4A893F79
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADF089413B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF8441F22A10
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9BBC282917
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AF547A74;
-	Mon,  1 Apr 2024 16:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A0F3F8F4;
+	Mon,  1 Apr 2024 16:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lv5h+Pm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9X3TEhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433E847A57;
-	Mon,  1 Apr 2024 16:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC96F1E86C;
+	Mon,  1 Apr 2024 16:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988223; cv=none; b=g6XYAWigvJI/hQlJEer6QdO1N2iu9ZEtSooojrxyp27Z7Q5Pqr0J8PUNpv0z1EnQrWfD6sew4IFhby+7tUjTSGml8qK37LvykLjRxeTHpdu+E5Wv2R/F6vP9KesjMzsBpAfN7Hg5lDM2r7RIPey8LxOcxrVL/aaXcX+CvkqlYb8=
+	t=1711989568; cv=none; b=eP8xZ5jsPRIYjcizyKGIwJ2t/7d4n23TT+B1aVa34ZmDSMUC5BTqBYuzc6LBeUsVlPCtd1G/JBbWwCqBmWk/R0fvTQ3zZXc7yNFRshe1kmswLeda3A/12rRNivVhyASRCgnd+05WPD3ggCWbEUX4u2Q22ymOgR4JEjZdjv59aV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988223; c=relaxed/simple;
-	bh=SEiKmy30zqQ89WLj2mRjpxkCIfoorfa/ROp/VPNMkB8=;
+	s=arc-20240116; t=1711989568; c=relaxed/simple;
+	bh=a2IWhpeFWE9CyRWHmfTVoxQUd5c0NFo+VNB0TBm7VUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=usRi9s+hKF2VB/XprBFSMD2VRVwYo4MmjFRPxWoZO8LWNAje0KU97sc9T/yGqOYqqTn71R1J+7mld3Yp3Wyn8IW/PFSuWgRLI6J6yQoIswp8va4SzTqK/WSIwUfDUCRTnFTEqTSie5Swp7a4xHfMh10kdcbJpEvcJq83GvGn3Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lv5h+Pm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6902BC43390;
-	Mon,  1 Apr 2024 16:17:02 +0000 (UTC)
+	 MIME-Version; b=kTOCO3c/ti2JGv9sA+ahvgHy8RoK28N5tqNcWRR4e/aRZ2DtwauIrPtJMdIlsIN8idLVFmrz3VPaK1c1TzKN7qRnMBA09o+/KD6rUrIt6MngnjVLhcEo6YIcQ78H65EZ1o2aBJ4sA1k/a9BOIklD9/WGDUuB7fH39lY+l+Jad6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9X3TEhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C291C43390;
+	Mon,  1 Apr 2024 16:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988222;
-	bh=SEiKmy30zqQ89WLj2mRjpxkCIfoorfa/ROp/VPNMkB8=;
+	s=korg; t=1711989567;
+	bh=a2IWhpeFWE9CyRWHmfTVoxQUd5c0NFo+VNB0TBm7VUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lv5h+Pm69/PIrq+FTHdbEoy4ATtxpZCZUOGD7aLQqpY0XxDWvjHQUG39fykm06VdI
-	 fXTxPkPOya5DCgAF2zhjBYueUm8mC1aKpBmru40jIka5jDOCLGNTVk3Iw2VM6o0gRz
-	 6ntwR7Uh63B9BHYhLcW36TR2zKQJROGN8OpFz504=
+	b=D9X3TEhuJFfWs37Lve3+39zkPCOl8h0BvvsfgsEHg5Brg74GbyakswibpJW8XtMce
+	 8HV9azAUtoPIFrfMCQd89257RSSum1P/yBBRlKx+Xz/kmkiMJPvEgItmz8sNsLpTTt
+	 yj9Tru8pMqsozdJEgSWa1SWb7cjELPG/Xi4efIZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 120/432] io_uring: fix io_queue_proc modifying req->flags
-Date: Mon,  1 Apr 2024 17:41:47 +0200
-Message-ID: <20240401152556.702650135@linuxfoundation.org>
+Subject: [PATCH 6.6 059/396] md/raid5: fix atomicity violation in raid5_cache_count
+Date: Mon,  1 Apr 2024 17:41:48 +0200
+Message-ID: <20240401152549.684163679@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit 1a8ec63b2b6c91caec87d4e132b1f71b5df342be ]
+[ Upstream commit dfd2bf436709b2bccb78c2dda550dde93700efa7 ]
 
-With multiple poll entries __io_queue_proc() might be running in
-parallel with poll handlers and possibly task_work, we should not be
-carelessly modifying req->flags there. io_poll_double_prepare() handles
-a similar case with locking but it's much easier to move it into
-__io_arm_poll_handler().
+In raid5_cache_count():
+    if (conf->max_nr_stripes < conf->min_nr_stripes)
+        return 0;
+    return conf->max_nr_stripes - conf->min_nr_stripes;
+The current check is ineffective, as the values could change immediately
+after being checked.
 
+In raid5_set_cache_size():
+    ...
+    conf->min_nr_stripes = size;
+    ...
+    while (size > conf->max_nr_stripes)
+        conf->min_nr_stripes = conf->max_nr_stripes;
+    ...
+
+Due to intermediate value updates in raid5_set_cache_size(), concurrent
+execution of raid5_cache_count() and raid5_set_cache_size() may lead to
+inconsistent reads of conf->max_nr_stripes and conf->min_nr_stripes.
+The current checks are ineffective as values could change immediately
+after being checked, raising the risk of conf->min_nr_stripes exceeding
+conf->max_nr_stripes and potentially causing an integer overflow.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including data races and atomicity violations. The above possible bug is
+reported when our tool analyzes the source code of Linux 6.2.
+
+To resolve this issue, it is suggested to introduce local variables
+'min_stripes' and 'max_stripes' in raid5_cache_count() to ensure the
+values remain stable throughout the check. Adding locks in
+raid5_cache_count() fails to resolve atomicity violations, as
+raid5_set_cache_size() may hold intermediate values of
+conf->min_nr_stripes while unlocked. With this patch applied, our tool no
+longer reports the bug, with the kernel configuration allyesconfig for
+x86_64. Due to the lack of associated hardware, we cannot test the patch
+in runtime testing, and just verify it according to the code logic.
+
+Fixes: edbe83ab4c27 ("md/raid5: allow the stripe_cache to grow and shrink.")
 Cc: stable@vger.kernel.org
-Fixes: 595e52284d24a ("io_uring/poll: don't enable lazy wake for POLLEXCLUSIVE")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/455cc49e38cf32026fa1b49670be8c162c2cb583.1709834755.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240112071017.16313-1-2045gemini@gmail.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/poll.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/md/raid5.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/io_uring/poll.c b/io_uring/poll.c
-index 58b7556f621eb..c6f4789623cb2 100644
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -539,14 +539,6 @@ static void __io_queue_proc(struct io_poll *poll, struct io_poll_table *pt,
- 	poll->wait.private = (void *) wqe_private;
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 68d86dbecb4ac..212bf85edad03 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -2420,7 +2420,7 @@ static int grow_one_stripe(struct r5conf *conf, gfp_t gfp)
+ 	atomic_inc(&conf->active_stripes);
  
- 	if (poll->events & EPOLLEXCLUSIVE) {
--		/*
--		 * Exclusive waits may only wake a limited amount of entries
--		 * rather than all of them, this may interfere with lazy
--		 * wake if someone does wait(events > 1). Ensure we don't do
--		 * lazy wake for those, as we need to process each one as they
--		 * come in.
--		 */
--		req->flags |= REQ_F_POLL_NO_LAZY;
- 		add_wait_queue_exclusive(head, &poll->wait);
- 	} else {
- 		add_wait_queue(head, &poll->wait);
-@@ -618,6 +610,17 @@ static int __io_arm_poll_handler(struct io_kiocb *req,
- 	if (issue_flags & IO_URING_F_UNLOCKED)
- 		req->flags &= ~REQ_F_HASH_LOCKED;
+ 	raid5_release_stripe(sh);
+-	conf->max_nr_stripes++;
++	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes + 1);
+ 	return 1;
+ }
  
-+
-+	/*
-+	 * Exclusive waits may only wake a limited amount of entries
-+	 * rather than all of them, this may interfere with lazy
-+	 * wake if someone does wait(events > 1). Ensure we don't do
-+	 * lazy wake for those, as we need to process each one as they
-+	 * come in.
-+	 */
-+	if (poll->events & EPOLLEXCLUSIVE)
-+		req->flags |= REQ_F_POLL_NO_LAZY;
-+
- 	mask = vfs_poll(req->file, &ipt->pt) & poll->events;
+@@ -2717,7 +2717,7 @@ static int drop_one_stripe(struct r5conf *conf)
+ 	shrink_buffers(sh);
+ 	free_stripe(conf->slab_cache, sh);
+ 	atomic_dec(&conf->active_stripes);
+-	conf->max_nr_stripes--;
++	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes - 1);
+ 	return 1;
+ }
  
- 	if (unlikely(ipt->error || !ipt->nr_entries)) {
+@@ -6901,7 +6901,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
+ 	if (size <= 16 || size > 32768)
+ 		return -EINVAL;
+ 
+-	conf->min_nr_stripes = size;
++	WRITE_ONCE(conf->min_nr_stripes, size);
+ 	mutex_lock(&conf->cache_size_mutex);
+ 	while (size < conf->max_nr_stripes &&
+ 	       drop_one_stripe(conf))
+@@ -6913,7 +6913,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
+ 	mutex_lock(&conf->cache_size_mutex);
+ 	while (size > conf->max_nr_stripes)
+ 		if (!grow_one_stripe(conf, GFP_KERNEL)) {
+-			conf->min_nr_stripes = conf->max_nr_stripes;
++			WRITE_ONCE(conf->min_nr_stripes, conf->max_nr_stripes);
+ 			result = -ENOMEM;
+ 			break;
+ 		}
+@@ -7478,11 +7478,13 @@ static unsigned long raid5_cache_count(struct shrinker *shrink,
+ 				       struct shrink_control *sc)
+ {
+ 	struct r5conf *conf = container_of(shrink, struct r5conf, shrinker);
++	int max_stripes = READ_ONCE(conf->max_nr_stripes);
++	int min_stripes = READ_ONCE(conf->min_nr_stripes);
+ 
+-	if (conf->max_nr_stripes < conf->min_nr_stripes)
++	if (max_stripes < min_stripes)
+ 		/* unlikely, but not impossible */
+ 		return 0;
+-	return conf->max_nr_stripes - conf->min_nr_stripes;
++	return max_stripes - min_stripes;
+ }
+ 
+ static struct r5conf *setup_conf(struct mddev *mddev)
 -- 
 2.43.0
 
