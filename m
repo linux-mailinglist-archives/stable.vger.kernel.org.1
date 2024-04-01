@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CAC8943DE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F8D8942B4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5694B1C2074D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 241001C21E6B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AE6487BC;
-	Mon,  1 Apr 2024 17:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77DC4653C;
+	Mon,  1 Apr 2024 16:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AsfZ7xuk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmyWR0KR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAD1482CA;
-	Mon,  1 Apr 2024 17:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FF463E;
+	Mon,  1 Apr 2024 16:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991350; cv=none; b=gLTSs+zDf0llAnU+KezvJgKLJ7Kgkasx9scD67l7lMq6CPizygvVrTjhvMin6ym3uYoAm4qxYX21+mBWFjxHoZakLQbPDdkmsqJMXFvrE2CqlNKGiJ8PmLuVXJ/GX3YvioTLEdBxpokq8sCMG1aTGKhsg+phc83DCBd/H7RniMY=
+	t=1711990517; cv=none; b=ktYDmeuesyV1NDzmHtJnZn9t+nL264Ol2lgkOYx3HwyJx1IC+jM6T3211Ujlv0OudcRnj/FvvoLVNGCOwrFAuJaDvDyRn93jm7dXYYQEVn1JhIzI++LeN2nb8JKCecKy3nun/blY1nyqI71G1rjhDjLVGZxG3KdGeKt3vwotreU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991350; c=relaxed/simple;
-	bh=Q6VI6vABHdLZ97qypGph3jBepIDB+pVshWJXLeoCZMY=;
+	s=arc-20240116; t=1711990517; c=relaxed/simple;
+	bh=QP8oPzBs0ZDhHuMLL5HjAht6/arYqYA14VEYIps8qcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSyJ5CvSks4VxZigDAONgN0LS48bw9h4hlDoj6mDcxH9Zs4UaKt3WqdkHy1iXvBHZDGdoPH8GjJIp9Fm1oA/ITiaVOySTfLdQA3asxaGCXbUSIntbat3cHu1oCzctUCbPt2QMei5b/5eLlQ6RVG5h3hqAI7AnGziT/cWVcjv0wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AsfZ7xuk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC92C433F1;
-	Mon,  1 Apr 2024 17:09:09 +0000 (UTC)
+	 MIME-Version; b=SufXwgyH0RHvuIN00IzrICVQC/ymFyOAMUdLKb4KkzU3KyJa2mX2FqBL5gjRS5M87PfX/tXpaWqNceJ1RUVxM0/4ksR9RX6GCYHIht0FQcZGV7GIjwcHqhTvQORUeZmE+kmgBXFfAq3XlMEFW9AiD6njh0ylh1VpaYCycgYw4Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmyWR0KR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E420BC433C7;
+	Mon,  1 Apr 2024 16:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991350;
-	bh=Q6VI6vABHdLZ97qypGph3jBepIDB+pVshWJXLeoCZMY=;
+	s=korg; t=1711990517;
+	bh=QP8oPzBs0ZDhHuMLL5HjAht6/arYqYA14VEYIps8qcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AsfZ7xuk0xjNIPmgWzLUUhk54Y/enshKk4lqRWxsu9aqhl4lN5q+PYcku+OJ6Bnmm
-	 fHE1TmoqTFtNlqU9Qs1Twz5hz3yr2bQkA2JfcJBEIWRmvvlQ0HApmtXe6ZymyS2NND
-	 CC5Kj9PpK1neU6H4k+MunhMtF3T5TO3whMEVlKfk=
+	b=DmyWR0KRxhKJIAr/jiB7ew6CTaU87smUx6Tx6BWbhReRyjsO1i78hxYKm4xAQIvj3
+	 X+TS/kh4YskcZP5HQh0HAs+eqeNgw9/4UXIFUBDFakxfIcGBwRnX7UUttwmhlU4ady
+	 +zNQjxkGxT348J6KiOznLWyIsz9nvmXYF9vs3oGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.1 238/272] staging: vc04_services: changen strncpy() to strscpy_pad()
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 379/396] scsi: qla2xxx: Fix N2N stuck connection
 Date: Mon,  1 Apr 2024 17:47:08 +0200
-Message-ID: <20240401152538.402203059@linuxfoundation.org>
+Message-ID: <20240401152559.213413383@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Quinn Tran <qutran@marvell.com>
 
-commit ef25725b7f8aaffd7756974d3246ec44fae0a5cf upstream.
+commit 881eb861ca3877300570db10abbf11494e48548d upstream.
 
-gcc-14 warns about this strncpy() that results in a non-terminated
-string for an overflow:
+Disk failed to rediscover after chip reset error injection. The chip reset
+happens at the time when a PLOGI is being sent. This causes a flag to be
+left on which blocks the retry. Clear the blocking flag.
 
-In file included from include/linux/string.h:369,
-                 from drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:20:
-In function 'strncpy',
-    inlined from 'create_component' at drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:940:2:
-include/linux/fortify-string.h:108:33: error: '__builtin_strncpy' specified bound 128 equals destination size [-Werror=stringop-truncation]
-
-Change it to strscpy_pad(), which produces a properly terminated and
-zero-padded string.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240313163712.224585-1-arnd@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-3-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_gbl.h  |    2 +-
+ drivers/scsi/qla2xxx/qla_iocb.c |   32 +++++++++++---------------------
+ drivers/scsi/qla2xxx/qla_os.c   |    2 +-
+ 3 files changed, 13 insertions(+), 23 deletions(-)
 
---- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-@@ -938,8 +938,8 @@ static int create_component(struct vchiq
- 	/* build component create message */
- 	m.h.type = MMAL_MSG_TYPE_COMPONENT_CREATE;
- 	m.u.component_create.client_component = component->client_component;
--	strncpy(m.u.component_create.name, name,
--		sizeof(m.u.component_create.name));
-+	strscpy_pad(m.u.component_create.name, name,
-+		    sizeof(m.u.component_create.name));
+--- a/drivers/scsi/qla2xxx/qla_gbl.h
++++ b/drivers/scsi/qla2xxx/qla_gbl.h
+@@ -44,7 +44,7 @@ extern int qla2x00_fabric_login(scsi_qla
+ extern int qla2x00_local_device_login(scsi_qla_host_t *, fc_port_t *);
  
- 	ret = send_synchronous_mmal_msg(instance, &m,
- 					sizeof(m.u.component_create),
+ extern int qla24xx_els_dcmd_iocb(scsi_qla_host_t *, int, port_id_t);
+-extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *, bool);
++extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *);
+ extern void qla2x00_els_dcmd2_free(scsi_qla_host_t *vha,
+ 				   struct els_plogi *els_plogi);
+ 
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -3041,7 +3041,7 @@ static void qla2x00_els_dcmd2_sp_done(sr
+ 
+ int
+ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *vha, int els_opcode,
+-    fc_port_t *fcport, bool wait)
++			fc_port_t *fcport)
+ {
+ 	srb_t *sp;
+ 	struct srb_iocb *elsio = NULL;
+@@ -3056,8 +3056,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 	if (!sp) {
+ 		ql_log(ql_log_info, vha, 0x70e6,
+ 		 "SRB allocation failed\n");
+-		fcport->flags &= ~FCF_ASYNC_ACTIVE;
+-		return -ENOMEM;
++		goto done;
+ 	}
+ 
+ 	fcport->flags |= FCF_ASYNC_SENT;
+@@ -3066,9 +3065,6 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 	ql_dbg(ql_dbg_io, vha, 0x3073,
+ 	       "%s Enter: PLOGI portid=%06x\n", __func__, fcport->d_id.b24);
+ 
+-	if (wait)
+-		sp->flags = SRB_WAKEUP_ON_COMP;
+-
+ 	sp->type = SRB_ELS_DCMD;
+ 	sp->name = "ELS_DCMD";
+ 	sp->fcport = fcport;
+@@ -3084,7 +3080,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 
+ 	if (!elsio->u.els_plogi.els_plogi_pyld) {
+ 		rval = QLA_FUNCTION_FAILED;
+-		goto out;
++		goto done_free_sp;
+ 	}
+ 
+ 	resp_ptr = elsio->u.els_plogi.els_resp_pyld =
+@@ -3093,7 +3089,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 
+ 	if (!elsio->u.els_plogi.els_resp_pyld) {
+ 		rval = QLA_FUNCTION_FAILED;
+-		goto out;
++		goto done_free_sp;
+ 	}
+ 
+ 	ql_dbg(ql_dbg_io, vha, 0x3073, "PLOGI %p %p\n", ptr, resp_ptr);
+@@ -3109,7 +3105,6 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 
+ 	if (els_opcode == ELS_DCMD_PLOGI && DBELL_ACTIVE(vha)) {
+ 		struct fc_els_flogi *p = ptr;
+-
+ 		p->fl_csp.sp_features |= cpu_to_be16(FC_SP_FT_SEC);
+ 	}
+ 
+@@ -3118,10 +3113,11 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 	    (uint8_t *)elsio->u.els_plogi.els_plogi_pyld,
+ 	    sizeof(*elsio->u.els_plogi.els_plogi_pyld));
+ 
+-	init_completion(&elsio->u.els_plogi.comp);
+ 	rval = qla2x00_start_sp(sp);
+ 	if (rval != QLA_SUCCESS) {
+-		rval = QLA_FUNCTION_FAILED;
++		fcport->flags |= FCF_LOGIN_NEEDED;
++		set_bit(RELOGIN_NEEDED, &vha->dpc_flags);
++		goto done_free_sp;
+ 	} else {
+ 		ql_dbg(ql_dbg_disc, vha, 0x3074,
+ 		    "%s PLOGI sent, hdl=%x, loopid=%x, to port_id %06x from port_id %06x\n",
+@@ -3129,21 +3125,15 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 		    fcport->d_id.b24, vha->d_id.b24);
+ 	}
+ 
+-	if (wait) {
+-		wait_for_completion(&elsio->u.els_plogi.comp);
+-
+-		if (elsio->u.els_plogi.comp_status != CS_COMPLETE)
+-			rval = QLA_FUNCTION_FAILED;
+-	} else {
+-		goto done;
+-	}
++	return rval;
+ 
+-out:
+-	fcport->flags &= ~(FCF_ASYNC_SENT | FCF_ASYNC_ACTIVE);
++done_free_sp:
+ 	qla2x00_els_dcmd2_free(vha, &elsio->u.els_plogi);
+ 	/* ref: INIT */
+ 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+ done:
++	fcport->flags &= ~(FCF_ASYNC_SENT | FCF_ASYNC_ACTIVE);
++	qla2x00_set_fcport_disc_state(fcport, DSC_DELETED);
+ 	return rval;
+ }
+ 
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -5582,7 +5582,7 @@ qla2x00_do_work(struct scsi_qla_host *vh
+ 			break;
+ 		case QLA_EVT_ELS_PLOGI:
+ 			qla24xx_els_dcmd2_iocb(vha, ELS_DCMD_PLOGI,
+-			    e->u.fcport.fcport, false);
++			    e->u.fcport.fcport);
+ 			break;
+ 		case QLA_EVT_SA_REPLACE:
+ 			rc = qla24xx_issue_sa_replace_iocb(vha, e);
 
 
 
