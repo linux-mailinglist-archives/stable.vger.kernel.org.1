@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA99B894065
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23858894230
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BF55B214A5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC361F210F5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D6A446D5;
-	Mon,  1 Apr 2024 16:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7DB4653C;
+	Mon,  1 Apr 2024 16:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6jFNs+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwZfW0zP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C283D961;
-	Mon,  1 Apr 2024 16:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9128F5C;
+	Mon,  1 Apr 2024 16:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988971; cv=none; b=sjdakiXGRpXExhTYwd4kFyFP1ppCfwyB9GLCijDNBUNijHWEforgBysKCv8ZVt+jyQFmPPqS+icgG41so6iTeOOs8bdVF/KFCl5Q7mTRbklbzBTIWaGtbKHv8zw5VIIiLGjYCyX+vBfA5ZHGAOWwMMrfDWL9+Co9PasB+h7y0Ws=
+	t=1711990212; cv=none; b=iEfNpFGj9qPpljzs0hqyHr+XweMsMwRy/jEpR18FW4GmPVMQU3z001t07/OLX4MNp7ACLHanyHnItWk7lY32EXIu+In6NYDrP76LKxf37Lf0utKKVi5vww9zfJFJGZAsF1IZIQHDMUcWdA4ev/aESITxDouQwPgYRKwMZct9PZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988971; c=relaxed/simple;
-	bh=VO2KuiNXjCA5cEjosMOQjcwxpMElwArDdfIwKlwH3DA=;
+	s=arc-20240116; t=1711990212; c=relaxed/simple;
+	bh=5vEecD5BBjRGVO2HmvUNN32DihtTZIYu4/jLDA6509E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYETrXd3s/evMK/GA973VnTiTfiwetB7mmsS5wcECQEMYec7L9AOz667N+9AuhFNgMuP9r7w9MADNhfALeu5pKeDDOaM/RXdOmQLKtvbSJR8DwATtaqzJ6xpHDPonNvSFahXReXF7JLPH/igQbiU5Snt7oWevxuKCsZ1XL080Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6jFNs+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17462C433F1;
-	Mon,  1 Apr 2024 16:29:30 +0000 (UTC)
+	 MIME-Version; b=Put5C/VQ8oDdHgBcDNIMF/fO4qibLh1dvok7fxKC5u3q+TqAhRHsAnsgOdYMag/jy1WQ97YZkV+p4N4WG0OQIk0419+a5pRGXk11ZQja5IS0cEqaPAhsS8Lq2jmQCdcV6uB1YExp+R6tWq3QIF3t4Nv6jVhrjc/OhxF8BBSBA9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwZfW0zP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E94C433C7;
+	Mon,  1 Apr 2024 16:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988971;
-	bh=VO2KuiNXjCA5cEjosMOQjcwxpMElwArDdfIwKlwH3DA=;
+	s=korg; t=1711990212;
+	bh=5vEecD5BBjRGVO2HmvUNN32DihtTZIYu4/jLDA6509E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6jFNs+RQamY5gKm45nIl5mFb8bAA/8eSuxulw0EiB5CDj2L3E2mIhZC9DYALWSnD
-	 ApYWI0ey6CbYL7Hqro+okAIh36g/JAyKOMgzEmIh0Y75fi1YjmHvhTVxFLd5SYB/Rd
-	 VmRU7by3ApGGXffk0cugVdY1I++QjeaFOoLymjhk=
+	b=xwZfW0zPxTb/9Nld+aUXdszPwRzrAoipc4es1ZXD95S9BW2v0a21Kj8P10JVWSHhb
+	 cJlFU0VqoPNKE5A4maZdML2BdGwQ5Fkd8DGUF30IfO1FuoefZPwZHr3jHkiH5HAK4U
+	 VAyFQqg0nE8F/xwqHSO6nLzVYE24/fFrlvWpDpKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.7 343/432] btrfs: zoned: dont skip block groups with 100% zone unusable
+	Diana Craciun <diana.craciun@oss.nxp.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 6.6 281/396] vfio/fsl-mc: Block calling interrupt handler without trigger
 Date: Mon,  1 Apr 2024 17:45:30 +0200
-Message-ID: <20240401152603.469203274@linuxfoundation.org>
+Message-ID: <20240401152556.287328235@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit a8b70c7f8600bc77d03c0b032c0662259b9e615e upstream.
+commit 7447d911af699a15f8d050dfcb7c680a86f87012 upstream.
 
-Commit f4a9f219411f ("btrfs: do not delete unused block group if it may be
-used soon") changed the behaviour of deleting unused block-groups on zoned
-filesystems. Starting with this commit, we're using
-btrfs_space_info_used() to calculate the number of used bytes in a
-space_info. But btrfs_space_info_used() also accounts
-btrfs_space_info::bytes_zone_unusable as used bytes.
+The eventfd_ctx trigger pointer of the vfio_fsl_mc_irq object is
+initially NULL and may become NULL if the user sets the trigger
+eventfd to -1.  The interrupt handler itself is guaranteed that
+trigger is always valid between request_irq() and free_irq(), but
+the loopback testing mechanisms to invoke the handler function
+need to test the trigger.  The triggering and setting ioctl paths
+both make use of igate and are therefore mutually exclusive.
 
-So if a block group is 100% zone_unusable it is skipped from the deletion
-step.
+The vfio-fsl-mc driver does not make use of irqfds, nor does it
+support any sort of masking operations, therefore unlike vfio-pci
+and vfio-platform, the flow can remain essentially unchanged.
 
-In order not to skip fully zone_unusable block-groups, also check if the
-block-group has bytes left that can be used on a zoned filesystem.
-
-Fixes: f4a9f219411f ("btrfs: do not delete unused block group if it may be used soon")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Diana Craciun <diana.craciun@oss.nxp.com>
+Cc:  <stable@vger.kernel.org>
+Fixes: cc0ee20bd969 ("vfio/fsl-mc: trigger an interrupt via eventfd")
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-8-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1562,7 +1562,8 @@ void btrfs_delete_unused_bgs(struct btrf
- 		 * needing to allocate extents from the block group.
- 		 */
- 		used = btrfs_space_info_used(space_info, true);
--		if (space_info->total_bytes - block_group->length < used) {
-+		if (space_info->total_bytes - block_group->length < used &&
-+		    block_group->zone_unusable < block_group->length) {
- 			/*
- 			 * Add a reference for the list, compensate for the ref
- 			 * drop under the "next" label for the
+--- a/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
++++ b/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
+@@ -141,13 +141,14 @@ static int vfio_fsl_mc_set_irq_trigger(s
+ 	irq = &vdev->mc_irqs[index];
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_fsl_mc_irq_handler(hwirq, irq);
++		if (irq->trigger)
++			eventfd_signal(irq->trigger, 1);
+ 
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		u8 trigger = *(u8 *)data;
+ 
+-		if (trigger)
+-			vfio_fsl_mc_irq_handler(hwirq, irq);
++		if (trigger && irq->trigger)
++			eventfd_signal(irq->trigger, 1);
+ 	}
+ 
+ 	return 0;
 
 
 
