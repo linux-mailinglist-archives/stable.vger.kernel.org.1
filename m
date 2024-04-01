@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-35023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51468941F5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1824F894322
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 469A7B228CF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4917B1C21EFB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051704AEF6;
-	Mon,  1 Apr 2024 16:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67884BA3F;
+	Mon,  1 Apr 2024 17:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXiohZWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOQkTWU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83324AEF0;
-	Mon,  1 Apr 2024 16:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DB1482DF;
+	Mon,  1 Apr 2024 17:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990087; cv=none; b=eCbwXtgSW2dg4GwHUEyI1m8rek/jyo2xa3vvpz9ADMCoHJMwMmTq4WZxCzAqoeLsiUWrIVHWuEHoasdRVr5Q/Xp5WKFdYRCzA2wKQDvpTS4dh471TzlRtUIMXf+qQd+m5gESqF43yyd+gfDfkqfrCGSsS1bp7LlK4ZEyU6tHiqc=
+	t=1711990808; cv=none; b=RzmEMyFG30PFaTRn5GwN8iWNklau84ix9TlZ+L3Z9ECB3mr+9JM+MynEFY/hgP7jD+0XHxf7h4M9ayl/C4cNIoWmOvtaj3VRp9xafhmk2Mm6xtuXVb2LD6WKAmXcC/A8of1TkLu0skngxmzJBhXUZsUL6T1HKuEjp/WYS0RJHtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990087; c=relaxed/simple;
-	bh=MHpKqYXcCCE5y8esbMXHkm2z1eW6XxgSIrjS0hH88JE=;
+	s=arc-20240116; t=1711990808; c=relaxed/simple;
+	bh=ZORA2BOmxMn91wopf6YwZSCVvLS3wef1RyW4J77QThI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJ5PdSWc54KTLW3wX7xYoqrlegabYN0Zmv+4Cch/2e7csiNSDJ45qS/9HuiQqeKilTFNf6x6gAzLMsOUn9GLOCwGQGhUjSacPw5QfHAGbhpzvQOHU+2F6f2py5z92qSclefu3iPXAFXtwQr3I8nGks58AexbHBLiEXZOkNhBZSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXiohZWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290B1C43390;
-	Mon,  1 Apr 2024 16:48:06 +0000 (UTC)
+	 MIME-Version; b=D9erqgKnLIBLh97sMOd+HC0Lx+OEKsGi8wqW83HHniHTDzr2nmxZvx+h+IQb80mTkICVRNYFdlqGPFasJYPgikxGlWSYBDjiIsd3egpKJ0C7u4Iym0i9xgPAPDR59qYohE/Dy0C8m/1eyMqPcyEoE6+QvRUGCJsW0mMlWS0iP1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOQkTWU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899F6C43390;
+	Mon,  1 Apr 2024 17:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990087;
-	bh=MHpKqYXcCCE5y8esbMXHkm2z1eW6XxgSIrjS0hH88JE=;
+	s=korg; t=1711990808;
+	bh=ZORA2BOmxMn91wopf6YwZSCVvLS3wef1RyW4J77QThI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXiohZWKOd+gDEzMlRAO+e7Eu7bB+I2VDMiFbcmG/0yy3SUtEqc3hGWngFiKhPzMy
-	 qjILlcMUf+O1csJu4snnnxAcfvNcsLtdu9ocZH820jf+mbx0QifR2d7UTly/k27yS1
-	 oSLbClk2QIfXtEcpcnEscNpvY5d9TC6NFvSzyQ50=
+	b=OOQkTWU0v3sd2/JJkEWc+aB6X4mx0YFv5Ia9FM4qnSLzJpnG6CwwunuqLqZ7KFp85
+	 Z3m2uug4wTHYGB5bmdeKL+s6Xq7tXQdjHUfxCm5PcLLBrDxnnZMrwx6xKZvTQP1ZWN
+	 R//OTsQ93GB/+RHsDa/c2Ykz5JG5bZpd9EIrQBb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Matlack <dmatlack@google.com>,
-	Pasha Tatashin <tatashin@google.com>,
-	Michael Krebs <mkrebs@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 213/396] KVM: x86: Mark target gfn of emulated atomic instruction as dirty
+	Alex Lyakas <alex.lyakas@zadara.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 072/272] btrfs: fix off-by-one chunk length calculation at contains_pending_extent()
 Date: Mon,  1 Apr 2024 17:44:22 +0200
-Message-ID: <20240401152554.275656128@linuxfoundation.org>
+Message-ID: <20240401152532.812688108@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 910c57dfa4d113aae6571c2a8b9ae8c430975902 upstream.
+[ Upstream commit ae6bd7f9b46a29af52ebfac25d395757e2031d0d ]
 
-When emulating an atomic access on behalf of the guest, mark the target
-gfn dirty if the CMPXCHG by KVM is attempted and doesn't fault.  This
-fixes a bug where KVM effectively corrupts guest memory during live
-migration by writing to guest memory without informing userspace that the
-page is dirty.
+At contains_pending_extent() the value of the end offset of a chunk we
+found in the device's allocation state io tree is inclusive, so when
+we calculate the length we pass to the in_range() macro, we must sum
+1 to the expression "physical_end - physical_offset".
 
-Marking the page dirty got unintentionally dropped when KVM's emulated
-CMPXCHG was converted to do a user access.  Before that, KVM explicitly
-mapped the guest page into kernel memory, and marked the page dirty during
-the unmap phase.
+In practice the wrong calculation should be harmless as chunks sizes
+are never 1 byte and we should never have 1 byte ranges of unallocated
+space. Nevertheless fix the wrong calculation.
 
-Mark the page dirty even if the CMPXCHG fails, as the old data is written
-back on failure, i.e. the page is still written.  The value written is
-guaranteed to be the same because the operation is atomic, but KVM's ABI
-is that all writes are dirty logged regardless of the value written.  And
-more importantly, that's what KVM did before the buggy commit.
-
-Huge kudos to the folks on the Cc list (and many others), who did all the
-actual work of triaging and debugging.
-
-Fixes: 1c2361f667f3 ("KVM: x86: Use __try_cmpxchg_user() to emulate atomic accesses")
-Cc: stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>
-Cc: Pasha Tatashin <tatashin@google.com>
-Cc: Michael Krebs <mkrebs@google.com>
-base-commit: 6769ea8da8a93ed4630f1ce64df6aafcaabfce64
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20240215010004.1456078-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Alex Lyakas <alex.lyakas@zadara.com>
+Link: https://lore.kernel.org/linux-btrfs/CAOcd+r30e-f4R-5x-S7sV22RJPe7+pgwherA6xqN2_qe7o4XTg@mail.gmail.com/
+Fixes: 1c11b63eff2a ("btrfs: replace pending/pinned chunks lists with io tree")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/btrfs/volumes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7840,6 +7840,16 @@ static int emulator_cmpxchg_emulated(str
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 6fc2d99270c18..03cfb425ea4ea 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1444,7 +1444,7 @@ static bool contains_pending_extent(struct btrfs_device *device, u64 *start,
  
- 	if (r < 0)
- 		return X86EMUL_UNHANDLEABLE;
-+
-+	/*
-+	 * Mark the page dirty _before_ checking whether or not the CMPXCHG was
-+	 * successful, as the old value is written back on failure.  Note, for
-+	 * live migration, this is unnecessarily conservative as CMPXCHG writes
-+	 * back the original value and the access is atomic, but KVM's ABI is
-+	 * that all writes are dirty logged, regardless of the value written.
-+	 */
-+	kvm_vcpu_mark_page_dirty(vcpu, gpa_to_gfn(gpa));
-+
- 	if (r)
- 		return X86EMUL_CMPXCHG_FAILED;
- 
+ 		if (in_range(physical_start, *start, len) ||
+ 		    in_range(*start, physical_start,
+-			     physical_end - physical_start)) {
++			     physical_end + 1 - physical_start)) {
+ 			*start = physical_end + 1;
+ 			return true;
+ 		}
+-- 
+2.43.0
+
 
 
 
