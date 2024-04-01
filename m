@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-35328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35961894378
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EF2893ED1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF438283807
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD3E51F211D2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6C048781;
-	Mon,  1 Apr 2024 17:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02604778E;
+	Mon,  1 Apr 2024 16:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f76e7OCZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6+8Kou5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF16482E4;
-	Mon,  1 Apr 2024 17:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D21C1CA8F;
+	Mon,  1 Apr 2024 16:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991037; cv=none; b=cUvmOR02heH5lRN1OVZLl4OLUhnszNxVkLc5UYSYt+nt4Kmtf5/Xg9PtwAyshsTRIaHhRDuDbqjweZLay3paeF0mtCPPsbmQArgMkh5nLPf5l3DYY459rOt97WGAO+g3mcdTzpLBvAgRP1231+FHeU0fxMO05cGW8O1S5Dc2I9g=
+	t=1711987702; cv=none; b=BSSU6jjY9pIIGyXHoweX9+K8b2FrFilJdP31tEGdTDmgtWaFd4LrJ/Hc8Bs5FKgIy717PVna0Xi4sCgHQIpWf0HTzBl2mWyGsAbz4ieTVIUE3IaDogHxNBN+5bWPnZd3F7L0kJi7HuySe0w+QcUuKH8GTGLQafhJGdMfNBzz+kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991037; c=relaxed/simple;
-	bh=fJ7JgUoLnHBb/rri0IeL5dvX91GqL5w5gABE13Wol64=;
+	s=arc-20240116; t=1711987702; c=relaxed/simple;
+	bh=ut6EIM+bBrJLCCYLnE0ymxFFZQdEuzTySy6BFYGiZ0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4BMowkYbihpDzy469Ln7tm3wnBbkc4bavreFAIbDVAe2OF1ne4PcagSQP3DBeZFTqdrm2qIBa15M3ZuTAjFxxxqoTP+at7cQduGJkQTmS6pu3/AyIhZOO4xcqKz761dVJ1natXpD8TXI9sINidvnFzk4OdyFfBjUi+iTgwpT1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f76e7OCZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBD2C43394;
-	Mon,  1 Apr 2024 17:03:56 +0000 (UTC)
+	 MIME-Version; b=tJkGq47TblwYXNVnQeGWgAOoDDeloPtdWDeHuqcbWsaJA4XsDiEDJUeob3wt61g7IaHkev8/RJK7ogMqkCl8Ks1NtEGi/B3uxD/02mDx9yHJdYIr9Yea47hB5EMCYargdrWH1e5J7W1U+C+EE+J8lJfHWfs1yuWaLRNKhMBJuic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6+8Kou5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46BEC433C7;
+	Mon,  1 Apr 2024 16:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991036;
-	bh=fJ7JgUoLnHBb/rri0IeL5dvX91GqL5w5gABE13Wol64=;
+	s=korg; t=1711987702;
+	bh=ut6EIM+bBrJLCCYLnE0ymxFFZQdEuzTySy6BFYGiZ0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f76e7OCZGdv+pAOeduR1dSgGUFSoPI3cUPEAIJR20ZCfXbNYSjlmJclLIez298n/8
-	 KvvOX/IdGwxkhnsYs2LfKscUt7Aq+B5wglsBY1epLbm6VzktUSU9qYtQC4xOOY63r3
-	 An6TKoQ2Zy9IqZRNLpsdOyjTnTLJsfa7ZeCO95J8=
+	b=v6+8Kou56NfPsMocvIQ1IOTCROm89Zmtn0QCdhZAyKibhR6z/8CMVXUJcpPfYeFFz
+	 5WEliCzLxB9pbwMBYxmaYQpRFd6htVPw+5sQJMdBylxyY+ustbQaEZrJ6O3uTnh5i+
+	 mawelwAFy8rIvZ5I74xPbGLrKijQucI3U+WYNN6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danil Rybakov <danilrybakov249@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 143/272] platform/x86: p2sb: On Goldmont only cache P2SB and SPI devfn BAR
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.8 367/399] usb: typec: ucsi: Fix race between typec_switch and role_switch
 Date: Mon,  1 Apr 2024 17:45:33 +0200
-Message-ID: <20240401152535.150457171@linuxfoundation.org>
+Message-ID: <20240401152600.132705410@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit aec7d25b497ce4a8d044e9496de0aa433f7f8f06 upstream.
+commit f5e9bda03aa50ffad36eccafe893d004ef213c43 upstream.
 
-On Goldmont p2sb_bar() only ever gets called for 2 devices, the actual P2SB
-devfn 13,0 and the SPI controller which is part of the P2SB, devfn 13,2.
+When orientation switch is enabled in ucsi glink, there is a xhci
+probe failure seen when booting up in host mode in reverse
+orientation.
 
-But the current p2sb code tries to cache BAR0 info for all of
-devfn 13,0 to 13,7 . This involves calling pci_scan_single_device()
-for device 13 functions 0-7 and the hw does not seem to like
-pci_scan_single_device() getting called for some of the other hidden
-devices. E.g. on an ASUS VivoBook D540NV-GQ065T this leads to continuous
-ACPI errors leading to high CPU usage.
+During bootup the following things happen in multiple drivers:
 
-Fix this by only caching BAR0 info and thus only calling
-pci_scan_single_device() for the P2SB and the SPI controller.
+a) DWC3 controller driver initializes the core in device mode when the
+dr_mode is set to DRD. It relies on role_switch call to change role to
+host.
 
-Fixes: 5913320eb0b3 ("platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe")
-Reported-by: Danil Rybakov <danilrybakov249@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218531
-Tested-by: Danil Rybakov <danilrybakov249@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240304134356.305375-2-hdegoede@redhat.com
+b) QMP driver initializes the lanes to TYPEC_ORIENTATION_NORMAL as a
+normal routine. It relies on the typec_switch_set call to get notified
+of orientation changes.
+
+c) UCSI core reads the UCSI_GET_CONNECTOR_STATUS via the glink and
+provides initial role switch to dwc3 controller.
+
+When booting up in host mode with orientation TYPEC_ORIENTATION_REVERSE,
+then we see the following things happening in order:
+
+a) UCSI gives initial role as host to dwc3 controller ucsi_register_port.
+Upon receiving this notification, the dwc3 core needs to program GCTL from
+PRTCAP_DEVICE to PRTCAP_HOST and as part of this change, it asserts GCTL
+Core soft reset and waits for it to be  completed before shifting it to
+host. Only after the reset is done will the dwc3_host_init be invoked and
+xhci is probed. DWC3 controller expects that the usb phy's are stable
+during this process i.e., the phy init is already done.
+
+b) During the 100ms wait for GCTL core soft reset, the actual notification
+from PPM is received by ucsi_glink via pmic glink for changing role to
+host. The pmic_glink_ucsi_notify routine first sends the orientation
+change to QMP and then sends role to dwc3 via ucsi framework. This is
+happening exactly at the time GCTL core soft reset is being processed.
+
+c) When QMP driver receives typec switch to TYPEC_ORIENTATION_REVERSE, it
+then re-programs the phy at the instant GCTL core soft reset has been
+asserted by dwc3 controller due to which the QMP PLL lock fails in
+qmp_combo_usb_power_on.
+
+d) After the 100ms of GCTL core soft reset is completed, the dwc3 core
+goes for initializing the host mode and invokes xhci probe. But at this
+point the QMP is non-responsive and as a result, the xhci plat probe fails
+during xhci_reset.
+
+Fix this by passing orientation switch to available ucsi instances if
+their gpio configuration is available before ucsi_register is invoked so
+that by the time, the pmic_glink_ucsi_notify provides typec_switch to QMP,
+the lane is already configured and the call would be a NOP thus not racing
+with role switch.
+
+Cc: stable@vger.kernel.org
+Fixes: c6165ed2f425 ("usb: ucsi: glink: use the connector orientation GPIO to provide switch events")
+Suggested-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240301040914.458492-1-quic_kriskura@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/p2sb.c |   23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_glink.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/platform/x86/p2sb.c
-+++ b/drivers/platform/x86/p2sb.c
-@@ -20,9 +20,11 @@
- #define P2SBC_HIDE		BIT(8)
- 
- #define P2SB_DEVFN_DEFAULT	PCI_DEVFN(31, 1)
-+#define P2SB_DEVFN_GOLDMONT	PCI_DEVFN(13, 0)
-+#define SPI_DEVFN_GOLDMONT	PCI_DEVFN(13, 2)
- 
- static const struct x86_cpu_id p2sb_cpu_ids[] = {
--	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT,	PCI_DEVFN(13, 0)),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT, P2SB_DEVFN_GOLDMONT),
- 	{}
- };
- 
-@@ -98,21 +100,12 @@ static void p2sb_scan_and_cache_devfn(st
- 
- static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -255,6 +255,20 @@ static void pmic_glink_ucsi_notify(struc
+ static void pmic_glink_ucsi_register(struct work_struct *work)
  {
--	unsigned int slot, fn;
-+	/* Scan the P2SB device and cache its BAR0 */
-+	p2sb_scan_and_cache_devfn(bus, devfn);
+ 	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
++	int orientation;
++	int i;
++
++	for (i = 0; i < PMIC_GLINK_MAX_PORTS; i++) {
++		if (!ucsi->port_orientation[i])
++			continue;
++		orientation = gpiod_get_value(ucsi->port_orientation[i]);
++
++		if (orientation >= 0) {
++			typec_switch_set(ucsi->port_switch[i],
++					 orientation ? TYPEC_ORIENTATION_REVERSE
++					     : TYPEC_ORIENTATION_NORMAL);
++		}
++	}
  
--	if (PCI_FUNC(devfn) == 0) {
--		/*
--		 * When function number of the P2SB device is zero, scan it and
--		 * other function numbers, and if devices are available, cache
--		 * their BAR0s.
--		 */
--		slot = PCI_SLOT(devfn);
--		for (fn = 0; fn < NR_P2SB_RES_CACHE; fn++)
--			p2sb_scan_and_cache_devfn(bus, PCI_DEVFN(slot, fn));
--	} else {
--		/* Scan the P2SB device and cache its BAR0 */
--		p2sb_scan_and_cache_devfn(bus, devfn);
--	}
-+	/* On Goldmont p2sb_bar() also gets called for the SPI controller */
-+	if (devfn == P2SB_DEVFN_GOLDMONT)
-+		p2sb_scan_and_cache_devfn(bus, SPI_DEVFN_GOLDMONT);
- 
- 	if (!p2sb_valid_resource(&p2sb_resources[PCI_FUNC(devfn)].res))
- 		return -ENOENT;
+ 	ucsi_register(ucsi->ucsi);
+ }
 
 
 
