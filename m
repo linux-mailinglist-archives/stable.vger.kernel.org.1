@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CBB8942B8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849758943F8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D8EE1F26765
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BD8D283A03
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF6947A6B;
-	Mon,  1 Apr 2024 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280144AEE0;
+	Mon,  1 Apr 2024 17:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFwh6jtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEJVPNVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A987BA3F;
-	Mon,  1 Apr 2024 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D825D47A64;
+	Mon,  1 Apr 2024 17:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990530; cv=none; b=n/R+cwrXqU1IW1QG+ekpbB5WiqBJdXaMMoS9X5afLDb22caJWuoKDrBj0gcz3y6sRLzkDaE64MhkFRjv/lt3LJcX8vXyzFg+9p7de2kZCi+HMa6j5TN/0Zf0YYpwcmIRdWznZ1z+1Kv2nGHaLd85qmeJ4dh2wYhVKVnf1EkAbqE=
+	t=1711991421; cv=none; b=neFoDv5LmTqkjk3Olfqe9ExVuY2pUpDaTIvQ5JrMhk9Y1ZBXDolttwulZc/yUVCca6M4eCjE2MZox+NGtk7+T8/O0S0+/r90UMhTmRZiEC6EBLuafqhk1fYrVKxQHTnmjUQ4bAYoNsb+EWPW3g+izZIVaDVXvUqhQGWQ9e41gSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990530; c=relaxed/simple;
-	bh=aMuvZ9Rjb1iZ/NynnVVlVpZyEUFR+KRzR0i0SaKLTXM=;
+	s=arc-20240116; t=1711991421; c=relaxed/simple;
+	bh=r+AgjK9cBi/7V5T6oWJqVCZJs6azaJ1jVFFWx0Cu+Xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nnWyi3pTnGqwTgBjbMbz3LH0kodTiDLQQJQCo+J7vlEeuJEPP0UsgAyVMRipMByk4XRTRCr0R2Viiwopj+rAk+xH46NmuTuEaKJnTO1IPXUvOj9Kf8fB4KxcJQ5Dpmat9Q7+lubjLXCJuKS1L3AdZ1fjquu7N00kHfTjx776Vmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFwh6jtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B6EC433C7;
-	Mon,  1 Apr 2024 16:55:29 +0000 (UTC)
+	 MIME-Version; b=ZhUK6+oRcT/SJGnJsd+ScK2P6+q0kW7S+pseBG7taZJpVJoVyGQVxF4vSrNEzkcuZ4gL5MybKtuFOBeD16rvO+EKl9eznwTb+IRVXR2uSlyOs1ZQcWkTrmr8NN6YZHyJ7Sh/oJt2Ki4+rUWfbQ4mVZeqQCHrDF/X+8oEVQgpkFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEJVPNVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AC0C433F1;
+	Mon,  1 Apr 2024 17:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990530;
-	bh=aMuvZ9Rjb1iZ/NynnVVlVpZyEUFR+KRzR0i0SaKLTXM=;
+	s=korg; t=1711991421;
+	bh=r+AgjK9cBi/7V5T6oWJqVCZJs6azaJ1jVFFWx0Cu+Xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hFwh6jtHQ8AdJQIaBwFkJX4tsupEjzC39VzcCQdtJQZGu5K5OcYWvdarWx7YLpxLT
-	 GjQrG1iqvmZa7ykJEvnlje20qRtNOWHiKafIfmztD1l6i2YoujO4dPXrmkscoy/khk
-	 u7lMm/t1SayQW/25YpLr5X1wLu+ucjFDcT7YizCQ=
+	b=TEJVPNVsnbojPH2+WIvQJjpHAOLDBMBEzzNSytrGO8M3SjARauevXExFVn7m/H3ES
+	 qD7l0nE47w/ihwUEBaET28OyhWg7+P7YF5mQ5GUrCxPGk34nixJUwSAMuC+F3C8OZM
+	 lca9W1/M+BT8pVYejqJyN+B5xhoud2vzMyyN0Fxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 383/396] scsi: qla2xxx: Fix command flush on cable pull
+Subject: [PATCH 6.1 242/272] scsi: sd: Fix TCG OPAL unlock on system resume
 Date: Mon,  1 Apr 2024 17:47:12 +0200
-Message-ID: <20240401152559.336180500@linuxfoundation.org>
+Message-ID: <20240401152538.530009120@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,244 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit a27d4d0e7de305def8a5098a614053be208d1aa1 upstream.
+commit 0c76106cb97548810214def8ee22700bbbb90543 upstream.
 
-System crash due to command failed to flush back to SCSI layer.
+Commit 3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop
+management") introduced the manage_system_start_stop scsi_device flag to
+allow libata to indicate to the SCSI disk driver that nothing should be
+done when resuming a disk on system resume. This change turned the
+execution of sd_resume() into a no-op for ATA devices on system
+resume. While this solved deadlock issues during device resume, this change
+also wrongly removed the execution of opal_unlock_from_suspend().  As a
+result, devices with TCG OPAL locking enabled remain locked and
+inaccessible after a system resume from sleep.
 
- BUG: unable to handle kernel NULL pointer dereference at 0000000000000000
- PGD 0 P4D 0
- Oops: 0000 [#1] SMP NOPTI
- CPU: 27 PID: 793455 Comm: kworker/u130:6 Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
- Hardware name: HPE ProLiant DL360 Gen10/ProLiant DL360 Gen10, BIOS U32 09/03/2021
- Workqueue: nvme-wq nvme_fc_connect_ctrl_work [nvme_fc]
- RIP: 0010:__wake_up_common+0x4c/0x190
- Code: 24 10 4d 85 c9 74 0a 41 f6 01 04 0f 85 9d 00 00 00 48 8b 43 08 48 83 c3 08 4c 8d 48 e8 49 8d 41 18 48 39 c3 0f 84 f0 00 00 00 <49> 8b 41 18 89 54 24 08 31 ed 4c 8d 70 e8 45 8b 29 41 f6 c5 04 75
- RSP: 0018:ffff95f3e0cb7cd0 EFLAGS: 00010086
- RAX: 0000000000000000 RBX: ffff8b08d3b26328 RCX: 0000000000000000
- RDX: 0000000000000001 RSI: 0000000000000003 RDI: ffff8b08d3b26320
- RBP: 0000000000000001 R08: 0000000000000000 R09: ffffffffffffffe8
- R10: 0000000000000000 R11: ffff95f3e0cb7a60 R12: ffff95f3e0cb7d20
- R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
- FS:  0000000000000000(0000) GS:ffff8b2fdf6c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 0000002f1e410002 CR4: 00000000007706e0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  __wake_up_common_lock+0x7c/0xc0
-  qla_nvme_ls_req+0x355/0x4c0 [qla2xxx]
- qla2xxx [0000:12:00.1]-f084:3: qlt_free_session_done: se_sess 0000000000000000 / sess ffff8ae1407ca000 from port 21:32:00:02:ac:07:ee:b8 loop_id 0x02 s_id 01:02:00 logout 1 keep 0 els_logo 0
- ? __nvme_fc_send_ls_req+0x260/0x380 [nvme_fc]
- qla2xxx [0000:12:00.1]-207d:3: FCPort 21:32:00:02:ac:07:ee:b8 state transitioned from ONLINE to LOST - portid=010200.
-  ? nvme_fc_send_ls_req.constprop.42+0x1a/0x45 [nvme_fc]
- qla2xxx [0000:12:00.1]-2109:3: qla2x00_schedule_rport_del 21320002ac07eeb8. rport ffff8ae598122000 roles 1
- ? nvme_fc_connect_ctrl_work.cold.63+0x1e3/0xa7d [nvme_fc]
- qla2xxx [0000:12:00.1]-f084:3: qlt_free_session_done: se_sess 0000000000000000 / sess ffff8ae14801e000 from port 21:32:01:02:ad:f7:ee:b8 loop_id 0x04 s_id 01:02:01 logout 1 keep 0 els_logo 0
-  ? __switch_to+0x10c/0x450
- ? process_one_work+0x1a7/0x360
- qla2xxx [0000:12:00.1]-207d:3: FCPort 21:32:01:02:ad:f7:ee:b8 state transitioned from ONLINE to LOST - portid=010201.
-  ? worker_thread+0x1ce/0x390
-  ? create_worker+0x1a0/0x1a0
- qla2xxx [0000:12:00.1]-2109:3: qla2x00_schedule_rport_del 21320102adf7eeb8. rport ffff8ae3b2312800 roles 70
-  ? kthread+0x10a/0x120
- qla2xxx [0000:12:00.1]-2112:3: qla_nvme_unregister_remote_port: unregister remoteport on ffff8ae14801e000 21320102adf7eeb8
-  ? set_kthread_struct+0x40/0x40
- qla2xxx [0000:12:00.1]-2110:3: remoteport_delete of ffff8ae14801e000 21320102adf7eeb8 completed.
-  ? ret_from_fork+0x1f/0x40
- qla2xxx [0000:12:00.1]-f086:3: qlt_free_session_done: waiting for sess ffff8ae14801e000 logout
+To fix this issue, introduce the SCSI driver resume method and implement it
+with the sd_resume() function calling opal_unlock_from_suspend(). The
+former sd_resume() function is renamed to sd_resume_common() and modified
+to call the new sd_resume() function. For non-ATA devices, this result in
+no functional changes.
 
-The system was under memory stress where driver was not able to allocate an
-SRB to carry out error recovery of cable pull.  The failure to flush causes
-upper layer to start modifying scsi_cmnd.  When the system frees up some
-memory, the subsequent cable pull trigger another command flush. At this
-point the driver access a null pointer when attempting to DMA unmap the
-SGL.
+In order for libata to explicitly execute sd_resume() when a device is
+resumed during system restart, the function scsi_resume_device() is
+introduced. libata calls this function from the revalidation work executed
+on devie resume, a state that is indicated with the new device flag
+ATA_DFLAG_RESUMING. Doing so, locked TCG OPAL enabled devices are unlocked
+on resume, allowing normal operation.
 
-Add a check to make sure commands are flush back on session tear down to
-prevent the null pointer access.
-
+Fixes: 3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop management")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218538
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240319071209.1179257-1-dlemoal@kernel.org
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_target.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/ata/libata-eh.c    |    5 ++++-
+ drivers/ata/libata-scsi.c  |    9 +++++++++
+ drivers/scsi/scsi_scan.c   |   34 ++++++++++++++++++++++++++++++++++
+ drivers/scsi/sd.c          |   25 +++++++++++++++++++++----
+ include/linux/libata.h     |    1 +
+ include/scsi/scsi_driver.h |    1 +
+ include/scsi/scsi_host.h   |    1 +
+ 7 files changed, 71 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_target.c
-+++ b/drivers/scsi/qla2xxx/qla_target.c
-@@ -1062,6 +1062,16 @@ void qlt_free_session_done(struct work_s
- 		    "%s: sess %p logout completed\n", __func__, sess);
- 	}
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -711,8 +711,10 @@ void ata_scsi_port_error_handler(struct
+ 					ehc->saved_ncq_enabled |= 1 << devno;
  
-+	/* check for any straggling io left behind */
-+	if (!(sess->flags & FCF_FCP2_DEVICE) &&
-+	    qla2x00_eh_wait_for_pending_commands(sess->vha, sess->d_id.b24, 0, WAIT_TARGET)) {
-+		ql_log(ql_log_warn, vha, 0x3027,
-+		    "IO not return. Resetting.\n");
-+		set_bit(ISP_ABORT_NEEDED, &vha->dpc_flags);
-+		qla2xxx_wake_dpc(vha);
-+		qla2x00_wait_for_chip_reset(vha);
+ 				/* If we are resuming, wake up the device */
+-				if (ap->pflags & ATA_PFLAG_RESUMING)
++				if (ap->pflags & ATA_PFLAG_RESUMING) {
++					dev->flags |= ATA_DFLAG_RESUMING;
+ 					ehc->i.dev_action[devno] |= ATA_EH_SET_ACTIVE;
++				}
+ 			}
+ 		}
+ 
+@@ -3089,6 +3091,7 @@ static int ata_eh_revalidate_and_attach(
+ 	return 0;
+ 
+  err:
++	dev->flags &= ~ATA_DFLAG_RESUMING;
+ 	*r_failed_dev = dev;
+ 	return rc;
+ }
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4652,6 +4652,7 @@ void ata_scsi_dev_rescan(struct work_str
+ 	struct ata_link *link;
+ 	struct ata_device *dev;
+ 	unsigned long flags;
++	bool do_resume;
+ 	int ret = 0;
+ 
+ 	mutex_lock(&ap->scsi_scan_mutex);
+@@ -4673,7 +4674,15 @@ void ata_scsi_dev_rescan(struct work_str
+ 			if (scsi_device_get(sdev))
+ 				continue;
+ 
++			do_resume = dev->flags & ATA_DFLAG_RESUMING;
++
+ 			spin_unlock_irqrestore(ap->lock, flags);
++			if (do_resume) {
++				ret = scsi_resume_device(sdev);
++				if (ret == -EWOULDBLOCK)
++					goto unlock;
++				dev->flags &= ~ATA_DFLAG_RESUMING;
++			}
+ 			ret = scsi_rescan_device(sdev);
+ 			scsi_device_put(sdev);
+ 			spin_lock_irqsave(ap->lock, flags);
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1611,6 +1611,40 @@ int scsi_add_device(struct Scsi_Host *ho
+ }
+ EXPORT_SYMBOL(scsi_add_device);
+ 
++int scsi_resume_device(struct scsi_device *sdev)
++{
++	struct device *dev = &sdev->sdev_gendev;
++	int ret = 0;
++
++	device_lock(dev);
++
++	/*
++	 * Bail out if the device or its queue are not running. Otherwise,
++	 * the rescan may block waiting for commands to be executed, with us
++	 * holding the device lock. This can result in a potential deadlock
++	 * in the power management core code when system resume is on-going.
++	 */
++	if (sdev->sdev_state != SDEV_RUNNING ||
++	    blk_queue_pm_only(sdev->request_queue)) {
++		ret = -EWOULDBLOCK;
++		goto unlock;
 +	}
 +
- 	if (sess->logo_ack_needed) {
- 		sess->logo_ack_needed = 0;
- 		qla24xx_async_notify_ack(vha, sess,
++	if (dev->driver && try_module_get(dev->driver->owner)) {
++		struct scsi_driver *drv = to_scsi_driver(dev->driver);
++
++		if (drv->resume)
++			ret = drv->resume(dev);
++		module_put(dev->driver->owner);
++	}
++
++unlock:
++	device_unlock(dev);
++
++	return ret;
++}
++EXPORT_SYMBOL(scsi_resume_device);
++
+ int scsi_rescan_device(struct scsi_device *sdev)
+ {
+ 	struct device *dev = &sdev->sdev_gendev;
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -110,6 +110,7 @@ static int sd_suspend_system(struct devi
+ static int sd_suspend_runtime(struct device *);
+ static int sd_resume_system(struct device *);
+ static int sd_resume_runtime(struct device *);
++static int sd_resume(struct device *);
+ static void sd_rescan(struct device *);
+ static blk_status_t sd_init_command(struct scsi_cmnd *SCpnt);
+ static void sd_uninit_command(struct scsi_cmnd *SCpnt);
+@@ -691,6 +692,7 @@ static struct scsi_driver sd_template =
+ 		.pm		= &sd_pm_ops,
+ 	},
+ 	.rescan			= sd_rescan,
++	.resume			= sd_resume,
+ 	.init_command		= sd_init_command,
+ 	.uninit_command		= sd_uninit_command,
+ 	.done			= sd_done,
+@@ -3830,7 +3832,22 @@ static int sd_suspend_runtime(struct dev
+ 	return sd_suspend_common(dev, true);
+ }
+ 
+-static int sd_resume(struct device *dev, bool runtime)
++static int sd_resume(struct device *dev)
++{
++	struct scsi_disk *sdkp = dev_get_drvdata(dev);
++
++	if (sdkp->device->no_start_on_resume)
++		sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
++
++	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
++		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
++		return -EIO;
++	}
++
++	return 0;
++}
++
++static int sd_resume_common(struct device *dev, bool runtime)
+ {
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+ 	int ret = 0;
+@@ -3849,7 +3866,7 @@ static int sd_resume(struct device *dev,
+ 	}
+ 
+ 	if (!ret) {
+-		opal_unlock_from_suspend(sdkp->opal_dev);
++		sd_resume(dev);
+ 		sdkp->suspended = false;
+ 	}
+ 
+@@ -3868,7 +3885,7 @@ static int sd_resume_system(struct devic
+ 		return 0;
+ 	}
+ 
+-	return sd_resume(dev, false);
++	return sd_resume_common(dev, false);
+ }
+ 
+ static int sd_resume_runtime(struct device *dev)
+@@ -3892,7 +3909,7 @@ static int sd_resume_runtime(struct devi
+ 				  "Failed to clear sense data\n");
+ 	}
+ 
+-	return sd_resume(dev, true);
++	return sd_resume_common(dev, true);
+ }
+ 
+ /**
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -102,6 +102,7 @@ enum {
+ 	ATA_DFLAG_NCQ_SEND_RECV = (1 << 19), /* device supports NCQ SEND and RECV */
+ 	ATA_DFLAG_NCQ_PRIO	= (1 << 20), /* device supports NCQ priority */
+ 	ATA_DFLAG_NCQ_PRIO_ENABLED = (1 << 21), /* Priority cmds sent to dev */
++	ATA_DFLAG_RESUMING	= (1 << 22),  /* Device is resuming */
+ 	ATA_DFLAG_INIT_MASK	= (1 << 24) - 1,
+ 
+ 	ATA_DFLAG_DETACH	= (1 << 24),
+--- a/include/scsi/scsi_driver.h
++++ b/include/scsi/scsi_driver.h
+@@ -12,6 +12,7 @@ struct request;
+ struct scsi_driver {
+ 	struct device_driver	gendrv;
+ 
++	int (*resume)(struct device *);
+ 	void (*rescan)(struct device *);
+ 	blk_status_t (*init_command)(struct scsi_cmnd *);
+ 	void (*uninit_command)(struct scsi_cmnd *);
+--- a/include/scsi/scsi_host.h
++++ b/include/scsi/scsi_host.h
+@@ -752,6 +752,7 @@ extern int __must_check scsi_add_host_wi
+ 					       struct device *,
+ 					       struct device *);
+ extern void scsi_scan_host(struct Scsi_Host *);
++extern int scsi_resume_device(struct scsi_device *sdev);
+ extern int scsi_rescan_device(struct scsi_device *sdev);
+ extern void scsi_remove_host(struct Scsi_Host *);
+ extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
 
 
 
