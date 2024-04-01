@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF42893EE1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DF8894385
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EE6A1C2126E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C0E283861
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C2D47A5D;
-	Mon,  1 Apr 2024 16:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5C8487BE;
+	Mon,  1 Apr 2024 17:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxotbrsq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBW1r9Jf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE5C4778B;
-	Mon,  1 Apr 2024 16:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7537F1DFF4;
+	Mon,  1 Apr 2024 17:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987753; cv=none; b=ECu7WLMDbeOE60UITENbyVB5g/7TJUvCSEYtmp79kjSAs/KaRYjvSxjHKM5vvdZdHLoXhnm22YYvADS4JdY6iHXg+XUens1UVazQ2UhJxlLoHokBS5xpWBln5JXgWY7EtSe0KxpIu3bY5iscqxyVjSrHOfLxucSma7dFFk//gNo=
+	t=1711991079; cv=none; b=lvkCWAr7lxzsubKgoO2/usz4uBU2+nKpb7JnVBxfcDPwdgu5wcxC8f/wYhN9aiOfklMwGibuBpbtdgBvgswaqxClRKHRnjZTMe00qh9rata596a7reaS/Ax7EQ3jtg3ZywJsfoNmfHDXVbysrwTricGNqeM3YKiSdBrrgyobMAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987753; c=relaxed/simple;
-	bh=Zr6o2XOS6FrbB5YUv5YWQruQkqk/xSFlLMcS3sj18+E=;
+	s=arc-20240116; t=1711991079; c=relaxed/simple;
+	bh=qpGs4MR2uhCcR7PhKgANbzlhsEzC/f8IcQQgzXmNDjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d86zfEN5DeL66iRIWKI3WUBP0WEBvXx8lOK1zNz3fu8YjvHvYbzs4g0ejvErpZ5Pqwj9q2PGWRNBi1CPSp7+vb7BWBp5lSquUf2AS9Vzxzf8C9an5jzejbZ7uqxx0C+6LUwz0grcyvz6tj6sMCgVK4IcuvHfmn9sRV3zA3GP8RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxotbrsq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB333C433F1;
-	Mon,  1 Apr 2024 16:09:12 +0000 (UTC)
+	 MIME-Version; b=mpAPecxlC64gILVro9db+WQq4G17TA7JcmyyJXt6MbiOQWczZU79RZQagjCGjcNZxoqTISclB+z7Iu3d6h9A1KhotaROtRzfSJSnCwoHtEc0rCV4nPAl8efVC70qLUomrxW2KtpkiB+IINwptL4oDW3D1hhjNUrZ3WPJiAV7mvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBW1r9Jf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB1DC433C7;
+	Mon,  1 Apr 2024 17:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987753;
-	bh=Zr6o2XOS6FrbB5YUv5YWQruQkqk/xSFlLMcS3sj18+E=;
+	s=korg; t=1711991079;
+	bh=qpGs4MR2uhCcR7PhKgANbzlhsEzC/f8IcQQgzXmNDjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxotbrsqT1ydfdj0nZtz7Gd/aXlTLLfWjAbDTOZYcr9nkRK77pB/ru3KJzCRu8jrN
-	 5RKbXl0SsEVeeZ8Y4RXPaHwwflR4X05zuhZ7qhm4wt7BVMoOribU+T06ycneTioR6P
-	 J2ZMPEdER4LyCsEFxNdJy5CE6UiQaZkXQ9tDJr/4=
+	b=nBW1r9JfFrp/aZ3AJPbsZn/4gTu/sOW2G8Owdk3V/9GCZcVUy8qQGO9aseHgeA1wi
+	 Sueix0hsJV+rtoWe3VeXGH//6BsimqwEhBSGylmUI98XXWteDP6YJKuSARTCqqp7WW
+	 /BXL/L1oDQsmxk2oNVm6CHiUCwtDu6ekcC7rJqO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 381/399] scsi: qla2xxx: NVME|FCP prefer flag not being honored
+	Alan Stern <stern@rowland.harvard.edu>,
+	PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 157/272] USB: usb-storage: Prevent divide-by-0 error in isd200_ata_command
 Date: Mon,  1 Apr 2024 17:45:47 +0200
-Message-ID: <20240401152600.550078106@linuxfoundation.org>
+Message-ID: <20240401152535.628974887@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 69aecdd410106dc3a8f543a4f7ec6379b995b8d0 upstream.
+commit 014bcf41d946b36a8f0b8e9b5d9529efbb822f49 upstream.
 
-Changing of [FCP|NVME] prefer flag in flash has no effect on driver. For
-device that supports both FCP + NVMe over the same connection, driver
-continues to connect to this device using the previous successful login
-mode.
+The isd200 sub-driver in usb-storage uses the HEADS and SECTORS values
+in the ATA ID information to calculate cylinder and head values when
+creating a CDB for READ or WRITE commands.  The calculation involves
+division and modulus operations, which will cause a crash if either of
+these values is 0.  While this never happens with a genuine device, it
+could happen with a flawed or subversive emulation, as reported by the
+syzbot fuzzer.
 
-On completion of flash update, adapter will be reset. Driver will
-reset the prefer flag based on setting from flash.
+Protect against this possibility by refusing to bind to the device if
+either the ATA_ID_HEADS or ATA_ID_SECTORS value in the device's ID
+information is 0.  This requires isd200_Initialization() to return a
+negative error code when initialization fails; currently it always
+returns 0 (even when there is an error).
 
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-usb/0000000000003eb868061245ba7f@google.com/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/b1e605ea-333f-4ac0-9511-da04f411763e@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/usb/storage/isd200.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -7501,6 +7501,7 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
- 	struct scsi_qla_host *vp, *tvp;
- 	struct req_que *req = ha->req_q_map[0];
- 	unsigned long flags;
-+	fc_port_t *fcport;
+--- a/drivers/usb/storage/isd200.c
++++ b/drivers/usb/storage/isd200.c
+@@ -1105,7 +1105,7 @@ static void isd200_dump_driveid(struct u
+ static int isd200_get_inquiry_data( struct us_data *us )
+ {
+ 	struct isd200_info *info = (struct isd200_info *)us->extra;
+-	int retStatus = ISD200_GOOD;
++	int retStatus;
+ 	u16 *id = info->id;
  
- 	if (vha->flags.online) {
- 		qla2x00_abort_isp_cleanup(vha);
-@@ -7569,6 +7570,15 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
- 			       "ISP Abort - ISP reg disconnect post nvmram config, exiting.\n");
- 			return status;
- 		}
-+
-+		/* User may have updated [fcp|nvme] prefer in flash */
-+		list_for_each_entry(fcport, &vha->vp_fcports, list) {
-+			if (NVME_PRIORITY(ha, fcport))
-+				fcport->do_prli_nvme = 1;
-+			else
-+				fcport->do_prli_nvme = 0;
-+		}
-+
- 		if (!qla2x00_restart_isp(vha)) {
- 			clear_bit(RESET_MARKER_NEEDED, &vha->dpc_flags);
+ 	usb_stor_dbg(us, "Entering isd200_get_inquiry_data\n");
+@@ -1137,6 +1137,13 @@ static int isd200_get_inquiry_data( stru
+ 				isd200_fix_driveid(id);
+ 				isd200_dump_driveid(us, id);
  
-@@ -7639,6 +7649,14 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
- 				atomic_inc(&vp->vref_count);
- 				spin_unlock_irqrestore(&ha->vport_slock, flags);
- 
-+				/* User may have updated [fcp|nvme] prefer in flash */
-+				list_for_each_entry(fcport, &vp->vp_fcports, list) {
-+					if (NVME_PRIORITY(ha, fcport))
-+						fcport->do_prli_nvme = 1;
-+					else
-+						fcport->do_prli_nvme = 0;
++				/* Prevent division by 0 in isd200_scsi_to_ata() */
++				if (id[ATA_ID_HEADS] == 0 || id[ATA_ID_SECTORS] == 0) {
++					usb_stor_dbg(us, "   Invalid ATA Identify data\n");
++					retStatus = ISD200_ERROR;
++					goto Done;
 +				}
 +
- 				qla2x00_vp_abort_isp(vp);
+ 				memset(&info->InquiryData, 0, sizeof(info->InquiryData));
  
- 				spin_lock_irqsave(&ha->vport_slock, flags);
+ 				/* Standard IDE interface only supports disks */
+@@ -1202,6 +1209,7 @@ static int isd200_get_inquiry_data( stru
+ 		}
+ 	}
+ 
++ Done:
+ 	usb_stor_dbg(us, "Leaving isd200_get_inquiry_data %08X\n", retStatus);
+ 
+ 	return(retStatus);
+@@ -1481,22 +1489,27 @@ static int isd200_init_info(struct us_da
+ 
+ static int isd200_Initialization(struct us_data *us)
+ {
++	int rc = 0;
++
+ 	usb_stor_dbg(us, "ISD200 Initialization...\n");
+ 
+ 	/* Initialize ISD200 info struct */
+ 
+-	if (isd200_init_info(us) == ISD200_ERROR) {
++	if (isd200_init_info(us) < 0) {
+ 		usb_stor_dbg(us, "ERROR Initializing ISD200 Info struct\n");
++		rc = -ENOMEM;
+ 	} else {
+ 		/* Get device specific data */
+ 
+-		if (isd200_get_inquiry_data(us) != ISD200_GOOD)
++		if (isd200_get_inquiry_data(us) != ISD200_GOOD) {
+ 			usb_stor_dbg(us, "ISD200 Initialization Failure\n");
+-		else
++			rc = -EINVAL;
++		} else {
+ 			usb_stor_dbg(us, "ISD200 Initialization complete\n");
++		}
+ 	}
+ 
+-	return 0;
++	return rc;
+ }
+ 
+ 
 
 
 
