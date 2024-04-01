@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-34542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE92893FC7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1491389414C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 455DC285163
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43B9F1C2179B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB064446AC;
-	Mon,  1 Apr 2024 16:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A01B481D0;
+	Mon,  1 Apr 2024 16:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ot9aTt6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAqrD3t3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C474778E;
-	Mon,  1 Apr 2024 16:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58025481C4;
+	Mon,  1 Apr 2024 16:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988472; cv=none; b=Nh/XPLNWySpv4UeYyfsgsxAyGSd81FwThXEgMk/SIHRsxOEXrgEeMXzHwVcDBjXDFAm0NzIg92YUYh90iV6sxE9sh2jubYbe3DwTkBMR+YWPE4OKMb35Lxq8Pi80HcPu17+YfuvGCEtgbQMWEnUoILb1GOqXQni3T/GjmifOQrk=
+	t=1711989621; cv=none; b=ZM3lmXnMR4PXKtoAXIg2YqXs5b8qn9lScbqypH2jPddjDtDxpa8dAmUgAFmyi07bGAQlNYFDjCdP0W+nd//cYxxM2AU/TK/4wIR34aDPNbE6C1e19Mnw/PAkxcdp69zR0CwC9ZgACOwDc6n0zOm3HJQjNHxCsS07IieTAPhBJOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988472; c=relaxed/simple;
-	bh=1JHVTAdRzwZofbaFwWrvH1LJ/ovwq7fq/NQTfaWzE2w=;
+	s=arc-20240116; t=1711989621; c=relaxed/simple;
+	bh=tWsEPmiR7KGjcn1uJl9p9eFK1Cc2jEK9kBc63rWahFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AshJEBWwP6eIINg9GgZjKQe/xfXx8pvN8kBpacerMUZYuvFe8vh9DKpXOam8Zs8HhI/HOHNIb0P+kUbxLclX8lcu8lHw2guc1hOOHXrUZEqMsBm16+J/lUfszlqtrcZrLp4xVN49bBkyDNLXt6cDKCyrfb5s6AD1tslUQbISha4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ot9aTt6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162BAC433C7;
-	Mon,  1 Apr 2024 16:21:11 +0000 (UTC)
+	 MIME-Version; b=QdxC19TTifxOKWXoR7tvelxQn5IcBWZoe6a4+tKAHbLvPYXfdX6080urI8K2okNWljR5uVqgaQRfeV7FzE4Fh7m9ycIwiNN5tEsfEqr4yRHZVKRGHwVpAga/65w9bsHvfjfJlv3yalcSna+bcx66JRYUkoWgfGeoePGHM0ZW6oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAqrD3t3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB579C43399;
+	Mon,  1 Apr 2024 16:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988472;
-	bh=1JHVTAdRzwZofbaFwWrvH1LJ/ovwq7fq/NQTfaWzE2w=;
+	s=korg; t=1711989621;
+	bh=tWsEPmiR7KGjcn1uJl9p9eFK1Cc2jEK9kBc63rWahFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ot9aTt6d1zrMXLyDw0NdC7uIc817wppOflWjoWb0wFdizZ4Yh9YJdQLNAKSCxg3P/
-	 UCdGIv98t6D8OY42JYRHmXjlJRfxe3GkzJQu3+PAeN8QNWrLDofJ69OphpnHTu7lVN
-	 Cj0rVSHrF4fbNRftJShCJe6GV+ICyEeI+12Wno5I=
+	b=lAqrD3t32aLxTi209taxqA2iZhu9/mVoRY/hHoh/NZzupJzY4/OyEqH+81JguvLMm
+	 rW1ngxM5dDSVparG2cMOprH2sw+/nN5BB9qFjURZP9jdjhOlwGQ99FAhPeI7cJtPPP
+	 ICURyq5PISw4LhxJVQ3w1ptCuE/wLFUBHDkRPQs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 166/432] drm/panel: do not return negative error codes from drm_panel_get_modes()
+Subject: [PATCH 6.6 104/396] drm/etnaviv: Restore some id values
 Date: Mon,  1 Apr 2024 17:42:33 +0200
-Message-ID: <20240401152558.096511516@linuxfoundation.org>
+Message-ID: <20240401152551.022129732@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-[ Upstream commit fc4e97726530241d96dd7db72eb65979217422c9 ]
+[ Upstream commit b735ee173f84d5d0d0733c53946a83c12d770d05 ]
 
-None of the callers of drm_panel_get_modes() expect it to return
-negative error codes. Either they propagate the return value in their
-struct drm_connector_helper_funcs .get_modes() hook (which is also not
-supposed to return negative codes), or add it to other counts leading to
-bogus values.
+The hwdb selection logic as a feature that allows it to mark some fields
+as 'don't care'. If we match with such a field we memcpy(..)
+the current etnaviv_chip_identity into ident.
 
-On the other hand, many of the struct drm_panel_funcs .get_modes() hooks
-do return negative error codes, so handle them gracefully instead of
-propagating further.
+This step can overwrite some id values read from the GPU with the
+'don't care' value.
 
-Return 0 for no modes, whatever the reason.
+Fix this issue by restoring the affected values after the memcpy(..).
 
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
+As this is crucial for user space to know when this feature works as
+expected increment the minor version too.
+
+Fixes: 4078a1186dd3 ("drm/etnaviv: update hwdb selection logic")
 Cc: stable@vger.kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_drv.c  | 2 +-
+ drivers/gpu/drm/etnaviv/etnaviv_hwdb.c | 9 +++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
-index e814020bbcd3b..cfbe020de54e0 100644
---- a/drivers/gpu/drm/drm_panel.c
-+++ b/drivers/gpu/drm/drm_panel.c
-@@ -274,19 +274,24 @@ EXPORT_SYMBOL(drm_panel_disable);
-  * The modes probed from the panel are automatically added to the connector
-  * that the panel is attached to.
-  *
-- * Return: The number of modes available from the panel on success or a
-- * negative error code on failure.
-+ * Return: The number of modes available from the panel on success, or 0 on
-+ * failure (no modes).
-  */
- int drm_panel_get_modes(struct drm_panel *panel,
- 			struct drm_connector *connector)
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+index a8d3fa81e4ec5..f9bc837e22bdd 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+@@ -494,7 +494,7 @@ static const struct drm_driver etnaviv_drm_driver = {
+ 	.desc               = "etnaviv DRM",
+ 	.date               = "20151214",
+ 	.major              = 1,
+-	.minor              = 3,
++	.minor              = 4,
+ };
+ 
+ /*
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
+index 67201242438be..8665f2658d51b 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
+@@ -265,6 +265,9 @@ static const struct etnaviv_chip_identity etnaviv_chip_identities[] = {
+ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
  {
- 	if (!panel)
--		return -EINVAL;
-+		return 0;
+ 	struct etnaviv_chip_identity *ident = &gpu->identity;
++	const u32 product_id = ident->product_id;
++	const u32 customer_id = ident->customer_id;
++	const u32 eco_id = ident->eco_id;
+ 	int i;
  
--	if (panel->funcs && panel->funcs->get_modes)
--		return panel->funcs->get_modes(panel, connector);
-+	if (panel->funcs && panel->funcs->get_modes) {
-+		int num;
- 
--	return -EOPNOTSUPP;
-+		num = panel->funcs->get_modes(panel, connector);
-+		if (num > 0)
-+			return num;
-+	}
+ 	for (i = 0; i < ARRAY_SIZE(etnaviv_chip_identities); i++) {
+@@ -278,6 +281,12 @@ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
+ 			 etnaviv_chip_identities[i].eco_id == ~0U)) {
+ 			memcpy(ident, &etnaviv_chip_identities[i],
+ 			       sizeof(*ident));
 +
-+	return 0;
- }
- EXPORT_SYMBOL(drm_panel_get_modes);
- 
++			/* Restore some id values as ~0U aka 'don't care' might been used. */
++			ident->product_id = product_id;
++			ident->customer_id = customer_id;
++			ident->eco_id = eco_id;
++
+ 			return true;
+ 		}
+ 	}
 -- 
 2.43.0
 
