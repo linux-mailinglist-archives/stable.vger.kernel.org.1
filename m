@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-34924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BAAA89417F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEBD893FD2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACBE01C21726
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A19621F22075
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECB14AEFA;
-	Mon,  1 Apr 2024 16:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E5A45BE4;
+	Mon,  1 Apr 2024 16:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDYH2cK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Bu/jLii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4907D4A99C;
-	Mon,  1 Apr 2024 16:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FEEC129;
+	Mon,  1 Apr 2024 16:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989757; cv=none; b=en6IOPlDp1fIwE4fQMNNK3VR46KgNPsYhdR1/pcngc+C/Lt+e9b4TYM1TWLhRxUbHqZeUHB0zz/3OsCRPM8Yc6JINyhdrxehRvlUjtLImDWQsQmE5c694MGZZ64EJK4cJcnaHlKZHvpblQ9v+kZjMV7kklQjtPJuiIdw33+pZBc=
+	t=1711988505; cv=none; b=s/eZI8209l5EUOhhzeSGTNBV2J7LbsmOFMduqojo2BZs77MLAPF3gBcUJw0FQl58s8QH0Kn2kNFlpdpp5LpT/Bf2gT26nKLLGZrgHgR4ABNfZzGZVaAFQgqhGHokRKShpT+9YgQrdpWA37vXWxt61OedZmNvv/urOAf6GzR45i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989757; c=relaxed/simple;
-	bh=NhSicWhnlI+vWhotjRnJistJJJ4liSCdgAE51xo1tBs=;
+	s=arc-20240116; t=1711988505; c=relaxed/simple;
+	bh=ySIBMQgrkxweOyn6NmNcEIqF8pRR+r8WvkZO5rW7pBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/VT1OksYYlucMLV1t7MwjoFzPqPF+rvsdTOA+VZsjfYAtu0gmwA6JX2gD2gyhBTHIKHg3ZnUXC2Z5xcKMrsJKRVELIzReUIlveFwYC+AM1UboIyL654ubQJLbR10TAwxdntnPEsn9xB9rSjZeJVqNshlwIVGV3uENOuKeFzhcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDYH2cK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A32C43394;
-	Mon,  1 Apr 2024 16:42:36 +0000 (UTC)
+	 MIME-Version; b=ECJxdeQhowEwq4ZPgZrPOQmi0Y2KV4KT34uOXabb+JWVwqNCV6P3Cwg51aNI2E1MglvdjGvNe2UmW9+L7YqtQIZBl+dNifUMf0ND5/b135CQUfTpdOyXti6Ejs0MenPenOpX1B1dHA7MB1w7BQvRvRNJ9bZc2k3wQW0v9Vtp0kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Bu/jLii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE6FC433C7;
+	Mon,  1 Apr 2024 16:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989756;
-	bh=NhSicWhnlI+vWhotjRnJistJJJ4liSCdgAE51xo1tBs=;
+	s=korg; t=1711988505;
+	bh=ySIBMQgrkxweOyn6NmNcEIqF8pRR+r8WvkZO5rW7pBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDYH2cK3vwKtLREo0h9d07C13y1Ev8rcQFy3/JEjoA8jrRBQAcw2pX7Cl4usZzMm3
-	 h9bqPe2YQd7Evqql+8/jujScov9/ij2rewwGpAyGH+we4SKXkemy9pVV5jBULUFmxM
-	 Ew16U2NFePbJe3bISeKNJOMquXx8bJrv7bK6zjxQ=
+	b=0Bu/jLiikjR+pOL+JL9kDRjA/9jil3H8euAfAXWSLi742anF1SBFIAUQZ202c2uDH
+	 RS1IgINBaUGZmNilQMta6Q8Zl61HunvS+qfA18lytBHYAMh2r+5gHNhyIfFUQw1xmI
+	 iGAP2s1JZoT8aDEIFSWNN4sJtAhkpc5ftbCczjfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Andrey Jr. Melnikov" <temnota.am@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/396] soc: fsl: qbman: Use raw spinlock for cgr_lock
+Subject: [PATCH 6.7 205/432] ahci: asm1064: correct count of reported ports
 Date: Mon,  1 Apr 2024 17:43:12 +0200
-Message-ID: <20240401152552.201929237@linuxfoundation.org>
+Message-ID: <20240401152559.249832097@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Andrey Jr. Melnikov <temnota.am@gmail.com>
 
-[ Upstream commit fbec4e7fed89b579f2483041fabf9650fb0dd6bc ]
+[ Upstream commit 9815e39617541ef52d0dfac4be274ad378c6dc09 ]
 
-smp_call_function always runs its callback in hard IRQ context, even on
-PREEMPT_RT, where spinlocks can sleep. So we need to use a raw spinlock
-for cgr_lock to ensure we aren't waiting on a sleeping task.
+The ASM1064 SATA host controller always reports wrongly,
+that it has 24 ports. But in reality, it only has four ports.
 
-Although this bug has existed for a while, it was not apparent until
-commit ef2a8d5478b9 ("net: dpaa: Adjust queue depth on rate change")
-which invokes smp_call_function_single via qman_update_cgr_safe every
-time a link goes up or down.
+before:
+ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
+ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xffff0f impl SATA mode
+ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
 
-Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()")
-CC: stable@vger.kernel.org
-Reported-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Closes: https://lore.kernel.org/all/20230323153935.nofnjucqjqnz34ej@skbuf/
-Reported-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Closes: https://lore.kernel.org/linux-arm-kernel/87wmsyvclu.fsf@pengutronix.de/
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+after:
+ahci 0000:04:00.0: ASM1064 has only four ports
+ahci 0000:04:00.0: forcing port_map 0xffff0f -> 0xf
+ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
+ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xf impl SATA mode
+ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
+
+Signed-off-by: "Andrey Jr. Melnikov" <temnota.am@gmail.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Stable-dep-of: 6cd8adc3e189 ("ahci: asm1064: asm1166: don't limit reported ports")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/ata/ahci.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 1bf1f1ea67f00..7e9074519ad22 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -991,7 +991,7 @@ struct qman_portal {
- 	/* linked-list of CSCN handlers. */
- 	struct list_head cgr_cbs;
- 	/* list lock */
--	spinlock_t cgr_lock;
-+	raw_spinlock_t cgr_lock;
- 	struct work_struct congestion_work;
- 	struct work_struct mr_work;
- 	char irqname[MAX_IRQNAME];
-@@ -1281,7 +1281,7 @@ static int qman_create_portal(struct qman_portal *portal,
- 		/* if the given mask is NULL, assume all CGRs can be seen */
- 		qman_cgrs_fill(&portal->cgrs[0]);
- 	INIT_LIST_HEAD(&portal->cgr_cbs);
--	spin_lock_init(&portal->cgr_lock);
-+	raw_spin_lock_init(&portal->cgr_lock);
- 	INIT_WORK(&portal->congestion_work, qm_congestion_task);
- 	INIT_WORK(&portal->mr_work, qm_mr_process_task);
- 	portal->bits = 0;
-@@ -1456,11 +1456,14 @@ static void qm_congestion_task(struct work_struct *work)
- 	union qm_mc_result *mcr;
- 	struct qman_cgr *cgr;
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index da2e74fce2d99..682ff550ccfb9 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -671,9 +671,17 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
+ {
+-	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
+-		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
+-		hpriv->saved_port_map = 0x3f;
++	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
++		switch (pdev->device) {
++		case 0x1166:
++			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
++			hpriv->saved_port_map = 0x3f;
++			break;
++		case 0x1064:
++			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
++			hpriv->saved_port_map = 0xf;
++			break;
++		}
+ 	}
  
--	spin_lock_irq(&p->cgr_lock);
-+	/*
-+	 * FIXME: QM_MCR_TIMEOUT is 10ms, which is too long for a raw spinlock!
-+	 */
-+	raw_spin_lock_irq(&p->cgr_lock);
- 	qm_mc_start(&p->p);
- 	qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
- 	if (!qm_mc_result_timeout(&p->p, &mcr)) {
--		spin_unlock_irq(&p->cgr_lock);
-+		raw_spin_unlock_irq(&p->cgr_lock);
- 		dev_crit(p->config->dev, "QUERYCONGESTION timeout\n");
- 		qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- 		return;
-@@ -1476,7 +1479,7 @@ static void qm_congestion_task(struct work_struct *work)
- 	list_for_each_entry(cgr, &p->cgr_cbs, node)
- 		if (cgr->cb && qman_cgrs_get(&c, cgr->cgrid))
- 			cgr->cb(p, cgr, qman_cgrs_get(&rr, cgr->cgrid));
--	spin_unlock_irq(&p->cgr_lock);
-+	raw_spin_unlock_irq(&p->cgr_lock);
- 	qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- }
- 
-@@ -2440,7 +2443,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	preempt_enable();
- 
- 	cgr->chan = p->config->channel;
--	spin_lock_irq(&p->cgr_lock);
-+	raw_spin_lock_irq(&p->cgr_lock);
- 
- 	if (opts) {
- 		struct qm_mcc_initcgr local_opts = *opts;
-@@ -2477,7 +2480,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	    qman_cgrs_get(&p->cgrs[1], cgr->cgrid))
- 		cgr->cb(p, cgr, 1);
- out:
--	spin_unlock_irq(&p->cgr_lock);
-+	raw_spin_unlock_irq(&p->cgr_lock);
- 	put_affine_portal();
- 	return ret;
- }
-@@ -2512,7 +2515,7 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		return -EINVAL;
- 
- 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
--	spin_lock_irqsave(&p->cgr_lock, irqflags);
-+	raw_spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	list_del(&cgr->node);
- 	/*
- 	 * If there are no other CGR objects for this CGRID in the list,
-@@ -2537,7 +2540,7 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		/* add back to the list */
- 		list_add(&cgr->node, &p->cgr_cbs);
- release_lock:
--	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
-+	raw_spin_unlock_irqrestore(&p->cgr_lock, irqflags);
- 	put_affine_portal();
- 	return ret;
- }
-@@ -2577,9 +2580,9 @@ static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
- 	if (!p)
- 		return -EINVAL;
- 
--	spin_lock_irqsave(&p->cgr_lock, irqflags);
-+	raw_spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	ret = qm_modify_cgr(cgr, 0, opts);
--	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
-+	raw_spin_unlock_irqrestore(&p->cgr_lock, irqflags);
- 	put_affine_portal();
- 	return ret;
- }
+ 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
 -- 
 2.43.0
 
