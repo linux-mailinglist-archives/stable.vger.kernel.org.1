@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B045A8942AC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7058940A3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73377282F90
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 538C0B20B68
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242FB40876;
-	Mon,  1 Apr 2024 16:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8661E525;
+	Mon,  1 Apr 2024 16:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMFojyqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQrfbSvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69CC63E;
-	Mon,  1 Apr 2024 16:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7773613C;
+	Mon,  1 Apr 2024 16:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990498; cv=none; b=JDpafd4bIvxW/7RPOs0rLXk/GtTI5whEykAH6jTjjTfMDoLHQOvfiHEkLmAuNSh53j04KguAw4PKA5cgeBcOxMx6o1Wct0YZ0SK27mUyPTnR+RYY+j3ExN9y5TCOLgu+mUQDbBBIKdXV49SQRgJE5+SrRo3ifW2kIHjL+F2OdJo=
+	t=1711989145; cv=none; b=U5YK7ZbkZwzEwOVu4VfUfT9FR5n0PoWsuVTnd2L1MdYH61AcWL7DUpuWE/H0DQtzE2TGrwLw7wk4VZdbvFXNpW+AwjSnDPj35ayYyT2Ot1E1udO94mO1kqXSZsdl7nLqdMW+aNKN5IcYVhEO9pV/nI/HDo04FO8swulFTSE3fuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990498; c=relaxed/simple;
-	bh=4U95SnD6PeveJQiXPr/QakOVw44MXL1NCzxgVhRfMBU=;
+	s=arc-20240116; t=1711989145; c=relaxed/simple;
+	bh=qfZthv6AgG/7/vlsHd//b8iISVXoHfeHpse9B3F8dqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYzHhxITStw39JaCuJlmjn5KBIeUYdA9/+E/IhqE/JN0nJ1PLV26g4HKKPgodSgK82vDUmKYP049x8yieWqt27ZBzU6wnGNpRPFKMeeQsjwGg5jtEoZCwuIabOe23UPkrUS4REcA2TbnHWHMimbpRmvmAigI+8c8kvsF2fE+AH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMFojyqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E55BC433F1;
-	Mon,  1 Apr 2024 16:54:58 +0000 (UTC)
+	 MIME-Version; b=BvQ02AxdTYpKjhkiFenDvM6ACvRJ4jw+vKcxmK8V1WEgxXT2dNw9sq+qX5O7PaM/mXMqBNhKdSayUxJaWw5gQFr0SZo4GTfcq6xw3GEsF2XAlWMVwsVIO6n2VKaPt19C3FfYP+0OkLz+b9zNRosA5sbVfOWBqA5P6+f2a+/sbpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQrfbSvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1208DC433C7;
+	Mon,  1 Apr 2024 16:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990498;
-	bh=4U95SnD6PeveJQiXPr/QakOVw44MXL1NCzxgVhRfMBU=;
+	s=korg; t=1711989145;
+	bh=qfZthv6AgG/7/vlsHd//b8iISVXoHfeHpse9B3F8dqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMFojyqLX3iUPuCDjmYhTiE6V1CvA1NA2N182t+VxjCLQW5anpwEIqXo7fnjUrTRG
-	 6SCJ/8OfqrP7rYnSVe4rVI6eUoDRPZ8KOmFwXlDB0ijnEdl6I6Rd+s+cVC5MXqUEBa
-	 /WOqnobMz+y0Jr5vhZu6QLe4I/qM44OeoqdRWo/8=
+	b=PQrfbSvwrfhLPMRVzQy7btdHW++2v68hywBxExfE3wWqK/rRFl0usF5aZotprxtRK
+	 VPgj5ngYjgbNyVFPeMdfO8jkLzvP9WERDGc5sGPdrhagZ1YqUgS7fYXFZZBGrr1arw
+	 bs8OBJ4C2LA07RsvS53mBdRARE5rvT+8xAr4frP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Avri Altman <avri.altman@wdc.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 333/396] mmc: core: Avoid negative index with array access
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Sanath S <Sanath.S@amd.com>
+Subject: [PATCH 6.7 395/432] usb: dwc3: Properly set system wakeup
 Date: Mon,  1 Apr 2024 17:46:22 +0200
-Message-ID: <20240401152557.842030185@linuxfoundation.org>
+Message-ID: <20240401152605.132593860@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit cf55a7acd1ed38afe43bba1c8a0935b51d1dc014 upstream.
+commit f9aa41130ac69d13a53ce2a153ca79c70d43f39c upstream.
 
-Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") assigns
-prev_idata = idatas[i - 1], but doesn't check that the iterator i is
-greater than zero. Let's fix this by adding a check.
+If the device is configured for system wakeup, then make sure that the
+xHCI driver knows about it and make sure to permit wakeup only at the
+appropriate time.
 
-Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
-Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
+For host mode, if the controller goes through the dwc3 code path, then a
+child xHCI platform device is created. Make sure the platform device
+also inherits the wakeup setting for xHCI to enable remote wakeup.
+
+For device mode, make sure to disable system wakeup if no gadget driver
+is bound. We may experience unwanted system wakeup due to the wakeup
+signal from the controller PMU detecting connection/disconnection when
+in low power (D3). E.g. In the case of Steam Deck, the PCI PME prevents
+the system staying in suspend.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240313133744.2405325-2-mikko.rapeli@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Closes: https://lore.kernel.org/linux-usb/70a7692d-647c-9be7-00a6-06fc60f77294@igalia.com/T/#mf00d6669c2eff7b308d1162acd1d66c09f0853c7
+Fixes: d07e8819a03d ("usb: dwc3: add xHCI Host support")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Tested-by: Sanath S <Sanath.S@amd.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
+Link: https://lore.kernel.org/r/667cfda7009b502e08462c8fb3f65841d103cc0a.1709865476.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c   |    2 ++
+ drivers/usb/dwc3/core.h   |    2 ++
+ drivers/usb/dwc3/gadget.c |   10 ++++++++++
+ drivers/usb/dwc3/host.c   |   11 +++++++++++
+ 4 files changed, 25 insertions(+)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -488,7 +488,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
- 	if (idata->flags & MMC_BLK_IOC_DROP)
- 		return 0;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1507,6 +1507,8 @@ static void dwc3_get_properties(struct d
+ 	else
+ 		dwc->sysdev = dwc->dev;
  
--	if (idata->flags & MMC_BLK_IOC_SBC)
-+	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
- 		prev_idata = idatas[i - 1];
++	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
++
+ 	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
+ 	if (ret >= 0) {
+ 		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1127,6 +1127,7 @@ struct dwc3_scratchpad_array {
+  *	3	- Reserved
+  * @dis_metastability_quirk: set to disable metastability quirk.
+  * @dis_split_quirk: set to disable split boundary.
++ * @sys_wakeup: set if the device may do system wakeup.
+  * @wakeup_configured: set if the device is configured for remote wakeup.
+  * @suspended: set to track suspend event due to U3/L2.
+  * @imod_interval: set the interrupt moderation interval in 250ns
+@@ -1350,6 +1351,7 @@ struct dwc3 {
  
- 	/*
+ 	unsigned		dis_split_quirk:1;
+ 	unsigned		async_callbacks:1;
++	unsigned		sys_wakeup:1;
+ 	unsigned		wakeup_configured:1;
+ 	unsigned		suspended:1;
+ 
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2968,6 +2968,9 @@ static int dwc3_gadget_start(struct usb_
+ 	dwc->gadget_driver	= driver;
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	if (dwc->sys_wakeup)
++		device_wakeup_enable(dwc->sysdev);
++
+ 	return 0;
+ }
+ 
+@@ -2983,6 +2986,9 @@ static int dwc3_gadget_stop(struct usb_g
+ 	struct dwc3		*dwc = gadget_to_dwc(g);
+ 	unsigned long		flags;
+ 
++	if (dwc->sys_wakeup)
++		device_wakeup_disable(dwc->sysdev);
++
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc->gadget_driver	= NULL;
+ 	dwc->max_cfg_eps = 0;
+@@ -4664,6 +4670,10 @@ int dwc3_gadget_init(struct dwc3 *dwc)
+ 	else
+ 		dwc3_gadget_set_speed(dwc->gadget, dwc->maximum_speed);
+ 
++	/* No system wakeup if no gadget driver bound */
++	if (dwc->sys_wakeup)
++		device_wakeup_disable(dwc->sysdev);
++
+ 	return 0;
+ 
+ err5:
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -123,6 +123,14 @@ int dwc3_host_init(struct dwc3 *dwc)
+ 		goto err;
+ 	}
+ 
++	if (dwc->sys_wakeup) {
++		/* Restore wakeup setting if switched from device */
++		device_wakeup_enable(dwc->sysdev);
++
++		/* Pass on wakeup setting to the new xhci platform device */
++		device_init_wakeup(&xhci->dev, true);
++	}
++
+ 	return 0;
+ err:
+ 	platform_device_put(xhci);
+@@ -131,6 +139,9 @@ err:
+ 
+ void dwc3_host_exit(struct dwc3 *dwc)
+ {
++	if (dwc->sys_wakeup)
++		device_init_wakeup(&dwc->xhci->dev, false);
++
+ 	platform_device_unregister(dwc->xhci);
+ 	dwc->xhci = NULL;
+ }
 
 
 
