@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAA6893F66
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A74B8940DD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F410B1C216D1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46E87282A53
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB5E1DFFC;
-	Mon,  1 Apr 2024 16:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15E541C89;
+	Mon,  1 Apr 2024 16:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFbsA0ge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNYgDyFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64A147A62;
-	Mon,  1 Apr 2024 16:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF08A10A3B;
+	Mon,  1 Apr 2024 16:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988160; cv=none; b=ZuDawdnv9U4pOGRTaho7k8WgShkwlUf85wMbJRSD0J5pQYpQHSrbIeHurf3vlRUrFStMXibOm1JBBl1CT7wt08S+eI0z8KZ0rUf19QOs1Sx+lyVSogZdTMY9dn5QjbZfMNNNhKpTEay4vuX2k1pBaa/7Ggvs5MrfAp8fMutqlV0=
+	t=1711989312; cv=none; b=gVHZoAmtJdwSfby97zauKMAZE719AEi+YtzxGMpS9dInXxhmjmG+Lok32PS+QemaYb6kdqvfNQ7j4Pfdo6ea6DabDx5GqV9nOUMSJEaTw/bQkOEc0EebNGpy07c0Bct5g/rx0KCFbeffOKZihaifpv+n0eNKMRkHjNRZQekdcOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988160; c=relaxed/simple;
-	bh=V78gTyw54xgK6BPhS0pxGCU/TuwUvR+ymNBTYF4Lvvg=;
+	s=arc-20240116; t=1711989312; c=relaxed/simple;
+	bh=dRprHhcnpgh5Pq3PAhXKjigwRhp7MGbTW5hu3iDYRNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dblpgOIt+D061XdmjvHQAMYFPhXqtIQ5z6ixBuNFhXCFrTjoVF8IzrG/LHzLnFyfLQ3qR9t2jH73hpTaFxp67HMattKQrt6nOfNQOloq1P/0Rn19tKL6bhU7BfhZ9PkmtbzPqETiuk5bnjgjH/2CQdwmXjGjTHS1xoX1FtAFbQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFbsA0ge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5E8C43390;
-	Mon,  1 Apr 2024 16:15:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mW0BLNEWsfXGcqgE4CVqNWkXqRUxYow/uxf4ibYkrf7oEHF9XRGrP2x9sk9qjO8uB9aEhgr/l31QMi+0Oi9+2l3fCpS3SqgjnUBPs0uyCzirslkNzgQwcXNPHXwYXXugAxmj4pzsLQ65vvhUDOFDwGo0MPCB3NtJQZbQ+9JP17c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNYgDyFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30760C433C7;
+	Mon,  1 Apr 2024 16:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988159;
-	bh=V78gTyw54xgK6BPhS0pxGCU/TuwUvR+ymNBTYF4Lvvg=;
+	s=korg; t=1711989312;
+	bh=dRprHhcnpgh5Pq3PAhXKjigwRhp7MGbTW5hu3iDYRNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFbsA0ge5a68wdZ3JQU+hjsi7H+i/DO5eWHPX6+CT5cG5URcWgMdXgoa57rClHJGm
-	 +jWBbDPAyg8nRl5MeQjaa4uiHe008zkbGaiWOhDNskC3A1LQHQsfqYOkQ5NUI2YQm6
-	 TXba6oe4tzWCjueB87NLJcXO7ZiBsRDLLApjxrJk=
+	b=iNYgDyFxMttqgWdVKkWdVfdzQXz/a6HdIdc3ObCevqRCWzNZs2FN+LVJaFxBImibJ
+	 V8VrDhLS5oOG3xaB+ZNldHkjuxMTdyHg+C05ouGs365xujwjoAVxFmLlbPu0saZhLD
+	 mU2Z3ACcW6fodtb5cI0SP37/Iu4d9G4u+QxoDpEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 074/432] clk: qcom: mmcc-msm8974: fix terminating of frequency table arrays
+Subject: [PATCH 6.6 012/396] arm: dts: marvell: Fix maxium->maxim typo in brownstone dts
 Date: Mon,  1 Apr 2024 17:41:01 +0200
-Message-ID: <20240401152555.330823680@linuxfoundation.org>
+Message-ID: <20240401152548.250797626@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Duje Mihanović <duje.mihanovic@skole.hr>
 
-[ Upstream commit e2c02a85bf53ae86d79b5fccf0a75ac0b78e0c96 ]
+[ Upstream commit 831e0cd4f9ee15a4f02ae10b67e7fdc10eb2b4fc ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+Fix an obvious spelling error in the PMIC compatible in the MMP2
+Brownstone DTS file.
 
-Only compile tested.
-
-Fixes: d8b212014e69 ("clk: qcom: Add support for MSM8974's multimedia clock controller (MMCC)")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-7-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 58f1193e6210 ("mfd: max8925: Add dts")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Closes: https://lore.kernel.org/linux-devicetree/1410884282-18041-1-git-send-email-k.kozlowski@samsung.com/
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240125-brownstone-typo-fix-v2-1-45bc48a0c81c@skole.hr
+[krzysztof: Just 10 years to take a patch, not bad! Rephrased commit
+ msg]
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8974.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/marvell/mmp2-brownstone.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
-index a31f6cf0c4e0c..36f460b78be2c 100644
---- a/drivers/clk/qcom/mmcc-msm8974.c
-+++ b/drivers/clk/qcom/mmcc-msm8974.c
-@@ -290,6 +290,7 @@ static struct freq_tbl ftbl_mmss_axi_clk[] = {
- 	F(291750000, P_MMPLL1, 4, 0, 0),
- 	F(400000000, P_MMPLL0, 2, 0, 0),
- 	F(466800000, P_MMPLL1, 2.5, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 mmss_axi_clk_src = {
-@@ -314,6 +315,7 @@ static struct freq_tbl ftbl_ocmemnoc_clk[] = {
- 	F(150000000, P_GPLL0, 4, 0, 0),
- 	F(291750000, P_MMPLL1, 4, 0, 0),
- 	F(400000000, P_MMPLL0, 2, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 ocmemnoc_clk_src = {
+diff --git a/arch/arm/boot/dts/marvell/mmp2-brownstone.dts b/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
+index 04f1ae1382e7a..bc64348b82185 100644
+--- a/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
++++ b/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
+@@ -28,7 +28,7 @@ &uart3 {
+ &twsi1 {
+ 	status = "okay";
+ 	pmic: max8925@3c {
+-		compatible = "maxium,max8925";
++		compatible = "maxim,max8925";
+ 		reg = <0x3c>;
+ 		interrupts = <1>;
+ 		interrupt-parent = <&intcmux4>;
 -- 
 2.43.0
 
