@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-34624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9526894020
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D35893EA3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E48AB20C42
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5F6E1C210A2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C927846B9F;
-	Mon,  1 Apr 2024 16:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F8A446AC;
+	Mon,  1 Apr 2024 16:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QEl7F8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZcZr4Wv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AF71CA8F;
-	Mon,  1 Apr 2024 16:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A801CA8F;
+	Mon,  1 Apr 2024 16:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988747; cv=none; b=OEngwAeuuBvhnwS71nZdSZpLsmqAiZHj6TvTUB58PHFSHAIxZ1j1Fpj9EfFQWuCwc0ZUndfXh0TmzSV8Z/y7II1iOXlxHg1HeZaaUYgI10Bad8R54zSDyoiK3LJEdAN4Jg0Mw9Io9QPZb+mhRGRNUZQfLyrWuHtnh7AgSu+JDvo=
+	t=1711987570; cv=none; b=d5XiWOF9REK10oA5sGk5V1h3VKRnuJpy6YGREPQ8ejy23t8ep/qJlfkm1Ffo+7eCHmWwOzV94KyzVdPuzOQrUYRU27N7weIExS42EqlIG8+JMVQH6Dy+Fhj4bq0WzTcG5kiSk4gt0aZPbGbsisxwGp5gGvSwlsSkG2oI0yWDN3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988747; c=relaxed/simple;
-	bh=MVEy7z/2lN9URB+hZMvTX1fFQT4LLfpRNvfpmZGCSs4=;
+	s=arc-20240116; t=1711987570; c=relaxed/simple;
+	bh=ps9+EsUz1OhStB5J5QjWHBb3z9KhyTNXiffPvPIHIzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQz7pqC62XrN3yD0ZJQER8M099pqRmQOL7zWe+1Qmt4RhFkt68mGymIaKUcqVFbmrVzvQZCZ1c+dZ3rg5JIQEZzNgaLvbe6PyHcWgWjBQ7s51mObYK30zydLx5KccQFU4tg5EqOARkMu0ZCs/cmn4qRycrjeB0jVDCsTSZwOWP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QEl7F8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072F8C43394;
-	Mon,  1 Apr 2024 16:25:46 +0000 (UTC)
+	 MIME-Version; b=uVDl5HiIDQtkzm5JtDHpLF1keDU3Qy8pUW42MCM4kFD4rpUpg7hXxIsnr9Iylxsy+PFvtdu1jXcdXu/BTkIxuAqLgreCGjODhAGPLNnK7UpVEluU68h7bNwVJp8Nh5cGqF1NCPjGtiWfjCMKUKXrpXV8gGuYamU/8vFcCYBOHQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZcZr4Wv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69750C433F1;
+	Mon,  1 Apr 2024 16:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988747;
-	bh=MVEy7z/2lN9URB+hZMvTX1fFQT4LLfpRNvfpmZGCSs4=;
+	s=korg; t=1711987569;
+	bh=ps9+EsUz1OhStB5J5QjWHBb3z9KhyTNXiffPvPIHIzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0QEl7F8PW2lJncn1o6cM63uxjWRLc08VH/TL9+9+7gLNnf5a32shEW41zM2HRI1o6
-	 sSAC0jjCCN/fVY8F6+S/LKpSovbdGkZ5KoXQ8BbS5A2g3yqyjt02jH36cffSNsvmNI
-	 YNs1FNutT9n9LRgsst3q1JdQp4OuwPpGFth12zOI=
+	b=GZcZr4Wv3W/mhLQr+bJnS40B1WKide444HqCqPUGNPR6x+ChRVVr8z8F6dletu9lL
+	 X4GEVgsk6Gaii7Th96LHQx1TNgjaGMY/7wJ0JU/DtPl1RA5dlv0tf5r0q00ZV4uIbT
+	 bcLcYue6Bt8MKmJYf1FvocN1MxHY6sj71isCwTvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 276/432] ALSA: hda/realtek - Add Headset Mic supported Acer NB platform
+	WA AM <waautomata@gmail.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.8 297/399] btrfs: zoned: use zone aware sb location for scrub
 Date: Mon,  1 Apr 2024 17:44:23 +0200
-Message-ID: <20240401152601.405527892@linuxfoundation.org>
+Message-ID: <20240401152558.058367874@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-commit 34ab5bbc6e82214d7f7393eba26d164b303ebb4e upstream.
+commit 74098a989b9c3370f768140b7783a7aaec2759b3 upstream.
 
-It will be enable headset Mic for Acer NB platform.
+At the moment scrub_supers() doesn't grab the super block's location via
+the zoned device aware btrfs_sb_log_location() but via btrfs_sb_offset().
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/fe0eb6661ca240f3b7762b5b3257710d@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This leads to checksum errors on 'scrub' as we're not accessing the
+correct location of the super block.
+
+So use btrfs_sb_log_location() for getting the super blocks location on
+scrub.
+
+Reported-by: WA AM <waautomata@gmail.com>
+Link: http://lore.kernel.org/linux-btrfs/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/scrub.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11046,6 +11046,8 @@ static const struct snd_hda_pin_quirk al
-  *   at most one tbl is allowed to define for the same vendor and same codec
-  */
- static const struct snd_hda_pin_quirk alc269_fallback_pin_fixup_tbl[] = {
-+	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1025, "Acer", ALC2XX_FIXUP_HEADSET_MIC,
-+		{0x19, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1b, 0x40000000}),
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -2805,7 +2805,17 @@ static noinline_for_stack int scrub_supe
+ 		gen = btrfs_get_last_trans_committed(fs_info);
+ 
+ 	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
+-		bytenr = btrfs_sb_offset(i);
++		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
++		if (ret == -ENOENT)
++			break;
++
++		if (ret) {
++			spin_lock(&sctx->stat_lock);
++			sctx->stat.super_errors++;
++			spin_unlock(&sctx->stat_lock);
++			continue;
++		}
++
+ 		if (bytenr + BTRFS_SUPER_INFO_SIZE >
+ 		    scrub_dev->commit_total_bytes)
+ 			break;
 
 
 
