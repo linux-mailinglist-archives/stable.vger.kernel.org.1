@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAC689415A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAD8893F99
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E46282F2F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B01B1F215F3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175824596E;
-	Mon,  1 Apr 2024 16:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BEE47A62;
+	Mon,  1 Apr 2024 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzF9bRsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDazmggi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACCF1EB37;
-	Mon,  1 Apr 2024 16:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657543AD6;
+	Mon,  1 Apr 2024 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989668; cv=none; b=QnjxeLkCDhf4Fg4yXxkmhCN/OtNHDrZ68DDpuQRTAeOTvMsw6+viyDUryV9uzK6VtYii3wXhZuI0wVHYwtnQ6Jz8nhuBZGgZpGNlTc796TNEnsBvoXnSwSCPCelVKRIpHGq5ZsGVxwB7fqsNYK7by1NpcZIKtiLThMLatoJqEzs=
+	t=1711988326; cv=none; b=q0UceARieRaeQMLMZGdI0Xqkx9Id9EMpgXH8+qb60mGSeme+Rwmfj3AcjDuP329vLy39fURaKad11zmgec/vbgMH05UOwChIdM60bw6BoZAxl7bNg4g7/OXhbmsF0bqKzOKr48YIJjKZJ5/V1Ahn5OovDFD282KNJjKqCMPhmSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989668; c=relaxed/simple;
-	bh=26zWfdSmeLTZOFJXy7VCkdcDg1kwLyUhWuaMNUPCE1c=;
+	s=arc-20240116; t=1711988326; c=relaxed/simple;
+	bh=jIq2OwVvo1xKyPHURkrVgZWxOWmySqE1wWhgMG9J4Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6fqUv7oJOa6mYjbK6c67Ua87UFq/zb4t8W9Mbpjp1+MPU03GLCH4+FlaY2rNY0bUWFJxVHjKFcAT+M+U0t7IZkCUFPLInF+uokFTz60LGVHz/wn45XArgl2aXVcplpzS8IUKOew+I1np6It0LhdMhhurhqvUbhghaieKDevvQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzF9bRsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC17C433F1;
-	Mon,  1 Apr 2024 16:41:08 +0000 (UTC)
+	 MIME-Version; b=Dwop2qi8uwWN/WArLBdSq/w1zIBRIavQhoD5udEL/m22+0oAJFqfqBcKG3EgQGW8/gyzEEjDD1Cax9/8TlA++tsBHkhUhiEBTulJKuYBApavDhPFoXxcb+B6gdGfPqCWz1IRJ0QQKK/ggnC4rvbjDozveKHCRoz0hAAr96sJQoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDazmggi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB001C433C7;
+	Mon,  1 Apr 2024 16:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989668;
-	bh=26zWfdSmeLTZOFJXy7VCkdcDg1kwLyUhWuaMNUPCE1c=;
+	s=korg; t=1711988326;
+	bh=jIq2OwVvo1xKyPHURkrVgZWxOWmySqE1wWhgMG9J4Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzF9bRsdJBYiHUW9A/POxmPgt5po/1+yw79y6OHFoq3Bn2VDtvCTOU/OOaiXVypMy
-	 7FV1YdhWpYy5qv+CkEdEINd1dY4o1QEhWf3xCFtSK58oKegu0vi9rvC08cGqE828aT
-	 MSlOYAi1NI9lD1EIzqxEne8Bdln7Vdq4IdjHS7oc=
+	b=XDazmggiHeTrEgtAD17RVoUV9TQhEMdxspRCxdAnyT7AXngDo8V7t+yRtSqwIAtQX
+	 CSpOCSahYjk8Ff0SVZmGyD5qPiw+4/PfB2i36UT9bFNCkW2caBKzi2bNG59D4/sXkh
+	 6CNJf9kMzz2citYPU+w4ktfdlDX4Bzlb/HLhkQx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	John Ogness <john.ogness@linutronix.de>,
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/396] serial: Lock console when calling into driver before registration
+Subject: [PATCH 6.7 151/432] ksmbd: replace generic_fillattr with vfs_getattr
 Date: Mon,  1 Apr 2024 17:42:18 +0200
-Message-ID: <20240401152550.570752366@linuxfoundation.org>
+Message-ID: <20240401152557.640779109@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,189 +63,481 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-[ Upstream commit 801410b26a0e8b8a16f7915b2b55c9528b69ca87 ]
+[ Upstream commit 5614c8c487f6af627614dd2efca038e4afe0c6d7 ]
 
-During the handoff from earlycon to the real console driver, we have
-two separate drivers operating on the same device concurrently. In the
-case of the 8250 driver these concurrent accesses cause problems due
-to the driver's use of banked registers, controlled by LCR.DLAB. It is
-possible for the setup(), config_port(), pm() and set_mctrl() callbacks
-to set DLAB, which can cause the earlycon code that intends to access
-TX to instead access DLL, leading to missed output and corruption on
-the serial line due to unintended modifications to the baud rate.
+generic_fillattr should not be used outside of ->getattr
+implementations.
 
-In particular, for setup() we have:
+Use vfs_getattr instead, and adapt functions to return an
+error code to the caller.
 
-univ8250_console_setup()
--> serial8250_console_setup()
--> uart_set_options()
--> serial8250_set_termios()
--> serial8250_do_set_termios()
--> serial8250_do_set_divisor()
-
-For config_port() we have:
-
-serial8250_config_port()
--> autoconfig()
-
-For pm() we have:
-
-serial8250_pm()
--> serial8250_do_pm()
--> serial8250_set_sleep()
-
-For set_mctrl() we have (for some devices):
-
-serial8250_set_mctrl()
--> omap8250_set_mctrl()
--> __omap8250_set_mctrl()
-
-To avoid such problems, let's make it so that the console is locked
-during pre-registration calls to these callbacks, which will prevent
-the earlycon driver from running concurrently.
-
-Remove the partial solution to this problem in the 8250 driver
-that locked the console only during autoconfig_irq(), as this would
-result in a deadlock with the new approach. The console continues
-to be locked during autoconfig_irq() because it can only be called
-through uart_configure_port().
-
-Although this patch introduces more locking than strictly necessary
-(and in particular it also locks during the call to rs485_config()
-which is not affected by this issue as far as I can tell), it follows
-the principle that it is the responsibility of the generic console
-code to manage the earlycon handoff by ensuring that earlycon and real
-console driver code cannot run concurrently, and not the individual
-drivers.
-
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240304214350.501253-1-pcc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c |  6 ------
- drivers/tty/serial/serial_core.c    | 12 ++++++++++++
- kernel/printk/printk.c              | 21 ++++++++++++++++++---
- 3 files changed, 30 insertions(+), 9 deletions(-)
+ fs/smb/server/smb2pdu.c    | 170 ++++++++++++++++++++++++-------------
+ fs/smb/server/smb_common.c |  11 ++-
+ fs/smb/server/vfs.c        |  12 ++-
+ 3 files changed, 127 insertions(+), 66 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 141627370aabc..a17803da83f8c 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1337,9 +1337,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
- 		inb_p(ICP);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 0c97d3c860726..f6cc5d2730ffb 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3828,11 +3828,16 @@ static int process_query_dir_entries(struct smb2_query_dir_private *priv)
+ 		}
+ 
+ 		ksmbd_kstat.kstat = &kstat;
+-		if (priv->info_level != FILE_NAMES_INFORMATION)
+-			ksmbd_vfs_fill_dentry_attrs(priv->work,
+-						    idmap,
+-						    dent,
+-						    &ksmbd_kstat);
++		if (priv->info_level != FILE_NAMES_INFORMATION) {
++			rc = ksmbd_vfs_fill_dentry_attrs(priv->work,
++							 idmap,
++							 dent,
++							 &ksmbd_kstat);
++			if (rc) {
++				dput(dent);
++				continue;
++			}
++		}
+ 
+ 		rc = smb2_populate_readdir_entry(priv->work->conn,
+ 						 priv->info_level,
+@@ -4480,6 +4485,7 @@ static int get_file_basic_info(struct smb2_query_info_rsp *rsp,
+ 	struct smb2_file_basic_info *basic_info;
+ 	struct kstat stat;
+ 	u64 time;
++	int ret;
+ 
+ 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
+ 		pr_err("no right to read the attributes : 0x%x\n",
+@@ -4487,9 +4493,12 @@ static int get_file_basic_info(struct smb2_query_info_rsp *rsp,
+ 		return -EACCES;
  	}
  
--	if (uart_console(port))
--		console_lock();
--
- 	/* forget possible initially masked and pending IRQ */
- 	probe_irq_off(probe_irq_on());
- 	save_mcr = serial8250_in_MCR(up);
-@@ -1379,9 +1376,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
- 	if (port->flags & UPF_FOURPORT)
- 		outb_p(save_ICP, ICP);
- 
--	if (uart_console(port))
--		console_unlock();
--
- 	port->irq = (irq > 0) ? irq : 0;
++	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			  AT_STATX_SYNC_AS_STAT);
++	if (ret)
++		return ret;
++
+ 	basic_info = (struct smb2_file_basic_info *)rsp->Buffer;
+-	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS,
+-			 file_inode(fp->filp), &stat);
+ 	basic_info->CreationTime = cpu_to_le64(fp->create_time);
+ 	time = ksmbd_UnixTimeToNT(stat.atime);
+ 	basic_info->LastAccessTime = cpu_to_le64(time);
+@@ -4504,27 +4513,31 @@ static int get_file_basic_info(struct smb2_query_info_rsp *rsp,
+ 	return 0;
  }
  
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 083ea4de48f9a..4c81210ad9b3a 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -2602,7 +2602,12 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 			port->type = PORT_UNKNOWN;
- 			flags |= UART_CONFIG_TYPE;
- 		}
-+		/* Synchronize with possible boot console. */
-+		if (uart_console(port))
-+			console_lock();
- 		port->ops->config_port(port, flags);
-+		if (uart_console(port))
-+			console_unlock();
+-static void get_file_standard_info(struct smb2_query_info_rsp *rsp,
+-				   struct ksmbd_file *fp, void *rsp_org)
++static int get_file_standard_info(struct smb2_query_info_rsp *rsp,
++				  struct ksmbd_file *fp, void *rsp_org)
+ {
+ 	struct smb2_file_standard_info *sinfo;
+ 	unsigned int delete_pending;
+-	struct inode *inode;
+ 	struct kstat stat;
++	int ret;
+ 
+-	inode = file_inode(fp->filp);
+-	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS, inode, &stat);
++	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			  AT_STATX_SYNC_AS_STAT);
++	if (ret)
++		return ret;
+ 
+ 	sinfo = (struct smb2_file_standard_info *)rsp->Buffer;
+ 	delete_pending = ksmbd_inode_pending_delete(fp);
+ 
+-	sinfo->AllocationSize = cpu_to_le64(inode->i_blocks << 9);
++	sinfo->AllocationSize = cpu_to_le64(stat.blocks << 9);
+ 	sinfo->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
+ 	sinfo->NumberOfLinks = cpu_to_le32(get_nlink(&stat) - delete_pending);
+ 	sinfo->DeletePending = delete_pending;
+ 	sinfo->Directory = S_ISDIR(stat.mode) ? 1 : 0;
+ 	rsp->OutputBufferLength =
+ 		cpu_to_le32(sizeof(struct smb2_file_standard_info));
++
++	return 0;
+ }
+ 
+ static void get_file_alignment_info(struct smb2_query_info_rsp *rsp,
+@@ -4546,11 +4559,11 @@ static int get_file_all_info(struct ksmbd_work *work,
+ 	struct ksmbd_conn *conn = work->conn;
+ 	struct smb2_file_all_info *file_info;
+ 	unsigned int delete_pending;
+-	struct inode *inode;
+ 	struct kstat stat;
+ 	int conv_len;
+ 	char *filename;
+ 	u64 time;
++	int ret;
+ 
+ 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
+ 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
+@@ -4562,8 +4575,10 @@ static int get_file_all_info(struct ksmbd_work *work,
+ 	if (IS_ERR(filename))
+ 		return PTR_ERR(filename);
+ 
+-	inode = file_inode(fp->filp);
+-	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS, inode, &stat);
++	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			  AT_STATX_SYNC_AS_STAT);
++	if (ret)
++		return ret;
+ 
+ 	ksmbd_debug(SMB, "filename = %s\n", filename);
+ 	delete_pending = ksmbd_inode_pending_delete(fp);
+@@ -4579,7 +4594,7 @@ static int get_file_all_info(struct ksmbd_work *work,
+ 	file_info->Attributes = fp->f_ci->m_fattr;
+ 	file_info->Pad1 = 0;
+ 	file_info->AllocationSize =
+-		cpu_to_le64(inode->i_blocks << 9);
++		cpu_to_le64(stat.blocks << 9);
+ 	file_info->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
+ 	file_info->NumberOfLinks =
+ 			cpu_to_le32(get_nlink(&stat) - delete_pending);
+@@ -4623,10 +4638,10 @@ static void get_file_alternate_info(struct ksmbd_work *work,
+ 		cpu_to_le32(sizeof(struct smb2_file_alt_name_info) + conv_len);
+ }
+ 
+-static void get_file_stream_info(struct ksmbd_work *work,
+-				 struct smb2_query_info_rsp *rsp,
+-				 struct ksmbd_file *fp,
+-				 void *rsp_org)
++static int get_file_stream_info(struct ksmbd_work *work,
++				struct smb2_query_info_rsp *rsp,
++				struct ksmbd_file *fp,
++				void *rsp_org)
+ {
+ 	struct ksmbd_conn *conn = work->conn;
+ 	struct smb2_file_stream_info *file_info;
+@@ -4637,9 +4652,13 @@ static void get_file_stream_info(struct ksmbd_work *work,
+ 	int nbytes = 0, streamlen, stream_name_len, next, idx = 0;
+ 	int buf_free_len;
+ 	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
++	int ret;
++
++	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			  AT_STATX_SYNC_AS_STAT);
++	if (ret)
++		return ret;
+ 
+-	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS,
+-			 file_inode(fp->filp), &stat);
+ 	file_info = (struct smb2_file_stream_info *)rsp->Buffer;
+ 
+ 	buf_free_len =
+@@ -4720,29 +4739,37 @@ static void get_file_stream_info(struct ksmbd_work *work,
+ 	kvfree(xattr_list);
+ 
+ 	rsp->OutputBufferLength = cpu_to_le32(nbytes);
++
++	return 0;
+ }
+ 
+-static void get_file_internal_info(struct smb2_query_info_rsp *rsp,
+-				   struct ksmbd_file *fp, void *rsp_org)
++static int get_file_internal_info(struct smb2_query_info_rsp *rsp,
++				  struct ksmbd_file *fp, void *rsp_org)
+ {
+ 	struct smb2_file_internal_info *file_info;
+ 	struct kstat stat;
++	int ret;
++
++	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			  AT_STATX_SYNC_AS_STAT);
++	if (ret)
++		return ret;
+ 
+-	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS,
+-			 file_inode(fp->filp), &stat);
+ 	file_info = (struct smb2_file_internal_info *)rsp->Buffer;
+ 	file_info->IndexNumber = cpu_to_le64(stat.ino);
+ 	rsp->OutputBufferLength =
+ 		cpu_to_le32(sizeof(struct smb2_file_internal_info));
++
++	return 0;
+ }
+ 
+ static int get_file_network_open_info(struct smb2_query_info_rsp *rsp,
+ 				      struct ksmbd_file *fp, void *rsp_org)
+ {
+ 	struct smb2_file_ntwrk_info *file_info;
+-	struct inode *inode;
+ 	struct kstat stat;
+ 	u64 time;
++	int ret;
+ 
+ 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
+ 		pr_err("no right to read the attributes : 0x%x\n",
+@@ -4750,10 +4777,12 @@ static int get_file_network_open_info(struct smb2_query_info_rsp *rsp,
+ 		return -EACCES;
  	}
  
- 	if (port->type != PORT_UNKNOWN) {
-@@ -2610,6 +2615,10 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+-	file_info = (struct smb2_file_ntwrk_info *)rsp->Buffer;
++	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			  AT_STATX_SYNC_AS_STAT);
++	if (ret)
++		return ret;
  
- 		uart_report_port(drv, port);
+-	inode = file_inode(fp->filp);
+-	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS, inode, &stat);
++	file_info = (struct smb2_file_ntwrk_info *)rsp->Buffer;
  
-+		/* Synchronize with possible boot console. */
-+		if (uart_console(port))
-+			console_lock();
+ 	file_info->CreationTime = cpu_to_le64(fp->create_time);
+ 	time = ksmbd_UnixTimeToNT(stat.atime);
+@@ -4763,8 +4792,7 @@ static int get_file_network_open_info(struct smb2_query_info_rsp *rsp,
+ 	time = ksmbd_UnixTimeToNT(stat.ctime);
+ 	file_info->ChangeTime = cpu_to_le64(time);
+ 	file_info->Attributes = fp->f_ci->m_fattr;
+-	file_info->AllocationSize =
+-		cpu_to_le64(inode->i_blocks << 9);
++	file_info->AllocationSize = cpu_to_le64(stat.blocks << 9);
+ 	file_info->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
+ 	file_info->Reserved = cpu_to_le32(0);
+ 	rsp->OutputBufferLength =
+@@ -4804,14 +4832,17 @@ static void get_file_mode_info(struct smb2_query_info_rsp *rsp,
+ 		cpu_to_le32(sizeof(struct smb2_file_mode_info));
+ }
+ 
+-static void get_file_compression_info(struct smb2_query_info_rsp *rsp,
+-				      struct ksmbd_file *fp, void *rsp_org)
++static int get_file_compression_info(struct smb2_query_info_rsp *rsp,
++				     struct ksmbd_file *fp, void *rsp_org)
+ {
+ 	struct smb2_file_comp_info *file_info;
+ 	struct kstat stat;
++	int ret;
+ 
+-	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS,
+-			 file_inode(fp->filp), &stat);
++	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			  AT_STATX_SYNC_AS_STAT);
++	if (ret)
++		return ret;
+ 
+ 	file_info = (struct smb2_file_comp_info *)rsp->Buffer;
+ 	file_info->CompressedFileSize = cpu_to_le64(stat.blocks << 9);
+@@ -4823,6 +4854,8 @@ static void get_file_compression_info(struct smb2_query_info_rsp *rsp,
+ 
+ 	rsp->OutputBufferLength =
+ 		cpu_to_le32(sizeof(struct smb2_file_comp_info));
 +
- 		/* Power up port for set_mctrl() */
- 		uart_change_pm(state, UART_PM_STATE_ON);
++	return 0;
+ }
  
-@@ -2626,6 +2635,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ static int get_file_attribute_tag_info(struct smb2_query_info_rsp *rsp,
+@@ -4844,7 +4877,7 @@ static int get_file_attribute_tag_info(struct smb2_query_info_rsp *rsp,
+ 	return 0;
+ }
  
- 		uart_rs485_config(port);
- 
-+		if (uart_console(port))
-+			console_unlock();
+-static void find_file_posix_info(struct smb2_query_info_rsp *rsp,
++static int find_file_posix_info(struct smb2_query_info_rsp *rsp,
+ 				struct ksmbd_file *fp, void *rsp_org)
+ {
+ 	struct smb311_posix_qinfo *file_info;
+@@ -4852,24 +4885,31 @@ static void find_file_posix_info(struct smb2_query_info_rsp *rsp,
+ 	struct mnt_idmap *idmap = file_mnt_idmap(fp->filp);
+ 	vfsuid_t vfsuid = i_uid_into_vfsuid(idmap, inode);
+ 	vfsgid_t vfsgid = i_gid_into_vfsgid(idmap, inode);
++	struct kstat stat;
+ 	u64 time;
+ 	int out_buf_len = sizeof(struct smb311_posix_qinfo) + 32;
++	int ret;
 +
- 		/*
- 		 * If this driver supports console, and it hasn't been
- 		 * successfully registered yet, try to re-register it.
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index b67fbae1299fa..c358c04d05162 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -3284,6 +3284,21 @@ static int __init keep_bootcon_setup(char *str)
++	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			  AT_STATX_SYNC_AS_STAT);
++	if (ret)
++		return ret;
  
- early_param("keep_bootcon", keep_bootcon_setup);
+ 	file_info = (struct smb311_posix_qinfo *)rsp->Buffer;
+ 	file_info->CreationTime = cpu_to_le64(fp->create_time);
+-	time = ksmbd_UnixTimeToNT(inode_get_atime(inode));
++	time = ksmbd_UnixTimeToNT(stat.atime);
+ 	file_info->LastAccessTime = cpu_to_le64(time);
+-	time = ksmbd_UnixTimeToNT(inode_get_mtime(inode));
++	time = ksmbd_UnixTimeToNT(stat.mtime);
+ 	file_info->LastWriteTime = cpu_to_le64(time);
+-	time = ksmbd_UnixTimeToNT(inode_get_ctime(inode));
++	time = ksmbd_UnixTimeToNT(stat.ctime);
+ 	file_info->ChangeTime = cpu_to_le64(time);
+ 	file_info->DosAttributes = fp->f_ci->m_fattr;
+-	file_info->Inode = cpu_to_le64(inode->i_ino);
+-	file_info->EndOfFile = cpu_to_le64(inode->i_size);
+-	file_info->AllocationSize = cpu_to_le64(inode->i_blocks << 9);
+-	file_info->HardLinks = cpu_to_le32(inode->i_nlink);
+-	file_info->Mode = cpu_to_le32(inode->i_mode & 0777);
+-	file_info->DeviceId = cpu_to_le32(inode->i_rdev);
++	file_info->Inode = cpu_to_le64(stat.ino);
++	file_info->EndOfFile = cpu_to_le64(stat.size);
++	file_info->AllocationSize = cpu_to_le64(stat.blocks << 9);
++	file_info->HardLinks = cpu_to_le32(stat.nlink);
++	file_info->Mode = cpu_to_le32(stat.mode & 0777);
++	file_info->DeviceId = cpu_to_le32(stat.rdev);
  
-+static int console_call_setup(struct console *newcon, char *options)
-+{
-+	int err;
-+
-+	if (!newcon->setup)
-+		return 0;
-+
-+	/* Synchronize with possible boot console. */
-+	console_lock();
-+	err = newcon->setup(newcon, options);
-+	console_unlock();
-+
-+	return err;
-+}
-+
- /*
-  * This is called by register_console() to try to match
-  * the newly registered console with any of the ones selected
-@@ -3319,8 +3334,8 @@ static int try_enable_preferred_console(struct console *newcon,
- 			if (_braille_register_console(newcon, c))
- 				return 0;
+ 	/*
+ 	 * Sids(32) contain two sids(Domain sid(16), UNIX group sid(16)).
+@@ -4882,6 +4922,8 @@ static void find_file_posix_info(struct smb2_query_info_rsp *rsp,
+ 		  SIDUNIX_GROUP, (struct smb_sid *)&file_info->Sids[16]);
  
--			if (newcon->setup &&
--			    (err = newcon->setup(newcon, c->options)) != 0)
-+			err = console_call_setup(newcon, c->options);
-+			if (err)
- 				return err;
+ 	rsp->OutputBufferLength = cpu_to_le32(out_buf_len);
++
++	return 0;
+ }
+ 
+ static int smb2_get_info_file(struct ksmbd_work *work,
+@@ -4930,7 +4972,7 @@ static int smb2_get_info_file(struct ksmbd_work *work,
+ 		break;
+ 
+ 	case FILE_STANDARD_INFORMATION:
+-		get_file_standard_info(rsp, fp, work->response_buf);
++		rc = get_file_standard_info(rsp, fp, work->response_buf);
+ 		break;
+ 
+ 	case FILE_ALIGNMENT_INFORMATION:
+@@ -4946,11 +4988,11 @@ static int smb2_get_info_file(struct ksmbd_work *work,
+ 		break;
+ 
+ 	case FILE_STREAM_INFORMATION:
+-		get_file_stream_info(work, rsp, fp, work->response_buf);
++		rc = get_file_stream_info(work, rsp, fp, work->response_buf);
+ 		break;
+ 
+ 	case FILE_INTERNAL_INFORMATION:
+-		get_file_internal_info(rsp, fp, work->response_buf);
++		rc = get_file_internal_info(rsp, fp, work->response_buf);
+ 		break;
+ 
+ 	case FILE_NETWORK_OPEN_INFORMATION:
+@@ -4974,7 +5016,7 @@ static int smb2_get_info_file(struct ksmbd_work *work,
+ 		break;
+ 
+ 	case FILE_COMPRESSION_INFORMATION:
+-		get_file_compression_info(rsp, fp, work->response_buf);
++		rc = get_file_compression_info(rsp, fp, work->response_buf);
+ 		break;
+ 
+ 	case FILE_ATTRIBUTE_TAG_INFORMATION:
+@@ -4985,7 +5027,7 @@ static int smb2_get_info_file(struct ksmbd_work *work,
+ 			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
+ 			rc = -EOPNOTSUPP;
+ 		} else {
+-			find_file_posix_info(rsp, fp, work->response_buf);
++			rc = find_file_posix_info(rsp, fp, work->response_buf);
  		}
- 		newcon->flags |= CON_ENABLED;
-@@ -3346,7 +3361,7 @@ static void try_enable_default_console(struct console *newcon)
- 	if (newcon->index < 0)
- 		newcon->index = 0;
+ 		break;
+ 	default:
+@@ -5398,7 +5440,6 @@ int smb2_close(struct ksmbd_work *work)
+ 	struct smb2_close_rsp *rsp;
+ 	struct ksmbd_conn *conn = work->conn;
+ 	struct ksmbd_file *fp;
+-	struct inode *inode;
+ 	u64 time;
+ 	int err = 0;
  
--	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
-+	if (console_call_setup(newcon, NULL) != 0)
- 		return;
+@@ -5453,24 +5494,33 @@ int smb2_close(struct ksmbd_work *work)
+ 	rsp->Reserved = 0;
  
- 	newcon->flags |= CON_ENABLED;
+ 	if (req->Flags == SMB2_CLOSE_FLAG_POSTQUERY_ATTRIB) {
++		struct kstat stat;
++		int ret;
++
+ 		fp = ksmbd_lookup_fd_fast(work, volatile_id);
+ 		if (!fp) {
+ 			err = -ENOENT;
+ 			goto out;
+ 		}
+ 
+-		inode = file_inode(fp->filp);
++		ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++				  AT_STATX_SYNC_AS_STAT);
++		if (ret) {
++			ksmbd_fd_put(work, fp);
++			goto out;
++		}
++
+ 		rsp->Flags = SMB2_CLOSE_FLAG_POSTQUERY_ATTRIB;
+-		rsp->AllocationSize = S_ISDIR(inode->i_mode) ? 0 :
+-			cpu_to_le64(inode->i_blocks << 9);
+-		rsp->EndOfFile = cpu_to_le64(inode->i_size);
++		rsp->AllocationSize = S_ISDIR(stat.mode) ? 0 :
++			cpu_to_le64(stat.blocks << 9);
++		rsp->EndOfFile = cpu_to_le64(stat.size);
+ 		rsp->Attributes = fp->f_ci->m_fattr;
+ 		rsp->CreationTime = cpu_to_le64(fp->create_time);
+-		time = ksmbd_UnixTimeToNT(inode_get_atime(inode));
++		time = ksmbd_UnixTimeToNT(stat.atime);
+ 		rsp->LastAccessTime = cpu_to_le64(time);
+-		time = ksmbd_UnixTimeToNT(inode_get_mtime(inode));
++		time = ksmbd_UnixTimeToNT(stat.mtime);
+ 		rsp->LastWriteTime = cpu_to_le64(time);
+-		time = ksmbd_UnixTimeToNT(inode_get_ctime(inode));
++		time = ksmbd_UnixTimeToNT(stat.ctime);
+ 		rsp->ChangeTime = cpu_to_le64(time);
+ 		ksmbd_fd_put(work, fp);
+ 	} else {
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index 7c98bf699772f..fcaf373cc0080 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -457,10 +457,13 @@ int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work, int info_level,
+ 			}
+ 
+ 			ksmbd_kstat.kstat = &kstat;
+-			ksmbd_vfs_fill_dentry_attrs(work,
+-						    idmap,
+-						    dentry,
+-						    &ksmbd_kstat);
++			rc = ksmbd_vfs_fill_dentry_attrs(work,
++							 idmap,
++							 dentry,
++							 &ksmbd_kstat);
++			if (rc)
++				break;
++
+ 			rc = fn(conn, info_level, d_info, &ksmbd_kstat);
+ 			if (rc)
+ 				break;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 4277750a6da1b..a8936aba7710e 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1669,11 +1669,19 @@ int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+ 				struct dentry *dentry,
+ 				struct ksmbd_kstat *ksmbd_kstat)
+ {
++	struct ksmbd_share_config *share_conf = work->tcon->share_conf;
+ 	u64 time;
+ 	int rc;
++	struct path path = {
++		.mnt = share_conf->vfs_path.mnt,
++		.dentry = dentry,
++	};
+ 
+-	generic_fillattr(idmap, STATX_BASIC_STATS, d_inode(dentry),
+-			 ksmbd_kstat->kstat);
++	rc = vfs_getattr(&path, ksmbd_kstat->kstat,
++			 STATX_BASIC_STATS | STATX_BTIME,
++			 AT_STATX_SYNC_AS_STAT);
++	if (rc)
++		return rc;
+ 
+ 	time = ksmbd_UnixTimeToNT(ksmbd_kstat->kstat->ctime);
+ 	ksmbd_kstat->create_time = time;
 -- 
 2.43.0
 
