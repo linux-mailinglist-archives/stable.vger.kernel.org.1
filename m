@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-34992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AB98941D3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CE4894302
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05CECB21A6A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A29611C21DF0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DFA4644C;
-	Mon,  1 Apr 2024 16:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF2248781;
+	Mon,  1 Apr 2024 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zp3++Xcl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB3ivhQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6CD1C0DE7;
-	Mon,  1 Apr 2024 16:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17020482CA;
+	Mon,  1 Apr 2024 16:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989985; cv=none; b=BUhAwCC/8wdEz1b18qHHLBCQf/68mCE33GOeZR6EKErcvzJQ+JTAl13Egn6+6XmoJuHeNgP8IqxxZX8p+Jy+y2A5W7wdNbjmD/+pu9wp3AKRFmy2rcYFLgw/L4LBNedIL5XuxBx08O80R6P4oGCc5kE56Pv3/aJ4zPkb6dPNAMw=
+	t=1711990711; cv=none; b=K+eci9OXuX4iuFOgDnqGNQ+RMJVtPomYuyw8kkhnK7hcOGmEtHeP/aBtOKhu6MUnoNrDbJjfDBlPfERX1zeq2DOgLL+0WHabuhXqgn45QyLw6QYI/wTEIaLwF91oASKcvHqnnZrDrKuiKL8P/MrOJYxmqd1EBX5a1UmL8wUqt7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989985; c=relaxed/simple;
-	bh=MJdglve4hwGQyr1VxCyBs/x3hcN7ZMBcpby+vnUSCEs=;
+	s=arc-20240116; t=1711990711; c=relaxed/simple;
+	bh=9GCJ23lDPe7LHwFdZBAiOhHaLCuV62vOLBcAtnwc/HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NiYDWwybyE+pypI3XpQe0AZL8Hw5SzXyqEFt/vA7kMfsS3jk4O3D6YMwvuv5UW2/9WHbuFzUVR/bYMQzXFzXYqz7qRw6zMuDmfZ86hgNu7iNc51nkBNTnbHzMf3DgIXDCB6aTP2ko8k3rawwnOQcCkMAWQ1Dz5yLtD51KkvbPAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp3++Xcl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3850DC433F1;
-	Mon,  1 Apr 2024 16:46:23 +0000 (UTC)
+	 MIME-Version; b=JTV6ICRldTKjfToulDQYf15N7GyH6/fDEj+FDTJZPj+kOSY/DU6B2YqgQgrz8iYxpSzG1YHxgs5f+3huUk1jmUtEwlWLPOB1ONNexO+qsJpS12cytGuUJ6O5n/VKwJuU/PY7Qia3Gqg5fQlB1xPlyU8ktKEByCB0cDu3yNUIt8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB3ivhQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904BCC433C7;
+	Mon,  1 Apr 2024 16:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989983;
-	bh=MJdglve4hwGQyr1VxCyBs/x3hcN7ZMBcpby+vnUSCEs=;
+	s=korg; t=1711990711;
+	bh=9GCJ23lDPe7LHwFdZBAiOhHaLCuV62vOLBcAtnwc/HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zp3++XclRHstJRkEkh8r9h03N6VVNQXkGXj3HWLKBcbBDhrvcvDekJ2IvLcTsGA4q
-	 hcYtuJdzPOfg2iHoR82/+qcRtuMJxP016uAj+tahSl7UNlE+D1OGnZ5FudHOKngIU4
-	 /o1Shlbbx1kucTt21n8si1FjJlJdLXMRGsW8BGTU=
+	b=lB3ivhQv16DxiJjMtIJNlIKz3dWdoyPatCgaeRzndm5s1OBWUv7ai8XHxQLqb/IHT
+	 ofZDBvvJcaO8JVxJKTK5apyCMTYpIVEjp1fWqC2MfnJc/R+vQlNfLmo1xacnFbOBWL
+	 s2Kbqu9/rcwsIbdyZc2Q/sNp0KRGmPho70EyFiUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Leo Ma <hanghong.ma@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/396] drm/amd/display: Fix noise issue on HDMI AV mute
+Subject: [PATCH 6.1 042/272] ubi: correct the calculation of fastmap size
 Date: Mon,  1 Apr 2024 17:43:52 +0200
-Message-ID: <20240401152553.396710837@linuxfoundation.org>
+Message-ID: <20240401152531.709409705@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Ma <hanghong.ma@amd.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 69e3be6893a7e668660b05a966bead82bbddb01d ]
+[ Upstream commit 7f174ae4f39e8475adcc09d26c5a43394689ad6c ]
 
-[Why]
-When mode switching is triggered there is momentary noise visible on
-some HDMI TV or displays.
+Now that the calculation of fastmap size in ubi_calc_fm_size() is
+incorrect since it miss each user volume's ubi_fm_eba structure and the
+Internal UBI volume info. Let's correct the calculation.
 
-[How]
-Wait for 2 frames to make sure we have enough time to send out AV mute
-and sink receives a full frame.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Leo Ma <hanghong.ma@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/mtd/ubi/fastmap.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index 255713ec29bb0..ba47a1c8eec10 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -619,10 +619,20 @@ void dcn30_set_avmute(struct pipe_ctx *pipe_ctx, bool enable)
- 	if (pipe_ctx == NULL)
- 		return;
- 
--	if (dc_is_hdmi_signal(pipe_ctx->stream->signal) && pipe_ctx->stream_res.stream_enc != NULL)
-+	if (dc_is_hdmi_signal(pipe_ctx->stream->signal) && pipe_ctx->stream_res.stream_enc != NULL) {
- 		pipe_ctx->stream_res.stream_enc->funcs->set_avmute(
- 				pipe_ctx->stream_res.stream_enc,
- 				enable);
-+
-+		/* Wait for two frame to make sure AV mute is sent out */
-+		if (enable) {
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VBLANK);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VBLANK);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
-+		}
-+	}
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index ca2d9efe62c3c..1060e19205d2a 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -85,9 +85,10 @@ size_t ubi_calc_fm_size(struct ubi_device *ubi)
+ 		sizeof(struct ubi_fm_scan_pool) +
+ 		sizeof(struct ubi_fm_scan_pool) +
+ 		(ubi->peb_count * sizeof(struct ubi_fm_ec)) +
+-		(sizeof(struct ubi_fm_eba) +
+-		(ubi->peb_count * sizeof(__be32))) +
+-		sizeof(struct ubi_fm_volhdr) * UBI_MAX_VOLUMES;
++		((sizeof(struct ubi_fm_eba) +
++		  sizeof(struct ubi_fm_volhdr)) *
++		 (UBI_MAX_VOLUMES + UBI_INT_VOL_COUNT)) +
++		(ubi->peb_count * sizeof(__be32));
+ 	return roundup(size, ubi->leb_size);
  }
  
- void dcn30_update_info_frame(struct pipe_ctx *pipe_ctx)
 -- 
 2.43.0
 
