@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-34245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A0A893E83
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 183BD8942FB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A8831C20910
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 494DF1C21D96
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E914778E;
-	Mon,  1 Apr 2024 16:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75367487BE;
+	Mon,  1 Apr 2024 16:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORtMY22i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSEP7GRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3718A45BE4;
-	Mon,  1 Apr 2024 16:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AE048781;
+	Mon,  1 Apr 2024 16:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987472; cv=none; b=maeyWdArwjHt3IbngPq8cbXTJWjnjGAul6dKG5WZNNrFWZTgh+Nk2tTJ8j96wcgfcRTQ8JMSFRi6tzkG8vDFDEMRRvzkc/3VNZ0kQAaonZZfYKXDwCsMDLQk97TO7aVRSueUMsyzvwwFWMYJt4F1Aj6z7VcdkdRd8c5KbGiKrvc=
+	t=1711990685; cv=none; b=hc445z9CAGN8xnw4uXwREoSkzk8RWQsrlNYwomSTikPy925oaVJIv5hXx8dlTLaVOlezKwOr5v3liR8SG/jWUNjnAzgLAY8Weroh6WYuinEKOI8+V8/ssCn0JYMRc8E684eypWyvorFMdNrO/A7FVkh5Bw2nFKnzlh5ioblggd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987472; c=relaxed/simple;
-	bh=p/lFXcWYnz3OsQLlgkfljt/5jjKuR5DuJuDCN6cu7yM=;
+	s=arc-20240116; t=1711990685; c=relaxed/simple;
+	bh=/SbEG8KiFyb7ER3fzXYMgcPXRWnxSfGkXunJYMhDIXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTmTvei+2pFjcu7fKmIGNPNJ6t0mC3nxb7AcRxuvKoUNKTugFqYIwASZNW2UDrKDKf3aqQNHl3OnztDHcOLjos11lIvqVZu5wVzIGewV0ZcHOD8NNmGpgknaGLNKoRoxKUa0c46lhgxPl32JwSksjroCVNRRECrWnunW9HTWDKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORtMY22i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B290EC433F1;
-	Mon,  1 Apr 2024 16:04:31 +0000 (UTC)
+	 MIME-Version; b=UPw38VklyqdqPhst9Cs7I00+xUz3umIgHfFks0KNkwYvV6V04YpdX5aNn7RPuJtIA7PnuuKRj808RS1rk47o0H5MreMf+6GwYrHDupW/UtkEgfIibj/erlM1P6h6Z6+OX795Ur8cPxfQ/Bd739oENAw4a3Ni25pD7sDUh+R1Q4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSEP7GRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A890AC433F1;
+	Mon,  1 Apr 2024 16:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987472;
-	bh=p/lFXcWYnz3OsQLlgkfljt/5jjKuR5DuJuDCN6cu7yM=;
+	s=korg; t=1711990685;
+	bh=/SbEG8KiFyb7ER3fzXYMgcPXRWnxSfGkXunJYMhDIXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORtMY22irz5g5mWm9DeMGTQ0GJlgVHRdAwwwabpkL3PR9pmAqD5wMyb1BuPg0oPLq
-	 LHOlVreetZ86c75ntlRTe5kWrQLhflThOP2X+M4jah/KUaT/BsI8Jpesb459JW6eEo
-	 jg6udDl7NDg36heeaMKokCiBq+t2Eeg0MgSyiA3Q=
+	b=lSEP7GRo//wmwVeaCXqiHj5kidzH8DNWSano4BI3erVlZXtNaeDgBdJn1cHC0y99Q
+	 Yx36BnllEGTzdXlSWnKt0EaB6dyk5EMYF+w07ShRcZi0ywafJfIHStGhFyed14d99W
+	 p9wL3F18EQt40lFbialxFECyGy2EF+TWLxI3BPrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Christoph Hellwig <hch@lst.de>,
+	stable@kernel.org,
+	yangerkun <yangerkun@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 259/399] swiotlb: Fix alignment checks when both allocation and DMA masks are present
+Subject: [PATCH 6.1 035/272] ext4: correct best extent lstart adjustment logic
 Date: Mon,  1 Apr 2024 17:43:45 +0200
-Message-ID: <20240401152556.904612505@linuxfoundation.org>
+Message-ID: <20240401152531.467737274@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +66,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 51b30ecb73b481d5fac6ccf2ecb4a309c9ee3310 ]
+[ Upstream commit 4fbf8bc733d14bceb16dda46a3f5e19c6a9621c5 ]
 
-Nicolin reports that swiotlb buffer allocations fail for an NVME device
-behind an IOMMU using 64KiB pages. This is because we end up with a
-minimum allocation alignment of 64KiB (for the IOMMU to map the buffer
-safely) but a minimum DMA alignment mask corresponding to a 4KiB NVME
-page (i.e. preserving the 4KiB page offset from the original allocation).
-If the original address is not 4KiB-aligned, the allocation will fail
-because swiotlb_search_pool_area() erroneously compares these unmasked
-bits with the 64KiB-aligned candidate allocation.
+When yangerkun review commit 93cdf49f6eca ("ext4: Fix best extent lstart
+adjustment logic in ext4_mb_new_inode_pa()"), it was found that the best
+extent did not completely cover the original request after adjusting the
+best extent lstart in ext4_mb_new_inode_pa() as follows:
 
-Tweak swiotlb_search_pool_area() so that the DMA alignment mask is
-reduced based on the required alignment of the allocation.
+  original request: 2/10(8)
+  normalized request: 0/64(64)
+  best extent: 0/9(9)
 
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Link: https://lore.kernel.org/r/cover.1707851466.git.nicolinc@nvidia.com
-Reported-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+When we check if best ex can be kept at start of goal, ac_o_ex.fe_logical
+is 2 less than the adjusted best extent logical end 9, so we think the
+adjustment is done. But obviously 0/9(9) doesn't cover 2/10(8), so we
+should determine here if the original request logical end is less than or
+equal to the adjusted best extent logical end.
+
+In addition, add a comment stating when adjusted best_ex will not cover
+the original request, and remove the duplicate assertion because adjusting
+lstart makes no change to b_ex.fe_len.
+
+Link: https://lore.kernel.org/r/3630fa7f-b432-7afd-5f79-781bc3b2c5ea@huawei.com
+Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
+Cc:  <stable@kernel.org>
+Signed-off-by: yangerkun <yangerkun@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240201141845.1879253-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index a619e22fecbf7..877c4b8fad195 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -981,8 +981,7 @@ static int swiotlb_search_pool_area(struct device *dev, struct io_tlb_pool *pool
- 	dma_addr_t tbl_dma_addr =
- 		phys_to_dma_unencrypted(dev, pool->start) & boundary_mask;
- 	unsigned long max_slots = get_max_slots(boundary_mask);
--	unsigned int iotlb_align_mask =
--		dma_get_min_align_mask(dev) & ~(IO_TLB_SIZE - 1);
-+	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
- 	unsigned int nslots = nr_slots(alloc_size), stride;
- 	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
- 	unsigned int index, slots_checked, count = 0, i;
-@@ -993,6 +992,14 @@ static int swiotlb_search_pool_area(struct device *dev, struct io_tlb_pool *pool
- 	BUG_ON(!nslots);
- 	BUG_ON(area_index >= pool->nareas);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 6a3e27771df73..bc0ca45a5d817 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4684,10 +4684,16 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 			.fe_len = ac->ac_g_ex.fe_len,
+ 		};
+ 		loff_t orig_goal_end = extent_logical_end(sbi, &ex);
++		loff_t o_ex_end = extent_logical_end(sbi, &ac->ac_o_ex);
  
-+	/*
-+	 * Ensure that the allocation is at least slot-aligned and update
-+	 * 'iotlb_align_mask' to ignore bits that will be preserved when
-+	 * offsetting into the allocation.
-+	 */
-+	alloc_align_mask |= (IO_TLB_SIZE - 1);
-+	iotlb_align_mask &= ~alloc_align_mask;
-+
- 	/*
- 	 * For mappings with an alignment requirement don't bother looping to
- 	 * unaligned slots once we found an aligned one.
+-		/* we can't allocate as much as normalizer wants.
+-		 * so, found space must get proper lstart
+-		 * to cover original request */
++		/*
++		 * We can't allocate as much as normalizer wants, so we try
++		 * to get proper lstart to cover the original request, except
++		 * when the goal doesn't cover the original request as below:
++		 *
++		 * orig_ex:2045/2055(10), isize:8417280 -> normalized:0/2048
++		 * best_ex:0/200(200) -> adjusted: 1848/2048(200)
++		 */
+ 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
+ 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
+ 
+@@ -4699,7 +4705,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		 * 1. Check if best ex can be kept at end of goal and still
+ 		 *    cover original start
+ 		 * 2. Else, check if best ex can be kept at start of goal and
+-		 *    still cover original start
++		 *    still cover original end
+ 		 * 3. Else, keep the best ex at start of original request.
+ 		 */
+ 		ex.fe_len = ac->ac_b_ex.fe_len;
+@@ -4709,7 +4715,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 			goto adjust_bex;
+ 
+ 		ex.fe_logical = ac->ac_g_ex.fe_logical;
+-		if (ac->ac_o_ex.fe_logical < extent_logical_end(sbi, &ex))
++		if (o_ex_end <= extent_logical_end(sbi, &ex))
+ 			goto adjust_bex;
+ 
+ 		ex.fe_logical = ac->ac_o_ex.fe_logical;
+@@ -4717,7 +4723,6 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
+ 		ac->ac_b_ex.fe_logical = ex.fe_logical;
+ 
+ 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
+-		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
+ 		BUG_ON(extent_logical_end(sbi, &ex) > orig_goal_end);
+ 	}
+ 
 -- 
 2.43.0
 
