@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8358941E0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 430E3894032
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC69A1C21355
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 748091C213F4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4DE47A6B;
-	Mon,  1 Apr 2024 16:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5320446AC;
+	Mon,  1 Apr 2024 16:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+VuTsKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLxwrXTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF5440876;
-	Mon,  1 Apr 2024 16:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929B3C129;
+	Mon,  1 Apr 2024 16:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990030; cv=none; b=O1vVVp3zAcRp+JRwGK7rfQ25XQOSCZ5CSsU0+qqq4cujt8c8Oh9d/hSgyYPnAPKtTDR+OFU+z6sQGlZo0bQxTUJQG3GZjL38obCchHaG10vCJ4cFIM75+GeLR5NWd37OIqP5kQiN0WjjIsPKJLcE1Vj5yqrqrKe9Y4uz8MoQI34=
+	t=1711988813; cv=none; b=DEzrk2OkWKZ3AGGBr4AEZdWduCWdv1VsBLdveYLKikiOW7Lgd7EQpGPt3fFXh8y7DhctfIwiK5cMFIJucjJdNbzqUzLbsQgaxoU4p+n2HGOeyWMIlicU8AMcyV4+EhTnyfzhUhCSXaDCOF2Vy7MVOU2zTj8jLBsIEZ984c3rE/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990030; c=relaxed/simple;
-	bh=ApU9Y2W4M0hdbw7TIMcl4OHlD6Dq5DOo5Uu/O0C9A1Y=;
+	s=arc-20240116; t=1711988813; c=relaxed/simple;
+	bh=5gQb07C8Gic71zxHRfoLxICXKLlRTu8PEz/skEIee+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QXPNc+6GloCrd5KKWH0m6Xh6sqa1uUoD35jOn6LXkNOtBbzLWMbXxUemYgG48I7G9N8PS4qkJEjsay2AIdWgAOzbuCwfivHj5nb3etLjulMkmdZ3P5FTfwepvpRqE0CT7vkJlqW/5Xtn6NxQhvWFgVea3Ron592xFqMDyuUGyok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+VuTsKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D25C433C7;
-	Mon,  1 Apr 2024 16:47:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nm5VUS8G06zi2ayDYjsvn70MDygZHrAEqyw8DtZYbv0FqUNs3rUWQ0SXNVB/XZC9DnujWWkAru8t2ezscjTH4hM5OwGMQMgNHIb7DWixd1rgcu83Iz+afuGOP8aLH0hDJGKPSenuybMP0DpZfKIPCTtCHprldje/zJ1tnHJk2uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLxwrXTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18BEC433F1;
+	Mon,  1 Apr 2024 16:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990030;
-	bh=ApU9Y2W4M0hdbw7TIMcl4OHlD6Dq5DOo5Uu/O0C9A1Y=;
+	s=korg; t=1711988813;
+	bh=5gQb07C8Gic71zxHRfoLxICXKLlRTu8PEz/skEIee+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+VuTsKXFHPAberhaKNmXIAWNVzp7v6PNhuFxJKNf/Yi06QW4Q1F68yPt0hDqANPC
-	 VjUouaSCidD46UHuEuhhr4qrHNFNOoO0FUoeKjEN6ozM9ydpCPfwlLOfzCV2mBfzP6
-	 K3o8vPf+k9gc5ox0E+ZPGtv7ISwx7Kl2qw/2U14M=
+	b=OLxwrXTYoSbZq2U3DQhK7N/OS6lYaVN/UjEewzkBRlccRB5UtfKkj80KIsCsHDnTp
+	 thnQmj8m9VBlgJ0kbJ8RhrKGmc6tUNsNGVeBRq3MfeYeBgOp4OaPHztfUnQIo+CXcj
+	 DxwV7DyDx44m5CxLZLOsVQRiFjqBMYAvXr/eHZ4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Subject: [PATCH 6.6 226/396] tty: serial: fsl_lpuart: avoid idle preamble pending if CTS is enabled
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.7 288/432] drm/i915: Dont explode when the dig port we dont have an AUX CH
 Date: Mon,  1 Apr 2024 17:44:35 +0200
-Message-ID: <20240401152554.658289799@linuxfoundation.org>
+Message-ID: <20240401152601.760598696@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,97 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 74cb7e0355fae9641f825afa389d3fba3b617714 upstream.
+commit 0b385be4c3ccd5636441923d7cad5eda6b4651cb upstream.
 
-If the remote uart device is not connected or not enabled after booting
-up, the CTS line is high by default. At this time, if we enable the flow
-control when opening the device(for example, using “stty -F /dev/ttyLP4
-crtscts” command), there will be a pending idle preamble(first writing 0
-and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
-cannot be sent out, resulting in the uart port fail to close(waiting for
-TX empty), so the user space stty will have to wait for a long time or
-forever.
+The icl+ power well code currently assumes that every AUX power
+well maps to an encoder which is using said power well. That is
+by no menas guaranteed as we:
+- only register encoders for ports declared in the VBT
+- combo PHY HDMI-only encoder no longer get an AUX CH since
+  commit 9856308c94ca ("drm/i915: Only populate aux_ch if really needed")
 
-This is an LPUART IP bug(idle preamble has higher priority than CTS),
-here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
-so that the idle preamble does not get stuck due to CTS is deasserted.
+However we have places such as intel_power_domains_sanitize_state()
+that blindly traverse all the possible power wells. So these bits
+of code may very well encounbter an aux power well with no associated
+encoder.
 
-Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20240305015706.1050769-1-sherry.sun@nxp.com
+In this particular case the BIOS seems to have left one AUX power
+well enabled even though we're dealing with a HDMI only encoder
+on a combo PHY. We then proceed to turn off said power well and
+explode when we can't find a matching encoder. As a short term fix
+we should be able to just skip the PHY related parts of the power
+well programming since we know this situation can only happen with
+combo PHYs.
+
+Another option might be to go back to always picking an AUX CH for
+all encoders. However I'm a bit wary about that since we might in
+theory end up conflicting with the VBT AUX CH assignment. Also
+that wouldn't help with encoders not declared in the VBT, should
+we ever need to poke the corresponding power wells.
+
+Longer term we need to figure out what the actual relationship
+is between the PHY vs. AUX CH vs. AUX power well. Currently this
+is entirely unclear.
+
+Cc: stable@vger.kernel.org
+Fixes: 9856308c94ca ("drm/i915: Only populate aux_ch if really needed")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10184
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240223203216.15210-1-ville.syrjala@linux.intel.com
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+(cherry picked from commit 6a8c66bf0e565c34ad0a18f820e0bb17951f7f91)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_power_well.c |   17 +++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2345,9 +2345,12 @@ lpuart32_set_termios(struct uart_port *p
+--- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
+@@ -246,7 +246,14 @@ static enum phy icl_aux_pw_to_phy(struct
+ 	enum aux_ch aux_ch = icl_aux_pw_to_ch(power_well);
+ 	struct intel_digital_port *dig_port = aux_ch_to_digital_port(i915, aux_ch);
  
- 	lpuart32_write(&sport->port, bd, UARTBAUD);
- 	lpuart32_serial_setbrg(sport, baud);
--	lpuart32_write(&sport->port, modem, UARTMODIR);
--	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
-+	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
- 	/* restore control register */
-+	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+	/* re-enable the CTS if needed */
-+	lpuart32_write(&sport->port, modem, UARTMODIR);
+-	return intel_port_to_phy(i915, dig_port->base.port);
++	/*
++	 * FIXME should we care about the (VBT defined) dig_port->aux_ch
++	 * relationship or should this be purely defined by the hardware layout?
++	 * Currently if the port doesn't appear in the VBT, or if it's declared
++	 * as HDMI-only and routed to a combo PHY, the encoder either won't be
++	 * present at all or it will not have an aux_ch assigned.
++	 */
++	return dig_port ? intel_port_to_phy(i915, dig_port->base.port) : PHY_NONE;
+ }
  
- 	if ((ctrl & (UARTCTRL_PE | UARTCTRL_M)) == UARTCTRL_PE)
- 		sport->is_cs7 = true;
+ static void hsw_wait_for_power_well_enable(struct drm_i915_private *dev_priv,
+@@ -414,7 +421,8 @@ icl_combo_phy_aux_power_well_enable(stru
+ 
+ 	intel_de_rmw(dev_priv, regs->driver, 0, HSW_PWR_WELL_CTL_REQ(pw_idx));
+ 
+-	if (DISPLAY_VER(dev_priv) < 12)
++	/* FIXME this is a mess */
++	if (phy != PHY_NONE)
+ 		intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy),
+ 			     0, ICL_LANE_ENABLE_AUX);
+ 
+@@ -437,7 +445,10 @@ icl_combo_phy_aux_power_well_disable(str
+ 
+ 	drm_WARN_ON(&dev_priv->drm, !IS_ICELAKE(dev_priv));
+ 
+-	intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy), ICL_LANE_ENABLE_AUX, 0);
++	/* FIXME this is a mess */
++	if (phy != PHY_NONE)
++		intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy),
++			     ICL_LANE_ENABLE_AUX, 0);
+ 
+ 	intel_de_rmw(dev_priv, regs->driver, HSW_PWR_WELL_CTL_REQ(pw_idx), 0);
+ 
 
 
 
