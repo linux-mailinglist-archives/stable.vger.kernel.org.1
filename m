@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-34971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7558941B9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7E889430C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FFCF1C217EF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B15BB20A59
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48E64778C;
-	Mon,  1 Apr 2024 16:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32ABD481C6;
+	Mon,  1 Apr 2024 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6G1KE/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtXe61Hz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F911C0DE7;
-	Mon,  1 Apr 2024 16:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45361E86C;
+	Mon,  1 Apr 2024 16:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989914; cv=none; b=e3RUEyiaRnDzaxaJAfrqZzJWMqwJNe696DrpJg/dFiTbgNSGHS7eTndd2njzy9QhO8NtEnPzG7ialzPwsJlI4a3oCdNeNnNAAcenzHmvqKIkt2PmlRB0iBV5LDZ8R+l48jc/aLI9J5EZBbkhKEjK3huBjM/VYn7wReTcAEkFRSU=
+	t=1711990739; cv=none; b=rRdjwJDQdUc2pCYjMk9jnVH6h+YP//CbIa5ekSIxO7awiCAKVMuhEMSXpyTiJ6vlTDH9az1nfWiPlqAOVbuFFHpeaZiMgPuKg7pmVyDtBnDNz4k8iPqs4GQn4f9T1iJwcjbk93jYAiOwLop83Q4Oc82Sp9IJDFZaMJNG6rYds0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989914; c=relaxed/simple;
-	bh=woKUBIu/Ze0YesBg0jByXDZzVitnkCZTBUZC6sAjakA=;
+	s=arc-20240116; t=1711990739; c=relaxed/simple;
+	bh=rRabb+c587IzB4ZbPoyck2vkyDxDgN/8F9smEVeO56I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7I2WC3qOgogN7zae3noT++5gnFov0yqLHpqklcU4JSOjFxXveTUY3qeTDS33egTfndI0SrrNUsqdW9BQQKrwe6MuMm91Z/hZ9inYf+IgjyX7thUiWy3isyikaqU1kbK4z8gL1uStbWfsepleRjs3eb6EPGrmnY4X059oOHx5so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6G1KE/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DF8C433F1;
-	Mon,  1 Apr 2024 16:45:13 +0000 (UTC)
+	 MIME-Version; b=WZfykyNaMWpmvdqah2saXV7TTg9Iw3yWNMUvp4YemNH/KaqtCwRp4MdM9vKXZ9Tw7rgLwIA+GYOCMGJWQTXKUKIJBbgxUvgGw8xtsCCk1kTGkscioRZdFFdeVRef74x3JPnzklprgkXC/yp/b4EbPDw6QM51/pT/c92XdC1lhPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtXe61Hz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03716C433C7;
+	Mon,  1 Apr 2024 16:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989914;
-	bh=woKUBIu/Ze0YesBg0jByXDZzVitnkCZTBUZC6sAjakA=;
+	s=korg; t=1711990738;
+	bh=rRabb+c587IzB4ZbPoyck2vkyDxDgN/8F9smEVeO56I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6G1KE/m3KLqvD7pdpTAshcNIZ9x/3Q5doNiLNVhqDj0Wl0dmj/wXVb+FGNmJg8sq
-	 nbV6p+s928l3geYVagqnuCUmpYZfW0kACxxTU/vnhws4T/RX0tPMSkvOvwt98Ht/43
-	 N3+bXCCiGQ25nHpQFlQA/RNe1Q7HSj1nguWIWEjQ=
+	b=wtXe61Hzu6LBAT2jNexDcic5aU/brOL+mX1HgMykdwKVW1U+wIundUZrLunreGv21
+	 LTQAUxtBCeDMEFmWyGNf8N5u2Mouf5WClW6R/e2X+L6EAV6Q4oNEO+3BebEJVPsAoc
+	 F1zpgDjPxWHo8WRr8ccOg5Z5sdPVAaI7Np23w0T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrien Grassein <adrien.grassein@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/396] drm/bridge: lt8912b: use drm_bridge_edid_read()
+Subject: [PATCH 6.1 050/272] md/raid5: fix atomicity violation in raid5_cache_count
 Date: Mon,  1 Apr 2024 17:44:00 +0200
-Message-ID: <20240401152553.633004956@linuxfoundation.org>
+Message-ID: <20240401152532.085739409@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit 60d1fe1a7f302cc1151b155ac2d134db59bb1420 ]
+[ Upstream commit dfd2bf436709b2bccb78c2dda550dde93700efa7 ]
 
-Prefer using the struct drm_edid based functions.
+In raid5_cache_count():
+    if (conf->max_nr_stripes < conf->min_nr_stripes)
+        return 0;
+    return conf->max_nr_stripes - conf->min_nr_stripes;
+The current check is ineffective, as the values could change immediately
+after being checked.
 
-cc: Adrien Grassein <adrien.grassein@gmail.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Robert Foss <rfoss@kernel.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Jonas Karlman <jonas@kwiboo.se>
-Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/32c9b52fe6fa7cbad6bfd0ff00041876977e02ea.1706038510.git.jani.nikula@intel.com
-Stable-dep-of: 171b711b26cc ("drm/bridge: lt8912b: do not return negative values from .get_modes()")
+In raid5_set_cache_size():
+    ...
+    conf->min_nr_stripes = size;
+    ...
+    while (size > conf->max_nr_stripes)
+        conf->min_nr_stripes = conf->max_nr_stripes;
+    ...
+
+Due to intermediate value updates in raid5_set_cache_size(), concurrent
+execution of raid5_cache_count() and raid5_set_cache_size() may lead to
+inconsistent reads of conf->max_nr_stripes and conf->min_nr_stripes.
+The current checks are ineffective as values could change immediately
+after being checked, raising the risk of conf->min_nr_stripes exceeding
+conf->max_nr_stripes and potentially causing an integer overflow.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including data races and atomicity violations. The above possible bug is
+reported when our tool analyzes the source code of Linux 6.2.
+
+To resolve this issue, it is suggested to introduce local variables
+'min_stripes' and 'max_stripes' in raid5_cache_count() to ensure the
+values remain stable throughout the check. Adding locks in
+raid5_cache_count() fails to resolve atomicity violations, as
+raid5_set_cache_size() may hold intermediate values of
+conf->min_nr_stripes while unlocked. With this patch applied, our tool no
+longer reports the bug, with the kernel configuration allyesconfig for
+x86_64. Due to the lack of associated hardware, we cannot test the patch
+in runtime testing, and just verify it according to the code logic.
+
+Fixes: edbe83ab4c27 ("md/raid5: allow the stripe_cache to grow and shrink.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240112071017.16313-1-2045gemini@gmail.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/md/raid5.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-index 03532efb893bb..491c08306f81a 100644
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -429,16 +429,16 @@ lt8912_connector_mode_valid(struct drm_connector *connector,
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index e4564ca1f2434..8cf2317857e0a 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -2420,7 +2420,7 @@ static int grow_one_stripe(struct r5conf *conf, gfp_t gfp)
+ 	atomic_inc(&conf->active_stripes);
  
- static int lt8912_connector_get_modes(struct drm_connector *connector)
- {
--	struct edid *edid;
-+	const struct drm_edid *drm_edid;
- 	int ret = -1;
- 	int num = 0;
- 	struct lt8912 *lt = connector_to_lt8912(connector);
- 	u32 bus_format = MEDIA_BUS_FMT_RGB888_1X24;
- 
--	edid = drm_bridge_get_edid(lt->hdmi_port, connector);
--	if (edid) {
--		drm_connector_update_edid_property(connector, edid);
--		num = drm_add_edid_modes(connector, edid);
-+	drm_edid = drm_bridge_edid_read(lt->hdmi_port, connector);
-+	if (drm_edid) {
-+		drm_edid_connector_update(connector, drm_edid);
-+		num = drm_edid_connector_add_modes(connector);
- 	} else {
- 		return ret;
- 	}
-@@ -448,7 +448,7 @@ static int lt8912_connector_get_modes(struct drm_connector *connector)
- 	if (ret)
- 		num = ret;
- 
--	kfree(edid);
-+	drm_edid_free(drm_edid);
- 	return num;
+ 	raid5_release_stripe(sh);
+-	conf->max_nr_stripes++;
++	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes + 1);
+ 	return 1;
  }
  
+@@ -2717,7 +2717,7 @@ static int drop_one_stripe(struct r5conf *conf)
+ 	shrink_buffers(sh);
+ 	free_stripe(conf->slab_cache, sh);
+ 	atomic_dec(&conf->active_stripes);
+-	conf->max_nr_stripes--;
++	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes - 1);
+ 	return 1;
+ }
+ 
+@@ -6891,7 +6891,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
+ 	if (size <= 16 || size > 32768)
+ 		return -EINVAL;
+ 
+-	conf->min_nr_stripes = size;
++	WRITE_ONCE(conf->min_nr_stripes, size);
+ 	mutex_lock(&conf->cache_size_mutex);
+ 	while (size < conf->max_nr_stripes &&
+ 	       drop_one_stripe(conf))
+@@ -6903,7 +6903,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
+ 	mutex_lock(&conf->cache_size_mutex);
+ 	while (size > conf->max_nr_stripes)
+ 		if (!grow_one_stripe(conf, GFP_KERNEL)) {
+-			conf->min_nr_stripes = conf->max_nr_stripes;
++			WRITE_ONCE(conf->min_nr_stripes, conf->max_nr_stripes);
+ 			result = -ENOMEM;
+ 			break;
+ 		}
+@@ -7468,11 +7468,13 @@ static unsigned long raid5_cache_count(struct shrinker *shrink,
+ 				       struct shrink_control *sc)
+ {
+ 	struct r5conf *conf = container_of(shrink, struct r5conf, shrinker);
++	int max_stripes = READ_ONCE(conf->max_nr_stripes);
++	int min_stripes = READ_ONCE(conf->min_nr_stripes);
+ 
+-	if (conf->max_nr_stripes < conf->min_nr_stripes)
++	if (max_stripes < min_stripes)
+ 		/* unlikely, but not impossible */
+ 		return 0;
+-	return conf->max_nr_stripes - conf->min_nr_stripes;
++	return max_stripes - min_stripes;
+ }
+ 
+ static struct r5conf *setup_conf(struct mddev *mddev)
 -- 
 2.43.0
 
