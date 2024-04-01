@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B78893E94
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 267CC894353
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B176C281C09
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4CF6283868
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B5743AD6;
-	Mon,  1 Apr 2024 16:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCDF482DF;
+	Mon,  1 Apr 2024 17:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeMDuEyO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuJlPQQh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043391CA8F;
-	Mon,  1 Apr 2024 16:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2E51C0DE7;
+	Mon,  1 Apr 2024 17:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987519; cv=none; b=LumO8HWeB8Zfu06F8VDbS/hGRD0oFzB/ezbvOq0bdhXDJfWzFCaA1wtUyfpgwlWqrYahNShyVjAb63V0VE1gY8gb2PD6GdK/H+GKfrs6ceBCZ0iqhLARlHHUJM4TGvtteG4tqFubAy3Qwpk5kjeBCQ29rJAGeQMXJo/UkQOmY4A=
+	t=1711990946; cv=none; b=JuyLcDVjF19uoi5s/a1bHsBYKmw+JV45QJKjgx7Ugucu65XheI3iG2IBjVYLxHJbGpb2g1VtXKiVF7icn90qmse/Qpf226flmx8aT5du/cZjHQM8F/nKFV1V/qB98OKkD1m/QGyOBluOjM4WFggVEd6i/tVSXIUZtH/2yx1REPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987519; c=relaxed/simple;
-	bh=DjU0LG/JJrXDkw0A4G+ty5pUY6MtXk0EsjBF9EjQWJs=;
+	s=arc-20240116; t=1711990946; c=relaxed/simple;
+	bh=C6f2aBOnOaHj1yswGYJqMLgK8mLCJ9WVZ5gX0KtJqdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBO/sgRAZtCMLIGYSYPCKZzxYfqGP20dXyBMl10PyCBQPUuBnWlOX7/Ew81S3CNChhyX/DfDX/V0X/Vbzq9qpDvTNFa1NCrCuhcf9EIIMPRU7ewnXuupoKXW+mVvhuhb6FZx8z2p6ZlUTpLUFo22yetmM0J5WB1KhtH0ZGbiS5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeMDuEyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6988FC433C7;
-	Mon,  1 Apr 2024 16:05:18 +0000 (UTC)
+	 MIME-Version; b=I2psbzDeay5Q7Ha32baL/Oj+NjIivBMsb7mgB7HP/rux1L16SD5ATX/PIB8bib+Mi+JuJ9tz6q7wmDrCnrX8nauFki7edcpvN/Ah7kIfmMflN1vZdzARQvTx4+6BcsQREIxSVJ4moIsSSIozNZ3LSkVgEkIWVDWoU1ber3/uMDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuJlPQQh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923A8C433C7;
+	Mon,  1 Apr 2024 17:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987518;
-	bh=DjU0LG/JJrXDkw0A4G+ty5pUY6MtXk0EsjBF9EjQWJs=;
+	s=korg; t=1711990946;
+	bh=C6f2aBOnOaHj1yswGYJqMLgK8mLCJ9WVZ5gX0KtJqdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeMDuEyOE5Jhe2Ev9zy5RufF3wJFzoyVEFpcV60u36XVqkVrPBAkmqkBNDSwbUUql
-	 KRh0G1ZgCKAKr7wE53a0RU9y3fIRwyd+yDQSN5MmxjeBPyRFJcGP7aErxz4VAvqtjC
-	 nbPRHzzO15cJt37RKvaS0b3hTpDlOO5jtmK0sZ90=
+	b=NuJlPQQhMG9vdqniFkkRdCTCKORuutj66/K5//BU+aRWPGdLl+m6I5p6MpL/r3Yxu
+	 dy5G7gmd1UyKFJeJhSWZXWXkmjvd7Tye9Ty3sVcHWD3V4jBAx9zSxoMvDINAGRTUp7
+	 tMDRf6xiosY1bRs2WJ1Jru49camv5mj6Pjf0kG0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Edward Liaw <edliaw@google.com>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 311/399] selftests/mm: fix ARM related issue with fork after pthread_create
+	Stable@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 087/272] slimbus: core: Remove usage of the deprecated ida_simple_xx() API
 Date: Mon,  1 Apr 2024 17:44:37 +0200
-Message-ID: <20240401152558.470910234@linuxfoundation.org>
+Message-ID: <20240401152533.341108783@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 8c864371b2a15a23ce35aa7e2bd241baaad6fbe8 upstream.
+[ Upstream commit 89ffa4cccec54467446f141a79b9e36893079fb8 ]
 
-Following issue was observed while running the uffd-unit-tests selftest
-on ARM devices. On x86_64 no issues were detected:
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-pthread_create followed by fork caused deadlock in certain cases wherein
-fork required some work to be completed by the created thread.  Used
-synchronization to ensure that created thread's start function has started
-before invoking fork.
+Note that the upper limit of ida_simple_get() is exclusive, but the one of
+ida_alloc_range() is inclusive. So change this change allows one more
+device. Previously address 0xFE was never used.
 
-[edliaw@google.com: refactored to use atomic_bool]
-Link: https://lkml.kernel.org/r/20240325194100.775052-1-edliaw@google.com
-Fixes: 760aee0b71e3 ("selftests/mm: add tests for RO pinning vs fork()")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 46a2bb5a7f7e ("slimbus: core: Add slim controllers support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240224114137.85781-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/uffd-common.c     |    3 +++
- tools/testing/selftests/mm/uffd-common.h     |    2 ++
- tools/testing/selftests/mm/uffd-unit-tests.c |   10 ++++++++++
- 3 files changed, 15 insertions(+)
+ drivers/slimbus/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/mm/uffd-common.c
-+++ b/tools/testing/selftests/mm/uffd-common.c
-@@ -18,6 +18,7 @@ bool test_uffdio_wp = true;
- unsigned long long *count_verify;
- uffd_test_ops_t *uffd_test_ops;
- uffd_test_case_ops_t *uffd_test_case_ops;
-+atomic_bool ready_for_fork;
+diff --git a/drivers/slimbus/core.c b/drivers/slimbus/core.c
+index 219483b79c09c..37fd655994ef3 100644
+--- a/drivers/slimbus/core.c
++++ b/drivers/slimbus/core.c
+@@ -436,8 +436,8 @@ static int slim_device_alloc_laddr(struct slim_device *sbdev,
+ 		if (ret < 0)
+ 			goto err;
+ 	} else if (report_present) {
+-		ret = ida_simple_get(&ctrl->laddr_ida,
+-				     0, SLIM_LA_MANAGER - 1, GFP_KERNEL);
++		ret = ida_alloc_max(&ctrl->laddr_ida,
++				    SLIM_LA_MANAGER - 1, GFP_KERNEL);
+ 		if (ret < 0)
+ 			goto err;
  
- static int uffd_mem_fd_create(off_t mem_size, bool hugetlb)
- {
-@@ -518,6 +519,8 @@ void *uffd_poll_thread(void *arg)
- 	pollfd[1].fd = pipefd[cpu*2];
- 	pollfd[1].events = POLLIN;
- 
-+	ready_for_fork = true;
-+
- 	for (;;) {
- 		ret = poll(pollfd, 2, -1);
- 		if (ret <= 0) {
---- a/tools/testing/selftests/mm/uffd-common.h
-+++ b/tools/testing/selftests/mm/uffd-common.h
-@@ -32,6 +32,7 @@
- #include <inttypes.h>
- #include <stdint.h>
- #include <sys/random.h>
-+#include <stdatomic.h>
- 
- #include "../kselftest.h"
- #include "vm_util.h"
-@@ -103,6 +104,7 @@ extern bool map_shared;
- extern bool test_uffdio_wp;
- extern unsigned long long *count_verify;
- extern volatile bool test_uffdio_copy_eexist;
-+extern atomic_bool ready_for_fork;
- 
- extern uffd_test_ops_t anon_uffd_test_ops;
- extern uffd_test_ops_t shmem_uffd_test_ops;
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -775,6 +775,8 @@ static void uffd_sigbus_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
-+	ready_for_fork = false;
-+
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 
- 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
-@@ -790,6 +792,9 @@ static void uffd_sigbus_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
-+	while (!ready_for_fork)
-+		; /* Wait for the poll_thread to start executing before forking */
-+
- 	pid = fork();
- 	if (pid < 0)
- 		err("fork");
-@@ -829,6 +834,8 @@ static void uffd_events_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
-+	ready_for_fork = false;
-+
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
- 			  true, wp, false))
-@@ -838,6 +845,9 @@ static void uffd_events_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
-+	while (!ready_for_fork)
-+		; /* Wait for the poll_thread to start executing before forking */
-+
- 	pid = fork();
- 	if (pid < 0)
- 		err("fork");
+-- 
+2.43.0
+
 
 
 
