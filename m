@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7468941CC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E993894013
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDA941F25601
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8FB61F21DC9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D8E48CDD;
-	Mon,  1 Apr 2024 16:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E43247A76;
+	Mon,  1 Apr 2024 16:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xP8tHiq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNswvILM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AB54778C;
-	Mon,  1 Apr 2024 16:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C46446AC;
+	Mon,  1 Apr 2024 16:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989967; cv=none; b=e8zJjJ/IFv1FUOtTBEALEt4JWiihKDSujmw0yyEbuCtQo4n7Kw2ThoHIQj2vj9PY9vWDuPDmxHlcHxTpFwnJkOAsLgmFVkvt6TmOkcOsYqElzcLqqVMCEOm2LIg04QN9OEcA1pO2TWN5bvXVAFMToI7B/46rJW9bMYWVkwRRyl0=
+	t=1711988717; cv=none; b=FVgRhXUs7b0g160oZbpBS3aLFQVCzjuXrLtQcjJO4ShMK9DM53WCEAmDH7dgvQRW8Lqj7pScw9qPZST32K0khQIDKrldnRtFF8btHOC0mrAs0EIXOO2Y8qHja2ur+QgUkXcndBS8ymlan44hukg/GY5zYSKqvhcz+vPYg8HGTt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989967; c=relaxed/simple;
-	bh=zAH5KfRUUPUFeEQdQ436jrw3Yjsa7/moAtcNfh8SRow=;
+	s=arc-20240116; t=1711988717; c=relaxed/simple;
+	bh=buDAD1XiVbMMNDOJxpslMhg3x/gVnt6LMMX8xAH6dI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHqBf9HAefCJ7QUjMT/4I8doVpC9b5LsXmZZwTYF1A5ZCYmXZehizYQgS+Xyor35jPFPeYZ59lh01rp90o7upvEw1z+/ZlyLCtjx3nMuS6AbTNFHsRi3R2HyTwlxd1wA2bRmQpdDjM+yjMMT9rC9KXWFXgdJM5qvCaU8B79n3dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xP8tHiq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A83EC433C7;
-	Mon,  1 Apr 2024 16:46:05 +0000 (UTC)
+	 MIME-Version; b=ntswYfOsa8wBgxenn4+EZaRgrulZ1lXPXWfoTOMfpgADE+FXVDTEH12k9F9kd1bmcGbTsMGBEt0UEGh9QgSEAt7P4HIMLRzoxXM8PkAnDXDCWIb8tzCR6P3gnJ+w5Mrt3BKcQXrPvcpseFvig0T2DGIDDSqDdzEKDWWeuKtFf8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNswvILM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811C8C433F1;
+	Mon,  1 Apr 2024 16:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989966;
-	bh=zAH5KfRUUPUFeEQdQ436jrw3Yjsa7/moAtcNfh8SRow=;
+	s=korg; t=1711988717;
+	bh=buDAD1XiVbMMNDOJxpslMhg3x/gVnt6LMMX8xAH6dI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xP8tHiq06K3M3q+8GQ6q1g4xDBaIrTCW6P5RXyWNOXZd3qUhQ+1Zkk3rdqhQBfG5r
-	 uB4A/Igob+vdLh4yDD6Yx1dgd2NnMMp6TtQHmVAmkd98lTBiux4q24BTMrnLmDGcaG
-	 Jf4FlDU80MGxCycp8Sy1EgQbno8TPT7uyCHfaqm0=
+	b=bNswvILMkN88eWfSE+tqe0G3ZAkNOmKuNA3Z/M0blLkM7WwMPey6cJJ8uZKGGI4ue
+	 jo+sGN2iKBr8T4kXuMOSYeacONaPpvIy5OZBrD2F9z+xOZ1EeDPOtFwO5eojUgFfre
+	 C3FXwl+nq69pTv0CvMMLIw6oF+QBxqW8jcHVbE4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 206/396] mm, mmap: fix vma_merge() case 7 with vma_ops->close
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	regressions@lists.linux.dev,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.7 268/432] misc: lis3lv02d_i2c: Fix regulators getting en-/dis-abled twice on suspend/resume
 Date: Mon,  1 Apr 2024 17:44:15 +0200
-Message-ID: <20240401152554.071578823@linuxfoundation.org>
+Message-ID: <20240401152601.150862272@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit fc0c8f9089c20d198d8fe51ddc28bfa1af588dce upstream.
+commit ac3e0384073b2408d6cb0d972fee9fcc3776053d upstream.
 
-When debugging issues with a workload using SysV shmem, Michal Hocko has
-come up with a reproducer that shows how a series of mprotect() operations
-can result in an elevated shm_nattch and thus leak of the resource.
+When not configured for wakeup lis3lv02d_i2c_suspend() will call
+lis3lv02d_poweroff() even if the device has already been turned off
+by the runtime-suspend handler and if configured for wakeup and
+the device is runtime-suspended at this point then it is not turned
+back on to serve as a wakeup source.
 
-The problem is caused by wrong assumptions in vma_merge() commit
-714965ca8252 ("mm/mmap: start distinguishing if vma can be removed in
-mergeability test").  The shmem vmas have a vma_ops->close callback that
-decrements shm_nattch, and we remove the vma without calling it.
+Before commit b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting
+of the reg_ctrl callback"), lis3lv02d_poweroff() failed to disable
+the regulators which as a side effect made calling poweroff() twice ok.
 
-vma_merge() has thus historically avoided merging vma's with
-vma_ops->close and commit 714965ca8252 was supposed to keep it that way.
-It relaxed the checks for vma_ops->close in can_vma_merge_after() assuming
-that it is never called on a vma that would be a candidate for removal.
-However, the vma_merge() code does also use the result of this check in
-the decision to remove a different vma in the merge case 7.
+Now that poweroff() correctly disables the regulators, doing this twice
+triggers a WARN() in the regulator core:
 
-A robust solution would be to refactor vma_merge() code in a way that the
-vma_ops->close check is only done for vma's that are actually going to be
-removed, and not as part of the preliminary checks.  That would both solve
-the existing bug, and also allow additional merges that the checks
-currently prevent unnecessarily in some cases.
+unbalanced disables for regulator-dummy
+WARNING: CPU: 1 PID: 92 at drivers/regulator/core.c:2999 _regulator_disable
+...
 
-However to fix the existing bug first with a minimized risk, and for
-easier stable backports, this patch only adds a vma_ops->close check to
-the buggy case 7 specifically.  All other cases of vma removal are covered
-by the can_vma_merge_before() check that includes the test for
-vma_ops->close.
+Fix lis3lv02d_i2c_suspend() to not call poweroff() a second time if
+already runtime-suspended and add a poweron() call when necessary to
+make wakeup work.
 
-The reproducer code, adapted from Michal Hocko's code:
+lis3lv02d_i2c_resume() has similar issues, with an added weirness that
+it always powers on the device if it is runtime suspended, after which
+the first runtime-resume will call poweron() again, causing the enabled
+count for the regulator to increase by 1 every suspend/resume. These
+unbalanced regulator_enable() calls cause the regulator to never
+be turned off and trigger the following WARN() on driver unbind:
 
-int main(int argc, char *argv[]) {
-  int segment_id;
-  size_t segment_size = 20 * PAGE_SIZE;
-  char * sh_mem;
-  struct shmid_ds shmid_ds;
+WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put
 
-  key_t key = 0x1234;
-  segment_id = shmget(key, segment_size,
-                      IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR);
-  sh_mem = (char *)shmat(segment_id, NULL, 0);
+Fix this by making lis3lv02d_i2c_resume() mirror the new suspend().
 
-  mprotect(sh_mem + 2*PAGE_SIZE, PAGE_SIZE, PROT_NONE);
-
-  mprotect(sh_mem + PAGE_SIZE, PAGE_SIZE, PROT_WRITE);
-
-  mprotect(sh_mem + 2*PAGE_SIZE, PAGE_SIZE, PROT_WRITE);
-
-  shmdt(sh_mem);
-
-  shmctl(segment_id, IPC_STAT, &shmid_ds);
-  printf("nattch after shmdt(): %lu (expected: 0)\n", shmid_ds.shm_nattch);
-
-  if (shmctl(segment_id, IPC_RMID, 0))
-          printf("IPCRM failed %d\n", errno);
-  return (shmid_ds.shm_nattch) ? 1 : 0;
-}
-
-Link: https://lkml.kernel.org/r/20240222215930.14637-2-vbabka@suse.cz
-Fixes: 714965ca8252 ("mm/mmap: start distinguishing if vma can be removed in mergeability test")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Reported-by: Michal Hocko <mhocko@suse.com>
-Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/regressions/5fc6da74-af0a-4aac-b4d5-a000b39a63a5@molgen.mpg.de/
+Cc: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 15 7590
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Link: https://lore.kernel.org/r/20240220190035.53402-1-hdegoede@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mmap.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/misc/lis3lv02d/lis3lv02d_i2c.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -949,13 +949,21 @@ struct vm_area_struct *vma_merge(struct
- 	} else if (merge_prev) {			/* case 2 */
- 		if (curr) {
- 			vma_start_write(curr);
--			err = dup_anon_vma(prev, curr, &anon_dup);
- 			if (end == curr->vm_end) {	/* case 7 */
-+				/*
-+				 * can_vma_merge_after() assumed we would not be
-+				 * removing prev vma, so it skipped the check
-+				 * for vm_ops->close, but we are removing curr
-+				 */
-+				if (curr->vm_ops && curr->vm_ops->close)
-+					err = -EINVAL;
- 				remove = curr;
- 			} else {			/* case 5 */
- 				adjust = curr;
- 				adj_start = (end - curr->vm_start);
- 			}
-+			if (!err)
-+				err = dup_anon_vma(prev, curr, &anon_dup);
- 		}
- 	} else { /* merge_next */
- 		vma_start_write(next);
+--- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
++++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+@@ -198,8 +198,14 @@ static int lis3lv02d_i2c_suspend(struct
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
+ 
+-	if (!lis3->pdata || !lis3->pdata->wakeup_flags)
++	/* Turn on for wakeup if turned off by runtime suspend */
++	if (lis3->pdata && lis3->pdata->wakeup_flags) {
++		if (pm_runtime_suspended(dev))
++			lis3lv02d_poweron(lis3);
++	/* For non wakeup turn off if not already turned off by runtime suspend */
++	} else if (!pm_runtime_suspended(dev))
+ 		lis3lv02d_poweroff(lis3);
++
+ 	return 0;
+ }
+ 
+@@ -208,13 +214,12 @@ static int lis3lv02d_i2c_resume(struct d
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
+ 
+-	/*
+-	 * pm_runtime documentation says that devices should always
+-	 * be powered on at resume. Pm_runtime turns them off after system
+-	 * wide resume is complete.
+-	 */
+-	if (!lis3->pdata || !lis3->pdata->wakeup_flags ||
+-		pm_runtime_suspended(dev))
++	/* Turn back off if turned on for wakeup and runtime suspended*/
++	if (lis3->pdata && lis3->pdata->wakeup_flags) {
++		if (pm_runtime_suspended(dev))
++			lis3lv02d_poweroff(lis3);
++	/* For non wakeup turn back on if not runtime suspended */
++	} else if (!pm_runtime_suspended(dev))
+ 		lis3lv02d_poweron(lis3);
+ 
+ 	return 0;
 
 
 
