@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-35331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43EE689437A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574B089406C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 760DB1C21F4D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB5F11F21424
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15FF48CE0;
-	Mon,  1 Apr 2024 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85476446D5;
+	Mon,  1 Apr 2024 16:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMNG1wBo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeGeKnr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85056487BE;
-	Mon,  1 Apr 2024 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421171CA8F;
+	Mon,  1 Apr 2024 16:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991046; cv=none; b=njrvbcaMUQCDuls0z9GHTBKvs6Caz/8s8uwOZ811SgfY+mPZyfDChKQlJFvNj+Dv3Qr4qzb6gIl6SCRB2GH7dHBy2Ktl4PLkunCG/h0Qc+L9DmzxWWy05P+wtN0b1pe7fgnl7J2W5DCF9hCi8Dy+eVhObxBZmX7PlKRVHn93Abc=
+	t=1711988992; cv=none; b=hTjge5kSCX78/jynUJYMhIU6thjaTkaFTcGhiD5Rx8OAlC8AioxwmuuqrsaRCt66f/zZ/iEPAmuNJyzL0Lsvg7rY9ewQp5df+N4VkrPOXOMEH9JdnJ2KirNwpYIKutDY/r1uPNvFaZl42BYGc320Xg/MnmPaK+zKKjbKJ3Pw2pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991046; c=relaxed/simple;
-	bh=RE/EdN/mqQ2Cme8u0LE8eZ/4IdtHarU+vyRZLO4KNVA=;
+	s=arc-20240116; t=1711988992; c=relaxed/simple;
+	bh=0th2WRnHvdVGS6Cym6j2QR7fIeSIi/1nhkHYRk9U8Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLtVOMx4ksvyTkCKTXIV//lqt6S6dy3dMrfvbfSkV0CP78EsShbdxZZSP9ucYwqvVCLr77ru3xHaBg0FHXj/+KqmB5xtfzrMyX03g2GSGN4Q0E9DXbVvq2Imt/mimppNUHfV47ar0XOJAi0Ivhu+6OTFynzhsIkBm3UmECv21JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMNG1wBo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8188C433F1;
-	Mon,  1 Apr 2024 17:04:05 +0000 (UTC)
+	 MIME-Version; b=VN5mQyWVtSRM0b+DmRlmjttVIRaAZp52Dy5NMyjXyATgSPoVG4G8wVuLyTJg8U4Gt2P9yVnynTPvkzlMQ1B0oNndOj+VTfzwL+VWonJUBby9tZAsU8A/PCKY52479DEH/kbNCwTj9tSROxIcc29HyubczdmsEOrNFGQBkMzTMbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeGeKnr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2123C433F1;
+	Mon,  1 Apr 2024 16:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991046;
-	bh=RE/EdN/mqQ2Cme8u0LE8eZ/4IdtHarU+vyRZLO4KNVA=;
+	s=korg; t=1711988992;
+	bh=0th2WRnHvdVGS6Cym6j2QR7fIeSIi/1nhkHYRk9U8Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMNG1wBorL3cTm+Qj3Sf/EXHN4GSuPWNU7fd++lK7AlB65Bo/qyOBj5CyLH8uohF4
-	 tok1sxctgvxVVSoOKe1Yq34txaAIr25OojBUdBEJo6ixFlI6/UDL8CtZmfqCPWbzq8
-	 s6iNitqIsQbKRxkpuDBoQbcFm3JZCQhQRXNtK6fs=
+	b=XeGeKnr9MwHPr4QaIT67dvyQ/Q5Mryb9BjQke+5/Sgs3e3+niPEFeXuVashi7FLwp
+	 y8pPXaQU+OR7qb0Q8CFiFikPPtgJbMGNDTNtM0YVeyidscKSASW6qZhYaLY5Itv6EF
+	 QDbiZAUCEUvCW9D4ikWt/z6Eq4d73B6RAoZLTZPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingi Cho <mgcho.minic@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 145/272] netfilter: nf_tables: mark set as dead when unbinding anonymous set with timeout
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.7 348/432] wifi: iwlwifi: fw: dont always use FW dump trig
 Date: Mon,  1 Apr 2024 17:45:35 +0200
-Message-ID: <20240401152535.219616375@linuxfoundation.org>
+Message-ID: <20240401152603.625588574@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 552705a3650bbf46a22b1adedc1b04181490fc36 upstream.
+commit 045a5b645dd59929b0e05375f493cde3a0318271 upstream.
 
-While the rhashtable set gc runs asynchronously, a race allows it to
-collect elements from anonymous sets with timeouts while it is being
-released from the commit path.
-
-Mingi Cho originally reported this issue in a different path in 6.1.x
-with a pipapo set with low timeouts which is not possible upstream since
-7395dfacfff6 ("netfilter: nf_tables: use timestamp to check for set
-element timeout").
-
-Fix this by setting on the dead flag for anonymous sets to skip async gc
-in this case.
-
-According to 08e4c8c5919f ("netfilter: nf_tables: mark newset as dead on
-transaction abort"), Florian plans to accelerate abort path by releasing
-objects via workqueue, therefore, this sets on the dead flag for abort
-path too.
+Since the dump_data (struct iwl_fwrt_dump_data) is a union,
+it's not safe to unconditionally access and use the 'trig'
+member, it might be 'desc' instead. Access it only if it's
+known to be 'trig' rather than 'desc', i.e. if ini-debug
+is present.
 
 Cc: stable@vger.kernel.org
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Reported-by: Mingi Cho <mgcho.minic@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 0eb50c674a1e ("iwlwifi: yoyo: send hcmd to fw after dump collection completes.")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.e2976bc58b29.I72fbd6135b3623227de53d8a2bb82776066cb72b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5132,6 +5132,7 @@ static void nf_tables_unbind_set(const s
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -3075,8 +3075,6 @@ static void iwl_fw_dbg_collect_sync(stru
+ 	struct iwl_fw_dbg_params params = {0};
+ 	struct iwl_fwrt_dump_data *dump_data =
+ 		&fwrt->dump.wks[wk_idx].dump_data;
+-	u32 policy;
+-	u32 time_point;
+ 	if (!test_bit(wk_idx, &fwrt->dump.active_wks))
+ 		return;
  
- 	if (list_empty(&set->bindings) && nft_set_is_anonymous(set)) {
- 		list_del_rcu(&set->list);
-+		set->dead = 1;
- 		if (event)
- 			nf_tables_set_notify(ctx, set, NFT_MSG_DELSET,
- 					     GFP_KERNEL);
+@@ -3107,13 +3105,16 @@ static void iwl_fw_dbg_collect_sync(stru
+ 
+ 	iwl_fw_dbg_stop_restart_recording(fwrt, &params, false);
+ 
+-	policy = le32_to_cpu(dump_data->trig->apply_policy);
+-	time_point = le32_to_cpu(dump_data->trig->time_point);
+-
+-	if (policy & IWL_FW_INI_APPLY_POLICY_DUMP_COMPLETE_CMD) {
+-		IWL_DEBUG_FW_INFO(fwrt, "WRT: sending dump complete\n");
+-		iwl_send_dbg_dump_complete_cmd(fwrt, time_point, 0);
++	if (iwl_trans_dbg_ini_valid(fwrt->trans)) {
++		u32 policy = le32_to_cpu(dump_data->trig->apply_policy);
++		u32 time_point = le32_to_cpu(dump_data->trig->time_point);
++
++		if (policy & IWL_FW_INI_APPLY_POLICY_DUMP_COMPLETE_CMD) {
++			IWL_DEBUG_FW_INFO(fwrt, "WRT: sending dump complete\n");
++			iwl_send_dbg_dump_complete_cmd(fwrt, time_point, 0);
++		}
+ 	}
++
+ 	if (fwrt->trans->dbg.last_tp_resetfw == IWL_FW_INI_RESET_FW_MODE_STOP_FW_ONLY)
+ 		iwl_force_nmi(fwrt->trans);
+ 
 
 
 
