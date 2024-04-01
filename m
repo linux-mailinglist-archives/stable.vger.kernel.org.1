@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D838943A6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E73894276
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1461D2839DC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E779B28340E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F774B5CD;
-	Mon,  1 Apr 2024 17:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC59482EF;
+	Mon,  1 Apr 2024 16:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KH4UMj8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp1kn3Kf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43774AEDF;
-	Mon,  1 Apr 2024 17:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DEF4DA10;
+	Mon,  1 Apr 2024 16:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991185; cv=none; b=V5G5VNM7wxoS8zIHI0YCg92Bk1Udp60vzwStrhOb/DMx2hEwCnGA9ztdF5xzK/3uJ19/YikXeQ7CHcWbVsP6Z7Nsjf7YBt9XY6H+++EyTkMZP72KVoezmh/cj45yb8Kj/D9b0YnyGvIERg44euUYp2gRTMPBuFIK4C3ydzJd0Fo=
+	t=1711990368; cv=none; b=FI6sQUB2IFMAw0s9yWx8SP1Wdu4mIxjdoyBbd/Z1mLqQsgYui20izkGviyKpFjEoLqzDnLmYvZu/YI7A3dhZBOtaLV5MhrWx44vt8+L3vy/llRUJwhLhCUJReA2VIA6Veks083Wt9ao9kEqCB5pWSC+SUg7WVl/ASmWT7B0VFVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991185; c=relaxed/simple;
-	bh=LSMLb0h7Z9OlNuBFzHOJOz3Ww6IalGwQzFw+6lxGHv4=;
+	s=arc-20240116; t=1711990368; c=relaxed/simple;
+	bh=o3IE693d365Ayud37RpmMDwAZryHs0Tb/Tdkp3/k0TY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOMRAwC1l6tgv/YSbaQl382ZzRbiHaSQI/oF+IZ0FGtpvj5K07shbPbQ0upxzTVGA41S0DDx69qtzafx7dzO7Pmo4YY/TRzINaKuWFFDq7vAaAN/GOifFTOdjIGaVK0CcV6fO9Jyv9ZFIVx9H0hkHWJ+J+d5sB9BBD1BG13zU28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KH4UMj8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE07C433C7;
-	Mon,  1 Apr 2024 17:06:24 +0000 (UTC)
+	 MIME-Version; b=aHUaNFmPPeZqVCVwR605Nijy/0t4wKPHVQv4sWEblmQjOybCxM2x456rTJKtTQ8/0y6PuOeFF+d1OHAjPtUPahJDjdsPo7W5XO84FjuzKUPw9/1PZQ4g5OoHuv3SG2SUJ6m38L3xCKRYFp91yu1hD3o2eSMdmKHh3wb+gZTTPII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp1kn3Kf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF5FC433F1;
+	Mon,  1 Apr 2024 16:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991185;
-	bh=LSMLb0h7Z9OlNuBFzHOJOz3Ww6IalGwQzFw+6lxGHv4=;
+	s=korg; t=1711990368;
+	bh=o3IE693d365Ayud37RpmMDwAZryHs0Tb/Tdkp3/k0TY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KH4UMj8Gg/MIox4ugzMGTXzrU+Z7Uv3sS436YkgGcOU21NLtHqfzbJnmx2R5JqlY0
-	 +l2haOMKmmAyVnEQ0rYUN+YJvTThxyV5FQOsXXaPCYoj0GFIYDBN96xuAp2fNrfcb8
-	 F0Xi1iyfwaxljVJ1ssAFD1B4575qKuvR2RTfLXb4=
+	b=xp1kn3KfiFsxOGIE2VWuz87qF0ZPlBfvlbbnpwgRSnfv1Kxs0cJvKKmiZHVGEGsQT
+	 4UHBvb+TjOx7zg72cRIme9XcMA0rCOFtXmTIHXyIthjagAIulUbuFiXpYh4xXFWnsA
+	 D5nF3BSE6AnjV0zUvvYy7Fy+k5NRFWq4QpLAEtv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 189/272] irqchip/renesas-rzg2l: Rename rzg2l_irq_eoi()
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Edward Liaw <edliaw@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 330/396] selftests/mm: fix ARM related issue with fork after pthread_create
 Date: Mon,  1 Apr 2024 17:46:19 +0200
-Message-ID: <20240401152536.773655939@linuxfoundation.org>
+Message-ID: <20240401152557.754533339@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Edward Liaw <edliaw@google.com>
 
-[ Upstream commit b4b5cd61a6fdd92ede0dc39f0850a182affd1323 ]
+commit 8c864371b2a15a23ce35aa7e2bd241baaad6fbe8 upstream.
 
-Rename rzg2l_irq_eoi()->rzg2l_clear_irq_int() and simplify the code by
-removing redundant priv local variable.
+Following issue was observed while running the uffd-unit-tests selftest
+on ARM devices. On x86_64 no issues were detected:
 
-Suggested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+pthread_create followed by fork caused deadlock in certain cases wherein
+fork required some work to be completed by the created thread.  Used
+synchronization to ensure that created thread's start function has started
+before invoking fork.
+
+[edliaw@google.com: refactored to use atomic_bool]
+Link: https://lkml.kernel.org/r/20240325194100.775052-1-edliaw@google.com
+Fixes: 760aee0b71e3 ("selftests/mm: add tests for RO pinning vs fork()")
+Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/uffd-common.c     |    3 +++
+ tools/testing/selftests/mm/uffd-common.h     |    2 ++
+ tools/testing/selftests/mm/uffd-unit-tests.c |   10 ++++++++++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index ced5064eb0e9d..aa27335ab2eec 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -66,10 +66,9 @@ static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
- 	return data->domain->host_data;
- }
+--- a/tools/testing/selftests/mm/uffd-common.c
++++ b/tools/testing/selftests/mm/uffd-common.c
+@@ -17,6 +17,7 @@ bool map_shared;
+ bool test_uffdio_wp = true;
+ unsigned long long *count_verify;
+ uffd_test_ops_t *uffd_test_ops;
++atomic_bool ready_for_fork;
  
--static void rzg2l_irq_eoi(struct irq_data *d)
-+static void rzg2l_clear_irq_int(struct rzg2l_irqc_priv *priv, unsigned int hwirq)
+ static int uffd_mem_fd_create(off_t mem_size, bool hugetlb)
  {
--	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
--	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
-+	unsigned int hw_irq = hwirq - IRQC_IRQ_START;
- 	u32 bit = BIT(hw_irq);
- 	u32 iitsr, iscr;
+@@ -507,6 +508,8 @@ void *uffd_poll_thread(void *arg)
+ 	pollfd[1].fd = pipefd[cpu*2];
+ 	pollfd[1].events = POLLIN;
  
-@@ -113,7 +112,7 @@ static void rzg2l_irqc_eoi(struct irq_data *d)
++	ready_for_fork = true;
++
+ 	for (;;) {
+ 		ret = poll(pollfd, 2, -1);
+ 		if (ret <= 0) {
+--- a/tools/testing/selftests/mm/uffd-common.h
++++ b/tools/testing/selftests/mm/uffd-common.h
+@@ -32,6 +32,7 @@
+ #include <inttypes.h>
+ #include <stdint.h>
+ #include <sys/random.h>
++#include <stdatomic.h>
  
- 	raw_spin_lock(&priv->lock);
- 	if (hw_irq >= IRQC_IRQ_START && hw_irq <= IRQC_IRQ_COUNT)
--		rzg2l_irq_eoi(d);
-+		rzg2l_clear_irq_int(priv, hw_irq);
- 	else if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ)
- 		rzg2l_clear_tint_int(priv, hw_irq);
- 	raw_spin_unlock(&priv->lock);
--- 
-2.43.0
-
+ #include "../kselftest.h"
+ #include "vm_util.h"
+@@ -97,6 +98,7 @@ extern bool map_shared;
+ extern bool test_uffdio_wp;
+ extern unsigned long long *count_verify;
+ extern volatile bool test_uffdio_copy_eexist;
++extern atomic_bool ready_for_fork;
+ 
+ extern uffd_test_ops_t anon_uffd_test_ops;
+ extern uffd_test_ops_t shmem_uffd_test_ops;
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -770,6 +770,8 @@ static void uffd_sigbus_test_common(bool
+ 	char c;
+ 	struct uffd_args args = { 0 };
+ 
++	ready_for_fork = false;
++
+ 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
+ 
+ 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
+@@ -785,6 +787,9 @@ static void uffd_sigbus_test_common(bool
+ 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
+ 		err("uffd_poll_thread create");
+ 
++	while (!ready_for_fork)
++		; /* Wait for the poll_thread to start executing before forking */
++
+ 	pid = fork();
+ 	if (pid < 0)
+ 		err("fork");
+@@ -824,6 +829,8 @@ static void uffd_events_test_common(bool
+ 	char c;
+ 	struct uffd_args args = { 0 };
+ 
++	ready_for_fork = false;
++
+ 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
+ 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
+ 			  true, wp, false))
+@@ -833,6 +840,9 @@ static void uffd_events_test_common(bool
+ 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
+ 		err("uffd_poll_thread create");
+ 
++	while (!ready_for_fork)
++		; /* Wait for the poll_thread to start executing before forking */
++
+ 	pid = fork();
+ 	if (pid < 0)
+ 		err("fork");
 
 
 
