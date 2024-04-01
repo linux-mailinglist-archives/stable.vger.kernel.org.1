@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-34599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E18894001
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58831894309
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9FE283783
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A5E71C21432
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C8E46B9F;
-	Mon,  1 Apr 2024 16:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC668482CA;
+	Mon,  1 Apr 2024 16:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqA/qI93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcBF6/5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F871C129;
-	Mon,  1 Apr 2024 16:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B101BA3F;
+	Mon,  1 Apr 2024 16:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988661; cv=none; b=RW/J0SwmnNoqWwacuTMS1V5p2G7TQD/i3kTRDpgbXnRDFfZedWvmDQHS/YS7YRPbEjK9w1DOigHqdF/TZb/0iJWlAoVN8e6K8aeTNHGvSZ/vcamdMs4Ak7O12M2fGSIdp0zNi/egcUE5bwZ2Rx+SIkOL9uY5EyudHvaP92Y6QZw=
+	t=1711990729; cv=none; b=mFucl2csgebadPmw+l1Qp3SF1jsPB4yRoT4RiIP9nNnzNkVernOVjMw/s5h2m8FHeHIQZ1DyqlDE7LRpLSVUT/NHj/vhydEd88CKCqHLbIkR++PpLO85tbWba/r3nYpT/2QL9V6CKxijz8czPZkoJB/FfkovAQap2KDCpRFm21s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988661; c=relaxed/simple;
-	bh=Jsyg7L1OAhp9889u4D6evZoZWoNpMt6+M/qnaMaw1Uk=;
+	s=arc-20240116; t=1711990729; c=relaxed/simple;
+	bh=b9y8DvWUhCGWyd7xnJPEh/IvY6DBHD/o6U26W453WnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lQIU2pW+g93JC89z2nhJlQWBRAE+wJB4Zde4Ph7MPAnwsPEtdHXlEgpWqE9yWsJIdeefKQvNb12oM7AaEL2cZlKkhy83vUNQFK+W8mdz2xvcj+u0CIzwqzBtTqI2wqcN0e5xqW6Djmw+jNXFLW1W5UoOLyMulwX2wUIq55NHWs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqA/qI93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06C3C433F1;
-	Mon,  1 Apr 2024 16:24:20 +0000 (UTC)
+	 MIME-Version; b=uxRWMoA7B9HIpJRhvvvzILcQwjWBi/703VhOaVb0HRo5N6ASx3s4NRDZVDClGwiusWmJe4/BRi8HR26NuV98uDolfozy4OCC3BXKY5e1GKXAoZ7MwP0eaRzW3mMw3vHy8GYRs0gVJiuvoqsfJMURYSOEa0zQSPo2NlrEcdWsY9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcBF6/5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FF9C433F1;
+	Mon,  1 Apr 2024 16:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988661;
-	bh=Jsyg7L1OAhp9889u4D6evZoZWoNpMt6+M/qnaMaw1Uk=;
+	s=korg; t=1711990729;
+	bh=b9y8DvWUhCGWyd7xnJPEh/IvY6DBHD/o6U26W453WnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqA/qI93VjcvhNiI5fg5uIw2lPpndi8pWif7ipKSs4mo/8OwjEyFnnvdRUJpkQnFu
-	 eflYS4/BW58RI/Vo3Uu5sCDuSZNYL/YY6ZqzWigBFtOiOFhMwkj7IO3A3VTjg9UcV6
-	 qRy4L5Zul3SvlY8ytXMH3MNtXhzlciDPQTRQn40I=
+	b=zcBF6/5lHWaPHg632/3ZNvm3LmjxJ6Q/c6jWEwlS6KZN4ry+TFUFiBLIvptCMCdLr
+	 8UJk6fgoiyoVpPAQ5ew94DqQ7nCBS0QSTS1l6akHo76Z9dtrmdyVBrb65UtbgyCXiQ
+	 JtYi8kaaG2Is+u15NmyuuJGCpOsuPoKq4HcdrlIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Yao <yaolu@kylinos.cn>,
-	Kees Cook <keescook@chromium.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 251/432] init/Kconfig: lower GCC version check for -Warray-bounds
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 048/272] parisc: Fix csum_ipv6_magic on 64-bit systems
 Date: Mon,  1 Apr 2024 17:43:58 +0200
-Message-ID: <20240401152600.625651725@linuxfoundation.org>
+Message-ID: <20240401152531.902220129@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,69 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 3e00f5802fabf2f504070a591b14b648523ede13 upstream.
+[ Upstream commit 4b75b12d70506e31fc02356bbca60f8d5ca012d0 ]
 
-We continue to see false positives from -Warray-bounds even in GCC 10,
-which is getting reported in a few places[1] still:
+hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
+operations. The last add folds protocol and length fields into the 64-bit
+result. While unlikely, this operation can overflow. The overflow can be
+triggered with a code sequence such as the following.
 
-security/security.c:811:2: warning: `memcpy' offset 32 is out of the bounds [0, 0] [-Warray-bounds]
+	/* try to trigger massive overflows */
+	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
+	csum_result = csum_ipv6_magic((struct in6_addr *)tmp_buf,
+				      (struct in6_addr *)tmp_buf,
+				      0xffff, 0xff, 0xffffffff);
 
-Lower the GCC version check from 11 to 10.
+Fix the problem by adding any overflows from the final add operation into
+the calculated checksum. Fortunately, we can do this without additional
+cost by replacing the add operation used to fold the checksum into 32 bit
+with "add,dc" to add in the missing carry.
 
-Link: https://lkml.kernel.org/r/20240223170824.work.768-kees@kernel.org
-Reported-by: Lu Yao <yaolu@kylinos.cn>
-Closes: https://lore.kernel.org/lkml/20240117014541.8887-1-yaolu@kylinos.cn/
-Link: https://lore.kernel.org/linux-next/65d84438.620a0220.7d171.81a7@mx.google.com [1]
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Marc Aurèle La France <tsi@tuyoix.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/parisc/include/asm/checksum.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -876,14 +876,14 @@ config CC_IMPLICIT_FALLTHROUGH
- 	default "-Wimplicit-fallthrough=5" if CC_IS_GCC && $(cc-option,-Wimplicit-fallthrough=5)
- 	default "-Wimplicit-fallthrough" if CC_IS_CLANG && $(cc-option,-Wunreachable-code-fallthrough)
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index e619e67440db9..c949aa20fa162 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -137,8 +137,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
+ "	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
+ "	depdi		0, 31, 32, %0\n"/* clear upper half */
+-"	add		%4, %0, %0\n"	/* fold into 32-bits */
+-"	addc		0, %0, %0\n"	/* add carry */
++"	add,dc		%4, %0, %0\n"	/* fold into 32-bits, plus carry */
++"	addc		0, %0, %0\n"	/* add final carry */
  
--# Currently, disable gcc-11+ array-bounds globally.
-+# Currently, disable gcc-10+ array-bounds globally.
- # It's still broken in gcc-13, so no upper bound yet.
--config GCC11_NO_ARRAY_BOUNDS
-+config GCC10_NO_ARRAY_BOUNDS
- 	def_bool y
+ #else
  
- config CC_NO_ARRAY_BOUNDS
- 	bool
--	default y if CC_IS_GCC && GCC_VERSION >= 110000 && GCC11_NO_ARRAY_BOUNDS
-+	default y if CC_IS_GCC && GCC_VERSION >= 100000 && GCC10_NO_ARRAY_BOUNDS
- 
- #
- # For architectures that know their GCC __int128 support is sound
+-- 
+2.43.0
+
 
 
 
