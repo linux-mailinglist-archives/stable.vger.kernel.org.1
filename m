@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9109D89404A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C1E894355
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45D5928294F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250A3283848
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BDA45BE4;
-	Mon,  1 Apr 2024 16:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE21481C6;
+	Mon,  1 Apr 2024 17:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0w3XJsn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aepf8i6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7052DC129;
-	Mon,  1 Apr 2024 16:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3051C0DE7;
+	Mon,  1 Apr 2024 17:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988885; cv=none; b=gCgd4s/8oHwZP44mxi0hPSjbhnBohLbW8/j6iSDT8w29braWObkBfQdgccCD2JBSVUqQUkHAa6Z6O7rJHvOXeZ1uXN5JjhT6ZQ4wgIDFtpQGlf61FzUrjtZrsLs6MRwbu1UN07ZCx+um9O36EUm8ShnN33/TNhaZOomAyoQ1GCs=
+	t=1711990949; cv=none; b=ZZeQkELJw3HmEDm9rn2SDJOv2T1fmln9pbrHQZtGGEFWOq7vJfsIE0uw/XZgL89GDT8RFr2Z/kcDfVLH97feW55emOY6B05tsq243wE4sMTbFXWM7FW3C15Dj33bwhEctb4lr+lLakmHEk9YEOd0BXT3XUNTdXggyfR1RPAQErQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988885; c=relaxed/simple;
-	bh=wdFGNrBfZW1E3ISOJhfHktdoAltlc96DRsBHp1Nd6ME=;
+	s=arc-20240116; t=1711990949; c=relaxed/simple;
+	bh=3ULS1fHPvT0t8tlj8hF1e6HZaCVfnCrEZZQB/skBJtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fObYx75Bpg2QWab7B8qcPunTWAfrjpznlJOOnbWGgPlReCDN/1ivyAUtS+g4P6VU9LqSGsnOm7ZEeIPftnXzYLfzaaTTN3Q0dkrz33i2kAG7V3g/rrenDG0YIxANFp7vJqKk9A2lQ20LgFPBA3dLKu94sIsQW6AK+O8hKs++EqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0w3XJsn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D3FC433F1;
-	Mon,  1 Apr 2024 16:28:04 +0000 (UTC)
+	 MIME-Version; b=O96LJV/p8w4LVh4xKxFULOFS/wruZK2OMX2udvTFeQXcQBOFK4DjgIZPlJ3uuwZGSNWW/NdK/bDNa/PmK6uCyRPstH1D2+fHY9TcxBtzVpwJUglx8kYyj+Khs4lMX4f9EG8emD6kqzIZM1lEwjkespOVNw0kx7qdLA6+Ak4iXso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aepf8i6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE674C433F1;
+	Mon,  1 Apr 2024 17:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988885;
-	bh=wdFGNrBfZW1E3ISOJhfHktdoAltlc96DRsBHp1Nd6ME=;
+	s=korg; t=1711990949;
+	bh=3ULS1fHPvT0t8tlj8hF1e6HZaCVfnCrEZZQB/skBJtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0w3XJsnFKcqBmPO3WEa/yx+RmIr4mWgpPm2e2J5+SmmEHxEp4jUmfqeHJ1KGmNLy
-	 68ggXHFqUN3liVjdP2WFBwKSz/gwDd78qfDkDSF14+NmCU2gXMg1MMUftdineXaUbD
-	 WYoeEldNnmbqdZWZt3f2DFZTAeVw2QEe1gvjfkQg=
+	b=Aepf8i6+clT4p8NkkSI1IahgCHV/0oX6r7tx+w3oJ6uJ24+g2SuG9KAEBBeCnA7o4
+	 /HQVLRLUb0a61BhaZGNYZt6pg83dPVFm3I6doqsGxtdlZcIqLZNDpIhj/xvK33s72J
+	 LR4XxuwMQrmQclU5onz1Huw7BohUOZqOig4oEvzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Ma <li.ma@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 290/432] drm/amd/swsmu: modify the gfx activity scaling
-Date: Mon,  1 Apr 2024 17:44:37 +0200
-Message-ID: <20240401152601.819004215@linuxfoundation.org>
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 088/272] phy: tegra: xusb: Add API to retrieve the port number of phy
+Date: Mon,  1 Apr 2024 17:44:38 +0200
+Message-ID: <20240401152533.370013869@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Ma <li.ma@amd.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-commit 6601c15c8a0680edb0d23a13151adb8023959149 upstream.
+[ Upstream commit d843f031d9e90462253015bc0bd9e3852d206bf2 ]
 
-Add an if condition for gfx activity because the scaling has been changed after smu fw version 5d4600.
-And remove a warning log.
+This patch introduces a new API, tegra_xusb_padctl_get_port_number,
+to the Tegra XUSB Pad Controller driver. This API is used to identify
+the USB port that is associated with a given PHY.
 
-Signed-off-by: Li Ma <li.ma@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.7.x
+The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
+and returns the corresponding port number. If the PHY pointer is invalid,
+it returns -ENODEV.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20240307030328.1487748-2-waynec@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c       |    2 --
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c |    5 ++++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/phy/tegra/xusb.c       | 13 +++++++++++++
+ include/linux/phy/tegra/xusb.h |  1 +
+ 2 files changed, 14 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
-@@ -229,8 +229,6 @@ int smu_v14_0_check_fw_version(struct sm
- 		smu->smc_driver_if_version = SMU14_DRIVER_IF_VERSION_SMU_V14_0_2;
- 		break;
- 	case IP_VERSION(14, 0, 0):
--		if ((smu->smc_fw_version < 0x5d3a00))
--			dev_warn(smu->adev->dev, "The PMFW version(%x) is behind in this BIOS!\n", smu->smc_fw_version);
- 		smu->smc_driver_if_version = SMU14_DRIVER_IF_VERSION_SMU_V14_0_0;
- 		break;
- 	default:
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
-@@ -261,7 +261,10 @@ static int smu_v14_0_0_get_smu_metrics_d
- 		*value = metrics->MpipuclkFrequency;
- 		break;
- 	case METRICS_AVERAGE_GFXACTIVITY:
--		*value = metrics->GfxActivity / 100;
-+		if ((smu->smc_fw_version > 0x5d4600))
-+			*value = metrics->GfxActivity;
-+		else
-+			*value = metrics->GfxActivity / 100;
- 		break;
- 	case METRICS_AVERAGE_VCNACTIVITY:
- 		*value = metrics->VcnActivity / 100;
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 4d5b4071d47d5..dc22b1dd2c8ba 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -1518,6 +1518,19 @@ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
+ }
+ EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_usb3_companion);
+ 
++int tegra_xusb_padctl_get_port_number(struct phy *phy)
++{
++	struct tegra_xusb_lane *lane;
++
++	if (!phy)
++		return -ENODEV;
++
++	lane = phy_get_drvdata(phy);
++
++	return lane->index;
++}
++EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_port_number);
++
+ MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
+ MODULE_DESCRIPTION("Tegra XUSB Pad Controller driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/phy/tegra/xusb.h b/include/linux/phy/tegra/xusb.h
+index 70998e6dd6fdc..6ca51e0080ec0 100644
+--- a/include/linux/phy/tegra/xusb.h
++++ b/include/linux/phy/tegra/xusb.h
+@@ -26,6 +26,7 @@ void tegra_phy_xusb_utmi_pad_power_down(struct phy *phy);
+ int tegra_phy_xusb_utmi_port_reset(struct phy *phy);
+ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
+ 					 unsigned int port);
++int tegra_xusb_padctl_get_port_number(struct phy *phy);
+ int tegra_xusb_padctl_enable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy,
+ 					   enum usb_device_speed speed);
+ int tegra_xusb_padctl_disable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy);
+-- 
+2.43.0
+
 
 
 
