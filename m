@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F89D893FC3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D56B7894167
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0CF61C20B1D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 687CE282F47
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50924778C;
-	Mon,  1 Apr 2024 16:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9D4481D7;
+	Mon,  1 Apr 2024 16:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPJOTc2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCbW4AwX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DAA3D961;
-	Mon,  1 Apr 2024 16:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A4D481C6;
+	Mon,  1 Apr 2024 16:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988458; cv=none; b=UJ2GUWqrfXD1qIjMFHYvZgowbI1AcNLYJxe60W5H2pOTZgeLVwi/XDbXDdof7dlHVTQShKNc7ZYPuXxUGglzjH2l0USLdnopZLCv32QNU5buyoet6zfwaUoVGR80WpfzBS8Vl6FINLUlKH9gy+C6QmscVe2R+ZPe+6HON1KtwoI=
+	t=1711989706; cv=none; b=msVk3Z1RSYdQIuvm6igHBZcP35I6K9qGWHqhvHmtHcwEebGiZ9MV8XD02wWzCYvosB1LzVuDTO7Yqiqq0d+4cBLMF/SJ9H8ggYi/S/gSfZ95vcK7wgPCu26VD9AFqiBSlt0ym/Fz2n9cgt9+qNV52cTPdXeh78aOr0mj8dD4atY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988458; c=relaxed/simple;
-	bh=Ta3BCZSupIVWYMUSAgNRMZAAtJ4EF2nuDMxT7XUDYME=;
+	s=arc-20240116; t=1711989706; c=relaxed/simple;
+	bh=eQmbf1RMPKDY5zXnSJjfIVDpKA/kZvsTJhBReluHeHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xkq+sQyi9/VvHUL9Tzs5on/DGEzcG6WURFUmo1BCCXpF43tlP+y53ZPcwwO8ncZiPYUTn25FphHaxxnttXYfukBTVe38l8Pa2unc0IWdxK4TWJlqTY3T32mu9XYEeoc9tvvn6xu9jelz6QoL4QkQG5I+XJvCvRB7EX0RkuttKJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPJOTc2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D21C433C7;
-	Mon,  1 Apr 2024 16:20:57 +0000 (UTC)
+	 MIME-Version; b=hPyh0uhfpfuaHmtBm3LOi/sqBjMMWXLfrkkG8fw5xGjElHhyu0MHCpsiq3k/tQ7x8xB9BJ7l2gQBpJlyt3ikNE/SAY3nIubb6tmgmnleXSb0NqQ0q3Yh87NsXp6GWE7Ldl3eVAEY3WJ5TSZLc5iBdNFMhdoO/Hm2pnul1RozwnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCbW4AwX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1807C433F1;
+	Mon,  1 Apr 2024 16:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988458;
-	bh=Ta3BCZSupIVWYMUSAgNRMZAAtJ4EF2nuDMxT7XUDYME=;
+	s=korg; t=1711989706;
+	bh=eQmbf1RMPKDY5zXnSJjfIVDpKA/kZvsTJhBReluHeHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sPJOTc2QPSZmmCix1z5WE1HWy4EgBXl+h+eqlMWucq+EESWoTVvW4CvIKjVXvNmqk
-	 Lvn1cSQ60XtmzX34cWG4FWGS40HXfEAW+UUmvm3H2Q4CEcB1luchlKHfFUvJ2cD32h
-	 vUXtUz9KSO4MK6iWmsZvyU5MvfJLBvg6yYkjPQpo=
+	b=hCbW4AwXbWWz2lW6Fu6tFDaGEyPz5Eapn3lbhcqFjy4FjudgOOMgp7qh+xbFUYOhU
+	 beCtepzYLWm8K1uGUIzOSqtGAkl7dpWcQOim8Ne6WantutLtItNFhf3sgUDio8Ok/i
+	 GphQ6zXIXNIVhxeoN/34iA0pqIV3qOotw/n96nOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuanzhe Yu <yuxuanzhe@outlook.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 190/432] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
-Date: Mon,  1 Apr 2024 17:42:57 +0200
-Message-ID: <20240401152558.806942211@linuxfoundation.org>
+Subject: [PATCH 6.6 129/396] vfio/platform: Disable virqfds on cleanup
+Date: Mon,  1 Apr 2024 17:42:58 +0200
+Message-ID: <20240401152551.763361081@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit a80a486d72e20bd12c335bcd38b6e6f19356b0aa ]
+[ Upstream commit fcdc0d3d40bc26c105acf8467f7d9018970944ae ]
 
-If ->NameOffset of smb2_create_req is smaller than Buffer offset of
-smb2_create_req, slab-out-of-bounds read can happen from smb2_open.
-This patch set the minimum value of the name offset to the buffer offset
-to validate name length of smb2_create_req().
+irqfds for mask and unmask that are not specifically disabled by the
+user are leaked.  Remove any irqfds during cleanup
 
-Cc: stable@vger.kernel.org
-Reported-by: Xuanzhe Yu <yuxuanzhe@outlook.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: Eric Auger <eric.auger@redhat.com>
+Cc:  <stable@vger.kernel.org>
+Fixes: a7fa7c77cf15 ("vfio/platform: implement IRQ masking/unmasking via an eventfd")
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-6-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2misc.c | 5 ++++-
+ drivers/vfio/platform/vfio_platform_irq.c | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
-index 03dded29a9804..7c872ffb4b0a9 100644
---- a/fs/smb/server/smb2misc.c
-+++ b/fs/smb/server/smb2misc.c
-@@ -107,7 +107,10 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 	case SMB2_CREATE:
- 	{
- 		unsigned short int name_off =
--			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
-+			max_t(unsigned short int,
-+			      le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset),
-+			      offsetof(struct smb2_create_req, Buffer));
-+
- 		unsigned short int name_len =
- 			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
+diff --git a/drivers/vfio/platform/vfio_platform_irq.c b/drivers/vfio/platform/vfio_platform_irq.c
+index 665197caed89e..d36c4cd0fbda3 100644
+--- a/drivers/vfio/platform/vfio_platform_irq.c
++++ b/drivers/vfio/platform/vfio_platform_irq.c
+@@ -321,8 +321,11 @@ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
+ {
+ 	int i;
  
+-	for (i = 0; i < vdev->num_irqs; i++)
++	for (i = 0; i < vdev->num_irqs; i++) {
++		vfio_virqfd_disable(&vdev->irqs[i].mask);
++		vfio_virqfd_disable(&vdev->irqs[i].unmask);
+ 		vfio_set_trigger(vdev, i, -1, NULL);
++	}
+ 
+ 	vdev->num_irqs = 0;
+ 	kfree(vdev->irqs);
 -- 
 2.43.0
 
