@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DC9894331
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D336A8941C4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7269A2838E1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88A6C1F25576
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30A84AEC3;
-	Mon,  1 Apr 2024 17:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134114C630;
+	Mon,  1 Apr 2024 16:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYbMG5op"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSE2ZttR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69116482F6;
-	Mon,  1 Apr 2024 17:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C662E4C61B;
+	Mon,  1 Apr 2024 16:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990850; cv=none; b=i8RPHAMhnnWv16IH1yAq+8HTOZmBZOXth/C0VZXNPO03oZ3fyF5IzU6IaIIciSlXlunCojS6PELgQ1J6eSuSAl/4Tn2o7jkBEOyoNSjjCcQkvEd573oxYGkLyy9R9Jt60oQ8rFurvNe3OkXMFXsrnRZOlcDBiNTkQYH0OgwtaHY=
+	t=1711989940; cv=none; b=ACiFW7hpfVTRcnyO3jknopgZIhSpzYuLBC0jEycAk0yYu/iUJ8NuTedCz6GbzfzvC9lDE+cWp+PIDCDjN6BdOx32VZ9xhkiyPUFy3I2gVKiAFB6UmpHU20E94AKQ/Ax4uwiC5UzSgL5IVf7yxUCNIn4lG5qC+VikBCDKT1RvTYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990850; c=relaxed/simple;
-	bh=/S/ueUQ5XUCPQj2DwYq4QRORsGYNCTVXwy2k7cV5JYE=;
+	s=arc-20240116; t=1711989940; c=relaxed/simple;
+	bh=FmXZqL+U0Rz5ukCQ8auYWcWRT/QtctcdL6pJ8j7CSaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1Z2aHYTJAb8ktHoN175tcgGdbXdNTrTj1hSB6ZKFITfUVPi8u39H5cBu0a+7c3rWg2uMb9VHD37bDHh1hGR6Oc9jS11+Q3j8Y4Zwcq/MSDegr3fDrOEqO3zjETvk+A5N2yRNnu+3YhbIACXdG0Y1RFEHz6g2eNYOoOV6RoKQdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYbMG5op; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE094C433F1;
-	Mon,  1 Apr 2024 17:00:49 +0000 (UTC)
+	 MIME-Version; b=BggYMicP9dHjB6NcutWi37s07lZz7FpIycls3Egssa3MFcokW49GKBjyLTSijjaU8builDTJQivN7rMZhg8fIBIvWuEQqzN8jG4Mr5I6N3ass3syHHFjduyYdM/3wkD8cDaxdytLs4EFAkKOrZlFl/IHV9JAvHjasvFt+1zmxWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSE2ZttR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30598C43399;
+	Mon,  1 Apr 2024 16:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990850;
-	bh=/S/ueUQ5XUCPQj2DwYq4QRORsGYNCTVXwy2k7cV5JYE=;
+	s=korg; t=1711989940;
+	bh=FmXZqL+U0Rz5ukCQ8auYWcWRT/QtctcdL6pJ8j7CSaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYbMG5opDuQEGG2uO8Igx1qmjUcEatGvSqC02H/AMmd/C4OUZZpavq+PQwY1BuN/i
-	 sEwaUyVPtYDOkG+i3JAZV55obJGaySIF3Uui5B25v0QlCNEtoR5KytUs54m0sbe5DJ
-	 kzphTXnFt1kvN4CizVyyRw+C3V+3/Uhmq56CcHQ8=
+	b=xSE2ZttRwWdZoG3Nxx8nV0DjPwmWxrfrsghH26gjkcgH7kcutNXf1g13ey8efaGtY
+	 LJoklpXdsSyeLuyUHX6d8p9QOzLAccn+d/gBQ/a92ZSu7lloA9rZ5guOc6BwPgoOrc
+	 GeI6/6EfuwjHcD5XT6gXLaESC08rO4+aZUvZOcsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/272] clk: qcom: mmcc-msm8974: fix terminating of frequency table arrays
-Date: Mon,  1 Apr 2024 17:44:06 +0200
-Message-ID: <20240401152532.299881033@linuxfoundation.org>
+	lonial con <kongln9170@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 198/396] netfilter: nf_tables: disallow anonymous set with timeout flag
+Date: Mon,  1 Apr 2024 17:44:07 +0200
+Message-ID: <20240401152553.837726407@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e2c02a85bf53ae86d79b5fccf0a75ac0b78e0c96 ]
+commit 16603605b667b70da974bea8216c93e7db043bf1 upstream.
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+Anonymous sets are never used with timeout from userspace, reject this.
+Exception to this rule is NFT_SET_EVAL to ensure legacy meters still work.
 
-Only compile tested.
-
-Fixes: d8b212014e69 ("clk: qcom: Add support for MSM8974's multimedia clock controller (MMCC)")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-7-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
+Reported-by: lonial con <kongln9170@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/mmcc-msm8974.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nf_tables_api.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
-index 17ed52046170a..eb2b0e2200d23 100644
---- a/drivers/clk/qcom/mmcc-msm8974.c
-+++ b/drivers/clk/qcom/mmcc-msm8974.c
-@@ -279,6 +279,7 @@ static struct freq_tbl ftbl_mmss_axi_clk[] = {
- 	F(291750000, P_MMPLL1, 4, 0, 0),
- 	F(400000000, P_MMPLL0, 2, 0, 0),
- 	F(466800000, P_MMPLL1, 2.5, 0, 0),
-+	{ }
- };
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4942,6 +4942,9 @@ static int nf_tables_newset(struct sk_bu
+ 		if ((flags & (NFT_SET_EVAL | NFT_SET_OBJECT)) ==
+ 			     (NFT_SET_EVAL | NFT_SET_OBJECT))
+ 			return -EOPNOTSUPP;
++		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
++			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
++			return -EOPNOTSUPP;
+ 	}
  
- static struct clk_rcg2 mmss_axi_clk_src = {
-@@ -303,6 +304,7 @@ static struct freq_tbl ftbl_ocmemnoc_clk[] = {
- 	F(150000000, P_GPLL0, 4, 0, 0),
- 	F(291750000, P_MMPLL1, 4, 0, 0),
- 	F(400000000, P_MMPLL0, 2, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 ocmemnoc_clk_src = {
--- 
-2.43.0
-
+ 	desc.dtype = 0;
 
 
 
