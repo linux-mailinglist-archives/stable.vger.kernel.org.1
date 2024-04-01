@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2986B893FC5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C30589414A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE001C21114
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2E68B20A76
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FA34778C;
-	Mon,  1 Apr 2024 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C003F8F4;
+	Mon,  1 Apr 2024 16:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWjf3Wm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8yMnw2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677393D961;
-	Mon,  1 Apr 2024 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BC61EB37;
+	Mon,  1 Apr 2024 16:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988465; cv=none; b=ZwVtynTirtDR5PGvYetnzGp2bnOr2I2XdyQ5fGPr2v/LcpvaBN6nlcM/bma8ZFMB5SwRwTGYY8vcZ9zQtsSwrcJFTZfgSth+/pIlX36wx4AUBAiKWBPrJJwVWwxiP3IgFqAj6DLYjTuh7t/K/gOsBdRlgyfVyws592/f7IFmh50=
+	t=1711989618; cv=none; b=LMehoYPlLAdQkUxR7mLnVl5ZA1HioWgb1cFO0pGVCykHt0OvHM5wpb0qzaTRWPtSHLJjZwgDbsblCtiNB51ZII05ZCKiN1ha+q5hrPidAmCKMNumKz7TX1xtlGjs7BFaBZ4VpLxxc8i0CvFSEymMWVeHUnI6wkFxic96lyTS69I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988465; c=relaxed/simple;
-	bh=B6qJSNwHpmuxHCLXsSh7G0+5ZetvlEmeDrNaxMVnaI8=;
+	s=arc-20240116; t=1711989618; c=relaxed/simple;
+	bh=XWoMmq4P5uuecp37yxGpKgTX6PXSK3zBu6i+rGhh+n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hz57o8eWkrnnO6a6DaBlV8PTsUkte19ff24h+LhYUKuh7YPZ+tcmRCXnMdwzoZ/00ful4SWWyEeN7wU9EWRc9Gd3PS9eNm2SfvZAKDmhKck76mWc/zdmnAAL+zCUci29lMKbrqQXk9ZrF9aX6Ah4ZGiiJiDC2ZZAszvMnTVdz+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWjf3Wm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA59EC433F1;
-	Mon,  1 Apr 2024 16:21:04 +0000 (UTC)
+	 MIME-Version; b=t3BsLbc9wZFmCmcZBy/GYo9ergisPgVVJIvbxYvadQh98O3GGh9qPMzbcPqEuJNPuB6EUk+7fq2T3nnaSQBXI2aUlYHBWE/u1UOjLf6xLPGnuM2CqoRm3AU+pqO9c6UKYptlmh/KethB2f2nfJL2lKEa0Qcs4pkecjlHLcP/Ogg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8yMnw2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843B7C433C7;
+	Mon,  1 Apr 2024 16:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988465;
-	bh=B6qJSNwHpmuxHCLXsSh7G0+5ZetvlEmeDrNaxMVnaI8=;
+	s=korg; t=1711989618;
+	bh=XWoMmq4P5uuecp37yxGpKgTX6PXSK3zBu6i+rGhh+n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWjf3Wm4wMPV6Ebl3jkzGgKJsXH+6zP1oe496a/tLB2EjvYlUfgT2AQiDrlmr8l5Z
-	 gr2fjlwocQ9Jo83YpSVpx9lPIt7AmehF8igNJhEH+3PZMeDKjvz7z8QtzMR2KmjI8M
-	 tOUwHwJfC7cKyo28ZmFrDJxuBKGX2IIQp0W7uwW4=
+	b=m8yMnw2vEkB/KyUDRXkqcwr9LPxUeteRQxjt/qbld4mH2nt/WbSnG4xmAdLfE79dk
+	 TL6tJCsz3itA8/d98TpvK6Phfh1Z7VAFHWXSYWR9t50hyvnoX6WdZ0aVru1Ue75MXa
+	 fgtCtrUKYad/2HmF3VLN7Xl7+2g/q+v2qVJLIKcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 165/432] drm/probe-helper: warn about negative .get_modes()
+Subject: [PATCH 6.6 103/396] leds: trigger: netdev: Fix kernel panic on interface rename trig notify
 Date: Mon,  1 Apr 2024 17:42:32 +0200
-Message-ID: <20240401152558.062404725@linuxfoundation.org>
+Message-ID: <20240401152550.993340715@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 7af03e688792293ba33149fb8df619a8dff90e80 ]
+[ Upstream commit 415798bc07dd1c1ae3a656aa026580816e0b9fe8 ]
 
-The .get_modes() callback is supposed to return the number of modes,
-never a negative error code. If a negative value is returned, it'll just
-be interpreted as a negative count, and added to previous calculations.
+Commit d5e01266e7f5 ("leds: trigger: netdev: add additional specific link
+speed mode") in the various changes, reworked the way to set the LINKUP
+mode in commit cee4bd16c319 ("leds: trigger: netdev: Recheck
+NETDEV_LED_MODE_LINKUP on dev rename") and moved it to a generic function.
 
-Document the rules, but handle the negative values gracefully with an
-error message.
+This changed the logic where, in the previous implementation the dev
+from the trigger event was used to check if the carrier was ok, but in
+the new implementation with the generic function, the dev in
+trigger_data is used instead.
 
+This is problematic and cause a possible kernel panic due to the fact
+that the dev in the trigger_data still reference the old one as the
+new one (passed from the trigger event) still has to be hold and saved
+in the trigger_data struct (done in the NETDEV_REGISTER case).
+
+On calling of get_device_state(), an invalid net_dev is used and this
+cause a kernel panic.
+
+To handle this correctly, move the call to get_device_state() after the
+new net_dev is correctly set in trigger_data (in the NETDEV_REGISTER
+case) and correctly parse the new dev.
+
+Fixes: d5e01266e7f5 ("leds: trigger: netdev: add additional specific link speed mode")
 Cc: stable@vger.kernel.org
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/50208c866facc33226a3c77b82bb96aeef8ef310.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240203235413.1146-1-ansuelsmth@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_probe_helper.c       | 7 +++++++
- include/drm/drm_modeset_helper_vtables.h | 3 ++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/leds/trigger/ledtrig-netdev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 3f479483d7d80..15ed974bcb988 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -419,6 +419,13 @@ static int drm_helper_probe_get_modes(struct drm_connector *connector)
- 
- 	count = connector_funcs->get_modes(connector);
- 
-+	/* The .get_modes() callback should not return negative values. */
-+	if (count < 0) {
-+		drm_err(connector->dev, ".get_modes() returned %pe\n",
-+			ERR_PTR(count));
-+		count = 0;
-+	}
-+
- 	/*
- 	 * Fallback for when DDC probe failed in drm_get_edid() and thus skipped
- 	 * override/firmware EDID.
-diff --git a/include/drm/drm_modeset_helper_vtables.h b/include/drm/drm_modeset_helper_vtables.h
-index e3c3ac6159094..159213786e6e1 100644
---- a/include/drm/drm_modeset_helper_vtables.h
-+++ b/include/drm/drm_modeset_helper_vtables.h
-@@ -898,7 +898,8 @@ struct drm_connector_helper_funcs {
- 	 *
- 	 * RETURNS:
- 	 *
--	 * The number of modes added by calling drm_mode_probed_add().
-+	 * The number of modes added by calling drm_mode_probed_add(). Return 0
-+	 * on failures (no modes) instead of negative error codes.
- 	 */
- 	int (*get_modes)(struct drm_connector *connector);
- 
+diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
+index d76214fa9ad86..79719fc8a08fb 100644
+--- a/drivers/leds/trigger/ledtrig-netdev.c
++++ b/drivers/leds/trigger/ledtrig-netdev.c
+@@ -462,12 +462,12 @@ static int netdev_trig_notify(struct notifier_block *nb,
+ 	trigger_data->duplex = DUPLEX_UNKNOWN;
+ 	switch (evt) {
+ 	case NETDEV_CHANGENAME:
+-		get_device_state(trigger_data);
+-		fallthrough;
+ 	case NETDEV_REGISTER:
+ 		dev_put(trigger_data->net_dev);
+ 		dev_hold(dev);
+ 		trigger_data->net_dev = dev;
++		if (evt == NETDEV_CHANGENAME)
++			get_device_state(trigger_data);
+ 		break;
+ 	case NETDEV_UNREGISTER:
+ 		dev_put(trigger_data->net_dev);
 -- 
 2.43.0
 
