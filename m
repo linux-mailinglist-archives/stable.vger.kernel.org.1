@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-34302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935B7893EC5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E9D894058
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33382B220B9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A7BA1C2102C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDF1383BA;
-	Mon,  1 Apr 2024 16:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B594D46B9F;
+	Mon,  1 Apr 2024 16:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcbNSNK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaQPqutW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3A91CA8F;
-	Mon,  1 Apr 2024 16:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E003C129;
+	Mon,  1 Apr 2024 16:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987663; cv=none; b=eyp3F0KB0z6s/bcCM3gF8cmxPSyZyZf8nvlbajgmzrv92kM2jpxBQOx2laTx1TiqGtsJg/uN9+ul4kJLrKemHmAFMLhyaFfBW8jb0l88kJ+CCRX2v51pt3CAO+j7xeqlASdIbZWwEIxWZBNYRRvMi/i4QQViWdmZUDHnmrTnIa4=
+	t=1711988931; cv=none; b=Z05n4KkJiycv4sTJ/SYU70ISzMynJekONeu85yqqT3pTWtaPXBKnGVkUNNngG/w0prirQKD73Ax6FEMFANP3u2xslPB2+KnY+DzRoh1PuQr6gcpPpxN0izzHDXFafoKWLSb7fHZRFxs/fMc/haUH52HIQsD8zoEK1diDdp7Ra8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987663; c=relaxed/simple;
-	bh=aDDqoAIreN8qWScPbw9gzm6n1lStU1olvf5ObH1ob1Y=;
+	s=arc-20240116; t=1711988931; c=relaxed/simple;
+	bh=4aRNAbVyUKXiM6+B/hAXh3gqjhvKKqYZIZSGcMnZghI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h19SaLqL2Vt/KMqWXQEwTrkwz4fCbNqyLYSU4UtG1pTwQf8sqBXM1S2t3r97TwrNW/I33XuPOrUmgej75Hdw5eGhN5MvXw2OSbz0ZmzNh754WHZgk5ChiwYAjOLwSJ+YV0S3Tzd31D7uD35PQ6CT6e1eISstOIyIv1blKgITGfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcbNSNK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08BDC433C7;
-	Mon,  1 Apr 2024 16:07:42 +0000 (UTC)
+	 MIME-Version; b=AYcFmdZRFwnQjC4GrhoIKSr7YVJfIpnRFUbjpa0/pA/2AO8Bu5vBpAebFKKJd5ZNCWz6yg50nmJXt4ELo7s00/omAI3TmccUyU0uHTq4cDSJ5bnodrtK6dPSIsxn3e9U2DOuvOgQrDh3jOKltHUZaykM3YzHybqwfhpDCQc4Ez8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaQPqutW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D022EC433C7;
+	Mon,  1 Apr 2024 16:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987663;
-	bh=aDDqoAIreN8qWScPbw9gzm6n1lStU1olvf5ObH1ob1Y=;
+	s=korg; t=1711988931;
+	bh=4aRNAbVyUKXiM6+B/hAXh3gqjhvKKqYZIZSGcMnZghI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FcbNSNK6zkb9VfCyZWgFrNezNTrG4kTnujMjSBQ5xUyyF+a2oTLtDfyrxC6L4jbvf
-	 1J5WmBlya7UWbUwQnHma92uMV/OROxatIJ1vJd1nfq9TXMUMNnZc0bbDlQlD3q/97L
-	 ctRumra6sBPPrDgjEbuNOKNpv5kNBfWppBiiRd5I=
+	b=eaQPqutWRI48k0nH6zR0Yvjs9fGEKxjcuLQJoJ71TzD++Sz0cj1GpOrCwczzJ9ppF
+	 aM3U7frVSrPzulfNrZo8YA7Szarj4mkJueudSSP4k/zPY5WIKsGHQ3e4c5elJYQnLm
+	 YmLfc61GyRaw4/1mTtF+q3pESHEIx8PLY9pY3osE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 353/399] scsi: core: Fix unremoved procfs host directory regression
+	Gergo Koteles <soyer@irl.hu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 332/432] ALSA: hda/tas2781: remove digital gain kcontrol
 Date: Mon,  1 Apr 2024 17:45:19 +0200
-Message-ID: <20240401152559.710194741@linuxfoundation.org>
+Message-ID: <20240401152603.114778315@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-commit f23a4d6e07570826fe95023ca1aa96a011fa9f84 upstream.
+commit ae065d0ce9e36ca4efdfb9b96ce3395bd1c19372 upstream.
 
-Commit fc663711b944 ("scsi: core: Remove the /proc/scsi/${proc_name}
-directory earlier") fixed a bug related to modules loading/unloading, by
-adding a call to scsi_proc_hostdir_rm() on scsi_remove_host(). But that led
-to a potential duplicate call to the hostdir_rm() routine, since it's also
-called from scsi_host_dev_release(). That triggered a regression report,
-which was then fixed by commit be03df3d4bfe ("scsi: core: Fix a procfs host
-directory removal regression"). The fix just dropped the hostdir_rm() call
-from dev_release().
+The "Speaker Digital Gain" kcontrol controls the TAS2781_DVC_LVL (0x1A)
+register. Unfortunately the tas2563 does not have DVC_LVL, but has
+INT_MASK0 in 0x1A, which has been misused so far.
 
-But it happens that this proc directory is created on scsi_host_alloc(),
-and that function "pairs" with scsi_host_dev_release(), while
-scsi_remove_host() pairs with scsi_add_host(). In other words, it seems the
-reason for removing the proc directory on dev_release() was meant to cover
-cases in which a SCSI host structure was allocated, but the call to
-scsi_add_host() didn't happen. And that pattern happens to exist in some
-error paths, for example.
+Since commit c1947ce61ff4 ("ALSA: hda/realtek: tas2781: enable subwoofer
+volume control") the volume of the tas2781 amplifiers can be controlled
+by the master volume, so this digital gain kcontrol is not needed.
 
-Syzkaller causes that by using USB raw gadget device, error'ing on
-usb-storage driver, at usb_stor_probe2(). By checking that path, we can see
-that the BadDevice label leads to a scsi_host_put() after a SCSI host
-allocation, but there's no call to scsi_add_host() in such path. That leads
-to messages like this in dmesg (and a leak of the SCSI host proc
-structure):
+Remove it.
 
-usb-storage 4-1:87.51: USB Mass Storage device detected
-proc_dir_entry 'scsi/usb-storage' already registered
-WARNING: CPU: 1 PID: 3519 at fs/proc/generic.c:377 proc_register+0x347/0x4e0 fs/proc/generic.c:376
-
-The proper fix seems to still call scsi_proc_hostdir_rm() on dev_release(),
-but guard that with the state check for SHOST_CREATED; there is even a
-comment in scsi_host_dev_release() detailing that: such conditional is
-meant for cases where the SCSI host was allocated but there was no calls to
-{add,remove}_host(), like the usb-storage case.
-
-This is what we propose here and with that, the error path of usb-storage
-does not trigger the warning anymore.
-
-Reported-by: syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com
-Fixes: be03df3d4bfe ("scsi: core: Fix a procfs host directory removal regression")
-Cc: stable@vger.kernel.org
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Link: https://lore.kernel.org/r/20240313113006.2834799-1-gpiccoli@igalia.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Message-ID: <741fc21db994efd58f83e7aef38931204961e5b2.1711469583.git.soyer@irl.hu>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hosts.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/pci/hda/tas2781_hda_i2c.c |   37 +------------------------------------
+ 1 file changed, 1 insertion(+), 36 deletions(-)
 
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -353,12 +353,13 @@ static void scsi_host_dev_release(struct
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -71,7 +71,7 @@ struct tas2781_hda {
+ 	struct snd_kcontrol *dsp_prog_ctl;
+ 	struct snd_kcontrol *dsp_conf_ctl;
+ 	struct snd_kcontrol *prof_ctl;
+-	struct snd_kcontrol *snd_ctls[3];
++	struct snd_kcontrol *snd_ctls[2];
+ };
  
- 	if (shost->shost_state == SHOST_CREATED) {
- 		/*
--		 * Free the shost_dev device name here if scsi_host_alloc()
--		 * and scsi_host_put() have been called but neither
-+		 * Free the shost_dev device name and remove the proc host dir
-+		 * here if scsi_host_{alloc,put}() have been called but neither
- 		 * scsi_host_add() nor scsi_remove_host() has been called.
- 		 * This avoids that the memory allocated for the shost_dev
--		 * name is leaked.
-+		 * name as well as the proc dir structure are leaked.
- 		 */
-+		scsi_proc_hostdir_rm(shost->hostt);
- 		kfree(dev_name(&shost->shost_dev));
- 	}
+ static int tas2781_get_i2c_res(struct acpi_resource *ares, void *data)
+@@ -288,27 +288,6 @@ static int tasdevice_config_put(struct s
+ 	return ret;
+ }
  
+-/*
+- * tas2781_digital_getvol - get the volum control
+- * @kcontrol: control pointer
+- * @ucontrol: User data
+- * Customer Kcontrol for tas2781 is primarily for regmap booking, paging
+- * depends on internal regmap mechanism.
+- * tas2781 contains book and page two-level register map, especially
+- * book switching will set the register BXXP00R7F, after switching to the
+- * correct book, then leverage the mechanism for paging to access the
+- * register.
+- */
+-static int tas2781_digital_getvol(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-
+-	return tasdevice_digital_getvol(tas_priv, ucontrol, mc);
+-}
+-
+ static int tas2781_amp_getvol(struct snd_kcontrol *kcontrol,
+ 	struct snd_ctl_elem_value *ucontrol)
+ {
+@@ -319,17 +298,6 @@ static int tas2781_amp_getvol(struct snd
+ 	return tasdevice_amp_getvol(tas_priv, ucontrol, mc);
+ }
+ 
+-static int tas2781_digital_putvol(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-
+-	/* The check of the given value is in tasdevice_digital_putvol. */
+-	return tasdevice_digital_putvol(tas_priv, ucontrol, mc);
+-}
+-
+ static int tas2781_amp_putvol(struct snd_kcontrol *kcontrol,
+ 	struct snd_ctl_elem_value *ucontrol)
+ {
+@@ -375,9 +343,6 @@ static const struct snd_kcontrol_new tas
+ 	ACARD_SINGLE_RANGE_EXT_TLV("Speaker Analog Gain", TAS2781_AMP_LEVEL,
+ 		1, 0, 20, 0, tas2781_amp_getvol,
+ 		tas2781_amp_putvol, amp_vol_tlv),
+-	ACARD_SINGLE_RANGE_EXT_TLV("Speaker Digital Gain", TAS2781_DVC_LVL,
+-		0, 0, 200, 1, tas2781_digital_getvol,
+-		tas2781_digital_putvol, dvc_tlv),
+ 	ACARD_SINGLE_BOOL_EXT("Speaker Force Firmware Load", 0,
+ 		tas2781_force_fwload_get, tas2781_force_fwload_put),
+ };
 
 
 
