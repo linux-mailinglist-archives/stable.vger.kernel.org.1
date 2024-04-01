@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-35153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0E98942A5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154358940C4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116051F2629F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 470E51C21709
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A494B433DA;
-	Mon,  1 Apr 2024 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E03481B4;
+	Mon,  1 Apr 2024 16:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZezsR57"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwSkXCA4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619951DFF4;
-	Mon,  1 Apr 2024 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501301E525;
+	Mon,  1 Apr 2024 16:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990477; cv=none; b=LQtIuEcEywAAZQ16gG7Y8eg0OEhZ/E55qzddGNW3VmnrRgpIYgQ37Tw/2kplCB/H4ZXZ2rh5TOqQCuqIc25FZH8WcE2rgEAbELrb89HlQ4ALsyJuBvhF3H8mwUIlnwLC4IV62+jZPWPq1emrDfiZh7+rwrZ+Dqudq+fsmgOjywA=
+	t=1711989248; cv=none; b=OocxyWdtNfoTUa+Gp/LpQvm8UskuWsRpzfYaVM3gnwzSXS8CcYS0iL85Hi5V177dQcuXUl5hB22xa3tpSmBsQSGvcrttzxu+38Qp9+6zHMVVY5zz2FnO8PMfrHad6RxAXWKNZE0I9fG3ZOac7KbRRNowaxYLMOAQ0xy1KskPuoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990477; c=relaxed/simple;
-	bh=3Y+QXRrC15QdtcLlgemb5nwnal7JilUYIno+o6K9bnk=;
+	s=arc-20240116; t=1711989248; c=relaxed/simple;
+	bh=REUxNDCh87Uts8aKdsYPqHvn+T+Zm6WpJG+LD8rghrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTfV7eZDqXKRIMFOrAlAazQ3FjHgpWYp1wWIrtd+6oJsyCeGURNHM3fGKF2Wsd/fq8wlVvbDNAF4HvvC5Z+hMWHwojA+iLLOoTB/i0Xk45CPhTC6vr3nOUFzeoj2rtV0qdtx056oqo31O3d9nWMXuDyCu4XCzmKvNKQRmTw2iHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZezsR57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0084C433F1;
-	Mon,  1 Apr 2024 16:54:36 +0000 (UTC)
+	 MIME-Version; b=akE8BtKuIi+cJJSoQtBZlMmggUxG/mZF8BQOuqaUy4swguZttROs6Jr2qtLqBeJBng/Z8sIjEEZYlmIjOJotJsp4iHMZBdUghaLWzVsxTM1+I8nPohbBCnM4ErAv2gmaGtGJC8mY6Diwh/vXsQW5ff9TiqJZU55gWGZL9KNbzI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwSkXCA4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4A8C43390;
+	Mon,  1 Apr 2024 16:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990477;
-	bh=3Y+QXRrC15QdtcLlgemb5nwnal7JilUYIno+o6K9bnk=;
+	s=korg; t=1711989247;
+	bh=REUxNDCh87Uts8aKdsYPqHvn+T+Zm6WpJG+LD8rghrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZezsR5730GpC7+SFE4/hTUFUTNaoG7KhOAgby801v5NIpEEUPm5yYx1fupo5vbJC
-	 APKvE0tIRmKqhLh4s6f11iiqKV2RLzw4wAyXsQ6SwssxQrXQRzFfYnHI3frkydKedZ
-	 D114p2MlFB+fn3fnc0i7nG63Y217gMtrmfKOTuLI=
+	b=LwSkXCA4L4QULGCmDPLCs1sqBHu+mq/CKj0BQ2wUPv7t5/x2vyImMLpqFDx452yPh
+	 0ABDBwJuPUp24sEQxznDnRaG/VYV4FP3stPfbWmJ3MCLXXaLy5w/HNRFEYO6W/6kmU
+	 QpWqiSygN4Pf7xJJdXG0px2Hfd4UaDcHiVIyY/Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 364/396] USB: core: Add hub_get() and hub_put() routines
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.7 426/432] usb: dwc3: pci: Drop duplicate ID
 Date: Mon,  1 Apr 2024 17:46:53 +0200
-Message-ID: <20240401152558.772027496@linuxfoundation.org>
+Message-ID: <20240401152606.134575195@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-commit ee113b860aa169e9a4d2c167c95d0f1961c6e1b8 upstream.
+commit f121531703ae442edc1dde4b56803680628bc5b7 upstream.
 
-Create hub_get() and hub_put() routines to encapsulate the kref_get()
-and kref_put() calls in hub.c.  The new routines will be used by the
-next patch in this series.
+Intel Arrow Lake CPU uses the Meteor Lake ID with this
+controller (the controller that's part of the Intel Arrow
+Lake chipset (PCH) does still have unique PCI ID).
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/604da420-ae8a-4a9e-91a4-2d511ff404fb@rowland.harvard.edu
-Cc: stable <stable@kernel.org>
+Fixes: de4b5b28c87c ("usb: dwc3: pci: add support for the Intel Arrow Lake-H")
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240312115008.1748637-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   23 ++++++++++++++++-------
- drivers/usb/core/hub.h |    2 ++
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ drivers/usb/dwc3/dwc3-pci.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -123,7 +123,6 @@ EXPORT_SYMBOL_GPL(ehci_cf_port_reset_rws
- #define HUB_DEBOUNCE_STEP	  25
- #define HUB_DEBOUNCE_STABLE	 100
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -51,7 +51,6 @@
+ #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
+ #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
+ #define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
+-#define PCI_DEVICE_ID_INTEL_ARLH		0x7ec1
+ #define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
+ #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
+ #define PCI_DEVICE_ID_AMD_MR			0x163a
+@@ -423,7 +422,6 @@ static const struct pci_device_id dwc3_p
+ 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, ARLH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
  
--static void hub_release(struct kref *kref);
- static int usb_reset_and_verify_device(struct usb_device *udev);
- static int hub_port_disable(struct usb_hub *hub, int port1, int set_state);
- static bool hub_port_warm_reset_required(struct usb_hub *hub, int port1,
-@@ -685,14 +684,14 @@ static void kick_hub_wq(struct usb_hub *
- 	 */
- 	intf = to_usb_interface(hub->intfdev);
- 	usb_autopm_get_interface_no_resume(intf);
--	kref_get(&hub->kref);
-+	hub_get(hub);
- 
- 	if (queue_work(hub_wq, &hub->events))
- 		return;
- 
- 	/* the work has already been scheduled */
- 	usb_autopm_put_interface_async(intf);
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
- 
- void usb_kick_hub_wq(struct usb_device *hdev)
-@@ -1060,7 +1059,7 @@ static void hub_activate(struct usb_hub
- 			goto init2;
- 		goto init3;
- 	}
--	kref_get(&hub->kref);
-+	hub_get(hub);
- 
- 	/* The superspeed hub except for root hub has to use Hub Depth
- 	 * value as an offset into the route string to locate the bits
-@@ -1308,7 +1307,7 @@ static void hub_activate(struct usb_hub
- 		device_unlock(&hdev->dev);
- 	}
- 
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
- 
- /* Implement the continuations for the delays above */
-@@ -1724,6 +1723,16 @@ static void hub_release(struct kref *kre
- 	kfree(hub);
- }
- 
-+void hub_get(struct usb_hub *hub)
-+{
-+	kref_get(&hub->kref);
-+}
-+
-+void hub_put(struct usb_hub *hub)
-+{
-+	kref_put(&hub->kref, hub_release);
-+}
-+
- static unsigned highspeed_hubs;
- 
- static void hub_disconnect(struct usb_interface *intf)
-@@ -1772,7 +1781,7 @@ static void hub_disconnect(struct usb_in
- 
- 	onboard_hub_destroy_pdevs(&hub->onboard_hub_devs);
- 
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
- 
- static bool hub_descriptor_is_sane(struct usb_host_interface *desc)
-@@ -5890,7 +5899,7 @@ out_hdev_lock:
- 
- 	/* Balance the stuff in kick_hub_wq() and allow autosuspend */
- 	usb_autopm_put_interface(intf);
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- 
- 	kcov_remote_stop();
- }
---- a/drivers/usb/core/hub.h
-+++ b/drivers/usb/core/hub.h
-@@ -126,6 +126,8 @@ extern void usb_hub_remove_port_device(s
- extern int usb_hub_set_port_power(struct usb_device *hdev, struct usb_hub *hub,
- 		int port1, bool set);
- extern struct usb_hub *usb_hub_to_struct_hub(struct usb_device *hdev);
-+extern void hub_get(struct usb_hub *hub);
-+extern void hub_put(struct usb_hub *hub);
- extern int hub_port_debounce(struct usb_hub *hub, int port1,
- 		bool must_be_connected);
- extern int usb_clear_port_feature(struct usb_device *hdev,
 
 
 
