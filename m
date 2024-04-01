@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A408940CA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1865894295
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4801FB21565
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:34:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8080F1F2607C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D482B43AD6;
-	Mon,  1 Apr 2024 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8274748CDD;
+	Mon,  1 Apr 2024 16:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T10Pco4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o92jCiK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9237B10A3B;
-	Mon,  1 Apr 2024 16:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA721DFF4;
+	Mon,  1 Apr 2024 16:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989266; cv=none; b=u/7qwfgL4GZWcphjykyvvmsRkXSxEjkfvWC+dIsWP0isHS8M1Rg0+S0Zkun21mmEUr69jnfW7rNkCJc6NkpHSkS2bPlcBhokVm6giaqy89onlQqEHmzwAk38FdsfBfKpB48cCkpIK2M5X0mN9HaY3sPtfcf4zqCPj0I0AW1TNH4=
+	t=1711990430; cv=none; b=afz6SFpqEvZjqs4tH0gWtJwqyMKAH/9RkE8MCnH4EPTVCkTQT/FoUnpEf93FafD5+XlDqoVuZqXjcXOtB7e0w4iKvBrbAf/WJwX+UvvbBgvn5i8XDvVR1DFTEleZKyYZ/HZSFcIZx7PHu35uhG8CwHQIYrofmqeyDB3JMBgi92E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989266; c=relaxed/simple;
-	bh=yx4moEIob2ngIVyRwA7oyXh+03YdXWPj8G5dEal3Ess=;
+	s=arc-20240116; t=1711990430; c=relaxed/simple;
+	bh=RDnyKjXVB9gU8Qkxzb+V4S0f65ZDbl7ERoQZP7526oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CS/8U/NCkyq4pU+49MajTS6HP1r7OTT6P28ID5jXa0DZ1IuWOWpAfmZ/ZQ13Pu4+YhjpY4jFxON6sAdu0hq7JHLiGhvKqpll0U2/pdtcPljTotrZFI9vWoOXH/XnU/24klsNA7XDKFf/5ZZ6PVa9GA2pmDVYas7hU/3HlFaW6UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T10Pco4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A22C43394;
-	Mon,  1 Apr 2024 16:34:24 +0000 (UTC)
+	 MIME-Version; b=mPaPwMkAIbplkKIgwQuqSXARJh46RL8n5pm0s+RVjfVEQr1knB3sTHV/bYRkoLCwxRYAb2E0xhwMEuX3BnLAvcudFj3BFiQcBkswN4RmoYyrgiJVEGg16GQ9RPYcxoSvF5Y5xXGY3JgWQF6wx3tm+ju476HPXszSml9PJ3wPzK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o92jCiK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41F5C433C7;
+	Mon,  1 Apr 2024 16:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989265;
-	bh=yx4moEIob2ngIVyRwA7oyXh+03YdXWPj8G5dEal3Ess=;
+	s=korg; t=1711990430;
+	bh=RDnyKjXVB9gU8Qkxzb+V4S0f65ZDbl7ERoQZP7526oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T10Pco4tJFURhCCSKQAFYF0DATgGmB6UPlOnMHDm7wn7EcmX+xpQO91BXuTVPud2P
-	 aEzjMBryGtlA7Od1HoPmwYYJQGpX1+Cc4dPrTRZHvDMd61AXOu10UpYStofqPvUcPK
-	 Utdc2nqXGqPy6G7WyKLJQnmQSwPVQz9bAcM0DytI=
+	b=o92jCiK20VB1V/Z6bQWX5uVTSVWGjizexkCtTwLzZ2wlH0SKAO+ly+H+dePjPuOu8
+	 LWPp0RtIvEBhYbmoKPgWpZEw1+Py7TDvABhfgaNDW5n7kE+6W3xuC5xoAZ54UJ+0E3
+	 vs0//ZwS0/lucu37F4g/nzBa+9I5/mJSZtlO9h6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.7 413/432] scsi: qla2xxx: Fix N2N stuck connection
+	Oliver Neukum <oneukum@suse.com>,
+	Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Subject: [PATCH 6.6 351/396] USB: UAS: return ENODEV when submit urbs fail with device not attached
 Date: Mon,  1 Apr 2024 17:46:40 +0200
-Message-ID: <20240401152605.709859531@linuxfoundation.org>
+Message-ID: <20240401152558.378554222@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,150 +61,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
 
-commit 881eb861ca3877300570db10abbf11494e48548d upstream.
+commit cd5432c712351a3d5f82512908f5febfca946ca6 upstream.
 
-Disk failed to rediscover after chip reset error injection. The chip reset
-happens at the time when a PLOGI is being sent. This causes a flag to be
-left on which blocks the retry. Clear the blocking flag.
+In the scenario of entering hibernation with udisk in the system, if the
+udisk was gone or resume fail in the thaw phase of hibernation. Its state
+will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
+and can't not handle disconnect event. Next, in the poweroff phase of
+hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
+when poweroff this scsi device, which will cause uas_submit_urbs to be
+called to submit URB for sense/data/cmd pipe. However, these URBs will
+submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
+will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
+the SCSI layer go into an ugly loop and system fail to go into hibernation.
 
+On the other hand, when we specially check for -ENODEV in function
+uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
+poweroff fail and system shutdown instead of entering hibernation.
+
+To fix this issue, let uas_submit_urbs to return original generic error
+when submitting URB failed. At the same time, we need to translate -ENODEV
+to DID_NOT_CONNECT for the SCSI layer.
+
+Suggested-by: Oliver Neukum <oneukum@suse.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-3-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Link: https://lore.kernel.org/r/20240306180814.4897-1-WeitaoWang-oc@zhaoxin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gbl.h  |    2 +-
- drivers/scsi/qla2xxx/qla_iocb.c |   32 +++++++++++---------------------
- drivers/scsi/qla2xxx/qla_os.c   |    2 +-
- 3 files changed, 13 insertions(+), 23 deletions(-)
+ drivers/usb/storage/uas.c |   28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_gbl.h
-+++ b/drivers/scsi/qla2xxx/qla_gbl.h
-@@ -44,7 +44,7 @@ extern int qla2x00_fabric_login(scsi_qla
- extern int qla2x00_local_device_login(scsi_qla_host_t *, fc_port_t *);
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -533,7 +533,7 @@ static struct urb *uas_alloc_cmd_urb(str
+  * daft to me.
+  */
  
- extern int qla24xx_els_dcmd_iocb(scsi_qla_host_t *, int, port_id_t);
--extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *, bool);
-+extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *);
- extern void qla2x00_els_dcmd2_free(scsi_qla_host_t *vha,
- 				   struct els_plogi *els_plogi);
- 
---- a/drivers/scsi/qla2xxx/qla_iocb.c
-+++ b/drivers/scsi/qla2xxx/qla_iocb.c
-@@ -3041,7 +3041,7 @@ static void qla2x00_els_dcmd2_sp_done(sr
- 
- int
- qla24xx_els_dcmd2_iocb(scsi_qla_host_t *vha, int els_opcode,
--    fc_port_t *fcport, bool wait)
-+			fc_port_t *fcport)
+-static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
++static int uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
  {
- 	srb_t *sp;
- 	struct srb_iocb *elsio = NULL;
-@@ -3056,8 +3056,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 	if (!sp) {
- 		ql_log(ql_log_info, vha, 0x70e6,
- 		 "SRB allocation failed\n");
--		fcport->flags &= ~FCF_ASYNC_ACTIVE;
--		return -ENOMEM;
-+		goto done;
+ 	struct uas_dev_info *devinfo = cmnd->device->hostdata;
+ 	struct urb *urb;
+@@ -541,30 +541,28 @@ static struct urb *uas_submit_sense_urb(
+ 
+ 	urb = uas_alloc_sense_urb(devinfo, gfp, cmnd);
+ 	if (!urb)
+-		return NULL;
++		return -ENOMEM;
+ 	usb_anchor_urb(urb, &devinfo->sense_urbs);
+ 	err = usb_submit_urb(urb, gfp);
+ 	if (err) {
+ 		usb_unanchor_urb(urb);
+ 		uas_log_cmd_state(cmnd, "sense submit err", err);
+ 		usb_free_urb(urb);
+-		return NULL;
  	}
- 
- 	fcport->flags |= FCF_ASYNC_SENT;
-@@ -3066,9 +3065,6 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 	ql_dbg(ql_dbg_io, vha, 0x3073,
- 	       "%s Enter: PLOGI portid=%06x\n", __func__, fcport->d_id.b24);
- 
--	if (wait)
--		sp->flags = SRB_WAKEUP_ON_COMP;
--
- 	sp->type = SRB_ELS_DCMD;
- 	sp->name = "ELS_DCMD";
- 	sp->fcport = fcport;
-@@ -3084,7 +3080,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 
- 	if (!elsio->u.els_plogi.els_plogi_pyld) {
- 		rval = QLA_FUNCTION_FAILED;
--		goto out;
-+		goto done_free_sp;
- 	}
- 
- 	resp_ptr = elsio->u.els_plogi.els_resp_pyld =
-@@ -3093,7 +3089,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 
- 	if (!elsio->u.els_plogi.els_resp_pyld) {
- 		rval = QLA_FUNCTION_FAILED;
--		goto out;
-+		goto done_free_sp;
- 	}
- 
- 	ql_dbg(ql_dbg_io, vha, 0x3073, "PLOGI %p %p\n", ptr, resp_ptr);
-@@ -3109,7 +3105,6 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 
- 	if (els_opcode == ELS_DCMD_PLOGI && DBELL_ACTIVE(vha)) {
- 		struct fc_els_flogi *p = ptr;
--
- 		p->fl_csp.sp_features |= cpu_to_be16(FC_SP_FT_SEC);
- 	}
- 
-@@ -3118,10 +3113,11 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 	    (uint8_t *)elsio->u.els_plogi.els_plogi_pyld,
- 	    sizeof(*elsio->u.els_plogi.els_plogi_pyld));
- 
--	init_completion(&elsio->u.els_plogi.comp);
- 	rval = qla2x00_start_sp(sp);
- 	if (rval != QLA_SUCCESS) {
--		rval = QLA_FUNCTION_FAILED;
-+		fcport->flags |= FCF_LOGIN_NEEDED;
-+		set_bit(RELOGIN_NEEDED, &vha->dpc_flags);
-+		goto done_free_sp;
- 	} else {
- 		ql_dbg(ql_dbg_disc, vha, 0x3074,
- 		    "%s PLOGI sent, hdl=%x, loopid=%x, to port_id %06x from port_id %06x\n",
-@@ -3129,21 +3125,15 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 		    fcport->d_id.b24, vha->d_id.b24);
- 	}
- 
--	if (wait) {
--		wait_for_completion(&elsio->u.els_plogi.comp);
--
--		if (elsio->u.els_plogi.comp_status != CS_COMPLETE)
--			rval = QLA_FUNCTION_FAILED;
--	} else {
--		goto done;
--	}
-+	return rval;
- 
--out:
--	fcport->flags &= ~(FCF_ASYNC_SENT | FCF_ASYNC_ACTIVE);
-+done_free_sp:
- 	qla2x00_els_dcmd2_free(vha, &elsio->u.els_plogi);
- 	/* ref: INIT */
- 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
- done:
-+	fcport->flags &= ~(FCF_ASYNC_SENT | FCF_ASYNC_ACTIVE);
-+	qla2x00_set_fcport_disc_state(fcport, DSC_DELETED);
- 	return rval;
+-	return urb;
++	return err;
  }
  
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -5583,7 +5583,7 @@ qla2x00_do_work(struct scsi_qla_host *vh
- 			break;
- 		case QLA_EVT_ELS_PLOGI:
- 			qla24xx_els_dcmd2_iocb(vha, ELS_DCMD_PLOGI,
--			    e->u.fcport.fcport, false);
-+			    e->u.fcport.fcport);
- 			break;
- 		case QLA_EVT_SA_REPLACE:
- 			rc = qla24xx_issue_sa_replace_iocb(vha, e);
+ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 			   struct uas_dev_info *devinfo)
+ {
+ 	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+-	struct urb *urb;
+ 	int err;
+ 
+ 	lockdep_assert_held(&devinfo->lock);
+ 	if (cmdinfo->state & SUBMIT_STATUS_URB) {
+-		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
+-		if (!urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
++		if (err)
++			return err;
+ 		cmdinfo->state &= ~SUBMIT_STATUS_URB;
+ 	}
+ 
+@@ -572,7 +570,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
+ 							cmnd, DMA_FROM_DEVICE);
+ 		if (!cmdinfo->data_in_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
+ 	}
+ 
+@@ -582,7 +580,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->data_in_urb);
+ 			uas_log_cmd_state(cmnd, "data in submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
+ 		cmdinfo->state |= DATA_IN_URB_INFLIGHT;
+@@ -592,7 +590,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		cmdinfo->data_out_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
+ 							cmnd, DMA_TO_DEVICE);
+ 		if (!cmdinfo->data_out_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_DATA_OUT_URB;
+ 	}
+ 
+@@ -602,7 +600,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->data_out_urb);
+ 			uas_log_cmd_state(cmnd, "data out submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
+ 		cmdinfo->state |= DATA_OUT_URB_INFLIGHT;
+@@ -611,7 +609,7 @@ static int uas_submit_urbs(struct scsi_c
+ 	if (cmdinfo->state & ALLOC_CMD_URB) {
+ 		cmdinfo->cmd_urb = uas_alloc_cmd_urb(devinfo, GFP_ATOMIC, cmnd);
+ 		if (!cmdinfo->cmd_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_CMD_URB;
+ 	}
+ 
+@@ -621,7 +619,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->cmd_urb);
+ 			uas_log_cmd_state(cmnd, "cmd submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->cmd_urb = NULL;
+ 		cmdinfo->state &= ~SUBMIT_CMD_URB;
+@@ -698,7 +696,7 @@ static int uas_queuecommand_lck(struct s
+ 	 * of queueing, no matter how fatal the error
+ 	 */
+ 	if (err == -ENODEV) {
+-		set_host_byte(cmnd, DID_ERROR);
++		set_host_byte(cmnd, DID_NO_CONNECT);
+ 		scsi_done(cmnd);
+ 		goto zombie;
+ 	}
 
 
 
