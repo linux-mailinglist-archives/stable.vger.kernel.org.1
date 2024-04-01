@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D581A893F65
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C078940DF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A4011C216D5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1482B2833AD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2A247F6F;
-	Mon,  1 Apr 2024 16:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8564241C89;
+	Mon,  1 Apr 2024 16:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZMxy1r+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjJ3eeII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7F0481C2;
-	Mon,  1 Apr 2024 16:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FBEDF6B;
+	Mon,  1 Apr 2024 16:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988163; cv=none; b=Ku/ngXMIrCC4WE70aRysjowbtN78pshuIMcO6inE5NPiA1ndmuLNzkR32MNKzeUrZ/9kJWerYhMHOWokxiv4ykwLtGhx2fkNA6zXnPuqZDOYD2iNJk4o1y1d0SsThl0Wowu2BOJMfng/HYKpowYKZdHq1B4eq77e40lll3e3eo4=
+	t=1711989319; cv=none; b=iaVlEyLT1GnM3xAEnuYJnlQ8earZ4pTEi5qWmhQkAjjFZjF1/ELRXBBWMIuMjycOcOhIN3fZ1be9np4s1aCzZo/eh50XyGhjYdzKeYzmG+xUd/YoNRDR9EIdaa2RoCE7BGODY6oF0H5UqmG/c0qKoNTqKWBXU6wNBv78GSAnkDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988163; c=relaxed/simple;
-	bh=Fi3X9U0nu+gKaTGqr1buLab9mhOiwyLYaBSM4TBs+Og=;
+	s=arc-20240116; t=1711989319; c=relaxed/simple;
+	bh=zQTyXCEZTE9EeINeV4mygG/SudScuDPcykOqg532ing=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nT7tSndj7HcUM3RSj3a3LLN9Bf2mKYB3A29gwovzSVZdZBwgNkFeBb2+F53a8tpKl8dhkt0pm5V5KulNxuklsjqCjbryqcwH84WqdwUx2iSO0KkwVIPLs2ZiLGfqw4ASOjMac7FbIslSk1XVgfY5vxUgHprvmthDiniC1tQFhsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZMxy1r+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30ECC433F1;
-	Mon,  1 Apr 2024 16:16:01 +0000 (UTC)
+	 MIME-Version; b=JXIEb59sG3/ahGlbGmmZnGH+cCczVKZj3tAPx3upiu4e1q9OO+ZsFKm+JdzudxRw7xYPxzCWgkE3AAh/BY5qLS9AMaU0IG0f+36l4gAzulixLOXPwNUnLvFr3BcCVZ60u/LEzYURTtyM1BQHfvpcafhuTz9qVkW2BrKHSfhTwCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjJ3eeII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35E9C433C7;
+	Mon,  1 Apr 2024 16:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988162;
-	bh=Fi3X9U0nu+gKaTGqr1buLab9mhOiwyLYaBSM4TBs+Og=;
+	s=korg; t=1711989319;
+	bh=zQTyXCEZTE9EeINeV4mygG/SudScuDPcykOqg532ing=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZMxy1r+fKSykarDgYwxWeH/nh9PP2nom3iE9QyzDSDVm3AuN/NAOskKIcC88xCuI
-	 De6aGwB+HQmmJmScVezzWVa3tgpD/VkxD1k4gb/bhhoC1NerQhMMSuimrJFZWlgHFp
-	 7dCOcvS2xvWbUZ1DIgDktalKcPov4gANs8MmPX+A=
+	b=NjJ3eeII6dvj8Hd8g7qDe4XlBviNT9DVxS+W5oqyjj40IoZ0Q46H+eTc2dZA59ys2
+	 +o4vXN21t1ED8m/KCiPq9gVyqouP6bT4pGKFKUJDPdL81YK9PcmBeoS9OUVybHXtV+
+	 H69T043kSvWYQYe/GNTJ7/oUQiyolFNSuWFN4siw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashanth K <quic_prashk@quicinc.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 075/432] usb: xhci: Add error handling in xhci_map_urb_for_dma
-Date: Mon,  1 Apr 2024 17:41:02 +0200
-Message-ID: <20240401152555.360508632@linuxfoundation.org>
+Subject: [PATCH 6.6 014/396] serial: max310x: fix NULL pointer dereference in I2C instantiation
+Date: Mon,  1 Apr 2024 17:41:03 +0200
+Message-ID: <20240401152548.311749047@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit be95cc6d71dfd0cba66e3621c65413321b398052 ]
+[ Upstream commit 0d27056c24efd3d63a03f3edfbcfc4827086b110 ]
 
-Currently xhci_map_urb_for_dma() creates a temporary buffer and copies
-the SG list to the new linear buffer. But if the kzalloc_node() fails,
-then the following sg_pcopy_to_buffer() can lead to crash since it
-tries to memcpy to NULL pointer.
+When trying to instantiate a max14830 device from userspace:
 
-So return -ENOMEM if kzalloc returns null pointer.
+    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
 
-Cc: stable@vger.kernel.org # 5.11
-Fixes: 2017a1e58472 ("usb: xhci: Use temporary buffer to consolidate SG")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240229141438.619372-10-mathias.nyman@linux.intel.com
+we get the following error:
+
+    Unable to handle kernel NULL pointer dereference at virtual address...
+    ...
+    Call trace:
+        max310x_i2c_probe+0x48/0x170 [max310x]
+        i2c_device_probe+0x150/0x2a0
+    ...
+
+Add check for validity of devtype to prevent the error, and abort probe
+with a meaningful error message.
+
+Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240118152213.2644269-2-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/max310x.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 884b0898d9c95..943b87d15f7ba 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1202,6 +1202,8 @@ static int xhci_map_temp_buffer(struct usb_hcd *hcd, struct urb *urb)
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index 4814aa310dcc5..e339abff926d3 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1635,13 +1635,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
  
- 	temp = kzalloc_node(buf_len, GFP_ATOMIC,
- 			    dev_to_node(hcd->self.sysdev));
-+	if (!temp)
-+		return -ENOMEM;
+ static int max310x_i2c_probe(struct i2c_client *client)
+ {
+-	const struct max310x_devtype *devtype =
+-			device_get_match_data(&client->dev);
++	const struct max310x_devtype *devtype;
+ 	struct i2c_client *port_client;
+ 	struct regmap *regmaps[4];
+ 	unsigned int i;
+ 	u8 port_addr;
  
- 	if (usb_urb_dir_out(urb))
- 		sg_pcopy_to_buffer(urb->sg, urb->num_sgs,
++	devtype = device_get_match_data(&client->dev);
++	if (!devtype)
++		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
++
+ 	if (client->addr < devtype->slave_addr.min ||
+ 		client->addr > devtype->slave_addr.max)
+ 		return dev_err_probe(&client->dev, -EINVAL,
 -- 
 2.43.0
 
