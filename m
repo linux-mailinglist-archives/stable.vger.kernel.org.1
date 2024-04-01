@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-34982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B498941C8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90829894338
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A67C5B20B3A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 080C9B20BAC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1758481C4;
-	Mon,  1 Apr 2024 16:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D7A482EF;
+	Mon,  1 Apr 2024 17:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NufphIyj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omaHCdkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F35947A76;
-	Mon,  1 Apr 2024 16:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EF8BA3F;
+	Mon,  1 Apr 2024 17:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989950; cv=none; b=KTC5ep9RQ26IeGjd+xNJay/TRn0J/F+4rZ4gch9tuIbamyJEWh0vJxLUVoAeRMAnyK48wV2AgC6d+CdlXBfYmtCHk6MbTRWG0dlQJLJciVIygpOfWP0LYvbsAPerd+/AbdiQBdkhrGVxlvzz3rY48i6Ibm12VEqvHRJUsl9uFrg=
+	t=1711990863; cv=none; b=uZTDDYqIgYdcAN8C14GH++H0SAic/3+NzXdpVmMFVeGJLN7JSnsnyr1fcDh3Nu3WosRFM0TUeECU7vF5Rv563QvfUFYRX88PL/Bdcs7jMO3TlvtOWnaddZ+gpYyYagMgF2lkiwe8qmtpkOKFIIYH7H8E3HWt6/UNVkoHg94+1fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989950; c=relaxed/simple;
-	bh=gJ0/73h8H1C/IZxLI0TTSquDGNY+kPew/ArfBMvrVl8=;
+	s=arc-20240116; t=1711990863; c=relaxed/simple;
+	bh=j2DqJof0ACJalfJOiwmqGYq1hq5xXxLIf6D7SZfNzXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gz6LT1ntYmAC6PW9DTgn0XO+tA+a2hiO4YfFyP6uWfRapdS1Fyno760dviQvAn9wCtJPCbUM1QNvTxv94LNZPLizfnhTR84XNlSBerkYNEmXGbOK8n+L4nTyVOWI1Je09rtUmmoZ3qNm7YJ3eoygTPcKurIwz+yqmmU9CMXViVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NufphIyj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBD0C433F1;
-	Mon,  1 Apr 2024 16:45:49 +0000 (UTC)
+	 MIME-Version; b=kEQ9vfZbdSjoxrc1MGYtfndAXfw17Oeg8F0Rk1ytnrdt0pHGpHQajuwkHtJHEQjvYF1axohBxGba509mK+z8CIKNs7exUueZq7JOhqTBX78+TLxbu6uyfWO7oXEtYtGVrG+aLPLhKsvGzFLi9ntBX0x6Trru/OGerEsrJJaR0Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omaHCdkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B841CC433C7;
+	Mon,  1 Apr 2024 17:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989950;
-	bh=gJ0/73h8H1C/IZxLI0TTSquDGNY+kPew/ArfBMvrVl8=;
+	s=korg; t=1711990863;
+	bh=j2DqJof0ACJalfJOiwmqGYq1hq5xXxLIf6D7SZfNzXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NufphIyj1Jv8X+EaDINaFU97nxWvw8cE7X7EgLcLux0bswQImVdlfQXSAARa5SDKl
-	 RENpO9PXu5+LNDmD9tLzvQZp47BufqU0pDElzNnQsCs8bN17zdbCmh9SjErj7vBVGO
-	 Fk2ucCcxqrE68FtyTBCNbfspzWR8su32S5I3KMLc=
+	b=omaHCdkDOnGID39P541EL3Bu3ohizYiYDGYZzVzyAosY4T9bLMaDohgz446o35Bpk
+	 BGtzT8Jbca3bMMVkEo5lMN6OVnvqdz+XciHWSj5o3Ag51ZEu78RcvUmiVmAsamI7Mf
+	 BLVEKfljPAxDLPZlUNs8Xzfyi1eYKa3ZFRJHXVcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.6 201/396] nouveau: lock the client object tree.
+	Cameron Williams <cang1@live.co.uk>,
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 060/272] USB: serial: add device ID for VeriFone adapter
 Date: Mon,  1 Apr 2024 17:44:10 +0200
-Message-ID: <20240401152553.924028250@linuxfoundation.org>
+Message-ID: <20240401152532.430563764@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,208 +60,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit b7cc4ff787a572edf2c55caeffaa88cd801eb135 upstream.
+[ Upstream commit cda704809797a8a86284f9df3eef5e62ec8a3175 ]
 
-It appears the client object tree has no locking unless I've missed
-something else. Fix races around adding/removing client objects,
-mostly vram bar mappings.
+Add device ID for a (probably fake) CP2102 UART device.
 
- 4562.099306] general protection fault, probably for non-canonical address =
-0x6677ed422bceb80c: 0000 [#1] PREEMPT SMP PTI
-[ 4562.099314] CPU: 2 PID: 23171 Comm: deqp-vk Not tainted 6.8.0-rc6+ #27
-[ 4562.099324] Hardware name: Gigabyte Technology Co., Ltd. Z390 I AORUS PR=
-O WIFI/Z390 I AORUS PRO WIFI-CF, BIOS F8 11/05/2021
-[ 4562.099330] RIP: 0010:nvkm_object_search+0x1d/0x70 [nouveau]
-[ 4562.099503] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f =
-1f 44 00 00 48 89 f8 48 85 f6 74 39 48 8b 87 a0 00 00 00 48 85 c0 74 12 <48=
-> 8b 48 f8 48 39 ce 73 15 48 8b 40 10 48 85 c0 75 ee 48 c7 c0 fe
-[ 4562.099506] RSP: 0000:ffffa94cc420bbf8 EFLAGS: 00010206
-[ 4562.099512] RAX: 6677ed422bceb814 RBX: ffff98108791f400 RCX: ffff9810f26=
-b8f58
-[ 4562.099517] RDX: 0000000000000000 RSI: ffff9810f26b9158 RDI: ffff9810879=
-1f400
-[ 4562.099519] RBP: ffff9810f26b9158 R08: 0000000000000000 R09: 00000000000=
-00000
-[ 4562.099521] R10: ffffa94cc420bc48 R11: 0000000000000001 R12: ffff9810f02=
-a7cc0
-[ 4562.099526] R13: 0000000000000000 R14: 00000000000000ff R15: 00000000000=
-00007
-[ 4562.099528] FS:  00007f629c5017c0(0000) GS:ffff98142c700000(0000) knlGS:=
-0000000000000000
-[ 4562.099534] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 4562.099536] CR2: 00007f629a882000 CR3: 000000017019e004 CR4: 00000000003=
-706f0
-[ 4562.099541] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
-00000
-[ 4562.099542] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
-00400
-[ 4562.099544] Call Trace:
-[ 4562.099555]  <TASK>
-[ 4562.099573]  ? die_addr+0x36/0x90
-[ 4562.099583]  ? exc_general_protection+0x246/0x4a0
-[ 4562.099593]  ? asm_exc_general_protection+0x26/0x30
-[ 4562.099600]  ? nvkm_object_search+0x1d/0x70 [nouveau]
-[ 4562.099730]  nvkm_ioctl+0xa1/0x250 [nouveau]
-[ 4562.099861]  nvif_object_map_handle+0xc8/0x180 [nouveau]
-[ 4562.099986]  nouveau_ttm_io_mem_reserve+0x122/0x270 [nouveau]
-[ 4562.100156]  ? dma_resv_test_signaled+0x26/0xb0
-[ 4562.100163]  ttm_bo_vm_fault_reserved+0x97/0x3c0 [ttm]
-[ 4562.100182]  ? __mutex_unlock_slowpath+0x2a/0x270
-[ 4562.100189]  nouveau_ttm_fault+0x69/0xb0 [nouveau]
-[ 4562.100356]  __do_fault+0x32/0x150
-[ 4562.100362]  do_fault+0x7c/0x560
-[ 4562.100369]  __handle_mm_fault+0x800/0xc10
-[ 4562.100382]  handle_mm_fault+0x17c/0x3e0
-[ 4562.100388]  do_user_addr_fault+0x208/0x860
-[ 4562.100395]  exc_page_fault+0x7f/0x200
-[ 4562.100402]  asm_exc_page_fault+0x26/0x30
-[ 4562.100412] RIP: 0033:0x9b9870
-[ 4562.100419] Code: 85 a8 f7 ff ff 8b 8d 80 f7 ff ff 89 08 e9 18 f2 ff ff =
-0f 1f 84 00 00 00 00 00 44 89 32 e9 90 fa ff ff 0f 1f 84 00 00 00 00 00 <44=
-> 89 32 e9 f8 f1 ff ff 0f 1f 84 00 00 00 00 00 66 44 89 32 e9 e7
-[ 4562.100422] RSP: 002b:00007fff9ba2dc70 EFLAGS: 00010246
-[ 4562.100426] RAX: 0000000000000004 RBX: 000000000dd65e10 RCX: 000000fff00=
-00000
-[ 4562.100428] RDX: 00007f629a882000 RSI: 00007f629a882000 RDI: 00000000000=
-00066
-[ 4562.100432] RBP: 00007fff9ba2e570 R08: 0000000000000000 R09: 0000000123d=
-df000
-[ 4562.100434] R10: 0000000000000001 R11: 0000000000000246 R12: 000000007ff=
-fffff
-[ 4562.100436] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
-00000
-[ 4562.100446]  </TASK>
-[ 4562.100448] Modules linked in: nf_conntrack_netbios_ns nf_conntrack_broa=
-dcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_rej=
-ect_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack=
- nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables libcrc32c nfnetlink cmac bn=
-ep sunrpc iwlmvm intel_rapl_msr intel_rapl_common snd_sof_pci_intel_cnl x86=
-_pkg_temp_thermal intel_powerclamp snd_sof_intel_hda_common mac80211 corete=
-mp snd_soc_acpi_intel_match kvm_intel snd_soc_acpi snd_soc_hdac_hda snd_sof=
-_pci snd_sof_xtensa_dsp snd_sof_intel_hda_mlink snd_sof_intel_hda snd_sof k=
-vm snd_sof_utils snd_soc_core snd_hda_codec_realtek libarc4 snd_hda_codec_g=
-eneric snd_compress snd_hda_ext_core vfat fat snd_hda_intel snd_intel_dspcf=
-g irqbypass iwlwifi snd_hda_codec snd_hwdep snd_hda_core btusb btrtl mei_hd=
-cp iTCO_wdt rapl mei_pxp btintel snd_seq iTCO_vendor_support btbcm snd_seq_=
-device intel_cstate bluetooth snd_pcm cfg80211 intel_wmi_thunderbolt wmi_bm=
-of intel_uncore snd_timer mei_me snd ecdh_generic i2c_i801
-[ 4562.100541]  ecc mei i2c_smbus soundcore rfkill intel_pch_thermal acpi_p=
-ad zram nouveau drm_ttm_helper ttm gpu_sched i2c_algo_bit drm_gpuvm drm_exe=
-c mxm_wmi drm_display_helper drm_kms_helper drm crct10dif_pclmul crc32_pclm=
-ul nvme e1000e crc32c_intel nvme_core ghash_clmulni_intel video wmi pinctrl=
-_cannonlake ip6_tables ip_tables fuse
-[ 4562.100616] ---[ end trace 0000000000000000 ]---
+lsusb -v output:
 
-Signed-off-by: Dave Airlie <airlied@redhat.com>
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               1.10
+  bDeviceClass            0 [unknown]
+  bDeviceSubClass         0 [unknown]
+  bDeviceProtocol         0
+  bMaxPacketSize0        64
+  idVendor           0x11ca VeriFone Inc
+  idProduct          0x0212 Verifone USB to Printer
+  bcdDevice            1.00
+  iManufacturer           1 Silicon Labs
+  iProduct                2 Verifone USB to Printer
+  iSerial                 3 0001
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength       0x0020
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass      0 [unknown]
+      bInterfaceProtocol      0
+      iInterface              2 Verifone USB to Printer
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x01  EP 1 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+Device Status:     0x0000
+  (Bus Powered)
+
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
 Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/include/nvkm/core/client.h |    1=20
- drivers/gpu/drm/nouveau/nvkm/core/client.c         |    1=20
- drivers/gpu/drm/nouveau/nvkm/core/object.c         |   26 ++++++++++++++++=
------
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ drivers/usb/serial/cp210x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/nouveau/include/nvkm/core/client.h
-+++ b/drivers/gpu/drm/nouveau/include/nvkm/core/client.h
-@@ -11,6 +11,7 @@ struct nvkm_client {
- 	u32 debug;
-=20
- 	struct rb_root objroot;
-+	spinlock_t obj_lock;
-=20
- 	void *data;
- 	int (*event)(u64 token, void *argv, u32 argc);
---- a/drivers/gpu/drm/nouveau/nvkm/core/client.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/core/client.c
-@@ -180,6 +180,7 @@ nvkm_client_new(const char *name, u64 de
- 	client->device =3D device;
- 	client->debug =3D nvkm_dbgopt(dbg, "CLIENT");
- 	client->objroot =3D RB_ROOT;
-+	spin_lock_init(&client->obj_lock);
- 	client->event =3D event;
- 	INIT_LIST_HEAD(&client->umem);
- 	spin_lock_init(&client->lock);
---- a/drivers/gpu/drm/nouveau/nvkm/core/object.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/core/object.c
-@@ -30,8 +30,10 @@ nvkm_object_search(struct nvkm_client *c
- 		   const struct nvkm_object_func *func)
- {
- 	struct nvkm_object *object;
-+	unsigned long flags;
-=20
- 	if (handle) {
-+		spin_lock_irqsave(&client->obj_lock, flags);
- 		struct rb_node *node =3D client->objroot.rb_node;
- 		while (node) {
- 			object =3D rb_entry(node, typeof(*object), node);
-@@ -40,9 +42,12 @@ nvkm_object_search(struct nvkm_client *c
- 			else
- 			if (handle > object->object)
- 				node =3D node->rb_right;
--			else
-+			else {
-+				spin_unlock_irqrestore(&client->obj_lock, flags);
- 				goto done;
-+			}
- 		}
-+		spin_unlock_irqrestore(&client->obj_lock, flags);
- 		return ERR_PTR(-ENOENT);
- 	} else {
- 		object =3D &client->object;
-@@ -57,30 +62,39 @@ done:
- void
- nvkm_object_remove(struct nvkm_object *object)
- {
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&object->client->obj_lock, flags);
- 	if (!RB_EMPTY_NODE(&object->node))
- 		rb_erase(&object->node, &object->client->objroot);
-+	spin_unlock_irqrestore(&object->client->obj_lock, flags);
- }
-=20
- bool
- nvkm_object_insert(struct nvkm_object *object)
- {
--	struct rb_node **ptr =3D &object->client->objroot.rb_node;
-+	struct rb_node **ptr;
- 	struct rb_node *parent =3D NULL;
-+	unsigned long flags;
-=20
-+	spin_lock_irqsave(&object->client->obj_lock, flags);
-+	ptr =3D &object->client->objroot.rb_node;
- 	while (*ptr) {
- 		struct nvkm_object *this =3D rb_entry(*ptr, typeof(*this), node);
- 		parent =3D *ptr;
--		if (object->object < this->object)
-+		if (object->object < this->object) {
- 			ptr =3D &parent->rb_left;
--		else
--		if (object->object > this->object)
-+		} else if (object->object > this->object) {
- 			ptr =3D &parent->rb_right;
--		else
-+		} else {
-+			spin_unlock_irqrestore(&object->client->obj_lock, flags);
- 			return false;
-+		}
- 	}
-=20
- 	rb_link_node(&object->node, parent, ptr);
- 	rb_insert_color(&object->node, &object->client->objroot);
-+	spin_unlock_irqrestore(&object->client->obj_lock, flags);
- 	return true;
- }
-=20
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index b3e60b3847941..bd0632e77d8b0 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -177,6 +177,7 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x10C4, 0xF004) }, /* Elan Digital Systems USBcount50 */
+ 	{ USB_DEVICE(0x10C5, 0xEA61) }, /* Silicon Labs MobiData GPRS USB Modem */
+ 	{ USB_DEVICE(0x10CE, 0xEA6A) }, /* Silicon Labs MobiData GPRS USB Modem 100EU */
++	{ USB_DEVICE(0x11CA, 0x0212) }, /* Verifone USB to Printer (UART, CP2102) */
+ 	{ USB_DEVICE(0x12B8, 0xEC60) }, /* Link G4 ECU */
+ 	{ USB_DEVICE(0x12B8, 0xEC62) }, /* Link G4+ ECU */
+ 	{ USB_DEVICE(0x13AD, 0x9999) }, /* Baltech card reader */
+-- 
+2.43.0
+
 
 
 
