@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-34619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5EA894017
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6ACC893E9E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06EE7282910
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E8FF2822C7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE67D47A6B;
-	Mon,  1 Apr 2024 16:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2310B446AC;
+	Mon,  1 Apr 2024 16:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFX8toVh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8sSrQFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5C0446D5;
-	Mon,  1 Apr 2024 16:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D304B1CA8F;
+	Mon,  1 Apr 2024 16:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988730; cv=none; b=DVz3MpRzEq33VIYh+A0ujUmp6cy49d+vT2kvm7XI1UP6yfBcL0jig9UsNOJRHMyD5j4mi6Mahr988cz4dkePa5VIsU63xPEdgRhNqi00T0hrXKswrwwvTbEbD90E5aEigUv8MJGAHlD7VJzKyRnByFiFJ0TB9NU32PTLm6YIbPQ=
+	t=1711987549; cv=none; b=qZmf2urgOQ2FpF3cKK/5OyxdQBujyHMRxpLiDr7ZoSUsA1pCRJoO5LByGO38TuMAVG4KG5WkWLbm3LBRJ+ucb1b2qChPdMGhocbaBtx2+M6QW+4mhjyHcIIjeaN4BqAnbzyOwWuAP+DNLCs7qrSxUs9W7mLui+JM5XX7jJ4uIyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988730; c=relaxed/simple;
-	bh=A8dlAxkbytLO6vjY6asrlH5zHT9fufMxjDnlSdm9sqM=;
+	s=arc-20240116; t=1711987549; c=relaxed/simple;
+	bh=XTTOxpTy+qr8Ncai0XKpRGBslqtYHtC1okXrojl+58g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNuV+B0+5a5qODZ4RFK654DgdkINEvFQeJSyYNWHbsuMPv7O5g/ZJEgfXB5LC46ICubm3mz1mAzN5a4k8VWGo/Xp/hwP31ZZaUFy5JUXRJNMlzxQCnfOn2ousG6y1vlZuLvz+jcl9GwLK/r4GSOEx1cvu45ipHXb5JPyhOYcK0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFX8toVh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD292C433F1;
-	Mon,  1 Apr 2024 16:25:29 +0000 (UTC)
+	 MIME-Version; b=aG1N57h07wcZ39i3Zj0bBL18R2ghP0sKm7ny2oqQ9a/7LGnlh0PwKWmUTuwqextTOn3W4esI9PacMBuIa/Lf0LfngnjmKjHPPc9CTvjuMAdSd6HenTx0xzuZB+n1bEJXcbfXOnhSU5X8RzAGmP3sAejcd45BKdJHGlm49sd94+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8sSrQFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1279EC433C7;
+	Mon,  1 Apr 2024 16:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988730;
-	bh=A8dlAxkbytLO6vjY6asrlH5zHT9fufMxjDnlSdm9sqM=;
+	s=korg; t=1711987549;
+	bh=XTTOxpTy+qr8Ncai0XKpRGBslqtYHtC1okXrojl+58g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFX8toVhcvlGi2RqoOYx1LWPfVk+4k9GjZVeFfOYTHD4KEY6Q3tFIFxxMl9fzetcV
-	 GvmO0jLxp+WNFVxJRaxReoggjre5iu9c8+sLgZwvlWjJ3VH6yFXtFV2GiqskRRh+XF
-	 pqMghbZIPIcONz8EuRQtLePbJ7uMPvYQizd6dQdA=
+	b=R8sSrQFtcZnf+GX+eDbQcqZKmLmdCCdQu05IE5L6EhX+PwhCLniJx9KRoJHA6z4PH
+	 RxAfCliNHuPMaWtja5QxTdlrq4jL4MJnyBn+G5QY2trM4Do4UywG9kK8AMiuK9/4DY
+	 z4RVFYatuyItT7jaaq0u7sTrxsLrR6Z3TcjD+GcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 6.7 272/432] mei: me: add arrow lake point H DID
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Ubisectech Sirius <bugreport@ubisectech.com>,
+	Jan Kara <jack@suse.cz>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 293/399] tmpfs: fix race on handling dquot rbtree
 Date: Mon,  1 Apr 2024 17:44:19 +0200
-Message-ID: <20240401152601.288907822@linuxfoundation.org>
+Message-ID: <20240401152557.932698807@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Carlos Maiolino <cem@kernel.org>
 
-commit 8436f25802ec028ac7254990893f3e01926d9b79 upstream.
+commit 0a69b6b3a026543bc215ccc866d0aea5579e6ce2 upstream.
 
-Add Arrow Lake H device id.
+A syzkaller reproducer found a race while attempting to remove dquot
+information from the rb tree.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240211103912.117105-2-tomas.winkler@intel.com
+Fetching the rb_tree root node must also be protected by the
+dqopt->dqio_sem, otherwise, giving the right timing, shmem_release_dquot()
+will trigger a warning because it couldn't find a node in the tree, when
+the real reason was the root node changing before the search starts:
+
+Thread 1				Thread 2
+- shmem_release_dquot()			- shmem_{acquire,release}_dquot()
+
+- fetch ROOT				- Fetch ROOT
+
+					- acquire dqio_sem
+- wait dqio_sem
+
+					- do something, triger a tree rebalance
+					- release dqio_sem
+
+- acquire dqio_sem
+- start searching for the node, but
+  from the wrong location, missing
+  the node, and triggering a warning.
+
+Link: https://lkml.kernel.org/r/20240320124011.398847-1-cem@kernel.org
+Fixes: eafc474e2029 ("shmem: prepare shmem quota infrastructure")
+Signed-off-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    1 +
- drivers/misc/mei/pci-me.c     |    1 +
- 2 files changed, 2 insertions(+)
+ mm/shmem_quota.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -113,6 +113,7 @@
+--- a/mm/shmem_quota.c
++++ b/mm/shmem_quota.c
+@@ -116,7 +116,7 @@ static int shmem_free_file_info(struct s
+ static int shmem_get_next_id(struct super_block *sb, struct kqid *qid)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(sb, qid->type);
+-	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node *node;
+ 	qid_t id = from_kqid(&init_user_ns, *qid);
+ 	struct quota_info *dqopt = sb_dqopt(sb);
+ 	struct quota_id *entry = NULL;
+@@ -126,6 +126,7 @@ static int shmem_get_next_id(struct supe
+ 		return -ESRCH;
  
- #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
- #define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
-+#define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
+ 	down_read(&dqopt->dqio_sem);
++	node = ((struct rb_root *)info->dqi_priv)->rb_node;
+ 	while (node) {
+ 		entry = rb_entry(node, struct quota_id, node);
  
- /*
-  * MEI HW Section
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -120,6 +120,7 @@ static const struct pci_device_id mei_me
+@@ -165,7 +166,7 @@ out_unlock:
+ static int shmem_acquire_dquot(struct dquot *dquot)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
+-	struct rb_node **n = &((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node **n;
+ 	struct shmem_sb_info *sbinfo = dquot->dq_sb->s_fs_info;
+ 	struct rb_node *parent = NULL, *new_node = NULL;
+ 	struct quota_id *new_entry, *entry;
+@@ -176,6 +177,8 @@ static int shmem_acquire_dquot(struct dq
+ 	mutex_lock(&dquot->dq_lock);
  
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
+ 	down_write(&dqopt->dqio_sem);
++	n = &((struct rb_root *)info->dqi_priv)->rb_node;
++
+ 	while (*n) {
+ 		parent = *n;
+ 		entry = rb_entry(parent, struct quota_id, node);
+@@ -264,7 +267,7 @@ static bool shmem_is_empty_dquot(struct
+ static int shmem_release_dquot(struct dquot *dquot)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
+-	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node *node;
+ 	qid_t id = from_kqid(&init_user_ns, dquot->dq_id);
+ 	struct quota_info *dqopt = sb_dqopt(dquot->dq_sb);
+ 	struct quota_id *entry = NULL;
+@@ -275,6 +278,7 @@ static int shmem_release_dquot(struct dq
+ 		goto out_dqlock;
  
- 	/* required last entry */
- 	{0, }
+ 	down_write(&dqopt->dqio_sem);
++	node = ((struct rb_root *)info->dqi_priv)->rb_node;
+ 	while (node) {
+ 		entry = rb_entry(node, struct quota_id, node);
+ 
 
 
 
