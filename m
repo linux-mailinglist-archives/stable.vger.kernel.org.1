@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-34807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C64F8940EE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:36:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573BB893F43
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E11421F22945
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:36:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F759283633
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF7041C89;
-	Mon,  1 Apr 2024 16:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94C447A53;
+	Mon,  1 Apr 2024 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6Iv+Dlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/UfIdd9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCAFDF6B;
-	Mon,  1 Apr 2024 16:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CC84778E;
+	Mon,  1 Apr 2024 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989364; cv=none; b=ssaVmiMGv71TN1ts+VqphuLakQCK62+YhyvUC3Sfoar6x9UAMGq0TaT5l17/Y3vLIBbdWzbwX8jorhs9GaTfeH4rekeznGfqc6WhRbreJvMnU325KvMBaPA8/pjnZrfcj4FDyWuH6Xx2I5tQoeGKFBqg7jHU4WKWVet40dsUoDY=
+	t=1711988050; cv=none; b=Kb6xXpJgJ5+ZJOaxB6nPPyAezfcp22g4bPInCfHk5KI6t1TOIOq9pdLy/qhgOIrNBu7CZBYvg0QFZTPHFDkitiNf49rJnX529uzPNjqg50d6ZGSCN63XLfYi+kVcfVVkCscwbxW6PMeXztrsZfxH7QhNGOA1ph+SrOHtj3YIUW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989364; c=relaxed/simple;
-	bh=aVvyyJtp2+YCXv0DCFVVfkCJwZXZ1ySuID6w5T3WISA=;
+	s=arc-20240116; t=1711988050; c=relaxed/simple;
+	bh=paU80dZ5Y56OmesFbgAc0LFyh0hXSkFCpKiEkmU7ZA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VgLVVRiNw7m4uovfzJABEulzmpLXcv49EjpFYwxIgdSWQpPnTubj0etQQakBzqe+kYs3qvlsNkvuV4+fDTFs3csaWxZabHqTBwNVXec+NvjLNztbJ7DQE++WRsABz0Nr4QxAiDtR9cFRXwtZWdZbw+k0rrUabl3XFHr79cBtVH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6Iv+Dlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C86AC433C7;
-	Mon,  1 Apr 2024 16:36:03 +0000 (UTC)
+	 MIME-Version; b=pu4cJZToq8gqzVjO3k+dubutYMrVLfke1y1bcKdf0GIJDeUOJ61khAmzjSTy5lhkrKZwHmHy/FxYNFq4hFwMLu3Bp7BZIFy8TT6RQeBCFETjBxIN8IDLa29r9HItE777fK3i4ASSRX1Z+G+l8KzlZXap3MJIyJKCte28fRn2R68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/UfIdd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB065C433C7;
+	Mon,  1 Apr 2024 16:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989364;
-	bh=aVvyyJtp2+YCXv0DCFVVfkCJwZXZ1ySuID6w5T3WISA=;
+	s=korg; t=1711988050;
+	bh=paU80dZ5Y56OmesFbgAc0LFyh0hXSkFCpKiEkmU7ZA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6Iv+DlhtYXp1GceoIjk7CftO8yRg7tm0fNBnPnhlyruUxQIs4w348f5CC/gva4gv
-	 xXE7hVTeS1K/gKLymkAFkguhhEt33tJ9SMcxyJIIiN24IZZWLHK5Xb4aJ+HfmMaq00
-	 kZrIWyPEfoUfDlhh/hqyYIIwmL2RhmGmAcrwaCMY=
+	b=F/UfIdd9Oaelo9rGBZtlzoG304nf9wTOl68bV9ApX02UBzVONubGCcG58oOLjjsxO
+	 RJtr85LU8ZmKZSkNv+bibxrKTgqZeat0r8KH1dYPk9VOpDELqCOsuHwHkN9nVCxLmD
+	 VMsHl1X4qh1ksefYOmEwNmtr8Q2t0Ax/qUJtj0hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hidenori Kobayashi <hidenorik@chromium.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/396] media: staging: ipu3-imgu: Set fields before media_entity_pads_init()
+Subject: [PATCH 6.7 068/432] vfio/pds: Always clear the save/restore FDs on reset
 Date: Mon,  1 Apr 2024 17:40:55 +0200
-Message-ID: <20240401152548.069865008@linuxfoundation.org>
+Message-ID: <20240401152555.153688255@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hidenori Kobayashi <hidenorik@chromium.org>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 87318b7092670d4086bfec115a0280a60c51c2dd ]
+[ Upstream commit 8512ed256334f6637fc0699ce794792c357544ec ]
 
-The imgu driver fails to probe with the following message because it
-does not set the pad's flags before calling media_entity_pads_init().
+After reset the VFIO device state will always be put in
+VFIO_DEVICE_STATE_RUNNING, but the save/restore files will only be
+cleared if the previous state was VFIO_DEVICE_STATE_ERROR. This
+can/will cause the restore/save files to be leaked if/when the
+migration state machine transitions through the states that
+re-allocates these files. Fix this by always clearing the
+restore/save files for resets.
 
-[   14.596315] ipu3-imgu 0000:00:05.0: failed initialize subdev media entity (-22)
-[   14.596322] ipu3-imgu 0000:00:05.0: failed to register subdev0 ret (-22)
-[   14.596327] ipu3-imgu 0000:00:05.0: failed to register pipes (-22)
-[   14.596331] ipu3-imgu 0000:00:05.0: failed to create V4L2 devices (-22)
-
-Fix the initialization order so that the driver probe succeeds. The ops
-initialization is also moved together for readability.
-
-Fixes: a0ca1627b450 ("media: staging/intel-ipu3: Add v4l2 driver based on media framework")
-Cc: <stable@vger.kernel.org> # 6.7
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hidenori Kobayashi <hidenorik@chromium.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 7dabb1bcd177 ("vfio/pds: Add support for firmware recovery")
+Cc: stable@vger.kernel.org
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20240228003205.47311-2-brett.creeley@amd.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/ipu3/ipu3-v4l2.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/vfio/pci/pds/vfio_dev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/media/ipu3/ipu3-v4l2.c b/drivers/staging/media/ipu3/ipu3-v4l2.c
-index e530767e80a5d..55cc44a401bc4 100644
---- a/drivers/staging/media/ipu3/ipu3-v4l2.c
-+++ b/drivers/staging/media/ipu3/ipu3-v4l2.c
-@@ -1069,6 +1069,11 @@ static int imgu_v4l2_subdev_register(struct imgu_device *imgu,
- 	struct imgu_media_pipe *imgu_pipe = &imgu->imgu_pipe[pipe];
- 
- 	/* Initialize subdev media entity */
-+	imgu_sd->subdev.entity.ops = &imgu_media_ops;
-+	for (i = 0; i < IMGU_NODE_NUM; i++) {
-+		imgu_sd->subdev_pads[i].flags = imgu_pipe->nodes[i].output ?
-+			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
-+	}
- 	r = media_entity_pads_init(&imgu_sd->subdev.entity, IMGU_NODE_NUM,
- 				   imgu_sd->subdev_pads);
- 	if (r) {
-@@ -1076,11 +1081,6 @@ static int imgu_v4l2_subdev_register(struct imgu_device *imgu,
- 			"failed initialize subdev media entity (%d)\n", r);
- 		return r;
- 	}
--	imgu_sd->subdev.entity.ops = &imgu_media_ops;
--	for (i = 0; i < IMGU_NODE_NUM; i++) {
--		imgu_sd->subdev_pads[i].flags = imgu_pipe->nodes[i].output ?
--			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
--	}
- 
- 	/* Initialize subdev */
- 	v4l2_subdev_init(&imgu_sd->subdev, &imgu_subdev_ops);
-@@ -1177,15 +1177,15 @@ static int imgu_v4l2_node_setup(struct imgu_device *imgu, unsigned int pipe,
- 	}
- 
- 	/* Initialize media entities */
-+	node->vdev_pad.flags = node->output ?
-+		MEDIA_PAD_FL_SOURCE : MEDIA_PAD_FL_SINK;
-+	vdev->entity.ops = NULL;
- 	r = media_entity_pads_init(&vdev->entity, 1, &node->vdev_pad);
- 	if (r) {
- 		dev_err(dev, "failed initialize media entity (%d)\n", r);
- 		mutex_destroy(&node->lock);
- 		return r;
- 	}
--	node->vdev_pad.flags = node->output ?
--		MEDIA_PAD_FL_SOURCE : MEDIA_PAD_FL_SINK;
--	vdev->entity.ops = NULL;
- 
- 	/* Initialize vbq */
- 	vbq->type = node->vdev_fmt.type;
+diff --git a/drivers/vfio/pci/pds/vfio_dev.c b/drivers/vfio/pci/pds/vfio_dev.c
+index 4c351c59d05a9..a286ebcc71126 100644
+--- a/drivers/vfio/pci/pds/vfio_dev.c
++++ b/drivers/vfio/pci/pds/vfio_dev.c
+@@ -32,9 +32,9 @@ void pds_vfio_state_mutex_unlock(struct pds_vfio_pci_device *pds_vfio)
+ 	mutex_lock(&pds_vfio->reset_mutex);
+ 	if (pds_vfio->deferred_reset) {
+ 		pds_vfio->deferred_reset = false;
++		pds_vfio_put_restore_file(pds_vfio);
++		pds_vfio_put_save_file(pds_vfio);
+ 		if (pds_vfio->state == VFIO_DEVICE_STATE_ERROR) {
+-			pds_vfio_put_restore_file(pds_vfio);
+-			pds_vfio_put_save_file(pds_vfio);
+ 			pds_vfio_dirty_disable(pds_vfio, false);
+ 		}
+ 		pds_vfio->state = pds_vfio->deferred_reset_state;
 -- 
 2.43.0
 
