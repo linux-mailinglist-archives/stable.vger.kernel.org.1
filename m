@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A39EE8940E8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA06893F52
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D58911C21731
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E56E1C21609
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F7C433DA;
-	Mon,  1 Apr 2024 16:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F9F3D961;
+	Mon,  1 Apr 2024 16:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmiCzCm1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsrP8z/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01669DF6B;
-	Mon,  1 Apr 2024 16:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3704778E;
+	Mon,  1 Apr 2024 16:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989347; cv=none; b=WQidfvuX5o4GCNRP1wQh4TRCdBFSCMszq+L73BYwQa0KBb/Navm5k+hqriZG2TFlgC6RlmiSmTru2T/ncoLDX8ZLd54clQee0F0Vedv1t/GYiJC32pi1yGi69lY3QbBUnwXJMBJuLO7/Hj4I5cI2YMJGQEpHzJte7tgtdWYwbZY=
+	t=1711988095; cv=none; b=PlGieGbaW1CRjevOUWjgMg86yaKn6XE8uASYt/fE0Csl2gtSflK80qM/axlTV6Mhu5bWcipbWzj1zaivOoKLYfOosRyfgrOcOVb2yr4D1cvd5oBZ5jMWkf3V2aKoAFWxQ+ZVpRapZCmYS3LpwX20mDjGXBUNxWSjrXX43HVSqjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989347; c=relaxed/simple;
-	bh=kSr7w6GlmUhw8+x59ZfJSjMburL1/oHr24kmUvChsK8=;
+	s=arc-20240116; t=1711988095; c=relaxed/simple;
+	bh=PGVrpRWHpTdUc/1flK7MSl9PQWnJAId6vgcThEH21ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geU0NPlEuHWkru9lZ25+VW8nNHWjLB35qvUYlkWzhv16GXB4pfl3Vq/k74iARK4QAhZfCpZM3KBKp+Ed3tM7xbe86VVKNQrVwbOlduJHXjB93UcOcZBB9M58EbWF8iGckFwNAClFqHQC5xEtwYvE14evXvPQAlai3qAS4Oac/4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmiCzCm1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604A7C433C7;
-	Mon,  1 Apr 2024 16:35:46 +0000 (UTC)
+	 MIME-Version; b=L7xDQNYSvXw5xaZH/lhx0u9+lFSLdr3zs1WB0+OnAf2zMz3jkaNufswwWvELEzDu/98hzWHugjVVtLThVk9WB9C0IZENFwjf7/oDrloTuxdNUAnLVqTzsUuz1jSPUogDxrck3eD4gaEHz+lggbrA0ue74mR3tYPYR1giqhxoPMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsrP8z/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77A6C433C7;
+	Mon,  1 Apr 2024 16:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989346;
-	bh=kSr7w6GlmUhw8+x59ZfJSjMburL1/oHr24kmUvChsK8=;
+	s=korg; t=1711988095;
+	bh=PGVrpRWHpTdUc/1flK7MSl9PQWnJAId6vgcThEH21ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmiCzCm16MljdA9QP+nsTVQMt/l2o0eLPWeFbEFDiRVmE+vkODGQbiLMbCCajyQnW
-	 wjzVbHkV/abjgBstLZM+sovJNddLVNK4///QTauqESaLBUk1lqbqqKcO9jGWZiUDRO
-	 Z2z7ltN6ycMiP1JdME3NelQwvNipf9sT6qgeBlu0=
+	b=KsrP8z/SK4jbaxwsV/LuhRs42zB9ITghuMcrw6Eocarr5Z7+GV3ozcvL2YRadyZnO
+	 E4q5v2XkOylH8jCeCL7pd8ls3H/G8948ldCiwxwz2TDGbwTy4zmkg6QW+PswKdiJD7
+	 bQna44F/Gpvuo+ysfrSKmqAxprrVz/YkdsUEs+oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Toru Katagiri <Toru.Katagiri@tdk.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/396] media: mc: Add num_links flag to media_pad
+Subject: [PATCH 6.7 083/432] USB: serial: cp210x: add pid/vid for TDK NC0110013M and MM0110113M
 Date: Mon,  1 Apr 2024 17:41:10 +0200
-Message-ID: <20240401152548.530418591@linuxfoundation.org>
+Message-ID: <20240401152555.596017315@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Toru Katagiri <Toru.Katagiri@tdk.com>
 
-[ Upstream commit baeddf94aa61879b118f2faa37ed126d772670cc ]
+[ Upstream commit b1a8da9ff1395c4879b4bd41e55733d944f3d613 ]
 
-Maintain a counter of the links connected to a pad in the media_pad
-structure. This helps checking if a pad is connected to anything, which
-will be used in the pipeline building code.
+TDK NC0110013M and MM0110113M have custom USB IDs for CP210x,
+so we need to add them to the driver.
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Toru Katagiri <Toru.Katagiri@tdk.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-entity.c | 6 ++++++
- include/media/media-entity.h | 2 ++
- 2 files changed, 8 insertions(+)
+ drivers/usb/serial/cp210x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
-index 330d876f41945..c5f44cbf9f877 100644
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -1025,6 +1025,9 @@ static void __media_entity_remove_link(struct media_entity *entity,
- 
- 	/* Remove the reverse links for a data link. */
- 	if ((link->flags & MEDIA_LNK_FL_LINK_TYPE) == MEDIA_LNK_FL_DATA_LINK) {
-+		link->source->num_links--;
-+		link->sink->num_links--;
-+
- 		if (link->source->entity == entity)
- 			remote = link->sink->entity;
- 		else
-@@ -1130,6 +1133,9 @@ media_create_pad_link(struct media_entity *source, u16 source_pad,
- 	sink->num_links++;
- 	source->num_links++;
- 
-+	link->source->num_links++;
-+	link->sink->num_links++;
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(media_create_pad_link);
-diff --git a/include/media/media-entity.h b/include/media/media-entity.h
-index 2b6cd343ee9e0..4d95893c89846 100644
---- a/include/media/media-entity.h
-+++ b/include/media/media-entity.h
-@@ -225,6 +225,7 @@ enum media_pad_signal_type {
-  * @graph_obj:	Embedded structure containing the media object common data
-  * @entity:	Entity this pad belongs to
-  * @index:	Pad index in the entity pads array, numbered from 0 to n
-+ * @num_links:	Number of links connected to this pad
-  * @sig_type:	Type of the signal inside a media pad
-  * @flags:	Pad flags, as defined in
-  *		:ref:`include/uapi/linux/media.h <media_header>`
-@@ -236,6 +237,7 @@ struct media_pad {
- 	struct media_gobj graph_obj;	/* must be first field in struct */
- 	struct media_entity *entity;
- 	u16 index;
-+	u16 num_links;
- 	enum media_pad_signal_type sig_type;
- 	unsigned long flags;
- 
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index 2169b6549a260..21fd26609252b 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -56,6 +56,8 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x0471, 0x066A) }, /* AKTAKOM ACE-1001 cable */
+ 	{ USB_DEVICE(0x0489, 0xE000) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
+ 	{ USB_DEVICE(0x0489, 0xE003) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
++	{ USB_DEVICE(0x04BF, 0x1301) }, /* TDK Corporation NC0110013M - Network Controller */
++	{ USB_DEVICE(0x04BF, 0x1303) }, /* TDK Corporation MM0110113M - i3 Micro Module */
+ 	{ USB_DEVICE(0x0745, 0x1000) }, /* CipherLab USB CCD Barcode Scanner 1000 */
+ 	{ USB_DEVICE(0x0846, 0x1100) }, /* NetGear Managed Switch M4100 series, M5300 series, M7100 series */
+ 	{ USB_DEVICE(0x08e6, 0x5501) }, /* Gemalto Prox-PU/CU contactless smartcard reader */
 -- 
 2.43.0
 
