@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-34312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DF4893ECF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8B9894375
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EFF91F20F9E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71A4728329D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AED47A60;
-	Mon,  1 Apr 2024 16:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E40482EF;
+	Mon,  1 Apr 2024 17:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBhgbQZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaRZ6WAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27B3446AC;
-	Mon,  1 Apr 2024 16:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6464446B6;
+	Mon,  1 Apr 2024 17:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987695; cv=none; b=LX5OF6gLQvqYNOGPFvaSlqDTxlV7YY4GJg3YVwcDoy/f2lh5K3mAVfiMkjABt0kiiioVOx7x82CN+RmclWSpC8JRQHEWBMvBslp3Jpl5j2JNOncE5te0st4nCvUypXF3bo69GNzevu/9adV0v9gYEZphkwZnnYaXpZulkuiCZZA=
+	t=1711991030; cv=none; b=ILqzTHWbPxPWyT8a6GQzoSlJhFb4vocq6b+k6zdaXOh9p6dJD1ttYV0kWzpTDjr47zM60sKa4sKf+Z7s5Wy5nFN8gjsjpgZbz536ni0MuPoLotqqUBijeIbQTYIStWyBGE8QO/8Om3efzjrXHkMZU7D7mEJplIGWqjQzDnIYK6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987695; c=relaxed/simple;
-	bh=gz8AyujVJhJdGQdsGbhzZ4Y+KP/vscg05IKhZrdxaSU=;
+	s=arc-20240116; t=1711991030; c=relaxed/simple;
+	bh=TpMHaEso2mYRwTkYIKKUJpAkjr9byp0g7HAOGruS1hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+/eR4nC8aeoOSZW2+r9EOiZ17/wj89YWE2ZUTrLQ7ydMWU8XM6TyRYPpAx/+32Cs0unxU3oplyii0keAOAXwyjJU0bsVx984EUjcJdB58SDYlv8MUlzW56r/7LY0MOM28ZCzHbrZoANjButdLk+JdBETbrHxRZP5s39WyqeREg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBhgbQZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27725C433C7;
-	Mon,  1 Apr 2024 16:08:14 +0000 (UTC)
+	 MIME-Version; b=RXwaDxRbzAQhUXINYc/0z5QHj1gfYwW+tZG8gzLPfFqoyQx8Y0mYIHQ797jAHBMXd3VMAGlL8dJ1Mt8Gh1B/Bq7PDUBSJD6CWp9qJZK/XK5EOwiWinf7Y0cwyjsJGtRlQggzcvk5AuhYUS0tZYRU0r8fKERRr6oT/OxrITi5m84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaRZ6WAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97F7C433F1;
+	Mon,  1 Apr 2024 17:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987695;
-	bh=gz8AyujVJhJdGQdsGbhzZ4Y+KP/vscg05IKhZrdxaSU=;
+	s=korg; t=1711991030;
+	bh=TpMHaEso2mYRwTkYIKKUJpAkjr9byp0g7HAOGruS1hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBhgbQZ4ie7+cf40yHz7iP3UzQuA5gnD4UmdutJ7Do8SL787fpQK1zHs9uQVtoMYh
-	 5SSNxgMlC3JaSmBaCTA0H1jP1eXwBZXBOsQbV1Nz7lBje6wFgeItzEhEfqe0n/3Ewi
-	 qc/2YXCC1I/bue9o2VwMLDXtFE/KO8jCEHI1wL4k=
+	b=jaRZ6WAalRDDTfXLnBPExScRMpuuB/P+J4xHuJiwk+zeI5sYHER09cuyS0oYKTbk1
+	 ZbOpJKHmUhY6+i3/ZLLbVhnZijXsl8yKgPGYeRO/G+wu1dY4nXMreApgrXQRxykX73
+	 FF4lluQa9AK2uKDGL17xFiS8o3fWH//t2ChW/1zM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.8 365/399] usb: dwc2: gadget: LPM flow fix
+	Anton Altaparmakov <anton@tuxera.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 141/272] x86/pm: Work around false positive kmemleak report in msr_build_context()
 Date: Mon,  1 Apr 2024 17:45:31 +0200
-Message-ID: <20240401152600.061675980@linuxfoundation.org>
+Message-ID: <20240401152535.091304346@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,155 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Anton Altaparmakov <anton@tuxera.com>
 
-commit 5d69a3b54e5a630c90d82a4c2bdce3d53dc78710 upstream.
+[ Upstream commit e3f269ed0accbb22aa8f25d2daffa23c3fccd407 ]
 
-Added functionality to exit from L1 state by device initiation
-using remote wakeup signaling, in case when function driver queuing
-request while core in L1 state.
+Since:
 
-Fixes: 273d576c4d41 ("usb: dwc2: gadget: Add functionality to exit from LPM L1 state")
-Fixes: 88b02f2cb1e1 ("usb: dwc2: Add core state checking")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/b4d9de5382375dddbf7ef6049d9a82066ad87d5d.1710166393.git.Minas.Harutyunyan@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  7ee18d677989 ("x86/power: Make restore_processor_context() sane")
+
+kmemleak reports this issue:
+
+  unreferenced object 0xf68241e0 (size 32):
+    comm "swapper/0", pid 1, jiffies 4294668610 (age 68.432s)
+    hex dump (first 32 bytes):
+      00 cc cc cc 29 10 01 c0 00 00 00 00 00 00 00 00  ....)...........
+      00 42 82 f6 cc cc cc cc cc cc cc cc cc cc cc cc  .B..............
+    backtrace:
+      [<461c1d50>] __kmem_cache_alloc_node+0x106/0x260
+      [<ea65e13b>] __kmalloc+0x54/0x160
+      [<c3858cd2>] msr_build_context.constprop.0+0x35/0x100
+      [<46635aff>] pm_check_save_msr+0x63/0x80
+      [<6b6bb938>] do_one_initcall+0x41/0x1f0
+      [<3f3add60>] kernel_init_freeable+0x199/0x1e8
+      [<3b538fde>] kernel_init+0x1a/0x110
+      [<938ae2b2>] ret_from_fork+0x1c/0x28
+
+Which is a false positive.
+
+Reproducer:
+
+  - Run rsync of whole kernel tree (multiple times if needed).
+  - start a kmemleak scan
+  - Note this is just an example: a lot of our internal tests hit these.
+
+The root cause is similar to the fix in:
+
+  b0b592cf0836 x86/pm: Fix false positive kmemleak report in msr_build_context()
+
+ie. the alignment within the packed struct saved_context
+which has everything unaligned as there is only "u16 gs;" at start of
+struct where in the past there were four u16 there thus aligning
+everything afterwards.  The issue is with the fact that Kmemleak only
+searches for pointers that are aligned (see how pointers are scanned in
+kmemleak.c) so when the struct members are not aligned it doesn't see
+them.
+
+Testing:
+
+We run a lot of tests with our CI, and after applying this fix we do not
+see any kmemleak issues any more whilst without it we see hundreds of
+the above report. From a single, simple test run consisting of 416 individual test
+cases on kernel 5.10 x86 with kmemleak enabled we got 20 failures due to this,
+which is quite a lot. With this fix applied we get zero kmemleak related failures.
+
+Fixes: 7ee18d677989 ("x86/power: Make restore_processor_context() sane")
+Signed-off-by: Anton Altaparmakov <anton@tuxera.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240314142656.17699-1-anton@tuxera.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/core.h      |    1 
- drivers/usb/dwc2/core_intr.c |   65 ++++++++++++++++++++++++++++---------------
- drivers/usb/dwc2/gadget.c    |    4 ++
- 3 files changed, 48 insertions(+), 22 deletions(-)
+ arch/x86/include/asm/suspend_32.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -1336,6 +1336,7 @@ int dwc2_backup_global_registers(struct
- int dwc2_restore_global_registers(struct dwc2_hsotg *hsotg);
+diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
+index a800abb1a9925..d8416b3bf832e 100644
+--- a/arch/x86/include/asm/suspend_32.h
++++ b/arch/x86/include/asm/suspend_32.h
+@@ -12,11 +12,6 @@
  
- void dwc2_enable_acg(struct dwc2_hsotg *hsotg);
-+void dwc2_wakeup_from_lpm_l1(struct dwc2_hsotg *hsotg, bool remotewakeup);
+ /* image of the saved processor state */
+ struct saved_context {
+-	/*
+-	 * On x86_32, all segment registers except gs are saved at kernel
+-	 * entry in pt_regs.
+-	 */
+-	u16 gs;
+ 	unsigned long cr0, cr2, cr3, cr4;
+ 	u64 misc_enable;
+ 	struct saved_msrs saved_msrs;
+@@ -27,6 +22,11 @@ struct saved_context {
+ 	unsigned long tr;
+ 	unsigned long safety;
+ 	unsigned long return_address;
++	/*
++	 * On x86_32, all segment registers except gs are saved at kernel
++	 * entry in pt_regs.
++	 */
++	u16 gs;
+ 	bool misc_enable_saved;
+ } __attribute__((packed));
  
- /* This function should be called on every hardware interrupt. */
- irqreturn_t dwc2_handle_common_intr(int irq, void *dev);
---- a/drivers/usb/dwc2/core_intr.c
-+++ b/drivers/usb/dwc2/core_intr.c
-@@ -323,10 +323,11 @@ static void dwc2_handle_session_req_intr
-  * @hsotg: Programming view of DWC_otg controller
-  *
-  */
--static void dwc2_wakeup_from_lpm_l1(struct dwc2_hsotg *hsotg)
-+void dwc2_wakeup_from_lpm_l1(struct dwc2_hsotg *hsotg, bool remotewakeup)
- {
- 	u32 glpmcfg;
--	u32 i = 0;
-+	u32 pcgctl;
-+	u32 dctl;
- 
- 	if (hsotg->lx_state != DWC2_L1) {
- 		dev_err(hsotg->dev, "Core isn't in DWC2_L1 state\n");
-@@ -335,37 +336,57 @@ static void dwc2_wakeup_from_lpm_l1(stru
- 
- 	glpmcfg = dwc2_readl(hsotg, GLPMCFG);
- 	if (dwc2_is_device_mode(hsotg)) {
--		dev_dbg(hsotg->dev, "Exit from L1 state\n");
-+		dev_dbg(hsotg->dev, "Exit from L1 state, remotewakeup=%d\n", remotewakeup);
- 		glpmcfg &= ~GLPMCFG_ENBLSLPM;
--		glpmcfg &= ~GLPMCFG_HIRD_THRES_EN;
-+		glpmcfg &= ~GLPMCFG_HIRD_THRES_MASK;
- 		dwc2_writel(hsotg, glpmcfg, GLPMCFG);
- 
--		do {
--			glpmcfg = dwc2_readl(hsotg, GLPMCFG);
--
--			if (!(glpmcfg & (GLPMCFG_COREL1RES_MASK |
--					 GLPMCFG_L1RESUMEOK | GLPMCFG_SLPSTS)))
--				break;
-+		pcgctl = dwc2_readl(hsotg, PCGCTL);
-+		pcgctl &= ~PCGCTL_ENBL_SLEEP_GATING;
-+		dwc2_writel(hsotg, pcgctl, PCGCTL);
-+
-+		glpmcfg = dwc2_readl(hsotg, GLPMCFG);
-+		if (glpmcfg & GLPMCFG_ENBESL) {
-+			glpmcfg |= GLPMCFG_RSTRSLPSTS;
-+			dwc2_writel(hsotg, glpmcfg, GLPMCFG);
-+		}
- 
--			udelay(1);
--		} while (++i < 200);
-+		if (remotewakeup) {
-+			if (dwc2_hsotg_wait_bit_set(hsotg, GLPMCFG, GLPMCFG_L1RESUMEOK, 1000)) {
-+				dev_warn(hsotg->dev, "%s: timeout GLPMCFG_L1RESUMEOK\n", __func__);
-+				goto fail;
-+				return;
-+			}
-+
-+			dctl = dwc2_readl(hsotg, DCTL);
-+			dctl |= DCTL_RMTWKUPSIG;
-+			dwc2_writel(hsotg, dctl, DCTL);
-+
-+			if (dwc2_hsotg_wait_bit_set(hsotg, GINTSTS, GINTSTS_WKUPINT, 1000)) {
-+				dev_warn(hsotg->dev, "%s: timeout GINTSTS_WKUPINT\n", __func__);
-+				goto fail;
-+				return;
-+			}
-+		}
- 
--		if (i == 200) {
--			dev_err(hsotg->dev, "Failed to exit L1 sleep state in 200us.\n");
-+		glpmcfg = dwc2_readl(hsotg, GLPMCFG);
-+		if (glpmcfg & GLPMCFG_COREL1RES_MASK || glpmcfg & GLPMCFG_SLPSTS ||
-+		    glpmcfg & GLPMCFG_L1RESUMEOK) {
-+			goto fail;
- 			return;
- 		}
--		dwc2_gadget_init_lpm(hsotg);
-+
-+		/* Inform gadget to exit from L1 */
-+		call_gadget(hsotg, resume);
-+		/* Change to L0 state */
-+		hsotg->lx_state = DWC2_L0;
-+		hsotg->bus_suspended = false;
-+fail:		dwc2_gadget_init_lpm(hsotg);
- 	} else {
- 		/* TODO */
- 		dev_err(hsotg->dev, "Host side LPM is not supported.\n");
- 		return;
- 	}
--
--	/* Change to L0 state */
--	hsotg->lx_state = DWC2_L0;
--
--	/* Inform gadget to exit from L1 */
--	call_gadget(hsotg, resume);
- }
- 
- /*
-@@ -386,7 +407,7 @@ static void dwc2_handle_wakeup_detected_
- 	dev_dbg(hsotg->dev, "%s lxstate = %d\n", __func__, hsotg->lx_state);
- 
- 	if (hsotg->lx_state == DWC2_L1) {
--		dwc2_wakeup_from_lpm_l1(hsotg);
-+		dwc2_wakeup_from_lpm_l1(hsotg, false);
- 		return;
- 	}
- 
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -1415,6 +1415,10 @@ static int dwc2_hsotg_ep_queue(struct us
- 		ep->name, req, req->length, req->buf, req->no_interrupt,
- 		req->zero, req->short_not_ok);
- 
-+	if (hs->lx_state == DWC2_L1) {
-+		dwc2_wakeup_from_lpm_l1(hs, true);
-+	}
-+
- 	/* Prevent new request submission when controller is suspended */
- 	if (hs->lx_state != DWC2_L0) {
- 		dev_dbg(hs->dev, "%s: submit request only in active state\n",
+-- 
+2.43.0
+
 
 
 
