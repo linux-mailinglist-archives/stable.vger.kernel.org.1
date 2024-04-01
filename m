@@ -1,141 +1,77 @@
-Return-Path: <stable+bounces-33871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076F68936E5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 04:21:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDFD893786
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 05:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87AE61F2166B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 02:21:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B794028171F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 03:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850C41362;
-	Mon,  1 Apr 2024 02:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F667F;
+	Mon,  1 Apr 2024 03:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FYbdwBxE"
+	dkim=pass (2048-bit key) header.d=quaintcat.com header.i=@quaintcat.com header.b="FAEL7gcu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.quaintcat.com (mx3.quaintcat.com [51.222.159.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45EA10E5;
-	Mon,  1 Apr 2024 02:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B38A48
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 03:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.222.159.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711938061; cv=none; b=gtWSG3DIvuxe9mg8jvdT3iji2hEl3crl6yoPX654MGpjRRe+NHQ4ksG51IvFfM+vXZ1J/PpvsQLq/zbFOPWVXW6fDBYUtGybwegBPaD0VpYkhKlU6TvkUVodk6bVSZmLpJQJMVMtOvLcZmiTHdKty6dHQkx+qO4hYmihs4XkIdU=
+	t=1711940408; cv=none; b=UPTplhxEyAVo2fCQ8d9QOx2+4T0M5c+oJn0ZV5Z50HS5u537MFduUp7uDjUHxbhc5ljvG3J6RvqrQoF+kOn7wJCZaFsjqSB3Or/6YavkdSNU4YDXoAaEc4+a4sux2w7ieNDbXGFPJFv8GFkw6aN5GzAMnBlIzrkAZ/BPg9Gqtds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711938061; c=relaxed/simple;
-	bh=9JDO4Cagwi3lP7gijNA6peSXaTD5GczAGmK9Wgoo/bo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NGrVWzq+yfLRT1TkDmg/9obRXRVQzj9ovWC1+OXHXK6Rc/YDP5kT+EMTAKhOtoMVWtVeownfnCVdPUYtfsadIz4LRymNbTm/1ZllbCyz157Fi6lxXzThGDBxPw1xqF44UDSJX+PkFwdRszPlI8P0VA953v1bmqMsKt/ONb0nwrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FYbdwBxE; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-697bd743062so13384306d6.0;
-        Sun, 31 Mar 2024 19:20:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711938059; x=1712542859; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9JDO4Cagwi3lP7gijNA6peSXaTD5GczAGmK9Wgoo/bo=;
-        b=FYbdwBxEoe+gJMUx6GvsmDeC4LhJ/H0LYfw5wE7b4JtNMqiQ7wqvgQ1mEo906VoJWk
-         bsqC2GTKfaYG38lqWbwQPn3nA+w72llz9krpXNNA8iLlHNV8V/fLyVuVOC5feQe+t2UX
-         2lAZ+lmTx+n8xAQcOS4NkM1i38yxx3F+4v8JoDOenvkxij/nLvXTMFF/pc+wHtd8m8+h
-         4Pz2RjM3MjupTq1GANnPg4YqoNEyaXOjofUiBBCzMYIngSTsnN/8hFLtaqbYuYytLswD
-         VG3pd421DuZ5WcsZhQSKlVSYN48CXlkrv5GUHN5x9umB5cRA6yAAlSYVbxTvwLbMbXKp
-         gLvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711938059; x=1712542859;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9JDO4Cagwi3lP7gijNA6peSXaTD5GczAGmK9Wgoo/bo=;
-        b=ClM/I8qAwp+rSsKK82Oz8NIi0V6QV69ivrzif+q0udmI4ygvDehFzWbLv73rW+/ZCi
-         y6kzsEvveLkp+uQCID/oFaIXIPtmCxNYbKX197htqAVOYqGmczxcmad1HyavkKbzHCrr
-         zY8qpB8phdDEEwUNFpp4omAJyQsToTxuPhu8a5smccTdNdU1eWmZn3W+ym6UePmw22Ia
-         D9AFIkrfx5FoD/8uoy0VS9gc0sjR71ohXeR3SObzaySHseaIar1UvoHk4u5/XzNDIAvC
-         ZsJHp/9uJ5WrY0pbn+b/VXDq2OWTsjxrszYpW168pTauZEVk0Rx+smTwxKv9H4vur1Ro
-         lZYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUNOLhbpl/pweVFnz9mmoJx20siAPLNqU1F5PWOalgVejg7E5Tk72Jn+oidz1FxJRmVAK7UmsxhX4wF81Lb0FwxACbOa9NmNfT15+JJvVafvR/b5pzXDXzDSf0jZaTgHrxDuOXx
-X-Gm-Message-State: AOJu0YxseOq/1cJquNYj/PCC+Gh5zfhRomPqrdiknSuI6uECFLQp94ew
-	y9WP6XZ2JysXOq6+/GEoADFVbn4+8fhz1kXjc8Rw/xIWQmhCjShyMdpM59KDIVFJGy8/Y60KQla
-	Obw5Jxq3y0d9dL/lX3sB0QqJDI2o=
-X-Google-Smtp-Source: AGHT+IF9CHspS/+4YIVUPThHfX60fsGTHH+icfepuaGZgKOX1lU41zLd0obIn/KQWOfp2D7L66KAVzHs3F7WzTa27BY=
-X-Received: by 2002:a0c:c783:0:b0:698:feb6:3d2 with SMTP id
- k3-20020a0cc783000000b00698feb603d2mr3792497qvj.10.1711938058772; Sun, 31 Mar
- 2024 19:20:58 -0700 (PDT)
+	s=arc-20240116; t=1711940408; c=relaxed/simple;
+	bh=UJxpacrwDaVWlcL6wdltxcCwbnV3A4usFHwLYbQpL4s=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=C/a4xl6oLvTeE4aYNhFilqcD4j43/9Tiq+1xwog94BzeoZAcI3XTH/caJukEtiFn41dNa6sJPUlJ/j2cocZ4fBLOypJAzyAzJH3ikLAks4/WbLAPJBvRRVQezRjbo3aY045eTvbpFIesgGOG6HxqL8SYh1Txx77Wo9yXxrocCTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=quaintcat.com; spf=pass smtp.mailfrom=quaintcat.com; dkim=pass (2048-bit key) header.d=quaintcat.com header.i=@quaintcat.com header.b=FAEL7gcu; arc=none smtp.client-ip=51.222.159.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=quaintcat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quaintcat.com
+Date: Sun, 31 Mar 2024 22:00:04 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx3.quaintcat.com 26A572004C31
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quaintcat.com;
+	s=mx3v3; t=1711940405;
+	bh=UJxpacrwDaVWlcL6wdltxcCwbnV3A4usFHwLYbQpL4s=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=FAEL7gcuUIGzbCqIKJZgHZtiVU1xjaS/CtJoIbDc/o2zA18R8qNebkIfUkmeWizvv
+	 FoOM4eD3dFQCcNva6qnja7dJ0YgViVzZUXNutxEtF8JGhfgg+Z9XR3mYk6FzMBb5ly
+	 gjayIoRlRW+RacsP2wY6akM6SRk5UARF9TcZtb6qbaD/KhJ9gAl6b74V4/1Wxhqsi8
+	 Aifvo6o85clBz+D5Zh9eXM8G0tsonKg0EXP2u6rgfT2zKb5MuQXF98hVgPAfI8TqQQ
+	 2Xxa5MM+5HwSc7gFhY9B/eHYfY6/0Zskt6z1nv3Ifjg9ZMoIip+G3MBHwbm8MHm2oC
+	 kWohaRgWV0hsQ==
+From: Andrei Gaponenko <beamflash@quaintcat.com>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+cc: Andrei Gaponenko <beamflash@quaintcat.com>, stable@vger.kernel.org
+Subject: Re: [REGRESSION] external monitor+Dell dock in 6.8
+In-Reply-To: <ce448389-bc61-4c71-85ca-e6c445e1a2bb@leemhuis.info>
+Message-ID: <2061d773-879b-2a5-809f-7918c5b85ca4@quaintcat.com>
+References: <22aa3878-62c7-9a2c-cfcc-303f373871f6@quaintcat.com> <e9e23151-66b4-4d4f-bf55-4b598515467c@leemhuis.info> <7543f75e-6a96-8114-cef9-779594a36460@quaintcat.com> <ce448389-bc61-4c71-85ca-e6c445e1a2bb@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325033515.814-1-jammy_huang@aspeedtech.com>
- <c04ebd16-f0b0-45be-a831-fae8b50b7011@redhat.com> <5df1d391-7683-4d9c-accc-9b446d46a150@suse.de>
-In-Reply-To: <5df1d391-7683-4d9c-accc-9b446d46a150@suse.de>
-From: =?UTF-8?B?6buD56uL6YqY?= <orbit.huang@gmail.com>
-Date: Mon, 1 Apr 2024 10:20:48 +0800
-Message-ID: <CAOj9kT3=UA-5wkVXb8Rk2h3D=vtZDbhzxe4MY=Nwzod96DeppA@mail.gmail.com>
-Subject: Re: [PATCH] drm/ast: Fix soft lockup
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, airlied@redhat.com, airlied@gmail.com, daniel@ffwll.ch, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	Jammy Huang <jammy_huang@aspeedtech.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 
-Hi Thomas and Jocelyn,
+Hi Thorsten,
 
-What we do in ast_dp_set_on_off() is a handshake between host driver
-and bmc-fw to confirm
-the operation, on/off, is completed.
+On Sun, 31 Mar 2024, Linux regression tracking (Thorsten Leemhuis) wrote:
 
-We use some scratch registers in bmc to handshake with host. This
-handshake only work if
-BMC's scu-lock is opened. If scu-lock is opened too late, then it
-could lead to this issue.
+> I see that it contains a warning from nouveau that might be hinting at
+> the problem. Then I'd say: go and file a ticket here:
+> https://gitlab.freedesktop.org/drm/nouveau/-/issues
 
-Best regards
-Jammy
+Working kernel versions issue a similar warning; I am not sure it it related to the regression.
+Perhaps I should file a report for it, but I want to deal with one issue at a time.
 
-Thomas Zimmermann <tzimmermann@suse.de> =E6=96=BC 2024=E5=B9=B43=E6=9C=8828=
-=E6=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8A=E5=8D=884:28=E5=AF=AB=E9=81=93=EF=BC=
-=9A
->
-> Hi
->
-> Am 27.03.24 um 09:53 schrieb Jocelyn Falempe:
-> > Hi,
-> >
-> > Thanks for your patch.
-> > I'm wondering how you can trigger this infinite loop ?
->
-> Yeah, a bit more context for this bug would be welcome. It's hard to
-> judge the fix without.
->
-> Best regards
-> Thomas
->
-> >
-> > Also this looks like a simple fix, that can be easily backported, so
-> > I'm adding stable in Cc.
-> >
-> > If Thomas has no objections, I can push it to drm-misc-fixes.
-> >
-> > Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-> >
->
->
->
-> --
-> --
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Frankenstrasse 146, 90461 Nuernberg, Germany
-> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-> HRB 36809 (AG Nuernberg)
->
+git bisect pointed to a range of drm/i915 commits, so I filed an updated regression report at
+https://gitlab.freedesktop.org/drm/intel/-/issues/10637
+
+Best regards,
+Andrei
 
