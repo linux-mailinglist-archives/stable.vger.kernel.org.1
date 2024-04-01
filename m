@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E018941CA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CB7894318
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B57161C217B3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA1D9B2115F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CFE482CA;
-	Mon,  1 Apr 2024 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10004481B8;
+	Mon,  1 Apr 2024 16:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBs1b+N6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+Pc7oTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742DD4653C;
-	Mon,  1 Apr 2024 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21A9BA3F;
+	Mon,  1 Apr 2024 16:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989963; cv=none; b=u5phT13tyW30nKFOmVRUWh00SkH0rLgGIB6w+baVxCBIaDna8f0siDvwVdra8a5IThknwRmRdviPbmkZGBSpAs9GiUCUvbarfpP3YjFLbZeI6Kx6uuCcGUpnMrwydO24FFQ6bt+1uC933g+o+681G3a0N4xGajIHNR7tQr6h50I=
+	t=1711990778; cv=none; b=LUgIfFrmSEcwPPHWC2H7SrBsDclS4MOmcLB48IkqKi69y5xoj1yXEluxBszDOivPTg+oDxXnOVBizMywFGzaRNIUmTjNaipeyqTB82f8CF5t6MidzmdAwfwhU/lHlvhTHuztVtZFxAvfAsdoeoGi8eh01QXlsdy9cBLl3bRleGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989963; c=relaxed/simple;
-	bh=O+hNula6jHbauuQNNY3m/K72XdtkNFqjwXOPZDx7+YU=;
+	s=arc-20240116; t=1711990778; c=relaxed/simple;
+	bh=aSK8MlPiarke8Z+fWxbx8JGg0bNa7qmyBEYEnaprNro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwp4+IJIx9G/fI7y6sTAxg/K+eGEqfDdOiAZHpb5ys77UYr1SrQp2xTMdIhZFnXef+qVQYmVke9REVcO3jhAzbL2HuE7F2UOGmNjNRBdICA3OJZDFydfjjrIsCWYeKJGM9FHZFCyGoQ8W7GPQUkI2/qyBc0IFUz5fRNWr3trXL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBs1b+N6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E1BC433C7;
-	Mon,  1 Apr 2024 16:46:02 +0000 (UTC)
+	 MIME-Version; b=h585kcpaHqpQ8f4Z32k+ipSceJTAa83UMHNJ3XOyLCd5Tk1hQP56eaLOvOUtSi3UQ2NZxnriBJ5HmHT91akh+zyf8PEc3ZlJG7PuNtylZQsRwtzSRsMgnmQUjOIRWOfhw2AUBPZflNWiqrGuk6OI9Cp1jX4GzWO1GciNyGesRYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+Pc7oTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA84C433F1;
+	Mon,  1 Apr 2024 16:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989963;
-	bh=O+hNula6jHbauuQNNY3m/K72XdtkNFqjwXOPZDx7+YU=;
+	s=korg; t=1711990778;
+	bh=aSK8MlPiarke8Z+fWxbx8JGg0bNa7qmyBEYEnaprNro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBs1b+N6Z3eaRYYTqIkZvk5ZPagVjXOMUosT03ESuLpyY8/wyLv3X9Yhb5xvn1iJ6
-	 4B9U/CIayTieS0NH113UhUp9mnvGjGrGi8BiaSB5OhjGnpnleOyyhlUTDDJDOe2vBX
-	 hpwFKtTSiOycXLOlTOEVyIipU3XRYsyQjR0iD22I=
+	b=a+Pc7oTzlco/OfV2Pr6jKlwiopjFuv5y+wdxRucy5W25Cbe6CHHdp4vs8fzlymtRJ
+	 Z37WoW2crpQxJk7EpvpQa0AabFHN9Ey1N4sL96oW140atlURm/vmG/4C8xKAuRM4GO
+	 PRFZVfdua53iTaNGUOUorf4lpDWE2DqAhjdsITPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.6 205/396] xfrm: Avoid clang fortify warning in copy_to_user_tmpl()
+	Toru Katagiri <Toru.Katagiri@tdk.com>,
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 064/272] USB: serial: cp210x: add pid/vid for TDK NC0110013M and MM0110113M
 Date: Mon,  1 Apr 2024 17:44:14 +0200
-Message-ID: <20240401152554.041912221@linuxfoundation.org>
+Message-ID: <20240401152532.547057335@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Toru Katagiri <Toru.Katagiri@tdk.com>
 
-commit 1a807e46aa93ebad1dfbed4f82dc3bf779423a6e upstream.
+[ Upstream commit b1a8da9ff1395c4879b4bd41e55733d944f3d613 ]
 
-After a couple recent changes in LLVM, there is a warning (or error with
-CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
-specifically the memset() in copy_to_user_tmpl().
+TDK NC0110013M and MM0110113M have custom USB IDs for CP210x,
+so we need to add them to the driver.
 
-  In file included from net/xfrm/xfrm_user.c:14:
-  ...
-  include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-    438 |                         __write_overflow_field(p_size_field, size);
-        |                         ^
-  1 error generated.
-
-While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
-is first assigned in copy_templates() by calling validate_tmpl() first
-(so there should not be any issue in practice), LLVM/clang cannot really
-deduce that across the boundaries of these functions. Without that
-knowledge, it cannot assume that the loop stops before i is greater than
-XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
-memset().
-
-To make the bounds of ->xfrm_nr clear to the compiler and add additional
-defense in case copy_to_user_tmpl() is ever used in a path where
-->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
-add an explicit bound check and early return, which clears up the
-warning.
-
+Signed-off-by: Toru Katagiri <Toru.Katagiri@tdk.com>
 Cc: stable@vger.kernel.org
-Link: https://github.com/ClangBuiltLinux/linux/issues/1985
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/serial/cp210x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2017,6 +2017,9 @@ static int copy_to_user_tmpl(struct xfrm
- 	if (xp->xfrm_nr == 0)
- 		return 0;
- 
-+	if (xp->xfrm_nr > XFRM_MAX_DEPTH)
-+		return -ENOBUFS;
-+
- 	for (i = 0; i < xp->xfrm_nr; i++) {
- 		struct xfrm_user_tmpl *up = &vec[i];
- 		struct xfrm_tmpl *kp = &xp->xfrm_vec[i];
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index e9ee8da8cc296..aa30288c8a8e0 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -56,6 +56,8 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x0471, 0x066A) }, /* AKTAKOM ACE-1001 cable */
+ 	{ USB_DEVICE(0x0489, 0xE000) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
+ 	{ USB_DEVICE(0x0489, 0xE003) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
++	{ USB_DEVICE(0x04BF, 0x1301) }, /* TDK Corporation NC0110013M - Network Controller */
++	{ USB_DEVICE(0x04BF, 0x1303) }, /* TDK Corporation MM0110113M - i3 Micro Module */
+ 	{ USB_DEVICE(0x0745, 0x1000) }, /* CipherLab USB CCD Barcode Scanner 1000 */
+ 	{ USB_DEVICE(0x0846, 0x1100) }, /* NetGear Managed Switch M4100 series, M5300 series, M7100 series */
+ 	{ USB_DEVICE(0x08e6, 0x5501) }, /* Gemalto Prox-PU/CU contactless smartcard reader */
+-- 
+2.43.0
+
 
 
 
