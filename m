@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-35098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB7F894267
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C384F89409B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259301F25798
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C66E283346
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0684CDE0;
-	Mon,  1 Apr 2024 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D44941C89;
+	Mon,  1 Apr 2024 16:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsGceGyA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqNdDSvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799684C630;
-	Mon,  1 Apr 2024 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF741E86C;
+	Mon,  1 Apr 2024 16:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990328; cv=none; b=IgTszo6aDLUwhdIUPF7mE70gkIr+W9yQWllcPhMvPPPu2ueMZl5gQ5sb7NU6zXg+l8FntPYaeU2PF2HelnST50upRNibvZM0hvEHF2er6B4fwyNFL05srPwtNaDMJ8gPg5uSh8LpajCbFLS7IoobI1C4sCdY1na1+mL55MS7Z6I=
+	t=1711989125; cv=none; b=qBnKNh15Aoxk20QK17rkoZlCMBmkHlCPU5uAxjZGPc7ypbv+RTS37LxNZpKUtIpJaseaQoXivw7x8nYmtZSJE75ACMutK7RG9NnChwgCTErhFlNzUhbBsWO82ofgzseCXczX/iqcBiLv8LmGzh5uj8Rbi/euey04+v6FlkfBkls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990328; c=relaxed/simple;
-	bh=75RKnO9YXd5gZDRse56JyfTLXw2cLdcL/OYl0afZF4M=;
+	s=arc-20240116; t=1711989125; c=relaxed/simple;
+	bh=I6A9Ra4VquZ75zF+/IHSbbg6mHgCpUTE+YmebGYZaZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzhcUuTPGUC/H/YYfxdG7gDgvtHRNRAQidT7XS+C17DuNI5OwBF1KaGtoyoY+LBuEFOzsfkEWtBl69A0RwNPXQ9vweup+kY7jDU570Fl/wTUMAYYU2FayuhhSjy86Uw4n0sTIxQzSHpNsszJAxdktWMfCe3Y3Lr+xE6MTU2R/4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsGceGyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952B9C433C7;
-	Mon,  1 Apr 2024 16:52:07 +0000 (UTC)
+	 MIME-Version; b=KxaV/bf6f9wK9IPvU/QTbhqSfHeiaixu1iABAGtfNIoowtsyypAZa26fGel+REuGnWX8hWGX8q/Jg/tr5waN8JzskEhHXqmeEy1+iH1/UiZY6ygt32wo2S+kz8nrbeLNM+p65/jsU7ctH86hxa7UMQACRTX5uezzdeb8/BOuWoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqNdDSvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58928C433F1;
+	Mon,  1 Apr 2024 16:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990328;
-	bh=75RKnO9YXd5gZDRse56JyfTLXw2cLdcL/OYl0afZF4M=;
+	s=korg; t=1711989125;
+	bh=I6A9Ra4VquZ75zF+/IHSbbg6mHgCpUTE+YmebGYZaZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsGceGyAPekmFyl4ll9WzWvwDW6aL4kMRopAAz3hR6+uRSxCg7GhQYsnjU4kTdwzZ
-	 piwd2yuATcKshRgc87OPAXPLvrwn2b38w3ywqzliyYRr3/p/62ME5RCykjnjZV1c5j
-	 xHebJ4nSG2q1ZDBVRWOtvn6sc89EYRgg/QBW5pPE=
+	b=JqNdDSvKZ6t735Url0wZb50nzDBBMlaCzPxq+1pZ3g70i8TCPDFV511QTwaqJKphu
+	 yRQbHRP7wbZ7GKsTkClvmYWLWOPgb//ho9VjdaRAfDDeJmbTDpFGBFFJx6cu5+ywjS
+	 Dde9HTiHdMnEkG1QNTXbgpiagTlFd3mHGfH8v5Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 318/396] btrfs: zoned: dont skip block groups with 100% zone unusable
-Date: Mon,  1 Apr 2024 17:46:07 +0200
-Message-ID: <20240401152557.393564478@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.7 381/432] usb: cdc-wdm: close race between read and workqueue
+Date: Mon,  1 Apr 2024 17:46:08 +0200
+Message-ID: <20240401152604.662674303@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit a8b70c7f8600bc77d03c0b032c0662259b9e615e upstream.
+commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
 
-Commit f4a9f219411f ("btrfs: do not delete unused block group if it may be
-used soon") changed the behaviour of deleting unused block-groups on zoned
-filesystems. Starting with this commit, we're using
-btrfs_space_info_used() to calculate the number of used bytes in a
-space_info. But btrfs_space_info_used() also accounts
-btrfs_space_info::bytes_zone_unusable as used bytes.
+wdm_read() cannot race with itself. However, in
+service_outstanding_interrupt() it can race with the
+workqueue, which can be triggered by error handling.
 
-So if a block group is 100% zone_unusable it is skipped from the deletion
-step.
+Hence we need to make sure that the WDM_RESPONDING
+flag is not just only set but tested.
 
-In order not to skip fully zone_unusable block-groups, also check if the
-block-group has bytes left that can be used on a zoned filesystem.
-
-Fixes: f4a9f219411f ("btrfs: do not delete unused block group if it may be used soon")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1562,7 +1562,8 @@ void btrfs_delete_unused_bgs(struct btrf
- 		 * needing to allocate extents from the block group.
- 		 */
- 		used = btrfs_space_info_used(space_info, true);
--		if (space_info->total_bytes - block_group->length < used) {
-+		if (space_info->total_bytes - block_group->length < used &&
-+		    block_group->zone_unusable < block_group->length) {
- 			/*
- 			 * Add a reference for the list, compensate for the ref
- 			 * drop under the "next" label for the
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -485,6 +485,7 @@ out_free_mem:
+ static int service_outstanding_interrupt(struct wdm_device *desc)
+ {
+ 	int rv = 0;
++	int used;
+ 
+ 	/* submit read urb only if the device is waiting for it */
+ 	if (!desc->resp_count || !--desc->resp_count)
+@@ -499,7 +500,10 @@ static int service_outstanding_interrupt
+ 		goto out;
+ 	}
+ 
+-	set_bit(WDM_RESPONDING, &desc->flags);
++	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
++	if (used)
++		goto out;
++
+ 	spin_unlock_irq(&desc->iuspin);
+ 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
+ 	spin_lock_irq(&desc->iuspin);
 
 
 
