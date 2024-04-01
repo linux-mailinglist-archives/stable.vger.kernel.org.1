@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-34547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5886E893FCC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0FC894152
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A95F1C213BB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 036EE282F5D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90214778C;
-	Mon,  1 Apr 2024 16:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4658A3B2A4;
+	Mon,  1 Apr 2024 16:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE0tqHAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVxQOfGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9739243AD6;
-	Mon,  1 Apr 2024 16:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF031481B8;
+	Mon,  1 Apr 2024 16:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988489; cv=none; b=XANrp+Dg5ZFvb7KGaQY1A2sUdvpVaIi+xaX/YvAJ1WbLsb11F8epPNmzqBQFmBWB0OfYdMGrGbAJC0XhfOxUrc6JGTh+Ltt173ybba9c90YVLs028yBJsQpEqTwUtXAVhHpiQS+MpbnmybdjsTkbx45SpMJwTaoqLbIZL/ZzGGQ=
+	t=1711989645; cv=none; b=AeajSw4NGcKjwTADZ4MSvUulQvBbEFFZYjoi7W/Eju6k3u8COEVjA/sucZZ5wZuzt4RrAulqTjAoGZNCP2fv2uDhqUQdawVJjB3xlzJcE2BKCtuDOS6vTQGOXLMTCzSbZsB5lbvJEYlmPO4Sp12eNC4R/1IbQfEXBpvhRgldrqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988489; c=relaxed/simple;
-	bh=r1c/k6yNnYzBmw/33EAokG2ZOCL+q1/l7vmLWI1HeEs=;
+	s=arc-20240116; t=1711989645; c=relaxed/simple;
+	bh=UM8RnadtpIG3qsly399S6c+WFVuvS3UgVMZeKlV1mOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aX52jxcrOSVgs1PRfNwojZEtQ76qrwGVY58SaXxmL/nFcd95bYKYdIjWvlurVRIcnxPTEHZ8iDARA5W9nUYSO75sL+cAasYLg4HzjTvYMnUZc4jh53LIQ7zSR5LArHl7qIWD9WkQwhkq+/EFJJmW+uPfI2dJOo2GRv2FJyxMqJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE0tqHAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30DDC433F1;
-	Mon,  1 Apr 2024 16:21:28 +0000 (UTC)
+	 MIME-Version; b=f5YfbAMedV92gzHEh88jQKTKoIMK46ohrmd2zozlPaZ4C7SKxKVIPpgYkkEkI7KCHm+Vw3wfeUsQsV84CwHqGkuw32QO32bGV+3oNNsiJMYLtiTEqqRkt68Rs4BSzXkDFnG3ms4NB3A8+NVbIuLNu4T0JYj/YzUi6u7AG91YEGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVxQOfGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9FCC433F1;
+	Mon,  1 Apr 2024 16:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988489;
-	bh=r1c/k6yNnYzBmw/33EAokG2ZOCL+q1/l7vmLWI1HeEs=;
+	s=korg; t=1711989644;
+	bh=UM8RnadtpIG3qsly399S6c+WFVuvS3UgVMZeKlV1mOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tE0tqHAIQf5SkWqXcRtJOeL03OkscT6lZi6A/GmT+7a5mHk4oTRTi46CRyQMT/WOB
-	 /PXy/DfFOqeSbatz6e4x662qj739apmxT33nSiav8CxnX1A/BGPJzESqmSSXouecvx
-	 ZcgOzjOR7odKSXlTGUjGWzuAMSSHvcouoTaac9qQ=
+	b=bVxQOfGATo9dZaHbeMPBFhxopjhwUmoY3phX7m8dNb+aYs5H50qJV3sLPNQiAIfvt
+	 MJVYD9DIRlUcbH/66IBeOSzcSnpcFLIN4p7KxraF8Whagx80YEtUQpAsJRXR1k21PJ
+	 jub5+5drWyA6l07IjooDoz1cWxelbZwB7XLAUcbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <qiang4.zhang@intel.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 171/432] memtest: use {READ,WRITE}_ONCE in memory scanning
-Date: Mon,  1 Apr 2024 17:42:38 +0200
-Message-ID: <20240401152558.248780855@linuxfoundation.org>
+Subject: [PATCH 6.6 110/396] phy: tegra: xusb: Add API to retrieve the port number of phy
+Date: Mon,  1 Apr 2024 17:42:39 +0200
+Message-ID: <20240401152551.198127405@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Zhang <qiang4.zhang@intel.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit 82634d7e24271698e50a3ec811e5f50de790a65f ]
+[ Upstream commit d843f031d9e90462253015bc0bd9e3852d206bf2 ]
 
-memtest failed to find bad memory when compiled with clang.  So use
-{WRITE,READ}_ONCE to access memory to avoid compiler over optimization.
+This patch introduces a new API, tegra_xusb_padctl_get_port_number,
+to the Tegra XUSB Pad Controller driver. This API is used to identify
+the USB port that is associated with a given PHY.
 
-Link: https://lkml.kernel.org/r/20240312080422.691222-1-qiang4.zhang@intel.com
-Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
+and returns the corresponding port number. If the PHY pointer is invalid,
+it returns -ENODEV.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20240307030328.1487748-2-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memtest.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/tegra/xusb.c       | 13 +++++++++++++
+ include/linux/phy/tegra/xusb.h |  1 +
+ 2 files changed, 14 insertions(+)
 
-diff --git a/mm/memtest.c b/mm/memtest.c
-index 32f3e9dda8370..c2c609c391199 100644
---- a/mm/memtest.c
-+++ b/mm/memtest.c
-@@ -51,10 +51,10 @@ static void __init memtest(u64 pattern, phys_addr_t start_phys, phys_addr_t size
- 	last_bad = 0;
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 142ebe0247cc0..983a6e6173bd2 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -1531,6 +1531,19 @@ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
+ }
+ EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_usb3_companion);
  
- 	for (p = start; p < end; p++)
--		*p = pattern;
-+		WRITE_ONCE(*p, pattern);
- 
- 	for (p = start; p < end; p++, start_phys_aligned += incr) {
--		if (*p == pattern)
-+		if (READ_ONCE(*p) == pattern)
- 			continue;
- 		if (start_phys_aligned == last_bad + incr) {
- 			last_bad += incr;
++int tegra_xusb_padctl_get_port_number(struct phy *phy)
++{
++	struct tegra_xusb_lane *lane;
++
++	if (!phy)
++		return -ENODEV;
++
++	lane = phy_get_drvdata(phy);
++
++	return lane->index;
++}
++EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_port_number);
++
+ MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
+ MODULE_DESCRIPTION("Tegra XUSB Pad Controller driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/phy/tegra/xusb.h b/include/linux/phy/tegra/xusb.h
+index 70998e6dd6fdc..6ca51e0080ec0 100644
+--- a/include/linux/phy/tegra/xusb.h
++++ b/include/linux/phy/tegra/xusb.h
+@@ -26,6 +26,7 @@ void tegra_phy_xusb_utmi_pad_power_down(struct phy *phy);
+ int tegra_phy_xusb_utmi_port_reset(struct phy *phy);
+ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
+ 					 unsigned int port);
++int tegra_xusb_padctl_get_port_number(struct phy *phy);
+ int tegra_xusb_padctl_enable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy,
+ 					   enum usb_device_speed speed);
+ int tegra_xusb_padctl_disable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy);
 -- 
 2.43.0
 
