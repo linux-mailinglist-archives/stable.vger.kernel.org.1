@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-34348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9B2893EF7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 548FA89438F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B168D1C21373
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 864F41C21E0B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B0547A57;
-	Mon,  1 Apr 2024 16:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3EF446B6;
+	Mon,  1 Apr 2024 17:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dQ0fubT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXl1A1nb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05C4446AC;
-	Mon,  1 Apr 2024 16:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C481DFF4;
+	Mon,  1 Apr 2024 17:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987817; cv=none; b=Tr9ro5JhH4bWRvT2KgErCsHB6jYOjQ2o6sHIv91QcBsZt3PDsWNoLbkxeMKXngKiMsjTaMgc7Q0Mch28FHrDC6BLpTh2Xsdkm4D6u3PIMWddwn3AG1I8BddKUbFMiBcG/MvAG+KDW2AdZVgsVrJ5R5/AnDWTOVwqXzh6nGMr4fE=
+	t=1711991112; cv=none; b=TpyNwfPSkWyFbwuInt5sJLInV9Gg23JxM74fC1ue0eIklJ2Id32ofH3lN3NUysP+XTwhRwbC1ebqopLKyZIM5K4Waj4LBBprDR+YGRyV3kmg1lz8nMbXapNa65q7o3e8OpaPtpYx8l+djtmdIQ+/IV7zBLALmMeHNxDh3QEKadE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987817; c=relaxed/simple;
-	bh=bZ1NYrgbzca19/cQTa391ZQ2PqL3gtXGaSqZQzpJOig=;
+	s=arc-20240116; t=1711991112; c=relaxed/simple;
+	bh=+NcE4/bcD3YuZsJ4GOexhfSP0OYEc5F2juJxTHFN37w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IwbmJsaRLmB2DFE5QiGzFxqxCjZGKV0/fhbZUk1K+TtwGt6skl4z45y+l6vIYpNaYAyglvcElbES+f3ADzimXi6TDbwvEmS5sDByikfIedr5FkJ6nlip9Z/1ZmnDRQH+HS4t1CyiGLTyZcD04jgJU3fzqCjIjrYVIqmwop0RYQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dQ0fubT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2CCC433C7;
-	Mon,  1 Apr 2024 16:10:16 +0000 (UTC)
+	 MIME-Version; b=HRqGQ3unEULpv2+IUPHwcEc/0QWu4MuwLHyW6K9nMvCBjJvyQBq9ADWnrkOvu7f1AU99y2y90kWReNHytnNLTIJh6/gAMFtXLur+/nEymrrolT9GDhuWiNnNPlWA6oTqtQ0cZ5t/WkDinJepzsVmwtH1UX++7cF5irkN4/GuKec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXl1A1nb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1613FC433C7;
+	Mon,  1 Apr 2024 17:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987817;
-	bh=bZ1NYrgbzca19/cQTa391ZQ2PqL3gtXGaSqZQzpJOig=;
+	s=korg; t=1711991112;
+	bh=+NcE4/bcD3YuZsJ4GOexhfSP0OYEc5F2juJxTHFN37w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dQ0fubT3y/F7lC0+arMNmklNJ6wYUa6UHNQBymAmE2J+EGMUx05FlkzPLs0I+vTd
-	 0TE9BcO4jnygQkG8GNUHYzk2ayGpJ1DDkOiHVvePGO8TZw+YY0joLHa5kCEoZqpNF+
-	 i+dRJBvy2mMW4Cliwn6KB/LbUDXfehYiG7FFtgiM=
+	b=IXl1A1nbR+RQxckF4JHGQf3iApAglBIBm7xje71RbNbXLx+lXyPWnoxZIvZaHyEUr
+	 fwm9THk+x9Dw8n+xFkyHFGMi+cMpY0dTldYN0mbcXTbXyLiiO4QTqVMt2ocoeglQPb
+	 hu32mBDvOEsVzVaz4GyNwticQElX9Fw/vm8gqc8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 389/399] drm/amd/display: fix IPX enablement
-Date: Mon,  1 Apr 2024 17:45:55 +0200
-Message-ID: <20240401152600.782939629@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Benjamin LaHaise <ben@communityfibre.ca>,
+	Eric Biggers <ebiggers@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 166/272] fs/aio: Check IOCB_AIO_RW before the struct aio_kiocb conversion
+Date: Mon,  1 Apr 2024 17:45:56 +0200
+Message-ID: <20240401152535.930316718@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +69,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 1202f794cdaa4f0ba6a456bc034f2db6cfcf5579 upstream.
+commit 961ebd120565cb60cebe21cb634fbc456022db4a upstream.
 
-We need to re-enable idle power optimizations after entering PSR. Since,
-we get kicked out of idle power optimizations before entering PSR
-(entering PSR requires us to write to DCN registers, which isn't allowed
-while we are in IPS).
+The first kiocb_set_cancel_fn() argument may point at a struct kiocb
+that is not embedded inside struct aio_kiocb. With the current code,
+depending on the compiler, the req->ki_ctx read happens either before
+the IOCB_AIO_RW test or after that test. Move the req->ki_ctx read such
+that it is guaranteed that the IOCB_AIO_RW test happens first.
 
-Fixes: a9b1a4f684b3 ("drm/amd/display: Add more checks for exiting idle in DC")
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Benjamin LaHaise <ben@communityfibre.ca>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Fixes: b820de741ae4 ("fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240304235715.3790858-1-bvanassche@acm.org
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c |    8 +++++---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.h |    2 +-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ fs/aio.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-@@ -141,9 +141,8 @@ bool amdgpu_dm_link_setup_psr(struct dc_
-  * amdgpu_dm_psr_enable() - enable psr f/w
-  * @stream: stream state
-  *
-- * Return: true if success
-  */
--bool amdgpu_dm_psr_enable(struct dc_stream_state *stream)
-+void amdgpu_dm_psr_enable(struct dc_stream_state *stream)
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -591,8 +591,8 @@ static int aio_setup_ring(struct kioctx
+ 
+ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
  {
- 	struct dc_link *link = stream->link;
- 	unsigned int vsync_rate_hz = 0;
-@@ -190,7 +189,10 @@ bool amdgpu_dm_psr_enable(struct dc_stre
- 	if (link->psr_settings.psr_version < DC_PSR_VERSION_SU_1)
- 		power_opt |= psr_power_opt_z10_static_screen;
+-	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
+-	struct kioctx *ctx = req->ki_ctx;
++	struct aio_kiocb *req;
++	struct kioctx *ctx;
+ 	unsigned long flags;
  
--	return dc_link_set_psr_allow_active(link, &psr_enable, false, false, &power_opt);
-+	dc_link_set_psr_allow_active(link, &psr_enable, false, false, &power_opt);
+ 	/*
+@@ -602,9 +602,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
+ 	if (!(iocb->ki_flags & IOCB_AIO_RW))
+ 		return;
+ 
++	req = container_of(iocb, struct aio_kiocb, rw);
 +
-+	if (link->ctx->dc->caps.ips_support)
-+		dc_allow_idle_optimizations(link->ctx->dc, true);
- }
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+ 		return;
  
- /*
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.h
-@@ -32,7 +32,7 @@
- #define AMDGPU_DM_PSR_ENTRY_DELAY 5
- 
- void amdgpu_dm_set_psr_caps(struct dc_link *link);
--bool amdgpu_dm_psr_enable(struct dc_stream_state *stream);
-+void amdgpu_dm_psr_enable(struct dc_stream_state *stream);
- bool amdgpu_dm_link_setup_psr(struct dc_stream_state *stream);
- bool amdgpu_dm_psr_disable(struct dc_stream_state *stream);
- bool amdgpu_dm_psr_disable_all(struct amdgpu_display_manager *dm);
++	ctx = req->ki_ctx;
++
+ 	spin_lock_irqsave(&ctx->ctx_lock, flags);
+ 	list_add_tail(&req->ki_list, &ctx->active_reqs);
+ 	req->ki_cancel = cancel;
 
 
 
