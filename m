@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-35445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849758943F8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E541894404
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BD8D283A03
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:10:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 599E6283A03
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280144AEE0;
-	Mon,  1 Apr 2024 17:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1D7482EF;
+	Mon,  1 Apr 2024 17:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEJVPNVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0WayKDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D825D47A64;
-	Mon,  1 Apr 2024 17:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A8921105;
+	Mon,  1 Apr 2024 17:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991421; cv=none; b=neFoDv5LmTqkjk3Olfqe9ExVuY2pUpDaTIvQ5JrMhk9Y1ZBXDolttwulZc/yUVCca6M4eCjE2MZox+NGtk7+T8/O0S0+/r90UMhTmRZiEC6EBLuafqhk1fYrVKxQHTnmjUQ4bAYoNsb+EWPW3g+izZIVaDVXvUqhQGWQ9e41gSk=
+	t=1711991456; cv=none; b=omwxhPfKDMDB8EpIzwhZI28RYwTqycB+PLpXo85KUoiz7/LeO1hkJBfT37tsbwl70eR1KfQgxJ+EYATqDYhmEffMXbNalFG5ufTU8zwQNvSfFg91fd0p7Hm3+d9jt8jh41G0ILUCfn0g12XbtC4uH5LcIKmixktyfSQtlxRPWeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991421; c=relaxed/simple;
-	bh=r+AgjK9cBi/7V5T6oWJqVCZJs6azaJ1jVFFWx0Cu+Xw=;
+	s=arc-20240116; t=1711991456; c=relaxed/simple;
+	bh=ZdWGTM4JEjWwo47mK1Ki8g/1P4jYu8jzbdLksjBUmrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhUK6+oRcT/SJGnJsd+ScK2P6+q0kW7S+pseBG7taZJpVJoVyGQVxF4vSrNEzkcuZ4gL5MybKtuFOBeD16rvO+EKl9eznwTb+IRVXR2uSlyOs1ZQcWkTrmr8NN6YZHyJ7Sh/oJt2Ki4+rUWfbQ4mVZeqQCHrDF/X+8oEVQgpkFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEJVPNVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AC0C433F1;
-	Mon,  1 Apr 2024 17:10:21 +0000 (UTC)
+	 MIME-Version; b=eMEYH6pfoMeiy9dq/DkUifGa7H4bDRJEllwECHAWT5UH8RC77NoFgAcXxAVjRDr6vth2A9sFY2fVF1HJmlZ/GLqdeyqVw4XlNmYBK80xLVU5ZIefUNgi55URn+815cfypnwD7dv/zCmDeFsfyxHMMyPKdpfk8WPU7j+RpmtF6Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0WayKDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A40C433C7;
+	Mon,  1 Apr 2024 17:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991421;
-	bh=r+AgjK9cBi/7V5T6oWJqVCZJs6azaJ1jVFFWx0Cu+Xw=;
+	s=korg; t=1711991456;
+	bh=ZdWGTM4JEjWwo47mK1Ki8g/1P4jYu8jzbdLksjBUmrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEJVPNVsnbojPH2+WIvQJjpHAOLDBMBEzzNSytrGO8M3SjARauevXExFVn7m/H3ES
-	 qD7l0nE47w/ihwUEBaET28OyhWg7+P7YF5mQ5GUrCxPGk34nixJUwSAMuC+F3C8OZM
-	 lca9W1/M+BT8pVYejqJyN+B5xhoud2vzMyyN0Fxc=
+	b=S0WayKDVi9MyIMILx1Ek0QdcINqmJKvE/nz8pTaJYBApzKaDKFdc1/rZ/UIWfAU+3
+	 Dp6aHFdDsM3DpjOEpKln20eN4a78S13Tv+r4mRVXe/TElzmghP3wmk9Nt/E/mc4SVa
+	 N+xiauSuHYhWO7GsF4rDecnA7zNiob6jcJJN5qJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 242/272] scsi: sd: Fix TCG OPAL unlock on system resume
-Date: Mon,  1 Apr 2024 17:47:12 +0200
-Message-ID: <20240401152538.530009120@linuxfoundation.org>
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 6.1 243/272] usb: dwc2: host: Fix remote wakeup from hibernation
+Date: Mon,  1 Apr 2024 17:47:13 +0200
+Message-ID: <20240401152538.570467796@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
 References: <20240401152530.237785232@linuxfoundation.org>
@@ -65,240 +64,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit 0c76106cb97548810214def8ee22700bbbb90543 upstream.
+commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
 
-Commit 3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop
-management") introduced the manage_system_start_stop scsi_device flag to
-allow libata to indicate to the SCSI disk driver that nothing should be
-done when resuming a disk on system resume. This change turned the
-execution of sd_resume() into a no-op for ATA devices on system
-resume. While this solved deadlock issues during device resume, this change
-also wrongly removed the execution of opal_unlock_from_suspend().  As a
-result, devices with TCG OPAL locking enabled remain locked and
-inaccessible after a system resume from sleep.
+Starting from core v4.30a changed order of programming
+GPWRDN_PMUACTV to 0 in case of exit from hibernation on
+remote wakeup signaling from device.
 
-To fix this issue, introduce the SCSI driver resume method and implement it
-with the sd_resume() function calling opal_unlock_from_suspend(). The
-former sd_resume() function is renamed to sd_resume_common() and modified
-to call the new sd_resume() function. For non-ATA devices, this result in
-no functional changes.
-
-In order for libata to explicitly execute sd_resume() when a device is
-resumed during system restart, the function scsi_resume_device() is
-introduced. libata calls this function from the revalidation work executed
-on devie resume, a state that is indicated with the new device flag
-ATA_DFLAG_RESUMING. Doing so, locked TCG OPAL enabled devices are unlocked
-on resume, allowing normal operation.
-
-Fixes: 3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop management")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218538
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240319071209.1179257-1-dlemoal@kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-eh.c    |    5 ++++-
- drivers/ata/libata-scsi.c  |    9 +++++++++
- drivers/scsi/scsi_scan.c   |   34 ++++++++++++++++++++++++++++++++++
- drivers/scsi/sd.c          |   25 +++++++++++++++++++++----
- include/linux/libata.h     |    1 +
- include/scsi/scsi_driver.h |    1 +
- include/scsi/scsi_host.h   |    1 +
- 7 files changed, 71 insertions(+), 5 deletions(-)
+ drivers/usb/dwc2/core.h |    1 +
+ drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -711,8 +711,10 @@ void ata_scsi_port_error_handler(struct
- 					ehc->saved_ncq_enabled |= 1 << devno;
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -1084,6 +1084,7 @@ struct dwc2_hsotg {
+ 	bool needs_byte_swap;
  
- 				/* If we are resuming, wake up the device */
--				if (ap->pflags & ATA_PFLAG_RESUMING)
-+				if (ap->pflags & ATA_PFLAG_RESUMING) {
-+					dev->flags |= ATA_DFLAG_RESUMING;
- 					ehc->i.dev_action[devno] |= ATA_EH_SET_ACTIVE;
-+				}
- 			}
- 		}
+ 	/* DWC OTG HW Release versions */
++#define DWC2_CORE_REV_4_30a	0x4f54430a
+ #define DWC2_CORE_REV_2_71a	0x4f54271a
+ #define DWC2_CORE_REV_2_72a     0x4f54272a
+ #define DWC2_CORE_REV_2_80a	0x4f54280a
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5610,10 +5610,12 @@ int dwc2_host_exit_hibernation(struct dw
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
  
-@@ -3089,6 +3091,7 @@ static int ata_eh_revalidate_and_attach(
- 	return 0;
- 
-  err:
-+	dev->flags &= ~ATA_DFLAG_RESUMING;
- 	*r_failed_dev = dev;
- 	return rc;
- }
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4652,6 +4652,7 @@ void ata_scsi_dev_rescan(struct work_str
- 	struct ata_link *link;
- 	struct ata_device *dev;
- 	unsigned long flags;
-+	bool do_resume;
- 	int ret = 0;
- 
- 	mutex_lock(&ap->scsi_scan_mutex);
-@@ -4673,7 +4674,15 @@ void ata_scsi_dev_rescan(struct work_str
- 			if (scsi_device_get(sdev))
- 				continue;
- 
-+			do_resume = dev->flags & ATA_DFLAG_RESUMING;
-+
- 			spin_unlock_irqrestore(ap->lock, flags);
-+			if (do_resume) {
-+				ret = scsi_resume_device(sdev);
-+				if (ret == -EWOULDBLOCK)
-+					goto unlock;
-+				dev->flags &= ~ATA_DFLAG_RESUMING;
-+			}
- 			ret = scsi_rescan_device(sdev);
- 			scsi_device_put(sdev);
- 			spin_lock_irqsave(ap->lock, flags);
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -1611,6 +1611,40 @@ int scsi_add_device(struct Scsi_Host *ho
- }
- EXPORT_SYMBOL(scsi_add_device);
- 
-+int scsi_resume_device(struct scsi_device *sdev)
-+{
-+	struct device *dev = &sdev->sdev_gendev;
-+	int ret = 0;
-+
-+	device_lock(dev);
-+
-+	/*
-+	 * Bail out if the device or its queue are not running. Otherwise,
-+	 * the rescan may block waiting for commands to be executed, with us
-+	 * holding the device lock. This can result in a potential deadlock
-+	 * in the power management core code when system resume is on-going.
-+	 */
-+	if (sdev->sdev_state != SDEV_RUNNING ||
-+	    blk_queue_pm_only(sdev->request_queue)) {
-+		ret = -EWOULDBLOCK;
-+		goto unlock;
+ 	/* De-assert Wakeup Logic */
+-	gpwrdn = dwc2_readl(hsotg, GPWRDN);
+-	gpwrdn &= ~GPWRDN_PMUACTV;
+-	dwc2_writel(hsotg, gpwrdn, GPWRDN);
+-	udelay(10);
++	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++		gpwrdn = dwc2_readl(hsotg, GPWRDN);
++		gpwrdn &= ~GPWRDN_PMUACTV;
++		dwc2_writel(hsotg, gpwrdn, GPWRDN);
++		udelay(10);
 +	}
-+
-+	if (dev->driver && try_module_get(dev->driver->owner)) {
-+		struct scsi_driver *drv = to_scsi_driver(dev->driver);
-+
-+		if (drv->resume)
-+			ret = drv->resume(dev);
-+		module_put(dev->driver->owner);
-+	}
-+
-+unlock:
-+	device_unlock(dev);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(scsi_resume_device);
-+
- int scsi_rescan_device(struct scsi_device *sdev)
- {
- 	struct device *dev = &sdev->sdev_gendev;
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -110,6 +110,7 @@ static int sd_suspend_system(struct devi
- static int sd_suspend_runtime(struct device *);
- static int sd_resume_system(struct device *);
- static int sd_resume_runtime(struct device *);
-+static int sd_resume(struct device *);
- static void sd_rescan(struct device *);
- static blk_status_t sd_init_command(struct scsi_cmnd *SCpnt);
- static void sd_uninit_command(struct scsi_cmnd *SCpnt);
-@@ -691,6 +692,7 @@ static struct scsi_driver sd_template =
- 		.pm		= &sd_pm_ops,
- 	},
- 	.rescan			= sd_rescan,
-+	.resume			= sd_resume,
- 	.init_command		= sd_init_command,
- 	.uninit_command		= sd_uninit_command,
- 	.done			= sd_done,
-@@ -3830,7 +3832,22 @@ static int sd_suspend_runtime(struct dev
- 	return sd_suspend_common(dev, true);
- }
  
--static int sd_resume(struct device *dev, bool runtime)
-+static int sd_resume(struct device *dev)
-+{
-+	struct scsi_disk *sdkp = dev_get_drvdata(dev);
-+
-+	if (sdkp->device->no_start_on_resume)
-+		sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
-+
-+	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
-+		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static int sd_resume_common(struct device *dev, bool runtime)
- {
- 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
- 	int ret = 0;
-@@ -3849,7 +3866,7 @@ static int sd_resume(struct device *dev,
- 	}
+ 	hprt0 = hr->hprt0;
+ 	hprt0 |= HPRT0_PWR;
+@@ -5638,6 +5640,13 @@ int dwc2_host_exit_hibernation(struct dw
+ 		hprt0 |= HPRT0_RES;
+ 		dwc2_writel(hsotg, hprt0, HPRT0);
  
- 	if (!ret) {
--		opal_unlock_from_suspend(sdkp->opal_dev);
-+		sd_resume(dev);
- 		sdkp->suspended = false;
- 	}
- 
-@@ -3868,7 +3885,7 @@ static int sd_resume_system(struct devic
- 		return 0;
- 	}
- 
--	return sd_resume(dev, false);
-+	return sd_resume_common(dev, false);
- }
- 
- static int sd_resume_runtime(struct device *dev)
-@@ -3892,7 +3909,7 @@ static int sd_resume_runtime(struct devi
- 				  "Failed to clear sense data\n");
- 	}
- 
--	return sd_resume(dev, true);
-+	return sd_resume_common(dev, true);
- }
- 
- /**
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -102,6 +102,7 @@ enum {
- 	ATA_DFLAG_NCQ_SEND_RECV = (1 << 19), /* device supports NCQ SEND and RECV */
- 	ATA_DFLAG_NCQ_PRIO	= (1 << 20), /* device supports NCQ priority */
- 	ATA_DFLAG_NCQ_PRIO_ENABLED = (1 << 21), /* Priority cmds sent to dev */
-+	ATA_DFLAG_RESUMING	= (1 << 22),  /* Device is resuming */
- 	ATA_DFLAG_INIT_MASK	= (1 << 24) - 1,
- 
- 	ATA_DFLAG_DETACH	= (1 << 24),
---- a/include/scsi/scsi_driver.h
-+++ b/include/scsi/scsi_driver.h
-@@ -12,6 +12,7 @@ struct request;
- struct scsi_driver {
- 	struct device_driver	gendrv;
- 
-+	int (*resume)(struct device *);
- 	void (*rescan)(struct device *);
- 	blk_status_t (*init_command)(struct scsi_cmnd *);
- 	void (*uninit_command)(struct scsi_cmnd *);
---- a/include/scsi/scsi_host.h
-+++ b/include/scsi/scsi_host.h
-@@ -752,6 +752,7 @@ extern int __must_check scsi_add_host_wi
- 					       struct device *,
- 					       struct device *);
- extern void scsi_scan_host(struct Scsi_Host *);
-+extern int scsi_resume_device(struct scsi_device *sdev);
- extern int scsi_rescan_device(struct scsi_device *sdev);
- extern void scsi_remove_host(struct Scsi_Host *);
- extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
++		/* De-assert Wakeup Logic */
++		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++			gpwrdn = dwc2_readl(hsotg, GPWRDN);
++			gpwrdn &= ~GPWRDN_PMUACTV;
++			dwc2_writel(hsotg, gpwrdn, GPWRDN);
++			udelay(10);
++		}
+ 		/* Wait for Resume time and then program HPRT again */
+ 		mdelay(100);
+ 		hprt0 &= ~HPRT0_RES;
 
 
 
