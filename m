@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D668C893F76
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0480D894138
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9093928450F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1FDD281063
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D2C446AC;
-	Mon,  1 Apr 2024 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639323B2A4;
+	Mon,  1 Apr 2024 16:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErAUtYJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8GE5aq2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DBD1DFFC;
-	Mon,  1 Apr 2024 16:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EDE1E86C;
+	Mon,  1 Apr 2024 16:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988216; cv=none; b=SZrHkUAKmHNM0S8v02BrPR1Jwc36Ds+bpI3odeRx/ApC7uhqcI87L5bZC1Yp5wGe2VmSxpRymYt7vui/MoLobB4iGf3bsgMUVtcoPpt9igmeSn5714m0zXrLESxAH/2iCNH4MyNm2/TaZnN9I+691sdPIeMqo5FquysIS1eSCS4=
+	t=1711989558; cv=none; b=Z0f8HUCueSXTaStoWHP81QIRRlc43/wFPMhvwKptIkQgsRSYhJzttbV53OZ538KfI8ycRuAcS0t0FIIIAO0wGvEHraedMzgfWh8aLpcxdhx66J7jIw/Ph1HLdxLjq8YIAfA/OZiA/e1aVuu+voYQwzM+0sMcfGt7KBETuDBJ75w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988216; c=relaxed/simple;
-	bh=wl5lQRMz41N7ru8vgclEMR6HIpfqgVnr0uuJz0ZlJ0s=;
+	s=arc-20240116; t=1711989558; c=relaxed/simple;
+	bh=heTXu2o9gZIjWww33o8cyqrJqmDhcoK94aD1N+obpG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9BNqZugmW4mYehKWyLwh7AJkoghoDHKuJNbwjikm22cOSzynx8fj8418sK2g5t3y42yCVB7m9BCWH+GrmS2shrn2KsECj+T3rDGEXHhnIZHGqaMRcrWWomZsTXYx8Q0geojcFjwLIwHnNGocXx+S+WdTiUVRmi0jx6NnzF2eWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErAUtYJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81DDC433F1;
-	Mon,  1 Apr 2024 16:16:55 +0000 (UTC)
+	 MIME-Version; b=SxqX9Mazny1BVui2sCEzCHTtiByELmicCp57yzKKJHguDJp2beLEySHA/zsU4OmUHRS2y5qv59A4Xd9/JiVumrVr5uuD4nGsBU1cYO9QlaGCYHGv9oS1zaoeDJ14YMB2WDWGePrF2n8nSRB5bdMVM4ZrKeWTjfSCAiL6jBXe4tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8GE5aq2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EF0C433C7;
+	Mon,  1 Apr 2024 16:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988216;
-	bh=wl5lQRMz41N7ru8vgclEMR6HIpfqgVnr0uuJz0ZlJ0s=;
+	s=korg; t=1711989558;
+	bh=heTXu2o9gZIjWww33o8cyqrJqmDhcoK94aD1N+obpG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ErAUtYJtFO8iLBsY+2rO4VkWWwnEo8VzvnqnkrNeAutP+RpjC7YZu1vVeF7GL9b8d
-	 TjZAvxCU5DCswtFU7WXFQMs227BmFlbcPdJjCSv1Ahqos6bzCv75du7s44JCTjnhkJ
-	 lSJxI7ePNdNG4AJXyOgtSD+jlsCixb+P5NdzdnwM=
+	b=b8GE5aq2Lz7GXS86rJe4dV5HH2jHtANRZjf9K+ankULNlADs/jikHIenCF2HDpwmR
+	 7+yyCC5hfPkO50Rg2BpV828PewQckDaHWwUniXHGHYU29OK3ImLd+OTBZnLFw7R+n8
+	 38swc68/hn/Pk53dV59DqvlgV3jdod1PyYrQ4Rq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 119/432] hwmon: (amc6821) add of_match table
+Subject: [PATCH 6.6 057/396] parisc: Fix csum_ipv6_magic on 64-bit systems
 Date: Mon,  1 Apr 2024 17:41:46 +0200
-Message-ID: <20240401152556.673709049@linuxfoundation.org>
+Message-ID: <20240401152549.625449062@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 3f003fda98a7a8d5f399057d92e6ed56b468657c ]
+[ Upstream commit 4b75b12d70506e31fc02356bbca60f8d5ca012d0 ]
 
-Add of_match table for "ti,amc6821" compatible string.
-This fixes automatic driver loading by userspace when using device-tree,
-and if built as a module like major linux distributions do.
+hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
+operations. The last add folds protocol and length fields into the 64-bit
+result. While unlikely, this operation can overflow. The overflow can be
+triggered with a code sequence such as the following.
 
-While devices probe just fine with i2c_device_id table, userspace can't
-match the "ti,amc6821" compatible string from dt with the plain
-"amc6821" device id. As a result, the kernel module can not be loaded.
+	/* try to trigger massive overflows */
+	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
+	csum_result = csum_ipv6_magic((struct in6_addr *)tmp_buf,
+				      (struct in6_addr *)tmp_buf,
+				      0xffff, 0xff, 0xffffffff);
 
+Fix the problem by adding any overflows from the final add operation into
+the calculated checksum. Fortunately, we can do this without additional
+cost by replacing the add operation used to fold the checksum into 32 bit
+with "add,dc" to add in the missing carry.
+
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Link: https://lore.kernel.org/r/20240307-amc6821-of-match-v1-1-5f40464a3110@solid-run.com
-[groeck: Cleaned up patch description]
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/amc6821.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/parisc/include/asm/checksum.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/amc6821.c b/drivers/hwmon/amc6821.c
-index 2a7a4b6b00942..9b02b304c2f5d 100644
---- a/drivers/hwmon/amc6821.c
-+++ b/drivers/hwmon/amc6821.c
-@@ -934,10 +934,21 @@ static const struct i2c_device_id amc6821_id[] = {
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index e619e67440db9..c949aa20fa162 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -137,8 +137,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
+ "	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
+ "	depdi		0, 31, 32, %0\n"/* clear upper half */
+-"	add		%4, %0, %0\n"	/* fold into 32-bits */
+-"	addc		0, %0, %0\n"	/* add carry */
++"	add,dc		%4, %0, %0\n"	/* fold into 32-bits, plus carry */
++"	addc		0, %0, %0\n"	/* add final carry */
  
- MODULE_DEVICE_TABLE(i2c, amc6821_id);
+ #else
  
-+static const struct of_device_id __maybe_unused amc6821_of_match[] = {
-+	{
-+		.compatible = "ti,amc6821",
-+		.data = (void *)amc6821,
-+	},
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(of, amc6821_of_match);
-+
- static struct i2c_driver amc6821_driver = {
- 	.class = I2C_CLASS_HWMON,
- 	.driver = {
- 		.name	= "amc6821",
-+		.of_match_table = of_match_ptr(amc6821_of_match),
- 	},
- 	.probe = amc6821_probe,
- 	.id_table = amc6821_id,
 -- 
 2.43.0
 
