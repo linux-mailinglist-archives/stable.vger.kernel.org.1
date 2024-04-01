@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-34700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F2289406F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A802189437F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C21DC1C2159B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48AECB21513
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3337481B4;
-	Mon,  1 Apr 2024 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DE2446B6;
+	Mon,  1 Apr 2024 17:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzhbfihS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5sXDJHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25F047A62;
-	Mon,  1 Apr 2024 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82119482E4;
+	Mon,  1 Apr 2024 17:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989002; cv=none; b=fpwhFJu3qAwiOcZBPu3XKMany96CUU5I8iyzx2SnYVM6eIyGYCvBDBmDh2DCTXvpoKbMae0PAqS2gIEEJZ4TS6aDVr8jn5j8MT5H+fOYD82EfGaWkpE/RCHVpbNh1T/mw2SrtvjxpLdUTAtC7W5FcMgVcmXlncSVLA43vJV+ot4=
+	t=1711991059; cv=none; b=SJCZqwmLT1a3tpKcejz1jEiDql7sN6nnk3XPfN4jrJE2xxL+Y2J1WvFnLFIozYLMITQLJVBauW+Ag8v233eelsa7+EiSTOBs4ULUIC4CG8a+KE3hLtT2WvJ3aLaIfi58UQ7Mx7P78xi8Vm/wNwKgY0OEYxvU85U81jT77bbQ9Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989002; c=relaxed/simple;
-	bh=Q/9cKqpcE7RM9dNPmNNo3RMkWivwAnQuIIwbshVXlMs=;
+	s=arc-20240116; t=1711991059; c=relaxed/simple;
+	bh=/lTJK/KFtQBdJG+xRN2rGCDPTwr/H08LHnkCs76omdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKocUJmcuh4j+pPnR61gNu2b87iIqWkMls3Qm8nwoJU0aAQ27O7WBiqfDI2OhILU7Kv+vycIJwjUT44TmQWF/ZvpMqk+OYX1+0BtIzM+Ptj34aaseMc2N5Fe/UdaK7SopLgjBKTo6NFovC+vtxmYBLg+vrqtOPNOQCqbgHyoY3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzhbfihS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04595C433F1;
-	Mon,  1 Apr 2024 16:30:01 +0000 (UTC)
+	 MIME-Version; b=pTKzNKQDH5sjiRbnNW/MCUKQkX2WJ6kxCoFV23k+X84EoE2t+iRAyLcyWnFlZkXJzO5CutzyWg+hjAuPVSJQUVu6OxkkuzEIR+GhehYG2d4XupIN5ugy3hcJCl+ZhGeWMGCG9zx6q8rIuaDI7nY/2SqfqeYHHhdXxh6jKtQsBV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5sXDJHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89D0C433F1;
+	Mon,  1 Apr 2024 17:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989002;
-	bh=Q/9cKqpcE7RM9dNPmNNo3RMkWivwAnQuIIwbshVXlMs=;
+	s=korg; t=1711991059;
+	bh=/lTJK/KFtQBdJG+xRN2rGCDPTwr/H08LHnkCs76omdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzhbfihSZ9cgulgwm53G6XBexmPxBsODcbpMVn6jQVfzQCINTtGT/Zr28pRhuZztE
-	 XneeDzfZq87mj2KBSx5wymBq2TVoXbi/fMa4jq3E6F19Buhsx7mMkh2lqyx+7M7oh/
-	 Lrho16eRmCw+ru7eMQ6IL8IkD4bmY7fRfqRwaVtk=
+	b=O5sXDJHFld4kIiCcB+7l9QffrzyOqkd8goH6vYm8GFbZkpewMAkhpW93CQnA0ly/C
+	 1nY2jL0Oh6Tfl8ieyZVB812LJ0iMTY+MS4bO6bDrftFG1oOUlsiHh9yt3RR7wD19bn
+	 w+5xBMrq+g+J0qFr8QLqwFpedw51NsrllWxBce40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Hector Martin <marcan@marcan.st>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 6.7 324/432] perf top: Use evsels cpus to replace user_requested_cpus
+	Damien Le Moal <dlemoal@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Zhiguo Niu <Zhiguo.Niu@unisoc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 121/272] Revert "block/mq-deadline: use correct way to throttling write requests"
 Date: Mon,  1 Apr 2024 17:45:11 +0200
-Message-ID: <20240401152602.862295840@linuxfoundation.org>
+Message-ID: <20240401152534.445769486@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 5fa695e7da4975e8d21ce49f3718d6cf00ecb75e upstream.
+[ Upstream commit 256aab46e31683d76d45ccbedc287b4d3f3e322b ]
 
-perf top errors out on a hybrid machine
- $perf top
+The code "max(1U, 3 * (1U << shift)  / 4)" comes from the Kyber I/O
+scheduler. The Kyber I/O scheduler maintains one internal queue per hwq
+and hence derives its async_depth from the number of hwq tags. Using
+this approach for the mq-deadline scheduler is wrong since the
+mq-deadline scheduler maintains one internal queue for all hwqs
+combined. Hence this revert.
 
- Error:
- The cycles:P event is not supported.
-
-The perf top expects that the "cycles" is collected on all CPUs in the
-system. But for hybrid there is no single "cycles" event which can cover
-all CPUs. Perf has to split it into two cycles events, e.g.,
-cpu_core/cycles/ and cpu_atom/cycles/. Each event has its own CPU mask.
-If a event is opened on the unsupported CPU. The open fails. That's the
-reason of the above error out.
-
-Perf should only open the cycles event on the corresponding CPU. The
-commit ef91871c960e ("perf evlist: Propagate user CPU maps intersecting
-core PMU maps") intersect the requested CPU map with the CPU map of the
-PMU. Use the evsel's cpus to replace user_requested_cpus.
-
-The evlist's threads are also propagated to the evsel's threads in
-__perf_evlist__propagate_maps(). For a system-wide event, perf appends
-a dummy event and assign it to the evsel's threads. For a per-thread
-event, the evlist's thread_map is assigned to the evsel's threads. The
-same as the other tools, e.g., perf record, using the evsel's threads
-when opening an event.
-
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Hector Martin <marcan@marcan.st>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Closes: https://lore.kernel.org/linux-perf-users/ZXNnDrGKXbEELMXV@kernel.org/
-Link: https://lore.kernel.org/r/20231214144612.1092028-1-kan.liang@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Zhiguo Niu <Zhiguo.Niu@unisoc.com>
+Fixes: d47f9717e5cf ("block/mq-deadline: use correct way to throttling write requests")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240313214218.1736147-1-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block/mq-deadline.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1027,8 +1027,8 @@ static int perf_top__start_counters(stru
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index 55e26065c2e27..f10c2a0d18d41 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -622,9 +622,8 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
+ 	struct request_queue *q = hctx->queue;
+ 	struct deadline_data *dd = q->elevator->elevator_data;
+ 	struct blk_mq_tags *tags = hctx->sched_tags;
+-	unsigned int shift = tags->bitmap_tags.sb.shift;
  
- 	evlist__for_each_entry(evlist, counter) {
- try_again:
--		if (evsel__open(counter, top->evlist->core.user_requested_cpus,
--				     top->evlist->core.threads) < 0) {
-+		if (evsel__open(counter, counter->core.cpus,
-+				counter->core.threads) < 0) {
+-	dd->async_depth = max(1U, 3 * (1U << shift)  / 4);
++	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
  
- 			/*
- 			 * Specially handle overwrite fall back.
+ 	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
+ }
+-- 
+2.43.0
+
 
 
 
