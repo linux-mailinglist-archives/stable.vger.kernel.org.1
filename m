@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-35204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13C98942E3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F3893FD4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C74D28376B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E6041C20FFF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FDE2481D1;
-	Mon,  1 Apr 2024 16:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20364778E;
+	Mon,  1 Apr 2024 16:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRpbcsC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvYJ4q/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA912EB0B;
-	Mon,  1 Apr 2024 16:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7015D446AC;
+	Mon,  1 Apr 2024 16:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990637; cv=none; b=cVdFLj+sGQOLHgNQuO8aJRLjPcW9hOx5nyPhH6ODDZxi00NNebMSOjBMhWSNbcv6L0bBine6r7gCTe4gYw2BavEeNEgNfNvFPsicgg3vaUCLBgYwvWcP3SP2ZJCUSUasSs7jbq5PaocUpL/gpMkPdNaLTeIlZz6OcMgdVjKnw+c=
+	t=1711988512; cv=none; b=ZRNEo5+LS1BvvOuzoZhZPX8o/xX7f3JFQLyN/dcsbIKtIIOaAfT9hzoWR6BBd0QSwp9vBm86YWuJE9WC8iX+vV917NXONVJLqlKb/4VwE5YMmel9gwLEiMb3lHjaYO8nHMtDri3kAkxn7t6if7Ax20SnD2xn1vIKj2DtiutQE00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990637; c=relaxed/simple;
-	bh=VUNeQIUpjuFmsmAaMXvkI93ruRNTJgJQdEvsFipQl0c=;
+	s=arc-20240116; t=1711988512; c=relaxed/simple;
+	bh=9jqZ2k0fL1UKgwwaqczpBetiuJ0XnxaQeDdslulflxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qB0Y62mKnStJyuSKEF07ApuZXZ3qctC1PA7TKDHsxbTrrgnzCf5BT1IW37sBhJW9vXdU995AhS9ghXZ/7TpbPrK8rE45O8/kFKSMk7BizsjgA5ZYCp7eEgM0IixjihRqpDjkoPy7MUF9nWCT7VkDk4kdjML3QU18K2R2eluOWQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRpbcsC/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2FDC433F1;
-	Mon,  1 Apr 2024 16:57:17 +0000 (UTC)
+	 MIME-Version; b=KDo/B8aelcHd98id8HBintkN5TDZKhzfwWcWU30KIKvyZpyUUAeDgidUWGE5wztyNzPYv1p68kIugrH1kV9OkNburP4Bsxdgbw97FWWETzmEvFHwoqS5zfTnSEEds7vZuWef4ljypTZ437D2aXoIgu/5jO675Ey59RI/Yz1FFYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvYJ4q/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C75C433C7;
+	Mon,  1 Apr 2024 16:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990637;
-	bh=VUNeQIUpjuFmsmAaMXvkI93ruRNTJgJQdEvsFipQl0c=;
+	s=korg; t=1711988512;
+	bh=9jqZ2k0fL1UKgwwaqczpBetiuJ0XnxaQeDdslulflxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRpbcsC/cqikTSjHmk2SyqKPbYcDPHw+xK8MNkgeGBiMvkCzV+pOdnjnXFib8E9Hi
-	 q87bvCctnMavtYuYJZ5mC61vgwB3Q63Kos5oX4k5lsuf7Rr8meNXE6D7j//maHkkHz
-	 VGCk4rcwBO9iSxXmvWYKQOKPh337gd6B4QDaafOM=
+	b=BvYJ4q/fGdUQfurhZ4djEahYze+15DQ++meDZqoo0eigUeBll65ggMkcBZy+pQN8K
+	 Ofv7tb6/JK8eSamuom74bsRIp4iFNTaqtGhT0RcleagtnoRgylx2FCwN9b5od9Rsa/
+	 un/JpBc+Dy7l4prGtCSqKc0AsYLKpsZ0E8zly3Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 003/272] KVM: x86: Update KVM-only leaf handling to allow for 100% KVM-only leafs
-Date: Mon,  1 Apr 2024 17:43:13 +0200
-Message-ID: <20240401152530.357225902@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Swapnil Patel <swapnil.patel@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 207/432] drm/amd/display: Change default size for dummy plane in DML2
+Date: Mon,  1 Apr 2024 17:43:14 +0200
+Message-ID: <20240401152559.308284066@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Swapnil Patel <swapnil.patel@amd.com>
 
-commit 047c7229906152fb85c23dc18fd25a00cd7cb4de upstream.
+[ Upstream commit 75eb8f7df65c5e6eb22a5aff8deb60ce0b65de1a ]
 
-Rename kvm_cpu_cap_init_scattered() to kvm_cpu_cap_init_kvm_defined() in
-anticipation of adding KVM-only CPUID leafs that aren't recognized by the
-kernel and thus not scattered, i.e. for leafs that are 100% KVM-defined.
+[WHY & HOW]
+Currently, to map dc states into dml_display_cfg,
+We create a dummy plane if the stream doesn't have any planes
+attached to it. This dummy plane uses max addersable width height.
+This results in certain mode validations failing when they shouldn't.
 
-Adjust/add comments to kvm_only_cpuid_leafs and KVM_X86_FEATURE to
-document how to create new kvm_only_cpuid_leafs entries for scattered
-features as well as features that are entirely unknown to the kernel.
-
-No functional change intended.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20221125125845.1182922-3-jiaxi.chen@linux.intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/cpuid.c         |    8 ++++----
- arch/x86/kvm/reverse_cpuid.h |   18 +++++++++++++++---
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ .../display/dc/dml2/dml2_translation_helper.c  | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -535,9 +535,9 @@ static __always_inline void __kvm_cpu_ca
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+index 16452dae4acac..5ef8c2e255808 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -824,13 +824,25 @@ static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state
  
- static __always_inline
--void kvm_cpu_cap_init_scattered(enum kvm_only_cpuid_leafs leaf, u32 mask)
-+void kvm_cpu_cap_init_kvm_defined(enum kvm_only_cpuid_leafs leaf, u32 mask)
+ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_stream_state *in)
  {
--	/* Use kvm_cpu_cap_mask for non-scattered leafs. */
-+	/* Use kvm_cpu_cap_mask for leafs that aren't KVM-only. */
- 	BUILD_BUG_ON(leaf < NCAPINTS);
++	dml_uint_t width, height;
++
++	if (in->timing.h_addressable > 3840)
++		width = 3840;
++	else
++		width = in->timing.h_addressable;	// 4K max
++
++	if (in->timing.v_addressable > 2160)
++		height = 2160;
++	else
++		height = in->timing.v_addressable;	// 4K max
++
+ 	out->CursorBPP[location] = dml_cur_32bit;
+ 	out->CursorWidth[location] = 256;
  
- 	kvm_cpu_caps[leaf] = mask;
-@@ -547,7 +547,7 @@ void kvm_cpu_cap_init_scattered(enum kvm
+ 	out->GPUVMMinPageSizeKBytes[location] = 256;
  
- static __always_inline void kvm_cpu_cap_mask(enum cpuid_leafs leaf, u32 mask)
- {
--	/* Use kvm_cpu_cap_init_scattered for scattered leafs. */
-+	/* Use kvm_cpu_cap_init_kvm_defined for KVM-only leafs. */
- 	BUILD_BUG_ON(leaf >= NCAPINTS);
+-	out->ViewportWidth[location] = in->timing.h_addressable;
+-	out->ViewportHeight[location] = in->timing.v_addressable;
++	out->ViewportWidth[location] = width;
++	out->ViewportHeight[location] = height;
+ 	out->ViewportStationary[location] = false;
+ 	out->ViewportWidthChroma[location] = 0;
+ 	out->ViewportHeightChroma[location] = 0;
+@@ -849,7 +861,7 @@ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned
+ 	out->HTapsChroma[location] = 0;
+ 	out->VTapsChroma[location] = 0;
+ 	out->SourceScan[location] = dml_rotation_0;
+-	out->ScalerRecoutWidth[location] = in->timing.h_addressable;
++	out->ScalerRecoutWidth[location] = width;
  
- 	kvm_cpu_caps[leaf] &= mask;
-@@ -656,7 +656,7 @@ void kvm_set_cpu_caps(void)
- 		F(XSAVEOPT) | F(XSAVEC) | F(XGETBV1) | F(XSAVES) | f_xfd
- 	);
+ 	out->LBBitPerPixel[location] = 57;
  
--	kvm_cpu_cap_init_scattered(CPUID_12_EAX,
-+	kvm_cpu_cap_init_kvm_defined(CPUID_12_EAX,
- 		SF(SGX1) | SF(SGX2)
- 	);
- 
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -7,9 +7,9 @@
- #include <asm/cpufeatures.h>
- 
- /*
-- * Hardware-defined CPUID leafs that are scattered in the kernel, but need to
-- * be directly used by KVM.  Note, these word values conflict with the kernel's
-- * "bug" caps, but KVM doesn't use those.
-+ * Hardware-defined CPUID leafs that are either scattered by the kernel or are
-+ * unknown to the kernel, but need to be directly used by KVM.  Note, these
-+ * word values conflict with the kernel's "bug" caps, but KVM doesn't use those.
-  */
- enum kvm_only_cpuid_leafs {
- 	CPUID_12_EAX	 = NCAPINTS,
-@@ -18,6 +18,18 @@ enum kvm_only_cpuid_leafs {
- 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
- };
- 
-+/*
-+ * Define a KVM-only feature flag.
-+ *
-+ * For features that are scattered by cpufeatures.h, __feature_translate() also
-+ * needs to be updated to translate the kernel-defined feature into the
-+ * KVM-defined feature.
-+ *
-+ * For features that are 100% KVM-only, i.e. not defined by cpufeatures.h,
-+ * forego the intermediate KVM_X86_FEATURE and directly define X86_FEATURE_* so
-+ * that X86_FEATURE_* can be used in KVM.  No __feature_translate() handling is
-+ * needed in this case.
-+ */
- #define KVM_X86_FEATURE(w, f)		((w)*32 + (f))
- 
- /* Intel-defined SGX sub-features, CPUID level 0x12 (EAX). */
+-- 
+2.43.0
+
 
 
 
