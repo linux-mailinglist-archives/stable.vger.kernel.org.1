@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-34836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6E5894119
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23557893F58
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E39B7B224A6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEC431F226D7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273291E525;
-	Mon,  1 Apr 2024 16:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55A7481BF;
+	Mon,  1 Apr 2024 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQgnVLze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itoWY/Oc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D980838DD8;
-	Mon,  1 Apr 2024 16:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1ED47A6A;
+	Mon,  1 Apr 2024 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989461; cv=none; b=exWz2P1aO0IBPHtt8ulnJF16nPOJ/ir0VpZIyk/JuaNs88rCmIfgr3QARqrtj7C7XJDAFrBsBVMIcMVjsjfHADs4p5RXAhicSneWit+cJNItTh+yGJCq+HtHPbdWl+R8GRjE0ZiXwMznS1IMiA0AXtd5jR9QTQ+Pm+DqmRResEY=
+	t=1711988115; cv=none; b=BGInLAA64vCytpfA1fg8pvEoG1WFzZXkFDGoyu/rek3zrNk26G/K3wUy+Z3xZzWmGQK9/qnh2b8OGK+Gab+VVBD5LFBJ4oy+oIzOXTsM7sQJLv+X0kdyjS/TTwEQZ/z8ExSkgGjagpOe9BNuuBgimSMSRtzHhcomD+ZAIJoExHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989461; c=relaxed/simple;
-	bh=PUog2+80WmatoqEymRT2IawYChZLpqWDPK4s+H0lg+E=;
+	s=arc-20240116; t=1711988115; c=relaxed/simple;
+	bh=xO7LL+7CVDxzIMZvB3FwUZ0peC7JSANtlvsRs8or1c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkPFklmDKwrYNFLeQgSU4EMX+fBFnZSxlXesZSHB5zdEEHOGrmAa86kbrjnB/kJtiRUBJ5BN1hhhfLJMpuN6Kppeo8VDtPsmCXmAk+l6UaWcuZNy6Q0dn8cISCl+x6flkWgU+UfCxqpt+TEfW6iTPAPXutIcn8fMOjROhAmZEF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQgnVLze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A7DC433F1;
-	Mon,  1 Apr 2024 16:37:41 +0000 (UTC)
+	 MIME-Version; b=ZBFUs66BbrWDip041D+3ohPPXUbseov9bMoo21Xa69MA9g83WK2JkhuY3UXDMQ4315OE+mgrwLEaRCjRJnVO+foNFlQ9wtlSrmKOgGxCRdYqQ2FdlDwx4Sd79Bwe+qHzFO8OWENc8qtV/CGZz86/cKJqsub4vSsF0PzOZYKHKDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itoWY/Oc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B1AC433F1;
+	Mon,  1 Apr 2024 16:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989461;
-	bh=PUog2+80WmatoqEymRT2IawYChZLpqWDPK4s+H0lg+E=;
+	s=korg; t=1711988115;
+	bh=xO7LL+7CVDxzIMZvB3FwUZ0peC7JSANtlvsRs8or1c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQgnVLzesnavUizBizFtXr49XqDJhvP3uMDM5TuIchfd8yYO+KBkDuYmACBVMQ8SE
-	 JmAb6uzIjAttanJU8p/YKBNDveotM4U3t1Q6esCRvYgRQQpqUQzSdAtn7/gBfQ7JFK
-	 ZInknm8KmMP/GduoGigvZOWOLt3dkUuieHBX+uvM=
+	b=itoWY/OcyE8t6HAA3bJknbHSY9OpTJyvquXhVdPiEhlNzg6DiXKi68iOitLJfJU00
+	 G4wF3UUBpFXeVXJzaW1llSmHNaFfjMHoNHFtQIvBXTHZwNft6AvzxVXgwa1Y8/WMWn
+	 FuCr9DQEUXZAFjim2xFdgKldwImOcGpmQOAt0/Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jameson Thies <jthies@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/396] arm64: dts: qcom: sm8550-mtp: correct WCD9385 TX port mapping
+Subject: [PATCH 6.7 089/432] usb: typec: ucsi: Clean up UCSI_CABLE_PROP macros
 Date: Mon,  1 Apr 2024 17:41:16 +0200
-Message-ID: <20240401152548.713380234@linuxfoundation.org>
+Message-ID: <20240401152555.779898642@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jameson Thies <jthies@google.com>
 
-[ Upstream commit b66966b1bbc0aa58f7af83cbd56d5a206892857c ]
+[ Upstream commit 4d0a5a9915793377c0fe1a8d78de6bcd92cea963 ]
 
-WCD9385 audio codec TX port mapping was copied form HDK8450, but in fact
-it is offset by one.  Correct it to fix recording via analogue
-microphones.
+Clean up UCSI_CABLE_PROP macros by fixing a bitmask shifting error for
+plug type and updating the modal support macro for consistent naming.
 
-The change is based on QRD8550 and should be correct here as well, but
-was not tested on MTP8550.
-
+Fixes: 3cf657f07918 ("usb: typec: ucsi: Remove all bit-fields")
 Cc: stable@vger.kernel.org
-Fixes: a541667c86a9 ("arm64: dts: qcom: sm8550-mtp: add WCD9385 audio-codec")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240124164505.293202-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Prashant Malani <pmalani@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jameson Thies <jthies@google.com>
+Link: https://lore.kernel.org/r/20240305025804.1290919-2-jthies@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550-mtp.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550-mtp.dts b/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-index f29cce5186acd..c4bfe43471f7c 100644
---- a/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-@@ -743,7 +743,7 @@ &swr2 {
- 	wcd_tx: codec@0,3 {
- 		compatible = "sdw20217010d00";
- 		reg = <0 3>;
--		qcom,tx-port-mapping = <1 1 2 3>;
-+		qcom,tx-port-mapping = <2 2 3 4>;
- 	};
- };
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 474315a72c770..13ec976b1c747 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -221,12 +221,12 @@ struct ucsi_cable_property {
+ #define UCSI_CABLE_PROP_FLAG_VBUS_IN_CABLE	BIT(0)
+ #define UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE	BIT(1)
+ #define UCSI_CABLE_PROP_FLAG_DIRECTIONALITY	BIT(2)
+-#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	((_f_) & GENMASK(3, 0))
++#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	(((_f_) & GENMASK(4, 3)) >> 3)
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_A	0
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_B	1
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_C	2
+ #define   UCSI_CABLE_PROPERTY_PLUG_OTHER	3
+-#define UCSI_CABLE_PROP_MODE_SUPPORT		BIT(5)
++#define UCSI_CABLE_PROP_FLAG_MODE_SUPPORT	BIT(5)
+ 	u8 latency;
+ } __packed;
  
 -- 
 2.43.0
