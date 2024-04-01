@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-34548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB79893FCD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE9C894148
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84F8E2851B2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67273282F26
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3847947A74;
-	Mon,  1 Apr 2024 16:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4BF4596E;
+	Mon,  1 Apr 2024 16:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0rvajnC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPqvyzJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE304778E;
-	Mon,  1 Apr 2024 16:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF7C1E86C;
+	Mon,  1 Apr 2024 16:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988493; cv=none; b=WSsEqz4mQ1EECdU6nVegwF1OlXxVZuZ6CwgLJAZ7qe9Ver16dQU875tc0FtmE/psr8kliBv13ho3xt5BNrLmmhDK7yTO2HuhCPE5v9jQjPKVT+X79bR/x3LhDppokL9P7JvR4mBWnhqIOqqrhGGs4m7Xt1tkgst6SptsIb527h4=
+	t=1711989611; cv=none; b=GH0UFlW5Wd5uZUziQWLsv7ALoB7EtAehj/1Ta4oSi1tQAbr2cgv+baADuGFXpHRk76/pUCfl0jGwxa5Ch9MiWHOgG5jt5mesEYbUrOpo3qC4JS9/frD56OaZNh+EHis8ErsOV/CgSlsqx0IxUpDWZAhxaqKXA9LP65YDpRhwQXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988493; c=relaxed/simple;
-	bh=/ldkf5XqJllRW+yddGfWeaofz4absth1vmK0eG5Kxwc=;
+	s=arc-20240116; t=1711989611; c=relaxed/simple;
+	bh=4D1FsQuh3PsAD10cQAU5ukHlnrUSuC7aia9ZIFigae8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qX36EromgPdowIhu5EsF1h9EwXx38utJtoHVUivjmW96rbuiYWhIKjSCL0QNkV4aF/GRrAwphyEUTg1OM8nfKAlE1U3LZkffRl9v62icM+cCENnjcjhcr0ED4QlgQfJFjCSK5J1gz2YTHFWTp6m0l75uFenDSB/yYa6Vkr0Keb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0rvajnC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745F3C433C7;
-	Mon,  1 Apr 2024 16:21:32 +0000 (UTC)
+	 MIME-Version; b=VClhtiPJIGinL8+rOP2OwezuJKBWxUoIErJCV72dghjjIzlBI+Z0ECbPX4hvzTItZ8j1365CRlGvi1DlnleuK4fPZsy3DLB8G5mPFgDyfNuF8ah3GxU8MT0ooejCJuGeTUHrKJTIC7ISXpvHDw46JOA4fEos3TaxJ9JPBb9PHp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPqvyzJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF605C433F1;
+	Mon,  1 Apr 2024 16:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988492;
-	bh=/ldkf5XqJllRW+yddGfWeaofz4absth1vmK0eG5Kxwc=;
+	s=korg; t=1711989611;
+	bh=4D1FsQuh3PsAD10cQAU5ukHlnrUSuC7aia9ZIFigae8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0rvajnCeW8Wcg97Bh4RcRoeStefyVn8ZryakbwnYDO5x8X8XmvBu0XA3vPakRXoq
-	 UJAFEY2I6C/5jhjiY+1liQmYxiOxIqQG4RwH+PJJ4p3oyilfcfC5mgZJC9vwkG9iIF
-	 0j3SHMa2HLQbRYdtzjskJqHJqfBe1iHWS9MmDEKw=
+	b=OPqvyzJS7mCehDTZ+38rGDA1+xVyAcyqCginYp9FE/U7fwpOerjQiryVvPGhEFeM+
+	 6ekUEwP5TMbFis1HmskcUoU86XCTX1k3kRe0wt9iKOpNRXUif8PoSDLOmA/pWl/Mea
+	 dy3KyhR3a3LHj22zuNr3J5jq8fN1S1f5pVfgthNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Camelia Groza <camelia.groza@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jorge Ramirez-Ortiz <jorge@foundries.io>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 162/432] soc: fsl: qbman: Always disable interrupts when taking cgr_lock
-Date: Mon,  1 Apr 2024 17:42:29 +0200
-Message-ID: <20240401152557.969987545@linuxfoundation.org>
+Subject: [PATCH 6.6 101/396] mmc: core: Fix switch on gp3 partition
+Date: Mon,  1 Apr 2024 17:42:30 +0200
+Message-ID: <20240401152550.932309734@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-[ Upstream commit 584c2a9184a33a40fceee838f856de3cffa19be3 ]
+[ Upstream commit 4af59a8df5ea930038cd3355e822f5eedf4accc1 ]
 
-smp_call_function_single disables IRQs when executing the callback. To
-prevent deadlocks, we must disable IRQs when taking cgr_lock elsewhere.
-This is already done by qman_update_cgr and qman_delete_cgr; fix the
-other lockers.
+Commit e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB
+partitions.") added a mask check for 'part_type', but the mask used was
+wrong leading to the code intended for rpmb also being executed for GP3.
 
-Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()")
-CC: stable@vger.kernel.org
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+On some MMCs (but not all) this would make gp3 partition inaccessible:
+armadillo:~# head -c 1 < /dev/mmcblk2gp3
+head: standard input: I/O error
+armadillo:~# dmesg -c
+[  422.976583] mmc2: running CQE recovery
+[  423.058182] mmc2: running CQE recovery
+[  423.137607] mmc2: running CQE recovery
+[  423.137802] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 4 prio class 0
+[  423.237125] mmc2: running CQE recovery
+[  423.318206] mmc2: running CQE recovery
+[  423.397680] mmc2: running CQE recovery
+[  423.397837] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
+[  423.408287] Buffer I/O error on dev mmcblk2gp3, logical block 0, async page read
+
+the part_type values of interest here are defined as follow:
+main  0
+boot0 1
+boot1 2
+rpmb  3
+gp0   4
+gp1   5
+gp2   6
+gp3   7
+
+so mask with EXT_CSD_PART_CONFIG_ACC_MASK (7) to correctly identify rpmb
+
+Fixes: e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB partitions.")
+Cc: stable@vger.kernel.org
+Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/mmc/core/block.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 739e4eee6b75c..1bf1f1ea67f00 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -1456,11 +1456,11 @@ static void qm_congestion_task(struct work_struct *work)
- 	union qm_mc_result *mcr;
- 	struct qman_cgr *cgr;
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 32d49100dff51..86efa6084696e 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -874,10 +874,11 @@ static const struct block_device_operations mmc_bdops = {
+ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ 				   unsigned int part_type)
+ {
+-	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
++	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
--	spin_lock(&p->cgr_lock);
-+	spin_lock_irq(&p->cgr_lock);
- 	qm_mc_start(&p->p);
- 	qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
- 	if (!qm_mc_result_timeout(&p->p, &mcr)) {
--		spin_unlock(&p->cgr_lock);
-+		spin_unlock_irq(&p->cgr_lock);
- 		dev_crit(p->config->dev, "QUERYCONGESTION timeout\n");
- 		qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- 		return;
-@@ -1476,7 +1476,7 @@ static void qm_congestion_task(struct work_struct *work)
- 	list_for_each_entry(cgr, &p->cgr_cbs, node)
- 		if (cgr->cb && qman_cgrs_get(&c, cgr->cgrid))
- 			cgr->cb(p, cgr, qman_cgrs_get(&rr, cgr->cgrid));
--	spin_unlock(&p->cgr_lock);
-+	spin_unlock_irq(&p->cgr_lock);
- 	qman_p_irqsource_add(p, QM_PIRQ_CSCI);
- }
+-	if ((part_type & mask) == mask) {
++	if ((part_type & mask) == rpmb) {
+ 		if (card->ext_csd.cmdq_en) {
+ 			ret = mmc_cmdq_disable(card);
+ 			if (ret)
+@@ -892,10 +893,11 @@ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ static int mmc_blk_part_switch_post(struct mmc_card *card,
+ 				    unsigned int part_type)
+ {
+-	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
++	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
-@@ -2440,7 +2440,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	preempt_enable();
- 
- 	cgr->chan = p->config->channel;
--	spin_lock(&p->cgr_lock);
-+	spin_lock_irq(&p->cgr_lock);
- 
- 	if (opts) {
- 		struct qm_mcc_initcgr local_opts = *opts;
-@@ -2477,7 +2477,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- 	    qman_cgrs_get(&p->cgrs[1], cgr->cgrid))
- 		cgr->cb(p, cgr, 1);
- out:
--	spin_unlock(&p->cgr_lock);
-+	spin_unlock_irq(&p->cgr_lock);
- 	put_affine_portal();
- 	return ret;
- }
+-	if ((part_type & mask) == mask) {
++	if ((part_type & mask) == rpmb) {
+ 		mmc_retune_unpause(card->host);
+ 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
+ 			ret = mmc_cmdq_enable(card);
 -- 
 2.43.0
 
