@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95220894340
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B418B893ECC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F085DB211ED
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4169EB22275
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5650E482E4;
-	Mon,  1 Apr 2024 17:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6761147A64;
+	Mon,  1 Apr 2024 16:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbfnAbKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjaffVL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C4A1C0DE7;
-	Mon,  1 Apr 2024 17:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2322A47A5D;
+	Mon,  1 Apr 2024 16:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990886; cv=none; b=OSJyLJ1zk8Ifl6RevWqvkonALZB5Mc6xJ7uFsfWOO2MXF5itP9coUke/iFqMlF9YCAaNC5hHoAV9QDUg8vTlkeZjMMzPgaP4MITAGfXR+0edfjU8p9hTDpmFKExyb4des7eL75uUAhQIzjRyLiyaHdhEZkm8g9IUeqPaD2sk14M=
+	t=1711987686; cv=none; b=qUEbqCccD7YrMd8q/8V1Y2FKHCmhYwSS4AiTu0dVUlUB1gB2MQU4nb6jSi5Zb8Rn2cLONkzBfafa6dA3Ii5rJ7vEiMJvShIFXTUDXY3Rp+C1ldk9ygc12Vz1u8Bm53/wF2+v3Rmh+WgrnolDzZ8MlMZPAVGUMhUsqtSMDWoOV98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990886; c=relaxed/simple;
-	bh=qRSVFAiMLFThcf51EnbFg67peOlizqCWBal1W3xnPiI=;
+	s=arc-20240116; t=1711987686; c=relaxed/simple;
+	bh=AziIWuca8i4Y4oMawj8/KbfL3KmR7A5Jhg7eDj/NUKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLg1MWXRwCnMyNHoqr3heiAo+2xQovIcpxZcD4p9bcBndn2JHdodEsnsNoqZ/zes4p6GEcSxru2uMRqHVSgoWM4sM3XWBjxW7DuoZWm8q1A5EVYdSb0j1HeEdFhYLpzqAoOn1d+4JW8f7gwr6ilDUOFDSujQLjO5xB74ioClHzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbfnAbKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AC2C433C7;
-	Mon,  1 Apr 2024 17:01:25 +0000 (UTC)
+	 MIME-Version; b=PzKQEiBZOiFyxOsmM9FL5XEPV2AzhW6NiPBU9EQhw+QFAoOiXTfDxDGpC6O6E3d4Yv/9HyGLy72foqwGiXhOq/ObIBusaYTM5xbuTUe7uDM5y8z1o/wGaD6XWn2DY4AYsjrsRLvF1rFm8b4A7/uYeZ9KoxmW9DAMiKtR9g5HSkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjaffVL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FECEC433C7;
+	Mon,  1 Apr 2024 16:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990886;
-	bh=qRSVFAiMLFThcf51EnbFg67peOlizqCWBal1W3xnPiI=;
+	s=korg; t=1711987686;
+	bh=AziIWuca8i4Y4oMawj8/KbfL3KmR7A5Jhg7eDj/NUKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbfnAbKtuKlpOanZjA0lG+VwPFft/IQmkJIVb2YA3uP+26bgFgMhoUYjSw26kQ10l
-	 xClmg/YGYoDU9tZ9LrOOx3LF7vX3nR4LKMNQm0SCsWEToG0uy78QwI6CkJ/72F55V3
-	 ERGYx8dhGYCJ58CYAxIgDRqpRAxunSHFSG79E4PY=
+	b=wjaffVL6wUCDkMO8v2GfgxEkb7OJNqyitoBZTGvQqej9tS4anzF4w9j7R+clAbXjG
+	 k74qFIvV9Dxq63NiybiUXZlWqlTwgPTtaME9xSU2HloRROWxvGjK0JVfVAuYBoz+I2
+	 uDCVACgKCOdzB+N9vgzVpaEojyetjpgj7iZU+Qmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/272] PCI: qcom: Rename qcom_pcie_config_sid_sm8250() to reflect IP version
-Date: Mon,  1 Apr 2024 17:44:47 +0200
-Message-ID: <20240401152533.657522528@linuxfoundation.org>
+	William Wortel <wwortel@dorpstraat.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.8 322/399] net: phy: qcom: at803x: fix kernel panic with at8031_probe
+Date: Mon,  1 Apr 2024 17:44:48 +0200
+Message-ID: <20240401152558.793088519@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,198 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 1f70939871b260b52e9d1941f1cad740b7295c2c ]
+commit 6a4aee277740d04ac0fd54cfa17cc28261932ddc upstream.
 
-qcom_pcie_config_sid_sm8250() function no longer applies only to SM8250.
-So let's rename it to reflect the actual IP version and also move its
-definition to keep it sorted as per IP revisions.
+On reworking and splitting the at803x driver, in splitting function of
+at803x PHYs it was added a NULL dereference bug where priv is referenced
+before it's actually allocated and then is tried to write to for the
+is_1000basex and is_fiber variables in the case of at8031, writing on
+the wrong address.
 
-Link: https://lore.kernel.org/r/20230316081117.14288-15-manivannan.sadhasivam@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Stable-dep-of: bf79e33cdd89 ("PCI: qcom: Enable BDF to SID translation properly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by correctly setting priv local variable only after
+at803x_probe is called and actually allocates priv in the phydev struct.
+
+Reported-by: William Wortel <wwortel@dorpstraat.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 25d2ba94005f ("net: phy: at803x: move specific at8031 probe mode check to dedicated probe")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240325190621.2665-1-ansuelsmth@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 143 ++++++++++++-------------
- 1 file changed, 71 insertions(+), 72 deletions(-)
+ drivers/net/phy/at803x.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 0ccd92faf078a..9202d2395b507 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1312,6 +1312,76 @@ static void qcom_pcie_deinit_2_7_0(struct qcom_pcie *pcie)
- 	regulator_bulk_disable(ARRAY_SIZE(res->supplies), res->supplies);
- }
+--- a/drivers/net/phy/at803x.c
++++ b/drivers/net/phy/at803x.c
+@@ -1503,7 +1503,7 @@ static int at8031_parse_dt(struct phy_de
  
-+static int qcom_pcie_config_sid_1_9_0(struct qcom_pcie *pcie)
-+{
-+	/* iommu map structure */
-+	struct {
-+		u32 bdf;
-+		u32 phandle;
-+		u32 smmu_sid;
-+		u32 smmu_sid_len;
-+	} *map;
-+	void __iomem *bdf_to_sid_base = pcie->parf + PARF_BDF_TO_SID_TABLE_N;
-+	struct device *dev = pcie->pci->dev;
-+	u8 qcom_pcie_crc8_table[CRC8_TABLE_SIZE];
-+	int i, nr_map, size = 0;
-+	u32 smmu_sid_base;
-+
-+	of_get_property(dev->of_node, "iommu-map", &size);
-+	if (!size)
-+		return 0;
-+
-+	map = kzalloc(size, GFP_KERNEL);
-+	if (!map)
-+		return -ENOMEM;
-+
-+	of_property_read_u32_array(dev->of_node, "iommu-map", (u32 *)map,
-+				   size / sizeof(u32));
-+
-+	nr_map = size / (sizeof(*map));
-+
-+	crc8_populate_msb(qcom_pcie_crc8_table, QCOM_PCIE_CRC8_POLYNOMIAL);
-+
-+	/* Registers need to be zero out first */
-+	memset_io(bdf_to_sid_base, 0, CRC8_TABLE_SIZE * sizeof(u32));
-+
-+	/* Extract the SMMU SID base from the first entry of iommu-map */
-+	smmu_sid_base = map[0].smmu_sid;
-+
-+	/* Look for an available entry to hold the mapping */
-+	for (i = 0; i < nr_map; i++) {
-+		__be16 bdf_be = cpu_to_be16(map[i].bdf);
-+		u32 val;
-+		u8 hash;
-+
-+		hash = crc8(qcom_pcie_crc8_table, (u8 *)&bdf_be, sizeof(bdf_be), 0);
-+
-+		val = readl(bdf_to_sid_base + hash * sizeof(u32));
-+
-+		/* If the register is already populated, look for next available entry */
-+		while (val) {
-+			u8 current_hash = hash++;
-+			u8 next_mask = 0xff;
-+
-+			/* If NEXT field is NULL then update it with next hash */
-+			if (!(val & next_mask)) {
-+				val |= (u32)hash;
-+				writel(val, bdf_to_sid_base + current_hash * sizeof(u32));
-+			}
-+
-+			val = readl(bdf_to_sid_base + hash * sizeof(u32));
-+		}
-+
-+		/* BDF [31:16] | SID [15:8] | NEXT [7:0] */
-+		val = map[i].bdf << 16 | (map[i].smmu_sid - smmu_sid_base) << 8 | 0;
-+		writel(val, bdf_to_sid_base + hash * sizeof(u32));
-+	}
-+
-+	kfree(map);
-+
-+	return 0;
-+}
-+
- static int qcom_pcie_get_resources_2_9_0(struct qcom_pcie *pcie)
+ static int at8031_probe(struct phy_device *phydev)
  {
- 	struct qcom_pcie_resources_2_9_0 *res = &pcie->res.v2_9_0;
-@@ -1429,77 +1499,6 @@ static int qcom_pcie_link_up(struct dw_pcie *pci)
- 	return !!(val & PCI_EXP_LNKSTA_DLLLA);
- }
+-	struct at803x_priv *priv = phydev->priv;
++	struct at803x_priv *priv;
+ 	int mode_cfg;
+ 	int ccr;
+ 	int ret;
+@@ -1512,6 +1512,8 @@ static int at8031_probe(struct phy_devic
+ 	if (ret)
+ 		return ret;
  
--static int qcom_pcie_config_sid_sm8250(struct qcom_pcie *pcie)
--{
--	/* iommu map structure */
--	struct {
--		u32 bdf;
--		u32 phandle;
--		u32 smmu_sid;
--		u32 smmu_sid_len;
--	} *map;
--	void __iomem *bdf_to_sid_base = pcie->parf + PARF_BDF_TO_SID_TABLE_N;
--	struct device *dev = pcie->pci->dev;
--	u8 qcom_pcie_crc8_table[CRC8_TABLE_SIZE];
--	int i, nr_map, size = 0;
--	u32 smmu_sid_base;
--
--	of_get_property(dev->of_node, "iommu-map", &size);
--	if (!size)
--		return 0;
--
--	map = kzalloc(size, GFP_KERNEL);
--	if (!map)
--		return -ENOMEM;
--
--	of_property_read_u32_array(dev->of_node,
--		"iommu-map", (u32 *)map, size / sizeof(u32));
--
--	nr_map = size / (sizeof(*map));
--
--	crc8_populate_msb(qcom_pcie_crc8_table, QCOM_PCIE_CRC8_POLYNOMIAL);
--
--	/* Registers need to be zero out first */
--	memset_io(bdf_to_sid_base, 0, CRC8_TABLE_SIZE * sizeof(u32));
--
--	/* Extract the SMMU SID base from the first entry of iommu-map */
--	smmu_sid_base = map[0].smmu_sid;
--
--	/* Look for an available entry to hold the mapping */
--	for (i = 0; i < nr_map; i++) {
--		__be16 bdf_be = cpu_to_be16(map[i].bdf);
--		u32 val;
--		u8 hash;
--
--		hash = crc8(qcom_pcie_crc8_table, (u8 *)&bdf_be, sizeof(bdf_be),
--			0);
--
--		val = readl(bdf_to_sid_base + hash * sizeof(u32));
--
--		/* If the register is already populated, look for next available entry */
--		while (val) {
--			u8 current_hash = hash++;
--			u8 next_mask = 0xff;
--
--			/* If NEXT field is NULL then update it with next hash */
--			if (!(val & next_mask)) {
--				val |= (u32)hash;
--				writel(val, bdf_to_sid_base + current_hash * sizeof(u32));
--			}
--
--			val = readl(bdf_to_sid_base + hash * sizeof(u32));
--		}
--
--		/* BDF [31:16] | SID [15:8] | NEXT [7:0] */
--		val = map[i].bdf << 16 | (map[i].smmu_sid - smmu_sid_base) << 8 | 0;
--		writel(val, bdf_to_sid_base + hash * sizeof(u32));
--	}
--
--	kfree(map);
--
--	return 0;
--}
--
- static int qcom_pcie_host_init(struct dw_pcie_rp *pp)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-@@ -1616,7 +1615,7 @@ static const struct qcom_pcie_ops ops_1_9_0 = {
- 	.init = qcom_pcie_init_2_7_0,
- 	.deinit = qcom_pcie_deinit_2_7_0,
- 	.ltssm_enable = qcom_pcie_2_3_2_ltssm_enable,
--	.config_sid = qcom_pcie_config_sid_sm8250,
-+	.config_sid = qcom_pcie_config_sid_1_9_0,
- };
- 
- /* Qcom IP rev.: 2.9.0  Synopsys IP rev.: 5.00a */
--- 
-2.43.0
-
++	priv = phydev->priv;
++
+ 	/* Only supported on AR8031/AR8033, the AR8030/AR8035 use strapping
+ 	 * options.
+ 	 */
 
 
 
