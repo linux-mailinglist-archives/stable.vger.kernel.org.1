@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCCF893F44
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:14:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336748940EF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 814231F213AC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:14:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64BCA1C217B8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AA547A62;
-	Mon,  1 Apr 2024 16:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB17938DD8;
+	Mon,  1 Apr 2024 16:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9tjC80W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChNvUTY4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D63446AC;
-	Mon,  1 Apr 2024 16:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE81DF6B;
+	Mon,  1 Apr 2024 16:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988053; cv=none; b=mf9EXjnRAyB2+pMCvGus6/bEc+gutz0nZxJdOCgqxpIvNwEe/u3B4XnrudEHwWaE084w3YEXBYgbZcI7gnfQKvTw4bewCtYeJPJMjHsD8SgnE1TwhAI/7EncWLvu3HWkGKJkFBT8EkNBHBeechNtJmCighYmd6IBYyo35XfonNI=
+	t=1711989367; cv=none; b=IQpkMjSIX2GRcf4CNFX/+zSpj8jyNuD+LHpKshQS5Iea4tBYq3wbBe2PYVjL0k0FXbP8EfYYkAKlwwcFJZSITskRSz7fnFpGJrn2l7dMO2C4qwZraEVs9gT3v394krjqD7c7bDxPuuHZ2XFry4hpAYN04XkKdjFF2pW3SFYGJYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988053; c=relaxed/simple;
-	bh=LBq0FjvapeRGQGFKp7URBNtlKiirU+rnkVilAX3BLHE=;
+	s=arc-20240116; t=1711989367; c=relaxed/simple;
+	bh=uwk/EGGJ6ttcICvGrVBkH8YEmafEYZZZoZOLu135YtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NsQF90p8fFa5jeoNOhOldUyXjbyu2MKBrkyN59IEld8L3rer6NuVBM6HKo5WJTM4IFkwOVlBDN+WsZDA2A4I1p4clniLmCi/3P0v6AM5ZVWP5L9RyO1eeR/dP5ju/UYzadHW9VQwX8jS/Fb8Crt4aTzMSDyYHyCiqjB9Z8pDM+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9tjC80W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433F5C433C7;
-	Mon,  1 Apr 2024 16:14:13 +0000 (UTC)
+	 MIME-Version; b=dAhVHgmB4IvaH6q5BBdwZY7TT9tQ1qYIllST5JWPBf4viU7DAL8TaAmKmO+6eWnZK2PeaCtVlfs/09fpkbP6FOk+V9YhVmECkz8H9sLA3nyKDbMFNYyh4BHHk7z/JqWxLACCeqxPshrStDoMA88dzrsljajFNOeGiB5v7yMri8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChNvUTY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA9EC433F1;
+	Mon,  1 Apr 2024 16:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988053;
-	bh=LBq0FjvapeRGQGFKp7URBNtlKiirU+rnkVilAX3BLHE=;
+	s=korg; t=1711989367;
+	bh=uwk/EGGJ6ttcICvGrVBkH8YEmafEYZZZoZOLu135YtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9tjC80Ww1MFYhjb1lratLRzqP7iI33s7GATiXCnCWFUV3RgMeh9ClWB66vq9ua5b
-	 IEIVENtV1rq1gNVyxlRQoQUHX1zPyNmHJ3S3qT3O2tEV9tzxnYQH0d0wKW+rSObROo
-	 1bI58cTvu69xxv0HZJaSctwDFzzlzyavrneGTRtg=
+	b=ChNvUTY4f4iZyRgSksjEED5NLnr1TYyswXlLXjWSpdqZ5+zvXjnDAigKnHZ0dlCKj
+	 3tnH7Gbr4KXY1cp5lIFEtRaC3qkj8W9lA09O7E5Lv25C2kAZEFs9njBpmypcq2NbeH
+	 30T3h3aIZRFRfQYitLMOkq8GiuWvwcOvmW/+4l6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 069/432] clk: qcom: gcc-ipq5018: fix terminating of frequency table arrays
+Subject: [PATCH 6.6 007/396] arm64: dts: qcom: sc7280: Add additional MSI interrupts
 Date: Mon,  1 Apr 2024 17:40:56 +0200
-Message-ID: <20240401152555.182618752@linuxfoundation.org>
+Message-ID: <20240401152548.100861241@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
 
-[ Upstream commit 90ad946fff70f312b8d23226afc38c13ddd88c4b ]
+[ Upstream commit b8ba66b40da3230a8675cb5dd5c2dea5bce24d62 ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+Current MSI's mapping doesn't have all the vectors. This platform
+supports 8 vectors each vector supports 32 MSI's, so total MSI's
+supported is 256.
 
-Fixes: e3fdbef1bab8 ("clk: qcom: Add Global Clock controller (GCC) driver for IPQ5018")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-1-074334f0905c@gmail.com
+Add all the MSI groups supported for this PCIe instance in this platform.
+
+Fixes: 92e0ee9f83b3 ("arm64: dts: qcom: sc7280: Add PCIe and PHY related nodes")
+cc: stable@vger.kernel.org
+Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+Link: https://lore.kernel.org/r/20231218-additional_msi-v1-1-de6917392684@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq5018.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq5018.c b/drivers/clk/qcom/gcc-ipq5018.c
-index e2bd54826a4ce..c1732d70e3a23 100644
---- a/drivers/clk/qcom/gcc-ipq5018.c
-+++ b/drivers/clk/qcom/gcc-ipq5018.c
-@@ -857,6 +857,7 @@ static struct clk_rcg2 lpass_sway_clk_src = {
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 8e330d2e2e224..b75de7caaa7e5 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -2098,8 +2098,16 @@ pcie1: pci@1c08000 {
+ 			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
  
- static const struct freq_tbl ftbl_pcie0_aux_clk_src[] = {
- 	F(2000000, P_XO, 12, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 pcie0_aux_clk_src = {
-@@ -1099,6 +1100,7 @@ static const struct freq_tbl ftbl_qpic_io_macro_clk_src[] = {
- 	F(100000000, P_GPLL0, 8, 0, 0),
- 	F(200000000, P_GPLL0, 4, 0, 0),
- 	F(320000000, P_GPLL0, 2.5, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 qpic_io_macro_clk_src = {
-@@ -1194,6 +1196,7 @@ static struct clk_rcg2 ubi0_axi_clk_src = {
- static const struct freq_tbl ftbl_ubi0_core_clk_src[] = {
- 	F(850000000, P_UBI32_PLL, 1, 0, 0),
- 	F(1000000000, P_UBI32_PLL, 1, 0, 0),
-+	{ }
- };
- 
- static struct clk_rcg2 ubi0_core_clk_src = {
+-			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
+-			interrupt-names = "msi";
++			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 375 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "msi0", "msi1", "msi2", "msi3",
++					  "msi4", "msi5", "msi6", "msi7";
+ 			#interrupt-cells = <1>;
+ 			interrupt-map-mask = <0 0 0 0x7>;
+ 			interrupt-map = <0 0 0 1 &intc 0 0 0 434 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.43.0
 
