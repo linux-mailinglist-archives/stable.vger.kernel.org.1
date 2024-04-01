@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C53889411E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6247E893F5A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64201C21072
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9351F1C216DB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366704778C;
-	Mon,  1 Apr 2024 16:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A0447A7C;
+	Mon,  1 Apr 2024 16:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/CimBdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kS3BR0wM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812D38DD8;
-	Mon,  1 Apr 2024 16:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBAC1DFFC;
+	Mon,  1 Apr 2024 16:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989472; cv=none; b=Ikoq1X2+4TwdK+tlWKhKrjGLP3OUarArCauTsL5TbxGYwql9IM9AGyviIBSdvEFMmyEIDGzaiHG5HJG4PM1w4JvWYskBdTksV4waMa7hpZIKTJh1+JZHgIDbT5StuinIm/MpneRmare1guLamFJwVXgwp2P0u6EQbvKUkAv35i8=
+	t=1711988128; cv=none; b=hxFuSgGmMqnkfRojzOPacIzRyJ3q9q5YtYjFmOFnmUee4bSXudR8/uF+PQ6LezjCMkYGM4lJTzzLCS3UGBU8io83L2rEYsXbvaLMLEGhw7scNhxgkbC0Cw6+Xz9vGRGqLx/a9jzCl7f2tEKhzeN7TtxqXmJCaGvul5+TbquBKJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989472; c=relaxed/simple;
-	bh=j5vHoVnODiCffhk7BgoLJNeMRN3k/u/d0UWgJnOl13g=;
+	s=arc-20240116; t=1711988128; c=relaxed/simple;
+	bh=NpY84Ckdwfd5LHs9fe/a2vWYPqTmp4CeiP4e2VG9UoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzQ6NsTr9QZP3L3vIhqEXSEdFg2FuwScXK5FBvvRVqgGO5J4LbBnJWH+KceJlobuMdbwmARjC1jOYuwbZlcOubIQzWC1Ttg+BfCQFqoZ9N647Fg0LoNsLYaRkdpb5MQvT9p4fhiPBg7Ep444s4FXjAc6eB8NboZm2za5aqhXQjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/CimBdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E54C433F1;
-	Mon,  1 Apr 2024 16:37:50 +0000 (UTC)
+	 MIME-Version; b=MnMY/2ZFp+W97kWFQO1iFBR10nmtaU3/HJ/3VvbaYMUUazsKsulkQJqbtNa8Q1HvtVqx68Twe9Kl0Tz4/KaMZWFPqL2fpTjjkJAFYQ1HKPKMt8jtMggws8b1VH5FTJ/P7YsgSJD94POcBFDJq6ItjbROsCHe2qkC/am/QLiqUJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kS3BR0wM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1853C433C7;
+	Mon,  1 Apr 2024 16:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989471;
-	bh=j5vHoVnODiCffhk7BgoLJNeMRN3k/u/d0UWgJnOl13g=;
+	s=korg; t=1711988128;
+	bh=NpY84Ckdwfd5LHs9fe/a2vWYPqTmp4CeiP4e2VG9UoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/CimBdvGkGO9L/3EsNpR3hp6bXzqCzO9/3ixdVMbB8kR/aNGUvfR8E7lziW1oG3t
-	 KKggqAENnXh1yGIL2ALf0Ufn01lH19/B7K/Vqd0/92gQMluC9OQTBsfoKrfRCjXf+I
-	 hBtmz4vlEuTkioItRY/0PDXTJ4BWeHJX2AHIxfdY=
+	b=kS3BR0wMk3UKka0DbmPTMda4xbvZFHHAcAIansJY5tMU496f6jXfnqR+hdy8WbMJK
+	 sgOzZDGuJhF89tLnMe5kklibcYDRMzhmXgRq3bYy+jvUXKgyDnao2vT2jFXFcTxfOM
+	 22z3v3bR2ruU9Duaatn/iesKCyaLxYziOEgi2LfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/396] powercap: intel_rapl: Fix a NULL pointer dereference
+Subject: [PATCH 6.7 092/432] serial: core: only stop transmit when HW fifo is empty
 Date: Mon,  1 Apr 2024 17:41:19 +0200
-Message-ID: <20240401152548.804256385@linuxfoundation.org>
+Message-ID: <20240401152555.868731658@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 2d1f5006ff95770da502f8cee2a224a1ff83866e ]
+[ Upstream commit 7bfb915a597a301abb892f620fe5c283a9fdbd77 ]
 
-A NULL pointer dereference is triggered when probing the MMIO RAPL
-driver on platforms with CPU ID not listed in intel_rapl_common CPU
-model list.
+If the circular buffer is empty, it just means we fit all characters to
+send into the HW fifo, but not that the hardware finished transmitting
+them.
 
-This is because the intel_rapl_common module still probes on such
-platforms even if 'defaults_msr' is not set after commit 1488ac990ac8
-("powercap: intel_rapl: Allow probing without CPUID match"). Thus the
-MMIO RAPL rp->priv->defaults is NULL when registering to RAPL framework.
+So if we immediately call stop_tx() after that, this may abort any
+pending characters in the HW fifo, and cause dropped characters on the
+console.
 
-Fix the problem by adding sanity check to ensure rp->priv->rapl_defaults
-is always valid.
+Fix this by only stopping tx when the tx HW fifo is actually empty.
 
-Fixes: 1488ac990ac8 ("powercap: intel_rapl: Allow probing without CPUID match")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Cc: 6.5+ <stable@vger.kernel.org> # 6.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 8275b48b2780 ("tty: serial: introduce transmit helpers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://lore.kernel.org/r/20240303150807.68117-1-jonas.gorski@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/intel_rapl_common.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/serial_core.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 2feed036c1cd4..1a739afd47d96 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -759,6 +759,11 @@ static int rapl_config(struct rapl_package *rp)
- 	default:
- 		return -EINVAL;
- 	}
-+
-+	/* defaults_msr can be NULL on unsupported platforms */
-+	if (!rp->priv->defaults || !rp->priv->rpi)
-+		return -ENODEV;
-+
- 	return 0;
- }
- 
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index f43aca7f3b01e..678409c47b885 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -786,7 +786,8 @@ enum UART_TX_FLAGS {
+ 	if (pending < WAKEUP_CHARS) {					      \
+ 		uart_write_wakeup(__port);				      \
+ 									      \
+-		if (!((flags) & UART_TX_NOSTOP) && pending == 0)	      \
++		if (!((flags) & UART_TX_NOSTOP) && pending == 0 &&	      \
++		    __port->ops->tx_empty(__port))			      \
+ 			__port->ops->stop_tx(__port);			      \
+ 	}								      \
+ 									      \
 -- 
 2.43.0
 
