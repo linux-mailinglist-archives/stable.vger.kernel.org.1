@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-34237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7A3893E7A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A6B893E7C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64CEC2826BC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07BE01F21496
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98024778B;
-	Mon,  1 Apr 2024 16:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B5F446AC;
+	Mon,  1 Apr 2024 16:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INwmYtfk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0i5asVWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B611CA8F;
-	Mon,  1 Apr 2024 16:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AB6383BA;
+	Mon,  1 Apr 2024 16:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987445; cv=none; b=NMeApVaR7DBIkiPFC5A2KCcQzA8SyiNDox37bOD27D7AuJJJG/74cIYVhbxZMM6rnRYYJGsyvCg4fPuu4wOIaDTxrbN6Hj3+J+Mh/XSDPwQCHzP/34PzzJH4UhKWKSFUVuxUB0xZFiSO4PNhTvsVp/B/i75Vbmu4y4zqd+CkZc0=
+	t=1711987452; cv=none; b=rKg3JeppSy1r6Uy6q375qJMZsqj6QclwpyvUZW8aK7G1HoFPwiEnLaeSzSDBJUhrB5OMrvDcMDPO+aUH5qeGwQawBAfmZuG4Az1ljJFZ0ufsExx5WgShTmQOCqvpBZrViAXl0rU3u9Dgk9tTVS4YbsVzZb6sFfO2rdYCR1KoR/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987445; c=relaxed/simple;
-	bh=46FsSdNxy+EA5uQtUr1rZaRORPCJehdmb4l2KgQRrkM=;
+	s=arc-20240116; t=1711987452; c=relaxed/simple;
+	bh=bq5KeqWGAKiIEoWOj7ZjwT6S7SB9lTe6jOgibXGNHwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6c1ihF3kRJ2LrUlEbPWbc6d/ApUkjyAe3J0Ky3ypFuZnp7Ag/DcfVrNTqq3Qs5C3HwBhR7SkoD+u4tM7k6Do3OqFfIZSxohHjzqpYycOpaFFu2cK0rh36FsOoTNLCpdHTMgT4oZrLnm52tbZQwX+naYOJFRD8PJMHpMdgez2ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INwmYtfk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EDAC433C7;
-	Mon,  1 Apr 2024 16:04:04 +0000 (UTC)
+	 MIME-Version; b=tk/EGMiBY980qO09Mxx0kNqMowEbeviHkpFSgtg5+KO0O35Mi+aI1Zp80PSY5r7wZ9ZHUJbGmXxSSrcgiEDxlQz98xcJi1BnLxQOR6pnl/8KwQB2blGdMhtgEAliDm9JtF9NNGkANE2rZ9vL+7P2j8+0HnnBd5Gnbb9C9C9/uko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0i5asVWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61BDC433C7;
+	Mon,  1 Apr 2024 16:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987445;
-	bh=46FsSdNxy+EA5uQtUr1rZaRORPCJehdmb4l2KgQRrkM=;
+	s=korg; t=1711987452;
+	bh=bq5KeqWGAKiIEoWOj7ZjwT6S7SB9lTe6jOgibXGNHwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INwmYtfkPxR+Rp12sMSNBpnBoaB4/EvCLL3aXmea/6PaZSZn7bYv+N9dh77d6Rgkt
-	 /ExVuReOrDG+K4P+lGQEOlnUy1SI3lek0JAjc/8+XQAAdOEkcVm5pidX4eCMT/o/q4
-	 mamWBs32wypAuDIizz3fLvNtr5Y0G/5x0l5weaNI=
+	b=0i5asVWrOiBTaE3iP3OxyYUejEqrA0Wwi0MTzx/RgSayRnVPvOvaMr0RqWS3ldejE
+	 KRBXJ/17xBd2/6gngTtgwRJgLVgdO3SLtlFpbfWdDXm0jDeXM6E3ih/6uKpyeBwqof
+	 rG/39Z/+k09fxK0weVEc/izs+EpR8zIgv4mMbydU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Biju Das <biju.das.jz@bp.renesas.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 262/399] irqchip/renesas-rzg2l: Flush posted write in irq_eoi()
-Date: Mon,  1 Apr 2024 17:43:48 +0200
-Message-ID: <20240401152557.008986781@linuxfoundation.org>
+Subject: [PATCH 6.8 263/399] irqchip/renesas-rzg2l: Rename rzg2l_tint_eoi()
+Date: Mon,  1 Apr 2024 17:43:49 +0200
+Message-ID: <20240401152557.038637223@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -68,62 +69,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 9eec61df55c51415409c7cc47e9a1c8de94a0522 ]
+[ Upstream commit 7cb6362c63df233172eaecddaf9ce2ce2f769112 ]
 
-The irq_eoi() callback of the RZ/G2L interrupt chip clears the relevant
-interrupt cause bit in the TSCR register by writing to it.
+Rename rzg2l_tint_eoi()->rzg2l_clear_tint_int() and simplify the code by
+removing redundant priv and hw_irq local variables.
 
-This write is not sufficient because the write is posted and therefore not
-guaranteed to immediately clear the bit. Due to that delay the CPU can
-raise the just handled interrupt again.
-
-Prevent this by reading the register back which causes the posted write to
-be flushed to the hardware before the read completes.
-
-Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 9494fc26259c3..5285bc817dd0c 100644
+index 5285bc817dd0c..599e0aba5cc00 100644
 --- a/drivers/irqchip/irq-renesas-rzg2l.c
 +++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -99,8 +99,14 @@ static void rzg2l_irq_eoi(struct irq_data *d)
- 	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
- 	 * falling/rising-edge.
- 	 */
--	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
-+	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq))) {
- 		writel_relaxed(iscr & ~bit, priv->base + ISCR);
-+		/*
-+		 * Enforce that the posted write is flushed to prevent that the
-+		 * just handled interrupt is raised again.
-+		 */
-+		readl_relaxed(priv->base + ISCR);
-+	}
+@@ -109,11 +109,9 @@ static void rzg2l_irq_eoi(struct irq_data *d)
+ 	}
  }
  
- static void rzg2l_tint_eoi(struct irq_data *d)
-@@ -111,8 +117,14 @@ static void rzg2l_tint_eoi(struct irq_data *d)
+-static void rzg2l_tint_eoi(struct irq_data *d)
++static void rzg2l_clear_tint_int(struct rzg2l_irqc_priv *priv, unsigned int hwirq)
+ {
+-	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_TINT_START;
+-	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+-	u32 bit = BIT(hw_irq);
++	u32 bit = BIT(hwirq - IRQC_TINT_START);
  	u32 reg;
  
  	reg = readl_relaxed(priv->base + TSCR);
--	if (reg & bit)
-+	if (reg & bit) {
- 		writel_relaxed(reg & ~bit, priv->base + TSCR);
-+		/*
-+		 * Enforce that the posted write is flushed to prevent that the
-+		 * just handled interrupt is raised again.
-+		 */
-+		readl_relaxed(priv->base + TSCR);
-+	}
+@@ -136,7 +134,7 @@ static void rzg2l_irqc_eoi(struct irq_data *d)
+ 	if (hw_irq >= IRQC_IRQ_START && hw_irq <= IRQC_IRQ_COUNT)
+ 		rzg2l_irq_eoi(d);
+ 	else if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ)
+-		rzg2l_tint_eoi(d);
++		rzg2l_clear_tint_int(priv, hw_irq);
+ 	raw_spin_unlock(&priv->lock);
+ 	irq_chip_eoi_parent(d);
  }
- 
- static void rzg2l_irqc_eoi(struct irq_data *d)
 -- 
 2.43.0
 
