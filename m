@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-35359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8988C894397
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA7689408E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45FFB2838BD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5267B1F2203C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6421DFF4;
-	Mon,  1 Apr 2024 17:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0944538DE5;
+	Mon,  1 Apr 2024 16:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZeK2I4K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1h+q9dx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7965F482CA;
-	Mon,  1 Apr 2024 17:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8AB1C0DE7;
+	Mon,  1 Apr 2024 16:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991139; cv=none; b=Phsz3yyfHlIZZYz444fNoAJWXOWdhoZAK3/DxkI10lVhfOULADUpaI+UUCAC01a9Qlo0HWob3efef6kTZGgGd3bKy2150l4/pnjas7OoUBxmQjqEhpFw1IkkLVAxviOr4wsBVwxySx8kBRyOaKN83EPLzTcoVJe07+GdOCWmQmQ=
+	t=1711989089; cv=none; b=Qp1utf28hl9NS5gGpWLjLp/7uFOGeMHnMCXSkfW9qk2ypnthHOzpv8u9MLUyga8CmjvjNSpvaZZNTZMnbF4aBbzCf4XOEhWOHAReA0BJYRC6PrnA9pm9nb+pHb1c2uB8ULGAFFb5DHm26XhuvMRdBhLKi43Q0tMKTLzBr10X06s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991139; c=relaxed/simple;
-	bh=vCZI962tPdepX5qkeUovUiYFhAOenMqIxtVUfv4DdsQ=;
+	s=arc-20240116; t=1711989089; c=relaxed/simple;
+	bh=h5VmkAyVKJD3IGjmmAxEC9TOfSIbDxN4OuBeKOtk4Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L8/yiv0BfcXS1Kc2rV2SHJ490bUFyKxuZnaZqbGk4xTkjWMb0bHuMFQcCIUwSC8xmNElRH/KLPmjBW0CLjPmRB685UxbKB8XL6evGMGjQJyOlPPUjDCu7uCbtQ8rOOmKz29mo4TcKcd+1AYMYUpt7F2v7vBswSOw+NrPopcryvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZeK2I4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FDAC433F1;
-	Mon,  1 Apr 2024 17:05:38 +0000 (UTC)
+	 MIME-Version; b=YnbCS6O4+hHi/5aEAtgcxgKhl5hEIoD3BBVAtDUC9LXp6o7C3W6IWd7VNtWyI5C4y13yleaIpGAV+4e0TIb73UFLSkpdPhXFNlBmwjDLq0mg/EzJGBoiZ3hORR5tyfPM6l/wVRZdu08YyZVDu7d0HpjsD56f0TxKA+1mjBPL9I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1h+q9dx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28395C433F1;
+	Mon,  1 Apr 2024 16:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991139;
-	bh=vCZI962tPdepX5qkeUovUiYFhAOenMqIxtVUfv4DdsQ=;
+	s=korg; t=1711989089;
+	bh=h5VmkAyVKJD3IGjmmAxEC9TOfSIbDxN4OuBeKOtk4Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZeK2I4KXbKn3LZv0r+QkMHWKEMqVI6Ml7Hvx+ZMdExq6OLIGXlXfOXt4H64wLIic
-	 5rHbneGfR53O6gxBER8yd0RmiFCGOxU94i9aqh0PX6llFbGAYAU1459pijJhxE2qYg
-	 EY6KQxiEZJn4DFe1TkUaiLI+v55/QC1IMMGBIsAQ=
+	b=1h+q9dx+fRDxl1rwdaLSMVeExngQdejlPq/qwyGdLRU6eOGqLG/o2/NwISKc+btP5
+	 e8y9Mgar1GJHs4vn2sQqiYGhD6PxDU6WVtnJPC5CsmQ49mmwSmmDSKV+e4+MPzNdt2
+	 woGDxl/9Q6xpxcuqNbuzwHIaBnTtU9T5RpSBbD1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mano=20S=C3=A9gransan?= <mano.segransan@protonmail.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 174/272] drm/amd/display: handle range offsets in VRR ranges
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.7 377/432] drm/amd/display: Fix bounds check for dcn35 DcfClocks
 Date: Mon,  1 Apr 2024 17:46:04 +0200
-Message-ID: <20240401152536.200678537@linuxfoundation.org>
+Message-ID: <20240401152604.532840946@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +63,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Roman Li <roman.li@amd.com>
 
-commit 937844d661354bf142dc1c621396fdab10ecbacc upstream.
+commit 2f10d4a51bbcd938f1f02f16c304ad1d54717b96 upstream.
 
-Need to check the offset bits for values greater than 255.
+[Why]
+NumFclkLevelsEnabled is used for DcfClocks bounds check
+instead of designated NumDcfClkLevelsEnabled.
+That can cause array index out-of-bounds access.
 
-v2: also update amdgpu_dm_connector values.
+[How]
+Use designated variable for dcn35 DcfClocks bounds check.
 
-Suggested-by: Mano Ségransan <mano.segransan@protonmail.com>
-Tested-by: Mano Ségransan <mano.segransan@protonmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3203
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a8edc9cc0b14 ("drm/amd/display: Fix array-index-out-of-bounds in dcn35_clkmgr")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10503,14 +10503,23 @@ void amdgpu_dm_update_freesync_caps(stru
- 				if (range->flags != 1)
- 					continue;
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -705,7 +705,7 @@ static void dcn35_clk_mgr_helper_populat
+ 		clock_table->NumFclkLevelsEnabled;
+ 	max_fclk = find_max_clk_value(clock_table->FclkClocks_Freq, num_fclk);
  
--				amdgpu_dm_connector->min_vfreq = range->min_vfreq;
--				amdgpu_dm_connector->max_vfreq = range->max_vfreq;
--				amdgpu_dm_connector->pixel_clock_mhz =
--					range->pixel_clock_mhz * 10;
--
- 				connector->display_info.monitor_range.min_vfreq = range->min_vfreq;
- 				connector->display_info.monitor_range.max_vfreq = range->max_vfreq;
- 
-+				if (edid->revision >= 4) {
-+					if (data->pad2 & DRM_EDID_RANGE_OFFSET_MIN_VFREQ)
-+						connector->display_info.monitor_range.min_vfreq += 255;
-+					if (data->pad2 & DRM_EDID_RANGE_OFFSET_MAX_VFREQ)
-+						connector->display_info.monitor_range.max_vfreq += 255;
-+				}
-+
-+				amdgpu_dm_connector->min_vfreq =
-+					connector->display_info.monitor_range.min_vfreq;
-+				amdgpu_dm_connector->max_vfreq =
-+					connector->display_info.monitor_range.max_vfreq;
-+				amdgpu_dm_connector->pixel_clock_mhz =
-+					range->pixel_clock_mhz * 10;
-+
- 				break;
- 			}
- 
+-	num_dcfclk = (clock_table->NumFclkLevelsEnabled > NUM_DCFCLK_DPM_LEVELS) ? NUM_DCFCLK_DPM_LEVELS :
++	num_dcfclk = (clock_table->NumDcfClkLevelsEnabled > NUM_DCFCLK_DPM_LEVELS) ? NUM_DCFCLK_DPM_LEVELS :
+ 		clock_table->NumDcfClkLevelsEnabled;
+ 	for (i = 0; i < num_dcfclk; i++) {
+ 		int j;
 
 
 
