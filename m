@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A113894226
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3876894349
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BF191C2191F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 847EEB22396
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEB240876;
-	Mon,  1 Apr 2024 16:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D34482DF;
+	Mon,  1 Apr 2024 17:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bo7ONUfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDi5Yt/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E7D1C0DE7;
-	Mon,  1 Apr 2024 16:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85F41C0DE7;
+	Mon,  1 Apr 2024 17:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990187; cv=none; b=COqs/fc4ROjYU3vFSHKN7Ayn0+bwFufcsyNWy7Kff0v4INQZ2++IEn4qaUjYujmvdeyOqaHgZN0vORin6os/5HcUIEBKAb3nWQLDOV8DeU6OJYYHGzePk4O6Kftv2gXcPS7dF4IMk8cfJbloSg08nO/n5uWpKO6VxcttGYjiyN8=
+	t=1711990914; cv=none; b=YpMvoDzcD2go05MdFt/Ha/AzT03Pi6zPC/cwJTZRH1dOIVw8IU4KJAmToYsoS9pZi1tznR578awOBgoDKf7K8h3HxqkWp1nvOUiBiasUx2YfhrwzN5yveV+2F/YMexK/BS094Ly0e8s2LRdWSUVgyQK7H2q4wQPJnG8A19jPkzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990187; c=relaxed/simple;
-	bh=9g0mxyJehLODmxdyFRZk6pGsU6aVG3vaygXh0+Wnzw4=;
+	s=arc-20240116; t=1711990914; c=relaxed/simple;
+	bh=+FW9FZEAk9tq0QZBFeJCZUuaaZWOg38z6PIZnKjnuBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkOoEx93Zzi+rU4pjWc3POOajmnCoduHP4E5CTvOKABLRN2CmVmOKMeXLiRV+vIpJXdfNqw2IrQLHUlDpCsHGBgVCepEBcD8m3EEIA0G5lXjnefU5/zFU5/G4fLSHnB25sO0IJztawU3pvB8Axv86gMSAKpe+YFqfhDWxvBrOMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bo7ONUfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A3C433F1;
-	Mon,  1 Apr 2024 16:49:46 +0000 (UTC)
+	 MIME-Version; b=rwb/uL64/KL496bZdAAfw8uwqniRht3rnW11LW8qOHlrh0oLeU+8+Yn27/1ukVntRVUplmLzu67MQCWGQv4eSjzKfkWv5ZS8tJrRs7HYy5SRY1QJyzBgL4CqWxztAWKCk7vWII3vq4tPISCVmf+zVTzMS0aLCzyxCNHShzg8P9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDi5Yt/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA77C433F1;
+	Mon,  1 Apr 2024 17:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990187;
-	bh=9g0mxyJehLODmxdyFRZk6pGsU6aVG3vaygXh0+Wnzw4=;
+	s=korg; t=1711990914;
+	bh=+FW9FZEAk9tq0QZBFeJCZUuaaZWOg38z6PIZnKjnuBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bo7ONUfXUfMQtrnEBLGBNtquERhN2o+m+RMAnNhydYd+HwE9hq53jSiloRQF0BRgr
-	 74rhlZFOZsZnsfWnr05wJUGEhO7+yMKPeUpFKo6JtExJ1CiXxPvUSR8z6v6PDBdNzo
-	 P+cXwWwhxi9W+7HQ7S8+9+ZdFlOeVkZ7GblZ54Cs=
+	b=iDi5Yt/O+EZQ/XrNyD9vlGa/CKC6Ec3OG6MlGzWdlEB089zFDcQgfAabCe6KsOOG4
+	 uQmCtDUR0K3v6aaazYdtPNGGA1Yu/QhGBwmvDvOgXNdYUGsMIko40hnUMIk8DPnIL3
+	 6bz4Aew4Ghfr94GeU9p0Pu3GebpK8+lrCcVfGymE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 245/396] iio: imu: inv_mpu6050: fix frequency setting when chip is off
-Date: Mon,  1 Apr 2024 17:44:54 +0200
-Message-ID: <20240401152555.218313881@linuxfoundation.org>
+	Eric Auger <eric.auger@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/272] vfio/platform: Disable virqfds on cleanup
+Date: Mon,  1 Apr 2024 17:44:55 +0200
+Message-ID: <20240401152533.916784205@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit daec424cc57b33a28f8621eb7ac85f8bd327bd6b upstream.
+[ Upstream commit fcdc0d3d40bc26c105acf8467f7d9018970944ae ]
 
-Track correctly FIFO state and apply ODR change before starting
-the chip. Without the fix, you cannot change ODR more than 1 time
-when data buffering is off. This restriction on a single pending ODR
-change should only apply when the FIFO is on.
+irqfds for mask and unmask that are not specifically disabled by the
+user are leaked.  Remove any irqfds during cleanup
 
-Fixes: 111e1abd0045 ("iio: imu: inv_mpu6050: use the common inv_sensors timestamp module")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://lore.kernel.org/r/20240219154741.90601-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Eric Auger <eric.auger@redhat.com>
+Cc:  <stable@vger.kernel.org>
+Fixes: a7fa7c77cf15 ("vfio/platform: implement IRQ masking/unmasking via an eventfd")
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-6-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/vfio/platform/vfio_platform_irq.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index 676704f9151f..e6e6e94452a3 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -111,6 +111,7 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
- 	if (enable) {
- 		/* reset timestamping */
- 		inv_sensors_timestamp_reset(&st->timestamp);
-+		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
- 		/* reset FIFO */
- 		d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
- 		ret = regmap_write(st->map, st->reg->user_ctrl, d);
-@@ -184,6 +185,10 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
- 		if (result)
- 			goto error_power_off;
- 	} else {
-+		st->chip_config.gyro_fifo_enable = 0;
-+		st->chip_config.accl_fifo_enable = 0;
-+		st->chip_config.temp_fifo_enable = 0;
-+		st->chip_config.magn_fifo_enable = 0;
- 		result = inv_mpu6050_prepare_fifo(st, false);
- 		if (result)
- 			goto error_power_off;
+diff --git a/drivers/vfio/platform/vfio_platform_irq.c b/drivers/vfio/platform/vfio_platform_irq.c
+index c5b09ec0a3c98..f2893f2fcaabd 100644
+--- a/drivers/vfio/platform/vfio_platform_irq.c
++++ b/drivers/vfio/platform/vfio_platform_irq.c
+@@ -321,8 +321,11 @@ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < vdev->num_irqs; i++)
++	for (i = 0; i < vdev->num_irqs; i++) {
++		vfio_virqfd_disable(&vdev->irqs[i].mask);
++		vfio_virqfd_disable(&vdev->irqs[i].unmask);
+ 		vfio_set_trigger(vdev, i, -1, NULL);
++	}
+ 
+ 	vdev->num_irqs = 0;
+ 	kfree(vdev->irqs);
 -- 
-2.44.0
+2.43.0
 
 
 
