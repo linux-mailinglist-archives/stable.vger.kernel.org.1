@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF228941CF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A91894300
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F353B210F2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9374B283875
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2D28F5C;
-	Mon,  1 Apr 2024 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BED94C3C3;
+	Mon,  1 Apr 2024 16:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5I0Ptv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1VYPjpw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94AF63E;
-	Mon,  1 Apr 2024 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2F24AEE4;
+	Mon,  1 Apr 2024 16:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989973; cv=none; b=DwfmWOjh1bHNDKXtRhgOOHy1v/b/Y6N4c0npinknhzDT+2By0iiRdT5GBWsckxBbj25VJYQN9ObuBQmiHdOIgAkMFbu1DL16Ei7Emfkqr2NlYbdAuLeM7qAhT1EY6ExygthtNHhI6FfF1XADIf7owwGCqIA/je4BQTrZuUVzbA0=
+	t=1711990704; cv=none; b=jQmJLkfkZVfgnLtniR8NO9zdckhP90SAYZPrMeLEMw2xZQhzo7Mi+HK339fbEac6hMeDIEZdyNyM6G0MAIGmra4jfsYkM3uhdzeXccBVVZayx+rFIeuxoWb9dHq6emfJZM+hcRuM9o2hqHXlHKEqck3c1HrCHfsrUf2Qtd19Gyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989973; c=relaxed/simple;
-	bh=rdTFRxs812F5JtWTLhsSnbdg8PTuXj685BF0Fhx3CDA=;
+	s=arc-20240116; t=1711990704; c=relaxed/simple;
+	bh=xlVmjqReFt4bOAHGuDsILbEFJHOl6aCBB/c5V77KnSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U5VyL2A1GLFwoUTLA0YObJKHQXLJWmOe4Wh9y2NKpsRPV88rnaRqYPwNVDegrAk2vPA4lxC7lrcmLawm8qLfC528qTT6qo0jLQY7kj+Sf6utolRGlA5XJ7x+CZUaGisI+8CEz7jMj2z+qiczaJrgyBYkPbkZRQbkjCY2DZrleyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5I0Ptv+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176CBC433F1;
-	Mon,  1 Apr 2024 16:46:12 +0000 (UTC)
+	 MIME-Version; b=RikluoPMF988f7lmk5QIsI2t4cS1SLXrmuaTXHgvOj/ZvKjDRdBO4vauOOIKbolqZvwmfw3OACnvLZ4wXvh0rv91A5HoOHcBaR/bA9IPGY/3VpgZvCW9yTE9oijhbQ1pbCGV/SD/0AYT61N/AJCbUyRQDI8gvt5Yo0ia/QrOnMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1VYPjpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC61C433C7;
+	Mon,  1 Apr 2024 16:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989973;
-	bh=rdTFRxs812F5JtWTLhsSnbdg8PTuXj685BF0Fhx3CDA=;
+	s=korg; t=1711990704;
+	bh=xlVmjqReFt4bOAHGuDsILbEFJHOl6aCBB/c5V77KnSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5I0Ptv+ocZ/rJke5Z1CwD1T/60sQHq3BvDcTbR+EtlGYc7nwAfQQRHajrmBTNWQl
-	 bOm0zsL1ZQBQiVB6tmpbYt2HU47+zGUwpo4sucksjdGm5TxU9xNzCbRuLtXioamMUk
-	 xsLjldHLDoEOvkO99+vquag0JA9A5iRIwYt47xWw=
+	b=m1VYPjpwh7im2tb81itAZbBCzL9gCl57Ka7iaSm/goyAAA/pcfh5ZRqqVjZ68bhyv
+	 JQTTN+r8JBokrGO5xfeKjNw98OCs9DB//F8PILW6CFCi7YfQB/WtFIYx2EYVeKhRYi
+	 LLhmii/Fr/2oZN+2QkyWejA7L27dVyZG4M1pWdBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/396] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
+Subject: [PATCH 6.1 040/272] ubifs: Set page uptodate in the correct place
 Date: Mon,  1 Apr 2024 17:43:50 +0200
-Message-ID: <20240401152553.338970333@linuxfoundation.org>
+Message-ID: <20240401152531.631330284@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 ]
+[ Upstream commit 723012cab779eee8228376754e22c6594229bf8f ]
 
-Otherwise after the GTT bo is released, the GTT and gart space is freed
-but amdgpu_ttm_backend_unbind will not clear the gart page table entry
-and leave valid mapping entry pointing to the stale system page. Then
-if GPU access the gart address mistakely, it will read undefined value
-instead page fault, harder to debug and reproduce the real issue.
+Page cache reads are lockless, so setting the freshly allocated page
+uptodate before we've overwritten it with the data it's supposed to have
+in it will allow a simultaneous reader to see old data.  Move the call
+to SetPageUptodate into ubifs_write_end(), which is after we copied the
+new data into the page.
 
+Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
 Cc: stable@vger.kernel.org
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ubifs/file.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index f573909332c01..928107d0bfea4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -869,6 +869,7 @@ static void amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
- 		amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
- 				 gtt->ttm.dma_address, flags);
+diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
+index 10c1779af9c51..f7b1f9ece1364 100644
+--- a/fs/ubifs/file.c
++++ b/fs/ubifs/file.c
+@@ -261,9 +261,6 @@ static int write_begin_slow(struct address_space *mapping,
+ 				return err;
+ 			}
+ 		}
+-
+-		SetPageUptodate(page);
+-		ClearPageError(page);
  	}
-+	gtt->bound = true;
- }
  
- /*
+ 	if (PagePrivate(page))
+@@ -462,9 +459,6 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
+ 				return err;
+ 			}
+ 		}
+-
+-		SetPageUptodate(page);
+-		ClearPageError(page);
+ 	}
+ 
+ 	err = allocate_budget(c, page, ui, appending);
+@@ -474,10 +468,8 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
+ 		 * If we skipped reading the page because we were going to
+ 		 * write all of it, then it is not up to date.
+ 		 */
+-		if (skipped_read) {
++		if (skipped_read)
+ 			ClearPageChecked(page);
+-			ClearPageUptodate(page);
+-		}
+ 		/*
+ 		 * Budgeting failed which means it would have to force
+ 		 * write-back but didn't, because we set the @fast flag in the
+@@ -568,6 +560,9 @@ static int ubifs_write_end(struct file *file, struct address_space *mapping,
+ 		goto out;
+ 	}
+ 
++	if (len == PAGE_SIZE)
++		SetPageUptodate(page);
++
+ 	if (!PagePrivate(page)) {
+ 		attach_page_private(page, (void *)1);
+ 		atomic_long_inc(&c->dirty_pg_cnt);
 -- 
 2.43.0
 
