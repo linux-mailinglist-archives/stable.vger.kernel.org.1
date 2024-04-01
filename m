@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15631893E9D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B201A894036
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5D9A2823A2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39CC8B22093
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D9D4596E;
-	Mon,  1 Apr 2024 16:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93CF446AC;
+	Mon,  1 Apr 2024 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFHbL3+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWy2jXkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A9B1CA8F;
-	Mon,  1 Apr 2024 16:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783061CA8F;
+	Mon,  1 Apr 2024 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987553; cv=none; b=IyHj9bLmCREyQwBb7awL6N++SGU3ZRkIY0fkYYs0Lk8zs0hH4sVHcoX/XK+/DLbCj/o+6nRJTp9NjkNS5m7mxiTV+4SsAv0nKdmsXD3FPZoyQ/1plSDJGITylChH75TsdmqleWgjWSHiX5paIum2NySA53lf1eGTss0EIlui/N4=
+	t=1711988826; cv=none; b=E2Yd0n5iV/MxDdQm3yEeUkGX3Fn3FnsmCK6Jp8nAyaQp69DNb/v1j8kgq4TG+vPUu53iUxWNIf8qHrQ2NbsIA8CFwTS8BBrK0raoGDr2jLFTYGB9AD16hfPppolv4lN8Bs9zt57snqf0z2lMWzDYeTSTXDQ0tp1uYh9JOvluR6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987553; c=relaxed/simple;
-	bh=OArqbsU4aFejfLNkVFE2Q42tAUL2/1IYxdPVNhEXUvI=;
+	s=arc-20240116; t=1711988826; c=relaxed/simple;
+	bh=rTJNyIfz3p6iZBWRubuwA7qpRIxiPNyz5PykmbRwgcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FTW2YbKI1Xs7kUypYVyKuEgkab52/5c3RKN66S1DeE294/HUxvdYmYUrKwL4/XJk5DAJAO21bcU6oFiDL6CjrkFcLIwHmnmHRWu4L6OE6Cj1mdu6SXtKszfjpVbS23cy2iaC6O2EzKDqyxyiDjRBge19KPGLM3gNg67gKKhLHPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFHbL3+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C73FC433C7;
-	Mon,  1 Apr 2024 16:05:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=um3Ua/OFBU6FcFt3FDaBAx2JXHRgWMaHUReUNlXtQou6lP3/KeKOy9GOHYcs8CXX9t+sc1vZr7f9Rf/oSvEJSLrJs+267m1QZIx4uOdNwXO4pj/bujBR47x7fTe/oa+KPhhEt1a603duARFWl1vuWFG0HXu4+FkJz8GDFNZRtAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWy2jXkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30E3C433F1;
+	Mon,  1 Apr 2024 16:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987553;
-	bh=OArqbsU4aFejfLNkVFE2Q42tAUL2/1IYxdPVNhEXUvI=;
+	s=korg; t=1711988826;
+	bh=rTJNyIfz3p6iZBWRubuwA7qpRIxiPNyz5PykmbRwgcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PFHbL3+zGuNQxFacv8wY0zbmfeMH/3Et2wocsQzWacklLHMMQ8wlhsw6OQ6usvboW
-	 kjIkRLCl55qlhyPJaPdB1MRJ4UI/WXU0FWFJ3psIP8lJOvxVs9+x4FsaiA10aVy/J0
-	 pSk5Nb5qv9KjM4KkbqJXBibqRCHRZnx2b1wjxT8s=
+	b=cWy2jXkDoehXiggX8oX0Ui5y3w9VUz0uWKo9X6e/hIFHIlP8FRfw3s+RSAn2wzo6l
+	 ivPMtQO73gsqnK1Axvbw43Q53/cnPTf1QN55e3ZMAAD0cFZf9a6KHj+WzJk8TKZ2nX
+	 E4Su/jFgjZB8K0/VTvdwh28o2F9ldJ5xXSjqY+1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claus Hansen Ries <chr@terma.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 320/399] net: ll_temac: platform_get_resource replaced by wrong function
-Date: Mon,  1 Apr 2024 17:44:46 +0200
-Message-ID: <20240401152558.734587880@linuxfoundation.org>
+	Mike Rapoport <rppt@linux.ibm.com>,
+	Yongqiang Liu <liuyongqiang13@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 300/432] ARM: 9359/1: flush: check if the folio is reserved for no-mapping addresses
+Date: Mon,  1 Apr 2024 17:44:47 +0200
+Message-ID: <20240401152602.135270032@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claus Hansen Ries <chr@terma.com>
+From: Yongqiang Liu <liuyongqiang13@huawei.com>
 
-commit 3a38a829c8bc27d78552c28e582eb1d885d07d11 upstream.
+[ Upstream commit 0c66c6f4e21cb22220cbd8821c5c73fc157d20dc ]
 
-The function platform_get_resource was replaced with
-devm_platform_ioremap_resource_byname and is called using 0 as name.
+Since commit a4d5613c4dc6 ("arm: extend pfn_valid to take into account
+freed memory map alignment") changes the semantics of pfn_valid() to check
+presence of the memory map for a PFN. A valid page for an address which
+is reserved but not mapped by the kernel[1], the system crashed during
+some uio test with the following memory layout:
 
-This eventually ends up in platform_get_resource_byname in the call
-stack, where it causes a null pointer in strcmp.
+ node   0: [mem 0x00000000c0a00000-0x00000000cc8fffff]
+ node   0: [mem 0x00000000d0000000-0x00000000da1fffff]
+ the uio layout is：0xc0900000, 0x100000
 
-	if (type == resource_type(r) && !strcmp(r->name, name))
+the crash backtrace like:
 
-It should have been replaced with devm_platform_ioremap_resource.
+  Unable to handle kernel paging request at virtual address bff00000
+  [...]
+  CPU: 1 PID: 465 Comm: startapp.bin Tainted: G           O      5.10.0 #1
+  Hardware name: Generic DT based system
+  PC is at b15_flush_kern_dcache_area+0x24/0x3c
+  LR is at __sync_icache_dcache+0x6c/0x98
+  [...]
+   (b15_flush_kern_dcache_area) from (__sync_icache_dcache+0x6c/0x98)
+   (__sync_icache_dcache) from (set_pte_at+0x28/0x54)
+   (set_pte_at) from (remap_pfn_range+0x1a0/0x274)
+   (remap_pfn_range) from (uio_mmap+0x184/0x1b8 [uio])
+   (uio_mmap [uio]) from (__mmap_region+0x264/0x5f4)
+   (__mmap_region) from (__do_mmap_mm+0x3ec/0x440)
+   (__do_mmap_mm) from (do_mmap+0x50/0x58)
+   (do_mmap) from (vm_mmap_pgoff+0xfc/0x188)
+   (vm_mmap_pgoff) from (ksys_mmap_pgoff+0xac/0xc4)
+   (ksys_mmap_pgoff) from (ret_fast_syscall+0x0/0x5c)
+  Code: e0801001 e2423001 e1c00003 f57ff04f (ee070f3e)
+  ---[ end trace 09cf0734c3805d52 ]---
+  Kernel panic - not syncing: Fatal exception
 
-Fixes: bd69058f50d5 ("net: ll_temac: Use devm_platform_ioremap_resource_byname()")
-Signed-off-by: Claus Hansen Ries <chr@terma.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/cca18f9c630a41c18487729770b492bb@terma.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So check if PG_reserved was set to solve this issue.
+
+[1]: https://lore.kernel.org/lkml/Zbtdue57RO0QScJM@linux.ibm.com/
+
+Fixes: a4d5613c4dc6 ("arm: extend pfn_valid to take into account freed memory map alignment")
+Suggested-by: Mike Rapoport <rppt@linux.ibm.com>
+Signed-off-by: Yongqiang Liu <liuyongqiang13@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/ll_temac_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mm/flush.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1443,7 +1443,7 @@ static int temac_probe(struct platform_d
- 	}
+diff --git a/arch/arm/mm/flush.c b/arch/arm/mm/flush.c
+index d19d140a10c7d..0749cf8a66371 100644
+--- a/arch/arm/mm/flush.c
++++ b/arch/arm/mm/flush.c
+@@ -296,6 +296,9 @@ void __sync_icache_dcache(pte_t pteval)
+ 		return;
  
- 	/* map device registers */
--	lp->regs = devm_platform_ioremap_resource_byname(pdev, 0);
-+	lp->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(lp->regs)) {
- 		dev_err(&pdev->dev, "could not map TEMAC registers\n");
- 		return -ENOMEM;
+ 	folio = page_folio(pfn_to_page(pfn));
++	if (folio_test_reserved(folio))
++		return;
++
+ 	if (cache_is_vipt_aliasing())
+ 		mapping = folio_flush_mapping(folio);
+ 	else
+-- 
+2.43.0
+
 
 
 
