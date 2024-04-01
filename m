@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3FD894044
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D53C8941FF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7F528124B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32F8F1F22993
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9AD45BE4;
-	Mon,  1 Apr 2024 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4887481D0;
+	Mon,  1 Apr 2024 16:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twQ/5IgV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNqtdsB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2E2C129;
-	Mon,  1 Apr 2024 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841894653C;
+	Mon,  1 Apr 2024 16:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988872; cv=none; b=dCt1F1Qe5L8S/a/ppIIhyBs9I8uOSmrBShsw+r/KcWFErYqYmKczVEC+vfVFkiZN23dgbzWeQmIwZlC9mcLe5wFgNBgSgMa99fMsCiNPCTn4W0eubaX95/XtzZ4zdgfbAFS91in3Z0xiA7+FRnARWZAJKkaVC6XPnmuArAvjWqA=
+	t=1711990116; cv=none; b=ctEonyGmAeizoQHz1UQssbkOtOjKXCX4U8QeUscOTIo8pAjzYE/nQTMyVsw9L3toEOeODUhjEzzdpc5C6Z+6u/ey830w0OTrDFNHHYC3VMXWAMbauj8jO/8o7NLV4lm+b1nPGUbFMrMRF/f2hWaw6IG5gpGUrMTgF6c9qzCIy9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988872; c=relaxed/simple;
-	bh=MmIl5S0k/aK2lz4q9hLoM08mXUy0V6keQdg4AcBaRdI=;
+	s=arc-20240116; t=1711990116; c=relaxed/simple;
+	bh=g7NbGwDHdm77VQE7+H+cg5muI5rk2QsyDENGCnxXpWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stj8GN0uItNEje5O2T4nPdtSwXegH6tsXxINk31u4ZWYMNRdxX2FH68KC6GFhuj0vAZNaa2tH/sqJl2XOUm9xPw/IB0vhtCgdEuIbt7J5PPLuV6Z+NU3FoIeoyO9jdLNbZXY9geiChKjfsME7yCveIEef0UyLozMcJoNAUwqjX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twQ/5IgV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93612C433F1;
-	Mon,  1 Apr 2024 16:27:51 +0000 (UTC)
+	 MIME-Version; b=l8llDQ6uNLnVTk90qj6CYTxl9v8B7HhM0sjFMuPfZduOsPF2RWA8XP/Qnk2Bz+R5UpwrxwOvAI87oRfAtXH8sneeEKLj4NQoMlZc/tZGWH5Q5slGPTROjwHwpViFaaMq8KUiTBd9OKqrCbIX4bYD25HxasRzstI8jF/6qthbB0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNqtdsB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B15AC433C7;
+	Mon,  1 Apr 2024 16:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988872;
-	bh=MmIl5S0k/aK2lz4q9hLoM08mXUy0V6keQdg4AcBaRdI=;
+	s=korg; t=1711990116;
+	bh=g7NbGwDHdm77VQE7+H+cg5muI5rk2QsyDENGCnxXpWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twQ/5IgVYVfiLkO55UHNafDS62+IrZfVNzNKMUCjloaJj5HWSOXQM21a5Fk/uI5qT
-	 Gf8KMWcvQIeFYhHEFT27wh3t1QAwkMj4IWLZCkWIwlS2eeezjfLXIGfi0xXRHtpdD8
-	 yq4/b0fiyfGZaVeGYXNZm2VqRvTpnsSlqusozh0c=
+	b=QNqtdsB5BfFqrcqwHGUfdSxRsuRdsZhrzO3+Rf2OxG7c1Z6u2Cpc/i9Z2kY8zz3zK
+	 fLV/XIqdfTo7eTFKvz9K1Q4mx8j+xX+7joj8jumEjYGvhREw/MBfqo/Dx4CDSi7HBF
+	 HGJvJO4DDDNfGrsiwoupZGq9l6ZnqJUzhnW6FJ9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <zzqq0103.hey@gmail.com>,
-	Jinghao Jia <jinghao7@illinois.edu>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 313/432] kprobes/x86: Use copy_from_kernel_nofault() to read from unsafe address
-Date: Mon,  1 Apr 2024 17:45:00 +0200
-Message-ID: <20240401152602.521381447@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.6 252/396] wifi: rtw88: 8821cu: Fix connection failure
+Date: Mon,  1 Apr 2024 17:45:01 +0200
+Message-ID: <20240401152555.422557555@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 4e51653d5d871f40f1bd5cf95cc7f2d8b33d063b ]
+commit 605d7c0b05eecb985273b1647070497142c470d3 upstream.
 
-Read from an unsafe address with copy_from_kernel_nofault() in
-arch_adjust_kprobe_addr() because this function is used before checking
-the address is in text or not. Syzcaller bot found a bug and reported
-the case if user specifies inaccessible data area,
-arch_adjust_kprobe_addr() will cause a kernel panic.
+Clear bit 8 of REG_SYS_STATUS1 after MAC power on.
 
-[ mingo: Clarified the comment. ]
+Without this, some RTL8821CU and RTL8811CU cannot connect to any
+network:
 
-Fixes: cc66bb914578 ("x86/ibt,kprobes: Cure sym+0 equals fentry woes")
-Reported-by: Qiang Zhang <zzqq0103.hey@gmail.com>
-Tested-by: Jinghao Jia <jinghao7@illinois.edu>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/171042945004.154897.2221804961882915806.stgit@devnote2
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Feb 19 13:33:11 ideapad2 kernel: wlp3s0f3u2: send auth to
+	90:55:de:__:__:__ (try 1/3)
+Feb 19 13:33:13 ideapad2 kernel: wlp3s0f3u2: send auth to
+	90:55:de:__:__:__ (try 2/3)
+Feb 19 13:33:14 ideapad2 kernel: wlp3s0f3u2: send auth to
+	90:55:de:__:__:__ (try 3/3)
+Feb 19 13:33:15 ideapad2 kernel: wlp3s0f3u2: authentication with
+	90:55:de:__:__:__ timed out
+
+The RTL8822CU and RTL8822BU out-of-tree drivers do this as well, so do
+it for all three types of chips.
+
+Tested with RTL8811CU (Tenda U9 V2.0).
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/aeeefad9-27c8-4506-a510-ef9a9a8731a4@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/kprobes/core.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/mac.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-index a0ce46c0a2d88..a6a3475e1d609 100644
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -335,7 +335,16 @@ static int can_probe(unsigned long paddr)
- kprobe_opcode_t *arch_adjust_kprobe_addr(unsigned long addr, unsigned long offset,
- 					 bool *on_func_entry)
- {
--	if (is_endbr(*(u32 *)addr)) {
-+	u32 insn;
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -309,6 +309,13 @@ static int rtw_mac_power_switch(struct r
+ 	pwr_seq = pwr_on ? chip->pwr_on_seq : chip->pwr_off_seq;
+ 	ret = rtw_pwr_seq_parser(rtwdev, pwr_seq);
+ 
++	if (pwr_on && rtw_hci_type(rtwdev) == RTW_HCI_TYPE_USB) {
++		if (chip->id == RTW_CHIP_TYPE_8822C ||
++		    chip->id == RTW_CHIP_TYPE_8822B ||
++		    chip->id == RTW_CHIP_TYPE_8821C)
++			rtw_write8_clr(rtwdev, REG_SYS_STATUS1 + 1, BIT(0));
++	}
 +
-+	/*
-+	 * Since 'addr' is not guaranteed to be safe to access, use
-+	 * copy_from_kernel_nofault() to read the instruction:
-+	 */
-+	if (copy_from_kernel_nofault(&insn, (void *)addr, sizeof(u32)))
-+		return NULL;
-+
-+	if (is_endbr(insn)) {
- 		*on_func_entry = !offset || offset == 4;
- 		if (*on_func_entry)
- 			offset = 4;
--- 
-2.43.0
-
+ 	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_SDIO)
+ 		rtw_write32(rtwdev, REG_SDIO_HIMR, imr);
+ 
 
 
 
