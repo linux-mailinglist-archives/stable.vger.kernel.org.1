@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-34337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFBB893EEC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 214F889436E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1862E283472
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05832839B3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E6347A79;
-	Mon,  1 Apr 2024 16:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7247A481B8;
+	Mon,  1 Apr 2024 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwVsfz+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdWRCLpN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24AA44596E;
-	Mon,  1 Apr 2024 16:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4DC1DFF4;
+	Mon,  1 Apr 2024 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987780; cv=none; b=bRIZ4yInkzxTPmMXDuMme5gSUVneCb8KspmZkRU/JDAFOb09xLV9GgKuNeu9dfDpapnu+xjmcJdhHCznb6FkfJpSxDdnVQzU4n1OGiQwAMR/0hBgfvPaj8dgXWQhKsvu7+ECnSKSi87uEY6kcn9f/GIsrxfmu+kq7m5zZHefUoU=
+	t=1711991014; cv=none; b=LRiT/REh6+0yJK7LkIOMkiO0yGZl075/LLLR+s+v1x3pFAPX5bUDh3b6qPs7hUhYkCvFtgbyVYaLp2hKWjIffCPNpYxb0KWbKt1hm2XqJTvfPXeVPRtGWjX0eSNQljfY7sla8tF7oULq6Xakna8a2yokgNSJFPdL6FxiIGzsDjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987780; c=relaxed/simple;
-	bh=wnMNecNPMys/GdR5tWBXaQrBM9gLQqeu5DAvf/JtMuQ=;
+	s=arc-20240116; t=1711991014; c=relaxed/simple;
+	bh=pD1ZBH7zcjJf+z+WZh+/A7oe+uYh7Y+iPFNq+5ioBBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNs1pcJLCBXsVWygcgM4tRxpdxU0CZjuTVzSLg6wFhgQbqkA3ngzJPJQH6E91z2oJ5+Lv8b4/LbD+ouMca+INYLEx+YDmAV5JylX4NlfGe+GNqwQqrRGha2Y+nhtXDQT3HSl5+MXYBsRIRtIjRfdCcxwZ5c9zPTTXWpMPckzV2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwVsfz+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D185C43390;
-	Mon,  1 Apr 2024 16:09:39 +0000 (UTC)
+	 MIME-Version; b=Df62XErVa/oNomdyxCzte1DrXI6DF/LC/2V+qeM6ha2oxfyNEbIDKEysdGQz5X4il5DhN5J2SCs3t3fs9QHr1pNpDa/FpcC8BF+k1ULcVbKgQRNJIBAytrE+Uz1/HN9VMH4YkSW+QAkahaMBjQEITdcLJWyIWi+Af0Dd4Peaxw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdWRCLpN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFE2C433F1;
+	Mon,  1 Apr 2024 17:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987780;
-	bh=wnMNecNPMys/GdR5tWBXaQrBM9gLQqeu5DAvf/JtMuQ=;
+	s=korg; t=1711991014;
+	bh=pD1ZBH7zcjJf+z+WZh+/A7oe+uYh7Y+iPFNq+5ioBBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwVsfz+SQ6akYGVX36HEqSvvyPc/HqJySE23XIMiBroxMPLNgFJIdd6uSxK2vx9XY
-	 MuciBzdFkEXoRTUyjSr36Ay3jSVLD4flIs1jPeokC8MPLyD0Dv/t7U1rLz/CcqN9h3
-	 3AjepCeNl+nXVAcyMrie5FQSbuQY7lXz4v384b2k=
+	b=jdWRCLpNce/XVUsUsn4dKAOU566+eTMfs1SR5r6wERNaCi01ewsJdonPPg42uwBtK
+	 Hdvb+7RC2NF2K1jAEpAuzzgv2KLOtYj1Gyas5AASplj396YzKQcl44tSYGMAXA6YON
+	 +zOxwhLilfuA376qLWEezIPcHFouwMIoxGg59d7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.8 360/399] USB: core: Fix deadlock in port "disable" sysfs attribute
+	Matt <cryptearth@googlemail.com>,
+	Conrad Kostecki <conikost@gentoo.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/272] ahci: asm1064: asm1166: dont limit reported ports
 Date: Mon,  1 Apr 2024 17:45:26 +0200
-Message-ID: <20240401152559.914862191@linuxfoundation.org>
+Message-ID: <20240401152534.933400977@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Conrad Kostecki <conikost@gentoo.org>
 
-commit f4d1960764d8a70318b02f15203a1be2b2554ca1 upstream.
+[ Upstream commit 6cd8adc3e18960f6e59d797285ed34ef473cc896 ]
 
-The show and store callback routines for the "disable" sysfs attribute
-file in port.c acquire the device lock for the port's parent hub
-device.  This can cause problems if another process has locked the hub
-to remove it or change its configuration:
+Previously, patches have been added to limit the reported count of SATA
+ports for asm1064 and asm1166 SATA controllers, as those controllers do
+report more ports than physically having.
 
-	Removing the hub or changing its configuration requires the
-	hub interface to be removed, which requires the port device
-	to be removed, and device_del() waits until all outstanding
-	sysfs attribute callbacks for the ports have returned.  The
-	lock can't be released until then.
+While it is allowed to report more ports than physically having in CAP.NP,
+it is not allowed to report more ports than physically having in the PI
+(Ports Implemented) register, which is what these HBAs do.
+(This is a AHCI spec violation.)
 
-	But the disable_show() or disable_store() routine can't return
-	until after it has acquired the lock.
+Unfortunately, it seems that the PMP implementation in these ASMedia HBAs
+is also violating the AHCI and SATA-IO PMP specification.
 
-The resulting deadlock can be avoided by calling
-sysfs_break_active_protection().  This will cause the sysfs core not
-to wait for the attribute's callback routine to return, allowing the
-removal to proceed.  The disadvantage is that after making this call,
-there is no guarantee that the hub structure won't be deallocated at
-any moment.  To prevent this, we have to acquire a reference to it
-first by calling hub_get().
+What these HBAs do is that they do not report that they support PMP
+(CAP.SPM (Supports Port Multiplier) is not set).
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/f7a8c135-a495-4ce6-bd49-405a45e7ea9a@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, they have decided to add extra "virtual" ports in the PI register
+that is used if a port multiplier is connected to any of the physical
+ports of the HBA.
+
+Enumerating the devices behind the PMP as specified in the AHCI and
+SATA-IO specifications, by using PMP READ and PMP WRITE commands to the
+physical ports of the HBA is not possible, you have to use the "virtual"
+ports.
+
+This is of course bad, because this gives us no way to detect the device
+and vendor ID of the PMP actually connected to the HBA, which means that
+we can not apply the proper PMP quirks for the PMP that is connected to
+the HBA.
+
+Limiting the port map will thus stop these controllers from working with
+SATA Port Multipliers.
+
+This patch reverts both patches for asm1064 and asm1166, so old behavior
+is restored and SATA PMP will work again, but it will also reintroduce the
+(minutes long) extra boot time for the ASMedia controllers that do not
+have a PMP connected (either on the PCIe card itself, or an external PMP).
+
+However, a longer boot time for some, is the lesser evil compared to some
+other users not being able to detect their drives at all.
+
+Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
+Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
+Cc: stable@vger.kernel.org
+Reported-by: Matt <cryptearth@googlemail.com>
+Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+[cassel: rewrote commit message]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/port.c |   38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ drivers/ata/ahci.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -55,11 +55,22 @@ static ssize_t disable_show(struct devic
- 	u16 portstatus, unused;
- 	bool disabled;
- 	int rc;
-+	struct kernfs_node *kn;
- 
-+	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
--		return rc;
-+		goto out_hub_get;
- 
-+	/*
-+	 * Prevent deadlock if another process is concurrently
-+	 * trying to unregister hdev.
-+	 */
-+	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+	if (!kn) {
-+		rc = -ENODEV;
-+		goto out_autopm;
-+	}
- 	usb_lock_device(hdev);
- 	if (hub->disconnected) {
- 		rc = -ENODEV;
-@@ -69,9 +80,13 @@ static ssize_t disable_show(struct devic
- 	usb_hub_port_status(hub, port1, &portstatus, &unused);
- 	disabled = !usb_port_is_power_on(hub, portstatus);
- 
--out_hdev_lock:
-+ out_hdev_lock:
- 	usb_unlock_device(hdev);
-+	sysfs_unbreak_active_protection(kn);
-+ out_autopm:
- 	usb_autopm_put_interface(intf);
-+ out_hub_get:
-+	hub_put(hub);
- 
- 	if (rc)
- 		return rc;
-@@ -89,15 +104,26 @@ static ssize_t disable_store(struct devi
- 	int port1 = port_dev->portnum;
- 	bool disabled;
- 	int rc;
-+	struct kernfs_node *kn;
- 
- 	rc = kstrtobool(buf, &disabled);
- 	if (rc)
- 		return rc;
- 
-+	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
--		return rc;
-+		goto out_hub_get;
- 
-+	/*
-+	 * Prevent deadlock if another process is concurrently
-+	 * trying to unregister hdev.
-+	 */
-+	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+	if (!kn) {
-+		rc = -ENODEV;
-+		goto out_autopm;
-+	}
- 	usb_lock_device(hdev);
- 	if (hub->disconnected) {
- 		rc = -ENODEV;
-@@ -118,9 +144,13 @@ static ssize_t disable_store(struct devi
- 	if (!rc)
- 		rc = count;
- 
--out_hdev_lock:
-+ out_hdev_lock:
- 	usb_unlock_device(hdev);
-+	sysfs_unbreak_active_protection(kn);
-+ out_autopm:
- 	usb_autopm_put_interface(intf);
-+ out_hub_get:
-+	hub_put(hub);
- 
- 	return rc;
- }
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 9de1731b6b444..17119e8dc8c30 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -671,19 +671,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
+ {
+-	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
+-		switch (pdev->device) {
+-		case 0x1166:
+-			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
+-			hpriv->saved_port_map = 0x3f;
+-			break;
+-		case 0x1064:
+-			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
+-			hpriv->saved_port_map = 0xf;
+-			break;
+-		}
+-	}
+-
+ 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 		dev_info(&pdev->dev, "JMB361 has only one port\n");
+ 		hpriv->saved_port_map = 1;
+-- 
+2.43.0
+
 
 
 
