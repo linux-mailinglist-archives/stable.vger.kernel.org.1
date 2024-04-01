@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-35233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58831894309
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 501C18941B4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A5E71C21432
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06407282F58
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC668482CA;
-	Mon,  1 Apr 2024 16:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D209347A6B;
+	Mon,  1 Apr 2024 16:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcBF6/5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2K31v8ej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B101BA3F;
-	Mon,  1 Apr 2024 16:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4E81C0DE7;
+	Mon,  1 Apr 2024 16:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990729; cv=none; b=mFucl2csgebadPmw+l1Qp3SF1jsPB4yRoT4RiIP9nNnzNkVernOVjMw/s5h2m8FHeHIQZ1DyqlDE7LRpLSVUT/NHj/vhydEd88CKCqHLbIkR++PpLO85tbWba/r3nYpT/2QL9V6CKxijz8czPZkoJB/FfkovAQap2KDCpRFm21s=
+	t=1711989907; cv=none; b=c80DtxHe4d7etVmaeqQ0w1XzkJa/j1OXLJW7ht+9T0xDpTlxhQ7KML1/TY4VKS9RzOqFG1RoOhmHpXeJx+kzZp4Gz7jM2nSk6I/cOYjdgrPuuA9WdDLTOSP5TdNNELsPHOhUURsnPqAHML+sm2fMLsw/u8e+c0GxWi6mKGXslxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990729; c=relaxed/simple;
-	bh=b9y8DvWUhCGWyd7xnJPEh/IvY6DBHD/o6U26W453WnE=;
+	s=arc-20240116; t=1711989907; c=relaxed/simple;
+	bh=ndOluXhy5iCnHo+fsgKaqDdkmKdF37DsDI6Xatxaba0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxRWMoA7B9HIpJRhvvvzILcQwjWBi/703VhOaVb0HRo5N6ASx3s4NRDZVDClGwiusWmJe4/BRi8HR26NuV98uDolfozy4OCC3BXKY5e1GKXAoZ7MwP0eaRzW3mMw3vHy8GYRs0gVJiuvoqsfJMURYSOEa0zQSPo2NlrEcdWsY9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcBF6/5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FF9C433F1;
-	Mon,  1 Apr 2024 16:58:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SKmTZNp+kS2nzQbsi6Ac+8lgcu8V/sCU/SU5uxnQM3YHftqhmbxltaEzvTOaxLUUKj11UBFLn+dwuhS0yzsqSKn3IvTIAUrN7IhC5IR0Omc2n3wExsgPJ0E16hgdVyVxK4AfZ22xfEdU9c/PdnomGBmHua89BHgmk6k2omXHcZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2K31v8ej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F75C433C7;
+	Mon,  1 Apr 2024 16:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990729;
-	bh=b9y8DvWUhCGWyd7xnJPEh/IvY6DBHD/o6U26W453WnE=;
+	s=korg; t=1711989907;
+	bh=ndOluXhy5iCnHo+fsgKaqDdkmKdF37DsDI6Xatxaba0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcBF6/5lHWaPHg632/3ZNvm3LmjxJ6Q/c6jWEwlS6KZN4ry+TFUFiBLIvptCMCdLr
-	 8UJk6fgoiyoVpPAQ5ew94DqQ7nCBS0QSTS1l6akHo76Z9dtrmdyVBrb65UtbgyCXiQ
-	 JtYi8kaaG2Is+u15NmyuuJGCpOsuPoKq4HcdrlIA=
+	b=2K31v8ejsp2P7dJ1rFMTyVfGVvLXD6jGCistNDg2KiURf3rDckOXO7nqhVTejvmcD
+	 Kgngw+ylDowjWjD/9KLGpTLuHc+6CDsmqHMJeEIlk/LKTdZfKpPg0BM1q28uQZi4cg
+	 cA1fDPrC429PWgrgQz78xHzrMlxTh5ggvmlYJLTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Helge Deller <deller@gmx.de>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/272] parisc: Fix csum_ipv6_magic on 64-bit systems
+Subject: [PATCH 6.6 189/396] drm/ttm: Make sure the mapped tt pages are decrypted when needed
 Date: Mon,  1 Apr 2024 17:43:58 +0200
-Message-ID: <20240401152531.902220129@linuxfoundation.org>
+Message-ID: <20240401152553.574022311@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,165 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit 4b75b12d70506e31fc02356bbca60f8d5ca012d0 ]
+[ Upstream commit 71ce046327cfd3aef3f93d1c44e091395eb03f8f ]
 
-hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
-operations. The last add folds protocol and length fields into the 64-bit
-result. While unlikely, this operation can overflow. The overflow can be
-triggered with a code sequence such as the following.
+Some drivers require the mapped tt pages to be decrypted. In an ideal
+world this would have been handled by the dma layer, but the TTM page
+fault handling would have to be rewritten to able to do that.
 
-	/* try to trigger massive overflows */
-	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
-	csum_result = csum_ipv6_magic((struct in6_addr *)tmp_buf,
-				      (struct in6_addr *)tmp_buf,
-				      0xffff, 0xff, 0xffffffff);
+A side-effect of the TTM page fault handling is using a dma allocation
+per order (via ttm_pool_alloc_page) which makes it impossible to just
+trivially use dma_mmap_attrs. As a result ttm has to be very careful
+about trying to make its pgprot for the mapped tt pages match what
+the dma layer thinks it is. At the ttm layer it's possible to
+deduce the requirement to have tt pages decrypted by checking
+whether coherent dma allocations have been requested and the system
+is running with confidential computing technologies.
 
-Fix the problem by adding any overflows from the final add operation into
-the calculated checksum. Fortunately, we can do this without additional
-cost by replacing the add operation used to fold the checksum into 32 bit
-with "add,dc" to add in the missing carry.
+This approach isn't ideal but keeping TTM matching DMAs expectations
+for the page properties is in general fragile, unfortunately proper
+fix would require a rewrite of TTM's page fault handling.
 
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes vmwgfx with SEV enabled.
+
+v2: Explicitly include cc_platform.h
+v3: Use CC_ATTR_GUEST_MEM_ENCRYPT instead of CC_ATTR_MEM_ENCRYPT to
+limit the scope to guests and log when memory decryption is enabled.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iomem")
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v5.14+
+Link: https://patchwork.freedesktop.org/patch/msgid/20230926040359.3040017-1-zack@kde.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/checksum.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ttm/ttm_bo_util.c | 13 +++++++++++--
+ drivers/gpu/drm/ttm/ttm_tt.c      | 13 +++++++++++++
+ include/drm/ttm/ttm_tt.h          |  9 ++++++++-
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index e619e67440db9..c949aa20fa162 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -137,8 +137,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- "	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
- "	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
- "	depdi		0, 31, 32, %0\n"/* clear upper half */
--"	add		%4, %0, %0\n"	/* fold into 32-bits */
--"	addc		0, %0, %0\n"	/* add carry */
-+"	add,dc		%4, %0, %0\n"	/* fold into 32-bits, plus carry */
-+"	addc		0, %0, %0\n"	/* add final carry */
+diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+index fd9fd3d15101c..0b3f4267130c4 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo_util.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+@@ -294,7 +294,13 @@ pgprot_t ttm_io_prot(struct ttm_buffer_object *bo, struct ttm_resource *res,
+ 	enum ttm_caching caching;
  
- #else
+ 	man = ttm_manager_type(bo->bdev, res->mem_type);
+-	caching = man->use_tt ? bo->ttm->caching : res->bus.caching;
++	if (man->use_tt) {
++		caching = bo->ttm->caching;
++		if (bo->ttm->page_flags & TTM_TT_FLAG_DECRYPTED)
++			tmp = pgprot_decrypted(tmp);
++	} else  {
++		caching = res->bus.caching;
++	}
  
+ 	return ttm_prot_from_caching(caching, tmp);
+ }
+@@ -337,6 +343,8 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
+ 		.no_wait_gpu = false
+ 	};
+ 	struct ttm_tt *ttm = bo->ttm;
++	struct ttm_resource_manager *man =
++			ttm_manager_type(bo->bdev, bo->resource->mem_type);
+ 	pgprot_t prot;
+ 	int ret;
+ 
+@@ -346,7 +354,8 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (num_pages == 1 && ttm->caching == ttm_cached) {
++	if (num_pages == 1 && ttm->caching == ttm_cached &&
++	    !(man->use_tt && (ttm->page_flags & TTM_TT_FLAG_DECRYPTED))) {
+ 		/*
+ 		 * We're mapping a single page, and the desired
+ 		 * page protection is consistent with the bo.
+diff --git a/drivers/gpu/drm/ttm/ttm_tt.c b/drivers/gpu/drm/ttm/ttm_tt.c
+index e0a77671edd6c..43eaffa7faae3 100644
+--- a/drivers/gpu/drm/ttm/ttm_tt.c
++++ b/drivers/gpu/drm/ttm/ttm_tt.c
+@@ -31,11 +31,14 @@
+ 
+ #define pr_fmt(fmt) "[TTM] " fmt
+ 
++#include <linux/cc_platform.h>
+ #include <linux/sched.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/file.h>
+ #include <linux/module.h>
+ #include <drm/drm_cache.h>
++#include <drm/drm_device.h>
++#include <drm/drm_util.h>
+ #include <drm/ttm/ttm_bo.h>
+ #include <drm/ttm/ttm_tt.h>
+ 
+@@ -60,6 +63,7 @@ static atomic_long_t ttm_dma32_pages_allocated;
+ int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
+ {
+ 	struct ttm_device *bdev = bo->bdev;
++	struct drm_device *ddev = bo->base.dev;
+ 	uint32_t page_flags = 0;
+ 
+ 	dma_resv_assert_held(bo->base.resv);
+@@ -81,6 +85,15 @@ int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
+ 		pr_err("Illegal buffer object type\n");
+ 		return -EINVAL;
+ 	}
++	/*
++	 * When using dma_alloc_coherent with memory encryption the
++	 * mapped TT pages need to be decrypted or otherwise the drivers
++	 * will end up sending encrypted mem to the gpu.
++	 */
++	if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
++		page_flags |= TTM_TT_FLAG_DECRYPTED;
++		drm_info(ddev, "TT memory decryption enabled.");
++	}
+ 
+ 	bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
+ 	if (unlikely(bo->ttm == NULL))
+diff --git a/include/drm/ttm/ttm_tt.h b/include/drm/ttm/ttm_tt.h
+index a4eff85b1f449..2b9d856ff388d 100644
+--- a/include/drm/ttm/ttm_tt.h
++++ b/include/drm/ttm/ttm_tt.h
+@@ -79,6 +79,12 @@ struct ttm_tt {
+ 	 *   page_flags = TTM_TT_FLAG_EXTERNAL |
+ 	 *		  TTM_TT_FLAG_EXTERNAL_MAPPABLE;
+ 	 *
++	 * TTM_TT_FLAG_DECRYPTED: The mapped ttm pages should be marked as
++	 * not encrypted. The framework will try to match what the dma layer
++	 * is doing, but note that it is a little fragile because ttm page
++	 * fault handling abuses the DMA api a bit and dma_map_attrs can't be
++	 * used to assure pgprot always matches.
++	 *
+ 	 * TTM_TT_FLAG_PRIV_POPULATED: TTM internal only. DO NOT USE. This is
+ 	 * set by TTM after ttm_tt_populate() has successfully returned, and is
+ 	 * then unset when TTM calls ttm_tt_unpopulate().
+@@ -87,8 +93,9 @@ struct ttm_tt {
+ #define TTM_TT_FLAG_ZERO_ALLOC		BIT(1)
+ #define TTM_TT_FLAG_EXTERNAL		BIT(2)
+ #define TTM_TT_FLAG_EXTERNAL_MAPPABLE	BIT(3)
++#define TTM_TT_FLAG_DECRYPTED		BIT(4)
+ 
+-#define TTM_TT_FLAG_PRIV_POPULATED	BIT(4)
++#define TTM_TT_FLAG_PRIV_POPULATED	BIT(5)
+ 	uint32_t page_flags;
+ 	/** @num_pages: Number of pages in the page array. */
+ 	uint32_t num_pages;
 -- 
 2.43.0
 
