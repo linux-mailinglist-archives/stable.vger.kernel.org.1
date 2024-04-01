@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807C9893E95
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 495238941E5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 354D71F21047
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEB3EB2237E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21334596E;
-	Mon,  1 Apr 2024 16:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AE540876;
+	Mon,  1 Apr 2024 16:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ckz/LQ38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyqcZlOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805F81CA8F;
-	Mon,  1 Apr 2024 16:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307FB4654F;
+	Mon,  1 Apr 2024 16:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987522; cv=none; b=dLxZGasvxAjZlmpRImE1Er9N/+jUAjm0YI2QYjOp5GckeBYV/Hu1xKxWeNmKdZnoTwtWtsbOPa/EwssijfclZMSt+7zn3coVLAyBrIxHbSuIiTBsQaiETFNWaEDuJLku9CRX+Ge17sixDhyGgXmgoTd2+gpCODNXOIVUqhyHIVs=
+	t=1711990047; cv=none; b=UpMb+2XAAyHo1Q9aIxkK4LXsK4jgxaRtFigFMKR9Wd9dj6HLve33DXnzqeyWKCoO1ApNHwOzURUiqDf+mFQ9TH/UbSdevRLXAOqQrMDioFCfqvFNx5n0JoIKDEm88vsA+8E5cw4VNWhAMTVUVsAqGN0gOS4YrWyjPTNXRCbaFB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987522; c=relaxed/simple;
-	bh=ff20X6VOBtJeOFKDS32TW7wfeFmtI6dDmnLP4k8JS+Y=;
+	s=arc-20240116; t=1711990047; c=relaxed/simple;
+	bh=U55rpLUd5IKxxvTLX5YJRbbjt1nOpFOD+oH48cnchR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDDXmNOSldownot2gi6iyPib95ZHLMc1V+u9fiaoJcZsTasiCC3+xqI8TpR5itysBlk5xs7nOAzGLT4aBqtvTFr3NuYYNWxx8KI48k5Xj4gqAeXIurSJVl4nnOXfSthdQzMdV3StlRQSapc3hbGXer4h9o0TNBrmvifNSX69Kw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ckz/LQ38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7801C433C7;
-	Mon,  1 Apr 2024 16:05:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cUOrvQqVVdnqfM+Ad82h8/Ad+UmxeKW7Ptq/vUEKWXcWn/bHQiS+1HkcYEBph+T/7fBhZPPmRIXR7wF5ujMkkXA4w07i97xV22bhJJv2qXv5oubxmHu+UMsQ1nICGt7XWgOriB+jRGHVC1Ey5TTEmD+hLB2rMiJstjXW88ZFBV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyqcZlOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEC9C433F1;
+	Mon,  1 Apr 2024 16:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987522;
-	bh=ff20X6VOBtJeOFKDS32TW7wfeFmtI6dDmnLP4k8JS+Y=;
+	s=korg; t=1711990047;
+	bh=U55rpLUd5IKxxvTLX5YJRbbjt1nOpFOD+oH48cnchR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ckz/LQ3847LSKvtkw9xM/eZEExJXx1HjLsNAfsFzB/BkTt3wjvf+aLypZDa3I7aFO
-	 kEOaj3mpr2G511WxyrTOv7vErUGEDI40QQ2PP7oZSEagjPA9t6VA9/upwgL2HNo2J5
-	 9PvdNh1gbbiffelLCCUoLH9W3EvW8rhQ5aXhsbzU=
+	b=ZyqcZlOOiH2jCW0KjxaYg/wavgBuT4ZnNzzGavxaFnN5TDG5e+WrVJd/tSHxly0B0
+	 1nCC6RIeLa5YYKuhbx5KlrDM8rHRFHCajseYEeODSmjTFmGntfiUbELWgDKvZy6woD
+	 y7/DJu+f0Pj1uN9je5w21UyIskwsddQ7qWpFFnYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Romain Naour <romain.naour@skf.com>,
+	stable <stable@kernel.org>,
 	Tony Lindgren <tony@atomide.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.8 312/399] mmc: sdhci-omap: re-tuning is needed after a pm transition to support emmc HS200 mode
-Date: Mon,  1 Apr 2024 17:44:38 +0200
-Message-ID: <20240401152558.500314837@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Yicong Yang <yangyicong@hisilicon.com>
+Subject: [PATCH 6.6 230/396] serial: port: Dont suspend if the port is still busy
+Date: Mon,  1 Apr 2024 17:44:39 +0200
+Message-ID: <20240401152554.775881151@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Romain Naour <romain.naour@skf.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-commit f9e2a5b00a35f2c064dc679808bc8db5cc779ed6 upstream.
+commit 43066e32227ecde674e8ae1fcdd4a1ede67680c2 upstream.
 
-"PM runtime functions" was been added in sdhci-omap driver in commit
-f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions") along
-with "card power off and enable aggressive PM" in commit 3edf588e7fe0
-("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM").
+We accidently met the issue that the bash prompt is not shown after the
+previous command done and until the next input if there's only one CPU
+(In our issue other CPUs are isolated by isolcpus=). Further analysis
+shows it's because the port entering runtime suspend even if there's
+still pending chars in the buffer and the pending chars will only be
+processed in next device resuming. We are using amba-pl011 and the
+problematic flow is like below:
 
-Since then, the sdhci-omap driver doesn't work using mmc-hs200 mode
-due to the tuning values being lost during a pm transition.
+Bash                                         kworker
+tty_write()
+  file_tty_write()
+    n_tty_write()
+      uart_write()
+        __uart_start()
+          pm_runtime_get() // wakeup waker
+            queue_work()
+                                             pm_runtime_work()
+                                               rpm_resume()
+                                                status = RPM_RESUMING
+                                                serial_port_runtime_resume()
+                                                  port->ops->start_tx()
+                                                    pl011_tx_chars()
+                                                      uart_write_wakeup()
+        […]
+        __uart_start()
+          pm_runtime_get() < 0 // because runtime status = RPM_RESUMING
+                               // later data are not commit to the port driver
+                                                status = RPM_ACTIVE
+                                                rpm_idle() -> rpm_suspend()
 
-As for the sdhci_am654 driver, request a new tuning sequence before
-suspend (sdhci_omap_runtime_suspend()), otherwise the device will
-trigger cache flush error:
+This patch tries to fix this by checking the port busy before entering
+runtime suspending. A runtime_suspend callback is added for the port
+driver. When entering runtime suspend the callback is invoked, if there's
+still pending chars in the buffer then flush the buffer.
 
-  mmc1: cache flush error -110 (ETIMEDOUT)
-  mmc1: error -110 doing aggressive suspend
-
-followed by I/O errors produced by fdisk -l /dev/mmcblk1boot1:
-
-  I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
-  prio class 2
-  I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
-  prio class 2
-  I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
-  prio class 2
-  Buffer I/O error on dev mmcblk1boot1, logical block 8048, async page read
-  I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
-  prio class 2
-  Buffer I/O error on dev mmcblk1boot0, logical block 8048, async page read
-
-Don't re-tune if auto retuning is supported in HW (when SDHCI_TUNING_MODE_3
-is available).
-
-Link: https://lore.kernel.org/all/2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr
-Fixes: f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions")
-Signed-off-by: Romain Naour <romain.naour@skf.com>
+Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
+Cc: stable <stable@kernel.org>
 Reviewed-by: Tony Lindgren <tony@atomide.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240315234444.816978-1-romain.naour@smile.fr
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240226152351.40924-1-yangyicong@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-omap.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/serial_port.c |   25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -1439,6 +1439,9 @@ static int __maybe_unused sdhci_omap_run
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+--- a/drivers/tty/serial/serial_port.c
++++ b/drivers/tty/serial/serial_port.c
+@@ -46,8 +46,31 @@ out:
+ 	return 0;
+ }
  
-+	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
-+		mmc_retune_needed(host->mmc);
++static int serial_port_runtime_suspend(struct device *dev)
++{
++	struct serial_port_device *port_dev = to_serial_base_port_device(dev);
++	struct uart_port *port = port_dev->port;
++	unsigned long flags;
++	bool busy;
 +
- 	if (omap_host->con != -EINVAL)
- 		sdhci_runtime_suspend_host(host);
++	if (port->flags & UPF_DEAD)
++		return 0;
++
++	uart_port_lock_irqsave(port, &flags);
++	busy = __serial_port_busy(port);
++	if (busy)
++		port->ops->start_tx(port);
++	uart_port_unlock_irqrestore(port, flags);
++
++	if (busy)
++		pm_runtime_mark_last_busy(dev);
++
++	return busy ? -EBUSY : 0;
++}
++
+ static DEFINE_RUNTIME_DEV_PM_OPS(serial_port_pm,
+-				 NULL, serial_port_runtime_resume, NULL);
++				 serial_port_runtime_suspend,
++				 serial_port_runtime_resume, NULL);
  
+ static int serial_port_probe(struct device *dev)
+ {
 
 
 
