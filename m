@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-34489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2387893F8F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A9E894135
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FE0B1C21045
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 897551F21B05
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD534778C;
-	Mon,  1 Apr 2024 16:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4EE3BBC3;
+	Mon,  1 Apr 2024 16:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuUTLGbl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsQBFKP4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2701DFFC;
-	Mon,  1 Apr 2024 16:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8B71E86C;
+	Mon,  1 Apr 2024 16:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988292; cv=none; b=FqJqI/pCC3Cm9KdL0bfgkP24MZzqEFGiX1bDVt6TtxderJUiEgQkLl53pHt1qVkRXcKXoOs/4ZUKjd6DR3WwrdZE636d92TumxSytqvb2S/uYHZqeQjF6Rq1S3mC1dv8UpRYobZnyWc/PxobeGvtK+wkCs9RVXwOkqGOHmOrAKU=
+	t=1711989548; cv=none; b=Y0AXRhaPHeidSQr6qLXqI233+wljdto0CsCLAkAGg9lsWO9HX0YDyWVwcYDEYE0guEgWbZTrB5XUJMCO3yJHWhmt7bzCeWIWLs5INVZRUhh4RkhKZLma8ipji06Zr2SQBGBypulmv0JhcxLIMP4us1qLJGD3IqsPEyKnRTVMPQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988292; c=relaxed/simple;
-	bh=cZBNzeamjy4gsZLV5NSya0H5wW+yt7FD5/L5kBbLgT0=;
+	s=arc-20240116; t=1711989548; c=relaxed/simple;
+	bh=TOTlaCEznBI1Faiw/0jPrbWMoWbC3k9GSCreI4o4j+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlNCJRJ03NxJBjgrmz1zOLB7m7JYkRaeboyt1o5et3TlbqIQBb8PaIRvDgErjzp9vm7qT95vvV751505eiNOKnzMz/TwlXxL9RDgTVEMHJPNRBUxjK/cS5qhkgHPRgowPnm1tsmAJ98Vkck9uUPALzPYybwm2Drj4yuXNxc4q6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuUTLGbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6748AC433F1;
-	Mon,  1 Apr 2024 16:18:11 +0000 (UTC)
+	 MIME-Version; b=hc4fhB4A9v3CKMXmxXbNeCdLutMEBQo97+VIdci0mK2g0CRF4gMkPYLIQX3G+WRv6YwzYSwP7yuKcC3FNkva2o9xTlRtossFq2t5r2z5QvyOwR8fe7oFpfwPuKa0kItYTHIOqs5kw9T6EN2AuRNtfVQ/q2DURkQm0wPx1OXNrOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsQBFKP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46565C43390;
+	Mon,  1 Apr 2024 16:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988291;
-	bh=cZBNzeamjy4gsZLV5NSya0H5wW+yt7FD5/L5kBbLgT0=;
+	s=korg; t=1711989547;
+	bh=TOTlaCEznBI1Faiw/0jPrbWMoWbC3k9GSCreI4o4j+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CuUTLGblNQf//mVxv31SSMfRNEhSorrMJKM49S6k9qnOeOyQEX6y8WJDNEBlVy2cm
-	 eUbagbagNX/sfamyz1foc+18pP9mNSJpVNhFmKtlA2ShL7ODG1lgIngTzQUraA35BJ
-	 qjJW6FZE3/scWzNDl8gbP0n33axQZKZ4D+1b1kEA=
+	b=NsQBFKP44M1fP2LgA9gAwxkK4CnqaYl1YyqnKejY9YvAILIiEYLoCOZfLWnvtdYws
+	 iFxyt6rTrLnbazHPBNu45tfEWyZf+606b767MOXBK4e+ZXoTzsGjfOU3pScIfaH91L
+	 kNUxc7inCo0MUociuDfNA2pKGpq0KvOJwovwAoCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Wunderlich <frank-w@public-files.de>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 142/432] thermal/drivers/mediatek: Fix control buffer enablement on MT7896
-Date: Mon,  1 Apr 2024 17:42:09 +0200
-Message-ID: <20240401152557.371755571@linuxfoundation.org>
+Subject: [PATCH 6.6 081/396] mmc: tmio: avoid concurrent runs of mmc_request_done()
+Date: Mon,  1 Apr 2024 17:42:10 +0200
+Message-ID: <20240401152550.331907805@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Wunderlich <frank-w@public-files.de>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 371ed6263e2403068b359f0c07188548c2d70827 ]
+[ Upstream commit e8d1b41e69d72c62865bebe8f441163ec00b3d44 ]
 
-Reading thermal sensor on mt7986 devices returns invalid temperature:
+With the to-be-fixed commit, the reset_work handler cleared 'host->mrq'
+outside of the spinlock protected critical section. That leaves a small
+race window during execution of 'tmio_mmc_reset()' where the done_work
+handler could grab a pointer to the now invalid 'host->mrq'. Both would
+use it to call mmc_request_done() causing problems (see link below).
 
-bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
- -274000
+However, 'host->mrq' cannot simply be cleared earlier inside the
+critical section. That would allow new mrqs to come in asynchronously
+while the actual reset of the controller still needs to be done. So,
+like 'tmio_mmc_set_ios()', an ERR_PTR is used to prevent new mrqs from
+coming in but still avoiding concurrency between work handlers.
 
-Fix this by adding missing members in mtk_thermal_data struct which were
-used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
-
-Cc: stable@vger.kernel.org
-Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230907112018.52811-1-linux@fw-web.de
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/all/20240220061356.3001761-1-dirk.behme@de.bosch.com/
+Fixes: df3ef2d3c92c ("mmc: protect the tmio_mmc driver against a theoretical race")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: stable@vger.kernel.org # 3.0+
+Link: https://lore.kernel.org/r/20240305104423.3177-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/auxadc_thermal.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/tmio_mmc_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
-index 8b0edb2048443..9ee2e7283435a 100644
---- a/drivers/thermal/mediatek/auxadc_thermal.c
-+++ b/drivers/thermal/mediatek/auxadc_thermal.c
-@@ -690,6 +690,9 @@ static const struct mtk_thermal_data mt7986_thermal_data = {
- 	.adcpnp = mt7986_adcpnp,
- 	.sensor_mux_values = mt7986_mux_values,
- 	.version = MTK_THERMAL_V3,
-+	.apmixed_buffer_ctl_reg = APMIXED_SYS_TS_CON1,
-+	.apmixed_buffer_ctl_mask = GENMASK(31, 6) | BIT(3),
-+	.apmixed_buffer_ctl_set = BIT(0),
- };
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index be7f18fd4836a..c253d176db691 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -259,6 +259,8 @@ static void tmio_mmc_reset_work(struct work_struct *work)
+ 	else
+ 		mrq->cmd->error = -ETIMEDOUT;
  
- static bool mtk_thermal_temp_is_valid(int temp)
++	/* No new calls yet, but disallow concurrent tmio_mmc_done_work() */
++	host->mrq = ERR_PTR(-EBUSY);
+ 	host->cmd = NULL;
+ 	host->data = NULL;
+ 
 -- 
 2.43.0
 
