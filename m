@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5B289426A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B50AA8943B1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82D371F25884
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6992F1F26442
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDEF4D58E;
-	Mon,  1 Apr 2024 16:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF5E48781;
+	Mon,  1 Apr 2024 17:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJVa6Reo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+e7Vuo3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED814D584;
-	Mon,  1 Apr 2024 16:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16884482DF;
+	Mon,  1 Apr 2024 17:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990335; cv=none; b=NQru2zDjSTKimKGmHymdWVenBV5hSHU+elpLsHMk1odyJqwlV2saGol8YEh8AYqT2a/2uxOHga5GScSxqhDA3sV/lifBmOoVC+Ab9DBhddOBN75hgqz1HH9fI2HtycaaYUmXMfmjTfu47YtSJIlYrz0U/OU2HPIgdnOayDZlD7A=
+	t=1711991212; cv=none; b=PF2iCFJfeP4eWD3XKwFMk4hESep0uw1AL8U2OFRJ1ep8EpY51uU1xCTrGKfh8jZqIAG6M4uB+OkWfxRjaKWtf1GFGiN0DpaxqXAJ3on7d4OKTYWwZczKTkX1/a7xGda9VdutcRKKOEtuehldmePwfHZ+HWegPHAQ7jzKcLJUuP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990335; c=relaxed/simple;
-	bh=7nNbRTPd3OSrNVp6bnRQyeyfjWc+oO9rvrC7Ef8NyI4=;
+	s=arc-20240116; t=1711991212; c=relaxed/simple;
+	bh=5nUzjyZBmd1t+Cwsy01JgPQpUMZsVn7aVaD8MEuXS/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJa4e9kRmStz06fQQGsMny+myEmRAfzgGN15qngpJgEzH4HQONiO7FW8b2qN99EuDXWGDUOPNk/61ObkAtUvdAD6WXsPvfICP2BmXk+xWbHtnzIGoM60j7/7+kaEA/cSCKfj8mM8lhybXJG2lf+TK0vFO/WiOSybstnjEAKEcfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJVa6Reo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD1AC433C7;
-	Mon,  1 Apr 2024 16:52:13 +0000 (UTC)
+	 MIME-Version; b=JZ8y1rvI4BFWnEhmGMfULVuqdDdYyf2oMnj2tDatwuM8Cm6JTYKnqdqDn6opxbwB6wlAGbNZ7ho5Qy6wYbTm7kkl5BDebSVxGjw3G4HgOgRVK844J5hUNL+y3ZZ0paPw0Bs4Cl9ioOippi6VhNXE318nPPUlIlKe39Uto3jLqC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+e7Vuo3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8187EC433F1;
+	Mon,  1 Apr 2024 17:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990334;
-	bh=7nNbRTPd3OSrNVp6bnRQyeyfjWc+oO9rvrC7Ef8NyI4=;
+	s=korg; t=1711991212;
+	bh=5nUzjyZBmd1t+Cwsy01JgPQpUMZsVn7aVaD8MEuXS/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJVa6ReoGtEd+Gc2mqpHuS7Cc4VnpckBhKROCpWIPet/v49Be+3W0pD7E4LYdjPZO
-	 L9QK41HsKuv6iXIOZ8UTf7ZDO3cYJGadV5y72uMMsloZ63J16ozdMX9l2bV8gvvkhG
-	 Qkd+9YR1o7Tq7+AfTzOFKbUUiwzkS/YfAD9TjYWc=
+	b=U+e7Vuo34ea274JRzN2HhyWHHdmxfboztiVcK+6zlFBv8G6wnoAozkRhjfqFEeOir
+	 BFNAxLGD5uviMtiyNN5de3Ppp94hmlUVqh92E5ka5VqYBgALv8fAa7D/iaUoGWt/JH
+	 ywC+6PmqLlXZxgNy9YcYDCqbmmON4aYmhgwDpBUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ranygh@riseup.net,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 320/396] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 179/272] clocksource/drivers/arm_global_timer: Fix maximum prescaler value
 Date: Mon,  1 Apr 2024 17:46:09 +0200
-Message-ID: <20240401152557.453416257@linuxfoundation.org>
+Message-ID: <20240401152536.393586281@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
+[ Upstream commit b34b9547cee41575a4fddf390f615570759dc999 ]
 
-When moving a station out of a VLAN and deleting the VLAN afterwards, the
-fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
-use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
-after the VLAN change.
+The prescaler in the "Global Timer Control Register bit assignments" is
+documented to use bits [15:8], which means that the maximum prescaler
+register value is 0xff.
 
-Cc: stable@vger.kernel.org
-Reported-by: ranygh@riseup.net
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 171b45a4a70e ("clocksource/drivers/arm_global_timer: Implement rate compensation whenever source clock changes")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240218174138.1942418-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/clocksource/arm_global_timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2187,15 +2187,14 @@ static int ieee80211_change_station(stru
- 		}
+diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
+index 44a61dc6f9320..e1c773bb55359 100644
+--- a/drivers/clocksource/arm_global_timer.c
++++ b/drivers/clocksource/arm_global_timer.c
+@@ -32,7 +32,7 @@
+ #define GT_CONTROL_IRQ_ENABLE		BIT(2)	/* banked */
+ #define GT_CONTROL_AUTO_INC		BIT(3)	/* banked */
+ #define GT_CONTROL_PRESCALER_SHIFT      8
+-#define GT_CONTROL_PRESCALER_MAX        0xF
++#define GT_CONTROL_PRESCALER_MAX        0xFF
+ #define GT_CONTROL_PRESCALER_MASK       (GT_CONTROL_PRESCALER_MAX << \
+ 					 GT_CONTROL_PRESCALER_SHIFT)
  
- 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
--		    sta->sdata->u.vlan.sta) {
--			ieee80211_clear_fast_rx(sta);
-+		    sta->sdata->u.vlan.sta)
- 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
--		}
- 
- 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
- 			ieee80211_vif_dec_num_mcast(sta->sdata);
- 
- 		sta->sdata = vlansdata;
-+		ieee80211_check_fast_rx(sta);
- 		ieee80211_check_fast_xmit(sta);
- 
- 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
+-- 
+2.43.0
+
 
 
 
