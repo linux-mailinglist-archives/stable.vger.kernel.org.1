@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-34460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FD4893F6F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34C2894115
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DAB31C216A4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02D921C216C6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD65E446AC;
-	Mon,  1 Apr 2024 16:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CC447A6B;
+	Mon,  1 Apr 2024 16:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pq5cit4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTJZ5f8m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688844778E;
-	Mon,  1 Apr 2024 16:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A593E3F8F4;
+	Mon,  1 Apr 2024 16:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988197; cv=none; b=l74yxZzoazEhORldB7eJDrK2eyvsUFAVSmtBsMf1wa9ih9R29EsZH63nlbgjNrFlJzpu5yMrfy7GgxNs+YfGlfv5033bq0WHrbVilgjg63sxY/uH0SXiMnbVj73R0Co3IqQFgIhDljf96sRj/08Dn5mf3N8EVo1WLXjbnrTNRvg=
+	t=1711989448; cv=none; b=kRqT1WNx0lIDt5vvxMYGfobsr88Ny9qqZeWrESqTdXjrntK7lgF/bqGkhF/YEw2Ex6rjgewIKlPxK99U9HCjHtceGxdtlsoK/vV8BfbQLq6fs2pSosY/5EnH0XiUGHHcTW2ZitKHkw7CXPXQIAMx7JyHdllK1EqypEXoVBeTo0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988197; c=relaxed/simple;
-	bh=JjmGmw0iEy0gUkiDWp8hFrMlW1VUCRHwb2p8lCkUYnI=;
+	s=arc-20240116; t=1711989448; c=relaxed/simple;
+	bh=QHXImpzBGm/ILsn/7jvHMyl21hDj6UNJAgC/ohUmsb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5zvARG9p8iJg/HK3rsW7INC1BHc0WImPeoBJmQR0lkpwcuRbuftAHANgifBBOH4LFU2+APmfiJBzozyCmpQy02ZsZep0JQRS3hb8GZfYlhKwPHfBbMfP3bXYXiLI9x3rtg1Z3D7FiehKWFoqu1MciE3Y2KlQrR/wb8NeV43WfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pq5cit4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E306C433C7;
-	Mon,  1 Apr 2024 16:16:35 +0000 (UTC)
+	 MIME-Version; b=l3fXALnAkoY9pY4h35INWuUxkiU+CLHVOdHHCEGVa3YUcrrlUKkcO7NLjFG7mraU7mpjwIDBfesJB/cqh0k5xMSR72pMS8eCgubTwpB+WU+mvKrjJr9ZTbsEcEeatFZIF6Ngceol545pD5YjaGhqNrD5aGb6kb0VQCVX6fh8xoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTJZ5f8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1C5C433C7;
+	Mon,  1 Apr 2024 16:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988196;
-	bh=JjmGmw0iEy0gUkiDWp8hFrMlW1VUCRHwb2p8lCkUYnI=;
+	s=korg; t=1711989448;
+	bh=QHXImpzBGm/ILsn/7jvHMyl21hDj6UNJAgC/ohUmsb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pq5cit4pSHcqiN4qXH73Tdo3w3wpTby15Hfrfl3yzFAh5YkzmUBaamcppyNzA88U7
-	 lb7BRIHhTLdStmPq/SkhAPR1LNgu28s0rNjY0kGAqn7Fzq66qCWc0YG5g3f48GVMhe
-	 r2TvH9IvCo8OPqR4YVikjTqiQ10W8dIM2xugBfjs=
+	b=wTJZ5f8mTvTyU8AbQU85yik8oltSp/TH3VSlOnRsewHJYRPcBX+jDgIE7XYuvHzv1
+	 biFEA5MLd55IoX8aKaV02NUCMErbCp+ytggVo0Iiu7BKs44zJaQvJHnvPXVcCb5wOe
+	 7elhmeTPoqmdRAnJXkFRXV3NFHa3gfHGqApe+wzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge@foundries.io>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 113/432] mmc: core: Fix switch on gp3 partition
+Subject: [PATCH 6.6 051/396] md/md-bitmap: fix incorrect usage for sb_index
 Date: Mon,  1 Apr 2024 17:41:40 +0200
-Message-ID: <20240401152556.498351261@linuxfoundation.org>
+Message-ID: <20240401152549.446783478@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Heming Zhao <heming.zhao@suse.com>
 
-[ Upstream commit 4af59a8df5ea930038cd3355e822f5eedf4accc1 ]
+[ Upstream commit ecbd8ebb51bf7e4939d83b9e6022a55cac44ef06 ]
 
-Commit e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB
-partitions.") added a mask check for 'part_type', but the mask used was
-wrong leading to the code intended for rpmb also being executed for GP3.
+Commit d7038f951828 ("md-bitmap: don't use ->index for pages backing the
+bitmap file") removed page->index from bitmap code, but left wrong code
+logic for clustered-md. current code never set slot offset for cluster
+nodes, will sometimes cause crash in clustered env.
 
-On some MMCs (but not all) this would make gp3 partition inaccessible:
-armadillo:~# head -c 1 < /dev/mmcblk2gp3
-head: standard input: I/O error
-armadillo:~# dmesg -c
-[  422.976583] mmc2: running CQE recovery
-[  423.058182] mmc2: running CQE recovery
-[  423.137607] mmc2: running CQE recovery
-[  423.137802] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 4 prio class 0
-[  423.237125] mmc2: running CQE recovery
-[  423.318206] mmc2: running CQE recovery
-[  423.397680] mmc2: running CQE recovery
-[  423.397837] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
-[  423.408287] Buffer I/O error on dev mmcblk2gp3, logical block 0, async page read
+Call trace (partly):
+ md_bitmap_file_set_bit+0x110/0x1d8 [md_mod]
+ md_bitmap_startwrite+0x13c/0x240 [md_mod]
+ raid1_make_request+0x6b0/0x1c08 [raid1]
+ md_handle_request+0x1dc/0x368 [md_mod]
+ md_submit_bio+0x80/0xf8 [md_mod]
+ __submit_bio+0x178/0x300
+ submit_bio_noacct_nocheck+0x11c/0x338
+ submit_bio_noacct+0x134/0x614
+ submit_bio+0x28/0xdc
+ submit_bh_wbc+0x130/0x1cc
+ submit_bh+0x1c/0x28
 
-the part_type values of interest here are defined as follow:
-main  0
-boot0 1
-boot1 2
-rpmb  3
-gp0   4
-gp1   5
-gp2   6
-gp3   7
-
-so mask with EXT_CSD_PART_CONFIG_ACC_MASK (7) to correctly identify rpmb
-
-Fixes: e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB partitions.")
-Cc: stable@vger.kernel.org
-Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: d7038f951828 ("md-bitmap: don't use ->index for pages backing the bitmap file")
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240223121128.28985-1-heming.zhao@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/md/md-bitmap.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 32d49100dff51..86efa6084696e 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -874,10 +874,11 @@ static const struct block_device_operations mmc_bdops = {
- static int mmc_blk_part_switch_pre(struct mmc_card *card,
- 				   unsigned int part_type)
- {
--	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
-+	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 6f9ff14971f98..42d4c38ba54d5 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -234,7 +234,8 @@ static int __write_sb_page(struct md_rdev *rdev, struct bitmap *bitmap,
+ 	sector_t doff;
  
--	if ((part_type & mask) == mask) {
-+	if ((part_type & mask) == rpmb) {
- 		if (card->ext_csd.cmdq_en) {
- 			ret = mmc_cmdq_disable(card);
- 			if (ret)
-@@ -892,10 +893,11 @@ static int mmc_blk_part_switch_pre(struct mmc_card *card,
- static int mmc_blk_part_switch_post(struct mmc_card *card,
- 				    unsigned int part_type)
- {
--	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
-+	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+ 	bdev = (rdev->meta_bdev) ? rdev->meta_bdev : rdev->bdev;
+-	if (pg_index == store->file_pages - 1) {
++	/* we compare length (page numbers), not page offset. */
++	if ((pg_index - store->sb_index) == store->file_pages - 1) {
+ 		unsigned int last_page_size = store->bytes & (PAGE_SIZE - 1);
  
--	if ((part_type & mask) == mask) {
-+	if ((part_type & mask) == rpmb) {
- 		mmc_retune_unpause(card->host);
- 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
- 			ret = mmc_cmdq_enable(card);
+ 		if (last_page_size == 0)
+@@ -438,8 +439,8 @@ static void filemap_write_page(struct bitmap *bitmap, unsigned long pg_index,
+ 	struct page *page = store->filemap[pg_index];
+ 
+ 	if (mddev_is_clustered(bitmap->mddev)) {
+-		pg_index += bitmap->cluster_slot *
+-			DIV_ROUND_UP(store->bytes, PAGE_SIZE);
++		/* go to node bitmap area starting point */
++		pg_index += store->sb_index;
+ 	}
+ 
+ 	if (store->file)
+@@ -952,6 +953,7 @@ static void md_bitmap_file_set_bit(struct bitmap *bitmap, sector_t block)
+ 	unsigned long index = file_page_index(store, chunk);
+ 	unsigned long node_offset = 0;
+ 
++	index += store->sb_index;
+ 	if (mddev_is_clustered(bitmap->mddev))
+ 		node_offset = bitmap->cluster_slot * store->file_pages;
+ 
+@@ -982,6 +984,7 @@ static void md_bitmap_file_clear_bit(struct bitmap *bitmap, sector_t block)
+ 	unsigned long index = file_page_index(store, chunk);
+ 	unsigned long node_offset = 0;
+ 
++	index += store->sb_index;
+ 	if (mddev_is_clustered(bitmap->mddev))
+ 		node_offset = bitmap->cluster_slot * store->file_pages;
+ 
 -- 
 2.43.0
 
