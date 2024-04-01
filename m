@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881F9893ED8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7869189438E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08320B22561
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24141F256C2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA66647A62;
-	Mon,  1 Apr 2024 16:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D38482DF;
+	Mon,  1 Apr 2024 17:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oksttrHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsovwoB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D51446AC;
-	Mon,  1 Apr 2024 16:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338211DFF4;
+	Mon,  1 Apr 2024 17:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987719; cv=none; b=nMNKWPDoOLxM0hOpKpMr/alou2e1ZzYVdjn1f5jjmYf85DELtTZY55JnajLRqhg3X5YfvSqDvvUb6BIP2zvBtvw6+3XMs+0bjhWfkv1Uki1xKXmexNpP8S+QjiNvu/7cv8Bi8rlerplSVYkFSsl0cC7g0E4trUWlVNOGbAl7oDk=
+	t=1711991109; cv=none; b=jqIi3Qn5+Yh6+nobC44sI+MI5JzNjzkUF/RxXFM1fGNQVq3/WfFDpSdmzobWLjdmLz02rBnaYfDgZ7KnX26k+SqF7JlGAPF8TPTvwNzWOT2y+moRoit+TjZ0VAQt10+SYcpGLXJkuUePQ8+kQnY0XmqCYbV+E1JvuDGHyDZ5wwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987719; c=relaxed/simple;
-	bh=V7Imk9XRDSZR+JLOQzTX54HDxgV0IIAQC6byTw6RGqQ=;
+	s=arc-20240116; t=1711991109; c=relaxed/simple;
+	bh=QLLERlwt5n2Fp/z0QEvxeRdWcnV+COrl9L1N09kPXhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1PVPQEpIK1B0iIPSJAyTubNopmMY1p9zzoDNHl8igGUEXduNiFWC1yEIfOM7Y911/iYNEiKndaQ4hNUbPgcn3xmhyKVMssnUE3icTIVZwAWaGjdaQAdyHf5kPTtF568PnnpiyDS73c8rAzsBD/sRb71gOXDi/WQHFbony5aBkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oksttrHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08771C433C7;
-	Mon,  1 Apr 2024 16:08:38 +0000 (UTC)
+	 MIME-Version; b=m/TRAPHU3oQ7TZ+gUdrtKLaQoNbrdHMSoKdVR3FixX9mkAOsVw3jSMCwodLUwNCBEl9VWYh/OLCvixwt5nVsuLjvAZ5ZvVwxv5MPBO/YmSyGv+BcXRP7Hd9/uYRbGJsTrf1rDslQlN6IF/VEyNvBQQOTW/8GLc3usuCnlpZNang=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsovwoB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9815EC433C7;
+	Mon,  1 Apr 2024 17:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987719;
-	bh=V7Imk9XRDSZR+JLOQzTX54HDxgV0IIAQC6byTw6RGqQ=;
+	s=korg; t=1711991109;
+	bh=QLLERlwt5n2Fp/z0QEvxeRdWcnV+COrl9L1N09kPXhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oksttrHwkZ6y0t0yLOqbcAXi1Dm5Q9aU1z56G/wR5KZjNqdlPdPwjQDSL/6FRG93Q
-	 zaIm6lOurL2FMvQ+gXXKaEuYoRfDdN8/WhIiJkcjQQZ17jsSVDWrthRNlzHVGl+Uwm
-	 Btg/H/6duZMfc4FXik+YCJwbjF3aszHP5MCezjCE=
+	b=GsovwoB2IH9LS5RqZozvacb0MK8v1mLDbAvFqjSrZ6Zxfv8MZiMu62yZsNHG14IQ4
+	 PMX0yjh168s6wes0UvLNNcpGeeGU1dYqw83VxRdUFmzeJ/mmFSB6h1flvzXPiXXv8R
+	 oJZ8kDT/7lCaccYIRKRiV183jl5+l/xZ3WqnaAfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.8 372/399] usb: typec: ucsi: Clear EVENT_PENDING under PPM lock
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.1 148/272] Drivers: hv: vmbus: Calculate ring buffer size for more efficient use of memory
 Date: Mon,  1 Apr 2024 17:45:38 +0200
-Message-ID: <20240401152600.279912475@linuxfoundation.org>
+Message-ID: <20240401152535.326240635@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit 15b2e71b4653b3e13df34695a29ebeee237c5af2 upstream.
+commit b8209544296edbd1af186e2ea9c648642c37b18c upstream.
 
-Suppose we sleep on the PPM lock after clearing the EVENT_PENDING
-bit because the thread for another connector is executing a command.
-In this case the command completion of the other command will still
-report the connector change for our connector.
+The VMBUS_RING_SIZE macro adds space for a ring buffer header to the
+requested ring buffer size.  The header size is always 1 page, and so
+its size varies based on the PAGE_SIZE for which the kernel is built.
+If the requested ring buffer size is a large power-of-2 size and the header
+size is small, the resulting size is inefficient in its use of memory.
+For example, a 512 Kbyte ring buffer with a 4 Kbyte page size results in
+a 516 Kbyte allocation, which is rounded to up 1 Mbyte by the memory
+allocator, and wastes 508 Kbytes of memory.
 
-Clear the EVENT_PENDING bit under the PPM lock to avoid another
-useless call to ucsi_handle_connector_change() in this case.
+In such situations, the exact size of the ring buffer isn't that important,
+and it's OK to allocate the 4 Kbyte header at the beginning of the 512
+Kbytes, leaving the ring buffer itself with just 508 Kbytes. The memory
+allocation can be 512 Kbytes instead of 1 Mbyte and nothing is wasted.
 
-Fixes: c9aed03a0a68 ("usb: ucsi: Add missing ppm_lock")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-2-lk@c--e.de
+Update VMBUS_RING_SIZE to implement this approach for "large" ring buffer
+sizes.  "Large" is somewhat arbitrarily defined as 8 times the size of
+the ring buffer header (which is of size PAGE_SIZE).  For example, for
+4 Kbyte PAGE_SIZE, ring buffers of 32 Kbytes and larger use the first
+4 Kbytes as the ring buffer header.  For 64 Kbyte PAGE_SIZE, ring buffers
+of 512 Kbytes and larger use the first 64 Kbytes as the ring buffer
+header.  In both cases, smaller sizes add space for the header so
+the ring size isn't reduced too much by using part of the space for
+the header.  For example, with a 64 Kbyte page size, we don't want
+a 128 Kbyte ring buffer to be reduced to 64 Kbytes by allocating half
+of the space for the header.  In such a case, the memory allocation
+is less efficient, but it's the best that can be done.
+
+While the new algorithm slightly changes the amount of space allocated
+for ring buffers by drivers that use VMBUS_RING_SIZE, the devices aren't
+known to be sensitive to small changes in ring buffer size, so there
+shouldn't be any effect.
+
+Fixes: c1135c7fd0e9 ("Drivers: hv: vmbus: Introduce types of GPADL")
+Fixes: 6941f67ad37d ("hv_netvsc: Calculate correct ring size when PAGE_SIZE is not 4 Kbytes")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218502
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Tested-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240229004533.313662-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240229004533.313662-1-mhklinux@outlook.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/hyperv.h |   22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -936,11 +936,11 @@ static void ucsi_handle_connector_change
- 	if (con->status.change & UCSI_CONSTAT_CAM_CHANGE)
- 		ucsi_partner_task(con, ucsi_check_altmodes, 1, 0);
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -164,8 +164,28 @@ struct hv_ring_buffer {
+ 	u8 buffer[];
+ } __packed;
  
--	clear_bit(EVENT_PENDING, &con->ucsi->flags);
--
- 	mutex_lock(&ucsi->ppm_lock);
-+	clear_bit(EVENT_PENDING, &con->ucsi->flags);
- 	ret = ucsi_acknowledge_connector_change(ucsi);
- 	mutex_unlock(&ucsi->ppm_lock);
 +
- 	if (ret)
- 		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
++/*
++ * If the requested ring buffer size is at least 8 times the size of the
++ * header, steal space from the ring buffer for the header. Otherwise, add
++ * space for the header so that is doesn't take too much of the ring buffer
++ * space.
++ *
++ * The factor of 8 is somewhat arbitrary. The goal is to prevent adding a
++ * relatively small header (4 Kbytes on x86) to a large-ish power-of-2 ring
++ * buffer size (such as 128 Kbytes) and so end up making a nearly twice as
++ * large allocation that will be almost half wasted. As a contrasting example,
++ * on ARM64 with 64 Kbyte page size, we don't want to take 64 Kbytes for the
++ * header from a 128 Kbyte allocation, leaving only 64 Kbytes for the ring.
++ * In this latter case, we must add 64 Kbytes for the header and not worry
++ * about what's wasted.
++ */
++#define VMBUS_HEADER_ADJ(payload_sz) \
++	((payload_sz) >=  8 * sizeof(struct hv_ring_buffer) ? \
++	0 : sizeof(struct hv_ring_buffer))
++
+ /* Calculate the proper size of a ringbuffer, it must be page-aligned */
+-#define VMBUS_RING_SIZE(payload_sz) PAGE_ALIGN(sizeof(struct hv_ring_buffer) + \
++#define VMBUS_RING_SIZE(payload_sz) PAGE_ALIGN(VMBUS_HEADER_ADJ(payload_sz) + \
+ 					       (payload_sz))
  
+ struct hv_ring_buffer_info {
 
 
 
