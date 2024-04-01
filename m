@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5A7893EBB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D1D894213
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E60F1F22EED
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0C7F283132
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AA847A64;
-	Mon,  1 Apr 2024 16:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4232A1E525;
+	Mon,  1 Apr 2024 16:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Du0jWQmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzYO9iuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896AE3F8F4;
-	Mon,  1 Apr 2024 16:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15CF1C0DE7;
+	Mon,  1 Apr 2024 16:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987629; cv=none; b=vCpFsuB1frV0Pd1i9ffUFvBzukzR7zEP22LHDZb3C+OxX3iIXwoH1gIklteHCMlW1wK+UB2LaqrehhjZJcuKKeOVAeHjlYRRZMYj7kt1z94AN7f7jeQNiBIhExSi9s3PQMBbpdzIGX9JlY+E5eCHw1+5RzrrWYQtv+tUSAHlKPc=
+	t=1711990153; cv=none; b=q8B5J4GSB5x1V7LWdR8pIK6+74k+vVrPLd46t7sGsXBOLoWS/dGv973sQ79xg3tdmfZDgqtfP9cMvhN8BgWpGg8JJ4wRDQDnjO7Al5k3qHM9uYcArP5iBKE9N2BKuQZa7ofv3us5HkLRdiIftAQR1yZw5gI7tI/Iphx7bA3IM5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987629; c=relaxed/simple;
-	bh=bUpQniQY+WCqj99SNow5l6ro2pf766d4bRlKyOwPxxU=;
+	s=arc-20240116; t=1711990153; c=relaxed/simple;
+	bh=E3gflaPC6++OQWj3LKVlfdapx5cNF5n9x7D1XuH3ZNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYL2bk1NvrZTz7EPVqZoq09ghXGYSyDM22J0pD6mhMQ3qgMoaCoQWCVchLfqAHIQSe7BnNljJE5qfDRZAJnrXIUkvpIgm8AGjggEgclf92r9jvyh2zLsxZujRgFkcybwiDT7o0KkOsqk8k2JCTKrcnnAuLP4bmmIk/g28DeJHng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Du0jWQmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26D2C433F1;
-	Mon,  1 Apr 2024 16:07:08 +0000 (UTC)
+	 MIME-Version; b=gUck5U2XKI59GeO8wKae3n4jiXv14NaE6/bkzih6pOt/Rqk/ISL4VolI5ay2AhCBmF5G4fszLRdOwlxsCEZDP+yx2HO3gzzveu7Z+sWrHPfCVHtEelY1/aI3lei8rci6eXR52kTSWsBDHElHEqTG0zuHPdFBwIGdtwI8ulqGsDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzYO9iuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C6FC433F1;
+	Mon,  1 Apr 2024 16:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987629;
-	bh=bUpQniQY+WCqj99SNow5l6ro2pf766d4bRlKyOwPxxU=;
+	s=korg; t=1711990152;
+	bh=E3gflaPC6++OQWj3LKVlfdapx5cNF5n9x7D1XuH3ZNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Du0jWQmu+bkfaSBiq2D6YPvKiB1EF0SUJ0OZIqQ0ngp+4nDMOavvxEU8Sbtf9iC1i
-	 fea3zO/CEOPT9KKYqU7ZBuKCY96E8ANWg6ZUn/F4SzGMvG4s6xaaqJAbuGH3NZEtcH
-	 z3J7UpVBtRAgqobU44dX+uzDzwXqE6jmQme7Q+Z8=
+	b=WzYO9iuT+/NlFuPLNZLLQr7+If81N6lrhYmtqY+5M++Z3j+rm2GLPhj7FScERm/Ut
+	 SV1fvjD5q8WZS6GHpkTgaZFwJ7wQ8WsbL/LP5jsmAQIWbW/e5v3rxLUMo43eSQhhL/
+	 +K43DMZ7qsr6l36DO63F+cuvx/w8KpXC8t5Y+2us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yongzhi Liu <hyperlyzcs@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.8 344/399] usb: misc: ljca: Fix double free in error handling path
-Date: Mon,  1 Apr 2024 17:45:10 +0200
-Message-ID: <20240401152559.440464997@linuxfoundation.org>
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 262/396] xfs: dont allow overly small or large realtime volumes
+Date: Mon,  1 Apr 2024 17:45:11 +0200
+Message-ID: <20240401152555.718025388@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongzhi Liu <hyperlyzcs@gmail.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 7c9631969287a5366bc8e39cd5abff154b35fb80 upstream.
+commit e14293803f4e84eb23a417b462b56251033b5a66 upstream.
 
-When auxiliary_device_add() returns error and then calls
-auxiliary_device_uninit(), callback function ljca_auxdev_release
-calls kfree(auxdev->dev.platform_data) to free the parameter data
-of the function ljca_new_client_device. The callers of
-ljca_new_client_device shouldn't call kfree() again
-in the error handling path to free the platform data.
+[backport: resolve merge conflicts due to refactoring rtbitmap/summary
+macros and accessors]
 
-Fix this by cleaning up the redundant kfree() in all callers and
-adding kfree() the passed in platform_data on errors which happen
-before auxiliary_device_init() succeeds .
+Don't allow realtime volumes that are less than one rt extent long.
+This has been broken across 4 LTS kernels with nobody noticing, so let's
+just disable it.
 
-Fixes: acd6199f195d ("usb: Add support for Intel LJCA device")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yongzhi Liu <hyperlyzcs@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240311125748.28198-1-hyperlyzcs@gmail.com
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/usb-ljca.c |   22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ fs/xfs/libxfs/xfs_rtbitmap.h |   13 +++++++++++++
+ fs/xfs/libxfs/xfs_sb.c       |    3 ++-
+ fs/xfs/xfs_rtalloc.c         |    2 ++
+ 3 files changed, 17 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/misc/usb-ljca.c
-+++ b/drivers/usb/misc/usb-ljca.c
-@@ -518,8 +518,10 @@ static int ljca_new_client_device(struct
- 	int ret;
+--- a/fs/xfs/libxfs/xfs_rtbitmap.h
++++ b/fs/xfs/libxfs/xfs_rtbitmap.h
+@@ -73,6 +73,18 @@ int xfs_rtfree_blocks(struct xfs_trans *
  
- 	client = kzalloc(sizeof *client, GFP_KERNEL);
--	if (!client)
-+	if (!client) {
-+		kfree(data);
- 		return -ENOMEM;
-+	}
+ uint8_t xfs_compute_rextslog(xfs_rtbxlen_t rtextents);
  
- 	client->type = type;
- 	client->id = id;
-@@ -535,8 +537,10 @@ static int ljca_new_client_device(struct
- 	auxdev->dev.release = ljca_auxdev_release;
++/* Do we support an rt volume having this number of rtextents? */
++static inline bool
++xfs_validate_rtextents(
++	xfs_rtbxlen_t		rtextents)
++{
++	/* No runt rt volumes */
++	if (rtextents == 0)
++		return false;
++
++	return true;
++}
++
+ #else /* CONFIG_XFS_RT */
+ # define xfs_rtfree_extent(t,b,l)			(-ENOSYS)
+ # define xfs_rtfree_blocks(t,rb,rl)			(-ENOSYS)
+@@ -81,6 +93,7 @@ uint8_t xfs_compute_rextslog(xfs_rtbxlen
+ # define xfs_rtbuf_get(m,t,b,i,p)			(-ENOSYS)
+ # define xfs_rtalloc_extent_is_free(m,t,s,l,i)		(-ENOSYS)
+ # define xfs_compute_rextslog(rtx)			(0)
++# define xfs_validate_rtextents(rtx)			(false)
+ #endif /* CONFIG_XFS_RT */
  
- 	ret = auxiliary_device_init(auxdev);
--	if (ret)
-+	if (ret) {
-+		kfree(data);
- 		goto err_free;
-+	}
+ #endif /* __XFS_RTBITMAP_H__ */
+--- a/fs/xfs/libxfs/xfs_sb.c
++++ b/fs/xfs/libxfs/xfs_sb.c
+@@ -509,7 +509,8 @@ xfs_validate_sb_common(
+ 		rbmblocks = howmany_64(sbp->sb_rextents,
+ 				       NBBY * sbp->sb_blocksize);
  
- 	ljca_auxdev_acpi_bind(adap, auxdev, adr, id);
- 
-@@ -590,12 +594,8 @@ static int ljca_enumerate_gpio(struct lj
- 		valid_pin[i] = get_unaligned_le32(&desc->bank_desc[i].valid_pins);
- 	bitmap_from_arr32(gpio_info->valid_pin_map, valid_pin, gpio_num);
- 
--	ret = ljca_new_client_device(adap, LJCA_CLIENT_GPIO, 0, "ljca-gpio",
-+	return ljca_new_client_device(adap, LJCA_CLIENT_GPIO, 0, "ljca-gpio",
- 				     gpio_info, LJCA_GPIO_ACPI_ADR);
--	if (ret)
--		kfree(gpio_info);
--
--	return ret;
- }
- 
- static int ljca_enumerate_i2c(struct ljca_adapter *adap)
-@@ -629,10 +629,8 @@ static int ljca_enumerate_i2c(struct ljc
- 		ret = ljca_new_client_device(adap, LJCA_CLIENT_I2C, i,
- 					     "ljca-i2c", i2c_info,
- 					     LJCA_I2C1_ACPI_ADR + i);
--		if (ret) {
--			kfree(i2c_info);
-+		if (ret)
- 			return ret;
--		}
- 	}
- 
- 	return 0;
-@@ -669,10 +667,8 @@ static int ljca_enumerate_spi(struct ljc
- 		ret = ljca_new_client_device(adap, LJCA_CLIENT_SPI, i,
- 					     "ljca-spi", spi_info,
- 					     LJCA_SPI1_ACPI_ADR + i);
--		if (ret) {
--			kfree(spi_info);
-+		if (ret)
- 			return ret;
--		}
- 	}
- 
- 	return 0;
+-		if (sbp->sb_rextents != rexts ||
++		if (!xfs_validate_rtextents(rexts) ||
++		    sbp->sb_rextents != rexts ||
+ 		    sbp->sb_rextslog != xfs_compute_rextslog(rexts) ||
+ 		    sbp->sb_rbmblocks != rbmblocks) {
+ 			xfs_notice(mp,
+--- a/fs/xfs/xfs_rtalloc.c
++++ b/fs/xfs/xfs_rtalloc.c
+@@ -998,6 +998,8 @@ xfs_growfs_rt(
+ 	 */
+ 	nrextents = nrblocks;
+ 	do_div(nrextents, in->extsize);
++	if (!xfs_validate_rtextents(nrextents))
++		return -EINVAL;
+ 	nrbmblocks = howmany_64(nrextents, NBBY * sbp->sb_blocksize);
+ 	nrextslog = xfs_compute_rextslog(nrextents);
+ 	nrsumlevels = nrextslog + 1;
 
 
 
