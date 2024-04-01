@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429608940F4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:36:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A82B893F4D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:14:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE88D1F226B0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:36:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15D43B20C48
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49634596E;
-	Mon,  1 Apr 2024 16:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F101E47A79;
+	Mon,  1 Apr 2024 16:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpQzKKKh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEGBU8IO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A6A38DD8;
-	Mon,  1 Apr 2024 16:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F0347A57;
+	Mon,  1 Apr 2024 16:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989374; cv=none; b=n60tMu3ktTt544pPtm+jpfMi3AbWTwhLCso0jDYQCx1T0fjCEZFJHRM7D1Pb9zWHER7J7HAj6wBNIicSkGy7bpPJXtNsCMPWTt9x/llR70PQxEQPQD5Igx0Czqfva+yodl+16/M5u846QvzQiu2A+gtjnhhzhiWK513l8SB4tCQ=
+	t=1711988081; cv=none; b=niG7FEgk/1FjL2J5lW8k3NL4QRV5JBLF6ktBm24rrpIp7YSyUpnQa6wFzcY1LSNa1KTHMCW822uZfX5AFS7AqZWm8//6z8pbsMjFHT2iLdZ3fWiNCXVwlJyhI24/TInoFukpbekJVSIZgUL/wEAV4ihVH75uZ+Tza1idReXPkMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989374; c=relaxed/simple;
-	bh=1hr843oa/TUiYhYY6aywuZ9kVCBbJ9Pi+ah4wyRs3/Y=;
+	s=arc-20240116; t=1711988081; c=relaxed/simple;
+	bh=8Cbmfc7KUb1rQHQqQ7OdlwiO48v2jKnVZnJG6WkuWQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CUWjeOqoX6f7k3SLi4vWzVOJbtV0L6QypTyVD56CnbVchqVV7AHA5IF9JdAwarBQPwZ3hzjUVs0qYgNndlE1UguLLICjTRttD+UbAgrsap2vXakm5ZM7mDQVCooIsuJxMPz0eqKA4ZvytNUJIHuDuVED7+WYbyG3OtrRWhzaWIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpQzKKKh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD844C433C7;
-	Mon,  1 Apr 2024 16:36:13 +0000 (UTC)
+	 MIME-Version; b=tSLAQ2F6NH6vZAcxIgRrtNx0Qxla+BvYRl2aFVHSDRq0XhvQ1kERf4Bic/34q8VKmUf3JCLATsDiXiw3I0oDM6z8q4h7ST9Ponyk02cBwhsTE4aWgvBzTfMBsnRZSZLT6pA4SBuwudfhTT50Prt5nJH6PVOJwR9R3IVQxCs12PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEGBU8IO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068DFC433C7;
+	Mon,  1 Apr 2024 16:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989374;
-	bh=1hr843oa/TUiYhYY6aywuZ9kVCBbJ9Pi+ah4wyRs3/Y=;
+	s=korg; t=1711988081;
+	bh=8Cbmfc7KUb1rQHQqQ7OdlwiO48v2jKnVZnJG6WkuWQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TpQzKKKhiFPaGpKq5AOVUy3zb3bU9BwktN/eR3LSsmOKWs5T6LGKpyXIfjT2eeOMD
-	 bXnrW4qtI9loGG5NCWA3GPMtBq1Iac7TtHu/7LDOp907v650xWbott03mpnW/nkWjg
-	 QvxErBBd+Riq785l0/YymNi3yZBGNCeamNoRlq5A=
+	b=CEGBU8IOG8qCfYlCdIsFqmh9+YEJL9Q956+N32M3yJH3Qt0yrXj/a2wfe35eRKRM0
+	 SIo0bwqq6tYsClAWLpA6xswyVbooxP9hcObOcUhqtIAdfqRjm6MGHUu6oIPL17qXXX
+	 Y9pO4fYj0lFn46vb23KSChr+n9EnnsrvbuWHgWCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Amit Pundir <amit.pundir@linaro.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/396] clk: qcom: gcc-sdm845: Add soft dependency on rpmhpd
+Subject: [PATCH 6.7 071/432] clk: qcom: gcc-ipq8074: fix terminating of frequency table arrays
 Date: Mon,  1 Apr 2024 17:40:58 +0200
-Message-ID: <20240401152548.160510041@linuxfoundation.org>
+Message-ID: <20240401152555.242466691@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Pundir <amit.pundir@linaro.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 1d9054e3a4fd36e2949e616f7360bdb81bcc1921 ]
+[ Upstream commit 1040ef5ed95d6fd2628bad387d78a61633e09429 ]
 
-With the addition of RPMh power domain to the GCC node in
-device tree, we noticed a significant delay in getting the
-UFS driver probed on AOSP which futher led to mount failures
-because Android do not support rootwait. So adding a soft
-dependency on RPMh power domain which informs modprobe to
-load rpmhpd module before gcc-sdm845.
+The frequency table arrays are supposed to be terminated with an
+empty element. Add such entry to the end of the arrays where it
+is missing in order to avoid possible out-of-bound access when
+the table is traversed by functions like qcom_find_freq() or
+qcom_find_freq_floor().
 
-Cc: stable@vger.kernel.org # v5.4+
-Fixes: 4b6ea15c0a11 ("arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC")
-Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240123062814.2555649-1-amit.pundir@linaro.org
+Only compile tested.
+
+Fixes: 9607f6224b39 ("clk: qcom: ipq8074: add PCIE, USB and SDCC clocks")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-3-074334f0905c@gmail.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sdm845.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/gcc-ipq8074.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
-index 725cd52d2398e..ea4c3bf4fb9bf 100644
---- a/drivers/clk/qcom/gcc-sdm845.c
-+++ b/drivers/clk/qcom/gcc-sdm845.c
-@@ -4037,3 +4037,4 @@ module_exit(gcc_sdm845_exit);
- MODULE_DESCRIPTION("QTI GCC SDM845 Driver");
- MODULE_LICENSE("GPL v2");
- MODULE_ALIAS("platform:gcc-sdm845");
-+MODULE_SOFTDEP("pre: rpmhpd");
+diff --git a/drivers/clk/qcom/gcc-ipq8074.c b/drivers/clk/qcom/gcc-ipq8074.c
+index b7faf12a511a1..7bc679871f324 100644
+--- a/drivers/clk/qcom/gcc-ipq8074.c
++++ b/drivers/clk/qcom/gcc-ipq8074.c
+@@ -644,6 +644,7 @@ static struct clk_rcg2 pcie0_axi_clk_src = {
+ 
+ static const struct freq_tbl ftbl_pcie_aux_clk_src[] = {
+ 	F(19200000, P_XO, 1, 0, 0),
++	{ }
+ };
+ 
+ static const struct clk_parent_data gcc_xo_gpll0_sleep_clk[] = {
+@@ -795,6 +796,7 @@ static const struct freq_tbl ftbl_sdcc_ice_core_clk_src[] = {
+ 	F(19200000, P_XO, 1, 0, 0),
+ 	F(160000000, P_GPLL0, 5, 0, 0),
+ 	F(308570000, P_GPLL6, 3.5, 0, 0),
++	{ }
+ };
+ 
+ static const struct clk_parent_data gcc_xo_gpll0_gpll6_gpll0_div2[] = {
 -- 
 2.43.0
 
