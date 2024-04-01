@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C7B89435C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4744A894073
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 012281C21640
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 032B42829F5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4202E1C0DE7;
-	Mon,  1 Apr 2024 17:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED2B249E4;
+	Mon,  1 Apr 2024 16:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9eu2f9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iukzWAWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54F24AEDF;
-	Mon,  1 Apr 2024 17:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBCF63E;
+	Mon,  1 Apr 2024 16:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990968; cv=none; b=Hs8qPjduWCXenpf30rdGCNQO0U7SmHUwLJdpERQ6TG1gggqbA5VFEPYr5jE7ZwFMVVctKd+j47/QPf8WSw0WEkauV/8bSTxyTDiSfkCk7lAZ9mdO+CTCVeU/5jPeL4OFKXPoNe3PLQqRPruS67XO3aOtkaI/jo6ECUZvtrRv4M4=
+	t=1711989016; cv=none; b=fUxMrEGRNVBDOyWfNiVcfm8TnK0L0TQPSXC2u7efXIzwnYebfI3viv+Zhd6RUXpiNz0dhKTR8J35LFyFvtXL5upfx8ds75tjxW7ERdz8C6TBim7ReCcJs9EmzxvSX93v6Y33qlpo/27LjM+ZHdXhue49KkdnjeVXjavNDHrc2LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990968; c=relaxed/simple;
-	bh=mswpXEYQptGqWC+z1pZsMbd3OwNXywb1wFCBD+A0N14=;
+	s=arc-20240116; t=1711989016; c=relaxed/simple;
+	bh=FbmaVD/vBaCq/+hvGlcMXfXA6fGMtF0pRktdI4p/e3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YY6CXrpTRLqjw5aOJ9AqYBS7/2uKOruFKbohFeiO4ncZ+V0P1/3ev7E0dTdnXlt49gql2WyYuo0bLtB67H+1i/O2oMl8+PHmoW403mTYqsGYyC6oZCqOlyZkMbqi6BEne4GZE6/pvYNvcEsdGE02qdZNmjxxlGhm2ixzBNdDfqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9eu2f9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A53C433C7;
-	Mon,  1 Apr 2024 17:02:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jIabYPfHqsI+iJOa7FCKqea0/tFvx81Fygw6rKfepzemChfVPZDXpQ243/+9MZJiEP3p5goe6DmZMVs8ZEHqnqLam8G4J/cezzajDpisahpvTmVe8R5rhv85aW6CpSyuO9AyayjWzyPdk4oA+5mV16hIkAe6BOKZrCHEbYDY2iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iukzWAWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF358C433C7;
+	Mon,  1 Apr 2024 16:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990968;
-	bh=mswpXEYQptGqWC+z1pZsMbd3OwNXywb1wFCBD+A0N14=;
+	s=korg; t=1711989016;
+	bh=FbmaVD/vBaCq/+hvGlcMXfXA6fGMtF0pRktdI4p/e3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9eu2f9SD+/j+Xf9nzBHTgx6zoGjBjGWS9niUpj5A1VVYLo1o6aZtDYbEQ/TrFgGy
-	 2gjCvpslR2DfSzhKeXVvjTdsUNUPRB5bmMTUC2NXigiD+i981YUN8kRhmKHx6De0qC
-	 AtHp2p1vvbgymWS6jEADYCrCeV3FForRe6B0DVCE=
+	b=iukzWAWWc9JE1MZqauTczApW4iJnonjMZWKdEfCUNguwEETyKYNK4lCVoQRysQcwz
+	 Y4pSK0eUI7Vb6nhh5QH7qJ7ceCISH6ZYg35czklFh0Bc1r9l3bBaWkfSDjNXjQIy9w
+	 vUsAw+zM25rrxw16wR53aX+/pBiLvMkqk5q7ZbdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Zoltan HERPAI <wigyori@uid0.hu>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/272] drm/probe-helper: warn about negative .get_modes()
+Subject: [PATCH 6.7 318/432] pwm: img: fix pwm clock lookup
 Date: Mon,  1 Apr 2024 17:45:05 +0200
-Message-ID: <20240401152534.249981702@linuxfoundation.org>
+Message-ID: <20240401152602.676733595@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Zoltan HERPAI <wigyori@uid0.hu>
 
-[ Upstream commit 7af03e688792293ba33149fb8df619a8dff90e80 ]
+[ Upstream commit 9eb05877dbee03064d3d3483cd6702f610d5a358 ]
 
-The .get_modes() callback is supposed to return the number of modes,
-never a negative error code. If a negative value is returned, it'll just
-be interpreted as a negative count, and added to previous calculations.
+22e8e19 has introduced a regression in the imgchip->pwm_clk lookup, whereas
+the clock name has also been renamed to "imgchip". This causes the driver
+failing to load:
 
-Document the rules, but handle the negative values gracefully with an
-error message.
+[    0.546905] img-pwm 18101300.pwm: failed to get imgchip clock
+[    0.553418] img-pwm: probe of 18101300.pwm failed with error -2
 
-Cc: stable@vger.kernel.org
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/50208c866facc33226a3c77b82bb96aeef8ef310.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fix this lookup by reverting the clock name back to "pwm".
+
+Signed-off-by: Zoltan HERPAI <wigyori@uid0.hu>
+Link: https://lore.kernel.org/r/20240320083602.81592-1-wigyori@uid0.hu
+Fixes: 22e8e19a46f7 ("pwm: img: Rename variable pointing to driver private data")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_probe_helper.c       | 7 +++++++
- include/drm/drm_modeset_helper_vtables.h | 3 ++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-img.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 3b968ad187cf3..52dbaf74fe164 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -362,6 +362,13 @@ static int drm_helper_probe_get_modes(struct drm_connector *connector)
+diff --git a/drivers/pwm/pwm-img.c b/drivers/pwm/pwm-img.c
+index 116fa060e3029..29dcf38f3b521 100644
+--- a/drivers/pwm/pwm-img.c
++++ b/drivers/pwm/pwm-img.c
+@@ -288,9 +288,9 @@ static int img_pwm_probe(struct platform_device *pdev)
+ 		return PTR_ERR(imgchip->sys_clk);
+ 	}
  
- 	count = connector_funcs->get_modes(connector);
- 
-+	/* The .get_modes() callback should not return negative values. */
-+	if (count < 0) {
-+		drm_err(connector->dev, ".get_modes() returned %pe\n",
-+			ERR_PTR(count));
-+		count = 0;
-+	}
-+
- 	/*
- 	 * Fallback for when DDC probe failed in drm_get_edid() and thus skipped
- 	 * override/firmware EDID.
-diff --git a/include/drm/drm_modeset_helper_vtables.h b/include/drm/drm_modeset_helper_vtables.h
-index fafa70ac1337f..6f19cf5c210e5 100644
---- a/include/drm/drm_modeset_helper_vtables.h
-+++ b/include/drm/drm_modeset_helper_vtables.h
-@@ -896,7 +896,8 @@ struct drm_connector_helper_funcs {
- 	 *
- 	 * RETURNS:
- 	 *
--	 * The number of modes added by calling drm_mode_probed_add().
-+	 * The number of modes added by calling drm_mode_probed_add(). Return 0
-+	 * on failures (no modes) instead of negative error codes.
- 	 */
- 	int (*get_modes)(struct drm_connector *connector);
+-	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "imgchip");
++	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "pwm");
+ 	if (IS_ERR(imgchip->pwm_clk)) {
+-		dev_err(&pdev->dev, "failed to get imgchip clock\n");
++		dev_err(&pdev->dev, "failed to get pwm clock\n");
+ 		return PTR_ERR(imgchip->pwm_clk);
+ 	}
  
 -- 
 2.43.0
