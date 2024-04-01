@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B21894097
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCE0894243
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A01F1F2189A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 461412833C1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1223338DD8;
-	Mon,  1 Apr 2024 16:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33324AEF6;
+	Mon,  1 Apr 2024 16:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDNuV8jN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQwDV/Uv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C7F1C0DE7;
-	Mon,  1 Apr 2024 16:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD9E41232;
+	Mon,  1 Apr 2024 16:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989116; cv=none; b=ATwMhSRIUicKIL7Tjsfxhsku5HtyTDnppKdsGCe0LRwaD6n25NI9V8Ldruh1HThs9zrHBHgTpoVw7bKzIJRLwg7ZxBfpPxpE2c1SqW+3JfeCiK0Synojva16JpeDC/amBSdgSTyVUMZu87R38xzMmO5bao2SOIiNEfgcd85HTh0=
+	t=1711990259; cv=none; b=nw+EYOgx5FEexSKKRRwpg6Kn0fdP9DYZTmdwRjiIQFCILr7yM4lzeJXVZJv/JzD4oVHJw7iRz5ihC3Y35UmOrfaI0Y/bnYaalKXEemVSj0YIalhx0ACp7ctIp6emG2NqMuIJ+g4o28KwLr4pO2fxuyPJMZbjuJqPEQS2+QTOFi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989116; c=relaxed/simple;
-	bh=YhOTu0eziPvY/THhBj9TfnpF7SL5HqCFYFKf23Pw/lQ=;
+	s=arc-20240116; t=1711990259; c=relaxed/simple;
+	bh=vv4NQdU9Rs3EhyW6faPp+9vxv41ic5s/O3a/5Pb9DcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyLBStw4wEoYsAHd+pFdX4xwH8Ov0aPvdGwSyhC/1g4PVSoAaJ4jy1F9Pliq9HAOrOMrrlSl20rzwcvgJsMtak/5+ahpNIsnanndW3yJ5nBt5iE1ACUAR4+Er5cRfKTqFY6vA3W055s/SJ4lJut6j58GKFRve6l2GB0icWfJ1Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDNuV8jN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491F3C433F1;
-	Mon,  1 Apr 2024 16:31:56 +0000 (UTC)
+	 MIME-Version; b=se5ijV1PnVNXwD2NCEwXEGYLq/y4drd2lx46ijAMLtDCXquGt/6Btzs6FxyW/YvTfDskqRDssu12o6vcid+wjkdr++9J+hQmRRvaF3rz9FSKe/tTyMOodkIJx9u4Az/b3m3smtvLX3WQkO4sYsmdgHP9p/cprkQHLw8zbyCXHwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQwDV/Uv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFCDC433C7;
+	Mon,  1 Apr 2024 16:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989116;
-	bh=YhOTu0eziPvY/THhBj9TfnpF7SL5HqCFYFKf23Pw/lQ=;
+	s=korg; t=1711990259;
+	bh=vv4NQdU9Rs3EhyW6faPp+9vxv41ic5s/O3a/5Pb9DcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDNuV8jNpefp9n0qcTk6lDEh1S+bGF85dZwrunsCb4fschy4UmlqXGY2JDm7SNq4J
-	 0Hj8dvrnNBbwXyACPJbnllXjzbJgXMR8Vb3QAfS2RfpRO1+vBDRje+dOUmvO4Yi40X
-	 N2on2me+EctD/c5bZrt7A6Un8Vmy4fQ/3diSip+w=
+	b=VQwDV/Uv/Uk0kNJyIi1Q97D5OLu5piKtkHjnU0BkIcTGI0JXj/S1GNBQaqIxBTX40
+	 DoGV6UNPfprLYvTFylqBE3yGVD65HknjRweuFLlE5WTIv2IrhT0LaTRhEB+rp1mNTw
+	 Mty+tq+Lt0LNPw0Wpi0FQSseNPGpu0cluXlzxD8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Romain Naour <romain.naour@skf.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.7 357/432] mmc: sdhci-omap: re-tuning is needed after a pm transition to support emmc HS200 mode
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 295/396] irqchip/renesas-rzg2l: Add macro to retrieve TITSR register offset based on registers index
 Date: Mon,  1 Apr 2024 17:45:44 +0200
-Message-ID: <20240401152603.909954385@linuxfoundation.org>
+Message-ID: <20240401152556.699776805@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Romain Naour <romain.naour@skf.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit f9e2a5b00a35f2c064dc679808bc8db5cc779ed6 upstream.
+[ Upstream commit 2eca4731cc66563b3919d8753dbd74d18c39f662 ]
 
-"PM runtime functions" was been added in sdhci-omap driver in commit
-f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions") along
-with "card power off and enable aggressive PM" in commit 3edf588e7fe0
-("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM").
+There are 2 TITSR registers available on the IA55 interrupt controller.
 
-Since then, the sdhci-omap driver doesn't work using mmc-hs200 mode
-due to the tuning values being lost during a pm transition.
+Add a macro that retrieves the TITSR register offset based on it's
+index. This macro is useful in when adding suspend/resume support so both
+TITSR registers can be accessed in a for loop.
 
-As for the sdhci_am654 driver, request a new tuning sequence before
-suspend (sdhci_omap_runtime_suspend()), otherwise the device will
-trigger cache flush error:
-
-  mmc1: cache flush error -110 (ETIMEDOUT)
-  mmc1: error -110 doing aggressive suspend
-
-followed by I/O errors produced by fdisk -l /dev/mmcblk1boot1:
-
-  I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
-  prio class 2
-  I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x80700 phys_seg 1
-  prio class 2
-  I/O error, dev mmcblk1boot1, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
-  prio class 2
-  Buffer I/O error on dev mmcblk1boot1, logical block 8048, async page read
-  I/O error, dev mmcblk1boot0, sector 64384 op 0x0:(READ) flags 0x0 phys_seg 1
-  prio class 2
-  Buffer I/O error on dev mmcblk1boot0, logical block 8048, async page read
-
-Don't re-tune if auto retuning is supported in HW (when SDHCI_TUNING_MODE_3
-is available).
-
-Link: https://lore.kernel.org/all/2e5f1997-564c-44e4-b357-6343e0dae7ab@smile.fr
-Fixes: f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions")
-Signed-off-by: Romain Naour <romain.naour@skf.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240315234444.816978-1-romain.naour@smile.fr
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231120111820.87398-7-claudiu.beznea.uj@bp.renesas.com
+Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-omap.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -1439,6 +1439,9 @@ static int __maybe_unused sdhci_omap_run
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 7ea646e3e287f..6e81b5945d21b 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -28,8 +28,7 @@
+ #define ISCR				0x10
+ #define IITSR				0x14
+ #define TSCR				0x20
+-#define TITSR0				0x24
+-#define TITSR1				0x28
++#define TITSR(n)			(0x24 + (n) * 4)
+ #define TITSR0_MAX_INT			16
+ #define TITSEL_WIDTH			0x2
+ #define TSSR(n)				(0x30 + ((n) * 4))
+@@ -206,8 +205,7 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 	unsigned int hwirq = irqd_to_hwirq(d);
+ 	u32 titseln = hwirq - IRQC_TINT_START;
+-	u32 offset;
+-	u8 sense;
++	u8 index, sense;
+ 	u32 reg;
  
-+	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
-+		mmc_retune_needed(host->mmc);
-+
- 	if (omap_host->con != -EINVAL)
- 		sdhci_runtime_suspend_host(host);
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+@@ -223,17 +221,17 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 		return -EINVAL;
+ 	}
  
+-	offset = TITSR0;
++	index = 0;
+ 	if (titseln >= TITSR0_MAX_INT) {
+ 		titseln -= TITSR0_MAX_INT;
+-		offset = TITSR1;
++		index = 1;
+ 	}
+ 
+ 	raw_spin_lock(&priv->lock);
+-	reg = readl_relaxed(priv->base + offset);
++	reg = readl_relaxed(priv->base + TITSR(index));
+ 	reg &= ~(IRQ_MASK << (titseln * TITSEL_WIDTH));
+ 	reg |= sense << (titseln * TITSEL_WIDTH);
+-	writel_relaxed(reg, priv->base + offset);
++	writel_relaxed(reg, priv->base + TITSR(index));
+ 	raw_spin_unlock(&priv->lock);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
