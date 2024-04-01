@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-35047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A8689421B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 190FF893EC0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E88E61C2030A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A64C1C2136A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3870C481B8;
-	Mon,  1 Apr 2024 16:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BBC446AC;
+	Mon,  1 Apr 2024 16:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOO4fp4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZbZIVNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E6D8F5C;
-	Mon,  1 Apr 2024 16:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60539383BA;
+	Mon,  1 Apr 2024 16:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990167; cv=none; b=PN04zNVvBEVxTORizjk5WUZuYe+XyaSe0A+z8l4edx3j3lV7zibFNPOl6SfLr8BZaE95suUxzqqQYnD++8rLYnCETtIsHc7Bggr7eqB8Te8UIzN9C86NYKVupTCqrNQAvD1+K1zfiAD6AuHjSah0xD+M538fdVcTYH2sfK/Wb0c=
+	t=1711987647; cv=none; b=rIU3QufEaXU+jwQjL+G5Elu6/ayQQXJlqXDjMurL0pTzb0O9FPU5s0ke78lKxjtj40vR1wluI87HzRPPzfyNhfbXvj3ey52IX651BT0tyox96ULZbJH5yFC+r96fH7mbHEH4VhHP0PZjitQNQ6tpILrprmBvpA1TUugkhckSvcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990167; c=relaxed/simple;
-	bh=oHL5zqz/cUjwzCnrKeY4BGDtGiJXonOo1seeczz7kFg=;
+	s=arc-20240116; t=1711987647; c=relaxed/simple;
+	bh=hZJX9EOFi5QHxuethHeWnkeyC2xRud4piLE6tcHiM1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHS8nohxN0jh+uD5TBcBYimUcP1foHrLIjVtiV51kYdRWCnxbX09xhPtM4SCqW+budEz2ch5ZHufCPLtFI9SkdBoy3Ne/UtVta2e+q3vmqu6spGr9vn+sA3qqXakLzvJv473kPXp9UkTrDXJCN3EbZQLli/8UHkFaKMzGOWSbtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOO4fp4k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D062C433F1;
-	Mon,  1 Apr 2024 16:49:26 +0000 (UTC)
+	 MIME-Version; b=jaISLsB+5tPNOSl2yXJ/QlrS5k4kkuy6kqhBD3qpiLecFrLbEUTjNQCXj12Uf5A9vcn4l7OojxF9qgD/be8P9DdBbyc64h9KLVmarGD9LiHEGC7fZKMZuZI0+v7StqTWJHXF8ILgDH9NGzSZsPLHe8sY5fKckTlqG8utW/X1S7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZbZIVNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 062FAC433C7;
+	Mon,  1 Apr 2024 16:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990166;
-	bh=oHL5zqz/cUjwzCnrKeY4BGDtGiJXonOo1seeczz7kFg=;
+	s=korg; t=1711987647;
+	bh=hZJX9EOFi5QHxuethHeWnkeyC2xRud4piLE6tcHiM1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOO4fp4kP/9xzk/En8sIrQ6saIzN8pHBo7HNq3Ez5NYhKSIkRJ7+pmhNFm5eGtsQx
-	 3d9aa2p4nJ6ymYI5XC40ezjnjeAvzd1ZYWDBJQY7vKV2/y6GJywIQHj3zCXeIY53iw
-	 OZ9Klv4xyQVvgM/AB08Mec5MkgDpnELAcqIG9mLo=
+	b=XZbZIVNuA3N8opjkQsNfDBlfLkpO5xRWTzGq9dfb8UKZJbJPkGO+qr66Ai+PiTTXd
+	 lKuMmIySRZSgPwecvZfLqWWMjX2YZY6Pg5dDbQlt/OqKAWUvJGVIwDhb9x67jeX2Qn
+	 7R0HQGul/hFHtfH2g/KCUF63Op6+LQFH0ElBFIIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 266/396] xfs: fix an off-by-one error in xreap_agextent_binval
+	Takashi Iwai <tiwai@suse.de>,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH 6.8 349/399] ALSA: sh: aica: reorder cleanup operations to avoid UAF bugs
 Date: Mon,  1 Apr 2024 17:45:15 +0200
-Message-ID: <20240401152555.835362842@linuxfoundation.org>
+Message-ID: <20240401152559.592870415@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit c0e37f07d2bd3c1ee3fb5a650da7d8673557ed16 upstream.
+commit 051e0840ffa8ab25554d6b14b62c9ab9e4901457 upstream.
 
-Overall, this function tries to find and invalidate all buffers for a
-given extent of space on the data device.  The inner for loop in this
-function tries to find all xfs_bufs for a given daddr.  The lengths of
-all possible cached buffers range from 1 fsblock to the largest needed
-to contain a 64k xattr value (~17fsb).  The scan is capped to avoid
-looking at anything buffer going past the given extent.
+The dreamcastcard->timer could schedule the spu_dma_work and the
+spu_dma_work could also arm the dreamcastcard->timer.
 
-Unfortunately, the loop continuation test is wrong -- max_fsbs is the
-largest size we want to scan, not one past that.  Put another way, this
-loop is actually 1-indexed, not 0-indexed.  Therefore, the continuation
-test should use <=, not <.
+When the snd_pcm_substream is closing, the aica_channel will be
+deallocated. But it could still be dereferenced in the worker
+thread. The reason is that del_timer() will return directly
+regardless of whether the timer handler is running or not and
+the worker could be rescheduled in the timer handler. As a result,
+the UAF bug will happen. The racy situation is shown below:
 
-As a result, online repairs of btree blocks fails to stale any buffers
-for btrees that are being torn down, which causes later assertions in
-the buffer cache when another thread creates a different-sized buffer.
-This happens in xfs/709 when allocating an inode cluster buffer:
+      (Thread 1)                 |      (Thread 2)
+snd_aicapcm_pcm_close()          |
+ ...                             |  run_spu_dma() //worker
+                                 |    mod_timer()
+  flush_work()                   |
+  del_timer()                    |  aica_period_elapsed() //timer
+  kfree(dreamcastcard->channel)  |    schedule_work()
+                                 |  run_spu_dma() //worker
+  ...                            |    dreamcastcard->channel-> //USE
 
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 3346128 at fs/xfs/xfs_message.c:104 assfail+0x3a/0x40 [xfs]
- CPU: 0 PID: 3346128 Comm: fsstress Not tainted 6.7.0-rc4-djwx #rc4
- RIP: 0010:assfail+0x3a/0x40 [xfs]
- Call Trace:
-  <TASK>
-  _xfs_buf_obj_cmp+0x4a/0x50
-  xfs_buf_get_map+0x191/0xba0
-  xfs_trans_get_buf_map+0x136/0x280
-  xfs_ialloc_inode_init+0x186/0x340
-  xfs_ialloc_ag_alloc+0x254/0x720
-  xfs_dialloc+0x21f/0x870
-  xfs_create_tmpfile+0x1a9/0x2f0
-  xfs_rename+0x369/0xfd0
-  xfs_vn_rename+0xfa/0x170
-  vfs_rename+0x5fb/0xc30
-  do_renameat2+0x52d/0x6e0
-  __x64_sys_renameat2+0x4b/0x60
-  do_syscall_64+0x3b/0xe0
-  entry_SYSCALL_64_after_hwframe+0x46/0x4e
+In order to mitigate this bug and other possible corner cases,
+call mod_timer() conditionally in run_spu_dma(), then implement
+PCM sync_stop op to cancel both the timer and worker. The sync_stop
+op will be called from PCM core appropriately when needed.
 
-A later refactoring patch in the online repair series fixed this by
-accident, which is why I didn't notice this until I started testing only
-the patches that are likely to end up in 6.8.
-
-Fixes: 1c7ce115e521 ("xfs: reap large AG metadata extents when possible")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: 198de43d758c ("[ALSA] Add ALSA support for the SEGA Dreamcast PCM device")
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Message-ID: <20240326094238.95442-1-duoming@zju.edu.cn>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/reap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/sh/aica.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/fs/xfs/scrub/reap.c
-+++ b/fs/xfs/scrub/reap.c
-@@ -247,7 +247,7 @@ xreap_agextent_binval(
- 		max_fsbs = min_t(xfs_agblock_t, agbno_next - bno,
- 				xfs_attr3_rmt_blocks(mp, XFS_XATTR_SIZE_MAX));
+--- a/sound/sh/aica.c
++++ b/sound/sh/aica.c
+@@ -278,7 +278,8 @@ static void run_spu_dma(struct work_stru
+ 		dreamcastcard->clicks++;
+ 		if (unlikely(dreamcastcard->clicks >= AICA_PERIOD_NUMBER))
+ 			dreamcastcard->clicks %= AICA_PERIOD_NUMBER;
+-		mod_timer(&dreamcastcard->timer, jiffies + 1);
++		if (snd_pcm_running(dreamcastcard->substream))
++			mod_timer(&dreamcastcard->timer, jiffies + 1);
+ 	}
+ }
  
--		for (fsbcount = 1; fsbcount < max_fsbs; fsbcount++) {
-+		for (fsbcount = 1; fsbcount <= max_fsbs; fsbcount++) {
- 			struct xfs_buf	*bp = NULL;
- 			xfs_daddr_t	daddr;
- 			int		error;
+@@ -290,6 +291,8 @@ static void aica_period_elapsed(struct t
+ 	/*timer function - so cannot sleep */
+ 	int play_period;
+ 	struct snd_pcm_runtime *runtime;
++	if (!snd_pcm_running(substream))
++		return;
+ 	runtime = substream->runtime;
+ 	dreamcastcard = substream->pcm->private_data;
+ 	/* Have we played out an additional period? */
+@@ -350,12 +353,19 @@ static int snd_aicapcm_pcm_open(struct s
+ 	return 0;
+ }
+ 
++static int snd_aicapcm_pcm_sync_stop(struct snd_pcm_substream *substream)
++{
++	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
++
++	del_timer_sync(&dreamcastcard->timer);
++	cancel_work_sync(&dreamcastcard->spu_dma_work);
++	return 0;
++}
++
+ static int snd_aicapcm_pcm_close(struct snd_pcm_substream
+ 				 *substream)
+ {
+ 	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
+-	flush_work(&(dreamcastcard->spu_dma_work));
+-	del_timer(&dreamcastcard->timer);
+ 	dreamcastcard->substream = NULL;
+ 	kfree(dreamcastcard->channel);
+ 	spu_disable();
+@@ -401,6 +411,7 @@ static const struct snd_pcm_ops snd_aica
+ 	.prepare = snd_aicapcm_pcm_prepare,
+ 	.trigger = snd_aicapcm_pcm_trigger,
+ 	.pointer = snd_aicapcm_pcm_pointer,
++	.sync_stop = snd_aicapcm_pcm_sync_stop,
+ };
+ 
+ /* TO DO: set up to handle more than one pcm instance */
 
 
 
