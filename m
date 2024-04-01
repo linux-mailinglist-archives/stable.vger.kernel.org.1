@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-34927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D9B894182
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583FD894186
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B351A1C20D06
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12BF5282F97
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C974482F6;
-	Mon,  1 Apr 2024 16:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAFC4D108;
+	Mon,  1 Apr 2024 16:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDbcQ9h2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oc/9dUsd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199914778C;
-	Mon,  1 Apr 2024 16:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B620481D1;
+	Mon,  1 Apr 2024 16:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989767; cv=none; b=lx420FTOu8QrOGpsSLRRuNE1MV+5+zKAE3R60UCD1L6nz2kNgY+HAwkRvrgTsEsIup20mD5ODorJ2DW586k38A3i2pYosMIxXEfJxqw35SLIGr7ba2XBpfKtKqTx55Z2QRrr2PUwEg4ABsG04XxqrP9IymKa3JgWTv21Hm96rVk=
+	t=1711989773; cv=none; b=m3VPi2yhiKOtPl1UM1AGq/xMbnI9ygiY2J7ZxsQcvA3ZNrmiqEGs3HeM5ftDb6NSjZOb2Z4buYMHh4MPORvR4fFON05wh67jedIXGAuS0KfKkC0iv5/qGdTPktT2HIM2LoRAFbvRQMefKmTDhcV3GLtmpDpIJvkhndxdziJLKp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989767; c=relaxed/simple;
-	bh=Reeh3kXSSA8I9FUIpQPfaQUTbwgSGKWJ1v5h5KfalNM=;
+	s=arc-20240116; t=1711989773; c=relaxed/simple;
+	bh=ZndReiGD0DZ7EsQWkGOnLabMnbvklruDOkoEEnVlnQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktlOVrBKFrqriNlaG9dbnuVveHjOSMdrporFIw3T28moWyMs1+3WtM+QXoHfmaHSqZkE8VQTpf4hrP4P4sET2KlO98u+61XzBONXl9uPs2ubHCghW5Cev5SXwdMvDp92sPxD0ciQxIVu1M+x6U1ulkICtzcegmfSKWy5FJDjdJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDbcQ9h2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B8CC433C7;
-	Mon,  1 Apr 2024 16:42:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YZP+RQ1qn7LAp6y7Msf68kME4Vt07ulKNDiH2880gWgf6csyVaF2+yHIs9VAqzmD+rZGtg3DdCLsqGsVNGNf70NS3cp3drf+gt7L1Fd76/fG7A2aylF0BtNNF4iCSZsrEoew3vVho5MKdHPvuB7a21UIPXn5T/5gwbhfgGXQZ3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oc/9dUsd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC667C433C7;
+	Mon,  1 Apr 2024 16:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989766;
-	bh=Reeh3kXSSA8I9FUIpQPfaQUTbwgSGKWJ1v5h5KfalNM=;
+	s=korg; t=1711989773;
+	bh=ZndReiGD0DZ7EsQWkGOnLabMnbvklruDOkoEEnVlnQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDbcQ9h2hLCmRsdJz1Bd+weQv5NRZI7064RxH5QvsraSYtRh+a36dq0jUAie1HifQ
-	 eFgCobkz2CgALjrcR5q4yGnqmhrqCo8xurEwHxykKEyFdFYteX4GsdYRhla7pIlKde
-	 lPmZ8RMdg0owKZG/G/Jtl6lOfxmLBiaSG+9ox8jE=
+	b=Oc/9dUsd9NAVX7juo6KIsYvbPNcMnTwAtnvF2LVbFIpNGK4AOHyBQfumhM6CGdjMD
+	 WMIjxRfu1PKxX4rUCtsIEdoWopsljEFup9zV6cUpDSp/nhDObfFLwId1FZI45UsnZX
+	 Fsn68z7u0MvmWtv3Hg1gv6w9JPjJ/+wPBXfbIHiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/396] kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1
-Date: Mon,  1 Apr 2024 17:42:48 +0200
-Message-ID: <20240401152551.466892035@linuxfoundation.org>
+Subject: [PATCH 6.6 120/396] PCI: qcom: Enable BDF to SID translation properly
+Date: Mon,  1 Apr 2024 17:42:49 +0200
+Message-ID: <20240401152551.496233909@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
 References: <20240401152547.867452742@linuxfoundation.org>
@@ -62,76 +60,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 75b5ab134bb5f657ef7979a59106dce0657e8d87 ]
+[ Upstream commit bf79e33cdd89db498e00a6131e937259de5f2705 ]
 
-Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
-under -Wenum-conversion. A recent change in Clang strengthened these
-warnings and they appear frequently in common builds, primarily due to
-several instances in common headers but there are quite a few drivers
-that have individual instances as well.
+Qcom SoCs making use of ARM SMMU require BDF to SID translation table in
+the driver to properly map the SID for the PCIe devices based on their BDF
+identifier. This is currently achieved with the help of
+qcom_pcie_config_sid_1_9_0() function for SoCs supporting the 1_9_0 config.
 
-  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-    509 |                            item];
-        |                            ~~~~
+But With newer Qcom SoCs starting from SM8450, BDF to SID translation is
+set to bypass mode by default in hardware. Due to this, the translation
+table that is set in the qcom_pcie_config_sid_1_9_0() is essentially
+unused and the default SID is used for all endpoints in SoCs starting from
+SM8450.
 
-  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
-    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
-        |                                      ^ ~~~~~~~~~~~~~~~~~~
-    956 |                           : IWL_MAC_BEACON_CCK_V1;
-        |                             ~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
-   1120 |                                                0) > 10 ?
-        |                                                        ^
-   1121 |                         IWL_MAC_BEACON_FILS :
-        |                         ~~~~~~~~~~~~~~~~~~~
-   1122 |                         IWL_MAC_BEACON_FILS_V1;
-        |                         ~~~~~~~~~~~~~~~~~~~~~~
+This is a security concern and also warrants swapping the DeviceID in DT
+while using the GIC ITS to handle MSIs from endpoints. The swapping is
+currently done like below in DT when using GIC ITS:
 
-Doing arithmetic between or returning two different types of enums could
-be a bug, so each of the instance of the warning needs to be evaluated.
-Unfortunately, as mentioned above, there are many instances of this
-warning in many different configurations, which can break the build when
-CONFIG_WERROR is enabled.
+      /*
+	* MSIs for BDF (1:0.0) only works with Device ID 0x5980.
+	* Hence, the IDs are swapped.
+	*/
+      msi-map = <0x0 &gic_its 0x5981 0x1>,
+		<0x100 &gic_its 0x5980 0x1>;
 
-To avoid introducing new instances of the warnings while cleaning up the
-disruption for the majority of users, disable these warnings for the
-default build while leaving them on for W=1 builds.
+Here, swapping of the DeviceIDs ensure that the endpoint with BDF (1:0.0)
+gets the DeviceID 0x5980 which is associated with the default SID as per
+the iommu mapping in DT. So MSIs were delivered with IDs swapped so far.
+But this also means the Root Port (0:0.0) won't receive any MSIs (for PME,
+AER etc...)
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
-Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+So let's fix these issues by clearing the BDF to SID bypass mode for all
+SoCs making use of the 1_9_0 config. This allows the PCIe devices to use
+the correct SID, thus avoiding the DeviceID swapping hack in DT and also
+achieving the isolation between devices.
+
+Fixes: 4c9398822106 ("PCI: qcom: Add support for configuring BDF to SID mapping for SM8250")
+Link: https://lore.kernel.org/linux-pci/20240307-pci-bdf-sid-fix-v1-1-9423a7e2d63c@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org # 5.11
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.extrawarn | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/controller/dwc/pcie-qcom.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index 2fe6f2828d376..16c750bb95faf 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -143,6 +143,8 @@ KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
- KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
-+KBUILD_CFLAGS += -Wno-enum-compare-conditional
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 64420ecc24d1c..d3ca6d3493130 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -53,6 +53,7 @@
+ #define PARF_SLV_ADDR_SPACE_SIZE		0x358
+ #define PARF_DEVICE_TYPE			0x1000
+ #define PARF_BDF_TO_SID_TABLE_N			0x2000
++#define PARF_BDF_TO_SID_CFG			0x2c00
  
- endif
+ /* ELBI registers */
+ #define ELBI_SYS_CTRL				0x04
+@@ -120,6 +121,9 @@
+ /* PARF_DEVICE_TYPE register fields */
+ #define DEVICE_TYPE_RC				0x4
+ 
++/* PARF_BDF_TO_SID_CFG fields */
++#define BDF_TO_SID_BYPASS			BIT(0)
++
+ /* ELBI_SYS_CTRL register fields */
+ #define ELBI_SYS_CTRL_LT_ENABLE			BIT(0)
+ 
+@@ -985,11 +989,17 @@ static int qcom_pcie_config_sid_1_9_0(struct qcom_pcie *pcie)
+ 	u8 qcom_pcie_crc8_table[CRC8_TABLE_SIZE];
+ 	int i, nr_map, size = 0;
+ 	u32 smmu_sid_base;
++	u32 val;
+ 
+ 	of_get_property(dev->of_node, "iommu-map", &size);
+ 	if (!size)
+ 		return 0;
+ 
++	/* Enable BDF to SID translation by disabling bypass mode (default) */
++	val = readl(pcie->parf + PARF_BDF_TO_SID_CFG);
++	val &= ~BDF_TO_SID_BYPASS;
++	writel(val, pcie->parf + PARF_BDF_TO_SID_CFG);
++
+ 	map = kzalloc(size, GFP_KERNEL);
+ 	if (!map)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
