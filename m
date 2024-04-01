@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-35404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D754A8943CB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9378942A1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 924DA2839AF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1B51C21D97
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DF34A99C;
-	Mon,  1 Apr 2024 17:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A2F4653C;
+	Mon,  1 Apr 2024 16:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dx6rvbQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLnn8jhQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A9640876;
-	Mon,  1 Apr 2024 17:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2251BA3F;
+	Mon,  1 Apr 2024 16:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991287; cv=none; b=eBA0+irwbZCsJ7AZPc+MdEi7v7kWMKamWM7G3aMFZaPYo6MWf8aYSdl4gXpa4KdhsPWIIcKQ9jHJZIOMKEE+hTTAx0FeB5hRf6zPHv/kwzAn4FWUOx9koKBOt+NFtT/uJGV3wfMW1wf37M69N8czOk8eegSinCEgAfjuaVCpX3U=
+	t=1711990465; cv=none; b=Ol6i4nQ3YpW97xzuMPxscMUAjgqNX3dfWSVsNn7umYPY1t4nrYTGFRcgUpRc09D6i+We2PNZD5tiUcHQiw8uawjBHQe3jFmJb3USl/zz3/az2FnAb0/c5g95zWc9s5vLJ3StbtLowdBS/AMWv4VCvRAx8NazUQvHeMs9tE1vOKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991287; c=relaxed/simple;
-	bh=UB74BJ6nRr/gAsG1JT9UbTRZEHdZg8uHcKQPSFDxDVY=;
+	s=arc-20240116; t=1711990465; c=relaxed/simple;
+	bh=JQi+rqvx7lEvulKQQfu4T6cD3MkPVnnB4qkNc7XQSlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrrRSBB1vQQgB/UstdBRcwjPWbgbK0EaWU7GHtmbAYJEyW6Y5Fnt+Jur4JauVk+w979s1akTDmWjASZl2DHN3rRbivsS5mRZIjGJgwsksL4LMejND9wn+6l10znpvmRNtzLRkeA7Usf882C36U3IbntTw8Wx92zMsAq6ssnoar4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dx6rvbQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7548C433F1;
-	Mon,  1 Apr 2024 17:08:06 +0000 (UTC)
+	 MIME-Version; b=kEI7UI69Yonj/bzeDU+KM94xc/F6neL5F9Y6kesNwX45YQbLF6Ob/StW/E1VqthqqDXkBPPnzA4PjCF/0PW4qsrw2jQn3uk4BGBShMMer/3Jbc9ar38YjkCL950QfapFdh/ZTO3BnaN2oo0iGmHJM1QLpH8vwtckk7oRxe6jaF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLnn8jhQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653E2C433C7;
+	Mon,  1 Apr 2024 16:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991287;
-	bh=UB74BJ6nRr/gAsG1JT9UbTRZEHdZg8uHcKQPSFDxDVY=;
+	s=korg; t=1711990464;
+	bh=JQi+rqvx7lEvulKQQfu4T6cD3MkPVnnB4qkNc7XQSlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dx6rvbQhQEm2G3dQcDaftzUeVnTh0JTSctC/ilxkr3d+gWi6BghIpsPdqdzpH8Zzo
-	 eDBs5KrYKC2iGizra59VW6x20niW4ZQimH5xa+ZwnZv8NiVYJXC2Osb3KcGRbGalpL
-	 j75HtYWp/dpUJmB33BaK2T+vLnrifRPPnAWxV4LE=
+	b=ZLnn8jhQz3SlEgS/8h3WZbI46cHP46b+nK7ZhJ3dZHhiItWUB1FFQ0Jr1uPbORtcH
+	 5AKAS3Vazmg1VtY3XE5Bo5ozueu0ocea4+241yuukkGW3wLvx+Io6WC+4aiUckF5mW
+	 LM0Wzt38yZa3STt1JtoOOnmN3t1oh8mJ25ZQdl9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Avri Altman <avri.altman@wdc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 220/272] mmc: core: Initialize mmc_blk_ioc_data
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.6 361/396] staging: vc04_services: fix information leak in create_component()
 Date: Mon,  1 Apr 2024 17:46:50 +0200
-Message-ID: <20240401152537.812361526@linuxfoundation.org>
+Message-ID: <20240401152558.683879416@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 0cdfe5b0bf295c0dee97436a8ed13336933a0211 upstream.
+commit f37e76abd614b68987abc8e5c22d986013349771 upstream.
 
-Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") adds
-flags uint to struct mmc_blk_ioc_data, but it does not get initialized for
-RPMB ioctls which now fails.
+The m.u.component_create.pid field is for debugging and in the mainline
+kernel it's not used anything.  However, it still needs to be set to
+something to prevent disclosing uninitialized stack data.  Set it to
+zero.
 
-Let's fix this by always initializing the struct and flags to zero.
-
-Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218587
-Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240313133744.2405325-1-mikko.rapeli@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 7b3ad5abf027 ("staging: Import the BCM2835 MMAL-based V4L2 camera driver.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/2d972847-9ebd-481b-b6f9-af390f5aabd3@moroto.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -415,7 +415,7 @@ static struct mmc_blk_ioc_data *mmc_blk_
- 	struct mmc_blk_ioc_data *idata;
- 	int err;
+--- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
+@@ -939,6 +939,7 @@ static int create_component(struct vchiq
+ 	m.u.component_create.client_component = component->client_component;
+ 	strscpy_pad(m.u.component_create.name, name,
+ 		    sizeof(m.u.component_create.name));
++	m.u.component_create.pid = 0;
  
--	idata = kmalloc(sizeof(*idata), GFP_KERNEL);
-+	idata = kzalloc(sizeof(*idata), GFP_KERNEL);
- 	if (!idata) {
- 		err = -ENOMEM;
- 		goto out;
+ 	ret = send_synchronous_mmal_msg(instance, &m,
+ 					sizeof(m.u.component_create),
 
 
 
