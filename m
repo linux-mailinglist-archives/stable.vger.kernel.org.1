@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC498941B2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81114894000
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E99472832DA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2121AB210F1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F624654F;
-	Mon,  1 Apr 2024 16:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5AC4778E;
+	Mon,  1 Apr 2024 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAToxLUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="musemjHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15A71E525;
-	Mon,  1 Apr 2024 16:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6811C4087B;
+	Mon,  1 Apr 2024 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989904; cv=none; b=C0UVCM4Hpu8w9tzStZ+GU7zDFn30jOTqS7BtwRxeHUTOCn059IWJzrEyheEweEildYqyu/cgXxAGXzZCR1yQFmomh6C0jNIK1WJO0fDU+3+9KiQ+upxHa3wwhiOs7vX7hskjkL3MHjkg3HOD6RvC41teW4G7gFW0/TBXaiKl8/w=
+	t=1711988658; cv=none; b=ZqkixwkDtrWy9f4dVe/ZOW5qH39ItwEv1tC4Z30aq3bbSBii+7X+XxLSneDqur/A3PcaFWUoIm668UzU47ICNvK52eZbhRN8mSpyFv31n8q0Pet24Z9yz+dOfKSWx3nkPr8eySuZAb6YiFIWfpDgxIx+GibBH/NqGofcjI3iu+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989904; c=relaxed/simple;
-	bh=CND7UNl3T38Hp/wnurvUAPHgRuJRAVkguVIMzCLy9tg=;
+	s=arc-20240116; t=1711988658; c=relaxed/simple;
+	bh=nkL7qpIQxkdKexYKKamR9mHhd2EZ8QjuPgDb8OR3RT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlXcJsBKVclmHh1SKmX8c/z7jmdT/Wuk7/EmbtWXIgkc+AqUXYtUVuwi1+7zBgFfK8ux8j7npSsZGHE8svjC5qVcmDZZguNwuDnwqXmbAd5ZLz3i/OSxfofQT0CJcbujOxRQbKZA39uTYT9lMTDq057CCheMiGjL2KMFL51FDNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAToxLUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C9DC433C7;
-	Mon,  1 Apr 2024 16:45:03 +0000 (UTC)
+	 MIME-Version; b=Kkom6D7eWev+op/y2CivjWpfBVAKYtyNdyNsVAsJ4/L/D/0iSIL28gJtiZblDstedlLQ8C4aC1km+5XdwETP/x97nbTweJNkzkIXqHHmRAu5snYW3kalAhom/ShgMJq4N8QmjJwmuG61eCvh9EMlMnI4hmZ4vxJYx2jrIGANVUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=musemjHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B53C433F1;
+	Mon,  1 Apr 2024 16:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989903;
-	bh=CND7UNl3T38Hp/wnurvUAPHgRuJRAVkguVIMzCLy9tg=;
+	s=korg; t=1711988658;
+	bh=nkL7qpIQxkdKexYKKamR9mHhd2EZ8QjuPgDb8OR3RT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAToxLUjo4+e4nRKcOCdaYa9kj+2x5wLdZ/KW4EQmr89ctZsx/IxPjBncQ4F7yfxP
-	 e/rza/iK/tKSKMG+MPOQTPHv56USSfQH7vv89tkgGOQ9H3ZKYcES527993YVKBI7SL
-	 23eqZXsMCmRZFWlb+ksxPjXLZV4w/cmJt83CTPxw=
+	b=musemjHK7mK55GXO5MTZiLArYEY4ao92gBsQ8E+zVNjV57lQFnSSCKQmEvJDnMhDI
+	 JlA7wcgYg43f87k0fWLkiEaQanAys6drJm2WfhNyDT//DFkjIC/u+vCoTVBLeo8mI/
+	 Kbfc3nFr+InwMXs1Mkz9tmw/HrCaCtmNEK8jwPvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/396] wifi: brcmfmac: Demote vendor-specific attach/detach messages to info
+	Chris Toledanes <chris.toledanes@hp.com>,
+	Carl Ng <carl.ng@hp.com>,
+	Max Nguyen <maxwell.nguyen@hp.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.7 250/432] Input: xpad - add additional HyperX Controller Identifiers
 Date: Mon,  1 Apr 2024 17:43:57 +0200
-Message-ID: <20240401152553.544193791@linuxfoundation.org>
+Message-ID: <20240401152600.596359600@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,209 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Max Nguyen <maxwell.nguyen@hp.com>
 
-[ Upstream commit 85da8f71aaa7b83ea7ef0e89182e0cd47e16d465 ]
+commit dd50f771af20fb02b1aecde04fbd085c872a9139 upstream.
 
-People are getting spooked by brcmfmac errors on their boot console.
-There's no reason for these messages to be errors.
+Add additional HyperX device identifiers to xpad_device and xpad_table.
 
-Cc: stable@vger.kernel.org # 6.2.x
-Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
-Signed-off-by: Hector Martin <marcan@marcan.st>
-[arend.vanspriel@broadcom.com: remove attach/detach vendor callbacks]
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240106103835.269149-2-arend.vanspriel@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Chris Toledanes<chris.toledanes@hp.com>
+Reviewed-by: Carl Ng <carl.ng@hp.com>
+Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/44ad5ffa-76d8-4046-94ee-2ef171930ed2@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../broadcom/brcm80211/brcmfmac/bca/core.c    | 13 ----------
- .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 13 ----------
- .../broadcom/brcm80211/brcmfmac/fwvid.c       |  7 +++--
- .../broadcom/brcm80211/brcmfmac/fwvid.h       | 26 ++-----------------
- .../broadcom/brcm80211/brcmfmac/wcc/core.c    | 15 +----------
- 5 files changed, 6 insertions(+), 68 deletions(-)
+ drivers/input/joystick/xpad.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
-index a5d9ac5e67638..a963c242975ac 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
-@@ -11,17 +11,6 @@
- 
- #include "vops.h"
- 
--static int brcmf_bca_attach(struct brcmf_pub *drvr)
--{
--	pr_err("%s: executing\n", __func__);
--	return 0;
--}
--
--static void brcmf_bca_detach(struct brcmf_pub *drvr)
--{
--	pr_err("%s: executing\n", __func__);
--}
--
- static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
- {
- 	/* SAE support not confirmed so disabling for now */
-@@ -29,7 +18,5 @@ static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
- }
- 
- const struct brcmf_fwvid_ops brcmf_bca_ops = {
--	.attach = brcmf_bca_attach,
--	.detach = brcmf_bca_detach,
- 	.feat_attach = brcmf_bca_feat_attach,
- };
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-index 24670497f1a40..bec5748310b9c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-@@ -11,17 +11,6 @@
- 
- #include "vops.h"
- 
--static int brcmf_cyw_attach(struct brcmf_pub *drvr)
--{
--	pr_err("%s: executing\n", __func__);
--	return 0;
--}
--
--static void brcmf_cyw_detach(struct brcmf_pub *drvr)
--{
--	pr_err("%s: executing\n", __func__);
--}
--
- static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
- 				 struct cfg80211_crypto_settings *crypto)
- {
-@@ -49,7 +38,5 @@ static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
- }
- 
- const struct brcmf_fwvid_ops brcmf_cyw_ops = {
--	.attach = brcmf_cyw_attach,
--	.detach = brcmf_cyw_detach,
- 	.set_sae_password = brcmf_cyw_set_sae_pwd,
- };
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-index f610818c2b059..b427782554b59 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-@@ -89,8 +89,7 @@ int brcmf_fwvid_register_vendor(enum brcmf_fwvendor fwvid, struct module *vmod,
- 	if (fwvid >= BRCMF_FWVENDOR_NUM)
- 		return -ERANGE;
- 
--	if (WARN_ON(!vmod) || WARN_ON(!vops) ||
--	    WARN_ON(!vops->attach) || WARN_ON(!vops->detach))
-+	if (WARN_ON(!vmod) || WARN_ON(!vops))
- 		return -EINVAL;
- 
- 	if (WARN_ON(fwvid_list[fwvid].vmod))
-@@ -150,7 +149,7 @@ static inline int brcmf_fwvid_request_module(enum brcmf_fwvendor fwvid)
- }
- #endif
- 
--int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr)
-+int brcmf_fwvid_attach(struct brcmf_pub *drvr)
- {
- 	enum brcmf_fwvendor fwvid = drvr->bus_if->fwvid;
- 	int ret;
-@@ -175,7 +174,7 @@ int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr)
- 	return ret;
- }
- 
--void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr)
-+void brcmf_fwvid_detach(struct brcmf_pub *drvr)
- {
- 	enum brcmf_fwvendor fwvid = drvr->bus_if->fwvid;
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-index d9fc76b46db96..dac22534d0334 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-@@ -12,8 +12,6 @@ struct brcmf_pub;
- struct brcmf_if;
- 
- struct brcmf_fwvid_ops {
--	int (*attach)(struct brcmf_pub *drvr);
--	void (*detach)(struct brcmf_pub *drvr);
- 	void (*feat_attach)(struct brcmf_if *ifp);
- 	int (*set_sae_password)(struct brcmf_if *ifp, struct cfg80211_crypto_settings *crypto);
- };
-@@ -24,30 +22,10 @@ int brcmf_fwvid_register_vendor(enum brcmf_fwvendor fwvid, struct module *mod,
- int brcmf_fwvid_unregister_vendor(enum brcmf_fwvendor fwvid, struct module *mod);
- 
- /* core driver functions */
--int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr);
--void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr);
-+int brcmf_fwvid_attach(struct brcmf_pub *drvr);
-+void brcmf_fwvid_detach(struct brcmf_pub *drvr);
- const char *brcmf_fwvid_vendor_name(struct brcmf_pub *drvr);
- 
--static inline int brcmf_fwvid_attach(struct brcmf_pub *drvr)
--{
--	int ret;
--
--	ret = brcmf_fwvid_attach_ops(drvr);
--	if (ret)
--		return ret;
--
--	return drvr->vops->attach(drvr);
--}
--
--static inline void brcmf_fwvid_detach(struct brcmf_pub *drvr)
--{
--	if (!drvr->vops)
--		return;
--
--	drvr->vops->detach(drvr);
--	brcmf_fwvid_detach_ops(drvr);
--}
--
- static inline void brcmf_fwvid_feat_attach(struct brcmf_if *ifp)
- {
- 	const struct brcmf_fwvid_ops *vops = ifp->drvr->vops;
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
-index 2d8f80bd73829..fd593b93ad404 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
-@@ -7,21 +7,10 @@
- #include <core.h>
- #include <bus.h>
- #include <fwvid.h>
--#include <fwil.h>
-+#include <cfg80211.h>
- 
- #include "vops.h"
- 
--static int brcmf_wcc_attach(struct brcmf_pub *drvr)
--{
--	pr_debug("%s: executing\n", __func__);
--	return 0;
--}
--
--static void brcmf_wcc_detach(struct brcmf_pub *drvr)
--{
--	pr_debug("%s: executing\n", __func__);
--}
--
- static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
- 				 struct cfg80211_crypto_settings *crypto)
- {
-@@ -30,7 +19,5 @@ static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
- }
- 
- const struct brcmf_fwvid_ops brcmf_wcc_ops = {
--	.attach = brcmf_wcc_attach,
--	.detach = brcmf_wcc_detach,
- 	.set_sae_password = brcmf_wcc_set_sae_pwd,
- };
--- 
-2.43.0
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -130,7 +130,12 @@ static const struct xpad_device {
+ 	{ 0x0079, 0x18d4, "GPD Win 2 X-Box Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x03eb, 0xff01, "Wooting One (Legacy)", 0, XTYPE_XBOX360 },
+ 	{ 0x03eb, 0xff02, "Wooting Two (Legacy)", 0, XTYPE_XBOX360 },
++	{ 0x03f0, 0x038D, "HyperX Clutch", 0, XTYPE_XBOX360 },			/* wired */
++	{ 0x03f0, 0x048D, "HyperX Clutch", 0, XTYPE_XBOX360 },			/* wireless */
+ 	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
++	{ 0x03f0, 0x07A0, "HyperX Clutch Gladiate RGB", 0, XTYPE_XBOXONE },
++	{ 0x03f0, 0x08B6, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },		/* v2 */
++	{ 0x03f0, 0x09B4, "HyperX Clutch Tanto", 0, XTYPE_XBOXONE },
+ 	{ 0x044f, 0x0f00, "Thrustmaster Wheel", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0x0f03, "Thrustmaster Wheel", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
+@@ -463,6 +468,7 @@ static const struct usb_device_id xpad_t
+ 	{ USB_INTERFACE_INFO('X', 'B', 0) },	/* Xbox USB-IF not-approved class */
+ 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 controller */
+ 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
++	XPAD_XBOX360_VENDOR(0x03f0),		/* HP HyperX Xbox 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One controllers */
+ 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster Xbox 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft Xbox 360 controllers */
 
 
 
