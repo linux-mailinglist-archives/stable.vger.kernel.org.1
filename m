@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DF2894004
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD86B894339
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 154AC2837D0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C18A1F26EFD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC844778E;
-	Mon,  1 Apr 2024 16:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9D0482DF;
+	Mon,  1 Apr 2024 17:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhoC4InV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1IZRFAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48133C129;
-	Mon,  1 Apr 2024 16:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEB5BA3F;
+	Mon,  1 Apr 2024 17:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988673; cv=none; b=P7sGcIzVcewPDNUfKdArve/uSiV1MlWso6oCsDYmDDpMgnyXQN4XfooJ9a+AberocUi6YKTmJajloxGACu5AnwNkgr+iHnrXbh5+q6HvpzdMFPNG+4TQiFi8uBV6sPYq+r+tbhtjP9S/aqaPWcEu7iqhniT6iCQV3feJCQA9u4E=
+	t=1711990866; cv=none; b=o21oxdMUgMFGSYZX61NilOjQz39LT4ebK+mEYlMhTHR9sGFIFwom/56oyLLJerihBaDHtxN5oqSbVC1o0mKaSSc+GZQ+tpaORB0XWfaaL/xAR2CbSTOZhdhadRJcSi5qpYoImSH/X/5PHvPq+bxLQZdCwqyILh6HSYfR1wOF6P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988673; c=relaxed/simple;
-	bh=VeAoUSFmxgKa4zjwRj5Gs+UNV8pPaPZQaBNBzbpiPjE=;
+	s=arc-20240116; t=1711990866; c=relaxed/simple;
+	bh=RFmApErE2ViLL9EusVr5fnVSCrkiFaQddYIlpN0dVTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSdKvMp8UWOybFFpKlQX7RpLDYvpUAbsZnhwp1BDxQzYJtfcITsutxuBiHNzLplyLP2hFVV8BrBV19xEUt5xzJvb3PsEFRu2fM2Kgm2YDJownMXWpjOtu7DpVr2g/rjVdU/WHbPZ4LIAvncaIJ4Cx4GiPW6Nnqn2SrHrLX6j69o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhoC4InV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405B7C433F1;
-	Mon,  1 Apr 2024 16:24:31 +0000 (UTC)
+	 MIME-Version; b=Xjd51jYUVawlHMx7232SdF5CS3iY3YWiSjfpXyEOrt56195/6cz4ypj3H5DDraiGErTvTBWiMvbNBybMsvrB1gMyhX40/pMwI70MvqB4aU5haZ/FYynFnxHISrpZgmEzFD0fM2rGcuXNuymF018ryBfg3U5sDacElaxZhfayPcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1IZRFAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86BDC433C7;
+	Mon,  1 Apr 2024 17:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988671;
-	bh=VeAoUSFmxgKa4zjwRj5Gs+UNV8pPaPZQaBNBzbpiPjE=;
+	s=korg; t=1711990866;
+	bh=RFmApErE2ViLL9EusVr5fnVSCrkiFaQddYIlpN0dVTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhoC4InVrjZdgKd7G0ldTxMFiiG2PJgyF8YBF5MWOELhQCY+FAMCY7yEHB1hhxFnM
-	 K6GvjiD3g/S5dItiWVfK8/IMuq4TTI2Tz2TGiPFF6seQpbwAve3WhhmZ1IW3bd8TB7
-	 zRZR/SGh8ZHSBBD00orFTekakoic876niHn8l0P4=
+	b=X1IZRFAKQK1qLxuuHCv8EUF9MyiKcONR9GupRyaM5kVA9N9NV/bUazjK7vtqT52XB
+	 Evnm2d7E7EoestebTylrGCpspOvJx+cSZIMoc9VEPHTmXFqHM5mNMb2zWMvMMMF21K
+	 DLcutjzHiRB5Y3vnn0me4/FXLf8pe+swP4XhD/ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabe Kirkpatrick <gkirkpatrick@google.com>,
-	Josh Eads <josheads@google.com>,
-	Peter Gonda <pgonda@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.7 254/432] KVM: SVM: Flush pages under kvm->lock to fix UAF in svm_register_enc_region()
+	Shivnandan Kumar <quic_kshivnan@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 051/272] cpufreq: Limit resolving a frequency to policy min/max
 Date: Mon,  1 Apr 2024 17:44:01 +0200
-Message-ID: <20240401152600.713691966@linuxfoundation.org>
+Message-ID: <20240401152532.115646528@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Shivnandan Kumar <quic_kshivnan@quicinc.com>
 
-commit 5ef1d8c1ddbf696e47b226e11888eaf8d9e8e807 upstream.
+[ Upstream commit d394abcb12bb1a6f309c1221fdb8e73594ecf1b4 ]
 
-Do the cache flush of converted pages in svm_register_enc_region() before
-dropping kvm->lock to fix use-after-free issues where region and/or its
-array of pages could be freed by a different task, e.g. if userspace has
-__unregister_enc_region_locked() already queued up for the region.
+Resolving a frequency to an efficient one should not transgress
+policy->max (which can be set for thermal reason) and policy->min.
 
-Note, the "obvious" alternative of using local variables doesn't fully
-resolve the bug, as region->pages is also dynamically allocated.  I.e. the
-region structure itself would be fine, but region->pages could be freed.
+Currently, there is possibility where scaling_cur_freq can exceed
+scaling_max_freq when scaling_max_freq is an inefficient frequency.
 
-Flushing multiple pages under kvm->lock is unfortunate, but the entire
-flow is a rare slow path, and the manual flush is only needed on CPUs that
-lack coherency for encrypted memory.
+Add a check to ensure that resolving a frequency will respect
+policy->min/max.
 
-Fixes: 19a23da53932 ("Fix unsynchronized access to sev members through svm_register_enc_region")
-Reported-by: Gabe Kirkpatrick <gkirkpatrick@google.com>
-Cc: Josh Eads <josheads@google.com>
-Cc: Peter Gonda <pgonda@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20240217013430.2079561-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: 1f39fa0dccff ("cpufreq: Introducing CPUFREQ_RELATION_E")
+Signed-off-by: Shivnandan Kumar <quic_kshivnan@quicinc.com>
+[ rjw: Whitespace adjustment, changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ include/linux/cpufreq.h | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1975,20 +1975,22 @@ int sev_mem_enc_register_region(struct k
- 		goto e_free;
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index d5595d57f4e53..9d208648c84d5 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -1023,6 +1023,18 @@ static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
+ 						   efficiencies);
+ }
+ 
++static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy, int idx)
++{
++	unsigned int freq;
++
++	if (idx < 0)
++		return false;
++
++	freq = policy->freq_table[idx].frequency;
++
++	return freq == clamp_val(freq, policy->min, policy->max);
++}
++
+ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 						 unsigned int target_freq,
+ 						 unsigned int relation)
+@@ -1056,7 +1068,8 @@ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 		return 0;
  	}
  
--	region->uaddr = range->addr;
--	region->size = range->size;
--
--	list_add_tail(&region->list, &sev->regions_list);
--	mutex_unlock(&kvm->lock);
--
- 	/*
- 	 * The guest may change the memory encryption attribute from C=0 -> C=1
- 	 * or vice versa for this memory range. Lets make sure caches are
- 	 * flushed to ensure that guest data gets written into memory with
--	 * correct C-bit.
-+	 * correct C-bit.  Note, this must be done before dropping kvm->lock,
-+	 * as region and its array of pages can be freed by a different task
-+	 * once kvm->lock is released.
- 	 */
- 	sev_clflush_pages(region->pages, region->npages);
- 
-+	region->uaddr = range->addr;
-+	region->size = range->size;
-+
-+	list_add_tail(&region->list, &sev->regions_list);
-+	mutex_unlock(&kvm->lock);
-+
- 	return ret;
- 
- e_free:
+-	if (idx < 0 && efficiencies) {
++	/* Limit frequency index to honor policy->min/max */
++	if (!cpufreq_is_in_limits(policy, idx) && efficiencies) {
+ 		efficiencies = false;
+ 		goto retry;
+ 	}
+-- 
+2.43.0
+
 
 
 
