@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5B289418A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E16893FBF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 290C6B2290D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 788071C210D3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB7D487A7;
-	Mon,  1 Apr 2024 16:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFE54778C;
+	Mon,  1 Apr 2024 16:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/JkxYkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8DfLUz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197D08F5C;
-	Mon,  1 Apr 2024 16:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD84C129;
+	Mon,  1 Apr 2024 16:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989786; cv=none; b=Oz4Z7rW04tg/T1RyZS4o6esgkNGQTiznImw/c8OYEia8diZSW3ot9mgPtOM6xkf9ud8PdrCV7+wdWngYm7lCe3wp8dXwUa9k3Kw4+N5xqyjuGwyZ1RzFwpZ0uuuHcP8R1B8KUdX2VqEuArZ1vrWxV5RhNnIX/aMy/t0ekM4dN5o=
+	t=1711988445; cv=none; b=myYnJkYhsKZ4otO/shHlWBdr5o8sXyyX+03p2t43yhmRBHZnkiPWbGcTO/N6ZUC7Ka5MUzoWJcL1ypzrHiLLbVqw72RzEhQ/MWRODVQ3QVsMXInMMbVlUlN5Ety5mhQmDAki7X0jVWTNMmCDCOzbFFmheLpp9v+ZzcP3hazSHM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989786; c=relaxed/simple;
-	bh=BR05keQwe5sIQX8VNE5ZAxi4+eQG9mf0V7u0GIVkWsI=;
+	s=arc-20240116; t=1711988445; c=relaxed/simple;
+	bh=iRs9DJiCOoQpghQfP54b2JJXfTI29DrV6uUCT0gfjk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyqEW4pMuXgMqun4KNGC9rLKpe62rIQBenMiiazwVDWw0yZrD/gxs68ixgRJ4D4evcPWzHrTIExmHhksj1dP4wd81bJpLbGmN+NqUyb6OIvVxE4aRE680uJ7bJiFSeAD1kV8jsOzMXHwokHynSFUTP2pUD3uSt13Fwvo4QNstZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/JkxYkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB568C433F1;
-	Mon,  1 Apr 2024 16:43:05 +0000 (UTC)
+	 MIME-Version; b=kB2NeUP/C6yNJExu1WfaP04OCI9lzn/115KxIAja/xGqEo3vKWmK+gpgJ4u+SkfgRhYK3cUzsm0wrSJiwt41ypwtNkyYI9+hdsybUn7oHlIW0Pi5JRguEMjSg/R1cSgfnjYtdmx/lLIH89CmiCbTDj5eqUI5LmtlQqxUhzIcpSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8DfLUz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86306C433F1;
+	Mon,  1 Apr 2024 16:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989786;
-	bh=BR05keQwe5sIQX8VNE5ZAxi4+eQG9mf0V7u0GIVkWsI=;
+	s=korg; t=1711988445;
+	bh=iRs9DJiCOoQpghQfP54b2JJXfTI29DrV6uUCT0gfjk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/JkxYkqD/tMlQjkYwCa8JBvKqb1w+wXw1fOtBetEybZX0QijfZyTZvNTH1buoZoX
-	 c9EPiLa2rpsMhQB01v7Px/8JppqCGcbJV57t6YIFm0lq8g4kDh+bucgInKOm5EMwZp
-	 9k5DHgF5VJSH6l06tZEBwmbr+sXoDQzrkVXCoVGo=
+	b=O8DfLUz+qSYO0iq82PndpoGaMMk+dD6FwSFJ+rp1PJduzH6J5imXGIADTYppV3ead
+	 uNIC2Fpkz4FpXmDgxhS8qJpe1ppk9i8gKJ1wjV1On4Me95JmNo77ioXjrZD75UynkC
+	 TjIQkKJobD9P8C/69nQgTghfOI5oDfVGc5kwnX9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"Christoph Lameter (Ampere)" <cl@linux.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/396] cifs: prevent updating file size from server if we have a read/write lease
+Subject: [PATCH 6.7 186/432] cpufreq: dt: always allocate zeroed cpumask
 Date: Mon,  1 Apr 2024 17:42:53 +0200
-Message-ID: <20240401152551.616774702@linuxfoundation.org>
+Message-ID: <20240401152558.689833484@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit e4b61f3b1c67f5068590965f64ea6e8d5d5bd961 ]
+[ Upstream commit d2399501c2c081eac703ca9597ceb83c7875a537 ]
 
-In cases of large directories, the readdir operation may span multiple
-round trips to retrieve contents. This introduces a potential race
-condition in case of concurrent write and readdir operations. If the
-readdir operation initiates before a write has been processed by the
-server, it may update the file size attribute to an older value.
-Address this issue by avoiding file size updates from readdir when we
-have read/write lease.
+Commit 0499a78369ad ("ARM64: Dynamically allocate cpumasks and increase
+supported CPUs to 512") changed the handling of cpumasks on ARM 64bit,
+what resulted in the strange issues and warnings during cpufreq-dt
+initialization on some big.LITTLE platforms.
 
-Scenario:
-1) process1: open dir xyz
-2) process1: readdir instance 1 on xyz
-3) process2: create file.txt for write
-4) process2: write x bytes to file.txt
-5) process2: close file.txt
-6) process2: open file.txt for read
-7) process1: readdir 2 - overwrites file.txt inode size to 0
-8) process2: read contents of file.txt - bug, short read with 0 bytes
+This was caused by mixing OPPs between big and LITTLE cores, because
+OPP-sharing information between big and LITTLE cores is computed on
+cpumask, which in turn was not zeroed on allocation. Fix this by
+switching to zalloc_cpumask_var() call.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: dc279ac6e5b4 ("cpufreq: dt: Refactor initialization to handle probe deferral properly")
+CC: stable@vger.kernel.org # v5.10+
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Christoph Lameter (Ampere) <cl@linux.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsproto.h |  6 ++++--
- fs/smb/client/file.c      |  8 +++++---
- fs/smb/client/inode.c     | 13 +++++++------
- fs/smb/client/readdir.c   |  2 +-
- 4 files changed, 17 insertions(+), 12 deletions(-)
+ drivers/cpufreq/cpufreq-dt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 260a6299bddb8..0cff4f5af1793 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -144,7 +144,8 @@ extern int cifs_reconnect(struct TCP_Server_Info *server,
- extern int checkSMB(char *buf, unsigned int len, struct TCP_Server_Info *srvr);
- extern bool is_valid_oplock_break(char *, struct TCP_Server_Info *);
- extern bool backup_cred(struct cifs_sb_info *);
--extern bool is_size_safe_to_change(struct cifsInodeInfo *, __u64 eof);
-+extern bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 eof,
-+				   bool from_readdir);
- extern void cifs_update_eof(struct cifsInodeInfo *cifsi, loff_t offset,
- 			    unsigned int bytes_written);
- extern struct cifsFileInfo *find_writable_file(struct cifsInodeInfo *, int);
-@@ -201,7 +202,8 @@ extern void cifs_unix_basic_to_fattr(struct cifs_fattr *fattr,
- 				     struct cifs_sb_info *cifs_sb);
- extern void cifs_dir_info_to_fattr(struct cifs_fattr *, FILE_DIRECTORY_INFO *,
- 					struct cifs_sb_info *);
--extern int cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr);
-+extern int cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
-+			       bool from_readdir);
- extern struct inode *cifs_iget(struct super_block *sb,
- 			       struct cifs_fattr *fattr);
+diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
+index 8bd6e5e8f121c..2d83bbc65dd0b 100644
+--- a/drivers/cpufreq/cpufreq-dt.c
++++ b/drivers/cpufreq/cpufreq-dt.c
+@@ -208,7 +208,7 @@ static int dt_cpufreq_early_init(struct device *dev, int cpu)
+ 	if (!priv)
+ 		return -ENOMEM;
  
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index c156460eb5587..c711d5eb2987e 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -329,7 +329,7 @@ int cifs_posix_open(const char *full_path, struct inode **pinode,
- 		}
- 	} else {
- 		cifs_revalidate_mapping(*pinode);
--		rc = cifs_fattr_to_inode(*pinode, &fattr);
-+		rc = cifs_fattr_to_inode(*pinode, &fattr, false);
- 	}
+-	if (!alloc_cpumask_var(&priv->cpus, GFP_KERNEL))
++	if (!zalloc_cpumask_var(&priv->cpus, GFP_KERNEL))
+ 		return -ENOMEM;
  
- posix_open_ret:
-@@ -4766,12 +4766,14 @@ static int is_inode_writable(struct cifsInodeInfo *cifs_inode)
-    refreshing the inode only on increases in the file size
-    but this is tricky to do without racing with writebehind
-    page caching in the current Linux kernel design */
--bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 end_of_file)
-+bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 end_of_file,
-+			    bool from_readdir)
- {
- 	if (!cifsInode)
- 		return true;
- 
--	if (is_inode_writable(cifsInode)) {
-+	if (is_inode_writable(cifsInode) ||
-+		((cifsInode->oplock & CIFS_CACHE_RW_FLG) != 0 && from_readdir)) {
- 		/* This inode is open for write at least once */
- 		struct cifs_sb_info *cifs_sb;
- 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 471abc99bbf02..cb9e719e67ae2 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -147,7 +147,8 @@ cifs_nlink_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
- 
- /* populate an inode with info from a cifs_fattr struct */
- int
--cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
-+cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
-+		    bool from_readdir)
- {
- 	struct cifsInodeInfo *cifs_i = CIFS_I(inode);
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
-@@ -199,7 +200,7 @@ cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
- 	 * Can't safely change the file size here if the client is writing to
- 	 * it due to potential races.
- 	 */
--	if (is_size_safe_to_change(cifs_i, fattr->cf_eof)) {
-+	if (is_size_safe_to_change(cifs_i, fattr->cf_eof, from_readdir)) {
- 		i_size_write(inode, fattr->cf_eof);
- 
- 		/*
-@@ -368,7 +369,7 @@ static int update_inode_info(struct super_block *sb,
- 		CIFS_I(*inode)->time = 0; /* force reval */
- 		return -ESTALE;
- 	}
--	return cifs_fattr_to_inode(*inode, fattr);
-+	return cifs_fattr_to_inode(*inode, fattr, false);
- }
- 
- #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
-@@ -403,7 +404,7 @@ cifs_get_file_info_unix(struct file *filp)
- 	} else
- 		goto cifs_gfiunix_out;
- 
--	rc = cifs_fattr_to_inode(inode, &fattr);
-+	rc = cifs_fattr_to_inode(inode, &fattr, false);
- 
- cifs_gfiunix_out:
- 	free_xid(xid);
-@@ -928,7 +929,7 @@ cifs_get_file_info(struct file *filp)
- 	fattr.cf_uniqueid = CIFS_I(inode)->uniqueid;
- 	fattr.cf_flags |= CIFS_FATTR_NEED_REVAL;
- 	/* if filetype is different, return error */
--	rc = cifs_fattr_to_inode(inode, &fattr);
-+	rc = cifs_fattr_to_inode(inode, &fattr, false);
- cgfi_exit:
- 	cifs_free_open_info(&data);
- 	free_xid(xid);
-@@ -1467,7 +1468,7 @@ cifs_iget(struct super_block *sb, struct cifs_fattr *fattr)
- 		}
- 
- 		/* can't fail - see cifs_find_inode() */
--		cifs_fattr_to_inode(inode, fattr);
-+		cifs_fattr_to_inode(inode, fattr, false);
- 		if (sb->s_flags & SB_NOATIME)
- 			inode->i_flags |= S_NOATIME | S_NOCMTIME;
- 		if (inode->i_state & I_NEW) {
-diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
-index 520c490e844b5..56033e4e4bae9 100644
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -148,7 +148,7 @@ cifs_prime_dcache(struct dentry *parent, struct qstr *name,
- 						rc = -ESTALE;
- 					}
- 				}
--				if (!rc && !cifs_fattr_to_inode(inode, fattr)) {
-+				if (!rc && !cifs_fattr_to_inode(inode, fattr, true)) {
- 					dput(dentry);
- 					return;
- 				}
+ 	cpumask_set_cpu(cpu, priv->cpus);
 -- 
 2.43.0
 
