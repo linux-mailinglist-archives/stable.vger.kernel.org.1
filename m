@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8018943D8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8918942D4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0940B2122C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D12E1C21DEA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EB6482DF;
-	Mon,  1 Apr 2024 17:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0D04AEE4;
+	Mon,  1 Apr 2024 16:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm71+O9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffFsFb5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AC640876;
-	Mon,  1 Apr 2024 17:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9FB1DFF4;
+	Mon,  1 Apr 2024 16:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991331; cv=none; b=SUjG8XXa+gqt3euVK0EZVr24kCPSf8AvDEksWFVVaARm4mdh5n2V/PdkDMjWFUNHghxOBHBd80WzHEXYODEDPlPlkGLLN+lFOUMQAW2PYWcoon4WdkZQ9RkXJrwyklaXfcs1pT7UH76mvnwp/JImvXo+8usip9GgTjB1V/6N78U=
+	t=1711990593; cv=none; b=poUIVwB0mvmSnTyRmcHzRpjco9+aBZEWknzwCySSL2jHWwcqTAH6XGLJBgItygLU6HeGnyeFdNK+ID9hJ9zeeGL58i2nqe8g1i2HPSdGclrendo/stb+j4+o/BDmXLbocQ/pY6YY6vsGZwY3hgwmO8ZyW7lvWLwVmKzkdphX1SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991331; c=relaxed/simple;
-	bh=ytJoCylIuPVA49GusGH28Rywy/QotDeC1g/4GE5GE/I=;
+	s=arc-20240116; t=1711990593; c=relaxed/simple;
+	bh=FfJBaHTIDSbK+9RGCQ7DzBqZuHCnBmFFlyNTaoDRlcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6S0beOHzp5dJEHxenwz9GKxrF9wsSblu2tBezVJy5nZRuFcSp+goZ6i2Hl0gnwljfSOk8xppkwK0QxbcCYHwpKojlMG6pVJRZWrd4w6R8cl+AIClpBFu8QXZbB4vw/t+wq8ZZo2Hj1z7vkkeQMimmdvKbHgPzsmZ89E3Q8xZiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm71+O9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35235C433C7;
-	Mon,  1 Apr 2024 17:08:50 +0000 (UTC)
+	 MIME-Version; b=Hnw6Ye/VQKMFDmPZVZdyj25K+G/3z0unGMMINtxqsDKrIjpLXMgENe3iYYkd9SLkGH0YORyPAoSxF8nJODWw/ORPlvoz/UxuPoUDmeV9U1Mn5yP6fPPOvVEVISC0XgYXYyx4ONradP46f9bRUFs8JkfloYf3DhoUx6p0knXyG0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffFsFb5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4E6C433F1;
+	Mon,  1 Apr 2024 16:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991330;
-	bh=ytJoCylIuPVA49GusGH28Rywy/QotDeC1g/4GE5GE/I=;
+	s=korg; t=1711990592;
+	bh=FfJBaHTIDSbK+9RGCQ7DzBqZuHCnBmFFlyNTaoDRlcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dm71+O9oqDy1l9uqpXIBggQLSTCcM1PoDLYyBd0tkPC1E4E+0l7lvSYdB+l0rjHha
-	 RdGlktB6OzMyUZ7HiGiFVIdZSGZfzRyUUWb5fuXfFIiu1hvysDHe5XALxe7+72ZEqy
-	 9I+docp4+oCcZkzQzPOM6MbTZ78dA5D/3M6yeAbI=
+	b=ffFsFb5t+RVp1DRBhYq+B/yBlwuoUYfokOpo+GmUvk+RfTyuMOR32ZUdTqpHgQ0N4
+	 f7qIUx32gD7HUCLWqE81qLHscVVPXsAh2Tz5SE6WyGSkB1Y9O+xkF1DFr7tBM8Wcln
+	 ap0CSSuFJhj5ka5HkrYV4YCBFmQrpp4foAgJP/to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.1 232/272] usb: cdc-wdm: close race between read and workqueue
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.6 373/396] usb: typec: ucsi: Clear EVENT_PENDING under PPM lock
 Date: Mon,  1 Apr 2024 17:47:02 +0200
-Message-ID: <20240401152538.222118075@linuxfoundation.org>
+Message-ID: <20240401152559.033504858@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
+commit 15b2e71b4653b3e13df34695a29ebeee237c5af2 upstream.
 
-wdm_read() cannot race with itself. However, in
-service_outstanding_interrupt() it can race with the
-workqueue, which can be triggered by error handling.
+Suppose we sleep on the PPM lock after clearing the EVENT_PENDING
+bit because the thread for another connector is executing a command.
+In this case the command completion of the other command will still
+report the connector change for our connector.
 
-Hence we need to make sure that the WDM_RESPONDING
-flag is not just only set but tested.
+Clear the EVENT_PENDING bit under the PPM lock to avoid another
+useless call to ucsi_handle_connector_change() in this case.
 
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Fixes: c9aed03a0a68 ("usb: ucsi: Add missing ppm_lock")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-2-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -485,6 +485,7 @@ out_free_mem:
- static int service_outstanding_interrupt(struct wdm_device *desc)
- {
- 	int rv = 0;
-+	int used;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -933,11 +933,11 @@ static void ucsi_handle_connector_change
+ 	if (con->status.change & UCSI_CONSTAT_CAM_CHANGE)
+ 		ucsi_partner_task(con, ucsi_check_altmodes, 1, 0);
  
- 	/* submit read urb only if the device is waiting for it */
- 	if (!desc->resp_count || !--desc->resp_count)
-@@ -499,7 +500,10 @@ static int service_outstanding_interrupt
- 		goto out;
- 	}
- 
--	set_bit(WDM_RESPONDING, &desc->flags);
-+	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
-+	if (used)
-+		goto out;
+-	clear_bit(EVENT_PENDING, &con->ucsi->flags);
+-
+ 	mutex_lock(&ucsi->ppm_lock);
++	clear_bit(EVENT_PENDING, &con->ucsi->flags);
+ 	ret = ucsi_acknowledge_connector_change(ucsi);
+ 	mutex_unlock(&ucsi->ppm_lock);
 +
- 	spin_unlock_irq(&desc->iuspin);
- 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
- 	spin_lock_irq(&desc->iuspin);
+ 	if (ret)
+ 		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
+ 
 
 
 
