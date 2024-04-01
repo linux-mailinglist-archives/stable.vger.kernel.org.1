@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C178941D8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5EA894017
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA7A31F25392
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06EE7282910
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EFA4654F;
-	Mon,  1 Apr 2024 16:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE67D47A6B;
+	Mon,  1 Apr 2024 16:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F63SBR9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFX8toVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451338F5C;
-	Mon,  1 Apr 2024 16:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5C0446D5;
+	Mon,  1 Apr 2024 16:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990004; cv=none; b=LkoCiQEDsZBVCB19S4/sPAOuYYGrTd8bQ+tNTMOLK9LcM+C3utn7Zl0BhpMxdTt6xdgmTGk0aF9Zi+FFbJ/lMC/FZ7CQRrpHld1KgKAqejwjQ3ppesKong/j17r32dnBQkL83DYOakdbG6SQDRZHadfoXPdtuLaUAPP/SjE8V0U=
+	t=1711988730; cv=none; b=DVz3MpRzEq33VIYh+A0ujUmp6cy49d+vT2kvm7XI1UP6yfBcL0jig9UsNOJRHMyD5j4mi6Mahr988cz4dkePa5VIsU63xPEdgRhNqi00T0hrXKswrwwvTbEbD90E5aEigUv8MJGAHlD7VJzKyRnByFiFJ0TB9NU32PTLm6YIbPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990004; c=relaxed/simple;
-	bh=bIzdrpNYkf5xtLCFdEdySceg04t/x8qOgj/MGt8dH34=;
+	s=arc-20240116; t=1711988730; c=relaxed/simple;
+	bh=A8dlAxkbytLO6vjY6asrlH5zHT9fufMxjDnlSdm9sqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwwPsxE3Z8V5rOHRDxAj2/CO046omCmhn8Rht6Y6Pm+90l8NTRzRLPSgulmMcsFXez1UFVvepBR7ajvc9DYQhx/Yz3KWeyvyUWoVKNHOHewFVsEWB0H+G+ji7cvwKxBXayQJy/WJqguXnU79sEsxNy59ca34c06r254W5NMoy9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F63SBR9i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD96C433F1;
-	Mon,  1 Apr 2024 16:46:43 +0000 (UTC)
+	 MIME-Version; b=YNuV+B0+5a5qODZ4RFK654DgdkINEvFQeJSyYNWHbsuMPv7O5g/ZJEgfXB5LC46ICubm3mz1mAzN5a4k8VWGo/Xp/hwP31ZZaUFy5JUXRJNMlzxQCnfOn2ousG6y1vlZuLvz+jcl9GwLK/r4GSOEx1cvu45ipHXb5JPyhOYcK0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFX8toVh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD292C433F1;
+	Mon,  1 Apr 2024 16:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990003;
-	bh=bIzdrpNYkf5xtLCFdEdySceg04t/x8qOgj/MGt8dH34=;
+	s=korg; t=1711988730;
+	bh=A8dlAxkbytLO6vjY6asrlH5zHT9fufMxjDnlSdm9sqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F63SBR9iySFXni45usQ8sMsEWAAMC02ovTB/6Yts3/bgbftryPjXJ9l5DorKoL04A
-	 /hqgAhd8II1ZtujM3zEfNcsVj1T1UZl40XWqCZKlIvmn//ejdHJRdgyEL8L8p4wxGI
-	 61cGEr2A4PfJl9NHBUs1nIkI4SQj+K/1ZQTnvGsI=
+	b=wFX8toVhcvlGi2RqoOYx1LWPfVk+4k9GjZVeFfOYTHD4KEY6Q3tFIFxxMl9fzetcV
+	 GvmO0jLxp+WNFVxJRaxReoggjre5iu9c8+sLgZwvlWjJ3VH6yFXtFV2GiqskRRh+XF
+	 pqMghbZIPIcONz8EuRQtLePbJ7uMPvYQizd6dQdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Toledanes <chris.toledanes@hp.com>,
-	Carl Ng <carl.ng@hp.com>,
-	Max Nguyen <maxwell.nguyen@hp.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 210/396] Input: xpad - add additional HyperX Controller Identifiers
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 6.7 272/432] mei: me: add arrow lake point H DID
 Date: Mon,  1 Apr 2024 17:44:19 +0200
-Message-ID: <20240401152554.189429695@linuxfoundation.org>
+Message-ID: <20240401152601.288907822@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Nguyen <maxwell.nguyen@hp.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit dd50f771af20fb02b1aecde04fbd085c872a9139 upstream.
+commit 8436f25802ec028ac7254990893f3e01926d9b79 upstream.
 
-Add additional HyperX device identifiers to xpad_device and xpad_table.
+Add Arrow Lake H device id.
 
-Suggested-by: Chris Toledanes<chris.toledanes@hp.com>
-Reviewed-by: Carl Ng <carl.ng@hp.com>
-Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/44ad5ffa-76d8-4046-94ee-2ef171930ed2@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240211103912.117105-2-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -130,7 +130,12 @@ static const struct xpad_device {
- 	{ 0x0079, 0x18d4, "GPD Win 2 X-Box Controller", 0, XTYPE_XBOX360 },
- 	{ 0x03eb, 0xff01, "Wooting One (Legacy)", 0, XTYPE_XBOX360 },
- 	{ 0x03eb, 0xff02, "Wooting Two (Legacy)", 0, XTYPE_XBOX360 },
-+	{ 0x03f0, 0x038D, "HyperX Clutch", 0, XTYPE_XBOX360 },			/* wired */
-+	{ 0x03f0, 0x048D, "HyperX Clutch", 0, XTYPE_XBOX360 },			/* wireless */
- 	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
-+	{ 0x03f0, 0x07A0, "HyperX Clutch Gladiate RGB", 0, XTYPE_XBOXONE },
-+	{ 0x03f0, 0x08B6, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },		/* v2 */
-+	{ 0x03f0, 0x09B4, "HyperX Clutch Tanto", 0, XTYPE_XBOXONE },
- 	{ 0x044f, 0x0f00, "Thrustmaster Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f03, "Thrustmaster Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
-@@ -463,6 +468,7 @@ static const struct usb_device_id xpad_t
- 	{ USB_INTERFACE_INFO('X', 'B', 0) },	/* Xbox USB-IF not-approved class */
- 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 controller */
- 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
-+	XPAD_XBOX360_VENDOR(0x03f0),		/* HP HyperX Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One controllers */
- 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster Xbox 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft Xbox 360 controllers */
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -113,6 +113,7 @@
+ 
+ #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
+ #define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
++#define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
+ 
+ /*
+  * MEI HW Section
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -120,6 +120,7 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
++	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
+ 	{0, }
 
 
 
