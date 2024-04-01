@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EF9894392
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E77894089
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 827FD1F25759
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 990E41F2215D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD33481B8;
-	Mon,  1 Apr 2024 17:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AC763E;
+	Mon,  1 Apr 2024 16:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sin0NZiC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLIeycVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C851DFF4;
-	Mon,  1 Apr 2024 17:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2BF1E525;
+	Mon,  1 Apr 2024 16:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991122; cv=none; b=hxY5MVRfttZ/3XOArAcReO8CCeOnZ7SX85nw4/fWbfYonb/saBVrMnQfIfXmDozJK3V0cnzO4ZoX0NYyl9irP4gkX096q8cT/hu8a0m2MTicqmjC1TjNb/5q+2bh7eclG8Ww8aQVGVMlFzxAadVMFEaxm1KV7EPJOqHdHMyWemQ=
+	t=1711989072; cv=none; b=FHIdwOSrAcDtZx2dBAh8nYbBPTcQ097/WEoeQMdgcvHA/6w74aP9sGlgnXENGLDQjFnwd/2QySbFAxSxxr+luUXrUmAMo7GovVOYo1gUwIE/le8dEGgXY7LcPUGoXS7kExdcBxWA8P4WJVHon9cDDZpZKfK001p0+mL8VTpg1lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991122; c=relaxed/simple;
-	bh=BP9KJXDw4u5ptyy2JLxnevmwr7X8xdbTeyFWkDEWcdQ=;
+	s=arc-20240116; t=1711989072; c=relaxed/simple;
+	bh=Q8Lqu7uDOnLQi80Zwv9txkjsZd7cGfwg5OoSdai8FfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+8FE8gK8FszsK4qyOy+pyJPlzoNhelss/V5rSjL4hReR9boe2UNVcEEK9vMYkgXQLlpwkX6J8vnpFt7/xPPmzYDj0s1B5ykgK/8hSAdjklAVHi6C/AGtE6Du71omYiCk8Oftw8K7LK07eENJe2RfS6NuQUcKrR/r0r3seRDlN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sin0NZiC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F01C433C7;
-	Mon,  1 Apr 2024 17:05:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wi2X0Vzf3lW5LdypynCuMLBBLpetlpYFfrsme4qtB+NyQnORaOoQqF6vGeBmgWJew+9F9GuzypPQxP3nAQUzBJaISDKhuEwkcfB0lmBRbypvvl331rYVBtcCA8JL+oSxRixL5EffDRPWSga1jsPn4NLM9xeQoqayIZ+F2VWQk5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLIeycVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E620AC433C7;
+	Mon,  1 Apr 2024 16:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991122;
-	bh=BP9KJXDw4u5ptyy2JLxnevmwr7X8xdbTeyFWkDEWcdQ=;
+	s=korg; t=1711989072;
+	bh=Q8Lqu7uDOnLQi80Zwv9txkjsZd7cGfwg5OoSdai8FfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sin0NZiC5kw8ehGYzg++2XqR7pF4bO3fyVOmqtYhx6KrCFvXJSvesn7LeWWvTXcxe
-	 krqpnHWsL55qhyOfMYk3rqfEs8YwrQ1yNyqCURIzp4InVBfpxMerVw6jvSFPJOESg3
-	 3WIRsahQM1Hydh+kpoNiw2VBvlDoq0QcnAdLoJGA=
+	b=LLIeycVY/kluK6eXfli8JWy1zml/+l/+Vd2phMKGsGb3NdyhYOcGXhZ+NV19bsygm
+	 Jl74LXH9jV7DYmgn7eeY+8c15VB3fNn4D6lzgq55bVIpZdFsOK4zgp5mAf6Ct9Wjpg
+	 IxPWLinqJL2521T3PIKMjNCMOKaGCztBUsOWFjGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Sumit Garg <sumit.garg@linaro.org>,
-	Jens Wiklander <jens.wiklander@linaro.org>
-Subject: [PATCH 6.1 169/272] tee: optee: Fix kernel panic caused by incorrect error handling
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Animesh Manna <animesh.manna@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.7 372/432] drm/i915/vrr: Generate VRR "safe window" for DSB
 Date: Mon,  1 Apr 2024 17:45:59 +0200
-Message-ID: <20240401152536.028715306@linuxfoundation.org>
+Message-ID: <20240401152604.378221562@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Garg <sumit.garg@linaro.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 95915ba4b987cf2b222b0f251280228a1ff977ac upstream.
+commit f7d3b9277ff7eb8e84e6f8554d1c2dd78278a572 upstream.
 
-The error path while failing to register devices on the TEE bus has a
-bug leading to kernel panic as follows:
+Looks like TRANS_CHICKEN bit 31 means something totally different
+depending on the platform:
+TGL: generate VRR "safe window" for DSB
+ADL/DG2: make TRANS_SET_CONTEXT_LATENCY effective with VRR
 
-[   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
-[   15.406913] Mem abort info:
-[   15.409722]   ESR = 0x0000000096000005
-[   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   15.418814]   SET = 0, FnV = 0
-[   15.421878]   EA = 0, S1PTW = 0
-[   15.425031]   FSC = 0x05: level 1 translation fault
-[   15.429922] Data abort info:
-[   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
-[   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
-[   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+So far we've only set this on ADL/DG2, but when using DSB+VRR
+we also need to set it on TGL.
 
-Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
-lead to the introduction of this bug. So fix it appropriately.
+And a quick test on MTL says it doesn't need this bit for either
+of those purposes, even though it's still documented as valid
+in bspec.
 
-Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
-Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Fixes: 34d8311f4a1c ("drm/i915/dsb: Re-instate DSB for LUT updates")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9927
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240306040806.21697-2-ville.syrjala@linux.intel.com
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+(cherry picked from commit 810e4519a1b34b5a0ff0eab32e5b184f533c5ee9)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tee/optee/device.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_vrr.c |    7 ++++---
+ drivers/gpu/drm/i915/i915_reg.h          |    2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/tee/optee/device.c
-+++ b/drivers/tee/optee/device.c
-@@ -90,13 +90,14 @@ static int optee_register_device(const u
- 	if (rc) {
- 		pr_err("device registration failed, err: %d\n", rc);
- 		put_device(&optee_device->dev);
-+		return rc;
- 	}
+--- a/drivers/gpu/drm/i915/display/intel_vrr.c
++++ b/drivers/gpu/drm/i915/display/intel_vrr.c
+@@ -187,10 +187,11 @@ void intel_vrr_set_transcoder_timings(co
+ 	enum transcoder cpu_transcoder = crtc_state->cpu_transcoder;
  
- 	if (func == PTA_CMD_GET_DEVICES_SUPP)
- 		device_create_file(&optee_device->dev,
- 				   &dev_attr_need_supplicant);
+ 	/*
+-	 * TRANS_SET_CONTEXT_LATENCY with VRR enabled
+-	 * requires this chicken bit on ADL/DG2.
++	 * This bit seems to have two meanings depending on the platform:
++	 * TGL: generate VRR "safe window" for DSB vblank waits
++	 * ADL/DG2: make TRANS_SET_CONTEXT_LATENCY effective with VRR
+ 	 */
+-	if (DISPLAY_VER(dev_priv) == 13)
++	if (IS_DISPLAY_VER(dev_priv, 12, 13))
+ 		intel_de_rmw(dev_priv, CHICKEN_TRANS(cpu_transcoder),
+ 			     0, PIPE_VBLANK_WITH_DELAY);
  
--	return rc;
-+	return 0;
- }
- 
- static int __optee_enumerate_devices(u32 func)
+--- a/drivers/gpu/drm/i915/i915_reg.h
++++ b/drivers/gpu/drm/i915/i915_reg.h
+@@ -4599,7 +4599,7 @@
+ #define MTL_CHICKEN_TRANS(trans)	_MMIO_TRANS((trans), \
+ 						    _MTL_CHICKEN_TRANS_A, \
+ 						    _MTL_CHICKEN_TRANS_B)
+-#define   PIPE_VBLANK_WITH_DELAY	REG_BIT(31) /* ADL/DG2 */
++#define   PIPE_VBLANK_WITH_DELAY	REG_BIT(31) /* tgl+ */
+ #define   SKL_UNMASK_VBL_TO_PIPE_IN_SRD	REG_BIT(30) /* skl+ */
+ #define   HSW_FRAME_START_DELAY_MASK	REG_GENMASK(28, 27)
+ #define   HSW_FRAME_START_DELAY(x)	REG_FIELD_PREP(HSW_FRAME_START_DELAY_MASK, x)
 
 
 
