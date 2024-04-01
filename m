@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADF089413B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD90893F7B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9BBC282917
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F3291C216B3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A0F3F8F4;
-	Mon,  1 Apr 2024 16:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FF4446D5;
+	Mon,  1 Apr 2024 16:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9X3TEhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LssEPClF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC96F1E86C;
-	Mon,  1 Apr 2024 16:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147024778C;
+	Mon,  1 Apr 2024 16:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989568; cv=none; b=eP8xZ5jsPRIYjcizyKGIwJ2t/7d4n23TT+B1aVa34ZmDSMUC5BTqBYuzc6LBeUsVlPCtd1G/JBbWwCqBmWk/R0fvTQ3zZXc7yNFRshe1kmswLeda3A/12rRNivVhyASRCgnd+05WPD3ggCWbEUX4u2Q22ymOgR4JEjZdjv59aV0=
+	t=1711988227; cv=none; b=RLmIAvuPKI7NApeI8QXc/bIapp+rhQ/Q9GWu6enAk0qm5osps89e8DBvux/fTER16pQGhFrNzTf5nAcAzKW9uEpnvk+zOj11pbfxth6in43m9aOnMuW3ZsRKJGjQ2A4woDmwsmSvqas7xPESf73hL3W4UN9d/PcSlm90KztPj6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989568; c=relaxed/simple;
-	bh=a2IWhpeFWE9CyRWHmfTVoxQUd5c0NFo+VNB0TBm7VUs=;
+	s=arc-20240116; t=1711988227; c=relaxed/simple;
+	bh=R95RaNIk/nee8tsGAu99nYEZ1FORbFJlrFa4lISYUug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTOCO3c/ti2JGv9sA+ahvgHy8RoK28N5tqNcWRR4e/aRZ2DtwauIrPtJMdIlsIN8idLVFmrz3VPaK1c1TzKN7qRnMBA09o+/KD6rUrIt6MngnjVLhcEo6YIcQ78H65EZ1o2aBJ4sA1k/a9BOIklD9/WGDUuB7fH39lY+l+Jad6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9X3TEhu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C291C43390;
-	Mon,  1 Apr 2024 16:39:27 +0000 (UTC)
+	 MIME-Version; b=Im03GMDPyoEo/bZ4Q4T9cCqfyomVXnvn2doeYRhI067AeA442ytc+Dwdn4vdD1EuATXhn7sKy6QN73p9j8IsoGwLdV3OM6jVyEUkAM+xGHCX5C6Jp/z2eOfVGWdeR7h/F3wpnUB2MtVUT34loszUnlJnLbkngNnIJuCIeAqgRSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LssEPClF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8DCC433F1;
+	Mon,  1 Apr 2024 16:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989567;
-	bh=a2IWhpeFWE9CyRWHmfTVoxQUd5c0NFo+VNB0TBm7VUs=;
+	s=korg; t=1711988227;
+	bh=R95RaNIk/nee8tsGAu99nYEZ1FORbFJlrFa4lISYUug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9X3TEhuJFfWs37Lve3+39zkPCOl8h0BvvsfgsEHg5Brg74GbyakswibpJW8XtMce
-	 8HV9azAUtoPIFrfMCQd89257RSSum1P/yBBRlKx+Xz/kmkiMJPvEgItmz8sNsLpTTt
-	 yj9Tru8pMqsozdJEgSWa1SWb7cjELPG/Xi4efIZc=
+	b=LssEPClFnh9kTFCruZRNB+AtP7QbbQfsJvCSSmF6aqWevszP/w+nZcK1sHujaaj4l
+	 MnUDZg5t5VJ05jsGZ0V4YTX3/z7ECW8d6SPzDmhQtn+pCFNrmxLLN2zVvMb06KSVSu
+	 f+WFkql7BFFNgcQFa32awMYuXxoCmINw7SgQ3jVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Srivathsa Dara <srivathsa.d.dara@oracle.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/396] md/raid5: fix atomicity violation in raid5_cache_count
+Subject: [PATCH 6.7 121/432] ext4: fix corruption during on-line resize
 Date: Mon,  1 Apr 2024 17:41:48 +0200
-Message-ID: <20240401152549.684163679@linuxfoundation.org>
+Message-ID: <20240401152556.731814530@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-[ Upstream commit dfd2bf436709b2bccb78c2dda550dde93700efa7 ]
+[ Upstream commit a6b3bfe176e8a5b05ec4447404e412c2a3fc92cc ]
 
-In raid5_cache_count():
-    if (conf->max_nr_stripes < conf->min_nr_stripes)
-        return 0;
-    return conf->max_nr_stripes - conf->min_nr_stripes;
-The current check is ineffective, as the values could change immediately
-after being checked.
+We observed a corruption during on-line resize of a file system that is
+larger than 16 TiB with 4k block size. With having more then 2^32 blocks
+resize_inode is turned off by default by mke2fs. The issue can be
+reproduced on a smaller file system for convenience by explicitly
+turning off resize_inode. An on-line resize across an 8 GiB boundary (the
+size of a meta block group in this setup) then leads to a corruption:
 
-In raid5_set_cache_size():
-    ...
-    conf->min_nr_stripes = size;
-    ...
-    while (size > conf->max_nr_stripes)
-        conf->min_nr_stripes = conf->max_nr_stripes;
-    ...
+  dev=/dev/<some_dev> # should be >= 16 GiB
+  mkdir -p /corruption
+  /sbin/mke2fs -t ext4 -b 4096 -O ^resize_inode $dev $((2 * 2**21 - 2**15))
+  mount -t ext4 $dev /corruption
 
-Due to intermediate value updates in raid5_set_cache_size(), concurrent
-execution of raid5_cache_count() and raid5_set_cache_size() may lead to
-inconsistent reads of conf->max_nr_stripes and conf->min_nr_stripes.
-The current checks are ineffective as values could change immediately
-after being checked, raising the risk of conf->min_nr_stripes exceeding
-conf->max_nr_stripes and potentially causing an integer overflow.
+  dd if=/dev/zero bs=4096 of=/corruption/test count=$((2*2**21 - 4*2**15))
+  sha1sum /corruption/test
+  # 79d2658b39dcfd77274e435b0934028adafaab11  /corruption/test
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including data races and atomicity violations. The above possible bug is
-reported when our tool analyzes the source code of Linux 6.2.
+  /sbin/resize2fs $dev $((2*2**21))
+  # drop page cache to force reload the block from disk
+  echo 1 > /proc/sys/vm/drop_caches
 
-To resolve this issue, it is suggested to introduce local variables
-'min_stripes' and 'max_stripes' in raid5_cache_count() to ensure the
-values remain stable throughout the check. Adding locks in
-raid5_cache_count() fails to resolve atomicity violations, as
-raid5_set_cache_size() may hold intermediate values of
-conf->min_nr_stripes while unlocked. With this patch applied, our tool no
-longer reports the bug, with the kernel configuration allyesconfig for
-x86_64. Due to the lack of associated hardware, we cannot test the patch
-in runtime testing, and just verify it according to the code logic.
+  sha1sum /corruption/test
+  # 3c2abc63cbf1a94c9e6977e0fbd72cd832c4d5c3  /corruption/test
 
-Fixes: edbe83ab4c27 ("md/raid5: allow the stripe_cache to grow and shrink.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240112071017.16313-1-2045gemini@gmail.com
-Signed-off-by: Song Liu <song@kernel.org>
+2^21 = 2^15*2^6 equals 8 GiB whereof 2^15 is the number of blocks per
+block group and 2^6 are the number of block groups that make a meta
+block group.
+
+The last checksum might be different depending on how the file is laid
+out across the physical blocks. The actual corruption occurs at physical
+block 63*2^15 = 2064384 which would be the location of the backup of the
+meta block group's block descriptor. During the on-line resize the file
+system will be converted to meta_bg starting at s_first_meta_bg which is
+2 in the example - meaning all block groups after 16 GiB. However, in
+ext4_flex_group_add we might add block groups that are not part of the
+first meta block group yet. In the reproducer we achieved this by
+substracting the size of a whole block group from the point where the
+meta block group would start. This must be considered when updating the
+backup block group descriptors to follow the non-meta_bg layout. The fix
+is to add a test whether the group to add is already part of the meta
+block group or not.
+
+Fixes: 01f795f9e0d67 ("ext4: add online resizing support for meta_bg and 64-bit file systems")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Tested-by: Srivathsa Dara <srivathsa.d.dara@oracle.com>
+Reviewed-by: Srivathsa Dara <srivathsa.d.dara@oracle.com>
+Link: https://lore.kernel.org/r/20240215155009.94493-1-mheyne@amazon.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/ext4/resize.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 68d86dbecb4ac..212bf85edad03 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -2420,7 +2420,7 @@ static int grow_one_stripe(struct r5conf *conf, gfp_t gfp)
- 	atomic_inc(&conf->active_stripes);
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index e168a9f596001..9a39596d2ac4d 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -1592,7 +1592,8 @@ static int ext4_flex_group_add(struct super_block *sb,
+ 		int gdb_num = group / EXT4_DESC_PER_BLOCK(sb);
+ 		int gdb_num_end = ((group + flex_gd->count - 1) /
+ 				   EXT4_DESC_PER_BLOCK(sb));
+-		int meta_bg = ext4_has_feature_meta_bg(sb);
++		int meta_bg = ext4_has_feature_meta_bg(sb) &&
++			      gdb_num >= le32_to_cpu(es->s_first_meta_bg);
+ 		sector_t padding_blocks = meta_bg ? 0 : sbi->s_sbh->b_blocknr -
+ 					 ext4_group_first_block_no(sb, 0);
  
- 	raid5_release_stripe(sh);
--	conf->max_nr_stripes++;
-+	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes + 1);
- 	return 1;
- }
- 
-@@ -2717,7 +2717,7 @@ static int drop_one_stripe(struct r5conf *conf)
- 	shrink_buffers(sh);
- 	free_stripe(conf->slab_cache, sh);
- 	atomic_dec(&conf->active_stripes);
--	conf->max_nr_stripes--;
-+	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes - 1);
- 	return 1;
- }
- 
-@@ -6901,7 +6901,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
- 	if (size <= 16 || size > 32768)
- 		return -EINVAL;
- 
--	conf->min_nr_stripes = size;
-+	WRITE_ONCE(conf->min_nr_stripes, size);
- 	mutex_lock(&conf->cache_size_mutex);
- 	while (size < conf->max_nr_stripes &&
- 	       drop_one_stripe(conf))
-@@ -6913,7 +6913,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
- 	mutex_lock(&conf->cache_size_mutex);
- 	while (size > conf->max_nr_stripes)
- 		if (!grow_one_stripe(conf, GFP_KERNEL)) {
--			conf->min_nr_stripes = conf->max_nr_stripes;
-+			WRITE_ONCE(conf->min_nr_stripes, conf->max_nr_stripes);
- 			result = -ENOMEM;
- 			break;
- 		}
-@@ -7478,11 +7478,13 @@ static unsigned long raid5_cache_count(struct shrinker *shrink,
- 				       struct shrink_control *sc)
- {
- 	struct r5conf *conf = container_of(shrink, struct r5conf, shrinker);
-+	int max_stripes = READ_ONCE(conf->max_nr_stripes);
-+	int min_stripes = READ_ONCE(conf->min_nr_stripes);
- 
--	if (conf->max_nr_stripes < conf->min_nr_stripes)
-+	if (max_stripes < min_stripes)
- 		/* unlikely, but not impossible */
- 		return 0;
--	return conf->max_nr_stripes - conf->min_nr_stripes;
-+	return max_stripes - min_stripes;
- }
- 
- static struct r5conf *setup_conf(struct mddev *mddev)
 -- 
 2.43.0
 
