@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-35336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EB9894380
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E8E894070
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8CB61C21DF1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BECDAB20A7B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85FE482CA;
-	Mon,  1 Apr 2024 17:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D5F249E4;
+	Mon,  1 Apr 2024 16:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozaX24GN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaPitLHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9374838DE5;
-	Mon,  1 Apr 2024 17:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180A2446AC;
+	Mon,  1 Apr 2024 16:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991062; cv=none; b=Ro6bk6Et1IPlx10rlfeaBv2iFWHZej8UHLt1uisoIBUQ4XE6SXmu7YD3gjpzsSHnzVXTBQy6+TkqknyDGsrD97FlESB60TtyK16Eyk+Ns1E3bgnDnc9ggjXMtFSF+Gf0NPeeNNv/g0PpapaYGVHa7MYZY3VH81h9RLOO9Xz4Dko=
+	t=1711989006; cv=none; b=WOrBvt3KzxmRvzeC84a1uXbsUfd11cs6VD2rpQYg5bd/CsZob8gENaDNAC+2VA7XZzFPKFvcPe/o8Z+yabdiP7QQW8vZP1nY5EF/qHEUXat2IpS/Y8v22DSfJ4AQWZdeBoFX/ov7TdPserCVvS1Qv6qXLD2+jzS1NUnVjyNZsC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991062; c=relaxed/simple;
-	bh=uJhhnljXq4/QXKMT702IiXrVDJItCRbUnMDxB8GVPAE=;
+	s=arc-20240116; t=1711989006; c=relaxed/simple;
+	bh=B7TLWi2khtmsYvndfiI6hwKFNcTDLkChNRnP2xR+MKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFN3wOw9E/xiXUp7Xj9yqAdwJEZUIJlnPhmWBunHwHPRPj3elUfVv4QRsWjqnZhkaFbSpe1wTvjUH2rnfadLiPArlYu3gvp3EIa8kyMSsw6lkHqFw2KRiDknAFItmChV1+pN5vGZEiCFotioo+rmQIPQXg4IRCM+5AA6zdI9s3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozaX24GN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DD2C433C7;
-	Mon,  1 Apr 2024 17:04:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GdiyU9PQPIKNVk/3myKYUSXLpJ3jAmBDkdwbnd0WD+zhKqS8knGPeuVvoM3j9EprqKg2izvSFjN84Pc2l4lw+FcucUQf0CmGT4FhwGuCuviI+sd6nBBdUzcF1eBfJIGi+pYd9ZW/gCgXBDbxFTzD4t1NMiyPDqFgo2kqEwTBiWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaPitLHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDFFC433C7;
+	Mon,  1 Apr 2024 16:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991062;
-	bh=uJhhnljXq4/QXKMT702IiXrVDJItCRbUnMDxB8GVPAE=;
+	s=korg; t=1711989006;
+	bh=B7TLWi2khtmsYvndfiI6hwKFNcTDLkChNRnP2xR+MKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ozaX24GNZG4AnYE7UniYeZlITpw25K9KFJUD/qYJ+SkclRMRCSbyv9shVwOtIwiuU
-	 MoeU+YazhtXVRDWc1v1mHrZ+DRX6mZ6WmZcEX186txSYiBJJn3DnuhFHv1Mo3m1tER
-	 A/tGZGfTLZFcP4M2MGZ6FpvhmsoAnRBf5M18uG0g=
+	b=iaPitLHthXIBEx1VJ8lNW6wZOkt4XrPhdN3hNnYRvQUDEeaj6D2/tD38k0Yl3raAA
+	 pmy0RJzmbSJXNtRfp5nAJC9PKyXd8cglieEag5xdl4hCLdiOYr6Qh7GAGlJkxM/TaZ
+	 p6IPUvgasCAxdh5Z5X/dXNsWYIOwu3bhdnmSnz8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Sunmin Jeong <s_min.jeong@samsung.com>,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/272] f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+Subject: [PATCH 6.7 325/432] drm/i915: Stop printing pipe name as hex
 Date: Mon,  1 Apr 2024 17:45:12 +0200
-Message-ID: <20240401152534.477460113@linuxfoundation.org>
+Message-ID: <20240401152602.909109092@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunmin Jeong <s_min.jeong@samsung.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 4bf78322346f6320313683dc9464e5423423ad5c ]
+commit 58046e6cf811464b8a6f269dc6a40a8cb91a8a68 upstream.
 
-In f2fs_update_inode, i_size of the atomic file isn't updated until
-FI_ATOMIC_COMMITTED flag is set. When committing atomic write right
-after the writeback of the inode, i_size of the raw inode will not be
-updated. It can cause the atomicity corruption due to a mismatch between
-old file size and new data.
+Print the pipe name in ascii rather than hex.
 
-To prevent the problem, let's mark inode dirty for FI_ATOMIC_COMMITTED
-
-Atomic write thread                   Writeback thread
-                                        __writeback_single_inode
-                                          write_inode
-                                            f2fs_update_inode
-                                              - skip i_size update
-  f2fs_ioc_commit_atomic_write
-    f2fs_commit_atomic_write
-      set_inode_flag(inode, FI_ATOMIC_COMMITTED)
-    f2fs_do_sync_file
-      f2fs_fsync_node_pages
-        - skip f2fs_update_inode since the inode is clean
-
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Cc: stable@vger.kernel.org #v5.19+
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231122093137.1509-3-ville.syrjala@linux.intel.com
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 5ae1c4aa3ae92..b54d681c6457d 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3000,6 +3000,7 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
- 	case FI_INLINE_DOTS:
- 	case FI_PIN_FILE:
- 	case FI_COMPRESS_RELEASED:
-+	case FI_ATOMIC_COMMITTED:
- 		f2fs_mark_inode_dirty_sync(inode, true);
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -4534,7 +4534,7 @@ void intel_shared_dpll_state_verify(stru
+ 				"pll active mismatch (didn't expect pipe %c in active mask (0x%x))\n",
+ 				pipe_name(crtc->pipe), pll->active_mask);
+ 		I915_STATE_WARN(i915, pll->state.pipe_mask & pipe_mask,
+-				"pll enabled crtcs mismatch (found %x in enabled mask (0x%x))\n",
++				"pll enabled crtcs mismatch (found pipe %c in enabled mask (0x%x))\n",
+ 				pipe_name(crtc->pipe), pll->state.pipe_mask);
  	}
  }
--- 
-2.43.0
-
 
 
 
