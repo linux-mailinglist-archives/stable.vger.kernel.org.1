@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-35251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C77589431D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 425F9893E84
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FC3F1C202CD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71E151C210A2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971604AED7;
-	Mon,  1 Apr 2024 16:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1967D47A55;
+	Mon,  1 Apr 2024 16:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPTjtw71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQVPoDOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F5DBA3F;
-	Mon,  1 Apr 2024 16:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D571CA8F;
+	Mon,  1 Apr 2024 16:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990789; cv=none; b=j6BpEmE6k1EzyfS3qV8QQkmLBoDqLX0oYaFp/sCyeBAIwJFy59oDQJ6CxHIWkKOs/rZ9x+3EJ0ndvw2542vTPirUpv8cJbJ0Lu2C4G1JHS+e+gKdSD0YXyXV8HDbT8/Qqui3Ww3uraCyo+aJHqm+HiSd4zuYKljh/m7YqpI3nYI=
+	t=1711987475; cv=none; b=An55ADZ6FyKHEKhY8GFesuaFm4Khhon7VhfoAgveMwAb6hONjAb1/EQE9Hx3mOr9+GtWyODDFuHeujth+uZ9b9opm9kZQFLz8KaK0P6IL1JLNhXZNeZCWvC1aiIWFSKXCBmT7IoeQppU2XXAvShhA6y8j346QC1FGWu7Zb4EW/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990789; c=relaxed/simple;
-	bh=YZDZhhIF07EP+Wx1/vlvEl/lK0mCE27DiiEPjo1gOQk=;
+	s=arc-20240116; t=1711987475; c=relaxed/simple;
+	bh=U+s2uphFi0kJemW4CeNf8ydFofk6mZeDThHiC1hBPys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFekB+REdQfKgXCK+gt85RYm8QvIXySrdCwWv/HDb5gOPtgpTZcdH50c1hWxqjHuRFRXrCZrtBamz3ZNh7vgacN+oMxHsHTqUk8NVpCNszrSnLFGx6yo3YKtgUf45fM8GEqaFtrizz3laSbJbIPbZaY09SXq8VCxkYZEv5gHhDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPTjtw71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6488BC433A6;
-	Mon,  1 Apr 2024 16:59:48 +0000 (UTC)
+	 MIME-Version; b=qZiMOLczOuC5O2DvsmA2+focBcEStLx9u2NE7ZDvrczrlgIbwPaNRNsPjjIDLAfRNmqZs8TylQYCRXYbEyF/vrbziaRM1T34veEhBwpsBiHJOCv5Zfe+kojz4iLuolRHtBBo9p8QlREj97tMcsjAjuBPbB2uE3dvSL1ZXvIWSS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQVPoDOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE933C433C7;
+	Mon,  1 Apr 2024 16:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990788;
-	bh=YZDZhhIF07EP+Wx1/vlvEl/lK0mCE27DiiEPjo1gOQk=;
+	s=korg; t=1711987475;
+	bh=U+s2uphFi0kJemW4CeNf8ydFofk6mZeDThHiC1hBPys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPTjtw71uba9JU3SbKK7B95fLM0IJ7hwUQtNfHsZ/JtVzdGVJ7Ry0RvuE+vOQKnLu
-	 ck1TqeA0ncXVy2vTYxcaHk3IO/dYGCw7BiXqW9BELoXAwhZtfkhCL0rRTbnW+EcceG
-	 6SOrTmIcw/32pPU/+fb5v9+xu3RLmdiB+i2lPsdE=
+	b=dQVPoDOUQxD7Kak/2a6Ix0t4bFjbk0xh+CxX54AUrERTptKA1uSUrELOJNsePCaU2
+	 7PyGkXNOW6rEP3im6PUj8SjwhCzDxhmq/LxWWOgq2KmMo29TXRqsqKs676cVnqekOZ
+	 cU8zlSNCJ4h7WUTyETMdbBxefQJtMrJoBB5GVkuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio SJ Musumeci <trapexit@spawn.link>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/272] fuse: fix root lookup with nonzero generation
+	Zev Weiss <zev@bewilderbeest.net>,
+	Borislav Petkov <bp@alien8.de>,
+	David Hildenbrand <david@redhat.com>,
+	Florent Revest <revest@chromium.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Kees Cook <keescook@chromium.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Sam James <sam@gentoo.org>,
+	Stefan Roesch <shr@devkernel.io>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yin Fengwei <fengwei.yin@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.8 291/399] prctl: generalize PR_SET_MDWE support check to be per-arch
 Date: Mon,  1 Apr 2024 17:44:17 +0200
-Message-ID: <20240401152532.647589578@linuxfoundation.org>
+Message-ID: <20240401152557.871502028@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +78,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Zev Weiss <zev@bewilderbeest.net>
 
-[ Upstream commit 68ca1b49e430f6534d0774a94147a823e3b8b26e ]
+commit d5aad4c2ca057e760a92a9a7d65bd38d72963f27 upstream.
 
-The root inode has a fixed nodeid and generation (1, 0).
+Patch series "ARM: prctl: Reject PR_SET_MDWE where not supported".
 
-Prior to the commit 15db16837a35 ("fuse: fix illegal access to inode with
-reused nodeid") generation number on lookup was ignored.  After this commit
-lookup with the wrong generation number resulted in the inode being
-unhashed.  This is correct for non-root inodes, but replacing the root
-inode is wrong and results in weird behavior.
+I noticed after a recent kernel update that my ARM926 system started
+segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After some
+investigation it appears that ARMv5 is incapable of providing the
+appropriate protections for MDWE, since any readable memory is also
+implicitly executable.
 
-Fix by reverting to the old behavior if ignoring the generation for the
-root inode, but issuing a warning in dmesg.
+The prctl_set_mdwe() function already had some special-case logic added
+disabling it on PARISC (commit 793838138c15, "prctl: Disable
+prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
+check to use an arch_*() function, and (2) adds a corresponding override
+for ARM to disable MDWE on pre-ARMv6 CPUs.
 
-Reported-by: Antonio SJ Musumeci <trapexit@spawn.link>
-Closes: https://lore.kernel.org/all/CAOQ4uxhek5ytdN8Yz2tNEOg5ea4NkBb4nk0FGPjPk_9nz-VG3g@mail.gmail.com/
-Fixes: 15db16837a35 ("fuse: fix illegal access to inode with reused nodeid")
-Cc: <stable@vger.kernel.org> # v5.14
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
+subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
+succeed instead of unconditionally failing; on ARMv6 the prctl works as it
+did previously.
+
+[0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
+
+
+This patch (of 2):
+
+There exist systems other than PARISC where MDWE may not be feasible to
+support; rather than cluttering up the generic code with additional
+arch-specific logic let's add a generic function for checking MDWE support
+and allow each arch to override it as needed.
+
+Link: https://lkml.kernel.org/r/20240227013546.15769-4-zev@bewilderbeest.net
+Link: https://lkml.kernel.org/r/20240227013546.15769-5-zev@bewilderbeest.net
+Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
+Acked-by: Helge Deller <deller@gmx.de>	[parisc]
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Florent Revest <revest@chromium.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: Sam James <sam@gentoo.org>
+Cc: Stefan Roesch <shr@devkernel.io>
+Cc: Yang Shi <yang@os.amperecomputing.com>
+Cc: Yin Fengwei <fengwei.yin@intel.com>
+Cc: <stable@vger.kernel.org>	[6.3+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dir.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/parisc/include/asm/mman.h |   14 ++++++++++++++
+ include/linux/mman.h           |    8 ++++++++
+ kernel/sys.c                   |    7 +++++--
+ 3 files changed, 27 insertions(+), 2 deletions(-)
+ create mode 100644 arch/parisc/include/asm/mman.h
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index 5e408e7ec4c6b..936a24b646cef 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -399,6 +399,10 @@ int fuse_lookup_name(struct super_block *sb, u64 nodeid, const struct qstr *name
- 		goto out_put_forget;
- 	if (fuse_invalid_attr(&outarg->attr))
- 		goto out_put_forget;
-+	if (outarg->nodeid == FUSE_ROOT_ID && outarg->generation != 0) {
-+		pr_warn_once("root generation should be zero\n");
-+		outarg->generation = 0;
-+	}
+--- /dev/null
++++ b/arch/parisc/include/asm/mman.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_MMAN_H__
++#define __ASM_MMAN_H__
++
++#include <uapi/asm/mman.h>
++
++/* PARISC cannot allow mdwe as it needs writable stacks */
++static inline bool arch_memory_deny_write_exec_supported(void)
++{
++	return false;
++}
++#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
++
++#endif /* __ASM_MMAN_H__ */
+--- a/include/linux/mman.h
++++ b/include/linux/mman.h
+@@ -162,6 +162,14 @@ calc_vm_flag_bits(unsigned long flags)
  
- 	*inode = fuse_iget(sb, outarg->nodeid, outarg->generation,
- 			   &outarg->attr, entry_attr_timeout(outarg),
--- 
-2.43.0
-
+ unsigned long vm_commit_limit(void);
+ 
++#ifndef arch_memory_deny_write_exec_supported
++static inline bool arch_memory_deny_write_exec_supported(void)
++{
++	return true;
++}
++#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
++#endif
++
+ /*
+  * Denies creating a writable executable mapping or gaining executable permissions.
+  *
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2408,8 +2408,11 @@ static inline int prctl_set_mdwe(unsigne
+ 	if (bits & PR_MDWE_NO_INHERIT && !(bits & PR_MDWE_REFUSE_EXEC_GAIN))
+ 		return -EINVAL;
+ 
+-	/* PARISC cannot allow mdwe as it needs writable stacks */
+-	if (IS_ENABLED(CONFIG_PARISC))
++	/*
++	 * EOPNOTSUPP might be more appropriate here in principle, but
++	 * existing userspace depends on EINVAL specifically.
++	 */
++	if (!arch_memory_deny_write_exec_supported())
+ 		return -EINVAL;
+ 
+ 	current_bits = get_current_mdwe();
 
 
 
