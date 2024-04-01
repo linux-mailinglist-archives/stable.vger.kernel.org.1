@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-34912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6E3894169
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C149893FCF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4732282F32
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2BF1F21FCD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBD0481DA;
-	Mon,  1 Apr 2024 16:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B887F481AA;
+	Mon,  1 Apr 2024 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq8bswya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bd+9UpsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB86481B7;
-	Mon,  1 Apr 2024 16:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588AD47A76;
+	Mon,  1 Apr 2024 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989716; cv=none; b=LevXx3xyGxodFsDmEC6yJBEqYvAu/SVNdJiNYrqvPBGoeUmxLQAlXEOmjJFjYxEoZL+SbzvWYPhTp/2wCN0GdhEun9kRlIrucv8GDxH1yy9Kct5ZysEC2GE5pj5lWxU9XxfmnsqFUzvzIi9NhVULBcPSlrWnpClRVfm2Qc5RM7Y=
+	t=1711988496; cv=none; b=PjUO+U/WOeeoyc1QIHTraVIP1vauEr7J138hv8aR5D2LTEVIQ2xn3fkgb9KMKiqihXJx0TtnWcfsuBlJqbvB0AYk/ZXEx+v6Z53xoodJKtobjrNcsR89+9kgQ96lDJdDiqUg3loM24UlrB4LXmrehUFJj79h8iagxVHc9GOM+g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989716; c=relaxed/simple;
-	bh=gmvA5YRKZwWBsp2W54epJe7qlY8rU3tAsI5H9nEDzN0=;
+	s=arc-20240116; t=1711988496; c=relaxed/simple;
+	bh=HEyIfRTZLT2uwFYgwP3RPYqF5mw+l9VSZ9bfz87NXD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmzQeFccRI3p1kSHE2Etmq1HRAZ719OEBLgLn84Z+deCV/FuB8zf1znxL62ZfkO/nunRigXhIXH/NW1IonCQ4NGz5pHKuJhCdx2vIRIgjHfVgY5Mpg2uhn8Rm+PaI2nvz/FUAjIJhRJJz1YNHr3gXaWWiZi43UzoJnUX8ur0fp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq8bswya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CBBC433C7;
-	Mon,  1 Apr 2024 16:41:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kGtzgcs8deHzuNgxoQ6tP0GxKHrztONw6DqM72HmY+ivpp6Ga4wJCN9Ma/fHfq56n29R29gGxZM4dr1Q6YvAo1a44Rq/UMdcz493ls8wh/XKxnY6bJs7uvp7LY5MICsZnsGHiVE2ftcUP3A8vZ8mrl46Oy+sAWXMGah6u+wY02g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bd+9UpsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A25C433F1;
+	Mon,  1 Apr 2024 16:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989715;
-	bh=gmvA5YRKZwWBsp2W54epJe7qlY8rU3tAsI5H9nEDzN0=;
+	s=korg; t=1711988496;
+	bh=HEyIfRTZLT2uwFYgwP3RPYqF5mw+l9VSZ9bfz87NXD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rq8bswyaAn03u3pA/gifhHhgsuM2nXeecU9eZk8mrt97a64cDS80xP4MCoeAsI56F
-	 0x6d9K/L6oSp8iUNnbu/B7vXCmkERFsG993Bq40SS6f+d1xgkZ2cBBIGieimJmXeGS
-	 iNlaSqWq1Re9Cgohh/EoblKjYPbnHh2lQfH17phs=
+	b=bd+9UpsJnCNoEFRh6Tbz0mBbrHw6aweK37WPjyNP8Dkyus77Uj1eqZS0PRhGQCAXh
+	 0ezw/IfOg5lkevPHtYp0GvnhXQnlKVRQW6YH6aqtU3F3iO6BVustkiHbbONRbc9N/H
+	 Lq3wHhiUt3OQHGHk+ieHxmVxcDG9SyeSHMDv+j9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	netdev <netdev@vger.kernel.org>,
+	Yisen Zhuang <yisen.zhuang@huawei.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Yufeng Mo <moyufeng@huawei.com>,
+	Huazhong Tan <tanhuazhong@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/396] ksmbd: replace generic_fillattr with vfs_getattr
+Subject: [PATCH 6.7 194/432] net: hns3: tracing: fix hclgevf trace event strings
 Date: Mon,  1 Apr 2024 17:43:01 +0200
-Message-ID: <20240401152551.852048748@linuxfoundation.org>
+Message-ID: <20240401152558.923743590@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,483 +69,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 5614c8c487f6af627614dd2efca038e4afe0c6d7 ]
+[ Upstream commit 3f9952e8d80cca2da3b47ecd5ad9ec16cfd1a649 ]
 
-generic_fillattr should not be used outside of ->getattr
-implementations.
+The __string() and __assign_str() helper macros of the TRACE_EVENT() macro
+are going through some optimizations where only the source string of
+__string() will be used and the __assign_str() source will be ignored and
+later removed.
 
-Use vfs_getattr instead, and adapt functions to return an
-error code to the caller.
+To make sure that there's no issues, a new check is added between the
+__string() src argument and the __assign_str() src argument that does a
+strcmp() to make sure they are the same string.
 
+The hclgevf trace events have:
+
+  __assign_str(devname, &hdev->nic.kinfo.netdev->name);
+
+Which triggers the warning:
+
+hclgevf_trace.h:34:39: error: passing argument 1 of ‘strcmp’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+   34 |                 __assign_str(devname, &hdev->nic.kinfo.netdev->name);
+ [..]
+arch/x86/include/asm/string_64.h:75:24: note: expected ‘const char *’ but argument is of type ‘char (*)[16]’
+   75 | int strcmp(const char *cs, const char *ct);
+      |            ~~~~~~~~~~~~^~
+
+Because __assign_str() now has:
+
+	WARN_ON_ONCE(__builtin_constant_p(src) ?		\
+		     strcmp((src), __data_offsets.dst##_ptr_) :	\
+		     (src) != __data_offsets.dst##_ptr_);	\
+
+The problem is the '&' on hdev->nic.kinfo.netdev->name. That's because
+that name is:
+
+	char			name[IFNAMSIZ]
+
+Where passing an address '&' of a char array is not compatible with strcmp().
+
+The '&' is not necessary, remove it.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240313093454.3909afe7@gandalf.local.home
+
+Cc: netdev <netdev@vger.kernel.org>
+Cc: Yisen Zhuang <yisen.zhuang@huawei.com>
+Cc: Salil Mehta <salil.mehta@huawei.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Yufeng Mo <moyufeng@huawei.com>
+Cc: Huazhong Tan <tanhuazhong@huawei.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Fixes: d8355240cf8fb ("net: hns3: add trace event support for PF/VF mailbox")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c    | 170 ++++++++++++++++++++++++-------------
- fs/smb/server/smb_common.c |  11 ++-
- fs/smb/server/vfs.c        |  12 ++-
- 3 files changed, 127 insertions(+), 66 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h  | 8 ++++----
+ .../net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h    | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 0c97d3c860726..f6cc5d2730ffb 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3828,11 +3828,16 @@ static int process_query_dir_entries(struct smb2_query_dir_private *priv)
- 		}
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
+index 8510b88d49820..f3cd5a376eca9 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
+@@ -24,7 +24,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
+ 		__field(u8, code)
+ 		__field(u8, subcode)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
++		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, PF_GET_MBX_LEN)
+ 	),
  
- 		ksmbd_kstat.kstat = &kstat;
--		if (priv->info_level != FILE_NAMES_INFORMATION)
--			ksmbd_vfs_fill_dentry_attrs(priv->work,
--						    idmap,
--						    dent,
--						    &ksmbd_kstat);
-+		if (priv->info_level != FILE_NAMES_INFORMATION) {
-+			rc = ksmbd_vfs_fill_dentry_attrs(priv->work,
-+							 idmap,
-+							 dent,
-+							 &ksmbd_kstat);
-+			if (rc) {
-+				dput(dent);
-+				continue;
-+			}
-+		}
+@@ -33,7 +33,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
+ 		__entry->code = req->msg.code;
+ 		__entry->subcode = req->msg.subcode;
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
+ 	),
+@@ -56,7 +56,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
+ 		__field(u8, vfid)
+ 		__field(u16, code)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
++		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, PF_SEND_MBX_LEN)
+ 	),
  
- 		rc = smb2_populate_readdir_entry(priv->work->conn,
- 						 priv->info_level,
-@@ -4480,6 +4485,7 @@ static int get_file_basic_info(struct smb2_query_info_rsp *rsp,
- 	struct smb2_file_basic_info *basic_info;
- 	struct kstat stat;
- 	u64 time;
-+	int ret;
+@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
+ 		__entry->vfid = req->dest_vfid;
+ 		__entry->code = le16_to_cpu(req->msg.code);
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
+ 	),
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
+index 5d4895bb57a17..b259e95dd53c2 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
+@@ -23,7 +23,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
+ 		__field(u8, vfid)
+ 		__field(u16, code)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->nic.kinfo.netdev->name)
++		__string(devname, hdev->nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, VF_GET_MBX_LEN)
+ 	),
  
- 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
- 		pr_err("no right to read the attributes : 0x%x\n",
-@@ -4487,9 +4493,12 @@ static int get_file_basic_info(struct smb2_query_info_rsp *rsp,
- 		return -EACCES;
- 	}
+@@ -31,7 +31,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
+ 		__entry->vfid = req->dest_vfid;
+ 		__entry->code = le16_to_cpu(req->msg.code);
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
+ 	),
+@@ -55,7 +55,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
+ 		__field(u8, code)
+ 		__field(u8, subcode)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->nic.kinfo.netdev->name)
++		__string(devname, hdev->nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, VF_SEND_MBX_LEN)
+ 	),
  
-+	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			  AT_STATX_SYNC_AS_STAT);
-+	if (ret)
-+		return ret;
-+
- 	basic_info = (struct smb2_file_basic_info *)rsp->Buffer;
--	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS,
--			 file_inode(fp->filp), &stat);
- 	basic_info->CreationTime = cpu_to_le64(fp->create_time);
- 	time = ksmbd_UnixTimeToNT(stat.atime);
- 	basic_info->LastAccessTime = cpu_to_le64(time);
-@@ -4504,27 +4513,31 @@ static int get_file_basic_info(struct smb2_query_info_rsp *rsp,
- 	return 0;
- }
- 
--static void get_file_standard_info(struct smb2_query_info_rsp *rsp,
--				   struct ksmbd_file *fp, void *rsp_org)
-+static int get_file_standard_info(struct smb2_query_info_rsp *rsp,
-+				  struct ksmbd_file *fp, void *rsp_org)
- {
- 	struct smb2_file_standard_info *sinfo;
- 	unsigned int delete_pending;
--	struct inode *inode;
- 	struct kstat stat;
-+	int ret;
- 
--	inode = file_inode(fp->filp);
--	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS, inode, &stat);
-+	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			  AT_STATX_SYNC_AS_STAT);
-+	if (ret)
-+		return ret;
- 
- 	sinfo = (struct smb2_file_standard_info *)rsp->Buffer;
- 	delete_pending = ksmbd_inode_pending_delete(fp);
- 
--	sinfo->AllocationSize = cpu_to_le64(inode->i_blocks << 9);
-+	sinfo->AllocationSize = cpu_to_le64(stat.blocks << 9);
- 	sinfo->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
- 	sinfo->NumberOfLinks = cpu_to_le32(get_nlink(&stat) - delete_pending);
- 	sinfo->DeletePending = delete_pending;
- 	sinfo->Directory = S_ISDIR(stat.mode) ? 1 : 0;
- 	rsp->OutputBufferLength =
- 		cpu_to_le32(sizeof(struct smb2_file_standard_info));
-+
-+	return 0;
- }
- 
- static void get_file_alignment_info(struct smb2_query_info_rsp *rsp,
-@@ -4546,11 +4559,11 @@ static int get_file_all_info(struct ksmbd_work *work,
- 	struct ksmbd_conn *conn = work->conn;
- 	struct smb2_file_all_info *file_info;
- 	unsigned int delete_pending;
--	struct inode *inode;
- 	struct kstat stat;
- 	int conv_len;
- 	char *filename;
- 	u64 time;
-+	int ret;
- 
- 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
- 		ksmbd_debug(SMB, "no right to read the attributes : 0x%x\n",
-@@ -4562,8 +4575,10 @@ static int get_file_all_info(struct ksmbd_work *work,
- 	if (IS_ERR(filename))
- 		return PTR_ERR(filename);
- 
--	inode = file_inode(fp->filp);
--	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS, inode, &stat);
-+	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			  AT_STATX_SYNC_AS_STAT);
-+	if (ret)
-+		return ret;
- 
- 	ksmbd_debug(SMB, "filename = %s\n", filename);
- 	delete_pending = ksmbd_inode_pending_delete(fp);
-@@ -4579,7 +4594,7 @@ static int get_file_all_info(struct ksmbd_work *work,
- 	file_info->Attributes = fp->f_ci->m_fattr;
- 	file_info->Pad1 = 0;
- 	file_info->AllocationSize =
--		cpu_to_le64(inode->i_blocks << 9);
-+		cpu_to_le64(stat.blocks << 9);
- 	file_info->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
- 	file_info->NumberOfLinks =
- 			cpu_to_le32(get_nlink(&stat) - delete_pending);
-@@ -4623,10 +4638,10 @@ static void get_file_alternate_info(struct ksmbd_work *work,
- 		cpu_to_le32(sizeof(struct smb2_file_alt_name_info) + conv_len);
- }
- 
--static void get_file_stream_info(struct ksmbd_work *work,
--				 struct smb2_query_info_rsp *rsp,
--				 struct ksmbd_file *fp,
--				 void *rsp_org)
-+static int get_file_stream_info(struct ksmbd_work *work,
-+				struct smb2_query_info_rsp *rsp,
-+				struct ksmbd_file *fp,
-+				void *rsp_org)
- {
- 	struct ksmbd_conn *conn = work->conn;
- 	struct smb2_file_stream_info *file_info;
-@@ -4637,9 +4652,13 @@ static void get_file_stream_info(struct ksmbd_work *work,
- 	int nbytes = 0, streamlen, stream_name_len, next, idx = 0;
- 	int buf_free_len;
- 	struct smb2_query_info_req *req = ksmbd_req_buf_next(work);
-+	int ret;
-+
-+	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			  AT_STATX_SYNC_AS_STAT);
-+	if (ret)
-+		return ret;
- 
--	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS,
--			 file_inode(fp->filp), &stat);
- 	file_info = (struct smb2_file_stream_info *)rsp->Buffer;
- 
- 	buf_free_len =
-@@ -4720,29 +4739,37 @@ static void get_file_stream_info(struct ksmbd_work *work,
- 	kvfree(xattr_list);
- 
- 	rsp->OutputBufferLength = cpu_to_le32(nbytes);
-+
-+	return 0;
- }
- 
--static void get_file_internal_info(struct smb2_query_info_rsp *rsp,
--				   struct ksmbd_file *fp, void *rsp_org)
-+static int get_file_internal_info(struct smb2_query_info_rsp *rsp,
-+				  struct ksmbd_file *fp, void *rsp_org)
- {
- 	struct smb2_file_internal_info *file_info;
- 	struct kstat stat;
-+	int ret;
-+
-+	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			  AT_STATX_SYNC_AS_STAT);
-+	if (ret)
-+		return ret;
- 
--	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS,
--			 file_inode(fp->filp), &stat);
- 	file_info = (struct smb2_file_internal_info *)rsp->Buffer;
- 	file_info->IndexNumber = cpu_to_le64(stat.ino);
- 	rsp->OutputBufferLength =
- 		cpu_to_le32(sizeof(struct smb2_file_internal_info));
-+
-+	return 0;
- }
- 
- static int get_file_network_open_info(struct smb2_query_info_rsp *rsp,
- 				      struct ksmbd_file *fp, void *rsp_org)
- {
- 	struct smb2_file_ntwrk_info *file_info;
--	struct inode *inode;
- 	struct kstat stat;
- 	u64 time;
-+	int ret;
- 
- 	if (!(fp->daccess & FILE_READ_ATTRIBUTES_LE)) {
- 		pr_err("no right to read the attributes : 0x%x\n",
-@@ -4750,10 +4777,12 @@ static int get_file_network_open_info(struct smb2_query_info_rsp *rsp,
- 		return -EACCES;
- 	}
- 
--	file_info = (struct smb2_file_ntwrk_info *)rsp->Buffer;
-+	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			  AT_STATX_SYNC_AS_STAT);
-+	if (ret)
-+		return ret;
- 
--	inode = file_inode(fp->filp);
--	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS, inode, &stat);
-+	file_info = (struct smb2_file_ntwrk_info *)rsp->Buffer;
- 
- 	file_info->CreationTime = cpu_to_le64(fp->create_time);
- 	time = ksmbd_UnixTimeToNT(stat.atime);
-@@ -4763,8 +4792,7 @@ static int get_file_network_open_info(struct smb2_query_info_rsp *rsp,
- 	time = ksmbd_UnixTimeToNT(stat.ctime);
- 	file_info->ChangeTime = cpu_to_le64(time);
- 	file_info->Attributes = fp->f_ci->m_fattr;
--	file_info->AllocationSize =
--		cpu_to_le64(inode->i_blocks << 9);
-+	file_info->AllocationSize = cpu_to_le64(stat.blocks << 9);
- 	file_info->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
- 	file_info->Reserved = cpu_to_le32(0);
- 	rsp->OutputBufferLength =
-@@ -4804,14 +4832,17 @@ static void get_file_mode_info(struct smb2_query_info_rsp *rsp,
- 		cpu_to_le32(sizeof(struct smb2_file_mode_info));
- }
- 
--static void get_file_compression_info(struct smb2_query_info_rsp *rsp,
--				      struct ksmbd_file *fp, void *rsp_org)
-+static int get_file_compression_info(struct smb2_query_info_rsp *rsp,
-+				     struct ksmbd_file *fp, void *rsp_org)
- {
- 	struct smb2_file_comp_info *file_info;
- 	struct kstat stat;
-+	int ret;
- 
--	generic_fillattr(file_mnt_idmap(fp->filp), STATX_BASIC_STATS,
--			 file_inode(fp->filp), &stat);
-+	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			  AT_STATX_SYNC_AS_STAT);
-+	if (ret)
-+		return ret;
- 
- 	file_info = (struct smb2_file_comp_info *)rsp->Buffer;
- 	file_info->CompressedFileSize = cpu_to_le64(stat.blocks << 9);
-@@ -4823,6 +4854,8 @@ static void get_file_compression_info(struct smb2_query_info_rsp *rsp,
- 
- 	rsp->OutputBufferLength =
- 		cpu_to_le32(sizeof(struct smb2_file_comp_info));
-+
-+	return 0;
- }
- 
- static int get_file_attribute_tag_info(struct smb2_query_info_rsp *rsp,
-@@ -4844,7 +4877,7 @@ static int get_file_attribute_tag_info(struct smb2_query_info_rsp *rsp,
- 	return 0;
- }
- 
--static void find_file_posix_info(struct smb2_query_info_rsp *rsp,
-+static int find_file_posix_info(struct smb2_query_info_rsp *rsp,
- 				struct ksmbd_file *fp, void *rsp_org)
- {
- 	struct smb311_posix_qinfo *file_info;
-@@ -4852,24 +4885,31 @@ static void find_file_posix_info(struct smb2_query_info_rsp *rsp,
- 	struct mnt_idmap *idmap = file_mnt_idmap(fp->filp);
- 	vfsuid_t vfsuid = i_uid_into_vfsuid(idmap, inode);
- 	vfsgid_t vfsgid = i_gid_into_vfsgid(idmap, inode);
-+	struct kstat stat;
- 	u64 time;
- 	int out_buf_len = sizeof(struct smb311_posix_qinfo) + 32;
-+	int ret;
-+
-+	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			  AT_STATX_SYNC_AS_STAT);
-+	if (ret)
-+		return ret;
- 
- 	file_info = (struct smb311_posix_qinfo *)rsp->Buffer;
- 	file_info->CreationTime = cpu_to_le64(fp->create_time);
--	time = ksmbd_UnixTimeToNT(inode_get_atime(inode));
-+	time = ksmbd_UnixTimeToNT(stat.atime);
- 	file_info->LastAccessTime = cpu_to_le64(time);
--	time = ksmbd_UnixTimeToNT(inode_get_mtime(inode));
-+	time = ksmbd_UnixTimeToNT(stat.mtime);
- 	file_info->LastWriteTime = cpu_to_le64(time);
--	time = ksmbd_UnixTimeToNT(inode_get_ctime(inode));
-+	time = ksmbd_UnixTimeToNT(stat.ctime);
- 	file_info->ChangeTime = cpu_to_le64(time);
- 	file_info->DosAttributes = fp->f_ci->m_fattr;
--	file_info->Inode = cpu_to_le64(inode->i_ino);
--	file_info->EndOfFile = cpu_to_le64(inode->i_size);
--	file_info->AllocationSize = cpu_to_le64(inode->i_blocks << 9);
--	file_info->HardLinks = cpu_to_le32(inode->i_nlink);
--	file_info->Mode = cpu_to_le32(inode->i_mode & 0777);
--	file_info->DeviceId = cpu_to_le32(inode->i_rdev);
-+	file_info->Inode = cpu_to_le64(stat.ino);
-+	file_info->EndOfFile = cpu_to_le64(stat.size);
-+	file_info->AllocationSize = cpu_to_le64(stat.blocks << 9);
-+	file_info->HardLinks = cpu_to_le32(stat.nlink);
-+	file_info->Mode = cpu_to_le32(stat.mode & 0777);
-+	file_info->DeviceId = cpu_to_le32(stat.rdev);
- 
- 	/*
- 	 * Sids(32) contain two sids(Domain sid(16), UNIX group sid(16)).
-@@ -4882,6 +4922,8 @@ static void find_file_posix_info(struct smb2_query_info_rsp *rsp,
- 		  SIDUNIX_GROUP, (struct smb_sid *)&file_info->Sids[16]);
- 
- 	rsp->OutputBufferLength = cpu_to_le32(out_buf_len);
-+
-+	return 0;
- }
- 
- static int smb2_get_info_file(struct ksmbd_work *work,
-@@ -4930,7 +4972,7 @@ static int smb2_get_info_file(struct ksmbd_work *work,
- 		break;
- 
- 	case FILE_STANDARD_INFORMATION:
--		get_file_standard_info(rsp, fp, work->response_buf);
-+		rc = get_file_standard_info(rsp, fp, work->response_buf);
- 		break;
- 
- 	case FILE_ALIGNMENT_INFORMATION:
-@@ -4946,11 +4988,11 @@ static int smb2_get_info_file(struct ksmbd_work *work,
- 		break;
- 
- 	case FILE_STREAM_INFORMATION:
--		get_file_stream_info(work, rsp, fp, work->response_buf);
-+		rc = get_file_stream_info(work, rsp, fp, work->response_buf);
- 		break;
- 
- 	case FILE_INTERNAL_INFORMATION:
--		get_file_internal_info(rsp, fp, work->response_buf);
-+		rc = get_file_internal_info(rsp, fp, work->response_buf);
- 		break;
- 
- 	case FILE_NETWORK_OPEN_INFORMATION:
-@@ -4974,7 +5016,7 @@ static int smb2_get_info_file(struct ksmbd_work *work,
- 		break;
- 
- 	case FILE_COMPRESSION_INFORMATION:
--		get_file_compression_info(rsp, fp, work->response_buf);
-+		rc = get_file_compression_info(rsp, fp, work->response_buf);
- 		break;
- 
- 	case FILE_ATTRIBUTE_TAG_INFORMATION:
-@@ -4985,7 +5027,7 @@ static int smb2_get_info_file(struct ksmbd_work *work,
- 			pr_err("client doesn't negotiate with SMB3.1.1 POSIX Extensions\n");
- 			rc = -EOPNOTSUPP;
- 		} else {
--			find_file_posix_info(rsp, fp, work->response_buf);
-+			rc = find_file_posix_info(rsp, fp, work->response_buf);
- 		}
- 		break;
- 	default:
-@@ -5398,7 +5440,6 @@ int smb2_close(struct ksmbd_work *work)
- 	struct smb2_close_rsp *rsp;
- 	struct ksmbd_conn *conn = work->conn;
- 	struct ksmbd_file *fp;
--	struct inode *inode;
- 	u64 time;
- 	int err = 0;
- 
-@@ -5453,24 +5494,33 @@ int smb2_close(struct ksmbd_work *work)
- 	rsp->Reserved = 0;
- 
- 	if (req->Flags == SMB2_CLOSE_FLAG_POSTQUERY_ATTRIB) {
-+		struct kstat stat;
-+		int ret;
-+
- 		fp = ksmbd_lookup_fd_fast(work, volatile_id);
- 		if (!fp) {
- 			err = -ENOENT;
- 			goto out;
- 		}
- 
--		inode = file_inode(fp->filp);
-+		ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+				  AT_STATX_SYNC_AS_STAT);
-+		if (ret) {
-+			ksmbd_fd_put(work, fp);
-+			goto out;
-+		}
-+
- 		rsp->Flags = SMB2_CLOSE_FLAG_POSTQUERY_ATTRIB;
--		rsp->AllocationSize = S_ISDIR(inode->i_mode) ? 0 :
--			cpu_to_le64(inode->i_blocks << 9);
--		rsp->EndOfFile = cpu_to_le64(inode->i_size);
-+		rsp->AllocationSize = S_ISDIR(stat.mode) ? 0 :
-+			cpu_to_le64(stat.blocks << 9);
-+		rsp->EndOfFile = cpu_to_le64(stat.size);
- 		rsp->Attributes = fp->f_ci->m_fattr;
- 		rsp->CreationTime = cpu_to_le64(fp->create_time);
--		time = ksmbd_UnixTimeToNT(inode_get_atime(inode));
-+		time = ksmbd_UnixTimeToNT(stat.atime);
- 		rsp->LastAccessTime = cpu_to_le64(time);
--		time = ksmbd_UnixTimeToNT(inode_get_mtime(inode));
-+		time = ksmbd_UnixTimeToNT(stat.mtime);
- 		rsp->LastWriteTime = cpu_to_le64(time);
--		time = ksmbd_UnixTimeToNT(inode_get_ctime(inode));
-+		time = ksmbd_UnixTimeToNT(stat.ctime);
- 		rsp->ChangeTime = cpu_to_le64(time);
- 		ksmbd_fd_put(work, fp);
- 	} else {
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index 7c98bf699772f..fcaf373cc0080 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -457,10 +457,13 @@ int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work, int info_level,
- 			}
- 
- 			ksmbd_kstat.kstat = &kstat;
--			ksmbd_vfs_fill_dentry_attrs(work,
--						    idmap,
--						    dentry,
--						    &ksmbd_kstat);
-+			rc = ksmbd_vfs_fill_dentry_attrs(work,
-+							 idmap,
-+							 dentry,
-+							 &ksmbd_kstat);
-+			if (rc)
-+				break;
-+
- 			rc = fn(conn, info_level, d_info, &ksmbd_kstat);
- 			if (rc)
- 				break;
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 4277750a6da1b..a8936aba7710e 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1669,11 +1669,19 @@ int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
- 				struct dentry *dentry,
- 				struct ksmbd_kstat *ksmbd_kstat)
- {
-+	struct ksmbd_share_config *share_conf = work->tcon->share_conf;
- 	u64 time;
- 	int rc;
-+	struct path path = {
-+		.mnt = share_conf->vfs_path.mnt,
-+		.dentry = dentry,
-+	};
- 
--	generic_fillattr(idmap, STATX_BASIC_STATS, d_inode(dentry),
--			 ksmbd_kstat->kstat);
-+	rc = vfs_getattr(&path, ksmbd_kstat->kstat,
-+			 STATX_BASIC_STATS | STATX_BTIME,
-+			 AT_STATX_SYNC_AS_STAT);
-+	if (rc)
-+		return rc;
- 
- 	time = ksmbd_UnixTimeToNT(ksmbd_kstat->kstat->ctime);
- 	ksmbd_kstat->create_time = time;
+@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
+ 		__entry->code = req->msg.code;
+ 		__entry->subcode = req->msg.subcode;
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
+ 	),
 -- 
 2.43.0
 
