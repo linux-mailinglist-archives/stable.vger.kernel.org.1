@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-35116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3455989427A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5AF894086
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65DE71C217D5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D812E1F21C6A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8C4481B7;
-	Mon,  1 Apr 2024 16:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745E638DE5;
+	Mon,  1 Apr 2024 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lusRpvia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIRN8RkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD12D63E;
-	Mon,  1 Apr 2024 16:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221D31E86C;
+	Mon,  1 Apr 2024 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990384; cv=none; b=DDXmNUVHsJeKQFsdBtNFrYpFGYWyVTRDxs6643ALF08Kpq27iZ12va7Gm7HdLTg33kS4zWQXGEiMnafZj5FfVuR/ilQU6wSfU+PbTFqcaDBZvzmh9h74e08ZcFTFXjU7hu4/YkZ+bUmvhZsuFoafstXluJG1IiOwF4eVMlWAvA4=
+	t=1711989062; cv=none; b=M2BWcuhjpd4tD30+AsSd6SohoiPVDg0GyUPyAWYi9dDnsMBbk6x8wHnEPr8qScK7F19pCHSehSnPpbpjmuOe6F+FfeTq7dn2PSDd1bp7Vt4aW+uSCDOVmCCqhAd+9LBH1gCe9HS3hSaVyMBgnkgUJu1wN40uz0wpdVV1FI2/pGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990384; c=relaxed/simple;
-	bh=mWEIuM9kw7tJbCNVN98DUdS/rtYiLc2S5BEsd99USfI=;
+	s=arc-20240116; t=1711989062; c=relaxed/simple;
+	bh=rLkm1DmRrdqhHiZU5pwm5kWJ5Dj8mXcF66COXjPw7Qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2AJO0lVL6W2YrGv94hySeO7BIX9jcj2+ncRjWt5j0xLMykmKn/Wz4rEcTewjw8t3cWworWnIlg7o/G+EMGMzHYzWX7sTRnxbx5bg8XDb5/g1yP0DRAhY8QbVTEuE7673IdJRZpAVpubdGOAhhdxNwa3q1TTe4RpNX2bxewesZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lusRpvia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6559AC433C7;
-	Mon,  1 Apr 2024 16:53:03 +0000 (UTC)
+	 MIME-Version; b=ExzVC1a2g8IRhFLCaE/ZMFhTUSPKBrAQR5LE2vFehAaFujYxfEEbqFXOATZJLTNnJLZoc+iFM68jc58kYTsm/owVWt46s89jrOTrjg2KCu0NQm0BkFkjMT1AjP2W7CHdTcFQ8W798UaJiL2R9IrRjpoXlYwwgpoO+UmDDon2JUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIRN8RkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670FBC433F1;
+	Mon,  1 Apr 2024 16:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990383;
-	bh=mWEIuM9kw7tJbCNVN98DUdS/rtYiLc2S5BEsd99USfI=;
+	s=korg; t=1711989062;
+	bh=rLkm1DmRrdqhHiZU5pwm5kWJ5Dj8mXcF66COXjPw7Qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lusRpviamLPhKs8wYH7iy3E3B7hxlxrzjtxBRGwq5iGeQ4djmj6Yh0RkN2FQr0tfQ
-	 ct7w08/LOEx30uZ3lGc5djn493A1DkvVi4Wo+dHALH0s6tLqqKSjdXNgYZQiBTcF1g
-	 ey1dTY7w1S3jXwAnLSWvsAwskMbhEVcHi9gPSroE=
+	b=qIRN8RkHCReNC/RIBumg1ZQJ5f13gSP1V2DJ8Q3MsE0NS8gGjEW7r/s4sx0HjMF+L
+	 tzvvgXt9gqSCNL+rUJZlN78ff24AgHJRwkixGlMSPNJO8UH1D9BDAg//45f9grOH+u
+	 wMzf/csxgGa439anjhLt7OTZm9dn6SgnkemPFoxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Hector Martin <marcan@marcan.st>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 6.6 307/396] perf top: Use evsels cpus to replace user_requested_cpus
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jun Lei <jun.lei@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Xi Liu <xi.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.7 369/432] drm/amd/display: Set DCN351 BB and IP the same as DCN35
 Date: Mon,  1 Apr 2024 17:45:56 +0200
-Message-ID: <20240401152557.068437633@linuxfoundation.org>
+Message-ID: <20240401152604.284506312@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Xi Liu <xi.liu@amd.com>
 
-commit 5fa695e7da4975e8d21ce49f3718d6cf00ecb75e upstream.
+commit 0ccc2b30f4feadc0b1a282dbcc06e396382e5d74 upstream.
 
-perf top errors out on a hybrid machine
- $perf top
+[WHY & HOW]
+DCN351 and DCN35 should use the same bounding box and IP settings.
 
- Error:
- The cycles:P event is not supported.
-
-The perf top expects that the "cycles" is collected on all CPUs in the
-system. But for hybrid there is no single "cycles" event which can cover
-all CPUs. Perf has to split it into two cycles events, e.g.,
-cpu_core/cycles/ and cpu_atom/cycles/. Each event has its own CPU mask.
-If a event is opened on the unsupported CPU. The open fails. That's the
-reason of the above error out.
-
-Perf should only open the cycles event on the corresponding CPU. The
-commit ef91871c960e ("perf evlist: Propagate user CPU maps intersecting
-core PMU maps") intersect the requested CPU map with the CPU map of the
-PMU. Use the evsel's cpus to replace user_requested_cpus.
-
-The evlist's threads are also propagated to the evsel's threads in
-__perf_evlist__propagate_maps(). For a system-wide event, perf appends
-a dummy event and assign it to the evsel's threads. For a per-thread
-event, the evlist's thread_map is assigned to the evsel's threads. The
-same as the other tools, e.g., perf record, using the evsel's threads
-when opening an event.
-
-Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Hector Martin <marcan@marcan.st>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Closes: https://lore.kernel.org/linux-perf-users/ZXNnDrGKXbEELMXV@kernel.org/
-Link: https://lore.kernel.org/r/20231214144612.1092028-1-kan.liang@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Xi Liu <xi.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-top.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1027,8 +1027,8 @@ static int perf_top__start_counters(stru
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -228,17 +228,13 @@ void dml2_init_socbb_params(struct dml2_
+ 		break;
  
- 	evlist__for_each_entry(evlist, counter) {
- try_again:
--		if (evsel__open(counter, top->evlist->core.user_requested_cpus,
--				     top->evlist->core.threads) < 0) {
-+		if (evsel__open(counter, counter->core.cpus,
-+				counter->core.threads) < 0) {
+ 	case dml_project_dcn35:
++	case dml_project_dcn351:
+ 		out->num_chans = 4;
+ 		out->round_trip_ping_latency_dcfclk_cycles = 106;
+ 		out->smn_latency_us = 2;
+ 		out->dispclk_dppclk_vco_speed_mhz = 3600;
+ 		break;
  
- 			/*
- 			 * Specially handle overwrite fall back.
+-	case dml_project_dcn351:
+-		out->num_chans = 16;
+-		out->round_trip_ping_latency_dcfclk_cycles = 1100;
+-		out->smn_latency_us = 2;
+-		break;
+ 	}
+ 	/* ---Overrides if available--- */
+ 	if (dml2->config.bbox_overrides.dram_num_chan)
 
 
 
