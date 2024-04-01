@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-35213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2988942F3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE208941A3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6B6283842
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 725781F24B5F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B8B4CB35;
-	Mon,  1 Apr 2024 16:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABD74CB57;
+	Mon,  1 Apr 2024 16:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mknVgtSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="so3jBO5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA344D137;
-	Mon,  1 Apr 2024 16:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19719481BF;
+	Mon,  1 Apr 2024 16:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990667; cv=none; b=e+W595Z2QL9kXRBzdyg7fgzI+/GU9TU4izg+WiKyuHxAvfNUqxpM9/GPC1CqUfKocNUJbFXJ1hPLZhAHnxtJ967d3dwM5xEQiIMiv8UV7YBLSRwOgg/7gCuYY+ZsGpPZmeVTwG8BgjvRf//sWZjf9gaKvw6Dz6IK3eRjKHnqmWQ=
+	t=1711989850; cv=none; b=WvcxFD8+ZefygkIGbelet8PQ2X3ABYPVPnyAqDRhOFp1waZjJ5dxsnGB12V6/FU2DUCZ85Af8awt1+C56/ACV8Jctb6CfUTMQyu/D8wvirwpQDPuzG+s1oj+1NY+hhkXpObopqQJ/A/L1LQ2uWPk8/jWRbkBqdagzP8eN8QM8cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990667; c=relaxed/simple;
-	bh=8RgxIasDXbj1qJSYcI82G+hUIXNZtPbXEpS7R10hjTo=;
+	s=arc-20240116; t=1711989850; c=relaxed/simple;
+	bh=V+JeAGk7sWJtMWZVUoJIEvOV97yGx5Vvj2rdaeOATdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOACgp4EZGVwhbYnzk1gCNwc1/BZrUreKrVKEGrQ+YbCyYrnwPBt2An2pAeDBu98YgLTrsO9hO3lyMlat9WVCNMNZ3FbjIQPSJNZJAZUvyDPX8Yz006L4lLghuntwH0++hVRkNfdnIm3amS1jMimKbYyaG9Qz/WZlxHPjgqyGhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mknVgtSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85177C433F1;
-	Mon,  1 Apr 2024 16:57:45 +0000 (UTC)
+	 MIME-Version; b=qgzxjZawvyU6sWgagQkFfUhlki61mI2Sxh22PLfB05I/K9d3UV+Ap/O8OLglh5+hkhPEclCkWnDCWVHjdlYUZF7LGt907F2oJfVoGXiCf9kjw4ECbUDjPAsjeu9NclPxZLdET/ZIIGHuUzF2m0z2Ol1x6lUOOj9SDz8hjDNCn9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=so3jBO5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79720C433F1;
+	Mon,  1 Apr 2024 16:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990666;
-	bh=8RgxIasDXbj1qJSYcI82G+hUIXNZtPbXEpS7R10hjTo=;
+	s=korg; t=1711989850;
+	bh=V+JeAGk7sWJtMWZVUoJIEvOV97yGx5Vvj2rdaeOATdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mknVgtSVam+a5klpLLBNk6QNUj3AfUglv9VWCy3uTnz/PWm/Ta/8+Lh0JrCE+Ribp
-	 ku7vjGxsk7NOXSFCQXvuNbFFk3im6reMxAUOGVPzn8t6dzzlLh8nJYEL3lS3V4jUSz
-	 V1KpBls5fxRKaks0JWR3XvLuhztf/YFUMST4bX4M=
+	b=so3jBO5YcctkGcyer7+FUjgrhbkV57Q1WDcDx4/uGr+jod86za8PLtNZj3wtKHuD6
+	 9b4TNjTrD9G4CWfzRW9BZkbQpIs9NVPhyobRrEytRBH9HCPcLOHagHr1FfmlOinJRI
+	 jlH6qgah62DgS0mNUz8Z/BY+VdPtq4LV9r/+sbm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/272] powerpc/smp: Increase nr_cpu_ids to include the boot CPU
-Date: Mon,  1 Apr 2024 17:43:39 +0200
-Message-ID: <20240401152531.268755523@linuxfoundation.org>
+Subject: [PATCH 6.6 171/396] cxl/trace: Properly initialize cxl_poison region name
+Date: Mon,  1 Apr 2024 17:43:40 +0200
+Message-ID: <20240401152553.039652038@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +68,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit 777f81f0a9c780a6443bcf2c7785f0cc2e87c1ef ]
+[ Upstream commit 6c871260965255a1c142fb77ccee58b172d1690b ]
 
-If nr_cpu_ids is too low to include the boot CPU adjust nr_cpu_ids
-upward. Otherwise the kernel will BUG when trying to allocate a paca
-for the boot CPU and fail to boot.
+The TP_STRUCT__entry that gets assigned the region name, or an
+empty string if no region is present, is erroneously initialized
+to the cxl_region pointer. It needs to be properly initialized
+otherwise it's length is wrong and garbage chars can appear in
+the kernel trace output: /sys/kernel/tracing/trace
 
+The bad initialization was due in part to a naming conflict with
+the parameter: struct cxl_region *region. The field 'region' is
+already exposed externally as the region name, so changing that
+to something logical, like 'region_name' is not an option. Instead
+rename the internal only struct cxl_region to the commonly used
+'cxlr'.
+
+Impact is that tooling depending on that trace data can miss
+picking up a valid event when searching by region name. The
+TP_printk() output, if enabled, does emit the correct region
+names in the dmesg log.
+
+This was found during testing of the cxl-list option to report
+media-errors for a region.
+
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231229120107.2281153-2-mpe@ellerman.id.au
+Fixes: ddf49d57b841 ("cxl/trace: Add TRACE support for CXL media-error records")
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Acked-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/cxl/core/trace.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index a64f4fb332893..9531ab90feb8a 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -375,6 +375,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 			nr_cpu_ids);
- 	}
+diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+index a0b5819bc70b3..f01d0709c9c32 100644
+--- a/drivers/cxl/core/trace.h
++++ b/drivers/cxl/core/trace.h
+@@ -642,18 +642,18 @@ u64 cxl_trace_hpa(struct cxl_region *cxlr, struct cxl_memdev *memdev, u64 dpa);
  
-+	if (boot_cpuid >= nr_cpu_ids) {
-+		set_nr_cpu_ids(min(CONFIG_NR_CPUS, ALIGN(boot_cpuid + 1, nthreads)));
-+		pr_warn("Boot CPU %d >= nr_cpu_ids, adjusted nr_cpu_ids to %d\n",
-+			boot_cpuid, nr_cpu_ids);
-+	}
-+
- 	/*
- 	 * PAPR defines "logical" PVR values for cpus that
- 	 * meet various levels of the architecture:
+ TRACE_EVENT(cxl_poison,
+ 
+-	TP_PROTO(struct cxl_memdev *cxlmd, struct cxl_region *region,
++	TP_PROTO(struct cxl_memdev *cxlmd, struct cxl_region *cxlr,
+ 		 const struct cxl_poison_record *record, u8 flags,
+ 		 __le64 overflow_ts, enum cxl_poison_trace_type trace_type),
+ 
+-	TP_ARGS(cxlmd, region, record, flags, overflow_ts, trace_type),
++	TP_ARGS(cxlmd, cxlr, record, flags, overflow_ts, trace_type),
+ 
+ 	TP_STRUCT__entry(
+ 		__string(memdev, dev_name(&cxlmd->dev))
+ 		__string(host, dev_name(cxlmd->dev.parent))
+ 		__field(u64, serial)
+ 		__field(u8, trace_type)
+-		__string(region, region)
++		__string(region, cxlr ? dev_name(&cxlr->dev) : "")
+ 		__field(u64, overflow_ts)
+ 		__field(u64, hpa)
+ 		__field(u64, dpa)
+@@ -673,10 +673,10 @@ TRACE_EVENT(cxl_poison,
+ 		__entry->source = cxl_poison_record_source(record);
+ 		__entry->trace_type = trace_type;
+ 		__entry->flags = flags;
+-		if (region) {
+-			__assign_str(region, dev_name(&region->dev));
+-			memcpy(__entry->uuid, &region->params.uuid, 16);
+-			__entry->hpa = cxl_trace_hpa(region, cxlmd,
++		if (cxlr) {
++			__assign_str(region, dev_name(&cxlr->dev));
++			memcpy(__entry->uuid, &cxlr->params.uuid, 16);
++			__entry->hpa = cxl_trace_hpa(cxlr, cxlmd,
+ 						     __entry->dpa);
+ 		} else {
+ 			__assign_str(region, "");
 -- 
 2.43.0
 
