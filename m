@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA16894111
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF157893F8B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5C42835A2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AFAD284D1C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D10C4AEF6;
-	Mon,  1 Apr 2024 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CAE446AC;
+	Mon,  1 Apr 2024 16:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MV1PBYmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdTWZpo7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17761482ED;
-	Mon,  1 Apr 2024 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576E91DFFC;
+	Mon,  1 Apr 2024 16:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989436; cv=none; b=as/JAhudATIAC2peeYmQS8VHFJJveh0MKn6Txgh6FRTfMvfztS2dDd9J8cqfrXsmiA9CWEJTaCzBBYOpNUw5A3GJ2k1vTSs7CfzU+RtWEPCrKXochGq1XANT2s+4ZQDtS7BZUxHOH7ze28zMOv6L/wGK3dh7SwsE+Al6kT4QgSc=
+	t=1711988279; cv=none; b=LJEsV0wP7az84j9iqVch0qPGKN7N3UTCKC5YVn7nU+ztjkEIliFmu/i4+LHwyvOdMopgy8m6Me5ZmyJXIn2lSyyBRW1aTOyNJTut4Shrwl2VN1sUwlbB2w5W5jSWTrkeETiEJvkJEPXM1VS+r6126MfrZqjstioRFONZu1zocv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989436; c=relaxed/simple;
-	bh=KeV3pdwGieiuAMM8fN2oDPfQ6uQrrGguakBPbD9uqUU=;
+	s=arc-20240116; t=1711988279; c=relaxed/simple;
+	bh=cvKjPck94p0Q7ZHsXLKym8V6Qc8EUYKmINCbQ1eCrNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDA7ApjZM83nYXHTSIC1Gidbdn+nPPj5Tt+UbYCOncLxfacpoL87OmsGtil6roViwar06r3xOVG+Eiqr+gZBumQvTLJiBFjXzoyAmwaiKs/B+Ju992SwC0JJ9DTENrQjVzAFOChdFNEGR7SNA63CPFT/x78/2ACFFpNg5TjNuLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MV1PBYmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9046AC433C7;
-	Mon,  1 Apr 2024 16:37:15 +0000 (UTC)
+	 MIME-Version; b=bB5y77e698Jt976k6rByAGVjvj/+CJvXV9W9N6rCPMqaGvbciKhhrMVAQv657xOheXsH4ifqKkRl5g2dioJW8lVb0BqdzFx/yVrBDMdHdspnjLZz8v0KSQZQJTqypFQ7svwUe1dAlg8u81opsexW+cKWGCSIMHLucuJ2WtBci+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdTWZpo7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC65C433C7;
+	Mon,  1 Apr 2024 16:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989436;
-	bh=KeV3pdwGieiuAMM8fN2oDPfQ6uQrrGguakBPbD9uqUU=;
+	s=korg; t=1711988279;
+	bh=cvKjPck94p0Q7ZHsXLKym8V6Qc8EUYKmINCbQ1eCrNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MV1PBYmvdkDZhFfEvSV4iCE1fan8K6+JkEAGQxP6UATracHq02tp+ZsDhV4jmsa3V
-	 2FVNq/H2MdVwxvzyJIxXdxVSDcKo82q0ZelhtJgoCwrnhjyDvYQmGtI2+9LVkgen9D
-	 3h46oEfLF94NFXbMOF+iV1MYMBEbX91qkX1QgnI8=
+	b=pdTWZpo7m4D3P0fEScAM3w99aQx05TWQxFizIa6R89f/vfxlr1WeBlBtVRFHTNON/
+	 5OFHe5kRQ1TTyTe/w5lH/kQNAzB45cC1sEyHsudZkP8UxzKqPR4Y9GoxBM8SkTpPR0
+	 CV5GUp+/GSWdyVUQTVinE2gG93VqUEem8g0UxkR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/396] ubifs: Set page uptodate in the correct place
+Subject: [PATCH 6.7 109/432] powerpc: xor_vmx: Add -mhard-float to CFLAGS
 Date: Mon,  1 Apr 2024 17:41:36 +0200
-Message-ID: <20240401152549.330359816@linuxfoundation.org>
+Message-ID: <20240401152556.381081326@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 723012cab779eee8228376754e22c6594229bf8f ]
+[ Upstream commit 35f20786c481d5ced9283ff42de5c69b65e5ed13 ]
 
-Page cache reads are lockless, so setting the freshly allocated page
-uptodate before we've overwritten it with the data it's supposed to have
-in it will allow a simultaneous reader to see old data.  Move the call
-to SetPageUptodate into ubifs_write_end(), which is after we copied the
-new data into the page.
+arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
+powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
+error when building with clang after a recent change in main:
 
-Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+  error: option '-msoft-float' cannot be specified with '-maltivec'
+  make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
+
+Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
+to override the previous inclusion of '-msoft-float' (as the last option
+wins), which matches how other areas of the kernel use '-maltivec', such
+as AMDGPU.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
+Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/file.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ arch/powerpc/lib/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
-index e5382f0b25878..781206d0ec845 100644
---- a/fs/ubifs/file.c
-+++ b/fs/ubifs/file.c
-@@ -261,9 +261,6 @@ static int write_begin_slow(struct address_space *mapping,
- 				return err;
- 			}
- 		}
--
--		SetPageUptodate(page);
--		ClearPageError(page);
- 	}
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 6eac63e79a899..0ab65eeb93ee3 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -76,7 +76,7 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
+ obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
  
- 	if (PagePrivate(page))
-@@ -462,9 +459,6 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
- 				return err;
- 			}
- 		}
--
--		SetPageUptodate(page);
--		ClearPageError(page);
- 	}
+ obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
+-CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
++CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
+ # Enable <altivec.h>
+ CFLAGS_xor_vmx.o += -isystem $(shell $(CC) -print-file-name=include)
  
- 	err = allocate_budget(c, page, ui, appending);
-@@ -474,10 +468,8 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
- 		 * If we skipped reading the page because we were going to
- 		 * write all of it, then it is not up to date.
- 		 */
--		if (skipped_read) {
-+		if (skipped_read)
- 			ClearPageChecked(page);
--			ClearPageUptodate(page);
--		}
- 		/*
- 		 * Budgeting failed which means it would have to force
- 		 * write-back but didn't, because we set the @fast flag in the
-@@ -568,6 +560,9 @@ static int ubifs_write_end(struct file *file, struct address_space *mapping,
- 		goto out;
- 	}
- 
-+	if (len == PAGE_SIZE)
-+		SetPageUptodate(page);
-+
- 	if (!PagePrivate(page)) {
- 		attach_page_private(page, (void *)1);
- 		atomic_long_inc(&c->dirty_pg_cnt);
 -- 
 2.43.0
 
