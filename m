@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-35062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414CF894231
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45210894376
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A02BDB21589
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76D9D1C21ED9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D6941232;
-	Mon,  1 Apr 2024 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CADF48CDD;
+	Mon,  1 Apr 2024 17:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm+hXwTW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe0zP7ra"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FEB8F5C;
-	Mon,  1 Apr 2024 16:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAF5482E4;
+	Mon,  1 Apr 2024 17:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990215; cv=none; b=s7ILJQ+N5J576XRiKbrHGldTOkjLObFghiWU1MxacEQaoUxV0Yl6K1ly2Qzr6NXraoApxM/n09BEV4TOaPtB6MeX6BLw//mm7stWwuN6pVGJ+bWnG6pmZ7dSUFyrfzEn3C1IpVrgqy5VyhmXHpNv1shAKtcHLGJ8GHon4G/n24Y=
+	t=1711991034; cv=none; b=a7AlU009GVmDWVhOxbu+9MbpLI13xIad/a1Jlem0LpMj43uKQR0+88bL3uzEMIeyXgB69WamTANI+p2ULj/l8LfnRPkwlNjc47QZnTxydK6iWiLEHQ2zOq6ATk/UjtN85ijqOLgQtu7UPUvE2VWuaWAL0apJJLbyNLvEnzpeAvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990215; c=relaxed/simple;
-	bh=dgl5XVWW1Nq+LiuWGttT6+1KPVwI/2ytKEJjAEMR26g=;
+	s=arc-20240116; t=1711991034; c=relaxed/simple;
+	bh=ZUR8aDHrIDATJaFT5mwjTPMGSpPHNvBGt9IkHKOfnLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ac021K1m9Pzvha02mTVqm406lFPYvdIWX9+Ik1GfJM+RiHxC8kcDPxV6GujH16uFScDk+f1a9p1hYSCXocbHHACRUP5lLkdY1Htfbsw8KLLG1INTKT6yv0lXN11iEFXFN0pe1fEE3xMlW9V499mKHvit+9ikfsasBr7kmzkVIks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm+hXwTW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B986C433F1;
-	Mon,  1 Apr 2024 16:50:15 +0000 (UTC)
+	 MIME-Version; b=p51U8YuR0cvDVtQDZ000EZW8YoI+sp1sbYIDpgCROXb5+dEV0ljfKtihSqM7wG8GmW1Zv1QifToNinEhX7r8QO48KdmdwyY5DoS6q0iJngl6NlfFOVlZVEGSBVVSePpz61gGKb2mLSwYP+iFHSoqMthNEgDeKTJlv5x7FlY7lPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe0zP7ra; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56285C433A6;
+	Mon,  1 Apr 2024 17:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990215;
-	bh=dgl5XVWW1Nq+LiuWGttT6+1KPVwI/2ytKEJjAEMR26g=;
+	s=korg; t=1711991033;
+	bh=ZUR8aDHrIDATJaFT5mwjTPMGSpPHNvBGt9IkHKOfnLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gm+hXwTWLD+mwZlh01PkjjKYxcUgzMzIkNRU3WMB7O+I2aE/TnJKBYw+ItlPowt0F
-	 rw+7XrNaWKRvya/S1es8lc7Mrxx85i3RVRG4gDo1mNSBfckpWHE03Qdt5PNBlpOvV0
-	 QX0FUtXt4ccqUR18kbyNqmBRWjvNZl4SfOjk2XS0=
+	b=Qe0zP7raetxd+mMVUhzJ+71m+SPDCESpFOlS5BsFM22ALyprwjsl1/WYe9vugDe9V
+	 U1YYp7N3pkHt/BOPZqwVWXNsynIHS1p9om26skD7b7kRPwrx+eMBHU92pLzv4UeJ05
+	 WMPdcOgQq4+m4A7qZ7Dzs+uiq6guZ48oKn5Bx0gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 282/396] x86/Kconfig: Remove CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
-Date: Mon,  1 Apr 2024 17:45:31 +0200
-Message-ID: <20240401152556.316548570@linuxfoundation.org>
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anastasia Belova <abelova@astralinux.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 142/272] cpufreq: brcmstb-avs-cpufreq: fix up "add check for cpufreq_cpu_gets return value"
+Date: Mon,  1 Apr 2024 17:45:32 +0200
+Message-ID: <20240401152535.120468142@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 29956748339aa8757a7e2f927a8679dd08f24bb6 upstream.
+In commit e72160cb6e23 ("cpufreq: brcmstb-avs-cpufreq: add check for
+cpufreq_cpu_get's return value"), build warnings occur because a
+variable is created after some logic, resulting in:
 
-It was meant well at the time but nothing's using it so get rid of it.
+drivers/cpufreq/brcmstb-avs-cpufreq.c: In function 'brcm_avs_cpufreq_get':
+drivers/cpufreq/brcmstb-avs-cpufreq.c:486:9: error: ISO C90 forbids mixed
+declarations and code [-Werror=declaration-after-statement]
+  486 |         struct private_data *priv = policy->driver_data;
+      |         ^~~~~~
+cc1: all warnings being treated as errors
+make[2]: *** [scripts/Makefile.build:289:
+drivers/cpufreq/brcmstb-avs-cpufreq.o] Error 1
+make[1]: *** [scripts/Makefile.build:552: drivers/cpufreq] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1907: drivers] Error 2
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20240202163510.GDZb0Zvj8qOndvFOiZ@fat_crate.local
+Fix this up.
+
+Link: https://lore.kernel.org/r/e114d9e5-26af-42be-9baa-72c3a6ec8fe5@oracle.com
+Link: https://lore.kernel.org/stable/20240327015023.GC7502@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net/T/#m15bff0fe96986ef780e848b4fff362bf8ea03f08
+Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: e72160cb6e23 ("cpufreq: brcmstb-avs-cpufreq: add check for cpufreq_cpu_get's return value")
+Cc: Anastasia Belova <abelova@astralinux.ru>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt  |    4 +---
- Documentation/arch/x86/amd-memory-encryption.rst |   16 ++++++++--------
- arch/x86/Kconfig                                 |   13 -------------
- arch/x86/mm/mem_encrypt_identity.c               |   11 +----------
- 4 files changed, 10 insertions(+), 34 deletions(-)
+ drivers/cpufreq/brcmstb-avs-cpufreq.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3269,9 +3269,7 @@
- 
- 	mem_encrypt=	[X86-64] AMD Secure Memory Encryption (SME) control
- 			Valid arguments: on, off
--			Default (depends on kernel configuration option):
--			  on  (CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT=y)
--			  off (CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT=n)
-+			Default: off
- 			mem_encrypt=on:		Activate SME
- 			mem_encrypt=off:	Do not activate SME
- 
---- a/Documentation/arch/x86/amd-memory-encryption.rst
-+++ b/Documentation/arch/x86/amd-memory-encryption.rst
-@@ -87,14 +87,14 @@ The state of SME in the Linux kernel can
- 	  kernel is non-zero).
- 
- SME can also be enabled and activated in the BIOS. If SME is enabled and
--activated in the BIOS, then all memory accesses will be encrypted and it will
--not be necessary to activate the Linux memory encryption support.  If the BIOS
--merely enables SME (sets bit 23 of the MSR_AMD64_SYSCFG), then Linux can activate
--memory encryption by default (CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT=y) or
--by supplying mem_encrypt=on on the kernel command line.  However, if BIOS does
--not enable SME, then Linux will not be able to activate memory encryption, even
--if configured to do so by default or the mem_encrypt=on command line parameter
--is specified.
-+activated in the BIOS, then all memory accesses will be encrypted and it
-+will not be necessary to activate the Linux memory encryption support.
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -481,10 +481,11 @@ static bool brcm_avs_is_firmware_loaded(
+ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+ {
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
++	struct private_data *priv;
 +
-+If the BIOS merely enables SME (sets bit 23 of the MSR_AMD64_SYSCFG),
-+then memory encryption can be enabled by supplying mem_encrypt=on on the
-+kernel command line.  However, if BIOS does not enable SME, then Linux
-+will not be able to activate memory encryption, even if configured to do
-+so by default or the mem_encrypt=on command line parameter is specified.
- 
- Secure Nested Paging (SNP)
- ==========================
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1514,19 +1514,6 @@ config AMD_MEM_ENCRYPT
- 	  This requires an AMD processor that supports Secure Memory
- 	  Encryption (SME).
- 
--config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
--	bool "Activate AMD Secure Memory Encryption (SME) by default"
--	depends on AMD_MEM_ENCRYPT
--	help
--	  Say yes to have system memory encrypted by default if running on
--	  an AMD processor that supports Secure Memory Encryption (SME).
+ 	if (!policy)
+ 		return 0;
+-	struct private_data *priv = policy->driver_data;
 -
--	  If set to Y, then the encryption of system memory can be
--	  deactivated with the mem_encrypt=off command line option.
--
--	  If set to N, then the encryption of system memory can be
--	  activated with the mem_encrypt=on command line option.
--
- # Common NUMA Features
- config NUMA
- 	bool "NUMA Memory Allocation and Scheduler Support"
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -97,7 +97,6 @@ static char sme_workarea[2 * PMD_SIZE] _
++	priv = policy->driver_data;
+ 	cpufreq_cpu_put(policy);
  
- static char sme_cmdline_arg[] __initdata = "mem_encrypt";
- static char sme_cmdline_on[]  __initdata = "on";
--static char sme_cmdline_off[] __initdata = "off";
- 
- static void __init sme_clear_pgd(struct sme_populate_pgd_data *ppd)
- {
-@@ -504,7 +503,7 @@ void __init sme_encrypt_kernel(struct bo
- 
- void __init sme_enable(struct boot_params *bp)
- {
--	const char *cmdline_ptr, *cmdline_arg, *cmdline_on, *cmdline_off;
-+	const char *cmdline_ptr, *cmdline_arg, *cmdline_on;
- 	unsigned int eax, ebx, ecx, edx;
- 	unsigned long feature_mask;
- 	unsigned long me_mask;
-@@ -587,12 +586,6 @@ void __init sme_enable(struct boot_param
- 	asm ("lea sme_cmdline_on(%%rip), %0"
- 	     : "=r" (cmdline_on)
- 	     : "p" (sme_cmdline_on));
--	asm ("lea sme_cmdline_off(%%rip), %0"
--	     : "=r" (cmdline_off)
--	     : "p" (sme_cmdline_off));
--
--	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT))
--		sme_me_mask = me_mask;
- 
- 	cmdline_ptr = (const char *)((u64)bp->hdr.cmd_line_ptr |
- 				     ((u64)bp->ext_cmd_line_ptr << 32));
-@@ -602,8 +595,6 @@ void __init sme_enable(struct boot_param
- 
- 	if (!strncmp(buffer, cmdline_on, sizeof(buffer)))
- 		sme_me_mask = me_mask;
--	else if (!strncmp(buffer, cmdline_off, sizeof(buffer)))
--		sme_me_mask = 0;
- 
- out:
- 	if (sme_me_mask) {
+ 	return brcm_avs_get_frequency(priv->base);
 
 
 
