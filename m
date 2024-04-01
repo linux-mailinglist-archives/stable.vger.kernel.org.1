@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-35265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7B189432C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670AA8941DC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BCD61C21E55
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 210C2283212
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB47482EF;
-	Mon,  1 Apr 2024 17:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92A34653C;
+	Mon,  1 Apr 2024 16:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbJqA68O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BuFJXMW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC0347A6B;
-	Mon,  1 Apr 2024 17:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891DE1E525;
+	Mon,  1 Apr 2024 16:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990834; cv=none; b=HB1sT+OVeQerjXep9+napgRQQFYDj6AsRx/l7X2Vn6l7VyV+VD6Av58e5fOZCc45aLa2kOEuGC6MhEqILOi4iBzbHFljQo4gdDpcR56U27O3wh/2cHzzrR1uxCmDBYP3SfVQVQtWcS0oeu3KG6jubErIcCZKlkkhhtThq2rTv/c=
+	t=1711990017; cv=none; b=Yjg0uuJ8/Bj3cd08nBzgKEaBwYv+lKK/eeoNHaFIKZu38utsQrYpqNHBPVSqoVqQamyVzdcayxUOKoHv+shEaw9LzV72cMB5DKsv5FNZZdDYHrFVL0MNk6ale5KfY6CclK436Xxe1B3r35ZbiItqCWKwKYRauQONTM6i6KIAJZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990834; c=relaxed/simple;
-	bh=2F4HI8lTuremcdxN93PXDP4yfoZj1yfbOdD6O9gyJWI=;
+	s=arc-20240116; t=1711990017; c=relaxed/simple;
+	bh=1vn0N1X5qWsarjz7RCZ/2vjtghSGCkz5HSwRyUzLP8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GasnJN98VoQRhXAs06pG457w504DRhCExxqFqRWKxeL+m2hohy8gF2cgqZFhNaZ0Y3aAwd17EgqrX47S5Q/M2MgfKiRQafCl7Pdu4FzEXGTRRr6wtTTlpsDYvoS5o8j8/pftLebb/Hdnfgvvq5yHGA9eKiuNgF5r8QnFUr7FZGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbJqA68O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31ABC433F1;
-	Mon,  1 Apr 2024 17:00:33 +0000 (UTC)
+	 MIME-Version; b=E7uJ11d5wwO3fQ5pyXX60yxDo0TfJoIrIKsR4jpDAeFF2tyd/lT6wAU3QoJH890OLDasJEWQLx0f/Ru7tnUgjPhfgm14VXAPHIDNrpZHrvLBRwuHQTLN6uKhG+UbFYdilg5xwA0V42OcaasHI3rckX8MzKTcBSdY44VxFjajMJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BuFJXMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0484FC433F1;
+	Mon,  1 Apr 2024 16:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990834;
-	bh=2F4HI8lTuremcdxN93PXDP4yfoZj1yfbOdD6O9gyJWI=;
+	s=korg; t=1711990017;
+	bh=1vn0N1X5qWsarjz7RCZ/2vjtghSGCkz5HSwRyUzLP8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbJqA68OcvJZ47IiCaT+hPdJ1y/xH+9NClevf9lXGtOXa7msEF88TUpcMCTK6DbjH
-	 p5Ew6Xd9P+zzEni5C7UnXzn9IB8h1ngrxQJCSCN+IC9jwapZXALuYql2Xert/Lon4l
-	 PPr1DvVemQZbSOp4zjo+Va9f6glq+h4D71YfOr48=
+	b=1BuFJXMWy2MGgBlVz1NNZh5KziBM4pFEinv7hhE/VBlzXlnjLUWnMXTYskp8MaP2K
+	 Z/X36XYkuVYbKgGRrbf0q3Lm5A2x3ddRRwRTevumdrAhG51mWUKcDrkvs7LyuHbVhm
+	 nhsyb0ULD/R+GJGK76QN8VyAWm+dcF/0LlPi19sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/272] mm: swap: fix race between free_swap_and_cache() and swapoff()
-Date: Mon,  1 Apr 2024 17:44:30 +0200
-Message-ID: <20240401152533.098385229@linuxfoundation.org>
+	RD Babiera <rdbabiera@google.com>
+Subject: [PATCH 6.6 222/396] usb: typec: altmodes/displayport: create sysfs nodes as drivers default device attribute group
+Date: Mon,  1 Apr 2024 17:44:31 +0200
+Message-ID: <20240401152554.539166566@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +60,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 82b1c07a0af603e3c47b906c8e991dc96f01688e ]
+commit 165376f6b23e9a779850e750fb2eb06622e5a531 upstream.
 
-There was previously a theoretical window where swapoff() could run and
-teardown a swap_info_struct while a call to free_swap_and_cache() was
-running in another thread.  This could cause, amongst other bad
-possibilities, swap_page_trans_huge_swapped() (called by
-free_swap_and_cache()) to access the freed memory for swap_map.
+The DisplayPort driver's sysfs nodes may be present to the userspace before
+typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
+a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
+hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
+NULL in those cases.
 
-This is a theoretical problem and I haven't been able to provoke it from a
-test case.  But there has been agreement based on code review that this is
-possible (see link below).
+Remove manual sysfs node creation in favor of adding attribute group as
+default for devices bound to the driver. The ATTRIBUTE_GROUPS() macro is
+not used here otherwise the path to the sysfs nodes is no longer compliant
+with the ABI.
 
-Fix it by using get_swap_device()/put_swap_device(), which will stall
-swapoff().  There was an extra check in _swap_info_get() to confirm that
-the swap entry was not free.  This isn't present in get_swap_device()
-because it doesn't make sense in general due to the race between getting
-the reference and swapoff.  So I've added an equivalent check directly in
-free_swap_and_cache().
-
-Details of how to provoke one possible issue (thanks to David Hildenbrand
-for deriving this):
-
---8<-----
-
-__swap_entry_free() might be the last user and result in
-"count == SWAP_HAS_CACHE".
-
-swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
-
-So the question is: could someone reclaim the folio and turn
-si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
-
-Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
-still references by swap entries.
-
-Process 1 still references subpage 0 via swap entry.
-Process 2 still references subpage 1 via swap entry.
-
-Process 1 quits. Calls free_swap_and_cache().
--> count == SWAP_HAS_CACHE
-[then, preempted in the hypervisor etc.]
-
-Process 2 quits. Calls free_swap_and_cache().
--> count == SWAP_HAS_CACHE
-
-Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
-__try_to_reclaim_swap().
-
-__try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
-put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
-swap_entry_free()->swap_range_free()->
-...
-WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
-
-What stops swapoff to succeed after process 2 reclaimed the swap cache
-but before process1 finished its call to swap_page_trans_huge_swapped()?
-
---8<-----
-
-Link: https://lkml.kernel.org/r/20240306140356.3974886-1-ryan.roberts@arm.com
-Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
-Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Link: https://lore.kernel.org/r/20240229001101.3889432-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swapfile.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/usb/typec/altmodes/displayport.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 324844f98d67c..0d6182db44a6a 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1229,6 +1229,11 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
-  * with get_swap_device() and put_swap_device(), unless the swap
-  * functions call get/put_swap_device() by themselves.
-  *
-+ * Note that when only holding the PTL, swapoff might succeed immediately
-+ * after freeing a swap entry. Therefore, immediately after
-+ * __swap_entry_free(), the swap info might become stale and should not
-+ * be touched without a prior get_swap_device().
-+ *
-  * Check whether swap entry is valid in the swap device.  If so,
-  * return pointer to swap_info_struct, and keep the swap entry valid
-  * via preventing the swap device from being swapoff, until
-@@ -1630,13 +1635,19 @@ int free_swap_and_cache(swp_entry_t entry)
- 	if (non_swap_entry(entry))
- 		return 1;
- 
--	p = _swap_info_get(entry);
-+	p = get_swap_device(entry);
- 	if (p) {
-+		if (WARN_ON(data_race(!p->swap_map[swp_offset(entry)]))) {
-+			put_swap_device(p);
-+			return 0;
-+		}
-+
- 		count = __swap_entry_free(p, entry);
- 		if (count == SWAP_HAS_CACHE &&
- 		    !swap_page_trans_huge_swapped(p, entry))
- 			__try_to_reclaim_swap(p, swp_offset(entry),
- 					      TTRS_UNMAPPED | TTRS_FULL);
-+		put_swap_device(p);
- 	}
- 	return p != NULL;
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -554,16 +554,21 @@ static ssize_t hpd_show(struct device *d
  }
--- 
-2.43.0
-
+ static DEVICE_ATTR_RO(hpd);
+ 
+-static struct attribute *dp_altmode_attrs[] = {
++static struct attribute *displayport_attrs[] = {
+ 	&dev_attr_configuration.attr,
+ 	&dev_attr_pin_assignment.attr,
+ 	&dev_attr_hpd.attr,
+ 	NULL
+ };
+ 
+-static const struct attribute_group dp_altmode_group = {
++static const struct attribute_group displayport_group = {
+ 	.name = "displayport",
+-	.attrs = dp_altmode_attrs,
++	.attrs = displayport_attrs,
++};
++
++static const struct attribute_group *displayport_groups[] = {
++	&displayport_group,
++	NULL,
+ };
+ 
+ int dp_altmode_probe(struct typec_altmode *alt)
+@@ -571,7 +576,6 @@ int dp_altmode_probe(struct typec_altmod
+ 	const struct typec_altmode *port = typec_altmode_get_partner(alt);
+ 	struct fwnode_handle *fwnode;
+ 	struct dp_altmode *dp;
+-	int ret;
+ 
+ 	/* FIXME: Port can only be DFP_U. */
+ 
+@@ -582,10 +586,6 @@ int dp_altmode_probe(struct typec_altmod
+ 	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo)))
+ 		return -ENODEV;
+ 
+-	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
+-	if (ret)
+-		return ret;
+-
+ 	dp = devm_kzalloc(&alt->dev, sizeof(*dp), GFP_KERNEL);
+ 	if (!dp)
+ 		return -ENOMEM;
+@@ -619,7 +619,6 @@ void dp_altmode_remove(struct typec_altm
+ {
+ 	struct dp_altmode *dp = typec_altmode_get_drvdata(alt);
+ 
+-	sysfs_remove_group(&alt->dev.kobj, &dp_altmode_group);
+ 	cancel_work_sync(&dp->work);
+ 
+ 	if (dp->connector_fwnode) {
+@@ -644,6 +643,7 @@ static struct typec_altmode_driver dp_al
+ 	.driver = {
+ 		.name = "typec_displayport",
+ 		.owner = THIS_MODULE,
++		.dev_groups = displayport_groups,
+ 	},
+ };
+ module_typec_altmode_driver(dp_altmode_driver);
 
 
 
