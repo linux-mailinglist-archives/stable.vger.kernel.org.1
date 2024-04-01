@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-34869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8466C89413C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DE9893F7C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 148FFB20B6A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C9FC28466C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4293B2A4;
-	Mon,  1 Apr 2024 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD9747A62;
+	Mon,  1 Apr 2024 16:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fwmjj4/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxSwt9uL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586091E86C;
-	Mon,  1 Apr 2024 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983064596E;
+	Mon,  1 Apr 2024 16:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989571; cv=none; b=pLhI8HRgaw1KE/d+uk7jk8wbRq9gTCK8BXjNDb6HycvrgFA9QD/bwZZT9u8bPqH6RzmupRaxaWJhYBgD5HV7VSWna8RKXYlN//nzWgmy+VfuInESlYpciieXt1gx2DzALyRfSZu1v48Kb6fZqEvRgzo0Mc/EAi1uYSfMVbDNz3g=
+	t=1711988230; cv=none; b=a7i8OeV1RVBHJazSPoV9n48o8t3I4ycxETj/ISaODzviLHOVukweokjYumg6G8CdO3D0IwtysYBLT5Hby7Jv4VoRe9OPyKOzmF0qQ/MhS2EB4wKKi88PHukFUREVu3h+1jLJ2UV9g5xzu+QmXF6UPIfHRRufmAnc3Bz7jcqlosY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989571; c=relaxed/simple;
-	bh=/NIhdgEzIfpuHCFm8tiw/y6Yv7bwNdpHv0nC9L04/A0=;
+	s=arc-20240116; t=1711988230; c=relaxed/simple;
+	bh=ZnYgnHHqnq5SRg6aqEJyMw0F9ufE8pcyAlR51FfZQwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQt3MlNjWwfItusD/XLWEeIRZQKRFTmQeT3tZ+nESHdGPj21pBcdwunCgR9dt3DlfYtMn7b+vjEJ0JefwBcIPBWUXui2XtnqaHjd0QAw32pqMCMPos8TgDOP2dJfbw1Ge9AfRx4Pfd0hEl3o8hYWJaRa+5mcUedVBzmPM+Lp1W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fwmjj4/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98E3C433F1;
-	Mon,  1 Apr 2024 16:39:30 +0000 (UTC)
+	 MIME-Version; b=GYFwPZw6T50BBVNdOa3L3OlNL3jLz+Q3ZkFXImoguVYLMLwwfdC9hYC8XMdZleSmAsxK+vg0u7gB1Q3kJpVSOpQz0lOwPGWaLNM151mJqt6Rupuitk8iUQ44iBjRQkN83bXAWXILcTenDahOpdK+fX60UFU96GnBukfs52LwMBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxSwt9uL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE04C433F1;
+	Mon,  1 Apr 2024 16:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989571;
-	bh=/NIhdgEzIfpuHCFm8tiw/y6Yv7bwNdpHv0nC9L04/A0=;
+	s=korg; t=1711988230;
+	bh=ZnYgnHHqnq5SRg6aqEJyMw0F9ufE8pcyAlR51FfZQwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fwmjj4/l2XwKkNnq+noWtudh/eXjLa6Gyw/deMn4Y3Uow7YERFQQXRFffi9IxNJiF
-	 04GOhcHCd4iqnhAlM7TQkkfktQNazRIUbn++3csHBuu2k0zhilYQQGSib/vbowzg3o
-	 6jJG4YiMI0YsYd2LPrpfk6+zMNWT91jbdV83chus=
+	b=kxSwt9uLlnxiTlbqY+/7rD8rlg8KsehzGmOdncOAqv+aUR+H8x+bgeVKLs1Koh3l5
+	 B1fvxgg6Ckxt30f5TWVkB+Dnzw2XdLgTSdg41JDvGuLFmGrOorNCkWdr12EqnPa/ET
+	 jxchTVDjdZqBQLsG/uwXF5Q3lc53CiXW+8T1vQXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/396] iio: adc: rockchip_saradc: fix bitmask for channels on SARADCv2
+Subject: [PATCH 6.7 122/432] nvmem: meson-efuse: fix function pointer type mismatch
 Date: Mon,  1 Apr 2024 17:41:49 +0200
-Message-ID: <20240401152549.713807181@linuxfoundation.org>
+Message-ID: <20240401152556.760700068@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit b0a4546df24a4f8c59b2d05ae141bd70ceccc386 ]
+[ Upstream commit cbd38332c140829ab752ba4e727f98be5c257f18 ]
 
-The SARADCv2 on RK3588 (the only SoC currently supported that has an
-SARADCv2) selects the channel through the channel_sel bitfield which is
-the 4 lowest bits, therefore the mask should be GENMASK(3, 0) and not
-GENMASK(15, 0).
+clang-16 warns about casting functions to incompatible types, as is done
+here to call clk_disable_unprepare:
 
-Fixes: 757953f8ec69 ("iio: adc: rockchip_saradc: Add support for RK3588")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20240223-saradcv2-chan-mask-v1-1-84b06a0f623a@theobroma-systems.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+drivers/nvmem/meson-efuse.c:78:12: error: cast from 'void (*)(struct clk *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+   78 |                                        (void(*)(void *))clk_disable_unprepare,
+
+The pattern of getting, enabling and setting a disable callback for a
+clock can be replaced with devm_clk_get_enabled(), which also fixes
+this warning.
+
+Fixes: 611fbca1c861 ("nvmem: meson-efuse: add peripheral clock")
+Cc: Stable@vger.kernel.org
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240224114023.85535-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/rockchip_saradc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/meson-efuse.c | 25 +++----------------------
+ 1 file changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index dd94667a623bd..2da8d6f3241a1 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -52,7 +52,7 @@
- #define SARADC2_START			BIT(4)
- #define SARADC2_SINGLE_MODE		BIT(5)
+diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
+index b922df99f9bc3..33678d0af2c24 100644
+--- a/drivers/nvmem/meson-efuse.c
++++ b/drivers/nvmem/meson-efuse.c
+@@ -47,7 +47,6 @@ static int meson_efuse_probe(struct platform_device *pdev)
+ 	struct nvmem_config *econfig;
+ 	struct clk *clk;
+ 	unsigned int size;
+-	int ret;
  
--#define SARADC2_CONV_CHANNELS GENMASK(15, 0)
-+#define SARADC2_CONV_CHANNELS GENMASK(3, 0)
+ 	sm_np = of_parse_phandle(pdev->dev.of_node, "secure-monitor", 0);
+ 	if (!sm_np) {
+@@ -60,27 +59,9 @@ static int meson_efuse_probe(struct platform_device *pdev)
+ 	if (!fw)
+ 		return -EPROBE_DEFER;
  
- struct rockchip_saradc;
+-	clk = devm_clk_get(dev, NULL);
+-	if (IS_ERR(clk)) {
+-		ret = PTR_ERR(clk);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get efuse gate");
+-		return ret;
+-	}
+-
+-	ret = clk_prepare_enable(clk);
+-	if (ret) {
+-		dev_err(dev, "failed to enable gate");
+-		return ret;
+-	}
+-
+-	ret = devm_add_action_or_reset(dev,
+-				       (void(*)(void *))clk_disable_unprepare,
+-				       clk);
+-	if (ret) {
+-		dev_err(dev, "failed to add disable callback");
+-		return ret;
+-	}
++	clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(clk))
++		return dev_err_probe(dev, PTR_ERR(clk), "failed to get efuse gate");
  
+ 	if (meson_sm_call(fw, SM_EFUSE_USER_MAX, &size, 0, 0, 0, 0, 0) < 0) {
+ 		dev_err(dev, "failed to get max user");
 -- 
 2.43.0
 
