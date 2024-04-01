@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-34891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0FC894152
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47878893FB0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 036EE282F5D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0276D2850D3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4658A3B2A4;
-	Mon,  1 Apr 2024 16:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DD9481C6;
+	Mon,  1 Apr 2024 16:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVxQOfGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPH1/Lub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF031481B8;
-	Mon,  1 Apr 2024 16:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224B5481B8;
+	Mon,  1 Apr 2024 16:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989645; cv=none; b=AeajSw4NGcKjwTADZ4MSvUulQvBbEFFZYjoi7W/Eju6k3u8COEVjA/sucZZ5wZuzt4RrAulqTjAoGZNCP2fv2uDhqUQdawVJjB3xlzJcE2BKCtuDOS6vTQGOXLMTCzSbZsB5lbvJEYlmPO4Sp12eNC4R/1IbQfEXBpvhRgldrqk=
+	t=1711988394; cv=none; b=EIoMVtBeY04wb3nc+tRzBIqPMmOAF2GwgfL0pGxH3ntGFXVquVQLN0BLbub9hD0SNuvi6X/dL7o9cd/XQt+CP6sMtW7yVSlwfmT0zqBOfKuEW1m8yfMnkcWEgYriLPgQufJQMyuGhZLWxQ8A2YI8PrNLAPaskU3kRjcq0ITF3gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989645; c=relaxed/simple;
-	bh=UM8RnadtpIG3qsly399S6c+WFVuvS3UgVMZeKlV1mOo=;
+	s=arc-20240116; t=1711988394; c=relaxed/simple;
+	bh=syDIcOGuQ5x3XaMRqb5VMy4beB0e7UlmOq95i7sZ0Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5YfbAMedV92gzHEh88jQKTKoIMK46ohrmd2zozlPaZ4C7SKxKVIPpgYkkEkI7KCHm+Vw3wfeUsQsV84CwHqGkuw32QO32bGV+3oNNsiJMYLtiTEqqRkt68Rs4BSzXkDFnG3ms4NB3A8+NVbIuLNu4T0JYj/YzUi6u7AG91YEGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVxQOfGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9FCC433F1;
-	Mon,  1 Apr 2024 16:40:44 +0000 (UTC)
+	 MIME-Version; b=aoNZ0Tsq4+UotnScrA8YsqYHQIkW4zvGV/GeiHKXRi+38qoF8cb/l6jIv9ykLglyOGtsBjPG/nVSn2ZxzEmSV3DGeKGBiMGSHLPeCHl5Rzs9DQ8biQrgRJb3oVwSakN1kKXNKfcEB4t626GOnwZsX47+Ne8oNJFGSyqMnnd07J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPH1/Lub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC2BC43141;
+	Mon,  1 Apr 2024 16:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989644;
-	bh=UM8RnadtpIG3qsly399S6c+WFVuvS3UgVMZeKlV1mOo=;
+	s=korg; t=1711988393;
+	bh=syDIcOGuQ5x3XaMRqb5VMy4beB0e7UlmOq95i7sZ0Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVxQOfGATo9dZaHbeMPBFhxopjhwUmoY3phX7m8dNb+aYs5H50qJV3sLPNQiAIfvt
-	 MJVYD9DIRlUcbH/66IBeOSzcSnpcFLIN4p7KxraF8Whagx80YEtUQpAsJRXR1k21PJ
-	 jub5+5drWyA6l07IjooDoz1cWxelbZwB7XLAUcbI=
+	b=MPH1/LubmYNl6w2W8cwgLcz007xD5/ODYn0X+qe4jG1eO9OBIyjDq7vAZMCussgLe
+	 xrq028/rRlkx1r+CFmvVOAsM+0bptigrp+Q9pJRtybfqYFxDLieEw0JoUmZR0X7Q8d
+	 yWxM+IdkPOdSQVrQHYCUs08upA1xNk1v27htGgNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Zhiguo Niu <Zhiguo.Niu@unisoc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/396] phy: tegra: xusb: Add API to retrieve the port number of phy
+Subject: [PATCH 6.7 172/432] Revert "block/mq-deadline: use correct way to throttling write requests"
 Date: Mon,  1 Apr 2024 17:42:39 +0200
-Message-ID: <20240401152551.198127405@linuxfoundation.org>
+Message-ID: <20240401152558.278060829@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit d843f031d9e90462253015bc0bd9e3852d206bf2 ]
+[ Upstream commit 256aab46e31683d76d45ccbedc287b4d3f3e322b ]
 
-This patch introduces a new API, tegra_xusb_padctl_get_port_number,
-to the Tegra XUSB Pad Controller driver. This API is used to identify
-the USB port that is associated with a given PHY.
-
-The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
-and returns the corresponding port number. If the PHY pointer is invalid,
-it returns -ENODEV.
+The code "max(1U, 3 * (1U << shift)  / 4)" comes from the Kyber I/O
+scheduler. The Kyber I/O scheduler maintains one internal queue per hwq
+and hence derives its async_depth from the number of hwq tags. Using
+this approach for the mq-deadline scheduler is wrong since the
+mq-deadline scheduler maintains one internal queue for all hwqs
+combined. Hence this revert.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20240307030328.1487748-2-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Zhiguo Niu <Zhiguo.Niu@unisoc.com>
+Fixes: d47f9717e5cf ("block/mq-deadline: use correct way to throttling write requests")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240313214218.1736147-1-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c       | 13 +++++++++++++
- include/linux/phy/tegra/xusb.h |  1 +
- 2 files changed, 14 insertions(+)
+ block/mq-deadline.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-index 142ebe0247cc0..983a6e6173bd2 100644
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -1531,6 +1531,19 @@ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
- }
- EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_usb3_companion);
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index f958e79277b8b..02a916ba62ee7 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -646,9 +646,8 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
+ 	struct request_queue *q = hctx->queue;
+ 	struct deadline_data *dd = q->elevator->elevator_data;
+ 	struct blk_mq_tags *tags = hctx->sched_tags;
+-	unsigned int shift = tags->bitmap_tags.sb.shift;
  
-+int tegra_xusb_padctl_get_port_number(struct phy *phy)
-+{
-+	struct tegra_xusb_lane *lane;
-+
-+	if (!phy)
-+		return -ENODEV;
-+
-+	lane = phy_get_drvdata(phy);
-+
-+	return lane->index;
-+}
-+EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_port_number);
-+
- MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
- MODULE_DESCRIPTION("Tegra XUSB Pad Controller driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/phy/tegra/xusb.h b/include/linux/phy/tegra/xusb.h
-index 70998e6dd6fdc..6ca51e0080ec0 100644
---- a/include/linux/phy/tegra/xusb.h
-+++ b/include/linux/phy/tegra/xusb.h
-@@ -26,6 +26,7 @@ void tegra_phy_xusb_utmi_pad_power_down(struct phy *phy);
- int tegra_phy_xusb_utmi_port_reset(struct phy *phy);
- int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
- 					 unsigned int port);
-+int tegra_xusb_padctl_get_port_number(struct phy *phy);
- int tegra_xusb_padctl_enable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy,
- 					   enum usb_device_speed speed);
- int tegra_xusb_padctl_disable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy);
+-	dd->async_depth = max(1U, 3 * (1U << shift)  / 4);
++	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
+ 
+ 	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
+ }
 -- 
 2.43.0
 
