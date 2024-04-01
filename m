@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AA1893ED7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4223889423C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AAA1F212EA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73D7C1C21B89
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F72547A5D;
-	Mon,  1 Apr 2024 16:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D1E481D7;
+	Mon,  1 Apr 2024 16:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NobWLt3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rc9Iu0Km"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1958446AC;
-	Mon,  1 Apr 2024 16:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67C340876;
+	Mon,  1 Apr 2024 16:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987723; cv=none; b=FwnvEH+vRZQDw8S1zuTDQKUAlVOxs6/xMdaXhOdt7hfXZh87R8xTy5/j1Lnyu409UECp5kLH1kej4pBy7pJaS/D3CWlvGb6fZxcG7amKmWTaHgbD5R6kFbESMXH+B59eh0Q7BWcgNen6TNVxyclWNGJM0bngIIBNM7gdLOstaTI=
+	t=1711990241; cv=none; b=BcWOxHkwhrSMVG75owPSf0kIOCeaVc1cjZ04dEGTo99oiudH6J27BY9eITG6HmNjfploEZy/2wnm3Lb4NUbhuStRaqJ95gIPyeLHZi+zLMtIkvNiz95jiD9D137E29IuuDfrKFMFa6eZeYebN+5oqmQQ/kXwv7fkBEL1OyRQ/NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987723; c=relaxed/simple;
-	bh=k2QJ5pQJYX29Tx3aQVRdlFkSWJQQp35czrOAZS9C2IA=;
+	s=arc-20240116; t=1711990241; c=relaxed/simple;
+	bh=9+Wa5HP77h5phw56+vIBjCVHuCv6duYsTXPFHQuw47Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUaQoYiHPbvPLkXaWlVNEU3g5WyvqOIq8tuO1Y4aECgFQpDoP2tNZpozxoq1YUoxw54jyYjT5S+TTNAQVV3efdSk1nlt+YfYQdw5hv9jQQ/IADuKePEvsTQ2uxOamak0+dSL0ixf7tW7WJM227n7uTBCctXS1/nCuXOEA6yne/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NobWLt3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67028C433C7;
-	Mon,  1 Apr 2024 16:08:42 +0000 (UTC)
+	 MIME-Version; b=WsJhPnkrlWe/C5QqlImykdfkufGQSbmklBhA38a0brBHTIQyoPNfV05ynuHVdq6bhbhoidht026RUjkvBPYs+Aw9YsPpEMgjAwdXWXu9TSY3NO/9z5fBhICP+GxprOkTCrEsDoM9f3R7ekO0LHj5ofZap78CsK+dChj5k+m2ZQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rc9Iu0Km; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D6FC433F1;
+	Mon,  1 Apr 2024 16:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987722;
-	bh=k2QJ5pQJYX29Tx3aQVRdlFkSWJQQp35czrOAZS9C2IA=;
+	s=korg; t=1711990240;
+	bh=9+Wa5HP77h5phw56+vIBjCVHuCv6duYsTXPFHQuw47Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NobWLt3Wd8OTKGtMg9IIuDgt2F0K8+Tyq+dqsQgxoQS+RmLheXOreWQXp0qNt++sf
-	 QktJhlAbZr5dyzshz1p1myNSRCPFEwfs53XruxsCifdCWoUQ5ND/XdMbP96/Hug47c
-	 7YGa88NoKbyrcuylBoBEf9orVtqp/HIFEU2QswKs=
+	b=Rc9Iu0Kmk9b/YmhTD5gcgiyql2uBDoHQ+WW+NILWgQjDbDYJyb71E74YjXORW4NPr
+	 nw2zrY4CPh0IX4P130aQA7k4rg5B8DsUvMd/iOumovX2/XsTKiFjYPao56NElKTDGq
+	 2H6s/TQOJqpjnWGv9NwluosPWHawX+DQoDSm4Fd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.8 373/399] usb: typec: ucsi: Check for notifications after init
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 290/396] swiotlb: Fix alignment checks when both allocation and DMA masks are present
 Date: Mon,  1 Apr 2024 17:45:39 +0200
-Message-ID: <20240401152600.313171411@linuxfoundation.org>
+Message-ID: <20240401152556.550855173@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Will Deacon <will@kernel.org>
 
-commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
+[ Upstream commit 51b30ecb73b481d5fac6ccf2ecb4a309c9ee3310 ]
 
-The completion notification for the final SET_NOTIFICATION_ENABLE
-command during initialization can include a connector change
-notification.  However, at the time this completion notification is
-processed, the ucsi struct is not ready to handle this notification.
-As a result the notification is ignored and the controller
-never sends an interrupt again.
+Nicolin reports that swiotlb buffer allocations fail for an NVME device
+behind an IOMMU using 64KiB pages. This is because we end up with a
+minimum allocation alignment of 64KiB (for the IOMMU to map the buffer
+safely) but a minimum DMA alignment mask corresponding to a 4KiB NVME
+page (i.e. preserving the 4KiB page offset from the original allocation).
+If the original address is not 4KiB-aligned, the allocation will fail
+because swiotlb_search_pool_area() erroneously compares these unmasked
+bits with the 64KiB-aligned candidate allocation.
 
-Re-check CCI for a pending connector state change after
-initialization is complete. Adjust the corresponding debug
-message accordingly.
+Tweak swiotlb_search_pool_area() so that the DMA alignment mask is
+reduced based on the required alignment of the allocation.
 
-Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+Link: https://lore.kernel.org/r/cover.1707851466.git.nicolinc@nvidia.com
+Reported-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ kernel/dma/swiotlb.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -958,7 +958,7 @@ void ucsi_connector_change(struct ucsi *
- 	struct ucsi_connector *con = &ucsi->connector[num - 1];
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index ded5a1f9e8f82..675ae318f74f8 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -981,8 +981,7 @@ static int swiotlb_area_find_slots(struct device *dev, struct io_tlb_pool *pool,
+ 	dma_addr_t tbl_dma_addr =
+ 		phys_to_dma_unencrypted(dev, pool->start) & boundary_mask;
+ 	unsigned long max_slots = get_max_slots(boundary_mask);
+-	unsigned int iotlb_align_mask =
+-		dma_get_min_align_mask(dev) & ~(IO_TLB_SIZE - 1);
++	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
+ 	unsigned int nslots = nr_slots(alloc_size), stride;
+ 	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
+ 	unsigned int index, slots_checked, count = 0, i;
+@@ -993,6 +992,14 @@ static int swiotlb_area_find_slots(struct device *dev, struct io_tlb_pool *pool,
+ 	BUG_ON(!nslots);
+ 	BUG_ON(area_index >= pool->nareas);
  
- 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
--		dev_dbg(ucsi->dev, "Bogus connector change event\n");
-+		dev_dbg(ucsi->dev, "Early connector change event\n");
- 		return;
- 	}
- 
-@@ -1355,6 +1355,7 @@ static int ucsi_init(struct ucsi *ucsi)
- {
- 	struct ucsi_connector *con, *connector;
- 	u64 command, ntfy;
-+	u32 cci;
- 	int ret;
- 	int i;
- 
-@@ -1407,6 +1408,13 @@ static int ucsi_init(struct ucsi *ucsi)
- 
- 	ucsi->connector = connector;
- 	ucsi->ntfy = ntfy;
++	/*
++	 * Ensure that the allocation is at least slot-aligned and update
++	 * 'iotlb_align_mask' to ignore bits that will be preserved when
++	 * offsetting into the allocation.
++	 */
++	alloc_align_mask |= (IO_TLB_SIZE - 1);
++	iotlb_align_mask &= ~alloc_align_mask;
 +
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret)
-+		return ret;
-+	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
-+		ucsi_connector_change(ucsi, cci);
-+
- 	return 0;
- 
- err_unregister:
+ 	/*
+ 	 * For mappings with an alignment requirement don't bother looping to
+ 	 * unaligned slots once we found an aligned one.
+-- 
+2.43.0
+
 
 
 
