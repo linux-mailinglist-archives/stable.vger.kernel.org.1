@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-34906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB5F894162
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B22893FC1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECCAE282F1F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8A891F217FA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06DA4654F;
-	Mon,  1 Apr 2024 16:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1113E4778E;
+	Mon,  1 Apr 2024 16:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9cr6CK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFsAdir9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC5C40876;
-	Mon,  1 Apr 2024 16:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A313D961;
+	Mon,  1 Apr 2024 16:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989696; cv=none; b=GH+LBy9B1QQHBwS4SMS7VlEMO/4zQY1kPECaWfgWHLAaZtvh78yzb/9frr/LdJyiE/B91BqGwhbPdp3fKZxTNXo54hWWPBcnI+19v3Bw8gNp43lfgNjblWnz49D7maquwF9Skxqy0lPV7G+vp1Ryl9dNv75KJVw+937k6VWTQ2I=
+	t=1711988451; cv=none; b=aTc6b6VdmqG5wy9lU28t4p/qkvf0MezHY4IBoRuOyryNvZ+EcK7x3o4hMtz2LxxXUl6vRxlf6/UhSmOqotkdWn6Y2Cs+XMP2WC3VJ7TNSQ2bqkliD7zeY2TyctVtPAPdjAaqaQUbBp41FdeuO2azH4Br6WSnROItWI8tfqNqhqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989696; c=relaxed/simple;
-	bh=ipAEloZ2M3Bkoqd90FT7+ReqBpjGclYRVtPJwDm4/4c=;
+	s=arc-20240116; t=1711988451; c=relaxed/simple;
+	bh=O9DsyFeNTSEjt1ovcjgT7xRp7lYWszFigJMWskjspic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sP2XcV7lECdKi/ZVu7WfiOYilLpqYuuuRg1X2dg+zv26gwjoUrpj9MYRvd0TjFRky6JcC+6mfT+lHhf7VPa1zXoKztm6llCz/jUa9E9rn+J1pQ03C3P35YGbyoYxLFeQuAS66lhm4eB/PqVY8/WnFqZ3M3E0wcNeJjjlDwhTD/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9cr6CK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1869C433F1;
-	Mon,  1 Apr 2024 16:41:35 +0000 (UTC)
+	 MIME-Version; b=dt7jCyD1kDgqtJMxCYcnneZK+tTZXvTb+UK95IpXK7xp1LUB6UQQgAo7X0ri0pHMfV8pefv47xTEzaq6h7B3ZZ0LHIVB/f3fsic8k/PuUlZLCMWv/SPn86opgHt9BIyiW/Bqd6g6ulWlly4aP85m/G/ghdmWb7y7ADRTJeTMLkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFsAdir9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3293DC433F1;
+	Mon,  1 Apr 2024 16:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989696;
-	bh=ipAEloZ2M3Bkoqd90FT7+ReqBpjGclYRVtPJwDm4/4c=;
+	s=korg; t=1711988451;
+	bh=O9DsyFeNTSEjt1ovcjgT7xRp7lYWszFigJMWskjspic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9cr6CK6OQbmiFvm0xuRCtXsxKzvkdoFRbrG0QkVXoghC8D6au9MS+PTEraSW5kPC
-	 hQaSUsg/aLPmDcyixY8x0jaK1N/fp1q2IQJDoNurWAFBuJ9wib0lpnJFvYO1KvzLv3
-	 6K0wZaf+fypVrPOB5ReX2FIO4JAdWMuPEkwvriGg=
+	b=tFsAdir9CpHQfNKOcpQa2uyP9RxrsdOKXqLot60oI7yE01vK7dr0dS1PBgPk25wUW
+	 pMZ+WX6NHUfW5S9pXYOUwq+0Ip7zbGFM8pw9hwAK8MhVvhylT7XwemwCbOqJnWO05j
+	 mKDJ1TDGzNypaO4A2MVAW0z2KJQWVha9f8cc3KXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Wunderlich <frank-w@public-files.de>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/396] thermal/drivers/mediatek: Fix control buffer enablement on MT7896
+Subject: [PATCH 6.7 188/432] io_uring/waitid: always remove waitid entry for cancel all
 Date: Mon,  1 Apr 2024 17:42:55 +0200
-Message-ID: <20240401152551.675135851@linuxfoundation.org>
+Message-ID: <20240401152558.749067258@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Wunderlich <frank-w@public-files.de>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 371ed6263e2403068b359f0c07188548c2d70827 ]
+[ Upstream commit 2b35b8b43e07b1a6f06fdd84cf4b9eb24785896d ]
 
-Reading thermal sensor on mt7986 devices returns invalid temperature:
+We know the request is either being removed, or already in the process of
+being removed through task_work, so we can delete it from our waitid list
+upfront. This is important for remove all conditions, as we otherwise
+will find it multiple times and prevent cancelation progress.
 
-bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
- -274000
-
-Fix this by adding missing members in mtk_thermal_data struct which were
-used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
+Remove the dead check in cancelation as well for the hash_node being
+empty or not. We already have a waitid reference check for ownership,
+so we don't need to check the list too.
 
 Cc: stable@vger.kernel.org
-Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230907112018.52811-1-linux@fw-web.de
+Fixes: f31ecf671ddc ("io_uring: add IORING_OP_WAITID support")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/auxadc_thermal.c | 3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/waitid.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
-index 8b0edb2048443..9ee2e7283435a 100644
---- a/drivers/thermal/mediatek/auxadc_thermal.c
-+++ b/drivers/thermal/mediatek/auxadc_thermal.c
-@@ -690,6 +690,9 @@ static const struct mtk_thermal_data mt7986_thermal_data = {
- 	.adcpnp = mt7986_adcpnp,
- 	.sensor_mux_values = mt7986_mux_values,
- 	.version = MTK_THERMAL_V3,
-+	.apmixed_buffer_ctl_reg = APMIXED_SYS_TS_CON1,
-+	.apmixed_buffer_ctl_mask = GENMASK(31, 6) | BIT(3),
-+	.apmixed_buffer_ctl_set = BIT(0),
- };
+diff --git a/io_uring/waitid.c b/io_uring/waitid.c
+index 6f851978606d9..77d340666cb95 100644
+--- a/io_uring/waitid.c
++++ b/io_uring/waitid.c
+@@ -125,12 +125,6 @@ static void io_waitid_complete(struct io_kiocb *req, int ret)
  
- static bool mtk_thermal_temp_is_valid(int temp)
+ 	lockdep_assert_held(&req->ctx->uring_lock);
+ 
+-	/*
+-	 * Did cancel find it meanwhile?
+-	 */
+-	if (hlist_unhashed(&req->hash_node))
+-		return;
+-
+ 	hlist_del_init(&req->hash_node);
+ 
+ 	ret = io_waitid_finish(req, ret);
+@@ -202,6 +196,7 @@ bool io_waitid_remove_all(struct io_ring_ctx *ctx, struct task_struct *task,
+ 	hlist_for_each_entry_safe(req, tmp, &ctx->waitid_list, hash_node) {
+ 		if (!io_match_task_safe(req, task, cancel_all))
+ 			continue;
++		hlist_del_init(&req->hash_node);
+ 		__io_waitid_cancel(ctx, req);
+ 		found = true;
+ 	}
 -- 
 2.43.0
 
