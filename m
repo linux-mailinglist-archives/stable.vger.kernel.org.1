@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA4A894235
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48210893ED4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5326A1F22816
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F190E282632
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9A141232;
-	Mon,  1 Apr 2024 16:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A069847A5D;
+	Mon,  1 Apr 2024 16:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMhp02Rk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xtc5icRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC868F5C;
-	Mon,  1 Apr 2024 16:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E83E481C6;
+	Mon,  1 Apr 2024 16:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990228; cv=none; b=Z2fYPD3VmLKNEKGy9m9AnKU5SV9TfqnY4WVM7YwDRKMILGHdxQddwjUlh9tEWSEnD0TKWyBAFzgmrVPRaedeDdcOLFX/OfbGi701YokCQTDxdgVQpgWWyID18mW8JSlg57WAFVIGnGH8v4HUjVSoHMrIoY68dPNXW1eQte/cKi4=
+	t=1711987709; cv=none; b=BBrs5tI1iNOmhg0NbNa4zh+lkd3RtuyVMPKEAyeJNsD0H95Osv2Eugdkj2L49uXntRcaG/Egk7Uz0eFDOupUAl3B3AruH28raMo5CwVnt26qjBOo1ajE0+NKBxxr2rcK9vpHJ3gZZs2X8MpRdgGCLco9o0cnD0Spx9wT8gmS0yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990228; c=relaxed/simple;
-	bh=KqfnW2k/QWselBQYZacYYscbYIcVau2/MYm4fYDjazA=;
+	s=arc-20240116; t=1711987709; c=relaxed/simple;
+	bh=+iDSsduQsBF1L1X8ULMAvCau10F+2KukV1MO9hNDekc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m4bKG0822KjKCTGheAezOTU+VaqnlW1cejJBC/3mdtjopCsentih5JuNpfz0emMemdTIxhNAqyaZ0RfpQ7fL/eIKKgS4ZuXifrLzQzgwr55o/3yq6YUB6A+py/7IbAqQOB0J+KXt7q4DBUdet+Z4slZ1e9hTG3NRgpI2VbswZ2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMhp02Rk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4B7C433C7;
-	Mon,  1 Apr 2024 16:50:27 +0000 (UTC)
+	 MIME-Version; b=PN9MWNOUZqaXLNHXsGGXm9Zlwa+0mDtByi1tsk7F0Dj4EfHaQDrIXe5PRemIoAJIc5rPN8+Y6pcx/XbSZw0asDx1nm31/wTrlUfTCoFsYBlYoGXp5ngEpa8N8meCJTNehM1YqG5KxALoidZGflXHa1gGA1XY67EsyEiTonCDZ5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xtc5icRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9ED3C43394;
+	Mon,  1 Apr 2024 16:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990228;
-	bh=KqfnW2k/QWselBQYZacYYscbYIcVau2/MYm4fYDjazA=;
+	s=korg; t=1711987709;
+	bh=+iDSsduQsBF1L1X8ULMAvCau10F+2KukV1MO9hNDekc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMhp02Rkh/5zcOjIpJti0OfJBGeb0TXz4kARcXj7cZMpz+TMgHxz7QRlVaoVTdd8k
-	 tCgM4fr5Pn3Ut/SMJuM4iTa+kCZeUKaEmcMmPQw+4mt4jwTebo2cwmxC6o5FSKAgB+
-	 Ja9GZc/pqR6mq7HBN+6O5Ndn1bcWdVdDDxye0nxo=
+	b=Xtc5icRbA0MUV+qxP0jyWoMO6kN+PQNEGrM8sspk+7/tz2ZQTDFgkW8HBMqswu+19
+	 kHgqFCzr2WM6v/6znWdxiShTbYOJIN1VrDMmmxPiFcUeECluObd731qa8lkdPjz+Ma
+	 XzjiQIgTDX2CbIQ9YeyNOxa/j6ESWUIrWHn+aqqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Rapoport <rppt@linux.ibm.com>,
-	Yongqiang Liu <liuyongqiang13@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 286/396] ARM: 9359/1: flush: check if the folio is reserved for no-mapping addresses
+	Kyle Tso <kyletso@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.8 369/399] usb: typec: tcpm: Correct port source pdo array in pd_set callback
 Date: Mon,  1 Apr 2024 17:45:35 +0200
-Message-ID: <20240401152556.434036404@linuxfoundation.org>
+Message-ID: <20240401152600.191642477@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongqiang Liu <liuyongqiang13@huawei.com>
+From: Kyle Tso <kyletso@google.com>
 
-[ Upstream commit 0c66c6f4e21cb22220cbd8821c5c73fc157d20dc ]
+commit 893cd9469c68a89a34956121685617dbb37497b1 upstream.
 
-Since commit a4d5613c4dc6 ("arm: extend pfn_valid to take into account
-freed memory map alignment") changes the semantics of pfn_valid() to check
-presence of the memory map for a PFN. A valid page for an address which
-is reserved but not mapped by the kernel[1], the system crashed during
-some uio test with the following memory layout:
+In tcpm_pd_set, the array of port source capabilities is port->src_pdo,
+not port->snk_pdo.
 
- node   0: [mem 0x00000000c0a00000-0x00000000cc8fffff]
- node   0: [mem 0x00000000d0000000-0x00000000da1fffff]
- the uio layout is：0xc0900000, 0x100000
-
-the crash backtrace like:
-
-  Unable to handle kernel paging request at virtual address bff00000
-  [...]
-  CPU: 1 PID: 465 Comm: startapp.bin Tainted: G           O      5.10.0 #1
-  Hardware name: Generic DT based system
-  PC is at b15_flush_kern_dcache_area+0x24/0x3c
-  LR is at __sync_icache_dcache+0x6c/0x98
-  [...]
-   (b15_flush_kern_dcache_area) from (__sync_icache_dcache+0x6c/0x98)
-   (__sync_icache_dcache) from (set_pte_at+0x28/0x54)
-   (set_pte_at) from (remap_pfn_range+0x1a0/0x274)
-   (remap_pfn_range) from (uio_mmap+0x184/0x1b8 [uio])
-   (uio_mmap [uio]) from (__mmap_region+0x264/0x5f4)
-   (__mmap_region) from (__do_mmap_mm+0x3ec/0x440)
-   (__do_mmap_mm) from (do_mmap+0x50/0x58)
-   (do_mmap) from (vm_mmap_pgoff+0xfc/0x188)
-   (vm_mmap_pgoff) from (ksys_mmap_pgoff+0xac/0xc4)
-   (ksys_mmap_pgoff) from (ret_fast_syscall+0x0/0x5c)
-  Code: e0801001 e2423001 e1c00003 f57ff04f (ee070f3e)
-  ---[ end trace 09cf0734c3805d52 ]---
-  Kernel panic - not syncing: Fatal exception
-
-So check if PG_reserved was set to solve this issue.
-
-[1]: https://lore.kernel.org/lkml/Zbtdue57RO0QScJM@linux.ibm.com/
-
-Fixes: a4d5613c4dc6 ("arm: extend pfn_valid to take into account freed memory map alignment")
-Suggested-by: Mike Rapoport <rppt@linux.ibm.com>
-Signed-off-by: Yongqiang Liu <liuyongqiang13@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Tso <kyletso@google.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240311144500.3694849-1-kyletso@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mm/flush.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/typec/tcpm/tcpm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mm/flush.c b/arch/arm/mm/flush.c
-index d19d140a10c7d..0749cf8a66371 100644
---- a/arch/arm/mm/flush.c
-+++ b/arch/arm/mm/flush.c
-@@ -296,6 +296,9 @@ void __sync_icache_dcache(pte_t pteval)
- 		return;
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -6117,7 +6117,7 @@ static int tcpm_pd_set(struct typec_port
  
- 	folio = page_folio(pfn_to_page(pfn));
-+	if (folio_test_reserved(folio))
-+		return;
-+
- 	if (cache_is_vipt_aliasing())
- 		mapping = folio_flush_mapping(folio);
- 	else
--- 
-2.43.0
-
+ 	if (data->source_desc.pdo[0]) {
+ 		for (i = 0; i < PDO_MAX_OBJECTS && data->source_desc.pdo[i]; i++)
+-			port->snk_pdo[i] = data->source_desc.pdo[i];
++			port->src_pdo[i] = data->source_desc.pdo[i];
+ 		port->nr_src_pdo = i + 1;
+ 	}
+ 
 
 
 
