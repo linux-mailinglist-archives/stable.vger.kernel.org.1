@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-34837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1AC89411A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B71893F5B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA7B028351B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AE611F22489
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A580D47A6B;
-	Mon,  1 Apr 2024 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316ED1DFFC;
+	Mon,  1 Apr 2024 16:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hW5X76gY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPtqF0+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627B010A3B;
-	Mon,  1 Apr 2024 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C313D961;
+	Mon,  1 Apr 2024 16:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989465; cv=none; b=SUrt0gkuDVsHEUbF+88jUvdMdZyJ7gmZEHZ7AtSG74GMzEM1ALkDmpBCW6MI9JVTttIRBSKzdKhsUvPz21sNB9qJaKn8EVkR8QEodCPnNldFc5coAOc2riEhhREPpSUeh4AdZmO/VyNnVIjF70mS7nndgcRz0GoNLh5wtJcZQFc=
+	t=1711988121; cv=none; b=Yry7ni2VGUTug9WXe4MvUrbcp4zRD/UkcdhI3hpF/lxZgJHOqNBBQi7aHLMKrOBSzGoYbz3H+qrEuddLGpd4jAWhYZPcja2AAqT7TSeUIQVNOgHDiJNzg8IaJV1dWmHd2zz3Z801NnYGgp2hgdPYGKaO+r1VuxOGBAiwdA2+G9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989465; c=relaxed/simple;
-	bh=BtuyZbF6wcEIc6pRwqotNKXSRW44lrjKZc4Nu8CHsZY=;
+	s=arc-20240116; t=1711988121; c=relaxed/simple;
+	bh=AXwC1aBmX/VebUTi9aFU+Qh9KolNcoP95Kby1yEj1ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NCc5fMgBvIv+5WWRPuTJQgjzcK4G2GH1wDh5Gw4k4rEqXJDvUH7diIaOqPbiJD9hqzV9jA/wFdhwhcfPxHPVpPz8Q13nHCAXqgse34yE42nDJEox0oVjrpgEf0zRbI9UCm2kNySGfDAWFwwmqTRcZY0E7mMXiIDTjfyzOVIhBsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hW5X76gY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CD4C433F1;
-	Mon,  1 Apr 2024 16:37:44 +0000 (UTC)
+	 MIME-Version; b=jBxBvUA7t/T9ZARqGGI2l//w/hgpgNxhrlu2OCuaf8Bn+Q7mGMS7eWRrWjJajoZsn5ibC3IFiCwzyAs2fYylBbJcM1i5sVHHZB2rxF5gZaoV9ygwjGZV1qNxHccqUOfSIYqirg7miZ2w91/R0OOgeMb3zip9TEeXLMSgHShRdvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPtqF0+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE2FC433F1;
+	Mon,  1 Apr 2024 16:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989464;
-	bh=BtuyZbF6wcEIc6pRwqotNKXSRW44lrjKZc4Nu8CHsZY=;
+	s=korg; t=1711988121;
+	bh=AXwC1aBmX/VebUTi9aFU+Qh9KolNcoP95Kby1yEj1ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hW5X76gY4Ou/hHtrKcVyHx11vRmZl/e2/WtiWL72oQe0TGCyOsoOL0C7v9nMU67GS
-	 9YUrlRIqeoG7O0WMSx2FyjYMZF9cQfsEh6odK+YW6Xqj4H0P+l0ZzYUc0VirAXiHUt
-	 FiG4zVthnohEBkrqmpniKNccNKZbc86ioDPGrkrk=
+	b=LPtqF0+QuReG7R3+hAUaymmibc5u9FC3G5+PAbg333MKLo46UuUgoZQNnDBBUjobT
+	 fSb+DJog9A/+28cugZfDiWlbSG/wsMWH/GEVY3s92oOW/tKRfNaLjEa3SqzDb1xijA
+	 4WTYAqNKZkduon40ONsyGZrKhrghmLLVDKbh7TR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Natalenko <oleksandr@natalenko.name>,
-	Perry Yuan <Perry.Yuan@amd.com>,
-	Tor Vic <torvic9@mailbox.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Roger Quadros <rogerq@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/396] cpufreq: amd-pstate: Fix min_perf assignment in amd_pstate_adjust_perf()
+Subject: [PATCH 6.7 090/432] usb: dwc3-am62: fix module unload/reload behavior
 Date: Mon,  1 Apr 2024 17:41:17 +0200
-Message-ID: <20240401152548.743050476@linuxfoundation.org>
+Message-ID: <20240401152555.809430705@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tor Vic <torvic9@mailbox.org>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit b26ffbf800ae3c8d01bdf90d9cd8a37e1606ff06 ]
+[ Upstream commit 6661befe41009c210efa2c1bcd16a5cc4cff8a06 ]
 
-In the function amd_pstate_adjust_perf(), the 'min_perf' variable is set
-to 'highest_perf' instead of 'lowest_perf'.
+As runtime PM is enabled, the module can be runtime
+suspended when .remove() is called.
 
-Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
-Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Reviewed-by: Perry Yuan <Perry.Yuan@amd.com>
-Signed-off-by: Tor Vic <torvic9@mailbox.org>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Do a pm_runtime_get_sync() to make sure module is active
+before doing any register operations.
+
+Doing a pm_runtime_put_sync() should disable the refclk
+so no need to disable it again.
+
+Fixes the below warning at module removel.
+
+[   39.705310] ------------[ cut here ]------------
+[   39.710004] clk:162:3 already disabled
+[   39.713941] WARNING: CPU: 0 PID: 921 at drivers/clk/clk.c:1090 clk_core_disable+0xb0/0xb8
+
+We called of_platform_populate() in .probe() so call the
+cleanup function of_platform_depopulate() in .remove().
+Get rid of the now unnnecessary dwc3_ti_remove_core().
+Without this, module re-load doesn't work properly.
+
+Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
+Cc: stable@vger.kernel.org # v5.19+
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20240227-for-v6-9-am62-usb-errata-3-0-v4-1-0ada8ddb0767@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-am62.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 1791d37fbc53c..07f3419954396 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -570,7 +570,7 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
- 	if (target_perf < capacity)
- 		des_perf = DIV_ROUND_UP(cap_perf * target_perf, capacity);
+diff --git a/drivers/usb/dwc3/dwc3-am62.c b/drivers/usb/dwc3/dwc3-am62.c
+index 90a587bc29b74..f85603b7f7c5e 100644
+--- a/drivers/usb/dwc3/dwc3-am62.c
++++ b/drivers/usb/dwc3/dwc3-am62.c
+@@ -267,21 +267,14 @@ static int dwc3_ti_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
--	min_perf = READ_ONCE(cpudata->highest_perf);
-+	min_perf = READ_ONCE(cpudata->lowest_perf);
- 	if (_min_perf < capacity)
- 		min_perf = DIV_ROUND_UP(cap_perf * _min_perf, capacity);
+-static int dwc3_ti_remove_core(struct device *dev, void *c)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-
+-	platform_device_unregister(pdev);
+-	return 0;
+-}
+-
+ static void dwc3_ti_remove(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct dwc3_am62 *am62 = platform_get_drvdata(pdev);
+ 	u32 reg;
  
+-	device_for_each_child(dev, NULL, dwc3_ti_remove_core);
++	pm_runtime_get_sync(dev);
++	of_platform_depopulate(dev);
+ 
+ 	/* Clear mode valid bit */
+ 	reg = dwc3_ti_readl(am62, USBSS_MODE_CONTROL);
+@@ -289,7 +282,6 @@ static void dwc3_ti_remove(struct platform_device *pdev)
+ 	dwc3_ti_writel(am62, USBSS_MODE_CONTROL, reg);
+ 
+ 	pm_runtime_put_sync(dev);
+-	clk_disable_unprepare(am62->usb2_refclk);
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_set_suspended(dev);
+ }
 -- 
 2.43.0
 
