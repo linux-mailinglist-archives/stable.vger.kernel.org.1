@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-35259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74301894325
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFA389401E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14EECB2079A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 961E2283692
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B39487BC;
-	Mon,  1 Apr 2024 17:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EE44778E;
+	Mon,  1 Apr 2024 16:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ao+ok+PE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OxbCEIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08201482E4;
-	Mon,  1 Apr 2024 17:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44324087B;
+	Mon,  1 Apr 2024 16:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990815; cv=none; b=K1aGgeJ3RzLNxx8/UnGA7VbPVaqHpV62mMiUEfwIcNrM7ud+OOO2TX51YQFKxnQz/awS2QwWREQl/H+DZQ23uwrVeMVQVrpUOvqP6OnvUNEaf4VL+iaeuSstS4NBzYKwVBbO2OyzjeXBRy+WNNzYoyLT1QlQHsB6a4amrBxFrtg=
+	t=1711988751; cv=none; b=JnXEp3zrHVdVoiG0MYdWu7JQATyUBqgN/9O1gIWjYAlvqwyjZI1qxOQ6HOvxkhr6odCZw0AO//yEdwA0R3WAmZAUcmf+oJYzJxHMeHhWfSrKZssPD23WPHKCqJ3+jFlCCh+Xa5bEaYAPm1aepcTaR8r3DgBdStbXMoHZrDRckwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990815; c=relaxed/simple;
-	bh=X9MVovDmRQdNLp+SQ6XalAwsT73jYnGYG0DNruABDR0=;
+	s=arc-20240116; t=1711988751; c=relaxed/simple;
+	bh=QNDsVPY31/gh3aMXWs5uQI7lvRR8JqrzTobIv/Z7054=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/lWhwYwuQHhSqk54Je4kkga4SO9RDaV1Us3z1TWvD3nXOrKV0TAo8mjASRIGuCeq3j9gbtkeuBDusO+/5bzAD7imQaOQwRCN3nUr8x5Hs+kcrrdcNXGqbqAjLFR9HtO4fVphWHIf0XKjql8FDv+V4JQ5mZ3wzc2vr/VdzKPct4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ao+ok+PE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BACBC433C7;
-	Mon,  1 Apr 2024 17:00:13 +0000 (UTC)
+	 MIME-Version; b=AQbh2ecQMP1wJ2cVGOuWHsaRvqtt70q1Wx8eL8ZdgNsQuoOD7RwerPhTd5+ycYa92RDcXRC48NR54C/DNos4m7eUz9A4duM3jG5W1ZHvS+by9ghVHQIs0/f9ZDNQJwT9bAcCE12yFCSILaBwfWh0InNqi0tQAWheOn4AE7OMDFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OxbCEIY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3B9C433C7;
+	Mon,  1 Apr 2024 16:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990814;
-	bh=X9MVovDmRQdNLp+SQ6XalAwsT73jYnGYG0DNruABDR0=;
+	s=korg; t=1711988750;
+	bh=QNDsVPY31/gh3aMXWs5uQI7lvRR8JqrzTobIv/Z7054=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ao+ok+PE9p7rXXKMQOZkOTz5rvm+Ypngopez/FO2TPma2/fNSNnEheDN0mvAsxi4s
-	 NxkKP7n63oe/qcIlNgHVzdoWLkViVrMEQF+FB2RH4PsX4dXKdHkdoBMU4tW1y/0rUr
-	 7SvQi7i0KD7/j+NSDgUGxxtQY7AGEx+XD63Zop5Y=
+	b=2OxbCEIYGF2W+mZVnDL/3hUTMBJYnDt8dvkQ3Dkl1if9bq/kB01c5E5Edn3yOtVSx
+	 UZwoJ9rugyasRP01KqXzqmOY2y0nj8P+ijNY5J2X/2KkllAv/r0pHGRkXG5fUPAyZh
+	 9odxa1vd5NRRSYrq69GO86Dmfdo4bRGLjidldGck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niels van Aert <nvaert1986@hotmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/272] PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports
+	Andy Chi <andy.chi@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 277/432] ALSA: hda/realtek: fix mute/micmute LEDs for HP EliteBook
 Date: Mon,  1 Apr 2024 17:44:24 +0200
-Message-ID: <20240401152532.878282256@linuxfoundation.org>
+Message-ID: <20240401152601.434827795@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Andy Chi <andy.chi@canonical.com>
 
-[ Upstream commit 627c6db20703b5d18d928464f411d0d4ec327508 ]
+commit a17bd44c0146b00fcaa692915789c16bd1fb2a81 upstream.
 
-Commit 5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root
-Ports") and commit 3b8803494a06 ("PCI/DPC: Quirk PIO log size for Intel Ice
-Lake Root Ports") add quirks for Ice, Tiger and Alder Lake Root Ports.
-System firmware for Raptor Lake still has the bug, so Linux logs the
-warning below on several Raptor Lake systems like Dell Precision 3581 with
-Intel Raptor Lake processor (0W18NX) system firmware/BIOS version 1.10.1.
+The HP EliteBook using ALC236 codec which using 0x02 to
+control mute LED and 0x01 to control micmute LED.
+Therefore, add a quirk to make it works.
 
-  pci 0000:00:07.0: [8086:a76e] type 01 class 0x060400
-  pci 0000:00:07.0: DPC: RP PIO log size 0 is invalid
-  pci 0000:00:07.1: [8086:a73f] type 01 class 0x060400
-  pci 0000:00:07.1: DPC: RP PIO log size 0 is invalid
-
-Apply the quirk for Raptor Lake Root Ports as well.
-
-This also enables the DPC driver to dump the RP PIO Log registers when DPC
-is triggered.
-
-Link: https://lore.kernel.org/r/20240305113057.56468-1-pmenzel@molgen.mpg.de
-Reported-by: Niels van Aert <nvaert1986@hotmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218560
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Andy Chi <andy.chi@canonical.com>
 Cc: <stable@vger.kernel.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Niels van Aert <nvaert1986@hotmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20240304134033.773348-1-andy.chi@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index c175b70a984c6..289ba6902e41b 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6078,6 +6078,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
- #endif
- 
- /*
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10045,6 +10045,10 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c90, "HP EliteBook 640", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c91, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca1, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
