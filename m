@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2728E8940B7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064FA89426E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB8C1B21076
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9921C1F259AF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E280538DD8;
-	Mon,  1 Apr 2024 16:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E664E1D5;
+	Mon,  1 Apr 2024 16:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+qYPXLM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvZAH8GL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13021C0DE7;
-	Mon,  1 Apr 2024 16:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143284F207;
+	Mon,  1 Apr 2024 16:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989207; cv=none; b=t9KjD98Va0ah1z+rqAm2tR7QCOJ+9W0bz3wse/oDuTtomOeJx4b1nt0UePgjt0IITZt7FX9L0oIukmHw44rrGPjAVNcNlScD78k+l28/2qlHFDGCRfV5RsEfnXBEcSOlDI68b1Pchxg4M5Kp80xvjVHcCJ+ESm+PaFKHDDggMoI=
+	t=1711990347; cv=none; b=bw7eTpOqY0jJWHJm+U/L6Kqr7W5lgHISX6vQtVlrosEp9sFUbEQikkoZMk0iV7bXYRtTsoRuNcRR5AZsSAp3+X5NHJYlDiIaN8NJR+4+HWPb/y+UVqJCnFNs9mN9M8k3h0aQZXOPQv7pG7SvP1Clkgijz8pFkafllUCobwBYRro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989207; c=relaxed/simple;
-	bh=iHxiHNTXE/+C65spDfpmoXtAZ7FFQ9zNzgeBi+9LppM=;
+	s=arc-20240116; t=1711990347; c=relaxed/simple;
+	bh=xiqTiyEGZowxrRQ07+h+fkxMRd8DvneZEcW2g8RlNo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2de2GXGXoekOtFXW3kQVayu7u/AGcDs9yrnLDHz2+kU6OU4tcjftMB4VjxwlI55OVDfonSiAGDSvF+DkHjrhlB7ofZiXlag9mXdmWf320Hzi5CT0BODtsp6zQZR9Lyp+OyvUiARbF1y/2dlQ2GxnyCTpWTdFGAL8CahOgQTSu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+qYPXLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FEEC433C7;
-	Mon,  1 Apr 2024 16:33:26 +0000 (UTC)
+	 MIME-Version; b=aAcubtYwaPXmBgFqQ7dMXVSGrcigL596EPERlJCbHjRm7TN9uk5n7CNS0+ifIK3Hmm5J35RHuKQ5zHYeQmHVerSEMtvbuqAzRpOtf1bjK6f3eMzy/CDssAES2tSuLS7no2Zoyf4g8gr3muCFRT1kxw3r1EgKFzzsFlMUQiAJeA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvZAH8GL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398A7C433C7;
+	Mon,  1 Apr 2024 16:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989207;
-	bh=iHxiHNTXE/+C65spDfpmoXtAZ7FFQ9zNzgeBi+9LppM=;
+	s=korg; t=1711990346;
+	bh=xiqTiyEGZowxrRQ07+h+fkxMRd8DvneZEcW2g8RlNo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+qYPXLMJPs4pziGb3GVHYAsk+Bh54/Ef7cxThhdrwTUUR3CpLr/xkp/Bok517Kzi
-	 93w8okTl+cQw2+LnfCtn/uYLSCkfI+eTRZwjhBUB7gIgYlBNW80IKj56RPTaqFHJnr
-	 e8oeCJZJAek0pCw21cc49ekm9rH3Wd0CDtOstyyc=
+	b=DvZAH8GLOG9uGzI2vgJZic7CIRkoIXOEDWa1uqEKOQpTxCNq+eHH2u8xKjjPyqNi/
+	 BGRRUqBmMAPqfOF8vfE3uOGnw4BIYVRYVan+QODyM3jzkDE58INdPHuyhc0JeZhZxY
+	 Kqis6JkrKF6IFGfgiSOiiomyIZmQt+9CqZis3veA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 385/432] drm/amdgpu: make damage clips support configurable
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.6 323/396] wifi: iwlwifi: fw: dont always use FW dump trig
 Date: Mon,  1 Apr 2024 17:46:12 +0200
-Message-ID: <20240401152604.795262601@linuxfoundation.org>
+Message-ID: <20240401152557.544507786@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit fc184dbe9fd99ad2dfb197b6fe18768bae1774b1 ]
+commit 045a5b645dd59929b0e05375f493cde3a0318271 upstream.
 
-We have observed that there are quite a number of PSR-SU panels on the
-market that are unable to keep up with what user space throws at them,
-resulting in hangs and random black screens. So, make damage clips
-support configurable and disable it by default for PSR-SU displays.
+Since the dump_data (struct iwl_fwrt_dump_data) is a union,
+it's not safe to unconditionally access and use the 'trig'
+member, it might be 'desc' instead. Access it only if it's
+known to be 'trig' rather than 'desc', i.e. if ini-debug
+is present.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0eb50c674a1e ("iwlwifi: yoyo: send hcmd to fw after dump collection completes.")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.e2976bc58b29.I72fbd6135b3623227de53d8a2bb82776066cb72b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h               |  1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           | 13 +++++++++++++
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  7 +++++++
- 3 files changed, 21 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-index 31d4b5a2c5e83..13c62a26aa19c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -198,6 +198,7 @@ extern uint amdgpu_dc_debug_mask;
- extern uint amdgpu_dc_visual_confirm;
- extern uint amdgpu_dm_abm_level;
- extern int amdgpu_backlight;
-+extern int amdgpu_damage_clips;
- extern struct amdgpu_mgpu_info mgpu_info;
- extern int amdgpu_ras_enable;
- extern uint amdgpu_ras_mask;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 10c4a8cfa18a0..855ab596323c7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -209,6 +209,7 @@ int amdgpu_umsch_mm;
- int amdgpu_seamless = -1; /* auto */
- uint amdgpu_debug_mask;
- int amdgpu_agp = -1; /* auto */
-+int amdgpu_damage_clips = -1; /* auto */
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -2933,8 +2933,6 @@ static void iwl_fw_dbg_collect_sync(stru
+ 	struct iwl_fw_dbg_params params = {0};
+ 	struct iwl_fwrt_dump_data *dump_data =
+ 		&fwrt->dump.wks[wk_idx].dump_data;
+-	u32 policy;
+-	u32 time_point;
+ 	if (!test_bit(wk_idx, &fwrt->dump.active_wks))
+ 		return;
  
- static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work);
+@@ -2965,13 +2963,16 @@ static void iwl_fw_dbg_collect_sync(stru
  
-@@ -857,6 +858,18 @@ int amdgpu_backlight = -1;
- MODULE_PARM_DESC(backlight, "Backlight control (0 = pwm, 1 = aux, -1 auto (default))");
- module_param_named(backlight, amdgpu_backlight, bint, 0444);
+ 	iwl_fw_dbg_stop_restart_recording(fwrt, &params, false);
  
-+/**
-+ * DOC: damageclips (int)
-+ * Enable or disable damage clips support. If damage clips support is disabled,
-+ * we will force full frame updates, irrespective of what user space sends to
-+ * us.
-+ *
-+ * Defaults to -1 (where it is enabled unless a PSR-SU display is detected).
-+ */
-+MODULE_PARM_DESC(damageclips,
-+		 "Damage clips support (0 = disable, 1 = enable, -1 auto (default))");
-+module_param_named(damageclips, amdgpu_damage_clips, int, 0444);
+-	policy = le32_to_cpu(dump_data->trig->apply_policy);
+-	time_point = le32_to_cpu(dump_data->trig->time_point);
+-
+-	if (policy & IWL_FW_INI_APPLY_POLICY_DUMP_COMPLETE_CMD) {
+-		IWL_DEBUG_FW_INFO(fwrt, "WRT: sending dump complete\n");
+-		iwl_send_dbg_dump_complete_cmd(fwrt, time_point, 0);
++	if (iwl_trans_dbg_ini_valid(fwrt->trans)) {
++		u32 policy = le32_to_cpu(dump_data->trig->apply_policy);
++		u32 time_point = le32_to_cpu(dump_data->trig->time_point);
 +
- /**
-  * DOC: tmz (int)
-  * Trusted Memory Zone (TMZ) is a method to protect data being written
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f5dceb4eb99a3..342e41c78fb34 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5147,6 +5147,7 @@ static void fill_dc_dirty_rects(struct drm_plane *plane,
- 				struct drm_plane_state *new_plane_state,
- 				struct drm_crtc_state *crtc_state,
- 				struct dc_flip_addrs *flip_addrs,
-+				bool is_psr_su,
- 				bool *dirty_regions_changed)
- {
- 	struct dm_crtc_state *dm_crtc_state = to_dm_crtc_state(crtc_state);
-@@ -5171,6 +5172,10 @@ static void fill_dc_dirty_rects(struct drm_plane *plane,
- 	num_clips = drm_plane_get_damage_clips_count(new_plane_state);
- 	clips = drm_plane_get_damage_clips(new_plane_state);
- 
-+	if (num_clips && (!amdgpu_damage_clips || (amdgpu_damage_clips < 0 &&
-+						   is_psr_su)))
-+		goto ffu;
++		if (policy & IWL_FW_INI_APPLY_POLICY_DUMP_COMPLETE_CMD) {
++			IWL_DEBUG_FW_INFO(fwrt, "WRT: sending dump complete\n");
++			iwl_send_dbg_dump_complete_cmd(fwrt, time_point, 0);
++		}
+ 	}
 +
- 	if (!dm_crtc_state->mpo_requested) {
- 		if (!num_clips || num_clips > DC_MAX_DIRTY_RECTS)
- 			goto ffu;
-@@ -8216,6 +8221,8 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
- 			fill_dc_dirty_rects(plane, old_plane_state,
- 					    new_plane_state, new_crtc_state,
- 					    &bundle->flip_addrs[planes_count],
-+					    acrtc_state->stream->link->psr_settings.psr_version ==
-+					    DC_PSR_VERSION_SU_1,
- 					    &dirty_rects_changed);
+ 	if (fwrt->trans->dbg.last_tp_resetfw == IWL_FW_INI_RESET_FW_MODE_STOP_FW_ONLY)
+ 		iwl_force_nmi(fwrt->trans);
  
- 			/*
--- 
-2.43.0
-
 
 
 
