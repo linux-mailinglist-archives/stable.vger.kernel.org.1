@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-34461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8050893F71
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CD2894116
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93C13284389
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A53941C2048F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462D947F60;
-	Mon,  1 Apr 2024 16:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1EA481D7;
+	Mon,  1 Apr 2024 16:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtW70f5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5+yXJ/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BCF47A5D;
-	Mon,  1 Apr 2024 16:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B61A46B9F;
+	Mon,  1 Apr 2024 16:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988200; cv=none; b=CWUUR0zubklNMjQFPRYrEBUQ35Al/o3JfvGgtbDNUMzeNb8kzDOAJN+H76gAML59xmggHSg9ewB7Va1x/iK3fFPk5liR9nzRvjqjyvTm6WAg7k6xrqR8A2D4w9w6FyyuN36lm03pmYbTfZuacx3BDwgPjZzzvNeki8nbE4q06Ls=
+	t=1711989452; cv=none; b=DVsLeNzjwnmQYI4eV5YEG9N/+6Br7Joihm4pfNXVD+1JDz1wlBZtblmLFTFlO6ZICs9RdnF+6EgaOMcIu44MBpeHsmnQt1YETNPBRM/x6DlME0zg2+SnyRhamQN4yU18kil44gAPZRC4fODvk/wkfCmwS/PHrnRG810lZ03/2vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988200; c=relaxed/simple;
-	bh=ppMw3pyatUL2W8arUhmfMC9x9kTeiJV4yPkhas2sc1o=;
+	s=arc-20240116; t=1711989452; c=relaxed/simple;
+	bh=O7lrjuT86WeU/xFsWyY8XKjyrTYesdcQvcNOjXMs1a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t93D158vP00KI6mKdg4krOv1K4ojMCAdp12CTmFxJI+q9bAzZiVLu20IuWgfOp7rZPmb1G8tu9AJA99ZJxvrbniGl8Ro+3wyO7RXK5fBdHbqa/UjZuvfOH3gfTH+n4sym25TI9WRrt1e4WlXLIaecmGdoDGIroF1yPPzVCYzerw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtW70f5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B341C433C7;
-	Mon,  1 Apr 2024 16:16:39 +0000 (UTC)
+	 MIME-Version; b=LGK8O8FH0ueLxh1Fr1TbAjztinzlNyfFMK127My5ZCm+kNgJeg3K/C/b3wJdEwTBL5W8b6rl2aV7LPnMlmkrgsXhbnyo4V6QQGXxS+zGFV6lgKwuxVTyBAIl78pdNCzh3ZwhvMmrdyvyGBadve2Yy4IjRAtOELIzUpKkmbFcy+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5+yXJ/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C31C433F1;
+	Mon,  1 Apr 2024 16:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988199;
-	bh=ppMw3pyatUL2W8arUhmfMC9x9kTeiJV4yPkhas2sc1o=;
+	s=korg; t=1711989451;
+	bh=O7lrjuT86WeU/xFsWyY8XKjyrTYesdcQvcNOjXMs1a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QtW70f5M+VE/rUTHnj+1MEwf0hR2wS/+VJxLheLXRxQ9cK31z7/Uw8uAKwOoce6G+
-	 1Z/O1/w2deOK8Q7ojJoA77YloeTTU4uZGjb5QQ802tAvb/iwBLtLBGycdmuRydgtKL
-	 4MDR5be3XVVL+WHspNGGu8XWykCR72rOJEIc/BKI=
+	b=y5+yXJ/CMpe/lw6fzU6u7JEXtXbqky5q8OgiWSGQx3dEXucPxn0PL05kdveCVop9j
+	 x3D0hqcwDswqe8sxWnsKduEM4EC8yNmk6B9ZuEOs7vreN7url4zSK0zQUE36tivLo0
+	 VQaoVuwlTdT3pMxY7HbTbQYtPLaw+naS9DET+dJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 114/432] Bluetooth: btnxpuart: Fix btnxpuart_close
+Subject: [PATCH 6.6 052/396] x86/nmi: Fix the inverse "in NMI handler" check
 Date: Mon,  1 Apr 2024 17:41:41 +0200
-Message-ID: <20240401152556.528013913@linuxfoundation.org>
+Message-ID: <20240401152549.476833867@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 664130c0b0309b360bc5bdd40a30604a9387bde8 ]
+[ Upstream commit d54e56f31a34fa38fcb5e91df609f9633419a79a ]
 
-Fix scheduling while atomic BUG in btnxpuart_close(), properly
-purge the transmit queue and free the receive skb.
+Commit 344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are
+ignored") creates a super nice framework to diagnose NMIs.
 
-[   10.973809] BUG: scheduling while atomic: kworker/u9:0/80/0x00000002
-...
-[   10.980740] CPU: 3 PID: 80 Comm: kworker/u9:0 Not tainted 6.8.0-rc7-0.0.0-devel-00005-g61fdfceacf09 #1
-[   10.980751] Hardware name: Toradex Verdin AM62 WB on Dahlia Board (DT)
-[   10.980760] Workqueue: hci0 hci_power_off [bluetooth]
-[   10.981169] Call trace:
-...
-[   10.981363]  uart_update_mctrl+0x58/0x78
-[   10.981373]  uart_dtr_rts+0x104/0x114
-[   10.981381]  tty_port_shutdown+0xd4/0xdc
-[   10.981396]  tty_port_close+0x40/0xbc
-[   10.981407]  uart_close+0x34/0x9c
-[   10.981414]  ttyport_close+0x50/0x94
-[   10.981430]  serdev_device_close+0x40/0x50
-[   10.981442]  btnxpuart_close+0x24/0x98 [btnxpuart]
-[   10.981469]  hci_dev_close_sync+0x2d8/0x718 [bluetooth]
-[   10.981728]  hci_dev_do_close+0x2c/0x70 [bluetooth]
-[   10.981862]  hci_power_off+0x20/0x64 [bluetooth]
+Every time nmi_exc() is called, it increments a per_cpu counter
+(nsp->idt_nmi_seq). At its exit, it also increments the same counter.  By
+reading this counter it can be seen how many times that function was called
+(dividing by 2), and, if the function is still being executed, by checking
+the idt_nmi_seq's least significant bit.
 
-Fixes: 689ca16e5232 ("Bluetooth: NXP: Add protocol support for NXP Bluetooth chipsets")
+On the check side (nmi_backtrace_stall_check()), that variable is queried
+to check if the NMI is still being executed, but, there is a mistake in the
+bitwise operation. That code wants to check if the least significant bit of
+the idt_nmi_seq is set or not, but does the opposite, and checks for all
+the other bits, which will always be true after the first exc_nmi()
+executed successfully.
+
+This appends the misleading string to the dump "(CPU currently in NMI
+handler function)"
+
+Fix it by checking the least significant bit, and if it is set, append the
+string.
+
+Fixes: 344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are ignored")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Reviewed-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lore.kernel.org/r/20240207165237.1048837-1-leitao@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btnxpuart.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/nmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-index 951fe3014a3f3..abccd571cf3ee 100644
---- a/drivers/bluetooth/btnxpuart.c
-+++ b/drivers/bluetooth/btnxpuart.c
-@@ -1234,6 +1234,9 @@ static int btnxpuart_close(struct hci_dev *hdev)
- 
- 	ps_wakeup(nxpdev);
- 	serdev_device_close(nxpdev->serdev);
-+	skb_queue_purge(&nxpdev->txq);
-+	kfree_skb(nxpdev->rx_skb);
-+	nxpdev->rx_skb = NULL;
- 	clear_bit(BTNXPUART_SERDEV_OPEN, &nxpdev->tx_state);
- 	return 0;
- }
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index 07e045399348e..87aee638e1a5d 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -629,7 +629,7 @@ void nmi_backtrace_stall_check(const struct cpumask *btp)
+ 			msgp = nmi_check_stall_msg[idx];
+ 			if (nsp->idt_ignored_snap != READ_ONCE(nsp->idt_ignored) && (idx & 0x1))
+ 				modp = ", but OK because ignore_nmis was set";
+-			if (nmi_seq & ~0x1)
++			if (nmi_seq & 0x1)
+ 				msghp = " (CPU currently in NMI handler function)";
+ 			else if (nsp->idt_nmi_seq_snap + 1 == nmi_seq)
+ 				msghp = " (CPU exited one NMI handler function)";
 -- 
 2.43.0
 
