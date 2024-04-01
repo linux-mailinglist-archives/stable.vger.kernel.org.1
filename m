@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECE4893EC6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F6689420F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C5371C21113
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDFA91C219CB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42174446AC;
-	Mon,  1 Apr 2024 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B990481C4;
+	Mon,  1 Apr 2024 16:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pw1nVzyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYKRPnpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0222C1CA8F;
-	Mon,  1 Apr 2024 16:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4B31C0DE7;
+	Mon,  1 Apr 2024 16:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987667; cv=none; b=OFlNGZCxQLhueL8eN7MZ6BTCsRsdof2RI/52w5b/1+nBwSDS21aHaSamX1kIgoAO7EZveDluOgjoUTxTOtbGVddHpEMyRCdPUK3bOliFtNiqfdWB0YVsZ1DxaXH5MDM6VVdrE2BGQx93i6TIG/NC+G3WFbC17NGTORE8/Ng2tqA=
+	t=1711990146; cv=none; b=QQOtKuAVlUEhtMhGvaQL3tQmNikQxnYvRY2ls5N602YR/sORaES1tYPN5eQCp2GlYfOXXYUU0dvjHVXIgvEOVYFvPX8gR4AywGewp5Dzz7hL+En0PsDevr1mP4fras5nkA2Xt0g/g91LiLvau+hUEX6LaTfiAHinOUTsGF8d8B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987667; c=relaxed/simple;
-	bh=LCaqcehe6zgMzU8M6AD2QIJglMxICDyh4foxauu2SC4=;
+	s=arc-20240116; t=1711990146; c=relaxed/simple;
+	bh=gZdzKc+qkRdMmJWXQvT+MUF0BIZqaQDUCre7x/m++GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/xk8Ko5cY53Dm5hBeXpYBepBc3EeKG+43hhqoGX1YB+pRtNVNbJpqER2HjYTyMrmag+0IYjluJPFg/e+U9L2g/RqDlV2qxkt6x96n6M/+x4TuU4PkaVu7NFbS3QFMtzOSBMFnOLhlWmvnlQgXjqymVOHsVkab8VC6FONFQB/5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pw1nVzyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630C6C433F1;
-	Mon,  1 Apr 2024 16:07:46 +0000 (UTC)
+	 MIME-Version; b=KWBdpxwK4BGtjlwKQLpbOkdGQ36KrwgQXjU/2h7pBWbq2ZdEhdv25INpet7k+JY7Q76afB9jmw+cm7j6X76TMZ1v5ZceeGt0S8IEKgtdFxQAG+RCutXq8ALxyx8YzLKqCz7mwYLcuv666w8UeRD0WVuKBcuCXx29T7fGjoJhctM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYKRPnpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9C1C433C7;
+	Mon,  1 Apr 2024 16:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987666;
-	bh=LCaqcehe6zgMzU8M6AD2QIJglMxICDyh4foxauu2SC4=;
+	s=korg; t=1711990146;
+	bh=gZdzKc+qkRdMmJWXQvT+MUF0BIZqaQDUCre7x/m++GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pw1nVzyZ1pTJ2iowIT0ZD4PGRL8r9isSJzd5jvfwH2tr/+BGS8AL6hClTfYP0Y+PM
-	 nBHBBcmooDUz5ITixYsm/IbRiA5CcWWAYN1+7cNknvW/n2KNAeFcH10HYIYgB8+CFS
-	 MeRKw7bzYHUWTv23Pn7App7AQBNWZf8jXHmVzlhc=
+	b=aYKRPnpLkcM+yn4Vm8UYCaMmHcLgMrzxZG8ZZS7rONzI8LVG8zluDcwd4Afqc/KRb
+	 XseMPtVJBeZ5VTxkuyLWVX6nKgsgSRw9xIybCYrFHGvR9fTovAW9qBpizWNnhwgNPI
+	 AH05nXcKimfSd4mIVh5SI1ZqDeRy4KHLkSuseiQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 326/399] drm/amdkfd: fix TLB flush after unmap for GFX9.4.2
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 243/396] iio: accel: adxl367: fix I2C FIFO data register
 Date: Mon,  1 Apr 2024 17:44:52 +0200
-Message-ID: <20240401152558.910920090@linuxfoundation.org>
+Message-ID: <20240401152555.158513251@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-commit 1210e2f1033dc56b666c9f6dfb761a2d3f9f5d6c upstream.
+commit 11dadb631007324c7a8bcb2650eda88ed2b9eed0 upstream.
 
-TLB flush after unmap accidentially was removed on
-gfx9.4.2. It is to add it back.
+As specified in the datasheet, the I2C FIFO data register is
+0x18, not 0x42. 0x42 was used by mistake when adapting the
+ADXL372 driver.
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fix this mistake.
+
+Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240207033657.206171-2-demonsingur@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h |    2 +-
+ drivers/iio/accel/adxl367_i2c.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -1473,7 +1473,7 @@ static inline void kfd_flush_tlb(struct
+--- a/drivers/iio/accel/adxl367_i2c.c
++++ b/drivers/iio/accel/adxl367_i2c.c
+@@ -11,7 +11,7 @@
  
- static inline bool kfd_flush_tlb_after_unmap(struct kfd_dev *dev)
- {
--	return KFD_GC_VERSION(dev) > IP_VERSION(9, 4, 2) ||
-+	return KFD_GC_VERSION(dev) >= IP_VERSION(9, 4, 2) ||
- 	       (KFD_GC_VERSION(dev) == IP_VERSION(9, 4, 1) && dev->sdma_fw_version >= 18) ||
- 	       KFD_GC_VERSION(dev) == IP_VERSION(9, 4, 0);
- }
+ #include "adxl367.h"
+ 
+-#define ADXL367_I2C_FIFO_DATA	0x42
++#define ADXL367_I2C_FIFO_DATA	0x18
+ 
+ struct adxl367_i2c_state {
+ 	struct regmap *regmap;
 
 
 
