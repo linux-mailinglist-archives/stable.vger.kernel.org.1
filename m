@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-34274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D35893EA3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C438941F6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5F6E1C210A2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87D481F22066
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F8A446AC;
-	Mon,  1 Apr 2024 16:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D615481C6;
+	Mon,  1 Apr 2024 16:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZcZr4Wv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0Urk2aT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A801CA8F;
-	Mon,  1 Apr 2024 16:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB53433DA;
+	Mon,  1 Apr 2024 16:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987570; cv=none; b=d5XiWOF9REK10oA5sGk5V1h3VKRnuJpy6YGREPQ8ejy23t8ep/qJlfkm1Ffo+7eCHmWwOzV94KyzVdPuzOQrUYRU27N7weIExS42EqlIG8+JMVQH6Dy+Fhj4bq0WzTcG5kiSk4gt0aZPbGbsisxwGp5gGvSwlsSkG2oI0yWDN3A=
+	t=1711990094; cv=none; b=EMSuqtf/zLmbxCJo0qD3c3u/NpFOfbIAOE/OE3HtVlggZ+vwTQ/o2zK8tPNaPoksP2mOpEVfxmImYR8llSz/YELxEbiY7drvgzWu0EnbGDIsmfGp/p7Gd3+MK0zTlEKInRdeVYT4PqAuIFJwDX7Z9Y2Ip8jJbDKXrYZitWERdu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987570; c=relaxed/simple;
-	bh=ps9+EsUz1OhStB5J5QjWHBb3z9KhyTNXiffPvPIHIzA=;
+	s=arc-20240116; t=1711990094; c=relaxed/simple;
+	bh=T6vIuoyUbQEzka1q0syozSZLq9G6dfSOhyrsPyhHYkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVDl5HiIDQtkzm5JtDHpLF1keDU3Qy8pUW42MCM4kFD4rpUpg7hXxIsnr9Iylxsy+PFvtdu1jXcdXu/BTkIxuAqLgreCGjODhAGPLNnK7UpVEluU68h7bNwVJp8Nh5cGqF1NCPjGtiWfjCMKUKXrpXV8gGuYamU/8vFcCYBOHQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZcZr4Wv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69750C433F1;
-	Mon,  1 Apr 2024 16:06:09 +0000 (UTC)
+	 MIME-Version; b=b4HQXcqN0SiE0E7+4UYzX3xWMIaDHDMkXwJjFH+j5k11cq5z2z1heu9ukuYSx2sn2rxqgX3I8qfMR0PdaGA/ZYwM7BmTE3BQMCNDw1yf3gh7/g83zHn0v+PAzta5a8JWp2h6Uhs2vvS400oWxoedQYNElbVJE6hwfhUHxcZF6FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0Urk2aT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E3FC433F1;
+	Mon,  1 Apr 2024 16:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987569;
-	bh=ps9+EsUz1OhStB5J5QjWHBb3z9KhyTNXiffPvPIHIzA=;
+	s=korg; t=1711990093;
+	bh=T6vIuoyUbQEzka1q0syozSZLq9G6dfSOhyrsPyhHYkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZcZr4Wv3W/mhLQr+bJnS40B1WKide444HqCqPUGNPR6x+ChRVVr8z8F6dletu9lL
-	 X4GEVgsk6Gaii7Th96LHQx1TNgjaGMY/7wJ0JU/DtPl1RA5dlv0tf5r0q00ZV4uIbT
-	 bcLcYue6Bt8MKmJYf1FvocN1MxHY6sj71isCwTvI=
+	b=r0Urk2aTKRx2q9EnS/bAvjURdsTCxePiRiyH1U9rjpAiEaVN0Qe8K3W/0UGyRlFxG
+	 bKT4rVqkEHjMklIcD/O8oVa3YWXwEv14F3JqPJSDmAYz5J2TAmn5tVD+OtDGqfsZSZ
+	 W8uwAhnczF9orO2sPXetkpcnewUTSP8a2x5fqDvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WA AM <waautomata@gmail.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 297/399] btrfs: zoned: use zone aware sb location for scrub
-Date: Mon,  1 Apr 2024 17:44:23 +0200
-Message-ID: <20240401152558.058367874@linuxfoundation.org>
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 215/396] SEV: disable SEV-ES DebugSwap by default
+Date: Mon,  1 Apr 2024 17:44:24 +0200
+Message-ID: <20240401152554.334076078@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit 74098a989b9c3370f768140b7783a7aaec2759b3 upstream.
+commit 5abf6dceb066f2b02b225fd561440c98a8062681 upstream.
 
-At the moment scrub_supers() doesn't grab the super block's location via
-the zoned device aware btrfs_sb_log_location() but via btrfs_sb_offset().
+The DebugSwap feature of SEV-ES provides a way for confidential guests to use
+data breakpoints.  However, because the status of the DebugSwap feature is
+recorded in the VMSA, enabling it by default invalidates the attestation
+signatures.  In 6.10 we will introduce a new API to create SEV VMs that
+will allow enabling DebugSwap based on what the user tells KVM to do.
+Contextually, we will change the legacy KVM_SEV_ES_INIT API to never
+enable DebugSwap.
 
-This leads to checksum errors on 'scrub' as we're not accessing the
-correct location of the super block.
+For compatibility with kernels that pre-date the introduction of DebugSwap,
+as well as with those where KVM_SEV_ES_INIT will never enable it, do not enable
+the feature by default.  If anybody wants to use it, for now they can enable
+the sev_es_debug_swap_enabled module parameter, but this will result in a
+warning.
 
-So use btrfs_sb_log_location() for getting the super blocks location on
-scrub.
-
-Reported-by: WA AM <waautomata@gmail.com>
-Link: http://lore.kernel.org/linux-btrfs/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: d1f85fbe836e ("KVM: SEV: Enable data breakpoints in SEV-ES")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/scrub.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -2805,7 +2805,17 @@ static noinline_for_stack int scrub_supe
- 		gen = btrfs_get_last_trans_committed(fs_info);
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index a132547fcfb5..a8ce5226b3b5 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -57,7 +57,7 @@ static bool sev_es_enabled = true;
+ module_param_named(sev_es, sev_es_enabled, bool, 0444);
  
- 	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
--		bytenr = btrfs_sb_offset(i);
-+		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
-+		if (ret == -ENOENT)
-+			break;
-+
-+		if (ret) {
-+			spin_lock(&sctx->stat_lock);
-+			sctx->stat.super_errors++;
-+			spin_unlock(&sctx->stat_lock);
-+			continue;
-+		}
-+
- 		if (bytenr + BTRFS_SUPER_INFO_SIZE >
- 		    scrub_dev->commit_total_bytes)
- 			break;
+ /* enable/disable SEV-ES DebugSwap support */
+-static bool sev_es_debug_swap_enabled = true;
++static bool sev_es_debug_swap_enabled = false;
+ module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
+ #else
+ #define sev_enabled false
+@@ -612,8 +612,11 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
+ 	save->xss  = svm->vcpu.arch.ia32_xss;
+ 	save->dr6  = svm->vcpu.arch.dr6;
+ 
+-	if (sev_es_debug_swap_enabled)
++	if (sev_es_debug_swap_enabled) {
+ 		save->sev_features |= SVM_SEV_FEAT_DEBUG_SWAP;
++		pr_warn_once("Enabling DebugSwap with KVM_SEV_ES_INIT. "
++			     "This will not work starting with Linux 6.10\n");
++	}
+ 
+ 	pr_debug("Virtual Machine Save Area (VMSA):\n");
+ 	print_hex_dump_debug("", DUMP_PREFIX_NONE, 16, 1, save, sizeof(*save), false);
+-- 
+2.44.0
+
 
 
 
