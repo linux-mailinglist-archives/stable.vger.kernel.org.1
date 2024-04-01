@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC55989403D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCD58941E1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E29E1F218D6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 095011C2127F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D34446D5;
-	Mon,  1 Apr 2024 16:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B154644C;
+	Mon,  1 Apr 2024 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTX2rsCE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwGqS4n8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5977C129;
-	Mon,  1 Apr 2024 16:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A551E525;
+	Mon,  1 Apr 2024 16:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988848; cv=none; b=Hd4OxaXdwCBsuj5NMIZ/EC6Yxyh+2FveKHaZn4XH5CucT3W79pjzFBaOLv5VKifT1oADD67IIGQCbRGzPJbduUkC4F5K5n9+2PIv8kf42cXH6Z8omfFjJnlVIurYHxY2FD3rrZFFcFqS3fDhGR1w0pBtfBHcxhOqL7R+XP4qo78=
+	t=1711990034; cv=none; b=JSHyrJxcKO9/fQva48kRnYf9Y3yPw2myO+GbG4GlX/hIVbIT+jETFWtoN2mKLB2ZyoYsQlhJTX/YFW4w5esJLzJ8cbd4R3E/OAln6guO93DzBxG9JPFud5rnIhML2gth84ZYz+8r9U/eZaAKvsbc2qglmiTu9TMwMgxdNdE1R5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988848; c=relaxed/simple;
-	bh=iLyXEqxIlNDD4ZTopjhmiZgrTESjyHwGfGhdJSa3RVc=;
+	s=arc-20240116; t=1711990034; c=relaxed/simple;
+	bh=TiTXvtU0w/nZlvAgXGhoi39i7rmq2bSnAYBQFGF2I/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dPvtBvgVazVOnRfRGVIOFfKwpTnLSmUJoeEdDIVtEmBxADHtTGwv9aLEkJoaqHIzUu/OThNlZxdFVOyyeDDE/i/Oju5mB1IHxiPJDJ8H+4TeeqyvlDINKHBHCJ+W8uphRccm+uHRo9fEQI5FGI1akGTTVrjUgbeXzWQFfnW4xak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTX2rsCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D1EC433C7;
-	Mon,  1 Apr 2024 16:27:28 +0000 (UTC)
+	 MIME-Version; b=UjmTNvGBDfy+DSFi1+rgHZdQoeHYxx+bUO9SEABtUgZefxH/7B1dBsgP9673xUoNqlC/XoB/I4yPErRrRCUApYjHWYHQw1qyVeH95SHDLoNW5KLnQSyqwrLwccQcJVvHi9jIUjIT56yY/dxAX6dkhHJRreO7JUCG8YWgGrERaMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwGqS4n8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F6FC433F1;
+	Mon,  1 Apr 2024 16:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988848;
-	bh=iLyXEqxIlNDD4ZTopjhmiZgrTESjyHwGfGhdJSa3RVc=;
+	s=korg; t=1711990033;
+	bh=TiTXvtU0w/nZlvAgXGhoi39i7rmq2bSnAYBQFGF2I/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTX2rsCEVNQR1xxOgdJaIKocEdvMi9HhtZJfmAKBa0JgZbo27I4m8A4tS91RZNi5g
-	 g1xKgcEXFSp0NkuIsRPqik07vnLqGTa3xE0u4C7BamMFUom0mTSxMtuxUxgi24OwMe
-	 fpTAl25Ns4q7EUTCeFLtnebKJJljrxTCL/+0DS/o=
+	b=ZwGqS4n8jS6aim/rDtvI3ME9lHHtJSgXVnnlRIddA0M6nMEzFfTUAcThWAeJIzWAN
+	 0c/fTXYcz/yXxa8/ZjatHU24E0IdUJprIeJMuyZdU6D5Ejt1I2VgYWQtHnnqvDDexf
+	 r4BanJo44Kn3oMjBHyYVd5cMarN1PbATdVraJND8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mano=20S=C3=A9gransan?= <mano.segransan@protonmail.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 289/432] drm/amd/display: handle range offsets in VRR ranges
+	Peter Collingbourne <pcc@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.6 227/396] serial: 8250_dw: Do not reclock if already at correct rate
 Date: Mon,  1 Apr 2024 17:44:36 +0200
-Message-ID: <20240401152601.790021858@linuxfoundation.org>
+Message-ID: <20240401152554.687535422@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Peter Collingbourne <pcc@google.com>
 
-commit 937844d661354bf142dc1c621396fdab10ecbacc upstream.
+commit e5d6bd25f93d6ae158bb4cd04956cb497a85b8ef upstream.
 
-Need to check the offset bits for values greater than 255.
+When userspace opens the console, we call set_termios() passing a
+termios with the console's configured baud rate. Currently this causes
+dw8250_set_termios() to disable and then re-enable the UART clock at
+the same frequency as it was originally. This can cause corruption
+of any concurrent console output. Fix it by skipping the reclocking
+if we are already at the correct rate.
 
-v2: also update amdgpu_dm_connector values.
-
-Suggested-by: Mano Ségransan <mano.segransan@protonmail.com>
-Tested-by: Mano Ségransan <mano.segransan@protonmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3203
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Fixes: 4e26b134bd17 ("serial: 8250_dw: clock rate handling for all ACPI platforms")
 Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222192635.1050502-1-pcc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10876,14 +10876,23 @@ void amdgpu_dm_update_freesync_caps(stru
- 				if (range->flags != 1)
- 					continue;
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -357,9 +357,9 @@ static void dw8250_set_termios(struct ua
+ 	long rate;
+ 	int ret;
  
--				amdgpu_dm_connector->min_vfreq = range->min_vfreq;
--				amdgpu_dm_connector->max_vfreq = range->max_vfreq;
--				amdgpu_dm_connector->pixel_clock_mhz =
--					range->pixel_clock_mhz * 10;
--
- 				connector->display_info.monitor_range.min_vfreq = range->min_vfreq;
- 				connector->display_info.monitor_range.max_vfreq = range->max_vfreq;
+-	clk_disable_unprepare(d->clk);
+ 	rate = clk_round_rate(d->clk, newrate);
+-	if (rate > 0) {
++	if (rate > 0 && p->uartclk != rate) {
++		clk_disable_unprepare(d->clk);
+ 		/*
+ 		 * Note that any clock-notifer worker will block in
+ 		 * serial8250_update_uartclk() until we are done.
+@@ -367,8 +367,8 @@ static void dw8250_set_termios(struct ua
+ 		ret = clk_set_rate(d->clk, newrate);
+ 		if (!ret)
+ 			p->uartclk = rate;
++		clk_prepare_enable(d->clk);
+ 	}
+-	clk_prepare_enable(d->clk);
  
-+				if (edid->revision >= 4) {
-+					if (data->pad2 & DRM_EDID_RANGE_OFFSET_MIN_VFREQ)
-+						connector->display_info.monitor_range.min_vfreq += 255;
-+					if (data->pad2 & DRM_EDID_RANGE_OFFSET_MAX_VFREQ)
-+						connector->display_info.monitor_range.max_vfreq += 255;
-+				}
-+
-+				amdgpu_dm_connector->min_vfreq =
-+					connector->display_info.monitor_range.min_vfreq;
-+				amdgpu_dm_connector->max_vfreq =
-+					connector->display_info.monitor_range.max_vfreq;
-+				amdgpu_dm_connector->pixel_clock_mhz =
-+					range->pixel_clock_mhz * 10;
-+
- 				break;
- 			}
- 
+ 	dw8250_do_set_termios(p, termios, old);
+ }
 
 
 
