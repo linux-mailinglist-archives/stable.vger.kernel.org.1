@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-34429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15A4893F51
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:14:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5C98940E7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C38D1C216D1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:14:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 863892826C3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D42481C2;
-	Mon,  1 Apr 2024 16:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0794C38DD8;
+	Mon,  1 Apr 2024 16:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/hlIVF/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Orkvoi7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A04A481AB;
-	Mon,  1 Apr 2024 16:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21D51C0DE7;
+	Mon,  1 Apr 2024 16:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988092; cv=none; b=d8RzGbHVImF9AEyL6s9LbSGdC3zsiDyO1q1j/AeeWEDbzSTV93tz8l7BYB+b0rLTZmWfsun8uOXplI4J8sQnlfoPtVgchy0L/2EB/ngpfbswF2zZSYyRKsIGTSxXy0qvorx/EtjRE3y+nEGSlmeLSGzK1rY9vbWX5nYYaXZFb4k=
+	t=1711989343; cv=none; b=sl8d3o+E60KyG5BIjVzMpkQMGOSiTRq7PLu+Z3w/x+UOm9RILlYN6oaoJx8Oee44V4Ji6UqGmnIJaspCtutdh9Bcy6p825ASITJmLbV+LA/X8MKKVYoJYay0VGPU27CVTQ0tHA4GGkELkrJ2EVM6XGuKJnKnm/zMuwZrPQJbVwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988092; c=relaxed/simple;
-	bh=VEWdvMgLmWmcmUTdrTYJIc4ssvEewyr7Y9shjsS+l4o=;
+	s=arc-20240116; t=1711989343; c=relaxed/simple;
+	bh=75cqZ6/o96dFfWY7wptKIH0Zfnod9ff8+UdW26VSmqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0m5p3m9GlgY8FHAI1sGcV0940+6hOqG91YqhbQQcEqDHl2rAz1Ix8Rb0kEKeNZ+89esOoI016RxkN/NxMboBw6H1vdYqy3ovBSm7AHtA3dHDXiEMI5C6G9SFmFKKWfa5Nq9FLIR1BZaNETaNU7thxKM3reCcar5adWWl9gclvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/hlIVF/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456C0C433F1;
-	Mon,  1 Apr 2024 16:14:51 +0000 (UTC)
+	 MIME-Version; b=UsPQxWCU349fFIcg7q3AeRc4afbmluZSYvjxLqvv3SOB4hfevqvwjjt+ttPaunzfEEhRZPUioAteXmI3O/A6NhxSbubqO9jLK33eHQSalzNAohp09IyO1w/kef3ZlHkAOxud5HQbzAuOwD9yqy9gkWPq2I8bTjZyLtc/eyEeQ8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Orkvoi7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CDAC433F1;
+	Mon,  1 Apr 2024 16:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988091;
-	bh=VEWdvMgLmWmcmUTdrTYJIc4ssvEewyr7Y9shjsS+l4o=;
+	s=korg; t=1711989343;
+	bh=75cqZ6/o96dFfWY7wptKIH0Zfnod9ff8+UdW26VSmqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/hlIVF/Xhqkpi8thknqowLsdWJWc6s5BvMmPTittm9t7OtDBCDmI/XsqJG9h+dzK
-	 ukdJEx3rQq4DyaMrrSBMThKlZF/ETv4vWvzS4hzfNDQKxcc4D224kmfj1+Aa/LSh1B
-	 NKtg4srr4BjVQtSRWuBbEmLreL/l1Ixa7zY1TjWE=
+	b=Orkvoi7KfCdWKRtCsG43W7wX7UvUq9xyw8mvuxSL2vjEaLDFX8APL6s1Kcrk7/s4y
+	 ABPIt5Q2sl/Wf/+zbAN9nzMNXlNrUr5INNgfKj4nzQF0B1jIctl/KLNDpNKSpnRko7
+	 yEMJlTt1XqMktGmpvU6BZaKVjyN+GvWDFlVTytp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>,
+	Marek Vasut <marex@denx.de>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 082/432] KVM: x86/xen: inject vCPU upcall vector when local APIC is enabled
+Subject: [PATCH 6.6 020/396] media: nxp: imx8-isi: Check whether crossbar pad is non-NULL before access
 Date: Mon,  1 Apr 2024 17:41:09 +0200
-Message-ID: <20240401152555.566972380@linuxfoundation.org>
+Message-ID: <20240401152548.499452038@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 8e62bf2bfa46367e14d0ffdcde5aada08759497c ]
+[ Upstream commit eb2f932100288dbb881eadfed02e1459c6b9504c ]
 
-Linux guests since commit b1c3497e604d ("x86/xen: Add support for
-HVMOP_set_evtchn_upcall_vector") in v6.0 onwards will use the per-vCPU
-upcall vector when it's advertised in the Xen CPUID leaves.
+When translating source to sink streams in the crossbar subdev, the
+driver tries to locate the remote subdev connected to the sink pad. The
+remote pad may be NULL, if userspace tries to enable a stream that ends
+at an unconnected crossbar sink. When that occurs, the driver
+dereferences the NULL pad, leading to a crash.
 
-This upcall is injected through the guest's local APIC as an MSI, unlike
-the older system vector which was merely injected by the hypervisor any
-time the CPU was able to receive an interrupt and the upcall_pending
-flags is set in its vcpu_info.
+Prevent the crash by checking if the pad is NULL before using it, and
+return an error if it is.
 
-Effectively, that makes the per-CPU upcall edge triggered instead of
-level triggered, which results in the upcall being lost if the MSI is
-delivered when the local APIC is *disabled*.
-
-Xen checks the vcpu_info->evtchn_upcall_pending flag when the local APIC
-for a vCPU is software enabled (in fact, on any write to the SPIV
-register which doesn't disable the APIC). Do the same in KVM since KVM
-doesn't provide a way for userspace to intervene and trap accesses to
-the SPIV register of a local APIC emulated by KVM.
-
-Fixes: fde0451be8fb3 ("KVM: x86/xen: Support per-vCPU event channel upcall via local APIC")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240227115648.3104-3-dwmw2@infradead.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org # 6.1
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20231201150614.63300-1-marex@denx.de
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |  5 ++++-
- arch/x86/kvm/xen.c   |  2 +-
- arch/x86/kvm/xen.h   | 18 ++++++++++++++++++
- 3 files changed, 23 insertions(+), 2 deletions(-)
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 245b20973caee..23fab75993a51 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -41,6 +41,7 @@
- #include "ioapic.h"
- #include "trace.h"
- #include "x86.h"
-+#include "xen.h"
- #include "cpuid.h"
- #include "hyperv.h"
- #include "smm.h"
-@@ -499,8 +500,10 @@ static inline void apic_set_spiv(struct kvm_lapic *apic, u32 val)
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+index 792f031e032ae..44354931cf8a1 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+@@ -160,8 +160,14 @@ mxc_isi_crossbar_xlate_streams(struct mxc_isi_crossbar *xbar,
  	}
  
- 	/* Check if there are APF page ready requests pending */
--	if (enabled)
-+	if (enabled) {
- 		kvm_make_request(KVM_REQ_APF_READY, apic->vcpu);
-+		kvm_xen_sw_enable_lapic(apic->vcpu);
+ 	pad = media_pad_remote_pad_first(&xbar->pads[sink_pad]);
+-	sd = media_entity_to_v4l2_subdev(pad->entity);
++	if (!pad) {
++		dev_dbg(xbar->isi->dev,
++			"no pad connected to crossbar input %u\n",
++			sink_pad);
++		return ERR_PTR(-EPIPE);
 +	}
- }
  
- static inline void kvm_apic_set_xapic_id(struct kvm_lapic *apic, u8 id)
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index e53fad915a626..50218f3fc1703 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -493,7 +493,7 @@ void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
- 		kvm_xen_update_runstate_guest(v, state == RUNSTATE_runnable);
- }
- 
--static void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
-+void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
- {
- 	struct kvm_lapic_irq irq = { };
- 	int r;
-diff --git a/arch/x86/kvm/xen.h b/arch/x86/kvm/xen.h
-index f8f1fe22d0906..f5841d9000aeb 100644
---- a/arch/x86/kvm/xen.h
-+++ b/arch/x86/kvm/xen.h
-@@ -18,6 +18,7 @@ extern struct static_key_false_deferred kvm_xen_enabled;
- 
- int __kvm_xen_has_interrupt(struct kvm_vcpu *vcpu);
- void kvm_xen_inject_pending_events(struct kvm_vcpu *vcpu);
-+void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *vcpu);
- int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data);
- int kvm_xen_vcpu_get_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data);
- int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data);
-@@ -36,6 +37,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
- 			 const struct kvm_irq_routing_entry *ue);
- void kvm_xen_update_tsc_info(struct kvm_vcpu *vcpu);
- 
-+static inline void kvm_xen_sw_enable_lapic(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * The local APIC is being enabled. If the per-vCPU upcall vector is
-+	 * set and the vCPU's evtchn_upcall_pending flag is set, inject the
-+	 * interrupt.
-+	 */
-+	if (static_branch_unlikely(&kvm_xen_enabled.key) &&
-+	    vcpu->arch.xen.vcpu_info_cache.active &&
-+	    vcpu->arch.xen.upcall_vector && __kvm_xen_has_interrupt(vcpu))
-+		kvm_xen_inject_vcpu_vector(vcpu);
-+}
-+
- static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
- {
- 	return static_branch_unlikely(&kvm_xen_enabled.key) &&
-@@ -101,6 +115,10 @@ static inline void kvm_xen_destroy_vcpu(struct kvm_vcpu *vcpu)
- {
- }
- 
-+static inline void kvm_xen_sw_enable_lapic(struct kvm_vcpu *vcpu)
-+{
-+}
-+
- static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
- {
- 	return false;
++	sd = media_entity_to_v4l2_subdev(pad->entity);
+ 	if (!sd) {
+ 		dev_dbg(xbar->isi->dev,
+ 			"no entity connected to crossbar input %u\n",
 -- 
 2.43.0
 
