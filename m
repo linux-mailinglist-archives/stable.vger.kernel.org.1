@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-35189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96628942D3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8018943D8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73A5EB22414
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0940B2122C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5624AED7;
-	Mon,  1 Apr 2024 16:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EB6482DF;
+	Mon,  1 Apr 2024 17:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks8f27hb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm71+O9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B5B4A99C;
-	Mon,  1 Apr 2024 16:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AC640876;
+	Mon,  1 Apr 2024 17:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990589; cv=none; b=SLaKYac6aL3qopFZ/u05L8QUOxr44mITSbK30NKEpspX1PPHam3PwLnhJPPOZxqeLPE8DUuFpWXWwKwbvdjQ5/0iKNsK5VNYY4MeNEGuzGh2wbwc18BJ5Ru+4KaR5iuV2278Dhh+BDqfWvtbMdC67uoABTRuS7bQcCJlRF43XZ4=
+	t=1711991331; cv=none; b=SUjG8XXa+gqt3euVK0EZVr24kCPSf8AvDEksWFVVaARm4mdh5n2V/PdkDMjWFUNHghxOBHBd80WzHEXYODEDPlPlkGLLN+lFOUMQAW2PYWcoon4WdkZQ9RkXJrwyklaXfcs1pT7UH76mvnwp/JImvXo+8usip9GgTjB1V/6N78U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990589; c=relaxed/simple;
-	bh=7nMfq+98GN3Va2kqR5DAP9BtD+OQ9Eu8ctX6F4v0c90=;
+	s=arc-20240116; t=1711991331; c=relaxed/simple;
+	bh=ytJoCylIuPVA49GusGH28Rywy/QotDeC1g/4GE5GE/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtgkXgLRI0q1WIh4VkSbwciXkgUeEfLNQeJQ1w/bi5lx2jHyeppXETlPSpR6oRsezsobnBqOhttWBa1cYU49d+jTcl4xNMaoyjH5sh3jSMB2zLa6ZH+1yyswtQ7RHxwrJJJwpZkjPj3ISyIDxd2lXg7aRsLbuLpevj7FWdqzDsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks8f27hb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2289BC433F1;
-	Mon,  1 Apr 2024 16:56:28 +0000 (UTC)
+	 MIME-Version; b=n6S0beOHzp5dJEHxenwz9GKxrF9wsSblu2tBezVJy5nZRuFcSp+goZ6i2Hl0gnwljfSOk8xppkwK0QxbcCYHwpKojlMG6pVJRZWrd4w6R8cl+AIClpBFu8QXZbB4vw/t+wq8ZZo2Hj1z7vkkeQMimmdvKbHgPzsmZ89E3Q8xZiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm71+O9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35235C433C7;
+	Mon,  1 Apr 2024 17:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990589;
-	bh=7nMfq+98GN3Va2kqR5DAP9BtD+OQ9Eu8ctX6F4v0c90=;
+	s=korg; t=1711991330;
+	bh=ytJoCylIuPVA49GusGH28Rywy/QotDeC1g/4GE5GE/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ks8f27hbFmJGQLWGwmcW9FG0DDKLHiuLuuWcoCpLc1nJ+ZVL6VXJkc7FTubzLmndu
-	 7XNGoEjPLWoFAvgKy5vGVnBgwWIuMgHjB8oHUq0QHiXCR+bI1GH5tudDoUP1Fd8FMB
-	 qF/0WggYlYnT1eObhF3Rrvp7eLEv2WNLyUdYUTg8=
+	b=Dm71+O9oqDy1l9uqpXIBggQLSTCcM1PoDLYyBd0tkPC1E4E+0l7lvSYdB+l0rjHha
+	 RdGlktB6OzMyUZ7HiGiFVIdZSGZfzRyUUWb5fuXfFIiu1hvysDHe5XALxe7+72ZEqy
+	 9I+docp4+oCcZkzQzPOM6MbTZ78dA5D/3M6yeAbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 372/396] usb: typec: Return size of buffer if pd_set operation succeeds
-Date: Mon,  1 Apr 2024 17:47:01 +0200
-Message-ID: <20240401152559.004142205@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.1 232/272] usb: cdc-wdm: close race between read and workqueue
+Date: Mon,  1 Apr 2024 17:47:02 +0200
+Message-ID: <20240401152538.222118075@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 53f5094fdf5deacd99b8655df692e9278506724d upstream.
+commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
 
-The attribute writing should return the number of bytes used from the
-buffer on success.
+wdm_read() cannot race with itself. However, in
+service_outstanding_interrupt() it can race with the
+workqueue, which can be triggered by error handling.
 
-Fixes: a7cff92f0635 ("usb: typec: USB Power Delivery helpers for ports and partners")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240319074309.3306579-1-kyletso@google.com
+Hence we need to make sure that the WDM_RESPONDING
+flag is not just only set but tested.
+
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -1264,6 +1264,7 @@ static ssize_t select_usb_power_delivery
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -485,6 +485,7 @@ out_free_mem:
+ static int service_outstanding_interrupt(struct wdm_device *desc)
  {
- 	struct typec_port *port = to_typec_port(dev);
- 	struct usb_power_delivery *pd;
-+	int ret;
+ 	int rv = 0;
++	int used;
  
- 	if (!port->ops || !port->ops->pd_set)
- 		return -EOPNOTSUPP;
-@@ -1272,7 +1273,11 @@ static ssize_t select_usb_power_delivery
- 	if (!pd)
- 		return -EINVAL;
+ 	/* submit read urb only if the device is waiting for it */
+ 	if (!desc->resp_count || !--desc->resp_count)
+@@ -499,7 +500,10 @@ static int service_outstanding_interrupt
+ 		goto out;
+ 	}
  
--	return port->ops->pd_set(port, pd);
-+	ret = port->ops->pd_set(port, pd);
-+	if (ret)
-+		return ret;
+-	set_bit(WDM_RESPONDING, &desc->flags);
++	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
++	if (used)
++		goto out;
 +
-+	return size;
- }
- 
- static ssize_t select_usb_power_delivery_show(struct device *dev,
+ 	spin_unlock_irq(&desc->iuspin);
+ 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
+ 	spin_lock_irq(&desc->iuspin);
 
 
 
