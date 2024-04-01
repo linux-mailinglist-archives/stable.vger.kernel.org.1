@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583FD894186
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CF2893FBB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12BF5282F97
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E3C91F22078
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAFC4D108;
-	Mon,  1 Apr 2024 16:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794E145BE4;
+	Mon,  1 Apr 2024 16:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oc/9dUsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHmXtO6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B620481D1;
-	Mon,  1 Apr 2024 16:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37150C129;
+	Mon,  1 Apr 2024 16:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989773; cv=none; b=m3VPi2yhiKOtPl1UM1AGq/xMbnI9ygiY2J7ZxsQcvA3ZNrmiqEGs3HeM5ftDb6NSjZOb2Z4buYMHh4MPORvR4fFON05wh67jedIXGAuS0KfKkC0iv5/qGdTPktT2HIM2LoRAFbvRQMefKmTDhcV3GLtmpDpIJvkhndxdziJLKp4=
+	t=1711988431; cv=none; b=PIhmbIaPpzij0k/GvycpNdrtHkkNkNLHndwf+RvSJpDBwZ7WJhunmq8hMgG+pcy9KDqJ4VGpVmIjEnueZah5IRInqKjVrADETrztY+ScHxz0S1/4dF28TDcwgbD6/u2PR3JEDSnJrpITgjeoQSbUdRASsX2aGLyGis+y4a7ytug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989773; c=relaxed/simple;
-	bh=ZndReiGD0DZ7EsQWkGOnLabMnbvklruDOkoEEnVlnQA=;
+	s=arc-20240116; t=1711988431; c=relaxed/simple;
+	bh=dwr216ZhRIJlxzDfow9x2z/Fhxcnq/btN7kx//yaSeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YZP+RQ1qn7LAp6y7Msf68kME4Vt07ulKNDiH2880gWgf6csyVaF2+yHIs9VAqzmD+rZGtg3DdCLsqGsVNGNf70NS3cp3drf+gt7L1Fd76/fG7A2aylF0BtNNF4iCSZsrEoew3vVho5MKdHPvuB7a21UIPXn5T/5gwbhfgGXQZ3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oc/9dUsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC667C433C7;
-	Mon,  1 Apr 2024 16:42:52 +0000 (UTC)
+	 MIME-Version; b=UzxKegg0Aap8zjgj8jXztiUGXYZlka4RgHKmo16Ia7/axx0HEa+nhzKTipL1w8bnprkEJSXu2G6efCkBmu+mwx11yn83Sj/TI3LvJSus7yIyKEM2T5pF6oG4+C1aHA6Rxko7ohlX50q474yJMCGaSjqlhr8YB+U/n748f/Y/66c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHmXtO6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CE8C433C7;
+	Mon,  1 Apr 2024 16:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989773;
-	bh=ZndReiGD0DZ7EsQWkGOnLabMnbvklruDOkoEEnVlnQA=;
+	s=korg; t=1711988431;
+	bh=dwr216ZhRIJlxzDfow9x2z/Fhxcnq/btN7kx//yaSeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oc/9dUsd9NAVX7juo6KIsYvbPNcMnTwAtnvF2LVbFIpNGK4AOHyBQfumhM6CGdjMD
-	 WMIjxRfu1PKxX4rUCtsIEdoWopsljEFup9zV6cUpDSp/nhDObfFLwId1FZI45UsnZX
-	 Fsn68z7u0MvmWtv3Hg1gv6w9JPjJ/+wPBXfbIHiQ=
+	b=HHmXtO6whC0DYubnHKBwmYSyq3SI5rANGCg8xMD8yM4GT0uHSJdhoo41Xz7xxM/ks
+	 8w2+KzuxFxXMtJuJnEORdQ9++Dl35noFBXYeypL2VQaZIqSbDEMb9v+Np+rFMoR/OL
+	 3Z0AdiVyIXqB2aU+CMH9/UMO2lqpDVVxeA8OVPGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/396] PCI: qcom: Enable BDF to SID translation properly
+Subject: [PATCH 6.7 182/432] mtd: rawnand: Fix and simplify again the continuous read derivations
 Date: Mon,  1 Apr 2024 17:42:49 +0200
-Message-ID: <20240401152551.496233909@linuxfoundation.org>
+Message-ID: <20240401152558.571869903@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,100 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit bf79e33cdd89db498e00a6131e937259de5f2705 ]
+[ Upstream commit c7ee7c8d4b60fe46d4861b1200bc1c7ab657960a ]
 
-Qcom SoCs making use of ARM SMMU require BDF to SID translation table in
-the driver to properly map the SID for the PCIe devices based on their BDF
-identifier. This is currently achieved with the help of
-qcom_pcie_config_sid_1_9_0() function for SoCs supporting the 1_9_0 config.
+We need to avoid the first page if we don't read it entirely.
+We need to avoid the last page if we don't read it entirely.
+While rather simple, this logic has been failed in the previous
+fix. This time I wrote about 30 unit tests locally to check each
+possible condition, hopefully I covered them all.
 
-But With newer Qcom SoCs starting from SM8450, BDF to SID translation is
-set to bypass mode by default in hardware. Due to this, the translation
-table that is set in the qcom_pcie_config_sid_1_9_0() is essentially
-unused and the default SID is used for all endpoints in SoCs starting from
-SM8450.
-
-This is a security concern and also warrants swapping the DeviceID in DT
-while using the GIC ITS to handle MSIs from endpoints. The swapping is
-currently done like below in DT when using GIC ITS:
-
-      /*
-	* MSIs for BDF (1:0.0) only works with Device ID 0x5980.
-	* Hence, the IDs are swapped.
-	*/
-      msi-map = <0x0 &gic_its 0x5981 0x1>,
-		<0x100 &gic_its 0x5980 0x1>;
-
-Here, swapping of the DeviceIDs ensure that the endpoint with BDF (1:0.0)
-gets the DeviceID 0x5980 which is associated with the default SID as per
-the iommu mapping in DT. So MSIs were delivered with IDs swapped so far.
-But this also means the Root Port (0:0.0) won't receive any MSIs (for PME,
-AER etc...)
-
-So let's fix these issues by clearing the BDF to SID bypass mode for all
-SoCs making use of the 1_9_0 config. This allows the PCIe devices to use
-the correct SID, thus avoiding the DeviceID swapping hack in DT and also
-achieving the isolation between devices.
-
-Fixes: 4c9398822106 ("PCI: qcom: Add support for configuring BDF to SID mapping for SM8250")
-Link: https://lore.kernel.org/linux-pci/20240307-pci-bdf-sid-fix-v1-1-9423a7e2d63c@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Cc: stable@vger.kernel.org # 5.11
+Reported-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Closes: https://lore.kernel.org/linux-mtd/20240221175327.42f7076d@xps-13/T/#m399bacb10db8f58f6b1f0149a1df867ec086bb0a
+Suggested-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Fixes: 828f6df1bcba ("mtd: rawnand: Clarify conditions to enable continuous reads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Link: https://lore.kernel.org/linux-mtd/20240223115545.354541-2-miquel.raynal@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/mtd/nand/raw/nand_base.c | 34 +++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 64420ecc24d1c..d3ca6d3493130 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -53,6 +53,7 @@
- #define PARF_SLV_ADDR_SPACE_SIZE		0x358
- #define PARF_DEVICE_TYPE			0x1000
- #define PARF_BDF_TO_SID_TABLE_N			0x2000
-+#define PARF_BDF_TO_SID_CFG			0x2c00
+diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+index bbdcfbe643f3f..7fca8b2c41cbe 100644
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -3460,30 +3460,36 @@ static void rawnand_enable_cont_reads(struct nand_chip *chip, unsigned int page,
+ 				      u32 readlen, int col)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+-	unsigned int end_page, end_col;
++	unsigned int first_page, last_page;
  
- /* ELBI registers */
- #define ELBI_SYS_CTRL				0x04
-@@ -120,6 +121,9 @@
- /* PARF_DEVICE_TYPE register fields */
- #define DEVICE_TYPE_RC				0x4
+ 	chip->cont_read.ongoing = false;
  
-+/* PARF_BDF_TO_SID_CFG fields */
-+#define BDF_TO_SID_BYPASS			BIT(0)
-+
- /* ELBI_SYS_CTRL register fields */
- #define ELBI_SYS_CTRL_LT_ENABLE			BIT(0)
+ 	if (!chip->controller->supported_op.cont_read)
+ 		return;
  
-@@ -985,11 +989,17 @@ static int qcom_pcie_config_sid_1_9_0(struct qcom_pcie *pcie)
- 	u8 qcom_pcie_crc8_table[CRC8_TABLE_SIZE];
- 	int i, nr_map, size = 0;
- 	u32 smmu_sid_base;
-+	u32 val;
+-	end_page = DIV_ROUND_UP(col + readlen, mtd->writesize);
+-	end_col = (col + readlen) % mtd->writesize;
++	/*
++	 * Don't bother making any calculations if the length is too small.
++	 * Side effect: avoids possible integer underflows below.
++	 */
++	if (readlen < (2 * mtd->writesize))
++		return;
  
- 	of_get_property(dev->of_node, "iommu-map", &size);
- 	if (!size)
- 		return 0;
++	/* Derive the page where continuous read should start (the first full page read) */
++	first_page = page;
+ 	if (col)
+-		page++;
+-
+-	if (end_col && end_page)
+-		end_page--;
++		first_page++;
  
-+	/* Enable BDF to SID translation by disabling bypass mode (default) */
-+	val = readl(pcie->parf + PARF_BDF_TO_SID_CFG);
-+	val &= ~BDF_TO_SID_BYPASS;
-+	writel(val, pcie->parf + PARF_BDF_TO_SID_CFG);
-+
- 	map = kzalloc(size, GFP_KERNEL);
- 	if (!map)
- 		return -ENOMEM;
+-	if (page + 1 > end_page)
+-		return;
+-
+-	chip->cont_read.first_page = page;
+-	chip->cont_read.last_page = end_page;
+-	chip->cont_read.ongoing = true;
++	/* Derive the page where continuous read should stop (the last full page read) */
++	last_page = page + ((col + readlen) / mtd->writesize) - 1;
+ 
+-	rawnand_cap_cont_reads(chip);
++	/* Configure and enable continuous read when suitable */
++	if (first_page < last_page) {
++		chip->cont_read.first_page = first_page;
++		chip->cont_read.last_page = last_page;
++		chip->cont_read.ongoing = true;
++		/* May reset the ongoing flag */
++		rawnand_cap_cont_reads(chip);
++	}
+ }
+ 
+ static void rawnand_cont_read_skip_first_page(struct nand_chip *chip, unsigned int page)
 -- 
 2.43.0
 
