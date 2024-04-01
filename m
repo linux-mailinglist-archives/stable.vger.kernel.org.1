@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-34633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8906F894028
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93078893E8D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D898B21117
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C419E1C2117F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8584047A74;
-	Mon,  1 Apr 2024 16:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858AA4776F;
+	Mon,  1 Apr 2024 16:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StuCD2rq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ky8yzTEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437A33D961;
-	Mon,  1 Apr 2024 16:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8031CA8F;
+	Mon,  1 Apr 2024 16:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988779; cv=none; b=Rdl380pEUhzk1QFMqyjgl3tLdJ1vyzfyR+9Ju3UwEGTCP2YkKh7Q7pgS+beSUDmSimV3s7ZttvRQF0UA/WTqoJNdo71cjJN2E3eXrdrjtnUUnoaReh47yI5/OWiO3fV7/Lf46n1KmxW2j3naswzu8o7wnRh88fW+4Q4HsGK43EM=
+	t=1711987499; cv=none; b=eGhVnFSBWdkbPIdmC5PRTHpOChE9PwRMjz2w9DIMINZruFiBoL2x9LykIR5GiCsbVplWfTxokshg9R5YII+ineFEHC5uhBKGuFx9NaLJYxiWQuoZddWyEOrM6wL1lY2Abjx7ZA77X7xbrjcrMVx2koxp2/aDIGFnp+UcjXT/m/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988779; c=relaxed/simple;
-	bh=ps4jrpTjeGLL/icB7VsgbyyKKoIR/fENQ6T8hKBULTo=;
+	s=arc-20240116; t=1711987499; c=relaxed/simple;
+	bh=PMSCh7YeYZ43I2lXPNxKk0Z1n/LS5UVy6jt5QNbm+QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ll9yyDuUd6yln51Z5nu0PXF2hh1yvw2XP8wRKywhGzTJQaYJ5RRnjj/DgrwNqQv1zKDM/1H++dV07IrRS5BTrz3gNNHTdEuh4sKw3SqGs94JW0PFlxgsWSwkqIQK1cNmT4pIN2WdzD9iB/5UNa75fwMF+POtYlUEhBA0+o+KBds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StuCD2rq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80DEC43390;
-	Mon,  1 Apr 2024 16:26:18 +0000 (UTC)
+	 MIME-Version; b=HDXxfC6OSEfaSprpyeNGraMKSpt+LQUluYewWtUXU10DeBm3cWSukArKFJhUfey8OdzjadeEscSrrIgWvFk83sfTOpYfDnuE4IO1hzsyPXoEVHB0xzEGXa8EMm3T+JlDZYOI2I0YIjRVeqr8lCFozkvq5uEny7rGS9P3I8Zbb/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ky8yzTEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE2CC433F1;
+	Mon,  1 Apr 2024 16:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988779;
-	bh=ps4jrpTjeGLL/icB7VsgbyyKKoIR/fENQ6T8hKBULTo=;
+	s=korg; t=1711987499;
+	bh=PMSCh7YeYZ43I2lXPNxKk0Z1n/LS5UVy6jt5QNbm+QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StuCD2rqbJI2htTDW/LFKbMq2fJH9xPXCcxF6qYwginKobx9+jBkMJVUnfORz1Gtl
-	 gTiyJMLkmMCOZwC4raHsuf/B2w/Zy/63xnLaYLpazb6S11h/Dzqlro1F3vr2NEYWez
-	 Uif9Qg/98E616hZtXiFqW5CvUH4mT5NtE7jgDasc=
+	b=Ky8yzTEMM0UmPuWfp4z/xvG5YMhSUuu/VJAqOqv1IoCyHd+gFoOXP+gDH9UZ3YGiO
+	 SuZLYOkdRjjpvU676fGPphDXm/XKIaA4PuK4hMjzfg3v9jihRgc44nlBLEgyDfJE73
+	 22pgApMMcz8hQCd87gpa49rjFjkjlT11P6mEWLjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH 6.7 285/432] i2c: i801: Avoid potential double call to gpiod_remove_lookup_table
+	Nick Bowler <nbowler@draconx.ca>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.8 306/399] fbdev: Select I/O-memory framebuffer ops for SBus
 Date: Mon,  1 Apr 2024 17:44:32 +0200
-Message-ID: <20240401152601.673792496@linuxfoundation.org>
+Message-ID: <20240401152558.322745905@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +69,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit ceb013b2d9a2946035de5e1827624edc85ae9484 upstream.
+commit a8eb93b42d7e068306ca07f51055cbcde893fea3 upstream.
 
-If registering the platform device fails, the lookup table is
-removed in the error path. On module removal we would try to
-remove the lookup table again. Fix this by setting priv->lookup
-only if registering the platform device was successful.
-In addition free the memory allocated for the lookup table in
-the error path.
+Framebuffer I/O on the Sparc Sbus requires read/write helpers for
+I/O memory. Select FB_IOMEM_FOPS accordingly.
 
-Fixes: d308dfbf62ef ("i2c: mux/i801: Switch to use descriptor passing")
-Cc: stable@vger.kernel.org
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Closes: https://lore.kernel.org/lkml/5bc21364-41da-a339-676e-5bb0f4faebfb@draconx.ca/
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 8813e86f6d82 ("fbdev: Remove default file-I/O implementations")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240322083005.24269-1-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-i801.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/Kconfig |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -1414,7 +1414,6 @@ static void i801_add_mux(struct i801_pri
- 		lookup->table[i] = GPIO_LOOKUP(mux_config->gpio_chip,
- 					       mux_config->gpios[i], "mux", 0);
- 	gpiod_add_lookup_table(lookup);
--	priv->lookup = lookup;
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -501,6 +501,7 @@ config FB_SBUS_HELPERS
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_IMAGEBLIT
++	select FB_IOMEM_FOPS
  
- 	/*
- 	 * Register the mux device, we use PLATFORM_DEVID_NONE here
-@@ -1428,7 +1427,10 @@ static void i801_add_mux(struct i801_pri
- 				sizeof(struct i2c_mux_gpio_platform_data));
- 	if (IS_ERR(priv->mux_pdev)) {
- 		gpiod_remove_lookup_table(lookup);
-+		devm_kfree(dev, lookup);
- 		dev_err(dev, "Failed to register i2c-mux-gpio device\n");
-+	} else {
-+		priv->lookup = lookup;
- 	}
- }
- 
+ config FB_BW2
+ 	bool "BWtwo support"
+@@ -521,6 +522,7 @@ config FB_CG6
+ 	depends on (FB = y) && (SPARC && FB_SBUS)
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
++	select FB_IOMEM_FOPS
+ 	help
+ 	  This is the frame buffer device driver for the CGsix (GX, TurboGX)
+ 	  frame buffer.
+@@ -530,6 +532,7 @@ config FB_FFB
+ 	depends on FB_SBUS && SPARC64
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
++	select FB_IOMEM_FOPS
+ 	help
+ 	  This is the frame buffer device driver for the Creator, Creator3D,
+ 	  and Elite3D graphics boards.
 
 
 
