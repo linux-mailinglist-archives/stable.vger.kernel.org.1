@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F305894193
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCA7893FE7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0C231C20828
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0C402851DE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B464AECF;
-	Mon,  1 Apr 2024 16:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5306047A5D;
+	Mon,  1 Apr 2024 16:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5ZLVTfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfrHMxbh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663A63F8F4;
-	Mon,  1 Apr 2024 16:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115DEC129;
+	Mon,  1 Apr 2024 16:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989813; cv=none; b=JryDyNlXLVlz/QXSe+6dVnnYM64HLmlX1KCtni4O0iXF+uOWcWEgSX85awDNbxK8xtN7e4V3XjZcCvngnSBAuRTu8nsY0iEQgqI4D89gdU/jOfI1SKA7+erKN2xGsa3ZfJpFpZhRYPnuiVIWBbxvB0n5FIa/LUjwiJbaW04Akpo=
+	t=1711988574; cv=none; b=rkOEHkKI/xOMQQgxxQ8ReFq3sSrFHRxBCqK34DsRwMhyeJRX2xBmlkyPrIyj2LmYsARe5+p/o4MJkQ7Lic1jMrmtObr0rXq1X+nJmct6nrr+W7StXAsJaD1Kb82CSQm24EjrQdzDsHbBCJrcWqcuGDuZq7r4aiHOxgt56g7DuZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989813; c=relaxed/simple;
-	bh=+VTiYCBKn0sI6kHLftj5boCISlffB4K3+qk2lVvSLFQ=;
+	s=arc-20240116; t=1711988574; c=relaxed/simple;
+	bh=u10mZjQN9aWcEEZ2oUZwpuJeUrJWqFhpZKWbaX+76oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GcOJ52pP/OnF1vN5q2JsABamamvep6/lLg6f+4Qrmw/q825XPjwGTMxDpyDkcjD/j6f94qzP/QRwx7VIG0t1csru1V991me+c3E2tTJR/NUxTLwPIEmWhAuWdSL4fKJyB7u4M3RcfZOs088Gs6JJeZkWdihUHETnpsS588ofJiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5ZLVTfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681B1C433F1;
-	Mon,  1 Apr 2024 16:43:32 +0000 (UTC)
+	 MIME-Version; b=ggEXPBT6g6/2tcElU23qRH/QaEW5J/gr3x7GSey1ei3yHCIpuEtdqCwYwbGCbyXRG5nlndm7Ze72HOZiknbRqQS680PgsXAY00V8vPWjr+f4PqZ2k0sHzIt/woL0y+QPbGcecTVljueXF74y0S7CnMXUzM4SZMgQHSPnflivFCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfrHMxbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75755C433C7;
+	Mon,  1 Apr 2024 16:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989812;
-	bh=+VTiYCBKn0sI6kHLftj5boCISlffB4K3+qk2lVvSLFQ=;
+	s=korg; t=1711988573;
+	bh=u10mZjQN9aWcEEZ2oUZwpuJeUrJWqFhpZKWbaX+76oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K5ZLVTfZoIPxVdqOb9Ps8T6l1LFxqiulhdME0PBJIsczcg7q2EIq5SckJNY4EYLjR
-	 XGOkjZc6gsB1flzZNX0EIkMQ23zK73I6rAv8aw0J9uZi8exb+/6kZp5PQ6SWp4z3Aj
-	 CfxINIC6VdopMy8OaMjgfgaGDmI4m/EGXQ0xMEEY=
+	b=KfrHMxbhjYWgSyRo8Ih0Drd277X/REN1SVjBccMrh6udnCG1//KgyHMnLRbejIUSt
+	 Meawaavt+7yS/vu9KNYkjICvGTn5eHBzooIW0Y4ZpNASk0X04XldPG+VIzykMbQdrx
+	 qnQOC0XE1ll1vRjDV8iBA+eYurkrU3eO3HFVg/Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20=C4=8Cerm=C3=A1k?= <sairon@sairon.cz>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Hector Martin <marcan@marcan.st>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/396] cifs: reduce warning log level for server not advertising interfaces
-Date: Mon,  1 Apr 2024 17:43:30 +0200
-Message-ID: <20240401152552.741544704@linuxfoundation.org>
+Subject: [PATCH 6.7 224/432] wifi: brcmfmac: Demote vendor-specific attach/detach messages to info
+Date: Mon,  1 Apr 2024 17:43:31 +0200
+Message-ID: <20240401152559.816217175@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,208 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 16a57d7681110b25708c7042688412238e6f73a9 ]
+[ Upstream commit 85da8f71aaa7b83ea7ef0e89182e0cd47e16d465 ]
 
-Several users have reported this log getting dumped too regularly to
-kernel log. The likely root cause has been identified, and it suggests
-that this situation is expected for some configurations
-(for example SMB2.1).
+People are getting spooked by brcmfmac errors on their boot console.
+There's no reason for these messages to be errors.
 
-Since the function returns appropriately even for such cases, it is
-fairly harmless to make this a debug log. When needed, the verbosity
-can be increased to capture this log.
-
-Cc: stable@vger.kernel.org
-Reported-by: Jan Čermák <sairon@sairon.cz>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: stable@vger.kernel.org # 6.2.x
+Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
+Signed-off-by: Hector Martin <marcan@marcan.st>
+[arend.vanspriel@broadcom.com: remove attach/detach vendor callbacks]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240106103835.269149-2-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/bca/core.c    | 13 ----------
+ .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 13 ----------
+ .../broadcom/brcm80211/brcmfmac/fwvid.c       |  7 +++--
+ .../broadcom/brcm80211/brcmfmac/fwvid.h       | 26 ++-----------------
+ .../broadcom/brcm80211/brcmfmac/wcc/core.c    | 15 +----------
+ 5 files changed, 6 insertions(+), 68 deletions(-)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 16554216f2f95..e4168cd8b6c28 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -224,7 +224,7 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
- 		spin_lock(&ses->iface_lock);
- 		if (!ses->iface_count) {
- 			spin_unlock(&ses->iface_lock);
--			cifs_dbg(VFS, "server %s does not advertise interfaces\n",
-+			cifs_dbg(ONCE, "server %s does not advertise interfaces\n",
- 				      ses->server->hostname);
- 			break;
- 		}
-@@ -390,7 +390,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	spin_lock(&ses->iface_lock);
- 	if (!ses->iface_count) {
- 		spin_unlock(&ses->iface_lock);
--		cifs_dbg(VFS, "server %s does not advertise interfaces\n", ses->server->hostname);
-+		cifs_dbg(ONCE, "server %s does not advertise interfaces\n", ses->server->hostname);
- 		return;
- 	}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+index a5d9ac5e67638..a963c242975ac 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+@@ -11,17 +11,6 @@
  
+ #include "vops.h"
+ 
+-static int brcmf_bca_attach(struct brcmf_pub *drvr)
+-{
+-	pr_err("%s: executing\n", __func__);
+-	return 0;
+-}
+-
+-static void brcmf_bca_detach(struct brcmf_pub *drvr)
+-{
+-	pr_err("%s: executing\n", __func__);
+-}
+-
+ static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
+ {
+ 	/* SAE support not confirmed so disabling for now */
+@@ -29,7 +18,5 @@ static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
+ }
+ 
+ const struct brcmf_fwvid_ops brcmf_bca_ops = {
+-	.attach = brcmf_bca_attach,
+-	.detach = brcmf_bca_detach,
+ 	.feat_attach = brcmf_bca_feat_attach,
+ };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+index 24670497f1a40..bec5748310b9c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+@@ -11,17 +11,6 @@
+ 
+ #include "vops.h"
+ 
+-static int brcmf_cyw_attach(struct brcmf_pub *drvr)
+-{
+-	pr_err("%s: executing\n", __func__);
+-	return 0;
+-}
+-
+-static void brcmf_cyw_detach(struct brcmf_pub *drvr)
+-{
+-	pr_err("%s: executing\n", __func__);
+-}
+-
+ static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
+ 				 struct cfg80211_crypto_settings *crypto)
+ {
+@@ -49,7 +38,5 @@ static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
+ }
+ 
+ const struct brcmf_fwvid_ops brcmf_cyw_ops = {
+-	.attach = brcmf_cyw_attach,
+-	.detach = brcmf_cyw_detach,
+ 	.set_sae_password = brcmf_cyw_set_sae_pwd,
+ };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
+index f610818c2b059..b427782554b59 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
+@@ -89,8 +89,7 @@ int brcmf_fwvid_register_vendor(enum brcmf_fwvendor fwvid, struct module *vmod,
+ 	if (fwvid >= BRCMF_FWVENDOR_NUM)
+ 		return -ERANGE;
+ 
+-	if (WARN_ON(!vmod) || WARN_ON(!vops) ||
+-	    WARN_ON(!vops->attach) || WARN_ON(!vops->detach))
++	if (WARN_ON(!vmod) || WARN_ON(!vops))
+ 		return -EINVAL;
+ 
+ 	if (WARN_ON(fwvid_list[fwvid].vmod))
+@@ -150,7 +149,7 @@ static inline int brcmf_fwvid_request_module(enum brcmf_fwvendor fwvid)
+ }
+ #endif
+ 
+-int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr)
++int brcmf_fwvid_attach(struct brcmf_pub *drvr)
+ {
+ 	enum brcmf_fwvendor fwvid = drvr->bus_if->fwvid;
+ 	int ret;
+@@ -175,7 +174,7 @@ int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr)
+ 	return ret;
+ }
+ 
+-void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr)
++void brcmf_fwvid_detach(struct brcmf_pub *drvr)
+ {
+ 	enum brcmf_fwvendor fwvid = drvr->bus_if->fwvid;
+ 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+index d9fc76b46db96..dac22534d0334 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+@@ -12,8 +12,6 @@ struct brcmf_pub;
+ struct brcmf_if;
+ 
+ struct brcmf_fwvid_ops {
+-	int (*attach)(struct brcmf_pub *drvr);
+-	void (*detach)(struct brcmf_pub *drvr);
+ 	void (*feat_attach)(struct brcmf_if *ifp);
+ 	int (*set_sae_password)(struct brcmf_if *ifp, struct cfg80211_crypto_settings *crypto);
+ };
+@@ -24,30 +22,10 @@ int brcmf_fwvid_register_vendor(enum brcmf_fwvendor fwvid, struct module *mod,
+ int brcmf_fwvid_unregister_vendor(enum brcmf_fwvendor fwvid, struct module *mod);
+ 
+ /* core driver functions */
+-int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr);
+-void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr);
++int brcmf_fwvid_attach(struct brcmf_pub *drvr);
++void brcmf_fwvid_detach(struct brcmf_pub *drvr);
+ const char *brcmf_fwvid_vendor_name(struct brcmf_pub *drvr);
+ 
+-static inline int brcmf_fwvid_attach(struct brcmf_pub *drvr)
+-{
+-	int ret;
+-
+-	ret = brcmf_fwvid_attach_ops(drvr);
+-	if (ret)
+-		return ret;
+-
+-	return drvr->vops->attach(drvr);
+-}
+-
+-static inline void brcmf_fwvid_detach(struct brcmf_pub *drvr)
+-{
+-	if (!drvr->vops)
+-		return;
+-
+-	drvr->vops->detach(drvr);
+-	brcmf_fwvid_detach_ops(drvr);
+-}
+-
+ static inline void brcmf_fwvid_feat_attach(struct brcmf_if *ifp)
+ {
+ 	const struct brcmf_fwvid_ops *vops = ifp->drvr->vops;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
+index 2d8f80bd73829..fd593b93ad404 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
+@@ -7,21 +7,10 @@
+ #include <core.h>
+ #include <bus.h>
+ #include <fwvid.h>
+-#include <fwil.h>
++#include <cfg80211.h>
+ 
+ #include "vops.h"
+ 
+-static int brcmf_wcc_attach(struct brcmf_pub *drvr)
+-{
+-	pr_debug("%s: executing\n", __func__);
+-	return 0;
+-}
+-
+-static void brcmf_wcc_detach(struct brcmf_pub *drvr)
+-{
+-	pr_debug("%s: executing\n", __func__);
+-}
+-
+ static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
+ 				 struct cfg80211_crypto_settings *crypto)
+ {
+@@ -30,7 +19,5 @@ static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
+ }
+ 
+ const struct brcmf_fwvid_ops brcmf_wcc_ops = {
+-	.attach = brcmf_wcc_attach,
+-	.detach = brcmf_wcc_detach,
+ 	.set_sae_password = brcmf_wcc_set_sae_pwd,
+ };
 -- 
 2.43.0
 
