@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10428943B6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D7589428D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 972211F25B94
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8C51C20FA6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3636B482E4;
-	Mon,  1 Apr 2024 17:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128B64F205;
+	Mon,  1 Apr 2024 16:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmf20pQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iOtpblc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19C7481B8;
-	Mon,  1 Apr 2024 17:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F044D9F6;
+	Mon,  1 Apr 2024 16:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991229; cv=none; b=RgzRnpNEKpwRWXLciG5Ppi2VGYs5mCj9xuu9NX0ZM7OwBUfdL7rEu9g8gGkQLnXx8UpzhgNVSA7KygoS67MqVrpMcSFKnYj3PH6VLNehQair6lJXH9AcT2OPJow7A0gfGR7wIExROi7gVMWEOzK4D5z2PDCpYlTfVV7BNImaX0Q=
+	t=1711990405; cv=none; b=V5Vu86M+ftIVd1YhM2MnYdbN8pSYYaMiJI5RfLpFoL8I5xetxSEThrc1mirMCdBO4I8RYhyth6ig6ZVT8JzXyeyoPafSaFCsNJPXmxDpekVQbNF7S6mmthBjGVhk4nmnGy+KoQodOk8K5LtcrSWIAnzetGr4LGMKQT3C3ynbVCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991229; c=relaxed/simple;
-	bh=QU7JZRYgQL719AtTI7T3v5B7dFEV7KVv0U3uhYphbJ8=;
+	s=arc-20240116; t=1711990405; c=relaxed/simple;
+	bh=1oE1TpX7L6kLhcNB17Yltnc8d2UwDt5msA1Bp1IBPDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mx1PdbppXM+/3MG6wXRdj/48n7kobW52SpfIZ/eMBBueePeVjsYsJk4vOgP2y8mh2xWW+FRf6yM57qrwvYEt6YZh/N6KKThhoz4c9x48OAVRqQBq7R8+igPZg17MBGten60MJ00kvNv8c0L44shCi7YvMbKVsC8DnMZZ4JsRHs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmf20pQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5296EC433F1;
-	Mon,  1 Apr 2024 17:07:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pjkcHzB4xcRyIxgWooTNSOlUnK1Ch1j13rabjYkM2q80pUO39a4OMn/Bwr6KolH3TgTBez/Zo1EBybm8TAYUb7yPoVITJUa7F18Ii8JKinLZvx7W8nrLHU/UIIyXncAvJ9sBBPnBefvMJVNgiB/LsfDN6d/pQEaY0w2DJ8jQCcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iOtpblc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7899C43399;
+	Mon,  1 Apr 2024 16:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991228;
-	bh=QU7JZRYgQL719AtTI7T3v5B7dFEV7KVv0U3uhYphbJ8=;
+	s=korg; t=1711990405;
+	bh=1oE1TpX7L6kLhcNB17Yltnc8d2UwDt5msA1Bp1IBPDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmf20pQ3wpcmPzZYoACaVFpgwRkb+n94vgejutnanwyFxxoAPjw25B1VsyQmYlFdo
-	 DtGP69ip0zxRMl6Ugru3rU3dRgSeGYCvSwDyKEmBvwp6SlnWzwwXS1/vaKcY4TVkXz
-	 4N2ePZOt6h/PQEOAWTPrwe5MYzZTikv/3/ho41qY=
+	b=2iOtpblc5qP4t0gCM0p4XICOXOSAUX7yunXOuVDz3+/ARiBdoxgNv1KEQ4lkjLCkg
+	 hN5ceTxwu0WJ9M0Y214L8aM8lTfuQur23W++asfI4bvQxUK51Pj8uoz1OMYvN7d6UX
+	 o0N+utfiTgP8VGZSt79FaCgbbPDkEfEHRov+kO7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.1 201/272] vfio: Introduce interface to flush virqfd inject workqueue
-Date: Mon,  1 Apr 2024 17:46:31 +0200
-Message-ID: <20240401152537.170064562@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.6 343/396] drm/i915/bios: Tolerate devdata==NULL in intel_bios_encoder_supports_dp_dual_mode()
+Date: Mon,  1 Apr 2024 17:46:32 +0200
+Message-ID: <20240401152558.144665628@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit b620ecbd17a03cacd06f014a5d3f3a11285ce053 ]
+commit 32e39bab59934bfd3f37097d4dd85ac5eb0fd549 upstream.
 
-In order to synchronize changes that can affect the thread callback,
-introduce an interface to force a flush of the inject workqueue.  The
-irqfd pointer is only valid under spinlock, but the workqueue cannot
-be flushed under spinlock.  Therefore the flush work for the irqfd is
-queued under spinlock.  The vfio_irqfd_cleanup_wq workqueue is re-used
-for queuing this work such that flushing the workqueue is also ordered
-relative to shutdown.
+If we have no VBT, or the VBT didn't declare the encoder
+in question, we won't have the 'devdata' for the encoder.
+Instead of oopsing just bail early.
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-4-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+We won't be able to tell whether the port is DP++ or not,
+but so be it.
+
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10464
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240319092443.15769-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 26410896206342c8a80d2b027923e9ee7d33b733)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/virqfd.c |   21 +++++++++++++++++++++
- include/linux/vfio.h  |    2 ++
- 2 files changed, 23 insertions(+)
+ drivers/gpu/drm/i915/display/intel_bios.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/vfio/virqfd.c
-+++ b/drivers/vfio/virqfd.c
-@@ -104,6 +104,13 @@ static void virqfd_inject(struct work_st
- 		virqfd->thread(virqfd->opaque, virqfd->data);
- }
+--- a/drivers/gpu/drm/i915/display/intel_bios.c
++++ b/drivers/gpu/drm/i915/display/intel_bios.c
+@@ -3313,6 +3313,9 @@ bool intel_bios_encoder_supports_dp_dual
+ {
+ 	const struct child_device_config *child = &devdata->child;
  
-+static void virqfd_flush_inject(struct work_struct *work)
-+{
-+	struct virqfd *virqfd = container_of(work, struct virqfd, flush_inject);
++	if (!devdata)
++		return false;
 +
-+	flush_work(&virqfd->inject);
-+}
-+
- int vfio_virqfd_enable(void *opaque,
- 		       int (*handler)(void *, void *),
- 		       void (*thread)(void *, void *),
-@@ -127,6 +134,7 @@ int vfio_virqfd_enable(void *opaque,
- 
- 	INIT_WORK(&virqfd->shutdown, virqfd_shutdown);
- 	INIT_WORK(&virqfd->inject, virqfd_inject);
-+	INIT_WORK(&virqfd->flush_inject, virqfd_flush_inject);
- 
- 	irqfd = fdget(fd);
- 	if (!irqfd.file) {
-@@ -217,6 +225,19 @@ void vfio_virqfd_disable(struct virqfd *
- }
- EXPORT_SYMBOL_GPL(vfio_virqfd_disable);
- 
-+void vfio_virqfd_flush_thread(struct virqfd **pvirqfd)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&virqfd_lock, flags);
-+	if (*pvirqfd && (*pvirqfd)->thread)
-+		queue_work(vfio_irqfd_cleanup_wq, &(*pvirqfd)->flush_inject);
-+	spin_unlock_irqrestore(&virqfd_lock, flags);
-+
-+	flush_workqueue(vfio_irqfd_cleanup_wq);
-+}
-+EXPORT_SYMBOL_GPL(vfio_virqfd_flush_thread);
-+
- module_init(vfio_virqfd_init);
- module_exit(vfio_virqfd_exit);
- 
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -268,6 +268,7 @@ struct virqfd {
- 	wait_queue_entry_t		wait;
- 	poll_table		pt;
- 	struct work_struct	shutdown;
-+	struct work_struct	flush_inject;
- 	struct virqfd		**pvirqfd;
- };
- 
-@@ -275,5 +276,6 @@ int vfio_virqfd_enable(void *opaque, int
- 		       void (*thread)(void *, void *), void *data,
- 		       struct virqfd **pvirqfd, int fd);
- void vfio_virqfd_disable(struct virqfd **pvirqfd);
-+void vfio_virqfd_flush_thread(struct virqfd **pvirqfd);
- 
- #endif /* VFIO_H */
+ 	if (!intel_bios_encoder_supports_dp(devdata) ||
+ 	    !intel_bios_encoder_supports_hdmi(devdata))
+ 		return false;
 
 
 
