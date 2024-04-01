@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D7589428D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091F68940AF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8C51C20FA6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D0BFB20D80
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128B64F205;
-	Mon,  1 Apr 2024 16:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2292D38DD8;
+	Mon,  1 Apr 2024 16:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iOtpblc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkIRUqHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F044D9F6;
-	Mon,  1 Apr 2024 16:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CCB1C0DE7;
+	Mon,  1 Apr 2024 16:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990405; cv=none; b=V5Vu86M+ftIVd1YhM2MnYdbN8pSYYaMiJI5RfLpFoL8I5xetxSEThrc1mirMCdBO4I8RYhyth6ig6ZVT8JzXyeyoPafSaFCsNJPXmxDpekVQbNF7S6mmthBjGVhk4nmnGy+KoQodOk8K5LtcrSWIAnzetGr4LGMKQT3C3ynbVCw=
+	t=1711989180; cv=none; b=PH5kSt8spEjJz18ERyvTL6kf1Z9k/IKqVt1LwxBAduSJm1kfrcq37csJpY/htBb9enEY7pa58+Vl7koJZyGCurqp4cKSMq2DOj9r2XIg0leBYZ9qNzDlij4VLCl0MLOZcCDYGVdftnklYO7tF/OGAbKsxnS5un1A+yN2e3PMzuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990405; c=relaxed/simple;
-	bh=1oE1TpX7L6kLhcNB17Yltnc8d2UwDt5msA1Bp1IBPDk=;
+	s=arc-20240116; t=1711989180; c=relaxed/simple;
+	bh=RRJqGzVkPOcUdQkLdQJNpP84vk2qlEYoqJ3y0a/I+70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pjkcHzB4xcRyIxgWooTNSOlUnK1Ch1j13rabjYkM2q80pUO39a4OMn/Bwr6KolH3TgTBez/Zo1EBybm8TAYUb7yPoVITJUa7F18Ii8JKinLZvx7W8nrLHU/UIIyXncAvJ9sBBPnBefvMJVNgiB/LsfDN6d/pQEaY0w2DJ8jQCcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iOtpblc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7899C43399;
-	Mon,  1 Apr 2024 16:53:24 +0000 (UTC)
+	 MIME-Version; b=hxvXP2sg227v4ngWd6oP8rFo4G+JjLLPCC+8jZd05h/iruQ0bkeHJOOwYIv2fV6FC2Ojmiij/ZTGukMrgtp7d8ZyO81dUaWg2IYivtESWeFbUBlbW0xNBXLqDY4pLyfhHpEzUHQUqGlQuWmTNj5oQERHBuTcDDdLslfbHDIagPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkIRUqHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456EBC433F1;
+	Mon,  1 Apr 2024 16:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990405;
-	bh=1oE1TpX7L6kLhcNB17Yltnc8d2UwDt5msA1Bp1IBPDk=;
+	s=korg; t=1711989180;
+	bh=RRJqGzVkPOcUdQkLdQJNpP84vk2qlEYoqJ3y0a/I+70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iOtpblc5qP4t0gCM0p4XICOXOSAUX7yunXOuVDz3+/ARiBdoxgNv1KEQ4lkjLCkg
-	 hN5ceTxwu0WJ9M0Y214L8aM8lTfuQur23W++asfI4bvQxUK51Pj8uoz1OMYvN7d6UX
-	 o0N+utfiTgP8VGZSt79FaCgbbPDkEfEHRov+kO7Y=
+	b=bkIRUqHp6Ft03Q9vIZi5hQRWtQSP3fnU/R3ENOIW3l7Befgq3l3FWZsIg2iQwIzkM
+	 O4RDiz2Z/r2+txddrcgaihVjLzhRafroGsOlWTi+/cvgyS8Stx+o7cuUyI8f2anjCq
+	 xT4FR2AId74xHoS/MDeDCMTAqTp1DTyHJiFZ14qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.6 343/396] drm/i915/bios: Tolerate devdata==NULL in intel_bios_encoder_supports_dp_dual_mode()
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.7 405/432] usb: typec: ucsi: Fix race between typec_switch and role_switch
 Date: Mon,  1 Apr 2024 17:46:32 +0200
-Message-ID: <20240401152558.144665628@linuxfoundation.org>
+Message-ID: <20240401152605.466637391@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit 32e39bab59934bfd3f37097d4dd85ac5eb0fd549 upstream.
+commit f5e9bda03aa50ffad36eccafe893d004ef213c43 upstream.
 
-If we have no VBT, or the VBT didn't declare the encoder
-in question, we won't have the 'devdata' for the encoder.
-Instead of oopsing just bail early.
+When orientation switch is enabled in ucsi glink, there is a xhci
+probe failure seen when booting up in host mode in reverse
+orientation.
 
-We won't be able to tell whether the port is DP++ or not,
-but so be it.
+During bootup the following things happen in multiple drivers:
+
+a) DWC3 controller driver initializes the core in device mode when the
+dr_mode is set to DRD. It relies on role_switch call to change role to
+host.
+
+b) QMP driver initializes the lanes to TYPEC_ORIENTATION_NORMAL as a
+normal routine. It relies on the typec_switch_set call to get notified
+of orientation changes.
+
+c) UCSI core reads the UCSI_GET_CONNECTOR_STATUS via the glink and
+provides initial role switch to dwc3 controller.
+
+When booting up in host mode with orientation TYPEC_ORIENTATION_REVERSE,
+then we see the following things happening in order:
+
+a) UCSI gives initial role as host to dwc3 controller ucsi_register_port.
+Upon receiving this notification, the dwc3 core needs to program GCTL from
+PRTCAP_DEVICE to PRTCAP_HOST and as part of this change, it asserts GCTL
+Core soft reset and waits for it to be  completed before shifting it to
+host. Only after the reset is done will the dwc3_host_init be invoked and
+xhci is probed. DWC3 controller expects that the usb phy's are stable
+during this process i.e., the phy init is already done.
+
+b) During the 100ms wait for GCTL core soft reset, the actual notification
+from PPM is received by ucsi_glink via pmic glink for changing role to
+host. The pmic_glink_ucsi_notify routine first sends the orientation
+change to QMP and then sends role to dwc3 via ucsi framework. This is
+happening exactly at the time GCTL core soft reset is being processed.
+
+c) When QMP driver receives typec switch to TYPEC_ORIENTATION_REVERSE, it
+then re-programs the phy at the instant GCTL core soft reset has been
+asserted by dwc3 controller due to which the QMP PLL lock fails in
+qmp_combo_usb_power_on.
+
+d) After the 100ms of GCTL core soft reset is completed, the dwc3 core
+goes for initializing the host mode and invokes xhci probe. But at this
+point the QMP is non-responsive and as a result, the xhci plat probe fails
+during xhci_reset.
+
+Fix this by passing orientation switch to available ucsi instances if
+their gpio configuration is available before ucsi_register is invoked so
+that by the time, the pmic_glink_ucsi_notify provides typec_switch to QMP,
+the lane is already configured and the call would be a NOP thus not racing
+with role switch.
 
 Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10464
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240319092443.15769-1-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 26410896206342c8a80d2b027923e9ee7d33b733)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: c6165ed2f425 ("usb: ucsi: glink: use the connector orientation GPIO to provide switch events")
+Suggested-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240301040914.458492-1-quic_kriskura@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_bios.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/typec/ucsi/ucsi_glink.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_bios.c
-+++ b/drivers/gpu/drm/i915/display/intel_bios.c
-@@ -3313,6 +3313,9 @@ bool intel_bios_encoder_supports_dp_dual
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -254,6 +254,20 @@ static void pmic_glink_ucsi_notify(struc
+ static void pmic_glink_ucsi_register(struct work_struct *work)
  {
- 	const struct child_device_config *child = &devdata->child;
- 
-+	if (!devdata)
-+		return false;
+ 	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
++	int orientation;
++	int i;
 +
- 	if (!intel_bios_encoder_supports_dp(devdata) ||
- 	    !intel_bios_encoder_supports_hdmi(devdata))
- 		return false;
++	for (i = 0; i < PMIC_GLINK_MAX_PORTS; i++) {
++		if (!ucsi->port_orientation[i])
++			continue;
++		orientation = gpiod_get_value(ucsi->port_orientation[i]);
++
++		if (orientation >= 0) {
++			typec_switch_set(ucsi->port_switch[i],
++					 orientation ? TYPEC_ORIENTATION_REVERSE
++					     : TYPEC_ORIENTATION_NORMAL);
++		}
++	}
+ 
+ 	ucsi_register(ucsi->ucsi);
+ }
 
 
 
