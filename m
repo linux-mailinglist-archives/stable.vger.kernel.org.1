@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E1A8940A0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A4D8943A8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7DC51F21E95
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6DB41C21E79
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB023BBC3;
-	Mon,  1 Apr 2024 16:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F26C482EF;
+	Mon,  1 Apr 2024 17:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpOOGhfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCGFm2dC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD18C1E895;
-	Mon,  1 Apr 2024 16:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C23438DE5;
+	Mon,  1 Apr 2024 17:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989139; cv=none; b=XQf28JYFbCi1uGZwLq0YI5SulOMHpNfMAK1ef+Qqe/OA+VOF+s/m74wVsbgQruC8ESXQH48xCfr5ZBLzvZq12AlrUjTHnFHNLEwGNqr3lYWWFuqSF/sAQTiYBbaU+eaomu2wBNJDlRRKVhbrcQOsTLzo0OdwJGMuT27AZy5D6m0=
+	t=1711991189; cv=none; b=Yb+d/FChbn+5y+Ou8uIpj8zZYz1oc0k1zGfmd1lqRggyCB2Tspp+qTjzF9z06JdJQ34AouV9pzGQSwx9uMaOx9Bk17gjHnN1rqFwcEkz8zwnZfMEalFN1pdSGfs9O7TGXk82453VFCOxQ4g6OaLtySqddzbvx7y5322i1q/fZZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989139; c=relaxed/simple;
-	bh=5CrumbGoi6ngIPjXcBS0KPJrbX9pxh9TWUmh5qFPAXQ=;
+	s=arc-20240116; t=1711991189; c=relaxed/simple;
+	bh=EuETFrZTXcFXbmxuf7Y1/w+vZJKn+qhSTC2/divoNDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NH1DDDSiksap1kMnp7rHo5uIknB5RLmYvCiiPiABoGdCQZirBPpWsK2LAryPN9Mgez9cy0OqiUB4Kiul6TOsuKjJ97Wcb6sRe2xZt9R5Op1bZNTlIriUi9ExvjOqyDq++bl09dXFFpDxkNMQVryIN0BqWjkDMYK5QriOvaYv0YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpOOGhfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE37C433F1;
-	Mon,  1 Apr 2024 16:32:18 +0000 (UTC)
+	 MIME-Version; b=X4THRK4Stsfly0GQvdaHYk9SCb0NXQWoVaLT8CJsvq6hJesgVEv841Ea9TxavmF6Wq7HKfZWOY+8TQqilIQO0rYA3vfYLPFrGVugzEAEBfJqqJ2TQyT2me+UpIhCV22GMaOctZ5KLJfXx2Gs4AMDmSh+HWppW2n9vw/MR0gM84M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCGFm2dC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7932EC433F1;
+	Mon,  1 Apr 2024 17:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989138;
-	bh=5CrumbGoi6ngIPjXcBS0KPJrbX9pxh9TWUmh5qFPAXQ=;
+	s=korg; t=1711991189;
+	bh=EuETFrZTXcFXbmxuf7Y1/w+vZJKn+qhSTC2/divoNDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GpOOGhfji44oEQXYjyzi2F4twme0twogviOogPICfFL8UL15vlqOoC24K2A2GPPaf
-	 uFudmI2N2SmZRT2L8tqpO9fv3pIfBDA4H5wdXNHDIktSzI3XrQX8eYd7U8XB1/IsNL
-	 5Q1hadmL1f2LRn27W08DzZYwL+hHWfK56QYnLW10=
+	b=dCGFm2dCy6KVv8Y5sxAXvbYhbthn3SmikJddcRb+Qmbf/guq7p4tZGy4ysIjTP0Do
+	 tQm90YOwr3FV2EiM5M7sp1WsFQpMaT2/pgaR3d4u/7/j83wsWWBvpMVmvswuSp613X
+	 nb1cfYj6tFAPImX3wq6hOjRAjzn2D5nI9C17N1B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.7 393/432] staging: vc04_services: changen strncpy() to strscpy_pad()
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 190/272] irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type
 Date: Mon,  1 Apr 2024 17:46:20 +0200
-Message-ID: <20240401152605.065038554@linuxfoundation.org>
+Message-ID: <20240401152536.811380664@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit ef25725b7f8aaffd7756974d3246ec44fae0a5cf upstream.
+[ Upstream commit 853a6030303f8a8fa54929b68e5665d9b21aa405 ]
 
-gcc-14 warns about this strncpy() that results in a non-terminated
-string for an overflow:
+RZ/G2L interrupt chips require that the interrupt is masked before changing
+the NMI, IRQ, TINT interrupt settings. Aside of that, after setting an edge
+trigger type it is required to clear the interrupt status register in order
+to avoid spurious interrupts.
 
-In file included from include/linux/string.h:369,
-                 from drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:20:
-In function 'strncpy',
-    inlined from 'create_component' at drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:940:2:
-include/linux/fortify-string.h:108:33: error: '__builtin_strncpy' specified bound 128 equals destination size [-Werror=stringop-truncation]
+The current implementation fails to do either of that and therefore is
+prone to generate spurious interrupts when setting the trigger type.
 
-Change it to strscpy_pad(), which produces a properly terminated and
-zero-padded string.
+Address this by:
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240313163712.224585-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  - Ensuring that the interrupt is masked at the chip level across the
+    update for the TINT chip
+
+  - Clearing the interrupt status register after updating the trigger mode
+    for edge type interrupts
+
+[ tglx: Massaged changelog and reverted the spin_lock_irqsave() change as
+  	the set_type() callback is always called with interrupts disabled. ]
+
+Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 36 +++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
---- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-@@ -937,8 +937,8 @@ static int create_component(struct vchiq
- 	/* build component create message */
- 	m.h.type = MMAL_MSG_TYPE_COMPONENT_CREATE;
- 	m.u.component_create.client_component = component->client_component;
--	strncpy(m.u.component_create.name, name,
--		sizeof(m.u.component_create.name));
-+	strscpy_pad(m.u.component_create.name, name,
-+		    sizeof(m.u.component_create.name));
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index aa27335ab2eec..be71459c7465a 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -162,8 +162,10 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
  
- 	ret = send_synchronous_mmal_msg(instance, &m,
- 					sizeof(m.u.component_create),
+ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+-	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
++	unsigned int hwirq = irqd_to_hwirq(d);
++	u32 iitseln = hwirq - IRQC_IRQ_START;
++	bool clear_irq_int = false;
+ 	u16 sense, tmp;
+ 
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+@@ -173,14 +175,17 @@ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
+ 
+ 	case IRQ_TYPE_EDGE_FALLING:
+ 		sense = IITSR_IITSEL_EDGE_FALLING;
++		clear_irq_int = true;
+ 		break;
+ 
+ 	case IRQ_TYPE_EDGE_RISING:
+ 		sense = IITSR_IITSEL_EDGE_RISING;
++		clear_irq_int = true;
+ 		break;
+ 
+ 	case IRQ_TYPE_EDGE_BOTH:
+ 		sense = IITSR_IITSEL_EDGE_BOTH;
++		clear_irq_int = true;
+ 		break;
+ 
+ 	default:
+@@ -189,21 +194,40 @@ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
+ 
+ 	raw_spin_lock(&priv->lock);
+ 	tmp = readl_relaxed(priv->base + IITSR);
+-	tmp &= ~IITSR_IITSEL_MASK(hw_irq);
+-	tmp |= IITSR_IITSEL(hw_irq, sense);
++	tmp &= ~IITSR_IITSEL_MASK(iitseln);
++	tmp |= IITSR_IITSEL(iitseln, sense);
++	if (clear_irq_int)
++		rzg2l_clear_irq_int(priv, hwirq);
+ 	writel_relaxed(tmp, priv->base + IITSR);
+ 	raw_spin_unlock(&priv->lock);
+ 
+ 	return 0;
+ }
+ 
++static u32 rzg2l_disable_tint_and_set_tint_source(struct irq_data *d, struct rzg2l_irqc_priv *priv,
++						  u32 reg, u32 tssr_offset, u8 tssr_index)
++{
++	u32 tint = (u32)(uintptr_t)irq_data_get_irq_chip_data(d);
++	u32 tien = reg & (TIEN << TSSEL_SHIFT(tssr_offset));
++
++	/* Clear the relevant byte in reg */
++	reg &= ~(TSSEL_MASK << TSSEL_SHIFT(tssr_offset));
++	/* Set TINT and leave TIEN clear */
++	reg |= tint << TSSEL_SHIFT(tssr_offset);
++	writel_relaxed(reg, priv->base + TSSR(tssr_index));
++
++	return reg | tien;
++}
++
+ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ {
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 	unsigned int hwirq = irqd_to_hwirq(d);
+ 	u32 titseln = hwirq - IRQC_TINT_START;
++	u32 tssr_offset = TSSR_OFFSET(titseln);
++	u8 tssr_index = TSSR_INDEX(titseln);
+ 	u8 index, sense;
+-	u32 reg;
++	u32 reg, tssr;
+ 
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+ 	case IRQ_TYPE_EDGE_RISING:
+@@ -225,10 +249,14 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 	}
+ 
+ 	raw_spin_lock(&priv->lock);
++	tssr = readl_relaxed(priv->base + TSSR(tssr_index));
++	tssr = rzg2l_disable_tint_and_set_tint_source(d, priv, tssr, tssr_offset, tssr_index);
+ 	reg = readl_relaxed(priv->base + TITSR(index));
+ 	reg &= ~(IRQ_MASK << (titseln * TITSEL_WIDTH));
+ 	reg |= sense << (titseln * TITSEL_WIDTH);
+ 	writel_relaxed(reg, priv->base + TITSR(index));
++	rzg2l_clear_tint_int(priv, hwirq);
++	writel_relaxed(tssr, priv->base + TSSR(tssr_index));
+ 	raw_spin_unlock(&priv->lock);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
