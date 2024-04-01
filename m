@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-34558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578E4893FD7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47FCC8942EC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8938A1C211AF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50F611C21EA4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E3F47A5D;
-	Mon,  1 Apr 2024 16:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F004B5CD;
+	Mon,  1 Apr 2024 16:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfPloYA+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKajjUMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04C9C129;
-	Mon,  1 Apr 2024 16:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749E01DFF4;
+	Mon,  1 Apr 2024 16:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988525; cv=none; b=Hr4/s5hFpnW672wzO6nKi2PxqRt8Tb/Bbdf/C0lezuZzIVRCaJyYJ7mKqlv26l+KoAPqxXQXzd3iv5NN4eIVEtX+BNOioyATaklmMA64Cu251jky/5uMS/aSEgAESnbkXhcPSd8xe8lnAnQessWZZd3cmQD21i+DWYQa1e6WkvU=
+	t=1711990653; cv=none; b=SJfH2qVV3avHtDVE46ZkRhHrIIHIqWj9OJ2vYxsxN5WiEsTC6vpQ5YPMDHb0/yJrcmaycQnEnr5+rM+x4I/lsN2gb447qjbTGzRBR2JWrUZ1qZUDq8ypy4qY3uchnynyQK5ADbP7SMmIL7SpX6lfiRYV9ajpDds1GVsYSRzZYrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988525; c=relaxed/simple;
-	bh=TpDU4tJSLCpjo6iMCGnLS29hwSIzIgBEVGZgVRpEbrI=;
+	s=arc-20240116; t=1711990653; c=relaxed/simple;
+	bh=71kUoFWAbOJIXmuoAyNQfe2B7tWPpUgXtjOyQWn7+sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tV6TlbBQXZK+aOD5F2LdoXeWLUJtQ9zt7Vl585RuJXXNkFeZHCbDJ7KmjV9PYkX2+VHU2CJ+Pfoa/V9DKknG2tXGY8U/02MyZhjqPrL+D+ZDLTgqQNFHv+YQbxCDIsaSzckHiToWIqeFDHPR1w6nAJLSje7/azAZ+f5rH8c0bzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfPloYA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C19C433F1;
-	Mon,  1 Apr 2024 16:22:05 +0000 (UTC)
+	 MIME-Version; b=LzkzIN1hm9W/KxWS3lY9X2Ek2BzKe1sLWxcwcyMhBLL6ckeurnmO/U8tZYSzzFx008pwRARd12acOHaL0sQGvaaK29Fzyy7XdZhZxlSGTybDXRWFQuzx+dknvKVMy1PWFGCf1E3HfyXIMqsi2GUabQByU7pYQPUJT3I8CL10Mfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKajjUMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E427CC433C7;
+	Mon,  1 Apr 2024 16:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988525;
-	bh=TpDU4tJSLCpjo6iMCGnLS29hwSIzIgBEVGZgVRpEbrI=;
+	s=korg; t=1711990653;
+	bh=71kUoFWAbOJIXmuoAyNQfe2B7tWPpUgXtjOyQWn7+sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mfPloYA+AOg8qwx9NqbphhqtMBSM4VyFYqXucI7i+226E5skU7Lr3YbJoQ2xXj4hK
-	 8T5Zbnvdmtv7ooG9lPryhlEmVe3QeDJA9iBZI3JMFZ/g+gyAol0QydyBmTgv7qVBRI
-	 o9q6yztmEcXJquDygtTluf6Yo3DbcVcyc5RTlMaI=
+	b=SKajjUMoJqQ1X5sCh7EIV0bMeKsW6Uslj/lxxOnmW1qGb8ZL+JT3BliPO0HeD7fqr
+	 KoZwqCJrdqVcLMjClIeQUHD2NMLx/YGL5oMzODPcZi3AVuw3fbNQUQvLVWxMkel90G
+	 jVvc9d0HlhUbB2sRBVlWGB2oIS7MFbT6JoEF87FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Relja Vojvodic <relja.vojvodic@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 211/432] drm/amd/display: Add ODM check during pipe split/merge validation
+Subject: [PATCH 6.1 008/272] timers: Rename del_timer_sync() to timer_delete_sync()
 Date: Mon,  1 Apr 2024 17:43:18 +0200
-Message-ID: <20240401152559.436601744@linuxfoundation.org>
+Message-ID: <20240401152530.547397025@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +65,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Relja Vojvodic <relja.vojvodic@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit dd2c5fac91d46df9dc1bf025ef23eff4704bd85f ]
+[ Upstream commit 9b13df3fb64ee95e2397585404e442afee2c7d4f ]
 
-[why]
-When querying DML for a vlevel after pipes have been split or merged the
-ODM policy would revert to a default policy, which could cause the query
-to use the incorrect ODM status. In this case ODM 2to1 was validated,
-but the last DML query would assume no ODM and return the incorrect
-vlevel.
+The timer related functions do not have a strict timer_ prefixed namespace
+which is really annoying.
 
-[how]
-Added ODM check to apply the correct ODM policy before querying DML.
+Rename del_timer_sync() to timer_delete_sync() and provide del_timer_sync()
+as a wrapper. Document that del_timer_sync() is not for new code.
 
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Relja Vojvodic <relja.vojvodic@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 26fbcb3da77e ("drm/amd/display: Override min required DCFCLK in dml1_validate")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/r/20221123201624.954785441@linutronix.de
+Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dcn32/dcn32_resource.h |  2 ++
- .../display/dc/dcn32/dcn32_resource_helpers.c | 26 +++++++++++++++++++
- .../drm/amd/display/dc/dml/dcn32/dcn32_fpu.c  |  3 +++
- 3 files changed, 31 insertions(+)
+ include/linux/timer.h | 15 ++++++++++++++-
+ kernel/time/timer.c   | 18 +++++++++---------
+ 2 files changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-index b931008114c91..58943835fb638 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
-@@ -183,6 +183,8 @@ bool dcn32_subvp_drr_admissable(struct dc *dc, struct dc_state *context);
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index 82bb2e4d3b7c2..6d18f04ad7039 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -183,7 +183,20 @@ extern int timer_reduce(struct timer_list *timer, unsigned long expires);
+ extern void add_timer(struct timer_list *timer);
  
- bool dcn32_subvp_vblank_admissable(struct dc *dc, struct dc_state *context, int vlevel);
- 
-+void dcn32_update_dml_pipes_odm_policy_based_on_context(struct dc *dc, struct dc_state *context, display_e2e_pipe_params_st *pipes);
+ extern int try_to_del_timer_sync(struct timer_list *timer);
+-extern int del_timer_sync(struct timer_list *timer);
++extern int timer_delete_sync(struct timer_list *timer);
 +
- /* definitions for run time init of reg offsets */
- 
- /* CLK SRC */
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
-index bc5f0db23d0c3..c80d6485f6ffa 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
-@@ -778,3 +778,29 @@ bool dcn32_subvp_vblank_admissable(struct dc *dc, struct dc_state *context, int
- 
- 	return result;
- }
-+
-+void dcn32_update_dml_pipes_odm_policy_based_on_context(struct dc *dc, struct dc_state *context,
-+		display_e2e_pipe_params_st *pipes)
++/**
++ * del_timer_sync - Delete a pending timer and wait for a running callback
++ * @timer:	The timer to be deleted
++ *
++ * See timer_delete_sync() for detailed explanation.
++ *
++ * Do not use in new code. Use timer_delete_sync() instead.
++ */
++static inline int del_timer_sync(struct timer_list *timer)
 +{
-+	int i, pipe_cnt;
-+	struct resource_context *res_ctx = &context->res_ctx;
-+	struct pipe_ctx *pipe = NULL;
-+
-+	for (i = 0, pipe_cnt = 0; i < dc->res_pool->pipe_count; i++) {
-+		int odm_slice_count = 0;
-+
-+		if (!res_ctx->pipe_ctx[i].stream)
-+			continue;
-+		pipe = &res_ctx->pipe_ctx[i];
-+		odm_slice_count = resource_get_odm_slice_count(pipe);
-+
-+		if (odm_slice_count == 1)
-+			pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_dal;
-+		else if (odm_slice_count == 2)
-+			pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_2to1;
-+		else if (odm_slice_count == 4)
-+			pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_4to1;
-+
-+		pipe_cnt++;
-+	}
++	return timer_delete_sync(timer);
 +}
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index fe2b67d745f0d..5b6d9643b02dc 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -2178,6 +2178,7 @@ bool dcn32_internal_validate_bw(struct dc *dc,
- 		int i;
  
- 		pipe_cnt = dc->res_pool->funcs->populate_dml_pipes(dc, context, pipes, fast_validate);
-+		dcn32_update_dml_pipes_odm_policy_based_on_context(dc, context, pipes);
+ #define del_singleshot_timer_sync(t) del_timer_sync(t)
  
- 		/* repopulate_pipes = 1 means the pipes were either split or merged. In this case
- 		 * we have to re-calculate the DET allocation and run through DML once more to
-@@ -2186,7 +2187,9 @@ bool dcn32_internal_validate_bw(struct dc *dc,
- 		 * */
- 		context->bw_ctx.dml.soc.allow_for_pstate_or_stutter_in_vblank_final =
- 					dm_prefetch_support_uclk_fclk_and_stutter_if_possible;
-+
- 		vlevel = dml_get_voltage_level(&context->bw_ctx.dml, pipes, pipe_cnt);
-+
- 		if (vlevel == context->bw_ctx.dml.soc.num_states) {
- 			/* failed after DET size changes */
- 			goto validate_fail;
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 9d09a2a0ad708..59469897432bc 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1083,7 +1083,7 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
+ 		/*
+ 		 * We are trying to schedule the timer on the new base.
+ 		 * However we can't change timer's base while it is running,
+-		 * otherwise del_timer_sync() can't detect that the timer's
++		 * otherwise timer_delete_sync() can't detect that the timer's
+ 		 * handler yet has not finished. This also guarantees that the
+ 		 * timer is serialized wrt itself.
+ 		 */
+@@ -1259,7 +1259,7 @@ EXPORT_SYMBOL_GPL(add_timer_on);
+  * @timer:	The timer to be deactivated
+  *
+  * The function only deactivates a pending timer, but contrary to
+- * del_timer_sync() it does not take into account whether the timer's
++ * timer_delete_sync() it does not take into account whether the timer's
+  * callback function is concurrently executed on a different CPU or not.
+  * It neither prevents rearming of the timer. If @timer can be rearmed
+  * concurrently then the return value of this function is meaningless.
+@@ -1395,7 +1395,7 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
+ #endif
+ 
+ /**
+- * del_timer_sync - Deactivate a timer and wait for the handler to finish.
++ * timer_delete_sync - Deactivate a timer and wait for the handler to finish.
+  * @timer:	The timer to be deactivated
+  *
+  * Synchronization rules: Callers must prevent restarting of the timer,
+@@ -1417,10 +1417,10 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
+  *    spin_lock_irq(somelock);
+  *                                     <IRQ>
+  *                                        spin_lock(somelock);
+- *    del_timer_sync(mytimer);
++ *    timer_delete_sync(mytimer);
+  *    while (base->running_timer == mytimer);
+  *
+- * Now del_timer_sync() will never return and never release somelock.
++ * Now timer_delete_sync() will never return and never release somelock.
+  * The interrupt on the other CPU is waiting to grab somelock but it has
+  * interrupted the softirq that CPU0 is waiting to finish.
+  *
+@@ -1433,7 +1433,7 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
+  * * %0	- The timer was not pending
+  * * %1	- The timer was pending and deactivated
+  */
+-int del_timer_sync(struct timer_list *timer)
++int timer_delete_sync(struct timer_list *timer)
+ {
+ 	int ret;
+ 
+@@ -1473,7 +1473,7 @@ int del_timer_sync(struct timer_list *timer)
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL(del_timer_sync);
++EXPORT_SYMBOL(timer_delete_sync);
+ 
+ static void call_timer_fn(struct timer_list *timer,
+ 			  void (*fn)(struct timer_list *),
+@@ -1495,8 +1495,8 @@ static void call_timer_fn(struct timer_list *timer,
+ #endif
+ 	/*
+ 	 * Couple the lock chain with the lock chain at
+-	 * del_timer_sync() by acquiring the lock_map around the fn()
+-	 * call here and in del_timer_sync().
++	 * timer_delete_sync() by acquiring the lock_map around the fn()
++	 * call here and in timer_delete_sync().
+ 	 */
+ 	lock_map_acquire(&lockdep_map);
+ 
 -- 
 2.43.0
 
