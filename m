@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BEE893EF9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF036894088
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397E61C21373
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A186282D50
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E67B4778E;
-	Mon,  1 Apr 2024 16:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2174538DD8;
+	Mon,  1 Apr 2024 16:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9GWMTjd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLd+xQ7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0EA8F5C;
-	Mon,  1 Apr 2024 16:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B1F1E525;
+	Mon,  1 Apr 2024 16:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987827; cv=none; b=k7X5PQz70FHC+A7xmHTjaMYurTAguN2qYg9tpMLlxVRAb8FhRrhbQDShhh+HbhicTfeFJCo74qdyCfpr8BUVSgfp4u/e1ZMUnXTw8mDKvVEcvM+fcQjxIb9QUH3PKdlfCVWU7D8eVDfPfig00v39vQoRKAwfGj7zjgEL28kJpCc=
+	t=1711989068; cv=none; b=fgc4xkDJMswdPaF9rwEZCzAFqd+HhoK4TuroufOF5JeJzWSJpuUNyz675fAMIegDrxLuUr5NlqeQIt7nA5GmS4mdUQlu1P08bLxMjU+Dcfa6eeA8m2dncb4dUDuvRZrRnQFck5NfV1TlARwLWO0cYuKF+w9jV3vQPaMngIkmD/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987827; c=relaxed/simple;
-	bh=/wpbOoJm7fhymXUryNsmmfZcX/h+xa7xduKzkSVJ43U=;
+	s=arc-20240116; t=1711989068; c=relaxed/simple;
+	bh=lMQ7g/8VeBCSK8j7ZzLrNEKOziJK2B8PleQxXqksBCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P23Kz9ijYeXaQyz6+B/sK028XtTxDKJ6/Y83+FeBbTxvVuyw28OqBILVulDYKUJd9QOlHGIn0Yn4JoI3f5SIw71GlpTKeEtIFpeunk5K+fELd1d3Jerqr5Z6GufVluS+EzeWwX0yzPuirDl8HYwyqJm1KHOvlbVikqvGX748kGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9GWMTjd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4608C433C7;
-	Mon,  1 Apr 2024 16:10:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sUSYVyLbqrlQgkc4J8SBSuHdsgMs/P/Rt4sMi1wY2QgA6mqJfDiHsj+HaEMaMmb+yj2m76v4V8N6MHSqGpH+WtSTzZsaSKhF0J5e2+ahheLWVlTWGYxJlRrfDnmUkzQSXfSGlzO6tGhUPrS/Sx/4zpfGs6PFjfokNeK717IF/xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLd+xQ7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A6BC433F1;
+	Mon,  1 Apr 2024 16:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987827;
-	bh=/wpbOoJm7fhymXUryNsmmfZcX/h+xa7xduKzkSVJ43U=;
+	s=korg; t=1711989068;
+	bh=lMQ7g/8VeBCSK8j7ZzLrNEKOziJK2B8PleQxXqksBCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9GWMTjd4Y9rTzgj/+s30Xp1uz+Ofy9EKFDknz0QaMxBUUVdtISY4bhUn9I8rY6S2
-	 F59z7kfUSgztmHCte/8WCPIBNcshd5FECv7bW5YXq41cmWYV4PDPRcLlpRKIoalayX
-	 dAhfxdIglGlpRjQkWTSkZNma0HO0w/SwBpe2sEUQ=
+	b=YLd+xQ7/naM9VAHuj5+UwywB+sCFsHh+E5ScW6XmIIDmKDqnSiUJR5JHr33WjOzCg
+	 OXZvoTfi2NSfwxlYgGirmIrSV7P6P0UZk7pYbawFVDPA/SgpBCSxKBCVvD0WUQLIaG
+	 ZKJA6MW/fO8hSjuPaY6YupkWm4x72zl++A3I4yP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.8 392/399] usb: dwc3: pci: Drop duplicate ID
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.7 371/432] drm/i915/bios: Tolerate devdata==NULL in intel_bios_encoder_supports_dp_dual_mode()
 Date: Mon,  1 Apr 2024 17:45:58 +0200
-Message-ID: <20240401152600.869739539@linuxfoundation.org>
+Message-ID: <20240401152604.348853310@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit f121531703ae442edc1dde4b56803680628bc5b7 upstream.
+commit 32e39bab59934bfd3f37097d4dd85ac5eb0fd549 upstream.
 
-Intel Arrow Lake CPU uses the Meteor Lake ID with this
-controller (the controller that's part of the Intel Arrow
-Lake chipset (PCH) does still have unique PCI ID).
+If we have no VBT, or the VBT didn't declare the encoder
+in question, we won't have the 'devdata' for the encoder.
+Instead of oopsing just bail early.
 
-Fixes: de4b5b28c87c ("usb: dwc3: pci: add support for the Intel Arrow Lake-H")
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240312115008.1748637-1-heikki.krogerus@linux.intel.com
+We won't be able to tell whether the port is DP++ or not,
+but so be it.
+
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10464
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240319092443.15769-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 26410896206342c8a80d2b027923e9ee7d33b733)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_bios.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -51,7 +51,6 @@
- #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
- #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
- #define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
--#define PCI_DEVICE_ID_INTEL_ARLH		0x7ec1
- #define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
- #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
- #define PCI_DEVICE_ID_AMD_MR			0x163a
-@@ -423,7 +422,6 @@ static const struct pci_device_id dwc3_p
- 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ARLH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
+--- a/drivers/gpu/drm/i915/display/intel_bios.c
++++ b/drivers/gpu/drm/i915/display/intel_bios.c
+@@ -3321,6 +3321,9 @@ bool intel_bios_encoder_supports_dp_dual
+ {
+ 	const struct child_device_config *child = &devdata->child;
  
++	if (!devdata)
++		return false;
++
+ 	if (!intel_bios_encoder_supports_dp(devdata) ||
+ 	    !intel_bios_encoder_supports_hdmi(devdata))
+ 		return false;
 
 
 
