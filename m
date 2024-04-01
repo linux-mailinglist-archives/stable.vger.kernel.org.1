@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBF18940D9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 942D8894293
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F706B20F78
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D4EF282FD0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D3A433DA;
-	Mon,  1 Apr 2024 16:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECEA481D1;
+	Mon,  1 Apr 2024 16:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miOYa8KF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4VF0sj5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1054810A3B;
-	Mon,  1 Apr 2024 16:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6B32EB0B;
+	Mon,  1 Apr 2024 16:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989299; cv=none; b=KEUPjCo+UH80Rqj2EiYr4SvsL7xTYq/mrNWd8eQbQgy88B7v62hj21W5/rA46hKvfkPZBNHxfJ+A87GOOfAT/gav49b0+mcXdW25vBXpcd50VvBa8vyyY1EPhO89fjn485ZyzePTvQQvfn39bQuD36ZLCAHyyYS0xU5sxwRYogk=
+	t=1711990424; cv=none; b=L2QQNNzL1SMi8FAZvCoG8w6qZ3giq5s7x7CzrS8NO5qJvcDY1yQuub4eMpwAYgESmtj57sJegp0pXuNcrPdsMIx+QUwFY3Aj7Jm8MG+4aWb2zVgHAVoAvbK8E6+mLhr74moIQHg2sCcSoHjLiiCVSuynn10jHBjCdQRkT4cCeTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989299; c=relaxed/simple;
-	bh=/2jcX25S4L1Vd2/5LiaoO0jm+lJJhr6KmfrxSIVCS3g=;
+	s=arc-20240116; t=1711990424; c=relaxed/simple;
+	bh=yY4f1c2kTvnNooIeQA7hF6+bs/ktmmGbVmQqEjuSKcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjdjxRLoT1U8LoPzW9/DshNIEOob6in+//tLrLZ4ri54oXMCVtu3Mgm1oVRFMtJek80LKgg6uh4uJVolsMnmhyIeVlPKfFvB/P7dXtssybmj/h72gmzApmT2rZqqE5RRPflJS0uZapsjzK+2Li3wd4LzTeEshHxBYcGORoWKSWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miOYa8KF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C41CC433C7;
-	Mon,  1 Apr 2024 16:34:58 +0000 (UTC)
+	 MIME-Version; b=JcfUYOvNu8ChrZBkQZ13o7hyFU6MwZJXj7sSuFUN+RslfZ2rc3QNCu2F4fqFiVa5VHma3Wk+zJm12sYmidvwb07sE2agASezL2FBj965wdulX5DJ3OJ3Ww5AYzJgYQrpPjqCvUnlM2DXFti5711+nk+Hu8adpAatgkdmNbGySpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4VF0sj5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57BAC433C7;
+	Mon,  1 Apr 2024 16:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989298;
-	bh=/2jcX25S4L1Vd2/5LiaoO0jm+lJJhr6KmfrxSIVCS3g=;
+	s=korg; t=1711990424;
+	bh=yY4f1c2kTvnNooIeQA7hF6+bs/ktmmGbVmQqEjuSKcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=miOYa8KFL0BQ0YN0WT9bbpfTTxQSyk+Vo9P+aOb52InK3dKHvqQDbLBjkOuVEC6Ku
-	 /8ZFxbYAtp/Xm+ryzGpLplzLOazc49ObQUKk19Uocd/ctY6WEUqTGOwV/ivOJpkOuv
-	 kWqOHGzC0dgiQtZl6YpnAy6a/kpdJa4U5j2wWyrQ=
+	b=h4VF0sj5Uk3T2g8VTn2TIhUARgSRI6HGBy7/6DxCUc3UX1QZcZFATFSo+DgmX553w
+	 UsSbhJT68hZsxnuGV1RqrObQlyNJjf4Y3725C+DoA94OIb056MqdGbFQA/K+J95Hdn
+	 A0XW2jh2wE5OfygFSJiQ4pY+O9zTstOn+4zTb6OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.7 411/432] usb: typec: ucsi: Clear UCSI_CCI_RESET_COMPLETE before reset
+	Sean Anderson <sean.anderson@seco.com>
+Subject: [PATCH 6.6 349/396] Revert "usb: phy: generic: Get the vbus supply"
 Date: Mon,  1 Apr 2024 17:46:38 +0200
-Message-ID: <20240401152605.646022609@linuxfoundation.org>
+Message-ID: <20240401152558.319659347@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 3de4f996a0b5412aa451729008130a488f71563e upstream.
+commit fdada0db0b2ae2addef4ccafe50937874dbeeebe upstream.
 
-Check the UCSI_CCI_RESET_COMPLETE complete flag before starting
-another reset. Use a UCSI_SET_NOTIFICATION_ENABLE command to clear
-the flag if it is set.
+This reverts commit 75fd6485cccef269ac9eb3b71cf56753341195ef.
+This patch was applied twice by accident, causing probe failures.
+Revert the accident.
 
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Fixes: 75fd6485ccce ("usb: phy: generic: Get the vbus supply")
 Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-6-lk@c--e.de
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Link: https://lore.kernel.org/r/20240314092628.1869414-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/usb/phy/phy-generic.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -982,13 +982,47 @@ static int ucsi_reset_connector(struct u
+--- a/drivers/usb/phy/phy-generic.c
++++ b/drivers/usb/phy/phy-generic.c
+@@ -268,13 +268,6 @@ int usb_phy_gen_create_phy(struct device
+ 		return dev_err_probe(dev, PTR_ERR(nop->vbus_draw),
+ 				     "could not get vbus regulator\n");
  
- static int ucsi_reset_ppm(struct ucsi *ucsi)
- {
--	u64 command = UCSI_PPM_RESET;
-+	u64 command;
- 	unsigned long tmo;
- 	u32 cci;
- 	int ret;
- 
- 	mutex_lock(&ucsi->ppm_lock);
- 
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret < 0)
-+		goto out;
-+
-+	/*
-+	 * If UCSI_CCI_RESET_COMPLETE is already set we must clear
-+	 * the flag before we start another reset. Send a
-+	 * UCSI_SET_NOTIFICATION_ENABLE command to achieve this.
-+	 * Ignore a timeout and try the reset anyway if this fails.
-+	 */
-+	if (cci & UCSI_CCI_RESET_COMPLETE) {
-+		command = UCSI_SET_NOTIFICATION_ENABLE;
-+		ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
-+					     sizeof(command));
-+		if (ret < 0)
-+			goto out;
-+
-+		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
-+		do {
-+			ret = ucsi->ops->read(ucsi, UCSI_CCI,
-+					      &cci, sizeof(cci));
-+			if (ret < 0)
-+				goto out;
-+			if (cci & UCSI_CCI_COMMAND_COMPLETE)
-+				break;
-+			if (time_is_before_jiffies(tmo))
-+				break;
-+			msleep(20);
-+		} while (1);
-+
-+		WARN_ON(cci & UCSI_CCI_RESET_COMPLETE);
-+	}
-+
-+	command = UCSI_PPM_RESET;
- 	ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
- 				     sizeof(command));
- 	if (ret < 0)
+-	nop->vbus_draw = devm_regulator_get_exclusive(dev, "vbus");
+-	if (PTR_ERR(nop->vbus_draw) == -ENODEV)
+-		nop->vbus_draw = NULL;
+-	if (IS_ERR(nop->vbus_draw))
+-		return dev_err_probe(dev, PTR_ERR(nop->vbus_draw),
+-				     "could not get vbus regulator\n");
+-
+ 	nop->dev		= dev;
+ 	nop->phy.dev		= nop->dev;
+ 	nop->phy.label		= "nop-xceiv";
 
 
 
