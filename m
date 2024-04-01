@@ -1,111 +1,179 @@
-Return-Path: <stable+bounces-33942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D41A893BD7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88335893BE7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FE501C20AE8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 14:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B9C1F21993
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 14:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3C641C6D;
-	Mon,  1 Apr 2024 14:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68834502C;
+	Mon,  1 Apr 2024 14:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Joh6FUHs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8s+dnhf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119043FE5F;
-	Mon,  1 Apr 2024 14:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B4B4436C;
+	Mon,  1 Apr 2024 14:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711980544; cv=none; b=YIm7A8ZtY+USGyWnIQozHMmO6pKNgTj2np/oOejJt5OsgjtuQSeFpJwRXIHhx3p9+1hyYKgVb+HptSAZk6ukZlHyzGh99wm6rn8NteJTAbwBJEw0jjLTBa1qH9xv2f73ntvQbh8Rpg9TgVf8DiLcfP+WwDS+ow5lb4Pkw4CQa5w=
+	t=1711980601; cv=none; b=qAUz2L2bvvaUSUWevH8k5HOcOEILubDsPuiOOJJKdMh6jcVO5GKsydzQXqBB9q6qWzxWB/J4AInVcC3cFMcBPN/6Fw8cg9u7dxScjOdiv8c5wbKH44gjIg8GjpBUsfcqDxeJ/LFKNtmAHGFpvPx0EkEErSNZzu3rhZuwVWwETb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711980544; c=relaxed/simple;
-	bh=ONagSjBbuAOK22vxfdcxGOHSR0JO6sqZwUIbRiywK60=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZVDJGttIzuYh7bBIZc3ppyo/K4QaV3UArPA3pEmW9qNw2yrlT3LrqleEv6NdSyP+R8XO/2wzmRbAnaZLjg9t6RyenyhdjdIqryvUOs9qlfwJMdAXIiVf6vE9aSH0F7KwktZ6FtvBOoFZIadOy2mo7iopVo19NmkOf9+0ARodtBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Joh6FUHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF416C433C7;
-	Mon,  1 Apr 2024 14:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711980543;
-	bh=ONagSjBbuAOK22vxfdcxGOHSR0JO6sqZwUIbRiywK60=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Joh6FUHs2IqizXp0hxaAbcEiT8AERojlhQqMv+kVbjux9wLShK/vXUpIiDFxbygvg
-	 fcP4iasnpuVm7LGbNA5V4VehmtOrVX/5BrvNz+bKjrzZKN5Jp0BmYTXj/Algu7+L7N
-	 qw9Mu955GQz3teRGLcAge50vx8XFMw+ayzK+UFquW0o/heMrBRH+uu8U+TCj7g6QZM
-	 MvyjYhaUA0fEDlGQxS00Fja9sMGJwIoWbK/Ioz+r9RYmf8uF9bDtYQfuKqwKrHIzZi
-	 2k3bD61EqxP/TdJw4MfFCZTqdRDsYa0yPKTHtKx4CgDTtqyc7/NAo8EAAvaSw51LoR
-	 qCZx0i8Pw98Zg==
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	devicetree@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64: tegra: correct Tegra132 I2C alias
-Date: Mon,  1 Apr 2024 16:08:54 +0200
-Message-Id: <20240401140854.97107-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1711980601; c=relaxed/simple;
+	bh=uixfFlzrYgpSvjoL5IWecBS0EOJUkWi0ZDlFNpE5bAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=iPF+vm7Lq2+b8f0lm0PHhUnYeO/Dqnd4Kno5sBNs8jCtENQbEsZ8uplBPTm/Sgq2lgGhC7/lSVPedL4cKC0GNipg5XdWkZWE5LUi6Iswiij7MHicjUAsY3flminqUYzq3+PWqF+ahQCF6lHZenMrVpw8/O2vC5FQgkNs6JKrSQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8s+dnhf; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1e0ae065d24so33356275ad.1;
+        Mon, 01 Apr 2024 07:09:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711980599; x=1712585399; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4LnTcUG5Gn+ClqY8LoKNtIWxJo6imLCDbbvZEP8U+iU=;
+        b=O8s+dnhfxxLcoi3v5uMGdccixjkCtbzrVRKNcTP/j8+RCzJ0w+h4/TwZN2++GTkD8r
+         Lm8qyN42an6VQdxeajOJiwtxWxiWdGMcJ1Shmy94dLshTwKXrZD98bYIqBOo4tabRjcY
+         swhIf3QQFUm8rSYVg13cvUfoLpRnRiL/BmsL7BSD35BCZJqKD8NvATeGzWkd3dS2NQLr
+         Ip3j46iOICoX2YgvgwMNhMN0RIx7mDHBEiWE6rGmtXNr8iYdugk87A/dBCHzNtOqeEji
+         7UWGugCuwnGQRIo+ZrI66vDM4JMGEtopdqisM22U2DcGGtUkNUuURVaGGe3cKSe2xl5i
+         HAMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711980599; x=1712585399;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4LnTcUG5Gn+ClqY8LoKNtIWxJo6imLCDbbvZEP8U+iU=;
+        b=L4Y6DWp1gWYv7sGixKQNtOPSQcpLyTkUXam+z6qTjJIZ67RVvPThXFD4sAlSY7LCSk
+         jDRicMum+8Xi3VuQvWMptjQHbKJSqr/A6C08vpcqAyj6qv4PKG4BuDUJrqcdAsaUKNMf
+         a8ZAEPv0uOoI7W3aSC2o3RzG71/sYHfVTRYTmPCtUY97cAlJF22KF+PhZHEzswqeKZSg
+         URanRAM54H73kJcs8CO25xnb/XnPY7xqMgYqzVjaJhgH8n2OFyveDprNHzC76vCA3f79
+         zY+oKTzSeriu1N/0nlO6S/sfx40nVlUXkCDxDL+dGEhYhKg0gQyaCE+vGTApzJ98iJGv
+         KICA==
+X-Forwarded-Encrypted: i=1; AJvYcCUx2uPA20XSf7WIKPw9xGGbuveAmL6mdsF4qf7EEB1XtztVWoNpIe9Ad+IHXntYDDFvVN0polC/ZMB/aWlne5M87DCZEVwY
+X-Gm-Message-State: AOJu0Yy8DUJMlGZvYrWjwLLNn9dGkuXcYfxvQO5Bvs1OQrs5uvESdJ6/
+	SkM3x3XuzZbGk+3DmIag/pKUAuJf7AYmMMjm2/O0b3x2BI4nIlhEah94l9yYIHg=
+X-Google-Smtp-Source: AGHT+IHsnqWUepxaIzaonpn0Lcg6hP1btF1hE4+WhjbYUVeNGv+A/038rxyG2j0bgQt/u/zLI8KtKA==
+X-Received: by 2002:a17:903:986:b0:1dd:7f7c:945f with SMTP id mb6-20020a170903098600b001dd7f7c945fmr10033900plb.17.1711980599171;
+        Mon, 01 Apr 2024 07:09:59 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id i10-20020a17090332ca00b001e0f504a74csm8921254plr.269.2024.04.01.07.09.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Apr 2024 07:09:58 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 0984E184EC504; Mon,  1 Apr 2024 21:09:55 +0700 (WIB)
+Date: Mon, 1 Apr 2024 21:09:55 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Viktor Malik <vmalik@redhat.com>, Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Xu <dxu@dxuuu.xyz>, Alexei Starovoitov <ast@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>, ncopa@alpinelinux.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Linux Stable <stable@vger.kernel.org>
+Subject: Fwd: stable kernels 6.6.23 and 6.1.83 fails to build: error: unknown
+ type name 'u32'
+Message-ID: <ZgrAM4NjZQWZ2Jq6@archie.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lF6ZRc2CngG1ApMg"
+Content-Disposition: inline
 
-There is no such device as "as3722@40", because its name is "pmic".  Use
-phandles for aliases to fix relying on full node path.  This corrects
-aliases for RTC devices and also fixes dtc W=1 warning:
 
-  tegra132-norrin.dts:12.3-36: Warning (alias_paths): /aliases:rtc0: aliases property is not a valid node (/i2c@7000d000/as3722@40)
+--lF6ZRc2CngG1ApMg
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 0f279ebdf3ce ("arm64: tegra: Add NVIDIA Tegra132 Norrin support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/arm64/boot/dts/nvidia/tegra132-norrin.dts | 4 ++--
- arch/arm64/boot/dts/nvidia/tegra132.dtsi       | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Hi,
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-index 14d58859bb55..683ac124523b 100644
---- a/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra132-norrin.dts
-@@ -9,8 +9,8 @@ / {
- 	compatible = "nvidia,norrin", "nvidia,tegra132", "nvidia,tegra124";
- 
- 	aliases {
--		rtc0 = "/i2c@7000d000/as3722@40";
--		rtc1 = "/rtc@7000e000";
-+		rtc0 = &as3722;
-+		rtc1 = &tegra_rtc;
- 		serial0 = &uarta;
- 	};
- 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra132.dtsi b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-index 7e24a212c7e4..5bcccfef3f7f 100644
---- a/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra132.dtsi
-@@ -572,7 +572,7 @@ spi@7000de00 {
- 		status = "disabled";
- 	};
- 
--	rtc@7000e000 {
-+	tegra_rtc: rtc@7000e000 {
- 		compatible = "nvidia,tegra124-rtc", "nvidia,tegra20-rtc";
- 		reg = <0x0 0x7000e000 0x0 0x100>;
- 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
--- 
-2.34.1
+On Bugzilla, ncopa@alpinelinux.org reported resolve_btfids FTBFS regression
+on musl system [1]:
 
+> The latest releases fails to build with musl libc (Alpine Linux edge and =
+v3.19):
+>=20
+> ```
+> rm -f -f /home/ncopa/aports/main/linux-lts/src/build-lts.x86_64/tools/bpf=
+/resolve_btfids/libbpf/libbpf.a; ar rcs /home/ncopa/aports/main/linux-lts/s=
+rc/build-lts.x86_64/tool
+> s/bpf/resolve_btfids/libbpf/libbpf.a /home/ncopa/aports/main/linux-lts/sr=
+c/build-lts.x86_64/tools/bpf/resolve_btfids/libbpf/staticobjs/libbpf-in.o
+> In file included from main.c:73:
+> /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_i=
+ds.h:7:9: error: unknown type name 'u32'
+>     7 |         u32 cnt;                                                 =
+            =20
+>       |         ^~~               =20
+> /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_i=
+ds.h:8:9: error: unknown type name 'u32'
+>     8 |         u32 ids[];        =20
+>       |         ^~~                   =20
+> /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_i=
+ds.h:12:9: error: unknown type name 'u32'
+>    12 |         u32 cnt;  =20
+>       |         ^~~                       =20
+> /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_i=
+ds.h:13:9: error: unknown type name 'u32'
+>    13 |         u32 flags;
+>       |         ^~~
+> /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_i=
+ds.h:15:17: error: unknown type name 'u32'
+>    15 |                 u32 id;
+>       |                 ^~~
+> /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_i=
+ds.h:16:17: error: unknown type name 'u32'
+>    16 |                 u32 flags;
+>       |                 ^~~
+> /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_i=
+ds.h:215:8: error: unknown type name 'u32'
+>   215 | extern u32 btf_tracing_ids[];
+>       |        ^~~
+> make[4]: *** [/home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/build=
+/Makefile.build:98: /home/ncopa/aports/main/linux-lts/src/build-lts.x86_64/=
+tools/bpf/resolve_btfids
+> /main.o] Error 1
+> make[4]: *** Waiting for unfinished jobs....
+> make[3]: *** [Makefile:83: /home/ncopa/aports/main/linux-lts/src/build-lt=
+s.x86_64/tools/bpf/resolve_btfids//resolve_btfids-in.o] Error 2
+> make[2]: *** [Makefile:76: bpf/resolve_btfids] Error 2
+> make[1]: *** [/home/ncopa/aports/main/linux-lts/src/linux-6.6/Makefile:13=
+54: tools/bpf/resolve_btfids] Error 2
+> make: *** [/home/ncopa/aports/main/linux-lts/src/linux-6.6/Makefile:234: =
+__sub-make] Error 2
+> ```
+
+Bisection led to upstream commit 9707ac4fe2f5ba ("tools/resolve_btfids:
+Refactor set sorting with types from btf_ids.h") as the culprit.
+
+See the report on Bugzilla for the full thread and proposed fix.
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D218647
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--lF6ZRc2CngG1ApMg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZgrALAAKCRD2uYlJVVFO
+o79xAQCQId87Ud0/1xV9IsBEtZCjTXCaiIJ42QJb+2ChKJUaWQD+NCIew9+kI275
+bI5KRT1jaCWXzSGYBW2gKyeoeAdUsAw=
+=Dx2A
+-----END PGP SIGNATURE-----
+
+--lF6ZRc2CngG1ApMg--
 
