@@ -1,177 +1,231 @@
-Return-Path: <stable+bounces-35484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964E189452D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 21:04:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D582689454C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 21:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6CEB2824E2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 485BB1F21E5B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C774C5024E;
-	Mon,  1 Apr 2024 19:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC7C51C49;
+	Mon,  1 Apr 2024 19:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ASFESFrV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ApYu8Bme"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A48651C44
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 19:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF22F9DF;
+	Mon,  1 Apr 2024 19:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711998278; cv=none; b=gOxGnC8Kwf0qCRjUskVsZ1E+SqVHmsIyWxMfuLtzg1oduuDjgz5fMJaOUo2g+6wqZFdGzQxopkbp2FHdU95V5vvwTdJKTtHwBbVfrW4sRsCsTt4cDLo8aWoRPs8LcBNsqSJnAWh6zHI++Ocw8fHObVd3LkOy9Ww34rHT+vc+tdo=
+	t=1711998644; cv=none; b=cbT/iiqQEaB+/yl8EzN5GIqnMH4XHoXeT0AmVKj0H2uCRRcpA+cWXbjiX9ar0+ytmd3vv6DZUZwjrfA07El2YWQiq6hMGKk5AZmHWGOZmtf1CTH61gDW5mTlBdBg+0/u4uAeF9TkRoNm4ah4AvhmZ7wDmR0KPWK56kHletGMIJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711998278; c=relaxed/simple;
-	bh=j7VLIK/u4oATc/29XeVXWWlasJDfPqEJ9jTWxs2dNWo=;
+	s=arc-20240116; t=1711998644; c=relaxed/simple;
+	bh=EwvM5/ryYd5YhJT1IVG8bcrXkExi8AlkMA6UHPlNQYA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OzRwBKsc3kvTslWrAyD8bR7S+OmwwwQGtJcOTlsfWy/+y+Y7hA1hk6olMFeV5/uTTxZc1l78UKv2ETf+W51O25fnPNQsAvRiWN88qIVMfOKnkARwF23FBJ9D74315kEWjM2/AtYgOqeAfulw+Fc8OGiU9g/wecZ7jzY1FG2uPqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ASFESFrV; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-56dc9955091so1384800a12.1
-        for <stable@vger.kernel.org>; Mon, 01 Apr 2024 12:04:36 -0700 (PDT)
+	 To:Cc:Content-Type; b=rCmAaVWGZVZRUiPzV2U1fnr3jFi/ustWJvNFj3/4zR0TNs96IJPGiykB2CnEXQiFVpROdchQOIjN9jNLrOsHAKqgB/t2ufgYEX1Hj8wIXCyJRS6oeUB3MiviCy3U69kzr4SRVGcKbgNApo0sGQ2teQ7EjEP4czihfzz9//B4W10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ApYu8Bme; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dcc71031680so3991548276.2;
+        Mon, 01 Apr 2024 12:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711998275; x=1712603075; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1711998642; x=1712603442; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=u6uaUI+tf8SHKzsQC+xZokqIl8VwjiOYFPlSJheN0WY=;
-        b=ASFESFrVjrCH6gC5TV1XvEQd/5rhkwLOB6094MP1neqOfhQyNzbqIkhEYBVr6oHsRg
-         DCuDtl7NCkUR08zheHfnF+k/jrFdZA0TgGwo7CnfjkgIJbha2HAdW7OX4CxJG1Oajb84
-         6CHYs2zZ7fEFiULgeRQEVk7ogT0aBvsrZ6s0SMNkdtBthcj0X6rixZnAvEabrARrx5Qo
-         77ZSTjLdJ7xLWWZqtwrMANk8G/0aGje9jCGKY9YGWwGzc7vWS6u+rq1+S/49fX6ID1zr
-         N4Cp8noLOdsV3CL9nG+bUFZKlBC4pNzRFh5Ul0rsgm3gS9rwzuhjBetO4+KZa6uxmW1S
-         co6Q==
+        bh=GNg9gkgBJslO2GtpUVVXE3k26E466KpxPLo9ZtxpaZY=;
+        b=ApYu8BmeVO91iA5oJa7cbj/VAOng4MsjO3oLUP+jE0I0r2lyWASWfdy93mjle9Yk2O
+         4ElD7yUkBB+gRYkmJSy07xXIDtGC7OPU4W86XBgoIXxxlLLWZoIXCmeszf9V/LhexxCd
+         oltXBEoMcHWXcoWI+BpvcR9yruaB6M7DiQ7pqq38ZJ/IvNEBxWf2kdOBgncF9EK4zY4q
+         rqR+jZeqxc1NLGo9EzFG7yfavoHyXZGRTyWnLHziul0pL6+oKNzmbfrESQ4n39eWaEdz
+         L3O4Tx4eom+oPKJQJF9CDxUnqKL6DD9PWWo5ejsKj10jSqmKKtL8ouPBG+nB5qmSeByh
+         NK6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711998275; x=1712603075;
+        d=1e100.net; s=20230601; t=1711998642; x=1712603442;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=u6uaUI+tf8SHKzsQC+xZokqIl8VwjiOYFPlSJheN0WY=;
-        b=GRKphFKjJZjweqoDz5GzYAay6fj5H+900ugyjwMGsOPz2nAPGLbFqXq3ky+CDe5KnK
-         Tcr8Pn7azbMPGm4CELMwGM56+UKoalJP7OLehDCl8EvchJCg3e7CZN1efDC561mOcPga
-         5uc53J2UTUXJXOSJdTKt07w8o16DiTeQO5vLBEeL3DvcjjieSTbYxkC7AFDr9L5N8Cel
-         LNh7VvS2XxjcCQaJZFv4W6cYc/EBYyuTq5ecHb/XjZppM5IsiSquAq7MYUUun34Qd1Ro
-         8fWc436WAYaakxu+oeCDNbi7E4y/7kiEVX0+dKdi4V9CaBg4JclukfefjTi1FBS9ZRqk
-         VEaw==
-X-Gm-Message-State: AOJu0YwJ04cFqLJT+v/ybPPvURU3t7B4TZlFFiQbZGTMCvmXQ5pvPlnQ
-	laIlgeSga1REVeSD/sSfuyOciMoL6IyWpguTs46kOO11QOwXojdkv4zTXqkU01WMUpTBcxPpYsG
-	5y/IwbrxacmSEUW/BXGhJuPXcpmoX5by6VIdOyA==
-X-Google-Smtp-Source: AGHT+IEGBhywqC+1C7o8zzn+AZ5cc0LrVNMqLDt3eM22SEsVPi/zqIlKIAhUFw1kqaGpME2GmtIWwF1NpF/DV8RSiUo=
-X-Received: by 2002:a05:6402:518f:b0:566:ca0:4a91 with SMTP id
- q15-20020a056402518f00b005660ca04a91mr8331898edd.2.1711998274794; Mon, 01 Apr
- 2024 12:04:34 -0700 (PDT)
+        bh=GNg9gkgBJslO2GtpUVVXE3k26E466KpxPLo9ZtxpaZY=;
+        b=Y22RzQo9YD2wf4Rcbyb6Pg0tC8d051Ei2JuJsVGHbHeHn+Wl0Op9MzGtZ4gVnOQQGv
+         uGIAhGZec/Nk/XCcLR+Im2YUSdapD32UGgh+l5dO9jgud/r2kvOz4iT5FotjVxofQfrV
+         TxOvbhSkNWkkCR/ysZwZ6C76w8nrWbdUb+a1PHRHIjfe9qliwqjkHQOqn2b8sZg0XZQQ
+         jZaF3spNOIr3kQKE6pBEOqZ0+0zgbVYBhQmuMMylyfLAiFdoxxLrnxY94RHfOrZXTgwN
+         3n58t/+wNtltxZgvSvEypTuDdPavemjOJgg00o78PjUDaxAvVDSQ/09qaLCT8R+o0Map
+         Wv5w==
+X-Forwarded-Encrypted: i=1; AJvYcCX4/SxwY2eS7YUMlVSLuIrTfcoIJIZDjs3f3NjAJC6NGKw8nKNHSp2eKYyyVULlxUkXiuTfdpxdtbgoJRzUuAr76zSVRQ8wp1YwK88fPJPf6tGhCxuH02jJGLw+iBoJe5b6pu8H2cBzjGMI5sZmoAflbD5Uv6QnXoK8HSPim4Z/C9GOJm0=
+X-Gm-Message-State: AOJu0YxdbUHAzduzEijBHsT/VAL3om9lvfuKV7XviWu+1kazVCrt41Bp
+	evOIfiYuYswj1I5iYsohCJxTA2G+TqPKbiiAKnCqcuzR3XsfIorxCaNDfW0xXSogyKZ4qkprakZ
+	zqC7Z2LFZvs6YYhMUANjOImIdzkc=
+X-Google-Smtp-Source: AGHT+IFdYWWHG46Y6Nw54sSzqw6L5V42K5FKzlzKf1jhP0Ob+er/o+L5Gl6FQpTes5ChjbyBKOwXA3VMGmVwE+tl0Zs=
+X-Received: by 2002:a25:ba41:0:b0:dc6:d22e:ef4c with SMTP id
+ z1-20020a25ba41000000b00dc6d22eef4cmr8698196ybj.17.1711998642045; Mon, 01 Apr
+ 2024 12:10:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240401152553.125349965@linuxfoundation.org>
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 2 Apr 2024 00:34:22 +0530
-Message-ID: <CA+G9fYuY6jrEroCeeioC389E6G56wjSGQpFxQS5MQtTFz-aZtQ@mail.gmail.com>
-Subject: Re: [PATCH 6.7 000/432] 6.7.12-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
+References: <20240327160346.22442-1-benno.lossin@proton.me>
+ <CANeycqp0o-HKBx6nuGCy9DD6mAwoGWzTR6bm5ceajsUhKcZuQg@mail.gmail.com> <d41d123e-d682-4685-88f5-e45567cc1975@proton.me>
+In-Reply-To: <d41d123e-d682-4685-88f5-e45567cc1975@proton.me>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Mon, 1 Apr 2024 16:10:31 -0300
+Message-ID: <CANeycqr_AkxTj2iNdnjRFrC-C8npsBtS34V4hNy35RpQHszG9w@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: fix soundness issue in `module!` macro
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
+	Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>, 
+	Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, 
+	Sumera Priyadarsini <sylphrenadin@gmail.com>, Finn Behrens <me@kloenk.dev>, 
+	Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, Daniel Xu <dxu@dxuuu.xyz>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 1 Apr 2024 at 21:41, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Sun, 31 Mar 2024 at 07:27, Benno Lossin <benno.lossin@proton.me> wrote:
 >
-> Note, this will be the LAST 6.7.y kernel release.  After this one it
-> will be end-of-life.  Please move to 6.8.y now.
+> On 31.03.24 03:00, Wedson Almeida Filho wrote:
+> > On Wed, 27 Mar 2024 at 13:04, Benno Lossin <benno.lossin@proton.me> wrote:
+> >> +                    #[cfg(not(MODULE))]
+> >> +                    #[doc(hidden)]
+> >> +                    #[no_mangle]
+> >> +                    pub extern \"C\" fn __{name}_exit() {{
+> >> +                        __exit()
 >
-> ------------------------------------------
+> I just noticed this should be wrapped in an `unsafe` block with a SAFETY
+> comment. Will fix this in v2.
 >
-> This is the start of the stable review cycle for the 6.7.12 release.
-> There are 432 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> >> +                    }}
+> >>
+> >> -            #[cfg(not(MODULE))]
+> >> -            #[doc(hidden)]
+> >> -            #[no_mangle]
+> >> -            pub extern \"C\" fn __{name}_exit() {{
+> >> -                __exit()
+> >> -            }}
+> >> +                    /// # Safety
+> >> +                    ///
+> >> +                    /// This function must
+> >> +                    /// - only be called once,
+> >> +                    /// - not be called concurrently with `__exit`.
+> >
+> > I don't think the second item is needed here, it really is a
+> > requirement on `__exit`.
 >
-> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
-> Anything received after that time might be too late.
+> Fixed.
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.12-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
+> >
+> >> +                    unsafe fn __init() -> core::ffi::c_int {{
+> >> +                        match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
+> >> +                            Ok(m) => {{
+> >> +                                // SAFETY:
+> >> +                                // no data race, since `__MOD` can only be accessed by this module and
+> >> +                                // there only `__init` and `__exit` access it. These functions are only
+> >> +                                // called once and `__exit` cannot be called before or during `__init`.
+> >> +                                unsafe {{
+> >> +                                    __MOD = Some(m);
+> >> +                                }}
+> >> +                                return 0;
+> >> +                            }}
+> >> +                            Err(e) => {{
+> >> +                                return e.to_errno();
+> >> +                            }}
+> >> +                        }}
+> >> +                    }}
+> >>
+> >> -            fn __init() -> core::ffi::c_int {{
+> >> -                match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
+> >> -                    Ok(m) => {{
+> >> +                    /// # Safety
+> >> +                    ///
+> >> +                    /// This function must
+> >> +                    /// - only be called once,
+> >> +                    /// - be called after `__init`,
+> >> +                    /// - not be called concurrently with `__init`.
+> >
+> > The second item is incomplete: it must be called after `__init` *succeeds*.
 >
-> thanks,
+> Indeed.
 >
-> greg k-h
+> >
+> > With that added (which is a different precondition), I think the third
+> > item can be dropped because if you have to wait to see whether
+> > `__init` succeeded or failed before you can call `__exit`, then
+> > certainly you cannot call it concurrently with `__init`.
+>
+> I would love to drop that requirement, but I am not sure we can. With
+> that requirement, I wanted to ensure that no data race on `__MOD` can
+> happen. If you need to verify that `__init` succeeded, one might think
+> that it is not possible to call `__exit` such that a data race occurs,
+> but I think it could theoretically be done if the concrete `Module`
+> implementation never failed.
 
+I see. If you're concerned about compiler reordering, then we need
+compiler barriers.
 
-Following kernel warnings have been noticed on qemu-x86_64 while running LTP
-cve ioctl_sg01 tests the kernel with stable-rc 6.6.24-rc1, 6.7.12-rc1 and
-6.8.3-rc1.
+> Do you have any suggestion for what I could add to the "be called after
+> `__init` was called and returned `0`" requirement to make a data race
+> impossible?
 
-We have started bi-secting this issue.
-Always reproduced.
+If you're concerned with reordering from the processor as well, then
+we need cpu barriers. You'd have to say that the cpu/thread executing
+`__init` must have a release barrier after `__init` completes, and the
+thread/cpu doing `__exit` must have an acquire barrier before starting
+`__exit`.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+But I'm not sure we need to go that far. Mostly because C is going to
+guarantee that ordering for us, so I'd say we can just omit this or
+perhaps say "This function must only be called from the exit module
+implementation".
 
-ioctl_sg01.c:81: TINFO: Found SCSI device /dev/sg0
-------------[ cut here ]------------
-[   36.606841] WARNING: CPU: 0 PID: 8 at drivers/scsi/sg.c:2237
-sg_remove_sfp_usercontext+0x145/0x150
-[   36.609445] Modules linked in:
-[   36.610793] CPU: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.6.24-rc1 #1
-[   36.611568] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-[   36.612872] Workqueue: events sg_remove_sfp_usercontext
-[   36.613691] RIP: 0010:sg_remove_sfp_usercontext+0x145/0x150
-
-<trim>
-
-[   36.621539] Call Trace:
-[   36.621953]  <TASK>
-[   36.622444]  ? show_regs+0x69/0x80
-[   36.622819]  ? __warn+0x8d/0x150
-[   36.623078]  ? sg_remove_sfp_usercontext+0x145/0x150
-[   36.623558]  ? report_bug+0x171/0x1a0
-[   36.623881]  ? handle_bug+0x42/0x80
-[   36.624070]  ? exc_invalid_op+0x1c/0x70
-[   36.624491]  ? asm_exc_invalid_op+0x1f/0x30
-[   36.624897]  ? sg_remove_sfp_usercontext+0x145/0x150
-[   36.625408]  process_one_work+0x141/0x300
-[   36.625769]  worker_thread+0x2f6/0x430
-[   36.626073]  ? __pfx_worker_thread+0x10/0x10
-[   36.626529]  kthread+0x105/0x140
-[   36.626778]  ? __pfx_kthread+0x10/0x10
-[   36.627059]  ret_from_fork+0x41/0x60
-[   36.627441]  ? __pfx_kthread+0x10/0x10
-[   36.627735]  ret_from_fork_asm+0x1b/0x30
-[   36.628293]  </TASK>
-[   36.628604] ---[ end trace 0000000000000000 ]---
-ioctl_sg01.c:122: TPASS: Output buffer is empty, no data leaked
-
-Suspecting commit:
------
-scsi: sg: Avoid sg device teardown race
-commit 27f58c04a8f438078583041468ec60597841284d upstream.
-
- + WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
-
-Steps to reproduce:
-- https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2eVWFlAeOUepfeFVkrOXFYNNAqI/reproducer
-
-Links:
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.23-397-g75a2533b74d0/testrun/23255318/suite/log-parser-test/tests/
- - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2eVTitwVMagaiWhs5T2iKH390D5
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+> --
+> Cheers,
+> Benno
+>
+> >
+> >> +                    unsafe fn __exit() {{
+> >> +                        // SAFETY:
+> >> +                        // no data race, since `__MOD` can only be accessed by this module and there
+> >> +                        // only `__init` and `__exit` access it. These functions are only called once
+> >> +                        // and `__init` was already called.
+> >>                           unsafe {{
+> >> -                            __MOD = Some(m);
+> >> +                            // Invokes `drop()` on `__MOD`, which should be used for cleanup.
+> >> +                            __MOD = None;
+> >>                           }}
+> >> -                        return 0;
+> >>                       }}
+> >> -                    Err(e) => {{
+> >> -                        return e.to_errno();
+> >> -                    }}
+> >> -                }}
+> >> -            }}
+> >>
+> >> -            fn __exit() {{
+> >> -                unsafe {{
+> >> -                    // Invokes `drop()` on `__MOD`, which should be used for cleanup.
+> >> -                    __MOD = None;
+> >> +                    {modinfo}
+> >>                   }}
+> >>               }}
+> >> -
+> >> -            {modinfo}
+> >>           ",
+> >>           type_ = info.type_,
+> >>           name = info.name,
+> >>
+> >> base-commit: 4cece764965020c22cff7665b18a012006359095
+> >> --
+> >> 2.44.0
+> >>
+> >>
+>
 
