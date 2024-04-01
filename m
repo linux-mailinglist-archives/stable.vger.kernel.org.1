@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-34300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09AF893EC3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEF0894039
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85C941F20C17
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25622281482
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231CF3F8F4;
-	Mon,  1 Apr 2024 16:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD25C129;
+	Mon,  1 Apr 2024 16:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIcS7K4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TyWYbDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3918383BA;
-	Mon,  1 Apr 2024 16:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6FA446AC;
+	Mon,  1 Apr 2024 16:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987656; cv=none; b=OolP/EZx/67D54IiDmo3mrOWxS5Chx3isRde7Dyc5dG3+gIe5KC10xYyAk7Y+GRM5FXf7qcarrUcVkhvUjEqoOYh9E8mR+PuF4bRuovmVNO59M1x2xbXje63nzH/bjxkXmWSfdCxcToIIxxDpCmlUOIP4zuK0JiV53BvZloA3ns=
+	t=1711988839; cv=none; b=TgpIwuB1kh6EhZsAjAx6UC2NKaUZt9NMBSIawX1RexQfWs8ffdWx2nGRrOLyAjVBjfF7eZD87QOai+jAtv0aSWlteklVHPC0cniWz4PHtB9ZRj5sYqUeGhqAuoDW2WMvRwRtdoSme+OeqpTlXhHs2ig9wTA1XYiF2OqpvmY8oOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987656; c=relaxed/simple;
-	bh=gnWWfq6FLeatSv1OaXltruKRIRyl8RSEh1Rzz1HbE5o=;
+	s=arc-20240116; t=1711988839; c=relaxed/simple;
+	bh=5W/PH10U5zcQzJ/Mwsq91dJaSPfuN0chxKayjG6/rhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pAhStwbX1/PvROJ4x0ipotRsTqkFL12yFBweWzZX5oL2vomCYb4vTmbD77SWgx8moOxsizzkLmkmoNF/GMRxueWDUlLU6xlcf14pkU2KvSyGmUZYkaoqliG44lRlW330yndHK3/OTKhl9NY3eXTxTbSnYcRgwM8e8ifsrVZJgM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIcS7K4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4267EC433C7;
-	Mon,  1 Apr 2024 16:07:36 +0000 (UTC)
+	 MIME-Version; b=n9l00yCAZ4HDJ8AK3QcsDRLcg7ODDeQ1ST1YphGCI3pt29VfAxfSPEzfHdKqL0MxlmfMjCpNE5RnRESOHRCtpa+xIEQrct8JJM2PPoX5At95Y3RDnwOWkMM30craWuD78RtLzDArd4cv2PEfLXlMg3IvnRGSPv0TTgDcN+ojyf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TyWYbDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D5EC433C7;
+	Mon,  1 Apr 2024 16:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987656;
-	bh=gnWWfq6FLeatSv1OaXltruKRIRyl8RSEh1Rzz1HbE5o=;
+	s=korg; t=1711988839;
+	bh=5W/PH10U5zcQzJ/Mwsq91dJaSPfuN0chxKayjG6/rhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIcS7K4IVg98SEYc/WFhCYZ9my+sQQpKP3kvDb7nede5PnIdVogza29sDRGFvJQw4
-	 lL/XqyAu8BRrkjlIamHGXGSxobgtne+IVx+567I9NA3Q9fRoGWUrIdYdRxlkz4GI3t
-	 d/IR6b2aNVCVMWMNc/G8dFogIsUqKY+3E4ysNUns=
+	b=2TyWYbDTUk3xJ+OP3bXkeuj8INQwb7jZUV6M0cgmMkWy1bdrVV1hMfn5TEpjbwYQU
+	 9lLTzOnkyT84WtlXQfA52RUFHQFvy58v87iKpc93oyHjZNkemhTZXUU+OINSfmyo3w
+	 k3ywqRjP1/mNkSoawwhdUV+NXto4MuG4fkRuuAyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH 6.8 325/399] drm/vmwgfx: Create debugfs ttm_resource_manager entry only if needed
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 304/432] swiotlb: Fix alignment checks when both allocation and DMA masks are present
 Date: Mon,  1 Apr 2024 17:44:51 +0200
-Message-ID: <20240401152558.881562467@linuxfoundation.org>
+Message-ID: <20240401152602.258326466@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Will Deacon <will@kernel.org>
 
-commit 4be9075fec0a639384ed19975634b662bfab938f upstream.
+[ Upstream commit 51b30ecb73b481d5fac6ccf2ecb4a309c9ee3310 ]
 
-The driver creates /sys/kernel/debug/dri/0/mob_ttm even when the
-corresponding ttm_resource_manager is not allocated.
-This leads to a crash when trying to read from this file.
+Nicolin reports that swiotlb buffer allocations fail for an NVME device
+behind an IOMMU using 64KiB pages. This is because we end up with a
+minimum allocation alignment of 64KiB (for the IOMMU to map the buffer
+safely) but a minimum DMA alignment mask corresponding to a 4KiB NVME
+page (i.e. preserving the 4KiB page offset from the original allocation).
+If the original address is not 4KiB-aligned, the allocation will fail
+because swiotlb_search_pool_area() erroneously compares these unmasked
+bits with the 64KiB-aligned candidate allocation.
 
-Add a check to create mob_ttm, system_mob_ttm, and gmr_ttm debug file
-only when the corresponding ttm_resource_manager is allocated.
+Tweak swiotlb_search_pool_area() so that the DMA alignment mask is
+reduced based on the required alignment of the allocation.
 
-crash> bt
-PID: 3133409  TASK: ffff8fe4834a5000  CPU: 3    COMMAND: "grep"
- #0 [ffffb954506b3b20] machine_kexec at ffffffffb2a6bec3
- #1 [ffffb954506b3b78] __crash_kexec at ffffffffb2bb598a
- #2 [ffffb954506b3c38] crash_kexec at ffffffffb2bb68c1
- #3 [ffffb954506b3c50] oops_end at ffffffffb2a2a9b1
- #4 [ffffb954506b3c70] no_context at ffffffffb2a7e913
- #5 [ffffb954506b3cc8] __bad_area_nosemaphore at ffffffffb2a7ec8c
- #6 [ffffb954506b3d10] do_page_fault at ffffffffb2a7f887
- #7 [ffffb954506b3d40] page_fault at ffffffffb360116e
-    [exception RIP: ttm_resource_manager_debug+0x11]
-    RIP: ffffffffc04afd11  RSP: ffffb954506b3df0  RFLAGS: 00010246
-    RAX: ffff8fe41a6d1200  RBX: 0000000000000000  RCX: 0000000000000940
-    RDX: 0000000000000000  RSI: ffffffffc04b4338  RDI: 0000000000000000
-    RBP: ffffb954506b3e08   R8: ffff8fee3ffad000   R9: 0000000000000000
-    R10: ffff8fe41a76a000  R11: 0000000000000001  R12: 00000000ffffffff
-    R13: 0000000000000001  R14: ffff8fe5bb6f3900  R15: ffff8fe41a6d1200
-    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
- #8 [ffffb954506b3e00] ttm_resource_manager_show at ffffffffc04afde7 [ttm]
- #9 [ffffb954506b3e30] seq_read at ffffffffb2d8f9f3
-    RIP: 00007f4c4eda8985  RSP: 00007ffdbba9e9f8  RFLAGS: 00000246
-    RAX: ffffffffffffffda  RBX: 000000000037e000  RCX: 00007f4c4eda8985
-    RDX: 000000000037e000  RSI: 00007f4c41573000  RDI: 0000000000000003
-    RBP: 000000000037e000   R8: 0000000000000000   R9: 000000000037fe30
-    R10: 0000000000000000  R11: 0000000000000246  R12: 00007f4c41573000
-    R13: 0000000000000003  R14: 00007f4c41572010  R15: 0000000000000003
-    ORIG_RAX: 0000000000000000  CS: 0033  SS: 002b
-
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: af4a25bbe5e7 ("drm/vmwgfx: Add debugfs entries for various ttm resource managers")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240312093551.196609-1-jfalempe@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+Link: https://lore.kernel.org/r/cover.1707851466.git.nicolinc@nvidia.com
+Reported-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ kernel/dma/swiotlb.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-@@ -1444,12 +1444,15 @@ static void vmw_debugfs_resource_manager
- 					    root, "system_ttm");
- 	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, TTM_PL_VRAM),
- 					    root, "vram_ttm");
--	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
--					    root, "gmr_ttm");
--	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
--					    root, "mob_ttm");
--	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
--					    root, "system_mob_ttm");
-+	if (vmw->has_gmr)
-+		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
-+						    root, "gmr_ttm");
-+	if (vmw->has_mob) {
-+		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
-+						    root, "mob_ttm");
-+		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
-+						    root, "system_mob_ttm");
-+	}
- }
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 2d347685cf566..9edfb3b7702bb 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -981,8 +981,7 @@ static int swiotlb_area_find_slots(struct device *dev, struct io_tlb_pool *pool,
+ 	dma_addr_t tbl_dma_addr =
+ 		phys_to_dma_unencrypted(dev, pool->start) & boundary_mask;
+ 	unsigned long max_slots = get_max_slots(boundary_mask);
+-	unsigned int iotlb_align_mask =
+-		dma_get_min_align_mask(dev) & ~(IO_TLB_SIZE - 1);
++	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
+ 	unsigned int nslots = nr_slots(alloc_size), stride;
+ 	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
+ 	unsigned int index, slots_checked, count = 0, i;
+@@ -993,6 +992,14 @@ static int swiotlb_area_find_slots(struct device *dev, struct io_tlb_pool *pool,
+ 	BUG_ON(!nslots);
+ 	BUG_ON(area_index >= pool->nareas);
  
- static int vmwgfx_pm_notifier(struct notifier_block *nb, unsigned long val,
++	/*
++	 * Ensure that the allocation is at least slot-aligned and update
++	 * 'iotlb_align_mask' to ignore bits that will be preserved when
++	 * offsetting into the allocation.
++	 */
++	alloc_align_mask |= (IO_TLB_SIZE - 1);
++	iotlb_align_mask &= ~alloc_align_mask;
++
+ 	/*
+ 	 * For mappings with an alignment requirement don't bother looping to
+ 	 * unaligned slots once we found an aligned one.
+-- 
+2.43.0
+
 
 
 
