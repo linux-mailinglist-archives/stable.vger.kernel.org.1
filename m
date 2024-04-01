@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-35396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650BC8943C1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2728E8940B7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F55D283930
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB8C1B21076
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9882482E4;
-	Mon,  1 Apr 2024 17:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E280538DD8;
+	Mon,  1 Apr 2024 16:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpElKnT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+qYPXLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8617A40876;
-	Mon,  1 Apr 2024 17:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13021C0DE7;
+	Mon,  1 Apr 2024 16:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991260; cv=none; b=XSqo3zqTT8e42t98nj1u1i//38x/4izU8fOossgCwHlE3Dp/ifJuPvEJoo3AiapLzs7pUnP/VD5ZahPHCMmB/bCE7PmxlFS4TjMtoNmIwJNTuYFblkRz2x4RI8mohIe4JDCiQfe5gYJIIriOStft3bbxsTRVRdDZVGw0sZfwOuo=
+	t=1711989207; cv=none; b=t9KjD98Va0ah1z+rqAm2tR7QCOJ+9W0bz3wse/oDuTtomOeJx4b1nt0UePgjt0IITZt7FX9L0oIukmHw44rrGPjAVNcNlScD78k+l28/2qlHFDGCRfV5RsEfnXBEcSOlDI68b1Pchxg4M5Kp80xvjVHcCJ+ESm+PaFKHDDggMoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991260; c=relaxed/simple;
-	bh=3aqVHnoDRkNYGC5eyLAqIoLQTEdl1oQ3THHRrVPCDjY=;
+	s=arc-20240116; t=1711989207; c=relaxed/simple;
+	bh=iHxiHNTXE/+C65spDfpmoXtAZ7FFQ9zNzgeBi+9LppM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfdIQSRnxw4R41sSufkdXtAsxUDLZMqJgpD+nFX3goaN7hyK83A+GToV6GSNwRTHHeRzOdiqbTHz9f5n02RxgZxXItIYYwU/DUXs8OfH6gCCe8U/96CaTCSigtgcUqTeY8oMGhMTWaLylV9B7CwEj2mAj8um777V5OPph7oSrvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpElKnT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2E6C433F1;
-	Mon,  1 Apr 2024 17:07:39 +0000 (UTC)
+	 MIME-Version; b=t2de2GXGXoekOtFXW3kQVayu7u/AGcDs9yrnLDHz2+kU6OU4tcjftMB4VjxwlI55OVDfonSiAGDSvF+DkHjrhlB7ofZiXlag9mXdmWf320Hzi5CT0BODtsp6zQZR9Lyp+OyvUiARbF1y/2dlQ2GxnyCTpWTdFGAL8CahOgQTSu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+qYPXLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FEEC433C7;
+	Mon,  1 Apr 2024 16:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991260;
-	bh=3aqVHnoDRkNYGC5eyLAqIoLQTEdl1oQ3THHRrVPCDjY=;
+	s=korg; t=1711989207;
+	bh=iHxiHNTXE/+C65spDfpmoXtAZ7FFQ9zNzgeBi+9LppM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpElKnT8Z3IFYFARrOg8j1/zAZRCGhNLPqtkBjwAyCBsOlCvYr698vUq1u9EpP65r
-	 N0wzxwcy9e2Y8hIzG9e0zGGYJxem4x84kOHTR3q6I9pFQbrDfISfhFSONhndh2HXQd
-	 3AlCKWRemTQ/HxJCfVTgRz0hv6pnpFAgru02A0fY=
+	b=G+qYPXLMJPs4pziGb3GVHYAsk+Bh54/Ef7cxThhdrwTUUR3CpLr/xkp/Bok517Kzi
+	 93w8okTl+cQw2+LnfCtn/uYLSCkfI+eTRZwjhBUB7gIgYlBNW80IKj56RPTaqFHJnr
+	 e8oeCJZJAek0pCw21cc49ekm9rH3Wd0CDtOstyyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/272] swiotlb: Fix alignment checks when both allocation and DMA masks are present
+Subject: [PATCH 6.7 385/432] drm/amdgpu: make damage clips support configurable
 Date: Mon,  1 Apr 2024 17:46:12 +0200
-Message-ID: <20240401152536.498310354@linuxfoundation.org>
+Message-ID: <20240401152604.795262601@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit 51b30ecb73b481d5fac6ccf2ecb4a309c9ee3310 ]
+[ Upstream commit fc184dbe9fd99ad2dfb197b6fe18768bae1774b1 ]
 
-Nicolin reports that swiotlb buffer allocations fail for an NVME device
-behind an IOMMU using 64KiB pages. This is because we end up with a
-minimum allocation alignment of 64KiB (for the IOMMU to map the buffer
-safely) but a minimum DMA alignment mask corresponding to a 4KiB NVME
-page (i.e. preserving the 4KiB page offset from the original allocation).
-If the original address is not 4KiB-aligned, the allocation will fail
-because swiotlb_search_pool_area() erroneously compares these unmasked
-bits with the 64KiB-aligned candidate allocation.
+We have observed that there are quite a number of PSR-SU panels on the
+market that are unable to keep up with what user space throws at them,
+resulting in hangs and random black screens. So, make damage clips
+support configurable and disable it by default for PSR-SU displays.
 
-Tweak swiotlb_search_pool_area() so that the DMA alignment mask is
-reduced based on the required alignment of the allocation.
-
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Link: https://lore.kernel.org/r/cover.1707851466.git.nicolinc@nvidia.com
-Reported-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h               |  1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           | 13 +++++++++++++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  7 +++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index ad6333c3fe1ff..db89ac94e7db4 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -654,8 +654,7 @@ static int swiotlb_do_find_slots(struct device *dev, int area_index,
- 	dma_addr_t tbl_dma_addr =
- 		phys_to_dma_unencrypted(dev, mem->start) & boundary_mask;
- 	unsigned long max_slots = get_max_slots(boundary_mask);
--	unsigned int iotlb_align_mask =
--		dma_get_min_align_mask(dev) & ~(IO_TLB_SIZE - 1);
-+	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
- 	unsigned int nslots = nr_slots(alloc_size), stride;
- 	unsigned int index, wrap, count = 0, i;
- 	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
-@@ -666,6 +665,14 @@ static int swiotlb_do_find_slots(struct device *dev, int area_index,
- 	BUG_ON(!nslots);
- 	BUG_ON(area_index >= mem->nareas);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 31d4b5a2c5e83..13c62a26aa19c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -198,6 +198,7 @@ extern uint amdgpu_dc_debug_mask;
+ extern uint amdgpu_dc_visual_confirm;
+ extern uint amdgpu_dm_abm_level;
+ extern int amdgpu_backlight;
++extern int amdgpu_damage_clips;
+ extern struct amdgpu_mgpu_info mgpu_info;
+ extern int amdgpu_ras_enable;
+ extern uint amdgpu_ras_mask;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 10c4a8cfa18a0..855ab596323c7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -209,6 +209,7 @@ int amdgpu_umsch_mm;
+ int amdgpu_seamless = -1; /* auto */
+ uint amdgpu_debug_mask;
+ int amdgpu_agp = -1; /* auto */
++int amdgpu_damage_clips = -1; /* auto */
  
-+	/*
-+	 * Ensure that the allocation is at least slot-aligned and update
-+	 * 'iotlb_align_mask' to ignore bits that will be preserved when
-+	 * offsetting into the allocation.
-+	 */
-+	alloc_align_mask |= (IO_TLB_SIZE - 1);
-+	iotlb_align_mask &= ~alloc_align_mask;
+ static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work);
+ 
+@@ -857,6 +858,18 @@ int amdgpu_backlight = -1;
+ MODULE_PARM_DESC(backlight, "Backlight control (0 = pwm, 1 = aux, -1 auto (default))");
+ module_param_named(backlight, amdgpu_backlight, bint, 0444);
+ 
++/**
++ * DOC: damageclips (int)
++ * Enable or disable damage clips support. If damage clips support is disabled,
++ * we will force full frame updates, irrespective of what user space sends to
++ * us.
++ *
++ * Defaults to -1 (where it is enabled unless a PSR-SU display is detected).
++ */
++MODULE_PARM_DESC(damageclips,
++		 "Damage clips support (0 = disable, 1 = enable, -1 auto (default))");
++module_param_named(damageclips, amdgpu_damage_clips, int, 0444);
 +
- 	/*
- 	 * For mappings with an alignment requirement don't bother looping to
- 	 * unaligned slots once we found an aligned one.  For allocations of
+ /**
+  * DOC: tmz (int)
+  * Trusted Memory Zone (TMZ) is a method to protect data being written
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index f5dceb4eb99a3..342e41c78fb34 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -5147,6 +5147,7 @@ static void fill_dc_dirty_rects(struct drm_plane *plane,
+ 				struct drm_plane_state *new_plane_state,
+ 				struct drm_crtc_state *crtc_state,
+ 				struct dc_flip_addrs *flip_addrs,
++				bool is_psr_su,
+ 				bool *dirty_regions_changed)
+ {
+ 	struct dm_crtc_state *dm_crtc_state = to_dm_crtc_state(crtc_state);
+@@ -5171,6 +5172,10 @@ static void fill_dc_dirty_rects(struct drm_plane *plane,
+ 	num_clips = drm_plane_get_damage_clips_count(new_plane_state);
+ 	clips = drm_plane_get_damage_clips(new_plane_state);
+ 
++	if (num_clips && (!amdgpu_damage_clips || (amdgpu_damage_clips < 0 &&
++						   is_psr_su)))
++		goto ffu;
++
+ 	if (!dm_crtc_state->mpo_requested) {
+ 		if (!num_clips || num_clips > DC_MAX_DIRTY_RECTS)
+ 			goto ffu;
+@@ -8216,6 +8221,8 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 			fill_dc_dirty_rects(plane, old_plane_state,
+ 					    new_plane_state, new_crtc_state,
+ 					    &bundle->flip_addrs[planes_count],
++					    acrtc_state->stream->link->psr_settings.psr_version ==
++					    DC_PSR_VERSION_SU_1,
+ 					    &dirty_rects_changed);
+ 
+ 			/*
 -- 
 2.43.0
 
