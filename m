@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-34578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024A9893FEC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B59894179
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8E71F21D54
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 062CA282F89
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F33247A57;
-	Mon,  1 Apr 2024 16:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0DC4AEDA;
+	Mon,  1 Apr 2024 16:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18OC1vTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMlMKieQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88A4446AC;
-	Mon,  1 Apr 2024 16:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACCD47A6B;
+	Mon,  1 Apr 2024 16:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988590; cv=none; b=jmAFW6lqDgQ92RY50+QNtjt1CSGaIQnxNRH0BP8yr3CJYZrqEGrbBCfFli2mzXeqhYm94gcTMsT1gF86ti39tr9zYI0ahVzkvk40ywe6aRMY9isJOgoAP1Ti64XBYKtW1Tw6Ff1HXIgyYQybG7jZDaeR8v++BxVxiWygCWDHLTk=
+	t=1711989743; cv=none; b=HKXkhwLOLxC/QCHn1R/1e6fLm64enS8Xn/XcFMxSkS1gk5TX7TJt2IbOppGoZFXnu0jOF7CZNuwCjZZpokAEVZ+U6AFttuFYMszSOSkPCtq9UPBZL6QLRZq9bspst2o30fB1gdHPnLosekrJItE/gZ92lDJ7q+44+uAHz+KolYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988590; c=relaxed/simple;
-	bh=A9xIVSFBhr23aunG4SRv9hhPgr28IO5lZQMkayS6KQk=;
+	s=arc-20240116; t=1711989743; c=relaxed/simple;
+	bh=2td1Xw4vu4gdvFMa3TvBwvWA00OLJCR4NpL/rsjG6wY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxzMFeY5ObqA6y8bwNJP98algRCOs6/YugTcmZfjMcXflsUlr4HdV/PQwSBrBgtnkFU1GNJ5mc2r1v4pfNlRwr1Vudq3lbWhc08CAWoqQyTCynKAA7tvAKPGYnXr7yLVoaLQCDaposrC4sdG6d/xsmtBsXFkBBjL64R6O/FK+d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18OC1vTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29717C433C7;
-	Mon,  1 Apr 2024 16:23:09 +0000 (UTC)
+	 MIME-Version; b=XKaCOfBLQVVPa5hiYVGx8RMw+F+AzuN0XSWK8qFq+EoF1fDh3Kiq1HAB/7vhCTin4ZfRx8Xhv8WTxOrqRJP957c0qGWRWRXJ6lRwfQH2oBKs26MCCUHMPkBrLV4PXfYtXRSLdVe84jeFMSU+ARsswuzd4KwumROQq1YCCte9EvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMlMKieQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E81C433C7;
+	Mon,  1 Apr 2024 16:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988590;
-	bh=A9xIVSFBhr23aunG4SRv9hhPgr28IO5lZQMkayS6KQk=;
+	s=korg; t=1711989743;
+	bh=2td1Xw4vu4gdvFMa3TvBwvWA00OLJCR4NpL/rsjG6wY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18OC1vTSbczeSBimFuAgWEegKwBH8gN1KSBZfE6gvnNgOCJLCtHjI4fOfpj3LU6+n
-	 sTHhd9C+3y0l/mmvHreDw7ED/eE2gF+pBlo2F3QhuQQb4JwAk66vbynZQu0AMsTxhe
-	 zz7495Ajj5mu9B4wPVM9ujhyK43qZ0uoB5sxvs5g=
+	b=PMlMKieQ/D3efs7H0M0oH1fuVNmdHlVlAZqkcikqcpqqZDeCzEatW3EJrYlAUb6PI
+	 R9qQRANMX1f0M4/pCE5yC4xeYc1q2lqfgWNhjpZl8eXmkzAUit10JR1Zaul4OSj4rh
+	 0P4gq5Vv4gHs+9MqhcmkpAjyXSWxvAjmS0A5/urU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WANG Xuerui <git@xen0n.name>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 201/432] LoongArch/crypto: Clean up useless assignment operations
+Subject: [PATCH 6.6 139/396] ring-buffer: Fix full_waiters_pending in poll
 Date: Mon,  1 Apr 2024 17:43:08 +0200
-Message-ID: <20240401152559.132515053@linuxfoundation.org>
+Message-ID: <20240401152552.058534955@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +65,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuli Wang <wangyuli@uniontech.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit fea1c949f6ca5059e12de00d0483645debc5b206 ]
+[ Upstream commit 8145f1c35fa648da662078efab299c4467b85ad5 ]
 
-The LoongArch CRC32 hw acceleration is based on arch/mips/crypto/
-crc32-mips.c. While the MIPS code supports both MIPS32 and MIPS64,
-but LoongArch32 lacks the CRC instruction. As a result, the line
-"len -= sizeof(u32)" is unnecessary.
+If a reader of the ring buffer is doing a poll, and waiting for the ring
+buffer to hit a specific watermark, there could be a case where it gets
+into an infinite ping-pong loop.
 
-Removing it can make context code style more unified and improve
-code readability.
+The poll code has:
+
+  rbwork->full_waiters_pending = true;
+  if (!cpu_buffer->shortest_full ||
+      cpu_buffer->shortest_full > full)
+         cpu_buffer->shortest_full = full;
+
+The writer will see full_waiters_pending and check if the ring buffer is
+filled over the percentage of the shortest_full value. If it is, it calls
+an irq_work to wake up all the waiters.
+
+But the code could get into a circular loop:
+
+	CPU 0					CPU 1
+	-----					-----
+ [ Poll ]
+   [ shortest_full = 0 ]
+   rbwork->full_waiters_pending = true;
+					  if (rbwork->full_waiters_pending &&
+					      [ buffer percent ] > shortest_full) {
+					         rbwork->wakeup_full = true;
+					         [ queue_irqwork ]
+
+   cpu_buffer->shortest_full = full;
+
+					  [ IRQ work ]
+					  if (rbwork->wakeup_full) {
+					        cpu_buffer->shortest_full = 0;
+					        wakeup poll waiters;
+  [woken]
+   if ([ buffer percent ] > full)
+      break;
+   rbwork->full_waiters_pending = true;
+					  if (rbwork->full_waiters_pending &&
+					      [ buffer percent ] > shortest_full) {
+					         rbwork->wakeup_full = true;
+					         [ queue_irqwork ]
+
+   cpu_buffer->shortest_full = full;
+
+					  [ IRQ work ]
+					  if (rbwork->wakeup_full) {
+					        cpu_buffer->shortest_full = 0;
+					        wakeup poll waiters;
+  [woken]
+
+ [ Wash, rinse, repeat! ]
+
+In the poll, the shortest_full needs to be set before the
+full_pending_waiters, as once that is set, the writer will compare the
+current shortest_full (which is incorrect) to decide to call the irq_work,
+which will reset the shortest_full (expecting the readers to update it).
+
+Also move the setting of full_waiters_pending after the check if the ring
+buffer has the required percentage filled. There's no reason to tell the
+writer to wake up waiters if there are no waiters.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240312131952.630922155@goodmis.org
 
 Cc: stable@vger.kernel.org
-Reviewed-by: WANG Xuerui <git@xen0n.name>
-Suggested-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/crypto/crc32-loongarch.c | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/trace/ring_buffer.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/arch/loongarch/crypto/crc32-loongarch.c b/arch/loongarch/crypto/crc32-loongarch.c
-index a49e507af38c0..3eebea3a7b478 100644
---- a/arch/loongarch/crypto/crc32-loongarch.c
-+++ b/arch/loongarch/crypto/crc32-loongarch.c
-@@ -44,7 +44,6 @@ static u32 crc32_loongarch_hw(u32 crc_, const u8 *p, unsigned int len)
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index a8ad5141d7ba3..b4979f6a449d7 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1112,16 +1112,32 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
+ 		poll_wait(filp, &rbwork->full_waiters, poll_table);
  
- 		CRC32(crc, value, w);
- 		p += sizeof(u32);
--		len -= sizeof(u32);
+ 		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+-		rbwork->full_waiters_pending = true;
+ 		if (!cpu_buffer->shortest_full ||
+ 		    cpu_buffer->shortest_full > full)
+ 			cpu_buffer->shortest_full = full;
+ 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+-	} else {
+-		poll_wait(filp, &rbwork->waiters, poll_table);
+-		rbwork->waiters_pending = true;
++		if (full_hit(buffer, cpu, full))
++			return EPOLLIN | EPOLLRDNORM;
++		/*
++		 * Only allow full_waiters_pending update to be seen after
++		 * the shortest_full is set. If the writer sees the
++		 * full_waiters_pending flag set, it will compare the
++		 * amount in the ring buffer to shortest_full. If the amount
++		 * in the ring buffer is greater than the shortest_full
++		 * percent, it will call the irq_work handler to wake up
++		 * this list. The irq_handler will reset shortest_full
++		 * back to zero. That's done under the reader_lock, but
++		 * the below smp_mb() makes sure that the update to
++		 * full_waiters_pending doesn't leak up into the above.
++		 */
++		smp_mb();
++		rbwork->full_waiters_pending = true;
++		return 0;
  	}
  
- 	if (len & sizeof(u16)) {
-@@ -80,7 +79,6 @@ static u32 crc32c_loongarch_hw(u32 crc_, const u8 *p, unsigned int len)
++	poll_wait(filp, &rbwork->waiters, poll_table);
++	rbwork->waiters_pending = true;
++
+ 	/*
+ 	 * There's a tight race between setting the waiters_pending and
+ 	 * checking if the ring buffer is empty.  Once the waiters_pending bit
+@@ -1137,9 +1153,6 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
+ 	 */
+ 	smp_mb();
  
- 		CRC32C(crc, value, w);
- 		p += sizeof(u32);
--		len -= sizeof(u32);
- 	}
- 
- 	if (len & sizeof(u16)) {
+-	if (full)
+-		return full_hit(buffer, cpu, full) ? EPOLLIN | EPOLLRDNORM : 0;
+-
+ 	if ((cpu == RING_BUFFER_ALL_CPUS && !ring_buffer_empty(buffer)) ||
+ 	    (cpu != RING_BUFFER_ALL_CPUS && !ring_buffer_empty_cpu(buffer, cpu)))
+ 		return EPOLLIN | EPOLLRDNORM;
 -- 
 2.43.0
 
