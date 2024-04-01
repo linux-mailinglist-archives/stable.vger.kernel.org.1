@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-35057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CE889422B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BF7894043
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F0A628347F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 838881F21C6A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED0840876;
-	Mon,  1 Apr 2024 16:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197D74596E;
+	Mon,  1 Apr 2024 16:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoHSqHxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+K6UXrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0BE8F5C;
-	Mon,  1 Apr 2024 16:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAA0C129;
+	Mon,  1 Apr 2024 16:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990199; cv=none; b=Xw4tDj+jreCsJ4wyjkzw12jIfh8T+APA35luWmGjm6sObMLoX9miMFcDdEIbfMXuDRfRaDUN4JeDmnPCnQopAKtf15/iP1KIH0wAzmpPH8WF941YJqbwIs20uSbT/5HZ1ToeS3uAnhGMD/lgxqIJM1RQ9KCZLV8DIcUCa53bCPg=
+	t=1711988868; cv=none; b=fynX1JyVkIVKmEnSN5xaB8EVQeK61eDlMsXD5YXUgSazU0jNZt61WWLkg3jL0U9B4CftuIq73lcqTLqjihLR92BIlCFfXX0b8Mrqo6PWfS2IMH+W62FqbV8/LjzE/UfzH+jc6Jen3WlJwQdmScBSWyj8esieocqNCU1ByfyFfkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990199; c=relaxed/simple;
-	bh=GbWOvFu8n35qZchcdnGWlr91SuB7PIDMGOsxudtCyWk=;
+	s=arc-20240116; t=1711988868; c=relaxed/simple;
+	bh=w5qyJyfOaw+zns+reLew8y0CPbHWusGWk2knOKVZnvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiCwSl+VDxf9x38YwMHE1Z6H5acvPojEg7h463UBItgAvgovahMRyte1FEiM2q65TuqX3Y3tTrClMt03kDnveJizBOhtkJ6+p/NY99LabZR/O4sQVQj3x2g32fn+YgrvpdlK3RaedaA8TDaOtR98Jg4DYQFZ6xLQUagbEDGvwRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoHSqHxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47045C433F1;
-	Mon,  1 Apr 2024 16:49:59 +0000 (UTC)
+	 MIME-Version; b=YjQw1mOQnS/2trd0zudt9HiYPHm8RcKSW8Lqucll79R+Mm9gdqU4g1mszxTStWQ4zfTuZ9ivzTVmAfeiVKb2ooqUmbaCEZ2VXquSKeKYflHT2vaaXTo0fdqgccLzMzWTMsfM431V+UFabb65kouikw6hNeVCmcriO2DVth2C/QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+K6UXrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40238C433C7;
+	Mon,  1 Apr 2024 16:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990199;
-	bh=GbWOvFu8n35qZchcdnGWlr91SuB7PIDMGOsxudtCyWk=;
+	s=korg; t=1711988868;
+	bh=w5qyJyfOaw+zns+reLew8y0CPbHWusGWk2knOKVZnvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UoHSqHxG/ZPypTjkGAfWRuXP/MNd488HHZoR+5//AebnFnrCItSKyz4QK0WLTLt0G
-	 iQPYncv7HsssG2m8gNSlqep9PlDPFlDn44Tguz/gxSfcVXrVCI55ZEmUasne4vwCRB
-	 1h44JTK82vwJXh+mrxw9daVf4paVRUmj6UxogmKo=
+	b=E+K6UXrTbYYWNC4FUZEj4csAMxm1CS4+UNIa/SjYpzfPcwJcx9yjwWmZ1VqRaydQU
+	 60hjWsw8MFcK2gM3z/TZs3FjbO7wSEcYU1glx+2WF2MJmSUNpvAJfFBIWO9zzrY5T7
+	 3FoQsnk+qkQrC3PRRc7vhWymh8Tzjh9xWSCF+Jwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 249/396] x86/efistub: Call mixed mode boot services on the firmwares stack
-Date: Mon,  1 Apr 2024 17:44:58 +0200
-Message-ID: <20240401152555.335288588@linuxfoundation.org>
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 312/432] irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type
+Date: Mon,  1 Apr 2024 17:44:59 +0200
+Message-ID: <20240401152602.492876857@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit cefcd4fe2e3aaf792c14c9e56dab89e3d7a65d02 upstream.
+[ Upstream commit 853a6030303f8a8fa54929b68e5665d9b21aa405 ]
 
-Normally, the EFI stub calls into the EFI boot services using the stack
-that was live when the stub was entered. According to the UEFI spec,
-this stack needs to be at least 128k in size - this might seem large but
-all asynchronous processing and event handling in EFI runs from the same
-stack and so quite a lot of space may be used in practice.
+RZ/G2L interrupt chips require that the interrupt is masked before changing
+the NMI, IRQ, TINT interrupt settings. Aside of that, after setting an edge
+trigger type it is required to clear the interrupt status register in order
+to avoid spurious interrupts.
 
-In mixed mode, the situation is a bit different: the bootloader calls
-the 32-bit EFI stub entry point, which calls the decompressor's 32-bit
-entry point, where the boot stack is set up, using a fixed allocation
-of 16k. This stack is still in use when the EFI stub is started in
-64-bit mode, and so all calls back into the EFI firmware will be using
-the decompressor's limited boot stack.
+The current implementation fails to do either of that and therefore is
+prone to generate spurious interrupts when setting the trigger type.
 
-Due to the placement of the boot stack right after the boot heap, any
-stack overruns have gone unnoticed. However, commit
+Address this by:
 
-  5c4feadb0011983b ("x86/decompressor: Move global symbol references to C code")
+  - Ensuring that the interrupt is masked at the chip level across the
+    update for the TINT chip
 
-moved the definition of the boot heap into C code, and now the boot
-stack is placed right at the base of BSS, where any overruns will
-corrupt the end of the .data section.
+  - Clearing the interrupt status register after updating the trigger mode
+    for edge type interrupts
 
-While it would be possible to work around this by increasing the size of
-the boot stack, doing so would affect all x86 systems, and mixed mode
-systems are a tiny (and shrinking) fraction of the x86 installed base.
+[ tglx: Massaged changelog and reverted the spin_lock_irqsave() change as
+  	the set_type() callback is always called with interrupts disabled. ]
 
-So instead, record the firmware stack pointer value when entering from
-the 32-bit firmware, and switch to this stack every time a EFI boot
-service call is made.
-
-Cc: <stable@kernel.org> # v6.1+
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 36 +++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -49,6 +49,11 @@ SYM_FUNC_START(startup_64_mixed_mode)
- 	lea	efi32_boot_args(%rip), %rdx
- 	mov	0(%rdx), %edi
- 	mov	4(%rdx), %esi
-+
-+	/* Switch to the firmware's stack */
-+	movl	efi32_boot_sp(%rip), %esp
-+	andl	$~7, %esp
-+
- #ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- 	mov	8(%rdx), %edx		// saved bootparams pointer
- 	test	%edx, %edx
-@@ -254,6 +259,9 @@ SYM_FUNC_START_LOCAL(efi32_entry)
- 	/* Store firmware IDT descriptor */
- 	sidtl	(efi32_boot_idt - 1b)(%ebx)
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 762bb90b74e61..dc822111fc5d5 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -162,8 +162,10 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
  
-+	/* Store firmware stack pointer */
-+	movl	%esp, (efi32_boot_sp - 1b)(%ebx)
-+
- 	/* Store boot arguments */
- 	leal	(efi32_boot_args - 1b)(%ebx), %ebx
- 	movl	%ecx, 0(%ebx)
-@@ -318,5 +326,6 @@ SYM_DATA_END(efi32_boot_idt)
+ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+-	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
++	unsigned int hwirq = irqd_to_hwirq(d);
++	u32 iitseln = hwirq - IRQC_IRQ_START;
++	bool clear_irq_int = false;
+ 	u16 sense, tmp;
  
- SYM_DATA_LOCAL(efi32_boot_cs, .word 0)
- SYM_DATA_LOCAL(efi32_boot_ds, .word 0)
-+SYM_DATA_LOCAL(efi32_boot_sp, .long 0)
- SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
- SYM_DATA(efi_is64, .byte 1)
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+@@ -173,14 +175,17 @@ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
+ 
+ 	case IRQ_TYPE_EDGE_FALLING:
+ 		sense = IITSR_IITSEL_EDGE_FALLING;
++		clear_irq_int = true;
+ 		break;
+ 
+ 	case IRQ_TYPE_EDGE_RISING:
+ 		sense = IITSR_IITSEL_EDGE_RISING;
++		clear_irq_int = true;
+ 		break;
+ 
+ 	case IRQ_TYPE_EDGE_BOTH:
+ 		sense = IITSR_IITSEL_EDGE_BOTH;
++		clear_irq_int = true;
+ 		break;
+ 
+ 	default:
+@@ -189,21 +194,40 @@ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
+ 
+ 	raw_spin_lock(&priv->lock);
+ 	tmp = readl_relaxed(priv->base + IITSR);
+-	tmp &= ~IITSR_IITSEL_MASK(hw_irq);
+-	tmp |= IITSR_IITSEL(hw_irq, sense);
++	tmp &= ~IITSR_IITSEL_MASK(iitseln);
++	tmp |= IITSR_IITSEL(iitseln, sense);
++	if (clear_irq_int)
++		rzg2l_clear_irq_int(priv, hwirq);
+ 	writel_relaxed(tmp, priv->base + IITSR);
+ 	raw_spin_unlock(&priv->lock);
+ 
+ 	return 0;
+ }
+ 
++static u32 rzg2l_disable_tint_and_set_tint_source(struct irq_data *d, struct rzg2l_irqc_priv *priv,
++						  u32 reg, u32 tssr_offset, u8 tssr_index)
++{
++	u32 tint = (u32)(uintptr_t)irq_data_get_irq_chip_data(d);
++	u32 tien = reg & (TIEN << TSSEL_SHIFT(tssr_offset));
++
++	/* Clear the relevant byte in reg */
++	reg &= ~(TSSEL_MASK << TSSEL_SHIFT(tssr_offset));
++	/* Set TINT and leave TIEN clear */
++	reg |= tint << TSSEL_SHIFT(tssr_offset);
++	writel_relaxed(reg, priv->base + TSSR(tssr_index));
++
++	return reg | tien;
++}
++
+ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ {
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 	unsigned int hwirq = irqd_to_hwirq(d);
+ 	u32 titseln = hwirq - IRQC_TINT_START;
++	u32 tssr_offset = TSSR_OFFSET(titseln);
++	u8 tssr_index = TSSR_INDEX(titseln);
+ 	u8 index, sense;
+-	u32 reg;
++	u32 reg, tssr;
+ 
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+ 	case IRQ_TYPE_EDGE_RISING:
+@@ -225,10 +249,14 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 	}
+ 
+ 	raw_spin_lock(&priv->lock);
++	tssr = readl_relaxed(priv->base + TSSR(tssr_index));
++	tssr = rzg2l_disable_tint_and_set_tint_source(d, priv, tssr, tssr_offset, tssr_index);
+ 	reg = readl_relaxed(priv->base + TITSR(index));
+ 	reg &= ~(IRQ_MASK << (titseln * TITSEL_WIDTH));
+ 	reg |= sense << (titseln * TITSEL_WIDTH);
+ 	writel_relaxed(reg, priv->base + TITSR(index));
++	rzg2l_clear_tint_int(priv, hwirq);
++	writel_relaxed(tssr, priv->base + TSSR(tssr_index));
+ 	raw_spin_unlock(&priv->lock);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
