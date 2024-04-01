@@ -1,68 +1,55 @@
-Return-Path: <stable+bounces-35009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12B88941E3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2A1894018
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C47D2833F4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D2861F21D86
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A76E4654F;
-	Mon,  1 Apr 2024 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2814F446D5;
+	Mon,  1 Apr 2024 16:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mg4rlAxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9ytDhJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04A140876;
-	Mon,  1 Apr 2024 16:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6E81CA8F;
+	Mon,  1 Apr 2024 16:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990041; cv=none; b=ev09IdQyqkyxH+ihRawxTVO8UOHj5XSUaynl6A7O9yDZQ3CVplDN1cWdaRH4SIT6VqC2jseRsD19YsC/viL5KotT9LjzIhB6n5t+CX55oVgpaxGkVJbdtwxAHz38VZVvtbA2Jse4E6DTyJJfA3FibZalKhtuZgi1hnEgmw9SID8=
+	t=1711988733; cv=none; b=WxOA8lTKZDJAbBnG+FoTJMCDtHBsJnkOPdSfENcBDC0um0EV4bVEzYMGv8/UNf6IN1MSW1byrqc7lK71L5aIe5dCBNFhU3TjwyrGcmJHxROXBQv6Xb/RIdQuz2FpGMXCJVPS/tSgO2fqsorUjgF7OkujeDglyzFKcVlMuvCq19Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990041; c=relaxed/simple;
-	bh=3wpz/5ttZHUxF4Yf0c8CnmN3rNF7Pb2rDRvh3Tup3Q0=;
+	s=arc-20240116; t=1711988733; c=relaxed/simple;
+	bh=CnsYTna+yJ6BP3jbnWue+F7cwYPMI0IMcS4AtmDZLSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O//Bj+V3pX8Q3PaHZXbCUzf26+4935n8Boxz1tl0TzqLxbZM/EwFXflWrjKtTL+gXFaRIw5vd6Tsr2AuVU9zbvF593phFBCo1F1DhAorlHsAxsp2cWqeUyPGt7eJ1NXQ73+jf0Wjrq0+oyKnfD8DGyHAKRRH6v5TI0OIH2ySR/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg4rlAxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10410C433F1;
-	Mon,  1 Apr 2024 16:47:20 +0000 (UTC)
+	 MIME-Version; b=oxCqWVN5x8FnW6g3LfvSV5SCGFFEI29wxZyicoSw3ADU2E+DGtZwceS42JKItAQQ6r5EPG1Nbdb2gXHcNhdRPotKZmTRNW2R1wLWlCYoLaEO32r7yC/bdL/4vf+TWDgYQo6sTv6w9Z24f4Tw8knZTy45d3OpvcVPKgWeuC5meyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9ytDhJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E586C433C7;
+	Mon,  1 Apr 2024 16:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990040;
-	bh=3wpz/5ttZHUxF4Yf0c8CnmN3rNF7Pb2rDRvh3Tup3Q0=;
+	s=korg; t=1711988733;
+	bh=CnsYTna+yJ6BP3jbnWue+F7cwYPMI0IMcS4AtmDZLSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mg4rlAxwJe1ev+4fzY31yf2eofaYOCIABLtMQ1ZUseJKsgZJuLPeoYrTt1pUI32C/
-	 tkl0G2eGLjxLqJu/T4rj0mZKApYKsQknfEvyrMiabAjqA0Hq83851ErvwKpnJTvR9i
-	 A4hRq9Ifsgy2R16OhJqq5fmQFvSeE/WEbRz1gc1I=
+	b=k9ytDhJgZxNmUQW37U16yn/TCIwST5pzlCtaX3pX0iFiUKAflBMYMeYslkGLEIwn3
+	 r1yxiVL+qIdqpLDfPCBEhXIi1eNf1U25Trrtsn33W9UvnGkR9AJViYUTuDC7H51dLz
+	 5r96mQbKV18fpROyob7OVkPemaVD8h/Da49HMIoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Yao <yaolu@kylinos.cn>,
-	Kees Cook <keescook@chromium.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 211/396] init/Kconfig: lower GCC version check for -Warray-bounds
+	Nicolas Pitre <nico@fluxnic.net>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.7 273/432] vt: fix unicode buffer corruption when deleting characters
 Date: Mon,  1 Apr 2024 17:44:20 +0200
-Message-ID: <20240401152554.217346808@linuxfoundation.org>
+Message-ID: <20240401152601.317738949@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,69 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Nicolas Pitre <nico@fluxnic.net>
 
-commit 3e00f5802fabf2f504070a591b14b648523ede13 upstream.
+commit 1581dafaf0d34bc9c428a794a22110d7046d186d upstream.
 
-We continue to see false positives from -Warray-bounds even in GCC 10,
-which is getting reported in a few places[1] still:
+This is the same issue that was fixed for the VGA text buffer in commit
+39cdb68c64d8 ("vt: fix memory overlapping when deleting chars in the
+buffer"). The cure is also the same i.e. replace memcpy() with memmove()
+due to the overlaping buffers.
 
-security/security.c:811:2: warning: `memcpy' offset 32 is out of the bounds [0, 0] [-Warray-bounds]
-
-Lower the GCC version check from 11 to 10.
-
-Link: https://lkml.kernel.org/r/20240223170824.work.768-kees@kernel.org
-Reported-by: Lu Yao <yaolu@kylinos.cn>
-Closes: https://lore.kernel.org/lkml/20240117014541.8887-1-yaolu@kylinos.cn/
-Link: https://lore.kernel.org/linux-next/65d84438.620a0220.7d171.81a7@mx.google.com [1]
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Marc Aurèle La France <tsi@tuyoix.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Nicolas Pitre <nico@fluxnic.net>
+Fixes: 81732c3b2fed ("tty vt: Fix line garbage in virtual console on command line edition")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/sn184on2-3p0q-0qrq-0218-895349s4753o@syhkavp.arg
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/vt/vt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -876,14 +876,14 @@ config CC_IMPLICIT_FALLTHROUGH
- 	default "-Wimplicit-fallthrough=5" if CC_IS_GCC && $(cc-option,-Wimplicit-fallthrough=5)
- 	default "-Wimplicit-fallthrough" if CC_IS_CLANG && $(cc-option,-Wunreachable-code-fallthrough)
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -381,7 +381,7 @@ static void vc_uniscr_delete(struct vc_d
+ 		u32 *ln = vc->vc_uni_lines[vc->state.y];
+ 		unsigned int x = vc->state.x, cols = vc->vc_cols;
  
--# Currently, disable gcc-11+ array-bounds globally.
-+# Currently, disable gcc-10+ array-bounds globally.
- # It's still broken in gcc-13, so no upper bound yet.
--config GCC11_NO_ARRAY_BOUNDS
-+config GCC10_NO_ARRAY_BOUNDS
- 	def_bool y
- 
- config CC_NO_ARRAY_BOUNDS
- 	bool
--	default y if CC_IS_GCC && GCC_VERSION >= 110000 && GCC11_NO_ARRAY_BOUNDS
-+	default y if CC_IS_GCC && GCC_VERSION >= 100000 && GCC10_NO_ARRAY_BOUNDS
- 
- #
- # For architectures that know their GCC __int128 support is sound
+-		memcpy(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
++		memmove(&ln[x], &ln[x + nr], (cols - x - nr) * sizeof(*ln));
+ 		memset32(&ln[cols - nr], ' ', nr);
+ 	}
+ }
 
 
 
