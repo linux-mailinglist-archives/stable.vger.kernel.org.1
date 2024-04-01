@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5650893F81
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EA4894125
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12A7F1C20DE8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 005171C21097
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7478F47A79;
-	Mon,  1 Apr 2024 16:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C074481BF;
+	Mon,  1 Apr 2024 16:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt+2RnKs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elDVaHfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBDD47A5D;
-	Mon,  1 Apr 2024 16:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076F3481B3;
+	Mon,  1 Apr 2024 16:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988247; cv=none; b=Af5gxAYUuxloPkgf5Iu6+JzLb+9B0zsg8QHOCXuUACfExASnK7bqWoOIwDKl0AFo7e/R3QZreBWPFlJabSc0CSQp94w3TwJ7ZK4CUlR6rgnBt/SY+U6rTrqIRxcq3AJnt+ZMFkN7bLI3Wa8vMBIq17eKes5579BNUtwNzewvUrg=
+	t=1711989494; cv=none; b=rOXYEVbCiWlMY/aGQsBx1C7FuVV+OMxYpKLohCE7PjHVcW08EyBJZeNCZ7DjwBCrF9hzfozdSRx6qjg559WszapvRh808q2DBCHl/2KBwLDVWgm+1iUaXdj7idO79XwuHYTuMhB3j7FKbNeMqT2YUkDm/X0et94yNFE2dlrBLQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988247; c=relaxed/simple;
-	bh=p8m179phBJQ5JOMN1fPQBBfh9RxGF3UOMcY/cAH22O4=;
+	s=arc-20240116; t=1711989494; c=relaxed/simple;
+	bh=0O+6KWEmbo9g1Fe3j1+aV86ByxohDXwN2m3/1yKi1jQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPEXqt2bkBnjOBYmJ3Oyu96UTmM+ASxh38svw9I72Z0gXYf7YFC/SW7kLAsryNcIe9pq46FtESDYASzcX+EBt49HcCX8Fw6gk1SwsrZ4S5e/3g7mdlSOUs5+WbSXjw3QpLopDVg1HSY0vU7hFTeCZOIlxGzFhXT6EQ5hJq9XV1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt+2RnKs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949F8C433C7;
-	Mon,  1 Apr 2024 16:17:26 +0000 (UTC)
+	 MIME-Version; b=iyK4lwcSJz5EQqurj9Re9XmQjwkxeEWO8dkfXW4mCs1Tg0NEOgqwaHv0S3cH5L+Z+7kP2eDDqpzQshwmPO99PfpoPiRuz/y3IK9NlwANvdoqW5QlfS+rHhqbyRV2OqZwfmnp512g/Qtg3vfxQfxzdkSymcCqREiO8B/SWliD5vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elDVaHfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AE9C433F1;
+	Mon,  1 Apr 2024 16:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988247;
-	bh=p8m179phBJQ5JOMN1fPQBBfh9RxGF3UOMcY/cAH22O4=;
+	s=korg; t=1711989493;
+	bh=0O+6KWEmbo9g1Fe3j1+aV86ByxohDXwN2m3/1yKi1jQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vt+2RnKsrBWkhQi17OBzZ1cdEoDZwk49N6w1ncr0TqRzjVF95nBMF/qfs+Q5UfXOO
-	 0jd1BmR1d/NCq4/3zIvzfCHUBWNhWt2vOB0YKaATxhsJiPhMOi/PWiKQSZYxoUL6Ln
-	 /X5ZiQ4vO96N/MmSqqMBdA9zr6SIulPemXjcXQI8=
+	b=elDVaHfXAIAsnlMwvYRsJ27lUcpOYIPxcG1xYSkZUYps8K1AfeoKUSBRmoSvSaqWL
+	 yM6bjT8BB0mMofeUYmtQXdXi0HOQr/zJc6xX729GF3e0Qo86QngPS0eZqswvl/cg+V
+	 Y4RH0mS+NngSVSsTICZyHOEDMLSpRoAwIlEu19as=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Greear <greearb@candelatech.com>,
-	Madhan Sai <madhan.singaraju@candelatech.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 127/432] debugfs: fix wait/cancellation handling during remove
-Date: Mon,  1 Apr 2024 17:41:54 +0200
-Message-ID: <20240401152556.912119993@linuxfoundation.org>
+Subject: [PATCH 6.6 066/396] clk: qcom: gcc-ipq5018: fix terminating of frequency table arrays
+Date: Mon,  1 Apr 2024 17:41:55 +0200
+Message-ID: <20240401152549.891306173@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 952c3fce297f12c7ff59380adb66b564e2bc9b64 ]
+[ Upstream commit 90ad946fff70f312b8d23226afc38c13ddd88c4b ]
 
-Ben Greear further reports deadlocks during concurrent debugfs
-remove while files are being accessed, even though the code in
-question now uses debugfs cancellations. Turns out that despite
-all the review on the locking, we missed completely that the
-logic is wrong: if the refcount hits zero we can finish (and
-need not wait for the completion), but if it doesn't we have
-to trigger all the cancellations. As written, we can _never_
-get into the loop triggering the cancellations. Fix this, and
-explain it better while at it.
+The frequency table arrays are supposed to be terminated with an
+empty element. Add such entry to the end of the arrays where it
+is missing in order to avoid possible out-of-bound access when
+the table is traversed by functions like qcom_find_freq() or
+qcom_find_freq_floor().
 
+Fixes: e3fdbef1bab8 ("clk: qcom: Add Global Clock controller (GCC) driver for IPQ5018")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 8c88a474357e ("debugfs: add API to allow debugfs operations cancellation")
-Reported-by: Ben Greear <greearb@candelatech.com>
-Closes: https://lore.kernel.org/r/1c9fa9e5-09f1-0522-fdbc-dbcef4d255ca@candelatech.com
-Tested-by: Madhan Sai <madhan.singaraju@candelatech.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://lore.kernel.org/r/20240229153635.6bfab7eb34d3.I6c7aeff8c9d6628a8bc1ddcf332205a49d801f17@changeid
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-1-074334f0905c@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/debugfs/inode.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/gcc-ipq5018.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 034a617cb1a5e..a40da00654336 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -751,13 +751,28 @@ static void __debugfs_file_removed(struct dentry *dentry)
- 	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
- 		return;
+diff --git a/drivers/clk/qcom/gcc-ipq5018.c b/drivers/clk/qcom/gcc-ipq5018.c
+index cc2331d729fb6..3136ba1c2a59c 100644
+--- a/drivers/clk/qcom/gcc-ipq5018.c
++++ b/drivers/clk/qcom/gcc-ipq5018.c
+@@ -856,6 +856,7 @@ static struct clk_rcg2 lpass_sway_clk_src = {
  
--	/* if we hit zero, just wait for all to finish */
--	if (!refcount_dec_and_test(&fsd->active_users)) {
--		wait_for_completion(&fsd->active_users_drained);
-+	/* if this was the last reference, we're done */
-+	if (refcount_dec_and_test(&fsd->active_users))
- 		return;
--	}
+ static const struct freq_tbl ftbl_pcie0_aux_clk_src[] = {
+ 	F(2000000, P_XO, 12, 0, 0),
++	{ }
+ };
  
--	/* if we didn't hit zero, try to cancel any we can */
-+	/*
-+	 * If there's still a reference, the code that obtained it can
-+	 * be in different states:
-+	 *  - The common case of not using cancellations, or already
-+	 *    after debugfs_leave_cancellation(), where we just need
-+	 *    to wait for debugfs_file_put() which signals the completion;
-+	 *  - inside a cancellation section, i.e. between
-+	 *    debugfs_enter_cancellation() and debugfs_leave_cancellation(),
-+	 *    in which case we need to trigger the ->cancel() function,
-+	 *    and then wait for debugfs_file_put() just like in the
-+	 *    previous case;
-+	 *  - before debugfs_enter_cancellation() (but obviously after
-+	 *    debugfs_file_get()), in which case we may not see the
-+	 *    cancellation in the list on the first round of the loop,
-+	 *    but debugfs_enter_cancellation() signals the completion
-+	 *    after adding it, so this code gets woken up to call the
-+	 *    ->cancel() function.
-+	 */
- 	while (refcount_read(&fsd->active_users)) {
- 		struct debugfs_cancellation *c;
+ static struct clk_rcg2 pcie0_aux_clk_src = {
+@@ -1098,6 +1099,7 @@ static const struct freq_tbl ftbl_qpic_io_macro_clk_src[] = {
+ 	F(100000000, P_GPLL0, 8, 0, 0),
+ 	F(200000000, P_GPLL0, 4, 0, 0),
+ 	F(320000000, P_GPLL0, 2.5, 0, 0),
++	{ }
+ };
  
+ static struct clk_rcg2 qpic_io_macro_clk_src = {
+@@ -1193,6 +1195,7 @@ static struct clk_rcg2 ubi0_axi_clk_src = {
+ static const struct freq_tbl ftbl_ubi0_core_clk_src[] = {
+ 	F(850000000, P_UBI32_PLL, 1, 0, 0),
+ 	F(1000000000, P_UBI32_PLL, 1, 0, 0),
++	{ }
+ };
+ 
+ static struct clk_rcg2 ubi0_core_clk_src = {
 -- 
 2.43.0
 
