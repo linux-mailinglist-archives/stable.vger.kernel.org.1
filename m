@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1329D894129
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8720E893F98
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44CC71C2123C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E789CB2093B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8AB647A6B;
-	Mon,  1 Apr 2024 16:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F18647A57;
+	Mon,  1 Apr 2024 16:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eag0201l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnbTFmEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AED433DA;
-	Mon,  1 Apr 2024 16:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7163F8F4;
+	Mon,  1 Apr 2024 16:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989507; cv=none; b=Vsgk7DEpB4gYTAxDJ5luw4qzRdU8wN3ByP85tyWBa4+hfV7eWvVU4fLXKtP2XI8YLtRIZgpMAIc2vIbMgslC7FIOR5lG9Wazkr68NMm3UH/qveVLntad6WbXPBRcaiKSdPVYKb0ThIBiG2Bekzp6HhKJeFkzcAR3VOSD24a6RyY=
+	t=1711988323; cv=none; b=a79Dh0x384ss+iFmQ+6kdJlLQlwnW06raJguWx3R2y3nYWoW1tvL4YyyyYkj77ym7zJ6mhgSQRLAPYLfIGOCLJhHOgEl1lceqQVUCR27JQdufaRl22su2SPE10jR0gvBeEjGxAq71Sfu9gduHliYjdwOBSq/7Bc7/Rch1Xb557o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989507; c=relaxed/simple;
-	bh=1uT0IQ/mxopYwwewrobTrGEs7j5iSaUVEPVsfEflT6Q=;
+	s=arc-20240116; t=1711988323; c=relaxed/simple;
+	bh=y/+7k7CO+Eo67xksewU1XcbjK8IeSBjuAdyugU8N79E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcGFaaS5Ks2HKUkqShGzc5WGef6lX/mHIcdfbVi+Ua/NeAlFQg38WdERH7b76bKSh8QGbp/Ft0ZFwPgM7gBdDhvDWRMLcQj8NuBWU89J+fzOodapMoh/KWvpM4X4GwiKBhhG5Pz2viUbeAjVT32zZIc30HGZplsle5fUlskrB+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eag0201l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5541AC433C7;
-	Mon,  1 Apr 2024 16:38:26 +0000 (UTC)
+	 MIME-Version; b=q7ZVbkeG332ZBDDE3z9tXrVutaIm7D07wTaesK7wjNvtsUdk/hbnAcwkw3Cc85ToXSTpXztbBvUZMQWQHF2Zo0LK3j/Q0okHJlD/OL3gbaS3Ci3s9g7XAxpugVrWHkMI/9HWofFT2u28j86Q6KQfE9Qj1/PDFSla3H30jGD8ZlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnbTFmEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A1DC43390;
+	Mon,  1 Apr 2024 16:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989507;
-	bh=1uT0IQ/mxopYwwewrobTrGEs7j5iSaUVEPVsfEflT6Q=;
+	s=korg; t=1711988322;
+	bh=y/+7k7CO+Eo67xksewU1XcbjK8IeSBjuAdyugU8N79E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eag0201lfLtwmHPisQh+0w6VBesgF4ayMXMrIYmdphB3jJ330NIcsdn36zUy+xB82
-	 Q6ZuX9aW0pXqcYNIUYy2UerOTC6CmyRfxi2YanmxMHESQsEz021zBqFFT84Yqxcq8F
-	 Qupuxqk7k6uYlOGj5s+K9G1kbiMrXCbwZDUhVsdI=
+	b=XnbTFmErbbboJAY+Yz2UXwBs3vxHeJpjmT6OLh5hlqCDZKzwJBCbBax2VPF7qGIQf
+	 09U6Dfq4yMYGxTzKgqi//1QNEQILkOXotEmGDt9lrPxVjp7TwoQGVAlRdDh/NnrBov
+	 wI5NENHBCKFFc/KeyZGJ8OIf2eZhxoycxNBVvG/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/396] clk: qcom: mmcc-apq8084: fix terminating of frequency table arrays
-Date: Mon,  1 Apr 2024 17:41:59 +0200
-Message-ID: <20240401152550.008682497@linuxfoundation.org>
+Subject: [PATCH 6.7 133/432] nfs: fix UAF in direct writes
+Date: Mon,  1 Apr 2024 17:42:00 +0200
+Message-ID: <20240401152557.100152451@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit a903cfd38d8dee7e754fb89fd1bebed99e28003d ]
+[ Upstream commit 17f46b803d4f23c66cacce81db35fef3adb8f2af ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+In production we have been hitting the following warning consistently
 
-Only compile tested.
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 17 PID: 1800359 at lib/refcount.c:28 refcount_warn_saturate+0x9c/0xe0
+Workqueue: nfsiod nfs_direct_write_schedule_work [nfs]
+RIP: 0010:refcount_warn_saturate+0x9c/0xe0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __warn+0x9f/0x130
+ ? refcount_warn_saturate+0x9c/0xe0
+ ? report_bug+0xcc/0x150
+ ? handle_bug+0x3d/0x70
+ ? exc_invalid_op+0x16/0x40
+ ? asm_exc_invalid_op+0x16/0x20
+ ? refcount_warn_saturate+0x9c/0xe0
+ nfs_direct_write_schedule_work+0x237/0x250 [nfs]
+ process_one_work+0x12f/0x4a0
+ worker_thread+0x14e/0x3b0
+ ? ZSTD_getCParams_internal+0x220/0x220
+ kthread+0xdc/0x120
+ ? __btf_name_valid+0xa0/0xa0
+ ret_from_fork+0x1f/0x30
 
-Fixes: 2b46cd23a5a2 ("clk: qcom: Add APQ8084 Multimedia Clock Controller (MMCC) support")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+This is because we're completing the nfs_direct_request twice in a row.
+
+The source of this is when we have our commit requests to submit, we
+process them and send them off, and then in the completion path for the
+commit requests we have
+
+if (nfs_commit_end(cinfo.mds))
+	nfs_direct_write_complete(dreq);
+
+However since we're submitting asynchronous requests we sometimes have
+one that completes before we submit the next one, so we end up calling
+complete on the nfs_direct_request twice.
+
+The only other place we use nfs_generic_commit_list() is in
+__nfs_commit_inode, which wraps this call in a
+
+nfs_commit_begin();
+nfs_commit_end();
+
+Which is a common pattern for this style of completion handling, one
+that is also repeated in the direct code with get_dreq()/put_dreq()
+calls around where we process events as well as in the completion paths.
+
+Fix this by using the same pattern for the commit requests.
+
+Before with my 200 node rocksdb stress running this warning would pop
+every 10ish minutes.  With my patch the stress test has been running for
+several hours without popping.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-6-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-apq8084.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/direct.c        | 11 +++++++++--
+ fs/nfs/write.c         |  2 +-
+ include/linux/nfs_fs.h |  1 +
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/mmcc-apq8084.c b/drivers/clk/qcom/mmcc-apq8084.c
-index 02fc21208dd14..c89700ab93f9c 100644
---- a/drivers/clk/qcom/mmcc-apq8084.c
-+++ b/drivers/clk/qcom/mmcc-apq8084.c
-@@ -348,6 +348,7 @@ static struct freq_tbl ftbl_mmss_axi_clk[] = {
- 	F(333430000, P_MMPLL1, 3.5, 0, 0),
- 	F(400000000, P_MMPLL0, 2, 0, 0),
- 	F(466800000, P_MMPLL1, 2.5, 0, 0),
-+	{ }
- };
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index 5918c67dae0da..b6f801e73bfdc 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -668,10 +668,17 @@ static void nfs_direct_commit_schedule(struct nfs_direct_req *dreq)
+ 	LIST_HEAD(mds_list);
  
- static struct clk_rcg2 mmss_axi_clk_src = {
-@@ -372,6 +373,7 @@ static struct freq_tbl ftbl_ocmemnoc_clk[] = {
- 	F(150000000, P_GPLL0, 4, 0, 0),
- 	F(228570000, P_MMPLL0, 3.5, 0, 0),
- 	F(320000000, P_MMPLL0, 2.5, 0, 0),
-+	{ }
- };
+ 	nfs_init_cinfo_from_dreq(&cinfo, dreq);
++	nfs_commit_begin(cinfo.mds);
+ 	nfs_scan_commit(dreq->inode, &mds_list, &cinfo);
+ 	res = nfs_generic_commit_list(dreq->inode, &mds_list, 0, &cinfo);
+-	if (res < 0) /* res == -ENOMEM */
+-		nfs_direct_write_reschedule(dreq);
++	if (res < 0) { /* res == -ENOMEM */
++		spin_lock(&dreq->lock);
++		if (dreq->flags == 0)
++			dreq->flags = NFS_ODIRECT_RESCHED_WRITES;
++		spin_unlock(&dreq->lock);
++	}
++	if (nfs_commit_end(cinfo.mds))
++		nfs_direct_write_complete(dreq);
+ }
  
- static struct clk_rcg2 ocmemnoc_clk_src = {
+ static void nfs_direct_write_clear_reqs(struct nfs_direct_req *dreq)
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 9e345d3c305a6..5c2ff4a31a340 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -1663,7 +1663,7 @@ static int wait_on_commit(struct nfs_mds_commit_info *cinfo)
+ 				       !atomic_read(&cinfo->rpcs_out));
+ }
+ 
+-static void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
++void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
+ {
+ 	atomic_inc(&cinfo->rpcs_out);
+ }
+diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
+index 279262057a925..832b7e354b4e3 100644
+--- a/include/linux/nfs_fs.h
++++ b/include/linux/nfs_fs.h
+@@ -612,6 +612,7 @@ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio);
+ extern int  nfs_commit_inode(struct inode *, int);
+ extern struct nfs_commit_data *nfs_commitdata_alloc(void);
+ extern void nfs_commit_free(struct nfs_commit_data *data);
++void nfs_commit_begin(struct nfs_mds_commit_info *cinfo);
+ bool nfs_commit_end(struct nfs_mds_commit_info *cinfo);
+ 
+ static inline bool nfs_have_writebacks(const struct inode *inode)
 -- 
 2.43.0
 
