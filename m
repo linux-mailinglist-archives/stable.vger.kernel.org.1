@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091F68940AF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CAB18943B7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D0BFB20D80
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6A31F26530
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2292D38DD8;
-	Mon,  1 Apr 2024 16:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F4147A64;
+	Mon,  1 Apr 2024 17:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkIRUqHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZgLN8Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CCB1C0DE7;
-	Mon,  1 Apr 2024 16:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A22E38DE5;
+	Mon,  1 Apr 2024 17:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989180; cv=none; b=PH5kSt8spEjJz18ERyvTL6kf1Z9k/IKqVt1LwxBAduSJm1kfrcq37csJpY/htBb9enEY7pa58+Vl7koJZyGCurqp4cKSMq2DOj9r2XIg0leBYZ9qNzDlij4VLCl0MLOZcCDYGVdftnklYO7tF/OGAbKsxnS5un1A+yN2e3PMzuM=
+	t=1711991232; cv=none; b=VfzF8KrqDhIb6BTovv5d1SXd7ws6DLMXsJRYYcvxj7KID0DmPoElrI+UEFZgl9RvTFupz2VtaUncTZmydMw8q0S4jKo8gdzfZlvKyhPWtEk9OCTgD3hIwCWgvTp4qzBbIs7i3P2yckW92UgNYglfRyHiK7fGXiFF4T0N5hzufmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989180; c=relaxed/simple;
-	bh=RRJqGzVkPOcUdQkLdQJNpP84vk2qlEYoqJ3y0a/I+70=;
+	s=arc-20240116; t=1711991232; c=relaxed/simple;
+	bh=M7vZCH9bmNYck9j6HLF+DM8MKMWT+7kzBWibwNDDjco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hxvXP2sg227v4ngWd6oP8rFo4G+JjLLPCC+8jZd05h/iruQ0bkeHJOOwYIv2fV6FC2Ojmiij/ZTGukMrgtp7d8ZyO81dUaWg2IYivtESWeFbUBlbW0xNBXLqDY4pLyfhHpEzUHQUqGlQuWmTNj5oQERHBuTcDDdLslfbHDIagPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkIRUqHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456EBC433F1;
-	Mon,  1 Apr 2024 16:33:00 +0000 (UTC)
+	 MIME-Version; b=QgwLwXnEKuEq5wi8AtkUBlI6KpYowvmeBrbGUfMh/27GWB3leL8jreqSE/idG/StBL/NPyzFb7erAEVYEpJVorZcho04OfttQ/n38KO5hj+cr7sXzfvk5UooDDwYmz1h1JObx/lhZ4M6c/wuw0oJBdoGs0BBcnYijEVKO6Wefjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZgLN8Z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF90C433F1;
+	Mon,  1 Apr 2024 17:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989180;
-	bh=RRJqGzVkPOcUdQkLdQJNpP84vk2qlEYoqJ3y0a/I+70=;
+	s=korg; t=1711991232;
+	bh=M7vZCH9bmNYck9j6HLF+DM8MKMWT+7kzBWibwNDDjco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkIRUqHp6Ft03Q9vIZi5hQRWtQSP3fnU/R3ENOIW3l7Befgq3l3FWZsIg2iQwIzkM
-	 O4RDiz2Z/r2+txddrcgaihVjLzhRafroGsOlWTi+/cvgyS8Stx+o7cuUyI8f2anjCq
-	 xT4FR2AId74xHoS/MDeDCMTAqTp1DTyHJiFZ14qc=
+	b=AZgLN8Z1JMmIsXqNCw4yhD5f5QSZjJIPdufk57nYR0wQgW3alzTy5HM6k0xazeTgG
+	 NsDUjBHWC+Cr7Cst4frvmXfLZaqllSZCRfGjoMYAW5JhlwoOCfLUwWJ3MycCgC4dMd
+	 zcGziPWEA+l8f2J/WCwUVr5VhufFKCnWUAg0tdFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.7 405/432] usb: typec: ucsi: Fix race between typec_switch and role_switch
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 6.1 202/272] vfio/pci: Create persistent INTx handler
 Date: Mon,  1 Apr 2024 17:46:32 +0200
-Message-ID: <20240401152605.466637391@linuxfoundation.org>
+Message-ID: <20240401152537.201295012@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +63,259 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit f5e9bda03aa50ffad36eccafe893d004ef213c43 upstream.
+[ Upstream commit 18c198c96a815c962adc2b9b77909eec0be7df4d ]
 
-When orientation switch is enabled in ucsi glink, there is a xhci
-probe failure seen when booting up in host mode in reverse
-orientation.
+A vulnerability exists where the eventfd for INTx signaling can be
+deconfigured, which unregisters the IRQ handler but still allows
+eventfds to be signaled with a NULL context through the SET_IRQS ioctl
+or through unmask irqfd if the device interrupt is pending.
 
-During bootup the following things happen in multiple drivers:
+Ideally this could be solved with some additional locking; the igate
+mutex serializes the ioctl and config space accesses, and the interrupt
+handler is unregistered relative to the trigger, but the irqfd path
+runs asynchronous to those.  The igate mutex cannot be acquired from the
+atomic context of the eventfd wake function.  Disabling the irqfd
+relative to the eventfd registration is potentially incompatible with
+existing userspace.
 
-a) DWC3 controller driver initializes the core in device mode when the
-dr_mode is set to DRD. It relies on role_switch call to change role to
-host.
+As a result, the solution implemented here moves configuration of the
+INTx interrupt handler to track the lifetime of the INTx context object
+and irq_type configuration, rather than registration of a particular
+trigger eventfd.  Synchronization is added between the ioctl path and
+eventfd_signal() wrapper such that the eventfd trigger can be
+dynamically updated relative to in-flight interrupts or irqfd callbacks.
 
-b) QMP driver initializes the lanes to TYPEC_ORIENTATION_NORMAL as a
-normal routine. It relies on the typec_switch_set call to get notified
-of orientation changes.
-
-c) UCSI core reads the UCSI_GET_CONNECTOR_STATUS via the glink and
-provides initial role switch to dwc3 controller.
-
-When booting up in host mode with orientation TYPEC_ORIENTATION_REVERSE,
-then we see the following things happening in order:
-
-a) UCSI gives initial role as host to dwc3 controller ucsi_register_port.
-Upon receiving this notification, the dwc3 core needs to program GCTL from
-PRTCAP_DEVICE to PRTCAP_HOST and as part of this change, it asserts GCTL
-Core soft reset and waits for it to be  completed before shifting it to
-host. Only after the reset is done will the dwc3_host_init be invoked and
-xhci is probed. DWC3 controller expects that the usb phy's are stable
-during this process i.e., the phy init is already done.
-
-b) During the 100ms wait for GCTL core soft reset, the actual notification
-from PPM is received by ucsi_glink via pmic glink for changing role to
-host. The pmic_glink_ucsi_notify routine first sends the orientation
-change to QMP and then sends role to dwc3 via ucsi framework. This is
-happening exactly at the time GCTL core soft reset is being processed.
-
-c) When QMP driver receives typec switch to TYPEC_ORIENTATION_REVERSE, it
-then re-programs the phy at the instant GCTL core soft reset has been
-asserted by dwc3 controller due to which the QMP PLL lock fails in
-qmp_combo_usb_power_on.
-
-d) After the 100ms of GCTL core soft reset is completed, the dwc3 core
-goes for initializing the host mode and invokes xhci probe. But at this
-point the QMP is non-responsive and as a result, the xhci plat probe fails
-during xhci_reset.
-
-Fix this by passing orientation switch to available ucsi instances if
-their gpio configuration is available before ucsi_register is invoked so
-that by the time, the pmic_glink_ucsi_notify provides typec_switch to QMP,
-the lane is already configured and the call would be a NOP thus not racing
-with role switch.
-
-Cc: stable@vger.kernel.org
-Fixes: c6165ed2f425 ("usb: ucsi: glink: use the connector orientation GPIO to provide switch events")
-Suggested-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240301040914.458492-1-quic_kriskura@quicinc.com
+Cc:  <stable@vger.kernel.org>
+Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+Reported-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-5-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi_glink.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/vfio/pci/vfio_pci_intrs.c |  149 ++++++++++++++++++++------------------
+ 1 file changed, 82 insertions(+), 67 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_glink.c
-+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-@@ -254,6 +254,20 @@ static void pmic_glink_ucsi_notify(struc
- static void pmic_glink_ucsi_register(struct work_struct *work)
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -55,8 +55,13 @@ static void vfio_send_intx_eventfd(void
  {
- 	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
-+	int orientation;
-+	int i;
+ 	struct vfio_pci_core_device *vdev = opaque;
+ 
+-	if (likely(is_intx(vdev) && !vdev->virq_disabled))
+-		eventfd_signal(vdev->ctx[0].trigger, 1);
++	if (likely(is_intx(vdev) && !vdev->virq_disabled)) {
++		struct eventfd_ctx *trigger;
 +
-+	for (i = 0; i < PMIC_GLINK_MAX_PORTS; i++) {
-+		if (!ucsi->port_orientation[i])
-+			continue;
-+		orientation = gpiod_get_value(ucsi->port_orientation[i]);
++		trigger = READ_ONCE(vdev->ctx[0].trigger);
++		if (likely(trigger))
++			eventfd_signal(trigger, 1);
++	}
+ }
+ 
+ /* Returns true if the INTx vfio_pci_irq_ctx.masked value is changed. */
+@@ -191,98 +196,104 @@ static irqreturn_t vfio_intx_handler(int
+ 	return ret;
+ }
+ 
+-static int vfio_intx_enable(struct vfio_pci_core_device *vdev)
++static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
++			    struct eventfd_ctx *trigger)
+ {
++	struct pci_dev *pdev = vdev->pdev;
++	unsigned long irqflags;
++	char *name;
++	int ret;
 +
-+		if (orientation >= 0) {
-+			typec_switch_set(ucsi->port_switch[i],
-+					 orientation ? TYPEC_ORIENTATION_REVERSE
-+					     : TYPEC_ORIENTATION_NORMAL);
-+		}
+ 	if (!is_irq_none(vdev))
+ 		return -EINVAL;
+ 
+-	if (!vdev->pdev->irq)
++	if (!pdev->irq)
+ 		return -ENODEV;
+ 
++	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
++	if (!name)
++		return -ENOMEM;
++
+ 	vdev->ctx = kzalloc(sizeof(struct vfio_pci_irq_ctx), GFP_KERNEL_ACCOUNT);
+ 	if (!vdev->ctx)
+ 		return -ENOMEM;
+ 
+ 	vdev->num_ctx = 1;
+ 
++	vdev->ctx[0].name = name;
++	vdev->ctx[0].trigger = trigger;
++
+ 	/*
+-	 * If the virtual interrupt is masked, restore it.  Devices
+-	 * supporting DisINTx can be masked at the hardware level
+-	 * here, non-PCI-2.3 devices will have to wait until the
+-	 * interrupt is enabled.
++	 * Fill the initial masked state based on virq_disabled.  After
++	 * enable, changing the DisINTx bit in vconfig directly changes INTx
++	 * masking.  igate prevents races during setup, once running masked
++	 * is protected via irqlock.
++	 *
++	 * Devices supporting DisINTx also reflect the current mask state in
++	 * the physical DisINTx bit, which is not affected during IRQ setup.
++	 *
++	 * Devices without DisINTx support require an exclusive interrupt.
++	 * IRQ masking is performed at the IRQ chip.  Again, igate protects
++	 * against races during setup and IRQ handlers and irqfds are not
++	 * yet active, therefore masked is stable and can be used to
++	 * conditionally auto-enable the IRQ.
++	 *
++	 * irq_type must be stable while the IRQ handler is registered,
++	 * therefore it must be set before request_irq().
+ 	 */
+ 	vdev->ctx[0].masked = vdev->virq_disabled;
+-	if (vdev->pci_2_3)
+-		pci_intx(vdev->pdev, !vdev->ctx[0].masked);
++	if (vdev->pci_2_3) {
++		pci_intx(pdev, !vdev->ctx[0].masked);
++		irqflags = IRQF_SHARED;
++	} else {
++		irqflags = vdev->ctx[0].masked ? IRQF_NO_AUTOEN : 0;
 +	}
  
- 	ucsi_register(ucsi->ucsi);
+ 	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
+ 
++	ret = request_irq(pdev->irq, vfio_intx_handler,
++			  irqflags, vdev->ctx[0].name, vdev);
++	if (ret) {
++		vdev->irq_type = VFIO_PCI_NUM_IRQS;
++		kfree(name);
++		vdev->num_ctx = 0;
++		kfree(vdev->ctx);
++		return ret;
++	}
++
+ 	return 0;
  }
+ 
+-static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
++static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev,
++				struct eventfd_ctx *trigger)
+ {
+ 	struct pci_dev *pdev = vdev->pdev;
+-	unsigned long irqflags = IRQF_SHARED;
+-	struct eventfd_ctx *trigger;
+-	unsigned long flags;
+-	int ret;
+-
+-	if (vdev->ctx[0].trigger) {
+-		free_irq(pdev->irq, vdev);
+-		kfree(vdev->ctx[0].name);
+-		eventfd_ctx_put(vdev->ctx[0].trigger);
+-		vdev->ctx[0].trigger = NULL;
+-	}
+-
+-	if (fd < 0) /* Disable only */
+-		return 0;
+-
+-	vdev->ctx[0].name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)",
+-				      pci_name(pdev));
+-	if (!vdev->ctx[0].name)
+-		return -ENOMEM;
+-
+-	trigger = eventfd_ctx_fdget(fd);
+-	if (IS_ERR(trigger)) {
+-		kfree(vdev->ctx[0].name);
+-		return PTR_ERR(trigger);
+-	}
++	struct eventfd_ctx *old;
+ 
+-	vdev->ctx[0].trigger = trigger;
++	old = vdev->ctx[0].trigger;
+ 
+-	/*
+-	 * Devices without DisINTx support require an exclusive interrupt,
+-	 * IRQ masking is performed at the IRQ chip.  The masked status is
+-	 * protected by vdev->irqlock. Setup the IRQ without auto-enable and
+-	 * unmask as necessary below under lock.  DisINTx is unmodified by
+-	 * the IRQ configuration and may therefore use auto-enable.
+-	 */
+-	if (!vdev->pci_2_3)
+-		irqflags = IRQF_NO_AUTOEN;
++	WRITE_ONCE(vdev->ctx[0].trigger, trigger);
+ 
+-	ret = request_irq(pdev->irq, vfio_intx_handler,
+-			  irqflags, vdev->ctx[0].name, vdev);
+-	if (ret) {
+-		vdev->ctx[0].trigger = NULL;
+-		kfree(vdev->ctx[0].name);
+-		eventfd_ctx_put(trigger);
+-		return ret;
++	/* Releasing an old ctx requires synchronizing in-flight users */
++	if (old) {
++		synchronize_irq(pdev->irq);
++		vfio_virqfd_flush_thread(&vdev->ctx[0].unmask);
++		eventfd_ctx_put(old);
+ 	}
+ 
+-	spin_lock_irqsave(&vdev->irqlock, flags);
+-	if (!vdev->pci_2_3 && !vdev->ctx[0].masked)
+-		enable_irq(pdev->irq);
+-	spin_unlock_irqrestore(&vdev->irqlock, flags);
+-
+ 	return 0;
+ }
+ 
+ static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
+ {
++	struct pci_dev *pdev = vdev->pdev;
++
+ 	vfio_virqfd_disable(&vdev->ctx[0].unmask);
+ 	vfio_virqfd_disable(&vdev->ctx[0].mask);
+-	vfio_intx_set_signal(vdev, -1);
++	free_irq(pdev->irq, vdev);
++	if (vdev->ctx[0].trigger)
++		eventfd_ctx_put(vdev->ctx[0].trigger);
++	kfree(vdev->ctx[0].name);
+ 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
+ 	vdev->num_ctx = 0;
+ 	kfree(vdev->ctx);
+@@ -534,19 +545,23 @@ static int vfio_pci_set_intx_trigger(str
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
++		struct eventfd_ctx *trigger = NULL;
+ 		int32_t fd = *(int32_t *)data;
+ 		int ret;
+ 
++		if (fd >= 0) {
++			trigger = eventfd_ctx_fdget(fd);
++			if (IS_ERR(trigger))
++				return PTR_ERR(trigger);
++		}
++
+ 		if (is_intx(vdev))
+-			return vfio_intx_set_signal(vdev, fd);
++			ret = vfio_intx_set_signal(vdev, trigger);
++		else
++			ret = vfio_intx_enable(vdev, trigger);
+ 
+-		ret = vfio_intx_enable(vdev);
+-		if (ret)
+-			return ret;
+-
+-		ret = vfio_intx_set_signal(vdev, fd);
+-		if (ret)
+-			vfio_intx_disable(vdev);
++		if (ret && trigger)
++			eventfd_ctx_put(trigger);
+ 
+ 		return ret;
+ 	}
 
 
 
