@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA8E893FFF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C797E8941D6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CA281C210BC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F844B225EC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059C546B9F;
-	Mon,  1 Apr 2024 16:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A08481DA;
+	Mon,  1 Apr 2024 16:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZ8h2EXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jj0YVhBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8172C129;
-	Mon,  1 Apr 2024 16:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C494654F;
+	Mon,  1 Apr 2024 16:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988654; cv=none; b=UbeNQe9/VydMneUEU820bZQp3jmh2OH2EDkInuQn8g2OxYfFuZrQV/nTt9d9D/BLnHdZb0vwDAYP9+r34s6pF+/SwmCQvQ4n96nI0KelpV60W7lMq/RvFxxKB0AvLXtZ8VgcUv+HrvpE1A7wb+KQGWtniZ7Za+XxHxt9LgKXbs8=
+	t=1711989997; cv=none; b=GvgLBk/2nFh+XczNtIuRoWc8N1OeSfB6crLM/Z6upPn5SjibYt20ECccgpaDPnpOyJ0z0qRasAfy3dYWrr9B7ZgBbFBAgeaA/IEQfA/TstYptvCci7L5cD4hfhx9aQ7O5zsnc32uDq0Ig4UX7/NxWGYKdkGVlOFyPcYOugYPSB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988654; c=relaxed/simple;
-	bh=8rRk3vsbYO1RffRK6coEA0kfZKzIGifE+4nJc5CCO9Q=;
+	s=arc-20240116; t=1711989997; c=relaxed/simple;
+	bh=AMQSX7T0h9o9ERRI1cZ+WHOsJCHzqMHOcnU5evoiz+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnsLlB35ytmTncHoBDRH2zYFXpU7Zvaaj2wUgq00LzR+DvlMaDL6sGPO5s0lOPBAw/udAtHL+rlZsPONq3WLs8mmdqZw2+44KtSIF4gpMa0m+DYSBCUdousjrzSOiTz7TROgUA/qiGp0QVb0AYK1taSojyQ0aDaao+v9J3bwjSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZ8h2EXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2538EC433F1;
-	Mon,  1 Apr 2024 16:24:13 +0000 (UTC)
+	 MIME-Version; b=O8hn2NpepJKCavr+GHRzNUmjkC5y1OwewZYvBTnq9KfJSRbeb9PEIZsee3FQurvuO4+vDV/2r1a+MGvr35Bjmjo2ntcMkhtJr6uwSRJOm0gRakM8LTwwap3MRbPtuUt7DqFX/AC0xWSOc7pmA+0VyNgDtah91CVWHftrhyvLxg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jj0YVhBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF880C43390;
+	Mon,  1 Apr 2024 16:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988654;
-	bh=8rRk3vsbYO1RffRK6coEA0kfZKzIGifE+4nJc5CCO9Q=;
+	s=korg; t=1711989997;
+	bh=AMQSX7T0h9o9ERRI1cZ+WHOsJCHzqMHOcnU5evoiz+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZ8h2EXKNqZdcQ2afaJ6mNkCSz83+UVyjTIrp4dGECUuexugpwkz4FvyzL+aQk0y+
-	 jq0vISuEmypo0iaE//y9198iXW3wbxWv05OL9rvHVufdCQBFGBJsAmuvHw90cLwxUN
-	 i1ZBiFUUjANeD99/Rh0T9xOyKIvWVAUlHyTOlgh4=
+	b=jj0YVhBTnuYHezDBi+ykr5laHduiLZj1Ju7jiLpQmKQokwfLkTpC+qHXgJdOUcbHQ
+	 1/7xDMVKS7J32drC2ZTYekGxjL6tuIe8R2m5RFEHyGp4LTF+t3Q+hT+Ft1Q3hn+vtY
+	 2lKQPRbLXNOVXGdBSCM8TnEL+QF9F+cm/qN0yR9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Mirsad Todorovac <mirsad.todorovac@alu.hr>
-Subject: [PATCH 6.7 249/432] cgroup/cpuset: Fix a memory leak in update_exclusive_cpumask()
+	Hector Martin <marcan@marcan.st>,
+	Neal Gompa <neal@gompa.dev>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 187/396] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
 Date: Mon,  1 Apr 2024 17:43:56 +0200
-Message-ID: <20240401152600.566378911@linuxfoundation.org>
+Message-ID: <20240401152553.514785127@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,311 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Hector Martin <marcan@marcan.st>
 
-commit 66f40b926dd249f74334a22162c09e7ec1ec5b07 upstream.
+[ Upstream commit 9f7861c56b51b84d30114e7fea9d744a9d5ba9b7 ]
 
-Fix a possible memory leak in update_exclusive_cpumask() by moving the
-alloc_cpumasks() down after the validate_change() check which can fail
-and still before the temporary cpumasks are needed.
+Using the WSEC command instead of sae_password seems to be the supported
+mechanism on newer firmware, and also how the brcmdhd driver does it.
 
-Fixes: e2ffe502ba45 ("cgroup/cpuset: Add cpuset.cpus.exclusive for v2")
-Reported-and-tested-by: Mirsad Todorovac <mirsad.todorovac@alu.hr>
-Closes: https://lore.kernel.org/lkml/14915689-27a3-4cd8-80d2-9c30d0c768b6@alu.unizg.hr
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The existing firmware mechanism intended for (some) Cypress chips has
+been separated from the new firmware mechanism using the multi-vendor
+framework. Depending on the device it will select the appropriate
+firmware mechanism.
+
+This makes WPA3 work with iwd, or with wpa_supplicant pending a support
+patchset [2].
+
+[1] https://rachelbythebay.com/w/2023/11/06/wpa3/
+[2] http://lists.infradead.org/pipermail/hostap/2023-July/041653.html
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+[arend.vanspriel@broadcom.com: use multi-vendor framework]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240103095704.135651-5-arend.vanspriel@broadcom.com
+Stable-dep-of: 85da8f71aaa7 ("wifi: brcmfmac: Demote vendor-specific attach/detach messages to info")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 56 ++++++++-----------
+ .../broadcom/brcm80211/brcmfmac/cfg80211.h    |  2 +
+ .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 28 ++++++++++
+ .../broadcom/brcm80211/brcmfmac/fwil.c        |  1 +
+ .../broadcom/brcm80211/brcmfmac/fwil_types.h  |  2 +-
+ .../broadcom/brcm80211/brcmfmac/fwvid.h       | 13 +++++
+ .../broadcom/brcm80211/brcmfmac/wcc/core.c    |  9 +++
+ 7 files changed, 76 insertions(+), 35 deletions(-)
 
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -2502,9 +2502,6 @@ static int update_exclusive_cpumask(stru
- 	if (cpumask_equal(cs->exclusive_cpus, trialcs->exclusive_cpus))
- 		return 0;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 567e3a0675d88..c230bc8900a5c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -32,6 +32,7 @@
+ #include "vendor.h"
+ #include "bus.h"
+ #include "common.h"
++#include "fwvid.h"
  
--	if (alloc_cpumasks(NULL, &tmp))
--		return -ENOMEM;
--
- 	if (*buf)
- 		compute_effective_exclusive_cpumask(trialcs, NULL);
+ #define BRCMF_SCAN_IE_LEN_MAX		2048
  
-@@ -2519,6 +2516,9 @@ static int update_exclusive_cpumask(stru
- 	if (retval)
- 		return retval;
+@@ -1686,52 +1687,39 @@ static u16 brcmf_map_fw_linkdown_reason(const struct brcmf_event_msg *e)
+ 	return reason;
+ }
  
-+	if (alloc_cpumasks(NULL, &tmp))
-+		return -ENOMEM;
+-static int brcmf_set_pmk(struct brcmf_if *ifp, const u8 *pmk_data, u16 pmk_len)
++int brcmf_set_wsec(struct brcmf_if *ifp, const u8 *key, u16 key_len, u16 flags)
+ {
+ 	struct brcmf_pub *drvr = ifp->drvr;
+ 	struct brcmf_wsec_pmk_le pmk;
+ 	int err;
+ 
++	if (key_len > sizeof(pmk.key)) {
++		bphy_err(drvr, "key must be less than %zu bytes\n",
++			 sizeof(pmk.key));
++		return -EINVAL;
++	}
 +
- 	if (old_prs) {
- 		if (cpumask_empty(trialcs->effective_xcpus)) {
- 			invalidate = true;
+ 	memset(&pmk, 0, sizeof(pmk));
+ 
+-	/* pass pmk directly */
+-	pmk.key_len = cpu_to_le16(pmk_len);
+-	pmk.flags = cpu_to_le16(0);
+-	memcpy(pmk.key, pmk_data, pmk_len);
++	/* pass key material directly */
++	pmk.key_len = cpu_to_le16(key_len);
++	pmk.flags = cpu_to_le16(flags);
++	memcpy(pmk.key, key, key_len);
+ 
+-	/* store psk in firmware */
++	/* store key material in firmware */
+ 	err = brcmf_fil_cmd_data_set(ifp, BRCMF_C_SET_WSEC_PMK,
+ 				     &pmk, sizeof(pmk));
+ 	if (err < 0)
+ 		bphy_err(drvr, "failed to change PSK in firmware (len=%u)\n",
+-			 pmk_len);
++			 key_len);
+ 
+ 	return err;
+ }
++BRCMF_EXPORT_SYMBOL_GPL(brcmf_set_wsec);
+ 
+-static int brcmf_set_sae_password(struct brcmf_if *ifp, const u8 *pwd_data,
+-				  u16 pwd_len)
++static int brcmf_set_pmk(struct brcmf_if *ifp, const u8 *pmk_data, u16 pmk_len)
+ {
+-	struct brcmf_pub *drvr = ifp->drvr;
+-	struct brcmf_wsec_sae_pwd_le sae_pwd;
+-	int err;
+-
+-	if (pwd_len > BRCMF_WSEC_MAX_SAE_PASSWORD_LEN) {
+-		bphy_err(drvr, "sae_password must be less than %d\n",
+-			 BRCMF_WSEC_MAX_SAE_PASSWORD_LEN);
+-		return -EINVAL;
+-	}
+-
+-	sae_pwd.key_len = cpu_to_le16(pwd_len);
+-	memcpy(sae_pwd.key, pwd_data, pwd_len);
+-
+-	err = brcmf_fil_iovar_data_set(ifp, "sae_password", &sae_pwd,
+-				       sizeof(sae_pwd));
+-	if (err < 0)
+-		bphy_err(drvr, "failed to set SAE password in firmware (len=%u)\n",
+-			 pwd_len);
+-
+-	return err;
++	return brcmf_set_wsec(ifp, pmk_data, pmk_len, 0);
+ }
+ 
+ static void brcmf_link_down(struct brcmf_cfg80211_vif *vif, u16 reason,
+@@ -2502,8 +2490,7 @@ brcmf_cfg80211_connect(struct wiphy *wiphy, struct net_device *ndev,
+ 			bphy_err(drvr, "failed to clean up user-space RSNE\n");
+ 			goto done;
+ 		}
+-		err = brcmf_set_sae_password(ifp, sme->crypto.sae_pwd,
+-					     sme->crypto.sae_pwd_len);
++		err = brcmf_fwvid_set_sae_password(ifp, &sme->crypto);
+ 		if (!err && sme->crypto.psk)
+ 			err = brcmf_set_pmk(ifp, sme->crypto.psk,
+ 					    BRCMF_WSEC_MAX_PSK_LEN);
+@@ -5257,8 +5244,7 @@ brcmf_cfg80211_start_ap(struct wiphy *wiphy, struct net_device *ndev,
+ 		if (crypto->sae_pwd) {
+ 			brcmf_dbg(INFO, "using SAE offload\n");
+ 			profile->use_fwauth |= BIT(BRCMF_PROFILE_FWAUTH_SAE);
+-			err = brcmf_set_sae_password(ifp, crypto->sae_pwd,
+-						     crypto->sae_pwd_len);
++			err = brcmf_fwvid_set_sae_password(ifp, crypto);
+ 			if (err < 0)
+ 				goto exit;
+ 		}
+@@ -5365,10 +5351,12 @@ static int brcmf_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *ndev,
+ 		msleep(400);
+ 
+ 		if (profile->use_fwauth != BIT(BRCMF_PROFILE_FWAUTH_NONE)) {
++			struct cfg80211_crypto_settings crypto = {};
++
+ 			if (profile->use_fwauth & BIT(BRCMF_PROFILE_FWAUTH_PSK))
+ 				brcmf_set_pmk(ifp, NULL, 0);
+ 			if (profile->use_fwauth & BIT(BRCMF_PROFILE_FWAUTH_SAE))
+-				brcmf_set_sae_password(ifp, NULL, 0);
++				brcmf_fwvid_set_sae_password(ifp, &crypto);
+ 			profile->use_fwauth = BIT(BRCMF_PROFILE_FWAUTH_NONE);
+ 		}
+ 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
+index 0e1fa3f0dea2c..dc3a6a537507d 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
+@@ -468,4 +468,6 @@ void brcmf_set_mpc(struct brcmf_if *ndev, int mpc);
+ void brcmf_abort_scanning(struct brcmf_cfg80211_info *cfg);
+ void brcmf_cfg80211_free_netdev(struct net_device *ndev);
+ 
++int brcmf_set_wsec(struct brcmf_if *ifp, const u8 *key, u16 key_len, u16 flags);
++
+ #endif /* BRCMFMAC_CFG80211_H */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+index b75652ba9359f..24670497f1a40 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+@@ -7,6 +7,7 @@
+ #include <core.h>
+ #include <bus.h>
+ #include <fwvid.h>
++#include <fwil.h>
+ 
+ #include "vops.h"
+ 
+@@ -21,7 +22,34 @@ static void brcmf_cyw_detach(struct brcmf_pub *drvr)
+ 	pr_err("%s: executing\n", __func__);
+ }
+ 
++static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
++				 struct cfg80211_crypto_settings *crypto)
++{
++	struct brcmf_pub *drvr = ifp->drvr;
++	struct brcmf_wsec_sae_pwd_le sae_pwd;
++	u16 pwd_len = crypto->sae_pwd_len;
++	int err;
++
++	if (pwd_len > BRCMF_WSEC_MAX_SAE_PASSWORD_LEN) {
++		bphy_err(drvr, "sae_password must be less than %d\n",
++			 BRCMF_WSEC_MAX_SAE_PASSWORD_LEN);
++		return -EINVAL;
++	}
++
++	sae_pwd.key_len = cpu_to_le16(pwd_len);
++	memcpy(sae_pwd.key, crypto->sae_pwd, pwd_len);
++
++	err = brcmf_fil_iovar_data_set(ifp, "sae_password", &sae_pwd,
++				       sizeof(sae_pwd));
++	if (err < 0)
++		bphy_err(drvr, "failed to set SAE password in firmware (len=%u)\n",
++			 pwd_len);
++
++	return err;
++}
++
+ const struct brcmf_fwvid_ops brcmf_cyw_ops = {
+ 	.attach = brcmf_cyw_attach,
+ 	.detach = brcmf_cyw_detach,
++	.set_sae_password = brcmf_cyw_set_sae_pwd,
+ };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
+index 72fe8bce6eaf5..a9514d72f770b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
+@@ -239,6 +239,7 @@ brcmf_fil_iovar_data_set(struct brcmf_if *ifp, const char *name, const void *dat
+ 	mutex_unlock(&drvr->proto_block);
+ 	return err;
+ }
++BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_iovar_data_set);
+ 
+ s32
+ brcmf_fil_iovar_data_get(struct brcmf_if *ifp, const char *name, void *data,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+index 611d1a6aabb9e..b68c46caabe86 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+@@ -584,7 +584,7 @@ struct brcmf_wsec_key_le {
+ struct brcmf_wsec_pmk_le {
+ 	__le16  key_len;
+ 	__le16  flags;
+-	u8 key[2 * BRCMF_WSEC_MAX_PSK_LEN + 1];
++	u8 key[BRCMF_WSEC_MAX_SAE_PASSWORD_LEN];
+ };
+ 
+ /**
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+index 17fbdbb76f51b..d9fc76b46db96 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+@@ -6,6 +6,7 @@
+ #define FWVID_H_
+ 
+ #include "firmware.h"
++#include "cfg80211.h"
+ 
+ struct brcmf_pub;
+ struct brcmf_if;
+@@ -14,6 +15,7 @@ struct brcmf_fwvid_ops {
+ 	int (*attach)(struct brcmf_pub *drvr);
+ 	void (*detach)(struct brcmf_pub *drvr);
+ 	void (*feat_attach)(struct brcmf_if *ifp);
++	int (*set_sae_password)(struct brcmf_if *ifp, struct cfg80211_crypto_settings *crypto);
+ };
+ 
+ /* exported functions */
+@@ -56,4 +58,15 @@ static inline void brcmf_fwvid_feat_attach(struct brcmf_if *ifp)
+ 	vops->feat_attach(ifp);
+ }
+ 
++static inline int brcmf_fwvid_set_sae_password(struct brcmf_if *ifp,
++					       struct cfg80211_crypto_settings *crypto)
++{
++	const struct brcmf_fwvid_ops *vops = ifp->drvr->vops;
++
++	if (!vops || !vops->set_sae_password)
++		return -EOPNOTSUPP;
++
++	return vops->set_sae_password(ifp, crypto);
++}
++
+ #endif /* FWVID_H_ */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
+index 5573a47766ad5..2d8f80bd73829 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
+@@ -7,6 +7,7 @@
+ #include <core.h>
+ #include <bus.h>
+ #include <fwvid.h>
++#include <fwil.h>
+ 
+ #include "vops.h"
+ 
+@@ -21,7 +22,15 @@ static void brcmf_wcc_detach(struct brcmf_pub *drvr)
+ 	pr_debug("%s: executing\n", __func__);
+ }
+ 
++static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
++				 struct cfg80211_crypto_settings *crypto)
++{
++	return brcmf_set_wsec(ifp, crypto->sae_pwd, crypto->sae_pwd_len,
++			      BRCMF_WSEC_PASSPHRASE);
++}
++
+ const struct brcmf_fwvid_ops brcmf_wcc_ops = {
+ 	.attach = brcmf_wcc_attach,
+ 	.detach = brcmf_wcc_detach,
++	.set_sae_password = brcmf_wcc_set_sae_pwd,
+ };
+-- 
+2.43.0
+
 
 
 
