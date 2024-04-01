@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79E2894002
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0DF89430B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73394283787
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791D0282F2A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2849B47A57;
-	Mon,  1 Apr 2024 16:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E531482CA;
+	Mon,  1 Apr 2024 16:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrSsg7gv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxsa4tsx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC5BC129;
-	Mon,  1 Apr 2024 16:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D94BA3F;
+	Mon,  1 Apr 2024 16:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988664; cv=none; b=H+1LnHqDmq3cLnA9o+b86wMzCI8yuGY6YsLPE2dmOfJ/ZbJgZ8BM7PmKeXwhjQzdYhMAo7garTIOPke8ayP9jFjKSOk4166ru3dby4pBEJgcOirl/3f8f6TvDSarERbddruZAjRaYhQZQferGWNAJAZrUkPd/PeFGmOoQWUP0iU=
+	t=1711990736; cv=none; b=CX3SfqGUl0nVbGYxMoXzdsG9fw5/Ruk7benHHn751PBFyoaWvvopF0WUBzC7b1jsgw3ixd3tJA0c2zzGlsUIGOlqiQ+0MXQUDxqiHy0LXWjFv4CF0XF/Gi7I+jpNsSSlx5/Mkzb8IktXxA7zn3y61CU59gZacjxMZhKhvMDkjFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988664; c=relaxed/simple;
-	bh=U6KvEDROeKffK10BbSe5kcqF3LQ2EB4tHrJB73p+7U8=;
+	s=arc-20240116; t=1711990736; c=relaxed/simple;
+	bh=CN7egjNP9qVWjZ7FBcz8S47pKlScW0FiYAj8NsLoKTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFWyXo3a7ok68PXCzfsMx/mn2i2Yh/2h2a5VhDG7Qtd1/vOR6YTVBK5PU4Vx3JRsl88+id4d0b0kTpbhEFV1jxYo7LBdV5PBnMU9PtZGxvQHhyCPSb1kdEd+t3E6XtJIBnqeM49kUlybSRiIbTE+RwCIPghsRL+Y0AN99ZomRsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrSsg7gv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1BFC433F1;
-	Mon,  1 Apr 2024 16:24:24 +0000 (UTC)
+	 MIME-Version; b=I2B8VfL9uZS2l/94ihKMWTWPHUHJu60hZu41gzoO7NHL6JOpJeLYKyd71iH8kSvYH9yy+Tp4EJ00tdcQ4G53tMqa3yle/DGvGOdqlVB8+WgfhC7d8vuJ0gvBLJvtX5ruV6qOW8SgndHyEBocelfYdDRm2lmcpVijWUHHKxpeiMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxsa4tsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1C6C433C7;
+	Mon,  1 Apr 2024 16:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988664;
-	bh=U6KvEDROeKffK10BbSe5kcqF3LQ2EB4tHrJB73p+7U8=;
+	s=korg; t=1711990735;
+	bh=CN7egjNP9qVWjZ7FBcz8S47pKlScW0FiYAj8NsLoKTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HrSsg7gvevPAXQJC2MJM2NjrLSCxEtKum6WzJK2pqNbIMXwkX8zZ6JMmpTLFViUAG
-	 9ko4Nw2TqYSe4r6AK71JMpJktybXiRy4c0ZxYhwNsDvNACr1nt3If0S9cbABf8E5Se
-	 dOBA8BtVI0kfO/xBm3XaUK5a3o2+G0BA3bbCZjjA=
+	b=yxsa4tsx/xWYEkkxvCPpqhHo96eTuIsCas8HzL2LlpsCOluvsyvpooUtOKbh4QQ60
+	 nUrMqTpH2r+8/S73G/6ai5x6Req3+ZyktEOgGjnmv+CHJ3JS4ZM72hANNdNeVljRAL
+	 UMI+WYsUv5NE4QlSEoG5ou7tGZAyTHBW6JIdqI04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edmund Raile <edmund.raile@proton.me>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 6.7 252/432] firewire: ohci: prevent leak of left-over IRQ on unbind
+	Helge Deller <deller@gmx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 049/272] parisc: Strip upper 32 bit of sum in csum_ipv6_magic for 64-bit builds
 Date: Mon,  1 Apr 2024 17:43:59 +0200
-Message-ID: <20240401152600.655615054@linuxfoundation.org>
+Message-ID: <20240401152531.932100629@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edmund Raile <edmund.raile@proton.me>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 575801663c7dc38f826212b39e3b91a4a8661c33 upstream.
+[ Upstream commit 0568b6f0d863643db2edcc7be31165740c89fa82 ]
 
-Commit 5a95f1ded28691e6 ("firewire: ohci: use devres for requested IRQ")
-also removed the call to free_irq() in pci_remove(), leading to a
-leftover irq of devm_request_irq() at pci_disable_msi() in pci_remove()
-when unbinding the driver from the device
+IPv6 checksum tests with unaligned addresses on 64-bit builds result
+in unexpected failures.
 
-remove_proc_entry: removing non-empty directory 'irq/136', leaking at
-least 'firewire_ohci'
-Call Trace:
- ? remove_proc_entry+0x19c/0x1c0
- ? __warn+0x81/0x130
- ? remove_proc_entry+0x19c/0x1c0
- ? report_bug+0x171/0x1a0
- ? console_unlock+0x78/0x120
- ? handle_bug+0x3c/0x80
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? remove_proc_entry+0x19c/0x1c0
- unregister_irq_proc+0xf4/0x120
- free_desc+0x3d/0xe0
- ? kfree+0x29f/0x2f0
- irq_free_descs+0x47/0x70
- msi_domain_free_locked.part.0+0x19d/0x1d0
- msi_domain_free_irqs_all_locked+0x81/0xc0
- pci_free_msi_irqs+0x12/0x40
- pci_disable_msi+0x4c/0x60
- pci_remove+0x9d/0xc0 [firewire_ohci
-     01b483699bebf9cb07a3d69df0aa2bee71db1b26]
- pci_device_remove+0x37/0xa0
- device_release_driver_internal+0x19f/0x200
- unbind_store+0xa1/0xb0
+Expected expected == csum_result, but
+    expected == 46591 (0xb5ff)
+    csum_result == 46381 (0xb52d)
+with alignment offset 1
 
-remove irq with devm_free_irq() before pci_disable_msi()
-also remove it in fail_msi: of pci_probe() as this would lead to
-an identical leak
+Oddly enough, the problem disappeared after adding test code into
+the beginning of csum_ipv6_magic().
 
+As it turns out, the 'sum' parameter of csum_ipv6_magic() is declared as
+__wsum, which is a 32-bit variable. However, it is treated as 64-bit
+variable in the 64-bit assembler code. Tests showed that the upper 32 bit
+of the register used to pass the variable are _not_ cleared when entering
+the function. This can result in checksum calculation errors.
+
+Clearing the upper 32 bit of 'sum' as first operation in the assembler
+code fixes the problem.
+
+Acked-by: Helge Deller <deller@gmx.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: 5a95f1ded28691e6 ("firewire: ohci: use devres for requested IRQ")
-Signed-off-by: Edmund Raile <edmund.raile@proton.me>
-Link: https://lore.kernel.org/r/20240229144723.13047-2-edmund.raile@proton.me
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/ohci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/parisc/include/asm/checksum.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -3773,6 +3773,7 @@ static int pci_probe(struct pci_dev *dev
- 	return 0;
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index c949aa20fa162..2aceebcd695c8 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -126,6 +126,7 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	** Try to keep 4 registers with "live" values ahead of the ALU.
+ 	*/
  
-  fail_msi:
-+	devm_free_irq(&dev->dev, dev->irq, ohci);
- 	pci_disable_msi(dev);
- 
- 	return err;
-@@ -3800,6 +3801,7 @@ static void pci_remove(struct pci_dev *d
- 
- 	software_reset(ohci);
- 
-+	devm_free_irq(&dev->dev, dev->irq, ohci);
- 	pci_disable_msi(dev);
- 
- 	dev_notice(&dev->dev, "removing fw-ohci device\n");
++"	depdi		0, 31, 32, %0\n"/* clear upper half of incoming checksum */
+ "	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
+ "	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
+ "	add		%4, %0, %0\n"
+-- 
+2.43.0
+
 
 
 
