@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5FC89410A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C5F893F78
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 540DFB2244B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F931F22A3D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC544AEC1;
-	Mon,  1 Apr 2024 16:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C0D4596E;
+	Mon,  1 Apr 2024 16:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z360XKDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEwAycTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B3B481C4;
-	Mon,  1 Apr 2024 16:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40561DFFC;
+	Mon,  1 Apr 2024 16:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989408; cv=none; b=FZvOW3wKt6oNgaAcHQWn3/HJgdCxO6SEI8NW/xZy3zqyleeCI397qBYwX+mBrQELmboKEAc7kjtuAkEhSRrQ0+IsGPb9ep6T7ZhtAIgVdplhHwb0mv+as4j7t3p5W+xCUPSys50XoznaJnExAq08Stf4AId3Kq76jTLB8SSkC4w=
+	t=1711988219; cv=none; b=cyQuhCsuv4xaos7wfawL7PtlOa7zHhBObivO0UCkA56vTbE0PIkNGJn3ZNklEJMPUERhhVuWYIul9XznXrZA9BblwfBU6BTAORZHIS4f4nF4LSCPBBDznfDELgqsFhVPB3b9KsFNEnoHqHlemg9S60JatgPVyl1nyAj7Xqt2yuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989408; c=relaxed/simple;
-	bh=0y0MT5zOjJS+CQrsgRSAZG3Q95KTGMk0Oo5B47fKSSQ=;
+	s=arc-20240116; t=1711988219; c=relaxed/simple;
+	bh=aR9Ty0OeCGEQD+1GSpH0wP+5VJbbIG5QjzI5Y58Lhl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzhOBcskGcgtAzrRVqMFTQlpnM94KyjvWoV/k7N5yYgndzWQNlRr9yvYx9CY3bjG0omDgSnfjCHIB/8Qybna66zSvIziCo/2u3a8hqyp/vyySurm1PWmG9y479bTTsaN0+AF5acKdBd3QyYgdfDY70ZAHkxW2gMmQqijCTV/Gh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z360XKDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C7FC433F1;
-	Mon,  1 Apr 2024 16:36:47 +0000 (UTC)
+	 MIME-Version; b=cQfx0mkrtxdU2UabzFMMCHLOoUVOo9vRhdD1U8D1v5Z9hzMTBvOfpaMtzpciJkGbV3Ty3GUGFKMVIabSLvLflJLyjdEq+2YeWUWHApFSGKnG6tu/ogpSFFnGvZyKWjvq1W3zc06AcHFa8JA2gxitFoqvsD5N7IfIqVHYGw7WUWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEwAycTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D7FC433C7;
+	Mon,  1 Apr 2024 16:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989408;
-	bh=0y0MT5zOjJS+CQrsgRSAZG3Q95KTGMk0Oo5B47fKSSQ=;
+	s=korg; t=1711988219;
+	bh=aR9Ty0OeCGEQD+1GSpH0wP+5VJbbIG5QjzI5Y58Lhl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z360XKDMxLDescfHu05DW/uTquOqBbdquXT2t1L1iIgHkJfbmzd5wNrWD8pAlhZmK
-	 1X6eWr866It58PL1dpTCyRh6FNBumuW2xq1zkcYP6rymHdFw/dmB8pDr5YoLfNt3Gs
-	 UZew5N283annRwozis9LhoJUjm+nPRtx9wypDzYQ=
+	b=CEwAycTWsxTTdn1UiBnGOI/lBxgUMM8GYvdzdxCAY0esHaiTMZTvxQ62mlVwew+RJ
+	 mWVJm9U7LSsV2EMSs4CKZTlzSQf1a00kqjAUHcBh6pWJlX9n5M9akMOA2wyVAkWKMp
+	 KApflrosZf7hMkJINc37zdKvZZshyBBvWyHRj+zI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/396] selftests/mqueue: Set timeout to 180 seconds
+Subject: [PATCH 6.7 102/432] md: export helper md_is_rdwr()
 Date: Mon,  1 Apr 2024 17:41:29 +0200
-Message-ID: <20240401152549.124143616@linuxfoundation.org>
+Message-ID: <20240401152556.168536420@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 85506aca2eb4ea41223c91c5fe25125953c19b13 ]
+[ Upstream commit 314e9af065513ff86ec9e32eaa96b9bd275cf51d ]
 
-While mq_perf_tests runs with the default kselftest timeout limit, which
-is 45 seconds, the test takes about 60 seconds to complete on i3.metal
-AWS instances.  Hence, the test always times out.  Increase the timeout
-to 180 seconds.
+There are no functional changes for now, prepare to fix a deadlock for
+dm-raid456.
 
-Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
-Cc: <stable@vger.kernel.org> # 5.4.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240305072306.2562024-4-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mqueue/setting | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 tools/testing/selftests/mqueue/setting
+ drivers/md/md.c | 12 ------------
+ drivers/md/md.h | 12 ++++++++++++
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/mqueue/setting b/tools/testing/selftests/mqueue/setting
-new file mode 100644
-index 0000000000000..a953c96aa16e1
---- /dev/null
-+++ b/tools/testing/selftests/mqueue/setting
-@@ -0,0 +1 @@
-+timeout=180
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 740541f6cad98..bae513018849a 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -99,18 +99,6 @@ static void mddev_detach(struct mddev *mddev);
+ static void export_rdev(struct md_rdev *rdev, struct mddev *mddev);
+ static void md_wakeup_thread_directly(struct md_thread __rcu *thread);
+ 
+-enum md_ro_state {
+-	MD_RDWR,
+-	MD_RDONLY,
+-	MD_AUTO_READ,
+-	MD_MAX_STATE
+-};
+-
+-static bool md_is_rdwr(struct mddev *mddev)
+-{
+-	return (mddev->ro == MD_RDWR);
+-}
+-
+ /*
+  * Default number of read corrections we'll attempt on an rdev
+  * before ejecting it from the array. We divide the read error
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index 0d06d640aa06d..db0cb00e4c9ac 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -559,6 +559,18 @@ enum recovery_flags {
+ 	MD_RESYNCING_REMOTE,	/* remote node is running resync thread */
+ };
+ 
++enum md_ro_state {
++	MD_RDWR,
++	MD_RDONLY,
++	MD_AUTO_READ,
++	MD_MAX_STATE
++};
++
++static inline bool md_is_rdwr(struct mddev *mddev)
++{
++	return (mddev->ro == MD_RDWR);
++}
++
+ static inline int __must_check mddev_lock(struct mddev *mddev)
+ {
+ 	return mutex_lock_interruptible(&mddev->reconfig_mutex);
 -- 
 2.43.0
 
