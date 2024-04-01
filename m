@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-34896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A8B894158
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAC689415A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4AF1F22ADD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E46282F2F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A915481B7;
-	Mon,  1 Apr 2024 16:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175824596E;
+	Mon,  1 Apr 2024 16:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hlzmTet"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzF9bRsd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164401EB37;
-	Mon,  1 Apr 2024 16:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACCF1EB37;
+	Mon,  1 Apr 2024 16:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989662; cv=none; b=B7V4x5TmYfQa2lz/D+9bz6lt9kJpmjeoCtTxWJI+MYFRXyxOVnEYzI91GRsiX81lshKlFOglff50m8sTNI2u/7YSz+STsEy2JS0NWoq8VOf+4xVKRWngSTBIM5fmaERRcMJlSKqaKv1YLPAnIlC6dqZdZzCy/DJZ3a7JcwOhk54=
+	t=1711989668; cv=none; b=QnjxeLkCDhf4Fg4yXxkmhCN/OtNHDrZ68DDpuQRTAeOTvMsw6+viyDUryV9uzK6VtYii3wXhZuI0wVHYwtnQ6Jz8nhuBZGgZpGNlTc796TNEnsBvoXnSwSCPCelVKRIpHGq5ZsGVxwB7fqsNYK7by1NpcZIKtiLThMLatoJqEzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989662; c=relaxed/simple;
-	bh=HEYpWH8s0/ScymLZsozfQqW2ZGLAuv0zdZJGS1/K44g=;
+	s=arc-20240116; t=1711989668; c=relaxed/simple;
+	bh=26zWfdSmeLTZOFJXy7VCkdcDg1kwLyUhWuaMNUPCE1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFVbGS3cAE10vuIRxG1CUMYOf0yztXCVeFNM7W42glH9YmvWcPlJH6LNrVde+GO0zPRBPl8HpS7Gusf/Nu2Zs/zui0fd84ORrzUYzrOUzzW64hWEv3Sk8ebN/wBES34B34QAIKACJQASxeYGhPwM03z40DAd4daHgALNBpO8iag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hlzmTet; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77416C433F1;
-	Mon,  1 Apr 2024 16:41:01 +0000 (UTC)
+	 MIME-Version; b=e6fqUv7oJOa6mYjbK6c67Ua87UFq/zb4t8W9Mbpjp1+MPU03GLCH4+FlaY2rNY0bUWFJxVHjKFcAT+M+U0t7IZkCUFPLInF+uokFTz60LGVHz/wn45XArgl2aXVcplpzS8IUKOew+I1np6It0LhdMhhurhqvUbhghaieKDevvQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzF9bRsd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC17C433F1;
+	Mon,  1 Apr 2024 16:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989661;
-	bh=HEYpWH8s0/ScymLZsozfQqW2ZGLAuv0zdZJGS1/K44g=;
+	s=korg; t=1711989668;
+	bh=26zWfdSmeLTZOFJXy7VCkdcDg1kwLyUhWuaMNUPCE1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1hlzmTetXMv9TqvSOaWL9iKCOtKIUCVh3H/b21e5Tf5azfrhuw1uQL9A15xSy3j9Z
-	 C0ExUWbYdAlMH3qCkJt3gYv5Amys2uDs/hgDRDTfHT1fCS80TZVQerH87O7Az4GHhj
-	 8uE85eWSbivhLopivJibpeiwvhmWSFw2R1Gt4VR0=
+	b=bzF9bRsdJBYiHUW9A/POxmPgt5po/1+yw79y6OHFoq3Bn2VDtvCTOU/OOaiXVypMy
+	 7FV1YdhWpYy5qv+CkEdEINd1dY4o1QEhWf3xCFtSK58oKegu0vi9rvC08cGqE828aT
+	 MSlOYAi1NI9lD1EIzqxEne8Bdln7Vdq4IdjHS7oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
+	Peter Collingbourne <pcc@google.com>,
+	John Ogness <john.ogness@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/396] serial: core: only stop transmit when HW fifo is empty
-Date: Mon,  1 Apr 2024 17:42:17 +0200
-Message-ID: <20240401152550.541395412@linuxfoundation.org>
+Subject: [PATCH 6.6 089/396] serial: Lock console when calling into driver before registration
+Date: Mon,  1 Apr 2024 17:42:18 +0200
+Message-ID: <20240401152550.570752366@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
 References: <20240401152547.867452742@linuxfoundation.org>
@@ -65,44 +66,185 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Peter Collingbourne <pcc@google.com>
 
-[ Upstream commit 7bfb915a597a301abb892f620fe5c283a9fdbd77 ]
+[ Upstream commit 801410b26a0e8b8a16f7915b2b55c9528b69ca87 ]
 
-If the circular buffer is empty, it just means we fit all characters to
-send into the HW fifo, but not that the hardware finished transmitting
-them.
+During the handoff from earlycon to the real console driver, we have
+two separate drivers operating on the same device concurrently. In the
+case of the 8250 driver these concurrent accesses cause problems due
+to the driver's use of banked registers, controlled by LCR.DLAB. It is
+possible for the setup(), config_port(), pm() and set_mctrl() callbacks
+to set DLAB, which can cause the earlycon code that intends to access
+TX to instead access DLL, leading to missed output and corruption on
+the serial line due to unintended modifications to the baud rate.
 
-So if we immediately call stop_tx() after that, this may abort any
-pending characters in the HW fifo, and cause dropped characters on the
-console.
+In particular, for setup() we have:
 
-Fix this by only stopping tx when the tx HW fifo is actually empty.
+univ8250_console_setup()
+-> serial8250_console_setup()
+-> uart_set_options()
+-> serial8250_set_termios()
+-> serial8250_do_set_termios()
+-> serial8250_do_set_divisor()
 
-Fixes: 8275b48b2780 ("tty: serial: introduce transmit helpers")
+For config_port() we have:
+
+serial8250_config_port()
+-> autoconfig()
+
+For pm() we have:
+
+serial8250_pm()
+-> serial8250_do_pm()
+-> serial8250_set_sleep()
+
+For set_mctrl() we have (for some devices):
+
+serial8250_set_mctrl()
+-> omap8250_set_mctrl()
+-> __omap8250_set_mctrl()
+
+To avoid such problems, let's make it so that the console is locked
+during pre-registration calls to these callbacks, which will prevent
+the earlycon driver from running concurrently.
+
+Remove the partial solution to this problem in the 8250 driver
+that locked the console only during autoconfig_irq(), as this would
+result in a deadlock with the new approach. The console continues
+to be locked during autoconfig_irq() because it can only be called
+through uart_configure_port().
+
+Although this patch introduces more locking than strictly necessary
+(and in particular it also locks during the call to rs485_config()
+which is not affected by this issue as far as I can tell), it follows
+the principle that it is the responsibility of the generic console
+code to manage the earlycon handoff by ensuring that earlycon and real
+console driver code cannot run concurrently, and not the individual
+drivers.
+
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://lore.kernel.org/r/20240303150807.68117-1-jonas.gorski@gmail.com
+Link: https://lore.kernel.org/r/20240304214350.501253-1-pcc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/serial_core.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_port.c |  6 ------
+ drivers/tty/serial/serial_core.c    | 12 ++++++++++++
+ kernel/printk/printk.c              | 21 ++++++++++++++++++---
+ 3 files changed, 30 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 27a26092493ad..a7d5fa892be26 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -786,7 +786,8 @@ enum UART_TX_FLAGS {
- 	if (pending < WAKEUP_CHARS) {					      \
- 		uart_write_wakeup(__port);				      \
- 									      \
--		if (!((flags) & UART_TX_NOSTOP) && pending == 0)	      \
-+		if (!((flags) & UART_TX_NOSTOP) && pending == 0 &&	      \
-+		    __port->ops->tx_empty(__port))			      \
- 			__port->ops->stop_tx(__port);			      \
- 	}								      \
- 									      \
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index 141627370aabc..a17803da83f8c 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1337,9 +1337,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
+ 		inb_p(ICP);
+ 	}
+ 
+-	if (uart_console(port))
+-		console_lock();
+-
+ 	/* forget possible initially masked and pending IRQ */
+ 	probe_irq_off(probe_irq_on());
+ 	save_mcr = serial8250_in_MCR(up);
+@@ -1379,9 +1376,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
+ 	if (port->flags & UPF_FOURPORT)
+ 		outb_p(save_ICP, ICP);
+ 
+-	if (uart_console(port))
+-		console_unlock();
+-
+ 	port->irq = (irq > 0) ? irq : 0;
+ }
+ 
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 083ea4de48f9a..4c81210ad9b3a 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -2602,7 +2602,12 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 			port->type = PORT_UNKNOWN;
+ 			flags |= UART_CONFIG_TYPE;
+ 		}
++		/* Synchronize with possible boot console. */
++		if (uart_console(port))
++			console_lock();
+ 		port->ops->config_port(port, flags);
++		if (uart_console(port))
++			console_unlock();
+ 	}
+ 
+ 	if (port->type != PORT_UNKNOWN) {
+@@ -2610,6 +2615,10 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 
+ 		uart_report_port(drv, port);
+ 
++		/* Synchronize with possible boot console. */
++		if (uart_console(port))
++			console_lock();
++
+ 		/* Power up port for set_mctrl() */
+ 		uart_change_pm(state, UART_PM_STATE_ON);
+ 
+@@ -2626,6 +2635,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 
+ 		uart_rs485_config(port);
+ 
++		if (uart_console(port))
++			console_unlock();
++
+ 		/*
+ 		 * If this driver supports console, and it hasn't been
+ 		 * successfully registered yet, try to re-register it.
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index b67fbae1299fa..c358c04d05162 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -3284,6 +3284,21 @@ static int __init keep_bootcon_setup(char *str)
+ 
+ early_param("keep_bootcon", keep_bootcon_setup);
+ 
++static int console_call_setup(struct console *newcon, char *options)
++{
++	int err;
++
++	if (!newcon->setup)
++		return 0;
++
++	/* Synchronize with possible boot console. */
++	console_lock();
++	err = newcon->setup(newcon, options);
++	console_unlock();
++
++	return err;
++}
++
+ /*
+  * This is called by register_console() to try to match
+  * the newly registered console with any of the ones selected
+@@ -3319,8 +3334,8 @@ static int try_enable_preferred_console(struct console *newcon,
+ 			if (_braille_register_console(newcon, c))
+ 				return 0;
+ 
+-			if (newcon->setup &&
+-			    (err = newcon->setup(newcon, c->options)) != 0)
++			err = console_call_setup(newcon, c->options);
++			if (err)
+ 				return err;
+ 		}
+ 		newcon->flags |= CON_ENABLED;
+@@ -3346,7 +3361,7 @@ static void try_enable_default_console(struct console *newcon)
+ 	if (newcon->index < 0)
+ 		newcon->index = 0;
+ 
+-	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
++	if (console_call_setup(newcon, NULL) != 0)
+ 		return;
+ 
+ 	newcon->flags |= CON_ENABLED;
 -- 
 2.43.0
 
