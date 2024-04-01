@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0198894033
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC9A893E9C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8614C281DFF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DC8E281F75
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2573D45BE4;
-	Mon,  1 Apr 2024 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A024A4778E;
+	Mon,  1 Apr 2024 16:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCiygx47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1akve0aB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66724087B;
-	Mon,  1 Apr 2024 16:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C8446AC;
+	Mon,  1 Apr 2024 16:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988816; cv=none; b=BKZW6YpZJGMghtJM1W7bRYEKhJZ264fq2NCCLuNQaGCZledXCeucotgaJ0pHQPdS+pbXz1Yl1q50W1r42xwL9AdYafPT+HU+s6NcOb6bYx1/o59WUuoqfG8TXMFInyprvT8YHDk8NnNaJcM3jwlViLaQvZqcap8Si5vt2MmesB4=
+	t=1711987542; cv=none; b=JakVNbv2be4OlJUpir8CovV6kPwyH9x3A/NglCPwUMFx7rfUJ9JwMRtwy8vZR4YVOPJSn7npVq+2OZv2C5uXe3zhiIoNjJqBg4BZwENGLZF6fQob7BeeJN9bkf8xU8Q2I2dUrrLna2HdSo1OAx0HQTDpZ5zI6jOnbWv1AbU0dBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988816; c=relaxed/simple;
-	bh=VPGkAUpEf9oXaBdSUI2/H+DLtF7PA6eb/tZNl6biM4A=;
+	s=arc-20240116; t=1711987542; c=relaxed/simple;
+	bh=+U89dGBWdFfd88jIQNbvQ1uJBHBV6Ikz53JrhE8ATjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BAGfiGNwTa216tDix3XYmnKWuQ+2XaMHV8Ur/NjIyaEhXE4ViuEZsa26cMCVyt+Y42H6TB0IJzBbH8nOPDmziXmlawQDReB7nxaVap/L+kDMI11j2qr6lg1ZQDe1VvzvVFCN2durueJw0H3ROf8FMRyOseLyCrY3b7R+iOrJTbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCiygx47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF2CC433C7;
-	Mon,  1 Apr 2024 16:26:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IaX+FeYwnf1ZY47bGGkcPrets8siL4SEyN903mLsQveXySStCzrQn1veWmzkpBZMOxYvySdZaZyh7uK9e2vqJ7EMItlukq60mdKbesF+5O8RU4cO1f1V4rqnQVYgY+tb+koIDoTBG2YxBI7hBy9Id4Rg94J5k8UJAlbOhCTdgBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1akve0aB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2654C433C7;
+	Mon,  1 Apr 2024 16:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988816;
-	bh=VPGkAUpEf9oXaBdSUI2/H+DLtF7PA6eb/tZNl6biM4A=;
+	s=korg; t=1711987542;
+	bh=+U89dGBWdFfd88jIQNbvQ1uJBHBV6Ikz53JrhE8ATjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCiygx47tjbjN2d4aHm/vr2V/G2Hu4zeGvN8SNigT8h2PmdtPd5UdmZ1Ttw+MbQu6
-	 XuPXpE9MpxCPs9A7x34n8+w6QBcmyFl2z5n1a3dUfdwOIhfacj3Nuf1i4dQffYgqQZ
-	 U1vmNMrwBbzltKoTjh28r0mc9YXj545B7dF0sMuw=
+	b=1akve0aB7vMRDVik0Db8EMc9bxCJ1nYEjENNFoNEJgJngWmSgU6+yga2b1EHHqxpt
+	 5g7+pKcwT69ZGPGsos9u8+PAlrmwUBAqJUylhzU7MO5L3q6d3bCxa7URjCDsxiw2Wm
+	 7xtBgKiDzNajcQAke+NS8Y+PgjqzHVo/DSvvkkjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.7 297/432] x86/sev: Fix position dependent variable references in startup code
+	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.8 318/399] Revert "thermal: core: Dont update trip points inside the hysteresis range"
 Date: Mon,  1 Apr 2024 17:44:44 +0200
-Message-ID: <20240401152602.033207339@linuxfoundation.org>
+Message-ID: <20240401152558.675311146@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,286 +61,172 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-commit 1c811d403afd73f04bde82b83b24c754011bd0e8 upstream.
+commit f67cf45deedb118af302534643627ce59074e8eb upstream.
 
-The early startup code executes from a 1:1 mapping of memory, which
-differs from the mapping that the code was linked and/or relocated to
-run at. The latter mapping is not active yet at this point, and so
-symbol references that rely on it will fault.
+It has been reported the commit cf3986f8c01d3 introduced a regression
+when the temperature is wavering in the hysteresis region. The
+mitigation stops leading to an uncontrolled temperature increase until
+reaching the critical trip point.
 
-Given that the core kernel is built without -fPIC, symbol references are
-typically emitted as absolute, and so any such references occuring in
-the early startup code will therefore crash the kernel.
+Here what happens:
 
-While an attempt was made to work around this for the early SEV/SME
-startup code, by forcing RIP-relative addressing for certain global
-SEV/SME variables via inline assembly (see snp_cpuid_get_table() for
-example), RIP-relative addressing must be pervasively enforced for
-SEV/SME global variables when accessed prior to page table fixups.
+ * 'throttle' is when the current temperature is greater than the trip
+   point temperature
+ * 'target' is the mitigation level
+ * 'passive' is positive when there is a mitigation, zero otherwise
+ * these values are computed in the step_wise governor
 
-__startup_64() already handles this issue for select non-SEV/SME global
-variables using fixup_pointer(), which adjusts the pointer relative to a
-`physaddr` argument. To avoid having to pass around this `physaddr`
-argument across all functions needing to apply pointer fixups, introduce
-a macro RIP_RELATIVE_REF() which generates a RIP-relative reference to
-a given global variable. It is used where necessary to force
-RIP-relative accesses to global variables.
+Configuration:
 
-For backporting purposes, this patch makes no attempt at cleaning up
-other occurrences of this pattern, involving either inline asm or
-fixup_pointer(). Those will be addressed later.
+ trip point 1: temp=95°C, hyst=5°C (passive)
+ trip point 2: temp=115°C, hyst=0°C (critical)
+ governor: step_wise
 
-  [ bp: Call it "rip_rel_ref" everywhere like other code shortens
-    "rIP-relative reference" and make the asm wrapper __always_inline. ]
+ 1. The temperature crosses the way up the trip point 1 at 95°C
 
-Co-developed-by: Kevin Loughlin <kevinloughlin@google.com>
-Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/all/20240130220845.1978329-1-kevinloughlin@google.com
+   - trend=raising
+   - throttle=1, target=1
+   - passive=1
+   - set_trips: low=90°C, high=115°C
+
+ 2. The temperature decreases but stays in the hysteresis region at
+    93°C
+
+   - trend=dropping
+   - throttle=0, target=0
+   - passive=1
+
+   Before cf3986f8c01d3
+   - set_trips: low=90°C, high=95°C
+
+   After cf3986f8c01d3
+   - set_trips: low=90°C, high=115°C
+
+ 3. The temperature increases a bit but stays in the hysteresis region
+    at 94°C (so below the trip point 1 temp 95°C)
+
+   - trend=raising
+   - throttle=0, target=0
+   - passive=1
+
+   Before cf3986f8c01d3
+   - set_trips: low=90°C, high=95°C
+
+   After cf3986f8c01d3
+   - set_trips: low=90°C, high=115°C
+
+ 4. The temperature decreases but stays in the hysteresis region at
+    93°C
+
+   - trend=dropping
+   - throttle=0, target=THERMAL_NO_TARGET
+   - passive=0
+
+   Before cf3986f8c01d3
+   - set_trips: low=90°C, high=95°C
+
+   After cf3986f8c01d3
+   - set_trips: low=90°C, high=115°C
+
+At this point, the 'passive' value is zero, there is no mitigation,
+the temperature is in the hysteresis region, the next trip point is
+115°C. As 'passive' is zero, the timer to monitor the thermal zone is
+disabled. Consequently if the temperature continues to increase, no
+mitigation will happen and it will reach the 115°C trip point and
+reboot.
+
+Before the optimization, the high boundary would have been 95°C, thus
+triggering the mitigation again and rearming the polling timer.
+
+The optimization make sense but given the current implementation of
+the step_wise governor collaborating via this 'passive' flag with the
+core framework it can not work.
+
+>From a higher perspective it seems like there is a problem between the
+governor which sets a variable to be used by the core framework. That
+sounds akward and it would make much more sense if the core framework
+controls the governor and not the opposite. But as the devil hides in
+the details, there are some subtilities to be addressed before.
+
+Elaborating those would be out of the scope this changelog. So let's
+stay simple and revert the change first to fixup all broken mobile
+platforms.
+
+This reverts commit cf3986f8c01d3 ("thermal: core: Don't update trip
+points inside the hysteresis range") and takes a conflict with commit
+0c0c4740c9d26 ("0c0c4740c9d2 thermal: trip: Use for_each_trip() in
+__thermal_zone_set_trips()") in drivers/thermal/thermal_trip.c into
+account.
+
+Fixes: cf3986f8c01d3 ("thermal: core: Don't update trip points inside the hysteresis range")
+Reported-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Cc: 6.7+ <stable@vger.kernel.org> # 6.7+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/coco/core.c               |    7 +------
- arch/x86/include/asm/asm.h         |   14 ++++++++++++++
- arch/x86/include/asm/coco.h        |    8 +++++++-
- arch/x86/include/asm/mem_encrypt.h |   15 +++++++++------
- arch/x86/kernel/sev-shared.c       |   12 ++++++------
- arch/x86/kernel/sev.c              |    4 ++--
- arch/x86/mm/mem_encrypt_identity.c |   27 ++++++++++++---------------
- 7 files changed, 51 insertions(+), 36 deletions(-)
+ drivers/thermal/thermal_trip.c |   19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -14,7 +14,7 @@
- #include <asm/processor.h>
- 
- enum cc_vendor cc_vendor __ro_after_init = CC_VENDOR_NONE;
--static u64 cc_mask __ro_after_init;
-+u64 cc_mask __ro_after_init;
- 
- static bool noinstr intel_cc_platform_has(enum cc_attr attr)
+--- a/drivers/thermal/thermal_trip.c
++++ b/drivers/thermal/thermal_trip.c
+@@ -65,7 +65,6 @@ void __thermal_zone_set_trips(struct the
  {
-@@ -148,8 +148,3 @@ u64 cc_mkdec(u64 val)
- 	}
- }
- EXPORT_SYMBOL_GPL(cc_mkdec);
--
--__init void cc_set_mask(u64 mask)
--{
--	cc_mask = mask;
--}
---- a/arch/x86/include/asm/asm.h
-+++ b/arch/x86/include/asm/asm.h
-@@ -113,6 +113,20 @@
+ 	const struct thermal_trip *trip;
+ 	int low = -INT_MAX, high = INT_MAX;
+-	bool same_trip = false;
+ 	int ret;
  
- #endif
- 
-+#ifndef __ASSEMBLY__
-+#ifndef __pic__
-+static __always_inline __pure void *rip_rel_ptr(void *p)
-+{
-+	asm("leaq %c1(%%rip), %0" : "=r"(p) : "i"(p));
-+
-+	return p;
-+}
-+#define RIP_REL_REF(var)	(*(typeof(&(var)))rip_rel_ptr(&(var)))
-+#else
-+#define RIP_REL_REF(var)	(var)
-+#endif
-+#endif
-+
- /*
-  * Macros to generate condition code outputs from inline assembly,
-  * The output operand must be type "bool".
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -2,6 +2,7 @@
- #ifndef _ASM_X86_COCO_H
- #define _ASM_X86_COCO_H
- 
-+#include <asm/asm.h>
- #include <asm/types.h>
- 
- enum cc_vendor {
-@@ -11,9 +12,14 @@ enum cc_vendor {
- };
- 
- extern enum cc_vendor cc_vendor;
-+extern u64 cc_mask;
- 
- #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
--void cc_set_mask(u64 mask);
-+static inline void cc_set_mask(u64 mask)
-+{
-+	RIP_REL_REF(cc_mask) = mask;
-+}
-+
- u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
- #else
---- a/arch/x86/include/asm/mem_encrypt.h
-+++ b/arch/x86/include/asm/mem_encrypt.h
-@@ -15,7 +15,8 @@
- #include <linux/init.h>
- #include <linux/cc_platform.h>
- 
--#include <asm/bootparam.h>
-+#include <asm/asm.h>
-+struct boot_params;
- 
- #ifdef CONFIG_X86_MEM_ENCRYPT
- void __init mem_encrypt_init(void);
-@@ -58,6 +59,11 @@ void __init mem_encrypt_free_decrypted_m
- 
- void __init sev_es_init_vc_handling(void);
- 
-+static inline u64 sme_get_me_mask(void)
-+{
-+	return RIP_REL_REF(sme_me_mask);
-+}
-+
- #define __bss_decrypted __section(".bss..decrypted")
- 
- #else	/* !CONFIG_AMD_MEM_ENCRYPT */
-@@ -89,6 +95,8 @@ early_set_mem_enc_dec_hypercall(unsigned
- 
- static inline void mem_encrypt_free_decrypted_mem(void) { }
- 
-+static inline u64 sme_get_me_mask(void) { return 0; }
-+
- #define __bss_decrypted
- 
- #endif	/* CONFIG_AMD_MEM_ENCRYPT */
-@@ -106,11 +114,6 @@ void add_encrypt_protection_map(void);
- 
- extern char __start_bss_decrypted[], __end_bss_decrypted[], __start_bss_decrypted_unused[];
- 
--static inline u64 sme_get_me_mask(void)
--{
--	return sme_me_mask;
--}
--
- #endif	/* __ASSEMBLY__ */
- 
- #endif	/* __X86_MEM_ENCRYPT_H__ */
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -556,9 +556,9 @@ static int snp_cpuid(struct ghcb *ghcb,
- 		leaf->eax = leaf->ebx = leaf->ecx = leaf->edx = 0;
- 
- 		/* Skip post-processing for out-of-range zero leafs. */
--		if (!(leaf->fn <= cpuid_std_range_max ||
--		      (leaf->fn >= 0x40000000 && leaf->fn <= cpuid_hyp_range_max) ||
--		      (leaf->fn >= 0x80000000 && leaf->fn <= cpuid_ext_range_max)))
-+		if (!(leaf->fn <= RIP_REL_REF(cpuid_std_range_max) ||
-+		      (leaf->fn >= 0x40000000 && leaf->fn <= RIP_REL_REF(cpuid_hyp_range_max)) ||
-+		      (leaf->fn >= 0x80000000 && leaf->fn <= RIP_REL_REF(cpuid_ext_range_max))))
- 			return 0;
- 	}
- 
-@@ -1063,11 +1063,11 @@ static void __init setup_cpuid_table(con
- 		const struct snp_cpuid_fn *fn = &cpuid_table->fn[i];
- 
- 		if (fn->eax_in == 0x0)
--			cpuid_std_range_max = fn->eax;
-+			RIP_REL_REF(cpuid_std_range_max) = fn->eax;
- 		else if (fn->eax_in == 0x40000000)
--			cpuid_hyp_range_max = fn->eax;
-+			RIP_REL_REF(cpuid_hyp_range_max) = fn->eax;
- 		else if (fn->eax_in == 0x80000000)
--			cpuid_ext_range_max = fn->eax;
-+			RIP_REL_REF(cpuid_ext_range_max) = fn->eax;
- 	}
- }
- 
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -748,7 +748,7 @@ void __init early_snp_set_memory_private
- 	 * This eliminates worries about jump tables or checking boot_cpu_data
- 	 * in the cc_platform_has() function.
- 	 */
--	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (!(RIP_REL_REF(sev_status) & MSR_AMD64_SEV_SNP_ENABLED))
+ 	lockdep_assert_held(&tz->lock);
+@@ -74,36 +73,22 @@ void __thermal_zone_set_trips(struct the
  		return;
  
- 	 /*
-@@ -767,7 +767,7 @@ void __init early_snp_set_memory_shared(
- 	 * This eliminates worries about jump tables or checking boot_cpu_data
- 	 * in the cc_platform_has() function.
- 	 */
--	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (!(RIP_REL_REF(sev_status) & MSR_AMD64_SEV_SNP_ENABLED))
- 		return;
+ 	for_each_trip(tz, trip) {
+-		bool low_set = false;
+ 		int trip_low;
  
- 	 /* Ask hypervisor to mark the memory pages shared in the RMP table. */
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -304,7 +304,8 @@ void __init sme_encrypt_kernel(struct bo
- 	 * instrumentation or checking boot_cpu_data in the cc_platform_has()
- 	 * function.
- 	 */
--	if (!sme_get_me_mask() || sev_status & MSR_AMD64_SEV_ENABLED)
-+	if (!sme_get_me_mask() ||
-+	    RIP_REL_REF(sev_status) & MSR_AMD64_SEV_ENABLED)
- 		return;
+ 		trip_low = trip->temperature - trip->hysteresis;
  
- 	/*
-@@ -541,11 +542,11 @@ void __init sme_enable(struct boot_param
- 	me_mask = 1UL << (ebx & 0x3f);
+-		if (trip_low < tz->temperature && trip_low > low) {
++		if (trip_low < tz->temperature && trip_low > low)
+ 			low = trip_low;
+-			low_set = true;
+-			same_trip = false;
+-		}
  
- 	/* Check the SEV MSR whether SEV or SME is enabled */
--	sev_status   = __rdmsr(MSR_AMD64_SEV);
--	feature_mask = (sev_status & MSR_AMD64_SEV_ENABLED) ? AMD_SEV_BIT : AMD_SME_BIT;
-+	RIP_REL_REF(sev_status) = msr = __rdmsr(MSR_AMD64_SEV);
-+	feature_mask = (msr & MSR_AMD64_SEV_ENABLED) ? AMD_SEV_BIT : AMD_SME_BIT;
- 
- 	/* The SEV-SNP CC blob should never be present unless SEV-SNP is enabled. */
--	if (snp && !(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (snp && !(msr & MSR_AMD64_SEV_SNP_ENABLED))
- 		snp_abort();
- 
- 	/* Check if memory encryption is enabled */
-@@ -571,7 +572,6 @@ void __init sme_enable(struct boot_param
- 			return;
- 	} else {
- 		/* SEV state cannot be controlled by a command line option */
--		sme_me_mask = me_mask;
- 		goto out;
+ 		if (trip->temperature > tz->temperature &&
+-		    trip->temperature < high) {
++		    trip->temperature < high)
+ 			high = trip->temperature;
+-			same_trip = low_set;
+-		}
  	}
  
-@@ -590,16 +590,13 @@ void __init sme_enable(struct boot_param
- 	cmdline_ptr = (const char *)((u64)bp->hdr.cmd_line_ptr |
- 				     ((u64)bp->ext_cmd_line_ptr << 32));
+ 	/* No need to change trip points */
+ 	if (tz->prev_low_trip == low && tz->prev_high_trip == high)
+ 		return;
  
--	if (cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer)) < 0)
--		goto out;
+-	/*
+-	 * If "high" and "low" are the same, skip the change unless this is the
+-	 * first time.
+-	 */
+-	if (same_trip && (tz->prev_low_trip != -INT_MAX ||
+-	    tz->prev_high_trip != INT_MAX))
+-		return;
 -
--	if (!strncmp(buffer, cmdline_on, sizeof(buffer)))
--		sme_me_mask = me_mask;
-+	if (cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer)) < 0 ||
-+	    strncmp(buffer, cmdline_on, sizeof(buffer)))
-+		return;
+ 	tz->prev_low_trip = low;
+ 	tz->prev_high_trip = high;
  
- out:
--	if (sme_me_mask) {
--		physical_mask &= ~sme_me_mask;
--		cc_vendor = CC_VENDOR_AMD;
--		cc_set_mask(sme_me_mask);
--	}
-+	RIP_REL_REF(sme_me_mask) = me_mask;
-+	physical_mask &= ~me_mask;
-+	cc_vendor = CC_VENDOR_AMD;
-+	cc_set_mask(me_mask);
- }
 
 
 
