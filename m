@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6114289415B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A556B893F9B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E30921F22B19
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34ED8B2090C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FA94778C;
-	Mon,  1 Apr 2024 16:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7E74778C;
+	Mon,  1 Apr 2024 16:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGbItqPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbBTUv7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6DD1EB37;
-	Mon,  1 Apr 2024 16:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4513F8F4;
+	Mon,  1 Apr 2024 16:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989672; cv=none; b=rWEb1HW7ZZFJ9QxSF2ToTeEaAjIsBt46dM6u3nFn4k3wqJeVtcuyDW4YATwbw9bZuVxy0nBgDd+U22nGTUWhantbOCxPCM9xQfkYarsIFBknvwrsYpMZGBYxAVfI9t46eY0HvYbTmQVE54XkzHy7+FClMyL8mV5Z4q827LWgKu8=
+	t=1711988333; cv=none; b=gv5TTjXnktCimchytWR4AAaYsFZ9wOM7MYB+/cDWpcWly3hVwYaMAYx/F8+TP5wiLpXUGXJO1NmOqiGTKPr1ObNRH/nZFd+djRTwh1FTbp5zcRqhbl5qFgTVKw0DZ2aEnCKA1S7ZAMyF8B2sHvrq4zo+hIODm+RI99GDlFCS0c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989672; c=relaxed/simple;
-	bh=y/ycodwzi+DaZpql/d20xNGMtfHHFNhoOLD2WI1lZvk=;
+	s=arc-20240116; t=1711988333; c=relaxed/simple;
+	bh=9KX1w5199xJTlxbLK2EV4SqNJp/q2Kv1jDKaa6OUNM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CR8PxQUdaziY70SLryix4/7eRhu5E/Sb/GtAT+31jB8nRTdufYCN+1CAKJepeLzdLHeddzAx4kBdGzLye2gGzZjCHJOoRzJ54jmUjV70KyWQCbImigA9vVjfnSyiM7Jr8ApRn838BdYURrpBeXDkgWuIbdh5WQ4cwBZnDxv9tzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGbItqPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FD5C433C7;
-	Mon,  1 Apr 2024 16:41:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yck5RE+vWte4N5dk4liCfF7PpN9AAB7Rj9rh7CQzBEo4zqzxrQ8blgHNXDQzdO3SJ6xr5Rvzdp2m7Yg0Hyz88G5X9oqT81ROgL7TzXRc/OXf5CcH34tkucd/t7I1ENULqI3xmgsl1DaA7si0RY6eZ+Yp9jzs1ZdalqE8KTilrOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbBTUv7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD88C433F1;
+	Mon,  1 Apr 2024 16:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989672;
-	bh=y/ycodwzi+DaZpql/d20xNGMtfHHFNhoOLD2WI1lZvk=;
+	s=korg; t=1711988333;
+	bh=9KX1w5199xJTlxbLK2EV4SqNJp/q2Kv1jDKaa6OUNM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGbItqPOOhkIHO9QOQ+V1qk5F3bsa8WLqAWS6FNjZsK88uK2Po8v3hGL7/tOf+Opb
-	 ITEfcYXK/UA21Z+0WdBXCzzk++PqAWJuYMzgWTQN97t8HLc60qnneXcKWMCItZWRZK
-	 Iml152dnIFezqNB6yxewG2sq6wHtLkf2+pVIXCr0=
+	b=wbBTUv7bo0y8U3+vQT2EYD4EC51Ibxjd5t6K78bLEdaGSatN1OasuD1DDeQ9yK+lK
+	 rWcrK3MzZy58YmzfehL2s2OJcrkbQxYQpzje/LhSdzC+v+DBQXjQNJupTTzapLlh0x
+	 /vZvbTYgWrnQ4EGoOdjJSwYdp045g1nE+w+/J5dU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabian Vogt <fvogt@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/396] btrfs: qgroup: always free reserved space for extent records
-Date: Mon,  1 Apr 2024 17:42:19 +0200
-Message-ID: <20240401152550.600030630@linuxfoundation.org>
+Subject: [PATCH 6.7 153/432] platform/x86/intel/tpmi: Change vsec offset to u64
+Date: Mon,  1 Apr 2024 17:42:20 +0200
+Message-ID: <20240401152557.707174113@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit d139ded8b9cdb897bb9539eb33311daf9a177fd2 ]
+[ Upstream commit 57221a07ff37ff356f9265acd228bc3c8744c8fc ]
 
-[BUG]
-If qgroup is marked inconsistent (e.g. caused by operations needing full
-subtree rescan, like creating a snapshot and assign to a higher level
-qgroup), btrfs would immediately start leaking its data reserved space.
+The vsec offset can be 64 bit long depending on the PFS start. So change
+type to u64. Also use 64 bit formatting for seq_printf.
 
-The following script can easily reproduce it:
-
-  mkfs.btrfs -O quota -f $dev
-  mount $dev $mnt
-  btrfs subvolume create $mnt/subv1
-  btrfs qgroup create 1/0 $mnt
-
-  # This snapshot creation would mark qgroup inconsistent,
-  # as the ownership involves different higher level qgroup, thus
-  # we have to rescan both source and snapshot, which can be very
-  # time consuming, thus here btrfs just choose to mark qgroup
-  # inconsistent, and let users to determine when to do the rescan.
-  btrfs subv snapshot -i 1/0 $mnt/subv1 $mnt/snap1
-
-  # Now this write would lead to qgroup rsv leak.
-  xfs_io -f -c "pwrite 0 64k" $mnt/file1
-
-  # And at unmount time, btrfs would report 64K DATA rsv space leaked.
-  umount $mnt
-
-And we would have the following dmesg output for the unmount:
-
-  BTRFS info (device dm-1): last unmount of filesystem 14a3d84e-f47b-4f72-b053-a8a36eef74d3
-  BTRFS warning (device dm-1): qgroup 0/5 has unreleased space, type 0 rsv 65536
-
-[CAUSE]
-Since commit e15e9f43c7ca ("btrfs: introduce
-BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING to skip qgroup accounting"),
-we introduce a mode for btrfs qgroup to skip the timing consuming
-backref walk, if the qgroup is already inconsistent.
-
-But this skip also covered the data reserved freeing, thus the qgroup
-reserved space for each newly created data extent would not be freed,
-thus cause the leakage.
-
-[FIX]
-Make the data extent reserved space freeing mandatory.
-
-The qgroup reserved space handling is way cheaper compared to the
-backref walking part, and we always have the super sensitive leak
-detector, thus it's definitely worth to always free the qgroup
-reserved data space.
-
-Reported-by: Fabian Vogt <fvogt@suse.com>
-Fixes: e15e9f43c7ca ("btrfs: introduce BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING to skip qgroup accounting")
-CC: stable@vger.kernel.org # 6.1+
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1216196
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 47731fd2865f ("platform/x86/intel: Intel TPMI enumeration driver")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: stable@vger.kernel.org # v6.3+
+Link: https://lore.kernel.org/r/20240305194644.2077867-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel/tpmi.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 9acdd0f91a5ae..312c7f8853866 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -2833,11 +2833,6 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
- 				ctx.roots = NULL;
- 			}
+diff --git a/drivers/platform/x86/intel/tpmi.c b/drivers/platform/x86/intel/tpmi.c
+index 311abcac894a6..c2f6e20b45bc0 100644
+--- a/drivers/platform/x86/intel/tpmi.c
++++ b/drivers/platform/x86/intel/tpmi.c
+@@ -96,7 +96,7 @@ struct intel_tpmi_pfs_entry {
+  */
+ struct intel_tpmi_pm_feature {
+ 	struct intel_tpmi_pfs_entry pfs_header;
+-	unsigned int vsec_offset;
++	u64 vsec_offset;
+ 	struct intel_vsec_device *vsec_dev;
+ };
  
--			/* Free the reserved data space */
--			btrfs_qgroup_free_refroot(fs_info,
--					record->data_rsv_refroot,
--					record->data_rsv,
--					BTRFS_QGROUP_RSV_DATA);
- 			/*
- 			 * Use BTRFS_SEQ_LAST as time_seq to do special search,
- 			 * which doesn't lock tree or delayed_refs and search
-@@ -2861,6 +2856,11 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
- 			record->old_roots = NULL;
- 			new_roots = NULL;
+@@ -389,7 +389,7 @@ static int tpmi_pfs_dbg_show(struct seq_file *s, void *unused)
+ 			read_blocked = feature_state.read_blocked ? 'Y' : 'N';
+ 			write_blocked = feature_state.write_blocked ? 'Y' : 'N';
  		}
-+		/* Free the reserved data space */
-+		btrfs_qgroup_free_refroot(fs_info,
-+				record->data_rsv_refroot,
-+				record->data_rsv,
-+				BTRFS_QGROUP_RSV_DATA);
- cleanup:
- 		ulist_free(record->old_roots);
- 		ulist_free(new_roots);
+-		seq_printf(s, "0x%02x\t\t0x%02x\t\t0x%04x\t\t0x%04x\t\t0x%02x\t\t0x%08x\t%c\t%c\t\t%c\t\t%c\n",
++		seq_printf(s, "0x%02x\t\t0x%02x\t\t0x%04x\t\t0x%04x\t\t0x%02x\t\t0x%016llx\t%c\t%c\t\t%c\t\t%c\n",
+ 			   pfs->pfs_header.tpmi_id, pfs->pfs_header.num_entries,
+ 			   pfs->pfs_header.entry_size, pfs->pfs_header.cap_offset,
+ 			   pfs->pfs_header.attribute, pfs->vsec_offset, locked, disabled,
+@@ -408,7 +408,8 @@ static int tpmi_mem_dump_show(struct seq_file *s, void *unused)
+ 	struct intel_tpmi_pm_feature *pfs = s->private;
+ 	int count, ret = 0;
+ 	void __iomem *mem;
+-	u32 off, size;
++	u32 size;
++	u64 off;
+ 	u8 *buffer;
+ 
+ 	size = TPMI_GET_SINGLE_ENTRY_SIZE(pfs);
+@@ -424,7 +425,7 @@ static int tpmi_mem_dump_show(struct seq_file *s, void *unused)
+ 	mutex_lock(&tpmi_dev_lock);
+ 
+ 	for (count = 0; count < pfs->pfs_header.num_entries; ++count) {
+-		seq_printf(s, "TPMI Instance:%d offset:0x%x\n", count, off);
++		seq_printf(s, "TPMI Instance:%d offset:0x%llx\n", count, off);
+ 
+ 		mem = ioremap(off, size);
+ 		if (!mem) {
 -- 
 2.43.0
 
