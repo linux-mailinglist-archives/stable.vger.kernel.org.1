@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C338943EA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FD48942B6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AA1AB20D14
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F7281C21DF7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54694481B8;
-	Mon,  1 Apr 2024 17:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AD0487BC;
+	Mon,  1 Apr 2024 16:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJhvBtlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQ1AfN86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C3E4AEE0;
-	Mon,  1 Apr 2024 17:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00922482E4;
+	Mon,  1 Apr 2024 16:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991385; cv=none; b=f8ajdsp6VqAE1Bod01hFK1jPRNskSF8zcLrYe4ncQn22ZCneR6IvqGHBzHD+a3ngupjMcD3htHEj4VPncsNrtYIaMLIJeLdIX46I6DhN1Keg/V0y716rQFBN3IgqMaBOP1dwf05oRgbhxV6NTjda6orND8SF3ovuo+1QA0PK7X8=
+	t=1711990527; cv=none; b=DYzWtrZJjd0K0PVC+qsQ0GuY7bshBwuZJ4jOFQb1mdlQ9r8AO3b3n1/9kEC0DXPsiztA95rm2i+rY73VPOttFrxHJycndDL6WIVwolFmUzP7istxOxIS0IpoM/3FrSczlay5mL3Sm8IRgtC9gSeJ4czB2SocVUHMci2Ato7/UwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991385; c=relaxed/simple;
-	bh=dXkOCjV19EPkKh2ihqfVdtwPWBgJKXUzCmK/2bGsEsw=;
+	s=arc-20240116; t=1711990527; c=relaxed/simple;
+	bh=RXvf5YdnbwN8GvCY6axph84c0UUmgebNfgYhxh19g6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZY9jNvUA5zTLoOGQhy1PCJtXXGocOn66d4rzS3efmoMpY/vsyKChgAJFhuqeMU4d6061eXNDitgRG+4Zo7kkjGAPXY2jhCefvPyTu6p1LmTsVcqLBv7VRunD2zNFdMT9TVfWCzwYJm2CjXdT7AizFiGl4V4Y/vTxWOwUkKSybQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJhvBtlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8827DC433C7;
-	Mon,  1 Apr 2024 17:09:44 +0000 (UTC)
+	 MIME-Version; b=gO37VWCpMZnM6MyWt3Te7hGqrBNUDlvm3L1VEVKqi95s2ZbNxEIargOSreeQXsC01k7AUs4fyrNsd6kw4Rolfa1Z4YBVew0rsoM9FQh4VDGjZQLQTIhsSiYcAJn1VdQjvgHHY+MOy2HtLTRW5/iWe8+gq6aGmUkHNVL9asED9wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQ1AfN86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552ACC433C7;
+	Mon,  1 Apr 2024 16:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991384;
-	bh=dXkOCjV19EPkKh2ihqfVdtwPWBgJKXUzCmK/2bGsEsw=;
+	s=korg; t=1711990526;
+	bh=RXvf5YdnbwN8GvCY6axph84c0UUmgebNfgYhxh19g6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJhvBtlNx1GUrAD6tC5WV/+ggy2w/r0oDIsf6FYwh+L3u9fK+UM/+k1xtzrXp2j3T
-	 99cZE0Uv6WIG3j5qbFIuc4EBovJS08w9hWiaNn57Pcnhgvris8Y4fkbrz/CtcMwn+W
-	 wExlOQ+llFIZLYOIJsp28zFy4tZUrLmXQm8/3nSM=
+	b=UQ1AfN86hUmfNFl3lgPsQF3qq1TBvFkylEH1zNfjNoH1fnFcwdLMkL4E9tAQTTI1j
+	 snc0OHdMF9tQAxbx1NCo9X0j0ZYA3k3uP4VEq0msqVSLmIkGrhzGpHwF2qKp+RtlVj
+	 /jnsefETZ5WB/vsOqobGF37nCZadC7j5HphklBao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 241/272] USB: core: Fix deadlock in port "disable" sysfs attribute
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 382/396] scsi: qla2xxx: NVME|FCP prefer flag not being honored
 Date: Mon,  1 Apr 2024 17:47:11 +0200
-Message-ID: <20240401152538.500427258@linuxfoundation.org>
+Message-ID: <20240401152559.306972995@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Quinn Tran <qutran@marvell.com>
 
-commit f4d1960764d8a70318b02f15203a1be2b2554ca1 upstream.
+commit 69aecdd410106dc3a8f543a4f7ec6379b995b8d0 upstream.
 
-The show and store callback routines for the "disable" sysfs attribute
-file in port.c acquire the device lock for the port's parent hub
-device.  This can cause problems if another process has locked the hub
-to remove it or change its configuration:
+Changing of [FCP|NVME] prefer flag in flash has no effect on driver. For
+device that supports both FCP + NVMe over the same connection, driver
+continues to connect to this device using the previous successful login
+mode.
 
-	Removing the hub or changing its configuration requires the
-	hub interface to be removed, which requires the port device
-	to be removed, and device_del() waits until all outstanding
-	sysfs attribute callbacks for the ports have returned.  The
-	lock can't be released until then.
+On completion of flash update, adapter will be reset. Driver will
+reset the prefer flag based on setting from flash.
 
-	But the disable_show() or disable_store() routine can't return
-	until after it has acquired the lock.
-
-The resulting deadlock can be avoided by calling
-sysfs_break_active_protection().  This will cause the sysfs core not
-to wait for the attribute's callback routine to return, allowing the
-removal to proceed.  The disadvantage is that after making this call,
-there is no guarantee that the hub structure won't be deallocated at
-any moment.  To prevent this, we have to acquire a reference to it
-first by calling hub_get().
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/f7a8c135-a495-4ce6-bd49-405a45e7ea9a@rowland.harvard.edu
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-6-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |   38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -28,11 +28,22 @@ static ssize_t disable_show(struct devic
- 	u16 portstatus, unused;
- 	bool disabled;
- 	int rc;
-+	struct kernfs_node *kn;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -7501,6 +7501,7 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
+ 	struct scsi_qla_host *vp, *tvp;
+ 	struct req_que *req = ha->req_q_map[0];
+ 	unsigned long flags;
++	fc_port_t *fcport;
  
-+	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
--		return rc;
-+		goto out_hub_get;
+ 	if (vha->flags.online) {
+ 		qla2x00_abort_isp_cleanup(vha);
+@@ -7569,6 +7570,15 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
+ 			       "ISP Abort - ISP reg disconnect post nvmram config, exiting.\n");
+ 			return status;
+ 		}
++
++		/* User may have updated [fcp|nvme] prefer in flash */
++		list_for_each_entry(fcport, &vha->vp_fcports, list) {
++			if (NVME_PRIORITY(ha, fcport))
++				fcport->do_prli_nvme = 1;
++			else
++				fcport->do_prli_nvme = 0;
++		}
++
+ 		if (!qla2x00_restart_isp(vha)) {
+ 			clear_bit(RESET_MARKER_NEEDED, &vha->dpc_flags);
  
-+	/*
-+	 * Prevent deadlock if another process is concurrently
-+	 * trying to unregister hdev.
-+	 */
-+	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+	if (!kn) {
-+		rc = -ENODEV;
-+		goto out_autopm;
-+	}
- 	usb_lock_device(hdev);
- 	if (hub->disconnected) {
- 		rc = -ENODEV;
-@@ -42,9 +53,13 @@ static ssize_t disable_show(struct devic
- 	usb_hub_port_status(hub, port1, &portstatus, &unused);
- 	disabled = !usb_port_is_power_on(hub, portstatus);
+@@ -7639,6 +7649,14 @@ qla2x00_abort_isp(scsi_qla_host_t *vha)
+ 				atomic_inc(&vp->vref_count);
+ 				spin_unlock_irqrestore(&ha->vport_slock, flags);
  
--out_hdev_lock:
-+ out_hdev_lock:
- 	usb_unlock_device(hdev);
-+	sysfs_unbreak_active_protection(kn);
-+ out_autopm:
- 	usb_autopm_put_interface(intf);
-+ out_hub_get:
-+	hub_put(hub);
++				/* User may have updated [fcp|nvme] prefer in flash */
++				list_for_each_entry(fcport, &vp->vp_fcports, list) {
++					if (NVME_PRIORITY(ha, fcport))
++						fcport->do_prli_nvme = 1;
++					else
++						fcport->do_prli_nvme = 0;
++				}
++
+ 				qla2x00_vp_abort_isp(vp);
  
- 	if (rc)
- 		return rc;
-@@ -62,15 +77,26 @@ static ssize_t disable_store(struct devi
- 	int port1 = port_dev->portnum;
- 	bool disabled;
- 	int rc;
-+	struct kernfs_node *kn;
- 
- 	rc = strtobool(buf, &disabled);
- 	if (rc)
- 		return rc;
- 
-+	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
--		return rc;
-+		goto out_hub_get;
- 
-+	/*
-+	 * Prevent deadlock if another process is concurrently
-+	 * trying to unregister hdev.
-+	 */
-+	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+	if (!kn) {
-+		rc = -ENODEV;
-+		goto out_autopm;
-+	}
- 	usb_lock_device(hdev);
- 	if (hub->disconnected) {
- 		rc = -ENODEV;
-@@ -91,9 +117,13 @@ static ssize_t disable_store(struct devi
- 	if (!rc)
- 		rc = count;
- 
--out_hdev_lock:
-+ out_hdev_lock:
- 	usb_unlock_device(hdev);
-+	sysfs_unbreak_active_protection(kn);
-+ out_autopm:
- 	usb_autopm_put_interface(intf);
-+ out_hub_get:
-+	hub_put(hub);
- 
- 	return rc;
- }
+ 				spin_lock_irqsave(&ha->vport_slock, flags);
 
 
 
