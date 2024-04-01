@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-35295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D3389434F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C62893EAB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BE5B2838A6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CBB8B20D86
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33B9482EF;
-	Mon,  1 Apr 2024 17:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CB94596E;
+	Mon,  1 Apr 2024 16:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yy9/fjKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMRWwz1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786F8482CA;
-	Mon,  1 Apr 2024 17:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E941CA8F;
+	Mon,  1 Apr 2024 16:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990930; cv=none; b=m/e69RLuI9W/Gm6n5ocOfRn8+gkfrz8lXAdbbDBdrllmrtpn2/ipysE88GX+qQFT8ArSLYgcyooPVIAlyHCN1x3/3VA7t9D5//OBbmvhfodqv9O8MH6S1pkWMHcCOa8RjyiUFIWXAr15u56s3W+3tBePJ5ImibK6ODJxf/s2Oh0=
+	t=1711987593; cv=none; b=nXXR5MH8tWnliWmztcB7127kWJAr3OVUqBVwE9xcYWPC55FAONpT+E5JEeYZHgopXfThL+/wLql2Su8i8dEzG5n3uJlecu83nK1zBezsDsKO3qeaHWcrtO7Ic4JvcbSN3BDt7WZLZBxaLq+7CtiU+PXhM8+4gPZKnKrqYY7TeIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990930; c=relaxed/simple;
-	bh=mdh71WvlY38Ijkb6Joauahfw2t0HgI4qaR3mI9l8NI4=;
+	s=arc-20240116; t=1711987593; c=relaxed/simple;
+	bh=yvh6xgcEWYij7aFFUxtgf4z0g3E0+u4KF/WWQTx3GNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXWzgSHXEJjTZJP+WvGSNjpc3qykUi8HHIFonziXFAS57GLPSl6zbfbxRWZNxf33ovv4gspWIcUNTRur0QB8ScdGIzht2fVkDlLPl2xGnwYmKtjIQrDMoGr6BDB6X7c9niVo+wjfWbWfP1ITNvEvXbk7BHPRKA9juIEksS1SPFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yy9/fjKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3086C433F1;
-	Mon,  1 Apr 2024 17:02:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jugK5gqEna8Djm77knPHCxw+w6Vml5vUzbhfbnzurN2V9NPzA1dK3JjAiS8P5RnHIQ8ZWuOMaOBccEGYEwojemmJRPERXhxRSe5Ee7jEiv9EYwfdWjLrPCy/QnpXWLnCTElllWDm1LxKUuqNQn7rzzZYIHCQZgpPqHhzEnw20CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMRWwz1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85D9C433F1;
+	Mon,  1 Apr 2024 16:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990930;
-	bh=mdh71WvlY38Ijkb6Joauahfw2t0HgI4qaR3mI9l8NI4=;
+	s=korg; t=1711987593;
+	bh=yvh6xgcEWYij7aFFUxtgf4z0g3E0+u4KF/WWQTx3GNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yy9/fjKvx2akfZ+dkK6VH1k+RvptkmIJFckBaxee6HaXcPwj5rDxOygfDYdoYVzvo
-	 rIrns4elumTwnXfHA+WDGMgmOmiMev4gKUplsMqybhX8TBH/VFS29mWP3fPR3HYqlZ
-	 AK4umwoyBP3jViVyvoCi6UQZEjbYSrheYjx7p9nY=
+	b=MMRWwz1h57Zx7HXcS0KotYSrueLpxnf37PP73C8Nn+b4lY5ijyPN4hK7R0pBWl3sL
+	 1LoXZbAta3jSY54TWK4a+864wqnJlHqhY+lEJaUaTjU/aqRvekbWBprk6ohJqBwIK9
+	 bDhSWh8cCNuUKi90Itt9owo6fDFfEP9QZ1SBtxCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/272] ring-buffer: Fix full_waiters_pending in poll
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.8 334/399] drm/i915/dsi: Go back to the previous INIT_OTP/DISPLAY_ON order, mostly
 Date: Mon,  1 Apr 2024 17:45:00 +0200
-Message-ID: <20240401152534.089855868@linuxfoundation.org>
+Message-ID: <20240401152559.147359228@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +60,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 8145f1c35fa648da662078efab299c4467b85ad5 ]
+commit 18846627ef1210dcd55d65342b055ea97a46ffff upstream.
 
-If a reader of the ring buffer is doing a poll, and waiting for the ring
-buffer to hit a specific watermark, there could be a case where it gets
-into an infinite ping-pong loop.
+Reinstate commit 88b065943cb5 ("drm/i915/dsi: Do display on
+sequence later on icl+"), for the most part. Turns out some
+machines (eg. Chuwi Minibook X) really do need that updated order.
+It is also the order the Windows driver uses.
 
-The poll code has:
+However we can't just undo the revert since that would again
+break Lenovo 82TQ. After staring at the VBT sequences for both
+machines I've concluded that the Lenovo 82TQ sequences look
+somewhat broken:
+ - INIT_OTP is not present at all
+ - what should be in INIT_OTP is found in DISPLAY_ON
+ - what should be in DISPLAY_ON is found in BACKLIGHT_ON
+   (along with the actual backlight stuff)
 
-  rbwork->full_waiters_pending = true;
-  if (!cpu_buffer->shortest_full ||
-      cpu_buffer->shortest_full > full)
-         cpu_buffer->shortest_full = full;
+The Chuwi Minibook X on the other hand has a full complement
+of sequences in its VBT.
 
-The writer will see full_waiters_pending and check if the ring buffer is
-filled over the percentage of the shortest_full value. If it is, it calls
-an irq_work to wake up all the waiters.
-
-But the code could get into a circular loop:
-
-	CPU 0					CPU 1
-	-----					-----
- [ Poll ]
-   [ shortest_full = 0 ]
-   rbwork->full_waiters_pending = true;
-					  if (rbwork->full_waiters_pending &&
-					      [ buffer percent ] > shortest_full) {
-					         rbwork->wakeup_full = true;
-					         [ queue_irqwork ]
-
-   cpu_buffer->shortest_full = full;
-
-					  [ IRQ work ]
-					  if (rbwork->wakeup_full) {
-					        cpu_buffer->shortest_full = 0;
-					        wakeup poll waiters;
-  [woken]
-   if ([ buffer percent ] > full)
-      break;
-   rbwork->full_waiters_pending = true;
-					  if (rbwork->full_waiters_pending &&
-					      [ buffer percent ] > shortest_full) {
-					         rbwork->wakeup_full = true;
-					         [ queue_irqwork ]
-
-   cpu_buffer->shortest_full = full;
-
-					  [ IRQ work ]
-					  if (rbwork->wakeup_full) {
-					        cpu_buffer->shortest_full = 0;
-					        wakeup poll waiters;
-  [woken]
-
- [ Wash, rinse, repeat! ]
-
-In the poll, the shortest_full needs to be set before the
-full_pending_waiters, as once that is set, the writer will compare the
-current shortest_full (which is incorrect) to decide to call the irq_work,
-which will reset the shortest_full (expecting the readers to update it).
-
-Also move the setting of full_waiters_pending after the check if the ring
-buffer has the required percentage filled. There's no reason to tell the
-writer to wake up waiters if there are no waiters.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240312131952.630922155@goodmis.org
+So let's try to deal with the broken sequences in the
+Lenovo 82TQ VBT by simply swapping the (non-existent)
+INIT_OTP sequence with the DISPLAY_ON sequence. Thus we
+execute DISPLAY_ON when intending to execute INIT_OTP,
+and execute nothing at all when intending to execute
+DISPLAY_ON. That should be 100% equivalent to the
+revert, for such broken VBTs.
 
 Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6992eb815d08 ("Revert "drm/i915/dsi: Do display on sequence later on icl+"")
+References: https://gitlab.freedesktop.org/drm/intel/-/issues/10071
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10334
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240305083659.8396-1-ville.syrjala@linux.intel.com
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 94ae4612ea336bfc3c12b3fc68467c6711a4f39b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/display/icl_dsi.c    |    3 +-
+ drivers/gpu/drm/i915/display/intel_bios.c |   43 +++++++++++++++++++++++++-----
+ 2 files changed, 39 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 3b50e17e2c9ab..e07f45d1890d3 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1116,16 +1116,32 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 		poll_wait(filp, &rbwork->full_waiters, poll_table);
- 
- 		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
--		rbwork->full_waiters_pending = true;
- 		if (!cpu_buffer->shortest_full ||
- 		    cpu_buffer->shortest_full > full)
- 			cpu_buffer->shortest_full = full;
- 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
--	} else {
--		poll_wait(filp, &rbwork->waiters, poll_table);
--		rbwork->waiters_pending = true;
-+		if (full_hit(buffer, cpu, full))
-+			return EPOLLIN | EPOLLRDNORM;
-+		/*
-+		 * Only allow full_waiters_pending update to be seen after
-+		 * the shortest_full is set. If the writer sees the
-+		 * full_waiters_pending flag set, it will compare the
-+		 * amount in the ring buffer to shortest_full. If the amount
-+		 * in the ring buffer is greater than the shortest_full
-+		 * percent, it will call the irq_work handler to wake up
-+		 * this list. The irq_handler will reset shortest_full
-+		 * back to zero. That's done under the reader_lock, but
-+		 * the below smp_mb() makes sure that the update to
-+		 * full_waiters_pending doesn't leak up into the above.
-+		 */
-+		smp_mb();
-+		rbwork->full_waiters_pending = true;
-+		return 0;
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -1155,7 +1155,6 @@ static void gen11_dsi_powerup_panel(stru
  	}
  
-+	poll_wait(filp, &rbwork->waiters, poll_table);
-+	rbwork->waiters_pending = true;
-+
- 	/*
- 	 * There's a tight race between setting the waiters_pending and
- 	 * checking if the ring buffer is empty.  Once the waiters_pending bit
-@@ -1141,9 +1157,6 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 	 */
- 	smp_mb();
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
+-	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
  
--	if (full)
--		return full_hit(buffer, cpu, full) ? EPOLLIN | EPOLLRDNORM : 0;
+ 	/* ensure all panel commands dispatched before enabling transcoder */
+ 	wait_for_cmds_dispatched_to_panel(encoder);
+@@ -1256,6 +1255,8 @@ static void gen11_dsi_enable(struct inte
+ 	/* step6d: enable dsi transcoder */
+ 	gen11_dsi_enable_transcoder(encoder);
+ 
++	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
++
+ 	/* step7: enable backlight */
+ 	intel_backlight_enable(crtc_state, conn_state);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_BACKLIGHT_ON);
+--- a/drivers/gpu/drm/i915/display/intel_bios.c
++++ b/drivers/gpu/drm/i915/display/intel_bios.c
+@@ -1952,16 +1952,12 @@ static int get_init_otp_deassert_fragmen
+  * these devices we split the init OTP sequence into a deassert sequence and
+  * the actual init OTP part.
+  */
+-static void fixup_mipi_sequences(struct drm_i915_private *i915,
+-				 struct intel_panel *panel)
++static void vlv_fixup_mipi_sequences(struct drm_i915_private *i915,
++				     struct intel_panel *panel)
+ {
+ 	u8 *init_otp;
+ 	int len;
+ 
+-	/* Limit this to VLV for now. */
+-	if (!IS_VALLEYVIEW(i915))
+-		return;
 -
- 	if ((cpu == RING_BUFFER_ALL_CPUS && !ring_buffer_empty(buffer)) ||
- 	    (cpu != RING_BUFFER_ALL_CPUS && !ring_buffer_empty_cpu(buffer, cpu)))
- 		return EPOLLIN | EPOLLRDNORM;
--- 
-2.43.0
-
+ 	/* Limit this to v1 vid-mode sequences */
+ 	if (panel->vbt.dsi.config->is_cmd_mode ||
+ 	    panel->vbt.dsi.seq_version != 1)
+@@ -1997,6 +1993,41 @@ static void fixup_mipi_sequences(struct
+ 	panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP] = init_otp + len - 1;
+ }
+ 
++/*
++ * Some machines (eg. Lenovo 82TQ) appear to have broken
++ * VBT sequences:
++ * - INIT_OTP is not present at all
++ * - what should be in INIT_OTP is in DISPLAY_ON
++ * - what should be in DISPLAY_ON is in BACKLIGHT_ON
++ *   (along with the actual backlight stuff)
++ *
++ * To make those work we simply swap DISPLAY_ON and INIT_OTP.
++ *
++ * TODO: Do we need to limit this to specific machines,
++ *       or examine the contents of the sequences to
++ *       avoid false positives?
++ */
++static void icl_fixup_mipi_sequences(struct drm_i915_private *i915,
++				     struct intel_panel *panel)
++{
++	if (!panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP] &&
++	    panel->vbt.dsi.sequence[MIPI_SEQ_DISPLAY_ON]) {
++		drm_dbg_kms(&i915->drm, "Broken VBT: Swapping INIT_OTP and DISPLAY_ON sequences\n");
++
++		swap(panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP],
++		     panel->vbt.dsi.sequence[MIPI_SEQ_DISPLAY_ON]);
++	}
++}
++
++static void fixup_mipi_sequences(struct drm_i915_private *i915,
++				 struct intel_panel *panel)
++{
++	if (DISPLAY_VER(i915) >= 11)
++		icl_fixup_mipi_sequences(i915, panel);
++	else if (IS_VALLEYVIEW(i915))
++		vlv_fixup_mipi_sequences(i915, panel);
++}
++
+ static void
+ parse_mipi_sequence(struct drm_i915_private *i915,
+ 		    struct intel_panel *panel)
 
 
 
