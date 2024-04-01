@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DCD8941CB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A83894316
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 274DFB20324
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A86C1C21E1B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E30A482DF;
-	Mon,  1 Apr 2024 16:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEE5482DF;
+	Mon,  1 Apr 2024 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leOFHSmB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ML9OyVPv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF8F47A76;
-	Mon,  1 Apr 2024 16:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D126433DA;
+	Mon,  1 Apr 2024 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989957; cv=none; b=qOHz5FK7BctiWTzbESWmxKNrSUWxrGk9W55cGb7EG7Fwq+oLGlVck94rithc4Hn403E21/Qw93ttAfvcf8VtRZt08tDD2fB9YRB36UQPttPBar61xQ2lxKdgG7ZGbolR9oWUDuZtpsl7oc5JeZuI7xCLh9ihxtdx77fURxwJlUE=
+	t=1711990772; cv=none; b=NfWiQZaFuRO8DpMoneHUaEY4pLsjIOX2sIE7mGqvvEsM4tHiTc4ZOQfTA59xZ3arrjR5+DKbfLEJKqg1/4wMmruyaHx/Fq6JHGKJd0kC7CL5nSDZvOEdpViujrgW18ahv1fdOKQxh8cRMHp7y032AR2Tsu+P7K65rLw956iqKPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989957; c=relaxed/simple;
-	bh=M8KAPMPjvKJfL6rSeF6EG2GoPUQe9YtuzEIAoCOTEq4=;
+	s=arc-20240116; t=1711990772; c=relaxed/simple;
+	bh=ogf3vtaFbZag964lOzwN5RpvvLOUvS4lkoAvXcMEmMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=baS8T3KQODHUAE6tdUtEAa+cOM4tmAmUjIvr7CzxLcQcbEG9wxb4LHahHy//zN4re/ovrxQ9DCdsGnyMZeFDoC0vPukDmj/3xS0xRiEDY2bSD+qYkqkjvoHp8tVpJSnq4XEmQUCb+XkGleDavxTxc0clDpLgzt8/7uLF0CrTR2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leOFHSmB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFC2C433F1;
-	Mon,  1 Apr 2024 16:45:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LqHCRCmARa2/La/3Ye3k6hY6YZr/dvY/6Hh+o/ieIP+npCwQ57eIMkOEgSjVXZSAM+CiV0eDfgCF0CnMi2u67+dusYeXh2cWELp5FA2W2q1Z/nt3+2ej+hpeTfO1RGJRP5ZD3hBLYBijXDlYza8AABJ2nbQdaWU+Y1rpk0ljTPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ML9OyVPv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E4FC433F1;
+	Mon,  1 Apr 2024 16:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989956;
-	bh=M8KAPMPjvKJfL6rSeF6EG2GoPUQe9YtuzEIAoCOTEq4=;
+	s=korg; t=1711990772;
+	bh=ogf3vtaFbZag964lOzwN5RpvvLOUvS4lkoAvXcMEmMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leOFHSmB8uLxI6aqn4dSVrYgfo91Y6UwKi1SiPHZcYVqFR9sUVuSreyWKqRC2QABo
-	 kYzifonWhulMg6CPZEaLZ8BxAxnLH7Dan404+MhP7kiuQeGxR9b0uEwR9cdbijiJlR
-	 MkjoecIkd+5hfGEH2sEL3zlHzTM3I+teq5WCbMJA=
+	b=ML9OyVPvy+yLP6qvU5Z7H58DSlAL27+AnX+55oHUHOETZWF3ARuV9b2plQA7481Qt
+	 hhSrFxIdaMG3Gd1hjX1qZFVegJXlrl5dWXeg53wVbzWw+lCDhb7wzG76jwRDBp4tVb
+	 e+AKTU3Hy15oC5LL4BLi/ADq24olBDXrzm2L9v14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 203/396] crypto: rk3288 - Fix use after free in unprepare
+	=?UTF-8?q?Aur=C3=A9lien=20Jacobs?= <aurel@gnuage.org>,
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/272] USB: serial: option: add MeiG Smart SLM320 product
 Date: Mon,  1 Apr 2024 17:44:12 +0200
-Message-ID: <20240401152553.982947306@linuxfoundation.org>
+Message-ID: <20240401152532.488577636@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Aurélien Jacobs <aurel@gnuage.org>
 
-commit c0afb6b88fbbc177fa322a835f874be217bffe45 upstream.
+[ Upstream commit 46809c51565b83881aede6cdf3b0d25254966a41 ]
 
-The unprepare call must be carried out before the finalize call
-as the latter can free the request.
+Update the USB serial option driver to support MeiG Smart SLM320.
 
-Fixes: c66c17a0f69b ("crypto: rk3288 - Remove prepare/unprepare request")
-Reported-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ID 2dee:4d41 UNISOC UNISOC-8910
+
+T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 9 Spd=480 MxCh= 0
+D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
+P: Vendor=2dee ProdID=4d41 Rev=00.00
+S: Manufacturer=UNISOC
+S: Product=UNISOC-8910
+C: #Ifs= 8 Cfg#= 1 Atr=e0 MxPwr=400mA
+I: If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Tested successfully a PPP LTE connection using If#= 0.
+Not sure of the purpose of every other serial interfaces.
+
+Signed-off-by: Aurélien Jacobs <aurel@gnuage.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/rockchip/rk3288_crypto_ahash.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/crypto/rockchip/rk3288_crypto_ahash.c b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-index 1b13b4aa16ec..a235e6c300f1 100644
---- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-+++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-@@ -332,12 +332,12 @@ static int rk_hash_run(struct crypto_engine *engine, void *breq)
- theend:
- 	pm_runtime_put_autosuspend(rkc->dev);
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+index c0a0cca65437f..1a3e5a9414f07 100644
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -613,6 +613,11 @@ static void option_instat_callback(struct urb *urb);
+ /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
+ #define LUAT_PRODUCT_AIR720U			0x4e00
  
-+	rk_hash_unprepare(engine, breq);
++/* MeiG Smart Technology products */
++#define MEIGSMART_VENDOR_ID			0x2dee
++/* MeiG Smart SLM320 based on UNISOC UIS8910 */
++#define MEIGSMART_PRODUCT_SLM320		0x4d41
 +
- 	local_bh_disable();
- 	crypto_finalize_hash_request(engine, breq, err);
- 	local_bh_enable();
+ /* Device flags */
  
--	rk_hash_unprepare(engine, breq);
--
- 	return 0;
- }
- 
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2282,6 +2287,7 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 -- 
-2.44.0
+2.43.0
 
 
 
