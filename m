@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29E7894090
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71AA1893ED7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86E331F22639
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AAA1F212EA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC90147A6B;
-	Mon,  1 Apr 2024 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F72547A5D;
+	Mon,  1 Apr 2024 16:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBg5sfuG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NobWLt3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AE74596E;
-	Mon,  1 Apr 2024 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1958446AC;
+	Mon,  1 Apr 2024 16:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989096; cv=none; b=PN9ZyhKDoP+GKwaUL3HBrzWMGcTFhUsrXKbxQxMN351/MJdLLVI09SoVxPR9OczueNBPd78EyreUBHpAQ8ScrW7LclmxTRsGV27DWymHPdIjC9cyZ0uNdwToDOAhezTvI4/ENgbwwJe8Z08z4xzHp8BAXCjcB59TlKa362yFnQU=
+	t=1711987723; cv=none; b=FwnvEH+vRZQDw8S1zuTDQKUAlVOxs6/xMdaXhOdt7hfXZh87R8xTy5/j1Lnyu409UECp5kLH1kej4pBy7pJaS/D3CWlvGb6fZxcG7amKmWTaHgbD5R6kFbESMXH+B59eh0Q7BWcgNen6TNVxyclWNGJM0bngIIBNM7gdLOstaTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989096; c=relaxed/simple;
-	bh=5OW/yPxCA2atmX09UF+deHocdDoQ7Ns25knZecGrfJc=;
+	s=arc-20240116; t=1711987723; c=relaxed/simple;
+	bh=k2QJ5pQJYX29Tx3aQVRdlFkSWJQQp35czrOAZS9C2IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfAgRZajcU0FQKIeD/Y4QcX9xlKI/jiToLsaxnBRpwOcIv8M3Mco7Hw1Yln3DLGqTVTm1A9hmaJXMxAMA3E+h05knl3sOfpHOdcm+q/tAWQ2cqzJ3h5aEr7ucc5Q5Mq+JV6EFNC4A+1kuJqp7RJ9ZlzTkwgwEq1o5NnGMbaMNJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBg5sfuG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07245C433C7;
-	Mon,  1 Apr 2024 16:31:35 +0000 (UTC)
+	 MIME-Version; b=lUaQoYiHPbvPLkXaWlVNEU3g5WyvqOIq8tuO1Y4aECgFQpDoP2tNZpozxoq1YUoxw54jyYjT5S+TTNAQVV3efdSk1nlt+YfYQdw5hv9jQQ/IADuKePEvsTQ2uxOamak0+dSL0ixf7tW7WJM227n7uTBCctXS1/nCuXOEA6yne/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NobWLt3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67028C433C7;
+	Mon,  1 Apr 2024 16:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989096;
-	bh=5OW/yPxCA2atmX09UF+deHocdDoQ7Ns25knZecGrfJc=;
+	s=korg; t=1711987722;
+	bh=k2QJ5pQJYX29Tx3aQVRdlFkSWJQQp35czrOAZS9C2IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBg5sfuGjwUfjPDFxDaZMyrAugvryjbSqon0ZoIVs74RyKz7F7lo/Q0VDIZihgNPK
-	 SQHuNTOcaP6mMYIpHnPyiJ2iQWE4GSHC/eqvafYPa/UZvqQK+rHAEDJ341DHb/JScV
-	 qgvsAPV7wK+57w24J3wy002Fbl+Fy4icCbXRE2O4=
+	b=NobWLt3Wd8OTKGtMg9IIuDgt2F0K8+Tyq+dqsQgxoQS+RmLheXOreWQXp0qNt++sf
+	 QktJhlAbZr5dyzshz1p1myNSRCPFEwfs53XruxsCifdCWoUQ5ND/XdMbP96/Hug47c
+	 7YGa88NoKbyrcuylBoBEf9orVtqp/HIFEU2QswKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.7 352/432] exec: Fix NOMMU linux_binprm::exec in transfer_args_to_stack()
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.8 373/399] usb: typec: ucsi: Check for notifications after init
 Date: Mon,  1 Apr 2024 17:45:39 +0200
-Message-ID: <20240401152603.747467997@linuxfoundation.org>
+Message-ID: <20240401152600.313171411@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 2aea94ac14d1e0a8ae9e34febebe208213ba72f7 upstream.
+commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
 
-In NOMMU kernel the value of linux_binprm::p is the offset inside the
-temporary program arguments array maintained in separate pages in the
-linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-thus must be adjusted when that array is copied to the user stack.
-Without that adjustment the value passed by the NOMMU kernel to the ELF
-program in the AT_EXECFN entry of the aux array doesn't make any sense
-and it may break programs that try to access memory pointed to by that
-entry.
+The completion notification for the final SET_NOTIFICATION_ENABLE
+command during initialization can include a connector change
+notification.  However, at the time this completion notification is
+processed, the ucsi struct is not ready to handle this notification.
+As a result the notification is ignored and the controller
+never sends an interrupt again.
 
-Adjust linux_binprm::exec before the successful return from the
-transfer_args_to_stack().
+Re-check CCI for a pending connector state change after
+initialization is complete. Adjust the corresponding debug
+message accordingly.
 
-Cc: <stable@vger.kernel.org>
-Fixes: b6a2fea39318 ("mm: variable length argument support")
-Fixes: 5edc2a5123a7 ("binfmt_elf_fdpic: wire up AT_EXECFD, AT_EXECFN, AT_SECURE")
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Link: https://lore.kernel.org/r/20240320182607.1472887-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exec.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -894,6 +894,7 @@ int transfer_args_to_stack(struct linux_
- 			goto out;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -958,7 +958,7 @@ void ucsi_connector_change(struct ucsi *
+ 	struct ucsi_connector *con = &ucsi->connector[num - 1];
+ 
+ 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
+-		dev_dbg(ucsi->dev, "Bogus connector change event\n");
++		dev_dbg(ucsi->dev, "Early connector change event\n");
+ 		return;
  	}
  
-+	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
- 	*sp_location = sp;
+@@ -1355,6 +1355,7 @@ static int ucsi_init(struct ucsi *ucsi)
+ {
+ 	struct ucsi_connector *con, *connector;
+ 	u64 command, ntfy;
++	u32 cci;
+ 	int ret;
+ 	int i;
  
- out:
+@@ -1407,6 +1408,13 @@ static int ucsi_init(struct ucsi *ucsi)
+ 
+ 	ucsi->connector = connector;
+ 	ucsi->ntfy = ntfy;
++
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret)
++		return ret;
++	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
++		ucsi_connector_change(ucsi, cci);
++
+ 	return 0;
+ 
+ err_unregister:
 
 
 
