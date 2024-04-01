@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-34580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588D5893FEE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A84289416A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D78D1C2125B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EEDFB220BA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE9547A62;
-	Mon,  1 Apr 2024 16:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2079A48781;
+	Mon,  1 Apr 2024 16:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5RDW4iM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f/kP8Ul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C801446AC;
-	Mon,  1 Apr 2024 16:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FD0481D7;
+	Mon,  1 Apr 2024 16:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988597; cv=none; b=OsYmX4AE7Yf2WxUIzYho27FklwiEssn00L3C5Vt8ZEejtJNiI8iv7PWkWdEpTGqgyk9qGQJSbGtiql+9UO2Da9LrDYGQ2sJ60rZ2CtR9hf6fEJ5khG836bcmcjkZ60wgbwcaMa9Ynr4UttOTaa0tfFuMxv5t+ZS5Aq8kAY9upEw=
+	t=1711989712; cv=none; b=PRzsG9UzgmbMXLv1nekDr/31CwW37EXuOkdU+/Qt2ub5XCnkwqP/N59rPDOugQS4IPXvHJyOLwAlFAcz1r1MAZ21Pl3Jzk/Ho2nyd4AJKV+7S4OXjhmvQBj7+p+rtmb48n+NOlB+aK4cS0UbUiFlnnY6n9EysSkb8ogEPCUKOYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988597; c=relaxed/simple;
-	bh=4ssyFjpDjJ6m6n19FTRqT802pz96sSOSxTP2OWnem6c=;
+	s=arc-20240116; t=1711989712; c=relaxed/simple;
+	bh=6qv8rJVL7P7ZD+ePADtHXTfa0FHa3Jq2SpxDQlHM43Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r2x/xgU3bfHwfQ3MkRoxPoxiNlTIviqlOdWILCqK/cmXJwK8K0stN0j/wvPSesASxUb9a2NGDu16+FXaCUq5Fd8eqz3NwaKQDucp7kUQL9S8+jQC8xekJiQ0J6rIfvLKGF04/kXw2y7NgSnk1FhNjDSZz6k38ZMqN5+v3fIvTIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5RDW4iM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027ACC433C7;
-	Mon,  1 Apr 2024 16:23:16 +0000 (UTC)
+	 MIME-Version; b=UxYOiNV8g2hhH7JN7IftrDrxmRLfJ5nChV+UB4ZED8WXGFdtGwcvWG809ccVDQES9rsK1tRS2AK5PFoviOR2OWsfxHhjQPUXF6J/gakN/p2TwHRGE17RRbQXoytd1nBtqg8C0i9bFlaDJZqf90kAUJ1OWjKi/MfAbFZ/v0S7kZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f/kP8Ul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43074C43390;
+	Mon,  1 Apr 2024 16:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988597;
-	bh=4ssyFjpDjJ6m6n19FTRqT802pz96sSOSxTP2OWnem6c=;
+	s=korg; t=1711989712;
+	bh=6qv8rJVL7P7ZD+ePADtHXTfa0FHa3Jq2SpxDQlHM43Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e5RDW4iMwyGBC8c/PLH86VEBSYjjxQ3qscc3mRcdLPPD1uID9HNOPqnHMt3ouoyLl
-	 C2doic7ux4eqA8OBVT1YnswcBElKXBBf0GKiqlO5V6D13Mpgqj5c3rkqw8UpiEwabr
-	 NYiIuPd4ESeAh6DldLEnpMGYqUZRxrWcBCkH5bM0=
+	b=1f/kP8UlI/Io7zxX4c+1v0PaHu94qI/n5ufii6gZiDlShq+njskMY4RgccGLq2YIv
+	 Q5HJ2MoMLxAPqYGs87lRF5S/GKM9kgugD6o0TpWxl9/3M9SiPb+nsUmdzYwBqsrlKF
+	 CgK1JO6yLsJI9Js6Zg+8oB1+bRGuGNOxULIyEOL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 193/432] drm/i915: Add missing ; to __assign_str() macros in tracepoint code
+Subject: [PATCH 6.6 131/396] server: convert to new timestamp accessors
 Date: Mon,  1 Apr 2024 17:43:00 +0200
-Message-ID: <20240401152558.894605354@linuxfoundation.org>
+Message-ID: <20240401152551.822342886@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 0df4c388a1e310400a6e90fb10b286e2673756f0 ]
+[ Upstream commit 769cfc919e35c70a5110b0843fb330746363acb8 ]
 
-I'm working on improving the __assign_str() and __string() macros to be
-more efficient, and removed some unneeded semicolons. This triggered a bug
-in the build as some of the __assign_str() macros in intel_display_trace
-was missing a terminating semicolon.
+Convert to using the new inode timestamp accessor functions.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240222133057.2af72a19@gandalf.local.home
-
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: David Airlie <airlied@gmail.com>
-Cc: stable@vger.kernel.org
-Fixes: 2ceea5d88048b ("drm/i915: Print plane name in fbc tracepoints")
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/20231004185347.80880-67-jlayton@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 5614c8c487f6 ("ksmbd: replace generic_fillattr with vfs_getattr")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/server/smb2pdu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_trace.h b/drivers/gpu/drm/i915/display/intel_display_trace.h
-index 99bdb833591ce..7862e7cefe027 100644
---- a/drivers/gpu/drm/i915/display/intel_display_trace.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_trace.h
-@@ -411,7 +411,7 @@ TRACE_EVENT(intel_fbc_activate,
- 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
- 									 plane->pipe);
- 			   __assign_str(dev, __dev_name_kms(plane));
--			   __assign_str(name, plane->base.name)
-+			   __assign_str(name, plane->base.name);
- 			   __entry->pipe = crtc->pipe;
- 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
- 			   __entry->scanline = intel_get_crtc_scanline(crtc);
-@@ -438,7 +438,7 @@ TRACE_EVENT(intel_fbc_deactivate,
- 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
- 									 plane->pipe);
- 			   __assign_str(dev, __dev_name_kms(plane));
--			   __assign_str(name, plane->base.name)
-+			   __assign_str(name, plane->base.name);
- 			   __entry->pipe = crtc->pipe;
- 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
- 			   __entry->scanline = intel_get_crtc_scanline(crtc);
-@@ -465,7 +465,7 @@ TRACE_EVENT(intel_fbc_nuke,
- 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
- 									 plane->pipe);
- 			   __assign_str(dev, __dev_name_kms(plane));
--			   __assign_str(name, plane->base.name)
-+			   __assign_str(name, plane->base.name);
- 			   __entry->pipe = crtc->pipe;
- 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
- 			   __entry->scanline = intel_get_crtc_scanline(crtc);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index e8c03445271d0..0c97d3c860726 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4857,9 +4857,9 @@ static void find_file_posix_info(struct smb2_query_info_rsp *rsp,
+ 
+ 	file_info = (struct smb311_posix_qinfo *)rsp->Buffer;
+ 	file_info->CreationTime = cpu_to_le64(fp->create_time);
+-	time = ksmbd_UnixTimeToNT(inode->i_atime);
++	time = ksmbd_UnixTimeToNT(inode_get_atime(inode));
+ 	file_info->LastAccessTime = cpu_to_le64(time);
+-	time = ksmbd_UnixTimeToNT(inode->i_mtime);
++	time = ksmbd_UnixTimeToNT(inode_get_mtime(inode));
+ 	file_info->LastWriteTime = cpu_to_le64(time);
+ 	time = ksmbd_UnixTimeToNT(inode_get_ctime(inode));
+ 	file_info->ChangeTime = cpu_to_le64(time);
+@@ -5466,9 +5466,9 @@ int smb2_close(struct ksmbd_work *work)
+ 		rsp->EndOfFile = cpu_to_le64(inode->i_size);
+ 		rsp->Attributes = fp->f_ci->m_fattr;
+ 		rsp->CreationTime = cpu_to_le64(fp->create_time);
+-		time = ksmbd_UnixTimeToNT(inode->i_atime);
++		time = ksmbd_UnixTimeToNT(inode_get_atime(inode));
+ 		rsp->LastAccessTime = cpu_to_le64(time);
+-		time = ksmbd_UnixTimeToNT(inode->i_mtime);
++		time = ksmbd_UnixTimeToNT(inode_get_mtime(inode));
+ 		rsp->LastWriteTime = cpu_to_le64(time);
+ 		time = ksmbd_UnixTimeToNT(inode_get_ctime(inode));
+ 		rsp->ChangeTime = cpu_to_le64(time);
 -- 
 2.43.0
 
