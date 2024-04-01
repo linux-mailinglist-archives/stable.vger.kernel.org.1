@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-35353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A4B894391
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E22A894280
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ED0B1F25720
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7872AB20CD3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA815482E4;
-	Mon,  1 Apr 2024 17:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AB04AEC3;
+	Mon,  1 Apr 2024 16:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X35icdBN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkIF4xby"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A78B38DE5;
-	Mon,  1 Apr 2024 17:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029EA487BC;
+	Mon,  1 Apr 2024 16:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991119; cv=none; b=mi38hTjJoqVrbgRBNLiYm6GC2g/F6EA5xt2CzZRkcadqgTuaDNoNwjx4lk/iAmDTT7Wz3p66Ic98cIUHnXhjXIUmrMB3AAKsX+yX68pNwpwdroMfHEh1/IHdTlfSa3G04CIUL0x8XePfooee8CQjM5HM9h0YUwIkAm2ljGttilE=
+	t=1711990393; cv=none; b=gnzNp8SRF1xlCzt2zqmCXaeWT7kTyl0QowvoNJ0uyjcxsSWjjOtRp47IAwdZcqFyCxkLY/PRUq6AAsJT+XCGM7nw583JCtp6XwDU0nyCGX3+1uXpZZpf35n7tXGytCxq52XOARmB/UPW0NU3CIISMED+Ca+3ipbX64UFSwX5Yio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991119; c=relaxed/simple;
-	bh=LopfdHBE8JF68M/+zYsYj2TZPfGPF4bpj/cPtwOa8ws=;
+	s=arc-20240116; t=1711990393; c=relaxed/simple;
+	bh=/1Tc+Qowhsc6vfeiLC420vEtcv1KpWvIE1zk6dv/R/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7pCgWauGb6mfN8HPAxXcu/G92PoCXRNqdeUCgsbaHJTF0JkG+pJAA4NMTu4NSpDu3cJwaCHcTZEEmYXCCUT08ftp1kfNwuDJ4fV69yQfW5ZbmFi5Q4Or+6Q2B7PGADEBjBDDD54fQy1iHhlm3/MN7X7/FufZvITW97hJLi4lws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X35icdBN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C14C433C7;
-	Mon,  1 Apr 2024 17:05:18 +0000 (UTC)
+	 MIME-Version; b=P1t4dT4+bFzopuObf2gk7LQi0P6Wry+iLSvwr/qVOvk7X8XHu3HidtIZFvPypKmvxTkUn8nJIYAdxTtgQ+LCq0swDt20aF7IveU20ZuU2siWvrAClgaT0GVauqui7X5pFjyIeViLUtmu+k4OzUwKn50YOImjyATXegG9Tb99S+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkIF4xby; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB0FC433C7;
+	Mon,  1 Apr 2024 16:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991119;
-	bh=LopfdHBE8JF68M/+zYsYj2TZPfGPF4bpj/cPtwOa8ws=;
+	s=korg; t=1711990392;
+	bh=/1Tc+Qowhsc6vfeiLC420vEtcv1KpWvIE1zk6dv/R/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X35icdBNPAtx0D1GLb06Z4ErOQDHwI4jjPwHclZXCdk5ux6OYUHc6xWXQZjJNbtcK
-	 Kzv+FX48L75yH47fjk94cbWKj2oPlK6VLAPZCFnD+3qYp6Q8QpCFVbmwfY7G6pzH6R
-	 smtq9sb4N5T2nVLdXO9GGWyLokKLiktIRfy31ZwI=
+	b=AkIF4xbyFAhzk0mD5snbmjotMWqSehRDmmi0zhh7QYpmJaURw01lDJj8kTCQwfFK1
+	 eLKIU4OYHpQ8c10FCNLf8Nj2sTHCeXmfZ6XwegXKN3MsCS7kIUWcKt/rwrK71ekYrU
+	 NAfljK++sq96wcL+YtwaJybHRs5KU5etG3zVaE8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Chi <andy.chi@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 168/272] ALSA: hda/realtek: fix mute/micmute LEDs for HP EliteBook
-Date: Mon,  1 Apr 2024 17:45:58 +0200
-Message-ID: <20240401152535.997685784@linuxfoundation.org>
+	John Sperbeck <jsperbeck@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 310/396] init: open /initrd.image with O_LARGEFILE
+Date: Mon,  1 Apr 2024 17:45:59 +0200
+Message-ID: <20240401152557.156316926@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Chi <andy.chi@canonical.com>
+From: John Sperbeck <jsperbeck@google.com>
 
-commit a17bd44c0146b00fcaa692915789c16bd1fb2a81 upstream.
+commit 4624b346cf67400ef46a31771011fb798dd2f999 upstream.
 
-The HP EliteBook using ALC236 codec which using 0x02 to
-control mute LED and 0x01 to control micmute LED.
-Therefore, add a quirk to make it works.
+If initrd data is larger than 2Gb, we'll eventually fail to write to the
+/initrd.image file when we hit that limit, unless O_LARGEFILE is set.
 
-Signed-off-by: Andy Chi <andy.chi@canonical.com>
+Link: https://lkml.kernel.org/r/20240317221522.896040-1-jsperbeck@google.com
+Signed-off-by: John Sperbeck <jsperbeck@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240304134033.773348-1-andy.chi@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ init/initramfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9792,6 +9792,10 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c90, "HP EliteBook 640", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c91, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8ca1, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -673,7 +673,7 @@ static void __init populate_initrd_image
+ 
+ 	printk(KERN_INFO "rootfs image is not initramfs (%s); looks like an initrd\n",
+ 			err);
+-	file = filp_open("/initrd.image", O_WRONLY | O_CREAT, 0700);
++	file = filp_open("/initrd.image", O_WRONLY|O_CREAT|O_LARGEFILE, 0700);
+ 	if (IS_ERR(file))
+ 		return;
+ 
 
 
 
