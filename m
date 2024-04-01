@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-34520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585F1893FB1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04159894154
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7B01C21371
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98DDD1F22816
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51C947A79;
-	Mon,  1 Apr 2024 16:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995E43F8F4;
+	Mon,  1 Apr 2024 16:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKUFQ0jQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxYmUOXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64218C129;
-	Mon,  1 Apr 2024 16:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563A71EB37;
+	Mon,  1 Apr 2024 16:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988397; cv=none; b=U5HLlSjCedxEH5PO4gkBYJhVvxSOQrXki6ZYAPHkzuxbNRIeSVP+J4VP9IqTT4kEij7bpfKaaJoT8oy/KwEvUW4LL1oDtZxpDQzSqI6AhLcAr68xoapBxhxr3zLfB9VNg1az3q1F/5jKw5p1g+iCdXvtmef6+KNT8A5Yh933M0M=
+	t=1711989648; cv=none; b=H1rnqYnE6T2UBnesNx0sOqQoFYbve+64jOFZ9pgGxciXqqhTSwUKgA95DmaJaZltFKyqxEREj7zkE2T8aMO/r7YSskseckt05xZPaxtzZK1GmHuXPZWrFJE0ORv1uRfSFYwYYLsj0Z13vJwWAXAYu68y4eDHXpDWfs0XJjE2C8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988397; c=relaxed/simple;
-	bh=7vOLFOo3/ZS+8qWZ6yXMTO5yLLY9P4auApIgIkZyIW8=;
+	s=arc-20240116; t=1711989648; c=relaxed/simple;
+	bh=3Kctqka1m1Gbp4nZbCbb8tDJBSWZNRocwZnWVUHUm1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocm3iftgfjhc294/yv/p3dRewY/pezOuU9zy2/8ycI+uywU6RhVeyABfOddPYsENJn1+12Tc9Te8zTM/rJzUu8qxoRvyRf+jzwiyS+ahjL3kT/btLYLDIHuUQE6Dg3nJ8Jx3qqpKa3HMHwpdNm6GDgy3DIu3hkGGzPgiCiLHNWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKUFQ0jQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80275C433C7;
-	Mon,  1 Apr 2024 16:19:56 +0000 (UTC)
+	 MIME-Version; b=oiCcmlbxFrfp6txcVhyL+cHCvNRdL6SOmkGP+kthIplxSN0KEhK2DUMeJccyaMIFbA4MpNxlPMRBYeN8zB/dEKSoKX1vjGDG5q1nw602hxMFhztHeLy6Ydli2f6Lc+6bOl89pRJDOdxe/3Yw395sCEU8nqn0kpSmgpJrPYFjYyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxYmUOXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2C9C433C7;
+	Mon,  1 Apr 2024 16:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988397;
-	bh=7vOLFOo3/ZS+8qWZ6yXMTO5yLLY9P4auApIgIkZyIW8=;
+	s=korg; t=1711989648;
+	bh=3Kctqka1m1Gbp4nZbCbb8tDJBSWZNRocwZnWVUHUm1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EKUFQ0jQvq/wHbG4qOMDWakddhzzCmjNfTFkLWaEZQFA1m/vxiuREaYj2jZm3NjQ5
-	 Acvou0d0AIWNnYuesx2ZccxCPu18EQGhR2Tp0J16hBaJ+RMDYv3j7wvqVoWK1vyRVb
-	 1s16uiPTA8rxewHYYejTzqUsJIcmgJixnUAWkGVU=
+	b=kxYmUOXkP50kudpnIYH5l3swWHjgvhlzvPctEvK0mKFpStVsFa2P8DUngOeCLxPY7
+	 PRo3fiYqlS23A8oUeUMT/1VpM+I1RIJG4uQjHODLT+6hvxEO0/wmMnMUOqCcDXDLlD
+	 01rmSEro7U2n2ipF9r3Nu81dlfSlqokCnHffTu3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Sunmin Jeong <s_min.jeong@samsung.com>,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 173/432] f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag
+Subject: [PATCH 6.6 111/396] usb: gadget: tegra-xudc: Fix USB3 PHY retrieval logic
 Date: Mon,  1 Apr 2024 17:42:40 +0200
-Message-ID: <20240401152558.307013096@linuxfoundation.org>
+Message-ID: <20240401152551.231058153@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunmin Jeong <s_min.jeong@samsung.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit 4bf78322346f6320313683dc9464e5423423ad5c ]
+[ Upstream commit 84fa943d93c31ee978355e6c6c69592dae3c9f59 ]
 
-In f2fs_update_inode, i_size of the atomic file isn't updated until
-FI_ATOMIC_COMMITTED flag is set. When committing atomic write right
-after the writeback of the inode, i_size of the raw inode will not be
-updated. It can cause the atomicity corruption due to a mismatch between
-old file size and new data.
+This commit resolves an issue in the tegra-xudc USB gadget driver that
+incorrectly fetched USB3 PHY instances. The problem stemmed from the
+assumption of a one-to-one correspondence between USB2 and USB3 PHY
+names and their association with physical USB ports in the device tree.
 
-To prevent the problem, let's mark inode dirty for FI_ATOMIC_COMMITTED
+Previously, the driver associated USB3 PHY names directly with the USB3
+instance number, leading to mismatches when mapping the physical USB
+ports. For instance, if using USB3-1 PHY, the driver expect the
+corresponding PHY name as 'usb3-1'. However, the physical USB ports in
+the device tree were designated as USB2-0 and USB3-0 as we only have
+one device controller, causing a misalignment.
 
-Atomic write thread                   Writeback thread
-                                        __writeback_single_inode
-                                          write_inode
-                                            f2fs_update_inode
-                                              - skip i_size update
-  f2fs_ioc_commit_atomic_write
-    f2fs_commit_atomic_write
-      set_inode_flag(inode, FI_ATOMIC_COMMITTED)
-    f2fs_do_sync_file
-      f2fs_fsync_node_pages
-        - skip f2fs_update_inode since the inode is clean
+This commit rectifies the issue by adjusting the PHY naming logic.
+Now, the driver correctly correlates the USB2 and USB3 PHY instances,
+allowing the USB2-0 and USB3-1 PHYs to form a physical USB port pair
+while accurately reflecting their configuration in the device tree by
+naming them USB2-0 and USB3-0, respectively.
 
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Cc: stable@vger.kernel.org #v5.19+
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+The change ensures that the PHY and PHY names align appropriately,
+resolving the mismatch between physical USB ports and their associated
+names in the device tree.
+
+Fixes: b4e19931c98a ("usb: gadget: tegra-xudc: Support multiple device modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20240307030328.1487748-3-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/udc/tegra-xudc.c | 39 ++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 200e1e43ef9bb..3b6133c865a29 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3025,6 +3025,7 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
- 	case FI_INLINE_DOTS:
- 	case FI_PIN_FILE:
- 	case FI_COMPRESS_RELEASED:
-+	case FI_ATOMIC_COMMITTED:
- 		f2fs_mark_inode_dirty_sync(inode, true);
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index cb85168fd00c2..7aa46d426f31b 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -3491,8 +3491,8 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
+ 
+ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ {
+-	int err = 0, usb3;
+-	unsigned int i;
++	int err = 0, usb3_companion_port;
++	unsigned int i, j;
+ 
+ 	xudc->utmi_phy = devm_kcalloc(xudc->dev, xudc->soc->num_phys,
+ 					   sizeof(*xudc->utmi_phy), GFP_KERNEL);
+@@ -3520,7 +3520,7 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		if (IS_ERR(xudc->utmi_phy[i])) {
+ 			err = PTR_ERR(xudc->utmi_phy[i]);
+ 			dev_err_probe(xudc->dev, err,
+-				      "failed to get usb2-%d PHY\n", i);
++				"failed to get PHY for phy-name usb2-%d\n", i);
+ 			goto clean_up;
+ 		} else if (xudc->utmi_phy[i]) {
+ 			/* Get usb-phy, if utmi phy is available */
+@@ -3539,19 +3539,30 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		}
+ 
+ 		/* Get USB3 phy */
+-		usb3 = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
+-		if (usb3 < 0)
++		usb3_companion_port = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
++		if (usb3_companion_port < 0)
+ 			continue;
+ 
+-		snprintf(phy_name, sizeof(phy_name), "usb3-%d", usb3);
+-		xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
+-		if (IS_ERR(xudc->usb3_phy[i])) {
+-			err = PTR_ERR(xudc->usb3_phy[i]);
+-			dev_err_probe(xudc->dev, err,
+-				      "failed to get usb3-%d PHY\n", usb3);
+-			goto clean_up;
+-		} else if (xudc->usb3_phy[i])
+-			dev_dbg(xudc->dev, "usb3-%d PHY registered", usb3);
++		for (j = 0; j < xudc->soc->num_phys; j++) {
++			snprintf(phy_name, sizeof(phy_name), "usb3-%d", j);
++			xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
++			if (IS_ERR(xudc->usb3_phy[i])) {
++				err = PTR_ERR(xudc->usb3_phy[i]);
++				dev_err_probe(xudc->dev, err,
++					"failed to get PHY for phy-name usb3-%d\n", j);
++				goto clean_up;
++			} else if (xudc->usb3_phy[i]) {
++				int usb2_port =
++					tegra_xusb_padctl_get_port_number(xudc->utmi_phy[i]);
++				int usb3_port =
++					tegra_xusb_padctl_get_port_number(xudc->usb3_phy[i]);
++				if (usb3_port == usb3_companion_port) {
++					dev_dbg(xudc->dev, "USB2 port %d is paired with USB3 port %d for device mode port %d\n",
++					 usb2_port, usb3_port, i);
++					break;
++				}
++			}
++		}
  	}
- }
+ 
+ 	return err;
 -- 
 2.43.0
 
