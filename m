@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-35105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7FF894270
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797438940B8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCC391C21D78
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 194421F22816
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBFE4EB38;
-	Mon,  1 Apr 2024 16:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFB738F84;
+	Mon,  1 Apr 2024 16:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEljUIOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZknTJHG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC04F897;
-	Mon,  1 Apr 2024 16:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E86C1C0DE7;
+	Mon,  1 Apr 2024 16:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990350; cv=none; b=QCFKPP7zMAAz9MKYRUY41Ebf3bUbQ111lrC1b9wWMPn+ZqonMf2Zd6tfnNn1am8nzUvPBHCVM00odkR5meto0NTUlEa6zSz8/eXXLDiMZRrQdAkrNqWlFFpoy5xe82rxTwrFTrhYreGnWCDHNiAKlpoCe7/EQSZmW9q2jk+QN0k=
+	t=1711989211; cv=none; b=m20k8hbMRhd8kqH74S5U3NmFHRsgw9W73P1gHIcfp2St82ExpW1Y0ALlUlSBSuOa+In2qliN21nayF5KH+8Nezr7GSHGtk/pELrLaO9o2FmeJyIq67odfV3GSd7YkvErfVbd/v2nuxYpzNVxVoRED2FHyipCY1i+RLhCvWKJS7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990350; c=relaxed/simple;
-	bh=tVmEkOp19snKovC9m/5DaEUQzS01VaRESjxqtXDO34k=;
+	s=arc-20240116; t=1711989211; c=relaxed/simple;
+	bh=bjSN10FV9pPlHmSd4iKxbnrlzJPSFcQORQ6vEgcbmes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/Bmx77aymAzd4MRzSSGp3gKBuWLKr6o+aAl2DXd9UqifoJ7G1H/zr5kfWJaFcmVin+YaVCTj5o22Mt3YAjoYq3nMN4CGHu6jz8I5TPuiGQC5o61Ay6nOHE7UjpUnYPJNHNTQfun+lkxqtC8WE8pt9vB8YgBKEDwbKUt3OGtFoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEljUIOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BC9C433F1;
-	Mon,  1 Apr 2024 16:52:28 +0000 (UTC)
+	 MIME-Version; b=FFvWVtfPWL6jI3NsEWPDr5JM7ezajXNY2L5EaEqL7uTIw7+i/3hNGW/whDBwvXlOYIJbEf2Z9Z6ub6cvPHrfQzJLEc00DsQkfuZAg7YNhapcJ75Npq+phXJ4hhA8En4xHe3OHuJd1FF/5YEsVac7z6NSq7O1369MTJU8nHclZEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZknTJHG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD66C43390;
+	Mon,  1 Apr 2024 16:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990350;
-	bh=tVmEkOp19snKovC9m/5DaEUQzS01VaRESjxqtXDO34k=;
+	s=korg; t=1711989211;
+	bh=bjSN10FV9pPlHmSd4iKxbnrlzJPSFcQORQ6vEgcbmes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEljUIOk/WAI/AXYAP8JO8RHmVeDqbIExy3XH8cryD/9s1hKzwiE7ZV4m9GSB6/uE
-	 /mv5yIOhprcoq8P7MnaP9Ike8GYfIZG9huGW/mxzM6Shi83qyA630xY/VXro78z4ny
-	 ImvC7FhMlvMmeU0MaQotcmUtu9jbhUc3qVZxuwRY=
+	b=XZknTJHGO1J4Thl4JD6auJgXqpaXvtn7bHKVs8X84wI1gGFJuLmoiL9RnFxYZ3Iq4
+	 7rGLn/xtGG9WsKXus6E9EUsHU2hfDen2LvTQNr8D7EuGNxCd8RSUbnQnLovgQgSh5T
+	 t0Ai3bUWVArpIH5r7wg/M7m7cnHIPQTsGhABBNsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 324/396] Revert "drm/amd/display: Fix sending VSC (+ colorimetry) packets for DP/eDP displays without PSR"
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 386/432] drm/amdgpu/display: Address kdoc for is_psr_su in fill_dc_dirty_rects
 Date: Mon,  1 Apr 2024 17:46:13 +0200
-Message-ID: <20240401152557.573591612@linuxfoundation.org>
+Message-ID: <20240401152604.829603589@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 78aca9ee5e012e130dbfbd7191bc2302b0cf3b37 upstream.
+[ Upstream commit 3651306ae4c7f3f54caa9feb826a93cc69ccebbf ]
 
-This causes flicker on a bunch of eDP panels. The info_packet code
-also caused regressions on other OSes that we haven't' seen on Linux
-yet, but that is likely due to the fact that we haven't had a chance
-to test those environments on Linux.
+The is_psr_su parameter is a boolean flag indicating whether the Panel
+Self Refresh Selective Update (PSR SU) feature is enabled which is a
+power-saving feature that allows only the updated regions of the screen
+to be refreshed, reducing the amount of data that needs to be sent to
+the display.
 
-We'll need to revisit this.
+Fixes the below with gcc W=1:
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:5257: warning: Function parameter or member 'is_psr_su' not described in 'fill_dc_dirty_rects'
 
-This reverts commit 202260f64519e591b5cd99626e441b6559f571a3.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3207
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3151
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Fixes: d16df040c8da ("drm/amdgpu: make damage clips support configurable")
+Cc: stable@vger.kernel.org
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c             |    8 ++----
- drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c |   13 +++-------
- 2 files changed, 8 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 342e41c78fb34..dafe9562a7370 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6121,9 +6121,8 @@ create_stream_for_sink(struct amdgpu_dm_
- 
- 	if (stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
- 		mod_build_hf_vsif_infopacket(stream, &stream->vsp_infopacket);
--	else if (stream->signal == SIGNAL_TYPE_DISPLAY_PORT ||
--			 stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST ||
--			 stream->signal == SIGNAL_TYPE_EDP) {
-+
-+	if (stream->link->psr_settings.psr_feature_enabled || stream->link->replay_settings.replay_feature_enabled) {
- 		//
- 		// should decide stream support vsc sdp colorimetry capability
- 		// before building vsc info packet
-@@ -6139,9 +6138,8 @@ create_stream_for_sink(struct amdgpu_dm_
- 		if (stream->out_transfer_func->tf == TRANSFER_FUNCTION_GAMMA22)
- 			tf = TRANSFER_FUNC_GAMMA_22;
- 		mod_build_vsc_infopacket(stream, &stream->vsc_infopacket, stream->output_color_space, tf);
-+		aconnector->psr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
- 
--		if (stream->link->psr_settings.psr_feature_enabled)
--			aconnector->psr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
- 	}
- finish:
- 	dc_sink_release(sink);
---- a/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
-+++ b/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
-@@ -147,15 +147,12 @@ void mod_build_vsc_infopacket(const stru
- 	}
- 
- 	/* VSC packet set to 4 for PSR-SU, or 2 for PSR1 */
--	if (stream->link->psr_settings.psr_feature_enabled) {
--		if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
--			vsc_packet_revision = vsc_packet_rev4;
--		else if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_1)
--			vsc_packet_revision = vsc_packet_rev2;
--	}
--
--	if (stream->link->replay_settings.config.replay_supported)
-+	if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
-+		vsc_packet_revision = vsc_packet_rev4;
-+	else if (stream->link->replay_settings.config.replay_supported)
- 		vsc_packet_revision = vsc_packet_rev4;
-+	else if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_1)
-+		vsc_packet_revision = vsc_packet_rev2;
- 
- 	/* Update to revision 5 for extended colorimetry support */
- 	if (stream->use_vsc_sdp_for_colorimetry)
+@@ -5129,6 +5129,10 @@ static inline void fill_dc_dirty_rect(struct drm_plane *plane,
+  * @new_plane_state: New state of @plane
+  * @crtc_state: New state of CRTC connected to the @plane
+  * @flip_addrs: DC flip tracking struct, which also tracts dirty rects
++ * @is_psr_su: Flag indicating whether Panel Self Refresh Selective Update (PSR SU) is enabled.
++ *             If PSR SU is enabled and damage clips are available, only the regions of the screen
++ *             that have changed will be updated. If PSR SU is not enabled,
++ *             or if damage clips are not available, the entire screen will be updated.
+  * @dirty_regions_changed: dirty regions changed
+  *
+  * For PSR SU, DC informs the DMUB uController of dirty rectangle regions
+-- 
+2.43.0
+
 
 
 
