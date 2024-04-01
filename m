@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-35192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625AD8942D6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB978940C6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93C821C21E53
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 058AE282483
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8665C4AEC3;
-	Mon,  1 Apr 2024 16:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3284778C;
+	Mon,  1 Apr 2024 16:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wV5kDN9x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtS/IoeW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8A848CDD;
-	Mon,  1 Apr 2024 16:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2AB3613C;
+	Mon,  1 Apr 2024 16:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990599; cv=none; b=blNXLnkxP/RtRncpRuBvEEMsOFSIyTjkDC8TE8j8U8M0YlFd+t7oTSoGD1w9nPQaevzd98el4B8Uciag36c73P534AhbvzVsV2iKMSGHUkWF8wDYeSREuNjEflVpIxYYsSYeTJhGQXINBFdRP2dAgODaXRiEKPmUxXBKUmdGCw8=
+	t=1711989251; cv=none; b=Jc5zRK+sDv0Jweym/N4Anui6G6XV7Ymj3DUdifdsXvensCA8sxFurmjW328h/vB5KGPit6RZi8NxAFt51H+sC54w9WAIFAl6XJZnbl3y2Pv5rKdrNTX6Ap7yUzcWFS05qJDldgcxOZ4D63SxE6lTYPHQoknDPlPLXXGgC5fdQjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990599; c=relaxed/simple;
-	bh=biiYxTnkEBjnKeyLzgXao8gdiiW41J7FYSX5VNDJgUo=;
+	s=arc-20240116; t=1711989251; c=relaxed/simple;
+	bh=EsYi+bLJNIVo2k9CrfafN58dmAFY6CdRItgniV72Nrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9MaMhTwCoWdD1lAWweMMNdTaN8DL57ch7U9zmA0p+pLseXSqKKX4ISMMorGTGJz4fFoNYtGmPlCt15Y1ldQu7STo2ZrrBI4VyC/d/65KrXKuf1VqOzfotMnIzEK+oJxHw477uKNQ/6Fw/K2RHJJvYTMdeddoPCf45PCyyWRKSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wV5kDN9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE4EC433F1;
-	Mon,  1 Apr 2024 16:56:38 +0000 (UTC)
+	 MIME-Version; b=G+44UWcpYNE7OdbQJRLQEnol06SN2JIihPfmSwOiIsICzjerv6/aI3cVZWXOvGNePSeQtWKL0Xe/HyC3ZfAiJfct6LVrw14S1jmUpaFJEvXzrPNC/eOTH5NQbe3GEYZxtbAGJGcpH7wt5SrQOaAJnPXPgXkPZoUg3fLHN+in/uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtS/IoeW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87A6C433C7;
+	Mon,  1 Apr 2024 16:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990599;
-	bh=biiYxTnkEBjnKeyLzgXao8gdiiW41J7FYSX5VNDJgUo=;
+	s=korg; t=1711989251;
+	bh=EsYi+bLJNIVo2k9CrfafN58dmAFY6CdRItgniV72Nrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wV5kDN9xU6CE9oM4UwE+MCzkFiTckUdvVClHm9EeqvdgL/v4rPWx0QjUttQlb00v7
-	 WH08dlzUf2uBflpra3kWIEBJs5TLh0G05YMqtyLcimlMfOjdWLLafnQ9fqzmwfzo/N
-	 wLhlU53+j3pC2dJ6mFI7yG8gj1xfPJzdMwljxiFY=
+	b=WtS/IoeWQqvk/rg8B66QFxbqpuc+U39zoAq3XkWbb79lpZLMZSbVHmPjIW+5gakXJ
+	 AP4B79n0ab96AdBLqmRKb/qsOSry5UL+oDAZ8xiBHFwlV6YTInP9NaG78ZLD5Gg+sa
+	 2w5legKJPwgyptT7OIMeYAV4MoREyAaIqHPNB+dE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 365/396] USB: core: Fix deadlock in port "disable" sysfs attribute
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 427/432] scsi: lpfc: Correct size for cmdwqe/rspwqe for memset()
 Date: Mon,  1 Apr 2024 17:46:54 +0200
-Message-ID: <20240401152558.800965933@linuxfoundation.org>
+Message-ID: <20240401152606.168895094@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit f4d1960764d8a70318b02f15203a1be2b2554ca1 upstream.
+commit 16cc2ba71b9f6440805aef7f92ba0f031f79b765 upstream.
 
-The show and store callback routines for the "disable" sysfs attribute
-file in port.c acquire the device lock for the port's parent hub
-device.  This can cause problems if another process has locked the hub
-to remove it or change its configuration:
+The cmdwqe and rspwqe are of type lpfc_wqe128. They should be memset() with
+the same type.
 
-	Removing the hub or changing its configuration requires the
-	hub interface to be removed, which requires the port device
-	to be removed, and device_del() waits until all outstanding
-	sysfs attribute callbacks for the ports have returned.  The
-	lock can't be released until then.
-
-	But the disable_show() or disable_store() routine can't return
-	until after it has acquired the lock.
-
-The resulting deadlock can be avoided by calling
-sysfs_break_active_protection().  This will cause the sysfs core not
-to wait for the attribute's callback routine to return, allowing the
-removal to proceed.  The disadvantage is that after making this call,
-there is no guarantee that the hub structure won't be deallocated at
-any moment.  To prevent this, we have to acquire a reference to it
-first by calling hub_get().
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/f7a8c135-a495-4ce6-bd49-405a45e7ea9a@rowland.harvard.edu
+Fixes: 61910d6a5243 ("scsi: lpfc: SLI path split: Refactor CT paths")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240304091119.847060-1-usama.anjum@collabora.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |   38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ drivers/scsi/lpfc/lpfc_bsg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -55,11 +55,22 @@ static ssize_t disable_show(struct devic
- 	u16 portstatus, unused;
- 	bool disabled;
- 	int rc;
-+	struct kernfs_node *kn;
+--- a/drivers/scsi/lpfc/lpfc_bsg.c
++++ b/drivers/scsi/lpfc/lpfc_bsg.c
+@@ -3169,10 +3169,10 @@ lpfc_bsg_diag_loopback_run(struct bsg_jo
+ 	}
  
-+	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
--		return rc;
-+		goto out_hub_get;
+ 	cmdwqe = &cmdiocbq->wqe;
+-	memset(cmdwqe, 0, sizeof(union lpfc_wqe));
++	memset(cmdwqe, 0, sizeof(*cmdwqe));
+ 	if (phba->sli_rev < LPFC_SLI_REV4) {
+ 		rspwqe = &rspiocbq->wqe;
+-		memset(rspwqe, 0, sizeof(union lpfc_wqe));
++		memset(rspwqe, 0, sizeof(*rspwqe));
+ 	}
  
-+	/*
-+	 * Prevent deadlock if another process is concurrently
-+	 * trying to unregister hdev.
-+	 */
-+	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+	if (!kn) {
-+		rc = -ENODEV;
-+		goto out_autopm;
-+	}
- 	usb_lock_device(hdev);
- 	if (hub->disconnected) {
- 		rc = -ENODEV;
-@@ -69,9 +80,13 @@ static ssize_t disable_show(struct devic
- 	usb_hub_port_status(hub, port1, &portstatus, &unused);
- 	disabled = !usb_port_is_power_on(hub, portstatus);
- 
--out_hdev_lock:
-+ out_hdev_lock:
- 	usb_unlock_device(hdev);
-+	sysfs_unbreak_active_protection(kn);
-+ out_autopm:
- 	usb_autopm_put_interface(intf);
-+ out_hub_get:
-+	hub_put(hub);
- 
- 	if (rc)
- 		return rc;
-@@ -89,15 +104,26 @@ static ssize_t disable_store(struct devi
- 	int port1 = port_dev->portnum;
- 	bool disabled;
- 	int rc;
-+	struct kernfs_node *kn;
- 
- 	rc = kstrtobool(buf, &disabled);
- 	if (rc)
- 		return rc;
- 
-+	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
--		return rc;
-+		goto out_hub_get;
- 
-+	/*
-+	 * Prevent deadlock if another process is concurrently
-+	 * trying to unregister hdev.
-+	 */
-+	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+	if (!kn) {
-+		rc = -ENODEV;
-+		goto out_autopm;
-+	}
- 	usb_lock_device(hdev);
- 	if (hub->disconnected) {
- 		rc = -ENODEV;
-@@ -118,9 +144,13 @@ static ssize_t disable_store(struct devi
- 	if (!rc)
- 		rc = count;
- 
--out_hdev_lock:
-+ out_hdev_lock:
- 	usb_unlock_device(hdev);
-+	sysfs_unbreak_active_protection(kn);
-+ out_autopm:
- 	usb_autopm_put_interface(intf);
-+ out_hub_get:
-+	hub_put(hub);
- 
- 	return rc;
- }
+ 	INIT_LIST_HEAD(&head);
 
 
 
