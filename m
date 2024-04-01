@@ -1,149 +1,171 @@
-Return-Path: <stable+bounces-35482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA17D89451E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 21:02:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17335894529
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 21:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60B0428271C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A8B81C21575
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21194F5ED;
-	Mon,  1 Apr 2024 19:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783F450255;
+	Mon,  1 Apr 2024 19:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="mtANK2cY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O5qtZlPH"
 X-Original-To: stable@vger.kernel.org
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3CD51C2B;
-	Mon,  1 Apr 2024 19:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983AD249E4
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 19:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711998123; cv=none; b=OTtGOjt/c7Cv7OAcBvYcoPuoVREDBCflJ8PQ0KiY6ePXeiE8pCY8uTX3ZjOFeqXTjTyVZhAi8yoaoVl9y2qhljba5HWUSofnn3vf7+pGiS61rRkwVSmr4i7ZNHgth2KTe9fC/5i2HxPiBpDxUDdYPvRRPhCo62iKJRZr6g9Aio8=
+	t=1711998249; cv=none; b=N8P+S5g/JPkwojWeNqFJ6VzxuYyH9enF0Txd3OQaavvBnnkN5kEOwRLmNV66savsZiXHmyWuYSZAPt5inBV/+a/08LLn3QmVt5nbQDsPFdQMGgvUuijdrzksmH5703CwtBZjSCnk0juj1EPFrWHXvfYVR6LHuzB4hHUQz4YzPSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711998123; c=relaxed/simple;
-	bh=zcx1JiWSTwMh76T+53t+ENEUyvzu/m9vpw98SiAWwR4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ClgzJ1xnbM1pOtOhNGEBuP0uI7K8bTs8Ua2r3W0KKVlnGJQ+91XyUpYiapKtPJBCiE3kWAuwJYBJ3xDdR0VHX3Gn+Iq8wfl7lbkfwB88Z2RSGyAWZDXzaeHaN5lwt+q2A9bNsQceHz6gfg7cQktRYEak/Ypc6j4B3vh5RUjXHHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=mtANK2cY; arc=none smtp.client-ip=5.252.227.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
-Message-ID: <5bad35f6-70e1-4887-8e31-01e437ba3b94@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1711998116;
-	bh=zcx1JiWSTwMh76T+53t+ENEUyvzu/m9vpw98SiAWwR4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mtANK2cY79o19r6zXPWQEU+rmYS3Xa8P+ez5A6F518n8BrAfqHmFbxZdgzvAAYwqt
-	 pGdohL+Ix6GiHR+uX7R6FtDBlzPt0roRnariCtJ8hkF9/3DjqvUIDW/J4tcdQZ1Hoy
-	 87r4x7VAlTAKJxstW78yh27sNyyvEii6fTCJsU80=
-Date: Mon, 1 Apr 2024 21:01:52 +0200
+	s=arc-20240116; t=1711998249; c=relaxed/simple;
+	bh=7YFzwRTLlPh301ibtaPdumqzzLLM37WL5MqJHvPd2iA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gk5ZAfFHtEHAR3MCcM1yI0y8M1C6LJ/pEIP/N+no1C7Sy5XkY3cZcnvbR1uKKp0nYPag9ZxyWNElmwGjN6LCJYlWlpF+wA/LuObHeNpuMOrKtLqzCQSTKK2nWKPq+IXhlAknbKxT4OWHgDk/aBiKLRWLRVgG8VSox4KAz5F5OZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O5qtZlPH; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6e6e0867be8so1981079a34.2
+        for <stable@vger.kernel.org>; Mon, 01 Apr 2024 12:04:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711998247; x=1712603047; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yYvO3v5OtgUEtXlnG8GDoLjAfRWwq7ns796AeG3oL58=;
+        b=O5qtZlPHOp4AmQ5Y2htq66war88e8OgBqeZOfLNrtdgfKOMqCgUhT2qilNVD9nyunu
+         JkIm3BRQJocPasSLG2OAHC22SAHlI15qzi9nSJuQ5PAQ89rKLp3Nh6yPhAOG9zFYIuty
+         g18GAQ7XyE+i5U7VyDj4EmOktv7JFe8c4yG+wK5086JnRbWUno94dFais2kY34j7+PWo
+         ZDMb2f1t19bOhzCfuYLO8TWqfgvq4LFnDp6NsyAAslmhJZysGchAnwJaVMGj26bZXCBn
+         59mQIRszhatCHWvuwPMe3OT56KZMcf4Gyv2anzZNRwL8S64qnJkU626Xd+SbmBeZgRSe
+         gprQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711998247; x=1712603047;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yYvO3v5OtgUEtXlnG8GDoLjAfRWwq7ns796AeG3oL58=;
+        b=pD9EjLUpeVgkalztgKXCEUaXhYnYwXSAulCU93RsEEU+zQvILFAm+NKeMB0Eb6UlzL
+         ohkEQw6j9s/OAVT9eor/EN+IrTm/RoPU+i0B5pyIYqoJW/m06gAvp7OfWYYBdjnITK+S
+         X4wbKPZWNRIERxrtvSJOXRAg1VS8eQBrT723uCARe7SmessyR///QXNXlPG5/Ebzlf0F
+         Pv9krHpzKYbLaZ0vpex+4bi1uQrTHOH4IHZw27WcTWNkh8h1SXULeAl0ztJffRlPkPHa
+         cu4kTEWp+a9PRjxwZNxtXlMU2t+rGxCfPt9yUO8VyLfhc4sFZEYAY4uQTGA4oOSC5Hof
+         gX9g==
+X-Gm-Message-State: AOJu0Yz/GmVTzwtE43JUKfseSlfrpXAg8slxbRNSB4MryiOklk+vhzaM
+	whrQCLwhIB9zJA03HFHR5xCuFUdzWGmSuXXYU3nBq7aXUcyqliqYYUbRp0gQX+hTDWc1iH72VJO
+	wuudT1peXAQOrqMEFcNWVfsv20Rl0x+zfoD0WYHrNlqUg4T7yr4E=
+X-Google-Smtp-Source: AGHT+IFZnjA9wbTE9xX1zGLihZXyUphLjo+EmppgipT7ou4wJ7gElQqC1DGtC8501AbmNk8APlrrdsleR3G66uawajg=
+X-Received: by 2002:a05:6808:2114:b0:3c4:ea03:81b with SMTP id
+ r20-20020a056808211400b003c4ea03081bmr4330021oiw.2.1711998246673; Mon, 01 Apr
+ 2024 12:04:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] scsi: sg: Avoid race in error handling & drop bogus
- warn
-To: Bart Van Assche <bvanassche@acm.org>, dgilbert@interlog.com
-Cc: gregkh@linuxfoundation.org, sachinp@linux.ibm.com,
- linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- martin.petersen@oracle.com, stable@vger.kernel.org
-References: <81266270-42F4-48F9-9139-8F0C3F0A6553@linux.ibm.com>
- <20240401100317.5395-1-Alexander@wetzel-home.de>
- <a8b8aabf-250d-46c0-a9b8-fba414e3cfcc@acm.org>
-Content-Language: en-US, de-DE
-From: Alexander Wetzel <alexander@wetzel-home.de>
-In-Reply-To: <a8b8aabf-250d-46c0-a9b8-fba414e3cfcc@acm.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 2 Apr 2024 00:33:55 +0530
+Message-ID: <CA+G9fYs5MZaPV+tTukfUbJtdztQMExfixo=ZwbBr1A6Oga+OLQ@mail.gmail.com>
+Subject: Re: [PATCH 6.8 000/399] 6.8.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 01.04.24 19:09, Bart Van Assche wrote:
-> On 4/1/24 03:03, Alexander Wetzel wrote:
->> commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
->> introduced an incorrect WARN_ON_ONCE() and missed a sequence where
->> sg_device_destroy() was used after scsi_device_put().
-> 
-> Isn't that too negative? I think that the WARN_ON_ONCE() mentioned above
-> has proven to be useful: it helped to catch a bug.
-> 
+On Mon, 1 Apr 2024 at 21:20, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.8.3 release.
+> There are 399 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-It helped to find the other issue. But the WARN_ON_ONCE() here is still 
-plain wrong. Any only explained by my lack of understanding of the code 
-and stupid assumptions I should have checked a bit more.
+Following kernel warnings have been noticed on qemu-x86_64 while running LTP
+cve ioctl_sg01 tests the kernel with stable-rc 6.6.24-rc1, 6.7.12-rc1 and
+6.8.3-rc1.
 
-The warning always triggers when we have more than one user of the sg 
-device (and then free one of them).
-While trying to understand the issue I tripped over the other wrong 
-sequence. Which is probably very seldom really executed...
+We have started bi-secting this issue.
+Always reproduced.
 
-That said I can of course update the wording when you have a better 
-suggestion. But I only have some variations of "Ups... sorry. I thought 
-that was a good idea. Turns out it's not"
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+ioctl_sg01.c:81: TINFO: Found SCSI device /dev/sg0
+------------[ cut here ]------------
+[   36.606841] WARNING: CPU: 0 PID: 8 at drivers/scsi/sg.c:2237
+sg_remove_sfp_usercontext+0x145/0x150
+[   36.609445] Modules linked in:
+[   36.610793] CPU: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.6.24-rc1 #1
+[   36.611568] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+[   36.612872] Workqueue: events sg_remove_sfp_usercontext
+[   36.613691] RIP: 0010:sg_remove_sfp_usercontext+0x145/0x150
+
+<trim>
+
+[   36.621539] Call Trace:
+[   36.621953]  <TASK>
+[   36.622444]  ? show_regs+0x69/0x80
+[   36.622819]  ? __warn+0x8d/0x150
+[   36.623078]  ? sg_remove_sfp_usercontext+0x145/0x150
+[   36.623558]  ? report_bug+0x171/0x1a0
+[   36.623881]  ? handle_bug+0x42/0x80
+[   36.624070]  ? exc_invalid_op+0x1c/0x70
+[   36.624491]  ? asm_exc_invalid_op+0x1f/0x30
+[   36.624897]  ? sg_remove_sfp_usercontext+0x145/0x150
+[   36.625408]  process_one_work+0x141/0x300
+[   36.625769]  worker_thread+0x2f6/0x430
+[   36.626073]  ? __pfx_worker_thread+0x10/0x10
+[   36.626529]  kthread+0x105/0x140
+[   36.626778]  ? __pfx_kthread+0x10/0x10
+[   36.627059]  ret_from_fork+0x41/0x60
+[   36.627441]  ? __pfx_kthread+0x10/0x10
+[   36.627735]  ret_from_fork_asm+0x1b/0x30
+[   36.628293]  </TASK>
+[   36.628604] ---[ end trace 0000000000000000 ]---
+ioctl_sg01.c:122: TPASS: Output buffer is empty, no data leaked
+
+Suspecting commit:
+-----
+scsi: sg: Avoid sg device teardown race
+commit 27f58c04a8f438078583041468ec60597841284d upstream.
+
+ + WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
+
+Steps to reproduce:
+- https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2eVWFlAeOUepfeFVkrOXFYNNAqI/reproducer
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.23-397-g75a2533b74d0/testrun/23255318/suite/log-parser-test/tests/
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2eVTitwVMagaiWhs5T2iKH390D5
 
 
->> sg_device_destroy() is accessing the parent scsi_device request_queue 
->> which
->> will already be set to NULL when the preceding call to scsi_device_put()
->> removed the last reference to the parent scsi_device.
->>
->> Drop the incorrect WARN_ON_ONCE() - allowing more than one concurrent
->> access to the sg device - and make sure sg_device_destroy() is not used
->> after scsi_device_put() in the error handling.
->>
->> Link: 
->> https://lore.kernel.org/all/5375B275-D137-4D5F-BE25-6AF8ACAE41EF@linux.ibm.com
->> Fixes: 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
-> 
-> The "goto sg_put" removed by this patch was introduced by commit
-> cc833acbee9d ("sg: O_EXCL and other lock handling"). Since the latter
-> commit is older than the one mentioned above, shouldn't the Fixes tag
-> refer to the latter commit?
-> 
-
-The order was not wrong till commit db59133e9279 ("scsi: sg: fix 
-blktrace debugfs entries leakage"), the one my original patch tried to 
-fix. Prior to that one sg_device_destroy() was not using the scsi device 
-request_queue.
-
-I guess I (or one maintainer) could add that commit here again, too...
-
-My reasoning here is, that this patch here fixes what my first patch got 
-wrong.
-Which is already heading into the stable trees. And I would prefer to 
-not have any kernel release with commit 27f58c04a8f4 ("scsi: sg: Avoid 
-sg device teardown race")  without this fix, too.
-
-
->> diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
->> index 386981c6976a..833c9277419b 100644
->> --- a/drivers/scsi/sg.c
->> +++ b/drivers/scsi/sg.c
->> @@ -372,8 +372,9 @@ sg_open(struct inode *inode, struct file *filp)
->>   error_out:
->>       scsi_autopm_put_device(sdp->device);
->>   sdp_put:
->> +    kref_put(&sdp->d_ref, sg_device_destroy);
->>       scsi_device_put(sdp->device);
->> -    goto sg_put;
->> +    return retval;
->>   }
-> 
-> Please add a comment above "return retval" that explains which code will
-> drop the sg reference.
-> 
-
-Hm, don't get that. That kref_put() is the one dropping the reference.
-The matching kref_get() is in sg_add_sfp(). Which is called a few lines 
-prior to the code here (line 350).
-
-The patch is literally only swapping the order of scsi_device_put() and 
-kref_put().
-
-Which *again* causes a use-after free. So I'll send out v3 immediately 
-and if any of the thinks discussed here require a v4 we'll do that.
-
-Alexander
+--
+Linaro LKFT
+https://lkft.linaro.org
 
