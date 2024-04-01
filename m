@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-35397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928D58943C2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A327E8940B9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D8CA283946
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43394B21076
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003A3482DF;
-	Mon,  1 Apr 2024 17:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B551E895;
+	Mon,  1 Apr 2024 16:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrSl7b9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xo+twcmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B253D40876;
-	Mon,  1 Apr 2024 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E23D1C0DE7;
+	Mon,  1 Apr 2024 16:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991263; cv=none; b=KAWwrUYM8drMGu3SST14/FJC+Ldjs9MWhGHicO05yUiDHraweD4IpL53fqr+Eo1niVN83aAzeWy/i70RmLfejImr/pI5T7HmoH9sdEYz1jNYO+oJbYaoYYv5Gvt/hBMqaNn/BKfr567/QEc8VyNHNBVjzfxPR2QtSQsITtUpKGw=
+	t=1711989214; cv=none; b=pwNaMEA9AopeTj3Cadpv7JppbG51fz1Iw2KNM7iQupOoqL5tl8fv7W7M4qcOYgwDwc0aCKX7OweJH93vfnV3n1nBFKB3Sjf+67aPHGA0JHbkUhNcdA4NfJI5CoFRG4zhJJaJFTDcHdoGsC9/xKrrZp0PHSytb7BsQGwiVEZvuhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991263; c=relaxed/simple;
-	bh=+26gvznnCS3DFpzmo/2D+ZAva8V8Xlrt4HeLN/VMOCY=;
+	s=arc-20240116; t=1711989214; c=relaxed/simple;
+	bh=0GiCLdua8FSGGWyhIKidpr2k2rqIWoheCJ4FQAXsU/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C12wK/efuNdvN3ZVgvq7pfTv8cokkirpL+G0SbW8mrGO7hzhbVaKSkdf2fvDtQ9poxu1vIWCeOrwYdAdlp0a61L3unxSRnR5h3zdPQWGCUghVde3eAptt2bgdzAIthDYZ9H+oy+x7c5Uh0z0d17ndramTWi+9TVsChZ1deaINNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrSl7b9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F81C433F1;
-	Mon,  1 Apr 2024 17:07:43 +0000 (UTC)
+	 MIME-Version; b=QHSUADH2KQWyVfbQW7EdQaMSNOWUwuKsnlGI4lSVCJkXltM8/B2ImTiaIK7nI814layTvMbQwhGJlQQxHASBLtFPCITlYzfN3eHxV3uWDI8q8w6E9OIopxWR3rHcYi9sMo1X/JG1rb7OHRGnQPIw08KikI9kvsWCo7XDNjlq0I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xo+twcmS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00645C433C7;
+	Mon,  1 Apr 2024 16:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991263;
-	bh=+26gvznnCS3DFpzmo/2D+ZAva8V8Xlrt4HeLN/VMOCY=;
+	s=korg; t=1711989214;
+	bh=0GiCLdua8FSGGWyhIKidpr2k2rqIWoheCJ4FQAXsU/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrSl7b9QdFO7cANT3hZEJgIO8cHOdc+clvcxGQVA+qReyrsTYtkzUPm6Bl7NOdL1A
-	 Gbvi1wogOd3ctgh1CTTv5G3ihVz29JhGG4KOLtZpKMk326v4akNGzuz9rdG6BXxZ2C
-	 CrpFdCuJpccd0Zi3AXm1XvFYzra+Kn5DQ4IwK77A=
+	b=xo+twcmSQodwAHAYQ1AmoO+WhStgzY/uxFBZAzwLU3FkhUihIjcRiiT6nuFjSB1f7
+	 dikt6Ey/rYOyB6R83IuHpAsVk27rfq1tX4DE7SIzjSn/ENX8vRwlkBE1KxoD6GAQ++
+	 1gEjHSYuoEWOeeeOFvqwHSk9TLRaKwfl6sFh/CQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/272] iommu/dma: Force swiotlb_max_mapping_size on an untrusted device
-Date: Mon,  1 Apr 2024 17:46:13 +0200
-Message-ID: <20240401152536.530267770@linuxfoundation.org>
+Subject: [PATCH 6.7 387/432] vfio/pds: Make sure migration file isnt accessed after reset
+Date: Mon,  1 Apr 2024 17:46:14 +0200
+Message-ID: <20240401152604.859248871@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit afc5aa46ed560f01ceda897c053c6a40c77ce5c4 ]
+[ Upstream commit 457f7308254756b6e4b8fc3876cb770dcf0e7cc7 ]
 
-The swiotlb does not support a mapping size > swiotlb_max_mapping_size().
-On the other hand, with a 64KB PAGE_SIZE configuration, it's observed that
-an NVME device can map a size between 300KB~512KB, which certainly failed
-the swiotlb mappings, though the default pool of swiotlb has many slots:
-    systemd[1]: Started Journal Service.
- => nvme 0000:00:01.0: swiotlb buffer is full (sz: 327680 bytes), total 32768 (slots), used 32 (slots)
-    note: journal-offline[392] exited with irqs disabled
-    note: journal-offline[392] exited with preempt_count 1
+It's possible the migration file is accessed after reset when it has
+been cleaned up, especially when it's initiated by the device. This is
+because the driver doesn't rip out the filep when cleaning up it only
+frees the related page structures and sets its local struct
+pds_vfio_lm_file pointer to NULL. This can cause a NULL pointer
+dereference, which is shown in the example below during a restore after
+a device initiated reset:
 
-Call trace:
-[    3.099918]  swiotlb_tbl_map_single+0x214/0x240
-[    3.099921]  iommu_dma_map_page+0x218/0x328
-[    3.099928]  dma_map_page_attrs+0x2e8/0x3a0
-[    3.101985]  nvme_prep_rq.part.0+0x408/0x878 [nvme]
-[    3.102308]  nvme_queue_rqs+0xc0/0x300 [nvme]
-[    3.102313]  blk_mq_flush_plug_list.part.0+0x57c/0x600
-[    3.102321]  blk_add_rq_to_plug+0x180/0x2a0
-[    3.102323]  blk_mq_submit_bio+0x4c8/0x6b8
-[    3.103463]  __submit_bio+0x44/0x220
-[    3.103468]  submit_bio_noacct_nocheck+0x2b8/0x360
-[    3.103470]  submit_bio_noacct+0x180/0x6c8
-[    3.103471]  submit_bio+0x34/0x130
-[    3.103473]  ext4_bio_write_folio+0x5a4/0x8c8
-[    3.104766]  mpage_submit_folio+0xa0/0x100
-[    3.104769]  mpage_map_and_submit_buffers+0x1a4/0x400
-[    3.104771]  ext4_do_writepages+0x6a0/0xd78
-[    3.105615]  ext4_writepages+0x80/0x118
-[    3.105616]  do_writepages+0x90/0x1e8
-[    3.105619]  filemap_fdatawrite_wbc+0x94/0xe0
-[    3.105622]  __filemap_fdatawrite_range+0x68/0xb8
-[    3.106656]  file_write_and_wait_range+0x84/0x120
-[    3.106658]  ext4_sync_file+0x7c/0x4c0
-[    3.106660]  vfs_fsync_range+0x3c/0xa8
-[    3.106663]  do_fsync+0x44/0xc0
+BUG: kernel NULL pointer dereference, address: 000000000000000c
+PF: supervisor read access in kernel mode
+PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+RIP: 0010:pds_vfio_get_file_page+0x5d/0xf0 [pds_vfio_pci]
+[...]
+Call Trace:
+ <TASK>
+ pds_vfio_restore_write+0xf6/0x160 [pds_vfio_pci]
+ vfs_write+0xc9/0x3f0
+ ? __fget_light+0xc9/0x110
+ ksys_write+0xb5/0xf0
+ __x64_sys_write+0x1a/0x20
+ do_syscall_64+0x38/0x90
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[...]
 
-Since untrusted devices might go down the swiotlb pathway with dma-iommu,
-these devices should not map a size larger than swiotlb_max_mapping_size.
+Add a disabled flag to the driver's struct pds_vfio_lm_file that gets
+set during cleanup. Then make sure to check the flag when the migration
+file is accessed via its file_operations. By default this flag will be
+false as the memory for struct pds_vfio_lm_file is kzalloc'd, which means
+the struct pds_vfio_lm_file is enabled and accessible. Also, since the
+file_operations and driver's migration file cleanup happen under the
+protection of the same pds_vfio_lm_file.lock, using this flag is thread
+safe.
 
-To fix this bug, add iommu_dma_max_mapping_size() for untrusted devices to
-take into account swiotlb_max_mapping_size() v.s. iova_rcache_range() from
-the iommu_dma_opt_mapping_size().
-
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Link: https://lore.kernel.org/r/ee51a3a5c32cf885b18f6416171802669f4a718a.1707851466.git.nicolinc@nvidia.com
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-[will: Drop redundant is_swiotlb_active(dev) check]
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 8512ed256334 ("vfio/pds: Always clear the save/restore FDs on reset")
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://lore.kernel.org/r/20240308182149.22036-2-brett.creeley@amd.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/dma-iommu.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/vfio/pci/pds/lm.c | 13 +++++++++++++
+ drivers/vfio/pci/pds/lm.h |  1 +
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index aa6d62cc567ae..3fa66dba0a326 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1547,6 +1547,14 @@ static size_t iommu_dma_opt_mapping_size(void)
- 	return iova_rcache_range();
- }
+diff --git a/drivers/vfio/pci/pds/lm.c b/drivers/vfio/pci/pds/lm.c
+index 79fe2e66bb498..6b94cc0bf45b4 100644
+--- a/drivers/vfio/pci/pds/lm.c
++++ b/drivers/vfio/pci/pds/lm.c
+@@ -92,8 +92,10 @@ static void pds_vfio_put_lm_file(struct pds_vfio_lm_file *lm_file)
+ {
+ 	mutex_lock(&lm_file->lock);
  
-+static size_t iommu_dma_max_mapping_size(struct device *dev)
-+{
-+	if (dev_is_untrusted(dev))
-+		return swiotlb_max_mapping_size(dev);
++	lm_file->disabled = true;
+ 	lm_file->size = 0;
+ 	lm_file->alloc_size = 0;
++	lm_file->filep->f_pos = 0;
+ 
+ 	/* Free scatter list of file pages */
+ 	sg_free_table(&lm_file->sg_table);
+@@ -183,6 +185,12 @@ static ssize_t pds_vfio_save_read(struct file *filp, char __user *buf,
+ 	pos = &filp->f_pos;
+ 
+ 	mutex_lock(&lm_file->lock);
 +
-+	return SIZE_MAX;
-+}
++	if (lm_file->disabled) {
++		done = -ENODEV;
++		goto out_unlock;
++	}
 +
- static const struct dma_map_ops iommu_dma_ops = {
- 	.flags			= DMA_F_PCI_P2PDMA_SUPPORTED,
- 	.alloc			= iommu_dma_alloc,
-@@ -1569,6 +1577,7 @@ static const struct dma_map_ops iommu_dma_ops = {
- 	.unmap_resource		= iommu_dma_unmap_resource,
- 	.get_merge_boundary	= iommu_dma_get_merge_boundary,
- 	.opt_mapping_size	= iommu_dma_opt_mapping_size,
-+	.max_mapping_size       = iommu_dma_max_mapping_size,
+ 	if (*pos > lm_file->size) {
+ 		done = -EINVAL;
+ 		goto out_unlock;
+@@ -283,6 +291,11 @@ static ssize_t pds_vfio_restore_write(struct file *filp, const char __user *buf,
+ 
+ 	mutex_lock(&lm_file->lock);
+ 
++	if (lm_file->disabled) {
++		done = -ENODEV;
++		goto out_unlock;
++	}
++
+ 	while (len) {
+ 		size_t page_offset;
+ 		struct page *page;
+diff --git a/drivers/vfio/pci/pds/lm.h b/drivers/vfio/pci/pds/lm.h
+index 13be893198b74..9511b1afc6a11 100644
+--- a/drivers/vfio/pci/pds/lm.h
++++ b/drivers/vfio/pci/pds/lm.h
+@@ -27,6 +27,7 @@ struct pds_vfio_lm_file {
+ 	struct scatterlist *last_offset_sg;	/* Iterator */
+ 	unsigned int sg_last_entry;
+ 	unsigned long last_offset;
++	bool disabled;
  };
  
- /*
+ struct pds_vfio_pci_device;
 -- 
 2.43.0
 
