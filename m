@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804B0893EAE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02C7894203
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF821F2209F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DEB01C21AF1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911B2446AC;
-	Mon,  1 Apr 2024 16:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E16482F6;
+	Mon,  1 Apr 2024 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjMuX4Mh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jx+NSk8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDBF1CA8F;
-	Mon,  1 Apr 2024 16:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615F61DFF4;
+	Mon,  1 Apr 2024 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987603; cv=none; b=UDO0U2m5YY4j2bw/GLganQQf0EHYcMkRSd3pBUpVMwsRkb1gaUhXy1nt6vk9PmPOTwhxCJMVKMZIEEPEth8jvuld3mReQ3PXmOtj2frRCaIRaOCFZD8/V5ZsPaAswpHu4KRl+6jpCEYy9hUh3VbByTZicOegGCE/e2fS9R26c18=
+	t=1711990123; cv=none; b=a5kLhvYmIqFqYRHe7U7vwXDWMZtUt184FPhrQHlU3i3eUwqkSfgwZKigsHJH/X4Ka2qkXGJK8MCFqAyFp09L8H7S3ZUzO5r88b2bUBppJVDU46O/1Z8u8TBLQHF9ZpYpop+Zao5XuwzjCOv9R9YMRlCBHUUsaUUYIBBu9jGv2RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987603; c=relaxed/simple;
-	bh=KJOnXaewG1/YM4DrcxzHlj9Uzc/WWvjt6sHgJkAKQtM=;
+	s=arc-20240116; t=1711990123; c=relaxed/simple;
+	bh=VE2IyDcsw1dI1AvU3FXCaOuxFVI3OwNTMTPtAiHS0sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tc0y5DR7Yiek+E+kpvraYy1uShGhFbYfAOlmLBO4T1l19FYz8ZYiznM1Ggl/WKLe5u9QUPJPvewiksrCNNpjd/qd/rf7WZZZStdhCvwCrM/kEzYdEl/1n9/OtB/dCK3TRF/grCqBb3ehExN86NAMEKUGoS8lWc5y+u+EpUqQS08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjMuX4Mh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C676AC433C7;
-	Mon,  1 Apr 2024 16:06:42 +0000 (UTC)
+	 MIME-Version; b=IbfXje3THLfU05wGpS6EcflDEySnYABbMiosedS7zI+QMICxMHqwF0aRrngeLiZ3z2fbVdW/0WtVOKv3Tz/FTPoztstB0UcSpv8iqD7nYva4HTRj5HbEiBQzDKANZogvOePuSTCLhFTyBsv3ilCvSZFUP7LDaanfdyMAL3WVE7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jx+NSk8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BC5C433C7;
+	Mon,  1 Apr 2024 16:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987603;
-	bh=KJOnXaewG1/YM4DrcxzHlj9Uzc/WWvjt6sHgJkAKQtM=;
+	s=korg; t=1711990123;
+	bh=VE2IyDcsw1dI1AvU3FXCaOuxFVI3OwNTMTPtAiHS0sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjMuX4MhyghHHo/m9x06JknImWK29XSl/8iKJDExY4jFj9qUUAuov1yQQqxwBoZD/
-	 7V+WIVbKqiwfYKsmZ1W92nx7U3HOsOLTWe9F7+aJ9wJFfAWYUfX6tVS5iuFbmTFbk+
-	 9xQjlp6xYLBECeapYX4Trj7vXSMZZl2IvuJJWveA=
+	b=jx+NSk8wrLC/GuC0zMok3TzKKMQGThI1Y4vRYl6ZNnQ6nM4k1TPTgiFTkqGWai3rc
+	 gx7BHlDe6nEcl11T1IQIe6r0mXrtAOPso5Hk3F47UjFxLSGj6g7qF9aMi4tGRCPTt7
+	 SBUWXeRYLf3BKtz8HyK+jyNa7VwVDpuHXhATl+2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.8 337/399] drm/i915: Pre-populate the cursor physical dma address
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 254/396] xfs: convert rt bitmap extent lengths to xfs_rtbxlen_t
 Date: Mon,  1 Apr 2024 17:45:03 +0200
-Message-ID: <20240401152559.234679113@linuxfoundation.org>
+Message-ID: <20240401152555.481212362@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +61,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 582dc04b0658ef3b90aeb49cbdd9747c2f1eccc3 upstream.
+commit f29c3e745dc253bf9d9d06ddc36af1a534ba1dd0 upstream.
 
-Calling i915_gem_object_get_dma_address() from the vblank
-evade critical section triggers might_sleep().
+XFS uses xfs_rtblock_t for many different uses, which makes it much more
+difficult to perform a unit analysis on the codebase.  One of these
+(ab)uses is when we need to store the length of a free space extent as
+stored in the realtime bitmap.  Because there can be up to 2^64 realtime
+extents in a filesystem, we need a new type that is larger than
+xfs_rtxlen_t for callers that are querying the bitmap directly.  This
+means scrub and growfs.
 
-While we know that we've already pinned the framebuffer
-and thus i915_gem_object_get_dma_address() will in fact
-not sleep in this case, it seems reasonable to keep the
-unconditional might_sleep() for maximum coverage.
+Create this type as "xfs_rtbxlen_t" and use it to store 64-bit rtx
+lengths.  'b' stands for 'bitmap' or 'big'; reader's choice.
 
-So let's instead pre-populate the dma address during
-fb pinning, which all happens before we enter the
-vblank evade critical section.
-
-We can use u32 for the dma address as this class of
-hardware doesn't support >32bit addresses.
-
-Cc: stable@vger.kernel.org
-Fixes: 0225a90981c8 ("drm/i915: Make cursor plane registers unlocked")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Closes: https://lore.kernel.org/intel-gfx/20240227100342.GAZd2zfmYcPS_SndtO@fat_crate.local/
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240325175738.3440-1-ville.syrjala@linux.intel.com
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-(cherry picked from commit c1289a5c3594cf04caa94ebf0edeb50c62009f1f)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_cursor.c        |    4 +---
- drivers/gpu/drm/i915/display/intel_display_types.h |    1 +
- drivers/gpu/drm/i915/display/intel_fb_pin.c        |   10 ++++++++++
- 3 files changed, 12 insertions(+), 3 deletions(-)
+ fs/xfs/libxfs/xfs_format.h   |    2 +-
+ fs/xfs/libxfs/xfs_rtbitmap.h |    2 +-
+ fs/xfs/libxfs/xfs_types.h    |    1 +
+ fs/xfs/scrub/trace.h         |    3 ++-
+ 4 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_cursor.c
-+++ b/drivers/gpu/drm/i915/display/intel_cursor.c
-@@ -35,12 +35,10 @@ static u32 intel_cursor_base(const struc
- {
- 	struct drm_i915_private *dev_priv =
- 		to_i915(plane_state->uapi.plane->dev);
--	const struct drm_framebuffer *fb = plane_state->hw.fb;
--	struct drm_i915_gem_object *obj = intel_fb_obj(fb);
- 	u32 base;
+--- a/fs/xfs/libxfs/xfs_format.h
++++ b/fs/xfs/libxfs/xfs_format.h
+@@ -98,7 +98,7 @@ typedef struct xfs_sb {
+ 	uint32_t	sb_blocksize;	/* logical block size, bytes */
+ 	xfs_rfsblock_t	sb_dblocks;	/* number of data blocks */
+ 	xfs_rfsblock_t	sb_rblocks;	/* number of realtime blocks */
+-	xfs_rtblock_t	sb_rextents;	/* number of realtime extents */
++	xfs_rtbxlen_t	sb_rextents;	/* number of realtime extents */
+ 	uuid_t		sb_uuid;	/* user-visible file system unique id */
+ 	xfs_fsblock_t	sb_logstart;	/* starting block of log if internal */
+ 	xfs_ino_t	sb_rootino;	/* root inode number */
+--- a/fs/xfs/libxfs/xfs_rtbitmap.h
++++ b/fs/xfs/libxfs/xfs_rtbitmap.h
+@@ -13,7 +13,7 @@
+  */
+ struct xfs_rtalloc_rec {
+ 	xfs_rtblock_t		ar_startext;
+-	xfs_rtblock_t		ar_extcount;
++	xfs_rtbxlen_t		ar_extcount;
+ };
  
- 	if (DISPLAY_INFO(dev_priv)->cursor_needs_physical)
--		base = i915_gem_object_get_dma_address(obj, 0);
-+		base = plane_state->phys_dma_addr;
- 	else
- 		base = intel_plane_ggtt_offset(plane_state);
+ typedef int (*xfs_rtalloc_query_range_fn)(
+--- a/fs/xfs/libxfs/xfs_types.h
++++ b/fs/xfs/libxfs/xfs_types.h
+@@ -31,6 +31,7 @@ typedef uint64_t	xfs_rfsblock_t;	/* bloc
+ typedef uint64_t	xfs_rtblock_t;	/* extent (block) in realtime area */
+ typedef uint64_t	xfs_fileoff_t;	/* block number in a file */
+ typedef uint64_t	xfs_filblks_t;	/* number of blocks in a file */
++typedef uint64_t	xfs_rtbxlen_t;	/* rtbitmap extent length in rtextents */
  
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -719,6 +719,7 @@ struct intel_plane_state {
- #define PLANE_HAS_FENCE BIT(0)
+ typedef int64_t		xfs_srtblock_t;	/* signed version of xfs_rtblock_t */
  
- 	struct intel_fb_view view;
-+	u32 phys_dma_addr; /* for cursor_needs_physical */
- 
- 	/* Plane pxp decryption state */
- 	bool decrypt;
---- a/drivers/gpu/drm/i915/display/intel_fb_pin.c
-+++ b/drivers/gpu/drm/i915/display/intel_fb_pin.c
-@@ -255,6 +255,16 @@ int intel_plane_pin_fb(struct intel_plan
- 			return PTR_ERR(vma);
- 
- 		plane_state->ggtt_vma = vma;
-+
-+		/*
-+		 * Pre-populate the dma address before we enter the vblank
-+		 * evade critical section as i915_gem_object_get_dma_address()
-+		 * will trigger might_sleep() even if it won't actually sleep,
-+		 * which is the case when the fb has already been pinned.
-+		 */
-+		if (phys_cursor)
-+			plane_state->phys_dma_addr =
-+				i915_gem_object_get_dma_address(intel_fb_obj(fb), 0);
- 	} else {
- 		struct intel_framebuffer *intel_fb = to_intel_framebuffer(fb);
- 
+--- a/fs/xfs/scrub/trace.h
++++ b/fs/xfs/scrub/trace.h
+@@ -1037,7 +1037,8 @@ TRACE_EVENT(xfarray_sort_stats,
+ #ifdef CONFIG_XFS_RT
+ TRACE_EVENT(xchk_rtsum_record_free,
+ 	TP_PROTO(struct xfs_mount *mp, xfs_rtblock_t start,
+-		 uint64_t len, unsigned int log, loff_t pos, xfs_suminfo_t v),
++		 xfs_rtbxlen_t len, unsigned int log, loff_t pos,
++		 xfs_suminfo_t v),
+ 	TP_ARGS(mp, start, len, log, pos, v),
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
 
 
 
