@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0417289406E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF78B894212
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E19282200
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A63991F226E0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6452B46B9F;
-	Mon,  1 Apr 2024 16:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E8241232;
+	Mon,  1 Apr 2024 16:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBHwCjU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRKIjJCl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213FA1CA8F;
-	Mon,  1 Apr 2024 16:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B7F1C0DE7;
+	Mon,  1 Apr 2024 16:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988999; cv=none; b=GDk3CDAKyv7UyNi4503YvNazNOROrgrk0GY7/pdQzCRqMNETxUosajRR8DMg3lF42NAOJLdvBBO1ZjkeJI1DFE79INIf39kkH8U9beAsV9Ou0KankRTi5/gm9R/Xf7HVtPV5R6rfa3E8pOVVTO+sTbMVSoerED1CxWd1xc80//w=
+	t=1711990149; cv=none; b=CCquAxidOwa2dKRQF3NfDDC6fbpw0wn50+oju5p1tHrMJ0+dz0h7mH7b89kORezrkh72VmsNOOR9wiKwj5TXr5y33vJmUEb3rXKvcQV3aNByFEfROsqYAFhkJV54f0pZc9JsOJmraI6nThK+s8igtyaIO6EXT74koO2xH6h9j3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988999; c=relaxed/simple;
-	bh=ZKS4Jzkz4HKQEFM4jDkSSt47Hrz2y9OTtHZRxVp4jqg=;
+	s=arc-20240116; t=1711990149; c=relaxed/simple;
+	bh=0KvWmWtWYfpFwEo/k1DrrYxy+OjaVJx54ea+lSefr+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BN51/OxOI2rvpl+EwnRpd9YZbJoaa1dmyo7E2RCSuviVt6BOnfro4JJBrT7ddLR2ZJuYAV8REz8WcIeoBjgqru5tigiijDW1J5/eEYjHMwdiQLtBVkd7NQsWg1rkJVlJ4UYE5ZoNNDGw8BYTUtTY4+ogUozHhitL4oS3fYyUx1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBHwCjU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5308DC43390;
-	Mon,  1 Apr 2024 16:29:58 +0000 (UTC)
+	 MIME-Version; b=YbXU+Cg61ezkuSGHXdGYHIhmH5gNNogJcaKj5wei9luqgWQ75wbiqJ95fisXQKA+wEyoYcXZ3Lkz2iwYIiRnM5X81IDVXvzWQRx+jykUYpKWMlKr/XrQZ63lC6ABQ3cRPUr0AcKVLTD9xkNi/60wx2795+807SwQgClnOXJP2e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRKIjJCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CDEC433C7;
+	Mon,  1 Apr 2024 16:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988999;
-	bh=ZKS4Jzkz4HKQEFM4jDkSSt47Hrz2y9OTtHZRxVp4jqg=;
+	s=korg; t=1711990149;
+	bh=0KvWmWtWYfpFwEo/k1DrrYxy+OjaVJx54ea+lSefr+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBHwCjU1pvn1VrpL5KXOOeD4HslsqkqM5g7xO5dV7Yfb2EEAhUC8bPHoJ8mY78BN4
-	 3Zwf/objVISJMlvraafYB3kVDNWLhqO13d+4VILmq71NOUJQ3Dy70gTCEaJCqRACgG
-	 EC1G/Udw9NbROCtrvLXYhAjASInAXX3h82uwAm5Q=
+	b=pRKIjJClYG6cYF5F8evqf1XtUv2fud25fYCMDm+07O4NhP1gp9q7gkHaPTHdCG9qQ
+	 jyr0lGjQUzumZ4oF57yI1EbAQ0NX/5C87I9VCHwcE15mBaz4ewuRNmPCkBnZiHD5TB
+	 I8E0mVGcm7+b7pOAViYR8li52/ocaUJTBTDViS1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.7 323/432] mfd: intel-lpss: Introduce QUIRK_CLOCK_DIVIDER_UNITY for XPS 9530
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 261/396] xfs: fix 32-bit truncation in xfs_compute_rextslog
 Date: Mon,  1 Apr 2024 17:45:10 +0200
-Message-ID: <20240401152602.832783067@linuxfoundation.org>
+Message-ID: <20240401152555.688745253@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 1d8c51ed2ddcc4161e6496cf14fcd83921c50ec8 upstream.
+commit cf8f0e6c1429be7652869059ea44696b72d5b726 upstream.
 
-Some devices (eg. Dell XPS 9530, 2023) due to a firmware bug have a
-misconfigured clock divider, which should've been 1:1. This introduces
-quirk which conditionally re-configures the clock divider to 1:1.
+It's quite reasonable that some customer somewhere will want to
+configure a realtime volume with more than 2^32 extents.  If they try to
+do this, the highbit32() call will truncate the upper bits of the
+xfs_rtbxlen_t and produce the wrong value for rextslog.  This in turn
+causes the rsumlevels to be wrong, which results in a realtime summary
+file that is the wrong length.  Fix that.
 
-Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231221185142.9224-3-alex.vinarskis@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/intel-lpss-pci.c |    5 +++++
- drivers/mfd/intel-lpss.c     |    7 +++++++
- drivers/mfd/intel-lpss.h     |    5 +++++
- 3 files changed, 17 insertions(+)
+ fs/xfs/libxfs/xfs_rtbitmap.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/mfd/intel-lpss-pci.c
-+++ b/drivers/mfd/intel-lpss-pci.c
-@@ -29,6 +29,11 @@ static const struct pci_device_id quirk_
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1237),
- 		.driver_data = QUIRK_IGNORE_RESOURCE_CONFLICTS,
- 	},
-+	{
-+		/* Dell XPS 9530 (2023) */
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x51fb, 0x1028, 0x0beb),
-+		.driver_data = QUIRK_CLOCK_DIVIDER_UNITY,
-+	},
- 	{ }
- };
+--- a/fs/xfs/libxfs/xfs_rtbitmap.c
++++ b/fs/xfs/libxfs/xfs_rtbitmap.c
+@@ -1133,13 +1133,15 @@ xfs_rtalloc_extent_is_free(
  
---- a/drivers/mfd/intel-lpss.c
-+++ b/drivers/mfd/intel-lpss.c
-@@ -292,6 +292,7 @@ static int intel_lpss_register_clock_div
- {
- 	char name[32];
- 	struct clk *tmp = *clk;
-+	int ret;
- 
- 	snprintf(name, sizeof(name), "%s-enable", devname);
- 	tmp = clk_register_gate(NULL, name, __clk_get_name(tmp), 0,
-@@ -308,6 +309,12 @@ static int intel_lpss_register_clock_div
- 		return PTR_ERR(tmp);
- 	*clk = tmp;
- 
-+	if (lpss->info->quirks & QUIRK_CLOCK_DIVIDER_UNITY) {
-+		ret = clk_set_rate(tmp, lpss->info->clk_rate);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	snprintf(name, sizeof(name), "%s-update", devname);
- 	tmp = clk_register_gate(NULL, name, __clk_get_name(tmp),
- 				CLK_SET_RATE_PARENT, lpss->priv, 31, 0, NULL);
---- a/drivers/mfd/intel-lpss.h
-+++ b/drivers/mfd/intel-lpss.h
-@@ -19,6 +19,11 @@
-  * Set to ignore resource conflicts with ACPI declared SystemMemory regions.
+ /*
+  * Compute the maximum level number of the realtime summary file, as defined by
+- * mkfs.  The use of highbit32 on a 64-bit quantity is a historic artifact that
+- * prohibits correct use of rt volumes with more than 2^32 extents.
++ * mkfs.  The historic use of highbit32 on a 64-bit quantity prohibited correct
++ * use of rt volumes with more than 2^32 extents.
   */
- #define QUIRK_IGNORE_RESOURCE_CONFLICTS BIT(0)
-+/*
-+ * Some devices have misconfigured clock divider due to a firmware bug.
-+ * Set this to force the clock divider to 1:1 ratio.
-+ */
-+#define QUIRK_CLOCK_DIVIDER_UNITY		BIT(1)
+ uint8_t
+ xfs_compute_rextslog(
+ 	xfs_rtbxlen_t		rtextents)
+ {
+-	return rtextents ? xfs_highbit32(rtextents) : 0;
++	if (!rtextents)
++		return 0;
++	return xfs_highbit64(rtextents);
+ }
  
- struct device;
- struct resource;
 
 
 
