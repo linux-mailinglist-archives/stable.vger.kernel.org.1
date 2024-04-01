@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EFE8941FB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09AF893EC3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4F421C2134E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85C941F20C17
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D828433DA;
-	Mon,  1 Apr 2024 16:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231CF3F8F4;
+	Mon,  1 Apr 2024 16:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDi+/HKu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIcS7K4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAE03613C;
-	Mon,  1 Apr 2024 16:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3918383BA;
+	Mon,  1 Apr 2024 16:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990110; cv=none; b=F5jCxSd8s8fwY5EMYeXjd7yxpaUyxYnHVT12vukdZltzviDhKC6QzbRm1b2mu++9P6FLD8zcDS7Kd1soSJk1pq8/N1inP0Xy0crP1Dtc24lo/IH5X0H6cyTVsIt+qeDWL8FkVSclo21OTYpdMyG+oaThb/Y5vG76xyv80x/seJM=
+	t=1711987656; cv=none; b=OolP/EZx/67D54IiDmo3mrOWxS5Chx3isRde7Dyc5dG3+gIe5KC10xYyAk7Y+GRM5FXf7qcarrUcVkhvUjEqoOYh9E8mR+PuF4bRuovmVNO59M1x2xbXje63nzH/bjxkXmWSfdCxcToIIxxDpCmlUOIP4zuK0JiV53BvZloA3ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990110; c=relaxed/simple;
-	bh=gWOdiABM0ZPlXsuQaWspwS5O5FfeJ81a0f3hG42LhqY=;
+	s=arc-20240116; t=1711987656; c=relaxed/simple;
+	bh=gnWWfq6FLeatSv1OaXltruKRIRyl8RSEh1Rzz1HbE5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4hf1ruecJkJbVWaqt5yX6eWNoPK5YDeK6O8IihHbjf6A7l4rFQdMle5/mbUQn+A24gcuhWFB8zT7UZ6IHEEal/0PFrRC4TUF4S4REpIS7bz3PAp7fnACgsNbaClalRELWavp8AQt9k9YdUhJz2zwmWunfA54McMJO9JDhPHANo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDi+/HKu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6094C433F1;
-	Mon,  1 Apr 2024 16:48:29 +0000 (UTC)
+	 MIME-Version; b=pAhStwbX1/PvROJ4x0ipotRsTqkFL12yFBweWzZX5oL2vomCYb4vTmbD77SWgx8moOxsizzkLmkmoNF/GMRxueWDUlLU6xlcf14pkU2KvSyGmUZYkaoqliG44lRlW330yndHK3/OTKhl9NY3eXTxTbSnYcRgwM8e8ifsrVZJgM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIcS7K4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4267EC433C7;
+	Mon,  1 Apr 2024 16:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990110;
-	bh=gWOdiABM0ZPlXsuQaWspwS5O5FfeJ81a0f3hG42LhqY=;
+	s=korg; t=1711987656;
+	bh=gnWWfq6FLeatSv1OaXltruKRIRyl8RSEh1Rzz1HbE5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDi+/HKui65hF4fpw508vhoPQbpG6VW+0MWQpuWQfzIqry6JYuRIKGZ7eRLqbVdUF
-	 RgGEcQhMZmZz76yNDszogNWQI3Qd6bivF047p6lDol9rii369t6vKRdg+iT8GtI0ie
-	 vPh3zj1dYFJGnQKdmu/iZYSe7Ex9L46/rclNK/jQ=
+	b=uIcS7K4IVg98SEYc/WFhCYZ9my+sQQpKP3kvDb7nede5PnIdVogza29sDRGFvJQw4
+	 lL/XqyAu8BRrkjlIamHGXGSxobgtne+IVx+567I9NA3Q9fRoGWUrIdYdRxlkz4GI3t
+	 d/IR6b2aNVCVMWMNc/G8dFogIsUqKY+3E4ysNUns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 242/396] iio: accel: adxl367: fix DEVID read after reset
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH 6.8 325/399] drm/vmwgfx: Create debugfs ttm_resource_manager entry only if needed
 Date: Mon,  1 Apr 2024 17:44:51 +0200
-Message-ID: <20240401152555.129118118@linuxfoundation.org>
+Message-ID: <20240401152558.881562467@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-commit 1b926914bbe4e30cb32f268893ef7d82a85275b8 upstream.
+commit 4be9075fec0a639384ed19975634b662bfab938f upstream.
 
-regmap_read_poll_timeout() will not sleep before reading,
-causing the first read to return -ENXIO on I2C, since the
-chip does not respond to it while it is being reset.
+The driver creates /sys/kernel/debug/dri/0/mob_ttm even when the
+corresponding ttm_resource_manager is not allocated.
+This leads to a crash when trying to read from this file.
 
-The datasheet specifies that a soft reset operation has a
-latency of 7.5ms.
+Add a check to create mob_ttm, system_mob_ttm, and gmr_ttm debug file
+only when the corresponding ttm_resource_manager is allocated.
 
-Add a 15ms sleep between reset and reading the DEVID register,
-and switch to a simple regmap_read() call.
+crash> bt
+PID: 3133409  TASK: ffff8fe4834a5000  CPU: 3    COMMAND: "grep"
+ #0 [ffffb954506b3b20] machine_kexec at ffffffffb2a6bec3
+ #1 [ffffb954506b3b78] __crash_kexec at ffffffffb2bb598a
+ #2 [ffffb954506b3c38] crash_kexec at ffffffffb2bb68c1
+ #3 [ffffb954506b3c50] oops_end at ffffffffb2a2a9b1
+ #4 [ffffb954506b3c70] no_context at ffffffffb2a7e913
+ #5 [ffffb954506b3cc8] __bad_area_nosemaphore at ffffffffb2a7ec8c
+ #6 [ffffb954506b3d10] do_page_fault at ffffffffb2a7f887
+ #7 [ffffb954506b3d40] page_fault at ffffffffb360116e
+    [exception RIP: ttm_resource_manager_debug+0x11]
+    RIP: ffffffffc04afd11  RSP: ffffb954506b3df0  RFLAGS: 00010246
+    RAX: ffff8fe41a6d1200  RBX: 0000000000000000  RCX: 0000000000000940
+    RDX: 0000000000000000  RSI: ffffffffc04b4338  RDI: 0000000000000000
+    RBP: ffffb954506b3e08   R8: ffff8fee3ffad000   R9: 0000000000000000
+    R10: ffff8fe41a76a000  R11: 0000000000000001  R12: 00000000ffffffff
+    R13: 0000000000000001  R14: ffff8fe5bb6f3900  R15: ffff8fe41a6d1200
+    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ #8 [ffffb954506b3e00] ttm_resource_manager_show at ffffffffc04afde7 [ttm]
+ #9 [ffffb954506b3e30] seq_read at ffffffffb2d8f9f3
+    RIP: 00007f4c4eda8985  RSP: 00007ffdbba9e9f8  RFLAGS: 00000246
+    RAX: ffffffffffffffda  RBX: 000000000037e000  RCX: 00007f4c4eda8985
+    RDX: 000000000037e000  RSI: 00007f4c41573000  RDI: 0000000000000003
+    RBP: 000000000037e000   R8: 0000000000000000   R9: 000000000037fe30
+    R10: 0000000000000000  R11: 0000000000000246  R12: 00007f4c41573000
+    R13: 0000000000000003  R14: 00007f4c41572010  R15: 0000000000000003
+    ORIG_RAX: 0000000000000000  CS: 0033  SS: 002b
 
-Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240207033657.206171-1-demonsingur@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: af4a25bbe5e7 ("drm/vmwgfx: Add debugfs entries for various ttm resource managers")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240312093551.196609-1-jfalempe@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/adxl367.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/iio/accel/adxl367.c
-+++ b/drivers/iio/accel/adxl367.c
-@@ -1429,9 +1429,11 @@ static int adxl367_verify_devid(struct a
- 	unsigned int val;
- 	int ret;
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -1444,12 +1444,15 @@ static void vmw_debugfs_resource_manager
+ 					    root, "system_ttm");
+ 	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, TTM_PL_VRAM),
+ 					    root, "vram_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
+-					    root, "gmr_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
+-					    root, "mob_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
+-					    root, "system_mob_ttm");
++	if (vmw->has_gmr)
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
++						    root, "gmr_ttm");
++	if (vmw->has_mob) {
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
++						    root, "mob_ttm");
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
++						    root, "system_mob_ttm");
++	}
+ }
  
--	ret = regmap_read_poll_timeout(st->regmap, ADXL367_REG_DEVID, val,
--				       val == ADXL367_DEVID_AD, 1000, 10000);
-+	ret = regmap_read(st->regmap, ADXL367_REG_DEVID, &val);
- 	if (ret)
-+		return dev_err_probe(st->dev, ret, "Failed to read dev id\n");
-+
-+	if (val != ADXL367_DEVID_AD)
- 		return dev_err_probe(st->dev, -ENODEV,
- 				     "Invalid dev id 0x%02X, expected 0x%02X\n",
- 				     val, ADXL367_DEVID_AD);
-@@ -1510,6 +1512,8 @@ int adxl367_probe(struct device *dev, co
- 	if (ret)
- 		return ret;
- 
-+	fsleep(15000);
-+
- 	ret = adxl367_verify_devid(st);
- 	if (ret)
- 		return ret;
+ static int vmwgfx_pm_notifier(struct notifier_block *nb, unsigned long val,
 
 
 
