@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-34919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEED1894178
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0325893FEB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CBA01C21707
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D9441C2114F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284FA4AED7;
-	Mon,  1 Apr 2024 16:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8504747A6B;
+	Mon,  1 Apr 2024 16:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUajMU5Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+myX1R/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C24487BC;
-	Mon,  1 Apr 2024 16:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453FEC129;
+	Mon,  1 Apr 2024 16:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989740; cv=none; b=o/N7WOwadwQNjtnxNP122nub8xmpSPGWfK4MSQ2tkFGeH2Ox9x3CbkZ4BbRNw5ZXIMAU4BSNi3N2oGUVCRfrpU6A3j4aC5hGqWiuS8JpqvgimoYxmZv/b4iBlhvZ9SiPWUZ28rpAovqqTg5VdNStA8NBWjjfKHfQsrZUaxM8bzE=
+	t=1711988587; cv=none; b=bsiMBaCZmLCvSQjfUpeC6sjXUQrez2LnkqWw1tXPbufP5ZGE+6x75d84wBBjzd4XJqeIweudP38zHQpz/WWFb3LaxGLpXu9JIgFtKEmlfS6+ABI/IKYE4m2RwIgeoFT6F2xtoaFCW5HJN3yhSSO57SOp6wlAdNj495s/ZfRu+s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989740; c=relaxed/simple;
-	bh=yTW6fQpzueHcY+8JEPSXn4T38TX2GnKaqnNiD52j8ms=;
+	s=arc-20240116; t=1711988587; c=relaxed/simple;
+	bh=Nhi1V4FAhUoEMOyXDGo3IWyK0OQUHZRmk8rFjPzYExU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyRpjo7riPiGZZ3JxrU7vYew1rleecmo7s3qja3vDD84L4CSCBYoDvaWyk0VYaUz+IGdYTSsnxQXN5GPHRxDKEKvI4dibAMRrS5Zf/8Ca32Kuhs9KuYZ57fxaPWqZq8faDJXzF1Fei8k8meleFZcevTyHu9T4pSyFgCUtdiKWWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUajMU5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0D9C433C7;
-	Mon,  1 Apr 2024 16:42:19 +0000 (UTC)
+	 MIME-Version; b=OKZGjA/dUAJZzwWIvUfvj3t35gEBdBybIvb0alXXG8sZvGd7q77Q2U+MPr9rgO6uGfDeU3WldvKJlNWBfQPZRIBa88nXUFordgMHQ74SbmLx+/4hsphE7c1joGWK/dwumkFWLmnr3JCZ37muu1mfP+GCFYUk0sUQ1hCENGKqV60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+myX1R/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F70C433C7;
+	Mon,  1 Apr 2024 16:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989740;
-	bh=yTW6fQpzueHcY+8JEPSXn4T38TX2GnKaqnNiD52j8ms=;
+	s=korg; t=1711988587;
+	bh=Nhi1V4FAhUoEMOyXDGo3IWyK0OQUHZRmk8rFjPzYExU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUajMU5ZARRVv8NYIW23MSbLM/eRpNsHZ9W63yvnoz02kGchA0Cg6v9/H9Zrb4wm/
-	 uFZJl4QEbCD5DOqz0YdzeAAtgmFNNBMdXmcrbuiTwSHyYiAU1WwOo842c2DSKXP9SG
-	 kDh9MSOyj9W8xSa6qUJB4y9MFwYUnR1Tz220y3H0=
+	b=e+myX1R/zQXPsW217isX2wGCPAAlwzR4fmNXjBo/vH9hGz2MkZClDo2Vv0qiYDX41
+	 X4jK7G6K0c3VmG7Qfg3MKQIsReBcQWa7YJshSqz7SYuDk3sVEExCguv/qGUakB2ynS
+	 j2nNYDWf+41eEKPZ4bdKnt1g4975F2EvuA/RNs98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linke li <lilinke99@qq.com>,
-	Rabin Vincent <rabin@rab.in>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/396] ring-buffer: Fix resetting of shortest_full
+Subject: [PATCH 6.7 200/432] LoongArch: Define the __io_aw() hook as mmiowb()
 Date: Mon,  1 Apr 2024 17:43:07 +0200
-Message-ID: <20240401152552.029442371@linuxfoundation.org>
+Message-ID: <20240401152559.103213918@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 68282dd930ea38b068ce2c109d12405f40df3f93 ]
+[ Upstream commit 9c68ece8b2a5c5ff9b2fcaea923dd73efeb174cd ]
 
-The "shortest_full" variable is used to keep track of the waiter that is
-waiting for the smallest amount on the ring buffer before being woken up.
-When a tasks waits on the ring buffer, it passes in a "full" value that is
-a percentage. 0 means wake up on any data. 1-100 means wake up from 1% to
-100% full buffer.
+Commit fb24ea52f78e0d595852e ("drivers: Remove explicit invocations of
+mmiowb()") remove all mmiowb() in drivers, but it says:
 
-As all waiters are on the same wait queue, the wake up happens for the
-waiter with the smallest percentage.
+"NOTE: mmiowb() has only ever guaranteed ordering in conjunction with
+spin_unlock(). However, pairing each mmiowb() removal in this patch with
+the corresponding call to spin_unlock() is not at all trivial, so there
+is a small chance that this change may regress any drivers incorrectly
+relying on mmiowb() to order MMIO writes between CPUs using lock-free
+synchronisation."
 
-The problem is that the smallest_full on the cpu_buffer that stores the
-smallest amount doesn't get reset when all the waiters are woken up. It
-does get reset when the ring buffer is reset (echo > /sys/kernel/tracing/trace).
+The mmio in radeon_ring_commit() is protected by a mutex rather than a
+spinlock, but in the mutex fastpath it behaves similar to spinlock. We
+can add mmiowb() calls in the radeon driver but the maintainer says he
+doesn't like such a workaround, and radeon is not the only example of
+mutex protected mmio.
 
-This means that tasks may be woken up more often then when they want to
-be. Instead, have the shortest_full field get reset just before waking up
-all the tasks. If the tasks wait again, they will update the shortest_full
-before sleeping.
+So we should extend the mmiowb tracking system from spinlock to mutex,
+and maybe other locking primitives. This is not easy and error prone, so
+we solve it in the architectural code, by simply defining the __io_aw()
+hook as mmiowb(). And we no longer need to override queued_spin_unlock()
+so use the generic definition.
 
-Also add locking around setting of shortest_full in the poll logic, and
-change "work" to "rbwork" to match the variable name for rb_irq_work
-structures that are used in other places.
+Without this, we get such an error when run 'glxgears' on weak ordering
+architectures such as LoongArch:
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240308202431.948914369@goodmis.org
+radeon 0000:04:00.0: ring 0 stalled for more than 10324msec
+radeon 0000:04:00.0: ring 3 stalled for more than 10240msec
+radeon 0000:04:00.0: GPU lockup (current fence id 0x000000000001f412 last fence id 0x000000000001f414 on ring 3)
+radeon 0000:04:00.0: GPU lockup (current fence id 0x000000000000f940 last fence id 0x000000000000f941 on ring 0)
+radeon 0000:04:00.0: scheduling IB failed (-35).
+[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
+radeon 0000:04:00.0: scheduling IB failed (-35).
+[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
+radeon 0000:04:00.0: scheduling IB failed (-35).
+[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
+radeon 0000:04:00.0: scheduling IB failed (-35).
+[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
+radeon 0000:04:00.0: scheduling IB failed (-35).
+[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
+radeon 0000:04:00.0: scheduling IB failed (-35).
+[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
+radeon 0000:04:00.0: scheduling IB failed (-35).
+[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
 
+Link: https://lore.kernel.org/dri-devel/29df7e26-d7a8-4f67-b988-44353c4270ac@amd.com/T/#t
+Link: https://lore.kernel.org/linux-arch/20240301130532.3953167-1-chenhuacai@loongson.cn/T/#t
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linke li <lilinke99@qq.com>
-Cc: Rabin Vincent <rabin@rab.in>
-Fixes: 2c2b0a78b3739 ("ring-buffer: Add percentage of ring buffer full to wake up reader")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 8145f1c35fa6 ("ring-buffer: Fix full_waiters_pending in poll")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ arch/loongarch/include/asm/Kbuild      |  1 +
+ arch/loongarch/include/asm/io.h        |  2 ++
+ arch/loongarch/include/asm/qspinlock.h | 18 ------------------
+ 3 files changed, 3 insertions(+), 18 deletions(-)
+ delete mode 100644 arch/loongarch/include/asm/qspinlock.h
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index a3315d569e2bf..a8ad5141d7ba3 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -902,8 +902,19 @@ static void rb_wake_up_waiters(struct irq_work *work)
+diff --git a/arch/loongarch/include/asm/Kbuild b/arch/loongarch/include/asm/Kbuild
+index 93783fa24f6e9..dede0b422cfb9 100644
+--- a/arch/loongarch/include/asm/Kbuild
++++ b/arch/loongarch/include/asm/Kbuild
+@@ -4,6 +4,7 @@ generic-y += mcs_spinlock.h
+ generic-y += parport.h
+ generic-y += early_ioremap.h
+ generic-y += qrwlock.h
++generic-y += qspinlock.h
+ generic-y += rwsem.h
+ generic-y += segment.h
+ generic-y += user.h
+diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
+index c486c2341b662..4a8adcca329b8 100644
+--- a/arch/loongarch/include/asm/io.h
++++ b/arch/loongarch/include/asm/io.h
+@@ -71,6 +71,8 @@ extern void __memcpy_fromio(void *to, const volatile void __iomem *from, size_t
+ #define memcpy_fromio(a, c, l) __memcpy_fromio((a), (c), (l))
+ #define memcpy_toio(c, a, l)   __memcpy_toio((c), (a), (l))
  
- 	wake_up_all(&rbwork->waiters);
- 	if (rbwork->full_waiters_pending || rbwork->wakeup_full) {
-+		/* Only cpu_buffer sets the above flags */
-+		struct ring_buffer_per_cpu *cpu_buffer =
-+			container_of(rbwork, struct ring_buffer_per_cpu, irq_work);
++#define __io_aw() mmiowb()
 +
-+		/* Called from interrupt context */
-+		raw_spin_lock(&cpu_buffer->reader_lock);
- 		rbwork->wakeup_full = false;
- 		rbwork->full_waiters_pending = false;
-+
-+		/* Waking up all waiters, they will reset the shortest full */
-+		cpu_buffer->shortest_full = 0;
-+		raw_spin_unlock(&cpu_buffer->reader_lock);
-+
- 		wake_up_all(&rbwork->full_waiters);
- 	}
- }
-@@ -1082,28 +1093,33 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 			  struct file *filp, poll_table *poll_table, int full)
- {
- 	struct ring_buffer_per_cpu *cpu_buffer;
--	struct rb_irq_work *work;
-+	struct rb_irq_work *rbwork;
+ #include <asm-generic/io.h>
  
- 	if (cpu == RING_BUFFER_ALL_CPUS) {
--		work = &buffer->irq_work;
-+		rbwork = &buffer->irq_work;
- 		full = 0;
- 	} else {
- 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
- 			return EPOLLERR;
- 
- 		cpu_buffer = buffer->buffers[cpu];
--		work = &cpu_buffer->irq_work;
-+		rbwork = &cpu_buffer->irq_work;
- 	}
- 
- 	if (full) {
--		poll_wait(filp, &work->full_waiters, poll_table);
--		work->full_waiters_pending = true;
-+		unsigned long flags;
-+
-+		poll_wait(filp, &rbwork->full_waiters, poll_table);
-+
-+		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
-+		rbwork->full_waiters_pending = true;
- 		if (!cpu_buffer->shortest_full ||
- 		    cpu_buffer->shortest_full > full)
- 			cpu_buffer->shortest_full = full;
-+		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- 	} else {
--		poll_wait(filp, &work->waiters, poll_table);
--		work->waiters_pending = true;
-+		poll_wait(filp, &rbwork->waiters, poll_table);
-+		rbwork->waiters_pending = true;
- 	}
- 
- 	/*
+ #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
+diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/include/asm/qspinlock.h
+deleted file mode 100644
+index 34f43f8ad5912..0000000000000
+--- a/arch/loongarch/include/asm/qspinlock.h
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_QSPINLOCK_H
+-#define _ASM_QSPINLOCK_H
+-
+-#include <asm-generic/qspinlock_types.h>
+-
+-#define queued_spin_unlock queued_spin_unlock
+-
+-static inline void queued_spin_unlock(struct qspinlock *lock)
+-{
+-	compiletime_assert_atomic_type(lock->locked);
+-	c_sync();
+-	WRITE_ONCE(lock->locked, 0);
+-}
+-
+-#include <asm-generic/qspinlock.h>
+-
+-#endif /* _ASM_QSPINLOCK_H */
 -- 
 2.43.0
 
