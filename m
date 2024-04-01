@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE828941B3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C71893FF7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4FF9B22CF8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98AB1281285
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA445481D5;
-	Mon,  1 Apr 2024 16:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C06247A74;
+	Mon,  1 Apr 2024 16:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BpkGwkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXRlDhkT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB471E525;
-	Mon,  1 Apr 2024 16:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0785847A5D;
+	Mon,  1 Apr 2024 16:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989900; cv=none; b=CkYM3jK2KP5ij4LinNJqEYI9N3bjEmH5ketMWsg+hU7oEbMw5KPUzSZ7nzYXIlHHybFuIxX2vTJUCGsUb2UtUtpmTc6sVOkf8Pcafg8urU4cR/1rU1l2VFV0/sfEWXLAMtyD18xM60FfHNTf7YvsN/l5a+EpdHqg30fEpI5TZPY=
+	t=1711988628; cv=none; b=rM5Cz76imZSpa7TqqU+OEDHegkqm30AhEVj7xuvKUZSoMYGxXmFEObLWt23DAwylsDFNfzZVq67u6iwtZgpH10e1NXdxa7838rn97HMdZh/fm1bLZWCjzhYHcpWQU14il8KVWhBzdYljUIUbr/WUUORdcIk0TMsxoodfNPIeA/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989900; c=relaxed/simple;
-	bh=VjmP1DQSwWEkhgEsfzQrhIsjznf3Pibimw0pLVQ9JoQ=;
+	s=arc-20240116; t=1711988628; c=relaxed/simple;
+	bh=AuYeX9t53eDzwyxKysJsoYI7dPmYLVCjEcO3WCTihak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8aSD9Dck10XVxLPWGjA/pMfce3fT5wK+n8Mtjo8FCotkfpCD2s8nkSyswBqpVdig4A0Ynx6iTfoe7iQc7oZDSmGnegzosAwzgGAMDOhgs02bVgH21ivmXf9rWyVt1GPZGz8YQjHOgMsAwSNITxcZK7V0bnrxlA9c2L72Mk6iSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BpkGwkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB8FC433F1;
-	Mon,  1 Apr 2024 16:44:59 +0000 (UTC)
+	 MIME-Version; b=MTo/sCP5vlgPqBzBGv52wGzdeoIjmJ04Lv2YsVpnZFMETo49OL9E4Vqomnc7A+IQjv7a0tGbc6ccd6xZyZ8XanqomyHYZBZTcLf0+Iq1gaaDxrYTqLPyPJ3d+1FpA8CVeaNFzsKvki0pFflpi+52lsgiQ1/hEnKoEfCnQm36V90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXRlDhkT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B60FC433C7;
+	Mon,  1 Apr 2024 16:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989900;
-	bh=VjmP1DQSwWEkhgEsfzQrhIsjznf3Pibimw0pLVQ9JoQ=;
+	s=korg; t=1711988627;
+	bh=AuYeX9t53eDzwyxKysJsoYI7dPmYLVCjEcO3WCTihak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BpkGwkrLqlIAiBi4fFYV5wC8eZEToNT4oQnKtWAjydgt8CQ2qA3I+nFCuWiRMGj8
-	 QrMQi1OMhyy7C/4sEZypVvQXBw+Zn0CiP38fEjoyoHDpdlOzfspxMSVAbMmC5ok10F
-	 YIKNLuoqvc0+DJe/jmxprDbWktHqro6rlKoYz8E4=
+	b=jXRlDhkTxvyw/B6GvUuYSASzWP4R4lncx5W1P1Kng6IsCtka9Wr/T0vMSpdKu35UG
+	 VQVaJpIRfRLm/9L3zSC13x1+Q6h5mi6TtvJgB+sR1kIMUn8t1+3y73eYAKHc/fpT0P
+	 HAYuU7X473hlgS/sEMM2jJndOtQ7P6D9y446BuC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Andrey Jr. Melnikov" <temnota.am@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/396] ahci: asm1064: correct count of reported ports
-Date: Mon,  1 Apr 2024 17:43:48 +0200
-Message-ID: <20240401152553.280060657@linuxfoundation.org>
+	Karel Balej <balejk@matfyz.cz>,
+	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.7 242/432] Revert "crypto: pkcs7 - remove sha1 support"
+Date: Mon,  1 Apr 2024 17:43:49 +0200
+Message-ID: <20240401152600.354588651@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,278 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Jr. Melnikov <temnota.am@gmail.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 9815e39617541ef52d0dfac4be274ad378c6dc09 ]
+commit 203a6763ab699da0568fd2b76303d03bb121abd4 upstream.
 
-The ASM1064 SATA host controller always reports wrongly,
-that it has 24 ports. But in reality, it only has four ports.
+This reverts commit 16ab7cb5825fc3425c16ad2c6e53d827f382d7c6 because it
+broke iwd.  iwd uses the KEYCTL_PKEY_* UAPIs via its dependency libell,
+and apparently it is relying on SHA-1 signature support.  These UAPIs
+are fairly obscure, and their documentation does not mention which
+algorithms they support.  iwd really should be using a properly
+supported userspace crypto library instead.  Regardless, since something
+broke we have to revert the change.
 
-before:
-ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
-ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xffff0f impl SATA mode
-ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
+It may be possible that some parts of this commit can be reinstated
+without breaking iwd (e.g. probably the removal of MODULE_SIG_SHA1), but
+for now this just does a full revert to get things working again.
 
-after:
-ahci 0000:04:00.0: ASM1064 has only four ports
-ahci 0000:04:00.0: forcing port_map 0xffff0f -> 0xf
-ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
-ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xf impl SATA mode
-ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
-
-Signed-off-by: "Andrey Jr. Melnikov" <temnota.am@gmail.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Stable-dep-of: 6cd8adc3e189 ("ahci: asm1064: asm1166: don't limit reported ports")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Karel Balej <balejk@matfyz.cz>
+Closes: https://lore.kernel.org/r/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz
+Cc: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Tested-by: Karel Balej <balejk@matfyz.cz>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ crypto/asymmetric_keys/mscode_parser.c    |    3 +
+ crypto/asymmetric_keys/pkcs7_parser.c     |    4 +
+ crypto/asymmetric_keys/public_key.c       |    3 -
+ crypto/asymmetric_keys/signature.c        |    2 
+ crypto/asymmetric_keys/x509_cert_parser.c |    8 +++
+ crypto/testmgr.h                          |   80 ++++++++++++++++++++++++++++++
+ include/linux/oid_registry.h              |    4 +
+ kernel/module/Kconfig                     |    5 +
+ 8 files changed, 107 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 90d33c519f4c6..9933ad9737bb2 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -670,9 +670,17 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
--		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--		hpriv->saved_port_map = 0x3f;
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
-+		switch (pdev->device) {
-+		case 0x1166:
-+			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+			hpriv->saved_port_map = 0x3f;
-+			break;
-+		case 0x1064:
-+			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
-+			hpriv->saved_port_map = 0xf;
-+			break;
-+		}
- 	}
+--- a/crypto/asymmetric_keys/mscode_parser.c
++++ b/crypto/asymmetric_keys/mscode_parser.c
+@@ -75,6 +75,9 @@ int mscode_note_digest_algo(void *contex
  
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
--- 
-2.43.0
-
+ 	oid = look_up_OID(value, vlen);
+ 	switch (oid) {
++	case OID_sha1:
++		ctx->digest_algo = "sha1";
++		break;
+ 	case OID_sha256:
+ 		ctx->digest_algo = "sha256";
+ 		break;
+--- a/crypto/asymmetric_keys/pkcs7_parser.c
++++ b/crypto/asymmetric_keys/pkcs7_parser.c
+@@ -227,6 +227,9 @@ int pkcs7_sig_note_digest_algo(void *con
+ 	struct pkcs7_parse_context *ctx = context;
+ 
+ 	switch (ctx->last_oid) {
++	case OID_sha1:
++		ctx->sinfo->sig->hash_algo = "sha1";
++		break;
+ 	case OID_sha256:
+ 		ctx->sinfo->sig->hash_algo = "sha256";
+ 		break;
+@@ -278,6 +281,7 @@ int pkcs7_sig_note_pkey_algo(void *conte
+ 		ctx->sinfo->sig->pkey_algo = "rsa";
+ 		ctx->sinfo->sig->encoding = "pkcs1";
+ 		break;
++	case OID_id_ecdsa_with_sha1:
+ 	case OID_id_ecdsa_with_sha224:
+ 	case OID_id_ecdsa_with_sha256:
+ 	case OID_id_ecdsa_with_sha384:
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -115,7 +115,8 @@ software_key_determine_akcipher(const st
+ 		 */
+ 		if (!hash_algo)
+ 			return -EINVAL;
+-		if (strcmp(hash_algo, "sha224") != 0 &&
++		if (strcmp(hash_algo, "sha1") != 0 &&
++		    strcmp(hash_algo, "sha224") != 0 &&
+ 		    strcmp(hash_algo, "sha256") != 0 &&
+ 		    strcmp(hash_algo, "sha384") != 0 &&
+ 		    strcmp(hash_algo, "sha512") != 0 &&
+--- a/crypto/asymmetric_keys/signature.c
++++ b/crypto/asymmetric_keys/signature.c
+@@ -115,7 +115,7 @@ EXPORT_SYMBOL_GPL(decrypt_blob);
+  * Sign the specified data blob using the private key specified by params->key.
+  * The signature is wrapped in an encoding if params->encoding is specified
+  * (eg. "pkcs1").  If the encoding needs to know the digest type, this can be
+- * passed through params->hash_algo (eg. "sha512").
++ * passed through params->hash_algo (eg. "sha1").
+  *
+  * Returns the length of the data placed in the signature buffer or an error.
+  */
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -198,6 +198,10 @@ int x509_note_sig_algo(void *context, si
+ 	default:
+ 		return -ENOPKG; /* Unsupported combination */
+ 
++	case OID_sha1WithRSAEncryption:
++		ctx->cert->sig->hash_algo = "sha1";
++		goto rsa_pkcs1;
++
+ 	case OID_sha256WithRSAEncryption:
+ 		ctx->cert->sig->hash_algo = "sha256";
+ 		goto rsa_pkcs1;
+@@ -214,6 +218,10 @@ int x509_note_sig_algo(void *context, si
+ 		ctx->cert->sig->hash_algo = "sha224";
+ 		goto rsa_pkcs1;
+ 
++	case OID_id_ecdsa_with_sha1:
++		ctx->cert->sig->hash_algo = "sha1";
++		goto ecdsa;
++
+ 	case OID_id_rsassa_pkcs1_v1_5_with_sha3_256:
+ 		ctx->cert->sig->hash_algo = "sha3-256";
+ 		goto rsa_pkcs1;
+--- a/crypto/testmgr.h
++++ b/crypto/testmgr.h
+@@ -653,6 +653,30 @@ static const struct akcipher_testvec rsa
+ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
+ 	{
+ 	.key =
++	"\x04\xf7\x46\xf8\x2f\x15\xf6\x22\x8e\xd7\x57\x4f\xcc\xe7\xbb\xc1"
++	"\xd4\x09\x73\xcf\xea\xd0\x15\x07\x3d\xa5\x8a\x8a\x95\x43\xe4\x68"
++	"\xea\xc6\x25\xc1\xc1\x01\x25\x4c\x7e\xc3\x3c\xa6\x04\x0a\xe7\x08"
++	"\x98",
++	.key_len = 49,
++	.params =
++	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
++	"\xce\x3d\x03\x01\x01",
++	.param_len = 21,
++	.m =
++	"\xcd\xb9\xd2\x1c\xb7\x6f\xcd\x44\xb3\xfd\x63\xea\xa3\x66\x7f\xae"
++	"\x63\x85\xe7\x82",
++	.m_size = 20,
++	.algo = OID_id_ecdsa_with_sha1,
++	.c =
++	"\x30\x35\x02\x19\x00\xba\xe5\x93\x83\x6e\xb6\x3b\x63\xa0\x27\x91"
++	"\xc6\xf6\x7f\xc3\x09\xad\x59\xad\x88\x27\xd6\x92\x6b\x02\x18\x10"
++	"\x68\x01\x9d\xba\xce\x83\x08\xef\x95\x52\x7b\xa0\x0f\xe4\x18\x86"
++	"\x80\x6f\xa5\x79\x77\xda\xd0",
++	.c_size = 55,
++	.public_key_vec = true,
++	.siggen_sigver_test = true,
++	}, {
++	.key =
+ 	"\x04\xb6\x4b\xb1\xd1\xac\xba\x24\x8f\x65\xb2\x60\x00\x90\xbf\xbd"
+ 	"\x78\x05\x73\xe9\x79\x1d\x6f\x7c\x0b\xd2\xc3\x93\xa7\x28\xe1\x75"
+ 	"\xf7\xd5\x95\x1d\x28\x10\xc0\x75\x50\x5c\x1a\x4f\x3f\x8f\xa5\xee"
+@@ -756,6 +780,32 @@ static const struct akcipher_testvec ecd
+ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
+ 	{
+ 	.key =
++	"\x04\xb9\x7b\xbb\xd7\x17\x64\xd2\x7e\xfc\x81\x5d\x87\x06\x83\x41"
++	"\x22\xd6\x9a\xaa\x87\x17\xec\x4f\x63\x55\x2f\x94\xba\xdd\x83\xe9"
++	"\x34\x4b\xf3\xe9\x91\x13\x50\xb6\xcb\xca\x62\x08\xe7\x3b\x09\xdc"
++	"\xc3\x63\x4b\x2d\xb9\x73\x53\xe4\x45\xe6\x7c\xad\xe7\x6b\xb0\xe8"
++	"\xaf",
++	.key_len = 65,
++	.params =
++	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
++	"\xce\x3d\x03\x01\x07",
++	.param_len = 21,
++	.m =
++	"\xc2\x2b\x5f\x91\x78\x34\x26\x09\x42\x8d\x6f\x51\xb2\xc5\xaf\x4c"
++	"\x0b\xde\x6a\x42",
++	.m_size = 20,
++	.algo = OID_id_ecdsa_with_sha1,
++	.c =
++	"\x30\x46\x02\x21\x00\xf9\x25\xce\x9f\x3a\xa6\x35\x81\xcf\xd4\xe7"
++	"\xb7\xf0\x82\x56\x41\xf7\xd4\xad\x8d\x94\x5a\x69\x89\xee\xca\x6a"
++	"\x52\x0e\x48\x4d\xcc\x02\x21\x00\xd7\xe4\xef\x52\x66\xd3\x5b\x9d"
++	"\x8a\xfa\x54\x93\x29\xa7\x70\x86\xf1\x03\x03\xf3\x3b\xe2\x73\xf7"
++	"\xfb\x9d\x8b\xde\xd4\x8d\x6f\xad",
++	.c_size = 72,
++	.public_key_vec = true,
++	.siggen_sigver_test = true,
++	}, {
++	.key =
+ 	"\x04\x8b\x6d\xc0\x33\x8e\x2d\x8b\x67\xf5\xeb\xc4\x7f\xa0\xf5\xd9"
+ 	"\x7b\x03\xa5\x78\x9a\xb5\xea\x14\xe4\x23\xd0\xaf\xd7\x0e\x2e\xa0"
+ 	"\xc9\x8b\xdb\x95\xf8\xb3\xaf\xac\x00\x2c\x2c\x1f\x7a\xfd\x95\x88"
+@@ -866,6 +916,36 @@ static const struct akcipher_testvec ecd
+ 
+ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
+ 	{
++	.key = /* secp384r1(sha1) */
++	"\x04\x89\x25\xf3\x97\x88\xcb\xb0\x78\xc5\x72\x9a\x14\x6e\x7a\xb1"
++	"\x5a\xa5\x24\xf1\x95\x06\x9e\x28\xfb\xc4\xb9\xbe\x5a\x0d\xd9\x9f"
++	"\xf3\xd1\x4d\x2d\x07\x99\xbd\xda\xa7\x66\xec\xbb\xea\xba\x79\x42"
++	"\xc9\x34\x89\x6a\xe7\x0b\xc3\xf2\xfe\x32\x30\xbe\xba\xf9\xdf\x7e"
++	"\x4b\x6a\x07\x8e\x26\x66\x3f\x1d\xec\xa2\x57\x91\x51\xdd\x17\x0e"
++	"\x0b\x25\xd6\x80\x5c\x3b\xe6\x1a\x98\x48\x91\x45\x7a\x73\xb0\xc3"
++	"\xf1",
++	.key_len = 97,
++	.params =
++	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
++	"\x00\x22",
++	.param_len = 18,
++	.m =
++	"\x12\x55\x28\xf0\x77\xd5\xb6\x21\x71\x32\x48\xcd\x28\xa8\x25\x22"
++	"\x3a\x69\xc1\x93",
++	.m_size = 20,
++	.algo = OID_id_ecdsa_with_sha1,
++	.c =
++	"\x30\x66\x02\x31\x00\xf5\x0f\x24\x4c\x07\x93\x6f\x21\x57\x55\x07"
++	"\x20\x43\x30\xde\xa0\x8d\x26\x8e\xae\x63\x3f\xbc\x20\x3a\xc6\xf1"
++	"\x32\x3c\xce\x70\x2b\x78\xf1\x4c\x26\xe6\x5b\x86\xcf\xec\x7c\x7e"
++	"\xd0\x87\xd7\xd7\x6e\x02\x31\x00\xcd\xbb\x7e\x81\x5d\x8f\x63\xc0"
++	"\x5f\x63\xb1\xbe\x5e\x4c\x0e\xa1\xdf\x28\x8c\x1b\xfa\xf9\x95\x88"
++	"\x74\xa0\x0f\xbf\xaf\xc3\x36\x76\x4a\xa1\x59\xf1\x1c\xa4\x58\x26"
++	"\x79\x12\x2a\xb7\xc5\x15\x92\xc5",
++	.c_size = 104,
++	.public_key_vec = true,
++	.siggen_sigver_test = true,
++	}, {
+ 	.key = /* secp384r1(sha224) */
+ 	"\x04\x69\x6c\xcf\x62\xee\xd0\x0d\xe5\xb5\x2f\x70\x54\xcf\x26\xa0"
+ 	"\xd9\x98\x8d\x92\x2a\xab\x9b\x11\xcb\x48\x18\xa1\xa9\x0d\xd5\x18"
+--- a/include/linux/oid_registry.h
++++ b/include/linux/oid_registry.h
+@@ -17,10 +17,12 @@
+  *	  build_OID_registry.pl to generate the data for look_up_OID().
+  */
+ enum OID {
++	OID_id_dsa_with_sha1,		/* 1.2.840.10030.4.3 */
+ 	OID_id_dsa,			/* 1.2.840.10040.4.1 */
+ 	OID_id_ecPublicKey,		/* 1.2.840.10045.2.1 */
+ 	OID_id_prime192v1,		/* 1.2.840.10045.3.1.1 */
+ 	OID_id_prime256v1,		/* 1.2.840.10045.3.1.7 */
++	OID_id_ecdsa_with_sha1,		/* 1.2.840.10045.4.1 */
+ 	OID_id_ecdsa_with_sha224,	/* 1.2.840.10045.4.3.1 */
+ 	OID_id_ecdsa_with_sha256,	/* 1.2.840.10045.4.3.2 */
+ 	OID_id_ecdsa_with_sha384,	/* 1.2.840.10045.4.3.3 */
+@@ -28,6 +30,7 @@ enum OID {
+ 
+ 	/* PKCS#1 {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-1(1)} */
+ 	OID_rsaEncryption,		/* 1.2.840.113549.1.1.1 */
++	OID_sha1WithRSAEncryption,	/* 1.2.840.113549.1.1.5 */
+ 	OID_sha256WithRSAEncryption,	/* 1.2.840.113549.1.1.11 */
+ 	OID_sha384WithRSAEncryption,	/* 1.2.840.113549.1.1.12 */
+ 	OID_sha512WithRSAEncryption,	/* 1.2.840.113549.1.1.13 */
+@@ -64,6 +67,7 @@ enum OID {
+ 	OID_PKU2U,			/* 1.3.5.1.5.2.7 */
+ 	OID_Scram,			/* 1.3.6.1.5.5.14 */
+ 	OID_certAuthInfoAccess,		/* 1.3.6.1.5.5.7.1.1 */
++	OID_sha1,			/* 1.3.14.3.2.26 */
+ 	OID_id_ansip384r1,		/* 1.3.132.0.34 */
+ 	OID_sha256,			/* 2.16.840.1.101.3.4.2.1 */
+ 	OID_sha384,			/* 2.16.840.1.101.3.4.2.2 */
+--- a/kernel/module/Kconfig
++++ b/kernel/module/Kconfig
+@@ -236,6 +236,10 @@ choice
+ 	  possible to load a signed module containing the algorithm to check
+ 	  the signature on that module.
+ 
++config MODULE_SIG_SHA1
++	bool "Sign modules with SHA-1"
++	select CRYPTO_SHA1
++
+ config MODULE_SIG_SHA256
+ 	bool "Sign modules with SHA-256"
+ 	select CRYPTO_SHA256
+@@ -265,6 +269,7 @@ endchoice
+ config MODULE_SIG_HASH
+ 	string
+ 	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
++	default "sha1" if MODULE_SIG_SHA1
+ 	default "sha256" if MODULE_SIG_SHA256
+ 	default "sha384" if MODULE_SIG_SHA384
+ 	default "sha512" if MODULE_SIG_SHA512
 
 
 
