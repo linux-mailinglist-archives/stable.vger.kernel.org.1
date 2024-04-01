@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BFD894132
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1F9893FAB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91111C21765
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D55992851D3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216FD47A6B;
-	Mon,  1 Apr 2024 16:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274994778E;
+	Mon,  1 Apr 2024 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXsS6Hus"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8oG31sq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3ED01E86C;
-	Mon,  1 Apr 2024 16:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE221CA8F;
+	Mon,  1 Apr 2024 16:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989537; cv=none; b=aoTJ5Mj68ZSvWY8xVfFIdps9fFYWlsMvAHeDVH3cCXH8gfcQgL0C8FIGFIlDcP0blPfWGoj5pJpmPYGyzuySQ8WmJy7DRWvadHgJegR/6mirVPAp3BOQZfya6eRzU10W1q4whEnLc7x2VtBkhYhoMBr1xB4mNS10kFG/fBsSE9g=
+	t=1711988383; cv=none; b=duWoAA0Khv/hJ0FFUNPYR4BcyfiibrrDYp9g0/GCao58qbYIU4LIZKgnuanNBNFN5EQ6ubkgCbXdReGP792XW7vZOuqAG/sAr4v4Fg7s58BbRPdGZtkkx9niazoTvqTAz+OepfaiG0dgTJI/k3Ro6x6Cz6LYrv2s09KjNJ8FVLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989537; c=relaxed/simple;
-	bh=7ofRoPwGWCL4JXtS9Fu7TU34H3qeegz21MWvurZ439g=;
+	s=arc-20240116; t=1711988383; c=relaxed/simple;
+	bh=ym/58p+/P4JdU8lOmQMwqJ8RHN33wmzI6/V94Su2WZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eO/NaIeDtnfKc68M67VdYp7xSgfet9SqnQ3Q1ok8a9vw6uTqmDaZhq3K5MyQnuUEHvMCboH5Ck0+P7WZ6NRSrepmD3ZeQ1Woj7UV/O7rUeSchbDTYfhML+inp67cgZfKHlRZVB2FXWyUVXXJDvHVLq1dWLXh1cMMN2+QIRQ9PCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXsS6Hus; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5487CC433C7;
-	Mon,  1 Apr 2024 16:38:57 +0000 (UTC)
+	 MIME-Version; b=BXgXIIa8F4R6pK8d1tWz/SPBFTKK9G1Vc01sM6OnCWtr+Hqari1/IT7r+q4npEvfkmVMveibn+934CcQxfvEkGwjYiu1MDkwO+6qPIo1J3MH6rAL/ujmLuM/ax40Em7ExQAAjQTH5KjQNIyK6pmlGpy3VF/K5evCB9pO05H0IVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8oG31sq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E2DC433C7;
+	Mon,  1 Apr 2024 16:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989537;
-	bh=7ofRoPwGWCL4JXtS9Fu7TU34H3qeegz21MWvurZ439g=;
+	s=korg; t=1711988383;
+	bh=ym/58p+/P4JdU8lOmQMwqJ8RHN33wmzI6/V94Su2WZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXsS6HusO3wRKkqnv6vzU6lgcseBAV5mL6LbsK2pIKBGPkVFv7jWnXFI9p/GAGh0x
-	 s/Sf459TzztjypeBm83nY/wmWwVe+ZS0elFeKreVVCBAn5hiczHB81OsDTOMEBRgJS
-	 LMIRDta3KrZgkZe827+Sa4vhSfaAfvqMk8OMMK88=
+	b=n8oG31sqwXo+Xp1D1eWA9SdOWeLqX8NbUmvJaid0yKXqdrlDSJplYwVzyAjwzQvQs
+	 7h3P1KroIqX4CRAbIfLT0TXj85vOde7JstR6n3QDgd45sNNXQxqpCOsnG7i05OJhzH
+	 T4SXrTZLRu7aJA8cM6k+488Llw06QBoZDAXq9u40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/396] KVM: x86/xen: inject vCPU upcall vector when local APIC is enabled
+Subject: [PATCH 6.7 140/432] cifs: prevent updating file size from server if we have a read/write lease
 Date: Mon,  1 Apr 2024 17:42:07 +0200
-Message-ID: <20240401152550.243538886@linuxfoundation.org>
+Message-ID: <20240401152557.313717689@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +63,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Bharath SM <bharathsm@microsoft.com>
 
-[ Upstream commit 8e62bf2bfa46367e14d0ffdcde5aada08759497c ]
+[ Upstream commit e4b61f3b1c67f5068590965f64ea6e8d5d5bd961 ]
 
-Linux guests since commit b1c3497e604d ("x86/xen: Add support for
-HVMOP_set_evtchn_upcall_vector") in v6.0 onwards will use the per-vCPU
-upcall vector when it's advertised in the Xen CPUID leaves.
+In cases of large directories, the readdir operation may span multiple
+round trips to retrieve contents. This introduces a potential race
+condition in case of concurrent write and readdir operations. If the
+readdir operation initiates before a write has been processed by the
+server, it may update the file size attribute to an older value.
+Address this issue by avoiding file size updates from readdir when we
+have read/write lease.
 
-This upcall is injected through the guest's local APIC as an MSI, unlike
-the older system vector which was merely injected by the hypervisor any
-time the CPU was able to receive an interrupt and the upcall_pending
-flags is set in its vcpu_info.
+Scenario:
+1) process1: open dir xyz
+2) process1: readdir instance 1 on xyz
+3) process2: create file.txt for write
+4) process2: write x bytes to file.txt
+5) process2: close file.txt
+6) process2: open file.txt for read
+7) process1: readdir 2 - overwrites file.txt inode size to 0
+8) process2: read contents of file.txt - bug, short read with 0 bytes
 
-Effectively, that makes the per-CPU upcall edge triggered instead of
-level triggered, which results in the upcall being lost if the MSI is
-delivered when the local APIC is *disabled*.
-
-Xen checks the vcpu_info->evtchn_upcall_pending flag when the local APIC
-for a vCPU is software enabled (in fact, on any write to the SPIV
-register which doesn't disable the APIC). Do the same in KVM since KVM
-doesn't provide a way for userspace to intervene and trap accesses to
-the SPIV register of a local APIC emulated by KVM.
-
-Fixes: fde0451be8fb3 ("KVM: x86/xen: Support per-vCPU event channel upcall via local APIC")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240227115648.3104-3-dwmw2@infradead.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |  5 ++++-
- arch/x86/kvm/xen.c   |  2 +-
- arch/x86/kvm/xen.h   | 18 ++++++++++++++++++
- 3 files changed, 23 insertions(+), 2 deletions(-)
+ fs/smb/client/cifsproto.h |  6 ++++--
+ fs/smb/client/file.c      |  8 +++++---
+ fs/smb/client/inode.c     | 13 +++++++------
+ fs/smb/client/readdir.c   |  2 +-
+ 4 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 245b20973caee..23fab75993a51 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -41,6 +41,7 @@
- #include "ioapic.h"
- #include "trace.h"
- #include "x86.h"
-+#include "xen.h"
- #include "cpuid.h"
- #include "hyperv.h"
- #include "smm.h"
-@@ -499,8 +500,10 @@ static inline void apic_set_spiv(struct kvm_lapic *apic, u32 val)
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index 9516f57323246..6945551ea166d 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -144,7 +144,8 @@ extern int cifs_reconnect(struct TCP_Server_Info *server,
+ extern int checkSMB(char *buf, unsigned int len, struct TCP_Server_Info *srvr);
+ extern bool is_valid_oplock_break(char *, struct TCP_Server_Info *);
+ extern bool backup_cred(struct cifs_sb_info *);
+-extern bool is_size_safe_to_change(struct cifsInodeInfo *, __u64 eof);
++extern bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 eof,
++				   bool from_readdir);
+ extern void cifs_update_eof(struct cifsInodeInfo *cifsi, loff_t offset,
+ 			    unsigned int bytes_written);
+ extern struct cifsFileInfo *find_writable_file(struct cifsInodeInfo *, int);
+@@ -201,7 +202,8 @@ extern void cifs_unix_basic_to_fattr(struct cifs_fattr *fattr,
+ 				     struct cifs_sb_info *cifs_sb);
+ extern void cifs_dir_info_to_fattr(struct cifs_fattr *, FILE_DIRECTORY_INFO *,
+ 					struct cifs_sb_info *);
+-extern int cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr);
++extern int cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
++			       bool from_readdir);
+ extern struct inode *cifs_iget(struct super_block *sb,
+ 			       struct cifs_fattr *fattr);
+ 
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index c156460eb5587..c711d5eb2987e 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -329,7 +329,7 @@ int cifs_posix_open(const char *full_path, struct inode **pinode,
+ 		}
+ 	} else {
+ 		cifs_revalidate_mapping(*pinode);
+-		rc = cifs_fattr_to_inode(*pinode, &fattr);
++		rc = cifs_fattr_to_inode(*pinode, &fattr, false);
  	}
  
- 	/* Check if there are APF page ready requests pending */
--	if (enabled)
-+	if (enabled) {
- 		kvm_make_request(KVM_REQ_APF_READY, apic->vcpu);
-+		kvm_xen_sw_enable_lapic(apic->vcpu);
-+	}
+ posix_open_ret:
+@@ -4766,12 +4766,14 @@ static int is_inode_writable(struct cifsInodeInfo *cifs_inode)
+    refreshing the inode only on increases in the file size
+    but this is tricky to do without racing with writebehind
+    page caching in the current Linux kernel design */
+-bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 end_of_file)
++bool is_size_safe_to_change(struct cifsInodeInfo *cifsInode, __u64 end_of_file,
++			    bool from_readdir)
+ {
+ 	if (!cifsInode)
+ 		return true;
+ 
+-	if (is_inode_writable(cifsInode)) {
++	if (is_inode_writable(cifsInode) ||
++		((cifsInode->oplock & CIFS_CACHE_RW_FLG) != 0 && from_readdir)) {
+ 		/* This inode is open for write at least once */
+ 		struct cifs_sb_info *cifs_sb;
+ 
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 471abc99bbf02..cb9e719e67ae2 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -147,7 +147,8 @@ cifs_nlink_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
+ 
+ /* populate an inode with info from a cifs_fattr struct */
+ int
+-cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
++cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr,
++		    bool from_readdir)
+ {
+ 	struct cifsInodeInfo *cifs_i = CIFS_I(inode);
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+@@ -199,7 +200,7 @@ cifs_fattr_to_inode(struct inode *inode, struct cifs_fattr *fattr)
+ 	 * Can't safely change the file size here if the client is writing to
+ 	 * it due to potential races.
+ 	 */
+-	if (is_size_safe_to_change(cifs_i, fattr->cf_eof)) {
++	if (is_size_safe_to_change(cifs_i, fattr->cf_eof, from_readdir)) {
+ 		i_size_write(inode, fattr->cf_eof);
+ 
+ 		/*
+@@ -368,7 +369,7 @@ static int update_inode_info(struct super_block *sb,
+ 		CIFS_I(*inode)->time = 0; /* force reval */
+ 		return -ESTALE;
+ 	}
+-	return cifs_fattr_to_inode(*inode, fattr);
++	return cifs_fattr_to_inode(*inode, fattr, false);
  }
  
- static inline void kvm_apic_set_xapic_id(struct kvm_lapic *apic, u8 id)
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 40edf4d1974c5..0ea6016ad132a 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -471,7 +471,7 @@ void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
- 		kvm_xen_update_runstate_guest(v, state == RUNSTATE_runnable);
- }
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+@@ -403,7 +404,7 @@ cifs_get_file_info_unix(struct file *filp)
+ 	} else
+ 		goto cifs_gfiunix_out;
  
--static void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
-+void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
- {
- 	struct kvm_lapic_irq irq = { };
- 	int r;
-diff --git a/arch/x86/kvm/xen.h b/arch/x86/kvm/xen.h
-index f8f1fe22d0906..f5841d9000aeb 100644
---- a/arch/x86/kvm/xen.h
-+++ b/arch/x86/kvm/xen.h
-@@ -18,6 +18,7 @@ extern struct static_key_false_deferred kvm_xen_enabled;
+-	rc = cifs_fattr_to_inode(inode, &fattr);
++	rc = cifs_fattr_to_inode(inode, &fattr, false);
  
- int __kvm_xen_has_interrupt(struct kvm_vcpu *vcpu);
- void kvm_xen_inject_pending_events(struct kvm_vcpu *vcpu);
-+void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *vcpu);
- int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data);
- int kvm_xen_vcpu_get_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data);
- int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data);
-@@ -36,6 +37,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
- 			 const struct kvm_irq_routing_entry *ue);
- void kvm_xen_update_tsc_info(struct kvm_vcpu *vcpu);
+ cifs_gfiunix_out:
+ 	free_xid(xid);
+@@ -928,7 +929,7 @@ cifs_get_file_info(struct file *filp)
+ 	fattr.cf_uniqueid = CIFS_I(inode)->uniqueid;
+ 	fattr.cf_flags |= CIFS_FATTR_NEED_REVAL;
+ 	/* if filetype is different, return error */
+-	rc = cifs_fattr_to_inode(inode, &fattr);
++	rc = cifs_fattr_to_inode(inode, &fattr, false);
+ cgfi_exit:
+ 	cifs_free_open_info(&data);
+ 	free_xid(xid);
+@@ -1467,7 +1468,7 @@ cifs_iget(struct super_block *sb, struct cifs_fattr *fattr)
+ 		}
  
-+static inline void kvm_xen_sw_enable_lapic(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * The local APIC is being enabled. If the per-vCPU upcall vector is
-+	 * set and the vCPU's evtchn_upcall_pending flag is set, inject the
-+	 * interrupt.
-+	 */
-+	if (static_branch_unlikely(&kvm_xen_enabled.key) &&
-+	    vcpu->arch.xen.vcpu_info_cache.active &&
-+	    vcpu->arch.xen.upcall_vector && __kvm_xen_has_interrupt(vcpu))
-+		kvm_xen_inject_vcpu_vector(vcpu);
-+}
-+
- static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
- {
- 	return static_branch_unlikely(&kvm_xen_enabled.key) &&
-@@ -101,6 +115,10 @@ static inline void kvm_xen_destroy_vcpu(struct kvm_vcpu *vcpu)
- {
- }
- 
-+static inline void kvm_xen_sw_enable_lapic(struct kvm_vcpu *vcpu)
-+{
-+}
-+
- static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
- {
- 	return false;
+ 		/* can't fail - see cifs_find_inode() */
+-		cifs_fattr_to_inode(inode, fattr);
++		cifs_fattr_to_inode(inode, fattr, false);
+ 		if (sb->s_flags & SB_NOATIME)
+ 			inode->i_flags |= S_NOATIME | S_NOCMTIME;
+ 		if (inode->i_state & I_NEW) {
+diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
+index 520c490e844b5..56033e4e4bae9 100644
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -148,7 +148,7 @@ cifs_prime_dcache(struct dentry *parent, struct qstr *name,
+ 						rc = -ESTALE;
+ 					}
+ 				}
+-				if (!rc && !cifs_fattr_to_inode(inode, fattr)) {
++				if (!rc && !cifs_fattr_to_inode(inode, fattr, true)) {
+ 					dput(dentry);
+ 					return;
+ 				}
 -- 
 2.43.0
 
