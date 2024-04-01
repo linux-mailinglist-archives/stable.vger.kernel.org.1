@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD6889402F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A0A8941C7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1480B21231
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C773C283365
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19239446D5;
-	Mon,  1 Apr 2024 16:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C895481D0;
+	Mon,  1 Apr 2024 16:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9QMDfFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqiGwHSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0D91CA8F;
-	Mon,  1 Apr 2024 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB261C0DE7;
+	Mon,  1 Apr 2024 16:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988802; cv=none; b=oMaKaRB/9p8n/TCxuf5iGctAroYpedIhtnzwQMTFSSOkVZhdWF950ApT4+gulEdWPIumBOP0uOnR4pAdPCve4GBdCaycYl83H1TQ/kBkvLk+RYS8JFDpk5PYQ5RAwsXEQyXFhwBQ4gtTSwIzB5OrmnF3X30EngwJjZWCdbL50mo=
+	t=1711989954; cv=none; b=ioT8iMoggrdEHKX/+RMFvABqBxv5HSKIcKQmmNy03W8rR5TUq6py/C9/eNP8NBtvvsUaIW32hmN05mkGJCAvpJ1r6K5dGfMDr8drrpCPPyJI1QiqRVqkVwJBMhPKB+Ok3qAj15IojT7ifOd9tIQzrzqff8mobNJ2mhyo7Y3puS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988802; c=relaxed/simple;
-	bh=BqvUUmDS1h9ks/M29z5D4KY/hx1YpjQRjjCE6EHkk1k=;
+	s=arc-20240116; t=1711989954; c=relaxed/simple;
+	bh=HIwB2UWIIDkcDGSbcaRSpJu9ev93TBfw8FiOkDoTs+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYGU8d92LyJoZ5IunCyM8mmXNu2KUPhoAdPqzpq8meNUO4FyjcAHh7qnSqgw7I10js5Jti8Pua3VKfNYr8/vZv3OEa/RhDAhu4Np5C2jt4MbBNFRs73hR4GgL85W86oh5eaQ9nSpm6xNrfQzojtD56bfL3juCjo6QvAiSsJKrQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9QMDfFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A42DC433C7;
-	Mon,  1 Apr 2024 16:26:42 +0000 (UTC)
+	 MIME-Version; b=f6XRANd0x4Y+bo1bmtfyy9U3oj7kA2J7kLHqybU+qZAOFXJfK+J4q1KMaDMgv5iHviS5a3vn6dPbhPV0u+0zZbV555EnLJPnGQ5fsfXQAN63UGjzv99620OWJ+FymWySoMlVfENgy0H4DHYSJrOZwsLyZGxmpav3MHzLhnw7LqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqiGwHSv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A6FC433C7;
+	Mon,  1 Apr 2024 16:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988802;
-	bh=BqvUUmDS1h9ks/M29z5D4KY/hx1YpjQRjjCE6EHkk1k=;
+	s=korg; t=1711989953;
+	bh=HIwB2UWIIDkcDGSbcaRSpJu9ev93TBfw8FiOkDoTs+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9QMDfFpvsveWUIKqyhzi/I9D9mvkg/4SMr+PwWAi1rXZt9ZJQpW4eL0iJqrA3Uls
-	 hSm5uPxnMHS1h77qake2mEu/123741v3aGRU7jg85SRVzDO/NES0OurzKI70fNrSq2
-	 8zN7yiUIreud9TjzFCUXGKH1UAU7MM3TA9P/hzfs=
+	b=LqiGwHSvMK+NqO3VxJRE9T6ZCjGsRumxIQi1hA/Y47Emw3POFyxEZOgi301nKYS+q
+	 RHnuE7IJAwD7kgWythm4cEqi4CbQbEFykgmheBQwpPDldEyo7TdlljcZvFp72yCJMN
+	 pRf3wmieIg1nrRO7VDzc0Fa9E119XcCgF5CCp0dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.7 264/432] usb: port: Dont try to peer unused USB ports based on location
+	Danilo Krummrich <dakr@redhat.com>,
+	Karol Herbst <kherbst@redhat.com>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.6 202/396] drm/nouveau: fix stale locked mutex in nouveau_gem_ioctl_pushbuf
 Date: Mon,  1 Apr 2024 17:44:11 +0200
-Message-ID: <20240401152601.024472351@linuxfoundation.org>
+Message-ID: <20240401152553.952738438@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Karol Herbst <kherbst@redhat.com>
 
-commit 69c63350e573367f9c8594162288cffa8a26d0d1 upstream.
+commit daf8739c3322a762ce84f240f50e0c39181a41ab upstream.
 
-Unused USB ports may have bogus location data in ACPI PLD tables.
-This causes port peering failures as these unused USB2 and USB3 ports
-location may match.
+If VM_BIND is enabled on the client the legacy submission ioctl can't be
+used, however if a client tries to do so regardless it will return an
+error. In this case the clients mutex remained unlocked leading to a
+deadlock inside nouveau_drm_postclose or any other nouveau ioctl call.
 
-Due to these failures the driver prints a
-"usb: port power management may be unreliable" warning, and
-unnecessarily blocks port power off during runtime suspend.
-
-This was debugged on a couple DELL systems where the unused ports
-all returned zeroes in their location data.
-Similar bugreports exist for other systems.
-
-Don't try to peer or match ports that have connect type set to
-USB_PORT_NOT_USED.
-
-Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
-Link: https://lore.kernel.org/r/20240222233343.71856-1-mathias.nyman@linux.intel.com
+Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
+Cc: Danilo Krummrich <dakr@redhat.com>
+Cc: <stable@vger.kernel.org> # v6.6+
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240305133853.2214268-1-kherbst@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_gem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -573,7 +573,7 @@ static int match_location(struct usb_dev
- 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
- 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
+--- a/drivers/gpu/drm/nouveau/nouveau_gem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
+@@ -758,7 +758,7 @@ nouveau_gem_ioctl_pushbuf(struct drm_dev
+ 		return -ENOMEM;
  
--	if (!peer_hub)
-+	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
- 		return 0;
+ 	if (unlikely(nouveau_cli_uvmm(cli)))
+-		return -ENOSYS;
++		return nouveau_abi16_put(abi16, -ENOSYS);
  
- 	hcd = bus_to_hcd(hdev->bus);
-@@ -584,7 +584,8 @@ static int match_location(struct usb_dev
- 
- 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
- 		peer = peer_hub->ports[port1 - 1];
--		if (peer && peer->location == port_dev->location) {
-+		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
-+		    peer->location == port_dev->location) {
- 			link_peers_report(port_dev, peer);
- 			return 1; /* done */
- 		}
+ 	list_for_each_entry(temp, &abi16->channels, head) {
+ 		if (temp->chan->chid == req->channel) {
 
 
 
