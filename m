@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-34561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3AD4893FDB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4748942D8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 319391C21136
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B68D283780
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8161147A62;
-	Mon,  1 Apr 2024 16:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED98481B8;
+	Mon,  1 Apr 2024 16:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWIGsyUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPli7NWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8F7C129;
-	Mon,  1 Apr 2024 16:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8D1433DA;
+	Mon,  1 Apr 2024 16:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988535; cv=none; b=PZNJ8cglL+aMgRsIXtF45E+67pyKEzBU2X3VttesYi+VjuzXcON5C4UqGT6TZWMwUqIzH6CvxKFgtmsxWNiywRIV6DwV2kgmWqOYaxy2TRhEC1ub0Tf0Y4uTtTjm3IH+Y19og/ZuJzal4UL4Ks/maiWAmH1iA/UBe32UkZI2shE=
+	t=1711990605; cv=none; b=WsTB/9c5vodzFArJdDzqZJzi8eKXwnLkVCMv1RTFOwko+dK0ZO/pB4YSSpzJyZfR3IRYRfn35KO26ppgZuepsCWxci8mFSh2FICt9GtQE32jsXwrpkfVrh51b9Eh45TimufcNsawlMIiwVxFCCu/7NaK0rLXYNIjHLyBUuIgar8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988535; c=relaxed/simple;
-	bh=y8YWYV6tXnMVpWYlx3O3lbu3Fg94McuSxPDoCDOq9d4=;
+	s=arc-20240116; t=1711990605; c=relaxed/simple;
+	bh=yNMPjIGextGtzeLeS32vfI+xnb7+iXZext/EISCr3sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZOlN23spKsytcIl/G/Wm0S/W4Ome7NRlHgjORZpetVXHKoXWT2i8q4YVC2TjOVSbbdzJvMICCd3KfxxxGYwh3zXDg89NrWcHBU2vD/cQ6Cg7NYUuFxqdjQM6phnDHp43ZsYJgQOlzvAIdlEUuZjTwayAcQxQoDKrjtHO0uQ48UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWIGsyUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96769C433F1;
-	Mon,  1 Apr 2024 16:22:14 +0000 (UTC)
+	 MIME-Version; b=racMvYlLLqgghczyhqtVA9Gl0GY7DcQJkXGW+v1LuIkTnEn+x5pL68haV0/G8OhGPjf993NVaDsTbpQ3qVGgUqTlHdY6wvSmux7F2CAKV3UE6MqYXl0+ly7DXFe3Wlv0MzCQM7vroUvSgFfS8xSa6Rzqoyj0YAT3c5w8FLfbtRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPli7NWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2C6C433C7;
+	Mon,  1 Apr 2024 16:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988535;
-	bh=y8YWYV6tXnMVpWYlx3O3lbu3Fg94McuSxPDoCDOq9d4=;
+	s=korg; t=1711990605;
+	bh=yNMPjIGextGtzeLeS32vfI+xnb7+iXZext/EISCr3sI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWIGsyUv+DIPmMPRMnspqWcAoGhSSmkCKdLt5g/OM/5E0DjgMsBG/pyuNg08+CZxf
-	 lczrAkZsfazUGp+1kBofvCsjymuX9PQEQOoflRBRovCbvweIJFwEny+Ko/ww31WD/y
-	 czYIiOnP+YJlWh90YCQn8v0XpYHr8txvj/X+oG7Q=
+	b=WPli7NWZ+QQsqlWFmEhsS8ZVmPqbZaFEMn+6vlVu84YxIUUMwQ4H9/gzwgzCnjQ/6
+	 jcU4+31l166mS28n3ax3ZlIR1PR3PBrX3nJlZkshIp4wyv6FvOb+IVElweY2oDESsT
+	 ixsGsJDjTYvpfqCiTgT9GEf73GcQF9x7j4Jvdt+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Anthony Koo <anthony.koo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Josip Pavic <josip.pavic@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hidenori Kobayashi <hidenorik@chromium.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 213/432] drm/amd/display: Allow dirty rects to be sent to dmub when abm is active
+Subject: [PATCH 6.1 010/272] media: staging: ipu3-imgu: Set fields before media_entity_pads_init()
 Date: Mon,  1 Apr 2024 17:43:20 +0200
-Message-ID: <20240401152559.494701165@linuxfoundation.org>
+Message-ID: <20240401152530.615829713@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josip Pavic <josip.pavic@amd.com>
+From: Hidenori Kobayashi <hidenorik@chromium.org>
 
-[ Upstream commit 7fb19d9510937121a1f285894cffd30bc96572e3 ]
+[ Upstream commit 87318b7092670d4086bfec115a0280a60c51c2dd ]
 
-[WHY]
-It's beneficial for ABM to know when new frame data are available.
+The imgu driver fails to probe with the following message because it
+does not set the pad's flags before calling media_entity_pads_init().
 
-[HOW]
-Add new condition to allow dirty rects to be sent to DMUB when ABM is
-active. ABM will use this as a signal that a new frame has arrived.
+[   14.596315] ipu3-imgu 0000:00:05.0: failed initialize subdev media entity (-22)
+[   14.596322] ipu3-imgu 0000:00:05.0: failed to register subdev0 ret (-22)
+[   14.596327] ipu3-imgu 0000:00:05.0: failed to register pipes (-22)
+[   14.596331] ipu3-imgu 0000:00:05.0: failed to create V4L2 devices (-22)
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Anthony Koo <anthony.koo@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Josip Pavic <josip.pavic@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix the initialization order so that the driver probe succeeds. The ops
+initialization is also moved together for readability.
+
+Fixes: a0ca1627b450 ("media: staging/intel-ipu3: Add v4l2 driver based on media framework")
+Cc: <stable@vger.kernel.org> # 6.7
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Hidenori Kobayashi <hidenorik@chromium.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/staging/media/ipu3/ipu3-v4l2.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index bbdeda489768b..537f71c19b806 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3340,6 +3340,9 @@ static bool dc_dmub_should_send_dirty_rect_cmd(struct dc *dc, struct dc_stream_s
- 	if (stream->link->replay_settings.config.replay_supported)
- 		return true;
+diff --git a/drivers/staging/media/ipu3/ipu3-v4l2.c b/drivers/staging/media/ipu3/ipu3-v4l2.c
+index e530767e80a5d..55cc44a401bc4 100644
+--- a/drivers/staging/media/ipu3/ipu3-v4l2.c
++++ b/drivers/staging/media/ipu3/ipu3-v4l2.c
+@@ -1069,6 +1069,11 @@ static int imgu_v4l2_subdev_register(struct imgu_device *imgu,
+ 	struct imgu_media_pipe *imgu_pipe = &imgu->imgu_pipe[pipe];
  
-+	if (stream->ctx->dce_version >= DCN_VERSION_3_5 && stream->abm_level)
-+		return true;
-+
- 	return false;
- }
+ 	/* Initialize subdev media entity */
++	imgu_sd->subdev.entity.ops = &imgu_media_ops;
++	for (i = 0; i < IMGU_NODE_NUM; i++) {
++		imgu_sd->subdev_pads[i].flags = imgu_pipe->nodes[i].output ?
++			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
++	}
+ 	r = media_entity_pads_init(&imgu_sd->subdev.entity, IMGU_NODE_NUM,
+ 				   imgu_sd->subdev_pads);
+ 	if (r) {
+@@ -1076,11 +1081,6 @@ static int imgu_v4l2_subdev_register(struct imgu_device *imgu,
+ 			"failed initialize subdev media entity (%d)\n", r);
+ 		return r;
+ 	}
+-	imgu_sd->subdev.entity.ops = &imgu_media_ops;
+-	for (i = 0; i < IMGU_NODE_NUM; i++) {
+-		imgu_sd->subdev_pads[i].flags = imgu_pipe->nodes[i].output ?
+-			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
+-	}
  
+ 	/* Initialize subdev */
+ 	v4l2_subdev_init(&imgu_sd->subdev, &imgu_subdev_ops);
+@@ -1177,15 +1177,15 @@ static int imgu_v4l2_node_setup(struct imgu_device *imgu, unsigned int pipe,
+ 	}
+ 
+ 	/* Initialize media entities */
++	node->vdev_pad.flags = node->output ?
++		MEDIA_PAD_FL_SOURCE : MEDIA_PAD_FL_SINK;
++	vdev->entity.ops = NULL;
+ 	r = media_entity_pads_init(&vdev->entity, 1, &node->vdev_pad);
+ 	if (r) {
+ 		dev_err(dev, "failed initialize media entity (%d)\n", r);
+ 		mutex_destroy(&node->lock);
+ 		return r;
+ 	}
+-	node->vdev_pad.flags = node->output ?
+-		MEDIA_PAD_FL_SOURCE : MEDIA_PAD_FL_SINK;
+-	vdev->entity.ops = NULL;
+ 
+ 	/* Initialize vbq */
+ 	vbq->type = node->vdev_fmt.type;
 -- 
 2.43.0
 
