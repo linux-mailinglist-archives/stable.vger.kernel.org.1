@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4C18941E6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7694893E97
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 604481F22D9D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7851F21B1F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0FA481B8;
-	Mon,  1 Apr 2024 16:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2003B4778B;
+	Mon,  1 Apr 2024 16:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hXZlLTO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/JMxYK3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1FA433DA;
-	Mon,  1 Apr 2024 16:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22C21CA8F;
+	Mon,  1 Apr 2024 16:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990050; cv=none; b=UwsrMwEdcHU10mLOmFu1IY9jjC2BUpACVKIocxTcAdW8O/Qt2lXoNs4Cr580BFKNoLv/GRdzrPB7/DddWREZl02aBjtLdON6r7TrpmCVw1Q1axFqWplEf+4J7QUrjir2AxEU8kRfKlQQuInjKUjHRY4GA3AgoG4IH0mMRogmAJc=
+	t=1711987528; cv=none; b=LI+XPdmusyZz+WAqSpJcVfRCLtMIkTQCSsXOEVmPZ5Po1zIxjr3I8QIh5y7xN1xXzxJQzuBnU/Y5LteYwco7Ng0esoT++8RXi8QCp+eAL1L8ErNMziLvwlVC2NeceYaPKqg9vY9kbt0K7XMVA78u2T2KyjtE5HXmJzWCYLGvjO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990050; c=relaxed/simple;
-	bh=78jwE1bXNZLWw/oOFyZBDcg0VVeChEfmxjTxcmF3UQY=;
+	s=arc-20240116; t=1711987528; c=relaxed/simple;
+	bh=BhCmKVonpYxcq1h4TDeTmSIdtAxoP38rpTox40Sm4iI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5GEed2OI9Of85meSADh0TtsQowSDDwZdSyIvYH4OxlkipIe3Qw2jSTd40Htm1Y9CwSBg0pV5CGRF+uzYtVDYxVdvFlHJN21503ymcsC+2Xbq+RspOKH/ZyY9Pj7nAubzXQGbR6fsREdvZho5xcBXucIhgwHo4roF56UyM8kJAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hXZlLTO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D38C433C7;
-	Mon,  1 Apr 2024 16:47:29 +0000 (UTC)
+	 MIME-Version; b=YixtM4Ac65dRqsO+NU0vzCuhyUC8WEofdenzmQoqaGDLqQffMNhbyjT5JZ2HD7+UXa5Tr0Sr07AxhlYRK1xDBwtmQuD9Bvv/YJnEVHvhVb/wdcfM0jq+KJLXFmNoNN7Y39NJ++d/aZHCHWE49AjnWd1cly3YmbRdSeqd9R1oxFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/JMxYK3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DD8C433F1;
+	Mon,  1 Apr 2024 16:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990050;
-	bh=78jwE1bXNZLWw/oOFyZBDcg0VVeChEfmxjTxcmF3UQY=;
+	s=korg; t=1711987528;
+	bh=BhCmKVonpYxcq1h4TDeTmSIdtAxoP38rpTox40Sm4iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2hXZlLTOVYO3fhDabWUMkLCBxEs/t6v/kbbQvumS00A5p83B4ezDE0hKo958epbgN
-	 lpyJqhKkZx3eYawoAKAOAQh+yQogEWApazGGvy+3QKtXAGKmxP4xX+PW8cESxhHVjH
-	 QtZ0R+wl0g6STivWMFU+lFQ+4SWloWkcITWvxEhc=
+	b=T/JMxYK3yIgE2SYVpkA1bZE0t/mTpJ/Q23iCWJlWrDxyyF0Iw/ZnVxVbr0UJgBz4j
+	 Nx7u3pxDtZYSjw/4VOdiWLJfU5+Y1la2JdqxLPyMbmJiPBcyVmVwSOgFlPQi9HzzhL
+	 q9HuhICMTbabb/5H5C0OsH8TkgbJoAfAUYXNP8hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 6.6 231/396] mei: me: add arrow lake point S DID
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Avri Altman <avri.altman@wdc.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.8 314/399] mmc: core: Avoid negative index with array access
 Date: Mon,  1 Apr 2024 17:44:40 +0200
-Message-ID: <20240401152554.805080986@linuxfoundation.org>
+Message-ID: <20240401152558.559006674@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-commit 7a9b9012043e126f6d6f4683e67409312d1b707b upstream.
+commit cf55a7acd1ed38afe43bba1c8a0935b51d1dc014 upstream.
 
-Add Arrow Lake S device id.
+Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") assigns
+prev_idata = idatas[i - 1], but doesn't check that the iterator i is
+greater than zero. Let's fix this by adding a check.
 
+Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
+Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240211103912.117105-1-tomas.winkler@intel.com
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20240313133744.2405325-2-mikko.rapeli@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    1 +
- drivers/misc/mei/pci-me.c     |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/mmc/core/block.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -112,6 +112,7 @@
- #define MEI_DEV_ID_RPL_S      0x7A68  /* Raptor Lake Point S */
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -488,7 +488,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	if (idata->flags & MMC_BLK_IOC_DROP)
+ 		return 0;
  
- #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
-+#define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
+-	if (idata->flags & MMC_BLK_IOC_SBC)
++	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
+ 		prev_idata = idatas[i - 1];
  
- /*
-  * MEI HW Section
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -119,6 +119,7 @@ static const struct pci_device_id mei_me
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
- 
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
- 
- 	/* required last entry */
- 	{0, }
+ 	/*
 
 
 
