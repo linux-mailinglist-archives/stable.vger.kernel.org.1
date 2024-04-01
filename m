@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-34921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0909E89417A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8D8893FED
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751CB1F23A54
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28E342851E0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374FF481BF;
-	Mon,  1 Apr 2024 16:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638824778E;
+	Mon,  1 Apr 2024 16:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXysLVwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OX6iNdT9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6A347A6B;
-	Mon,  1 Apr 2024 16:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C99C129;
+	Mon,  1 Apr 2024 16:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989747; cv=none; b=SGul8bmVoi7ZXhK2vuHRHfyQpWNBiCZqbqPypPaYNCjp4Wm7NdFoVHQ3xdjTn2gohDrB0Eze9Q2LlBakoS21WkrxNKIBUZISMrw16VLfEOd/zPCHRl7/hBtSOCNippGRqcN7unCeK9LcR/BFkh86NXoROcWOgRVTt+HwAvLQ/4g=
+	t=1711988594; cv=none; b=HNUeU63V91lvR1MhqLX4NBBWKoEUVL+RsZj2LaLfYFneoky56c+//rBE5935n1GPGOYK/60WE0itC70wTC+lP167EiuTwemVjvKbYmvKYACjyS202Lm3Ner4/dyBFVJXnHtSUsqARAUmBpTDsEwq07haghTh52yFXNul41P2Bq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989747; c=relaxed/simple;
-	bh=beXoZC9z7zbVUWhQd9Mzt2qU7ju0qo/Lm1x89OQuipU=;
+	s=arc-20240116; t=1711988594; c=relaxed/simple;
+	bh=CJBdm/QALX3cyQUgyoUEtjLjTDSQH9JWAi41OcenZ1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDqFZFsH0vtpqvKxG34RXaTI/2v26PkOD6vF90clvju4Ivg5/JkzruNfza7MVvGlj8XJyCNUUmCSXCRIhKbrZ6LElSK580zO5rAZkuQJrCq0UQFgZk9cQqzdYcuLDU3nEGrFtT9Hx8x8UVCxov5Evb/M8EffOtwSG/lJiqiXess=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXysLVwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AECDC433F1;
-	Mon,  1 Apr 2024 16:42:26 +0000 (UTC)
+	 MIME-Version; b=QqOoQ7OZ4yAlr+iw9fheCDY/kDgSS6hD5SBJcRc13hfqxXv1V8tZnQipkDM/Ce8IgLQBMbz7UbtuLDPxitdaUB9a0YZMQmgQErqM3Vg+RqmxShB4zaf+dnQds9LANoFxMOyhL7XvAgCe9vc5mds9ReUaAjJ+lAEBkQLUSpz4Lw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OX6iNdT9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CA2C433C7;
+	Mon,  1 Apr 2024 16:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989746;
-	bh=beXoZC9z7zbVUWhQd9Mzt2qU7ju0qo/Lm1x89OQuipU=;
+	s=korg; t=1711988594;
+	bh=CJBdm/QALX3cyQUgyoUEtjLjTDSQH9JWAi41OcenZ1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qXysLVwuyT40+Py81jU3R0yOT69Vx+vZmtiQ9MYLPgIQjpqYVBWD1yWGTsnSwaaZo
-	 yLA1lQ1Pueb2RF5hM9tlGKX5LU6iu3aEywn6rSZ5iri9gr2JyrGpKhSVwdfhpByx5G
-	 0VTo1PfyRjfMmR9fsSCdZfF4yc62CB1BhLazFcyY=
+	b=OX6iNdT9Mu7DXu9/HhtzWPzoi+AUtOqIovvJsIyvQWQbMmoAEQmdgyVxMTvP8PzWR
+	 Ub48FI5gA7uidFkMFMlbenUaaIbN6lDYglvCZA2nVopflBeDSJ2nTQfOWihtsHuOvm
+	 /bIRnhFnA+eccNMTtJO5U/FmvV0z6nsiU09InHOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linke li <lilinke99@qq.com>,
-	Rabin Vincent <rabin@rab.in>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Lillian Berry <lillian@star-ark.net>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 140/396] ring-buffer: Use wait_event_interruptible() in ring_buffer_wait()
+Subject: [PATCH 6.7 202/432] wireguard: netlink: check for dangling peer via is_dead instead of empty list
 Date: Mon,  1 Apr 2024 17:43:09 +0200
-Message-ID: <20240401152552.088636244@linuxfoundation.org>
+Message-ID: <20240401152559.161733396@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,205 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[ Upstream commit 7af9ded0c2caac0a95f33df5cb04706b0f502588 ]
+[ Upstream commit 55b6c738673871c9b0edae05d0c97995c1ff08c4 ]
 
-Convert ring_buffer_wait() over to wait_event_interruptible(). The default
-condition is to execute the wait loop inside __wait_event() just once.
+If all peers are removed via wg_peer_remove_all(), rather than setting
+peer_list to empty, the peer is added to a temporary list with a head on
+the stack of wg_peer_remove_all(). If a netlink dump is resumed and the
+cursored peer is one that has been removed via wg_peer_remove_all(), it
+will iterate from that peer and then attempt to dump freed peers.
 
-This does not change the ring_buffer_wait() prototype yet, but
-restructures the code so that it can take a "cond" and "data" parameter
-and will call wait_event_interruptible() with a helper function as the
-condition.
+Fix this by instead checking peer->is_dead, which was explictly created
+for this purpose. Also move up the device_update_lock lockdep assertion,
+since reading is_dead relies on that.
 
-The helper function (rb_wait_cond) takes the cond function and data
-parameters. It will first check if the buffer hit the watermark defined by
-the "full" parameter and then call the passed in condition parameter. If
-either are true, it returns true.
+It can be reproduced by a small script like:
 
-If rb_wait_cond() does not return true, it will set the appropriate
-"waiters_pending" flag and returns false.
+    echo "Setting config..."
+    ip link add dev wg0 type wireguard
+    wg setconf wg0 /big-config
+    (
+            while true; do
+                    echo "Showing config..."
+                    wg showconf wg0 > /dev/null
+            done
+    ) &
+    sleep 4
+    wg setconf wg0 <(printf "[Peer]\nPublicKey=$(wg genkey)\n")
 
-Link: https://lore.kernel.org/linux-trace-kernel/CAHk-=wgsNgewHFxZAJiAQznwPMqEtQmi1waeS2O1v6L4c_Um5A@mail.gmail.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240312121703.399598519@goodmis.org
+Resulting in:
+
+    BUG: KASAN: slab-use-after-free in __lock_acquire+0x182a/0x1b20
+    Read of size 8 at addr ffff88811956ec70 by task wg/59
+    CPU: 2 PID: 59 Comm: wg Not tainted 6.8.0-rc2-debug+ #5
+    Call Trace:
+     <TASK>
+     dump_stack_lvl+0x47/0x70
+     print_address_description.constprop.0+0x2c/0x380
+     print_report+0xab/0x250
+     kasan_report+0xba/0xf0
+     __lock_acquire+0x182a/0x1b20
+     lock_acquire+0x191/0x4b0
+     down_read+0x80/0x440
+     get_peer+0x140/0xcb0
+     wg_get_device_dump+0x471/0x1130
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linke li <lilinke99@qq.com>
-Cc: Rabin Vincent <rabin@rab.in>
-Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Reported-by: Lillian Berry <lillian@star-ark.net>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ring_buffer.h |   1 +
- kernel/trace/ring_buffer.c  | 116 +++++++++++++++++++++---------------
- 2 files changed, 69 insertions(+), 48 deletions(-)
+ drivers/net/wireguard/netlink.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
-index 782e14f62201f..ded528d23f855 100644
---- a/include/linux/ring_buffer.h
-+++ b/include/linux/ring_buffer.h
-@@ -98,6 +98,7 @@ __ring_buffer_alloc(unsigned long size, unsigned flags, struct lock_class_key *k
- 	__ring_buffer_alloc((size), (flags), &__key);	\
- })
- 
-+typedef bool (*ring_buffer_cond_fn)(void *data);
- int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full);
- __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 			  struct file *filp, poll_table *poll_table, int full);
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index b4979f6a449d7..3fedd051f12c0 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -990,43 +990,15 @@ static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
- 	return ret;
- }
- 
--/**
-- * ring_buffer_wait - wait for input to the ring buffer
-- * @buffer: buffer to wait on
-- * @cpu: the cpu buffer to wait on
-- * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-- *
-- * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
-- * as data is added to any of the @buffer's cpu buffers. Otherwise
-- * it will wait for data to be added to a specific cpu buffer.
-- */
--int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
-+static inline bool
-+rb_wait_cond(struct rb_irq_work *rbwork, struct trace_buffer *buffer,
-+	     int cpu, int full, ring_buffer_cond_fn cond, void *data)
- {
--	struct ring_buffer_per_cpu *cpu_buffer;
--	DEFINE_WAIT(wait);
--	struct rb_irq_work *work;
--	int ret = 0;
--
--	/*
--	 * Depending on what the caller is waiting for, either any
--	 * data in any cpu buffer, or a specific buffer, put the
--	 * caller on the appropriate wait queue.
--	 */
--	if (cpu == RING_BUFFER_ALL_CPUS) {
--		work = &buffer->irq_work;
--		/* Full only makes sense on per cpu reads */
--		full = 0;
--	} else {
--		if (!cpumask_test_cpu(cpu, buffer->cpumask))
--			return -ENODEV;
--		cpu_buffer = buffer->buffers[cpu];
--		work = &cpu_buffer->irq_work;
--	}
-+	if (rb_watermark_hit(buffer, cpu, full))
-+		return true;
- 
--	if (full)
--		prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
--	else
--		prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
-+	if (cond(data))
-+		return true;
- 
- 	/*
- 	 * The events can happen in critical sections where
-@@ -1049,27 +1021,75 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
- 	 * a task has been queued. It's OK for spurious wake ups.
+diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+index e220d761b1f27..c17aee454fa3b 100644
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -255,17 +255,17 @@ static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 	if (!peers_nest)
+ 		goto out;
+ 	ret = 0;
+-	/* If the last cursor was removed via list_del_init in peer_remove, then
++	lockdep_assert_held(&wg->device_update_lock);
++	/* If the last cursor was removed in peer_remove or peer_remove_all, then
+ 	 * we just treat this the same as there being no more peers left. The
+ 	 * reason is that seq_nr should indicate to userspace that this isn't a
+ 	 * coherent dump anyway, so they'll try again.
  	 */
- 	if (full)
--		work->full_waiters_pending = true;
-+		rbwork->full_waiters_pending = true;
- 	else
--		work->waiters_pending = true;
-+		rbwork->waiters_pending = true;
- 
--	if (rb_watermark_hit(buffer, cpu, full))
--		goto out;
-+	return false;
-+}
- 
--	if (signal_pending(current)) {
--		ret = -EINTR;
--		goto out;
-+/*
-+ * The default wait condition for ring_buffer_wait() is to just to exit the
-+ * wait loop the first time it is woken up.
-+ */
-+static bool rb_wait_once(void *data)
-+{
-+	long *once = data;
-+
-+	/* wait_event() actually calls this twice before scheduling*/
-+	if (*once > 1)
-+		return true;
-+
-+	(*once)++;
-+	return false;
-+}
-+
-+/**
-+ * ring_buffer_wait - wait for input to the ring buffer
-+ * @buffer: buffer to wait on
-+ * @cpu: the cpu buffer to wait on
-+ * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-+ *
-+ * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
-+ * as data is added to any of the @buffer's cpu buffers. Otherwise
-+ * it will wait for data to be added to a specific cpu buffer.
-+ */
-+int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
-+{
-+	struct ring_buffer_per_cpu *cpu_buffer;
-+	struct wait_queue_head *waitq;
-+	ring_buffer_cond_fn cond;
-+	struct rb_irq_work *rbwork;
-+	void *data;
-+	long once = 0;
-+	int ret = 0;
-+
-+	cond = rb_wait_once;
-+	data = &once;
-+
-+	/*
-+	 * Depending on what the caller is waiting for, either any
-+	 * data in any cpu buffer, or a specific buffer, put the
-+	 * caller on the appropriate wait queue.
-+	 */
-+	if (cpu == RING_BUFFER_ALL_CPUS) {
-+		rbwork = &buffer->irq_work;
-+		/* Full only makes sense on per cpu reads */
-+		full = 0;
-+	} else {
-+		if (!cpumask_test_cpu(cpu, buffer->cpumask))
-+			return -ENODEV;
-+		cpu_buffer = buffer->buffers[cpu];
-+		rbwork = &cpu_buffer->irq_work;
+ 	if (list_empty(&wg->peer_list) ||
+-	    (ctx->next_peer && list_empty(&ctx->next_peer->peer_list))) {
++	    (ctx->next_peer && ctx->next_peer->is_dead)) {
+ 		nla_nest_cancel(skb, peers_nest);
+ 		goto out;
  	}
- 
--	schedule();
-- out:
- 	if (full)
--		finish_wait(&work->full_waiters, &wait);
-+		waitq = &rbwork->full_waiters;
- 	else
--		finish_wait(&work->waiters, &wait);
-+		waitq = &rbwork->waiters;
- 
--	if (!ret && !rb_watermark_hit(buffer, cpu, full) && signal_pending(current))
--		ret = -EINTR;
-+	ret = wait_event_interruptible((*waitq),
-+				rb_wait_cond(rbwork, buffer, cpu, full, cond, data));
- 
- 	return ret;
- }
+-	lockdep_assert_held(&wg->device_update_lock);
+ 	peer = list_prepare_entry(ctx->next_peer, &wg->peer_list, peer_list);
+ 	list_for_each_entry_continue(peer, &wg->peer_list, peer_list) {
+ 		if (get_peer(peer, skb, ctx)) {
 -- 
 2.43.0
 
