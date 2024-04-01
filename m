@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7694893E97
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B6E89435A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7851F21B1F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 311171C21D4E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2003B4778B;
-	Mon,  1 Apr 2024 16:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572A4487BC;
+	Mon,  1 Apr 2024 17:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/JMxYK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMu+9Cz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22C21CA8F;
-	Mon,  1 Apr 2024 16:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15949481C6;
+	Mon,  1 Apr 2024 17:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987528; cv=none; b=LI+XPdmusyZz+WAqSpJcVfRCLtMIkTQCSsXOEVmPZ5Po1zIxjr3I8QIh5y7xN1xXzxJQzuBnU/Y5LteYwco7Ng0esoT++8RXi8QCp+eAL1L8ErNMziLvwlVC2NeceYaPKqg9vY9kbt0K7XMVA78u2T2KyjtE5HXmJzWCYLGvjO0=
+	t=1711990959; cv=none; b=Aae73Y8KQxc4W5QMk4w1VVhrcWGemoZtox6yCitjMshYQUZQ4RBX1PkQ+S8dbrqPLJ1y94Ck6XEk7cukP8aFlqHi3s+JI7aA9iexm2bqAESgCYp5sYYZ5G50W9xCYMnquHlJIxNuuF6UXbJGgkYh8rWLnRQlT+Sha578p6KttLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987528; c=relaxed/simple;
-	bh=BhCmKVonpYxcq1h4TDeTmSIdtAxoP38rpTox40Sm4iI=;
+	s=arc-20240116; t=1711990959; c=relaxed/simple;
+	bh=6giTHlHdM+IfjOJXxUVhB+vDdMx85OgMHvqWsV6eDMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YixtM4Ac65dRqsO+NU0vzCuhyUC8WEofdenzmQoqaGDLqQffMNhbyjT5JZ2HD7+UXa5Tr0Sr07AxhlYRK1xDBwtmQuD9Bvv/YJnEVHvhVb/wdcfM0jq+KJLXFmNoNN7Y39NJ++d/aZHCHWE49AjnWd1cly3YmbRdSeqd9R1oxFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/JMxYK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DD8C433F1;
-	Mon,  1 Apr 2024 16:05:28 +0000 (UTC)
+	 MIME-Version; b=B8CZgIxA6uKJh5X0lsCGsXC2SmeEgHL6pBMJC6lPmeIoxfBUA2oemQcGGxhldDrBLbygu3Sm9GQo5v884GalTc2E81ZwXKCZIJL/OP9I+W8LTHifBhxqqHlZJRtVknZCIzKrVcEASiKEhMPxx/Fr+dEguHOmAk3IvJTxx8Lu+vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMu+9Cz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753E3C433F1;
+	Mon,  1 Apr 2024 17:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987528;
-	bh=BhCmKVonpYxcq1h4TDeTmSIdtAxoP38rpTox40Sm4iI=;
+	s=korg; t=1711990959;
+	bh=6giTHlHdM+IfjOJXxUVhB+vDdMx85OgMHvqWsV6eDMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/JMxYK3yIgE2SYVpkA1bZE0t/mTpJ/Q23iCWJlWrDxyyF0Iw/ZnVxVbr0UJgBz4j
-	 Nx7u3pxDtZYSjw/4VOdiWLJfU5+Y1la2JdqxLPyMbmJiPBcyVmVwSOgFlPQi9HzzhL
-	 q9HuhICMTbabb/5H5C0OsH8TkgbJoAfAUYXNP8hs=
+	b=gMu+9Cz5tAEQFmdlYbs9odmWnKSmoKpkpnVj5SABLBrEocd+zftumaKc3B8NpB0it
+	 mDzvM7cDAshjemX8dGZwGF55a4PFJ45kbZD+NEzpE6xEpERBT39SuC/S6NDdOuy4Rj
+	 jAdSNLsWT/3mBQXqu/yrsmXZILfvd+H25y9EAw6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Avri Altman <avri.altman@wdc.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.8 314/399] mmc: core: Avoid negative index with array access
-Date: Mon,  1 Apr 2024 17:44:40 +0200
-Message-ID: <20240401152558.559006674@linuxfoundation.org>
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 091/272] PCI/AER: Block runtime suspend when handling errors
+Date: Mon,  1 Apr 2024 17:44:41 +0200
+Message-ID: <20240401152533.468712615@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
 
-commit cf55a7acd1ed38afe43bba1c8a0935b51d1dc014 upstream.
+[ Upstream commit 002bf2fbc00e5c4b95fb167287e2ae7d1973281e ]
 
-Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") assigns
-prev_idata = idatas[i - 1], but doesn't check that the iterator i is
-greater than zero. Let's fix this by adding a check.
+PM runtime can be done simultaneously with AER error handling.  Avoid that
+by using pm_runtime_get_sync() before and pm_runtime_put() after reset in
+pcie_do_recovery() for all recovering devices.
 
-Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
-Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240313133744.2405325-2-mikko.rapeli@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+pm_runtime_get_sync() will increase dev->power.usage_count counter to
+prevent any possible future request to runtime suspend a device.  It will
+also resume a device, if it was previously in D3hot state.
+
+I tested with igc device by doing simultaneous aer_inject and rpm
+suspend/resume via /sys/bus/pci/devices/PCI_ID/power/control and can
+reproduce:
+
+  igc 0000:02:00.0: not ready 65535ms after bus reset; giving up
+  pcieport 0000:00:1c.2: AER: Root Port link has been reset (-25)
+  pcieport 0000:00:1c.2: AER: subordinate device reset failed
+  pcieport 0000:00:1c.2: AER: device recovery failed
+  igc 0000:02:00.0: Unable to change power state from D3hot to D0, device inaccessible
+
+The problem disappears when this patch is applied.
+
+Link: https://lore.kernel.org/r/20240212120135.146068-1-stanislaw.gruszka@linux.intel.com
+Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pcie/err.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -488,7 +488,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
- 	if (idata->flags & MMC_BLK_IOC_DROP)
- 		return 0;
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index 59c90d04a609a..705893b5f7b09 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -13,6 +13,7 @@
+ #define dev_fmt(fmt) "AER: " fmt
  
--	if (idata->flags & MMC_BLK_IOC_SBC)
-+	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
- 		prev_idata = idatas[i - 1];
+ #include <linux/pci.h>
++#include <linux/pm_runtime.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
+@@ -85,6 +86,18 @@ static int report_error_detected(struct pci_dev *dev,
+ 	return 0;
+ }
  
- 	/*
++static int pci_pm_runtime_get_sync(struct pci_dev *pdev, void *data)
++{
++	pm_runtime_get_sync(&pdev->dev);
++	return 0;
++}
++
++static int pci_pm_runtime_put(struct pci_dev *pdev, void *data)
++{
++	pm_runtime_put(&pdev->dev);
++	return 0;
++}
++
+ static int report_frozen_detected(struct pci_dev *dev, void *data)
+ {
+ 	return report_error_detected(dev, pci_channel_io_frozen, data);
+@@ -207,6 +220,8 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 	else
+ 		bridge = pci_upstream_bridge(dev);
+ 
++	pci_walk_bridge(bridge, pci_pm_runtime_get_sync, NULL);
++
+ 	pci_dbg(bridge, "broadcast error_detected message\n");
+ 	if (state == pci_channel_io_frozen) {
+ 		pci_walk_bridge(bridge, report_frozen_detected, &status);
+@@ -251,10 +266,15 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 		pcie_clear_device_status(dev);
+ 		pci_aer_clear_nonfatal_status(dev);
+ 	}
++
++	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
++
+ 	pci_info(bridge, "device recovery successful\n");
+ 	return status;
+ 
+ failed:
++	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
++
+ 	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
+ 
+ 	/* TODO: Should kernel panic here? */
+-- 
+2.43.0
+
 
 
 
