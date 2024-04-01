@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-35335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A802189437F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0358B894215
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48AECB21513
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C011F2282E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DE2446B6;
-	Mon,  1 Apr 2024 17:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2100D4653C;
+	Mon,  1 Apr 2024 16:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5sXDJHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8TYyixN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82119482E4;
-	Mon,  1 Apr 2024 17:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDE78F5C;
+	Mon,  1 Apr 2024 16:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991059; cv=none; b=SJCZqwmLT1a3tpKcejz1jEiDql7sN6nnk3XPfN4jrJE2xxL+Y2J1WvFnLFIozYLMITQLJVBauW+Ag8v233eelsa7+EiSTOBs4ULUIC4CG8a+KE3hLtT2WvJ3aLaIfi58UQ7Mx7P78xi8Vm/wNwKgY0OEYxvU85U81jT77bbQ9Ug=
+	t=1711990156; cv=none; b=ZJOtd9Su+xbMORc0gsec4AjNrauFAmTqGSUZVOIBnNTNsyJX1pQPWYcS395yVn51d1VAelL1hakjEFOtppKgVhH3pShKv7eEY0LLk3xk1XriWKxEEW3wTAfdomtW55oA8Gsh+jKrvxSIobYpeS7q0EuQnLMMJacrZ6o3AQUV8pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991059; c=relaxed/simple;
-	bh=/lTJK/KFtQBdJG+xRN2rGCDPTwr/H08LHnkCs76omdA=;
+	s=arc-20240116; t=1711990156; c=relaxed/simple;
+	bh=MlqOcIYCoMHqKB7YyrX10lv+D1oQkEVU0Isk+5M2K+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pTKzNKQDH5sjiRbnNW/MCUKQkX2WJ6kxCoFV23k+X84EoE2t+iRAyLcyWnFlZkXJzO5CutzyWg+hjAuPVSJQUVu6OxkkuzEIR+GhehYG2d4XupIN5ugy3hcJCl+ZhGeWMGCG9zx6q8rIuaDI7nY/2SqfqeYHHhdXxh6jKtQsBV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5sXDJHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89D0C433F1;
-	Mon,  1 Apr 2024 17:04:18 +0000 (UTC)
+	 MIME-Version; b=HigZbKKCg2fd9bz294dq8qYzDaC4WUCOQIBVE2vyRjsQJARIB1pz0PZEUDj5ad+eQgvNOcE3ZJ5u22ttGP2aUhmda5EOeKSUAM8Fx46V+4IkWSxxEX5FVMDRmfeH+SNbFwikqGYJT6zj/lip+fStOeKKKTCvEbx/NFRmkWq4lUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8TYyixN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6809C433C7;
+	Mon,  1 Apr 2024 16:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991059;
-	bh=/lTJK/KFtQBdJG+xRN2rGCDPTwr/H08LHnkCs76omdA=;
+	s=korg; t=1711990156;
+	bh=MlqOcIYCoMHqKB7YyrX10lv+D1oQkEVU0Isk+5M2K+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5sXDJHFld4kIiCcB+7l9QffrzyOqkd8goH6vYm8GFbZkpewMAkhpW93CQnA0ly/C
-	 1nY2jL0Oh6Tfl8ieyZVB812LJ0iMTY+MS4bO6bDrftFG1oOUlsiHh9yt3RR7wD19bn
-	 w+5xBMrq+g+J0qFr8QLqwFpedw51NsrllWxBce40=
+	b=z8TYyixNbc4HsvUjcRa62/kmcIFhw2VnxErIk2s1ktarArV/Axn6ERNMh9YhaIeFx
+	 YaLu27TegfR92Oh7l9scIHed62NaH15bBnld29uK9lB1bWMBptYEI9IUeZWm6KiBFV
+	 G4LFPKB/ZZtJd6agz3drnq4fxG0zbSTn8KCbJH4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Zhiguo Niu <Zhiguo.Niu@unisoc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/272] Revert "block/mq-deadline: use correct way to throttling write requests"
-Date: Mon,  1 Apr 2024 17:45:11 +0200
-Message-ID: <20240401152534.445769486@linuxfoundation.org>
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 263/396] xfs: make xchk_iget safer in the presence of corrupt inode btrees
+Date: Mon,  1 Apr 2024 17:45:12 +0200
+Message-ID: <20240401152555.747717568@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 256aab46e31683d76d45ccbedc287b4d3f3e322b ]
+commit 3f113c2739b1b068854c7ffed635c2bd790d1492 upstream.
 
-The code "max(1U, 3 * (1U << shift)  / 4)" comes from the Kyber I/O
-scheduler. The Kyber I/O scheduler maintains one internal queue per hwq
-and hence derives its async_depth from the number of hwq tags. Using
-this approach for the mq-deadline scheduler is wrong since the
-mq-deadline scheduler maintains one internal queue for all hwqs
-combined. Hence this revert.
+When scrub is trying to iget an inode, ensure that it won't end up
+deadlocked on a cycle in the inode btree by using an empty transaction
+to store all the buffers.
 
-Cc: stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Zhiguo Niu <Zhiguo.Niu@unisoc.com>
-Fixes: d47f9717e5cf ("block/mq-deadline: use correct way to throttling write requests")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240313214218.1736147-1-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/mq-deadline.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/xfs/scrub/common.c |    6 ++++--
+ fs/xfs/scrub/common.h |   25 +++++++++++++++++++++++++
+ fs/xfs/scrub/inode.c  |    4 ++--
+ 3 files changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index 55e26065c2e27..f10c2a0d18d41 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -622,9 +622,8 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
- 	struct request_queue *q = hctx->queue;
- 	struct deadline_data *dd = q->elevator->elevator_data;
- 	struct blk_mq_tags *tags = hctx->sched_tags;
--	unsigned int shift = tags->bitmap_tags.sb.shift;
- 
--	dd->async_depth = max(1U, 3 * (1U << shift)  / 4);
-+	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
- 
- 	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
+--- a/fs/xfs/scrub/common.c
++++ b/fs/xfs/scrub/common.c
+@@ -733,6 +733,8 @@ xchk_iget(
+ 	xfs_ino_t		inum,
+ 	struct xfs_inode	**ipp)
+ {
++	ASSERT(sc->tp != NULL);
++
+ 	return xfs_iget(sc->mp, sc->tp, inum, XFS_IGET_UNTRUSTED, 0, ipp);
  }
--- 
-2.43.0
-
+ 
+@@ -882,8 +884,8 @@ xchk_iget_for_scrubbing(
+ 	if (!xfs_verify_ino(sc->mp, sc->sm->sm_ino))
+ 		return -ENOENT;
+ 
+-	/* Try a regular untrusted iget. */
+-	error = xchk_iget(sc, sc->sm->sm_ino, &ip);
++	/* Try a safe untrusted iget. */
++	error = xchk_iget_safe(sc, sc->sm->sm_ino, &ip);
+ 	if (!error)
+ 		return xchk_install_handle_inode(sc, ip);
+ 	if (error == -ENOENT)
+--- a/fs/xfs/scrub/common.h
++++ b/fs/xfs/scrub/common.h
+@@ -151,6 +151,11 @@ void xchk_iunlock(struct xfs_scrub *sc,
+ 
+ void xchk_buffer_recheck(struct xfs_scrub *sc, struct xfs_buf *bp);
+ 
++/*
++ * Grab the inode at @inum.  The caller must have created a scrub transaction
++ * so that we can confirm the inumber by walking the inobt and not deadlock on
++ * a loop in the inobt.
++ */
+ int xchk_iget(struct xfs_scrub *sc, xfs_ino_t inum, struct xfs_inode **ipp);
+ int xchk_iget_agi(struct xfs_scrub *sc, xfs_ino_t inum,
+ 		struct xfs_buf **agi_bpp, struct xfs_inode **ipp);
+@@ -158,6 +163,26 @@ void xchk_irele(struct xfs_scrub *sc, st
+ int xchk_install_handle_inode(struct xfs_scrub *sc, struct xfs_inode *ip);
+ 
+ /*
++ * Safe version of (untrusted) xchk_iget that uses an empty transaction to
++ * avoid deadlocking on loops in the inobt.  This should only be used in a
++ * scrub or repair setup routine, and only prior to grabbing a transaction.
++ */
++static inline int
++xchk_iget_safe(struct xfs_scrub *sc, xfs_ino_t inum, struct xfs_inode **ipp)
++{
++	int	error;
++
++	ASSERT(sc->tp == NULL);
++
++	error = xchk_trans_alloc(sc, 0);
++	if (error)
++		return error;
++	error = xchk_iget(sc, inum, ipp);
++	xchk_trans_cancel(sc);
++	return error;
++}
++
++/*
+  * Don't bother cross-referencing if we already found corruption or cross
+  * referencing discrepancies.
+  */
+--- a/fs/xfs/scrub/inode.c
++++ b/fs/xfs/scrub/inode.c
+@@ -94,8 +94,8 @@ xchk_setup_inode(
+ 	if (!xfs_verify_ino(sc->mp, sc->sm->sm_ino))
+ 		return -ENOENT;
+ 
+-	/* Try a regular untrusted iget. */
+-	error = xchk_iget(sc, sc->sm->sm_ino, &ip);
++	/* Try a safe untrusted iget. */
++	error = xchk_iget_safe(sc, sc->sm->sm_ino, &ip);
+ 	if (!error)
+ 		return xchk_install_handle_iscrub(sc, ip);
+ 	if (error == -ENOENT)
 
 
 
