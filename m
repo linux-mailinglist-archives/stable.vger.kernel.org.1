@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E09893F4A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:14:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E87E893F2D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4271C2838CF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:14:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FB9D1C215F6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E288247A5D;
-	Mon,  1 Apr 2024 16:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBD147A62;
+	Mon,  1 Apr 2024 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LB7C6nj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CcEBLXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1BA446AC;
-	Mon,  1 Apr 2024 16:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B6243AD6;
+	Mon,  1 Apr 2024 16:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988074; cv=none; b=s/7en5RR+TQwEHxTUv1ZEUYcdnA9AdEtlmc+pTtj8t77bH+V56HARjXVwOYt3Um35QSpZqY9owBt51oguMOX49uTrEzi0zB8p8vqy5QUCpi39RieBmJ6yfZJFSG2Nij4k6Cb3AUkRnbGLJJvXjOyR9275VahqX/2YoE9LGpRlVs=
+	t=1711987976; cv=none; b=WGc7vWm63ozJM1ANzw9ZsovmfgMO4UxLVvJTAjxSO/rV6FX0jKqu3foGp2UGzr2VA0wbFVwKG4XmQ3qhw4y9LLYf0abmvCWSV1i5hJ/TIogzUogRfGERx5JW6C14o8muoVInlIdRG4i/4pkL0nkx+C0CMWpBNbQyCsAS7HBezyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988074; c=relaxed/simple;
-	bh=sRUa31LXYiOeqAYJvLuWxXno07390/mWKnwO3wm4aaA=;
+	s=arc-20240116; t=1711987976; c=relaxed/simple;
+	bh=Ntd+RP2PKLlijgrkMNux02JYJQAPn2SpHVzNst4hsm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELK7wxSYhFwcPxBW3pTLEtgWttu7iECjZ9B0QmvgkljYXWHcynBzRC2Qqo8CRs3ecDuzLglDMlXKuUXPrKddLTGZ0CLFA9zxaCDCwS74RLCidgskfJKeVO86qA8gDIKRB1albPeW59ZxvBhA+f+Bo+62VP8Xvl5MQYziz123hKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LB7C6nj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B78C43390;
-	Mon,  1 Apr 2024 16:14:33 +0000 (UTC)
+	 MIME-Version; b=Xk8MBaBlLx2qPX+3B/M6DAwU9kgZVLxQz95IUCecfpLlsDxEscegQ/gjA4acQoh95aWATNiG4GNbDy8twoErb4YNJavtJYdrxM0jJNEV+RVPfDPAe6BglIaqHb0TgOYV6oau3bhoQtSGRixYOTGUVGNzC7oKR0nM+a3Z0a6fE6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CcEBLXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D901C433F1;
+	Mon,  1 Apr 2024 16:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988074;
-	bh=sRUa31LXYiOeqAYJvLuWxXno07390/mWKnwO3wm4aaA=;
+	s=korg; t=1711987976;
+	bh=Ntd+RP2PKLlijgrkMNux02JYJQAPn2SpHVzNst4hsm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LB7C6nj3vvzhrZSIy51JvYTOvz3xgLqlEyA6xl5RqVxsu0sAIkbsh4jptoiaVXDC0
-	 gMetubgVxeQZwtwV/xQJpERtTnCxNgyd2DrzF05nT7w7Vn6irfkwm/AcZ5OlGJ9Aju
-	 +7v7TEyS8PutKsaArcToQevIV9jjUEBiIo/ze1mY=
+	b=1CcEBLXntTtibr2jdCQ8fr06tGdjBjuizStoaBIQQdYmIu26MWYmQ3LhMvUsa9tGs
+	 PhxySiubgYSm5DycotqpAmmBtYBiuHpOpXxLuUHvFGyxhqeThYCZ9uCq+HG4EJZ89M
+	 tTLybnomev5XCxBWriuuYpQLqEP4V0/zYpLoqILk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Hao Xu <howeyxu@tencent.com>,
+	Bernd Schubert <bschubert@ddn.com>,
 	Amir Goldstein <amir73il@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 047/432] fat: fix uninitialized field in nostale filehandles
-Date: Mon,  1 Apr 2024 17:40:34 +0200
-Message-ID: <20240401152554.533124328@linuxfoundation.org>
+Subject: [PATCH 6.7 048/432] fuse: fix VM_MAYSHARE and direct_io_allow_mmap
+Date: Mon,  1 Apr 2024 17:40:35 +0200
+Message-ID: <20240401152554.562261504@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
 References: <20240401152553.125349965@linuxfoundation.org>
@@ -69,47 +68,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Bernd Schubert <bschubert@ddn.com>
 
-[ Upstream commit fde2497d2bc3a063d8af88b258dbadc86bd7b57c ]
+[ Upstream commit 9511176bbaee0ac60ecc84e7b01cf5972a59ea17 ]
 
-When fat_encode_fh_nostale() encodes file handle without a parent it
-stores only first 10 bytes of the file handle. However the length of the
-file handle must be a multiple of 4 so the file handle is actually 12
-bytes long and the last two bytes remain uninitialized. This is not
-great at we potentially leak uninitialized information with the handle
-to userspace. Properly initialize the full handle length.
+There were multiple issues with direct_io_allow_mmap:
 
-Link: https://lkml.kernel.org/r/20240205122626.13701-1-jack@suse.cz
-Reported-by: syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com
-Fixes: ea3983ace6b7 ("fat: restructure export_operations")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+ - fuse_link_write_file() was missing, resulting in warnings in
+   fuse_write_file_get() and EIO from msync()
+
+ - "vma->vm_ops = &fuse_file_vm_ops" was not set, but especially
+   fuse_page_mkwrite is needed.
+
+The semantics of invalidate_inode_pages2() is so far not clearly defined in
+fuse_file_mmap.  It dates back to commit 3121bfe76311 ("fuse: fix
+"direct_io" private mmap") Though, as direct_io_allow_mmap is a new
+feature, that was for MAP_PRIVATE only.  As invalidate_inode_pages2() is
+calling into fuse_launder_folio() and writes out dirty pages, it should be
+safe to call invalidate_inode_pages2 for MAP_PRIVATE and MAP_SHARED as
+well.
+
+Cc: Hao Xu <howeyxu@tencent.com>
+Cc: stable@vger.kernel.org
+Fixes: e78662e818f9 ("fuse: add a new fuse init flag to relax restrictions in no cache mode")
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fat/nfs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/fuse/file.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fat/nfs.c b/fs/fat/nfs.c
-index c52e63e10d35c..509eea96a457d 100644
---- a/fs/fat/nfs.c
-+++ b/fs/fat/nfs.c
-@@ -130,6 +130,12 @@ fat_encode_fh_nostale(struct inode *inode, __u32 *fh, int *lenp,
- 		fid->parent_i_gen = parent->i_generation;
- 		type = FILEID_FAT_WITH_PARENT;
- 		*lenp = FAT_FID_SIZE_WITH_PARENT;
-+	} else {
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index a660f1f21540a..cc9651a01351c 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -2467,7 +2467,8 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
+ 		return fuse_dax_mmap(file, vma);
+ 
+ 	if (ff->open_flags & FOPEN_DIRECT_IO) {
+-		/* Can't provide the coherency needed for MAP_SHARED
 +		/*
-+		 * We need to initialize this field because the fh is actually
-+		 * 12 bytes long
-+		 */
-+		fid->parent_i_pos_hi = 0;
++		 * Can't provide the coherency needed for MAP_SHARED
+ 		 * if FUSE_DIRECT_IO_ALLOW_MMAP isn't set.
+ 		 */
+ 		if ((vma->vm_flags & VM_MAYSHARE) && !fc->direct_io_allow_mmap)
+@@ -2475,7 +2476,10 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
+ 
+ 		invalidate_inode_pages2(file->f_mapping);
+ 
+-		return generic_file_mmap(file, vma);
++		if (!(vma->vm_flags & VM_MAYSHARE)) {
++			/* MAP_PRIVATE */
++			return generic_file_mmap(file, vma);
++		}
  	}
  
- 	return type;
+ 	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_MAYWRITE))
 -- 
 2.43.0
 
