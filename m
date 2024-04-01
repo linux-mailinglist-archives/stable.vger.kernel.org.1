@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-34835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF015894118
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7E7894140
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F110E1C2048F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBA22B20B10
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECBF47A76;
-	Mon,  1 Apr 2024 16:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5382B47A6B;
+	Mon,  1 Apr 2024 16:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzeUMzoF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wn/RGMjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9394943AD6;
-	Mon,  1 Apr 2024 16:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F2B1E86C;
+	Mon,  1 Apr 2024 16:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989458; cv=none; b=tCZHZVVf5/7PlIDkIaFi/j9SuK4T36rv8DDPe1szSvVGxE/KLj/CJLf0HOwDTGJ4iwGWSRNjrICvoxgZgmYy/cjJyPkiXkk5TsjoCbO8AiOkQCf/ngBZq3mQWWuMTB2zKonTfIKKvF72jHCFRJbpxQ+wgEIqqtV3E9DDxW7SEUw=
+	t=1711989585; cv=none; b=KEDoIwCMz4OswdJCS4D34qHsVNIXgc+P47qeYqK1E99z4N3oJji/VNgDSOgXwUQAqJIMDNKPrTjPoW+At1bHaYju2W8GQNDaJMdw95/Lvlvh2H92ABx64y/N5GAgQIuDxc8sfLG6Ha5ATCRNM2mFict3oDToGTY8fYiLEq+1OSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989458; c=relaxed/simple;
-	bh=Kh29KrHML0LdQUP8lNfKfFxo+fH9BWh38JWujvvKLzg=;
+	s=arc-20240116; t=1711989585; c=relaxed/simple;
+	bh=gZ4e5xHhCRCmM+5Zs+ug6p3R62j/5YMUgXzEBy/rijg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJC3bpXfJaZjRDQB3SEFHZM9zurbiKUXtdaSv7BR2Y0Pq4nHiMOukr+XQLYfIAq3N2hrgFt99fPYjyP3JkOuT62AFPoBJXZLFYdjI7/XSAwF+kbTUOBVF9e2KkcookJegvWJp2aKltMK7/AojU2SMv4UMU+cuZVQgJujcbMEU7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzeUMzoF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03463C433C7;
-	Mon,  1 Apr 2024 16:37:37 +0000 (UTC)
+	 MIME-Version; b=sCuXn8WA3BXwxBmKj8lEDUn8jmRDIXOLom6643RbA1cUnCWokJrpnn23jfhX9qgJVJw90NqVWngFjt3IC3cu/JZYv0vkdvrl7eTntDHBP9BDIaHku/JqfOGdGfiE1BJ3xTlc3KaQ6l1ZXo5gBLf4z3ojnnyERbPJmmSOOVtLadQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wn/RGMjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E7CC433C7;
+	Mon,  1 Apr 2024 16:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989458;
-	bh=Kh29KrHML0LdQUP8lNfKfFxo+fH9BWh38JWujvvKLzg=;
+	s=korg; t=1711989584;
+	bh=gZ4e5xHhCRCmM+5Zs+ug6p3R62j/5YMUgXzEBy/rijg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzeUMzoFRwqfDkyLxISp8yYKPq4D39p6sH8irQfOGs33CQJmTqnpKkZmTQ3GlAf+Q
-	 1Tlyx0V8QATNEAAPd3NMl9QxmwfmPXG+COrx3blN2q/ITgP2kFJtxODaNVzoCMMLw1
-	 Y2yNtH9fQfNtvkwlNDF0ot+XxV/OWYMWF6dza2Vc=
+	b=Wn/RGMjkrNk2+fmKjs7OsK/BBgc13qgNkNeJTAjU7a32HVVjvwN4zdgQVwAeK/ocY
+	 SReXsGP8hcpOYgxr6583MQU+zgvVeR1lh5KkknKxLK0X3eb/UIz39LN59gyJL9Ajns
+	 0akKUPfjidrSnL5QhezJNeXzb6p8TwOFl2Ei3u14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	John David Anglin <dave.anglin@bell.net>,
 	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/396] parisc/unaligned: Rewrite 64-bit inline assembly of emulate_ldd()
-Date: Mon,  1 Apr 2024 17:41:42 +0200
-Message-ID: <20240401152549.506316039@linuxfoundation.org>
+Subject: [PATCH 6.6 054/396] parisc: Avoid clobbering the C/B bits in the PSW with tophys and tovirt macros
+Date: Mon,  1 Apr 2024 17:41:43 +0200
+Message-ID: <20240401152549.536148810@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
 References: <20240401152547.867452742@linuxfoundation.org>
@@ -66,86 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit e5db6a74571a8baf87a116ea39aab946283362ff ]
+[ Upstream commit 4603fbaa76b5e703b38ac8cc718102834eb6e330 ]
 
-Convert to use real temp variables instead of clobbering processor
-registers. This aligns the 64-bit inline assembly code with the 32-bit
-assembly code which was rewritten with commit 427c1073a2a1
-("parisc/unaligned: Rewrite 32-bit inline assembly of emulate_ldd()").
+Use add,l to avoid clobbering the C/B bits in the PSW.
 
-While at it, fix comment in 32-bit rewrite code. Temporary variables are
-now used for both 32-bit and 64-bit code, so move their declarations
-to the function header.
-
-No functional change intended.
-
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
 Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.10+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/unaligned.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ arch/parisc/include/asm/assembly.h | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
-index c520e551a1652..a8e75e5b884a7 100644
---- a/arch/parisc/kernel/unaligned.c
-+++ b/arch/parisc/kernel/unaligned.c
-@@ -169,6 +169,7 @@ static int emulate_ldw(struct pt_regs *regs, int toreg, int flop)
- static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
- {
- 	unsigned long saddr = regs->ior;
-+	unsigned long shift, temp1;
- 	__u64 val = 0;
- 	ASM_EXCEPTIONTABLE_VAR(ret);
+diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/assembly.h
+index 5937d5edaba1e..000a28e1c5e8d 100644
+--- a/arch/parisc/include/asm/assembly.h
++++ b/arch/parisc/include/asm/assembly.h
+@@ -97,26 +97,28 @@
+ 	 * version takes two arguments: a src and destination register.
+ 	 * However, the source and destination registers can not be
+ 	 * the same register.
++	 *
++	 * We use add,l to avoid clobbering the C/B bits in the PSW.
+ 	 */
  
-@@ -180,25 +181,22 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
+ 	.macro  tophys  grvirt, grphys
+-	ldil    L%(__PAGE_OFFSET), \grphys
+-	sub     \grvirt, \grphys, \grphys
++	ldil    L%(-__PAGE_OFFSET), \grphys
++	addl    \grvirt, \grphys, \grphys
+ 	.endm
+-	
++
+ 	.macro  tovirt  grphys, grvirt
+ 	ldil    L%(__PAGE_OFFSET), \grvirt
+-	add     \grphys, \grvirt, \grvirt
++	addl    \grphys, \grvirt, \grvirt
+ 	.endm
  
- #ifdef CONFIG_64BIT
- 	__asm__ __volatile__  (
--"	depd,z	%3,60,3,%%r19\n"		/* r19=(ofs&7)*8 */
--"	mtsp	%4, %%sr1\n"
--"	depd	%%r0,63,3,%3\n"
--"1:	ldd	0(%%sr1,%3),%0\n"
--"2:	ldd	8(%%sr1,%3),%%r20\n"
--"	subi	64,%%r19,%%r19\n"
--"	mtsar	%%r19\n"
--"	shrpd	%0,%%r20,%%sar,%0\n"
-+"	depd,z	%2,60,3,%3\n"		/* shift=(ofs&7)*8 */
-+"	mtsp	%5, %%sr1\n"
-+"	depd	%%r0,63,3,%2\n"
-+"1:	ldd	0(%%sr1,%2),%0\n"
-+"2:	ldd	8(%%sr1,%2),%4\n"
-+"	subi	64,%3,%3\n"
-+"	mtsar	%3\n"
-+"	shrpd	%0,%4,%%sar,%0\n"
- "3:	\n"
- 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
- 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
--	: "=r" (val), "+r" (ret)
--	: "0" (val), "r" (saddr), "r" (regs->isr)
--	: "r19", "r20" );
-+	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
-+	: "r" (regs->isr) );
- #else
--    {
--	unsigned long shift, temp1;
- 	__asm__ __volatile__  (
--"	zdep	%2,29,2,%3\n"		/* r19=(ofs&3)*8 */
-+"	zdep	%2,29,2,%3\n"		/* shift=(ofs&3)*8 */
- "	mtsp	%5, %%sr1\n"
- "	dep	%%r0,31,2,%2\n"
- "1:	ldw	0(%%sr1,%2),%0\n"
-@@ -214,7 +212,6 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
- 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b, "%1")
- 	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
- 	: "r" (regs->isr) );
--    }
- #endif
+ 	.macro  tophys_r1  gr
+-	ldil    L%(__PAGE_OFFSET), %r1
+-	sub     \gr, %r1, \gr
++	ldil    L%(-__PAGE_OFFSET), %r1
++	addl    \gr, %r1, \gr
+ 	.endm
+-	
++
+ 	.macro  tovirt_r1  gr
+ 	ldil    L%(__PAGE_OFFSET), %r1
+-	add     \gr, %r1, \gr
++	addl    \gr, %r1, \gr
+ 	.endm
  
- 	DPRINTF("val = 0x%llx\n", val);
+ 	.macro delay value
 -- 
 2.43.0
 
