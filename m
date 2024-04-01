@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-34253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93078893E8D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BE18941DD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C419E1C2117F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 831411F2558F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858AA4776F;
-	Mon,  1 Apr 2024 16:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E17481B8;
+	Mon,  1 Apr 2024 16:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ky8yzTEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gyr1cXMq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8031CA8F;
-	Mon,  1 Apr 2024 16:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF6F40876;
+	Mon,  1 Apr 2024 16:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987499; cv=none; b=eGhVnFSBWdkbPIdmC5PRTHpOChE9PwRMjz2w9DIMINZruFiBoL2x9LykIR5GiCsbVplWfTxokshg9R5YII+ineFEHC5uhBKGuFx9NaLJYxiWQuoZddWyEOrM6wL1lY2Abjx7ZA77X7xbrjcrMVx2koxp2/aDIGFnp+UcjXT/m/M=
+	t=1711990020; cv=none; b=cx/x/zBFi56LZDnAw2gUGa4wF90lA3yfq4izT2gp7kq1tiYpyKVDmY4ix0WY0ar+FwehdJgmuweQXuQchkVRXbm5TuMG2zsAxui+M24GzcACC8Jw6U4P9mAD9cic25p8SzHcVpHBZFWb0kRQZ537oS6+W4hK3hZP+OTWUR9yv90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987499; c=relaxed/simple;
-	bh=PMSCh7YeYZ43I2lXPNxKk0Z1n/LS5UVy6jt5QNbm+QQ=;
+	s=arc-20240116; t=1711990020; c=relaxed/simple;
+	bh=aleZN7/mTXCq4f+776UgnDbePwa9n1oyogL5GA728dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDXxfC6OSEfaSprpyeNGraMKSpt+LQUluYewWtUXU10DeBm3cWSukArKFJhUfey8OdzjadeEscSrrIgWvFk83sfTOpYfDnuE4IO1hzsyPXoEVHB0xzEGXa8EMm3T+JlDZYOI2I0YIjRVeqr8lCFozkvq5uEny7rGS9P3I8Zbb/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ky8yzTEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE2CC433F1;
-	Mon,  1 Apr 2024 16:04:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nDw31tOgkjbrA3YWKCmM4Yf8gZNWhQOkK73CNTZFCeFvbWAXOP8kxQp7ML1IHa/1vKQjKQRNENNne0dFmcg3Ubo6RBO0fI3hTKY9kWLNvSajrnimn5mFnyq+TNROyxdAqmVtY6BAM7YWVzr3lXOwsDlPc/OaHnywwzMGs+ajrd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gyr1cXMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3EBC433F1;
+	Mon,  1 Apr 2024 16:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987499;
-	bh=PMSCh7YeYZ43I2lXPNxKk0Z1n/LS5UVy6jt5QNbm+QQ=;
+	s=korg; t=1711990020;
+	bh=aleZN7/mTXCq4f+776UgnDbePwa9n1oyogL5GA728dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ky8yzTEMM0UmPuWfp4z/xvG5YMhSUuu/VJAqOqv1IoCyHd+gFoOXP+gDH9UZ3YGiO
-	 SuZLYOkdRjjpvU676fGPphDXm/XKIaA4PuK4hMjzfg3v9jihRgc44nlBLEgyDfJE73
-	 22pgApMMcz8hQCd87gpa49rjFjkjlT11P6mEWLjU=
+	b=Gyr1cXMqrI8a66rgJfsd7Tuf34Gh1MZXqPG7mJq14eusTy6fAaGB5071Ey+YsP2Lv
+	 RZaegnIgv3ihRxol1vNn64TYu7fjnl5rDMfXcJD9hzVXm+y2935bNtKuBRnAQs663t
+	 IL5TBTVC/ESePHveaMDCr+lBhY6wxqM0b3WZOcmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Bowler <nbowler@draconx.ca>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.8 306/399] fbdev: Select I/O-memory framebuffer ops for SBus
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
+Subject: [PATCH 6.6 223/396] usb: gadget: ncm: Fix handling of zero block length packets
 Date: Mon,  1 Apr 2024 17:44:32 +0200
-Message-ID: <20240401152558.322745905@linuxfoundation.org>
+Message-ID: <20240401152554.568470749@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,67 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit a8eb93b42d7e068306ca07f51055cbcde893fea3 upstream.
+commit f90ce1e04cbcc76639d6cba0fdbd820cd80b3c70 upstream.
 
-Framebuffer I/O on the Sparc Sbus requires read/write helpers for
-I/O memory. Select FB_IOMEM_FOPS accordingly.
+While connecting to a Linux host with CDC_NCM_NTB_DEF_SIZE_TX
+set to 65536, it has been observed that we receive short packets,
+which come at interval of 5-10 seconds sometimes and have block
+length zero but still contain 1-2 valid datagrams present.
 
-Reported-by: Nick Bowler <nbowler@draconx.ca>
-Closes: https://lore.kernel.org/lkml/5bc21364-41da-a339-676e-5bb0f4faebfb@draconx.ca/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 8813e86f6d82 ("fbdev: Remove default file-I/O implementations")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240322083005.24269-1-tzimmermann@suse.de
+According to the NCM spec:
+
+"If wBlockLength = 0x0000, the block is terminated by a
+short packet. In this case, the USB transfer must still
+be shorter than dwNtbInMaxSize or dwNtbOutMaxSize. If
+exactly dwNtbInMaxSize or dwNtbOutMaxSize bytes are sent,
+and the size is a multiple of wMaxPacketSize for the
+given pipe, then no ZLP shall be sent.
+
+wBlockLength= 0x0000 must be used with extreme care, because
+of the possibility that the host and device may get out of
+sync, and because of test issues.
+
+wBlockLength = 0x0000 allows the sender to reduce latency by
+starting to send a very large NTB, and then shortening it when
+the sender discovers that there’s not sufficient data to justify
+sending a large NTB"
+
+However, there is a potential issue with the current implementation,
+as it checks for the occurrence of multiple NTBs in a single
+giveback by verifying if the leftover bytes to be processed is zero
+or not. If the block length reads zero, we would process the same
+NTB infintely because the leftover bytes is never zero and it leads
+to a crash. Fix this by bailing out if block length reads zero.
+
+Cc: stable@vger.kernel.org
+Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Link: https://lore.kernel.org/r/20240228115441.2105585-1-quic_kriskura@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/Kconfig |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/gadget/function/f_ncm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -501,6 +501,7 @@ config FB_SBUS_HELPERS
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_FOPS
- 
- config FB_BW2
- 	bool "BWtwo support"
-@@ -521,6 +522,7 @@ config FB_CG6
- 	depends on (FB = y) && (SPARC && FB_SBUS)
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_FOPS
- 	help
- 	  This is the frame buffer device driver for the CGsix (GX, TurboGX)
- 	  frame buffer.
-@@ -530,6 +532,7 @@ config FB_FFB
- 	depends on FB_SBUS && SPARC64
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_FOPS
- 	help
- 	  This is the frame buffer device driver for the Creator, Creator3D,
- 	  and Elite3D graphics boards.
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1333,7 +1333,7 @@ parse_ntb:
+ 	if (to_process == 1 &&
+ 	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
+ 		to_process--;
+-	} else if (to_process > 0) {
++	} else if ((to_process > 0) && (block_len != 0)) {
+ 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
+ 		goto parse_ntb;
+ 	}
 
 
 
