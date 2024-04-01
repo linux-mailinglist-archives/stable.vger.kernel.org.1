@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C118941ED
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50364893E9F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 589A9B224A2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BE7F282622
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F9C4644C;
-	Mon,  1 Apr 2024 16:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C624776F;
+	Mon,  1 Apr 2024 16:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTIJ/JZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNj0FjOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BAB1E525;
-	Mon,  1 Apr 2024 16:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615331CA8F;
+	Mon,  1 Apr 2024 16:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990074; cv=none; b=QW72b5fHrFcODumpQrApFAALsGapfIk7St4s+gDIWJ8Yynv6QKGmX8rYzIC6Ffv9VmejmD8OKp8FTyWd5TuauhUtH3u3Sw8vZm6xI3qWylzJ1AAZ0+7XipRPudkp0qpn7efZgSMz8o+x1PmdcpAxdRFnecTawysfg3Tm2qjtkC0=
+	t=1711987556; cv=none; b=RQQXmJqr1iDyVQs2SDeFIFFQyRzWi9c/jNhT75x8l+LIwh/l78+v43n3tEdceX/KNbIeKhxB8qTWZYfeh5vDY2QjPai6LZiF7PCB0xTnVFarugY5NWUfGuSyVpTnYnJ4Et0E7IMW9GFJCHHvVcHX98DzVIQBtp0ExVKY/7nUNHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990074; c=relaxed/simple;
-	bh=u0o7zJt6HPCbYtN3xtIH5qeFw1KQ/wm8LgXIGbZcdK0=;
+	s=arc-20240116; t=1711987556; c=relaxed/simple;
+	bh=3uSLwXPE+ie4Erd1ycRWXi/yq80cHJvgNRSAuHoHhtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqC9ElpDauAEt7r/r0vezKeIsFlUsLsguQy3VaHK3S0xNm7BY31DuJrk+uTyzeRfCOfHsY/Xbidk6a7ZwgvoxWxhyKQi4fRo/+KSYnCWyZ1yrnwVwRmfsFpTkn8Z9jkkVvi/laGcO3Udmh3kIqMsahnaMv766Hio0BcWeIfpCIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTIJ/JZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B90C433C7;
-	Mon,  1 Apr 2024 16:47:53 +0000 (UTC)
+	 MIME-Version; b=CijgqlvnVkTT2Ofz7mYEKugaIPx5TV8ednIWr0xq/GYCMGbxR7pxgv/dLH3XD+ETnRAcygACRR7kbyQWm862KONiZjICbyMvR1HMZ1H/TSfMRI41V9i5D1w79zcT+XrO7GyQgwlfv8XgwhdFTHaKdGvzggqHIa41i433E7Og8Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNj0FjOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C814AC433F1;
+	Mon,  1 Apr 2024 16:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990074;
-	bh=u0o7zJt6HPCbYtN3xtIH5qeFw1KQ/wm8LgXIGbZcdK0=;
+	s=korg; t=1711987556;
+	bh=3uSLwXPE+ie4Erd1ycRWXi/yq80cHJvgNRSAuHoHhtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTIJ/JZKPACu0V2XXZYJjtcvmKeUhQc2YP36MUC5zV9+WCo/0/sQSy5TDn/eYrxz8
-	 GY0D8BJ0DxOTwwVBvUS1fuQ5f/6PMeO00Bv0Muplj7HjCnnx23OoCI6yM0qmtqgrP2
-	 eAhkikam+a95/FqjJlmdAwdKhvs88P9yG3o8kwMA=
+	b=yNj0FjObO1Vl0DCeI0hpR1+Ykuj2BsncSVK44BgJGi+hagZhtaUSW4KEhWTaN9d48
+	 QXjlWpTVggXPInqyMI6cKCSX+ewJH2mWZ3yIedhJqXpyll/tC3al+iMktg21o2LEJS
+	 9dMQydsYim5URpwokk583+VLjmvBEMyZfylSBaGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Sumit Garg <sumit.garg@linaro.org>,
-	Jens Wiklander <jens.wiklander@linaro.org>
-Subject: [PATCH 6.6 238/396] tee: optee: Fix kernel panic caused by incorrect error handling
+	kernel test robot <lkp@intel.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.8 321/399] net: wan: framer: Add missing static inline qualifiers
 Date: Mon,  1 Apr 2024 17:44:47 +0200
-Message-ID: <20240401152555.009998005@linuxfoundation.org>
+Message-ID: <20240401152558.763852494@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Garg <sumit.garg@linaro.org>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 95915ba4b987cf2b222b0f251280228a1ff977ac upstream.
+commit ea2c09283b44d1a3732a195a9b257d56779c8863 upstream.
 
-The error path while failing to register devices on the TEE bus has a
-bug leading to kernel panic as follows:
+Compilation with CONFIG_GENERIC_FRAMER disabled lead to the following
+warnings:
+  framer.h:184:16: warning: no previous prototype for function 'framer_get' [-Wmissing-prototypes]
+  184 | struct framer *framer_get(struct device *dev, const char *con_id)
+  framer.h:184:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  184 | struct framer *framer_get(struct device *dev, const char *con_id)
+  framer.h:189:6: warning: no previous prototype for function 'framer_put' [-Wmissing-prototypes]
+  189 | void framer_put(struct device *dev, struct framer *framer)
+  framer.h:189:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  189 | void framer_put(struct device *dev, struct framer *framer)
 
-[   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
-[   15.406913] Mem abort info:
-[   15.409722]   ESR = 0x0000000096000005
-[   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   15.418814]   SET = 0, FnV = 0
-[   15.421878]   EA = 0, S1PTW = 0
-[   15.425031]   FSC = 0x05: level 1 translation fault
-[   15.429922] Data abort info:
-[   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
-[   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
-[   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+Add missing 'static inline' qualifiers for these functions.
 
-Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
-lead to the introduction of this bug. So fix it appropriately.
-
-Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
-Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202403241110.hfJqeJRu-lkp@intel.com/
+Fixes: 82c944d05b1a ("net: wan: Add framer framework support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tee/optee/device.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/framer/framer.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tee/optee/device.c
-+++ b/drivers/tee/optee/device.c
-@@ -90,13 +90,14 @@ static int optee_register_device(const u
- 	if (rc) {
- 		pr_err("device registration failed, err: %d\n", rc);
- 		put_device(&optee_device->dev);
-+		return rc;
- 	}
- 
- 	if (func == PTA_CMD_GET_DEVICES_SUPP)
- 		device_create_file(&optee_device->dev,
- 				   &dev_attr_need_supplicant);
- 
--	return rc;
-+	return 0;
+--- a/include/linux/framer/framer.h
++++ b/include/linux/framer/framer.h
+@@ -181,12 +181,12 @@ static inline int framer_notifier_unregi
+ 	return -ENOSYS;
  }
  
- static int __optee_enumerate_devices(u32 func)
+-struct framer *framer_get(struct device *dev, const char *con_id)
++static inline struct framer *framer_get(struct device *dev, const char *con_id)
+ {
+ 	return ERR_PTR(-ENOSYS);
+ }
+ 
+-void framer_put(struct device *dev, struct framer *framer)
++static inline void framer_put(struct device *dev, struct framer *framer)
+ {
+ }
+ 
 
 
 
