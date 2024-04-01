@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-35139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA78894296
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0DD38940D2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF5491C21D97
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C52228286B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B138748781;
-	Mon,  1 Apr 2024 16:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25830482DF;
+	Mon,  1 Apr 2024 16:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSDU05AB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnB/4VeC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FED7BA3F;
-	Mon,  1 Apr 2024 16:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9404487BC;
+	Mon,  1 Apr 2024 16:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990433; cv=none; b=B1aczQ5TAkzqpUcjA7Y0cEejZhnJzlHW59gAECbJL1MQYma3n1Aljg4U5nE5/EcWkKVufx+l1uLKlNW44rjZqfiXQ2MRnpbTtlOcIkAzhEQJeMm4xfz95wL62Hilk1jCsfmy41Zmt2N1XIXUC0kWTrlVMc/MMdF2jba2XZ6GLBE=
+	t=1711989278; cv=none; b=MFu50ItirsNwtorgjNM01zFTchZI0i4+vV2yWauX/r6TGtd/vMl2REl2+ymQFUMGoGK/bosZVg2oI78oaVyOVoLNnL7DY52VdmO6DvQISBc5nQBzbYKZ7CL6Xz4dO9gQdDMIqQG94Y9UCf4X1+oHoNp8w7AfNwR/hHwgZdq6pEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990433; c=relaxed/simple;
-	bh=3cfd3Os00xa3jf7cgroTULDXHbO2xeC8Ohssc1Hbaac=;
+	s=arc-20240116; t=1711989278; c=relaxed/simple;
+	bh=KyPwdPKevL8RLruA3SLmtkxyv2T66BahGyeGsY5rTVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOtBNlN+Ng9lrUJlkEA4egu/QHTMNWbzO2OJovHmYtAZHX18N2gaAfImMp4ggBjA+F127Af7F02vPW5z5FIvW/TDGdrUUKrYk4oghonaAp2lHnK/qg/h18Um+sMfEkK1r5JSetDMaRRyFagngbZ6SyU8zZ1C5JQwZJgse14t65g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSDU05AB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59C5C433C7;
-	Mon,  1 Apr 2024 16:53:52 +0000 (UTC)
+	 MIME-Version; b=eqoJ5gJeB8ISYFkBdg5ftAFPkay6ouCWu4NStB4ADAkO0r/1/r7whxUVEoLCylncU1VM7jKCOY75+bueARwwnnwA6vPOuZMLPx4JKk6oGEsbIZmgIjjZKXHuj97AV2MATrASeGvhMqVDUuKpaer3Ip/Bvq+zoJzYH7qRhdDMP2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnB/4VeC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F05C43390;
+	Mon,  1 Apr 2024 16:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990433;
-	bh=3cfd3Os00xa3jf7cgroTULDXHbO2xeC8Ohssc1Hbaac=;
+	s=korg; t=1711989278;
+	bh=KyPwdPKevL8RLruA3SLmtkxyv2T66BahGyeGsY5rTVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSDU05ABHmyecJurM+xwYz4XyhhJ3srxSlSzsH7P10ytEvKQaT+DnGjIM3Nieha4D
-	 YfWUz7t2xJg19WdUpQ59Pb1ylRZf6eqkrrVqK2a5nfM+t7IZsX42c6PnB7ddm+NG9l
-	 ODqwIiqKHW3RimXnurrD+ZNN2mIsEvHxoC665AdI=
+	b=wnB/4VeC4SsMpjBvztSqnvspnhidPh5MHd2NGENxCJegg2k4qldrt3EggqCl7E66p
+	 mR2j8i6p/Tnl0l3LdMQALqyw8+HeRw2E8zuaCOdT3ttRBmjudw2xroojc0OHf2LGeW
+	 KDEVlkqplxCP/Zv0seuoZZtA2YG+kkJuPrl0sVD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Ilya Bakoulin <ilya.bakoulin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 352/396] drm/amd/display: Fix hang/underflow when transitioning to ODM4:1
-Date: Mon,  1 Apr 2024 17:46:41 +0200
-Message-ID: <20240401152558.416806864@linuxfoundation.org>
+	Bikash Hazarika <bhazarika@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 415/432] scsi: qla2xxx: Update manufacturer detail
+Date: Mon,  1 Apr 2024 17:46:42 +0200
+Message-ID: <20240401152605.778228241@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <ilya.bakoulin@amd.com>
+From: Bikash Hazarika <bhazarika@marvell.com>
 
-[ Upstream commit e7b2b108cdeab76a7e7324459e50b0c1214c0386 ]
+commit 688fa069fda6fce24d243cddfe0c7024428acb74 upstream.
 
-[Why]
-Under some circumstances, disabling an OPTC and attempting to reclaim
-its OPP(s) for a different OPTC could cause a hang/underflow due to OPPs
-not being properly disconnected from the disabled OPTC.
+Update manufacturer detail from "Marvell Semiconductor, Inc." to
+"Marvell".
 
-[How]
-Ensure that all OPPs are unassigned from an OPTC when it gets disabled.
-
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: b4e05bb1dec5 ("drm/amd/display: Clear OPTC mem select on disable")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bikash Hazarika <bhazarika@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-5-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/qla2xxx/qla_def.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-index 8abb94f60078f..b1fcc91b65a32 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-@@ -148,6 +148,13 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
- 	REG_UPDATE(OTG_CONTROL,
- 			OTG_MASTER_EN, 0);
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -82,7 +82,7 @@ typedef union {
+ #include "qla_nvme.h"
+ #define QLA2XXX_DRIVER_NAME	"qla2xxx"
+ #define QLA2XXX_APIDEV		"ql2xapidev"
+-#define QLA2XXX_MANUFACTURER	"Marvell Semiconductor, Inc."
++#define QLA2XXX_MANUFACTURER	"Marvell"
  
-+	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
-+			OPTC_SEG0_SRC_SEL, 0xf,
-+			OPTC_SEG1_SRC_SEL, 0xf,
-+			OPTC_SEG2_SRC_SEL, 0xf,
-+			OPTC_SEG3_SRC_SEL, 0xf,
-+			OPTC_NUM_OF_INPUT_SEGMENT, 0);
-+
- 	REG_UPDATE(CONTROL,
- 			VTG0_ENABLE, 0);
- 
--- 
-2.43.0
-
+ /*
+  * We have MAILBOX_REGISTER_COUNT sized arrays in a few places,
 
 
 
