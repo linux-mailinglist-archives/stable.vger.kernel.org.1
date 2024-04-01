@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-34141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4A7893E0E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:58:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E105B893E11
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7DFD1F21349
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:58:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E567B22420
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBE54778B;
-	Mon,  1 Apr 2024 15:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBB747A53;
+	Mon,  1 Apr 2024 15:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxvftmbO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHVH8YHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBCF383BA;
-	Mon,  1 Apr 2024 15:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A602383BA;
+	Mon,  1 Apr 2024 15:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987133; cv=none; b=NTgXK3KjSEDraiyncg5w5s7nG+RuLf9PZUKBSI/DN5Cht82XSU6TzwEY/7MX1sD0o7u5F2JrEvNmMRvrI9wTUxzvKDcPKT4kscchMYOiYNZwcnqBfk1rosUNzHMqLRJL7eOK3Ol+o+eOJQO8rN7v/RWoqYLRPTUFZfk5sKsVCVc=
+	t=1711987139; cv=none; b=pRXDVu63xX8PNenxEV8sW700Og1Y4v0Shdxq26WXwb9eDLCFjyMLCwJJ92wD1vjqDU0wvTKNVeHioT0FhEluVc6z8XcO5au/PTt9V+k1gRiITZJLRr9nZduEwKIrzW8v0dSnX9M31hFyJAfaFnN6jLyZskqSY5/zyQfZpVMOsuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987133; c=relaxed/simple;
-	bh=PtEVayP0ptO0Qj+8RmmKQrnzmJWc+T4gnwAvD67nplE=;
+	s=arc-20240116; t=1711987139; c=relaxed/simple;
+	bh=y3qhDm74PSoTVAd2p8xXaa5BoWwrQh6XHTzVZuzqltI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h6g3FZJJehbaLeWjKFAkCrgsqH0nsGPrbi+nP5dy7LXOVzsIMgd+ztE0/HDe0CO7K6QPwZZd2Tzi0O9ZNLMcarsPwDBZoOh1LKbpHmr2DGJx9du150jNy3PAhB+6lSI3ErBUKjVeaeCVriVaBfX9ai637nMLCtzd4hfCl7gJ7r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxvftmbO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03807C433F1;
-	Mon,  1 Apr 2024 15:58:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jXzah0kFmvOUJ5TYU4Ss48+/4DPlQkBFLmPUBN8axzQsohQZ4tqWGsTDz5L5VV75RjyHy6pTuT0xh5TGmf+hrwvWCcsO1n/v1UW6e/D0Pqh9fQEUPoMnAa0TThJ4X6aF22pgLppGVrv5NTA6Yf9d6YmiR9dNF6IZ0z5ZclXZCUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHVH8YHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB34C433F1;
+	Mon,  1 Apr 2024 15:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987133;
-	bh=PtEVayP0ptO0Qj+8RmmKQrnzmJWc+T4gnwAvD67nplE=;
+	s=korg; t=1711987139;
+	bh=y3qhDm74PSoTVAd2p8xXaa5BoWwrQh6XHTzVZuzqltI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxvftmbOcLSpPtooGegkyp7NH+SwXln0FCMk6zJiSWbNQZjiz9tQYmsNUPpmXGFwi
-	 HouhdueUQy2cSkqLaxYGTx10vTYtBe70p1w6C7Tmu66WqkwzczMXahcoqQY7suYJ1k
-	 jhmm4j/ohJMohUOl2rMDZhUG9/ki/8u/LYbfBSNs=
+	b=rHVH8YHWMFZ2yLWn/7X3NbiZDaHNCYFYbAwI4Sy8TNdz1zNVWSEWCOErDpwWBzHD2
+	 W5kYHeYAB72nrF6sqqn6g3rGGA9ieg1wVYWps4is0TA/XLJV7dLi3AtLzEsnfVgB0A
+	 QbpMWw2q6J23oNNJGQxSgMT5P5RMoo9XxvDDJ+GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	netdev <netdev@vger.kernel.org>,
+	Yisen Zhuang <yisen.zhuang@huawei.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Yufeng Mo <moyufeng@huawei.com>,
+	Huazhong Tan <tanhuazhong@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 193/399] drm/i915: Add missing ; to __assign_str() macros in tracepoint code
-Date: Mon,  1 Apr 2024 17:42:39 +0200
-Message-ID: <20240401152554.943058086@linuxfoundation.org>
+Subject: [PATCH 6.8 194/399] net: hns3: tracing: fix hclgevf trace event strings
+Date: Mon,  1 Apr 2024 17:42:40 +0200
+Message-ID: <20240401152554.972397559@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -72,58 +78,146 @@ Content-Transfer-Encoding: 8bit
 
 From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 0df4c388a1e310400a6e90fb10b286e2673756f0 ]
+[ Upstream commit 3f9952e8d80cca2da3b47ecd5ad9ec16cfd1a649 ]
 
-I'm working on improving the __assign_str() and __string() macros to be
-more efficient, and removed some unneeded semicolons. This triggered a bug
-in the build as some of the __assign_str() macros in intel_display_trace
-was missing a terminating semicolon.
+The __string() and __assign_str() helper macros of the TRACE_EVENT() macro
+are going through some optimizations where only the source string of
+__string() will be used and the __assign_str() source will be ignored and
+later removed.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240222133057.2af72a19@gandalf.local.home
+To make sure that there's no issues, a new check is added between the
+__string() src argument and the __assign_str() src argument that does a
+strcmp() to make sure they are the same string.
 
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: David Airlie <airlied@gmail.com>
+The hclgevf trace events have:
+
+  __assign_str(devname, &hdev->nic.kinfo.netdev->name);
+
+Which triggers the warning:
+
+hclgevf_trace.h:34:39: error: passing argument 1 of ‘strcmp’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+   34 |                 __assign_str(devname, &hdev->nic.kinfo.netdev->name);
+ [..]
+arch/x86/include/asm/string_64.h:75:24: note: expected ‘const char *’ but argument is of type ‘char (*)[16]’
+   75 | int strcmp(const char *cs, const char *ct);
+      |            ~~~~~~~~~~~~^~
+
+Because __assign_str() now has:
+
+	WARN_ON_ONCE(__builtin_constant_p(src) ?		\
+		     strcmp((src), __data_offsets.dst##_ptr_) :	\
+		     (src) != __data_offsets.dst##_ptr_);	\
+
+The problem is the '&' on hdev->nic.kinfo.netdev->name. That's because
+that name is:
+
+	char			name[IFNAMSIZ]
+
+Where passing an address '&' of a char array is not compatible with strcmp().
+
+The '&' is not necessary, remove it.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240313093454.3909afe7@gandalf.local.home
+
+Cc: netdev <netdev@vger.kernel.org>
+Cc: Yisen Zhuang <yisen.zhuang@huawei.com>
+Cc: Salil Mehta <salil.mehta@huawei.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Yufeng Mo <moyufeng@huawei.com>
+Cc: Huazhong Tan <tanhuazhong@huawei.com>
 Cc: stable@vger.kernel.org
-Fixes: 2ceea5d88048b ("drm/i915: Print plane name in fbc tracepoints")
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Fixes: d8355240cf8fb ("net: hns3: add trace event support for PF/VF mailbox")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h  | 8 ++++----
+ .../net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h    | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_trace.h b/drivers/gpu/drm/i915/display/intel_display_trace.h
-index 99bdb833591ce..7862e7cefe027 100644
---- a/drivers/gpu/drm/i915/display/intel_display_trace.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_trace.h
-@@ -411,7 +411,7 @@ TRACE_EVENT(intel_fbc_activate,
- 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
- 									 plane->pipe);
- 			   __assign_str(dev, __dev_name_kms(plane));
--			   __assign_str(name, plane->base.name)
-+			   __assign_str(name, plane->base.name);
- 			   __entry->pipe = crtc->pipe;
- 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
- 			   __entry->scanline = intel_get_crtc_scanline(crtc);
-@@ -438,7 +438,7 @@ TRACE_EVENT(intel_fbc_deactivate,
- 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
- 									 plane->pipe);
- 			   __assign_str(dev, __dev_name_kms(plane));
--			   __assign_str(name, plane->base.name)
-+			   __assign_str(name, plane->base.name);
- 			   __entry->pipe = crtc->pipe;
- 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
- 			   __entry->scanline = intel_get_crtc_scanline(crtc);
-@@ -465,7 +465,7 @@ TRACE_EVENT(intel_fbc_nuke,
- 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
- 									 plane->pipe);
- 			   __assign_str(dev, __dev_name_kms(plane));
--			   __assign_str(name, plane->base.name)
-+			   __assign_str(name, plane->base.name);
- 			   __entry->pipe = crtc->pipe;
- 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
- 			   __entry->scanline = intel_get_crtc_scanline(crtc);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
+index 8510b88d49820..f3cd5a376eca9 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
+@@ -24,7 +24,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
+ 		__field(u8, code)
+ 		__field(u8, subcode)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
++		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, PF_GET_MBX_LEN)
+ 	),
+ 
+@@ -33,7 +33,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
+ 		__entry->code = req->msg.code;
+ 		__entry->subcode = req->msg.subcode;
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
+ 	),
+@@ -56,7 +56,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
+ 		__field(u8, vfid)
+ 		__field(u16, code)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
++		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, PF_SEND_MBX_LEN)
+ 	),
+ 
+@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
+ 		__entry->vfid = req->dest_vfid;
+ 		__entry->code = le16_to_cpu(req->msg.code);
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
+ 	),
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
+index 5d4895bb57a17..b259e95dd53c2 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
+@@ -23,7 +23,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
+ 		__field(u8, vfid)
+ 		__field(u16, code)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->nic.kinfo.netdev->name)
++		__string(devname, hdev->nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, VF_GET_MBX_LEN)
+ 	),
+ 
+@@ -31,7 +31,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
+ 		__entry->vfid = req->dest_vfid;
+ 		__entry->code = le16_to_cpu(req->msg.code);
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
+ 	),
+@@ -55,7 +55,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
+ 		__field(u8, code)
+ 		__field(u8, subcode)
+ 		__string(pciname, pci_name(hdev->pdev))
+-		__string(devname, &hdev->nic.kinfo.netdev->name)
++		__string(devname, hdev->nic.kinfo.netdev->name)
+ 		__array(u32, mbx_data, VF_SEND_MBX_LEN)
+ 	),
+ 
+@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
+ 		__entry->code = req->msg.code;
+ 		__entry->subcode = req->msg.subcode;
+ 		__assign_str(pciname, pci_name(hdev->pdev));
+-		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
++		__assign_str(devname, hdev->nic.kinfo.netdev->name);
+ 		memcpy(__entry->mbx_data, req,
+ 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
+ 	),
 -- 
 2.43.0
 
