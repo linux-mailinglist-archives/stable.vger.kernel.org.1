@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2D1893E85
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AED98941D5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E189CB20A12
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA75BB2254E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2254D47A6A;
-	Mon,  1 Apr 2024 16:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25D7481D0;
+	Mon,  1 Apr 2024 16:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ai5lp7r9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxs/nxPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FD1481C0;
-	Mon,  1 Apr 2024 16:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3F4481B8;
+	Mon,  1 Apr 2024 16:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987468; cv=none; b=Lau/ZiBcioW4rxOYrUEv5Je9Lv5/Pfyg1Mh9HbUZS5p9P1sQOwno04Z/kTKu4qcyOVgxKqpPhPFmZkh6zMp5alYYwbR6PI82G0jmAwgreCHijAuz5CRq7cb1ZS7BsbmjZVT8SVAn/IkMALcUYvOabyRi7GiN0UkQAZ0atymnmU8=
+	t=1711989994; cv=none; b=gACFnGkQFrYFbeB8sLN3QYlxwSQuU/jJQB0YYXZhk5RfDYR3zVqIh+CqvwdCeBmPNmRD4Z0G1dezyxNndd7wEsmWYIT2V5dImLpnOTDTsieherymRFYp7OuNdIX/7vydUZYqd41bflpT2IVBmrotrd6OzYf+ewYiOCrh3p60sgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987468; c=relaxed/simple;
-	bh=j5QyFTavSqyyOZ9atTWw+BtkpVQoZpsdWgskeqlqTRk=;
+	s=arc-20240116; t=1711989994; c=relaxed/simple;
+	bh=PKbekVFCSHgM9KiNVF5DqKm+Vid4MBjt48tJYu7GCl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVAEnCNnMJsEfsFBNk/JEWzZUr9ApxitrjdIjI7Jt197172aATOvlTjtFQPKB286AqRduQ5urQrVe9IRVByiFcdnAeZtPNtB6YaVhizqdb6NKfFX7aGz+2+5NNRWMPH//jybFKHeoOnEjCI4We0o6CBo2wnlbSFerHo2aQsaUq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ai5lp7r9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58751C433C7;
-	Mon,  1 Apr 2024 16:04:28 +0000 (UTC)
+	 MIME-Version; b=UDliu9cFbujaBKzGoHGwIOEPG/gkEUy37to8eYReN6krQJP3lguZ4+eK6gP6bwGqqR2ySsqmAQ5+DYgXEHXDDJr83IG1G4wzJqhi8/YlQ8H7aCx7BOmnmRZXctUhUio9+oDPjZKUhbzIYil85LRPA4xX+OvMejduKKxuUtadGOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxs/nxPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FC6C43390;
+	Mon,  1 Apr 2024 16:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987468;
-	bh=j5QyFTavSqyyOZ9atTWw+BtkpVQoZpsdWgskeqlqTRk=;
+	s=korg; t=1711989993;
+	bh=PKbekVFCSHgM9KiNVF5DqKm+Vid4MBjt48tJYu7GCl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ai5lp7r9ttqS7Xe5SjJxLBCa1Ku1bgQMdE8lfQDjEYXS2A7YWXe863WqwscaBFEWs
-	 9kjbmQ/Rtxjvr7wv9jz1bReKDjPP6DDPeLGMDXZYsLi4Fk7eFM+ZlcCCm/W90iCM5m
-	 E5WucWALm4AszbN/m/Gy3whRE2IKjkxzJnUrCv6g=
+	b=bxs/nxPHTPnokDcVjB4HFvEiZ4rCS+yL1HgBp/M8OLmZpPNPI9JbDDhen7RBWEfRS
+	 JW6gjwalRaOGDsVBC65MaZ+mZFflmRh/wFUnsRHw8AfveWMMiF9ot5lgaD3dCTwQLo
+	 QZX2yXJR5RPEV6uH+qA7wi0Y/vZX8YwEjiAPTah0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 268/399] x86/mpparse: Register APIC address only once
-Date: Mon,  1 Apr 2024 17:43:54 +0200
-Message-ID: <20240401152557.185828558@linuxfoundation.org>
+Subject: [PATCH 6.6 186/396] wifi: brcmfmac: add per-vendor feature detection callback
+Date: Mon,  1 Apr 2024 17:43:55 +0200
+Message-ID: <20240401152553.485632253@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-[ Upstream commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 ]
+[ Upstream commit 14e1391b71027948cdbacdbea4bf8858c2068eb7 ]
 
-The APIC address is registered twice. First during the early detection and
-afterwards when actually scanning the table for APIC IDs. The APIC and
-topology core warn about the second attempt.
+Adding a .feat_attach() callback allowing per-vendor overrides
+of the driver feature flags. In this patch the callback is only
+provided by BCA vendor to disable SAE feature as it has not been
+confirmed yet. BCA chips generally do not have the in-driver
+supplicant (idsup) feature so they rely on NL80211_CMD_EXTERNAL_AUTH
+to trigger user-space authentication.
 
-Restrict it to the early detection call.
-
-Fixes: 81287ad65da5 ("x86/apic: Sanitize APIC address setup")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240322185305.297774848@linutronix.de
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240103095704.135651-3-arend.vanspriel@broadcom.com
+Stable-dep-of: 85da8f71aaa7 ("wifi: brcmfmac: Demote vendor-specific attach/detach messages to info")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/mpparse.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/bca/core.c  |  8 ++++++++
+ .../wireless/broadcom/brcm80211/brcmfmac/feature.c   |  3 +++
+ .../net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h | 12 ++++++++++++
+ 3 files changed, 23 insertions(+)
 
-diff --git a/arch/x86/kernel/mpparse.c b/arch/x86/kernel/mpparse.c
-index b223922248e9f..15c700d358700 100644
---- a/arch/x86/kernel/mpparse.c
-+++ b/arch/x86/kernel/mpparse.c
-@@ -196,12 +196,12 @@ static int __init smp_read_mpc(struct mpc_table *mpc, unsigned early)
- 	if (!smp_check_mpc(mpc, oem, str))
- 		return 0;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+index ac3a36fa3640c..a5d9ac5e67638 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+@@ -7,6 +7,7 @@
+ #include <core.h>
+ #include <bus.h>
+ #include <fwvid.h>
++#include <feature.h>
  
--	/* Initialize the lapic mapping */
--	if (!acpi_lapic)
--		register_lapic_address(mpc->lapic);
--
--	if (early)
-+	if (early) {
-+		/* Initialize the lapic mapping */
-+		if (!acpi_lapic)
-+			register_lapic_address(mpc->lapic);
- 		return 1;
-+	}
+ #include "vops.h"
  
- 	/* Now process the configuration blocks. */
- 	while (count < mpc->length) {
+@@ -21,7 +22,14 @@ static void brcmf_bca_detach(struct brcmf_pub *drvr)
+ 	pr_err("%s: executing\n", __func__);
+ }
+ 
++static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
++{
++	/* SAE support not confirmed so disabling for now */
++	ifp->drvr->feat_flags &= ~BIT(BRCMF_FEAT_SAE);
++}
++
+ const struct brcmf_fwvid_ops brcmf_bca_ops = {
+ 	.attach = brcmf_bca_attach,
+ 	.detach = brcmf_bca_detach,
++	.feat_attach = brcmf_bca_feat_attach,
+ };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
+index 6d10c9efbe93d..909a34a1ab503 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
+@@ -13,6 +13,7 @@
+ #include "debug.h"
+ #include "fwil.h"
+ #include "fwil_types.h"
++#include "fwvid.h"
+ #include "feature.h"
+ #include "common.h"
+ 
+@@ -339,6 +340,8 @@ void brcmf_feat_attach(struct brcmf_pub *drvr)
+ 	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_FWSUP, "sup_wpa");
+ 	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_SCAN_V2, "scan_ver");
+ 
++	brcmf_fwvid_feat_attach(ifp);
++
+ 	if (drvr->settings->feature_disable) {
+ 		brcmf_dbg(INFO, "Features: 0x%02x, disable: 0x%02x\n",
+ 			  ifp->drvr->feat_flags,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+index 43df58bb70ad3..17fbdbb76f51b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+@@ -8,10 +8,12 @@
+ #include "firmware.h"
+ 
+ struct brcmf_pub;
++struct brcmf_if;
+ 
+ struct brcmf_fwvid_ops {
+ 	int (*attach)(struct brcmf_pub *drvr);
+ 	void (*detach)(struct brcmf_pub *drvr);
++	void (*feat_attach)(struct brcmf_if *ifp);
+ };
+ 
+ /* exported functions */
+@@ -44,4 +46,14 @@ static inline void brcmf_fwvid_detach(struct brcmf_pub *drvr)
+ 	brcmf_fwvid_detach_ops(drvr);
+ }
+ 
++static inline void brcmf_fwvid_feat_attach(struct brcmf_if *ifp)
++{
++	const struct brcmf_fwvid_ops *vops = ifp->drvr->vops;
++
++	if (!vops->feat_attach)
++		return;
++
++	vops->feat_attach(ifp);
++}
++
+ #endif /* FWVID_H_ */
 -- 
 2.43.0
 
