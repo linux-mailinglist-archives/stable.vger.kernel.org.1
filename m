@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-35000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2478941DA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977E2893E89
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E01B1F253C5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3179AB2303A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A854653C;
-	Mon,  1 Apr 2024 16:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBE74778E;
+	Mon,  1 Apr 2024 16:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZyspUfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKgynikH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6588B1E525;
-	Mon,  1 Apr 2024 16:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC73522301;
+	Mon,  1 Apr 2024 16:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990011; cv=none; b=MFBcl9fIhKLDPwDjRwXZx8vqUpIWAf7pTV7RdzHxTOK2hrX8NZemeb0wTScslGPoqv3yrpt13h/hnZ/wPyKoeD2QPtTbJ/aESUPSCa5JaueN9JnfegrUS2jqLB75TSfs2+UOLzotnbnfjdLO1NFD5Y6VWDTKXLWggaCrUCfHQBc=
+	t=1711987489; cv=none; b=F56OerBaqgEGXs2aHJYvBibnFoPBGSKXhm4zHb2/bQmRjAVlsdInGC9gsWKRGyrv5UJEH0oaA0drw4iX5KdZNx5oTgvULlckT5xyh9vj4EaRc+j+3L7oFkzBvzWfB6HJaVTEoFMxsrnrin42ULRRLdxGLChh+odPzCJGKp1ROlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990011; c=relaxed/simple;
-	bh=2ela1B7qnq+5k06GW1vebAs38nPPE9y6T4c2SsvhS9Y=;
+	s=arc-20240116; t=1711987489; c=relaxed/simple;
+	bh=n6A//aT+b9KLWY/i36AtEO7EZ1cPWX188uuyMz8dOl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jI3j0swq/Qx45FlAU4CUz4mBkyZ3p7nM6hjjnLWOQMgz/j+w3DoEGmZt7OITlbGmhiH4fHTnR/b95VPGmqjoQIKkRcSGCa4VTrigWVdTFQhqfzwFdqGZyymsiZCmvtqTl3R4mZVEWxSWSGWlIO6arZnauA3lN+3wNNPR0c1KJoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZyspUfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28662C433F1;
-	Mon,  1 Apr 2024 16:46:49 +0000 (UTC)
+	 MIME-Version; b=HQBM+1DYXsfvSVppKhLtvRtkSqYShcOnmwnTXV6preD1duhKi1mRVVP10UShciz506Fi4ThLGvIfBkXgZg046ck5swZT5kRhudSxj7aPgnrdTO635w7mJP3GXlbAfprcfFg3vktF8/N0toDczQVAdq/T4+bAxeM3CKn/wbdeqtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKgynikH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51325C43394;
+	Mon,  1 Apr 2024 16:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990010;
-	bh=2ela1B7qnq+5k06GW1vebAs38nPPE9y6T4c2SsvhS9Y=;
+	s=korg; t=1711987488;
+	bh=n6A//aT+b9KLWY/i36AtEO7EZ1cPWX188uuyMz8dOl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZyspUfY2PG29KfZXQ/jSKWvKZzEuPfwJTcBzcyMWqCB/tCc56QSpEtmi6SDwmMgu
-	 usdJq8TlYcQuhobvu6RSKj2HuPRGEqLEIWxkb+3Ge2+aciOcNEmQ4yQRwa4IMU0mn0
-	 sohHEHb9rLFfTycDEb5DF2kd4QSamFvXbvS7VNes=
+	b=cKgynikHC0oh7lqy5atc+KIodD1gIN+/k1f5CzgnWbJMAuh+ioSib7AiFk74QGUfR
+	 FWYv2S7U4MsgmTjfv8DY3M8Tc/zqxrDTG9Pyy6AkG2iknVmOSHZbs6uNyHM3OhgmOx
+	 U+bWjWofQdUTcwEvi+gGYmlX39j++++7meE3qtZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 220/396] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.8 303/399] wifi: iwlwifi: mvm: handle debugfs names more carefully
 Date: Mon,  1 Apr 2024 17:44:29 +0200
-Message-ID: <20240401152554.480220140@linuxfoundation.org>
+Message-ID: <20240401152558.235381860@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
+commit 19d82bdedaf2db0bfb3762dda714ea803065eed5 upstream.
 
-Headset Mic will no show at resume back.
-This patch will fix this issue.
+With debugfs=off, we can get here with the dbgfs_dir being
+an ERR_PTR(). Instead of checking for all this, which is
+often flagged as a mistake, simply handle the names here
+more carefully by printing them, then we don't need extra
+checks.
 
-Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Also, while checking, I noticed theoretically 'buf' is too
+small, so fix that size as well.
+
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218422
+Fixes: c36235acb34f ("wifi: iwlwifi: mvm: rework debugfs handling")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.4dc1eb3dd015.I32f308b0356ef5bcf8d188dd98ce9b210e3ab9fd@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11624,8 +11624,7 @@ static void alc897_hp_automute_hook(stru
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+@@ -735,7 +735,9 @@ void iwl_mvm_vif_dbgfs_add_link(struct i
+ {
+ 	struct dentry *dbgfs_dir = vif->debugfs_dir;
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	char buf[100];
++	char buf[3 * 3 + 11 + (NL80211_WIPHY_NAME_MAXLEN + 1) +
++		 (7 + IFNAMSIZ + 1) + 6 + 1];
++	char name[7 + IFNAMSIZ + 1];
  
- 	snd_hda_gen_hp_automute(codec, jack);
- 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
--	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
--			    vref);
-+	snd_hda_set_pin_ctl(codec, 0x1b, vref);
+ 	/* this will happen in monitor mode */
+ 	if (!dbgfs_dir)
+@@ -748,10 +750,11 @@ void iwl_mvm_vif_dbgfs_add_link(struct i
+ 	 * find
+ 	 * netdev:wlan0 -> ../../../ieee80211/phy0/netdev:wlan0/iwlmvm/
+ 	 */
+-	snprintf(buf, 100, "../../../%pd3/iwlmvm", dbgfs_dir);
++	snprintf(name, sizeof(name), "%pd", dbgfs_dir);
++	snprintf(buf, sizeof(buf), "../../../%pd3/iwlmvm", dbgfs_dir);
+ 
+-	mvmvif->dbgfs_slink = debugfs_create_symlink(dbgfs_dir->d_name.name,
+-						     mvm->debugfs_dir, buf);
++	mvmvif->dbgfs_slink =
++		debugfs_create_symlink(name, mvm->debugfs_dir, buf);
  }
  
- static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
-@@ -11634,6 +11633,10 @@ static void alc897_fixup_lenovo_headset_
- 	struct alc_spec *spec = codec->spec;
- 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
- 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
-+		spec->no_shutup_pins = 1;
-+	}
-+	if (action == HDA_FIXUP_ACT_PROBE) {
-+		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
- 	}
- }
- 
+ void iwl_mvm_vif_dbgfs_rm_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
 
 
 
