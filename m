@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-35369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9949D8943A0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64ABD89409A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8EE61C21EE1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8FE7B21E07
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C73747A64;
-	Mon,  1 Apr 2024 17:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190FE3613C;
+	Mon,  1 Apr 2024 16:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRrKvkMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojTOq/BI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7DF38DE5;
-	Mon,  1 Apr 2024 17:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2761C0DE7;
+	Mon,  1 Apr 2024 16:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991172; cv=none; b=LwsfkITRNIT9j3nrjh9vWpEZ9SckxsEbU1WKTo824JhAUkmnHA1eSnxv29vyv9NpT4tJuIxdVzTBFgxkprvDUKqAlkrN1P+IawEdVQxaUtCWNRyU3tPgIjX0wfzueTM8LrPPNr77TAL1giiTZZUU4+EI6agZqAQAr9rxTSQtSjs=
+	t=1711989122; cv=none; b=dghxYjBaWMcCfNf8QUXsFepI7MZhm7eaYwxJF1oUiyQCRSLLjQBWqazjdIj2L7tZVHxz/ZZqYxzR52D0YPMhOwlRCnzAneHz9k+NdIEdoPAtjd2E1JfTQ9szQnAmJHX4nhVn1iKFS6lz9f5epZfRQhxFtcf0GYMzFQn77FXZE7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991172; c=relaxed/simple;
-	bh=QwFlYzAdXAaUOmTtR1BI0EG2fmzJdmGbpaA/8kW7b9I=;
+	s=arc-20240116; t=1711989122; c=relaxed/simple;
+	bh=m9zxYOGxmpgPGZKUsTV1mKyjlNi2QCzxJVV/dol+YbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVOAcutUHp3TYt6jhLf84AFpSUGmoJPK70MYGd7yAnXWFrHtZcSSCXVeCai/n5wZx+yV2YSVn+hg/jyiG0lhLCqAk+axJ/pCMrLFVymMTQ98rEUQvORM/y2SgfDm2ZC2JC6Wz1ehDwel8w0oVVAUADaKis+tMQrRf48ONUZe9FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRrKvkMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6ABC433F1;
-	Mon,  1 Apr 2024 17:06:11 +0000 (UTC)
+	 MIME-Version; b=qRTmvNdX+bZlYuX2ii3Cqgy6ulpg5hiIpks/a3Z6VR7TRuKcOdaopX347FrgndaC6wvhNyQwG+KSyH8uNC0aCKboUXTFeRMASA7NmXaGbOjUHLoU7NL7Suqn4iGNAYXlQ55E3T52xw6+Idthdrwh4Y+ceDl5eMAvNJLi5tSj+RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojTOq/BI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA64C433F1;
+	Mon,  1 Apr 2024 16:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991171;
-	bh=QwFlYzAdXAaUOmTtR1BI0EG2fmzJdmGbpaA/8kW7b9I=;
+	s=korg; t=1711989122;
+	bh=m9zxYOGxmpgPGZKUsTV1mKyjlNi2QCzxJVV/dol+YbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRrKvkMhtDSvlu/7TlE8N/Ogi3Uz55SGSTCC715ecawWRybugaCFdmX3HwRmPnJCE
-	 OxRAYBiV3KK0NQ08jcdsnzH5QdiCwtCpA6op6utaXYn9gdy64xobGIE5MAy1ACfOrA
-	 rRp+B8mveqeI9yXVaHqjUM8X/HmASkwFX2l+whls=
+	b=ojTOq/BIlTm0iiSvr5HxlRdASBjVPF/UlXd/A/BwKgtFWZIcgRnFuvsre2ivmIcoM
+	 l/EhXH/IywsiMpklKJQ2rR96kw0ahD1eqdacUJgFR9h7I+9S5eDdf7jkxaNu4I36Kt
+	 9aYk0Vf7RTmGrSRKyD6IPNYHNc0pxcgR+Ln0kTDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 146/272] netfilter: nf_tables: disallow anonymous set with timeout flag
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.7 349/432] wifi: iwlwifi: mvm: handle debugfs names more carefully
 Date: Mon,  1 Apr 2024 17:45:36 +0200
-Message-ID: <20240401152535.256656155@linuxfoundation.org>
+Message-ID: <20240401152603.654356102@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 16603605b667b70da974bea8216c93e7db043bf1 upstream.
+commit 19d82bdedaf2db0bfb3762dda714ea803065eed5 upstream.
 
-Anonymous sets are never used with timeout from userspace, reject this.
-Exception to this rule is NFT_SET_EVAL to ensure legacy meters still work.
+With debugfs=off, we can get here with the dbgfs_dir being
+an ERR_PTR(). Instead of checking for all this, which is
+often flagged as a mistake, simply handle the names here
+more carefully by printing them, then we don't need extra
+checks.
+
+Also, while checking, I noticed theoretically 'buf' is too
+small, so fix that size as well.
 
 Cc: stable@vger.kernel.org
-Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218422
+Fixes: c36235acb34f ("wifi: iwlwifi: mvm: rework debugfs handling")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.4dc1eb3dd015.I32f308b0356ef5bcf8d188dd98ce9b210e3ab9fd@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4711,6 +4711,9 @@ static int nf_tables_newset(struct sk_bu
- 		if ((flags & (NFT_SET_EVAL | NFT_SET_OBJECT)) ==
- 			     (NFT_SET_EVAL | NFT_SET_OBJECT))
- 			return -EOPNOTSUPP;
-+		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
-+			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
-+			return -EOPNOTSUPP;
- 	}
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+@@ -735,7 +735,9 @@ void iwl_mvm_vif_dbgfs_add_link(struct i
+ {
+ 	struct dentry *dbgfs_dir = vif->debugfs_dir;
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	char buf[100];
++	char buf[3 * 3 + 11 + (NL80211_WIPHY_NAME_MAXLEN + 1) +
++		 (7 + IFNAMSIZ + 1) + 6 + 1];
++	char name[7 + IFNAMSIZ + 1];
  
- 	desc.dtype = 0;
+ 	/* this will happen in monitor mode */
+ 	if (!dbgfs_dir)
+@@ -748,10 +750,11 @@ void iwl_mvm_vif_dbgfs_add_link(struct i
+ 	 * find
+ 	 * netdev:wlan0 -> ../../../ieee80211/phy0/netdev:wlan0/iwlmvm/
+ 	 */
+-	snprintf(buf, 100, "../../../%pd3/iwlmvm", dbgfs_dir);
++	snprintf(name, sizeof(name), "%pd", dbgfs_dir);
++	snprintf(buf, sizeof(buf), "../../../%pd3/iwlmvm", dbgfs_dir);
+ 
+-	mvmvif->dbgfs_slink = debugfs_create_symlink(dbgfs_dir->d_name.name,
+-						     mvm->debugfs_dir, buf);
++	mvmvif->dbgfs_slink =
++		debugfs_create_symlink(name, mvm->debugfs_dir, buf);
+ }
+ 
+ void iwl_mvm_vif_dbgfs_rm_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
 
 
 
