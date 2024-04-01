@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACE68941CE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C269894015
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24E41283410
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11E5A1F21DF1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB9D482DF;
-	Mon,  1 Apr 2024 16:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2528547A74;
+	Mon,  1 Apr 2024 16:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oC4Z6oMm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1lk3NjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0572C4644C;
-	Mon,  1 Apr 2024 16:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8339446D5;
+	Mon,  1 Apr 2024 16:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989977; cv=none; b=nn+eQGmi7jFZGOlTqLwul8SbOU7VDNs1kHWIT7rMNRVN7VJ2cIU6LFdlr2lG/HvbcIZ33m8R8GOzRxXGT2/bV0e0QuBLUnjwTCWnFTZ5n8h/miiBPhto5S4FauBUU7cw7GihX0CVC4KjKYxI8Jh5IgWGonZ8Mh63EGK6gIfKVco=
+	t=1711988723; cv=none; b=ihVHcnQkBAHart6gHK6iJOc2jzVO73pjwXtw4VDsjvXNX3GLhnBw3iWyvV3noIdBNHZxqIXZfWwGBUFztaSplBhIBABTjifTIuJi75ScJrp424DjEaQo9eoHjF3cmYhzFYj/i0bebJdkoVEwGVHfiyTCbJh8bociWSzB38gw8KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989977; c=relaxed/simple;
-	bh=7N01FboA15G92vAsEYHpDABxL7mJKlGF0d+4kpZH20Q=;
+	s=arc-20240116; t=1711988723; c=relaxed/simple;
+	bh=bAZHJmUBM8FQoHS7UtTF6BauW+4J2C1E+ho7gRNH3kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDdA1zslhWw3JLezwVTTsRztegwrU4yCd4HmJf/3EQX3i5R/u9yFLfv7/EBcvsTxBMNoP2WZuZ2dxd97Kmd2gZjex6/SPeVhFWPM3I0GH8VWvGrPXaOu8+ZVkJDAYDnpF3+hGmJ+UevM9vUzolBjim0g6WiIkRC7X/0Cj8Cf51M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oC4Z6oMm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56273C433F1;
-	Mon,  1 Apr 2024 16:46:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MpOHciryUSeM+6uaz5L/DzLv8YtUChzb73jDK8q6boVufo5ea7Qq86Q80ERE4BmRzgr9huTVjyG3xAboO1useWw8CUgWegoFc/TfsWQ5he4/tpBTE0bTuNFD9IL+XjaWrF0NH5nT+ijvRsvFLgvRpECVz8dkeLdLxPSRF/dRJ4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1lk3NjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499B7C433F1;
+	Mon,  1 Apr 2024 16:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989976;
-	bh=7N01FboA15G92vAsEYHpDABxL7mJKlGF0d+4kpZH20Q=;
+	s=korg; t=1711988723;
+	bh=bAZHJmUBM8FQoHS7UtTF6BauW+4J2C1E+ho7gRNH3kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oC4Z6oMmrUl+dgLRZHfNZ99tdObK7XkWENhz0SKu0A4Q+cCWclPNnfxMoONrrjC4S
-	 pRkm5oOKXDYy8bOr8IKwY5e+W4Jy2QFeBiunhkoucHuW/gN0x3nAdeIqCmn6S6SuHv
-	 rTVaKOFfsYiHi0L6DVB/RTYyonAR8w3EuvcGd8Co=
+	b=R1lk3NjAaw+izWqM8gbIBkWFrbkdg9Xb4CWe3mhoDhGxLBeyRrtrAYrLBa2BFew1s
+	 FyvZg5Fa+eKzDceqWG+cNPbxxKMv7qTgVmB8PgiWLfHIsMYsU7VkPIiZXjbeZfOsD9
+	 xOxEehH6pcuZJpulsFW572hLGG0NnMF570h7GGEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 6.6 208/396] usb: typec: tpcm: Fix PORT_RESET behavior for self powered devices
+	stable <stable@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Yicong Yang <yangyicong@hisilicon.com>
+Subject: [PATCH 6.7 270/432] serial: port: Dont suspend if the port is still busy
 Date: Mon,  1 Apr 2024 17:44:17 +0200
-Message-ID: <20240401152554.129995563@linuxfoundation.org>
+Message-ID: <20240401152601.230073965@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-commit 197331b27ac890d0209232d5f669830cd00e8918 upstream.
+commit 43066e32227ecde674e8ae1fcdd4a1ede67680c2 upstream.
 
-While commit 69f89168b310 ("usb: typec: tpcm: Fix issues with power being
-removed during reset") fixes the boot issues for bus powered devices such
-as LibreTech Renegade Elite/Firefly, it trades off the CC pins NOT being
-Hi-Zed during errory recovery (i.e PORT_RESET) for devices which are NOT
-bus powered(a.k.a self powered). This change Hi-Zs the CC pins only for
-self powered devices, thus preventing brown out for bus powered devices
+We accidently met the issue that the bash prompt is not shown after the
+previous command done and until the next input if there's only one CPU
+(In our issue other CPUs are isolated by isolcpus=). Further analysis
+shows it's because the port entering runtime suspend even if there's
+still pending chars in the buffer and the pending chars will only be
+processed in next device resuming. We are using amba-pl011 and the
+problematic flow is like below:
 
-Adhering to spec is gaining more importance due to the Common charger
-initiative enforced by the European Union.
+Bash                                         kworker
+tty_write()
+  file_tty_write()
+    n_tty_write()
+      uart_write()
+        __uart_start()
+          pm_runtime_get() // wakeup waker
+            queue_work()
+                                             pm_runtime_work()
+                                               rpm_resume()
+                                                status = RPM_RESUMING
+                                                serial_port_runtime_resume()
+                                                  port->ops->start_tx()
+                                                    pl011_tx_chars()
+                                                      uart_write_wakeup()
+        […]
+        __uart_start()
+          pm_runtime_get() < 0 // because runtime status = RPM_RESUMING
+                               // later data are not commit to the port driver
+                                                status = RPM_ACTIVE
+                                                rpm_idle() -> rpm_suspend()
 
-Quoting from the spec:
-    4.5.2.2.2.1 ErrorRecovery State Requirements
-    The port shall not drive VBUS or VCONN, and shall present a
-    high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
+This patch tries to fix this by checking the port busy before entering
+runtime suspending. A runtime_suspend callback is added for the port
+driver. When entering runtime suspend the callback is invoked, if there's
+still pending chars in the buffer then flush the buffer.
 
-Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
-CC pins are set to default state after tErrorRecovery in
-PORT_RESET_WAIT_OFF.
-
-    4.5.2.2.2.2 Exiting From ErrorRecovery State
-    A Sink shall transition to Unattached.SNK after tErrorRecovery.
-    A Source shall transition to Unattached.SRC after tErrorRecovery.
-
-Fixes: 69f89168b310 ("usb: typec: tpcm: Fix issues with power being removed during reset")
-Cc: stable@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Tested-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240228000512.746252-1-badhri@google.com
+Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240226152351.40924-1-yangyicong@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/tty/serial/serial_port.c |   25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4859,8 +4859,11 @@ static void run_state_machine(struct tcp
- 		break;
- 	case PORT_RESET:
- 		tcpm_reset_port(port);
--		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
--			    TYPEC_CC_RD : tcpm_rp_cc(port));
-+		if (port->self_powered)
-+			tcpm_set_cc(port, TYPEC_CC_OPEN);
-+		else
-+			tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
-+				    TYPEC_CC_RD : tcpm_rp_cc(port));
- 		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
- 			       PD_T_ERROR_RECOVERY);
- 		break;
+--- a/drivers/tty/serial/serial_port.c
++++ b/drivers/tty/serial/serial_port.c
+@@ -46,8 +46,31 @@ out:
+ 	return 0;
+ }
+ 
++static int serial_port_runtime_suspend(struct device *dev)
++{
++	struct serial_port_device *port_dev = to_serial_base_port_device(dev);
++	struct uart_port *port = port_dev->port;
++	unsigned long flags;
++	bool busy;
++
++	if (port->flags & UPF_DEAD)
++		return 0;
++
++	uart_port_lock_irqsave(port, &flags);
++	busy = __serial_port_busy(port);
++	if (busy)
++		port->ops->start_tx(port);
++	uart_port_unlock_irqrestore(port, flags);
++
++	if (busy)
++		pm_runtime_mark_last_busy(dev);
++
++	return busy ? -EBUSY : 0;
++}
++
+ static DEFINE_RUNTIME_DEV_PM_OPS(serial_port_pm,
+-				 NULL, serial_port_runtime_resume, NULL);
++				 serial_port_runtime_suspend,
++				 serial_port_runtime_resume, NULL);
+ 
+ static int serial_port_probe(struct device *dev)
+ {
 
 
 
