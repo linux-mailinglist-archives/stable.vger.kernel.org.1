@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3844B894394
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09308893EF2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6E53283908
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E10283484
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849B1481B8;
-	Mon,  1 Apr 2024 17:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79D44596E;
+	Mon,  1 Apr 2024 16:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RR01aodm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wZICVux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A341DFF4;
-	Mon,  1 Apr 2024 17:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936353F8F4;
+	Mon,  1 Apr 2024 16:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991129; cv=none; b=SdAj6HgAdiAFVQ3Pgj6iwUJXdr/3eomnTreB3xrwBJC0fxvj/yUvra/M+Zzwrow7plHl2oB/OTZ6ISmkvx9x2caJRXNDXVC2eERjunelBkYfGZso2P3zvJUfYuJOEV3WQ1FrTI/X/1y7qVyhFtatrfiCakGfH6y2/Qsxdds3g+0=
+	t=1711987800; cv=none; b=sV1BxFbFvrkD1cukLjm5qLvT/iF4wi96N1TPK8dhHh8/4fKa+9ejSXHKuSmp1ubC9qkJnYcN2MMM/pAIovFxt9q2SnMWuYJtYuLdcFV2iIWIB8VhLyathAYaNmtS8o0JLOfEVNYr2tVIKLQs4TYga4xvbvShPGA1Y5TJ+lszjwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991129; c=relaxed/simple;
-	bh=sSjj58zK0Koh4XShh8WsbKn0Jdz9kTOLEXhUZ9Vj7rI=;
+	s=arc-20240116; t=1711987800; c=relaxed/simple;
+	bh=OztKi9wCvkndfbtySX73EaSHzaX8A/jXYjYuBCursAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QDYVSrU6Y26UyRApTK00SyfwxK5VP4zWJkTESv2FgBXzIDGj0DPAFx8xDijdSuza6Lo8L9UA2gU9XEKccrDKnV4FHMULC8yQSgAClaxyn/yEqwdkzdn6jh0gEimBVq24wQAlwF4SXfe2Fo9t3dJB4H6RPlx/6OXDnkB1t8oSWH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RR01aodm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD61C433F1;
-	Mon,  1 Apr 2024 17:05:28 +0000 (UTC)
+	 MIME-Version; b=HcKO3+XxBJExBbLsKlyCOhPsbWwRbkRT8t9xXgsuwOZMvz+wtqF2KbyitefRBoVPK4GKio+jon8zf+ZBOETpXOeOzs10HWVy1W2l8iIhj0vdz8Nv2nDttpIKQaJBi5efxR7TQHxyOCkHjpaJIcbipLRV85WLW1ZBds2n3ep6N3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wZICVux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99437C433C7;
+	Mon,  1 Apr 2024 16:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991129;
-	bh=sSjj58zK0Koh4XShh8WsbKn0Jdz9kTOLEXhUZ9Vj7rI=;
+	s=korg; t=1711987800;
+	bh=OztKi9wCvkndfbtySX73EaSHzaX8A/jXYjYuBCursAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RR01aodmfmEhumxOIM3JHrrGDJKT3BR8M+c5xAKFyAGhY0SH4XpaJXlqjlHB3FAFe
-	 M9GnaRdJkKpJaYaE0vmBavY/J+zDmGpwpdFNVzYrV4fi/xoNKXPxdHSbO5NPs4hlj2
-	 H2CbNllKy0RfRc4zDgwY+bg/QzBdeXbhAueyOM40=
+	b=2wZICVuxgl6/0FekhSxbiqPXAmr0XFM3i2SozjJ7KEzExlBpTcsckzJKWo7f8bqpS
+	 L94i0wksAv9sjRolLyM1lafExAYjRwvxJffdhOFth+bm35eOYHs8076xnMwJ6L6kNW
+	 pu22i0/obPxpYVC49zpg87zDdGa9cgf7mn85DVrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 171/272] iio: accel: adxl367: fix DEVID read after reset
-Date: Mon,  1 Apr 2024 17:46:01 +0200
-Message-ID: <20240401152536.100188534@linuxfoundation.org>
+	Xingui Yang <yangxingui@huawei.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.8 396/399] scsi: libsas: Fix disk not being scanned in after being removed
+Date: Mon,  1 Apr 2024 17:46:02 +0200
+Message-ID: <20240401152600.998640232@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-commit 1b926914bbe4e30cb32f268893ef7d82a85275b8 upstream.
+commit 8e68a458bcf5b5cb9c3624598bae28f08251601f upstream.
 
-regmap_read_poll_timeout() will not sleep before reading,
-causing the first read to return -ENXIO on I2C, since the
-chip does not respond to it while it is being reset.
+As of commit d8649fc1c5e4 ("scsi: libsas: Do discovery on empty PHY to
+update PHY info"), do discovery will send a new SMP_DISCOVER and update
+phy->phy_change_count. We found that if the disk is reconnected and phy
+change_count changes at this time, the disk scanning process will not be
+triggered.
 
-The datasheet specifies that a soft reset operation has a
-latency of 7.5ms.
+Therefore, call sas_set_ex_phy() to update the PHY info with the results of
+the last query. And because the previous phy info will be used when calling
+sas_unregister_devs_sas_addr(), sas_unregister_devs_sas_addr() should be
+called before sas_set_ex_phy().
 
-Add a 15ms sleep between reset and reading the DEVID register,
-and switch to a simple regmap_read() call.
-
-Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240207033657.206171-1-demonsingur@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: d8649fc1c5e4 ("scsi: libsas: Do discovery on empty PHY to update PHY info")
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20240307141413.48049-3-yangxingui@huawei.com
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/adxl367.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/scsi/libsas/sas_expander.c |   32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
---- a/drivers/iio/accel/adxl367.c
-+++ b/drivers/iio/accel/adxl367.c
-@@ -1444,9 +1444,11 @@ static int adxl367_verify_devid(struct a
- 	unsigned int val;
- 	int ret;
+--- a/drivers/scsi/libsas/sas_expander.c
++++ b/drivers/scsi/libsas/sas_expander.c
+@@ -1945,6 +1945,7 @@ static int sas_rediscover_dev(struct dom
+ 	struct expander_device *ex = &dev->ex_dev;
+ 	struct ex_phy *phy = &ex->ex_phy[phy_id];
+ 	enum sas_device_type type = SAS_PHY_UNUSED;
++	struct smp_disc_resp *disc_resp;
+ 	u8 sas_addr[SAS_ADDR_SIZE];
+ 	char msg[80] = "";
+ 	int res;
+@@ -1956,33 +1957,41 @@ static int sas_rediscover_dev(struct dom
+ 		 SAS_ADDR(dev->sas_addr), phy_id, msg);
  
--	ret = regmap_read_poll_timeout(st->regmap, ADXL367_REG_DEVID, val,
--				       val == ADXL367_DEVID_AD, 1000, 10000);
-+	ret = regmap_read(st->regmap, ADXL367_REG_DEVID, &val);
- 	if (ret)
-+		return dev_err_probe(st->dev, ret, "Failed to read dev id\n");
+ 	memset(sas_addr, 0, SAS_ADDR_SIZE);
+-	res = sas_get_phy_attached_dev(dev, phy_id, sas_addr, &type);
++	disc_resp = alloc_smp_resp(DISCOVER_RESP_SIZE);
++	if (!disc_resp)
++		return -ENOMEM;
 +
-+	if (val != ADXL367_DEVID_AD)
- 		return dev_err_probe(st->dev, -ENODEV,
- 				     "Invalid dev id 0x%02X, expected 0x%02X\n",
- 				     val, ADXL367_DEVID_AD);
-@@ -1543,6 +1545,8 @@ int adxl367_probe(struct device *dev, co
- 	if (ret)
- 		return ret;
++	res = sas_get_phy_discover(dev, phy_id, disc_resp);
+ 	switch (res) {
+ 	case SMP_RESP_NO_PHY:
+ 		phy->phy_state = PHY_NOT_PRESENT;
+ 		sas_unregister_devs_sas_addr(dev, phy_id, last);
+-		return res;
++		goto out_free_resp;
+ 	case SMP_RESP_PHY_VACANT:
+ 		phy->phy_state = PHY_VACANT;
+ 		sas_unregister_devs_sas_addr(dev, phy_id, last);
+-		return res;
++		goto out_free_resp;
+ 	case SMP_RESP_FUNC_ACC:
+ 		break;
+ 	case -ECOMM:
+ 		break;
+ 	default:
+-		return res;
++		goto out_free_resp;
+ 	}
  
-+	fsleep(15000);
++	if (res == 0)
++		sas_get_sas_addr_and_dev_type(disc_resp, sas_addr, &type);
 +
- 	ret = adxl367_verify_devid(st);
- 	if (ret)
- 		return ret;
+ 	if ((SAS_ADDR(sas_addr) == 0) || (res == -ECOMM)) {
+ 		phy->phy_state = PHY_EMPTY;
+ 		sas_unregister_devs_sas_addr(dev, phy_id, last);
+ 		/*
+-		 * Even though the PHY is empty, for convenience we discover
+-		 * the PHY to update the PHY info, like negotiated linkrate.
++		 * Even though the PHY is empty, for convenience we update
++		 * the PHY info, like negotiated linkrate.
+ 		 */
+-		sas_ex_phy_discover(dev, phy_id);
+-		return res;
++		if (res == 0)
++			sas_set_ex_phy(dev, phy_id, disc_resp);
++		goto out_free_resp;
+ 	} else if (SAS_ADDR(sas_addr) == SAS_ADDR(phy->attached_sas_addr) &&
+ 		   dev_type_flutter(type, phy->attached_dev_type)) {
+ 		struct domain_device *ata_dev = sas_ex_to_ata(dev, phy_id);
+@@ -1994,7 +2003,7 @@ static int sas_rediscover_dev(struct dom
+ 			action = ", needs recovery";
+ 		pr_debug("ex %016llx phy%02d broadcast flutter%s\n",
+ 			 SAS_ADDR(dev->sas_addr), phy_id, action);
+-		return res;
++		goto out_free_resp;
+ 	}
+ 
+ 	/* we always have to delete the old device when we went here */
+@@ -2003,7 +2012,10 @@ static int sas_rediscover_dev(struct dom
+ 		SAS_ADDR(phy->attached_sas_addr));
+ 	sas_unregister_devs_sas_addr(dev, phy_id, last);
+ 
+-	return sas_discover_new(dev, phy_id);
++	res = sas_discover_new(dev, phy_id);
++out_free_resp:
++	kfree(disc_resp);
++	return res;
+ }
+ 
+ /**
 
 
 
