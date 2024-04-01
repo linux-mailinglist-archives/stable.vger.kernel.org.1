@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-34338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62ED6893EED
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF127894063
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E39B282F06
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70DD7B20C0D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C866F47A6B;
-	Mon,  1 Apr 2024 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E5747A62;
+	Mon,  1 Apr 2024 16:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+JXhlFK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amzTC+oI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8591147A5D;
-	Mon,  1 Apr 2024 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8669B446AC;
+	Mon,  1 Apr 2024 16:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987783; cv=none; b=NCINkqzUIl3aGHMDUH3tLvUcMKkBr/LK16BV+dB1CSaTP+N66w8uJPBNIoUYaavGm0dqUVz44lNmPaLcwfrtoXNL/iT+CMZRUEBgBK6/pmwEULczFX4GPtetW4DmEtLleTq/GzSaj/Un06dLtD4SzTBxQ0uGqwTF3T7o4VDRAaM=
+	t=1711988961; cv=none; b=E0yEvTArORGbafpdPDzK9qPD73/nnulCbdeZ7TplJublyTPflHU2Auh8vJmuutDaVMKV6rshPpgpRKAsRtZuiiEK11KaXZ5cY29AXqxNFsGm1On2KAfiTa54eWNSLNNwyeV+i1d2tfA2t+8ji7ZM5gYvEpL27UTlTUiMMZzNDWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987783; c=relaxed/simple;
-	bh=Bq3zVH7J4kYCiuVj5w1tqvRqmChNmAetl2rs/R/WOKY=;
+	s=arc-20240116; t=1711988961; c=relaxed/simple;
+	bh=1NHDNgwZUw9w1aFltYk4/vD5Pgku2WmWVJaxbdwWRik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1htosyGvVY7AvZ4bi6YpQpfmo/AVv6ytA2Hc4Fyv7MsC2UfZOnO/ekmNpgkgauXa8LIfpupuWfQpKXs1DLtqi3xlc5rok5Eo3IXzcHbaS3gNOORa4GnUVQWu+JJ7ySjMWiNAWw6WAdBUEPEU7Ry7BkZXl2YTt6RGffYGWu5NLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+JXhlFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E1DC433C7;
-	Mon,  1 Apr 2024 16:09:42 +0000 (UTC)
+	 MIME-Version; b=A2B4XAizqMMOkSha2GoZorDluALeFKTT9X5QcxLA73GfAaeZrS8fgJSeMaTW2hM52FxTWI7RRLB0ULbCFCFHJpsarLvr38TKfovrzzhLAiKioeIhC4Kd41Ar0Rju7kCmWI6WwQFiQsWcq+6ppacUtbd5vmaot1sdlEqmI9iG6Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amzTC+oI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA485C433C7;
+	Mon,  1 Apr 2024 16:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987783;
-	bh=Bq3zVH7J4kYCiuVj5w1tqvRqmChNmAetl2rs/R/WOKY=;
+	s=korg; t=1711988961;
+	bh=1NHDNgwZUw9w1aFltYk4/vD5Pgku2WmWVJaxbdwWRik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+JXhlFKLw6hGbvEsM1B3/NLXWlVnKggMnQ8aL/GVkR2mFByVYQJITar5pMkEgy/4
-	 Jn0cBHeBc27AYINbSGjCQ5QCS6LzKquR0lpTANdwxrG3HzqDWpKv3RPKcYKG0XTvbH
-	 /O2OtoG5Zro5XUbZ7+a7P7BKi+V+Jn463mfPMKHQ=
+	b=amzTC+oIjxbyO+GCl6l9PsDP440c007xkddhMHIiQqzwoPMstP1jXmCwhjfD1Zonx
+	 dFaG5TGIXVvmbOAhoiFYcTGMN5VcmbKQMm9UdSt+fVDaKEXsfIfsEf0aVyl7AhrIE3
+	 SlnnRgYozx3Y3M44iPWeff8qPLFL5W7MevAnZlVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.8 361/399] usb: dwc2: host: Fix remote wakeup from hibernation
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Ubisectech Sirius <bugreport@ubisectech.com>,
+	Jan Kara <jack@suse.cz>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 340/432] tmpfs: fix race on handling dquot rbtree
 Date: Mon,  1 Apr 2024 17:45:27 +0200
-Message-ID: <20240401152559.943991677@linuxfoundation.org>
+Message-ID: <20240401152603.377720337@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Carlos Maiolino <cem@kernel.org>
 
-commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
+commit 0a69b6b3a026543bc215ccc866d0aea5579e6ce2 upstream.
 
-Starting from core v4.30a changed order of programming
-GPWRDN_PMUACTV to 0 in case of exit from hibernation on
-remote wakeup signaling from device.
+A syzkaller reproducer found a race while attempting to remove dquot
+information from the rb tree.
 
-Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
+Fetching the rb_tree root node must also be protected by the
+dqopt->dqio_sem, otherwise, giving the right timing, shmem_release_dquot()
+will trigger a warning because it couldn't find a node in the tree, when
+the real reason was the root node changing before the search starts:
+
+Thread 1				Thread 2
+- shmem_release_dquot()			- shmem_{acquire,release}_dquot()
+
+- fetch ROOT				- Fetch ROOT
+
+					- acquire dqio_sem
+- wait dqio_sem
+
+					- do something, triger a tree rebalance
+					- release dqio_sem
+
+- acquire dqio_sem
+- start searching for the node, but
+  from the wrong location, missing
+  the node, and triggering a warning.
+
+Link: https://lkml.kernel.org/r/20240320124011.398847-1-cem@kernel.org
+Fixes: eafc474e2029 ("shmem: prepare shmem quota infrastructure")
+Signed-off-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/core.h |    1 +
- drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ mm/shmem_quota.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -1086,6 +1086,7 @@ struct dwc2_hsotg {
- 	bool needs_byte_swap;
+--- a/mm/shmem_quota.c
++++ b/mm/shmem_quota.c
+@@ -116,7 +116,7 @@ static int shmem_free_file_info(struct s
+ static int shmem_get_next_id(struct super_block *sb, struct kqid *qid)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(sb, qid->type);
+-	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node *node;
+ 	qid_t id = from_kqid(&init_user_ns, *qid);
+ 	struct quota_info *dqopt = sb_dqopt(sb);
+ 	struct quota_id *entry = NULL;
+@@ -126,6 +126,7 @@ static int shmem_get_next_id(struct supe
+ 		return -ESRCH;
  
- 	/* DWC OTG HW Release versions */
-+#define DWC2_CORE_REV_4_30a	0x4f54430a
- #define DWC2_CORE_REV_2_71a	0x4f54271a
- #define DWC2_CORE_REV_2_72a     0x4f54272a
- #define DWC2_CORE_REV_2_80a	0x4f54280a
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -5610,10 +5610,12 @@ int dwc2_host_exit_hibernation(struct dw
- 	dwc2_writel(hsotg, hr->hcfg, HCFG);
+ 	down_read(&dqopt->dqio_sem);
++	node = ((struct rb_root *)info->dqi_priv)->rb_node;
+ 	while (node) {
+ 		entry = rb_entry(node, struct quota_id, node);
  
- 	/* De-assert Wakeup Logic */
--	gpwrdn = dwc2_readl(hsotg, GPWRDN);
--	gpwrdn &= ~GPWRDN_PMUACTV;
--	dwc2_writel(hsotg, gpwrdn, GPWRDN);
--	udelay(10);
-+	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
-+		gpwrdn = dwc2_readl(hsotg, GPWRDN);
-+		gpwrdn &= ~GPWRDN_PMUACTV;
-+		dwc2_writel(hsotg, gpwrdn, GPWRDN);
-+		udelay(10);
-+	}
+@@ -165,7 +166,7 @@ out_unlock:
+ static int shmem_acquire_dquot(struct dquot *dquot)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
+-	struct rb_node **n = &((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node **n;
+ 	struct shmem_sb_info *sbinfo = dquot->dq_sb->s_fs_info;
+ 	struct rb_node *parent = NULL, *new_node = NULL;
+ 	struct quota_id *new_entry, *entry;
+@@ -176,6 +177,8 @@ static int shmem_acquire_dquot(struct dq
+ 	mutex_lock(&dquot->dq_lock);
  
- 	hprt0 = hr->hprt0;
- 	hprt0 |= HPRT0_PWR;
-@@ -5638,6 +5640,13 @@ int dwc2_host_exit_hibernation(struct dw
- 		hprt0 |= HPRT0_RES;
- 		dwc2_writel(hsotg, hprt0, HPRT0);
+ 	down_write(&dqopt->dqio_sem);
++	n = &((struct rb_root *)info->dqi_priv)->rb_node;
++
+ 	while (*n) {
+ 		parent = *n;
+ 		entry = rb_entry(parent, struct quota_id, node);
+@@ -264,7 +267,7 @@ static bool shmem_is_empty_dquot(struct
+ static int shmem_release_dquot(struct dquot *dquot)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
+-	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node *node;
+ 	qid_t id = from_kqid(&init_user_ns, dquot->dq_id);
+ 	struct quota_info *dqopt = sb_dqopt(dquot->dq_sb);
+ 	struct quota_id *entry = NULL;
+@@ -275,6 +278,7 @@ static int shmem_release_dquot(struct dq
+ 		goto out_dqlock;
  
-+		/* De-assert Wakeup Logic */
-+		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
-+			gpwrdn = dwc2_readl(hsotg, GPWRDN);
-+			gpwrdn &= ~GPWRDN_PMUACTV;
-+			dwc2_writel(hsotg, gpwrdn, GPWRDN);
-+			udelay(10);
-+		}
- 		/* Wait for Resume time and then program HPRT again */
- 		mdelay(100);
- 		hprt0 &= ~HPRT0_RES;
+ 	down_write(&dqopt->dqio_sem);
++	node = ((struct rb_root *)info->dqi_priv)->rb_node;
+ 	while (node) {
+ 		entry = rb_entry(node, struct quota_id, node);
+ 
 
 
 
