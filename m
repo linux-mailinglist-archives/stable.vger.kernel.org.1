@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D28489413D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5454C893F7E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4702E280F27
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A2041F21A28
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E7C3F8F4;
-	Mon,  1 Apr 2024 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD42647A5D;
+	Mon,  1 Apr 2024 16:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3GuI8l5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nj+84rol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B571E86C;
-	Mon,  1 Apr 2024 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D764778C;
+	Mon,  1 Apr 2024 16:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989574; cv=none; b=S5bDE3R4KcJ9m/ls3IqWa+R/NVhMQWbMpNbccAEACY1htSk2pwOIAREByCHMooxoSUN93i0GHXEVEB14nKLiFrTPJWbh5Vklzk/FdI3G4vNHl6CzKahYQiMRYJtfZ7xnZtU3pccZOJPrGGJTGu8/SjFHg/yy8EA1kU7XvK3vx7g=
+	t=1711988237; cv=none; b=aeSnNnVq1OnSdfpOucOHS4aPrtAewwUrnhFuny57wha8mfl/G63JIEfROJuppb8igZzNAqdIEX9zuoliv0acPU8lU7BlfeWa85yifoaBoFMnAbX3qQA/K7p3VnxjBIly527q4ggPaiFbNDdN1lirc1smBlCz2+m8Q+/DPpsFOFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989574; c=relaxed/simple;
-	bh=OiHroSHK2Q+yytq06RWKY5G+gC4+q3386C6wntv0kWc=;
+	s=arc-20240116; t=1711988237; c=relaxed/simple;
+	bh=9LTkHSvAiY1GxbsRDJcpyf1Cd7vRkm9L2Nyiukej+Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F93tTllTRwg6lUruaQRTx9/Q2+ohz8iCF00rzy69emieqqpUDJNqfpsWlXjPbsP6H4VITJqQ9gNDPvKdCNNgAssAbLwaalClVdYgBRglJJZjRi5w3YOLzxzTojfKFDHl71E/jzpt7LuCFW8s6oqyOTfrqyZkWzJ+4Q17XhIUkLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3GuI8l5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B64C433F1;
-	Mon,  1 Apr 2024 16:39:33 +0000 (UTC)
+	 MIME-Version; b=Bv4tDhtzgbI84lJ8kWb+Ln5K6SM9rLui2p7rONPmdZx5BEzNbi5Xf9r9j2lM6cCVsVhEAQRriKwrfLR0HFluZLMfEGBFwnYDpBz3hBFf/l2xAvkkAUyngSK/euMx0jI3EDF5pQjlBbZI0vsE1BGZz9MmpMk0SfssDBSGjJFIJMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nj+84rol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C57EC433F1;
+	Mon,  1 Apr 2024 16:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989574;
-	bh=OiHroSHK2Q+yytq06RWKY5G+gC4+q3386C6wntv0kWc=;
+	s=korg; t=1711988237;
+	bh=9LTkHSvAiY1GxbsRDJcpyf1Cd7vRkm9L2Nyiukej+Gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3GuI8l5RsHqwl1hG3UzPtuPjZxmx6nei6DcS5tGm3oQvVJ/sJI4+F31Lu1S32NPC
-	 2rOFbR41pCsTNo8f4if3abNvEkq6iQSSajnFt0T4qKfAeZHZe2/TieM3vzHOU7LO/I
-	 vQU66J6ZgQRubuCg1dqjCXJ84q8KSR2r15AKzdSE=
+	b=nj+84rolqA16P2RgQmh8QPeNaqSB1x0pK59htuoF1cD5XdHRaQlZRGk0LiI0ZsrET
+	 1qPVyV8i4exPOQiDZy8aWw44uKrdnfXSS47MBiTGR7cXGAwSbTst+4UJarnRA3QaFu
+	 qnMuqRApPMZ0mm0aKpBmBO/1GrMhApNt4r1txaaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/396] iio: adc: rockchip_saradc: use mask for write_enable bitfield
-Date: Mon,  1 Apr 2024 17:41:50 +0200
-Message-ID: <20240401152549.743146314@linuxfoundation.org>
+Subject: [PATCH 6.7 124/432] phy: tegra: xusb: Add API to retrieve the port number of phy
+Date: Mon,  1 Apr 2024 17:41:51 +0200
+Message-ID: <20240401152556.819499544@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit 5b4e4b72034f85f7a0cdd147d3d729c5a22c8764 ]
+[ Upstream commit d843f031d9e90462253015bc0bd9e3852d206bf2 ]
 
-Some of the registers on the SARADCv2 have bits write protected except
-if another bit is set. This is usually done by having the lowest 16 bits
-store the data to write and the highest 16 bits specify which of the 16
-lowest bits should have their value written to the hardware block.
+This patch introduces a new API, tegra_xusb_padctl_get_port_number,
+to the Tegra XUSB Pad Controller driver. This API is used to identify
+the USB port that is associated with a given PHY.
 
-The write_enable mask for the channel selection was incorrect because it
-was just the value shifted by 16 bits, which means it would only ever
-write bits and never clear them. So e.g. if someone starts a conversion
-on channel 5, the lowest 4 bits would be 0x5, then starts a conversion
-on channel 0, it would still be 5.
+The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
+and returns the corresponding port number. If the PHY pointer is invalid,
+it returns -ENODEV.
 
-Instead of shifting the value by 16 as the mask, let's use the OR'ing of
-the appropriate masks shifted by 16.
-
-Note that this is not an issue currently because the only SARADCv2
-currently supported has a reset defined in its Device Tree, that reset
-resets the SARADC controller before starting a conversion on a channel.
-However, this reset is handled as optional by the probe function and
-thus proper masking should be used in the event an SARADCv2 without a
-reset ever makes it upstream.
-
-Fixes: 757953f8ec69 ("iio: adc: rockchip_saradc: Add support for RK3588")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20240223-saradcv2-chan-mask-v1-2-84b06a0f623a@theobroma-systems.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20240307030328.1487748-2-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/rockchip_saradc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/tegra/xusb.c       | 13 +++++++++++++
+ include/linux/phy/tegra/xusb.h |  1 +
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index 2da8d6f3241a1..1c0042fbbb548 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -102,12 +102,12 @@ static void rockchip_saradc_start_v2(struct rockchip_saradc *info, int chn)
- 	writel_relaxed(0xc, info->regs + SARADC_T_DAS_SOC);
- 	writel_relaxed(0x20, info->regs + SARADC_T_PD_SOC);
- 	val = FIELD_PREP(SARADC2_EN_END_INT, 1);
--	val |= val << 16;
-+	val |= SARADC2_EN_END_INT << 16;
- 	writel_relaxed(val, info->regs + SARADC2_END_INT_EN);
- 	val = FIELD_PREP(SARADC2_START, 1) |
- 	      FIELD_PREP(SARADC2_SINGLE_MODE, 1) |
- 	      FIELD_PREP(SARADC2_CONV_CHANNELS, chn);
--	val |= val << 16;
-+	val |= (SARADC2_START | SARADC2_SINGLE_MODE | SARADC2_CONV_CHANNELS) << 16;
- 	writel(val, info->regs + SARADC2_CONV_CON);
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 142ebe0247cc0..983a6e6173bd2 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -1531,6 +1531,19 @@ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
  }
+ EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_usb3_companion);
  
++int tegra_xusb_padctl_get_port_number(struct phy *phy)
++{
++	struct tegra_xusb_lane *lane;
++
++	if (!phy)
++		return -ENODEV;
++
++	lane = phy_get_drvdata(phy);
++
++	return lane->index;
++}
++EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_port_number);
++
+ MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
+ MODULE_DESCRIPTION("Tegra XUSB Pad Controller driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/phy/tegra/xusb.h b/include/linux/phy/tegra/xusb.h
+index 70998e6dd6fdc..6ca51e0080ec0 100644
+--- a/include/linux/phy/tegra/xusb.h
++++ b/include/linux/phy/tegra/xusb.h
+@@ -26,6 +26,7 @@ void tegra_phy_xusb_utmi_pad_power_down(struct phy *phy);
+ int tegra_phy_xusb_utmi_port_reset(struct phy *phy);
+ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
+ 					 unsigned int port);
++int tegra_xusb_padctl_get_port_number(struct phy *phy);
+ int tegra_xusb_padctl_enable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy,
+ 					   enum usb_device_speed speed);
+ int tegra_xusb_padctl_disable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy);
 -- 
 2.43.0
 
