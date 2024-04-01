@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-34350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D40893EFA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6BD689427D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1D49B20A3E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57341B22067
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717523F8F4;
-	Mon,  1 Apr 2024 16:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A1848CE0;
+	Mon,  1 Apr 2024 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="po3uPh99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ss0V1tkc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD84446AC;
-	Mon,  1 Apr 2024 16:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FEA482DF;
+	Mon,  1 Apr 2024 16:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987824; cv=none; b=PDKi3rvbJIxt0WcqUQuGifG6QTCFcAa3oBuIesTdGcbJimsYPdXXmI9oo3LerQ0cgr7AxhGfSxRM9qAHUvWSuL+6u8PYJp4hESAAMZo85w2BBHJEOvMbok6NOMazfuuED9qon5HDTyQk7HdkkVj8dT9ZwpAZRvKO8UleODhbSqE=
+	t=1711990386; cv=none; b=KIjkHzxMILecvJyY+09AsriHTznoqMe7S/633WfeTbacLj4GEFiQ+n90u81pLcKq/vsl0XNdbuO9EBI5c6CPh8KG2Ulb+X3huAD1X7VzplSTTl2VtcNLiJzfVW1wfpSbXMqfusz3X8EWsaVXJWGfL4dkUXAbQTjvtH6I4NB6v/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987824; c=relaxed/simple;
-	bh=wGpKSRzMuNDVyjz9say515/9xey5lKkwU92WWPCh/KU=;
+	s=arc-20240116; t=1711990386; c=relaxed/simple;
+	bh=SSNocstk5yNM0Y7zBiP5PGbMKS6G0TDALDrXCV0IJeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuHZCfPX/zFeYGoa0RBISF2ICQ/v5UalKcA76nsPo6HbIHx1y8qSqcKHu5uGn2LrxjlqwBWtE2MvQy+EFV39TUJNMsMJ/bBizG3QPir2W4oDCQIO0+J+wxFV8UXvJ2zfI7Z+v567SBmh/nwhvnB2stG0NNhvLKn+q8aalazvLsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=po3uPh99; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771CFC433C7;
-	Mon,  1 Apr 2024 16:10:23 +0000 (UTC)
+	 MIME-Version; b=luoRHCeVQRMw9T9qEFVwu3k1Ctg2tldE1e67MBrzQlbQxWZkaycyYLbOhEXDFxAZJ4z98BmtwEe2HbplcNUzywhGi2ufUdE46ZZJmB1dbd4laA8I+BrYRMO5GuGX+yHk3Cy9A06F+hRjlcC+z8tfkStaFofOAiz51KCBudqbqVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss0V1tkc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5976BC433C7;
+	Mon,  1 Apr 2024 16:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987824;
-	bh=wGpKSRzMuNDVyjz9say515/9xey5lKkwU92WWPCh/KU=;
+	s=korg; t=1711990386;
+	bh=SSNocstk5yNM0Y7zBiP5PGbMKS6G0TDALDrXCV0IJeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=po3uPh990jGdW41WInrT1+fnmU19lQYehl/qmXECsDpLxzIiZtitxdF7B//5m6rEw
-	 zrNChk13S0YI4SYDfMJ8e7D8VuCjKlyDcGUMK7aNeASOoIaGsohZCpKP66HnYMDeTF
-	 4DERdOslh+TYtaeehI0o8/j5k3X6jl+Ba6aJrLDU=
+	b=ss0V1tkcI5ycY/E5VsIdc0qyE73ywbhOr1UpolMX2MrTE1xvloFy2FGeG+NsD0K3N
+	 cSk3Sq0Iv7HNQCpO6T4XkwcRAEGhLuydwWfy3yRHOhlpKymoA5lPJHT0JyXdkynfiY
+	 mEUHCXTgW+EzzEoPfTp+Ru+EIxnzscqeSWNB3N3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.8 391/399] Revert "x86/bugs: Use fixed addressing for VERW operand"
+	Gergo Koteles <soyer@irl.hu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 308/396] ALSA: hda/tas2781: remove digital gain kcontrol
 Date: Mon,  1 Apr 2024 17:45:57 +0200
-Message-ID: <20240401152600.840562454@linuxfoundation.org>
+Message-ID: <20240401152557.097794207@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-commit 532a0c57d7ff75e8f07d4e25cba4184989e2a241 upstream.
+commit ae065d0ce9e36ca4efdfb9b96ce3395bd1c19372 upstream.
 
-This was reverts commit 8009479ee919b9a91674f48050ccbff64eafedaa.
+The "Speaker Digital Gain" kcontrol controls the TAS2781_DVC_LVL (0x1A)
+register. Unfortunately the tas2563 does not have DVC_LVL, but has
+INT_MASK0 in 0x1A, which has been misused so far.
 
-It was originally in x86/urgent, but was deemed wrong so got zapped.
-But in the meantime, x86/urgent had been merged into x86/apic to
-resolve a conflict.  I didn't notice the merge so didn't zap it
-from x86/apic and it managed to make it up with the x86/apic
-material.
+Since commit c1947ce61ff4 ("ALSA: hda/realtek: tas2781: enable subwoofer
+volume control") the volume of the tas2781 amplifiers can be controlled
+by the master volume, so this digital gain kcontrol is not needed.
 
-The reverted commit is known to cause some KASAN problems.
+Remove it.
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Message-ID: <741fc21db994efd58f83e7aef38931204961e5b2.1711469583.git.soyer@irl.hu>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/tas2781_hda_i2c.c |   37 +------------------------------------
+ 1 file changed, 1 insertion(+), 36 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -332,7 +332,7 @@
-  * Note: Only the memory operand variant of VERW clears the CPU buffers.
-  */
- .macro CLEAR_CPU_BUFFERS
--	ALTERNATIVE "", __stringify(verw mds_verw_sel), X86_FEATURE_CLEAR_CPU_BUF
-+	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
- .endm
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -71,7 +71,7 @@ struct tas2781_hda {
+ 	struct snd_kcontrol *dsp_prog_ctl;
+ 	struct snd_kcontrol *dsp_conf_ctl;
+ 	struct snd_kcontrol *prof_ctl;
+-	struct snd_kcontrol *snd_ctls[3];
++	struct snd_kcontrol *snd_ctls[2];
+ };
  
- #else /* __ASSEMBLY__ */
+ static int tas2781_get_i2c_res(struct acpi_resource *ares, void *data)
+@@ -288,27 +288,6 @@ static int tasdevice_config_put(struct s
+ 	return ret;
+ }
+ 
+-/*
+- * tas2781_digital_getvol - get the volum control
+- * @kcontrol: control pointer
+- * @ucontrol: User data
+- * Customer Kcontrol for tas2781 is primarily for regmap booking, paging
+- * depends on internal regmap mechanism.
+- * tas2781 contains book and page two-level register map, especially
+- * book switching will set the register BXXP00R7F, after switching to the
+- * correct book, then leverage the mechanism for paging to access the
+- * register.
+- */
+-static int tas2781_digital_getvol(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-
+-	return tasdevice_digital_getvol(tas_priv, ucontrol, mc);
+-}
+-
+ static int tas2781_amp_getvol(struct snd_kcontrol *kcontrol,
+ 	struct snd_ctl_elem_value *ucontrol)
+ {
+@@ -319,17 +298,6 @@ static int tas2781_amp_getvol(struct snd
+ 	return tasdevice_amp_getvol(tas_priv, ucontrol, mc);
+ }
+ 
+-static int tas2781_digital_putvol(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-
+-	/* The check of the given value is in tasdevice_digital_putvol. */
+-	return tasdevice_digital_putvol(tas_priv, ucontrol, mc);
+-}
+-
+ static int tas2781_amp_putvol(struct snd_kcontrol *kcontrol,
+ 	struct snd_ctl_elem_value *ucontrol)
+ {
+@@ -375,9 +343,6 @@ static const struct snd_kcontrol_new tas
+ 	ACARD_SINGLE_RANGE_EXT_TLV("Speaker Analog Gain", TAS2781_AMP_LEVEL,
+ 		1, 0, 20, 0, tas2781_amp_getvol,
+ 		tas2781_amp_putvol, amp_vol_tlv),
+-	ACARD_SINGLE_RANGE_EXT_TLV("Speaker Digital Gain", TAS2781_DVC_LVL,
+-		0, 0, 200, 1, tas2781_digital_getvol,
+-		tas2781_digital_putvol, dvc_tlv),
+ 	ACARD_SINGLE_BOOL_EXT("Speaker Force Firmware Load", 0,
+ 		tas2781_force_fwload_get, tas2781_force_fwload_put),
+ };
 
 
 
