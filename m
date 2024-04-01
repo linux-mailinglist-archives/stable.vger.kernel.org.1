@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-35195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D5D8942D9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0BD893FDC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D226D283748
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30552B20D24
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC3748781;
-	Mon,  1 Apr 2024 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79F447A5D;
+	Mon,  1 Apr 2024 16:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brE8QCSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjX9EEdV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5D0481D1;
-	Mon,  1 Apr 2024 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AAA45BE4;
+	Mon,  1 Apr 2024 16:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990608; cv=none; b=qohEKe7PSPvd9FCtFi1qiVkGDvX8+F8AalKE1PX+6gxY67T5LpunLs5nKE0C8A8x5pSuhb22WwciqYuxqlaZc/1+wg2M1eCZNya1ciHgVyJlsNM/yGiz9tEvpIUxz8MnGsL7+eIveXo+VPtvW2K38mA0rB6SxLhGWIZS2cfxf0c=
+	t=1711988538; cv=none; b=lL0a/FpPQbupDi1V1otLY1wITKbuWKcj0OJL8WK3qJg39dC7Xs0HKk/3Y9kAHoSOFyAC7jPcmU25i1eOCK6KkmrcuGI/y3GBakBgLIwbJlqVBbxb5MKNYvRpsNcchSOq1cyY3a99pJCFQDdkiXKBHPTsG7as0EC4GtZlbweK97M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990608; c=relaxed/simple;
-	bh=VKK0Xas/U/nEuJO1PTjpoVrXYRdBjPXIvGMmS3RqkEg=;
+	s=arc-20240116; t=1711988538; c=relaxed/simple;
+	bh=w/mPsP7cohAyDfnQISVccRR/4wQNiXvQQqlkCCadO/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKLFk+7HEDlYgyNX668RWrFqGl84zQpB80ufcGZSq4IAH6v9l0wQJWj90zaCIFDsqWc9+iAud+lVAZuzj9EWRAnqpx50pt/++w1XZYta83CCMCb8V84jRguSo5zoVjYzI/DiOCtSUieyBUq83VB3zq0KmTWJkTRZmS4+pCZZAic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brE8QCSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52DEC433F1;
-	Mon,  1 Apr 2024 16:56:47 +0000 (UTC)
+	 MIME-Version; b=fcVQ8byP7wJiX464eNSPdLp6Ei3z7UXZEnnwyc/F9mpppENttVh4ne48CKT4zXePUlTHZ57mLnZeDPFhSbJQYbIg7Gie/oo1hFpNlea+T1sMeAZdQfkK5Lw7hj7gG9EhRAkhAXD4TXMH2ZcHGvReZVgD/coDN1DnhGt7S+kveo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjX9EEdV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E706C433C7;
+	Mon,  1 Apr 2024 16:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990608;
-	bh=VKK0Xas/U/nEuJO1PTjpoVrXYRdBjPXIvGMmS3RqkEg=;
+	s=korg; t=1711988538;
+	bh=w/mPsP7cohAyDfnQISVccRR/4wQNiXvQQqlkCCadO/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brE8QCSPL1FeHk+bRl3jy69WDHY728/fdFfsZZcmo7QY7S57OAcka45YfXGVG/CQI
-	 GCijWXMx1vWf/vdA4zQc+ed71XlvW9xagUIA3KIjPJsacT8X4tuM0p6u1WohZBhXD0
-	 OxXFJxbYKvTnSsLDpLX5k28GC5TKSpzR77qGjQcQ=
+	b=WjX9EEdVX/bVR8ZXOVA5yFt9oCJr06+TmBhZf0hb5LM4kdy6UB4dEhoKSfJEM1qlt
+	 QKnP9AVnnm//Livu148tmGyTkIbE9I0dsOEh1j3G80G1Hlauq71tsbHR5kGY2KWmMI
+	 Po9xsx5bmiGCC28cYJQ1EjurWvX2FnYZB4dD/pAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/272] arm64: dts: qcom: sc7280: Add additional MSI interrupts
+Subject: [PATCH 6.7 214/432] drm/amd/display: Add dml2 copy functions
 Date: Mon,  1 Apr 2024 17:43:21 +0200
-Message-ID: <20240401152530.648613622@linuxfoundation.org>
+Message-ID: <20240401152559.524207138@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +65,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+From: Dillon Varone <dillon.varone@amd.com>
 
-[ Upstream commit b8ba66b40da3230a8675cb5dd5c2dea5bce24d62 ]
+[ Upstream commit abd26a3252cbd1a3ae4e46d37596d176fe50b41a ]
 
-Current MSI's mapping doesn't have all the vectors. This platform
-supports 8 vectors each vector supports 32 MSI's, so total MSI's
-supported is 256.
+Add function to handle deep copying dml2 context.
 
-Add all the MSI groups supported for this PCIe instance in this platform.
-
-Fixes: 92e0ee9f83b3 ("arm64: dts: qcom: sc7280: Add PCIe and PHY related nodes")
-cc: stable@vger.kernel.org
-Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
-Link: https://lore.kernel.org/r/20231218-additional_msi-v1-1-de6917392684@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 4f5b8d78ca43 ("drm/amd/display: Init DPPCLK from SMU on dcn32")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c      | 15 +++-------
+ .../drm/amd/display/dc/dml2/dml2_wrapper.c    | 29 ++++++++++++++++++-
+ .../drm/amd/display/dc/dml2/dml2_wrapper.h    |  4 +++
+ 3 files changed, 36 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 04106d7254000..b5cd24d59ad9a 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -2028,8 +2028,16 @@ pcie1: pci@1c08000 {
- 			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 537f71c19b806..dab26d7e4d52a 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -2258,23 +2258,16 @@ struct dc_state *dc_copy_state(struct dc_state *src_ctx)
+ {
+ 	int i, j;
+ 	struct dc_state *new_ctx = kvmalloc(sizeof(struct dc_state), GFP_KERNEL);
+-#ifdef CONFIG_DRM_AMD_DC_FP
+-	struct dml2_context *dml2 =  NULL;
+-#endif
  
--			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "msi";
-+			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 375 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "msi0", "msi1", "msi2", "msi3",
-+					  "msi4", "msi5", "msi6", "msi7";
- 			#interrupt-cells = <1>;
- 			interrupt-map-mask = <0 0 0 0x7>;
- 			interrupt-map = <0 0 0 1 &intc 0 0 0 434 IRQ_TYPE_LEVEL_HIGH>,
+ 	if (!new_ctx)
+ 		return NULL;
+ 	memcpy(new_ctx, src_ctx, sizeof(struct dc_state));
+ 
+ #ifdef CONFIG_DRM_AMD_DC_FP
+-	if (new_ctx->bw_ctx.dml2) {
+-		dml2 = kzalloc(sizeof(struct dml2_context), GFP_KERNEL);
+-		if (!dml2)
+-			return NULL;
+-
+-		memcpy(dml2, src_ctx->bw_ctx.dml2, sizeof(struct dml2_context));
+-		new_ctx->bw_ctx.dml2 = dml2;
+-	}
++	if (new_ctx->bw_ctx.dml2 && !dml2_create_copy(&new_ctx->bw_ctx.dml2, src_ctx->bw_ctx.dml2)) {
++		dc_release_state(new_ctx);
++		return NULL;
++ 	}
+ #endif
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
+index c62b61ac45d27..8f34df00055c3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
+@@ -696,10 +696,15 @@ bool dml2_validate(const struct dc *in_dc, struct dc_state *context, bool fast_v
+ 	return out;
+ }
+ 
++static inline struct dml2_context *dml2_allocate_memory(void)
++{
++	return (struct dml2_context *) kzalloc(sizeof(struct dml2_context), GFP_KERNEL);
++}
++
+ bool dml2_create(const struct dc *in_dc, const struct dml2_configuration_options *config, struct dml2_context **dml2)
+ {
+ 	// Allocate Mode Lib Ctx
+-	*dml2 = (struct dml2_context *) kzalloc(sizeof(struct dml2_context), GFP_KERNEL);
++	*dml2 = dml2_allocate_memory();
+ 
+ 	if (!(*dml2))
+ 		return false;
+@@ -750,3 +755,25 @@ void dml2_extract_dram_and_fclk_change_support(struct dml2_context *dml2,
+ 	*fclk_change_support = (unsigned int) dml2->v20.dml_core_ctx.ms.support.FCLKChangeSupport[0];
+ 	*dram_clk_change_support = (unsigned int) dml2->v20.dml_core_ctx.ms.support.DRAMClockChangeSupport[0];
+ }
++
++void dml2_copy(struct dml2_context *dst_dml2,
++	struct dml2_context *src_dml2)
++{
++	/* copy Mode Lib Ctx */
++	memcpy(dst_dml2, src_dml2, sizeof(struct dml2_context));
++}
++
++bool dml2_create_copy(struct dml2_context **dst_dml2,
++	struct dml2_context *src_dml2)
++{
++	/* Allocate Mode Lib Ctx */
++	*dst_dml2 = dml2_allocate_memory();
++
++	if (!(*dst_dml2))
++		return false;
++
++	/* copy Mode Lib Ctx */
++	dml2_copy(*dst_dml2, src_dml2);
++
++	return true;
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
+index fe15baa4bf094..0de6886969c69 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
+@@ -191,6 +191,10 @@ bool dml2_create(const struct dc *in_dc,
+ 				 struct dml2_context **dml2);
+ 
+ void dml2_destroy(struct dml2_context *dml2);
++void dml2_copy(struct dml2_context *dst_dml2,
++	struct dml2_context *src_dml2);
++bool dml2_create_copy(struct dml2_context **dst_dml2,
++	struct dml2_context *src_dml2);
+ 
+ /*
+  * dml2_validate - Determines if a display configuration is supported or not.
 -- 
 2.43.0
 
