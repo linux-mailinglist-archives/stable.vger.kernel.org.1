@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5E8893E1F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:59:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74839893E28
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 361AE1F21CA8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:59:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28AA41F20CD3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B8347A60;
-	Mon,  1 Apr 2024 15:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF0E4776F;
+	Mon,  1 Apr 2024 16:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJtIPR/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eeo8j52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE04383BA;
-	Mon,  1 Apr 2024 15:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE47383BA;
+	Mon,  1 Apr 2024 16:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987168; cv=none; b=ItLPf9PnVw2eJdQqlpKRnldBR2bdfiSGa6MDlBl03YSXHzRYMAUIhcHjB1R6pfRffrawbb9Mv7ABZyQUH5yGROgN8hzwWi0h86Ps/T5hK4Iyi5PSRBVvwjdMuIggA23R6LXgzsMQHsOq4oBHGIDLbD3wS5NPbxDJ7lwvDO9SET4=
+	t=1711987204; cv=none; b=J4iT4EFwswsiubGufS/Kzo71aayit+TWNQjBWOQa8s7c4IL3ugK3N/+5qGz2NL35RVuRdkzfVXQGEpaUMbBBLpJQ0EE2xl8DoQLn7cX+UJAwmdAu0OvLQCNLyJUJdYD7i3AgL7kbBipj3nCrfsoc/tc7tQ2OYeJeZ7WMALGPQno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987168; c=relaxed/simple;
-	bh=6bZuzsEiRDf64uhIU1u+U7cgn2S2AZIWoZOuBiDUYwU=;
+	s=arc-20240116; t=1711987204; c=relaxed/simple;
+	bh=CDYtR0hjfu8SIhhQDvFo2BPNrG3+bGU37RBFvrEuuN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqjbwqeNyYz8jlDweKS5FQLXqbUFrvygRA1i7hDOF/SGuiXVqkF2XfVdYvAwoZDcXZ8Gwi6zJ704o/rCmScfwnr3f2SPOtCiuRfERV5Azb19dyCV6owFtuefRF35zuxvhDVQZh3RhfbMIhNEewPo/wQ2UB6uvYu5Znm4E7+ns0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJtIPR/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE77C433F1;
-	Mon,  1 Apr 2024 15:59:27 +0000 (UTC)
+	 MIME-Version; b=GGcGnFiRu0zFpX+HYh3PZnsVDiJ55pM9+znQo9TAF7fw7Ma1xA14Pp8ozZdD/r0Zg20bg0SbdYmqwdBpFIB6Z7lXLzl8p0VR4jAFd+nd9BrQFMZNWgaSrzRMmi0yK1r81TPdNJ+SZwBHoU+Zb1k3dhP0EG8qYpR8BkG649Ts09M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eeo8j52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C839C433F1;
+	Mon,  1 Apr 2024 16:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987168;
-	bh=6bZuzsEiRDf64uhIU1u+U7cgn2S2AZIWoZOuBiDUYwU=;
+	s=korg; t=1711987203;
+	bh=CDYtR0hjfu8SIhhQDvFo2BPNrG3+bGU37RBFvrEuuN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJtIPR/g1ML1qz5xKCXebYm3+33qx381++5ZvYZvrthKoW0fgS2JeHy6h5MGIXkPi
-	 ySe6rYWiopGK9JavkCW7YV9hh2g8Rl8DR/qoZNlDbtSL1FVAZ7YfNPU5P/y+hSey/k
-	 JDgSNBRd7WnnWni6PTqZCFcGmBXVMQSei1a7Qlz8=
+	b=0eeo8j52/gG9WVOwg9Dq+rckgIL8gwYw/wCov5ReK1RNPK6tDHQX373mwjrQ4nIkO
+	 wr035M3vF2s7bc312qkA0shfGfLK9sZEhnfvOjGg5Bs5cO0LeMk++XedvzA9iFGOaN
+	 nZPCJZkC6VhB+M1ahDBfc69agZXU5v0qGkuzEzI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
+	Xiaotian Wu <wuxiaotian@loongson.cn>,
+	Miao Wang <shankerwangmiao@gmail.com>,
+	Xing Li <lixing@loongson.cn>,
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	Rui Wang <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 197/399] virtio: reenable config if freezing device failed
-Date: Mon,  1 Apr 2024 17:42:43 +0200
-Message-ID: <20240401152555.062123358@linuxfoundation.org>
+Subject: [PATCH 6.8 198/399] LoongArch: Change __my_cpu_offset definition to avoid mis-optimization
+Date: Mon,  1 Apr 2024 17:42:44 +0200
+Message-ID: <20240401152555.092177178@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -69,48 +70,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 310227f42882c52356b523e2f4e11690eebcd2ab ]
+[ Upstream commit c87e12e0e8c1241410e758e181ca6bf23efa5b5b ]
 
-Currently, we don't reenable the config if freezing the device failed.
+>From GCC commit 3f13154553f8546a ("df-scan: remove ad-hoc handling of
+global regs in asms"), global registers will no longer be forced to add
+to the def-use chain. Then current_thread_info(), current_stack_pointer
+and __my_cpu_offset may be lifted out of the loop because they are no
+longer treated as "volatile variables".
 
-For example, virtio-mem currently doesn't support suspend+resume, and
-trying to freeze the device will always fail. Afterwards, the device
-will no longer respond to resize requests, because it won't get notified
-about config changes.
+This optimization is still correct for the current_thread_info() and
+current_stack_pointer usages because they are associated to a thread.
+However it is wrong for __my_cpu_offset because it is associated to a
+CPU rather than a thread: if the thread migrates to a different CPU in
+the loop, __my_cpu_offset should be changed.
 
-Let's fix this by re-enabling the config if freezing fails.
+Change __my_cpu_offset definition to treat it as a "volatile variable",
+in order to avoid such a mis-optimization.
 
-Fixes: 22b7050a024d ("virtio: defer config changed notifications")
-Cc: <stable@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20240213135425.795001-1-david@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Cc: stable@vger.kernel.org
+Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
+Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+Signed-off-by: Xing Li <lixing@loongson.cn>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Rui Wang <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/loongarch/include/asm/percpu.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-index f4080692b3513..f513ee21b1c18 100644
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -510,8 +510,10 @@ int virtio_device_freeze(struct virtio_device *dev)
+diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include/asm/percpu.h
+index 9b36ac003f890..8f290e5546cf7 100644
+--- a/arch/loongarch/include/asm/percpu.h
++++ b/arch/loongarch/include/asm/percpu.h
+@@ -29,7 +29,12 @@ static inline void set_my_cpu_offset(unsigned long off)
+ 	__my_cpu_offset = off;
+ 	csr_write64(off, PERCPU_BASE_KS);
+ }
+-#define __my_cpu_offset __my_cpu_offset
++
++#define __my_cpu_offset					\
++({							\
++	__asm__ __volatile__("":"+r"(__my_cpu_offset));	\
++	__my_cpu_offset;				\
++})
  
- 	if (drv && drv->freeze) {
- 		ret = drv->freeze(dev);
--		if (ret)
-+		if (ret) {
-+			virtio_config_enable(dev);
- 			return ret;
-+		}
- 	}
- 
- 	if (dev->config->destroy_avq)
+ #define PERCPU_OP(op, asm_op, c_op)					\
+ static __always_inline unsigned long __percpu_##op(void *ptr,		\
 -- 
 2.43.0
 
