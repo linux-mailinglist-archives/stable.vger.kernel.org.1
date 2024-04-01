@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6B1894220
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A816893EC4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FECF1C21A72
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BAF61C216C5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A760481B8;
-	Mon,  1 Apr 2024 16:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2604778E;
+	Mon,  1 Apr 2024 16:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YL5mWzJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfEp9ySf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2261C0DE7;
-	Mon,  1 Apr 2024 16:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C51F3FE2D;
+	Mon,  1 Apr 2024 16:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990173; cv=none; b=Jg9L81u3HvgtbBMpY15/gGXQ4b8hGFRwpKjZIFPQxRkJ3QKOG5ychLIGVg56nfM49HcixlI2xNELm1TrCTd53hDKM6eZYsP6YpOBPOSOjRIPnBNRjno81MrE309fNXsKkvVplcqTylvvrHzWuvldkIJhPR0bjJJQ3gXIkyNFTtI=
+	t=1711987660; cv=none; b=XL5KJGjULUherIRJJEf7SOvps/xP6BHun02JLFq64dJYVNjvGYHdtbthHos028d4z8K3olj6tlIjZfDJT8HnlAE0PE9Hx3EPY7DbkPMpASs5HeanrZJr0zh+HXUcq1RzjOMz0B9nFwiKhMXEiC8CllXnyv62X9mkA3EMtX0tN58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990173; c=relaxed/simple;
-	bh=glbm2Ug8lQ37rSSsj/72nLzMOnwwpJ+/c1CL9taZbog=;
+	s=arc-20240116; t=1711987660; c=relaxed/simple;
+	bh=R5kZ3J2h2q5M9lqUHJGgWWJAbOAMABD4kbCbpfOiwEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1n36B7YMj29/wLNO38C6y+DhG0pRTZVB7PTWmEQYr6mbPTjhyeL0Q96FCdhH4USBBJg+mAh5/k/npwwEDQ2CtQAgfY8YNcczfeOBy3LH5o04UfBpjOyIJFmd5oN6A1BUuajkyiY6R1qX1fjUp/58NlBc4AumOVxpV2U+XcHknw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YL5mWzJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29044C433C7;
-	Mon,  1 Apr 2024 16:49:32 +0000 (UTC)
+	 MIME-Version; b=swkavKSNo9/IGBIX9LYd0F75bnwNzrV4SsSxt/rIMpgbLdKKZNVIzXqm8FolZ+PaISBKyvP0wdDlaQ+68C44QJkKuKFghu4+ji7dWnOdG/BH4YxdwwPJW1n12Ffpu2m8goiDVGrwVcohvcHj5dbMoFqtp+xY1QdPtY4LP+RlHv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfEp9ySf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7D6C433F1;
+	Mon,  1 Apr 2024 16:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990173;
-	bh=glbm2Ug8lQ37rSSsj/72nLzMOnwwpJ+/c1CL9taZbog=;
+	s=korg; t=1711987660;
+	bh=R5kZ3J2h2q5M9lqUHJGgWWJAbOAMABD4kbCbpfOiwEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YL5mWzJJq7S+63kqWKm3lqZPqnRSJRDViL1pwloxNrNTmN2BisZn6E6rtDdIY5HoT
-	 pSkBlV7uuRUEaC/0qzRLxYhNtheBJEdbCb+yPDyYqhboKb+ArMhsNw+WRhX9TrPs2J
-	 xrS3jAuM+WRKO3uf1aRShyq2/AAMMkSVOW+5QLOc=
+	b=gfEp9ySf+9PhXXLS+zcvP25ofmdK+uwEzCVrS27B6YuSu+pRbEwUSQOIkkiNBrQmY
+	 Qu3whWAU0cnzFr3yoptKycKZkQAe613ESnxV4Qcz80MnlN8dzmD4yZTkxk7KdOxNv4
+	 6xxepJMOy7lNrvZfAHUcpAZRcfsd5kgCxbHSufxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 268/396] xfs: add missing nrext64 inode flag check to scrub
-Date: Mon,  1 Apr 2024 17:45:17 +0200
-Message-ID: <20240401152555.893893661@linuxfoundation.org>
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.8 352/399] scsi: sg: Avoid sg device teardown race
+Date: Mon,  1 Apr 2024 17:45:18 +0200
+Message-ID: <20240401152559.680994067@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Alexander Wetzel <Alexander@wetzel-home.de>
 
-commit 576d30ecb620ae3bc156dfb2a4e91143e7f3256d upstream.
+commit 27f58c04a8f438078583041468ec60597841284d upstream.
 
-Add this missing check that the superblock nrext64 flag is set if the
-inode flag is set.
+sg_remove_sfp_usercontext() must not use sg_device_destroy() after calling
+scsi_device_put().
 
-Fixes: 9b7d16e34bbeb ("xfs: Introduce XFS_DIFLAG2_NREXT64 and associated helpers")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+sg_device_destroy() is accessing the parent scsi_device request_queue which
+will already be set to NULL when the preceding call to scsi_device_put()
+removed the last reference to the parent scsi_device.
+
+The resulting NULL pointer exception will then crash the kernel.
+
+Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
+Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Link: https://lore.kernel.org/r/20240320213032.18221-1-Alexander@wetzel-home.de
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/inode.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/sg.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/scrub/inode.c
-+++ b/fs/xfs/scrub/inode.c
-@@ -337,6 +337,10 @@ xchk_inode_flags2(
- 	if (xfs_dinode_has_bigtime(dip) && !xfs_has_bigtime(mp))
- 		goto bad;
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -2207,6 +2207,7 @@ sg_remove_sfp_usercontext(struct work_st
+ {
+ 	struct sg_fd *sfp = container_of(work, struct sg_fd, ew.work);
+ 	struct sg_device *sdp = sfp->parentdp;
++	struct scsi_device *device = sdp->device;
+ 	Sg_request *srp;
+ 	unsigned long iflags;
  
-+	/* no large extent counts without the filesystem feature */
-+	if ((flags2 & XFS_DIFLAG2_NREXT64) && !xfs_has_large_extent_counts(mp))
-+		goto bad;
-+
- 	return;
- bad:
- 	xchk_ino_set_corrupt(sc, ino);
+@@ -2232,8 +2233,9 @@ sg_remove_sfp_usercontext(struct work_st
+ 			"sg_remove_sfp: sfp=0x%p\n", sfp));
+ 	kfree(sfp);
+ 
+-	scsi_device_put(sdp->device);
++	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
+ 	kref_put(&sdp->d_ref, sg_device_destroy);
++	scsi_device_put(device);
+ 	module_put(THIS_MODULE);
+ }
+ 
 
 
 
