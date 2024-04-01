@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7281B893FA4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17003894147
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 298EF1F21F85
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C63EC282ECA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9321A4778E;
-	Mon,  1 Apr 2024 16:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1073F8F4;
+	Mon,  1 Apr 2024 16:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjtfAb8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUHznYeP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520C31CA8F;
-	Mon,  1 Apr 2024 16:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B78A3B2A4;
+	Mon,  1 Apr 2024 16:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988363; cv=none; b=DU7FRvM3am5mpZY9l0WRVV8AZ0R1VdVkbwwruQMcKY26kWEg4GwpPWPVEI0Ne25yEFgCmoT5IVs3fomtoJJAr5EwEPUAoi+9+O052lreyeBohs7QH8tfZVCoxmJUrMQAjkJhh9hS1qpZK8TIj7vxqewicS85JiBb24niSWDJIzM=
+	t=1711989608; cv=none; b=JxI+orZoKSkfL/fKUl4rbd/GVNPYBZuEDBhcIQTdFdaVDq58inzFrKG9SuYEp7R5nSYY0w/Ot0W5VEOfn4G02MMcn2RQWG6Uj9AWfoSf43fQuK6Zt08DJBjtGMfTI3dyjulde4gh0ywR6VP+3jMKiUAObTwzNduBrk6lUYEOiHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988363; c=relaxed/simple;
-	bh=eSDSvoC9IGhW/LrE6kUjwKBoRgVFgelPHNX2psYCzpo=;
+	s=arc-20240116; t=1711989608; c=relaxed/simple;
+	bh=YdXAOEZHfnSO/XvN0etpNkHkzsd9LNAlQFIV7fDxfKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nmD7+4hXrKLA+/04Wqoij8rFslN5g45Oonqt014vFWi+6ZePRZUd8n3s4m3yxDsPs8bWwP0TMLpoY+x++bC5pbzVgpXNMz/UYcdTAJ52QquQPp6Bym3VQLi2kCz0EtOOseC1VesRhhOVbX8IGK3XL+8QiG7cn+1V7CUZ/b3Rbnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjtfAb8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB9DC433F1;
-	Mon,  1 Apr 2024 16:19:22 +0000 (UTC)
+	 MIME-Version; b=fs+NIxzHg3yLzRODC//QF38NU2Gh4Cozn6nRXPpNgNJQmHHcSFy/vh2zh+8lKDWiErRTXxxHJaVaUjeyCtRm3/58tkRGXYegx2AFf1hOB5ws1ol1MTe3pKV7VnZh1zMTIR/Z0c6nXcNfgJFxSzyVKaHwIno+knKe+ctfDdMSBvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUHznYeP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9D6C433F1;
+	Mon,  1 Apr 2024 16:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988363;
-	bh=eSDSvoC9IGhW/LrE6kUjwKBoRgVFgelPHNX2psYCzpo=;
+	s=korg; t=1711989608;
+	bh=YdXAOEZHfnSO/XvN0etpNkHkzsd9LNAlQFIV7fDxfKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjtfAb8XMShSqqbrF0VhxekSPSz2K6hIfsmD0P143W+DbRwJDPyuTovVLBYDqAAIq
-	 C3B8m7QEV3T7HMxwh7hyCul2JELjMv1fs2l/+O0Onr1uJFrP3aVEYzkRD9wKkuIzUg
-	 Gy4LrL0Zfy4doQ67SCyMiuuQ7M/OtP1gWYldasN4=
+	b=GUHznYePE+LlLgw+L+pY8Xg0xtZ7HFilR159yvn/TIUtitFVfoDABdJJmeMC9ET1H
+	 oICvIyL+RERUxm/kWDm9tvxenP5C6Wqs4NFBJjXY9UvOP5/0M5YHNUxwO9SFnzPVui
+	 50JGx8lWR8VGpWVsWfkEgYqF2eJOKBpiJSzARhwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Valentin=20Vidi=C4=87?= <vvidic@valentin-vidic.from.hr>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 161/432] dlm: fix user space lkb refcounting
-Date: Mon,  1 Apr 2024 17:42:28 +0200
-Message-ID: <20240401152557.939986416@linuxfoundation.org>
+Subject: [PATCH 6.6 100/396] mm: swap: fix race between free_swap_and_cache() and swapoff()
+Date: Mon,  1 Apr 2024 17:42:29 +0200
+Message-ID: <20240401152550.902916260@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 2ab3d705ca5d4f7ea345a21c3da41a447a549649 ]
+[ Upstream commit 82b1c07a0af603e3c47b906c8e991dc96f01688e ]
 
-This patch fixes to check on the right return value if it was the last
-callback. The rv variable got overwritten by the return of
-copy_result_to_user(). Fixing it by introducing a second variable for
-the return value and don't let rv being overwritten.
+There was previously a theoretical window where swapoff() could run and
+teardown a swap_info_struct while a call to free_swap_and_cache() was
+running in another thread.  This could cause, amongst other bad
+possibilities, swap_page_trans_huge_swapped() (called by
+free_swap_and_cache()) to access the freed memory for swap_map.
 
-Cc: stable@vger.kernel.org
-Fixes: 61bed0baa4db ("fs: dlm: use a non-static queue for callbacks")
-Reported-by: Valentin Vidić <vvidic@valentin-vidic.from.hr>
-Closes: https://lore.kernel.org/gfs2/Ze4qSvzGJDt5yxC3@valentin-vidic.from.hr
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+This is a theoretical problem and I haven't been able to provoke it from a
+test case.  But there has been agreement based on code review that this is
+possible (see link below).
+
+Fix it by using get_swap_device()/put_swap_device(), which will stall
+swapoff().  There was an extra check in _swap_info_get() to confirm that
+the swap entry was not free.  This isn't present in get_swap_device()
+because it doesn't make sense in general due to the race between getting
+the reference and swapoff.  So I've added an equivalent check directly in
+free_swap_and_cache().
+
+Details of how to provoke one possible issue (thanks to David Hildenbrand
+for deriving this):
+
+--8<-----
+
+__swap_entry_free() might be the last user and result in
+"count == SWAP_HAS_CACHE".
+
+swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
+
+So the question is: could someone reclaim the folio and turn
+si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
+
+Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
+still references by swap entries.
+
+Process 1 still references subpage 0 via swap entry.
+Process 2 still references subpage 1 via swap entry.
+
+Process 1 quits. Calls free_swap_and_cache().
+-> count == SWAP_HAS_CACHE
+[then, preempted in the hypervisor etc.]
+
+Process 2 quits. Calls free_swap_and_cache().
+-> count == SWAP_HAS_CACHE
+
+Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
+__try_to_reclaim_swap().
+
+__try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
+put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
+swap_entry_free()->swap_range_free()->
+...
+WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
+
+What stops swapoff to succeed after process 2 reclaimed the swap cache
+but before process1 finished its call to swap_page_trans_huge_swapped()?
+
+--8<-----
+
+Link: https://lkml.kernel.org/r/20240306140356.3974886-1-ryan.roberts@arm.com
+Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
+Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/user.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ mm/swapfile.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/fs/dlm/user.c b/fs/dlm/user.c
-index 695e691b38b31..9f9b68448830e 100644
---- a/fs/dlm/user.c
-+++ b/fs/dlm/user.c
-@@ -806,7 +806,7 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 	struct dlm_lkb *lkb;
- 	DECLARE_WAITQUEUE(wait, current);
- 	struct dlm_callback *cb;
--	int rv, copy_lvb = 0;
-+	int rv, ret, copy_lvb = 0;
- 	int old_mode, new_mode;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 750314fff0c46..eada1351753e3 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1226,6 +1226,11 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
+  * with get_swap_device() and put_swap_device(), unless the swap
+  * functions call get/put_swap_device() by themselves.
+  *
++ * Note that when only holding the PTL, swapoff might succeed immediately
++ * after freeing a swap entry. Therefore, immediately after
++ * __swap_entry_free(), the swap info might become stale and should not
++ * be touched without a prior get_swap_device().
++ *
+  * Check whether swap entry is valid in the swap device.  If so,
+  * return pointer to swap_info_struct, and keep the swap entry valid
+  * via preventing the swap device from being swapoff, until
+@@ -1603,13 +1608,19 @@ int free_swap_and_cache(swp_entry_t entry)
+ 	if (non_swap_entry(entry))
+ 		return 1;
  
- 	if (count == sizeof(struct dlm_device_version)) {
-@@ -906,9 +906,9 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 		trace_dlm_ast(lkb->lkb_resource->res_ls, lkb);
+-	p = _swap_info_get(entry);
++	p = get_swap_device(entry);
+ 	if (p) {
++		if (WARN_ON(data_race(!p->swap_map[swp_offset(entry)]))) {
++			put_swap_device(p);
++			return 0;
++		}
++
+ 		count = __swap_entry_free(p, entry);
+ 		if (count == SWAP_HAS_CACHE &&
+ 		    !swap_page_trans_huge_swapped(p, entry))
+ 			__try_to_reclaim_swap(p, swp_offset(entry),
+ 					      TTRS_UNMAPPED | TTRS_FULL);
++		put_swap_device(p);
  	}
- 
--	rv = copy_result_to_user(lkb->lkb_ua,
--				 test_bit(DLM_PROC_FLAGS_COMPAT, &proc->flags),
--				 cb->flags, cb->mode, copy_lvb, buf, count);
-+	ret = copy_result_to_user(lkb->lkb_ua,
-+				  test_bit(DLM_PROC_FLAGS_COMPAT, &proc->flags),
-+				  cb->flags, cb->mode, copy_lvb, buf, count);
- 
- 	kref_put(&cb->ref, dlm_release_callback);
- 
-@@ -916,7 +916,7 @@ static ssize_t device_read(struct file *file, char __user *buf, size_t count,
- 	if (rv == DLM_DEQUEUE_CALLBACK_LAST)
- 		dlm_put_lkb(lkb);
- 
--	return rv;
-+	return ret;
+ 	return p != NULL;
  }
- 
- static __poll_t device_poll(struct file *file, poll_table *wait)
 -- 
 2.43.0
 
