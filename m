@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-35459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E88894407
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:11:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811F28942BE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98FAA1F27AB8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:11:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21A121F267B6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF477482EF;
-	Mon,  1 Apr 2024 17:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD0B40876;
+	Mon,  1 Apr 2024 16:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhIzIXZ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LymlM5Y+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4EB21105;
-	Mon,  1 Apr 2024 17:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB2ABA3F;
+	Mon,  1 Apr 2024 16:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991466; cv=none; b=lx3L+wPmaW6Eglbqa0f/jQjxkfNcnzik53g3V14UHtboiXLl1Et9tKSdvSkpzZOYP0BwQiBqH/M7EijHGEDz0I81B1oRiQ1aW5fOnVvpn4t7YZFOHFuUYhEOq/HC6kttVsKsKFHIk278daXc9CyXBo7yv4UM/OtSJyvkUWUV8rk=
+	t=1711990542; cv=none; b=i3jm6DJ9VAn1PpjnLbwzaPmN3xs1Bqgj5fiBJb5Ict/rdpwhNRl/BHi2xkWWo5Ftf4F/HwLSzgaeZSo07flZ71NpH3rIVO8GoYNR891CpANT5OBxNc7+Coxn5em+xi1Ho9NcOdiFtBsCGbPyTo+86aSzFHxSSEf0Lk80S5sRO5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991466; c=relaxed/simple;
-	bh=mqRQYmmGKuAHCjRpMG2GWNHp+ITsO+CHDLVxDyUaJV8=;
+	s=arc-20240116; t=1711990542; c=relaxed/simple;
+	bh=UBJWTWi8albX9TiPUynMgf+K9HFDxe3rkHAxohoxDNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MEr5vKgJsl9A7FhBognZbqNs1Tl7NtKROPk7LORkdu7oDYw5lvlL0roS3hZxttZqDV76+zLw3OQY9cjgoxx4yg9jcZbzqQ4jWSiaIaFYYtWNrF4ey9cJuc8ULKc1DmDg5RsSQN5wqQrvvHnyzU5N0zMw0GLGo7bbdpfingkSdgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhIzIXZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2754C433F1;
-	Mon,  1 Apr 2024 17:11:05 +0000 (UTC)
+	 MIME-Version; b=NnA5ilnZ20Epzc4eBKZKD4oOVDd22EUiXFDujY9CgRRH77ZKgb6I59Vk1CJc2ErR/c1tw8B4QYbfY8gbNJeIOEp/8STviTjtVePVFC/2t+eSSa4NFVK5QcfBCG65sDcd1/LH9jnFjCbRrlgkkJSOC6tWv6PAE+0BjF0cDm15X98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LymlM5Y+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC551C433F1;
+	Mon,  1 Apr 2024 16:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991466;
-	bh=mqRQYmmGKuAHCjRpMG2GWNHp+ITsO+CHDLVxDyUaJV8=;
+	s=korg; t=1711990542;
+	bh=UBJWTWi8albX9TiPUynMgf+K9HFDxe3rkHAxohoxDNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhIzIXZ0mB+RI5s82xAElibm6M0yb1Q+CXCu3rX0TEwQxAYd9UJ1qurk3Ismh7G4u
-	 9Ou/XBf4X+UTsO0HL3ztknP0bPUbOc6CvfgYvdSzjVCnrf/HQanGUauXAtf63jLADs
-	 n7UcxwRFFJt7Zv6zpVP8ICxFrTvqA34FKI1/XBQw=
+	b=LymlM5Y+ROF4NwZcG1KeBkPE+O+RiXvCV1qdQ6XThrK7HYQZjYboGDWjFe/3cX6so
+	 c9++XX6M9JF/23CCfPiWZMCKwi9QN++e1ZT7DhO9T6C2ODlNp2htb4DZHM/xu3IxEH
+	 MH6gUTIIhFYNwcRB3VPXdBT8YOSf7TdPtA8xhQrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.1 245/272] usb: dwc2: host: Fix ISOC flow in DDMA mode
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 386/396] scsi: qla2xxx: Change debug message during driver unload
 Date: Mon,  1 Apr 2024 17:47:15 +0200
-Message-ID: <20240401152538.632809067@linuxfoundation.org>
+Message-ID: <20240401152559.423251328@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,139 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-commit b258e42688501cadb1a6dd658d6f015df9f32d8f upstream.
+commit b5a30840727a3e41d12a336d19f6c0716b299161 upstream.
 
-Fixed ISOC completion flow in DDMA mode. Added isoc
-descriptor actual length value and update urb's start_frame
-value.
-Fixed initialization of ISOC DMA descriptors flow.
+Upon driver unload, purge_mbox flag is set and the heartbeat monitor thread
+detects this flag and does not send the mailbox command down to FW with a
+debug message "Error detected: purge[1] eeh[0] cmd=0x0, Exiting".  This
+being not a real error, change the debug message.
 
-Fixes: 56f5b1cff22a ("staging: Core files for the DWC2 driver")
-Fixes: 20f2eb9c4cf8 ("staging: dwc2: add microframe scheduler from downstream Pi kernel")
-Fixes: c17b337c1ea4 ("usb: dwc2: host: program descriptor for next frame")
-Fixes: dc4c76e7b22c ("staging: HCD descriptor DMA support for the DWC2 driver")
-Fixes: 762d3a1a9cd7 ("usb: dwc2: host: process all completed urbs")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/a8b1e1711cc6cabfb45d92ede12e35445c66f06c.1708944698.git.Minas.Harutyunyan@synopsys.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-10-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd.c      |   12 ++++++++++--
- drivers/usb/dwc2/hcd_ddma.c |   17 +++++++++++------
- drivers/usb/dwc2/hw.h       |    2 +-
- 3 files changed, 22 insertions(+), 9 deletions(-)
+ drivers/scsi/qla2xxx/qla_mbx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -2701,8 +2701,11 @@ enum dwc2_transaction_type dwc2_hcd_sele
- 			hsotg->available_host_channels--;
- 		}
- 		qh = list_entry(qh_ptr, struct dwc2_qh, qh_list_entry);
--		if (dwc2_assign_and_init_hc(hsotg, qh))
-+		if (dwc2_assign_and_init_hc(hsotg, qh)) {
-+			if (hsotg->params.uframe_sched)
-+				hsotg->available_host_channels++;
- 			break;
-+		}
- 
- 		/*
- 		 * Move the QH from the periodic ready schedule to the
-@@ -2735,8 +2738,11 @@ enum dwc2_transaction_type dwc2_hcd_sele
- 			hsotg->available_host_channels--;
- 		}
- 
--		if (dwc2_assign_and_init_hc(hsotg, qh))
-+		if (dwc2_assign_and_init_hc(hsotg, qh)) {
-+			if (hsotg->params.uframe_sched)
-+				hsotg->available_host_channels++;
- 			break;
-+		}
- 
- 		/*
- 		 * Move the QH from the non-periodic inactive schedule to the
-@@ -4143,6 +4149,8 @@ void dwc2_host_complete(struct dwc2_hsot
- 			 urb->actual_length);
- 
- 	if (usb_pipetype(urb->pipe) == PIPE_ISOCHRONOUS) {
-+		if (!hsotg->params.dma_desc_enable)
-+			urb->start_frame = qtd->qh->start_active_frame;
- 		urb->error_count = dwc2_hcd_urb_get_error_count(qtd->urb);
- 		for (i = 0; i < urb->number_of_packets; ++i) {
- 			urb->iso_frame_desc[i].actual_length =
---- a/drivers/usb/dwc2/hcd_ddma.c
-+++ b/drivers/usb/dwc2/hcd_ddma.c
-@@ -559,7 +559,7 @@ static void dwc2_init_isoc_dma_desc(stru
- 	idx = qh->td_last;
- 	inc = qh->host_interval;
- 	hsotg->frame_number = dwc2_hcd_get_frame_number(hsotg);
--	cur_idx = dwc2_frame_list_idx(hsotg->frame_number);
-+	cur_idx = idx;
- 	next_idx = dwc2_desclist_idx_inc(qh->td_last, inc, qh->dev_speed);
- 
- 	/*
-@@ -866,6 +866,8 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- {
- 	struct dwc2_dma_desc *dma_desc;
- 	struct dwc2_hcd_iso_packet_desc *frame_desc;
-+	u16 frame_desc_idx;
-+	struct urb *usb_urb = qtd->urb->priv;
- 	u16 remain = 0;
- 	int rc = 0;
- 
-@@ -878,8 +880,11 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 				DMA_FROM_DEVICE);
- 
- 	dma_desc = &qh->desc_list[idx];
-+	frame_desc_idx = (idx - qtd->isoc_td_first) & (usb_urb->number_of_packets - 1);
- 
--	frame_desc = &qtd->urb->iso_descs[qtd->isoc_frame_index_last];
-+	frame_desc = &qtd->urb->iso_descs[frame_desc_idx];
-+	if (idx == qtd->isoc_td_first)
-+		usb_urb->start_frame = dwc2_hcd_get_frame_number(hsotg);
- 	dma_desc->buf = (u32)(qtd->urb->dma + frame_desc->offset);
- 	if (chan->ep_is_in)
- 		remain = (dma_desc->status & HOST_DMA_ISOC_NBYTES_MASK) >>
-@@ -900,7 +905,7 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 		frame_desc->status = 0;
- 	}
- 
--	if (++qtd->isoc_frame_index == qtd->urb->packet_count) {
-+	if (++qtd->isoc_frame_index == usb_urb->number_of_packets) {
- 		/*
- 		 * urb->status is not used for isoc transfers here. The
- 		 * individual frame_desc status are used instead.
-@@ -1005,11 +1010,11 @@ static void dwc2_complete_isoc_xfer_ddma
- 				return;
- 			idx = dwc2_desclist_idx_inc(idx, qh->host_interval,
- 						    chan->speed);
--			if (!rc)
-+			if (rc == 0)
- 				continue;
- 
--			if (rc == DWC2_CMPL_DONE)
--				break;
-+			if (rc == DWC2_CMPL_DONE || rc == DWC2_CMPL_STOP)
-+				goto stop_scan;
- 
- 			/* rc == DWC2_CMPL_STOP */
- 
---- a/drivers/usb/dwc2/hw.h
-+++ b/drivers/usb/dwc2/hw.h
-@@ -698,7 +698,7 @@
- #define TXSTS_QTOP_TOKEN_MASK		(0x3 << 25)
- #define TXSTS_QTOP_TOKEN_SHIFT		25
- #define TXSTS_QTOP_TERMINATE		BIT(24)
--#define TXSTS_QSPCAVAIL_MASK		(0xff << 16)
-+#define TXSTS_QSPCAVAIL_MASK		(0x7f << 16)
- #define TXSTS_QSPCAVAIL_SHIFT		16
- #define TXSTS_FSPCAVAIL_MASK		(0xffff << 0)
- #define TXSTS_FSPCAVAIL_SHIFT		0
+--- a/drivers/scsi/qla2xxx/qla_mbx.c
++++ b/drivers/scsi/qla2xxx/qla_mbx.c
+@@ -194,7 +194,7 @@ qla2x00_mailbox_command(scsi_qla_host_t
+ 	if (ha->flags.purge_mbox || chip_reset != ha->chip_reset ||
+ 	    ha->flags.eeh_busy) {
+ 		ql_log(ql_log_warn, vha, 0xd035,
+-		       "Error detected: purge[%d] eeh[%d] cmd=0x%x, Exiting.\n",
++		       "Purge mbox: purge[%d] eeh[%d] cmd=0x%x, Exiting.\n",
+ 		       ha->flags.purge_mbox, ha->flags.eeh_busy, mcp->mb[0]);
+ 		rval = QLA_ABORTED;
+ 		goto premature_exit;
 
 
 
