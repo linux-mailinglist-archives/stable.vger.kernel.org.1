@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A3C894078
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6C9894387
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B32041C21514
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567C82838BD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E68D38DD8;
-	Mon,  1 Apr 2024 16:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF971482CA;
+	Mon,  1 Apr 2024 17:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cL8fyYJF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pz3+idxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D69517FD;
-	Mon,  1 Apr 2024 16:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F12E1DFF4;
+	Mon,  1 Apr 2024 17:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989030; cv=none; b=NZpnl8EhkU3m2plL/cVVdoYSjizfQHWl4ojU0BgBgHGvkxMfdcp/MQ9goukY3QXsTyjEY87QGYxZelkAdS9z2j3Bj7hACG0cd4J2uQPKZdqc9FBfhnlx0l48YSUeLnW4vJV6JxK/KWLbpZgq/qlIgzlydayNeQ0VY0fA3enGW/E=
+	t=1711991085; cv=none; b=rdx+ubiM9qpiGhwtYpMSY2J8KQxY2aRXkyS0pOFnG9QbCdLKXvf+8z8ZLRzoXWCzHH0u4IW82jPNPuUXnC7PjXCymU3iLz54KKjwPB63toOEdlM220go+tYX73ptHmQwhT0yzmpSrgSUG9S4/bUoLx8prkQZLwhvY7FN0J+c4ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989030; c=relaxed/simple;
-	bh=Nld9IgLRx81dBnt5tvwa4R8slsi6jk6OAAXkAMqZmqo=;
+	s=arc-20240116; t=1711991085; c=relaxed/simple;
+	bh=4Jo604/eV22zivqbDU88XgWES6+D5Dv1UuQwAkk3uls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uW0vVo87cgbswi6VcCuzld3jfnxIOdBnc21SwZ+dV2mId2EG1+5zzowiWmpliQtI/ML2JOZHiS1oVrnvU0bio6CjvIHuvasQyztgu6sztKtXWXp1LoxeNNHKWyzpfn48YF1bq89oZ6RFise/b8mVaM8GjJl0MKOseCeRkgqD+4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cL8fyYJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B470C433C7;
-	Mon,  1 Apr 2024 16:30:29 +0000 (UTC)
+	 MIME-Version; b=Pob4wgoUneUfzH+ix+CnRdNDpdAChchGbPHXVg2F3TN7gHUw486HlRCPCbdEnodVIYXMeURjv4apal8OSJkohqJkWIg54K7kVqgSYdh4lpgYQyQb5+krpo32irx6niIp1k+j2rdV/UrdWWNcNzrE19jkKhtGENeml1NnmvfiRbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pz3+idxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F94C433C7;
+	Mon,  1 Apr 2024 17:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989029;
-	bh=Nld9IgLRx81dBnt5tvwa4R8slsi6jk6OAAXkAMqZmqo=;
+	s=korg; t=1711991085;
+	bh=4Jo604/eV22zivqbDU88XgWES6+D5Dv1UuQwAkk3uls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cL8fyYJF3qEgiJ196u0FJw830sDPFs3WlAmx/EY6tybUgQR/pCWA/S00tsAJTJoz4
-	 klXT0Ob68Wq+OvuEYXmT3lAak41C5wQkJMu8QKhqq7eokwSwpnoYylN0d8Y970L4AJ
-	 Ejs5tonSuh/InfyGb29RP3jL2yI0W3/A1ixxXQIU=
+	b=pz3+idxx5r67RqAk1YWPYdwFZEUTucA+s2W754fCh0Hl4W/YUTMT7Y95NbLaUDRe9
+	 R1mMxuMYuG/AkKgJtHRRv4vhB831908BfsAFIzAjvOnZgWA58a8byFPqary7JKB/XG
+	 W8jnq9pFISMY7M0XAqCEce8KwK22TQXxaVNbu7JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.7 361/432] block: Do not force full zone append completion in req_bio_endio()
-Date: Mon,  1 Apr 2024 17:45:48 +0200
-Message-ID: <20240401152604.034503379@linuxfoundation.org>
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.1 159/272] usb: port: Dont try to peer unused USB ports based on location
+Date: Mon,  1 Apr 2024 17:45:49 +0200
+Message-ID: <20240401152535.698165590@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 55251fbdf0146c252ceff146a1bb145546f3e034 upstream.
+commit 69c63350e573367f9c8594162288cffa8a26d0d1 upstream.
 
-This reverts commit 748dc0b65ec2b4b7b3dbd7befcc4a54fdcac7988.
+Unused USB ports may have bogus location data in ACPI PLD tables.
+This causes port peering failures as these unused USB2 and USB3 ports
+location may match.
 
-Partial zone append completions cannot be supported as there is no
-guarantees that the fragmented data will be written sequentially in the
-same manner as with a full command. Commit 748dc0b65ec2 ("block: fix
-partial zone append completion handling in req_bio_endio()") changed
-req_bio_endio() to always advance a partially failed BIO by its full
-length, but this can lead to incorrect accounting. So revert this
-change and let low level device drivers handle this case by always
-failing completely zone append operations. With this revert, users will
-still see an IO error for a partially completed zone append BIO.
+Due to these failures the driver prints a
+"usb: port power management may be unreliable" warning, and
+unnecessarily blocks port power off during runtime suspend.
 
-Fixes: 748dc0b65ec2 ("block: fix partial zone append completion handling in req_bio_endio()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240328004409.594888-2-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This was debugged on a couple DELL systems where the unused ports
+all returned zeroes in their location data.
+Similar bugreports exist for other systems.
+
+Don't try to peer or match ports that have connect type set to
+USB_PORT_NOT_USED.
+
+Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
+Cc: stable@vger.kernel.org # v3.16+
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
+Link: https://lore.kernel.org/r/20240222233343.71856-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/usb/core/port.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -772,16 +772,11 @@ static void req_bio_endio(struct request
- 		/*
- 		 * Partial zone append completions cannot be supported as the
- 		 * BIO fragments may end up not being written sequentially.
--		 * For such case, force the completed nbytes to be equal to
--		 * the BIO size so that bio_advance() sets the BIO remaining
--		 * size to 0 and we end up calling bio_endio() before returning.
- 		 */
--		if (bio->bi_iter.bi_size != nbytes) {
-+		if (bio->bi_iter.bi_size != nbytes)
- 			bio->bi_status = BLK_STS_IOERR;
--			nbytes = bio->bi_iter.bi_size;
--		} else {
-+		else
- 			bio->bi_iter.bi_sector = rq->__sector;
--		}
- 	}
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -534,7 +534,7 @@ static int match_location(struct usb_dev
+ 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
+ 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
  
- 	bio_advance(bio, nbytes);
+-	if (!peer_hub)
++	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
+ 		return 0;
+ 
+ 	hcd = bus_to_hcd(hdev->bus);
+@@ -545,7 +545,8 @@ static int match_location(struct usb_dev
+ 
+ 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
+ 		peer = peer_hub->ports[port1 - 1];
+-		if (peer && peer->location == port_dev->location) {
++		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
++		    peer->location == port_dev->location) {
+ 			link_peers_report(port_dev, peer);
+ 			return 1; /* done */
+ 		}
 
 
 
