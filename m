@@ -1,155 +1,308 @@
-Return-Path: <stable+bounces-33883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCE289394D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:15:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084A9893955
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:18:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF46BB21956
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D9841F212E3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E865101DE;
-	Mon,  1 Apr 2024 09:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3FE101EB;
+	Mon,  1 Apr 2024 09:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="DLHWMNWN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCGapdnj"
 X-Original-To: stable@vger.kernel.org
-Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37928101C5;
-	Mon,  1 Apr 2024 09:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D454CFBFD
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711962910; cv=none; b=RQDLFTil9ij8VznedTePgzze9whjMZI4p8VJNyd6OdiCuGyQxykOQiaTiOTTxpRm5i8MI3qr/0K5j0xgrH+zV7Ea+UXxXjrS+R8/0LQt/L+DJY/tP1+aM1vixpJ+QeHY6TPppLHrjNv2wLn6w9aLEbtc31S+NYNhtz89Fu5zR/Y=
+	t=1711963086; cv=none; b=k0P7pf9shntbCRvvRuXZThb17UsLgG5nrON90gqnYPJ4V+9qGF4UzDobfSDeTvqWye+HMXcJbqMJDDODXJLLG85V96SjtOedwM1f8BXrIJe1E2XoK51dA8WwoCTQDwxS86mPqFE1O+gEb6T1MV8nEezDaQeUFfzUZE5i/IyiFUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711962910; c=relaxed/simple;
-	bh=7BbthviDQ0Ra47LSGIAYHzV26/8roeWxwzBYVgJLFiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t+yjo2KWuwWShqVTpNmbuEf+dYy4KVn1XP24SLkP6tm49bnev73Dc3Mp2bMkDLriA/gLMYGk5eIN8tbgJek6WxAyzLC780fa79Y0ZdoBMZxsOWQCVwtPFmFmoWaIhY0RsS+zrer7eL//UdO2hobQl4IOiS6M0f5z96k7fTK0Sho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=DLHWMNWN; arc=none smtp.client-ip=139.138.36.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1711962906; x=1743498906;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7BbthviDQ0Ra47LSGIAYHzV26/8roeWxwzBYVgJLFiM=;
-  b=DLHWMNWNAqlN6QyrbEgjEIVdX4fgw/lyrHuVt/R7HDzGupV57bzekq9+
-   xfUmmU2BeY6bRc6sbvu0vMEwDd9ChY/TReCbwsjN59qAQsdn4aApeTAq/
-   ST4epl0j7XpQvf9AF9dqQTzbC3bhRV/bfp1L7SROd+oKxrgRXZykKtlrW
-   Gz5qTel4WAmUbt2sjnyuPuudMoKx8U+8L5Txk4blN3pFDePmWcFYmXcmF
-   XLpEw6+yrgi7XKDHxUmexUqyxFcK/WUeUOQ1oGTSiB2m9YOEUmz+HoRrJ
-   WgJuJbi+lbXNSOMtw60m0PF7cjdB/YmCGQdu+p0ZCbzMFn1IHjlPD7ZmE
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11030"; a="142702081"
-X-IronPort-AV: E=Sophos;i="6.07,171,1708354800"; 
-   d="scan'208";a="142702081"
-Received: from unknown (HELO yto-r3.gw.nic.fujitsu.com) ([218.44.52.219])
-  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2024 18:14:56 +0900
-Received: from yto-m1.gw.nic.fujitsu.com (yto-nat-yto-m1.gw.nic.fujitsu.com [192.168.83.64])
-	by yto-r3.gw.nic.fujitsu.com (Postfix) with ESMTP id A5F06E95D6;
-	Mon,  1 Apr 2024 18:14:54 +0900 (JST)
-Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com [192.51.206.22])
-	by yto-m1.gw.nic.fujitsu.com (Postfix) with ESMTP id D9011CF7C2;
-	Mon,  1 Apr 2024 18:14:53 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
-	by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id 6A2D821D02B;
-	Mon,  1 Apr 2024 18:14:53 +0900 (JST)
-Received: from [192.168.50.5] (unknown [10.167.226.114])
-	by edo.cn.fujitsu.com (Postfix) with ESMTP id 8C1E41A000A;
-	Mon,  1 Apr 2024 17:14:52 +0800 (CST)
-Message-ID: <545f7629-2937-42ff-809e-02fdff5f4571@fujitsu.com>
-Date: Mon, 1 Apr 2024 17:14:52 +0800
+	s=arc-20240116; t=1711963086; c=relaxed/simple;
+	bh=NnJqZwrhHh23qmqguL6GQSovTgqE5TNpcw1HXQ9nlKM=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uDrf89qXTgPZ3PEWHqUnq7MvwRPiEvFvh1uLYfqJSMS1B3zg3YANbzr/1IP5a4d8e/clfnZSHJliFXSgZ3u7i2BzfCTCzSFzDdcylW91kBrL2Vh9+2nnlYsJ9sHSI35hCh/Co85JH3+WEW5FhQxHDypfzl3E9KYPE1ujpbYPx9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCGapdnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C547C433F1
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:18:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711963086;
+	bh=NnJqZwrhHh23qmqguL6GQSovTgqE5TNpcw1HXQ9nlKM=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=nCGapdnjHcovrOXSizcgkDseveECXznfaVw2xx/RjP/i37NDKEFuhSkWkOhiYyX1l
+	 hrx9fnFhWoD0W7lUaUKbG1mwh4ickoMVXnl91gMd0CXg+ztKh50ewBCoiArp4i44Qs
+	 ZahSzhDXENxCYd3iA8P/3LaJxW2AlOVQdEvgXeDEjaVjPtj7u4C+keaTDWup+NWgWV
+	 o9uFIZwYICn+2oireeCQvFRQIDsUfVOgb+TOKlzzJBar4104iKI0HQOF+Rr3+f3HVJ
+	 NHCvuM6H7ya8C5k61XKECsI/HBtiPTI/VyMk2l7DvFAvfWAxCJ9pUow+EsjR/0Ty4S
+	 UA7VCEqXH8g1w==
+From: Damien Le Moal <dlemoal@kernel.org>
+To: stable@vger.kernel.org
+Subject: [PATCH 6.1.y] scsi: sd: Fix TCG OPAL unlock on system resume
+Date: Mon,  1 Apr 2024 18:18:04 +0900
+Message-ID: <20240401091804.1752629-1-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <2024040127-defraud-ladle-60f4@gregkh>
+References: <2024040127-defraud-ladle-60f4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/6] cxl/core: correct length of DPA field masks
-To: Dan Williams <dan.j.williams@intel.com>, qemu-devel@nongnu.org,
- linux-cxl@vger.kernel.org
-Cc: Jonathan.Cameron@huawei.com, dave@stgolabs.net, ira.weiny@intel.com,
- stable@vger.kernel.org
-References: <20240329063614.362763-1-ruansy.fnst@fujitsu.com>
- <20240329063614.362763-2-ruansy.fnst@fujitsu.com>
- <66076ce2ddec7_19e02946d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-In-Reply-To: <66076ce2ddec7_19e02946d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28290.006
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28290.006
-X-TMASE-Result: 10--5.278600-10.000000
-X-TMASE-MatchedRID: U43YD7H1LvyPvrMjLFD6eCkMR2LAnMRp2q80vLACqaeqvcIF1TcLYLBk
-	jjdoOP1baz4aoYHfj+mh3bqxZ6gk+QqU4tmmg3HIi3TrOhAURKEbbhhV65kaY2O0yVK/5Lmc5GA
-	Qy8LG5mci+t+0AiFaYvL3NxFKQpq17ZpdgJkP1WLcgUVP3Cp+vXFd5+Cf9M1DCK16zrE94nmkQu
-	0/M/TLDg9Mn3iItNtKhgDksK+IVyzHO8eAxCOj9o61Z+HJnvsOfS0Ip2eEHnzUHQeTVDUrIg6wQ
-	I72z4YedB0ntd9Tzp7GVuWouVipcobZcWeGK7nSbWo/bGcDJ4NC0x/dJHqjC/pbmb3XVEvJZDeF
-	sBl1p6QJJfBDBk+SFcEYB+iaMCoc579tse/QOaV+erPL3QFt0vMMpBf3ZLno9xc4blKmPsG++4/
-	U0fKJimxVnQcP2HDau2+pJwc75bs=
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 
+Commit 0c76106cb97548810214def8ee22700bbbb90543 upstream.
 
+Commit 3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop
+management") introduced the manage_system_start_stop scsi_device flag to
+allow libata to indicate to the SCSI disk driver that nothing should be
+done when resuming a disk on system resume. This change turned the
+execution of sd_resume() into a no-op for ATA devices on system
+resume. While this solved deadlock issues during device resume, this change
+also wrongly removed the execution of opal_unlock_from_suspend().  As a
+result, devices with TCG OPAL locking enabled remain locked and
+inaccessible after a system resume from sleep.
 
-在 2024/3/30 9:37, Dan Williams 写道:
-> Shiyang Ruan wrote:
->> The length of Physical Address in General Media Event Record/DRAM Event
->> Record is 64-bit, so the field mask should be defined as such length.
->> Otherwise, this causes cxl_general_media and cxl_dram tracepoints to
->> mask off the upper-32-bits of DPA addresses. The cxl_poison event is
->> unaffected.
->>
->> If userspace was doing its own DPA-to-HPA translation this could lead to
->> incorrect page retirement decisions, but there is no known consumer
->> (like rasdaemon) of this event today.
->>
->> Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
->> Cc: <stable@vger.kernel.org>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Davidlohr Bueso <dave@stgolabs.net>
->> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Cc: Ira Weiny <ira.weiny@intel.com>
->> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
->> ---
->>   drivers/cxl/core/trace.h | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
->> index e5f13260fc52..e2d1f296df97 100644
->> --- a/drivers/cxl/core/trace.h
->> +++ b/drivers/cxl/core/trace.h
->> @@ -253,11 +253,11 @@ TRACE_EVENT(cxl_generic_event,
->>    * DRAM Event Record
->>    * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
->>    */
->> -#define CXL_DPA_FLAGS_MASK			0x3F
->> +#define CXL_DPA_FLAGS_MASK			0x3FULL
-> 
-> This change makes sense...
-> 
->>   #define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
->>   
->> -#define CXL_DPA_VOLATILE			BIT(0)
->> -#define CXL_DPA_NOT_REPAIRABLE			BIT(1)
->> +#define CXL_DPA_VOLATILE			BIT_ULL(0)
->> +#define CXL_DPA_NOT_REPAIRABLE			BIT_ULL(1)
-> 
-> ...these do not. The argument to __print_flags() is an unsigned long, so
-> they will be cast down to (unsigned long), and they are never used as a
-> mask so the generated code should not change.
+To fix this issue, introduce the SCSI driver resume method and implement it
+with the sd_resume() function calling opal_unlock_from_suspend(). The
+former sd_resume() function is renamed to sd_resume_common() and modified
+to call the new sd_resume() function. For non-ATA devices, this result in
+no functional changes.
 
-They will only used to check if such flag is set, not used as mask.  So, 
-yes, I'll remove these changes.
+In order for libata to explicitly execute sd_resume() when a device is
+resumed during system restart, the function scsi_resume_device() is
+introduced. libata calls this function from the revalidation work executed
+on devie resume, a state that is indicated with the new device flag
+ATA_DFLAG_RESUMING. Doing so, locked TCG OPAL enabled devices are unlocked
+on resume, allowing normal operation.
 
+Fixes: 3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop management")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218538
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240319071209.1179257-1-dlemoal@kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+---
+ drivers/ata/libata-eh.c    |  5 ++++-
+ drivers/ata/libata-scsi.c  |  9 +++++++++
+ drivers/scsi/scsi_scan.c   | 34 ++++++++++++++++++++++++++++++++++
+ drivers/scsi/sd.c          | 25 +++++++++++++++++++++----
+ include/linux/libata.h     |  1 +
+ include/scsi/scsi_driver.h |  1 +
+ include/scsi/scsi_host.h   |  1 +
+ 7 files changed, 71 insertions(+), 5 deletions(-)
 
---
-Thanks,
-Ruan.
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 1eaaf01418ea..b8034d194078 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -711,8 +711,10 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
+ 					ehc->saved_ncq_enabled |= 1 << devno;
+ 
+ 				/* If we are resuming, wake up the device */
+-				if (ap->pflags & ATA_PFLAG_RESUMING)
++				if (ap->pflags & ATA_PFLAG_RESUMING) {
++					dev->flags |= ATA_DFLAG_RESUMING;
+ 					ehc->i.dev_action[devno] |= ATA_EH_SET_ACTIVE;
++				}
+ 			}
+ 		}
+ 
+@@ -3089,6 +3091,7 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
+ 	return 0;
+ 
+  err:
++	dev->flags &= ~ATA_DFLAG_RESUMING;
+ 	*r_failed_dev = dev;
+ 	return rc;
+ }
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index a9da2f05e629..a09548630fc8 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4652,6 +4652,7 @@ void ata_scsi_dev_rescan(struct work_struct *work)
+ 	struct ata_link *link;
+ 	struct ata_device *dev;
+ 	unsigned long flags;
++	bool do_resume;
+ 	int ret = 0;
+ 
+ 	mutex_lock(&ap->scsi_scan_mutex);
+@@ -4673,7 +4674,15 @@ void ata_scsi_dev_rescan(struct work_struct *work)
+ 			if (scsi_device_get(sdev))
+ 				continue;
+ 
++			do_resume = dev->flags & ATA_DFLAG_RESUMING;
++
+ 			spin_unlock_irqrestore(ap->lock, flags);
++			if (do_resume) {
++				ret = scsi_resume_device(sdev);
++				if (ret == -EWOULDBLOCK)
++					goto unlock;
++				dev->flags &= ~ATA_DFLAG_RESUMING;
++			}
+ 			ret = scsi_rescan_device(sdev);
+ 			scsi_device_put(sdev);
+ 			spin_lock_irqsave(ap->lock, flags);
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index bab00b65bc9d..852d509b19b2 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1611,6 +1611,40 @@ int scsi_add_device(struct Scsi_Host *host, uint channel,
+ }
+ EXPORT_SYMBOL(scsi_add_device);
+ 
++int scsi_resume_device(struct scsi_device *sdev)
++{
++	struct device *dev = &sdev->sdev_gendev;
++	int ret = 0;
++
++	device_lock(dev);
++
++	/*
++	 * Bail out if the device or its queue are not running. Otherwise,
++	 * the rescan may block waiting for commands to be executed, with us
++	 * holding the device lock. This can result in a potential deadlock
++	 * in the power management core code when system resume is on-going.
++	 */
++	if (sdev->sdev_state != SDEV_RUNNING ||
++	    blk_queue_pm_only(sdev->request_queue)) {
++		ret = -EWOULDBLOCK;
++		goto unlock;
++	}
++
++	if (dev->driver && try_module_get(dev->driver->owner)) {
++		struct scsi_driver *drv = to_scsi_driver(dev->driver);
++
++		if (drv->resume)
++			ret = drv->resume(dev);
++		module_put(dev->driver->owner);
++	}
++
++unlock:
++	device_unlock(dev);
++
++	return ret;
++}
++EXPORT_SYMBOL(scsi_resume_device);
++
+ int scsi_rescan_device(struct scsi_device *sdev)
+ {
+ 	struct device *dev = &sdev->sdev_gendev;
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 4433b02c8935..c793bca88223 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -110,6 +110,7 @@ static int sd_suspend_system(struct device *);
+ static int sd_suspend_runtime(struct device *);
+ static int sd_resume_system(struct device *);
+ static int sd_resume_runtime(struct device *);
++static int sd_resume(struct device *);
+ static void sd_rescan(struct device *);
+ static blk_status_t sd_init_command(struct scsi_cmnd *SCpnt);
+ static void sd_uninit_command(struct scsi_cmnd *SCpnt);
+@@ -691,6 +692,7 @@ static struct scsi_driver sd_template = {
+ 		.pm		= &sd_pm_ops,
+ 	},
+ 	.rescan			= sd_rescan,
++	.resume			= sd_resume,
+ 	.init_command		= sd_init_command,
+ 	.uninit_command		= sd_uninit_command,
+ 	.done			= sd_done,
+@@ -3830,7 +3832,22 @@ static int sd_suspend_runtime(struct device *dev)
+ 	return sd_suspend_common(dev, true);
+ }
+ 
+-static int sd_resume(struct device *dev, bool runtime)
++static int sd_resume(struct device *dev)
++{
++	struct scsi_disk *sdkp = dev_get_drvdata(dev);
++
++	if (sdkp->device->no_start_on_resume)
++		sd_printk(KERN_NOTICE, sdkp, "Starting disk\n");
++
++	if (opal_unlock_from_suspend(sdkp->opal_dev)) {
++		sd_printk(KERN_NOTICE, sdkp, "OPAL unlock failed\n");
++		return -EIO;
++	}
++
++	return 0;
++}
++
++static int sd_resume_common(struct device *dev, bool runtime)
+ {
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+ 	int ret = 0;
+@@ -3849,7 +3866,7 @@ static int sd_resume(struct device *dev, bool runtime)
+ 	}
+ 
+ 	if (!ret) {
+-		opal_unlock_from_suspend(sdkp->opal_dev);
++		sd_resume(dev);
+ 		sdkp->suspended = false;
+ 	}
+ 
+@@ -3868,7 +3885,7 @@ static int sd_resume_system(struct device *dev)
+ 		return 0;
+ 	}
+ 
+-	return sd_resume(dev, false);
++	return sd_resume_common(dev, false);
+ }
+ 
+ static int sd_resume_runtime(struct device *dev)
+@@ -3892,7 +3909,7 @@ static int sd_resume_runtime(struct device *dev)
+ 				  "Failed to clear sense data\n");
+ 	}
+ 
+-	return sd_resume(dev, true);
++	return sd_resume_common(dev, true);
+ }
+ 
+ /**
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 45910aebc377..6645259be143 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -102,6 +102,7 @@ enum {
+ 	ATA_DFLAG_NCQ_SEND_RECV = (1 << 19), /* device supports NCQ SEND and RECV */
+ 	ATA_DFLAG_NCQ_PRIO	= (1 << 20), /* device supports NCQ priority */
+ 	ATA_DFLAG_NCQ_PRIO_ENABLED = (1 << 21), /* Priority cmds sent to dev */
++	ATA_DFLAG_RESUMING	= (1 << 22),  /* Device is resuming */
+ 	ATA_DFLAG_INIT_MASK	= (1 << 24) - 1,
+ 
+ 	ATA_DFLAG_DETACH	= (1 << 24),
+diff --git a/include/scsi/scsi_driver.h b/include/scsi/scsi_driver.h
+index 4ce1988b2ba0..f40915d2ecee 100644
+--- a/include/scsi/scsi_driver.h
++++ b/include/scsi/scsi_driver.h
+@@ -12,6 +12,7 @@ struct request;
+ struct scsi_driver {
+ 	struct device_driver	gendrv;
+ 
++	int (*resume)(struct device *);
+ 	void (*rescan)(struct device *);
+ 	blk_status_t (*init_command)(struct scsi_cmnd *);
+ 	void (*uninit_command)(struct scsi_cmnd *);
+diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
+index 71def41b1ad7..149b63e3534a 100644
+--- a/include/scsi/scsi_host.h
++++ b/include/scsi/scsi_host.h
+@@ -752,6 +752,7 @@ extern int __must_check scsi_add_host_with_dma(struct Scsi_Host *,
+ 					       struct device *,
+ 					       struct device *);
+ extern void scsi_scan_host(struct Scsi_Host *);
++extern int scsi_resume_device(struct scsi_device *sdev);
+ extern int scsi_rescan_device(struct scsi_device *sdev);
+ extern void scsi_remove_host(struct Scsi_Host *);
+ extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
+-- 
+2.44.0
+
 
