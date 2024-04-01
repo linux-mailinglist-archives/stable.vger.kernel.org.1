@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-34688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF127894063
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BF5893EEE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70DD7B20C0D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31C8E1F21256
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E5747A62;
-	Mon,  1 Apr 2024 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6602B47A6A;
+	Mon,  1 Apr 2024 16:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amzTC+oI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iS538/PB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8669B446AC;
-	Mon,  1 Apr 2024 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176F54778E;
+	Mon,  1 Apr 2024 16:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988961; cv=none; b=E0yEvTArORGbafpdPDzK9qPD73/nnulCbdeZ7TplJublyTPflHU2Auh8vJmuutDaVMKV6rshPpgpRKAsRtZuiiEK11KaXZ5cY29AXqxNFsGm1On2KAfiTa54eWNSLNNwyeV+i1d2tfA2t+8ji7ZM5gYvEpL27UTlTUiMMZzNDWY=
+	t=1711987787; cv=none; b=CswBc1QnYKvYlnG+brIx1rpq0AObaoLKf9LOhTmBINYw2GiC6b9766EKWQ6fkMotG3CNxE5djBFK0OHuKfmtze1jqpm3OJCgq6F3L/ShjUH7SRpi6FQ2jd90b/jxZVGvDR2yHqOlWAnAHVhFXOASisIBHkhzc/GLXn0zIMcjkio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988961; c=relaxed/simple;
-	bh=1NHDNgwZUw9w1aFltYk4/vD5Pgku2WmWVJaxbdwWRik=;
+	s=arc-20240116; t=1711987787; c=relaxed/simple;
+	bh=JKJnSumkDFDy/aGA8c/iMFzXcKyB/2vy85UGfC+IGUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2B4XAizqMMOkSha2GoZorDluALeFKTT9X5QcxLA73GfAaeZrS8fgJSeMaTW2hM52FxTWI7RRLB0ULbCFCFHJpsarLvr38TKfovrzzhLAiKioeIhC4Kd41Ar0Rju7kCmWI6WwQFiQsWcq+6ppacUtbd5vmaot1sdlEqmI9iG6Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amzTC+oI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA485C433C7;
-	Mon,  1 Apr 2024 16:29:20 +0000 (UTC)
+	 MIME-Version; b=IKwlV2nIjBePg9decb7BtEWIcDqkN4ZhcLB3u4m9FHNuX05Hj3p2fbmpiUpZTbXIDb4DN06m8BEiHqxzVAyLh1EF7KO+fjPAUkmQvGiXn/9rT+C3/cCpmD2q2Zp6kanLmxekZqWEnAlfHYDcWXffMsrzhOR4e7KclpbBxwea+ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iS538/PB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF4AC43390;
+	Mon,  1 Apr 2024 16:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988961;
-	bh=1NHDNgwZUw9w1aFltYk4/vD5Pgku2WmWVJaxbdwWRik=;
+	s=korg; t=1711987787;
+	bh=JKJnSumkDFDy/aGA8c/iMFzXcKyB/2vy85UGfC+IGUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amzTC+oIjxbyO+GCl6l9PsDP440c007xkddhMHIiQqzwoPMstP1jXmCwhjfD1Zonx
-	 dFaG5TGIXVvmbOAhoiFYcTGMN5VcmbKQMm9UdSt+fVDaKEXsfIfsEf0aVyl7AhrIE3
-	 SlnnRgYozx3Y3M44iPWeff8qPLFL5W7MevAnZlVE=
+	b=iS538/PBPFjhvbFn2fdK3AIwvzxUzAjk0DO/wO+WInYf41MOP8/oAkHqSpOsbLReN
+	 eTFQTnKrbOLhOwDS70rpDYrDY7HIQTT/YZta/cSEo1sWJr2ikzLNJpv7OSHVazv+8Z
+	 8Zyp2GcCWmpHfWQmrAyaSi1Q89wkyIZXmMtOhBso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Ubisectech Sirius <bugreport@ubisectech.com>,
-	Jan Kara <jack@suse.cz>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 340/432] tmpfs: fix race on handling dquot rbtree
-Date: Mon,  1 Apr 2024 17:45:27 +0200
-Message-ID: <20240401152603.377720337@linuxfoundation.org>
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 6.8 362/399] usb: dwc2: host: Fix hibernation flow
+Date: Mon,  1 Apr 2024 17:45:28 +0200
+Message-ID: <20240401152559.973316281@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +60,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Maiolino <cem@kernel.org>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit 0a69b6b3a026543bc215ccc866d0aea5579e6ce2 upstream.
+commit 3c7b9856a82227db01a20171d2e24c7ce305d59b upstream.
 
-A syzkaller reproducer found a race while attempting to remove dquot
-information from the rb tree.
+Added to backup/restore registers HFLBADDR, HCCHARi, HCSPLTi,
+HCTSIZi, HCDMAi and HCDMABi.
 
-Fetching the rb_tree root node must also be protected by the
-dqopt->dqio_sem, otherwise, giving the right timing, shmem_release_dquot()
-will trigger a warning because it couldn't find a node in the tree, when
-the real reason was the root node changing before the search starts:
-
-Thread 1				Thread 2
-- shmem_release_dquot()			- shmem_{acquire,release}_dquot()
-
-- fetch ROOT				- Fetch ROOT
-
-					- acquire dqio_sem
-- wait dqio_sem
-
-					- do something, triger a tree rebalance
-					- release dqio_sem
-
-- acquire dqio_sem
-- start searching for the node, but
-  from the wrong location, missing
-  the node, and triggering a warning.
-
-Link: https://lkml.kernel.org/r/20240320124011.398847-1-cem@kernel.org
-Fixes: eafc474e2029 ("shmem: prepare shmem quota infrastructure")
-Signed-off-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 58e52ff6a6c3 ("usb: dwc2: Move register save and restore functions")
+Fixes: d17ee77b3044 ("usb: dwc2: add controller hibernation support")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/c2d10ee6098b9b009a8e94191e046004747d3bdd.1708945444.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/shmem_quota.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/usb/dwc2/core.h |   12 ++++++++++++
+ drivers/usb/dwc2/hcd.c  |   18 ++++++++++++++++--
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
---- a/mm/shmem_quota.c
-+++ b/mm/shmem_quota.c
-@@ -116,7 +116,7 @@ static int shmem_free_file_info(struct s
- static int shmem_get_next_id(struct super_block *sb, struct kqid *qid)
- {
- 	struct mem_dqinfo *info = sb_dqinfo(sb, qid->type);
--	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
-+	struct rb_node *node;
- 	qid_t id = from_kqid(&init_user_ns, *qid);
- 	struct quota_info *dqopt = sb_dqopt(sb);
- 	struct quota_id *entry = NULL;
-@@ -126,6 +126,7 @@ static int shmem_get_next_id(struct supe
- 		return -ESRCH;
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -729,8 +729,14 @@ struct dwc2_dregs_backup {
+  * struct dwc2_hregs_backup - Holds host registers state before
+  * entering partial power down
+  * @hcfg:		Backup of HCFG register
++ * @hflbaddr:		Backup of HFLBADDR register
+  * @haintmsk:		Backup of HAINTMSK register
++ * @hcchar:		Backup of HCCHAR register
++ * @hcsplt:		Backup of HCSPLT register
+  * @hcintmsk:		Backup of HCINTMSK register
++ * @hctsiz:		Backup of HCTSIZ register
++ * @hdma:		Backup of HCDMA register
++ * @hcdmab:		Backup of HCDMAB register
+  * @hprt0:		Backup of HPTR0 register
+  * @hfir:		Backup of HFIR register
+  * @hptxfsiz:		Backup of HPTXFSIZ register
+@@ -738,8 +744,14 @@ struct dwc2_dregs_backup {
+  */
+ struct dwc2_hregs_backup {
+ 	u32 hcfg;
++	u32 hflbaddr;
+ 	u32 haintmsk;
++	u32 hcchar[MAX_EPS_CHANNELS];
++	u32 hcsplt[MAX_EPS_CHANNELS];
+ 	u32 hcintmsk[MAX_EPS_CHANNELS];
++	u32 hctsiz[MAX_EPS_CHANNELS];
++	u32 hcidma[MAX_EPS_CHANNELS];
++	u32 hcidmab[MAX_EPS_CHANNELS];
+ 	u32 hprt0;
+ 	u32 hfir;
+ 	u32 hptxfsiz;
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5406,9 +5406,16 @@ int dwc2_backup_host_registers(struct dw
+ 	/* Backup Host regs */
+ 	hr = &hsotg->hr_backup;
+ 	hr->hcfg = dwc2_readl(hsotg, HCFG);
++	hr->hflbaddr = dwc2_readl(hsotg, HFLBADDR);
+ 	hr->haintmsk = dwc2_readl(hsotg, HAINTMSK);
+-	for (i = 0; i < hsotg->params.host_channels; ++i)
++	for (i = 0; i < hsotg->params.host_channels; ++i) {
++		hr->hcchar[i] = dwc2_readl(hsotg, HCCHAR(i));
++		hr->hcsplt[i] = dwc2_readl(hsotg, HCSPLT(i));
+ 		hr->hcintmsk[i] = dwc2_readl(hsotg, HCINTMSK(i));
++		hr->hctsiz[i] = dwc2_readl(hsotg, HCTSIZ(i));
++		hr->hcidma[i] = dwc2_readl(hsotg, HCDMA(i));
++		hr->hcidmab[i] = dwc2_readl(hsotg, HCDMAB(i));
++	}
  
- 	down_read(&dqopt->dqio_sem);
-+	node = ((struct rb_root *)info->dqi_priv)->rb_node;
- 	while (node) {
- 		entry = rb_entry(node, struct quota_id, node);
+ 	hr->hprt0 = dwc2_read_hprt0(hsotg);
+ 	hr->hfir = dwc2_readl(hsotg, HFIR);
+@@ -5442,10 +5449,17 @@ int dwc2_restore_host_registers(struct d
+ 	hr->valid = false;
  
-@@ -165,7 +166,7 @@ out_unlock:
- static int shmem_acquire_dquot(struct dquot *dquot)
- {
- 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
--	struct rb_node **n = &((struct rb_root *)info->dqi_priv)->rb_node;
-+	struct rb_node **n;
- 	struct shmem_sb_info *sbinfo = dquot->dq_sb->s_fs_info;
- 	struct rb_node *parent = NULL, *new_node = NULL;
- 	struct quota_id *new_entry, *entry;
-@@ -176,6 +177,8 @@ static int shmem_acquire_dquot(struct dq
- 	mutex_lock(&dquot->dq_lock);
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
++	dwc2_writel(hsotg, hr->hflbaddr, HFLBADDR);
+ 	dwc2_writel(hsotg, hr->haintmsk, HAINTMSK);
  
- 	down_write(&dqopt->dqio_sem);
-+	n = &((struct rb_root *)info->dqi_priv)->rb_node;
-+
- 	while (*n) {
- 		parent = *n;
- 		entry = rb_entry(parent, struct quota_id, node);
-@@ -264,7 +267,7 @@ static bool shmem_is_empty_dquot(struct
- static int shmem_release_dquot(struct dquot *dquot)
- {
- 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
--	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
-+	struct rb_node *node;
- 	qid_t id = from_kqid(&init_user_ns, dquot->dq_id);
- 	struct quota_info *dqopt = sb_dqopt(dquot->dq_sb);
- 	struct quota_id *entry = NULL;
-@@ -275,6 +278,7 @@ static int shmem_release_dquot(struct dq
- 		goto out_dqlock;
+-	for (i = 0; i < hsotg->params.host_channels; ++i)
++	for (i = 0; i < hsotg->params.host_channels; ++i) {
++		dwc2_writel(hsotg, hr->hcchar[i], HCCHAR(i));
++		dwc2_writel(hsotg, hr->hcsplt[i], HCSPLT(i));
+ 		dwc2_writel(hsotg, hr->hcintmsk[i], HCINTMSK(i));
++		dwc2_writel(hsotg, hr->hctsiz[i], HCTSIZ(i));
++		dwc2_writel(hsotg, hr->hcidma[i], HCDMA(i));
++		dwc2_writel(hsotg, hr->hcidmab[i], HCDMAB(i));
++	}
  
- 	down_write(&dqopt->dqio_sem);
-+	node = ((struct rb_root *)info->dqi_priv)->rb_node;
- 	while (node) {
- 		entry = rb_entry(node, struct quota_id, node);
- 
+ 	dwc2_writel(hsotg, hr->hprt0, HPRT0);
+ 	dwc2_writel(hsotg, hr->hfir, HFIR);
 
 
 
