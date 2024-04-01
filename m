@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-33891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923F689398E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:41:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49E189398D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC5D5B20CE1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:41:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E65551C215FB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A029101EB;
-	Mon,  1 Apr 2024 09:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29EEE10953;
+	Mon,  1 Apr 2024 09:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cANNcr4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swbNL2lm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B9E1113
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE18B1113
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711964480; cv=none; b=iOPrMy2TznaBdH+b8hmEYxk7IzXgVl46U626u9Q2h5Bj7ElanbF5CujUoGnneJlRuMlcglSri3wlrv5g0MF3eQy5zFCHaEe/2SN365ndOYV1TqiU2ucZ7aGAAoDQwlJqPCbPPY2MnsIpWFJfY8BL6PZ+aTPqdJa2+8QgJ0xuIs8=
+	t=1711964484; cv=none; b=hWPyJTFUtQMOVxRYGBRDX/3HVrpVV+o7E1rz3AkwLX2hFMr/Oh0vw4N60hA48VwokNvw0KBHatE2372V1xL/07d0LiX7ZpEGXkuP7RCFrHJoAVU7IqBWNyILoKLCnf1IKj3OaHP9KWe4tLbi9ZDS6TEbtoB8cqGQeET+/7qAp3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711964480; c=relaxed/simple;
-	bh=VLNCuXqqJ2cjwZMhSEmhAirXXuhElng+MGc+F9Keo/0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A+6xLi+XyJXTk9L/bmUFP73j0ZGe+pnHHqs/KciLXlU6SgjVApC6PEOTbGm8BSJQEZPkiENbJ0mfLaF0tTiX5zclCQvVaokj24SpnqDuzRy0Kik1VYbARe+mbR0i4NcYXlwG1JMjTeaqti2BhIaT4sVpMtpQHT0RrGwFW68NfDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cANNcr4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34842C433F1;
-	Mon,  1 Apr 2024 09:41:19 +0000 (UTC)
+	s=arc-20240116; t=1711964484; c=relaxed/simple;
+	bh=oWgZE5//XTY/JO4e5NepxF2QSBhwW+9qPNPm3VMvL94=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ctIClnnIE+WVUZol7EglNPQimWxl+ezqnzfltUdQHF/BdAXsEOWJ5tqydPq6GNzAabWfk6R/Usay6lXzqtqjiwLUgElAOnvjP8z3OEZRhmeJ1vHE30krvzvs3hXXD5ffXLUKTg7d+f0SKT9U1hV0x+2ZHY0DXQ/m0HY6KHI9Dtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swbNL2lm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A82C433F1;
+	Mon,  1 Apr 2024 09:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711964479;
-	bh=VLNCuXqqJ2cjwZMhSEmhAirXXuhElng+MGc+F9Keo/0=;
+	s=korg; t=1711964483;
+	bh=oWgZE5//XTY/JO4e5NepxF2QSBhwW+9qPNPm3VMvL94=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cANNcr4IpwYLy0ItEULEIbsRRqugUJOQ6TersDvCJr0G+KDM0/xxACIiSz7DCTOac
-	 xVFEczuJuxrGj/52JCKQdZDbVQuZSnNfyTPoZWWL3AJ0j5ahgBbHfQagUhWPE8bkhv
-	 xLkvqOsK0Zyym4LBktx09sNTh3OqyeQuHJmus6WU=
-Subject: FAILED: patch "[PATCH] Revert "x86/mm/ident_map: Use gbpages only where full GB page" failed to apply to 6.8-stable tree
+	b=swbNL2lmj7oUlBhSn++osufl6Djlbmjs+aqGskubPgZc+vfNWnMC0RIY4zYMywvtG
+	 flES/Q8/Myy2uVhzLHCjTwx92IJNehOqCvplUl0JobKg82O5vOWZOGrCZFSTs/HomE
+	 wYTqM83Q44+rqb48A36rIApx5I0zwSMlPNjJIx4M=
+Subject: FAILED: patch "[PATCH] Revert "x86/mm/ident_map: Use gbpages only where full GB page" failed to apply to 6.7-stable tree
 To: mingo@kernel.org,dave.hansen@linux.intel.com,rja@hpe.com,stable@vger.kernel.org,steve.wahl@hpe.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Apr 2024 11:41:16 +0200
-Message-ID: <2024040116-epidermis-early-a05d@gregkh>
+Date: Mon, 01 Apr 2024 11:41:17 +0200
+Message-ID: <2024040117-chump-laxative-8210@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.8-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
 git cherry-pick -x c567f2948f57bdc03ed03403ae0234085f376b7d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040116-epidermis-early-a05d@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040117-chump-laxative-8210@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
 c567f2948f57 ("Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."")
 0a845e0f6348 ("mm/treewide: replace pud_large() with pud_leaf()")
+d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
 
 thanks,
 
