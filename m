@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6FA894027
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35201893E8B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B32C28178D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6732D1C2105F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD92446AC;
-	Mon,  1 Apr 2024 16:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503054778B;
+	Mon,  1 Apr 2024 16:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9OV7C5b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hA/bIkN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE67B1CA8F;
-	Mon,  1 Apr 2024 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABC41CA8F;
+	Mon,  1 Apr 2024 16:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988776; cv=none; b=WLE8FoifNdujH6tZPvBOTzpkjNDBQiR7m0Wc+9lYEWb2FOefkocyg0JXPEgk7zWWghktx9ojrxgsamfPx39QPWT5dr5uKGg2AEqpyQl9AX+aqNeA89Qz/T77oLimHab8xSN0ByMFuGGeay6Gdo7nyprwrWLXRNdoRhvmQcD+QuU=
+	t=1711987496; cv=none; b=EtUDaroWyUN0XkHChdXiIBQ4eN/Omw5Z51FU9NQfJDCy8VU/LH/dJpmLRXFYKuX/rP+pa02dHXHYL/gdNIzNQcbrp/oMpjXG8i7v/UMkWOd3RnPevDYrW81mmfvdSgsr69wmLzFDWHBCnHgq7+ntP6Xo9FhP/9nJ2iTYavkBYaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988776; c=relaxed/simple;
-	bh=Ei6nnOkn//wCjo/dKBDEJbfcVCp+x7WL53wOLVQwOQ4=;
+	s=arc-20240116; t=1711987496; c=relaxed/simple;
+	bh=Zvsw6dADyqFGrYlbQ3JW3x7d0pfOMrhSyBFcnDN0iCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KyDuwFDHRFCDysBpgKvoY4HSBso05UbO0IHnG9jMhA9gRoDSnrowYCz9srOdgn+8Q6VP/hSTV96r6xuNpm7Z7jUD/Bn60e0HCFpGl/EvVd5azUagBsr+vaE1oAlz5YMFjK6YgJ4i/CZKJ9xH+XFunTkkgXSWnMr+tu+DS0cxGaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9OV7C5b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C51C433C7;
-	Mon,  1 Apr 2024 16:26:14 +0000 (UTC)
+	 MIME-Version; b=bQ4GpN0udIyuB8GMY3SRlIkFSC4P+uFBYe/hmkG74gJg2EhOZ9MCMkmloCqM5+NLRSWtCqbhX5rG55ZOnwuI3etcKn1lLP4x8z9fAX0CbkVZDDxPkumyXQguW1AjQwC/P4klhG/AzSYfAC2Zo3bav57pawvV9HXtAKhdx1yF1wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hA/bIkN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E042C433F1;
+	Mon,  1 Apr 2024 16:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988775;
-	bh=Ei6nnOkn//wCjo/dKBDEJbfcVCp+x7WL53wOLVQwOQ4=;
+	s=korg; t=1711987495;
+	bh=Zvsw6dADyqFGrYlbQ3JW3x7d0pfOMrhSyBFcnDN0iCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9OV7C5bKkjdsWmUwu/S8lyrUoA6dA6MmlfqO4UZ0TZrrZW7YgWckiDmGndu0H+Yd
-	 FFZ9BHDBtz6yMOSpfmhi17UMJulVRGCRGKzSDlWzJ0s9f1YMhhIcJ4ZnHH27F2veLY
-	 wCMnp7hvxCsW9vD00TDD91QiYoW8QbCnvR/W6/20=
+	b=hA/bIkN51G2JXtJn9KJ2e32a8Pu6+fzm+hV9Lgu7/u3nxcL0CLIbbxsynBVivBhYL
+	 Cum/d8zYQjMTkpD88So2kgLuhAAnqebf/qoMn2Q6E5bJNnRSzeAoLafghkLqzvFBkV
+	 dMQX1/RbBslGBlircTOnjDbNl3962lsiIFGca2TQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.7 284/432] i2c: i801: Fix using mux_pdev before its set
+	Stefan Wahren <wahrenst@gmx.net>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>
+Subject: [PATCH 6.8 305/399] gpio: cdev: sanitize the label before requesting the interrupt
 Date: Mon,  1 Apr 2024 17:44:31 +0200
-Message-ID: <20240401152601.644078484@linuxfoundation.org>
+Message-ID: <20240401152558.293782569@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 09f02902eb9cd41d4b88f4a5b93696297b57a3b0 upstream.
+commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
 
-i801_probe_optional_slaves() is called before i801_add_mux().
-This results in mux_pdev being checked before it's set by
-i801_add_mux(). Fix this by changing the order of the calls.
-I consider this safe as I see no dependencies.
+When an interrupt is requested, a procfs directory is created under
+"/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
+the request_irq() variants.
 
-Fixes: 80e56b86b59e ("i2c: i801: Simplify class-based client device instantiation")
+What follows is that the string must not contain the "/" character or
+the procfs mkdir operation will fail. We don't have such constraints for
+GPIO consumer labels which are used verbatim as interrupt labels for
+GPIO irqs. We must therefore sanitize the consumer string before
+requesting the interrupt.
+
+Let's replace all "/" with ":".
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Kent Gibson <warthog618@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-i801.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -1740,9 +1740,9 @@ static int i801_probe(struct pci_dev *de
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1089,10 +1089,20 @@ static u32 gpio_v2_line_config_debounce_
+ 	return 0;
+ }
  
- 	i801_enable_host_notify(&priv->adapter);
++static inline char *make_irq_label(const char *orig)
++{
++	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
++}
++
++static inline void free_irq_label(const char *label)
++{
++	kfree(label);
++}
++
+ static void edge_detector_stop(struct line *line)
+ {
+ 	if (line->irq) {
+-		free_irq(line->irq, line);
++		free_irq_label(free_irq(line->irq, line));
+ 		line->irq = 0;
+ 	}
  
--	i801_probe_optional_slaves(priv);
- 	/* We ignore errors - multiplexing is optional */
- 	i801_add_mux(priv);
-+	i801_probe_optional_slaves(priv);
+@@ -1116,6 +1126,7 @@ static int edge_detector_setup(struct li
+ 	unsigned long irqflags = 0;
+ 	u64 eflags;
+ 	int irq, ret;
++	char *label;
  
- 	pci_set_drvdata(dev, priv);
+ 	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
+ 	if (eflags && !kfifo_initialized(&line->req->events)) {
+@@ -1152,11 +1163,17 @@ static int edge_detector_setup(struct li
+ 			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
+ 	irqflags |= IRQF_ONESHOT;
+ 
++	label = make_irq_label(line->req->label);
++	if (!label)
++		return -ENOMEM;
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+-				   irqflags, line->req->label, line);
+-	if (ret)
++				   irqflags, label, line);
++	if (ret) {
++		free_irq_label(label);
+ 		return ret;
++	}
+ 
+ 	line->irq = irq;
+ 	return 0;
+@@ -1979,7 +1996,7 @@ static void lineevent_free(struct lineev
+ 		blocking_notifier_chain_unregister(&le->gdev->device_notifier,
+ 						   &le->device_unregistered_nb);
+ 	if (le->irq)
+-		free_irq(le->irq, le);
++		free_irq_label(free_irq(le->irq, le));
+ 	if (le->desc)
+ 		gpiod_free(le->desc);
+ 	kfree(le->label);
+@@ -2120,6 +2137,7 @@ static int lineevent_create(struct gpio_
+ 	int fd;
+ 	int ret;
+ 	int irq, irqflags = 0;
++	char *label;
+ 
+ 	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
+ 		return -EFAULT;
+@@ -2204,15 +2222,23 @@ static int lineevent_create(struct gpio_
+ 	if (ret)
+ 		goto out_free_le;
+ 
++	label = make_irq_label(le->label);
++	if (!label) {
++		ret = -ENOMEM;
++		goto out_free_le;
++	}
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq,
+ 				   lineevent_irq_handler,
+ 				   lineevent_irq_thread,
+ 				   irqflags,
+-				   le->label,
++				   label,
+ 				   le);
+-	if (ret)
++	if (ret) {
++		free_irq_label(label);
+ 		goto out_free_le;
++	}
+ 
+ 	le->irq = irq;
  
 
 
