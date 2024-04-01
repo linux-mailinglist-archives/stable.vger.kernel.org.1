@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-35072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FAB894242
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C21893EDC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7454AB2205C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A833B224F7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB894D9F2;
-	Mon,  1 Apr 2024 16:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49814776F;
+	Mon,  1 Apr 2024 16:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JymegGuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOa0kOKD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27918481B8;
-	Mon,  1 Apr 2024 16:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D601CA8F;
+	Mon,  1 Apr 2024 16:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990247; cv=none; b=A2+9x4zIepNjiY+GSZew3DezFLbUlbn10mq08y4AWnFp04OCwbYwtM481w7X1I02hl0qPpdsQu0Lo1DeuW/mkS6cW9xDtPchYJpCMYAMdFpN9v0NdDaly2iUXoWpukzTZS0i0ypsyFqWOzYza21vMFMtn2zz0R/XFgx8jtsDsaM=
+	t=1711987733; cv=none; b=gQ+kyZcUmWaOwVglVcmtpcxPryJMe8L0qJBLvPqVBe3kI07Lavp/Jq3dzcACGBNin7Lq3uGM05r8+UoOImYEoNXXOD0DBUCq0TMzv7NL+Nl6iE6z/Y0GjL/mUPjSL3ufJZxamPPnLqgbUXATVkC4hO1n1624hbqZpRcRw8sauBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990247; c=relaxed/simple;
-	bh=pkFuaD9qGm7ty1TP56SpecGC0JIk+ivpxe1gPg+uI5A=;
+	s=arc-20240116; t=1711987733; c=relaxed/simple;
+	bh=NEzvoli03+x4g6z/vxg6NhGXukT/wjs6ZBkqJ6uCVPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hj28BDP1wfOglPX/HDnDXUj32GriEMQoSqWlu7PwHZLszCj8itGGGhxDnVk2jOC7q6W1CtK00x2Cmnt7Y7YVK7aRDMrGKkp7mFohISfLvFPnw5rNM1M3DzG4wDJmEL0SQxopx5rEovunrLu7yITU82wHOJRPXbyOyAo87iLV7mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JymegGuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A192EC433F1;
-	Mon,  1 Apr 2024 16:50:46 +0000 (UTC)
+	 MIME-Version; b=MUYc602VLoxOZhdaXfFx+w7eVMKhbEoZFk+xUTejSs46ZCYLMNLKxn/TSym6gIk+jYPklwwi3rD2c+F2Mh4WtjzzXxBfuXqzuNt1q8oj9i+5kUdzxmlDN9FBaDSOycTQqHgAH4RKDmTBDc6QjtbP55Zai1+xc4ZFUbCRL1tuE2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOa0kOKD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8781BC433F1;
+	Mon,  1 Apr 2024 16:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990247;
-	bh=pkFuaD9qGm7ty1TP56SpecGC0JIk+ivpxe1gPg+uI5A=;
+	s=korg; t=1711987733;
+	bh=NEzvoli03+x4g6z/vxg6NhGXukT/wjs6ZBkqJ6uCVPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JymegGuCqwmfscBiqaPG/xM+KBRkrbaCKS2Zr7cpdrcoSkxjiccok1BnwfNZfq71E
-	 GPCkFzW3oYx/IajF6MztL2qEPgaZzhI1N4/TJLGDRO3XKKk5HlK2qho07cmfJSmfCY
-	 7rNG8BGD6dSYfMbVctaspWa8/90qikj/tBxF349M=
+	b=vOa0kOKDMel7EqlOAIzS996qS7bM1JI0SBMkGa2QUh9JgZGE7bt1qqb5JsciaRxLu
+	 3locddjW+VYbgaojW59Ty23Rd1+9Jd+HbhT/0X6rt+d3ELbhtTK9GApdZgTzrdZJAS
+	 SgeWYYtbF8rvonOa5WSZsMUlKxOSVxSc/VjjYlHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 291/396] iommu/dma: Force swiotlb_max_mapping_size on an untrusted device
-Date: Mon,  1 Apr 2024 17:45:40 +0200
-Message-ID: <20240401152556.580912721@linuxfoundation.org>
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.8 375/399] usb: typec: ucsi_acpi: Refactor and fix DELL quirk
+Date: Mon,  1 Apr 2024 17:45:41 +0200
+Message-ID: <20240401152600.373342298@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit afc5aa46ed560f01ceda897c053c6a40c77ce5c4 ]
+commit 6aaceb7d9cd00f3e065dc4b054ecfe52c5253b03 upstream.
 
-The swiotlb does not support a mapping size > swiotlb_max_mapping_size().
-On the other hand, with a 64KB PAGE_SIZE configuration, it's observed that
-an NVME device can map a size between 300KB~512KB, which certainly failed
-the swiotlb mappings, though the default pool of swiotlb has many slots:
-    systemd[1]: Started Journal Service.
- => nvme 0000:00:01.0: swiotlb buffer is full (sz: 327680 bytes), total 32768 (slots), used 32 (slots)
-    note: journal-offline[392] exited with irqs disabled
-    note: journal-offline[392] exited with preempt_count 1
+Some DELL systems don't like UCSI_ACK_CC_CI commands with the
+UCSI_ACK_CONNECTOR_CHANGE but not the UCSI_ACK_COMMAND_COMPLETE
+bit set. The current quirk still leaves room for races because
+it requires two consecutive ACK commands to be sent.
 
-Call trace:
-[    3.099918]  swiotlb_tbl_map_single+0x214/0x240
-[    3.099921]  iommu_dma_map_page+0x218/0x328
-[    3.099928]  dma_map_page_attrs+0x2e8/0x3a0
-[    3.101985]  nvme_prep_rq.part.0+0x408/0x878 [nvme]
-[    3.102308]  nvme_queue_rqs+0xc0/0x300 [nvme]
-[    3.102313]  blk_mq_flush_plug_list.part.0+0x57c/0x600
-[    3.102321]  blk_add_rq_to_plug+0x180/0x2a0
-[    3.102323]  blk_mq_submit_bio+0x4c8/0x6b8
-[    3.103463]  __submit_bio+0x44/0x220
-[    3.103468]  submit_bio_noacct_nocheck+0x2b8/0x360
-[    3.103470]  submit_bio_noacct+0x180/0x6c8
-[    3.103471]  submit_bio+0x34/0x130
-[    3.103473]  ext4_bio_write_folio+0x5a4/0x8c8
-[    3.104766]  mpage_submit_folio+0xa0/0x100
-[    3.104769]  mpage_map_and_submit_buffers+0x1a4/0x400
-[    3.104771]  ext4_do_writepages+0x6a0/0xd78
-[    3.105615]  ext4_writepages+0x80/0x118
-[    3.105616]  do_writepages+0x90/0x1e8
-[    3.105619]  filemap_fdatawrite_wbc+0x94/0xe0
-[    3.105622]  __filemap_fdatawrite_range+0x68/0xb8
-[    3.106656]  file_write_and_wait_range+0x84/0x120
-[    3.106658]  ext4_sync_file+0x7c/0x4c0
-[    3.106660]  vfs_fsync_range+0x3c/0xa8
-[    3.106663]  do_fsync+0x44/0xc0
+Refactor and significantly simplify the quirk to fix this:
+Send a dummy command and bundle the connector change ack with the
+command completion ack in a single UCSI_ACK_CC_CI command.
+This removes the need to probe for the quirk.
 
-Since untrusted devices might go down the swiotlb pathway with dma-iommu,
-these devices should not map a size larger than swiotlb_max_mapping_size.
+While there define flag bits for struct ucsi_acpi->flags in ucsi_acpi.c
+and don't re-use definitions from ucsi.h for struct ucsi->flags.
 
-To fix this bug, add iommu_dma_max_mapping_size() for untrusted devices to
-take into account swiotlb_max_mapping_size() v.s. iova_rcache_range() from
-the iommu_dma_opt_mapping_size().
-
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Link: https://lore.kernel.org/r/ee51a3a5c32cf885b18f6416171802669f4a718a.1707851466.git.nicolinc@nvidia.com
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-[will: Drop redundant is_swiotlb_active(dev) check]
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f3be347ea42d ("usb: ucsi_acpi: Quirk to ack a connector change ack cmd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-5-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/dma-iommu.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/typec/ucsi/ucsi_acpi.c |   71 ++++++++++++++++---------------------
+ 1 file changed, 31 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index e5d087bd6da15..2da969fc89900 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1602,6 +1602,14 @@ static size_t iommu_dma_opt_mapping_size(void)
- 	return iova_rcache_range();
- }
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -23,10 +23,11 @@ struct ucsi_acpi {
+ 	void *base;
+ 	struct completion complete;
+ 	unsigned long flags;
++#define UCSI_ACPI_SUPPRESS_EVENT	0
++#define UCSI_ACPI_COMMAND_PENDING	1
++#define UCSI_ACPI_ACK_PENDING		2
+ 	guid_t guid;
+ 	u64 cmd;
+-	bool dell_quirk_probed;
+-	bool dell_quirk_active;
+ };
  
-+static size_t iommu_dma_max_mapping_size(struct device *dev)
-+{
-+	if (dev_is_untrusted(dev))
-+		return swiotlb_max_mapping_size(dev);
-+
-+	return SIZE_MAX;
-+}
-+
- static const struct dma_map_ops iommu_dma_ops = {
- 	.flags			= DMA_F_PCI_P2PDMA_SUPPORTED,
- 	.alloc			= iommu_dma_alloc,
-@@ -1624,6 +1632,7 @@ static const struct dma_map_ops iommu_dma_ops = {
- 	.unmap_resource		= iommu_dma_unmap_resource,
- 	.get_merge_boundary	= iommu_dma_get_merge_boundary,
- 	.opt_mapping_size	= iommu_dma_opt_mapping_size,
-+	.max_mapping_size       = iommu_dma_max_mapping_size,
+ static int ucsi_acpi_dsm(struct ucsi_acpi *ua, int func)
+@@ -79,9 +80,9 @@ static int ucsi_acpi_sync_write(struct u
+ 	int ret;
+ 
+ 	if (ack)
+-		set_bit(ACK_PENDING, &ua->flags);
++		set_bit(UCSI_ACPI_ACK_PENDING, &ua->flags);
+ 	else
+-		set_bit(COMMAND_PENDING, &ua->flags);
++		set_bit(UCSI_ACPI_COMMAND_PENDING, &ua->flags);
+ 
+ 	ret = ucsi_acpi_async_write(ucsi, offset, val, val_len);
+ 	if (ret)
+@@ -92,9 +93,9 @@ static int ucsi_acpi_sync_write(struct u
+ 
+ out_clear_bit:
+ 	if (ack)
+-		clear_bit(ACK_PENDING, &ua->flags);
++		clear_bit(UCSI_ACPI_ACK_PENDING, &ua->flags);
+ 	else
+-		clear_bit(COMMAND_PENDING, &ua->flags);
++		clear_bit(UCSI_ACPI_COMMAND_PENDING, &ua->flags);
+ 
+ 	return ret;
+ }
+@@ -129,51 +130,40 @@ static const struct ucsi_operations ucsi
  };
  
  /*
--- 
-2.43.0
-
+- * Some Dell laptops expect that an ACK command with the
+- * UCSI_ACK_CONNECTOR_CHANGE bit set is followed by a (separate)
+- * ACK command that only has the UCSI_ACK_COMMAND_COMPLETE bit set.
+- * If this is not done events are not delivered to OSPM and
+- * subsequent commands will timeout.
++ * Some Dell laptops don't like ACK commands with the
++ * UCSI_ACK_CONNECTOR_CHANGE but not the UCSI_ACK_COMMAND_COMPLETE
++ * bit set. To work around this send a dummy command and bundle the
++ * UCSI_ACK_CONNECTOR_CHANGE with the UCSI_ACK_COMMAND_COMPLETE
++ * for the dummy command.
+  */
+ static int
+ ucsi_dell_sync_write(struct ucsi *ucsi, unsigned int offset,
+ 		     const void *val, size_t val_len)
+ {
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+-	u64 cmd = *(u64 *)val, ack = 0;
++	u64 cmd = *(u64 *)val;
++	u64 dummycmd = UCSI_GET_CAPABILITY;
+ 	int ret;
+ 
+-	if (UCSI_COMMAND(cmd) == UCSI_ACK_CC_CI &&
+-	    cmd & UCSI_ACK_CONNECTOR_CHANGE)
+-		ack = UCSI_ACK_CC_CI | UCSI_ACK_COMMAND_COMPLETE;
++	if (cmd == (UCSI_ACK_CC_CI | UCSI_ACK_CONNECTOR_CHANGE)) {
++		cmd |= UCSI_ACK_COMMAND_COMPLETE;
+ 
+-	ret = ucsi_acpi_sync_write(ucsi, offset, val, val_len);
+-	if (ret != 0)
+-		return ret;
+-	if (ack == 0)
+-		return ret;
+-
+-	if (!ua->dell_quirk_probed) {
+-		ua->dell_quirk_probed = true;
++		/*
++		 * The UCSI core thinks it is sending a connector change ack
++		 * and will accept new connector change events. We don't want
++		 * this to happen for the dummy command as its response will
++		 * still report the very event that the core is trying to clear.
++		 */
++		set_bit(UCSI_ACPI_SUPPRESS_EVENT, &ua->flags);
++		ret = ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &dummycmd,
++					   sizeof(dummycmd));
++		clear_bit(UCSI_ACPI_SUPPRESS_EVENT, &ua->flags);
+ 
+-		cmd = UCSI_GET_CAPABILITY;
+-		ret = ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &cmd,
+-					   sizeof(cmd));
+-		if (ret == 0)
+-			return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL,
+-						    &ack, sizeof(ack));
+-		if (ret != -ETIMEDOUT)
++		if (ret < 0)
+ 			return ret;
+-
+-		ua->dell_quirk_active = true;
+-		dev_err(ua->dev, "Firmware bug: Additional ACK required after ACKing a connector change.\n");
+-		dev_err(ua->dev, "Firmware bug: Enabling workaround\n");
+ 	}
+ 
+-	if (!ua->dell_quirk_active)
+-		return ret;
+-
+-	return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &ack, sizeof(ack));
++	return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &cmd, sizeof(cmd));
+ }
+ 
+ static const struct ucsi_operations ucsi_dell_ops = {
+@@ -209,13 +199,14 @@ static void ucsi_acpi_notify(acpi_handle
+ 	if (ret)
+ 		return;
+ 
+-	if (UCSI_CCI_CONNECTOR(cci))
++	if (UCSI_CCI_CONNECTOR(cci) &&
++	    !test_bit(UCSI_ACPI_SUPPRESS_EVENT, &ua->flags))
+ 		ucsi_connector_change(ua->ucsi, UCSI_CCI_CONNECTOR(cci));
+ 
+ 	if (cci & UCSI_CCI_ACK_COMPLETE && test_bit(ACK_PENDING, &ua->flags))
+ 		complete(&ua->complete);
+ 	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
+-	    test_bit(COMMAND_PENDING, &ua->flags))
++	    test_bit(UCSI_ACPI_COMMAND_PENDING, &ua->flags))
+ 		complete(&ua->complete);
+ }
+ 
 
 
 
