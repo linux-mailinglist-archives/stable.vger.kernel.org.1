@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-34543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E57893FC8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B2789414E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E8B2851BF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 845561C217A4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15664778C;
-	Mon,  1 Apr 2024 16:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C873BBC3;
+	Mon,  1 Apr 2024 16:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhOl1SPT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7MdJ/LH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FABFC129;
-	Mon,  1 Apr 2024 16:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7E31E86C;
+	Mon,  1 Apr 2024 16:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988476; cv=none; b=V5NXBIqUrTMXwzXC0VZtUss2ICsu2G/ccLEJ/9YpxowZdg0fde65SSApfrWzRA7ExiNlO5fwMDRh0m7RVAdk+xJyvaW3WGhYgZmdKEWlFLGaAfxXLklXudYdd25a2B8mPSytOF17flP+mnWVyMakDyevRCcN+Z/c8B1I4Rv8GRs=
+	t=1711989628; cv=none; b=EUzNI9slaVUO6v1mKwDiFY8U7fwjb8o0i1B0rTu+M1IGFubg2+RPTTfC/0HTO3q9YOBGDLBd7hxwGbuGE/9TDudbyqO1k1z1qxhuPVoll69U6MttxYGoSaBXupIBEQLNqMzHvumWJK+7884Cb8daeoKubwzkRdXTwGUfN4Lx90g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988476; c=relaxed/simple;
-	bh=0/E7utxPg3R1d8OKdoo0aeuUtAvNYwUz5GHPUqmfbks=;
+	s=arc-20240116; t=1711989628; c=relaxed/simple;
+	bh=BvJUZsD7+FwxM+YMYYaTSor+Kw28XzSsqdZNVxcO/R4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcdatUaxQZVeT2iRzfYSDb+7W+afF3l2b3plKpMdrfYbshuUM9BcgNg6q93wBAAqGAe0AUDxp04ageBGJprbIrOUuX2AfBbHqxd2Qid6NV1MpcXUqE54JCYXvlLikoQQ4vUKFNEdvGGjkUTqS1PUuk/fT3gkKyyIq3T/hWejqF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhOl1SPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC6FC433C7;
-	Mon,  1 Apr 2024 16:21:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UqXMRdLNJT2M3QTfaPVJlKUU/WwKt164nBTjW5DINVr4exDPztzVMutZxesPY34tlI/JmNwNuX+LXCDdzvfryJcQZP/omM9X2fbbHDgCnsMggsaEQU9RKIfWXYE9eglUwiW+8aUM5iC23uFjljt84N4VlE5tFb4VgyFCrhopD6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7MdJ/LH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F761C43390;
+	Mon,  1 Apr 2024 16:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988476;
-	bh=0/E7utxPg3R1d8OKdoo0aeuUtAvNYwUz5GHPUqmfbks=;
+	s=korg; t=1711989628;
+	bh=BvJUZsD7+FwxM+YMYYaTSor+Kw28XzSsqdZNVxcO/R4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PhOl1SPTnz8vVEDrM9FXh68CdHELn61QnXQqwTnmSqlxSwnIB3CCND2CX1DImF18c
-	 +R9WFiKW7/p+LYrLqD0T05/KefmGdetigsjk8gewA2DklTOfPIxZY0aL/OejuojQ7l
-	 u/6XhWujoKtrl0nuBTBlv/VVpJ0SFdyUcOYWie90=
+	b=Y7MdJ/LHi+hiSLFEHoAgoT1VbH90aZ5lb0Hp+Nm5t9Sl62eITSx78gc0LLvtyaGrI
+	 Ks3EIHtm7P0JFgNPX6EIXv9CBz4YeeEIdEoOeI0STL6xWRutSfwzod91iTJeWzTQsz
+	 /+s9R6+6RiQoLodmBQLXB6p7cotNp+UWj9U5ZCQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inki Dae <inki.dae@samsung.com>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Kees Cook <keescook@chromium.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 167/432] drm/exynos: do not return negative values from .get_modes()
+Subject: [PATCH 6.6 105/396] landlock: Warn once if a Landlock action is requested while disabled
 Date: Mon,  1 Apr 2024 17:42:34 +0200
-Message-ID: <20240401152558.131324011@linuxfoundation.org>
+Message-ID: <20240401152551.051615305@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 13d5b040363c7ec0ac29c2de9cf661a24a8aa531 ]
+[ Upstream commit 782191c74875cc33b50263e21d76080b1411884d ]
 
-The .get_modes() hooks aren't supposed to return negative error
-codes. Return 0 for no modes, whatever the reason.
+Because sandboxing can be used as an opportunistic security measure,
+user space may not log unsupported features.  Let the system
+administrator know if an application tries to use Landlock but failed
+because it isn't enabled at boot time.  This may be caused by boot
+loader configurations with outdated "lsm" kernel's command-line
+parameter.
 
-Cc: Inki Dae <inki.dae@samsung.com>
-Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
-Cc: Kyungmin Park <kyungmin.park@samsung.com>
 Cc: stable@vger.kernel.org
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/d8665f620d9c252aa7d5a4811ff6b16e773903a2.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 265885daf3e5 ("landlock: Add syscall implementations")
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Link: https://lore.kernel.org/r/20240227110550.3702236-2-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 4 ++--
- drivers/gpu/drm/exynos/exynos_hdmi.c     | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ security/landlock/syscalls.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index f5e1adfcaa514..fb941a8c99f0f 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -316,14 +316,14 @@ static int vidi_get_modes(struct drm_connector *connector)
- 	 */
- 	if (!ctx->raw_edid) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev, "raw_edid is null.\n");
--		return -EFAULT;
-+		return 0;
- 	}
+diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
+index 245cc650a4dc9..336bedaa3af68 100644
+--- a/security/landlock/syscalls.c
++++ b/security/landlock/syscalls.c
+@@ -32,6 +32,18 @@
+ #include "ruleset.h"
+ #include "setup.h"
  
- 	edid_len = (1 + ctx->raw_edid->extensions) * EDID_LENGTH;
- 	edid = kmemdup(ctx->raw_edid, edid_len, GFP_KERNEL);
- 	if (!edid) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev, "failed to allocate edid\n");
--		return -ENOMEM;
-+		return 0;
- 	}
++static bool is_initialized(void)
++{
++	if (likely(landlock_initialized))
++		return true;
++
++	pr_warn_once(
++		"Disabled but requested by user space. "
++		"You should enable Landlock at boot time: "
++		"https://docs.kernel.org/userspace-api/landlock.html#boot-time-configuration\n");
++	return false;
++}
++
+ /**
+  * copy_min_struct_from_user - Safe future-proof argument copying
+  *
+@@ -165,7 +177,7 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+ 	/* Build-time checks. */
+ 	build_check_abi();
  
- 	drm_connector_update_edid_property(connector, edid);
-diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
-index dd9903eab563e..eff51bfc46440 100644
---- a/drivers/gpu/drm/exynos/exynos_hdmi.c
-+++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
-@@ -887,11 +887,11 @@ static int hdmi_get_modes(struct drm_connector *connector)
- 	int ret;
+-	if (!landlock_initialized)
++	if (!is_initialized())
+ 		return -EOPNOTSUPP;
  
- 	if (!hdata->ddc_adpt)
--		return -ENODEV;
-+		return 0;
+ 	if (flags) {
+@@ -311,7 +323,7 @@ SYSCALL_DEFINE4(landlock_add_rule, const int, ruleset_fd,
+ 	struct landlock_ruleset *ruleset;
+ 	int res, err;
  
- 	edid = drm_get_edid(connector, hdata->ddc_adpt);
- 	if (!edid)
--		return -ENODEV;
-+		return 0;
+-	if (!landlock_initialized)
++	if (!is_initialized())
+ 		return -EOPNOTSUPP;
  
- 	hdata->dvi_mode = !connector->display_info.is_hdmi;
- 	DRM_DEV_DEBUG_KMS(hdata->dev, "%s : width[%d] x height[%d]\n",
+ 	/* No flag for now. */
+@@ -402,7 +414,7 @@ SYSCALL_DEFINE2(landlock_restrict_self, const int, ruleset_fd, const __u32,
+ 	struct landlock_cred_security *new_llcred;
+ 	int err;
+ 
+-	if (!landlock_initialized)
++	if (!is_initialized())
+ 		return -EOPNOTSUPP;
+ 
+ 	/*
 -- 
 2.43.0
 
