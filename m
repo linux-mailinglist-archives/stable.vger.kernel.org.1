@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B07A89429C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1610F8940D7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAE5C2832E2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 476871C217C6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB2147A5D;
-	Mon,  1 Apr 2024 16:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4208B481D0;
+	Mon,  1 Apr 2024 16:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="The9BMcS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8aZKME7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE1540876;
-	Mon,  1 Apr 2024 16:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22C6481C4;
+	Mon,  1 Apr 2024 16:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990455; cv=none; b=UbG7qTj920L50ffWUC1+aANEL7+YPXGPPf2r6lmhUCPWK7XqCKrSamcqGP/PR/Qx33KD8psgDliUf82eV18uGQ0ONmxfx/yN+3tP2S6az0uFji2LhgU/CY5wLrGPI78EPZLoA/w+K6c+rPC6fEiLzXGynu1a2NbazXT/LMN6AQ4=
+	t=1711989296; cv=none; b=TlzgHz3lbKRcDRgMLWnpFQ6YGv4tdz3m5D1fIq3CY8ha7qQPrUBzeush4GfTJaXSToLJSMifPgG0S7w3itSWOOkvTL7BwKuynn6P+wtUjCyaoaGMNtcbpcLA1TlxQI33aumo4fPBc+gAI4n1ryw4tseKShGvGq7Awizp3AAgyn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990455; c=relaxed/simple;
-	bh=Sod/+TmoCvGok3nwSYxxrJ2duYj3BhJamXfJU8OmIJY=;
+	s=arc-20240116; t=1711989296; c=relaxed/simple;
+	bh=ZNvy3HPVKsHGtJkBaYAFzvb0+5iEQ5qSSvDhLu0U3XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ho8EbFFfu3s66u8td5EMLGZRxlAVkaDl2uxR0kGj2iyqj0hjcR6Cm5VHe1c7NrCryoM7kWCt2tXzsCTDeVEpUAHgFI47h/+czpE29uedj5TjzECzW0HyxkyBwPbotJCnNyBAL+/9s2+pFawH/9KZd+LzNv+FEdUbqQBHEgnDg30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=The9BMcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BA3C433C7;
-	Mon,  1 Apr 2024 16:54:15 +0000 (UTC)
+	 MIME-Version; b=fjxeJWu/omjSdj6gROeyGp65UvAe2iu8M9ox5JCLmr4elT5qT5KyqfJyUGeEdLUIko9U7hQSWDdNPcMZ/uYdLhkzIa2mzIISJuSBHkgWOVDSVGEDxrkwtQ8HrqWY07Xh8qONeM+ZcIlO90z2Y6dXDGIzJegPJT2v9KSJj1FxjPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8aZKME7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17866C433F1;
+	Mon,  1 Apr 2024 16:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990455;
-	bh=Sod/+TmoCvGok3nwSYxxrJ2duYj3BhJamXfJU8OmIJY=;
+	s=korg; t=1711989295;
+	bh=ZNvy3HPVKsHGtJkBaYAFzvb0+5iEQ5qSSvDhLu0U3XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=The9BMcSqatXBi4BfXxMktPLNVxX26145dTJmc6TGQTuF5svizmdknBMfpMy/dAa2
-	 qtpSTkSVhCXtXBuTYdnc+lboKMea/Nhhyvwdsk4l9ZJlGswPaslY+boVCP1blBUxAx
-	 zaS1co3e25WYt6rw9j3AELMLrOjNTQrQKYgsYFKY=
+	b=T8aZKME7M60fYyK0QqQDkp2NPlhbKLXqjakh6TfTk6CsDsJp+k44SXMShk7xA7M+K
+	 2wRpL+Suv/NyhqbFoNtNGvd+uqEyY6JUAm2Ou4vQ8kMBxHyVjtD4ioesJ2UAcW+Dzw
+	 jxGUxgTJEYgJpqrOgvBRI/HeVNo77AyPRhPoKYiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Bart Van Assche <bvanassche@acm.org>,
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 358/396] scsi: sg: Avoid sg device teardown race
+Subject: [PATCH 6.7 420/432] scsi: qla2xxx: Change debug message during driver unload
 Date: Mon,  1 Apr 2024 17:46:47 +0200
-Message-ID: <20240401152558.595568937@linuxfoundation.org>
+Message-ID: <20240401152605.942834023@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-commit 27f58c04a8f438078583041468ec60597841284d upstream.
+commit b5a30840727a3e41d12a336d19f6c0716b299161 upstream.
 
-sg_remove_sfp_usercontext() must not use sg_device_destroy() after calling
-scsi_device_put().
+Upon driver unload, purge_mbox flag is set and the heartbeat monitor thread
+detects this flag and does not send the mailbox command down to FW with a
+debug message "Error detected: purge[1] eeh[0] cmd=0x0, Exiting".  This
+being not a real error, change the debug message.
 
-sg_device_destroy() is accessing the parent scsi_device request_queue which
-will already be set to NULL when the preceding call to scsi_device_put()
-removed the last reference to the parent scsi_device.
-
-The resulting NULL pointer exception will then crash the kernel.
-
-Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
-Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://lore.kernel.org/r/20240320213032.18221-1-Alexander@wetzel-home.de
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-10-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_mbx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2208,6 +2208,7 @@ sg_remove_sfp_usercontext(struct work_st
- {
- 	struct sg_fd *sfp = container_of(work, struct sg_fd, ew.work);
- 	struct sg_device *sdp = sfp->parentdp;
-+	struct scsi_device *device = sdp->device;
- 	Sg_request *srp;
- 	unsigned long iflags;
- 
-@@ -2233,8 +2234,9 @@ sg_remove_sfp_usercontext(struct work_st
- 			"sg_remove_sfp: sfp=0x%p\n", sfp));
- 	kfree(sfp);
- 
--	scsi_device_put(sdp->device);
-+	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
- 	kref_put(&sdp->d_ref, sg_device_destroy);
-+	scsi_device_put(device);
- 	module_put(THIS_MODULE);
- }
- 
+--- a/drivers/scsi/qla2xxx/qla_mbx.c
++++ b/drivers/scsi/qla2xxx/qla_mbx.c
+@@ -194,7 +194,7 @@ qla2x00_mailbox_command(scsi_qla_host_t
+ 	if (ha->flags.purge_mbox || chip_reset != ha->chip_reset ||
+ 	    ha->flags.eeh_busy) {
+ 		ql_log(ql_log_warn, vha, 0xd035,
+-		       "Error detected: purge[%d] eeh[%d] cmd=0x%x, Exiting.\n",
++		       "Purge mbox: purge[%d] eeh[%d] cmd=0x%x, Exiting.\n",
+ 		       ha->flags.purge_mbox, ha->flags.eeh_busy, mcp->mb[0]);
+ 		rval = QLA_ABORTED;
+ 		goto premature_exit;
 
 
 
