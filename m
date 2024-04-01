@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-35141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72D6894298
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4692C8943E1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91DED283274
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9EC41F27191
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C6F487BC;
-	Mon,  1 Apr 2024 16:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7618548781;
+	Mon,  1 Apr 2024 17:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpegzF1E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+hoRiUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAB863E;
-	Mon,  1 Apr 2024 16:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346DE47A5D;
+	Mon,  1 Apr 2024 17:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990440; cv=none; b=PiRF+RwSHfFjhmhrR3uCdcxl3nNbvojc9h8RB0aEO6Q4kebWWSfbWC4g9YvD2xsscLtM9Jc3dqzHZAL8NQEij/FTEd139PxXVt++IpYVAdsLKnARenzvUI92+ejNsMO0TfqfiAd+LaeUDBaPqAdozu9szM08oT4vu6kzcccjmSI=
+	t=1711991361; cv=none; b=tP5RZDW++E6kCJYCLhDZVcYtz+hw6quf0iltvw1PHFFye/5PO4oZ06Ju1Vxdbolxkjg2ni1rYaeQGIDSWunYpRggxovfh+ePIF1GLIHNKDnCxknXLSfDUwNHeooIHhHF/MQqOsQQ8cOVSv0+Ek5pzSALbdf+gORsBDtEOeRExiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990440; c=relaxed/simple;
-	bh=jwhJiLk6twmUVf/L02gB/A+o6ITLxPsWZN70+59VzIU=;
+	s=arc-20240116; t=1711991361; c=relaxed/simple;
+	bh=Y+uvM5u5r1eEdseRFlgmjFyNibB2OCh+BhOWaA/hUkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=baJMKY7STS0uCtmQnig4RZcT2K8IWeD5fwi4EbWpshrvhBNvoWAmcmXXkNlMF70qyM8gxJ8asdUkvNXkKbkg6vo01uCTKb2v4bwVDJEYFDjXV2MN3lobmEOb+i2580CY1WrnJlktV/m/f81zOwRKB9YpTdXudubOrnmBggNO4iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpegzF1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F3CC433C7;
-	Mon,  1 Apr 2024 16:53:59 +0000 (UTC)
+	 MIME-Version; b=L6Isv0YCuO+JRXHwR2z285i/1IHhY3WsPA5IkOBF2VaH24PrAWTmLPdVNy0A+4f6PPaAQVNEknPno/M0OBEvj2pgUHOYs996Oo/S7pTiUXXPPq/69XUD1PPpVlS6fbebCsQ/LkWGxrCnW1N/uEaqzMC9OkZqlEcw448Wh2k+554=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+hoRiUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9643C433C7;
+	Mon,  1 Apr 2024 17:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990439;
-	bh=jwhJiLk6twmUVf/L02gB/A+o6ITLxPsWZN70+59VzIU=;
+	s=korg; t=1711991361;
+	bh=Y+uvM5u5r1eEdseRFlgmjFyNibB2OCh+BhOWaA/hUkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpegzF1EbfSZOIj70JT1+UPpTb6eoP71PaVRLnWkeIwSMnFq5DxFK6vUimJaSX/Uc
-	 l5jptS9Q62mhHFmj2reIPIL59FaNCKutngEBc7R1X12+sM/LodZfLlacAhqEVhsfz/
-	 mcCrwJkwfli1gBa/U8QLID5NxmbUKcCT+ayC1hkQ=
+	b=K+hoRiUkeo7J9tjhm9mrk/p4bHVdKglg1rW48cWQfMDwxqtMtzkRaVXFfhJlDRBnI
+	 iLPdjkEn/XeV2+sxsU65bJImbTwB31ZAYbJ1KB1xZaIeNhujxBKSSs0MpzR6UVWuli
+	 skvDANhmiYGmg8jG3HPlH8ZUNxZ5dn2uZzIySZwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 353/396] drm/amd/display: Disconnect phantom pipe OPP from OPTC being disabled
-Date: Mon,  1 Apr 2024 17:46:42 +0200
-Message-ID: <20240401152558.446091398@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 213/272] btrfs: zoned: dont skip block groups with 100% zone unusable
+Date: Mon,  1 Apr 2024 17:46:43 +0200
+Message-ID: <20240401152537.583148927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 7bdbfb4e36e34eb788e44f27666bf0a2b3b90803 ]
+commit a8b70c7f8600bc77d03c0b032c0662259b9e615e upstream.
 
-[Why]
-If an OPP is used for a different OPTC without first being disconnected
-from the previous OPTC, unexpected behaviour can occur. This also
-applies to phantom pipes, which is what the current logic missed.
+Commit f4a9f219411f ("btrfs: do not delete unused block group if it may be
+used soon") changed the behaviour of deleting unused block-groups on zoned
+filesystems. Starting with this commit, we're using
+btrfs_space_info_used() to calculate the number of used bytes in a
+space_info. But btrfs_space_info_used() also accounts
+btrfs_space_info::bytes_zone_unusable as used bytes.
 
-[How]
-Disconnect OPPs from OPTC for phantom pipes before disabling OTG master.
+So if a block group is 100% zone_unusable it is skipped from the deletion
+step.
 
-Also move the disconnection to before the OTG master disable, since the
-register is double buffered.
+In order not to skip fully zone_unusable block-groups, also check if the
+block-group has bytes left that can be used on a zoned filesystem.
 
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: b4e05bb1dec5 ("drm/amd/display: Clear OPTC mem select on disable")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f4a9f219411f ("btrfs: do not delete unused block group if it may be used soon")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ fs/btrfs/block-group.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-index b1fcc91b65a32..93592e8051fb7 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-@@ -142,12 +142,6 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
- {
- 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
- 
--	/* disable otg request until end of the first line
--	 * in the vertical blank region
--	 */
--	REG_UPDATE(OTG_CONTROL,
--			OTG_MASTER_EN, 0);
--
- 	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
- 			OPTC_SEG0_SRC_SEL, 0xf,
- 			OPTC_SEG1_SRC_SEL, 0xf,
-@@ -155,6 +149,12 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
- 			OPTC_SEG3_SRC_SEL, 0xf,
- 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
- 
-+	/* disable otg request until end of the first line
-+	 * in the vertical blank region
-+	 */
-+	REG_UPDATE(OTG_CONTROL,
-+			OTG_MASTER_EN, 0);
-+
- 	REG_UPDATE(CONTROL,
- 			VTG0_ENABLE, 0);
- 
-@@ -181,6 +181,13 @@ static void optc32_disable_phantom_otg(struct timing_generator *optc)
- {
- 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
- 
-+	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
-+			OPTC_SEG0_SRC_SEL, 0xf,
-+			OPTC_SEG1_SRC_SEL, 0xf,
-+			OPTC_SEG2_SRC_SEL, 0xf,
-+			OPTC_SEG3_SRC_SEL, 0xf,
-+			OPTC_NUM_OF_INPUT_SEGMENT, 0);
-+
- 	REG_UPDATE(OTG_CONTROL, OTG_MASTER_EN, 0);
- }
- 
--- 
-2.43.0
-
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1413,7 +1413,8 @@ void btrfs_delete_unused_bgs(struct btrf
+ 		 * needing to allocate extents from the block group.
+ 		 */
+ 		used = btrfs_space_info_used(space_info, true);
+-		if (space_info->total_bytes - block_group->length < used) {
++		if (space_info->total_bytes - block_group->length < used &&
++		    block_group->zone_unusable < block_group->length) {
+ 			/*
+ 			 * Add a reference for the list, compensate for the ref
+ 			 * drop under the "next" label for the
 
 
 
