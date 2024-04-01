@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-35083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD03089424D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3129894286
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF2471C2138F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EF041C21DDB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359614DA16;
-	Mon,  1 Apr 2024 16:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4044D9F2;
+	Mon,  1 Apr 2024 16:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXngDd7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Odjqq4S+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16251E525;
-	Mon,  1 Apr 2024 16:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474D54D137;
+	Mon,  1 Apr 2024 16:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990281; cv=none; b=hASwW4MqzD67YjOacHRjSttilljU2SGk1AFM4Ch9knxwY61UCmtiZBh9Rm98h/otZ7s17MI3DGMUhc2rdfbARw5IXjBFJBwpKudPs9Vb1Wb/9Eli2MJ/2+YE5dsZhsGTkENBF5tJkyc8qKd9s3qnO/I8AZz5Wt8/jRaTh5q+2b8=
+	t=1711990399; cv=none; b=cV3pxDaG4L1NhEpSjNAJABlGIobd7gSpnJlJQD8Y5tcM1ABVR9HJQa3j9pKr0qcw0iDdX6+1ShNrc4x2q4S7mQTZt4EBWII6kj7mmFzNDcj/c0IgHWPJl6T8zrAxuqsH0mhS1CV8aS0+wkoZy4leboPbzosbMt67bd5CanXBK1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990281; c=relaxed/simple;
-	bh=5+nTIL7w0OtY1dz2J6kr94BjTtcvJxB28z9arG7W6So=;
+	s=arc-20240116; t=1711990399; c=relaxed/simple;
+	bh=5iKdgqtd2yxApdW3qo97plm4KNZ6KRLKa0UZv8mZtzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxLkIlHlkI2oCkgACL4Z2acYzP8eGt2cu/MRMe4uRCh+heeJ4Or7+wKvsi8kL+zcKddLkzIrnVKgtUlNpzYO16p0piaOsrtDva/obHkdU8oZz89Eh2zxW4HRPtVv7FNXDTbR8ch6Q9u5MzbtOfixfmcYhXUmDmkIpWom1/Mqku4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXngDd7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E05C433A6;
-	Mon,  1 Apr 2024 16:51:21 +0000 (UTC)
+	 MIME-Version; b=q+9GdUtyID0ANN+q3yIYqMyG42g/N50h+rFAbo9pQUmbD9IgO8tyAC3p4ZbpDl2shfg/QGO/oDhlJ7HL/DoyPWe20yQRHNQaY0UAJ88i3iPFCjR7r7YGMFzODQEGYZMNh0TsYGnv16wOvTqOC/BNDRCB3lzcy9HwSVSTaIAa0Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Odjqq4S+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCED9C43399;
+	Mon,  1 Apr 2024 16:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990281;
-	bh=5+nTIL7w0OtY1dz2J6kr94BjTtcvJxB28z9arG7W6So=;
+	s=korg; t=1711990399;
+	bh=5iKdgqtd2yxApdW3qo97plm4KNZ6KRLKa0UZv8mZtzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXngDd7HprONyjUk011/jvqOrXXadmEjO8t6jVJ2eCHmRWKBT2q58PhjZgMfxdTne
-	 /c07xQNlWRDzhzVJ2rO28McAFDbGdKD6G0/STwWrr9VfU0SVN38dhuOZGAu/I3vEF6
-	 NPViBTPAYUPFmmGO/Y0gprF/P3MvUHXeuetsMbrE=
+	b=Odjqq4S+HSm3YHln2b7hCeY/D4PbK8Gdlh8TgCeSn19CDODcOQEwJeIrdDq3hmrF4
+	 zqsdVdvfYYcVbIUF8aLjozKAjxnjDGeqodsZGxNgnjgkOspJLA/fHbDt1eDwoN0dby
+	 t9dvJSOxPnIhSxR7O9q2GB9dsOieeFaslKpj0MtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Adamos Ttofari <attofari@amazon.de>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/396] x86/mpparse: Register APIC address only once
-Date: Mon,  1 Apr 2024 17:45:50 +0200
-Message-ID: <20240401152556.874691756@linuxfoundation.org>
+Subject: [PATCH 6.6 302/396] x86/fpu: Keep xfd_state in sync with MSR_IA32_XFD
+Date: Mon,  1 Apr 2024 17:45:51 +0200
+Message-ID: <20240401152556.904628725@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
 References: <20240401152547.867452742@linuxfoundation.org>
@@ -67,48 +68,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Adamos Ttofari <attofari@amazon.de>
 
-[ Upstream commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 ]
+[ Upstream commit 10e4b5166df9ff7a2d5316138ca668b42d004422 ]
 
-The APIC address is registered twice. First during the early detection and
-afterwards when actually scanning the table for APIC IDs. The APIC and
-topology core warn about the second attempt.
+Commit 672365477ae8 ("x86/fpu: Update XFD state where required") and
+commit 8bf26758ca96 ("x86/fpu: Add XFD state to fpstate") introduced a
+per CPU variable xfd_state to keep the MSR_IA32_XFD value cached, in
+order to avoid unnecessary writes to the MSR.
 
-Restrict it to the early detection call.
+On CPU hotplug MSR_IA32_XFD is reset to the init_fpstate.xfd, which
+wipes out any stale state. But the per CPU cached xfd value is not
+reset, which brings them out of sync.
 
-Fixes: 81287ad65da5 ("x86/apic: Sanitize APIC address setup")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240322185305.297774848@linutronix.de
+As a consequence a subsequent xfd_update_state() might fail to update
+the MSR which in turn can result in XRSTOR raising a #NM in kernel
+space, which crashes the kernel.
+
+To fix this, introduce xfd_set_state() to write xfd_state together
+with MSR_IA32_XFD, and use it in all places that set MSR_IA32_XFD.
+
+Fixes: 672365477ae8 ("x86/fpu: Update XFD state where required")
+Signed-off-by: Adamos Ttofari <attofari@amazon.de>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240322230439.456571-1-chang.seok.bae@intel.com
+
+Closes: https://lore.kernel.org/lkml/20230511152818.13839-1-attofari@amazon.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/mpparse.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/fpu/xstate.c |  5 +++--
+ arch/x86/kernel/fpu/xstate.h | 14 ++++++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/mpparse.c b/arch/x86/kernel/mpparse.c
-index b223922248e9f..15c700d358700 100644
---- a/arch/x86/kernel/mpparse.c
-+++ b/arch/x86/kernel/mpparse.c
-@@ -196,12 +196,12 @@ static int __init smp_read_mpc(struct mpc_table *mpc, unsigned early)
- 	if (!smp_check_mpc(mpc, oem, str))
- 		return 0;
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index ef6906107c541..571a43b3105df 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -178,10 +178,11 @@ void fpu__init_cpu_xstate(void)
+ 	 * Must happen after CR4 setup and before xsetbv() to allow KVM
+ 	 * lazy passthrough.  Write independent of the dynamic state static
+ 	 * key as that does not work on the boot CPU. This also ensures
+-	 * that any stale state is wiped out from XFD.
++	 * that any stale state is wiped out from XFD. Reset the per CPU
++	 * xfd cache too.
+ 	 */
+ 	if (cpu_feature_enabled(X86_FEATURE_XFD))
+-		wrmsrl(MSR_IA32_XFD, init_fpstate.xfd);
++		xfd_set_state(init_fpstate.xfd);
  
--	/* Initialize the lapic mapping */
--	if (!acpi_lapic)
--		register_lapic_address(mpc->lapic);
--
--	if (early)
-+	if (early) {
-+		/* Initialize the lapic mapping */
-+		if (!acpi_lapic)
-+			register_lapic_address(mpc->lapic);
- 		return 1;
-+	}
+ 	/*
+ 	 * XCR_XFEATURE_ENABLED_MASK (aka. XCR0) sets user features
+diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
+index 3518fb26d06b0..19ca623ffa2ac 100644
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -148,20 +148,26 @@ static inline void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rs
+ #endif
  
- 	/* Now process the configuration blocks. */
- 	while (count < mpc->length) {
+ #ifdef CONFIG_X86_64
++static inline void xfd_set_state(u64 xfd)
++{
++	wrmsrl(MSR_IA32_XFD, xfd);
++	__this_cpu_write(xfd_state, xfd);
++}
++
+ static inline void xfd_update_state(struct fpstate *fpstate)
+ {
+ 	if (fpu_state_size_dynamic()) {
+ 		u64 xfd = fpstate->xfd;
+ 
+-		if (__this_cpu_read(xfd_state) != xfd) {
+-			wrmsrl(MSR_IA32_XFD, xfd);
+-			__this_cpu_write(xfd_state, xfd);
+-		}
++		if (__this_cpu_read(xfd_state) != xfd)
++			xfd_set_state(xfd);
+ 	}
+ }
+ 
+ extern int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu);
+ #else
++static inline void xfd_set_state(u64 xfd) { }
++
+ static inline void xfd_update_state(struct fpstate *fpstate) { }
+ 
+ static inline int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu) {
 -- 
 2.43.0
 
