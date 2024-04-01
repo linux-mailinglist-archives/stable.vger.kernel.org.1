@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C269894015
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FA189431F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11E5A1F21DF1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3B42B20C6A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2528547A74;
-	Mon,  1 Apr 2024 16:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8026B481C6;
+	Mon,  1 Apr 2024 16:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1lk3NjA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFTtWmgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8339446D5;
-	Mon,  1 Apr 2024 16:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6B7BA3F;
+	Mon,  1 Apr 2024 16:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988723; cv=none; b=ihVHcnQkBAHart6gHK6iJOc2jzVO73pjwXtw4VDsjvXNX3GLhnBw3iWyvV3noIdBNHZxqIXZfWwGBUFztaSplBhIBABTjifTIuJi75ScJrp424DjEaQo9eoHjF3cmYhzFYj/i0bebJdkoVEwGVHfiyTCbJh8bociWSzB38gw8KU=
+	t=1711990792; cv=none; b=QlqF8qcaLnoPbk4oY2LWPoEyTqgT4zraX0C6aLsvOpzzey6K10wr8nHis66SmTH9zmSMJsc1MzqyxKfHiQE5EZw9ns5LWqPZQKItjrAYl2/MGI/eY7bEL1oBNoMBeHlLVpNT9epGgwnfMkf7+THDl2RokPmSJchec8Cned2U70Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988723; c=relaxed/simple;
-	bh=bAZHJmUBM8FQoHS7UtTF6BauW+4J2C1E+ho7gRNH3kA=;
+	s=arc-20240116; t=1711990792; c=relaxed/simple;
+	bh=cTCoFfwk3PwJ5fhDBB7LTYpp/sXGfZUy/ULUbIfCX98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MpOHciryUSeM+6uaz5L/DzLv8YtUChzb73jDK8q6boVufo5ea7Qq86Q80ERE4BmRzgr9huTVjyG3xAboO1useWw8CUgWegoFc/TfsWQ5he4/tpBTE0bTuNFD9IL+XjaWrF0NH5nT+ijvRsvFLgvRpECVz8dkeLdLxPSRF/dRJ4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1lk3NjA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499B7C433F1;
-	Mon,  1 Apr 2024 16:25:23 +0000 (UTC)
+	 MIME-Version; b=l0AsY9Fla2bAZfY1IKEg4uPvd/Jqn070RCPqcIYV9FQ/9QxFtWSVPO05L7e8tPzTD7qpE7uKW+yR7Q97kNrUXwh7je4XfMhSbEUpQQeIgoc1LFbkqHuCJb27hdWIC/nTEdVZvOXX1Qe0s3jTJaF01cdwwrT/p3F+5+R77Xqofhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFTtWmgZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A20C433C7;
+	Mon,  1 Apr 2024 16:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988723;
-	bh=bAZHJmUBM8FQoHS7UtTF6BauW+4J2C1E+ho7gRNH3kA=;
+	s=korg; t=1711990792;
+	bh=cTCoFfwk3PwJ5fhDBB7LTYpp/sXGfZUy/ULUbIfCX98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1lk3NjAaw+izWqM8gbIBkWFrbkdg9Xb4CWe3mhoDhGxLBeyRrtrAYrLBa2BFew1s
-	 FyvZg5Fa+eKzDceqWG+cNPbxxKMv7qTgVmB8PgiWLfHIsMYsU7VkPIiZXjbeZfOsD9
-	 xOxEehH6pcuZJpulsFW572hLGG0NnMF570h7GGEM=
+	b=oFTtWmgZ6Iz7bWRkVWRl0H3RSQlq31wbdGZiNODzAMbxOCaXZMIJ0aZWDzCU1UEGr
+	 2T+8waHTu66EohVB4jVamTQmObXmQjbkfUMTMRh9g7E/9iyYvcsZHtNoyhvetgNu8X
+	 aFCGVPog+L0B5KzXUvEzWWLFj0+voGw81zYvZAVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Yicong Yang <yangyicong@hisilicon.com>
-Subject: [PATCH 6.7 270/432] serial: port: Dont suspend if the port is still busy
-Date: Mon,  1 Apr 2024 17:44:17 +0200
-Message-ID: <20240401152601.230073965@linuxfoundation.org>
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 068/272] fuse: dont unhash root
+Date: Mon,  1 Apr 2024 17:44:18 +0200
+Message-ID: <20240401152532.687669777@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 43066e32227ecde674e8ae1fcdd4a1ede67680c2 upstream.
+[ Upstream commit b1fe686a765e6c0d71811d825b5a1585a202b777 ]
 
-We accidently met the issue that the bash prompt is not shown after the
-previous command done and until the next input if there's only one CPU
-(In our issue other CPUs are isolated by isolcpus=). Further analysis
-shows it's because the port entering runtime suspend even if there's
-still pending chars in the buffer and the pending chars will only be
-processed in next device resuming. We are using amba-pl011 and the
-problematic flow is like below:
+The root inode is assumed to be always hashed.  Do not unhash the root
+inode even if it is marked BAD.
 
-Bash                                         kworker
-tty_write()
-  file_tty_write()
-    n_tty_write()
-      uart_write()
-        __uart_start()
-          pm_runtime_get() // wakeup waker
-            queue_work()
-                                             pm_runtime_work()
-                                               rpm_resume()
-                                                status = RPM_RESUMING
-                                                serial_port_runtime_resume()
-                                                  port->ops->start_tx()
-                                                    pl011_tx_chars()
-                                                      uart_write_wakeup()
-        […]
-        __uart_start()
-          pm_runtime_get() < 0 // because runtime status = RPM_RESUMING
-                               // later data are not commit to the port driver
-                                                status = RPM_ACTIVE
-                                                rpm_idle() -> rpm_suspend()
-
-This patch tries to fix this by checking the port busy before entering
-runtime suspending. A runtime_suspend callback is added for the port
-driver. When entering runtime suspend the callback is invoked, if there's
-still pending chars in the buffer then flush the buffer.
-
-Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240226152351.40924-1-yangyicong@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5d069dbe8aaf ("fuse: fix bad inode")
+Cc: <stable@vger.kernel.org> # v5.11
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_port.c |   25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ fs/fuse/fuse_i.h | 1 -
+ fs/fuse/inode.c  | 7 +++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/serial_port.c
-+++ b/drivers/tty/serial/serial_port.c
-@@ -46,8 +46,31 @@ out:
- 	return 0;
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index a9681fecbd91f..253b9b78d6f13 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -923,7 +923,6 @@ static inline bool fuse_stale_inode(const struct inode *inode, int generation,
+ 
+ static inline void fuse_make_bad(struct inode *inode)
+ {
+-	remove_inode_hash(inode);
+ 	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
  }
  
-+static int serial_port_runtime_suspend(struct device *dev)
-+{
-+	struct serial_port_device *port_dev = to_serial_base_port_device(dev);
-+	struct uart_port *port = port_dev->port;
-+	unsigned long flags;
-+	bool busy;
-+
-+	if (port->flags & UPF_DEAD)
-+		return 0;
-+
-+	uart_port_lock_irqsave(port, &flags);
-+	busy = __serial_port_busy(port);
-+	if (busy)
-+		port->ops->start_tx(port);
-+	uart_port_unlock_irqrestore(port, flags);
-+
-+	if (busy)
-+		pm_runtime_mark_last_busy(dev);
-+
-+	return busy ? -EBUSY : 0;
-+}
-+
- static DEFINE_RUNTIME_DEV_PM_OPS(serial_port_pm,
--				 NULL, serial_port_runtime_resume, NULL);
-+				 serial_port_runtime_suspend,
-+				 serial_port_runtime_resume, NULL);
- 
- static int serial_port_probe(struct device *dev)
- {
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index f81000d968875..367e3b276092f 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -445,8 +445,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
+ 	} else if (fuse_stale_inode(inode, generation, attr)) {
+ 		/* nodeid was reused, any I/O on the old inode should fail */
+ 		fuse_make_bad(inode);
+-		iput(inode);
+-		goto retry;
++		if (inode != d_inode(sb->s_root)) {
++			remove_inode_hash(inode);
++			iput(inode);
++			goto retry;
++		}
+ 	}
+ 	fi = get_fuse_inode(inode);
+ 	spin_lock(&fi->lock);
+-- 
+2.43.0
+
 
 
 
