@@ -1,370 +1,175 @@
-Return-Path: <stable+bounces-35480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2411894504
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 20:53:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C4089451D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 21:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B261F21E41
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24CC81C2186E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB294CDE0;
-	Mon,  1 Apr 2024 18:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2351C51C46;
+	Mon,  1 Apr 2024 19:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TGP2zhoV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kV2DsGXl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9958429CFA;
-	Mon,  1 Apr 2024 18:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595AC4CE13
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 19:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711997588; cv=none; b=Ok6+Au0fax5A5bNFLCsWRnyulnqeWijkmaR6ZV63uPHNHDZzR/LfGoEaGpw6LPGfDIXF0O5EqubqvIVuw/gKET+zQXN9kf2M2QmLOumL7WPKarC57TNY2npExyF3BUo7Vs06suimLOwv39bO3AzQnV+jKs0kqXJGW1GTo5QSZIQ=
+	t=1711998103; cv=none; b=McA7tgC2vr0cNFgEM3D1l7RhxPqnmXo4R2TPh/2xmbbjHuoT5fo99SSMZ3HY9C071OqQ5u9ODitKsEPcPmAQ2MMiVd7hWIAheyxzFyqNGZ/EebgkNz2s6EyjeyYCBWsqkd0ljbK4dZKiptiWSJetUzG4v5RwfoqgpmaLbkCGlrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711997588; c=relaxed/simple;
-	bh=mn160bmbr3ihc6WOyXRTXI6Q6xdrsjP28TsGkpAWmiU=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=CLwsAs7KHRZ4Lb+h6VX4fdlM1lMm0aITqgpQ6LbqCpWK+9pNK20X+RuZn14D9o/nGbjzPrhbke/9eFDq1vvNuWBubm77/6sAC42fxrssIX0dpxUj2UBeEc0id4RAgswLGW55zSUtJStwvvmiAX5mXTR/34GCeIcDLQCINfIoaLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TGP2zhoV; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711997577; x=1712256777;
-	bh=bzkClClBfGXbwanM0n075DqRUXgckA/1kUMPbrP5+0k=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=TGP2zhoVKJ2pFdgE3cZohsvtKd0r3YW1GJyZ4Wp5BiS+Ex9aLQcy9enT5nsKYopyE
-	 JIsOSv5S24otrhu+XY2syV/l9DurUsCUZNOts2Z+keMvkhnjzTHC7LEcOezcQ+C16U
-	 667Dq/7DWdisMbO6VjZ4oqg5MBROXmx3VOLhaXzthQL1muBZJOuHL55NDqQPi+mv06
-	 3VieUNZrsI0B1Zl4WKkhp3QTNfynPIa/CVPCaLYkuq8V5/fqgS8WMFRNAFmDBGgHB3
-	 WV9vfhTvmtSn7icXSiOLSzWb4LRfi7OJQ0Zx3Jw9wgOSx+PeSWJBXIbVr0Fl2uKnDB
-	 yBKeVlHYQo2bw==
-Date: Mon, 01 Apr 2024 18:52:50 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
-Message-ID: <20240401185222.12015-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
+	s=arc-20240116; t=1711998103; c=relaxed/simple;
+	bh=OpL35PcgIK4wmZiMDnenaRELysGw5y7Sx+jwFbuYnC4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I+KHBoPHXliEy3pJ3v+4XeXEq8Yl/r8LtIhQdR6i+3vJoNce0i6SJw3vfvFoZbwaxS5Y+480JYsVBcbeFHx+baAPNE+iZAwFaALdtuJJXGBzISl9EUFPp+8zvMoBrPgKBoE+QsyvoO5dGosk4xQ5Q8fcK7u02X7TBzyXR+jmw4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kV2DsGXl; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5a4f608432bso2750098eaf.2
+        for <stable@vger.kernel.org>; Mon, 01 Apr 2024 12:01:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711998100; x=1712602900; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8VfZljfocSfpqKfZ24APD96ZY0uNFOza/nVTuCvA10s=;
+        b=kV2DsGXl3YCXM56t5xV4bC9jgT0P4BSlV1y52ZYuJvI/EAWueCT75kCRGYFSjnitGW
+         +2ppHk3Bx4fsOiQXT3EDjtSAVhwQ55K2CD1+WiZ7tMaERJNAOdKHoUOT2epl7/EOcBC3
+         qgXxjngv+nLDGFCOstWhX3cOU5mZmVv6K4HErfv9bP7AwRSv2KoCBWxEjq+HpZkh7ePY
+         RN4IkQFFD0MwJHhyew3PNGf2nVrE0ToHDOH8Wp8K6tiixSp7kOE9sfLqERDiZ1LwtsAH
+         f9OFNBIEVGisx8wsIOejaGPdiXs2xv4L46MxIiYfVCfsAHEZTZDKd67ksQ9MhBkVApzS
+         +9fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711998100; x=1712602900;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8VfZljfocSfpqKfZ24APD96ZY0uNFOza/nVTuCvA10s=;
+        b=lInwGsDVCyZ0mpxklTkvfp+LKEAW6tZoim4qdiH0yvyyYKZR/B06jqRvdk2eBFSW43
+         y7819ZSMzTwpbT4cWq6t9Vmw0tsCQZUefq8ukw1hLGvDp79r1DzK9Th+RHbpYeTUu5j5
+         IUj70glnn4nemeDB5k3yWEjWfX4UUIxfEog/HyUdPbrtE64IAZOJd3QEOYegD+GZROHQ
+         2KRHWt7Ev8qGs8uOYwGiDN2tVziuN/XgDMW0scEhwYbmsCfzt6oe9vZcywP3c6TFLs4b
+         qQMI9ByrFq0+aPOl4PUqsCZu6/OYZ6bj5tWzf+ALf00GFRGxkDRmIk2TjlRKlYejhU6O
+         BEZQ==
+X-Gm-Message-State: AOJu0YwEH+qYdpbNatb7iQZ0z2oeWwu7aXmDWm4mJGcE6Kui91Zpb+M9
+	fqJyZqabSwTU9w08OgcrDV8b+Du7oig1BDHZrKDg36neR0nc/VI/vfwzo8vjYG0bvLuiaHnrtXf
+	nAbSbG1NGEFkKxmRotmKC6aA6kQheQxtPGQBk/A==
+X-Google-Smtp-Source: AGHT+IFWsTgohUEdMBkXC10fXfKP3iS0KDnJgXeRSHA+MEC5uuUmhMYLgrrl4ce7h5CXapU9nMnWcn+nFmlIVMpAOM8=
+X-Received: by 2002:a05:6808:190d:b0:3c3:d37d:594d with SMTP id
+ bf13-20020a056808190d00b003c3d37d594dmr12830121oib.0.1711998100384; Mon, 01
+ Apr 2024 12:01:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 2 Apr 2024 00:31:28 +0530
+Message-ID: <CA+G9fYvewkbwR_i07HHTM=8E2yS-0wRhOT-C45LP3SNtzgd+4Q@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/396] 6.6.24-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Alexander Wetzel <Alexander@wetzel-home.de>, 
+	Bart Van Assche <bvanassche@acm.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, LTP List <ltp@lists.linux.it>
+Content-Type: text/plain; charset="UTF-8"
 
-The `module!` macro creates glue code that are called by C to initialize
-the Rust modules using the `Module::init` function. Part of this glue
-code are the local functions `__init` and `__exit` that are used to
-initialize/destroy the Rust module.
-These functions are safe and also visible to the Rust mod in which the
-`module!` macro is invoked. This means that they can be called by other
-safe Rust code. But since they contain `unsafe` blocks that rely on only
-being called at the right time, this is a soundness issue.
-
-Wrap these generated functions inside of two private modules, this
-guarantees that the public functions cannot be called from the outside.
-Make the safe functions `unsafe` and add SAFETY comments.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/Rust-for-Linux/linux/issues/629
-Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
-v1: https://lore.kernel.org/rust-for-linux/20240327160346.22442-1-benno.los=
-sin@proton.me/
-v1 -> v2:
-- wrapped `__init` and `__exit` calls in `unsafe` blocks and added
-  SAFETY comments,
-- fixed safety requirement on `__exit` and `__init`,
-- rebased onto rust-next.
-
- rust/macros/module.rs | 213 +++++++++++++++++++++++++-----------------
- 1 file changed, 127 insertions(+), 86 deletions(-)
-
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 27979e582e4b..293beca0a583 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -199,103 +199,144 @@ pub(crate) fn module(ts: TokenStream) -> TokenStrea=
-m {
-             /// Used by the printing macros, e.g. [`info!`].
-             const __LOG_PREFIX: &[u8] =3D b\"{name}\\0\";
-=20
--            /// The \"Rust loadable module\" mark.
--            //
--            // This may be best done another way later on, e.g. as a new m=
-odinfo
--            // key or a new section. For the moment, keep it simple.
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[used]
--            static __IS_RUST_MODULE: () =3D ();
--
--            static mut __MOD: Option<{type_}> =3D None;
--
--            // SAFETY: `__this_module` is constructed by the kernel at loa=
-d time and will not be
--            // freed until the module is unloaded.
--            #[cfg(MODULE)]
--            static THIS_MODULE: kernel::ThisModule =3D unsafe {{
--                kernel::ThisModule::from_ptr(&kernel::bindings::__this_mod=
-ule as *const _ as *mut _)
--            }};
--            #[cfg(not(MODULE))]
--            static THIS_MODULE: kernel::ThisModule =3D unsafe {{
--                kernel::ThisModule::from_ptr(core::ptr::null_mut())
--            }};
--
--            // Loadable modules need to export the `{{init,cleanup}}_modul=
-e` identifiers.
--            /// # Safety
--            ///
--            /// This function must not be called after module initializati=
-on, because it may be
--            /// freed after that completes.
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[no_mangle]
--            #[link_section =3D \".init.text\"]
--            pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {=
-{
--                __init()
--            }}
-+            // Double nested modules, since then nobody can access the pub=
-lic items inside.
-+            mod __module_init {{
-+                mod __module_init {{
-+                    use super::super::{type_};
-+
-+                    /// The \"Rust loadable module\" mark.
-+                    //
-+                    // This may be best done another way later on, e.g. as=
- a new modinfo
-+                    // key or a new section. For the moment, keep it simpl=
-e.
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[used]
-+                    static __IS_RUST_MODULE: () =3D ();
-+
-+                    static mut __MOD: Option<{type_}> =3D None;
-+
-+                    // SAFETY: `__this_module` is constructed by the kerne=
-l at load time and will not be
-+                    // freed until the module is unloaded.
-+                    #[cfg(MODULE)]
-+                    static THIS_MODULE: kernel::ThisModule =3D unsafe {{
-+                        kernel::ThisModule::from_ptr(&kernel::bindings::__=
-this_module as *const _ as *mut _)
-+                    }};
-+                    #[cfg(not(MODULE))]
-+                    static THIS_MODULE: kernel::ThisModule =3D unsafe {{
-+                        kernel::ThisModule::from_ptr(core::ptr::null_mut()=
-)
-+                    }};
-+
-+                    // Loadable modules need to export the `{{init,cleanup=
-}}_module` identifiers.
-+                    /// # Safety
-+                    ///
-+                    /// This function must not be called after module init=
-ialization, because it may be
-+                    /// freed after that completes.
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    #[link_section =3D \".init.text\"]
-+                    pub unsafe extern \"C\" fn init_module() -> core::ffi:=
-:c_int {{
-+                        // SAFETY: this function is inaccessible to the ou=
-tside due to the double
-+                        // module wrapping it. It is called exactly once b=
-y the C side via its
-+                        // unique name.
-+                        unsafe {{ __init() }}
-+                    }}
-=20
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn cleanup_module() {{
--                __exit()
--            }}
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn cleanup_module() {{
-+                        // SAFETY:
-+                        // - this function is inaccessible to the outside =
-due to the double
-+                        //   module wrapping it. It is called exactly once=
- by the C side via its
-+                        //   unique name,
-+                        // - furthermore it is only called after `init_mod=
-ule` has returned `0`
-+                        //   (which delegates to `__init`).
-+                        unsafe {{ __exit() }}
-+                    }}
-=20
--            // Built-in modules are initialized through an initcall pointe=
-r
--            // and the identifiers need to be unique.
--            #[cfg(not(MODULE))]
--            #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
--            #[doc(hidden)]
--            #[link_section =3D \"{initcall_section}\"]
--            #[used]
--            pub static __{name}_initcall: extern \"C\" fn() -> core::ffi::=
-c_int =3D __{name}_init;
--
--            #[cfg(not(MODULE))]
--            #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
--            core::arch::global_asm!(
--                r#\".section \"{initcall_section}\", \"a\"
--                __{name}_initcall:
--                    .long   __{name}_init - .
--                    .previous
--                \"#
--            );
-+                    // Built-in modules are initialized through an initcal=
-l pointer
-+                    // and the identifiers need to be unique.
-+                    #[cfg(not(MODULE))]
-+                    #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
-+                    #[doc(hidden)]
-+                    #[link_section =3D \"{initcall_section}\"]
-+                    #[used]
-+                    pub static __{name}_initcall: extern \"C\" fn() -> cor=
-e::ffi::c_int =3D __{name}_init;
-+
-+                    #[cfg(not(MODULE))]
-+                    #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
-+                    core::arch::global_asm!(
-+                        r#\".section \"{initcall_section}\", \"a\"
-+                        __{name}_initcall:
-+                            .long   __{name}_init - .
-+                            .previous
-+                        \"#
-+                    );
-+
-+                    #[cfg(not(MODULE))]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn __{name}_init() -> core::ffi::c_in=
-t {{
-+                        // SAFETY: this function is inaccessible to the ou=
-tside due to the double
-+                        // module wrapping it. It is called exactly once b=
-y the C side via its
-+                        // placement above in the initcall section.
-+                        unsafe {{ __init() }}
-+                    }}
-=20
--            #[cfg(not(MODULE))]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn __{name}_init() -> core::ffi::c_int {{
--                __init()
--            }}
-+                    #[cfg(not(MODULE))]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn __{name}_exit() {{
-+                        // SAFETY:
-+                        // - this function is inaccessible to the outside =
-due to the double
-+                        //   module wrapping it. It is called exactly once=
- by the C side via its
-+                        //   unique name,
-+                        // - furthermore it is only called after `__{name}=
-_init` has returned `0`
-+                        //   (which delegates to `__init`).
-+                        unsafe {{ __exit() }}
-+                    }}
-=20
--            #[cfg(not(MODULE))]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn __{name}_exit() {{
--                __exit()
--            }}
-+                    /// # Safety
-+                    ///
-+                    /// This function must only be called once.
-+                    unsafe fn __init() -> core::ffi::c_int {{
-+                        match <{type_} as kernel::Module>::init(&THIS_MODU=
-LE) {{
-+                            Ok(m) =3D> {{
-+                                // SAFETY:
-+                                // no data race, since `__MOD` can only be=
- accessed by this module and
-+                                // there only `__init` and `__exit` access=
- it. These functions are only
-+                                // called once and `__exit` cannot be call=
-ed before or during `__init`.
-+                                unsafe {{
-+                                    __MOD =3D Some(m);
-+                                }}
-+                                return 0;
-+                            }}
-+                            Err(e) =3D> {{
-+                                return e.to_errno();
-+                            }}
-+                        }}
-+                    }}
-=20
--            fn __init() -> core::ffi::c_int {{
--                match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
--                    Ok(m) =3D> {{
-+                    /// # Safety
-+                    ///
-+                    /// This function must
-+                    /// - only be called once,
-+                    /// - be called after `__init` has been called and ret=
-urned `0`.
-+                    unsafe fn __exit() {{
-+                        // SAFETY:
-+                        // no data race, since `__MOD` can only be accesse=
-d by this module and there
-+                        // only `__init` and `__exit` access it. These fun=
-ctions are only called once
-+                        // and `__init` was already called.
-                         unsafe {{
--                            __MOD =3D Some(m);
-+                            // Invokes `drop()` on `__MOD`, which should b=
-e used for cleanup.
-+                            __MOD =3D None;
-                         }}
--                        return 0;
-                     }}
--                    Err(e) =3D> {{
--                        return e.to_errno();
--                    }}
--                }}
--            }}
-=20
--            fn __exit() {{
--                unsafe {{
--                    // Invokes `drop()` on `__MOD`, which should be used f=
-or cleanup.
--                    __MOD =3D None;
-+                    {modinfo}
-                 }}
-             }}
--
--            {modinfo}
-         ",
-         type_ =3D info.type_,
-         name =3D info.name,
-
-base-commit: 9ffe2a730313f27cebd0859ea856247ac59c576c
---=20
-2.44.0
+On Mon, 1 Apr 2024 at 22:06, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.24 release.
+> There are 396 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.24-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
 
+Following kernel warnings have been noticed on qemu-x86_64 while running LTP
+cve ioctl_sg01 tests the kernel with stable-rc 6.6.24-rc1, 6.7.12-rc1 and
+6.8.3-rc1.
+
+We have started bi-secting this issue.
+Always reproduced.
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+ioctl_sg01.c:81: TINFO: Found SCSI device /dev/sg0
+------------[ cut here ]------------
+[   36.606841] WARNING: CPU: 0 PID: 8 at drivers/scsi/sg.c:2237
+sg_remove_sfp_usercontext+0x145/0x150
+[   36.609445] Modules linked in:
+[   36.610793] CPU: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.6.24-rc1 #1
+[   36.611568] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+[   36.612872] Workqueue: events sg_remove_sfp_usercontext
+[   36.613691] RIP: 0010:sg_remove_sfp_usercontext+0x145/0x150
+
+<trim>
+
+[   36.621539] Call Trace:
+[   36.621953]  <TASK>
+[   36.622444]  ? show_regs+0x69/0x80
+[   36.622819]  ? __warn+0x8d/0x150
+[   36.623078]  ? sg_remove_sfp_usercontext+0x145/0x150
+[   36.623558]  ? report_bug+0x171/0x1a0
+[   36.623881]  ? handle_bug+0x42/0x80
+[   36.624070]  ? exc_invalid_op+0x1c/0x70
+[   36.624491]  ? asm_exc_invalid_op+0x1f/0x30
+[   36.624897]  ? sg_remove_sfp_usercontext+0x145/0x150
+[   36.625408]  process_one_work+0x141/0x300
+[   36.625769]  worker_thread+0x2f6/0x430
+[   36.626073]  ? __pfx_worker_thread+0x10/0x10
+[   36.626529]  kthread+0x105/0x140
+[   36.626778]  ? __pfx_kthread+0x10/0x10
+[   36.627059]  ret_from_fork+0x41/0x60
+[   36.627441]  ? __pfx_kthread+0x10/0x10
+[   36.627735]  ret_from_fork_asm+0x1b/0x30
+[   36.628293]  </TASK>
+[   36.628604] ---[ end trace 0000000000000000 ]---
+ioctl_sg01.c:122: TPASS: Output buffer is empty, no data leaked
+
+Suspecting commit:
+-----
+scsi: sg: Avoid sg device teardown race
+commit 27f58c04a8f438078583041468ec60597841284d upstream.
+
+ + WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
+
+Steps to reproduce:
+- https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2eVWFlAeOUepfeFVkrOXFYNNAqI/reproducer
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.23-397-g75a2533b74d0/testrun/23255318/suite/log-parser-test/tests/
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2eVTitwVMagaiWhs5T2iKH390D5
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
