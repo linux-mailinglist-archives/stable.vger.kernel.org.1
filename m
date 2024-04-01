@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E18A8941D2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DC7894305
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EE981C21932
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 595BF1F26EFF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D180B4644C;
-	Mon,  1 Apr 2024 16:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3DA47A6B;
+	Mon,  1 Apr 2024 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXJUxpBM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdowHDXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900D38F5C;
-	Mon,  1 Apr 2024 16:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0EC1E86C;
+	Mon,  1 Apr 2024 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989990; cv=none; b=iTKD58ngiF8OM+clh8VEk43QtWDVZau2alzocANVnu+tHaSpC3j6xLf3T3Z7PO248651F1G6EWpYdDBYLjum54ggvydpPa6QyDXM0bytLkhz5V1BPwcLm6VeN7Q8Piluci92CS+WKYbhmkMX7KZ88v5iLXh9kPr+HBQbTSPKGEo=
+	t=1711990717; cv=none; b=X1KEENf8AIIKzvriMu+f33yv0Av7Ot+RAtOyK12aBKdlj20/26h35+xX+ZrtDGQF7HTxICGOX/hCDt3W9lqaW+8bAIWVwRcNQRfTwtjjbLfhubCpVztNMFIHxG2VO52ErnoO4BCafwQ17oGcnPFLBRBkLGc+Qlgs9f5fXJdfAIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989990; c=relaxed/simple;
-	bh=bNhCKAnfslwAC/kndvz5W+1eXohHP3ISDj4/6ZnLDco=;
+	s=arc-20240116; t=1711990717; c=relaxed/simple;
+	bh=LLxOVD+Iko8MczvrXpEZoK6g2DT51793yKXgBj6Q9Co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yz04N6LETfdGY4PsSfB7wwaeOnpN8vlsvjMj1IOBB2RwrZhq+Mq+Fnj4gMzYzYaaSyTkg1D0pHvmfNLh1uwNR+yCpU6CSjT7Lvs/+IXFVQjjrIpJ9bT/nhRGtiO/TEkdUCtWdGnnUzHAcjtJocOGSmuHIHmIjof/oW8luWEMv4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXJUxpBM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1650BC433F1;
-	Mon,  1 Apr 2024 16:46:29 +0000 (UTC)
+	 MIME-Version; b=uJVBZXzWrZhI3zqW5i8agdxcMr+nZweIv5YFM7AG4HsEtuYPzjwi33BuWO+tJImkV3eZhVJUshdYRlgTBm89EdBM2ze3eHLgfa/FlSIKlwAGVR8Drja8mn+Ky0EQtYNnCkgwpqlcvQJ2g6bL0QJOfrpxoa6Du05oVvHdRwPMTco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdowHDXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6E0C433F1;
+	Mon,  1 Apr 2024 16:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989990;
-	bh=bNhCKAnfslwAC/kndvz5W+1eXohHP3ISDj4/6ZnLDco=;
+	s=korg; t=1711990717;
+	bh=LLxOVD+Iko8MczvrXpEZoK6g2DT51793yKXgBj6Q9Co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXJUxpBMrVlZqAgx1K13uQoIZtrffeVxfTeBZyngAA8J05v5TkrmmQhU+g1uGe74e
-	 BNQVtLGoFpRIpEZqQzQTgYqZaFJy/fCDwptX0EqPgI9dPbaJ3G7TyIXhQe0fl4UO6r
-	 TocYzVKeN8Iv3/oTiM3/vtgQsF1/+qs4b2nBS0pk=
+	b=xdowHDXBkaEmfWF7s8wdEm8CKWEoxK/hhsNcwIk8FUQnrpv947q1IOJpDZ/w3mPl0
+	 E6eoHbleJpzVzcksf++3zi54a0ruLoPRYull1KfA5bpzcsN8nW6cxO6iNYdqQGEEIP
+	 QgqfUSYOQ4bGMMTnbRyKuvc6Abz1b44bwjyaW73M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Altaparmakov <anton@tuxera.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/396] x86/pm: Work around false positive kmemleak report in msr_build_context()
+Subject: [PATCH 6.1 044/272] parisc/unaligned: Rewrite 64-bit inline assembly of emulate_ldd()
 Date: Mon,  1 Apr 2024 17:43:54 +0200
-Message-ID: <20240401152553.456292979@linuxfoundation.org>
+Message-ID: <20240401152531.776546462@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Altaparmakov <anton@tuxera.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit e3f269ed0accbb22aa8f25d2daffa23c3fccd407 ]
+[ Upstream commit e5db6a74571a8baf87a116ea39aab946283362ff ]
 
-Since:
+Convert to use real temp variables instead of clobbering processor
+registers. This aligns the 64-bit inline assembly code with the 32-bit
+assembly code which was rewritten with commit 427c1073a2a1
+("parisc/unaligned: Rewrite 32-bit inline assembly of emulate_ldd()").
 
-  7ee18d677989 ("x86/power: Make restore_processor_context() sane")
+While at it, fix comment in 32-bit rewrite code. Temporary variables are
+now used for both 32-bit and 64-bit code, so move their declarations
+to the function header.
 
-kmemleak reports this issue:
+No functional change intended.
 
-  unreferenced object 0xf68241e0 (size 32):
-    comm "swapper/0", pid 1, jiffies 4294668610 (age 68.432s)
-    hex dump (first 32 bytes):
-      00 cc cc cc 29 10 01 c0 00 00 00 00 00 00 00 00  ....)...........
-      00 42 82 f6 cc cc cc cc cc cc cc cc cc cc cc cc  .B..............
-    backtrace:
-      [<461c1d50>] __kmem_cache_alloc_node+0x106/0x260
-      [<ea65e13b>] __kmalloc+0x54/0x160
-      [<c3858cd2>] msr_build_context.constprop.0+0x35/0x100
-      [<46635aff>] pm_check_save_msr+0x63/0x80
-      [<6b6bb938>] do_one_initcall+0x41/0x1f0
-      [<3f3add60>] kernel_init_freeable+0x199/0x1e8
-      [<3b538fde>] kernel_init+0x1a/0x110
-      [<938ae2b2>] ret_from_fork+0x1c/0x28
-
-Which is a false positive.
-
-Reproducer:
-
-  - Run rsync of whole kernel tree (multiple times if needed).
-  - start a kmemleak scan
-  - Note this is just an example: a lot of our internal tests hit these.
-
-The root cause is similar to the fix in:
-
-  b0b592cf0836 x86/pm: Fix false positive kmemleak report in msr_build_context()
-
-ie. the alignment within the packed struct saved_context
-which has everything unaligned as there is only "u16 gs;" at start of
-struct where in the past there were four u16 there thus aligning
-everything afterwards.  The issue is with the fact that Kmemleak only
-searches for pointers that are aligned (see how pointers are scanned in
-kmemleak.c) so when the struct members are not aligned it doesn't see
-them.
-
-Testing:
-
-We run a lot of tests with our CI, and after applying this fix we do not
-see any kmemleak issues any more whilst without it we see hundreds of
-the above report. From a single, simple test run consisting of 416 individual test
-cases on kernel 5.10 x86 with kmemleak enabled we got 20 failures due to this,
-which is quite a lot. With this fix applied we get zero kmemleak related failures.
-
-Fixes: 7ee18d677989 ("x86/power: Make restore_processor_context() sane")
-Signed-off-by: Anton Altaparmakov <anton@tuxera.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240314142656.17699-1-anton@tuxera.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/suspend_32.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/parisc/kernel/unaligned.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
-index a800abb1a9925..d8416b3bf832e 100644
---- a/arch/x86/include/asm/suspend_32.h
-+++ b/arch/x86/include/asm/suspend_32.h
-@@ -12,11 +12,6 @@
+diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
+index 8a8e7d7224a26..782ee05e20889 100644
+--- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -167,6 +167,7 @@ static int emulate_ldw(struct pt_regs *regs, int toreg, int flop)
+ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
+ {
+ 	unsigned long saddr = regs->ior;
++	unsigned long shift, temp1;
+ 	__u64 val = 0;
+ 	ASM_EXCEPTIONTABLE_VAR(ret);
  
- /* image of the saved processor state */
- struct saved_context {
--	/*
--	 * On x86_32, all segment registers except gs are saved at kernel
--	 * entry in pt_regs.
--	 */
--	u16 gs;
- 	unsigned long cr0, cr2, cr3, cr4;
- 	u64 misc_enable;
- 	struct saved_msrs saved_msrs;
-@@ -27,6 +22,11 @@ struct saved_context {
- 	unsigned long tr;
- 	unsigned long safety;
- 	unsigned long return_address;
-+	/*
-+	 * On x86_32, all segment registers except gs are saved at kernel
-+	 * entry in pt_regs.
-+	 */
-+	u16 gs;
- 	bool misc_enable_saved;
- } __attribute__((packed));
+@@ -178,25 +179,22 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
  
+ #ifdef CONFIG_64BIT
+ 	__asm__ __volatile__  (
+-"	depd,z	%3,60,3,%%r19\n"		/* r19=(ofs&7)*8 */
+-"	mtsp	%4, %%sr1\n"
+-"	depd	%%r0,63,3,%3\n"
+-"1:	ldd	0(%%sr1,%3),%0\n"
+-"2:	ldd	8(%%sr1,%3),%%r20\n"
+-"	subi	64,%%r19,%%r19\n"
+-"	mtsar	%%r19\n"
+-"	shrpd	%0,%%r20,%%sar,%0\n"
++"	depd,z	%2,60,3,%3\n"		/* shift=(ofs&7)*8 */
++"	mtsp	%5, %%sr1\n"
++"	depd	%%r0,63,3,%2\n"
++"1:	ldd	0(%%sr1,%2),%0\n"
++"2:	ldd	8(%%sr1,%2),%4\n"
++"	subi	64,%3,%3\n"
++"	mtsar	%3\n"
++"	shrpd	%0,%4,%%sar,%0\n"
+ "3:	\n"
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
+-	: "=r" (val), "+r" (ret)
+-	: "0" (val), "r" (saddr), "r" (regs->isr)
+-	: "r19", "r20" );
++	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
++	: "r" (regs->isr) );
+ #else
+-    {
+-	unsigned long shift, temp1;
+ 	__asm__ __volatile__  (
+-"	zdep	%2,29,2,%3\n"		/* r19=(ofs&3)*8 */
++"	zdep	%2,29,2,%3\n"		/* shift=(ofs&3)*8 */
+ "	mtsp	%5, %%sr1\n"
+ "	dep	%%r0,31,2,%2\n"
+ "1:	ldw	0(%%sr1,%2),%0\n"
+@@ -212,7 +210,6 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b, "%1")
+ 	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
+ 	: "r" (regs->isr) );
+-    }
+ #endif
+ 
+ 	DPRINTF("val = 0x%llx\n", val);
 -- 
 2.43.0
 
