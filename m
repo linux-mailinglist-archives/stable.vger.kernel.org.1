@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 511A189440B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:11:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B12438942C3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6336B20C98
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:11:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D556B20B97
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCBC487BC;
-	Mon,  1 Apr 2024 17:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48584653C;
+	Mon,  1 Apr 2024 16:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+Fjgozg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdwzKUIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEA4481B8;
-	Mon,  1 Apr 2024 17:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D5B63E;
+	Mon,  1 Apr 2024 16:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991479; cv=none; b=inpScIN8b3xTbpIZ9kuUVvtuqkBTEs6wUdSFxUC8A2KmLofr9Oaex3jjtkkhrJycUqvIxXZttvc7HchKrNbwmCqnQKAUt/e+aa5y1J1zK8p1sGWA1PtJ3VoEqsGwNt/msdS1hpW3kRJ3nh4AFTgy0B73PhIekY8nf05MtkLALUk=
+	t=1711990558; cv=none; b=aq5r2HkW00GesDZWjOR0y7HiGsua+j/d+FqR3qdOZ4e0pNUKWTMGp4hZOGea3vSfA3H4oPfrOW5CB3kZ8j7wWq3uf1drt1Uw5Nl8p+YBo0N3ZRiaKbyKxl4756tP6U4ld3ElkUIq4ZlKkXGFEguRWj/xB3KzS2KoP3uQ/nZAp2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991479; c=relaxed/simple;
-	bh=/oSkE1EVP0ycfDQCl4pkwfYmjyS7GZ3bkLmw5vOBWaw=;
+	s=arc-20240116; t=1711990558; c=relaxed/simple;
+	bh=Mzi30M9E/Ie2zhlr5jtbM4pEMZWHiceVFhrxjHIrfLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8AKbfSoU3zmyEJaUrAuGVuqqLAXVsq4UEE3EAWa1jp344bOik5nrYba8jELau0tAGLMKPF1xAkG1iaOe/HDNumyESZUN2VtiavIAzFainP/gLWm00DvfEwFUrOgx2FJ9C3cWMCx8rTrjcalgM3eKqNJYN7GKivYmtxyJPBQ9z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+Fjgozg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA5BC433C7;
-	Mon,  1 Apr 2024 17:11:18 +0000 (UTC)
+	 MIME-Version; b=Ep+hCSMxLUvt2h///HoYPi8uAstjeBBveAKDyXJcMMTT73WsOaIi4Du6ucCYoOeEAm5FutcWJMe5wV/9wWEQg0a6FHxMXXxyxDbOPW4yJGg7paiBVuGQDX+g8Ku3SZwA65rst57ybwp40a0qvqM7A5fH1U+HUiIPRTRxUG3sZzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdwzKUIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E742C433C7;
+	Mon,  1 Apr 2024 16:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991479;
-	bh=/oSkE1EVP0ycfDQCl4pkwfYmjyS7GZ3bkLmw5vOBWaw=;
+	s=korg; t=1711990557;
+	bh=Mzi30M9E/Ie2zhlr5jtbM4pEMZWHiceVFhrxjHIrfLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+FjgozggNP6Ay3mCBJcEz+fu4h4/apE4Js4sTZ5m4Z8KEfKglFU3xS06yVQDq9dA
-	 0NDx+TgJyMircLB99dlMUuVKwjQ8rkZ/UwY140nTMu9QvoERrnlyBhgAbWTYgonQvr
-	 qv/rJkQZ41kjPMEU4KTT7HZY0svK+49JkTOVtiBU=
+	b=SdwzKUIPfZyn0Mtk/tdV2PRcW7zP8fSlMHMHZYGHJDqdBBKa/sSjhzMkWj2nR4X8s
+	 06ja1Qz8pq36HxM8d1JQ1jnSAsGb24StmTdQzqXbL72lN7R5QpPW7zoW1l23I0LPbE
+	 iXQET/+89d05gzRLcstW0Id2ZQ92LSgmuwogRVZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 249/272] usb: typec: Return size of buffer if pd_set operation succeeds
-Date: Mon,  1 Apr 2024 17:47:19 +0200
-Message-ID: <20240401152538.793292559@linuxfoundation.org>
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 391/396] scsi: lpfc: Correct size for cmdwqe/rspwqe for memset()
+Date: Mon,  1 Apr 2024 17:47:20 +0200
+Message-ID: <20240401152559.568225160@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 53f5094fdf5deacd99b8655df692e9278506724d upstream.
+commit 16cc2ba71b9f6440805aef7f92ba0f031f79b765 upstream.
 
-The attribute writing should return the number of bytes used from the
-buffer on success.
+The cmdwqe and rspwqe are of type lpfc_wqe128. They should be memset() with
+the same type.
 
-Fixes: a7cff92f0635 ("usb: typec: USB Power Delivery helpers for ports and partners")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240319074309.3306579-1-kyletso@google.com
+Fixes: 61910d6a5243 ("scsi: lpfc: SLI path split: Refactor CT paths")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240304091119.847060-1-usama.anjum@collabora.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_bsg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -1245,6 +1245,7 @@ static ssize_t select_usb_power_delivery
- {
- 	struct typec_port *port = to_typec_port(dev);
- 	struct usb_power_delivery *pd;
-+	int ret;
+--- a/drivers/scsi/lpfc/lpfc_bsg.c
++++ b/drivers/scsi/lpfc/lpfc_bsg.c
+@@ -3169,10 +3169,10 @@ lpfc_bsg_diag_loopback_run(struct bsg_jo
+ 	}
  
- 	if (!port->ops || !port->ops->pd_set)
- 		return -EOPNOTSUPP;
-@@ -1253,7 +1254,11 @@ static ssize_t select_usb_power_delivery
- 	if (!pd)
- 		return -EINVAL;
+ 	cmdwqe = &cmdiocbq->wqe;
+-	memset(cmdwqe, 0, sizeof(union lpfc_wqe));
++	memset(cmdwqe, 0, sizeof(*cmdwqe));
+ 	if (phba->sli_rev < LPFC_SLI_REV4) {
+ 		rspwqe = &rspiocbq->wqe;
+-		memset(rspwqe, 0, sizeof(union lpfc_wqe));
++		memset(rspwqe, 0, sizeof(*rspwqe));
+ 	}
  
--	return port->ops->pd_set(port, pd);
-+	ret = port->ops->pd_set(port, pd);
-+	if (ret)
-+		return ret;
-+
-+	return size;
- }
- 
- static ssize_t select_usb_power_delivery_show(struct device *dev,
+ 	INIT_LIST_HEAD(&head);
 
 
 
