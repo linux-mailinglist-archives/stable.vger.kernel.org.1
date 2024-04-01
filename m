@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-34716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98D5894085
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DE989423B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 941FB2831C2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFCB1C210CA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486B238DE5;
-	Mon,  1 Apr 2024 16:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078D64CDEC;
+	Mon,  1 Apr 2024 16:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9OBywQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiYqRuld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33B31E525;
-	Mon,  1 Apr 2024 16:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A44CB4A;
+	Mon,  1 Apr 2024 16:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989058; cv=none; b=mkEzu380njHA2s7gzRyBAvI+Ry7N5OzP7G2dKH3zM61xnBMn5+k1pcCZBmu7Uekd4maWHN+9VL0G0DWTYa2nF931exUf2CWSFqMU3RqO4jSoST1qNw13hRups+QtBhMSmLTAVsKi5035WhNnXc0gkitjMFgLJMNCjt7AO88XfyM=
+	t=1711990237; cv=none; b=NHRhx7orB6Fk2pU66Z93D7nUQQNC2RUJ1C103weIUOTFRDx7BF2WQB8B2sg/2zNg7qiJrBXiO16SUQ+lAy/LRLOvIBk6RDBJdT451GPB7u0F06AKf5WEZvcIza7/QPFcK5+uHjSaJmt/GdzKxiJTVMO+UPLSR/hjBy5fjDVO2Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989058; c=relaxed/simple;
-	bh=OWiEs2Ovn6dY6q++WfLzlTWU5nTNpNnDeuVk1/Qk/ug=;
+	s=arc-20240116; t=1711990237; c=relaxed/simple;
+	bh=hDz67f2DB412MPmFBtDa4LB1SuH3Qj4S7QwtQDfgXeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgtQN8CoGv9mzP8RtV4s371HxekO7eE1P6Ydhe7fVMDT+Exj1HqggfJ1nO4fjZSP76n7tR7M+1k37hquzAC+amh042wSlpx02Sr3bsrIrHonj8rfzqhkmUHhb29fXYV0gae6PjTnElL9JB3cFpFlhAEbdAJZYrpK7ST2mnUNcWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9OBywQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F22C433F1;
-	Mon,  1 Apr 2024 16:30:57 +0000 (UTC)
+	 MIME-Version; b=aXJbMa78NHlI185sFZMBgGzWBSaK30qI+SvoX1iLulS2gpCfB/TmC+X8Uaw4cepl+g3rR6mWbEXke2QR/o9imN2M7j+k5SclVV5B1bTmsf21kJnIQ7U3Wk/J4GxxVPnS/7n5Or7c2mx91C/7OXIK3RRmcGrl5TRMJaMddP+tFLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiYqRuld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3DEC43390;
+	Mon,  1 Apr 2024 16:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989057;
-	bh=OWiEs2Ovn6dY6q++WfLzlTWU5nTNpNnDeuVk1/Qk/ug=;
+	s=korg; t=1711990237;
+	bh=hDz67f2DB412MPmFBtDa4LB1SuH3Qj4S7QwtQDfgXeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h9OBywQbEEghnVD5PVpO54lyru4RUPPIyTFCc4PHjNeqGTB3fqe253rOZ221Pu78E
-	 mRjD3DhlP8fsoWo1o2esyPcaMJgi44as11t3cXgnDTiczfxArFzJ7nnKlcBsfY3WIS
-	 4Wi/CHik15j6daFq1zXfHMg2AYkIRQ5kue9tbUmE=
+	b=qiYqRuldcbUbTppvRIyqbgCFfGfeuXoMxFbIs/QCZBqppR38QzA5z4Ra+wo3IGlYC
+	 thUNNZ/XooC4NgNcfzuBl95kJDWeqev0IuZTDOIVYZYpyrVxA+Qb7yRWAU5+0tzKgv
+	 oocleKDU6CH2294kZQ57Cp6FLr4IIQO/a3Nku9KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>
-Subject: [PATCH 6.7 351/432] gpio: cdev: sanitize the label before requesting the interrupt
+	Will Deacon <will@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 289/396] swiotlb: Honour dma_alloc_coherent() alignment in swiotlb_alloc()
 Date: Mon,  1 Apr 2024 17:45:38 +0200
-Message-ID: <20240401152603.718423432@linuxfoundation.org>
+Message-ID: <20240401152556.521724707@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Will Deacon <will@kernel.org>
 
-commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
+[ Upstream commit cbf53074a528191df82b4dba1e3d21191102255e ]
 
-When an interrupt is requested, a procfs directory is created under
-"/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
-the request_irq() variants.
+core-api/dma-api-howto.rst states the following properties of
+dma_alloc_coherent():
 
-What follows is that the string must not contain the "/" character or
-the procfs mkdir operation will fail. We don't have such constraints for
-GPIO consumer labels which are used verbatim as interrupt labels for
-GPIO irqs. We must therefore sanitize the consumer string before
-requesting the interrupt.
+  | The CPU virtual address and the DMA address are both guaranteed to
+  | be aligned to the smallest PAGE_SIZE order which is greater than or
+  | equal to the requested size.
 
-Let's replace all "/" with ":".
+However, swiotlb_alloc() passes zero for the 'alloc_align_mask'
+parameter of swiotlb_find_slots() and so this property is not upheld.
+Instead, allocations larger than a page are aligned to PAGE_SIZE,
 
-Cc: stable@vger.kernel.org
-Reported-by: Stefan Wahren <wahrenst@gmx.net>
-Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Kent Gibson <warthog618@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Calculate the mask corresponding to the page order suitable for holding
+the allocation and pass that to swiotlb_find_slots().
+
+Fixes: e81e99bacc9f ("swiotlb: Support aligned swiotlb buffers")
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ kernel/dma/swiotlb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1010,10 +1010,20 @@ static u32 gpio_v2_line_config_debounce_
- 	return 0;
- }
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index e59f510a5d8a6..ded5a1f9e8f82 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -1608,12 +1608,14 @@ struct page *swiotlb_alloc(struct device *dev, size_t size)
+ 	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+ 	struct io_tlb_pool *pool;
+ 	phys_addr_t tlb_addr;
++	unsigned int align;
+ 	int index;
  
-+static inline char *make_irq_label(const char *orig)
-+{
-+	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
-+}
-+
-+static inline void free_irq_label(const char *label)
-+{
-+	kfree(label);
-+}
-+
- static void edge_detector_stop(struct line *line)
- {
- 	if (line->irq) {
--		free_irq(line->irq, line);
-+		free_irq_label(free_irq(line->irq, line));
- 		line->irq = 0;
- 	}
+ 	if (!mem)
+ 		return NULL;
  
-@@ -1038,6 +1048,7 @@ static int edge_detector_setup(struct li
- 	unsigned long irqflags = 0;
- 	u64 eflags;
- 	int irq, ret;
-+	char *label;
+-	index = swiotlb_find_slots(dev, 0, size, 0, &pool);
++	align = (1 << (get_order(size) + PAGE_SHIFT)) - 1;
++	index = swiotlb_find_slots(dev, 0, size, align, &pool);
+ 	if (index == -1)
+ 		return NULL;
  
- 	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
- 	if (eflags && !kfifo_initialized(&line->req->events)) {
-@@ -1074,11 +1085,17 @@ static int edge_detector_setup(struct li
- 			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
- 	irqflags |= IRQF_ONESHOT;
- 
-+	label = make_irq_label(line->req->label);
-+	if (!label)
-+		return -ENOMEM;
-+
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
--				   irqflags, line->req->label, line);
--	if (ret)
-+				   irqflags, label, line);
-+	if (ret) {
-+		free_irq_label(label);
- 		return ret;
-+	}
- 
- 	line->irq = irq;
- 	return 0;
-@@ -1943,7 +1960,7 @@ static void lineevent_free(struct lineev
- 		blocking_notifier_chain_unregister(&le->gdev->device_notifier,
- 						   &le->device_unregistered_nb);
- 	if (le->irq)
--		free_irq(le->irq, le);
-+		free_irq_label(free_irq(le->irq, le));
- 	if (le->desc)
- 		gpiod_free(le->desc);
- 	kfree(le->label);
-@@ -2091,6 +2108,7 @@ static int lineevent_create(struct gpio_
- 	int fd;
- 	int ret;
- 	int irq, irqflags = 0;
-+	char *label;
- 
- 	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
- 		return -EFAULT;
-@@ -2175,15 +2193,23 @@ static int lineevent_create(struct gpio_
- 	if (ret)
- 		goto out_free_le;
- 
-+	label = make_irq_label(le->label);
-+	if (!label) {
-+		ret = -ENOMEM;
-+		goto out_free_le;
-+	}
-+
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(irq,
- 				   lineevent_irq_handler,
- 				   lineevent_irq_thread,
- 				   irqflags,
--				   le->label,
-+				   label,
- 				   le);
--	if (ret)
-+	if (ret) {
-+		free_irq_label(label);
- 		goto out_free_le;
-+	}
- 
- 	le->irq = irq;
- 
+-- 
+2.43.0
+
 
 
 
