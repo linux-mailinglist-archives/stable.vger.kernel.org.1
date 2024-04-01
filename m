@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28AC894023
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FDA893E87
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100501C215B5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F821C210C1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17DF45BE4;
-	Mon,  1 Apr 2024 16:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEDF47A66;
+	Mon,  1 Apr 2024 16:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u05kKsAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKfCeCqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2BE1CA8F;
-	Mon,  1 Apr 2024 16:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B4E47A5D;
+	Mon,  1 Apr 2024 16:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988757; cv=none; b=Er70XnVeHW64di4bvW9yOwEtk6qBd3Qnf0QtD2ecs6BUBl9aCv2dr2aVA3/kCYqIi/mwLtd8dtwCGY43tj2bLWJGayMYEYFP5947fyxlhA8zjv7bE/LVu+ELM1Ui4arn+ldcpjmtzLoZO05N08xO6BxOKMaFRYv0gY9j8F0zmqM=
+	t=1711987482; cv=none; b=g2YducFX7FPbXLFA7lMbAezyS9vkDC/Bv08HyJV7TwRwRuBVM1LfcNuh6Zpnpw7xeSfNO6gbFIqvStxkmR8RE1NZIT/ZChtwatbnjQqmz0yE4zPsdl6cy0Cy3AeqwgxVGMmz8qawfwuJcdRZbPq0JUckyuCzG/zLSpekeDJhtwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988757; c=relaxed/simple;
-	bh=Mu+wTT7mZu6JU+R2Lyp0TxyE9VZGN3/zzalje0P5DgI=;
+	s=arc-20240116; t=1711987482; c=relaxed/simple;
+	bh=pkAQpuc//7M8/D8ToCa14GTNgTv7fhFjlQ4B+/mVC2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z8xOVF0jZhM+4aW6UvsEoqWOeDXGP5e9s5cUMOVWImi6CqlhDyobg6AwsjqrzD7Kv9Dv4J2DshBUWhhB8KU9ujJFvH0JYPMnFznkRLPvMxSAQXiAOLXLw6k3oieD+E4kx5TDEXjAxylGpdnhnCczNG7Qr3gD6RDsUoF7bDABaSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u05kKsAw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08674C43390;
-	Mon,  1 Apr 2024 16:25:56 +0000 (UTC)
+	 MIME-Version; b=aCC841hOqGl2V44w0QjQdZYG8/4rggeN5O9N4RtFPpI3FHm9kM9T4x/dln6XRw7rnzH6nopqBv/iYOaKxNxkUx20sV9GYGlb3dXgpfccF5v3vDm+MiGADkky7n68yZ5vR9abo/U5ReFMqL1QahwLcnDwmQyKmiZMDvSBZ7Y1Ggo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKfCeCqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C117C433C7;
+	Mon,  1 Apr 2024 16:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988757;
-	bh=Mu+wTT7mZu6JU+R2Lyp0TxyE9VZGN3/zzalje0P5DgI=;
+	s=korg; t=1711987481;
+	bh=pkAQpuc//7M8/D8ToCa14GTNgTv7fhFjlQ4B+/mVC2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u05kKsAwy/NqgcUBRaWngcH4mkLCx+DlH7BtqCGmUVw4cQVEYWK3NKUaZD5wQslog
-	 INpvhnJmTzKyOK1+IoCz/a1YpjoVWmSsmlaB4kEzebD7LUqX5x8ZdgbzxiLQlIrcbW
-	 PeS+huiRkVw0EHSyqF5O3DwrAMZUjNa7BCn+fvdo=
+	b=tKfCeCqtVoWbh/aR9V95E8WjiWJudAjSatY4mIGqDsNxshW7prZ6YjoFNKUNu9OQQ
+	 k7lhsyBz4Hx5xhE5+DMAsAtZYd1SMK6dsTT9wIKt/IUhYrL8xxE/zlGSZtZ2Ys+5gj
+	 T33vbjjYzyMm9pTYmbOI3ax8ZpgaOY+ZUCZEnRwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.7 279/432] ARM: imx_v6_v7_defconfig: Restore CONFIG_BACKLIGHT_CLASS_DEVICE
-Date: Mon,  1 Apr 2024 17:44:26 +0200
-Message-ID: <20240401152601.493489664@linuxfoundation.org>
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.8 301/399] wifi: iwlwifi: mvm: disable MLO for the time being
+Date: Mon,  1 Apr 2024 17:44:27 +0200
+Message-ID: <20240401152558.178076753@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 2b0a5a8a397c0ae8f8cd25e7d3857c749239ceb8 upstream.
+commit 5f404005055304830bbbee0d66af2964fc48f29e upstream.
 
-Since commit bfac19e239a7 ("fbdev: mx3fb: Remove the driver") backlight
-is no longer functional.
-
-The fbdev mx3fb driver used to automatically select
-CONFIG_BACKLIGHT_CLASS_DEVICE.
-
-Now that the mx3fb driver has been removed, enable the
-CONFIG_BACKLIGHT_CLASS_DEVICE option so that backlight can still work
-by default.
-
-Tested on a imx6dl-sabresd board.
+MLO ended up not really fully stable yet, we want to make
+sure it works well with the ecosystem before enabling it.
+Thus, remove the flag, but set WIPHY_FLAG_DISABLE_WEXT so
+we don't get wireless extensions back until we enable MLO
+for this hardware.
 
 Cc: stable@vger.kernel.org
-Fixes: bfac19e239a7 ("fbdev: mx3fb: Remove the driver")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com> # Toradex Colibri iMX7
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Reviewed-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240314110951.d6ad146df98d.I47127e4fdbdef89e4ccf7483641570ee7871d4e6@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/configs/imx_v6_v7_defconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/configs/imx_v6_v7_defconfig
-+++ b/arch/arm/configs/imx_v6_v7_defconfig
-@@ -297,6 +297,7 @@ CONFIG_FB_MODE_HELPERS=y
- CONFIG_LCD_CLASS_DEVICE=y
- CONFIG_LCD_L4F00242T03=y
- CONFIG_LCD_PLATFORM=y
-+CONFIG_BACKLIGHT_CLASS_DEVICE=y
- CONFIG_BACKLIGHT_PWM=y
- CONFIG_BACKLIGHT_GPIO=y
- CONFIG_FRAMEBUFFER_CONSOLE=y
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -354,7 +354,7 @@ int iwl_mvm_mac_setup_register(struct iw
+ 	if (mvm->mld_api_is_used && mvm->nvm_data->sku_cap_11be_enable &&
+ 	    !iwlwifi_mod_params.disable_11ax &&
+ 	    !iwlwifi_mod_params.disable_11be)
+-		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
++		hw->wiphy->flags |= WIPHY_FLAG_DISABLE_WEXT;
+ 
+ 	/* With MLD FW API, it tracks timing by itself,
+ 	 * no need for any timing from the host
 
 
 
