@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8918942D4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12398943D9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D12E1C21DEA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19828B21698
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0D04AEE4;
-	Mon,  1 Apr 2024 16:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5DE482EF;
+	Mon,  1 Apr 2024 17:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffFsFb5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnZsZ/Yk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9FB1DFF4;
-	Mon,  1 Apr 2024 16:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B11940876;
+	Mon,  1 Apr 2024 17:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990593; cv=none; b=poUIVwB0mvmSnTyRmcHzRpjco9+aBZEWknzwCySSL2jHWwcqTAH6XGLJBgItygLU6HeGnyeFdNK+ID9hJ9zeeGL58i2nqe8g1i2HPSdGclrendo/stb+j4+o/BDmXLbocQ/pY6YY6vsGZwY3hgwmO8ZyW7lvWLwVmKzkdphX1SI=
+	t=1711991334; cv=none; b=jU2w5JqcvSH2yzqxY8AYgJdcDCoyxD5JWjJ0te0UYmYY4SKqnM3Q7g/xmlewXMaiCiSByo40YzF1V06fQ5jt4fmnTYzq5XVD15sgiAS6O15TLwKCEcBstNTp7pj7JgdsaltxpY7rBBgyNlbp+7/KrpYP/g02WRnuUpER00DnTJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990593; c=relaxed/simple;
-	bh=FfJBaHTIDSbK+9RGCQ7DzBqZuHCnBmFFlyNTaoDRlcs=;
+	s=arc-20240116; t=1711991334; c=relaxed/simple;
+	bh=2LrvDvGh4BSYQ6QgkGCFiSf0YVSBizbDqRkTJTfaijc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hnw6Ye/VQKMFDmPZVZdyj25K+G/3z0unGMMINtxqsDKrIjpLXMgENe3iYYkd9SLkGH0YORyPAoSxF8nJODWw/ORPlvoz/UxuPoUDmeV9U1Mn5yP6fPPOvVEVISC0XgYXYyx4ONradP46f9bRUFs8JkfloYf3DhoUx6p0knXyG0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffFsFb5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4E6C433F1;
-	Mon,  1 Apr 2024 16:56:32 +0000 (UTC)
+	 MIME-Version; b=oXy6NqsqxGmONfBpnvj8FR6+B8kJQi3hLtAFf+6imwJcoHVRAlzsq88VQ4bmGmYzgoBVP48PyuSzzyKld2szyL27madvxhFlj+HZYgrYB0zYW/tXyn3ONWDIncxN4iE5HNIwWbWI9lCK70eF4NPTPs2562YSXtaDLsNatEZBjzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnZsZ/Yk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742FAC433F1;
+	Mon,  1 Apr 2024 17:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990592;
-	bh=FfJBaHTIDSbK+9RGCQ7DzBqZuHCnBmFFlyNTaoDRlcs=;
+	s=korg; t=1711991334;
+	bh=2LrvDvGh4BSYQ6QgkGCFiSf0YVSBizbDqRkTJTfaijc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ffFsFb5t+RVp1DRBhYq+B/yBlwuoUYfokOpo+GmUvk+RfTyuMOR32ZUdTqpHgQ0N4
-	 f7qIUx32gD7HUCLWqE81qLHscVVPXsAh2Tz5SE6WyGSkB1Y9O+xkF1DFr7tBM8Wcln
-	 ap0CSSuFJhj5ka5HkrYV4YCBFmQrpp4foAgJP/to=
+	b=XnZsZ/Yk4tTHtYQ7k+fwjDg054EznFV5+h9GfBYvhO9RqJomsx+dvF3N4CCpBmtHz
+	 KUGHyf7Sbg8vW1rvwYS7ym0I9yW553xylHxsg6psYOyuWUOrLUgBUO9wjW/JgCyt1e
+	 w+W8fOov4Ath7nPd2rC5/Z0wDRwJo+vkLW8XczSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.6 373/396] usb: typec: ucsi: Clear EVENT_PENDING under PPM lock
-Date: Mon,  1 Apr 2024 17:47:02 +0200
-Message-ID: <20240401152559.033504858@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Subject: [PATCH 6.1 233/272] USB: UAS: return ENODEV when submit urbs fail with device not attached
+Date: Mon,  1 Apr 2024 17:47:03 +0200
+Message-ID: <20240401152538.251597927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
 
-commit 15b2e71b4653b3e13df34695a29ebeee237c5af2 upstream.
+commit cd5432c712351a3d5f82512908f5febfca946ca6 upstream.
 
-Suppose we sleep on the PPM lock after clearing the EVENT_PENDING
-bit because the thread for another connector is executing a command.
-In this case the command completion of the other command will still
-report the connector change for our connector.
+In the scenario of entering hibernation with udisk in the system, if the
+udisk was gone or resume fail in the thaw phase of hibernation. Its state
+will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
+and can't not handle disconnect event. Next, in the poweroff phase of
+hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
+when poweroff this scsi device, which will cause uas_submit_urbs to be
+called to submit URB for sense/data/cmd pipe. However, these URBs will
+submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
+will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
+the SCSI layer go into an ugly loop and system fail to go into hibernation.
 
-Clear the EVENT_PENDING bit under the PPM lock to avoid another
-useless call to ucsi_handle_connector_change() in this case.
+On the other hand, when we specially check for -ENODEV in function
+uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
+poweroff fail and system shutdown instead of entering hibernation.
 
-Fixes: c9aed03a0a68 ("usb: ucsi: Add missing ppm_lock")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-2-lk@c--e.de
+To fix this issue, let uas_submit_urbs to return original generic error
+when submitting URB failed. At the same time, we need to translate -ENODEV
+to DID_NOT_CONNECT for the SCSI layer.
+
+Suggested-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Link: https://lore.kernel.org/r/20240306180814.4897-1-WeitaoWang-oc@zhaoxin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/storage/uas.c |   28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -933,11 +933,11 @@ static void ucsi_handle_connector_change
- 	if (con->status.change & UCSI_CONSTAT_CAM_CHANGE)
- 		ucsi_partner_task(con, ucsi_check_altmodes, 1, 0);
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -533,7 +533,7 @@ static struct urb *uas_alloc_cmd_urb(str
+  * daft to me.
+  */
  
--	clear_bit(EVENT_PENDING, &con->ucsi->flags);
--
- 	mutex_lock(&ucsi->ppm_lock);
-+	clear_bit(EVENT_PENDING, &con->ucsi->flags);
- 	ret = ucsi_acknowledge_connector_change(ucsi);
- 	mutex_unlock(&ucsi->ppm_lock);
-+
- 	if (ret)
- 		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
+-static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
++static int uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
+ {
+ 	struct uas_dev_info *devinfo = cmnd->device->hostdata;
+ 	struct urb *urb;
+@@ -541,30 +541,28 @@ static struct urb *uas_submit_sense_urb(
  
+ 	urb = uas_alloc_sense_urb(devinfo, gfp, cmnd);
+ 	if (!urb)
+-		return NULL;
++		return -ENOMEM;
+ 	usb_anchor_urb(urb, &devinfo->sense_urbs);
+ 	err = usb_submit_urb(urb, gfp);
+ 	if (err) {
+ 		usb_unanchor_urb(urb);
+ 		uas_log_cmd_state(cmnd, "sense submit err", err);
+ 		usb_free_urb(urb);
+-		return NULL;
+ 	}
+-	return urb;
++	return err;
+ }
+ 
+ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 			   struct uas_dev_info *devinfo)
+ {
+ 	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+-	struct urb *urb;
+ 	int err;
+ 
+ 	lockdep_assert_held(&devinfo->lock);
+ 	if (cmdinfo->state & SUBMIT_STATUS_URB) {
+-		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
+-		if (!urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
++		if (err)
++			return err;
+ 		cmdinfo->state &= ~SUBMIT_STATUS_URB;
+ 	}
+ 
+@@ -572,7 +570,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
+ 							cmnd, DMA_FROM_DEVICE);
+ 		if (!cmdinfo->data_in_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
+ 	}
+ 
+@@ -582,7 +580,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->data_in_urb);
+ 			uas_log_cmd_state(cmnd, "data in submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
+ 		cmdinfo->state |= DATA_IN_URB_INFLIGHT;
+@@ -592,7 +590,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		cmdinfo->data_out_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
+ 							cmnd, DMA_TO_DEVICE);
+ 		if (!cmdinfo->data_out_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_DATA_OUT_URB;
+ 	}
+ 
+@@ -602,7 +600,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->data_out_urb);
+ 			uas_log_cmd_state(cmnd, "data out submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
+ 		cmdinfo->state |= DATA_OUT_URB_INFLIGHT;
+@@ -611,7 +609,7 @@ static int uas_submit_urbs(struct scsi_c
+ 	if (cmdinfo->state & ALLOC_CMD_URB) {
+ 		cmdinfo->cmd_urb = uas_alloc_cmd_urb(devinfo, GFP_ATOMIC, cmnd);
+ 		if (!cmdinfo->cmd_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_CMD_URB;
+ 	}
+ 
+@@ -621,7 +619,7 @@ static int uas_submit_urbs(struct scsi_c
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->cmd_urb);
+ 			uas_log_cmd_state(cmnd, "cmd submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->cmd_urb = NULL;
+ 		cmdinfo->state &= ~SUBMIT_CMD_URB;
+@@ -698,7 +696,7 @@ static int uas_queuecommand_lck(struct s
+ 	 * of queueing, no matter how fatal the error
+ 	 */
+ 	if (err == -ENODEV) {
+-		set_host_byte(cmnd, DID_ERROR);
++		set_host_byte(cmnd, DID_NO_CONNECT);
+ 		scsi_done(cmnd);
+ 		goto zombie;
+ 	}
 
 
 
