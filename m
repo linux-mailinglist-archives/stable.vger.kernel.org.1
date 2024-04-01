@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F8F9894395
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D683E89408C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 606DD1C21E8D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142DF1C2159B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C2B482CA;
-	Mon,  1 Apr 2024 17:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA26481B4;
+	Mon,  1 Apr 2024 16:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4/2ogLt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAQ4zijH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FFC1DFF4;
-	Mon,  1 Apr 2024 17:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8E746B9F;
+	Mon,  1 Apr 2024 16:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991132; cv=none; b=eab3TCYCIZyOnvTb3u2QtEgFJw5/MsxxmANDSEFwMOgtgsMCOdCeARKE0lP8Nw0b1obAD8j2+t6he0UO2v+hh9IqaNk16m8jJ/S+lz15ZXYYCID1RQ+6NDauSgw3oths14yGCcex4IJV1W6GOPrjybsP+0LPjfxVnGT85cSHWS8=
+	t=1711989083; cv=none; b=LY/y98KVsv79L97sBnQYmRwghVPKo1xz8jweU+yGSl3Cz1YbEO+ZAu5OMXsOuNlS++c9UkwXtMr1GwrAFg5Uy6x9V/mwUPpu2bI8SEPpEu1BYmldjHv2l+AR2Y8rPsMVzCzh1fglpV1Z7qFzpqVYdNc9TD9n2nBjPhKExVlumwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991132; c=relaxed/simple;
-	bh=+6URVwDLuobUNmO16BVqfYqTTpCHaU2kH7oqsx1ndkI=;
+	s=arc-20240116; t=1711989083; c=relaxed/simple;
+	bh=lsCFDHXb5R7qXfljthDl7WxC7rE8CeZQQXwVxfgO478=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCQVR3QhxKrnKHKHTNh2Pmj/WP7keUOWhpbaQIhWIC6+z/f72AhCYXpPVe6BCNptB5naxcIpw81hehP4xAlp9LPdmzDuaLRYF27aWXc2HJDVum4xTLUSkIURm3c7cK5YXBpMEXihbbdRhBleriOk6BunzWG6o0ngDqnyTDLIvMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4/2ogLt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C15FC433F1;
-	Mon,  1 Apr 2024 17:05:31 +0000 (UTC)
+	 MIME-Version; b=YYAsBjS4+yzydAmZYTONidyUZ7vNM8USgGzTGTvylw4pV1QGCdT0S0hTIyOfk+x9++FHmIpMYe8aSgH520vay+jI+14KcHfr+AgLr82JfxLHvW28NgRVhFXQoSmNUOx4Fm19vRxVqlCdXcTerCZ3A52+mDz3TDs6WLYdsIPYSFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAQ4zijH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7A3C433F1;
+	Mon,  1 Apr 2024 16:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991132;
-	bh=+6URVwDLuobUNmO16BVqfYqTTpCHaU2kH7oqsx1ndkI=;
+	s=korg; t=1711989083;
+	bh=lsCFDHXb5R7qXfljthDl7WxC7rE8CeZQQXwVxfgO478=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G4/2ogLt9ntE9mm9czhcwoeTR8lwi3Ccz/vSi7v/rxY7MUaps60F0MP35uAqHcKJ+
-	 uNlOTbyODovurWPdYHJHvqlWbaEtrEY3psxYTzuZu4T9okuQBOMGxzU+EWYZ9O58OO
-	 UIhXyhoy+mRf93C2oKTNLt2d4y4JkYiMaoy2KCqU=
+	b=qAQ4zijHOg/1EdPMw30o6cMr5p9fqOMNoL/6lW7fdvFEXzJsZcE7Mt5Euozg35hw/
+	 8iG75zAgwzcQiuW+w3/aQfcrxC+y7h8iIeBoc2c+InPQh9pYMawDVGOVPXcTpWHkEd
+	 nBy/an65LnC5uXgp6CLvGXWTdOOPULkui3/QU1JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 172/272] iio: accel: adxl367: fix I2C FIFO data register
+	Jonathon Hall <jonathon.hall@puri.sm>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.7 375/432] drm/i915: Do not match JSL in ehl_combo_pll_div_frac_wa_needed()
 Date: Mon,  1 Apr 2024 17:46:02 +0200
-Message-ID: <20240401152536.130445241@linuxfoundation.org>
+Message-ID: <20240401152604.473674271@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Jonathon Hall <jonathon.hall@puri.sm>
 
-commit 11dadb631007324c7a8bcb2650eda88ed2b9eed0 upstream.
+commit e41d769f1a7a1dc533c35ef7b366be3dbf432a1c upstream.
 
-As specified in the datasheet, the I2C FIFO data register is
-0x18, not 0x42. 0x42 was used by mistake when adapting the
-ADXL372 driver.
+Since commit 0c65dc062611 ("drm/i915/jsl: s/JSL/JASPERLAKE for
+platform/subplatform defines"), boot freezes on a Jasper Lake tablet
+(Librem 11), usually with graphical corruption on the eDP display,
+but sometimes just a black screen.  This commit was included in 6.6 and
+later.
 
-Fix this mistake.
+That commit was intended to refactor EHL and JSL macros, but the change
+to ehl_combo_pll_div_frac_wa_needed() started matching JSL incorrectly
+when it was only intended to match EHL.
 
-Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240207033657.206171-2-demonsingur@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+It replaced:
+	return ((IS_PLATFORM(i915, INTEL_ELKHARTLAKE) &&
+		 IS_JSL_EHL_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+with:
+	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
+		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+
+Remove IS_JASPERLAKE() to fix the regression.
+
+Signed-off-by: Jonathon Hall <jonathon.hall@puri.sm>
+Cc: stable@vger.kernel.org
+Fixes: 0c65dc062611 ("drm/i915/jsl: s/JSL/JASPERLAKE for platform/subplatform defines")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240313135424.3731410-1-jonathon.hall@puri.sm
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 1ef48859317b2a77672dea8682df133abf9c44ed)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/adxl367_i2c.c | 2 +-
+ drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/adxl367_i2c.c b/drivers/iio/accel/adxl367_i2c.c
-index b595fe94f3a3..62c74bdc0d77 100644
---- a/drivers/iio/accel/adxl367_i2c.c
-+++ b/drivers/iio/accel/adxl367_i2c.c
-@@ -11,7 +11,7 @@
- 
- #include "adxl367.h"
- 
--#define ADXL367_I2C_FIFO_DATA	0x42
-+#define ADXL367_I2C_FIFO_DATA	0x18
- 
- struct adxl367_i2c_state {
- 	struct regmap *regmap;
--- 
-2.44.0
-
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -2489,7 +2489,7 @@ static void icl_wrpll_params_populate(st
+ static bool
+ ehl_combo_pll_div_frac_wa_needed(struct drm_i915_private *i915)
+ {
+-	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
++	return ((IS_ELKHARTLAKE(i915) &&
+ 		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+ 		 IS_TIGERLAKE(i915) || IS_ALDERLAKE_S(i915) || IS_ALDERLAKE_P(i915)) &&
+ 		 i915->display.dpll.ref_clks.nssc == 38400;
 
 
 
