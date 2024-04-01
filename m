@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-35206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997868942E8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F98B894183
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5569128375A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE7CE282F41
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265D84653C;
-	Mon,  1 Apr 2024 16:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1012487BC;
+	Mon,  1 Apr 2024 16:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgvUu3+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPiYT5+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C921DFF4;
-	Mon,  1 Apr 2024 16:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E518481BF;
+	Mon,  1 Apr 2024 16:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990643; cv=none; b=T+sF5YzpotLG01x5FkdiEZyseQ9Aag3PrnznDigr2glH4+Ph/gFenmmDHqGALRtcQNDE35J7F/2qg212gMuvmntxX2gUWgW08smshkaP9V88Wljr447IJ4yd+xBo1EuV+Izo35Z5x97+fmHjnAHOJwbYaFBBRLuhpgVwsZzPgSs=
+	t=1711989770; cv=none; b=iMsYEbrQ3fM94eiXToMmZd99AM3IaCR/gk0PPp8P7fyMzhPlwX23YyNy0BrMbQibza4Zy3jggjfBKsIhF8zpko3TWEElcsuqUVCpJwp5ASaDeuJzwXx5RHAsTTVuH3MWAVXv/vlGxGG5kqE15H98JagLbUaARCgYQEs0YjqVU+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990643; c=relaxed/simple;
-	bh=BJ9s33zGqxDHmqIRuAsB8dH8hPSitdVPVq4VRgpqkMs=;
+	s=arc-20240116; t=1711989770; c=relaxed/simple;
+	bh=1SmC2wftcbq8vGEdRPozC67nXaLBGqLMplLU66bv8fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EHVPuuGQSd7JtB6tFZLuDAnWF+zme1aAv3ho58V7xprwyJqChWbAGk4Wfp/dI+KEvgafUYZ1zHzAFkINTMvU/Ya3vRjb/suiytcg8K2FgeemX+1yYFQyyFoWy5rR/DOJiIK5no7cObVA5HIDVaDvgNaikRofkJbWnriEVnVI7ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgvUu3+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C057C433F1;
-	Mon,  1 Apr 2024 16:57:23 +0000 (UTC)
+	 MIME-Version; b=RbfGSYzrz1GyzI8Qss87mNmBJgXrxRMm6zKZ+9qOJz+TGMEhIDfMW0Rz0xXlUEDVrGta/8HyufKFHtEQVLX5OageWsm7MGDCPxBTj92u2xX6OGk5xK30nc2pBIMj9rqeUPhHrLDXcxXaTWivq9FRCpPrL+ZPMwnxAL2g7XUSlk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPiYT5+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC7FC433C7;
+	Mon,  1 Apr 2024 16:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990643;
-	bh=BJ9s33zGqxDHmqIRuAsB8dH8hPSitdVPVq4VRgpqkMs=;
+	s=korg; t=1711989770;
+	bh=1SmC2wftcbq8vGEdRPozC67nXaLBGqLMplLU66bv8fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KgvUu3+fcg6nOJWh9D4OwmwcKj5AvH67f46ca8rn59Fk6Ic+O0t933aA47g0lWd/D
-	 AvVewST5ZIofTArFJDus7T6t/RBltg185ka1xO3Owq/ZWbaGbX03/xetUVnMwpdMUo
-	 lTas2oVmdo0owCtzgymR9Izv7Matur0QjorDdXuk=
+	b=CPiYT5+wO9ceNHW9/4PKrQv+Q+/fADN7GcN6W6JE84E/fkBgZZRBrG+NEX+kMPUna
+	 4k6gYg/JIn3WZIxH0yQfy3ebbd+N9f26PI38ZqKwTxuSJFfkTd1T6+TtCQGyDvyflP
+	 D2j3hewtxKY+2k5NyTsv+33gveQigtvVrjIP3rlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 005/272] KVM: x86: Use a switch statement and macros in __feature_translate()
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 146/396] drm/panel: do not return negative error codes from drm_panel_get_modes()
 Date: Mon,  1 Apr 2024 17:43:15 +0200
-Message-ID: <20240401152530.438741679@linuxfoundation.org>
+Message-ID: <20240401152552.299525651@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 80c883db87d9ffe2d685e91ba07a087b1c246c78 upstream.
+[ Upstream commit fc4e97726530241d96dd7db72eb65979217422c9 ]
 
-Use a switch statement with macro-generated case statements to handle
-translating feature flags in order to reduce the probability of runtime
-errors due to copy+paste goofs, to make compile-time errors easier to
-debug, and to make the code more readable.
+None of the callers of drm_panel_get_modes() expect it to return
+negative error codes. Either they propagate the return value in their
+struct drm_connector_helper_funcs .get_modes() hook (which is also not
+supposed to return negative codes), or add it to other counts leading to
+bogus values.
 
-E.g. the compiler won't directly generate an error for duplicate if
-statements
+On the other hand, many of the struct drm_panel_funcs .get_modes() hooks
+do return negative error codes, so handle them gracefully instead of
+propagating further.
 
-	if (x86_feature == X86_FEATURE_SGX1)
-		return KVM_X86_FEATURE_SGX1;
-	else if (x86_feature == X86_FEATURE_SGX2)
-		return KVM_X86_FEATURE_SGX1;
+Return 0 for no modes, whatever the reason.
 
-and so instead reverse_cpuid_check() will fail due to the untranslated
-entry pointing at a Linux-defined leaf, which provides practically no
-hint as to what is broken
-
-  arch/x86/kvm/reverse_cpuid.h:108:2: error: call to __compiletime_assert_450 declared with 'error' attribute:
-                                      BUILD_BUG_ON failed: x86_leaf == CPUID_LNX_4
-          BUILD_BUG_ON(x86_leaf == CPUID_LNX_4);
-          ^
-whereas duplicate case statements very explicitly point at the offending
-code:
-
-  arch/x86/kvm/reverse_cpuid.h:125:2: error: duplicate case value '361'
-          KVM_X86_TRANSLATE_FEATURE(SGX2);
-          ^
-  arch/x86/kvm/reverse_cpuid.h:124:2: error: duplicate case value '360'
-          KVM_X86_TRANSLATE_FEATURE(SGX1);
-          ^
-
-And without macros, the opposite type of copy+paste goof doesn't generate
-any error at compile-time, e.g. this yields no complaints:
-
-        case X86_FEATURE_SGX1:
-                return KVM_X86_FEATURE_SGX1;
-        case X86_FEATURE_SGX2:
-                return KVM_X86_FEATURE_SGX1;
-
-Note, __feature_translate() is forcibly inlined and the feature is known
-at compile-time, so the code generation between an if-elif sequence and a
-switch statement should be identical.
-
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20231024001636.890236-2-jmattson@google.com
-[sean: use a macro, rewrite changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/reverse_cpuid.h |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/drm_panel.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -97,14 +97,16 @@ static __always_inline void reverse_cpui
+diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+index e814020bbcd3b..cfbe020de54e0 100644
+--- a/drivers/gpu/drm/drm_panel.c
++++ b/drivers/gpu/drm/drm_panel.c
+@@ -274,19 +274,24 @@ EXPORT_SYMBOL(drm_panel_disable);
+  * The modes probed from the panel are automatically added to the connector
+  * that the panel is attached to.
+  *
+- * Return: The number of modes available from the panel on success or a
+- * negative error code on failure.
++ * Return: The number of modes available from the panel on success, or 0 on
++ * failure (no modes).
   */
- static __always_inline u32 __feature_translate(int x86_feature)
+ int drm_panel_get_modes(struct drm_panel *panel,
+ 			struct drm_connector *connector)
  {
--	if (x86_feature == X86_FEATURE_SGX1)
--		return KVM_X86_FEATURE_SGX1;
--	else if (x86_feature == X86_FEATURE_SGX2)
--		return KVM_X86_FEATURE_SGX2;
--	else if (x86_feature == X86_FEATURE_RRSBA_CTRL)
--		return KVM_X86_FEATURE_RRSBA_CTRL;
-+#define KVM_X86_TRANSLATE_FEATURE(f)	\
-+	case X86_FEATURE_##f: return KVM_X86_FEATURE_##f
+ 	if (!panel)
+-		return -EINVAL;
++		return 0;
  
--	return x86_feature;
-+	switch (x86_feature) {
-+	KVM_X86_TRANSLATE_FEATURE(SGX1);
-+	KVM_X86_TRANSLATE_FEATURE(SGX2);
-+	KVM_X86_TRANSLATE_FEATURE(RRSBA_CTRL);
-+	default:
-+		return x86_feature;
+-	if (panel->funcs && panel->funcs->get_modes)
+-		return panel->funcs->get_modes(panel, connector);
++	if (panel->funcs && panel->funcs->get_modes) {
++		int num;
+ 
+-	return -EOPNOTSUPP;
++		num = panel->funcs->get_modes(panel, connector);
++		if (num > 0)
++			return num;
 +	}
++
++	return 0;
  }
+ EXPORT_SYMBOL(drm_panel_get_modes);
  
- static __always_inline u32 __feature_leaf(int x86_feature)
+-- 
+2.43.0
+
 
 
 
