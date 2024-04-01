@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-34310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B22893ECD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EBD89423F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07AC21F20FFC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00B6A1F22A4D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7114778B;
-	Mon,  1 Apr 2024 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC7F4DA14;
+	Mon,  1 Apr 2024 16:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1isFh8Zv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9SFxADF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5940B1CA8F;
-	Mon,  1 Apr 2024 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350664D9FC;
+	Mon,  1 Apr 2024 16:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987689; cv=none; b=F4xTCtDfFaPYN2SpsUrL7Mi4+p/Kuz1YJ+JoGCWH2giUZsS7ezLMKEkSypVH/zGXRxb9V9C096sqqKvPskY9eWyRhqxEcVqI2kKQSjlwrwwVcGdZfo7GeH5XZljY2PWRiCJosDOmrmY9IqmbuAaOuXg66EbH0iRmfXLZZkJypyc=
+	t=1711990244; cv=none; b=qXl0eduSdzI8oLAcr97/hvBaJD+JndCusn1sCG29gNF2e1PqvXmZYxzRf34v4uUUo/NyLF/YSwvIPS9SQajYFr9PTHX2RP538spOcwzkZ8RlK4/DvxPpCt1Bo/LSjHkxIuKbddxu43qdxG0GYq93yyS6UJnaa4xZPfDaw2xApuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987689; c=relaxed/simple;
-	bh=XKLU/BPqPPI46leQjwvec9GZQYt0CCVvcNDeWzxDXJ0=;
+	s=arc-20240116; t=1711990244; c=relaxed/simple;
+	bh=uid9c6OYZp1AGbTsp0zOUD1OjF2Rf0/4s4TadzXxi6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmFzGDj4QkmHbmzEIAVRbZWoZEboQ4p3jYqgTQYCeqt792d6i7NqLlfdgO8I2KRiz0jQozj/ivar9OwqIey/Pi3A6tZTfmJpjc8LQ4A6kNuZouZhAdnN7QLc6NaXu155J6aAmMJl+6WGNcWDpnaiCSQm6q+dkR8S3lFM96mLRTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1isFh8Zv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DDEC43390;
-	Mon,  1 Apr 2024 16:08:08 +0000 (UTC)
+	 MIME-Version; b=G/LFGfKbeIioYsUQS3eMGvRue0zEmpiBJ7qAgxpp+Sfdjwu0sPdEao95oYwEtfSVaZL317Z2NqUANsSR1Bn4iXFBVr9vNQJz4MFSJpOhSLdOei0CkvUlPPsweSH+PMfjR438gDXVCDm3Ky0cYjdlUKgju1Lako3sSXLc009jqzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9SFxADF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD4DC433C7;
+	Mon,  1 Apr 2024 16:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987689;
-	bh=XKLU/BPqPPI46leQjwvec9GZQYt0CCVvcNDeWzxDXJ0=;
+	s=korg; t=1711990244;
+	bh=uid9c6OYZp1AGbTsp0zOUD1OjF2Rf0/4s4TadzXxi6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1isFh8Zv8Ieq5ZjgHAeBXMckEdXQ6CiGjix+XsDB+w98xRgQmWD4QDUXQRPzrKjVc
-	 0WLKxerQpby98T04Dnq+vmtX7xhTY/4r0A/XwIQKPtYEkI4dt7IiZDuSPjnMjWHHd8
-	 K7eALioQ0Vxc9G3lj0axmgDFHWlqOl3pPcEUF5OQ=
+	b=x9SFxADF404dl5Ofy2O6xq1W9jp73+x/X26ZPKr0wCpmH20wZcCzI6RDxgi+DayCq
+	 2Ht/VotvzQscO9jpnOhf5sOtxBGb5cpoCnBnE2MtJkD0Xlrv/JY17dMk41LejEUMP+
+	 mDPtaU2VTqwjHZz6uFS3+mEQR4UCpdczB22VEYFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.8 355/399] staging: vc04_services: fix information leak in create_component()
-Date: Mon,  1 Apr 2024 17:45:21 +0200
-Message-ID: <20240401152559.768286832@linuxfoundation.org>
+	linux-xfs@vger.kernel.org,
+	Jiachen Zhang <zhangjiachen.jaycee@bytedance.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 273/396] xfs: ensure logflagsp is initialized in xfs_bmap_del_extent_real
+Date: Mon,  1 Apr 2024 17:45:22 +0200
+Message-ID: <20240401152556.051182296@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +65,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jiachen Zhang <zhangjiachen.jaycee@bytedance.com>
 
-commit f37e76abd614b68987abc8e5c22d986013349771 upstream.
+commit e6af9c98cbf0164a619d95572136bfb54d482dd6 upstream.
 
-The m.u.component_create.pid field is for debugging and in the mainline
-kernel it's not used anything.  However, it still needs to be set to
-something to prevent disclosing uninitialized stack data.  Set it to
-zero.
+In the case of returning -ENOSPC, ensure logflagsp is initialized by 0.
+Otherwise the caller __xfs_bunmapi will set uninitialized illegal
+tmp_logflags value into xfs log, which might cause unpredictable error
+in the log recovery procedure.
 
-Fixes: 7b3ad5abf027 ("staging: Import the BCM2835 MMAL-based V4L2 camera driver.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/2d972847-9ebd-481b-b6f9-af390f5aabd3@moroto.mountain
+Also, remove the flags variable and set the *logflagsp directly, so that
+the code should be more robust in the long run.
+
+Fixes: 1b24b633aafe ("xfs: move some more code into xfs_bmap_del_extent_real")
+Signed-off-by: Jiachen Zhang <zhangjiachen.jaycee@bytedance.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/xfs/libxfs/xfs_bmap.c |   73 +++++++++++++++++++----------------------------
+ 1 file changed, 31 insertions(+), 42 deletions(-)
 
---- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-@@ -939,6 +939,7 @@ static int create_component(struct vchiq
- 	m.u.component_create.client_component = component->client_component;
- 	strscpy_pad(m.u.component_create.name, name,
- 		    sizeof(m.u.component_create.name));
-+	m.u.component_create.pid = 0;
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -5014,7 +5014,6 @@ xfs_bmap_del_extent_real(
+ 	xfs_fileoff_t		del_endoff;	/* first offset past del */
+ 	int			do_fx;	/* free extent at end of routine */
+ 	int			error;	/* error return value */
+-	int			flags = 0;/* inode logging flags */
+ 	struct xfs_bmbt_irec	got;	/* current extent entry */
+ 	xfs_fileoff_t		got_endoff;	/* first offset past got */
+ 	int			i;	/* temp state */
+@@ -5027,6 +5026,8 @@ xfs_bmap_del_extent_real(
+ 	uint32_t		state = xfs_bmap_fork_to_state(whichfork);
+ 	struct xfs_bmbt_irec	old;
  
- 	ret = send_synchronous_mmal_msg(instance, &m,
- 					sizeof(m.u.component_create),
++	*logflagsp = 0;
++
+ 	mp = ip->i_mount;
+ 	XFS_STATS_INC(mp, xs_del_exlist);
+ 
+@@ -5039,7 +5040,6 @@ xfs_bmap_del_extent_real(
+ 	ASSERT(got_endoff >= del_endoff);
+ 	ASSERT(!isnullstartblock(got.br_startblock));
+ 	qfield = 0;
+-	error = 0;
+ 
+ 	/*
+ 	 * If it's the case where the directory code is running with no block
+@@ -5055,13 +5055,13 @@ xfs_bmap_del_extent_real(
+ 	    del->br_startoff > got.br_startoff && del_endoff < got_endoff)
+ 		return -ENOSPC;
+ 
+-	flags = XFS_ILOG_CORE;
++	*logflagsp = XFS_ILOG_CORE;
+ 	if (whichfork == XFS_DATA_FORK && XFS_IS_REALTIME_INODE(ip)) {
+ 		if (!(bflags & XFS_BMAPI_REMAP)) {
+ 			error = xfs_rtfree_blocks(tp, del->br_startblock,
+ 					del->br_blockcount);
+ 			if (error)
+-				goto done;
++				return error;
+ 		}
+ 
+ 		do_fx = 0;
+@@ -5076,11 +5076,9 @@ xfs_bmap_del_extent_real(
+ 	if (cur) {
+ 		error = xfs_bmbt_lookup_eq(cur, &got, &i);
+ 		if (error)
+-			goto done;
+-		if (XFS_IS_CORRUPT(mp, i != 1)) {
+-			error = -EFSCORRUPTED;
+-			goto done;
+-		}
++			return error;
++		if (XFS_IS_CORRUPT(mp, i != 1))
++			return -EFSCORRUPTED;
+ 	}
+ 
+ 	if (got.br_startoff == del->br_startoff)
+@@ -5097,17 +5095,15 @@ xfs_bmap_del_extent_real(
+ 		xfs_iext_prev(ifp, icur);
+ 		ifp->if_nextents--;
+ 
+-		flags |= XFS_ILOG_CORE;
++		*logflagsp |= XFS_ILOG_CORE;
+ 		if (!cur) {
+-			flags |= xfs_ilog_fext(whichfork);
++			*logflagsp |= xfs_ilog_fext(whichfork);
+ 			break;
+ 		}
+ 		if ((error = xfs_btree_delete(cur, &i)))
+-			goto done;
+-		if (XFS_IS_CORRUPT(mp, i != 1)) {
+-			error = -EFSCORRUPTED;
+-			goto done;
+-		}
++			return error;
++		if (XFS_IS_CORRUPT(mp, i != 1))
++			return -EFSCORRUPTED;
+ 		break;
+ 	case BMAP_LEFT_FILLING:
+ 		/*
+@@ -5118,12 +5114,12 @@ xfs_bmap_del_extent_real(
+ 		got.br_blockcount -= del->br_blockcount;
+ 		xfs_iext_update_extent(ip, state, icur, &got);
+ 		if (!cur) {
+-			flags |= xfs_ilog_fext(whichfork);
++			*logflagsp |= xfs_ilog_fext(whichfork);
+ 			break;
+ 		}
+ 		error = xfs_bmbt_update(cur, &got);
+ 		if (error)
+-			goto done;
++			return error;
+ 		break;
+ 	case BMAP_RIGHT_FILLING:
+ 		/*
+@@ -5132,12 +5128,12 @@ xfs_bmap_del_extent_real(
+ 		got.br_blockcount -= del->br_blockcount;
+ 		xfs_iext_update_extent(ip, state, icur, &got);
+ 		if (!cur) {
+-			flags |= xfs_ilog_fext(whichfork);
++			*logflagsp |= xfs_ilog_fext(whichfork);
+ 			break;
+ 		}
+ 		error = xfs_bmbt_update(cur, &got);
+ 		if (error)
+-			goto done;
++			return error;
+ 		break;
+ 	case 0:
+ 		/*
+@@ -5154,18 +5150,18 @@ xfs_bmap_del_extent_real(
+ 		new.br_state = got.br_state;
+ 		new.br_startblock = del_endblock;
+ 
+-		flags |= XFS_ILOG_CORE;
++		*logflagsp |= XFS_ILOG_CORE;
+ 		if (cur) {
+ 			error = xfs_bmbt_update(cur, &got);
+ 			if (error)
+-				goto done;
++				return error;
+ 			error = xfs_btree_increment(cur, 0, &i);
+ 			if (error)
+-				goto done;
++				return error;
+ 			cur->bc_rec.b = new;
+ 			error = xfs_btree_insert(cur, &i);
+ 			if (error && error != -ENOSPC)
+-				goto done;
++				return error;
+ 			/*
+ 			 * If get no-space back from btree insert, it tried a
+ 			 * split, and we have a zero block reservation.  Fix up
+@@ -5178,33 +5174,28 @@ xfs_bmap_del_extent_real(
+ 				 */
+ 				error = xfs_bmbt_lookup_eq(cur, &got, &i);
+ 				if (error)
+-					goto done;
+-				if (XFS_IS_CORRUPT(mp, i != 1)) {
+-					error = -EFSCORRUPTED;
+-					goto done;
+-				}
++					return error;
++				if (XFS_IS_CORRUPT(mp, i != 1))
++					return -EFSCORRUPTED;
+ 				/*
+ 				 * Update the btree record back
+ 				 * to the original value.
+ 				 */
+ 				error = xfs_bmbt_update(cur, &old);
+ 				if (error)
+-					goto done;
++					return error;
+ 				/*
+ 				 * Reset the extent record back
+ 				 * to the original value.
+ 				 */
+ 				xfs_iext_update_extent(ip, state, icur, &old);
+-				flags = 0;
+-				error = -ENOSPC;
+-				goto done;
+-			}
+-			if (XFS_IS_CORRUPT(mp, i != 1)) {
+-				error = -EFSCORRUPTED;
+-				goto done;
++				*logflagsp = 0;
++				return -ENOSPC;
+ 			}
++			if (XFS_IS_CORRUPT(mp, i != 1))
++				return -EFSCORRUPTED;
+ 		} else
+-			flags |= xfs_ilog_fext(whichfork);
++			*logflagsp |= xfs_ilog_fext(whichfork);
+ 
+ 		ifp->if_nextents++;
+ 		xfs_iext_next(ifp, icur);
+@@ -5228,7 +5219,7 @@ xfs_bmap_del_extent_real(
+ 					((bflags & XFS_BMAPI_NODISCARD) ||
+ 					del->br_state == XFS_EXT_UNWRITTEN));
+ 			if (error)
+-				goto done;
++				return error;
+ 		}
+ 	}
+ 
+@@ -5243,9 +5234,7 @@ xfs_bmap_del_extent_real(
+ 	if (qfield && !(bflags & XFS_BMAPI_REMAP))
+ 		xfs_trans_mod_dquot_byino(tp, ip, qfield, (long)-nblks);
+ 
+-done:
+-	*logflagsp = flags;
+-	return error;
++	return 0;
+ }
+ 
+ /*
 
 
 
