@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-34614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C64894012
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7468941CC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8CAC1C2159B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDA941F25601
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CAF1CA8F;
-	Mon,  1 Apr 2024 16:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D8E48CDD;
+	Mon,  1 Apr 2024 16:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mP1D59Fd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xP8tHiq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835654087B;
-	Mon,  1 Apr 2024 16:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AB54778C;
+	Mon,  1 Apr 2024 16:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988713; cv=none; b=n247UNnhpCF9PqcVk/M2NrKLEB01CM+u/avbgLo2mUqGSB1etWd64OADhw9QlNbSjSREkiK2SM3UJoZoOXKoEpTNzlPSHMQag69dodgYe3i705pxUn8h68xxTCUH5lU/cBAj7/iVYzVIeEQ/oBnfNaroiHwI8IS0wXnG+CTjzxA=
+	t=1711989967; cv=none; b=e8zJjJ/IFv1FUOtTBEALEt4JWiihKDSujmw0yyEbuCtQo4n7Kw2ThoHIQj2vj9PY9vWDuPDmxHlcHxTpFwnJkOAsLgmFVkvt6TmOkcOsYqElzcLqqVMCEOm2LIg04QN9OEcA1pO2TWN5bvXVAFMToI7B/46rJW9bMYWVkwRRyl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988713; c=relaxed/simple;
-	bh=o5/r481BhgsU32+YOrRDKv+/QWuF0UCf6rsDtjSsIjA=;
+	s=arc-20240116; t=1711989967; c=relaxed/simple;
+	bh=zAH5KfRUUPUFeEQdQ436jrw3Yjsa7/moAtcNfh8SRow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MtMveuClhldE/AHjOGix72heVJ3yiRoNe4TqAMmI1iIOl2SITs6yPNuVW3XezoXZczuav+1nkNmvd4n9ClwrFPRIk6KBuhAAcWHLthSpUOsjKJb+dokL6372FN+pLU575XFd2nzYERiMOYX68/ZzKTIIr0Kx5Nb6sVpaMMQZ+Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mP1D59Fd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6075C433C7;
-	Mon,  1 Apr 2024 16:25:12 +0000 (UTC)
+	 MIME-Version; b=GHqBf9HAefCJ7QUjMT/4I8doVpC9b5LsXmZZwTYF1A5ZCYmXZehizYQgS+Xyor35jPFPeYZ59lh01rp90o7upvEw1z+/ZlyLCtjx3nMuS6AbTNFHsRi3R2HyTwlxd1wA2bRmQpdDjM+yjMMT9rC9KXWFXgdJM5qvCaU8B79n3dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xP8tHiq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A83EC433C7;
+	Mon,  1 Apr 2024 16:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988713;
-	bh=o5/r481BhgsU32+YOrRDKv+/QWuF0UCf6rsDtjSsIjA=;
+	s=korg; t=1711989966;
+	bh=zAH5KfRUUPUFeEQdQ436jrw3Yjsa7/moAtcNfh8SRow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mP1D59FdGuO8lgA42Jd5ixFsxJVHcZgg+WYmCwtK3UOZL0iTSE7FKr/YNG5y0hqRV
-	 POjjXr0tFVJHjjn5oxc9GA99IlTKxom0n+Aolu96q3JRm0teHXJpnehl1PgNgX5Oyv
-	 CZ0+WqWAiTTcyS+KmoUo3kNXeoYpmKpMYT1gv1U0=
+	b=xP8tHiq06K3M3q+8GQ6q1g4xDBaIrTCW6P5RXyWNOXZd3qUhQ+1Zkk3rdqhQBfG5r
+	 uB4A/Igob+vdLh4yDD6Yx1dgd2NnMMp6TtQHmVAmkd98lTBiux4q24BTMrnLmDGcaG
+	 Jf4FlDU80MGxCycp8Sy1EgQbno8TPT7uyCHfaqm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.7 267/432] serial: 8250_dw: Do not reclock if already at correct rate
-Date: Mon,  1 Apr 2024 17:44:14 +0200
-Message-ID: <20240401152601.112837269@linuxfoundation.org>
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 206/396] mm, mmap: fix vma_merge() case 7 with vma_ops->close
+Date: Mon,  1 Apr 2024 17:44:15 +0200
+Message-ID: <20240401152554.071578823@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-commit e5d6bd25f93d6ae158bb4cd04956cb497a85b8ef upstream.
+commit fc0c8f9089c20d198d8fe51ddc28bfa1af588dce upstream.
 
-When userspace opens the console, we call set_termios() passing a
-termios with the console's configured baud rate. Currently this causes
-dw8250_set_termios() to disable and then re-enable the UART clock at
-the same frequency as it was originally. This can cause corruption
-of any concurrent console output. Fix it by skipping the reclocking
-if we are already at the correct rate.
+When debugging issues with a workload using SysV shmem, Michal Hocko has
+come up with a reproducer that shows how a series of mprotect() operations
+can result in an elevated shm_nattch and thus leak of the resource.
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Fixes: 4e26b134bd17 ("serial: 8250_dw: clock rate handling for all ACPI platforms")
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240222192635.1050502-1-pcc@google.com
+The problem is caused by wrong assumptions in vma_merge() commit
+714965ca8252 ("mm/mmap: start distinguishing if vma can be removed in
+mergeability test").  The shmem vmas have a vma_ops->close callback that
+decrements shm_nattch, and we remove the vma without calling it.
+
+vma_merge() has thus historically avoided merging vma's with
+vma_ops->close and commit 714965ca8252 was supposed to keep it that way.
+It relaxed the checks for vma_ops->close in can_vma_merge_after() assuming
+that it is never called on a vma that would be a candidate for removal.
+However, the vma_merge() code does also use the result of this check in
+the decision to remove a different vma in the merge case 7.
+
+A robust solution would be to refactor vma_merge() code in a way that the
+vma_ops->close check is only done for vma's that are actually going to be
+removed, and not as part of the preliminary checks.  That would both solve
+the existing bug, and also allow additional merges that the checks
+currently prevent unnecessarily in some cases.
+
+However to fix the existing bug first with a minimized risk, and for
+easier stable backports, this patch only adds a vma_ops->close check to
+the buggy case 7 specifically.  All other cases of vma removal are covered
+by the can_vma_merge_before() check that includes the test for
+vma_ops->close.
+
+The reproducer code, adapted from Michal Hocko's code:
+
+int main(int argc, char *argv[]) {
+  int segment_id;
+  size_t segment_size = 20 * PAGE_SIZE;
+  char * sh_mem;
+  struct shmid_ds shmid_ds;
+
+  key_t key = 0x1234;
+  segment_id = shmget(key, segment_size,
+                      IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR);
+  sh_mem = (char *)shmat(segment_id, NULL, 0);
+
+  mprotect(sh_mem + 2*PAGE_SIZE, PAGE_SIZE, PROT_NONE);
+
+  mprotect(sh_mem + PAGE_SIZE, PAGE_SIZE, PROT_WRITE);
+
+  mprotect(sh_mem + 2*PAGE_SIZE, PAGE_SIZE, PROT_WRITE);
+
+  shmdt(sh_mem);
+
+  shmctl(segment_id, IPC_STAT, &shmid_ds);
+  printf("nattch after shmdt(): %lu (expected: 0)\n", shmid_ds.shm_nattch);
+
+  if (shmctl(segment_id, IPC_RMID, 0))
+          printf("IPCRM failed %d\n", errno);
+  return (shmid_ds.shm_nattch) ? 1 : 0;
+}
+
+Link: https://lkml.kernel.org/r/20240222215930.14637-2-vbabka@suse.cz
+Fixes: 714965ca8252 ("mm/mmap: start distinguishing if vma can be removed in mergeability test")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/mmap.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -357,9 +357,9 @@ static void dw8250_set_termios(struct ua
- 	long rate;
- 	int ret;
- 
--	clk_disable_unprepare(d->clk);
- 	rate = clk_round_rate(d->clk, newrate);
--	if (rate > 0) {
-+	if (rate > 0 && p->uartclk != rate) {
-+		clk_disable_unprepare(d->clk);
- 		/*
- 		 * Note that any clock-notifer worker will block in
- 		 * serial8250_update_uartclk() until we are done.
-@@ -367,8 +367,8 @@ static void dw8250_set_termios(struct ua
- 		ret = clk_set_rate(d->clk, newrate);
- 		if (!ret)
- 			p->uartclk = rate;
-+		clk_prepare_enable(d->clk);
- 	}
--	clk_prepare_enable(d->clk);
- 
- 	dw8250_do_set_termios(p, termios, old);
- }
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -949,13 +949,21 @@ struct vm_area_struct *vma_merge(struct
+ 	} else if (merge_prev) {			/* case 2 */
+ 		if (curr) {
+ 			vma_start_write(curr);
+-			err = dup_anon_vma(prev, curr, &anon_dup);
+ 			if (end == curr->vm_end) {	/* case 7 */
++				/*
++				 * can_vma_merge_after() assumed we would not be
++				 * removing prev vma, so it skipped the check
++				 * for vm_ops->close, but we are removing curr
++				 */
++				if (curr->vm_ops && curr->vm_ops->close)
++					err = -EINVAL;
+ 				remove = curr;
+ 			} else {			/* case 5 */
+ 				adjust = curr;
+ 				adj_start = (end - curr->vm_start);
+ 			}
++			if (!err)
++				err = dup_anon_vma(prev, curr, &anon_dup);
+ 		}
+ 	} else { /* merge_next */
+ 		vma_start_write(next);
 
 
 
