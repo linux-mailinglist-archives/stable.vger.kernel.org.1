@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B22893FC1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FAB894163
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8A891F217FA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A63B1F230CB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1113E4778E;
-	Mon,  1 Apr 2024 16:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC1747A6B;
+	Mon,  1 Apr 2024 16:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFsAdir9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v02pBULu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A313D961;
-	Mon,  1 Apr 2024 16:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C64B63E;
+	Mon,  1 Apr 2024 16:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988451; cv=none; b=aTc6b6VdmqG5wy9lU28t4p/qkvf0MezHY4IBoRuOyryNvZ+EcK7x3o4hMtz2LxxXUl6vRxlf6/UhSmOqotkdWn6Y2Cs+XMP2WC3VJ7TNSQ2bqkliD7zeY2TyctVtPAPdjAaqaQUbBp41FdeuO2azH4Br6WSnROItWI8tfqNqhqM=
+	t=1711989699; cv=none; b=tm9dfhim2UqHCiLpalIhXqucz9nLMXQFmFkX8jkn9bZ2PaXF/wXKeeAiJIPVPwarkZRfbmC/Ul2uyTPYrpcmUmr/vXQkMYuERMIyuWo4qwjvEv/6ggH9VJBFOMDpgUtVu1U1yEGIqOZhaV5jkyrQhRBHaN5UjfYFGVFCGubyPrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988451; c=relaxed/simple;
-	bh=O9DsyFeNTSEjt1ovcjgT7xRp7lYWszFigJMWskjspic=;
+	s=arc-20240116; t=1711989699; c=relaxed/simple;
+	bh=zWKtth+KIr8ZJetjGcZenQLnRctk+q+mLQggugVkYoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dt7jCyD1kDgqtJMxCYcnneZK+tTZXvTb+UK95IpXK7xp1LUB6UQQgAo7X0ri0pHMfV8pefv47xTEzaq6h7B3ZZ0LHIVB/f3fsic8k/PuUlZLCMWv/SPn86opgHt9BIyiW/Bqd6g6ulWlly4aP85m/G/ghdmWb7y7ADRTJeTMLkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFsAdir9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3293DC433F1;
-	Mon,  1 Apr 2024 16:20:50 +0000 (UTC)
+	 MIME-Version; b=glT4a1AVeqKDAnnwHlYXtPfqlPY42kWj+fP0jH2hok9sXID2SDQm3h/5FEBPjt9YzN+60VMIV2rjyonBn4vcUGjD7HhjlWSaZr2YVPB7KyT8/FHaVtkuflBQmkHS2ny0VsYo0Vhsar0bbmMmp4iC1/dUhQAO81MdKe7gQK0/HJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v02pBULu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1065FC433F1;
+	Mon,  1 Apr 2024 16:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988451;
-	bh=O9DsyFeNTSEjt1ovcjgT7xRp7lYWszFigJMWskjspic=;
+	s=korg; t=1711989699;
+	bh=zWKtth+KIr8ZJetjGcZenQLnRctk+q+mLQggugVkYoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFsAdir9CpHQfNKOcpQa2uyP9RxrsdOKXqLot60oI7yE01vK7dr0dS1PBgPk25wUW
-	 pMZ+WX6NHUfW5S9pXYOUwq+0Ip7zbGFM8pw9hwAK8MhVvhylT7XwemwCbOqJnWO05j
-	 mKDJ1TDGzNypaO4A2MVAW0z2KJQWVha9f8cc3KXc=
+	b=v02pBULutjUuBnMFQ+2emNqKp9S1OGjhrOv1a+FWqsGoqGhk1JAttJMLG1qDIwt5q
+	 VVSaBNnMlj8kLp3rPchA6tjWJhhhKXJbuNIMMpvlTSWz9KMGLToerf/O25mfV4ENT+
+	 FE/W/i1aVMT+8jLpNCPr0GbBfozq+S4YDuYYTnCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 188/432] io_uring/waitid: always remove waitid entry for cancel all
-Date: Mon,  1 Apr 2024 17:42:55 +0200
-Message-ID: <20240401152558.749067258@linuxfoundation.org>
+Subject: [PATCH 6.6 127/396] vfio/pci: Disable auto-enable of exclusive INTx IRQ
+Date: Mon,  1 Apr 2024 17:42:56 +0200
+Message-ID: <20240401152551.704434446@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 2b35b8b43e07b1a6f06fdd84cf4b9eb24785896d ]
+[ Upstream commit fe9a7082684eb059b925c535682e68c34d487d43 ]
 
-We know the request is either being removed, or already in the process of
-being removed through task_work, so we can delete it from our waitid list
-upfront. This is important for remove all conditions, as we otherwise
-will find it multiple times and prevent cancelation progress.
+Currently for devices requiring masking at the irqchip for INTx, ie.
+devices without DisINTx support, the IRQ is enabled in request_irq()
+and subsequently disabled as necessary to align with the masked status
+flag.  This presents a window where the interrupt could fire between
+these events, resulting in the IRQ incrementing the disable depth twice.
+This would be unrecoverable for a user since the masked flag prevents
+nested enables through vfio.
 
-Remove the dead check in cancelation as well for the hash_node being
-empty or not. We already have a waitid reference check for ownership,
-so we don't need to check the list too.
+Instead, invert the logic using IRQF_NO_AUTOEN such that exclusive INTx
+is never auto-enabled, then unmask as required.
 
-Cc: stable@vger.kernel.org
-Fixes: f31ecf671ddc ("io_uring: add IORING_OP_WAITID support")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc:  <stable@vger.kernel.org>
+Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-2-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/waitid.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/vfio/pci/vfio_pci_intrs.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/io_uring/waitid.c b/io_uring/waitid.c
-index 6f851978606d9..77d340666cb95 100644
---- a/io_uring/waitid.c
-+++ b/io_uring/waitid.c
-@@ -125,12 +125,6 @@ static void io_waitid_complete(struct io_kiocb *req, int ret)
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index cbb4bcbfbf83d..3dbeeb5bfadce 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -296,8 +296,15 @@ static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
  
- 	lockdep_assert_held(&req->ctx->uring_lock);
+ 	ctx->trigger = trigger;
+ 
++	/*
++	 * Devices without DisINTx support require an exclusive interrupt,
++	 * IRQ masking is performed at the IRQ chip.  The masked status is
++	 * protected by vdev->irqlock. Setup the IRQ without auto-enable and
++	 * unmask as necessary below under lock.  DisINTx is unmodified by
++	 * the IRQ configuration and may therefore use auto-enable.
++	 */
+ 	if (!vdev->pci_2_3)
+-		irqflags = 0;
++		irqflags = IRQF_NO_AUTOEN;
+ 
+ 	ret = request_irq(pdev->irq, vfio_intx_handler,
+ 			  irqflags, ctx->name, vdev);
+@@ -308,13 +315,9 @@ static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
+ 		return ret;
+ 	}
  
 -	/*
--	 * Did cancel find it meanwhile?
+-	 * INTx disable will stick across the new irq setup,
+-	 * disable_irq won't.
 -	 */
--	if (hlist_unhashed(&req->hash_node))
--		return;
--
- 	hlist_del_init(&req->hash_node);
+ 	spin_lock_irqsave(&vdev->irqlock, flags);
+-	if (!vdev->pci_2_3 && ctx->masked)
+-		disable_irq_nosync(pdev->irq);
++	if (!vdev->pci_2_3 && !ctx->masked)
++		enable_irq(pdev->irq);
+ 	spin_unlock_irqrestore(&vdev->irqlock, flags);
  
- 	ret = io_waitid_finish(req, ret);
-@@ -202,6 +196,7 @@ bool io_waitid_remove_all(struct io_ring_ctx *ctx, struct task_struct *task,
- 	hlist_for_each_entry_safe(req, tmp, &ctx->waitid_list, hash_node) {
- 		if (!io_match_task_safe(req, task, cancel_all))
- 			continue;
-+		hlist_del_init(&req->hash_node);
- 		__io_waitid_cancel(ctx, req);
- 		found = true;
- 	}
+ 	return 0;
 -- 
 2.43.0
 
