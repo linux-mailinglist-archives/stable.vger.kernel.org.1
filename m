@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-34604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EF1894006
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1DF8941BB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE51B1F21BF3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EF7E1F2503E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0072247A76;
-	Mon,  1 Apr 2024 16:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F12481D7;
+	Mon,  1 Apr 2024 16:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBh/LeO+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNSVSa/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CB045BE4;
-	Mon,  1 Apr 2024 16:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C0C4653C;
+	Mon,  1 Apr 2024 16:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988678; cv=none; b=LYhh9KNo+UMDdC4i85vYMkMGDEwRZuih8dHrSH0fck2DZIhw4ljWEzydgBT1IxpXeLvF6s1gTkaB864isq2/80iCuyAe/9FPyhOZnGVcp9hKQBlbDyizePWuLdOd6jhQaatbxnldYoGzKm8zKx7Is4f4fDcsYuYA4sEcnC48TFE=
+	t=1711989921; cv=none; b=IlEVr1MAdmxzAnNnhPb8j+VLBTeDFRMbOTFvJkaIoffPPghTxmgVGqhv8WCfxZvjVDQQL5REo4khrABuD1whB1eDEZ1DWbHVpRqqQ8+7ANbf00sIW2WcoB22a9VU55ktSB0Z5pDAT7nJjTsR2n/qSZngG9W1atXpEQrEspNVm8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988678; c=relaxed/simple;
-	bh=jOxOpd+zHzQFmDT+8/Gu+mVxZgHiW400OHsO48092lQ=;
+	s=arc-20240116; t=1711989921; c=relaxed/simple;
+	bh=fghdhqH/DB75vD4jdRL7iOH/0uvZTBApnDwfPSPxx4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn2PZNKHqiwT8gZhwVMOo2TNNY6goy8TKuMpthHXQrGj7XoTJjWTqWGVY3reRB1WFRIZYiaLmZ6234NW7FznoKDFzzrvL906nJEsdJkdy/QGGbnlAZAvOUqK5/Xnvw8Gm0YofoQFqtnjbAfRudonsP6WWEProFGwmX9DCQIW83E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBh/LeO+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20884C433F1;
-	Mon,  1 Apr 2024 16:24:37 +0000 (UTC)
+	 MIME-Version; b=IjgcwNUsJRQl57SFQTGx9o2H+q3R5FKrwi67SvO2sTEBzMNZxnQ87ZvHbbttD+b79McYhwgKFu9QWrtK22qP6r+2QNCFUail/wknB1W4wLRZ2w+RFGPTlDSR2NrA4cGLq07potnVat1xXgwEWrKyMQULg+1KUOuKN/QAhtNU0Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNSVSa/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5773FC433F1;
+	Mon,  1 Apr 2024 16:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988678;
-	bh=jOxOpd+zHzQFmDT+8/Gu+mVxZgHiW400OHsO48092lQ=;
+	s=korg; t=1711989920;
+	bh=fghdhqH/DB75vD4jdRL7iOH/0uvZTBApnDwfPSPxx4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBh/LeO+NS2PVBwPBA8moI0cP1fhy5bvKM0BG7dYaZ7AtiaDw0rNmdwTeJmZP8T+a
-	 Z6SY7AhJctrJGfBNPcXRIKdU27BbEihFBT5GbSq2GUHdU2Ait3oxY/tTaHdJpOp5tn
-	 C+UthOCOXDuSOmYVPBEc6yPIY9Y7QjJvW3TZQlEQ=
+	b=lNSVSa/Yw3FX3DmAXdH3C7PDkkHRpytMCbEVCYvFRXHcZ/nTK5QE2mxQgwTaVeNuh
+	 285EGe7t8IDgKxpElbrkgv1ffamYostPS+9lP2vnCeLrr2peZcv+4MVDbUGBe+ZGLD
+	 XnYb3EPSyvV1qnQ4ToTajCT7OoxCImOyp2oMyf9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.7 255/432] SEV: disable SEV-ES DebugSwap by default
+	Adrien Grassein <adrien.grassein@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 193/396] drm/bridge: lt8912b: do not return negative values from .get_modes()
 Date: Mon,  1 Apr 2024 17:44:02 +0200
-Message-ID: <20240401152600.748031424@linuxfoundation.org>
+Message-ID: <20240401152553.691725073@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 5abf6dceb066f2b02b225fd561440c98a8062681 upstream.
+[ Upstream commit 171b711b26cce208bb628526b1b368aeec7b6fa4 ]
 
-The DebugSwap feature of SEV-ES provides a way for confidential guests to use
-data breakpoints.  However, because the status of the DebugSwap feature is
-recorded in the VMSA, enabling it by default invalidates the attestation
-signatures.  In 6.10 we will introduce a new API to create SEV VMs that
-will allow enabling DebugSwap based on what the user tells KVM to do.
-Contextually, we will change the legacy KVM_SEV_ES_INIT API to never
-enable DebugSwap.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
-For compatibility with kernels that pre-date the introduction of DebugSwap,
-as well as with those where KVM_SEV_ES_INIT will never enable it, do not enable
-the feature by default.  If anybody wants to use it, for now they can enable
-the sev_es_debug_swap_enabled module parameter, but this will result in a
-warning.
-
-Fixes: d1f85fbe836e ("KVM: SEV: Enable data breakpoints in SEV-ES")
+Cc: Adrien Grassein <adrien.grassein@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/dcdddcbcb64b6f6cdc55022ee50c10dee8ddbc3d.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -57,7 +57,7 @@ static bool sev_es_enabled = true;
- module_param_named(sev_es, sev_es_enabled, bool, 0444);
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index f0ebd56b4736a..e5839c89a355a 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -430,23 +430,21 @@ lt8912_connector_mode_valid(struct drm_connector *connector,
+ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ {
+ 	const struct drm_edid *drm_edid;
+-	int ret = -1;
+-	int num = 0;
+ 	struct lt8912 *lt = connector_to_lt8912(connector);
+ 	u32 bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++	int ret, num;
  
- /* enable/disable SEV-ES DebugSwap support */
--static bool sev_es_debug_swap_enabled = true;
-+static bool sev_es_debug_swap_enabled = false;
- module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
- #else
- #define sev_enabled false
-@@ -612,8 +612,11 @@ static int sev_es_sync_vmsa(struct vcpu_
- 	save->xss  = svm->vcpu.arch.ia32_xss;
- 	save->dr6  = svm->vcpu.arch.dr6;
+ 	drm_edid = drm_bridge_edid_read(lt->hdmi_port, connector);
+ 	drm_edid_connector_update(connector, drm_edid);
+-	if (drm_edid) {
+-		num = drm_edid_connector_add_modes(connector);
+-	} else {
+-		return ret;
+-	}
++	if (!drm_edid)
++		return 0;
++
++	num = drm_edid_connector_add_modes(connector);
  
--	if (sev_es_debug_swap_enabled)
-+	if (sev_es_debug_swap_enabled) {
- 		save->sev_features |= SVM_SEV_FEAT_DEBUG_SWAP;
-+		pr_warn_once("Enabling DebugSwap with KVM_SEV_ES_INIT. "
-+			     "This will not work starting with Linux 6.10\n");
-+	}
+ 	ret = drm_display_info_set_bus_formats(&connector->display_info,
+ 					       &bus_format, 1);
+-	if (ret)
+-		num = ret;
++	if (ret < 0)
++		num = 0;
  
- 	pr_debug("Virtual Machine Save Area (VMSA):\n");
- 	print_hex_dump_debug("", DUMP_PREFIX_NONE, 16, 1, save, sizeof(*save), false);
+ 	drm_edid_free(drm_edid);
+ 	return num;
+-- 
+2.43.0
+
 
 
 
