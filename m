@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834C88942A3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D21FF8943AE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13091B20BF4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52297283993
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898374653C;
-	Mon,  1 Apr 2024 16:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BFE481B8;
+	Mon,  1 Apr 2024 17:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvPfdtc8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlSk24ik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4761ABA3F;
-	Mon,  1 Apr 2024 16:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B3482EF;
+	Mon,  1 Apr 2024 17:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990471; cv=none; b=LJe7jvFfzoDmEZGX/czE6z0p/T7jJDWXmqYFHk3eG9JG0yjwXTSBYaQvQYSSStkWrFQEsmsvdZitrBMRV/MUAsIZwzhY5GMOj+MndgTVk/sjlTKB70pi+w3MYNIEmRJPN1FZZHbOfqNpwrleTCMkLRUIFnjGVfgKwHQb3z08qPw=
+	t=1711991205; cv=none; b=mFygj/Ku0pUZTP01TVxdNKN4fTGSbufXDEcHD/F0hiptSedBbLIG6bg4W0YnXyQexXoTrx1GOgY0TPf57KsOyL3dZLxspyZPzzFcR5zvkVj9vFmS/isw+9oV9wz3wZhDKMYi2eSuF83GPKTg1epseFcmrUgxKM6ZW4J0YJWqeFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990471; c=relaxed/simple;
-	bh=Nu6jhG8HXYHZQxDZ37wS9AGvnKVAonawCM9v1/U5luw=;
+	s=arc-20240116; t=1711991205; c=relaxed/simple;
+	bh=6J+rEjYKoW2OoU2uN8Z9EPlxnT39Qv+op2asA9dqi+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A4nKjA2iU3JmLKPFgSwjqFygxcRa0HjpU5Y93n6ZEvwPd61vRJic6FpwPtE8/YM33LlULiKiCsrVBtkvOVw1uqejOpmV6iqUHG9oV2F5XE127Zx8Da2KMtY9QVvpB1lkLF8mzCx78apqcZgllanA9qFsC4DKyFscp2rwGKwRS3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvPfdtc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28C8C433F1;
-	Mon,  1 Apr 2024 16:54:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Iy/eiplT8LaUjOJsIL8Lsx/W6bOzqfSA9zudjHUlHKkt+tYpMAB29jOrUWf3TyB+tgQru8edq22N1RH8VyA9iyVyhPE2sp+vNqojYhfpu4agiE0oYCPrZ3Hn8kWPAt58C3oI0RZ0AAqh4FrGUCisSQqGoua3F7VO2SL7KEp8uvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlSk24ik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB69CC433C7;
+	Mon,  1 Apr 2024 17:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990471;
-	bh=Nu6jhG8HXYHZQxDZ37wS9AGvnKVAonawCM9v1/U5luw=;
+	s=korg; t=1711991205;
+	bh=6J+rEjYKoW2OoU2uN8Z9EPlxnT39Qv+op2asA9dqi+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvPfdtc8G0u8PdHj6iQMdOs/MZAVjV14sLPsyx5yk5nO36ig7ePq0R0abUunq3AE9
-	 UsuDgzamcXgJ3sycbe5b49gVHKkfo0tOEcyDvLrm/8LEv/w9dh5JwFJRFvnwZGXl0+
-	 FG4ioqtF8A6LEDa8LRsNcuZujpiLa0xbf3Lc1pkU=
+	b=UlSk24ikQaO/I4jsNjk1ym9hW4gYAhgkAnGu0hN5eE8D+cnVj0Fn0xnghxQiLqSp1
+	 sqvYhtA2mq1rRAsolvSkljSkr1jGtKJ3jw8C6jM0Ka7WkJ2Oe839zRj3TCKCuLNlBO
+	 DIYfK+SEIOBknxo8lbYfjNZwZHQe3Lm+D1x8eKaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Zhang <ye.zhang@rock-chips.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 336/396] thermal: devfreq_cooling: Fix perf state when calculate dfc res_util
+	Zoltan HERPAI <wigyori@uid0.hu>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 195/272] pwm: img: fix pwm clock lookup
 Date: Mon,  1 Apr 2024 17:46:25 +0200
-Message-ID: <20240401152557.929783788@linuxfoundation.org>
+Message-ID: <20240401152536.970950331@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Zhang <ye.zhang@rock-chips.com>
+From: Zoltan HERPAI <wigyori@uid0.hu>
 
-commit a26de34b3c77ae3a969654d94be49e433c947e3b upstream.
+[ Upstream commit 9eb05877dbee03064d3d3483cd6702f610d5a358 ]
 
-The issue occurs when the devfreq cooling device uses the EM power model
-and the get_real_power() callback is provided by the driver.
+22e8e19 has introduced a regression in the imgchip->pwm_clk lookup, whereas
+the clock name has also been renamed to "imgchip". This causes the driver
+failing to load:
 
-The EM power table is sorted ascending，can't index the table by cooling
-device state，so convert cooling state to performance state by
-dfc->max_state - dfc->capped_state.
+[    0.546905] img-pwm 18101300.pwm: failed to get imgchip clock
+[    0.553418] img-pwm: probe of 18101300.pwm failed with error -2
 
-Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
-Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
-Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this lookup by reverting the clock name back to "pwm".
+
+Signed-off-by: Zoltan HERPAI <wigyori@uid0.hu>
+Link: https://lore.kernel.org/r/20240320083602.81592-1-wigyori@uid0.hu
+Fixes: 22e8e19a46f7 ("pwm: img: Rename variable pointing to driver private data")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/devfreq_cooling.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-img.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/thermal/devfreq_cooling.c
-+++ b/drivers/thermal/devfreq_cooling.c
-@@ -201,7 +201,7 @@ static int devfreq_cooling_get_requested
+diff --git a/drivers/pwm/pwm-img.c b/drivers/pwm/pwm-img.c
+index 0fccf061ab958..8ce6c453adf07 100644
+--- a/drivers/pwm/pwm-img.c
++++ b/drivers/pwm/pwm-img.c
+@@ -289,9 +289,9 @@ static int img_pwm_probe(struct platform_device *pdev)
+ 		return PTR_ERR(imgchip->sys_clk);
+ 	}
  
- 		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
- 		if (!res) {
--			state = dfc->capped_state;
-+			state = dfc->max_state - dfc->capped_state;
+-	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "imgchip");
++	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "pwm");
+ 	if (IS_ERR(imgchip->pwm_clk)) {
+-		dev_err(&pdev->dev, "failed to get imgchip clock\n");
++		dev_err(&pdev->dev, "failed to get pwm clock\n");
+ 		return PTR_ERR(imgchip->pwm_clk);
+ 	}
  
- 			/* Convert EM power into milli-Watts first */
- 			dfc->res_util = dfc->em_pd->table[state].power;
+-- 
+2.43.0
+
 
 
 
