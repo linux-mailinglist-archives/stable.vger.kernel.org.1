@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-34918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142CC894177
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCA6893FEA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456C71C2170B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1350B2110F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CE64C630;
-	Mon,  1 Apr 2024 16:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2979A47A62;
+	Mon,  1 Apr 2024 16:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/V3e7kM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdSjqVEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D814C61B;
-	Mon,  1 Apr 2024 16:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC00C129;
+	Mon,  1 Apr 2024 16:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989737; cv=none; b=irtPv5M7CJ8mnqTqOquo8qzY68/0oQ6tKBEzg2Z9716IWBLzxVnqDodcUxLU+bojsdCQx6MimEi9Q+C0g5StQxu5SuqC/fxBe08CevhPk7PuxyW8j2M2bxRXcKrESg1oZjaYJmvg9MG5noJ6Vaam3L2lEKAsLZ4kQ3lhkBAkej4=
+	t=1711988584; cv=none; b=ZnfYMOjwN1MWUsioqrZZ3oDXxCzf2Flk7+JrHTO9nwdXh0iPokBA7ffEe9vrbNifjfojXQeUstGSkxXelSC/+4pBQinMP1t5TnRYLkQUSk5rB2VLgT9PQgN5mal1sQW1TCy4jd/0Ao6jBG8ki2s28ZKZvaWkA82CXD2PUqQpmpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989737; c=relaxed/simple;
-	bh=WEEpZF/+qvb0+rKZAlDHDxJilpEZEOFYnd4MZt+OIqQ=;
+	s=arc-20240116; t=1711988584; c=relaxed/simple;
+	bh=wawCy+jAIrNWYj1JV9UCkJHnsR4GWVebJx8Al5FlCjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pUZJ4+97cpekeFKRTdO36B+h5+njlXN4qF7Kk3brO8UWKamg4B9LSLey1gsSnGnPKROUhEa825z9EG8/zNu696r498rjlMpgPxgPgPm0W3R/cxa1ze2OIMUOSzaXs1W0dU2ub+BDuXX4hGQvhnsx0gtX3uRaurvME7wqw79omnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/V3e7kM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0866AC433F1;
-	Mon,  1 Apr 2024 16:42:15 +0000 (UTC)
+	 MIME-Version; b=XF3wAJka0dyf0hYrsStDqqzIlJ/8+qsJ6rAvVliob0d86FBSj0HU5dxVqlAAO3QHZO3hGdtXu9vwZVZMbiWFQAQQwRfuKrjly+rxxP4i2gBNwWPBD5m1sAY4BHeYqcVSZ2iyLuwL//Kay34M3n1uvZhqv3QhTo08yr3JCUTLHVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdSjqVEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7D1C433F1;
+	Mon,  1 Apr 2024 16:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989736;
-	bh=WEEpZF/+qvb0+rKZAlDHDxJilpEZEOFYnd4MZt+OIqQ=;
+	s=korg; t=1711988583;
+	bh=wawCy+jAIrNWYj1JV9UCkJHnsR4GWVebJx8Al5FlCjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/V3e7kM9YOOMk5zM5OljJfWzj8hdP1s077xf0as02r2yeGT93ZVqm9+/T74M25yL
-	 Xko3FvFds2nzHrATF1W3GRCKvoVSRD1RNy1KJufTzukLDMh5+oFJiaNPViqDIVCvS+
-	 fyLWGj/zteLrR1kqLtqUa9UTZSvnTWwbnK6hYH2U=
+	b=DdSjqVEBWyv1LtHCYLiet2ga7UxjJbcQREDekIMy+UssQfxU5+xUqhkXcfAkWTvqF
+	 2SX0JF7/qhvSpywHgZUj4chtqn1OJNFzv9mUVz8P+E895Dfi2MWSN3kO8veZPhyJsh
+	 WHmTon1cABG/y/A0k6E0XKzoqMBn5U0XNgZQgo4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Xiaotian Wu <wuxiaotian@loongson.cn>,
+	Miao Wang <shankerwangmiao@gmail.com>,
+	Xing Li <lixing@loongson.cn>,
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	Rui Wang <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/396] ring-buffer: Do not set shortest_full when full target is hit
+Subject: [PATCH 6.7 199/432] LoongArch: Change __my_cpu_offset definition to avoid mis-optimization
 Date: Mon,  1 Apr 2024 17:43:06 +0200
-Message-ID: <20240401152552.000343955@linuxfoundation.org>
+Message-ID: <20240401152559.073796495@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 761d9473e27f0c8782895013a3e7b52a37c8bcfc ]
+[ Upstream commit c87e12e0e8c1241410e758e181ca6bf23efa5b5b ]
 
-The rb_watermark_hit() checks if the amount of data in the ring buffer is
-above the percentage level passed in by the "full" variable. If it is, it
-returns true.
+>From GCC commit 3f13154553f8546a ("df-scan: remove ad-hoc handling of
+global regs in asms"), global registers will no longer be forced to add
+to the def-use chain. Then current_thread_info(), current_stack_pointer
+and __my_cpu_offset may be lifted out of the loop because they are no
+longer treated as "volatile variables".
 
-But it also sets the "shortest_full" field of the cpu_buffer that informs
-writers that it needs to call the irq_work if the amount of data on the
-ring buffer is above the requested amount.
+This optimization is still correct for the current_thread_info() and
+current_stack_pointer usages because they are associated to a thread.
+However it is wrong for __my_cpu_offset because it is associated to a
+CPU rather than a thread: if the thread migrates to a different CPU in
+the loop, __my_cpu_offset should be changed.
 
-The rb_watermark_hit() always sets the shortest_full even if the amount in
-the ring buffer is what it wants. As it is not going to wait, because it
-has what it wants, there's no reason to set shortest_full.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240312115641.6aa8ba08@gandalf.local.home
+Change __my_cpu_offset definition to treat it as a "volatile variable",
+in order to avoid such a mis-optimization.
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
+Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+Signed-off-by: Xing Li <lixing@loongson.cn>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Rui Wang <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/loongarch/include/asm/percpu.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index ed3577d269efe..a3315d569e2bf 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -970,9 +970,10 @@ static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
- 		pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
- 		ret = !pagebusy && full_hit(buffer, cpu, full);
+diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include/asm/percpu.h
+index 9b36ac003f890..8f290e5546cf7 100644
+--- a/arch/loongarch/include/asm/percpu.h
++++ b/arch/loongarch/include/asm/percpu.h
+@@ -29,7 +29,12 @@ static inline void set_my_cpu_offset(unsigned long off)
+ 	__my_cpu_offset = off;
+ 	csr_write64(off, PERCPU_BASE_KS);
+ }
+-#define __my_cpu_offset __my_cpu_offset
++
++#define __my_cpu_offset					\
++({							\
++	__asm__ __volatile__("":"+r"(__my_cpu_offset));	\
++	__my_cpu_offset;				\
++})
  
--		if (!cpu_buffer->shortest_full ||
--		    cpu_buffer->shortest_full > full)
--			cpu_buffer->shortest_full = full;
-+		if (!ret && (!cpu_buffer->shortest_full ||
-+			     cpu_buffer->shortest_full > full)) {
-+		    cpu_buffer->shortest_full = full;
-+		}
- 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- 	}
- 	return ret;
+ #define PERCPU_OP(op, asm_op, c_op)					\
+ static __always_inline unsigned long __percpu_##op(void *ptr,		\
 -- 
 2.43.0
 
