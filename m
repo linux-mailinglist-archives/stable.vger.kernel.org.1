@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-34267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38B5893E9B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEDD8941EB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 886A71F21761
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA36A1F2118F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E336E4779E;
-	Mon,  1 Apr 2024 16:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CB54654F;
+	Mon,  1 Apr 2024 16:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYkqj4hN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2vzK+A9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F49D4596E;
-	Mon,  1 Apr 2024 16:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D451E525;
+	Mon,  1 Apr 2024 16:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987545; cv=none; b=P/cj+ZvxPkhIvQHPJV+eul8LRbGcquULI/tnuESkGyQiwqpIVSB++3fayHcu+pc6MFFHAaX7Z0YSELIz+ViUR9EzGmILzchNJzlJx2EQbEpEAjurGEqRurC1MJnxSPdRbQ0rSuSd+BfZ7VOW3MpsOKu18x7L/cCfxiEnnQdnHsk=
+	t=1711990068; cv=none; b=SwsoqrSXf5D9Pre76ad4ai3OJAyQBc6EzjhuqwZ5qdLlsU3ZHy3iUvPOTljsr950I7jDTq1HJX7mNGV80romS+O4h24WRsUYPbPO7qeZpvTbq2vDfT/eWUyuyEbgPQiZyjp4y1BPD75uW+fc++dIg3lq/r6Ujy7TKe2rJjBKkKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987545; c=relaxed/simple;
-	bh=2s2Y0iStsN5SR7qNSB8Yg2gdT34EvzBp7JoRR81pTUw=;
+	s=arc-20240116; t=1711990068; c=relaxed/simple;
+	bh=wDkzHUdW9M4KI4j214yORY4UvDGmV8U4edh/GiZqo4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFbTOqX0oluJTe9fXUnZz5tV3WiNF2lMeGVHCZRL5J6QxxzJeV0Cd5B79JME+KBNIA0IURhIFZ7oXRoxB8N8xHl94VjQp1OdkudVkGDqV6QpX7Z97UJ7Bg2p50BvDs5eSRBCNFbdrauWLkqMr3WgYhjM4tKhjq7Vth5P7THm1Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYkqj4hN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1093AC433C7;
-	Mon,  1 Apr 2024 16:05:44 +0000 (UTC)
+	 MIME-Version; b=k4BbZwk5jJvdhSCbg7fBz8zJ0e3M+2OLdiTMLTZcQ2PZRN73vmangCid9RSLMmbB5KV2k09WBkQiPni4r5Gdq0j6pAl0tBKtKldRexkodnT+03S857qHwHBjzZs5MrKvNRSUj5Bt+YQBLvhyAs9aVTgwn26sZ450gMSsciw6/iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2vzK+A9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD8BC433C7;
+	Mon,  1 Apr 2024 16:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987545;
-	bh=2s2Y0iStsN5SR7qNSB8Yg2gdT34EvzBp7JoRR81pTUw=;
+	s=korg; t=1711990068;
+	bh=wDkzHUdW9M4KI4j214yORY4UvDGmV8U4edh/GiZqo4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYkqj4hNXJHxS7Xwhf21rw85HpUc04BIban5Jn0XAVpo4QU/BluvdMNjcmh94bwhy
-	 qtpw1AdSnG8aw1Sty+YfHtXuQiMiYacUVy/A9dGyXY8su37FgyJFlX3DcPQFS5WgwI
-	 Xxe6e+2h2AtjRb2ZQJvKieVh4S5N77dvMt0XsKdM=
+	b=I2vzK+A9cFJfu/imwjI4dYMQAF+Nk1IxGbwQhMdYEfeW+Zk87fiZgZEOo7qf+xlzU
+	 M5T3pnHZcmm4lfRDSObInmi9NOvyKuDN5RFOnol2YbdC7CDrj59GkWyzoXVQa9A3G6
+	 +uib3/MFRQweH9+WzR8FDHPvs26tCH1EiLVOtqyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@redhat.com>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 6.8 319/399] nouveau/dmem: handle kcalloc() allocation failure
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 236/396] ALSA: hda/realtek - Add Headset Mic supported Acer NB platform
 Date: Mon,  1 Apr 2024 17:44:45 +0200
-Message-ID: <20240401152558.704853759@linuxfoundation.org>
+Message-ID: <20240401152554.951660116@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 16e87fe23d4af6df920406494ced5c0f4354567b upstream.
+commit 34ab5bbc6e82214d7f7393eba26d164b303ebb4e upstream.
 
-The kcalloc() in nouveau_dmem_evict_chunk() will return null if
-the physical memory has run out. As a result, if we dereference
-src_pfns, dst_pfns or dma_addrs, the null pointer dereference bugs
-will happen.
+It will be enable headset Mic for Acer NB platform.
 
-Moreover, the GPU is going away. If the kcalloc() fails, we could not
-evict all pages mapping a chunk. So this patch adds a __GFP_NOFAIL
-flag in kcalloc().
-
-Finally, as there is no need to have physically contiguous memory,
-this patch switches kcalloc() to kvcalloc() in order to avoid
-failing allocations.
-
-CC: <stable@vger.kernel.org> # v6.1
-Fixes: 249881232e14 ("nouveau/dmem: evict device private memory during release")
-Suggested-by: Danilo Krummrich <dakr@redhat.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240306050104.11259-1-duoming@zju.edu.cn
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/fe0eb6661ca240f3b7762b5b3257710d@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_dmem.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-@@ -378,9 +378,9 @@ nouveau_dmem_evict_chunk(struct nouveau_
- 	dma_addr_t *dma_addrs;
- 	struct nouveau_fence *fence;
- 
--	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
--	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
--	dma_addrs = kcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL);
-+	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dma_addrs = kvcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL | __GFP_NOFAIL);
- 
- 	migrate_device_range(src_pfns, chunk->pagemap.range.start >> PAGE_SHIFT,
- 			npages);
-@@ -406,11 +406,11 @@ nouveau_dmem_evict_chunk(struct nouveau_
- 	migrate_device_pages(src_pfns, dst_pfns, npages);
- 	nouveau_dmem_fence_done(&fence);
- 	migrate_device_finalize(src_pfns, dst_pfns, npages);
--	kfree(src_pfns);
--	kfree(dst_pfns);
-+	kvfree(src_pfns);
-+	kvfree(dst_pfns);
- 	for (i = 0; i < npages; i++)
- 		dma_unmap_page(chunk->drm->dev->dev, dma_addrs[i], PAGE_SIZE, DMA_BIDIRECTIONAL);
--	kfree(dma_addrs);
-+	kvfree(dma_addrs);
- }
- 
- void
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10935,6 +10935,8 @@ static const struct snd_hda_pin_quirk al
+  *   at most one tbl is allowed to define for the same vendor and same codec
+  */
+ static const struct snd_hda_pin_quirk alc269_fallback_pin_fixup_tbl[] = {
++	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1025, "Acer", ALC2XX_FIXUP_HEADSET_MIC,
++		{0x19, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1b, 0x40000000}),
 
 
 
