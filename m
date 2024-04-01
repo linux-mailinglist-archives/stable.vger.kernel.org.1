@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-35317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C40189436A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E923A89405D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 544962838BD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26A1B1C214F4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AA7487BE;
-	Mon,  1 Apr 2024 17:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367B947A7C;
+	Mon,  1 Apr 2024 16:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RYt/hWP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pv0O+U6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB5E1DFF4;
-	Mon,  1 Apr 2024 17:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DC1446AC;
+	Mon,  1 Apr 2024 16:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991001; cv=none; b=ALFcNumH3eUbMP4Lct5RQ1liTOTdyLb4qJ/IGM1DkXKuUgJMyhq1D7R4BeEDZU2GX8ZNEdOkQIWqqvt03FVVULgvG6/bdykUvC8iNsBjmC2zrOgQlByQvWLp7XkRTYZOQ/rjxOYZBs6sgPEJA3MOjEtvoJ14eyTAksehPgbU3O4=
+	t=1711988945; cv=none; b=c2rX/QTjD7fF+9MZs94+DiVIqsv35hWm022/5SDxbin67S6rZnndrzmSp9wOYyGFILHtqaccpCLTQ1M7XpUz5HxLZ73mQI2PcVB2j060K7cqZETQ1YEGKbGkb76p7pesdlbhIgWGV8MqeFJg9X6+dknEcECYhHVGKMJrWOD0t88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991001; c=relaxed/simple;
-	bh=8t70cHffxhJSHLGLEuzLr5yzXyXeZsgyAynitZPZQ2w=;
+	s=arc-20240116; t=1711988945; c=relaxed/simple;
+	bh=UwKLU2F9T+efHfGuBifNda3dWu8DKVRMXPPqVfoHS40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N04+nVW6AKiGa1tU0i+IyK+AjwPcUKyZCYA2WJcHc7qqTG9C7W5yw9bU0ThTuKGNJpfigIQgM9plImlBgHc17TlPbOT67bi5Dz/oTLDpzeGhkfSaYZjGNu6BJBO+8AzR+YOSBofK8J4ll2tHF4wxezLvKBy0I70d5cjbyiFa/Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RYt/hWP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95CEC433C7;
-	Mon,  1 Apr 2024 17:03:20 +0000 (UTC)
+	 MIME-Version; b=mNkErXRGIr8qY5y9SIfXiBe3qfVuxTDg59RHSD8U5lFnj4IsO1Y7kisgYtXn4UWKJRRFwGzB4ohC+R5Xn1HRHKOcLoEwmfD/2jEO/ohTj73ZCT7oNdnwWYYPXhmr9vHlt3YaMxIT53P4DchPd6ZuvoQU75HVMdJ+yZ2FCG/q8lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pv0O+U6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A79BC433C7;
+	Mon,  1 Apr 2024 16:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991001;
-	bh=8t70cHffxhJSHLGLEuzLr5yzXyXeZsgyAynitZPZQ2w=;
+	s=korg; t=1711988944;
+	bh=UwKLU2F9T+efHfGuBifNda3dWu8DKVRMXPPqVfoHS40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1RYt/hWPQ3FIcymWFUJDwwEf/1yIv8feyCbXqvh69vzfIjArsE17nwlaW0gbQF9Lc
-	 zB83Lm7frokUNuQ5hLgen1aUbAq2th9Ftuwp1SsLcsWFfTH7dSR3COTnfp9dtyclzB
-	 F5Mov2C5YdWDhO+n6kU+Dv+40V5LQMVIoen4jD8c=
+	b=Pv0O+U6sBjegXx4gsbNCpLAOdqbIc2/V4dHtw+kzbH1lYKHfGMiT2KhKYk85VESr/
+	 L5leYk15RxWt90IgL1MsaUXoHppxoZlPqVGLF0dHitwpJBygL1cn3SuUgHySQA0214
+	 PvFCNVHcc/OHvxwUj5wjCUk3AT99RBmlJLGNYnss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lillian Berry <lillian@star-ark.net>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/272] wireguard: netlink: check for dangling peer via is_dead instead of empty list
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.7 336/432] efi/libstub: Cast away type warning in use of max()
 Date: Mon,  1 Apr 2024 17:45:23 +0200
-Message-ID: <20240401152534.836063752@linuxfoundation.org>
+Message-ID: <20240401152603.246495659@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +60,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 55b6c738673871c9b0edae05d0c97995c1ff08c4 ]
+commit 61d130f261a3c15ae2c4b6f3ac3517d5d5b78855 upstream.
 
-If all peers are removed via wg_peer_remove_all(), rather than setting
-peer_list to empty, the peer is added to a temporary list with a head on
-the stack of wg_peer_remove_all(). If a netlink dump is resumed and the
-cursored peer is one that has been removed via wg_peer_remove_all(), it
-will iterate from that peer and then attempt to dump freed peers.
+Avoid a type mismatch warning in max() by switching to max_t() and
+providing the type explicitly.
 
-Fix this by instead checking peer->is_dead, which was explictly created
-for this purpose. Also move up the device_update_lock lockdep assertion,
-since reading is_dead relies on that.
-
-It can be reproduced by a small script like:
-
-    echo "Setting config..."
-    ip link add dev wg0 type wireguard
-    wg setconf wg0 /big-config
-    (
-            while true; do
-                    echo "Showing config..."
-                    wg showconf wg0 > /dev/null
-            done
-    ) &
-    sleep 4
-    wg setconf wg0 <(printf "[Peer]\nPublicKey=$(wg genkey)\n")
-
-Resulting in:
-
-    BUG: KASAN: slab-use-after-free in __lock_acquire+0x182a/0x1b20
-    Read of size 8 at addr ffff88811956ec70 by task wg/59
-    CPU: 2 PID: 59 Comm: wg Not tainted 6.8.0-rc2-debug+ #5
-    Call Trace:
-     <TASK>
-     dump_stack_lvl+0x47/0x70
-     print_address_description.constprop.0+0x2c/0x380
-     print_report+0xab/0x250
-     kasan_report+0xba/0xf0
-     __lock_acquire+0x182a/0x1b20
-     lock_acquire+0x191/0x4b0
-     down_read+0x80/0x440
-     get_peer+0x140/0xcb0
-     wg_get_device_dump+0x471/0x1130
-
-Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Reported-by: Lillian Berry <lillian@star-ark.net>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3cb4a4827596abc82e ("efi/libstub: fix efi_random_alloc() ...")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireguard/netlink.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/firmware/efi/libstub/randomalloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index 6d1bd9f52d02a..81eef56773a23 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -255,17 +255,17 @@ static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (!peers_nest)
- 		goto out;
- 	ret = 0;
--	/* If the last cursor was removed via list_del_init in peer_remove, then
-+	lockdep_assert_held(&wg->device_update_lock);
-+	/* If the last cursor was removed in peer_remove or peer_remove_all, then
- 	 * we just treat this the same as there being no more peers left. The
- 	 * reason is that seq_nr should indicate to userspace that this isn't a
- 	 * coherent dump anyway, so they'll try again.
- 	 */
- 	if (list_empty(&wg->peer_list) ||
--	    (ctx->next_peer && list_empty(&ctx->next_peer->peer_list))) {
-+	    (ctx->next_peer && ctx->next_peer->is_dead)) {
- 		nla_nest_cancel(skb, peers_nest);
- 		goto out;
- 	}
--	lockdep_assert_held(&wg->device_update_lock);
- 	peer = list_prepare_entry(ctx->next_peer, &wg->peer_list, peer_list);
- 	list_for_each_entry_continue(peer, &wg->peer_list, peer_list) {
- 		if (get_peer(peer, skb, ctx)) {
--- 
-2.43.0
-
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -120,7 +120,7 @@ efi_status_t efi_random_alloc(unsigned l
+ 			continue;
+ 		}
+ 
+-		target = round_up(max(md->phys_addr, alloc_min), align) + target_slot * align;
++		target = round_up(max_t(u64, md->phys_addr, alloc_min), align) + target_slot * align;
+ 		pages = size / EFI_PAGE_SIZE;
+ 
+ 		status = efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS,
 
 
 
