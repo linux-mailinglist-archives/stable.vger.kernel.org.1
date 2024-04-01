@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0692C8940E9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6929893F53
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DA41C21550
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91B75283B1A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7771E525;
-	Mon,  1 Apr 2024 16:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F07047A5D;
+	Mon,  1 Apr 2024 16:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zcso1FUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWEkYtVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1DF1C0DE7;
-	Mon,  1 Apr 2024 16:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EED4778C;
+	Mon,  1 Apr 2024 16:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989350; cv=none; b=PDetb0w/7SgPTOZNAzC3VZki6eXojqSLZvFGh/VlM6nsmfyTVaEFETxwTU86LrmE1lacXpQaLPi/e4RiGcwuKBLpXSUwGGqRoDDS+IeLG+7HhWAWpW2Yfl4gmaiEDrzWmJcUXGw/o990rXSG9RV9scoolJs8jgH0a0+owdwVFmk=
+	t=1711988099; cv=none; b=gogXM9NyToHh2pOhb4N+XvKoCfo0vgA4pk2Zh82bwR+47uKCVRhwDISbQ5lqE5vsPxrQrd4lFVxGX6uT9mX9qkRrTnBE0f9d4RklOhCAPgHhvR2C1a0eul2CEXKIa9pwYZvmnahexDB3rmAjrgo1bX8rxaOirb1aLRveli5WYyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989350; c=relaxed/simple;
-	bh=KJFtnc7kwrmeO1tAKCTWyhfRWEhlWFgNDWVz9eVbom4=;
+	s=arc-20240116; t=1711988099; c=relaxed/simple;
+	bh=wy671zdzdrawi+sqHMb6wU+2L8NYA8AMFaqvgRF0QQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAu8E18czvzHHDDa51bZUrpXA8yzK280yhZCbi1NhoAQsKLlSbJpHaT7wSE7iyYVkWLL2vPOSi3svaVyh10YtN6Fsu2lEAZwM9VoncRKDBEXuBXdD3iB/2FTIfhlAzRft181xmTxK2gLdX3A0BOxrkmVq/vIafY/B+g4fD/90l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zcso1FUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0D0C433C7;
-	Mon,  1 Apr 2024 16:35:49 +0000 (UTC)
+	 MIME-Version; b=GT8SmhKyUj9eW8KOoepOwkfuuVFQ8BFNtsWeSmckLBGzJKmVhdGrROTxPGASOSDLBG+aXoRAJJRregwctnEwPtAnAdiqvrrqT5stxF8WtIU7g03ZKarvD7lZm96e+iQSVGBHXAfvAw3y0x/G84KRuJOgUwDbXM7Tt0AsqpdscNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWEkYtVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067E3C433C7;
+	Mon,  1 Apr 2024 16:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989350;
-	bh=KJFtnc7kwrmeO1tAKCTWyhfRWEhlWFgNDWVz9eVbom4=;
+	s=korg; t=1711988098;
+	bh=wy671zdzdrawi+sqHMb6wU+2L8NYA8AMFaqvgRF0QQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zcso1FUoxBbHmHFgtgjIlzfJM7ZsUp7CeK5+XDcTOSLAMw7lAEyrwo4yJvV0vir0s
-	 M6vphdVWfjV6tGZL+Inz4ZDIbI5BiwBYjCHzG6lidzXm571V19c1+M659MuBWU1y9h
-	 gZcAfYE95jq4emrD3RjEnhIAc5zR/eEGxzMQA508=
+	b=CWEkYtVFGvO0LhcYUpAc793A4K2whIPtbMgpyqOgyyevjRliBD8cbUHG6AZifehUX
+	 Aca54K/a+XOxBaXcXcESK3/RnEfz49VoBby01+OpZdaraxSGxALXXM5C1enXSvgiTZ
+	 1Rxxa89WQySXTx0yDcnAM/fouOLwPLN02j/qXGc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Dhruva Gole <d-gole@ti.com>,
+	Qingliang Li <qingliang.li@mediatek.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/396] media: mc: Rename pad variable to clarify intent
+Subject: [PATCH 6.7 084/432] PM: sleep: wakeirq: fix wake irq warning in system suspend
 Date: Mon,  1 Apr 2024 17:41:11 +0200
-Message-ID: <20240401152548.561723730@linuxfoundation.org>
+Message-ID: <20240401152555.625577667@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Qingliang Li <qingliang.li@mediatek.com>
 
-[ Upstream commit 9ec9109cf9f611e3ec9ed0355afcc7aae5e73176 ]
+[ Upstream commit e7a7681c859643f3f2476b2a28a494877fd89442 ]
 
-The pad local variable in the media_pipeline_explore_next_link()
-function is used to store the pad through which the entity has been
-reached. Rename it to origin to reflect that and make the code easier to
-read. This will be even more important in subsequent commits when
-expanding the function with additional logic.
+When driver uses pm_runtime_force_suspend() as the system suspend callback
+function and registers the wake irq with reverse enable ordering, the wake
+irq will be re-enabled when entering system suspend, triggering an
+'Unbalanced enable for IRQ xxx' warning. In this scenario, the call
+sequence during system suspend is as follows:
+  suspend_devices_and_enter()
+    -> dpm_suspend_start()
+      -> dpm_run_callback()
+        -> pm_runtime_force_suspend()
+          -> dev_pm_enable_wake_irq_check()
+          -> dev_pm_enable_wake_irq_complete()
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+    -> suspend_enter()
+      -> dpm_suspend_noirq()
+        -> device_wakeup_arm_wake_irqs()
+          -> dev_pm_arm_wake_irq()
+
+To fix this issue, complete the setting of WAKE_IRQ_DEDICATED_ENABLED flag
+in dev_pm_enable_wake_irq_complete() to avoid redundant irq enablement.
+
+Fixes: 8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Qingliang Li <qingliang.li@mediatek.com>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-entity.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/base/power/wakeirq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
-index c5f44cbf9f877..7da899bc9d08f 100644
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -592,13 +592,13 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 					    struct media_pipeline_walk *walk)
- {
- 	struct media_pipeline_walk_entry *entry = media_pipeline_walk_top(walk);
--	struct media_pad *pad;
-+	struct media_pad *origin;
- 	struct media_link *link;
- 	struct media_pad *local;
- 	struct media_pad *remote;
- 	int ret;
+diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
+index 42171f766dcba..5a5a9e978e85f 100644
+--- a/drivers/base/power/wakeirq.c
++++ b/drivers/base/power/wakeirq.c
+@@ -313,8 +313,10 @@ void dev_pm_enable_wake_irq_complete(struct device *dev)
+ 		return;
  
--	pad = entry->pad;
-+	origin = entry->pad;
- 	link = list_entry(entry->links, typeof(*link), list);
- 	media_pipeline_walk_pop(walk);
+ 	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED &&
+-	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE)
++	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE) {
+ 		enable_irq(wirq->irq);
++		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
++	}
+ }
  
-@@ -608,7 +608,7 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 		link->sink->entity->name, link->sink->index);
- 
- 	/* Get the local pad and remote pad. */
--	if (link->source->entity == pad->entity) {
-+	if (link->source->entity == origin->entity) {
- 		local = link->source;
- 		remote = link->sink;
- 	} else {
-@@ -620,8 +620,9 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 	 * Skip links that originate from a different pad than the incoming pad
- 	 * that is not connected internally in the entity to the incoming pad.
- 	 */
--	if (pad != local &&
--	    !media_entity_has_pad_interdep(pad->entity, pad->index, local->index)) {
-+	if (origin != local &&
-+	    !media_entity_has_pad_interdep(origin->entity, origin->index,
-+					   local->index)) {
- 		dev_dbg(walk->mdev->dev,
- 			"media pipeline: skipping link (no route)\n");
- 		return 0;
+ /**
 -- 
 2.43.0
 
