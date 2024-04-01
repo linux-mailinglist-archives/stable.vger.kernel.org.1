@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-34554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0F3893FD4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3175894181
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E6041C20FFF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539041F23D65
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20364778E;
-	Mon,  1 Apr 2024 16:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFDE4C3C3;
+	Mon,  1 Apr 2024 16:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvYJ4q/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuYrc6ZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7015D446AC;
-	Mon,  1 Apr 2024 16:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BB7481B8;
+	Mon,  1 Apr 2024 16:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988512; cv=none; b=ZRNEo5+LS1BvvOuzoZhZPX8o/xX7f3JFQLyN/dcsbIKtIIOaAfT9hzoWR6BBd0QSwp9vBm86YWuJE9WC8iX+vV917NXONVJLqlKb/4VwE5YMmel9gwLEiMb3lHjaYO8nHMtDri3kAkxn7t6if7Ax20SnD2xn1vIKj2DtiutQE00=
+	t=1711989763; cv=none; b=RcKzbMWhDIvDchKd9u1D9K/xsR6yjVjryTmy1IrpwrPaSMWqOR6NnHF0M1W5Xc3QGVH1A8oRh41Zzuv1W+LrBQACNPABLU5ftFr9hYfTgA27F06S+cJkqKai3LlQ3g0puL9NNBUaqtXUW53fE2HMgYoZDpvH5R2+OUmgvmZcJKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988512; c=relaxed/simple;
-	bh=9jqZ2k0fL1UKgwwaqczpBetiuJ0XnxaQeDdslulflxU=;
+	s=arc-20240116; t=1711989763; c=relaxed/simple;
+	bh=voUdliA5hMHKoTLZ3sa0BBg/eHwkdpBfIH5DrrxODMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDo/B8aelcHd98id8HBintkN5TDZKhzfwWcWU30KIKvyZpyUUAeDgidUWGE5wztyNzPYv1p68kIugrH1kV9OkNburP4Bsxdgbw97FWWETzmEvFHwoqS5zfTnSEEds7vZuWef4ljypTZ437D2aXoIgu/5jO675Ey59RI/Yz1FFYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvYJ4q/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C75C433C7;
-	Mon,  1 Apr 2024 16:21:51 +0000 (UTC)
+	 MIME-Version; b=fN07zUjcMMQGjx+zkJH3kM7ECJI7Lg/jSpyyCJVlfpL8Uo+NiogVZWcAwokHoYTVX0kB/Xo8yn4+F9Am9YhMz44xUmwqfpGhlEG6EDSHfk3sr5BzhYUzckKVMlTB7W93XtFqjwGM3q4Z+lfATl3p1SrKpIT1lo85HzLQ1gPQ/H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuYrc6ZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA6AC433F1;
+	Mon,  1 Apr 2024 16:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988512;
-	bh=9jqZ2k0fL1UKgwwaqczpBetiuJ0XnxaQeDdslulflxU=;
+	s=korg; t=1711989763;
+	bh=voUdliA5hMHKoTLZ3sa0BBg/eHwkdpBfIH5DrrxODMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BvYJ4q/fGdUQfurhZ4djEahYze+15DQ++meDZqoo0eigUeBll65ggMkcBZy+pQN8K
-	 Ofv7tb6/JK8eSamuom74bsRIp4iFNTaqtGhT0RcleagtnoRgylx2FCwN9b5od9Rsa/
-	 un/JpBc+Dy7l4prGtCSqKc0AsYLKpsZ0E8zly3Yg=
+	b=NuYrc6ZHlMbIPjFM2QwdW1efkfLCGlUFCyBr7wKrn9oLWFGI3dwCk/5GxMugGD1xC
+	 Ulj9fro3C0iKVLidO/gIZU/9Q+t4UQ5dO62LrA37jYjA3JhsxpfodYqNkg/jRNs8hA
+	 87odc7/ByIuQSU8FSORluePgLrlxfDK5QQAAMcLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Chaitanya Dhere <chaitanya.dhere@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Swapnil Patel <swapnil.patel@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 207/432] drm/amd/display: Change default size for dummy plane in DML2
+Subject: [PATCH 6.6 145/396] drm/probe-helper: warn about negative .get_modes()
 Date: Mon,  1 Apr 2024 17:43:14 +0200
-Message-ID: <20240401152559.308284066@linuxfoundation.org>
+Message-ID: <20240401152552.269450433@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Swapnil Patel <swapnil.patel@amd.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 75eb8f7df65c5e6eb22a5aff8deb60ce0b65de1a ]
+[ Upstream commit 7af03e688792293ba33149fb8df619a8dff90e80 ]
 
-[WHY & HOW]
-Currently, to map dc states into dml_display_cfg,
-We create a dummy plane if the stream doesn't have any planes
-attached to it. This dummy plane uses max addersable width height.
-This results in certain mode validations failing when they shouldn't.
+The .get_modes() callback is supposed to return the number of modes,
+never a negative error code. If a negative value is returned, it'll just
+be interpreted as a negative count, and added to previous calculations.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Document the rules, but handle the negative values gracefully with an
+error message.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/50208c866facc33226a3c77b82bb96aeef8ef310.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/dml2/dml2_translation_helper.c  | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_probe_helper.c       | 7 +++++++
+ include/drm/drm_modeset_helper_vtables.h | 3 ++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index 16452dae4acac..5ef8c2e255808 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -824,13 +824,25 @@ static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state
+diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
+index 3f479483d7d80..15ed974bcb988 100644
+--- a/drivers/gpu/drm/drm_probe_helper.c
++++ b/drivers/gpu/drm/drm_probe_helper.c
+@@ -419,6 +419,13 @@ static int drm_helper_probe_get_modes(struct drm_connector *connector)
  
- static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_stream_state *in)
- {
-+	dml_uint_t width, height;
+ 	count = connector_funcs->get_modes(connector);
+ 
++	/* The .get_modes() callback should not return negative values. */
++	if (count < 0) {
++		drm_err(connector->dev, ".get_modes() returned %pe\n",
++			ERR_PTR(count));
++		count = 0;
++	}
 +
-+	if (in->timing.h_addressable > 3840)
-+		width = 3840;
-+	else
-+		width = in->timing.h_addressable;	// 4K max
-+
-+	if (in->timing.v_addressable > 2160)
-+		height = 2160;
-+	else
-+		height = in->timing.v_addressable;	// 4K max
-+
- 	out->CursorBPP[location] = dml_cur_32bit;
- 	out->CursorWidth[location] = 256;
- 
- 	out->GPUVMMinPageSizeKBytes[location] = 256;
- 
--	out->ViewportWidth[location] = in->timing.h_addressable;
--	out->ViewportHeight[location] = in->timing.v_addressable;
-+	out->ViewportWidth[location] = width;
-+	out->ViewportHeight[location] = height;
- 	out->ViewportStationary[location] = false;
- 	out->ViewportWidthChroma[location] = 0;
- 	out->ViewportHeightChroma[location] = 0;
-@@ -849,7 +861,7 @@ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned
- 	out->HTapsChroma[location] = 0;
- 	out->VTapsChroma[location] = 0;
- 	out->SourceScan[location] = dml_rotation_0;
--	out->ScalerRecoutWidth[location] = in->timing.h_addressable;
-+	out->ScalerRecoutWidth[location] = width;
- 
- 	out->LBBitPerPixel[location] = 57;
+ 	/*
+ 	 * Fallback for when DDC probe failed in drm_get_edid() and thus skipped
+ 	 * override/firmware EDID.
+diff --git a/include/drm/drm_modeset_helper_vtables.h b/include/drm/drm_modeset_helper_vtables.h
+index e3c3ac6159094..159213786e6e1 100644
+--- a/include/drm/drm_modeset_helper_vtables.h
++++ b/include/drm/drm_modeset_helper_vtables.h
+@@ -898,7 +898,8 @@ struct drm_connector_helper_funcs {
+ 	 *
+ 	 * RETURNS:
+ 	 *
+-	 * The number of modes added by calling drm_mode_probed_add().
++	 * The number of modes added by calling drm_mode_probed_add(). Return 0
++	 * on failures (no modes) instead of negative error codes.
+ 	 */
+ 	int (*get_modes)(struct drm_connector *connector);
  
 -- 
 2.43.0
