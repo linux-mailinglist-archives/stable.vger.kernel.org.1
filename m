@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-33915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB358939D6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:57:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB3B8939F4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 12:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F4551C2105C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:57:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4607F281E3D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 10:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E289710A3E;
-	Mon,  1 Apr 2024 09:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBDD125C4;
+	Mon,  1 Apr 2024 10:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="OVDxb2V3"
+	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="HyZ3+wUO"
 X-Original-To: stable@vger.kernel.org
 Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733A3101C5;
-	Mon,  1 Apr 2024 09:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F741171A;
+	Mon,  1 Apr 2024 10:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711965452; cv=none; b=eNIuOlvLvvCDb6DoAOHI7hqKadlUBdhj3DGo5boObNuwUuW7RgZOvn3Mr5IeVhIfZutsCgpwHdClx+9DBEPEvbpbXbdknZ5D2SU1xArjFPgzNn+I1Z3Vo/KvT1kYzt5xPrRU4dUEdX48elHzUeh2GM4RTgWVrugdKovmefswjC4=
+	t=1711965811; cv=none; b=VnybXX7NbR4sd4Wl5IM2iLUlXkiwf06TIJWwMd/biSVobnfBPvlkljaI+5jO9E8WaA8K9qwHJGnVS6ZZwGbBF+juAv8G6ovYihEBUeisEI8NNVKkp5C4xz3yPEJRyFTa6BJoazUecbw0gha3skzC1BYgPnptR9Xn3+YLfP0pCNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711965452; c=relaxed/simple;
-	bh=VQZhdw09jrXTFrGwzX+rLaXVEw+XW/mOek8JIA6cGZM=;
+	s=arc-20240116; t=1711965811; c=relaxed/simple;
+	bh=YIceQqgjbT2hYX+XMuDAks+pSm299AXzqKHWNQ7zWIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knJRyrbB0jtPJ1ZMtpR6QbdjmCM+ImQsuajU/iTHYsWetlD99QP8g7+BOq3clVE+5beg7dfICRwFHHRe30Y6383mWxwfSH3VZDDHfh8yH+F9p6GjMUp6E8jkXw6h3COmswhr6mAMq3Fli/K7+TfZIulFmoKJSRuMiqs8CsoL72k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=OVDxb2V3; arc=none smtp.client-ip=5.252.227.236
+	 MIME-Version; b=McKrWlJxOamKl81mIRIuUdlRbQhAgR8tRb/rhI9rU+st/7BoCyAJxtO5jLUSYfH6WKu82Z9//tZ1B5mJeSKVanvPBhoOOsmO9UjMWTM0hLSBvns/AXUFEG2e53WvUXmFu8gdCSQtB/r6eYSGPTB90/7PQmPwG3BYXvHRA00eVGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=HyZ3+wUO; arc=none smtp.client-ip=5.252.227.236
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
 From: Alexander Wetzel <Alexander@wetzel-home.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-	s=wetzel-home; t=1711965440;
-	bh=VQZhdw09jrXTFrGwzX+rLaXVEw+XW/mOek8JIA6cGZM=;
+	s=wetzel-home; t=1711965805;
+	bh=YIceQqgjbT2hYX+XMuDAks+pSm299AXzqKHWNQ7zWIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OVDxb2V3ZvrNNEUNEbfcoMuWiqa9QKUV+uMtT+2IHg1rw2OI9CbY47okrm8rOqDSY
-	 cLk7eqXhB3ap6DsRA9Kf9mGu9957NQtiu4UkDxwx62342UPUtt1v51QRsG52DyMA6E
-	 vKBPcM5TA3RUtjFGq6FxEPRsjabOReBmuT7iG27Y=
+	b=HyZ3+wUOE1J8aCCaD2RmFIWApWdPzjqOEMBAEc9NQpg0xbCCRzxPnyraO1vba5uSz
+	 oYoOUxWNLVog0Nlu8vrSfuNxgqpHHCkLtu8hzWUGixhiWFRev2gHKMzQN8IwhmejcP
+	 fimgcIjmwBCQehD9o9Dq9XQDsHTO9P/Ot9EXJMek=
 To: dgilbert@interlog.com
 Cc: gregkh@linuxfoundation.org,
 	sachinp@linux.ibm.com,
@@ -46,9 +46,9 @@ Cc: gregkh@linuxfoundation.org,
 	linuxppc-dev@lists.ozlabs.org,
 	martin.petersen@oracle.com,
 	stable@vger.kernel.org
-Subject: [PATCH] scsi: sg: Avoid race in error handling & drop bogus warn
-Date: Mon,  1 Apr 2024 11:56:29 +0200
-Message-ID: <20240401095629.5089-1-Alexander@wetzel-home.de>
+Subject: [PATCH v2] scsi: sg: Avoid race in error handling & drop bogus warn
+Date: Mon,  1 Apr 2024 12:03:17 +0200
+Message-ID: <20240401100317.5395-1-Alexander@wetzel-home.de>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <81266270-42F4-48F9-9139-8F0C3F0A6553@linux.ibm.com>
 References: <81266270-42F4-48F9-9139-8F0C3F0A6553@linux.ibm.com>
@@ -62,14 +62,14 @@ Content-Transfer-Encoding: 8bit
 
 commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
 introduced an incorrect WARN_ON_ONCE() and missed a sequence where
-sg_device_destroy() after scsi_device_put() when handling errors.
+sg_device_destroy() was used after scsi_device_put().
 
 sg_device_destroy() is accessing the parent scsi_device request_queue which
 will already be set to NULL when the preceding call to scsi_device_put()
 removed the last reference to the parent scsi_device.
 
 Drop the incorrect WARN_ON_ONCE() - allowing more than one concurrent
-access to the sg device -  and make sure sg_device_destroy() is not used
+access to the sg device - and make sure sg_device_destroy() is not used
 after scsi_device_put() in the error handling.
 
 Link: https://lore.kernel.org/all/5375B275-D137-4D5F-BE25-6AF8ACAE41EF@linux.ibm.com
@@ -77,6 +77,8 @@ Fixes: 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
 Cc: stable@vger.kernel.org
 Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
 ---
+
+Changes compared to V1: fixed commit message
 
 The WARN_ON_ONCE() was kind of stupid to add:
 We get add reference for each sg_open(). So opening a second session and
