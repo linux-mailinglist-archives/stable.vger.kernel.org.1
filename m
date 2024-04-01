@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31295894336
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB1C89402C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B68E4B20A59
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD51F1C215B5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DEC48781;
-	Mon,  1 Apr 2024 17:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10013446D5;
+	Mon,  1 Apr 2024 16:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kw/+1zPs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTGdj1SY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C857347A6B;
-	Mon,  1 Apr 2024 17:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A7D1CA8F;
+	Mon,  1 Apr 2024 16:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990856; cv=none; b=LQ4K5Wz0NsaXhGMV+TD13C8Z8JNKt/7+M7WDcbrOTyILhFgqB1ANIepXOT5f1BEBTdFzwFZn8H3440BL7MJde7NA1eWFlGehGKBXlPR4MAJ2Sz/awYqNq4uXquiStAjO+WiT65ggyb6z/vYDB+q9QXPF2ND4ocsM0K7XZDE6gkY=
+	t=1711988792; cv=none; b=EjGab5alZgFkAL+yKzuooVTlNWBpLCYWAnpUhBeJJ3cb1mm6py/yDrwe9VNqYWmBOzE55v7w9Tojh4EU7DPeVyXAJFQdJSG+cUz54IsIGToXn/1cZKgA1eRZRkrLIaODgus+DHh1piOrXUWvNl9uLG8e+AAxO7+XOJWLdkmzn1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990856; c=relaxed/simple;
-	bh=Ux594vPgpac524bAHtE2607NuX0GdXiz/iaTpImU8I4=;
+	s=arc-20240116; t=1711988792; c=relaxed/simple;
+	bh=t+W/n3krD+YrPj9URdUOXm3TkhC2059JmRHA3w9TvXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQas6KzxtNBNi0wTTFrJSMQOiMBcRfNDDLwjsgj4GIoIBgpGcpwSZHUjBnfHPOqiGIHt8hYbcMqTGjT9YDegGqSkl0dLEoLs5Au0IXFNEQa+G8oDK6V+VEQLLTT47nQEfrGMGX+hZYointja96G9gHHg1k9h/IdXJ1TYwX9fTiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kw/+1zPs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFD5C433F1;
-	Mon,  1 Apr 2024 17:00:56 +0000 (UTC)
+	 MIME-Version; b=Fj4Ofv8XUFGNjh5r0oUDZ8WCC9flDjB70vhdvB7gZbVu0COlkte8xyTtKiDmUD87TzJW/lj9FU1QSqI+XWSkOvEzi1hTQOX7qSU/C0T5VtXcBoWIDtlPU8bic/wYG/YKGuJJonKFfkHZOs3oNEjApQJJS8lW215DkO8QiVB8RBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTGdj1SY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43131C433C7;
+	Mon,  1 Apr 2024 16:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990856;
-	bh=Ux594vPgpac524bAHtE2607NuX0GdXiz/iaTpImU8I4=;
+	s=korg; t=1711988792;
+	bh=t+W/n3krD+YrPj9URdUOXm3TkhC2059JmRHA3w9TvXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kw/+1zPs5bS2rkqQsLKQ2SW7srJBnv6NK3o3LodhkHbTFmgJ+iEzeo09aMVinj+/a
-	 UldcW9PaB+gVzVH5LjKrm33cAcSQQRtukWCQ1FfM7sGzOEtEDo70el43B5AhoX5wXj
-	 aYx25MgimZsG+3XkEXutcSn/8Z7W17y3Fng5yeE4=
+	b=NTGdj1SYR+tjv7xGDXijQ2Y1Qye5XeG9SrgV5uMGaIOF19MmNpjBo3zt8D+BW8Z8+
+	 ONY9uyYlMGybvrw8+c+puwPUxRGU1BlvdTlH2n7SkKWKACDBzZwFWB84tWy1zUvTNi
+	 zfP0ZxLgdwAzYdVRGDJmeHv12uaIDEZ2RD29kPIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan-Benedict Glaw <jbglaw@lug-owl.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/272] powerpc/fsl: Fix mfpmr build errors with newer binutils
+	Alan Stern <stern@rowland.harvard.edu>,
+	PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 261/432] USB: usb-storage: Prevent divide-by-0 error in isd200_ata_command
 Date: Mon,  1 Apr 2024 17:44:08 +0200
-Message-ID: <20240401152532.365543401@linuxfoundation.org>
+Message-ID: <20240401152600.933243743@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 5f491356b7149564ab22323ccce79c8d595bfd0c ]
+commit 014bcf41d946b36a8f0b8e9b5d9529efbb822f49 upstream.
 
-Binutils 2.38 complains about the use of mfpmr when building
-ppc6xx_defconfig:
+The isd200 sub-driver in usb-storage uses the HEADS and SECTORS values
+in the ATA ID information to calculate cylinder and head values when
+creating a CDB for READ or WRITE commands.  The calculation involves
+division and modulus operations, which will cause a crash if either of
+these values is 0.  While this never happens with a genuine device, it
+could happen with a flawed or subversive emulation, as reported by the
+syzbot fuzzer.
 
-    CC      arch/powerpc/kernel/pmc.o
-  {standard input}: Assembler messages:
-  {standard input}:45: Error: unrecognized opcode: `mfpmr'
-  {standard input}:56: Error: unrecognized opcode: `mtpmr'
+Protect against this possibility by refusing to bind to the device if
+either the ATA_ID_HEADS or ATA_ID_SECTORS value in the device's ID
+information is 0.  This requires isd200_Initialization() to return a
+negative error code when initialization fails; currently it always
+returns 0 (even when there is an error).
 
-This is because by default the kernel is built with -mcpu=powerpc, and
-the mt/mfpmr instructions are not defined.
-
-It can be avoided by enabling CONFIG_E300C3_CPU, but just adding that to
-the defconfig will leave open the possibility of randconfig failures.
-
-So add machine directives around the mt/mfpmr instructions to tell
-binutils how to assemble them.
-
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-usb/0000000000003eb868061245ba7f@google.com/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Reported-by: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240229122521.762431-3-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/b1e605ea-333f-4ac0-9511-da04f411763e@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/reg_fsl_emb.h | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/usb/storage/isd200.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/reg_fsl_emb.h b/arch/powerpc/include/asm/reg_fsl_emb.h
-index a21f529c43d96..8359c06d92d9f 100644
---- a/arch/powerpc/include/asm/reg_fsl_emb.h
-+++ b/arch/powerpc/include/asm/reg_fsl_emb.h
-@@ -12,9 +12,16 @@
- #ifndef __ASSEMBLY__
- /* Performance Monitor Registers */
- #define mfpmr(rn)	({unsigned int rval; \
--			asm volatile("mfpmr %0," __stringify(rn) \
-+			asm volatile(".machine push; " \
-+				     ".machine e300; " \
-+				     "mfpmr %0," __stringify(rn) ";" \
-+				     ".machine pop; " \
- 				     : "=r" (rval)); rval;})
--#define mtpmr(rn, v)	asm volatile("mtpmr " __stringify(rn) ",%0" : : "r" (v))
-+#define mtpmr(rn, v)	asm volatile(".machine push; " \
-+				     ".machine e300; " \
-+				     "mtpmr " __stringify(rn) ",%0; " \
-+				     ".machine pop; " \
-+				     : : "r" (v))
- #endif /* __ASSEMBLY__ */
+--- a/drivers/usb/storage/isd200.c
++++ b/drivers/usb/storage/isd200.c
+@@ -1105,7 +1105,7 @@ static void isd200_dump_driveid(struct u
+ static int isd200_get_inquiry_data( struct us_data *us )
+ {
+ 	struct isd200_info *info = (struct isd200_info *)us->extra;
+-	int retStatus = ISD200_GOOD;
++	int retStatus;
+ 	u16 *id = info->id;
  
- /* Freescale Book E Performance Monitor APU Registers */
--- 
-2.43.0
-
+ 	usb_stor_dbg(us, "Entering isd200_get_inquiry_data\n");
+@@ -1137,6 +1137,13 @@ static int isd200_get_inquiry_data( stru
+ 				isd200_fix_driveid(id);
+ 				isd200_dump_driveid(us, id);
+ 
++				/* Prevent division by 0 in isd200_scsi_to_ata() */
++				if (id[ATA_ID_HEADS] == 0 || id[ATA_ID_SECTORS] == 0) {
++					usb_stor_dbg(us, "   Invalid ATA Identify data\n");
++					retStatus = ISD200_ERROR;
++					goto Done;
++				}
++
+ 				memset(&info->InquiryData, 0, sizeof(info->InquiryData));
+ 
+ 				/* Standard IDE interface only supports disks */
+@@ -1202,6 +1209,7 @@ static int isd200_get_inquiry_data( stru
+ 		}
+ 	}
+ 
++ Done:
+ 	usb_stor_dbg(us, "Leaving isd200_get_inquiry_data %08X\n", retStatus);
+ 
+ 	return(retStatus);
+@@ -1481,22 +1489,27 @@ static int isd200_init_info(struct us_da
+ 
+ static int isd200_Initialization(struct us_data *us)
+ {
++	int rc = 0;
++
+ 	usb_stor_dbg(us, "ISD200 Initialization...\n");
+ 
+ 	/* Initialize ISD200 info struct */
+ 
+-	if (isd200_init_info(us) == ISD200_ERROR) {
++	if (isd200_init_info(us) < 0) {
+ 		usb_stor_dbg(us, "ERROR Initializing ISD200 Info struct\n");
++		rc = -ENOMEM;
+ 	} else {
+ 		/* Get device specific data */
+ 
+-		if (isd200_get_inquiry_data(us) != ISD200_GOOD)
++		if (isd200_get_inquiry_data(us) != ISD200_GOOD) {
+ 			usb_stor_dbg(us, "ISD200 Initialization Failure\n");
+-		else
++			rc = -EINVAL;
++		} else {
+ 			usb_stor_dbg(us, "ISD200 Initialization complete\n");
++		}
+ 	}
+ 
+-	return 0;
++	return rc;
+ }
+ 
+ 
 
 
 
