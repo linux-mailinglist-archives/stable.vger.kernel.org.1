@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCBD8943B4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848338942A9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEAA41C21CBD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E065DB20512
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A04481B8;
-	Mon,  1 Apr 2024 17:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79588433DA;
+	Mon,  1 Apr 2024 16:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/bkRwNJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDkrqXi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7EE47A64;
-	Mon,  1 Apr 2024 17:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FED63E;
+	Mon,  1 Apr 2024 16:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991222; cv=none; b=nRLqD5LH9tUy4xIqFAqrfV55M5x0Gsbd6fkHl84CxOvU0I8MXiDP+zf3UY8/HpDWZHu/+NKPbxWmBIDocxOilNkfChpIm6mHqHq0uEy5UWXpeuV0Yit+hVlPgUsKYz5zPZ0bqPuYGUpr+rfexBXzj8GNPakF3W4adxl05YafKIA=
+	t=1711990490; cv=none; b=Zm3rxfmNChytmjgSoJXb8TDo0PiwhqKJOnnMwqsTjXZlJ1cUaPVil+erog/DFlHQVwrR0Hjt8l+sDoW4+2o+5KaYpNTuqICgc3KwaV5vW/M3Q11PbPlWU14w4a4FSRRRBYw5a/p2o2w8AxTjjpxX28e/ZweuVXS25LAQfEJQSRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991222; c=relaxed/simple;
-	bh=ITBnKnhqNTg8anUR4AjpsephsxBkTHBO5EKbrxTO+uQ=;
+	s=arc-20240116; t=1711990490; c=relaxed/simple;
+	bh=kkjKIQCTttz20BNoFtySvEWvcH0lh5a02zmyzIfozv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hz5fe5uD9lqPzFreOafGxu0OWOlZPgWnAq/YVw+5+ZUYH2rHKFHC27oIo4tHl8kYNoVb2yzBT4xCwXOp9XqGIjemDYBZsA3oZno/JtIUclKJc2GYbhKL66myNntfVnCzFNppHAc7xQDtcoxJ1ZeM2g5fJdf79FmxYgJVe2J4Dwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/bkRwNJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F09C433C7;
-	Mon,  1 Apr 2024 17:07:01 +0000 (UTC)
+	 MIME-Version; b=HmiNnDHt8h27i47u1kyIgVctOGkzNGV/hghCt5Uq8SN07/5uTrj96mRPon9LbAQM781zCLjHrmSH4ZOSFxSm6fkVlUnVCHzaKP42qi2Z44VaZ6UTTYFJ/SWANRDmvoikgYHto+9dY2qFMuxuxOMK13QdKtpGcUeGktvRaZUEzrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDkrqXi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B595C433C7;
+	Mon,  1 Apr 2024 16:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991222;
-	bh=ITBnKnhqNTg8anUR4AjpsephsxBkTHBO5EKbrxTO+uQ=;
+	s=korg; t=1711990489;
+	bh=kkjKIQCTttz20BNoFtySvEWvcH0lh5a02zmyzIfozv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/bkRwNJ+cT+COsPGB2DtTWqUdKprJNPSjFMODWkoYy3S9ujZu7l2jsHciAVD7bPw
-	 K/bGawYVlksEQ2vmu546QLhd4tVszloeTHQDRY06QfkUN17L9DBSF8vsiwz4IKmzUi
-	 jv17dGJbtxCWJCKwpdGh6lDTn4OoRjlMYRrEx+ms=
+	b=GDkrqXi6O4dVpAGMlkaeqMZHu74tTKld2UrMQbFDBe/dLzKHDJ7CAGCZ6zum/xXDY
+	 urCXslC+nmGDVA1RB+CZ7FuPiMODmNFCSwmyo4QbBvP0Hc8UwCU4E5PMW6CGbYrsJE
+	 X6zVCWOPzbCOv9T8qmwtZz0CWm0TNRh+aq0bz4y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 199/272] selftests: mptcp: diag: return KSFT_FAIL not test_cnt
+	Eric Huang <jinhuieric.huang@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 340/396] drm/amdkfd: fix TLB flush after unmap for GFX9.4.2
 Date: Mon,  1 Apr 2024 17:46:29 +0200
-Message-ID: <20240401152537.110524290@linuxfoundation.org>
+Message-ID: <20240401152558.050708298@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Eric Huang <jinhuieric.huang@amd.com>
 
-commit 45bcc0346561daa3f59e19a753cc7f3e08e8dff1 upstream.
+commit 1210e2f1033dc56b666c9f6dfb761a2d3f9f5d6c upstream.
 
-The test counter 'test_cnt' should not be returned in diag.sh, e.g. what
-if only the 4th test fail? Will do 'exit 4' which is 'exit ${KSFT_SKIP}',
-the whole test will be marked as skipped instead of 'failed'!
+TLB flush after unmap accidentially was removed on
+gfx9.4.2. It is to add it back.
 
-So we should do ret=${KSFT_FAIL} instead.
-
-Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
+Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 42fb6cddec3b ("selftests: mptcp: more stable diag tests")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/diag.sh |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/diag.sh
-+++ b/tools/testing/selftests/net/mptcp/diag.sh
-@@ -56,7 +56,7 @@ __chk_nr()
- 			echo "[ skip ] Feature probably not supported"
- 		else
- 			echo "[ fail ] expected $expected found $nr"
--			ret=$test_cnt
-+			ret=${KSFT_FAIL}
- 		fi
- 	else
- 		echo "[  ok  ]"
-@@ -100,10 +100,10 @@ wait_msk_nr()
- 	printf "%-50s" "$msg"
- 	if [ $i -ge $timeout ]; then
- 		echo "[ fail ] timeout while expecting $expected max $max last $nr"
--		ret=$test_cnt
-+		ret=${KSFT_FAIL}
- 	elif [ $nr != $expected ]; then
- 		echo "[ fail ] expected $expected found $nr"
--		ret=$test_cnt
-+		ret=${KSFT_FAIL}
- 	else
- 		echo "[  ok  ]"
- 	fi
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -1466,7 +1466,7 @@ void kfd_flush_tlb(struct kfd_process_de
+ 
+ static inline bool kfd_flush_tlb_after_unmap(struct kfd_dev *dev)
+ {
+-	return KFD_GC_VERSION(dev) > IP_VERSION(9, 4, 2) ||
++	return KFD_GC_VERSION(dev) >= IP_VERSION(9, 4, 2) ||
+ 	       (KFD_GC_VERSION(dev) == IP_VERSION(9, 4, 1) && dev->sdma_fw_version >= 18) ||
+ 	       KFD_GC_VERSION(dev) == IP_VERSION(9, 4, 0);
+ }
 
 
 
