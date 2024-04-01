@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CD2894116
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C10D893F72
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A53941C2048F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 258AC2843F6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1EA481D7;
-	Mon,  1 Apr 2024 16:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9948C47A79;
+	Mon,  1 Apr 2024 16:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5+yXJ/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ts8Ct1J8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B61A46B9F;
-	Mon,  1 Apr 2024 16:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560FD47A5D;
+	Mon,  1 Apr 2024 16:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989452; cv=none; b=DVsLeNzjwnmQYI4eV5YEG9N/+6Br7Joihm4pfNXVD+1JDz1wlBZtblmLFTFlO6ZICs9RdnF+6EgaOMcIu44MBpeHsmnQt1YETNPBRM/x6DlME0zg2+SnyRhamQN4yU18kil44gAPZRC4fODvk/wkfCmwS/PHrnRG810lZ03/2vs=
+	t=1711988203; cv=none; b=p3C/PmI4F2TQm0bJ4JnKJQs+5CeyhEb1qeQE0ZaC0iqkFmB/DsvCqVUeiFC1o8ckrhYHieQCw8Lroq7y4BRPxlWjtWavSRW18RW/Pp1iEMONN9lbL/BEPuiJMFGy8AHAPDAdsuR1zZBsgG7K52t3hcjCPNzVmSSd+zsTgwBUF14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989452; c=relaxed/simple;
-	bh=O7lrjuT86WeU/xFsWyY8XKjyrTYesdcQvcNOjXMs1a8=;
+	s=arc-20240116; t=1711988203; c=relaxed/simple;
+	bh=nVabI8nfMY3h/CUVFLmufdbzVMaHJgrNJYOo2t7KUL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGK8O8FH0ueLxh1Fr1TbAjztinzlNyfFMK127My5ZCm+kNgJeg3K/C/b3wJdEwTBL5W8b6rl2aV7LPnMlmkrgsXhbnyo4V6QQGXxS+zGFV6lgKwuxVTyBAIl78pdNCzh3ZwhvMmrdyvyGBadve2Yy4IjRAtOELIzUpKkmbFcy+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5+yXJ/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C31C433F1;
-	Mon,  1 Apr 2024 16:37:31 +0000 (UTC)
+	 MIME-Version; b=henIPlC9zYiIoDJWq2mVdN/Zs5M0ZDJ0reL+aawVeSeZxW/KJR6bTrj0U9gLsbcyteYikU0br/CIHnqsRCOWqdNIiTfWrHZ535D0Oqsd2gGR7F09GDUOkcmOlkZdSHp4SOMfDL0tSmfAliT5XP2zTMKa8JsrTIwJVyKyCBjiutg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ts8Ct1J8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF622C433C7;
+	Mon,  1 Apr 2024 16:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989451;
-	bh=O7lrjuT86WeU/xFsWyY8XKjyrTYesdcQvcNOjXMs1a8=;
+	s=korg; t=1711988203;
+	bh=nVabI8nfMY3h/CUVFLmufdbzVMaHJgrNJYOo2t7KUL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y5+yXJ/CMpe/lw6fzU6u7JEXtXbqky5q8OgiWSGQx3dEXucPxn0PL05kdveCVop9j
-	 x3D0hqcwDswqe8sxWnsKduEM4EC8yNmk6B9ZuEOs7vreN7url4zSK0zQUE36tivLo0
-	 VQaoVuwlTdT3pMxY7HbTbQYtPLaw+naS9DET+dJ8=
+	b=Ts8Ct1J8j3UXuM3IHaIufifbwYayiYY5Svix53aBBhEufeIgvdknOWAK5sWwrheZg
+	 XBGzvKKD1HRsJsHT4L9htCoOvJgqtjmKhiMVNp6QUw0Da5yedL0loOXoV6ocK+a2I9
+	 SYs6vfBayQlglGDUZHdVK3eXJfhb2UTNYweOVFuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/396] x86/nmi: Fix the inverse "in NMI handler" check
-Date: Mon,  1 Apr 2024 17:41:41 +0200
-Message-ID: <20240401152549.476833867@linuxfoundation.org>
+Subject: [PATCH 6.7 115/432] leds: trigger: netdev: Fix kernel panic on interface rename trig notify
+Date: Mon,  1 Apr 2024 17:41:42 +0200
+Message-ID: <20240401152556.557216847@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit d54e56f31a34fa38fcb5e91df609f9633419a79a ]
+[ Upstream commit 415798bc07dd1c1ae3a656aa026580816e0b9fe8 ]
 
-Commit 344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are
-ignored") creates a super nice framework to diagnose NMIs.
+Commit d5e01266e7f5 ("leds: trigger: netdev: add additional specific link
+speed mode") in the various changes, reworked the way to set the LINKUP
+mode in commit cee4bd16c319 ("leds: trigger: netdev: Recheck
+NETDEV_LED_MODE_LINKUP on dev rename") and moved it to a generic function.
 
-Every time nmi_exc() is called, it increments a per_cpu counter
-(nsp->idt_nmi_seq). At its exit, it also increments the same counter.  By
-reading this counter it can be seen how many times that function was called
-(dividing by 2), and, if the function is still being executed, by checking
-the idt_nmi_seq's least significant bit.
+This changed the logic where, in the previous implementation the dev
+from the trigger event was used to check if the carrier was ok, but in
+the new implementation with the generic function, the dev in
+trigger_data is used instead.
 
-On the check side (nmi_backtrace_stall_check()), that variable is queried
-to check if the NMI is still being executed, but, there is a mistake in the
-bitwise operation. That code wants to check if the least significant bit of
-the idt_nmi_seq is set or not, but does the opposite, and checks for all
-the other bits, which will always be true after the first exc_nmi()
-executed successfully.
+This is problematic and cause a possible kernel panic due to the fact
+that the dev in the trigger_data still reference the old one as the
+new one (passed from the trigger event) still has to be hold and saved
+in the trigger_data struct (done in the NETDEV_REGISTER case).
 
-This appends the misleading string to the dump "(CPU currently in NMI
-handler function)"
+On calling of get_device_state(), an invalid net_dev is used and this
+cause a kernel panic.
 
-Fix it by checking the least significant bit, and if it is set, append the
-string.
+To handle this correctly, move the call to get_device_state() after the
+new net_dev is correctly set in trigger_data (in the NETDEV_REGISTER
+case) and correctly parse the new dev.
 
-Fixes: 344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are ignored")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Fixes: d5e01266e7f5 ("leds: trigger: netdev: add additional specific link speed mode")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240207165237.1048837-1-leitao@debian.org
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240203235413.1146-1-ansuelsmth@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/nmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/trigger/ledtrig-netdev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index 07e045399348e..87aee638e1a5d 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -629,7 +629,7 @@ void nmi_backtrace_stall_check(const struct cpumask *btp)
- 			msgp = nmi_check_stall_msg[idx];
- 			if (nsp->idt_ignored_snap != READ_ONCE(nsp->idt_ignored) && (idx & 0x1))
- 				modp = ", but OK because ignore_nmis was set";
--			if (nmi_seq & ~0x1)
-+			if (nmi_seq & 0x1)
- 				msghp = " (CPU currently in NMI handler function)";
- 			else if (nsp->idt_nmi_seq_snap + 1 == nmi_seq)
- 				msghp = " (CPU exited one NMI handler function)";
+diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
+index d76214fa9ad86..79719fc8a08fb 100644
+--- a/drivers/leds/trigger/ledtrig-netdev.c
++++ b/drivers/leds/trigger/ledtrig-netdev.c
+@@ -462,12 +462,12 @@ static int netdev_trig_notify(struct notifier_block *nb,
+ 	trigger_data->duplex = DUPLEX_UNKNOWN;
+ 	switch (evt) {
+ 	case NETDEV_CHANGENAME:
+-		get_device_state(trigger_data);
+-		fallthrough;
+ 	case NETDEV_REGISTER:
+ 		dev_put(trigger_data->net_dev);
+ 		dev_hold(dev);
+ 		trigger_data->net_dev = dev;
++		if (evt == NETDEV_CHANGENAME)
++			get_device_state(trigger_data);
+ 		break;
+ 	case NETDEV_UNREGISTER:
+ 		dev_put(trigger_data->net_dev);
 -- 
 2.43.0
 
