@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-35392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D278943BD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1AA8940B6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 000321C20404
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C7A2831BF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D394AEE4;
-	Mon,  1 Apr 2024 17:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61833613C;
+	Mon,  1 Apr 2024 16:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVEwhUl3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBJ9iJVA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5821E482EF;
-	Mon,  1 Apr 2024 17:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6452D1E525;
+	Mon,  1 Apr 2024 16:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991248; cv=none; b=QCqzUY134rsDH4Fs74s8pRhLo7BlFj6j0OZoJ2ZQ4vvV6l6pkjQcNzagjSg/89NCV1mVb1DyrSKSxVom3ZneVwzvMcrqezBGd0u+eAp4EJsI4pjn5cerBFt4NguX5UO5k4NdsYM6RGYsc+4zObbH0j4R/dkp9S3OU5KfjR/p1pk=
+	t=1711989204; cv=none; b=MI2Ifw7bP8MpS3HdTRTSV3rW9UitxxtCip1Tk9Rv1rlSasXPxIvb+QTvGXiBTlcy6XVyTi7L0NPlRnksoJlm4HhYmzlHf1aF/IIT0IwM+GzDw2Hv0s024eDg2hZbp2ovnOtw3VotNLXcNDI4VOCMEG6JOkWKqJmURfZc3rXMdBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991248; c=relaxed/simple;
-	bh=HIjFNuH4zISWzcfuZRkh3bT3K4nzEt+gQDXZe0Tb3s0=;
+	s=arc-20240116; t=1711989204; c=relaxed/simple;
+	bh=Q056fO9672aFXqMqpO/d8vlmPiWAUf0+VE/UlFRJoME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uHi44eHK8bYtimcQTc4RfFn0Dq73mMdjKPPbZ66Bz1Hyy5idZXtjBV0LaCfva7ZL3aSujnJQ+2k/VlisSL6pK8I+yHE7eih+gABlewCQti9Uj+PB25oKxi4myaWum5gU3rUXLsbejU20XR94KZtGuE1PE+1C25Nl09UjR8+JK8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVEwhUl3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7392FC433F1;
-	Mon,  1 Apr 2024 17:07:27 +0000 (UTC)
+	 MIME-Version; b=bqeUUpgnRHJsfKXVh2VlATBdG/AMstvkXnan+0fMVN/BVX1P1O/EqH2U0eOu8rGhjKkY8PaA6NaVPxHrz1pxf1497x1bc52CGq/SLhbV2HUr2PvLem+eLBoMVd8W65wqn0YecSbjWhW0xt+j0m1Q0azm2zdIwLZb/an3WPyMigc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBJ9iJVA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBA4C43390;
+	Mon,  1 Apr 2024 16:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991247;
-	bh=HIjFNuH4zISWzcfuZRkh3bT3K4nzEt+gQDXZe0Tb3s0=;
+	s=korg; t=1711989204;
+	bh=Q056fO9672aFXqMqpO/d8vlmPiWAUf0+VE/UlFRJoME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVEwhUl3yYQw67bdOB95mI6gKm344MHUY5Ss9KzF9i2pRU7q41dVS9X5fqg8250Ko
-	 /HSQZ6JpuUp52J43O0FsTvb1WIkwtwt0ZHuqWYaMh5z8WAuJJMFgG7bRev8dGAyWuY
-	 OKv/m77B0yfdGWOr4Y+XQ4CiukeKV2FybDHiFZXk=
+	b=QBJ9iJVAxfOLN9cSX9RvuEqChWzqvyU6aJExWgG3AFDQFCVEY1bEFD97+7wSF0lqh
+	 aL+CaA1f5HY+tBKkA0bfM1EsEo9qHcBBDV3NiDwo83gUbywyEKlMjJaNo4QoE+vU7f
+	 UzEZe2Al98xoNQ+OkI1oVixi9fi0HlkUtiombfpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20R=C3=B6sti?= <an.roesti@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/272] entry: Respect changes to system call number by trace_sys_enter()
-Date: Mon,  1 Apr 2024 17:46:10 +0200
-Message-ID: <20240401152536.432359818@linuxfoundation.org>
+Subject: [PATCH 6.7 384/432] drm/amd/display: set odm_combine_policy based on context in dcn32 resource
+Date: Mon,  1 Apr 2024 17:46:11 +0200
+Message-ID: <20240401152604.755658919@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +63,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Rösti <an.roesti@gmail.com>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-[ Upstream commit fb13b11d53875e28e7fbf0c26b288e4ea676aa9f ]
+[ Upstream commit 0a5fd7811a17af708cefdaab93af86838353002d ]
 
-When a probe is registered at the trace_sys_enter() tracepoint, and that
-probe changes the system call number, the old system call still gets
-executed.  This worked correctly until commit b6ec41346103 ("core/entry:
-Report syscall correctly for trace and audit"), which removed the
-re-evaluation of the syscall number after the trace point.
+[why]
+When populating dml pipes, odm combine policy should be assigned based
+on the pipe topology of the context passed in. DML pipes could be
+repopulated multiple times during single validate bandwidth attempt. We
+need to make sure that whenever we repopulate the dml pipes it is always
+aligned with the updated context. There is a case where DML pipes get
+repopulated during FPO optimization after ODM combine policy is changed.
+Since in the current code we reinitlaize ODM combine policy, even though
+the current context has ODM combine enabled, we overwrite it despite the
+pipes are already split. This causes DML to think that MPC combine is
+used so we mistakenly enable MPC combine because we apply pipe split
+with ODM combine policy reset. This issue doesn't impact non windowed
+MPO with ODM case because the legacy policy has restricted use cases. We
+don't encounter the case where both ODM and FPO optimizations are
+enabled together. So we decide to leave it as is because it is about to
+be replaced anyway.
 
-Restore the original semantics by re-evaluating the system call number
-after trace_sys_enter().
-
-The performance impact of this re-evaluation is minimal because it only
-takes place when a trace point is active, and compared to the actual trace
-point overhead the read from a cache hot variable is negligible.
-
-Fixes: b6ec41346103 ("core/entry: Report syscall correctly for trace and audit")
-Signed-off-by: André Rösti <an.roesti@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240311211704.7262-1-an.roesti@gmail.com
+Cc: stable@vger.kernel.org # 6.6+
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/entry/common.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ .../drm/amd/display/dc/dcn32/dcn32_resource.c | 16 ++++++++++++++-
+ .../drm/amd/display/dc/dml/dcn32/dcn32_fpu.c  | 15 ++++++++++----
+ drivers/gpu/drm/amd/display/dc/inc/resource.h | 20 ++++++++-----------
+ 3 files changed, 34 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index be61332c66b54..ccf2b1e1b40be 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -77,8 +77,14 @@ static long syscall_trace_enter(struct pt_regs *regs, long syscall,
- 	/* Either of the above might have changed the syscall number */
- 	syscall = syscall_get_nr(current, regs);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
+index cc468bdcb3de2..f663de1cdcdca 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
+@@ -1925,7 +1925,21 @@ int dcn32_populate_dml_pipes_from_context(
+ 		dcn32_zero_pipe_dcc_fraction(pipes, pipe_cnt);
+ 		DC_FP_END();
+ 		pipes[pipe_cnt].pipe.dest.vfront_porch = timing->v_front_porch;
+-		pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_dal;
++		if (dc->config.enable_windowed_mpo_odm &&
++				dc->debug.enable_single_display_2to1_odm_policy) {
++			switch (resource_get_odm_slice_count(pipe)) {
++			case 2:
++				pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_2to1;
++				break;
++			case 4:
++				pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_4to1;
++				break;
++			default:
++				pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_dal;
++			}
++		} else {
++			pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_dal;
++		}
+ 		pipes[pipe_cnt].pipe.src.gpuvm_min_page_size_kbytes = 256; // according to spreadsheet
+ 		pipes[pipe_cnt].pipe.src.unbounded_req_mode = false;
+ 		pipes[pipe_cnt].pipe.scale_ratio_depth.lb_depth = dm_lb_19;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index 5b6d9643b02dc..b315ca6f1cee8 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -1265,7 +1265,7 @@ static bool update_pipes_with_split_flags(struct dc *dc, struct dc_state *contex
+ 	return updated;
+ }
  
--	if (unlikely(work & SYSCALL_WORK_SYSCALL_TRACEPOINT))
-+	if (unlikely(work & SYSCALL_WORK_SYSCALL_TRACEPOINT)) {
- 		trace_sys_enter(regs, syscall);
-+		/*
-+		 * Probes or BPF hooks in the tracepoint may have changed the
-+		 * system call number as well.
-+		 */
-+		syscall = syscall_get_nr(current, regs);
+-static bool should_allow_odm_power_optimization(struct dc *dc,
++static bool should_apply_odm_power_optimization(struct dc *dc,
+ 		struct dc_state *context, struct vba_vars_st *v, int *split,
+ 		bool *merge)
+ {
+@@ -1369,9 +1369,12 @@ static void try_odm_power_optimization_and_revalidate(
+ {
+ 	int i;
+ 	unsigned int new_vlevel;
++	unsigned int cur_policy[MAX_PIPES];
+ 
+-	for (i = 0; i < pipe_cnt; i++)
++	for (i = 0; i < pipe_cnt; i++) {
++		cur_policy[i] = pipes[i].pipe.dest.odm_combine_policy;
+ 		pipes[i].pipe.dest.odm_combine_policy = dm_odm_combine_policy_2to1;
 +	}
  
- 	syscall_enter_audit(regs, syscall);
+ 	new_vlevel = dml_get_voltage_level(&context->bw_ctx.dml, pipes, pipe_cnt);
  
+@@ -1380,6 +1383,9 @@ static void try_odm_power_optimization_and_revalidate(
+ 		memset(merge, 0, MAX_PIPES * sizeof(bool));
+ 		*vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, new_vlevel, split, merge);
+ 		context->bw_ctx.dml.vba.VoltageLevel = *vlevel;
++	} else {
++		for (i = 0; i < pipe_cnt; i++)
++			pipes[i].pipe.dest.odm_combine_policy = cur_policy[i];
+ 	}
+ }
+ 
+@@ -1550,7 +1556,7 @@ static void dcn32_full_validate_bw_helper(struct dc *dc,
+ 		}
+ 	}
+ 
+-	if (should_allow_odm_power_optimization(dc, context, vba, split, merge))
++	if (should_apply_odm_power_optimization(dc, context, vba, split, merge))
+ 		try_odm_power_optimization_and_revalidate(
+ 				dc, context, pipes, split, merge, vlevel, *pipe_cnt);
+ 
+@@ -2178,7 +2184,8 @@ bool dcn32_internal_validate_bw(struct dc *dc,
+ 		int i;
+ 
+ 		pipe_cnt = dc->res_pool->funcs->populate_dml_pipes(dc, context, pipes, fast_validate);
+-		dcn32_update_dml_pipes_odm_policy_based_on_context(dc, context, pipes);
++		if (!dc->config.enable_windowed_mpo_odm)
++			dcn32_update_dml_pipes_odm_policy_based_on_context(dc, context, pipes);
+ 
+ 		/* repopulate_pipes = 1 means the pipes were either split or merged. In this case
+ 		 * we have to re-calculate the DET allocation and run through DML once more to
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/resource.h b/drivers/gpu/drm/amd/display/dc/inc/resource.h
+index 06ca8bfb91e7d..3d7244393807a 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/resource.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/resource.h
+@@ -427,22 +427,18 @@ struct pipe_ctx *resource_get_primary_dpp_pipe(const struct pipe_ctx *dpp_pipe);
+ int resource_get_mpc_slice_index(const struct pipe_ctx *dpp_pipe);
+ 
+ /*
+- * Get number of MPC "cuts" of the plane associated with the pipe. MPC slice
+- * count is equal to MPC splits + 1. For example if a plane is cut 3 times, it
+- * will have 4 pieces of slice.
+- * return - 0 if pipe is not used for a plane with MPCC combine. otherwise
+- * the number of MPC "cuts" for the plane.
++ * Get the number of MPC slices associated with the pipe.
++ * The function returns 0 if the pipe is not associated with an MPC combine
++ * pipe topology.
+  */
+-int resource_get_mpc_slice_count(const struct pipe_ctx *opp_head);
++int resource_get_mpc_slice_count(const struct pipe_ctx *pipe);
+ 
+ /*
+- * Get number of ODM "cuts" of the timing associated with the pipe. ODM slice
+- * count is equal to ODM splits + 1. For example if a timing is cut 3 times, it
+- * will have 4 pieces of slice.
+- * return - 0 if pipe is not used for ODM combine. otherwise
+- * the number of ODM "cuts" for the timing.
++ * Get the number of ODM slices associated with the pipe.
++ * The function returns 0 if the pipe is not associated with an ODM combine
++ * pipe topology.
+  */
+-int resource_get_odm_slice_count(const struct pipe_ctx *otg_master);
++int resource_get_odm_slice_count(const struct pipe_ctx *pipe);
+ 
+ /* Get the ODM slice index counting from 0 from left most slice */
+ int resource_get_odm_slice_index(const struct pipe_ctx *opp_head);
 -- 
 2.43.0
 
