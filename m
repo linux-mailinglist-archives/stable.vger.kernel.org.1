@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-35231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FD5894307
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA8E893FFF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D6E428375A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CA281C210BC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06E4482DF;
-	Mon,  1 Apr 2024 16:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059C546B9F;
+	Mon,  1 Apr 2024 16:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ms4Bkbvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZ8h2EXK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC64BA3F;
-	Mon,  1 Apr 2024 16:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8172C129;
+	Mon,  1 Apr 2024 16:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990723; cv=none; b=R8GVs9+h1brqHkgHnQjE1mwJ8XlBdKppUXIipS6f8qun0erBf4QV3GtpEFGyieH801xn4zZ2fLHB2iBw/1UcXZcQ6i+yn+XTCQ2xfENpWF1PBTTgViwgOEU41KljYoX2rDqyCDkbP46RfDJ2JHvOo6TK0DJCqwDBP7w6WnLQoCc=
+	t=1711988654; cv=none; b=UbeNQe9/VydMneUEU820bZQp3jmh2OH2EDkInuQn8g2OxYfFuZrQV/nTt9d9D/BLnHdZb0vwDAYP9+r34s6pF+/SwmCQvQ4n96nI0KelpV60W7lMq/RvFxxKB0AvLXtZ8VgcUv+HrvpE1A7wb+KQGWtniZ7Za+XxHxt9LgKXbs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990723; c=relaxed/simple;
-	bh=RAjX3Yd9+ZrF2fHMLTDTWlimYWfCXL+KA8CZN4Pb0RA=;
+	s=arc-20240116; t=1711988654; c=relaxed/simple;
+	bh=8rRk3vsbYO1RffRK6coEA0kfZKzIGifE+4nJc5CCO9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IwYQyiZmf/wNEqwAcZgKxOGuwh9c3OCiFJFhmEKlCmBvcXLWnQtW4Tmci6G/QwxmExprPsSFJl4Csfb47YE3HmbCS4OriBqyLQD9poDwbvkN2vDxjca3ugNC3CKSexoZ398WUELI5pefq7+dPnnz5ZM2GhW8OoEOjxIHnnYgOFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ms4Bkbvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08113C433C7;
-	Mon,  1 Apr 2024 16:58:42 +0000 (UTC)
+	 MIME-Version; b=DnsLlB35ytmTncHoBDRH2zYFXpU7Zvaaj2wUgq00LzR+DvlMaDL6sGPO5s0lOPBAw/udAtHL+rlZsPONq3WLs8mmdqZw2+44KtSIF4gpMa0m+DYSBCUdousjrzSOiTz7TROgUA/qiGp0QVb0AYK1taSojyQ0aDaao+v9J3bwjSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZ8h2EXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2538EC433F1;
+	Mon,  1 Apr 2024 16:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990723;
-	bh=RAjX3Yd9+ZrF2fHMLTDTWlimYWfCXL+KA8CZN4Pb0RA=;
+	s=korg; t=1711988654;
+	bh=8rRk3vsbYO1RffRK6coEA0kfZKzIGifE+4nJc5CCO9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ms4BkbvrGAxA6vrYppab1HQuwRWTYSdfLIB4D0utEVpZ0fnCH0k44w3WN2agBrVtC
-	 Vcg2AClasjU9/Irws0MyKPvRY57xAFzxQ6lwA2c4Ss4+W6XfaUuqOoc5jAAqy4Caph
-	 EGHoEgcZ4Zfpbb09LPSfdl++yQp/9R86M61KjfNU=
+	b=rZ8h2EXKNqZdcQ2afaJ6mNkCSz83+UVyjTIrp4dGECUuexugpwkz4FvyzL+aQk0y+
+	 jq0vISuEmypo0iaE//y9198iXW3wbxWv05OL9rvHVufdCQBFGBJsAmuvHw90cLwxUN
+	 i1ZBiFUUjANeD99/Rh0T9xOyKIvWVAUlHyTOlgh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/272] parisc: Fix ip_fast_csum
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Mirsad Todorovac <mirsad.todorovac@alu.hr>
+Subject: [PATCH 6.7 249/432] cgroup/cpuset: Fix a memory leak in update_exclusive_cpumask()
 Date: Mon,  1 Apr 2024 17:43:56 +0200
-Message-ID: <20240401152531.838736905@linuxfoundation.org>
+Message-ID: <20240401152600.566378911@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit a2abae8f0b638c31bb9799d9dd847306e0d005bd ]
+commit 66f40b926dd249f74334a22162c09e7ec1ec5b07 upstream.
 
-IP checksum unit tests report the following error when run on hppa/hppa64.
+Fix a possible memory leak in update_exclusive_cpumask() by moving the
+alloc_cpumasks() down after the validate_change() check which can fail
+and still before the temporary cpumasks are needed.
 
-    # test_ip_fast_csum: ASSERTION FAILED at lib/checksum_kunit.c:463
-    Expected ( u64)csum_result == ( u64)expected, but
-        ( u64)csum_result == 33754 (0x83da)
-        ( u64)expected == 10946 (0x2ac2)
-    not ok 4 test_ip_fast_csum
-
-0x83da is the expected result if the IP header length is 20 bytes. 0x2ac2
-is the expected result if the IP header length is 24 bytes. The test fails
-with an IP header length of 24 bytes. It appears that ip_fast_csum()
-always returns the checksum for a 20-byte header, no matter how long
-the header actually is.
-
-Code analysis shows a suspicious assembler sequence in ip_fast_csum().
-
- "      addc            %0, %3, %0\n"
- "1:    ldws,ma         4(%1), %3\n"
- "      addib,<         0, %2, 1b\n"	<---
-
-While my understanding of HPPA assembler is limited, it does not seem
-to make much sense to subtract 0 from a register and to expect the result
-to ever be negative. Subtracting 1 from the length parameter makes more
-sense. On top of that, the operation should be repeated if and only if
-the result is still > 0, so change the suspicious instruction to
- "      addib,>         -1, %2, 1b\n"
-
-The IP checksum unit test passes after this change.
-
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2ffe502ba45 ("cgroup/cpuset: Add cpuset.cpus.exclusive for v2")
+Reported-and-tested-by: Mirsad Todorovac <mirsad.todorovac@alu.hr>
+Closes: https://lore.kernel.org/lkml/14915689-27a3-4cd8-80d2-9c30d0c768b6@alu.unizg.hr
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/asm/checksum.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cgroup/cpuset.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index 3c43baca7b397..f705e5dd10742 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -40,7 +40,7 @@ static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
- "	addc		%0, %5, %0\n"
- "	addc		%0, %3, %0\n"
- "1:	ldws,ma		4(%1), %3\n"
--"	addib,<		0, %2, 1b\n"
-+"	addib,>		-1, %2, 1b\n"
- "	addc		%0, %3, %0\n"
- "\n"
- "	extru		%0, 31, 16, %4\n"
--- 
-2.43.0
-
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2502,9 +2502,6 @@ static int update_exclusive_cpumask(stru
+ 	if (cpumask_equal(cs->exclusive_cpus, trialcs->exclusive_cpus))
+ 		return 0;
+ 
+-	if (alloc_cpumasks(NULL, &tmp))
+-		return -ENOMEM;
+-
+ 	if (*buf)
+ 		compute_effective_exclusive_cpumask(trialcs, NULL);
+ 
+@@ -2519,6 +2516,9 @@ static int update_exclusive_cpumask(stru
+ 	if (retval)
+ 		return retval;
+ 
++	if (alloc_cpumasks(NULL, &tmp))
++		return -ENOMEM;
++
+ 	if (old_prs) {
+ 		if (cpumask_empty(trialcs->effective_xcpus)) {
+ 			invalidate = true;
 
 
 
