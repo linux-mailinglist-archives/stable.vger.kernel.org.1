@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F291894244
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC603894075
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7126E1C21A21
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A03B1C215CD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DCB4653C;
-	Mon,  1 Apr 2024 16:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4647D1E895;
+	Mon,  1 Apr 2024 16:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/WWmr2E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsWS6PDP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A9E63E;
-	Mon,  1 Apr 2024 16:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F173C1DDC9;
+	Mon,  1 Apr 2024 16:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990262; cv=none; b=ih7luCiVdcHjqo67qpmuzQ9QWtv3coIsCj+8WSNhowhN497926Q0g9a7tl5rpM7htYwchOBfr5g+vMZ7OhHtevVjjEhI+9ecsU4vVtdNLuSBcyXUWgVs6JgGwaJTPf87kHZ5KU7pSZSBlSz47GV8sOv7BZK/DVFqoLH0cHQLV+Y=
+	t=1711989023; cv=none; b=lPdMuJDxEMI7J3oia3180ZIgzpLXJre+vmkzC7FAPQ5WenC5ppMDS7VHNpyjB/JI4yyFgdhedOw+kfWitxpaIHg1vFNMDrzW+eARqtFZAL6IDbUZXv1r+GYwYbVGR8ZS6MOPTE8kZt3cbZVPQS8UwXJUqXxVW321KurezWvWTkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990262; c=relaxed/simple;
-	bh=dtih0+ozksseOakGBhA7/T+2YqsWQqLjZsOut7vp2XA=;
+	s=arc-20240116; t=1711989023; c=relaxed/simple;
+	bh=XxmOSLsDxWKDG8w0Y+hVsIwwnstMxGZUyn+mNsr2VKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYKXXKxUxlDB5Plw8Pm+gKqsGUHvdygW2sYz4PBunnA6hk5kkvYfpsxLZmwiRp14LsAbOBA388JPXKYIVz/1pD8MHeR2Smd74SOUFOoZxapFdWn9/tQqlLxsOaKBNMNe0gPfpE5oGAqGaPPdKBZzUTce4lqr9JGPNo4cQ4SuZbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/WWmr2E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1BFC433F1;
-	Mon,  1 Apr 2024 16:51:01 +0000 (UTC)
+	 MIME-Version; b=PDjXyaXJ2M/jKomINqUWa8LuZ3cOmfyaoA4PlVTlS9ML+sLHPye62qdTGuXhRu3wVNF3SZqAHsXpTv4TDhKFXdVKXTrKS05slqF5Ibu2dyZnIwzERDImJhv9kMlreKd8F7PpqyYNfD6D01zPzQ3VQ+Ois861aKKVR97fYzuTdKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsWS6PDP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DF2C433F1;
+	Mon,  1 Apr 2024 16:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990262;
-	bh=dtih0+ozksseOakGBhA7/T+2YqsWQqLjZsOut7vp2XA=;
+	s=korg; t=1711989022;
+	bh=XxmOSLsDxWKDG8w0Y+hVsIwwnstMxGZUyn+mNsr2VKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/WWmr2E7TAGM3dAALV8Cq/BvcLZTPtne81h0SoNnpkv8QSXjANz+WnANSq/sZKyq
-	 Ognr+EgiTAEPQk6KL30HsJCLUerFIwPJgY/60erALVmu84wf+m66aoq8F+GC6kU4aL
-	 2iBE0wyizH2bY0Sd2uwHHRNfZPKZjMfW4CTNpR0w=
+	b=HsWS6PDPgTbktZl3VyoMhdtusTv+FxoTyS+r6jPSwal3gD322S1qmmZEkZGmTmd4r
+	 S2KkQJyQD2jexj3ryZw5nfOlVjUISYHk/098DCgi0lYtfFW3kGCMB994sxbtpU67X8
+	 2PV8oBao1nktsZDAPvxQblybZ1jqy6H8w3SRO9Y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 296/396] irqchip/renesas-rzg2l: Rename rzg2l_tint_eoi()
-Date: Mon,  1 Apr 2024 17:45:45 +0200
-Message-ID: <20240401152556.729024419@linuxfoundation.org>
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Avri Altman <avri.altman@wdc.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.7 359/432] mmc: core: Avoid negative index with array access
+Date: Mon,  1 Apr 2024 17:45:46 +0200
+Message-ID: <20240401152603.976462977@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-[ Upstream commit 7cb6362c63df233172eaecddaf9ce2ce2f769112 ]
+commit cf55a7acd1ed38afe43bba1c8a0935b51d1dc014 upstream.
 
-Rename rzg2l_tint_eoi()->rzg2l_clear_tint_int() and simplify the code by
-removing redundant priv and hw_irq local variables.
+Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") assigns
+prev_idata = idatas[i - 1], but doesn't check that the iterator i is
+greater than zero. Let's fix this by adding a check.
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
+Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20240313133744.2405325-2-mikko.rapeli@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/mmc/core/block.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 6e81b5945d21b..2fcd63bfb44d2 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -90,11 +90,9 @@ static void rzg2l_irq_eoi(struct irq_data *d)
- 	}
- }
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -488,7 +488,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	if (idata->flags & MMC_BLK_IOC_DROP)
+ 		return 0;
  
--static void rzg2l_tint_eoi(struct irq_data *d)
-+static void rzg2l_clear_tint_int(struct rzg2l_irqc_priv *priv, unsigned int hwirq)
- {
--	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_TINT_START;
--	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
--	u32 bit = BIT(hw_irq);
-+	u32 bit = BIT(hwirq - IRQC_TINT_START);
- 	u32 reg;
+-	if (idata->flags & MMC_BLK_IOC_SBC)
++	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
+ 		prev_idata = idatas[i - 1];
  
- 	reg = readl_relaxed(priv->base + TSCR);
-@@ -117,7 +115,7 @@ static void rzg2l_irqc_eoi(struct irq_data *d)
- 	if (hw_irq >= IRQC_IRQ_START && hw_irq <= IRQC_IRQ_COUNT)
- 		rzg2l_irq_eoi(d);
- 	else if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ)
--		rzg2l_tint_eoi(d);
-+		rzg2l_clear_tint_int(priv, hw_irq);
- 	raw_spin_unlock(&priv->lock);
- 	irq_chip_eoi_parent(d);
- }
--- 
-2.43.0
-
+ 	/*
 
 
 
