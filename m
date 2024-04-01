@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-35042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF78B894212
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF7289437E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A63991F226E0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF04EB22033
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E8241232;
-	Mon,  1 Apr 2024 16:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82974482CA;
+	Mon,  1 Apr 2024 17:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRKIjJCl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ+yFVrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B7F1C0DE7;
-	Mon,  1 Apr 2024 16:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F58B481B8;
+	Mon,  1 Apr 2024 17:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990149; cv=none; b=CCquAxidOwa2dKRQF3NfDDC6fbpw0wn50+oju5p1tHrMJ0+dz0h7mH7b89kORezrkh72VmsNOOR9wiKwj5TXr5y33vJmUEb3rXKvcQV3aNByFEfROsqYAFhkJV54f0pZc9JsOJmraI6nThK+s8igtyaIO6EXT74koO2xH6h9j3k=
+	t=1711991056; cv=none; b=SZIRhrRg5Xm2m6a/DEgBOG2Azvmj/+dToi/jMXZMgzMQUGnCi3u1cgEEHL5c60/Q2mI8xnumn2dK1yvFvDExfFHw1AugjRkDXBWR7bj41kXwhb3s96SETa/dtCWx36u+ddfsbv0D4MpwbX4WqqU38iDaUv5rQ/ob7ejxd697ZxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990149; c=relaxed/simple;
-	bh=0KvWmWtWYfpFwEo/k1DrrYxy+OjaVJx54ea+lSefr+g=;
+	s=arc-20240116; t=1711991056; c=relaxed/simple;
+	bh=1LsX67bh+k+NJiR2MW66xSkuZB5N+ZSCN0ojOi1D/4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YbXU+Cg61ezkuSGHXdGYHIhmH5gNNogJcaKj5wei9luqgWQ75wbiqJ95fisXQKA+wEyoYcXZ3Lkz2iwYIiRnM5X81IDVXvzWQRx+jykUYpKWMlKr/XrQZ63lC6ABQ3cRPUr0AcKVLTD9xkNi/60wx2795+807SwQgClnOXJP2e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRKIjJCl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CDEC433C7;
-	Mon,  1 Apr 2024 16:49:08 +0000 (UTC)
+	 MIME-Version; b=UdVVfRfVzeU8Uq5FGwYuGCUexQwm8MUCz/N0NUkBe+CPzxmkZKjGvntPcyrvUIMqm/CDlqoOV7fWYmTjYuUml7KZdvQaxjeNdXzBzDFUuzIDxktJoPDEzFICBbM80C8rDMjldTWMPTYwu4fX2NVb10ZlkKlypwVIgQMOtyK6YTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ+yFVrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B45C433F1;
+	Mon,  1 Apr 2024 17:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990149;
-	bh=0KvWmWtWYfpFwEo/k1DrrYxy+OjaVJx54ea+lSefr+g=;
+	s=korg; t=1711991056;
+	bh=1LsX67bh+k+NJiR2MW66xSkuZB5N+ZSCN0ojOi1D/4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRKIjJClYG6cYF5F8evqf1XtUv2fud25fYCMDm+07O4NhP1gp9q7gkHaPTHdCG9qQ
-	 jyr0lGjQUzumZ4oF57yI1EbAQ0NX/5C87I9VCHwcE15mBaz4ewuRNmPCkBnZiHD5TB
-	 I8E0mVGcm7+b7pOAViYR8li52/ocaUJTBTDViS1M=
+	b=JZ+yFVrM653FiM1p2lafduDyK2f8JML+rpIZw0aObV3RDqjGclPGOQu3DtmsEJmr8
+	 sDubGjCEDCSWKAJPrvP1bFI+ejDhGAGj8nCGRli9Jwxij2wRpEedcAUDWumhLeZXKC
+	 QoJAqidqAILY6kk9/cMWJlEDCheSXGdlMkGO9Lv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 261/396] xfs: fix 32-bit truncation in xfs_compute_rextslog
+	Qiang Zhang <qiang4.zhang@intel.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 120/272] memtest: use {READ,WRITE}_ONCE in memory scanning
 Date: Mon,  1 Apr 2024 17:45:10 +0200
-Message-ID: <20240401152555.688745253@linuxfoundation.org>
+Message-ID: <20240401152534.416904078@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +66,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Qiang Zhang <qiang4.zhang@intel.com>
 
-commit cf8f0e6c1429be7652869059ea44696b72d5b726 upstream.
+[ Upstream commit 82634d7e24271698e50a3ec811e5f50de790a65f ]
 
-It's quite reasonable that some customer somewhere will want to
-configure a realtime volume with more than 2^32 extents.  If they try to
-do this, the highbit32() call will truncate the upper bits of the
-xfs_rtbxlen_t and produce the wrong value for rextslog.  This in turn
-causes the rsumlevels to be wrong, which results in a realtime summary
-file that is the wrong length.  Fix that.
+memtest failed to find bad memory when compiled with clang.  So use
+{WRITE,READ}_ONCE to access memory to avoid compiler over optimization.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240312080422.691222-1-qiang4.zhang@intel.com
+Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_rtbitmap.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ mm/memtest.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_rtbitmap.c
-+++ b/fs/xfs/libxfs/xfs_rtbitmap.c
-@@ -1133,13 +1133,15 @@ xfs_rtalloc_extent_is_free(
+diff --git a/mm/memtest.c b/mm/memtest.c
+index f53ace709ccd8..d407373f225b4 100644
+--- a/mm/memtest.c
++++ b/mm/memtest.c
+@@ -46,10 +46,10 @@ static void __init memtest(u64 pattern, phys_addr_t start_phys, phys_addr_t size
+ 	last_bad = 0;
  
- /*
-  * Compute the maximum level number of the realtime summary file, as defined by
-- * mkfs.  The use of highbit32 on a 64-bit quantity is a historic artifact that
-- * prohibits correct use of rt volumes with more than 2^32 extents.
-+ * mkfs.  The historic use of highbit32 on a 64-bit quantity prohibited correct
-+ * use of rt volumes with more than 2^32 extents.
-  */
- uint8_t
- xfs_compute_rextslog(
- 	xfs_rtbxlen_t		rtextents)
- {
--	return rtextents ? xfs_highbit32(rtextents) : 0;
-+	if (!rtextents)
-+		return 0;
-+	return xfs_highbit64(rtextents);
- }
+ 	for (p = start; p < end; p++)
+-		*p = pattern;
++		WRITE_ONCE(*p, pattern);
  
+ 	for (p = start; p < end; p++, start_phys_aligned += incr) {
+-		if (*p == pattern)
++		if (READ_ONCE(*p) == pattern)
+ 			continue;
+ 		if (start_phys_aligned == last_bad + incr) {
+ 			last_bad += incr;
+-- 
+2.43.0
+
 
 
 
