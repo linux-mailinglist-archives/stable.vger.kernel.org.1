@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-35061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23858894230
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD0E893ECE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC361F210F5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 511F01C213FF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7DB4653C;
-	Mon,  1 Apr 2024 16:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FEA73F8F4;
+	Mon,  1 Apr 2024 16:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwZfW0zP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wkg1twJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9128F5C;
-	Mon,  1 Apr 2024 16:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580B4383BA;
+	Mon,  1 Apr 2024 16:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990212; cv=none; b=iEfNpFGj9qPpljzs0hqyHr+XweMsMwRy/jEpR18FW4GmPVMQU3z001t07/OLX4MNp7ACLHanyHnItWk7lY32EXIu+In6NYDrP76LKxf37Lf0utKKVi5vww9zfJFJGZAsF1IZIQHDMUcWdA4ev/aESITxDouQwPgYRKwMZct9PZM=
+	t=1711987692; cv=none; b=YbPKkPbw/Mg0VxP8GRVOHJac+Q9f8kzQpeqFKIRFuHL/bK0ndmDU6Qq4Lo6du2y7muIclIit0BPEiioKU8PST9dDHNc8ID1EkdrlZNIQ/acotmCt1+Wxg0LWxUeFfxzP6YWl2rRY3rDTbIQyQvwxVakJcU7ZqzBMnqkbeK/mX7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990212; c=relaxed/simple;
-	bh=5vEecD5BBjRGVO2HmvUNN32DihtTZIYu4/jLDA6509E=;
+	s=arc-20240116; t=1711987692; c=relaxed/simple;
+	bh=00x6BFh/lT9MBWqCdV/NvrJOI83r2vyOAnz8hJQ2sjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Put5C/VQ8oDdHgBcDNIMF/fO4qibLh1dvok7fxKC5u3q+TqAhRHsAnsgOdYMag/jy1WQ97YZkV+p4N4WG0OQIk0419+a5pRGXk11ZQja5IS0cEqaPAhsS8Lq2jmQCdcV6uB1YExp+R6tWq3QIF3t4Nv6jVhrjc/OhxF8BBSBA9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwZfW0zP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E94C433C7;
-	Mon,  1 Apr 2024 16:50:11 +0000 (UTC)
+	 MIME-Version; b=Gda7ON6I7or4WBzo6bayd9VGZXIViIVBLBa4h9vU3mDx0uRols4atAKhvqPwvRykrgtnG7N5X94gLy4f/kw6h9H+oR6L/oCVRtJTKzZdVWCpb4OuxD3KUgDLaKzE0l1AQlIxX1KcLKqzF+eYlCzMt246BvAjJXvNoljo0ql/ebk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wkg1twJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66DBC433C7;
+	Mon,  1 Apr 2024 16:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990212;
-	bh=5vEecD5BBjRGVO2HmvUNN32DihtTZIYu4/jLDA6509E=;
+	s=korg; t=1711987692;
+	bh=00x6BFh/lT9MBWqCdV/NvrJOI83r2vyOAnz8hJQ2sjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwZfW0zPxTb/9Nld+aUXdszPwRzrAoipc4es1ZXD95S9BW2v0a21Kj8P10JVWSHhb
-	 cJlFU0VqoPNKE5A4maZdML2BdGwQ5Fkd8DGUF30IfO1FuoefZPwZHr3jHkiH5HAK4U
-	 VAyFQqg0nE8F/xwqHSO6nLzVYE24/fFrlvWpDpKo=
+	b=Wkg1twJVuM6vgVn7GsNLsRGJsZwGuEP7HxO2i5qF7IsM/lw3IF4RWnk7KW1dC2kJ6
+	 y+YF5fooqDDnIUHDCWxRmGEjwMds9nRuuGeLDLI4WTUmEMu0Y9yAvFxDEYmwoL83Tm
+	 RNcQO+IsiiIjN92bWvbVcMjffGFW6IWiZwLbTAwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diana Craciun <diana.craciun@oss.nxp.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.6 281/396] vfio/fsl-mc: Block calling interrupt handler without trigger
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 6.8 364/399] usb: dwc2: gadget: Fix exiting from clock gating
 Date: Mon,  1 Apr 2024 17:45:30 +0200
-Message-ID: <20240401152556.287328235@linuxfoundation.org>
+Message-ID: <20240401152600.031777760@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit 7447d911af699a15f8d050dfcb7c680a86f87012 upstream.
+commit 31f42da31417bec88158f3cf62d19db836217f1e upstream.
 
-The eventfd_ctx trigger pointer of the vfio_fsl_mc_irq object is
-initially NULL and may become NULL if the user sets the trigger
-eventfd to -1.  The interrupt handler itself is guaranteed that
-trigger is always valid between request_irq() and free_irq(), but
-the loopback testing mechanisms to invoke the handler function
-need to test the trigger.  The triggering and setting ioctl paths
-both make use of igate and are therefore mutually exclusive.
+Added exiting from the clock gating mode on USB Reset Detect interrupt
+if core in the clock gating mode.
+Added new condition to check core in clock gating mode or no.
 
-The vfio-fsl-mc driver does not make use of irqfds, nor does it
-support any sort of masking operations, therefore unlike vfio-pci
-and vfio-platform, the flow can remain essentially unchanged.
-
-Cc: Diana Craciun <diana.craciun@oss.nxp.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: cc0ee20bd969 ("vfio/fsl-mc: trigger an interrupt via eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-8-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 9b4965d77e11 ("usb: dwc2: Add exit clock gating from session request interrupt")
+Fixes: 5d240efddc7f ("usb: dwc2: Add exit clock gating from wakeup interrupt")
+Fixes: 16c729f90bdf ("usb: dwc2: Allow exit clock gating in urb enqueue")
+Fixes: 401411bbc4e6 ("usb: dwc2: Add exit clock gating before removing driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/cbcc2ccd37e89e339130797ed68ae4597db773ac.1708938774.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/dwc2/core_intr.c |    9 ++++++---
+ drivers/usb/dwc2/gadget.c    |    6 ++++++
+ drivers/usb/dwc2/hcd.c       |    2 +-
+ drivers/usb/dwc2/platform.c  |    2 +-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-+++ b/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-@@ -141,13 +141,14 @@ static int vfio_fsl_mc_set_irq_trigger(s
- 	irq = &vdev->mc_irqs[index];
+--- a/drivers/usb/dwc2/core_intr.c
++++ b/drivers/usb/dwc2/core_intr.c
+@@ -297,7 +297,8 @@ static void dwc2_handle_session_req_intr
  
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (irq->trigger)
-+			eventfd_signal(irq->trigger, 1);
+ 			/* Exit gadget mode clock gating. */
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		}
  
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		u8 trigger = *(u8 *)data;
+@@ -408,7 +409,8 @@ static void dwc2_handle_wakeup_detected_
  
--		if (trigger)
--			vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (trigger && irq->trigger)
-+			eventfd_signal(irq->trigger, 1);
+ 			/* Exit gadget mode clock gating. */
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		} else {
+ 			/* Change to L0 state */
+@@ -425,7 +427,8 @@ static void dwc2_handle_wakeup_detected_
+ 			}
+ 
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_host_exit_clock_gating(hsotg, 1);
+ 
+ 			/*
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -3727,6 +3727,12 @@ irq_retry:
+ 		if (hsotg->in_ppd && hsotg->lx_state == DWC2_L2)
+ 			dwc2_exit_partial_power_down(hsotg, 0, true);
+ 
++		/* Exit gadget mode clock gating. */
++		if (hsotg->params.power_down ==
++		    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++		    !hsotg->params.no_clock_gating)
++			dwc2_gadget_exit_clock_gating(hsotg, 0);
++
+ 		hsotg->lx_state = DWC2_L0;
  	}
  
- 	return 0;
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -4657,7 +4657,7 @@ static int _dwc2_hcd_urb_enqueue(struct
+ 	}
+ 
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+-	    hsotg->bus_suspended) {
++	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
+ 		if (dwc2_is_device_mode(hsotg))
+ 			dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		else
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -331,7 +331,7 @@ static void dwc2_driver_remove(struct pl
+ 
+ 	/* Exit clock gating when driver is removed. */
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+-	    hsotg->bus_suspended) {
++	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
+ 		if (dwc2_is_device_mode(hsotg))
+ 			dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		else
 
 
 
