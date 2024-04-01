@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C348943C4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC13E894271
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1450F28398C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A599928360D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897A6482F6;
-	Mon,  1 Apr 2024 17:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE1650267;
+	Mon,  1 Apr 2024 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgj2JFDW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKCn6bpU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46252481B8;
-	Mon,  1 Apr 2024 17:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5884D5A0;
+	Mon,  1 Apr 2024 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991270; cv=none; b=X0866TRF4R1ciHpdbzthWIQI33yRIoQcUDXjNf3k+GkvTeAioWUiS0K9X+zaJgLgf5W0h0jXRAl3aLcLasjza7TuymEMeQf3vg4npooxzza7zwk/wsxtApfHl4gOZ77cKJzBVxbuTJ4XSsi7tQRVXe5pT8yYBF5M+I+5W4yV7Cw=
+	t=1711990356; cv=none; b=RPhaSyftHdnvBsy4xZKDGg7kD01GyqFAKQNul+FbnEgTPm3GVB5bd8uQE6eVQTAPV7VtaU1vlk1MPstUEDTCs7+UuATZ50lFl6tdkGh+idj+SVoGDQFk7BKW/ze74j6zZdrHn9UM+2/UyOj5k1hKVe5//IogqFGQUcdactD0U1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991270; c=relaxed/simple;
-	bh=HGZHeJnL/LBnhmeMHC6FfFRZLH0x3kGQRJB3McSQ8tA=;
+	s=arc-20240116; t=1711990356; c=relaxed/simple;
+	bh=L3QXZ4ONzMJCMJegrEtPaIi+2gqrWhNVVIePsrxnlbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmFo0Lgg75saKB79dhicq61HjcDinWl6RYlTpfNvH2sAVrgG6DvpJB3h6+xl9CKq73LbbaqL6wj3Bqa3NUP8DB7+DK/rbQhBOqlKDQgkd71oz4sCAojGcwvxktGaHEf6XHjBHjmj88XZ4Fx4oORHoCLUxo2ZQK7KPbC5IVB/jz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgj2JFDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EACC433C7;
-	Mon,  1 Apr 2024 17:07:49 +0000 (UTC)
+	 MIME-Version; b=RtVRi+uledJGV8X7aWv+SKtHGe+A7KuzQQqnFQysBX/LURHEgdvVACnDFecuMDVvzwNByF/DaumpNCKdW0lcnA0je0Dr5tycrmxwDPLEIN52jFTPCadr0sdokZjZE4MvCSoozM2HCisjdltjK98hx1HFk6/Mhwqeaqz0DIWlTsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKCn6bpU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBBEDC433F1;
+	Mon,  1 Apr 2024 16:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991270;
-	bh=HGZHeJnL/LBnhmeMHC6FfFRZLH0x3kGQRJB3McSQ8tA=;
+	s=korg; t=1711990356;
+	bh=L3QXZ4ONzMJCMJegrEtPaIi+2gqrWhNVVIePsrxnlbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgj2JFDWshHY86YwisdTsZfNt6TRrMhBYJ8RNj3KG31MAslt8D9gXCnWm7xnzgTJr
-	 whTjiHoixd9h77aaZy9RKotLR5k3CLDIcKiMgisNoXx7kaC2zO/LKKhJ9Hcg1oyM1S
-	 pE9AK4K99Vww4Dw4WB95ieL/YfB1KFrLbuhnYtfo=
+	b=SKCn6bpU78szovGLh/VeOJGWtssdJMtRIlgcHynXXqzSBtQeyugqVSl6oJtdhyKwP
+	 CTR3C7Fshu8gzZ9Ot3dUNbHhL+4ej1dYpOoGDuTaBNdznWDBy5Rs1taiyO3RgT5PL1
+	 qwE3lRehfgUs+z8nULInd5H1Zzmi9cbJkztsZYuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/272] irqchip/renesas-rzg2l: Implement restriction when writing ISCR register
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.6 326/396] exec: Fix NOMMU linux_binprm::exec in transfer_args_to_stack()
 Date: Mon,  1 Apr 2024 17:46:15 +0200
-Message-ID: <20240401152536.600557536@linuxfoundation.org>
+Message-ID: <20240401152557.631554734@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit ef88eefb1a81a8701eabb7d5ced761a66a465a49 ]
+commit 2aea94ac14d1e0a8ae9e34febebe208213ba72f7 upstream.
 
-The RZ/G2L manual (chapter "IRQ Status Control Register (ISCR)") describes
-the operation to clear interrupts through the ISCR register as follows:
+In NOMMU kernel the value of linux_binprm::p is the offset inside the
+temporary program arguments array maintained in separate pages in the
+linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
+thus must be adjusted when that array is copied to the user stack.
+Without that adjustment the value passed by the NOMMU kernel to the ELF
+program in the AT_EXECFN entry of the aux array doesn't make any sense
+and it may break programs that try to access memory pointed to by that
+entry.
 
-[Write operation]
+Adjust linux_binprm::exec before the successful return from the
+transfer_args_to_stack().
 
-  When "Falling-edge detection", "Rising-edge detection" or
-  "Falling/Rising-edge detection" is set in IITSR:
-
-    - In case ISTAT is 1
-	0: IRQn interrupt detection status is cleared.
-	1: Invalid to write.
-    - In case ISTAT is 0
-	Invalid to write.
-
-  When "Low-level detection" is set in IITSR.:
-        Invalid to write.
-
-Take the interrupt type into account when clearing interrupts through the
-ISCR register to avoid writing the ISCR when the interrupt type is level.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231120111820.87398-6-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: 9eec61df55c5 ("irqchip/renesas-rzg2l: Flush posted write in irq_eoi()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: b6a2fea39318 ("mm: variable length argument support")
+Fixes: 5edc2a5123a7 ("binfmt_elf_fdpic: wire up AT_EXECFD, AT_EXECFN, AT_SECURE")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Link: https://lore.kernel.org/r/20240320182607.1472887-1-jcmvbkbc@gmail.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/exec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 10c3e85c90c23..fbd1766f6aaa5 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -72,11 +72,17 @@ static void rzg2l_irq_eoi(struct irq_data *d)
- 	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
- 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
- 	u32 bit = BIT(hw_irq);
--	u32 reg;
-+	u32 iitsr, iscr;
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -894,6 +894,7 @@ int transfer_args_to_stack(struct linux_
+ 			goto out;
+ 	}
  
--	reg = readl_relaxed(priv->base + ISCR);
--	if (reg & bit)
--		writel_relaxed(reg & ~bit, priv->base + ISCR);
-+	iscr = readl_relaxed(priv->base + ISCR);
-+	iitsr = readl_relaxed(priv->base + IITSR);
-+
-+	/*
-+	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
-+	 * falling/rising-edge.
-+	 */
-+	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
-+		writel_relaxed(iscr & ~bit, priv->base + ISCR);
- }
++	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
+ 	*sp_location = sp;
  
- static void rzg2l_tint_eoi(struct irq_data *d)
--- 
-2.43.0
-
+ out:
 
 
 
