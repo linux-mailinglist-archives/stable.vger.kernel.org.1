@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-35334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF7289437E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5A7893EBB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF04EB22033
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E60F1F22EED
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82974482CA;
-	Mon,  1 Apr 2024 17:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AA847A64;
+	Mon,  1 Apr 2024 16:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ+yFVrM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Du0jWQmu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F58B481B8;
-	Mon,  1 Apr 2024 17:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896AE3F8F4;
+	Mon,  1 Apr 2024 16:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991056; cv=none; b=SZIRhrRg5Xm2m6a/DEgBOG2Azvmj/+dToi/jMXZMgzMQUGnCi3u1cgEEHL5c60/Q2mI8xnumn2dK1yvFvDExfFHw1AugjRkDXBWR7bj41kXwhb3s96SETa/dtCWx36u+ddfsbv0D4MpwbX4WqqU38iDaUv5rQ/ob7ejxd697ZxU=
+	t=1711987629; cv=none; b=vCpFsuB1frV0Pd1i9ffUFvBzukzR7zEP22LHDZb3C+OxX3iIXwoH1gIklteHCMlW1wK+UB2LaqrehhjZJcuKKeOVAeHjlYRRZMYj7kt1z94AN7f7jeQNiBIhExSi9s3PQMBbpdzIGX9JlY+E5eCHw1+5RzrrWYQtv+tUSAHlKPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991056; c=relaxed/simple;
-	bh=1LsX67bh+k+NJiR2MW66xSkuZB5N+ZSCN0ojOi1D/4c=;
+	s=arc-20240116; t=1711987629; c=relaxed/simple;
+	bh=bUpQniQY+WCqj99SNow5l6ro2pf766d4bRlKyOwPxxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdVVfRfVzeU8Uq5FGwYuGCUexQwm8MUCz/N0NUkBe+CPzxmkZKjGvntPcyrvUIMqm/CDlqoOV7fWYmTjYuUml7KZdvQaxjeNdXzBzDFUuzIDxktJoPDEzFICBbM80C8rDMjldTWMPTYwu4fX2NVb10ZlkKlypwVIgQMOtyK6YTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ+yFVrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B45C433F1;
-	Mon,  1 Apr 2024 17:04:15 +0000 (UTC)
+	 MIME-Version; b=jYL2bk1NvrZTz7EPVqZoq09ghXGYSyDM22J0pD6mhMQ3qgMoaCoQWCVchLfqAHIQSe7BnNljJE5qfDRZAJnrXIUkvpIgm8AGjggEgclf92r9jvyh2zLsxZujRgFkcybwiDT7o0KkOsqk8k2JCTKrcnnAuLP4bmmIk/g28DeJHng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Du0jWQmu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26D2C433F1;
+	Mon,  1 Apr 2024 16:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991056;
-	bh=1LsX67bh+k+NJiR2MW66xSkuZB5N+ZSCN0ojOi1D/4c=;
+	s=korg; t=1711987629;
+	bh=bUpQniQY+WCqj99SNow5l6ro2pf766d4bRlKyOwPxxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZ+yFVrM653FiM1p2lafduDyK2f8JML+rpIZw0aObV3RDqjGclPGOQu3DtmsEJmr8
-	 sDubGjCEDCSWKAJPrvP1bFI+ejDhGAGj8nCGRli9Jwxij2wRpEedcAUDWumhLeZXKC
-	 QoJAqidqAILY6kk9/cMWJlEDCheSXGdlMkGO9Lv8=
+	b=Du0jWQmu+bkfaSBiq2D6YPvKiB1EF0SUJ0OZIqQ0ngp+4nDMOavvxEU8Sbtf9iC1i
+	 fea3zO/CEOPT9KKYqU7ZBuKCY96E8ANWg6ZUn/F4SzGMvG4s6xaaqJAbuGH3NZEtcH
+	 z3J7UpVBtRAgqobU44dX+uzDzwXqE6jmQme7Q+Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Zhang <qiang4.zhang@intel.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/272] memtest: use {READ,WRITE}_ONCE in memory scanning
+	stable <stable@kernel.org>,
+	Yongzhi Liu <hyperlyzcs@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.8 344/399] usb: misc: ljca: Fix double free in error handling path
 Date: Mon,  1 Apr 2024 17:45:10 +0200
-Message-ID: <20240401152534.416904078@linuxfoundation.org>
+Message-ID: <20240401152559.440464997@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,50 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Zhang <qiang4.zhang@intel.com>
+From: Yongzhi Liu <hyperlyzcs@gmail.com>
 
-[ Upstream commit 82634d7e24271698e50a3ec811e5f50de790a65f ]
+commit 7c9631969287a5366bc8e39cd5abff154b35fb80 upstream.
 
-memtest failed to find bad memory when compiled with clang.  So use
-{WRITE,READ}_ONCE to access memory to avoid compiler over optimization.
+When auxiliary_device_add() returns error and then calls
+auxiliary_device_uninit(), callback function ljca_auxdev_release
+calls kfree(auxdev->dev.platform_data) to free the parameter data
+of the function ljca_new_client_device. The callers of
+ljca_new_client_device shouldn't call kfree() again
+in the error handling path to free the platform data.
 
-Link: https://lkml.kernel.org/r/20240312080422.691222-1-qiang4.zhang@intel.com
-Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by cleaning up the redundant kfree() in all callers and
+adding kfree() the passed in platform_data on errors which happen
+before auxiliary_device_init() succeeds .
+
+Fixes: acd6199f195d ("usb: Add support for Intel LJCA device")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yongzhi Liu <hyperlyzcs@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240311125748.28198-1-hyperlyzcs@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memtest.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/misc/usb-ljca.c |   22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/mm/memtest.c b/mm/memtest.c
-index f53ace709ccd8..d407373f225b4 100644
---- a/mm/memtest.c
-+++ b/mm/memtest.c
-@@ -46,10 +46,10 @@ static void __init memtest(u64 pattern, phys_addr_t start_phys, phys_addr_t size
- 	last_bad = 0;
+--- a/drivers/usb/misc/usb-ljca.c
++++ b/drivers/usb/misc/usb-ljca.c
+@@ -518,8 +518,10 @@ static int ljca_new_client_device(struct
+ 	int ret;
  
- 	for (p = start; p < end; p++)
--		*p = pattern;
-+		WRITE_ONCE(*p, pattern);
+ 	client = kzalloc(sizeof *client, GFP_KERNEL);
+-	if (!client)
++	if (!client) {
++		kfree(data);
+ 		return -ENOMEM;
++	}
  
- 	for (p = start; p < end; p++, start_phys_aligned += incr) {
--		if (*p == pattern)
-+		if (READ_ONCE(*p) == pattern)
- 			continue;
- 		if (start_phys_aligned == last_bad + incr) {
- 			last_bad += incr;
--- 
-2.43.0
-
+ 	client->type = type;
+ 	client->id = id;
+@@ -535,8 +537,10 @@ static int ljca_new_client_device(struct
+ 	auxdev->dev.release = ljca_auxdev_release;
+ 
+ 	ret = auxiliary_device_init(auxdev);
+-	if (ret)
++	if (ret) {
++		kfree(data);
+ 		goto err_free;
++	}
+ 
+ 	ljca_auxdev_acpi_bind(adap, auxdev, adr, id);
+ 
+@@ -590,12 +594,8 @@ static int ljca_enumerate_gpio(struct lj
+ 		valid_pin[i] = get_unaligned_le32(&desc->bank_desc[i].valid_pins);
+ 	bitmap_from_arr32(gpio_info->valid_pin_map, valid_pin, gpio_num);
+ 
+-	ret = ljca_new_client_device(adap, LJCA_CLIENT_GPIO, 0, "ljca-gpio",
++	return ljca_new_client_device(adap, LJCA_CLIENT_GPIO, 0, "ljca-gpio",
+ 				     gpio_info, LJCA_GPIO_ACPI_ADR);
+-	if (ret)
+-		kfree(gpio_info);
+-
+-	return ret;
+ }
+ 
+ static int ljca_enumerate_i2c(struct ljca_adapter *adap)
+@@ -629,10 +629,8 @@ static int ljca_enumerate_i2c(struct ljc
+ 		ret = ljca_new_client_device(adap, LJCA_CLIENT_I2C, i,
+ 					     "ljca-i2c", i2c_info,
+ 					     LJCA_I2C1_ACPI_ADR + i);
+-		if (ret) {
+-			kfree(i2c_info);
++		if (ret)
+ 			return ret;
+-		}
+ 	}
+ 
+ 	return 0;
+@@ -669,10 +667,8 @@ static int ljca_enumerate_spi(struct ljc
+ 		ret = ljca_new_client_device(adap, LJCA_CLIENT_SPI, i,
+ 					     "ljca-spi", spi_info,
+ 					     LJCA_SPI1_ACPI_ADR + i);
+-		if (ret) {
+-			kfree(spi_info);
++		if (ret)
+ 			return ret;
+-		}
+ 	}
+ 
+ 	return 0;
 
 
 
