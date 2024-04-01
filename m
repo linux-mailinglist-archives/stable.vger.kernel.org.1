@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-34664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65196894048
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B66D894354
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B9B81C2031E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE52FB20CF9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718A747F60;
-	Mon,  1 Apr 2024 16:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C4E482CA;
+	Mon,  1 Apr 2024 17:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIyGNOLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8iJRSrF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D9345BE4;
-	Mon,  1 Apr 2024 16:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024731C0DE7;
+	Mon,  1 Apr 2024 17:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988882; cv=none; b=MlAL/K9dwW9blFclyx7kgmgeAgmFgdBp1DydK9oB5q21dRnpDUg5QnEuj2fDzyipkV7dJMVKCrzZNQgIRFsK90xZrtgjujQlMaacjNlqPPGCtUpTkTrsyTefBo2Yi7s3GFjumooexXB8AMq+eadGvqCXyCIx/bZ+PyD9zcddo6I=
+	t=1711990943; cv=none; b=OyCk/Qa5S0flHPVXSilmX4VazOAFzeIGVgXbE2xGGGvjO1HbKYkAFToQ4w3p8sHI1FwNmAqoEGgObuhVLhoTKNDZH6M3avEWd4MukAL5gL1a//MxLOmOPy7Hzb6HOSDrrOVBCKImlSjpzi0OgcqYs9RNVJEWLB+nz6rVETR04lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988882; c=relaxed/simple;
-	bh=Py09tB+BCHZS9pgQSpZd8bb2chompbvAihx42/eAF9g=;
+	s=arc-20240116; t=1711990943; c=relaxed/simple;
+	bh=OTQl8csRepYS0+o1zE2WdrZ+HZBxjaUDP9yx5sKmEJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtQp+wGru4mAHswYpEyrQUziI9ffDJ/wJPG6ZRa7Mcc1WdIPC6HwaAmb8kZyiJb7YTZIxY1oZKLL2ZcTwuMdbh0EbVudawDEWRQpU29kE4BbsUCUqZghQq52OS1vUlWRoIHWqfnGDTZcuYNDW0jIVW2MRusO/WzvHMWfqiWRJFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIyGNOLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB328C43390;
-	Mon,  1 Apr 2024 16:28:01 +0000 (UTC)
+	 MIME-Version; b=T/zCFAMoQqZJlsAgoHlj+EAHuk1bR5Sc2Jfs32v2ArhbWukQkChcRfjl9Vv6419cGhOrsWcaWOoa0N4yNbnmALZCyq5ckNcZsmnhvu6xsuF3njSyhxo++PPLn+xlFm9i5mH+oMLWsGug72v4VMnmHFltcXRl8eVBByBF+kDDw+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8iJRSrF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A34FC433C7;
+	Mon,  1 Apr 2024 17:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988882;
-	bh=Py09tB+BCHZS9pgQSpZd8bb2chompbvAihx42/eAF9g=;
+	s=korg; t=1711990942;
+	bh=OTQl8csRepYS0+o1zE2WdrZ+HZBxjaUDP9yx5sKmEJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIyGNOLUqDx9dHJnGLiaac33a4EiNTWbNYqkaspBIHfCtp3WhgkyFK6r0tOOtpUVP
-	 zFnaqgPTSCh9RaL5mBGo0xXHdbpHNNAvkeBjlzYMXcrTmQU+0FI/IauX7UVfV+fpzT
-	 D2tyFa9KzirP9kY+XPrXIhy2NcFUI/sdxX8P0Yws=
+	b=z8iJRSrFM5fwkT8ougYyIB3wJeYyXlIUQV2jeR/ZLP2Fvve4KfEJAlobRNSVNddw8
+	 omrTF1pxtuolEQRpzKdr081wWlKGQIjshGNcZn8iB+CGbMpoOdQK0M/iu91oRQncBM
+	 xobcfHXf3RlgPOiGPAaMSewz/D7/S9G/rdo1n4ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adamos Ttofari <attofari@amazon.de>,
-	"Chang S. Bae" <chang.seok.bae@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Camelia Groza <camelia.groza@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 316/432] x86/fpu: Keep xfd_state in sync with MSR_IA32_XFD
+Subject: [PATCH 6.1 113/272] soc: fsl: qbman: Use raw spinlock for cgr_lock
 Date: Mon,  1 Apr 2024 17:45:03 +0200
-Message-ID: <20240401152602.618653654@linuxfoundation.org>
+Message-ID: <20240401152534.189712556@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +65,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adamos Ttofari <attofari@amazon.de>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 10e4b5166df9ff7a2d5316138ca668b42d004422 ]
+[ Upstream commit fbec4e7fed89b579f2483041fabf9650fb0dd6bc ]
 
-Commit 672365477ae8 ("x86/fpu: Update XFD state where required") and
-commit 8bf26758ca96 ("x86/fpu: Add XFD state to fpstate") introduced a
-per CPU variable xfd_state to keep the MSR_IA32_XFD value cached, in
-order to avoid unnecessary writes to the MSR.
+smp_call_function always runs its callback in hard IRQ context, even on
+PREEMPT_RT, where spinlocks can sleep. So we need to use a raw spinlock
+for cgr_lock to ensure we aren't waiting on a sleeping task.
 
-On CPU hotplug MSR_IA32_XFD is reset to the init_fpstate.xfd, which
-wipes out any stale state. But the per CPU cached xfd value is not
-reset, which brings them out of sync.
+Although this bug has existed for a while, it was not apparent until
+commit ef2a8d5478b9 ("net: dpaa: Adjust queue depth on rate change")
+which invokes smp_call_function_single via qman_update_cgr_safe every
+time a link goes up or down.
 
-As a consequence a subsequent xfd_update_state() might fail to update
-the MSR which in turn can result in XRSTOR raising a #NM in kernel
-space, which crashes the kernel.
-
-To fix this, introduce xfd_set_state() to write xfd_state together
-with MSR_IA32_XFD, and use it in all places that set MSR_IA32_XFD.
-
-Fixes: 672365477ae8 ("x86/fpu: Update XFD state where required")
-Signed-off-by: Adamos Ttofari <attofari@amazon.de>
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240322230439.456571-1-chang.seok.bae@intel.com
-
-Closes: https://lore.kernel.org/lkml/20230511152818.13839-1-attofari@amazon.de
+Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()")
+CC: stable@vger.kernel.org
+Reported-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Closes: https://lore.kernel.org/all/20230323153935.nofnjucqjqnz34ej@skbuf/
+Reported-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Closes: https://lore.kernel.org/linux-arm-kernel/87wmsyvclu.fsf@pengutronix.de/
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/fpu/xstate.c |  5 +++--
- arch/x86/kernel/fpu/xstate.h | 14 ++++++++++----
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/soc/fsl/qbman/qman.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 117e74c44e756..33a214b1a4cec 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -178,10 +178,11 @@ void fpu__init_cpu_xstate(void)
- 	 * Must happen after CR4 setup and before xsetbv() to allow KVM
- 	 * lazy passthrough.  Write independent of the dynamic state static
- 	 * key as that does not work on the boot CPU. This also ensures
--	 * that any stale state is wiped out from XFD.
-+	 * that any stale state is wiped out from XFD. Reset the per CPU
-+	 * xfd cache too.
- 	 */
- 	if (cpu_feature_enabled(X86_FEATURE_XFD))
--		wrmsrl(MSR_IA32_XFD, init_fpstate.xfd);
-+		xfd_set_state(init_fpstate.xfd);
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 1bf1f1ea67f00..7e9074519ad22 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -991,7 +991,7 @@ struct qman_portal {
+ 	/* linked-list of CSCN handlers. */
+ 	struct list_head cgr_cbs;
+ 	/* list lock */
+-	spinlock_t cgr_lock;
++	raw_spinlock_t cgr_lock;
+ 	struct work_struct congestion_work;
+ 	struct work_struct mr_work;
+ 	char irqname[MAX_IRQNAME];
+@@ -1281,7 +1281,7 @@ static int qman_create_portal(struct qman_portal *portal,
+ 		/* if the given mask is NULL, assume all CGRs can be seen */
+ 		qman_cgrs_fill(&portal->cgrs[0]);
+ 	INIT_LIST_HEAD(&portal->cgr_cbs);
+-	spin_lock_init(&portal->cgr_lock);
++	raw_spin_lock_init(&portal->cgr_lock);
+ 	INIT_WORK(&portal->congestion_work, qm_congestion_task);
+ 	INIT_WORK(&portal->mr_work, qm_mr_process_task);
+ 	portal->bits = 0;
+@@ -1456,11 +1456,14 @@ static void qm_congestion_task(struct work_struct *work)
+ 	union qm_mc_result *mcr;
+ 	struct qman_cgr *cgr;
  
- 	/*
- 	 * XCR_XFEATURE_ENABLED_MASK (aka. XCR0) sets user features
-diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-index 3518fb26d06b0..19ca623ffa2ac 100644
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -148,20 +148,26 @@ static inline void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rs
- #endif
- 
- #ifdef CONFIG_X86_64
-+static inline void xfd_set_state(u64 xfd)
-+{
-+	wrmsrl(MSR_IA32_XFD, xfd);
-+	__this_cpu_write(xfd_state, xfd);
-+}
-+
- static inline void xfd_update_state(struct fpstate *fpstate)
- {
- 	if (fpu_state_size_dynamic()) {
- 		u64 xfd = fpstate->xfd;
- 
--		if (__this_cpu_read(xfd_state) != xfd) {
--			wrmsrl(MSR_IA32_XFD, xfd);
--			__this_cpu_write(xfd_state, xfd);
--		}
-+		if (__this_cpu_read(xfd_state) != xfd)
-+			xfd_set_state(xfd);
- 	}
+-	spin_lock_irq(&p->cgr_lock);
++	/*
++	 * FIXME: QM_MCR_TIMEOUT is 10ms, which is too long for a raw spinlock!
++	 */
++	raw_spin_lock_irq(&p->cgr_lock);
+ 	qm_mc_start(&p->p);
+ 	qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
+ 	if (!qm_mc_result_timeout(&p->p, &mcr)) {
+-		spin_unlock_irq(&p->cgr_lock);
++		raw_spin_unlock_irq(&p->cgr_lock);
+ 		dev_crit(p->config->dev, "QUERYCONGESTION timeout\n");
+ 		qman_p_irqsource_add(p, QM_PIRQ_CSCI);
+ 		return;
+@@ -1476,7 +1479,7 @@ static void qm_congestion_task(struct work_struct *work)
+ 	list_for_each_entry(cgr, &p->cgr_cbs, node)
+ 		if (cgr->cb && qman_cgrs_get(&c, cgr->cgrid))
+ 			cgr->cb(p, cgr, qman_cgrs_get(&rr, cgr->cgrid));
+-	spin_unlock_irq(&p->cgr_lock);
++	raw_spin_unlock_irq(&p->cgr_lock);
+ 	qman_p_irqsource_add(p, QM_PIRQ_CSCI);
  }
  
- extern int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu);
- #else
-+static inline void xfd_set_state(u64 xfd) { }
-+
- static inline void xfd_update_state(struct fpstate *fpstate) { }
+@@ -2440,7 +2443,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
+ 	preempt_enable();
  
- static inline int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu) {
+ 	cgr->chan = p->config->channel;
+-	spin_lock_irq(&p->cgr_lock);
++	raw_spin_lock_irq(&p->cgr_lock);
+ 
+ 	if (opts) {
+ 		struct qm_mcc_initcgr local_opts = *opts;
+@@ -2477,7 +2480,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
+ 	    qman_cgrs_get(&p->cgrs[1], cgr->cgrid))
+ 		cgr->cb(p, cgr, 1);
+ out:
+-	spin_unlock_irq(&p->cgr_lock);
++	raw_spin_unlock_irq(&p->cgr_lock);
+ 	put_affine_portal();
+ 	return ret;
+ }
+@@ -2512,7 +2515,7 @@ int qman_delete_cgr(struct qman_cgr *cgr)
+ 		return -EINVAL;
+ 
+ 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
+-	spin_lock_irqsave(&p->cgr_lock, irqflags);
++	raw_spin_lock_irqsave(&p->cgr_lock, irqflags);
+ 	list_del(&cgr->node);
+ 	/*
+ 	 * If there are no other CGR objects for this CGRID in the list,
+@@ -2537,7 +2540,7 @@ int qman_delete_cgr(struct qman_cgr *cgr)
+ 		/* add back to the list */
+ 		list_add(&cgr->node, &p->cgr_cbs);
+ release_lock:
+-	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
++	raw_spin_unlock_irqrestore(&p->cgr_lock, irqflags);
+ 	put_affine_portal();
+ 	return ret;
+ }
+@@ -2577,9 +2580,9 @@ static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
+ 	if (!p)
+ 		return -EINVAL;
+ 
+-	spin_lock_irqsave(&p->cgr_lock, irqflags);
++	raw_spin_lock_irqsave(&p->cgr_lock, irqflags);
+ 	ret = qm_modify_cgr(cgr, 0, opts);
+-	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
++	raw_spin_unlock_irqrestore(&p->cgr_lock, irqflags);
+ 	put_affine_portal();
+ 	return ret;
+ }
 -- 
 2.43.0
 
