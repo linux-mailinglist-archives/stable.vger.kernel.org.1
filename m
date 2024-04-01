@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-34977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3EE8941C0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D27D894029
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D2C21F25398
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42EEC1F21E7E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D431C0DE7;
-	Mon,  1 Apr 2024 16:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A7945BE4;
+	Mon,  1 Apr 2024 16:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqpD4aFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUgEuA7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C294654F;
-	Mon,  1 Apr 2024 16:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B603D961;
+	Mon,  1 Apr 2024 16:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989934; cv=none; b=M7F1igaLO0owjrRD/HkjzCJPglboTeddYOmalHQd8EvQ6T3zJMYAnXB0wijoW9ULUPiQLu7cDldOK8f3k4ZEYr8d7aZIp1U1yYxtOxwkRLmbhpUhu1tzydidxHY6epLfau3jlXXxEDS8gR+eV5fCONUWrizyij2nNuwmpCEJDTM=
+	t=1711988782; cv=none; b=abSc+VLEMnQGTts7vmkEkH9jQCDj/IUK76i+qz9PN3LxgSxl8c7repPICdAmF+LfX4q3TBi8SCK4NVpOb86pw/Yt9o87e25LkqQPvQ35kJ+lF+bnqcSVLzT9VBacih75d8bKZ9cxiLBbGtsgA2S4OulY0LfCzRFXlMS25+Ttp2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989934; c=relaxed/simple;
-	bh=T1Dwsfsc8FaCp6r+hopjVPC0B23iq+eQiQQnb0svXo4=;
+	s=arc-20240116; t=1711988782; c=relaxed/simple;
+	bh=eQRjCSHRfP0qhbXu0/qcY/3bJaxhLPakun/FnXcfu4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Js3VGYimUqS3RR2wZRtn+H0on+Wp12K1JmPkWtYfUqxEknSIingd6EVN7FY0fgECKr4zjeSn5yJgDjU5RBhc/j97wjF3W8EA17KqgAMrtG3tNyMGuXO684LL2qlu9kiyhGy7iRITvbakKZulk1yI1NR5v6ucKVU3jXtGX53C5qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqpD4aFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DD7C433F1;
-	Mon,  1 Apr 2024 16:45:33 +0000 (UTC)
+	 MIME-Version; b=VPngGT2Ce5mOBkA0mwhbKETWC3+6qayBdffCHEvqoJycCvhSha0buPIpt0BbdJqQn4Wk+1wUINwbcgw1yIwDG4pMwmX2QKPFNcNd7nUoDbldTXFmhYzrhNzJjDi8TxD1oRUsYAfLZw8f9LHqiBD9eoTrOBYBAom3cdKLWrNPSew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUgEuA7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D05CC433F1;
+	Mon,  1 Apr 2024 16:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989933;
-	bh=T1Dwsfsc8FaCp6r+hopjVPC0B23iq+eQiQQnb0svXo4=;
+	s=korg; t=1711988782;
+	bh=eQRjCSHRfP0qhbXu0/qcY/3bJaxhLPakun/FnXcfu4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqpD4aFp8lvbzOC3GRH0xhC6Q9ffe6NBmSVxGY8wl0gbVkMFAYV6UeuArciESvaB0
-	 BUTxtC6LMY5rtLNx9dWRlXqmGjeGstptJqlUOZhfzcHHGTCucoogMp9Au+y5XPhhwj
-	 /uX8b0jgI8rNSLZLTo3S1JiypbUOpj0h+lywh5pA=
+	b=sUgEuA7Bi3jCRg5abBHD4Z6hZKt4UIuaV1fj2lsEBvtJKxgtUvy13PAxrbm9N+3J1
+	 drxNMndhShkyao6df6CBQ/vM6AsuvgYsJ5JOILXKMPeYSaFuxM2GCA0g5OLW+ClCf9
+	 W3mTaK1/hzksx6Eo81//L575NwH1HGvJRQhrxPDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingi Cho <mgcho.minic@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.6 197/396] netfilter: nf_tables: mark set as dead when unbinding anonymous set with timeout
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Shawn Lee <shawn.c.lee@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.7 259/432] drm/i915: Check before removing mm notifier
 Date: Mon,  1 Apr 2024 17:44:06 +0200
-Message-ID: <20240401152553.808672612@linuxfoundation.org>
+Message-ID: <20240401152600.874052498@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Nirmoy Das <nirmoy.das@intel.com>
 
-commit 552705a3650bbf46a22b1adedc1b04181490fc36 upstream.
+commit 01bb1ae35006e473138c90711bad1a6b614a1823 upstream.
 
-While the rhashtable set gc runs asynchronously, a race allows it to
-collect elements from anonymous sets with timeouts while it is being
-released from the commit path.
+Error in mmu_interval_notifier_insert() can leave a NULL
+notifier.mm pointer. Catch that and return early.
 
-Mingi Cho originally reported this issue in a different path in 6.1.x
-with a pipapo set with low timeouts which is not possible upstream since
-7395dfacfff6 ("netfilter: nf_tables: use timestamp to check for set
-element timeout").
-
-Fix this by setting on the dead flag for anonymous sets to skip async gc
-in this case.
-
-According to 08e4c8c5919f ("netfilter: nf_tables: mark newset as dead on
-transaction abort"), Florian plans to accelerate abort path by releasing
-objects via workqueue, therefore, this sets on the dead flag for abort
-path too.
-
-Cc: stable@vger.kernel.org
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Reported-by: Mingi Cho <mgcho.minic@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: ed29c2691188 ("drm/i915: Fix userptr so we do not have to worry about obj->mm.lock, v7.")
+Cc: <stable@vger.kernel.org> # v5.13+
+[tursulin: Added Fixes and cc stable.]
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Shawn Lee <shawn.c.lee@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240219125047.28906-1-nirmoy.das@intel.com
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+(cherry picked from commit db7bbd13f08774cde0332c705f042e327fe21e73)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/gem/i915_gem_userptr.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5367,6 +5367,7 @@ static void nf_tables_unbind_set(const s
+--- a/drivers/gpu/drm/i915/gem/i915_gem_userptr.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_userptr.c
+@@ -379,6 +379,9 @@ i915_gem_userptr_release(struct drm_i915
+ {
+ 	GEM_WARN_ON(obj->userptr.page_ref);
  
- 	if (list_empty(&set->bindings) && nft_set_is_anonymous(set)) {
- 		list_del_rcu(&set->list);
-+		set->dead = 1;
- 		if (event)
- 			nf_tables_set_notify(ctx, set, NFT_MSG_DELSET,
- 					     GFP_KERNEL);
++	if (!obj->userptr.notifier.mm)
++		return;
++
+ 	mmu_interval_notifier_remove(&obj->userptr.notifier);
+ 	obj->userptr.notifier.mm = NULL;
+ }
 
 
 
