@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-35327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45210894376
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A7D893ED0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76D9D1C21ED9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB3C282DB9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CADF48CDD;
-	Mon,  1 Apr 2024 17:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D5D446AC;
+	Mon,  1 Apr 2024 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe0zP7ra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vz2qE96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAF5482E4;
-	Mon,  1 Apr 2024 17:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E572A1CA8F;
+	Mon,  1 Apr 2024 16:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991034; cv=none; b=a7AlU009GVmDWVhOxbu+9MbpLI13xIad/a1Jlem0LpMj43uKQR0+88bL3uzEMIeyXgB69WamTANI+p2ULj/l8LfnRPkwlNjc47QZnTxydK6iWiLEHQ2zOq6ATk/UjtN85ijqOLgQtu7UPUvE2VWuaWAL0apJJLbyNLvEnzpeAvk=
+	t=1711987699; cv=none; b=e/3Id91mMN+gNL/VN12Rqb0k0dt9g60cAHkjXGC81Z4nnmgB7bASZDURLN7mYir2ikpJH8ZeguYhFCNmZJsQbSyndRoctvx22npoup0fpK6kMLeRkhTEYUWULAxv6LFwVXiRRuY7u+1bY8oXIjf/I98NzBkf2EeBb4LKATIpywM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991034; c=relaxed/simple;
-	bh=ZUR8aDHrIDATJaFT5mwjTPMGSpPHNvBGt9IkHKOfnLs=;
+	s=arc-20240116; t=1711987699; c=relaxed/simple;
+	bh=yEAZq02YpB/ui4kyM9XOXGEwNNKomrttTfXpjmHCd78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p51U8YuR0cvDVtQDZ000EZW8YoI+sp1sbYIDpgCROXb5+dEV0ljfKtihSqM7wG8GmW1Zv1QifToNinEhX7r8QO48KdmdwyY5DoS6q0iJngl6NlfFOVlZVEGSBVVSePpz61gGKb2mLSwYP+iFHSoqMthNEgDeKTJlv5x7FlY7lPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe0zP7ra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56285C433A6;
-	Mon,  1 Apr 2024 17:03:53 +0000 (UTC)
+	 MIME-Version; b=enE+e/3NaPhf/fuxSQgOYEO4cLe0jsj7XUY8s0l1G6Xqqgp1w+6/q/PK91spEgdKcKq/ht3bO6hSAyE4SBeTiE/EJwghPiPwvGg8NcgMvOmjldNTaAkwq8LFDaILrxXqDPW/6gU3vjUBxkGCrKGf+B89+V5OKgRRfsnJiDC8IBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vz2qE96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5662AC433C7;
+	Mon,  1 Apr 2024 16:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991033;
-	bh=ZUR8aDHrIDATJaFT5mwjTPMGSpPHNvBGt9IkHKOfnLs=;
+	s=korg; t=1711987698;
+	bh=yEAZq02YpB/ui4kyM9XOXGEwNNKomrttTfXpjmHCd78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qe0zP7raetxd+mMVUhzJ+71m+SPDCESpFOlS5BsFM22ALyprwjsl1/WYe9vugDe9V
-	 U1YYp7N3pkHt/BOPZqwVWXNsynIHS1p9om26skD7b7kRPwrx+eMBHU92pLzv4UeJ05
-	 WMPdcOgQq4+m4A7qZ7Dzs+uiq6guZ48oKn5Bx0gg=
+	b=1vz2qE96Olqy4QhPK3EZ67oaFuUUJB2TYh94/F8DRYmjMgrjDIsSqWbOmiyeHMcX9
+	 BzG2MJxMvVqZ0cre6ElbGkgTGHSWn2oRU4IOCvNh0/Ssp/p76hR+3JmQKwnijw0g8m
+	 ACMVyx6CxWDKVetCCB1BVjJ2yrkM5wIFwrBLWqNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/272] cpufreq: brcmstb-avs-cpufreq: fix up "add check for cpufreq_cpu_gets return value"
+	Alan Stern <stern@rowland.harvard.edu>,
+	yuan linyu <yuanlinyu@hihonor.com>
+Subject: [PATCH 6.8 366/399] usb: udc: remove warning when queue disabled ep
 Date: Mon,  1 Apr 2024 17:45:32 +0200
-Message-ID: <20240401152535.120468142@linuxfoundation.org>
+Message-ID: <20240401152600.099965980@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: yuan linyu <yuanlinyu@hihonor.com>
 
-In commit e72160cb6e23 ("cpufreq: brcmstb-avs-cpufreq: add check for
-cpufreq_cpu_get's return value"), build warnings occur because a
-variable is created after some logic, resulting in:
+commit 2a587a035214fa1b5ef598aea0b81848c5b72e5e upstream.
 
-drivers/cpufreq/brcmstb-avs-cpufreq.c: In function 'brcm_avs_cpufreq_get':
-drivers/cpufreq/brcmstb-avs-cpufreq.c:486:9: error: ISO C90 forbids mixed
-declarations and code [-Werror=declaration-after-statement]
-  486 |         struct private_data *priv = policy->driver_data;
-      |         ^~~~~~
-cc1: all warnings being treated as errors
-make[2]: *** [scripts/Makefile.build:289:
-drivers/cpufreq/brcmstb-avs-cpufreq.o] Error 1
-make[1]: *** [scripts/Makefile.build:552: drivers/cpufreq] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1907: drivers] Error 2
+It is possible trigger below warning message from mass storage function,
 
-Fix this up.
+WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
+pc : usb_ep_queue+0x7c/0x104
+lr : fsg_main_thread+0x494/0x1b3c
 
-Link: https://lore.kernel.org/r/e114d9e5-26af-42be-9baa-72c3a6ec8fe5@oracle.com
-Link: https://lore.kernel.org/stable/20240327015023.GC7502@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net/T/#m15bff0fe96986ef780e848b4fff362bf8ea03f08
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Fixes: e72160cb6e23 ("cpufreq: brcmstb-avs-cpufreq: add check for cpufreq_cpu_get's return value")
-Cc: Anastasia Belova <abelova@astralinux.ru>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Sasha Levin <sashal@kernel.org>
+Root cause is mass storage function try to queue request from main thread,
+but other thread may already disable ep when function disable.
+
+As there is no function failure in the driver, in order to avoid effort
+to fix warning, change WARN_ON_ONCE() in usb_ep_queue() to pr_debug().
+
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: stable@vger.kernel.org
+Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20240315020144.2715575-1-yuanlinyu@hihonor.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/brcmstb-avs-cpufreq.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/udc/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
-+++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-@@ -481,10 +481,11 @@ static bool brcm_avs_is_firmware_loaded(
- static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -292,7 +292,9 @@ int usb_ep_queue(struct usb_ep *ep,
  {
- 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-+	struct private_data *priv;
-+
- 	if (!policy)
- 		return 0;
--	struct private_data *priv = policy->driver_data;
--
-+	priv = policy->driver_data;
- 	cpufreq_cpu_put(policy);
+ 	int ret = 0;
  
- 	return brcm_avs_get_frequency(priv->base);
+-	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
++	if (!ep->enabled && ep->address) {
++		pr_debug("USB gadget: queue request to disabled ep 0x%x (%s)\n",
++				 ep->address, ep->name);
+ 		ret = -ESHUTDOWN;
+ 		goto out;
+ 	}
 
 
 
