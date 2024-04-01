@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-35291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED0489434A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC30B893ECA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCD7428385A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4641C2107E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179B0482CA;
-	Mon,  1 Apr 2024 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329114776F;
+	Mon,  1 Apr 2024 16:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhZgBWqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWgldUXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3F81DFF4;
-	Mon,  1 Apr 2024 17:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0981CA8F;
+	Mon,  1 Apr 2024 16:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990917; cv=none; b=KCDZbshM7taocSkPFc4042bM1XMUvCfIkyN9RA0bqQjDgLhFcMB3MNo0kvGM7OqHUpD8PKYtclefZ6YFtsYKJKcX2vjP7Wdk5JwFd+9Y1FWIk6n3VNmKmCfK5d5Fmp6wIuKmdAAS/v04fSgg8jXSW7v+UhmnOQy6xjkjDokkip0=
+	t=1711987680; cv=none; b=bN/2r7HoOmAwUgjAatL1KNT0Ra+0nRMhotELMyfgtctP/cKGaQVkv4t6CKTutZKVd1ei/os1jJYlLW/3xGCi8MgA5zhglBCfEBpvL9E4Bfzqwbs3e3PkT/ZWb9QJdMI6kaLCFjcBm3a1QWR8CQ8ygRG3o5WgUIjP8hlVg3z8YvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990917; c=relaxed/simple;
-	bh=65PT+ATWuciVg9fUCrawcu4dQbw0IBX1trOpu8HYRG4=;
+	s=arc-20240116; t=1711987680; c=relaxed/simple;
+	bh=aVohFMhsxPpIasXgWFuCFOLSebMxv4rRuemO5HYpt94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srK8/UoVo77OK3mVN7QO1iOs061QHK4PgC/QhYC4i5FNV0B1CwzqcFq5lnaxZY3fgVLJwy/voco8b5kEAzPIZEfmj4f/kNOjm5C7SvENmC81+pwC3qWh47fbbSu1Nr0d/CZPywKjxmxhvCfq4LCceKTx9ccHc123oKyw1eJ0Ggc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhZgBWqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C099C433F1;
-	Mon,  1 Apr 2024 17:01:57 +0000 (UTC)
+	 MIME-Version; b=Ii8ll70WnrHRgSJky4i0vbo2pZdUqKJtw70TTh7yWB/5n6KX9UFFAQMd0NL5eAdGpWFjT6FzDSFor5Wnld/hZBbA8+Vfoq/sSL2dlvH9HVWxvTcBBUMXSP4Jj6uW1MUd88s3a2TnYTya+gV3H4n9CqZZED0UzqcUMLOFJfMWzZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWgldUXc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644BEC433F1;
+	Mon,  1 Apr 2024 16:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990917;
-	bh=65PT+ATWuciVg9fUCrawcu4dQbw0IBX1trOpu8HYRG4=;
+	s=korg; t=1711987679;
+	bh=aVohFMhsxPpIasXgWFuCFOLSebMxv4rRuemO5HYpt94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhZgBWqwn8lkt6PwvYQzE90LleY1c4AlD9RA/aaa2tNDIUNkwamGZCPqRsrEAOpP0
-	 BPPKArnXzkMjuJ1NzfMF4U9gQhR2x2LEcGdDJZjJToT3ShzzkPvNMXxHIejOT8ThV+
-	 hbMiUA48lShgupDx1NCLSbvncZgyyt2QLIa63Mzk=
+	b=iWgldUXcg38FE0S7HhlJhvvPJuZPM1+1Gsqld/PVNLgRZq+iKKsG8lyteMg86CWye
+	 0FABxUn4mzH3J8rzzA2EvD2nmP7QzOn/0B0jNe5G8TRjMcXDTZNCkpysf4YUAL29Br
+	 0vT1UeJhl7whH1NAusle6cIEe/16GkhjIlxSWg6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/272] ksmbd: retrieve number of blocks using vfs_getattr in set_file_allocation_info
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH 6.8 330/399] drm/i915/hwmon: Fix locking inversion in sysfs getter
 Date: Mon,  1 Apr 2024 17:44:56 +0200
-Message-ID: <20240401152533.948270923@linuxfoundation.org>
+Message-ID: <20240401152559.028348885@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit 34cd86b6632718b7df3999d96f51e63de41c5e4f ]
+commit b212b79768ccde74429f872c37618c543fa11333 upstream.
 
-Use vfs_getattr() to retrieve stat information, rather than make
-assumptions about how a filesystem fills inode structs.
+In i915 hwmon sysfs getter path we now take a hwmon_lock, then acquire an
+rpm wakeref.  That results in lock inversion:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+<4> [197.079335] ======================================================
+<4> [197.085473] WARNING: possible circular locking dependency detected
+<4> [197.091611] 6.8.0-rc7-Patchwork_129026v7-gc4dc92fb1152+ #1 Not tainted
+<4> [197.098096] ------------------------------------------------------
+<4> [197.104231] prometheus-node/839 is trying to acquire lock:
+<4> [197.109680] ffffffff82764d80 (fs_reclaim){+.+.}-{0:0}, at: __kmalloc+0x9a/0x350
+<4> [197.116939]
+but task is already holding lock:
+<4> [197.122730] ffff88811b772a40 (&hwmon->hwmon_lock){+.+.}-{3:3}, at: hwm_energy+0x4b/0x100 [i915]
+<4> [197.131543]
+which lock already depends on the new lock.
+...
+<4> [197.507922] Chain exists of:
+  fs_reclaim --> &gt->reset.mutex --> &hwmon->hwmon_lock
+<4> [197.518528]  Possible unsafe locking scenario:
+<4> [197.524411]        CPU0                    CPU1
+<4> [197.528916]        ----                    ----
+<4> [197.533418]   lock(&hwmon->hwmon_lock);
+<4> [197.537237]                                lock(&gt->reset.mutex);
+<4> [197.543376]                                lock(&hwmon->hwmon_lock);
+<4> [197.549682]   lock(fs_reclaim);
+...
+<4> [197.632548] Call Trace:
+<4> [197.634990]  <TASK>
+<4> [197.637088]  dump_stack_lvl+0x64/0xb0
+<4> [197.640738]  check_noncircular+0x15e/0x180
+<4> [197.652968]  check_prev_add+0xe9/0xce0
+<4> [197.656705]  __lock_acquire+0x179f/0x2300
+<4> [197.660694]  lock_acquire+0xd8/0x2d0
+<4> [197.673009]  fs_reclaim_acquire+0xa1/0xd0
+<4> [197.680478]  __kmalloc+0x9a/0x350
+<4> [197.689063]  acpi_ns_internalize_name.part.0+0x4a/0xb0
+<4> [197.694170]  acpi_ns_get_node_unlocked+0x60/0xf0
+<4> [197.720608]  acpi_ns_get_node+0x3b/0x60
+<4> [197.724428]  acpi_get_handle+0x57/0xb0
+<4> [197.728164]  acpi_has_method+0x20/0x50
+<4> [197.731896]  acpi_pci_set_power_state+0x43/0x120
+<4> [197.736485]  pci_power_up+0x24/0x1c0
+<4> [197.740047]  pci_pm_default_resume_early+0x9/0x30
+<4> [197.744725]  pci_pm_runtime_resume+0x2d/0x90
+<4> [197.753911]  __rpm_callback+0x3c/0x110
+<4> [197.762586]  rpm_callback+0x58/0x70
+<4> [197.766064]  rpm_resume+0x51e/0x730
+<4> [197.769542]  rpm_resume+0x267/0x730
+<4> [197.773020]  rpm_resume+0x267/0x730
+<4> [197.776498]  rpm_resume+0x267/0x730
+<4> [197.779974]  __pm_runtime_resume+0x49/0x90
+<4> [197.784055]  __intel_runtime_pm_get+0x19/0xa0 [i915]
+<4> [197.789070]  hwm_energy+0x55/0x100 [i915]
+<4> [197.793183]  hwm_read+0x9a/0x310 [i915]
+<4> [197.797124]  hwmon_attr_show+0x36/0x120
+<4> [197.800946]  dev_attr_show+0x15/0x60
+<4> [197.804509]  sysfs_kf_seq_show+0xb5/0x100
+
+Acquire the wakeref before the lock and hold it as long as the lock is
+also held.  Follow that pattern across the whole source file where similar
+lock inversion can happen.
+
+v2: Keep hardware read under the lock so the whole operation of updating
+    energy from hardware is still atomic (Guenter),
+  - instead, acquire the rpm wakeref before the lock and hold it as long
+    as the lock is held,
+  - use the same aproach for other similar places across the i915_hwmon.c
+    source file (Rodrigo).
+
+Fixes: 1b44019a93e2 ("drm/i915/guc: Disable PL1 power limit when loading GuC firmware")
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: <stable@vger.kernel.org> # v6.5+
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240311203500.518675-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 71b218771426ea84c0e0148a2b7ac52c1f76e792)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/i915_hwmon.c |   37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 66d25d0e34d8b..39fc078284c8e 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5757,15 +5757,21 @@ static int set_file_allocation_info(struct ksmbd_work *work,
+--- a/drivers/gpu/drm/i915/i915_hwmon.c
++++ b/drivers/gpu/drm/i915/i915_hwmon.c
+@@ -72,12 +72,13 @@ hwm_locked_with_pm_intel_uncore_rmw(stru
+ 	struct intel_uncore *uncore = ddat->uncore;
+ 	intel_wakeref_t wakeref;
  
- 	loff_t alloc_blks;
- 	struct inode *inode;
-+	struct kstat stat;
- 	int rc;
+-	mutex_lock(&hwmon->hwmon_lock);
++	with_intel_runtime_pm(uncore->rpm, wakeref) {
++		mutex_lock(&hwmon->hwmon_lock);
  
- 	if (!(fp->daccess & FILE_WRITE_DATA_LE))
- 		return -EACCES;
+-	with_intel_runtime_pm(uncore->rpm, wakeref)
+ 		intel_uncore_rmw(uncore, reg, clear, set);
  
-+	rc = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			 AT_STATX_SYNC_AS_STAT);
-+	if (rc)
-+		return rc;
-+
- 	alloc_blks = (le64_to_cpu(file_alloc_info->AllocationSize) + 511) >> 9;
- 	inode = file_inode(fp->filp);
+-	mutex_unlock(&hwmon->hwmon_lock);
++		mutex_unlock(&hwmon->hwmon_lock);
++	}
+ }
  
--	if (alloc_blks > inode->i_blocks) {
-+	if (alloc_blks > stat.blocks) {
- 		smb_break_all_levII_oplock(work, fp, 1);
- 		rc = vfs_fallocate(fp->filp, FALLOC_FL_KEEP_SIZE, 0,
- 				   alloc_blks * 512);
-@@ -5773,7 +5779,7 @@ static int set_file_allocation_info(struct ksmbd_work *work,
- 			pr_err("vfs_fallocate is failed : %d\n", rc);
- 			return rc;
+ /*
+@@ -136,20 +137,21 @@ hwm_energy(struct hwm_drvdata *ddat, lon
+ 	else
+ 		rgaddr = hwmon->rg.energy_status_all;
+ 
+-	mutex_lock(&hwmon->hwmon_lock);
++	with_intel_runtime_pm(uncore->rpm, wakeref) {
++		mutex_lock(&hwmon->hwmon_lock);
+ 
+-	with_intel_runtime_pm(uncore->rpm, wakeref)
+ 		reg_val = intel_uncore_read(uncore, rgaddr);
+ 
+-	if (reg_val >= ei->reg_val_prev)
+-		ei->accum_energy += reg_val - ei->reg_val_prev;
+-	else
+-		ei->accum_energy += UINT_MAX - ei->reg_val_prev + reg_val;
+-	ei->reg_val_prev = reg_val;
++		if (reg_val >= ei->reg_val_prev)
++			ei->accum_energy += reg_val - ei->reg_val_prev;
++		else
++			ei->accum_energy += UINT_MAX - ei->reg_val_prev + reg_val;
++		ei->reg_val_prev = reg_val;
+ 
+-	*energy = mul_u64_u32_shr(ei->accum_energy, SF_ENERGY,
+-				  hwmon->scl_shift_energy);
+-	mutex_unlock(&hwmon->hwmon_lock);
++		*energy = mul_u64_u32_shr(ei->accum_energy, SF_ENERGY,
++					  hwmon->scl_shift_energy);
++		mutex_unlock(&hwmon->hwmon_lock);
++	}
+ }
+ 
+ static ssize_t
+@@ -404,6 +406,7 @@ hwm_power_max_write(struct hwm_drvdata *
+ 
+ 	/* Block waiting for GuC reset to complete when needed */
+ 	for (;;) {
++		wakeref = intel_runtime_pm_get(ddat->uncore->rpm);
+ 		mutex_lock(&hwmon->hwmon_lock);
+ 
+ 		prepare_to_wait(&ddat->waitq, &wait, TASK_INTERRUPTIBLE);
+@@ -417,14 +420,13 @@ hwm_power_max_write(struct hwm_drvdata *
  		}
--	} else if (alloc_blks < inode->i_blocks) {
-+	} else if (alloc_blks < stat.blocks) {
- 		loff_t size;
  
- 		/*
--- 
-2.43.0
-
+ 		mutex_unlock(&hwmon->hwmon_lock);
++		intel_runtime_pm_put(ddat->uncore->rpm, wakeref);
+ 
+ 		schedule();
+ 	}
+ 	finish_wait(&ddat->waitq, &wait);
+ 	if (ret)
+-		goto unlock;
+-
+-	wakeref = intel_runtime_pm_get(ddat->uncore->rpm);
++		goto exit;
+ 
+ 	/* Disable PL1 limit and verify, because the limit cannot be disabled on all platforms */
+ 	if (val == PL1_DISABLE) {
+@@ -444,9 +446,8 @@ hwm_power_max_write(struct hwm_drvdata *
+ 	intel_uncore_rmw(ddat->uncore, hwmon->rg.pkg_rapl_limit,
+ 			 PKG_PWR_LIM_1_EN | PKG_PWR_LIM_1, nval);
+ exit:
+-	intel_runtime_pm_put(ddat->uncore->rpm, wakeref);
+-unlock:
+ 	mutex_unlock(&hwmon->hwmon_lock);
++	intel_runtime_pm_put(ddat->uncore->rpm, wakeref);
+ 	return ret;
+ }
+ 
 
 
 
