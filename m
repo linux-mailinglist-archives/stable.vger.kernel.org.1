@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-35326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8B9894375
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2AC894066
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71A4728329D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9110A1F2215D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E40482EF;
-	Mon,  1 Apr 2024 17:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B7546B9F;
+	Mon,  1 Apr 2024 16:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaRZ6WAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxeeUxyd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6464446B6;
-	Mon,  1 Apr 2024 17:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94013D961;
+	Mon,  1 Apr 2024 16:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991030; cv=none; b=ILqzTHWbPxPWyT8a6GQzoSlJhFb4vocq6b+k6zdaXOh9p6dJD1ttYV0kWzpTDjr47zM60sKa4sKf+Z7s5Wy5nFN8gjsjpgZbz536ni0MuPoLotqqUBijeIbQTYIStWyBGE8QO/8Om3efzjrXHkMZU7D7mEJplIGWqjQzDnIYK6Q=
+	t=1711988975; cv=none; b=ri0risATu7IOkp79AZK95Y2yUwaRrCsUf/wH7PJMRR4RMUkt/oZiKGje8do5bmJNMiu6lSsQ/etUr1ltFAZoiBrQ0WZSFw+v5KmpDrMp/vK2KvbABzoxmMuFQyx+3OGNduQRbleyszxfHMo481g8wdtzi7IEsgeYocgOoCIwxKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991030; c=relaxed/simple;
-	bh=TpMHaEso2mYRwTkYIKKUJpAkjr9byp0g7HAOGruS1hw=;
+	s=arc-20240116; t=1711988975; c=relaxed/simple;
+	bh=VLb04Zz37v9hyv/Gjutm5l3s6B6TQMuhoT+Fc4F/o/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXwaDxRbzAQhUXINYc/0z5QHj1gfYwW+tZG8gzLPfFqoyQx8Y0mYIHQ797jAHBMXd3VMAGlL8dJ1Mt8Gh1B/Bq7PDUBSJD6CWp9qJZK/XK5EOwiWinf7Y0cwyjsJGtRlQggzcvk5AuhYUS0tZYRU0r8fKERRr6oT/OxrITi5m84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaRZ6WAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97F7C433F1;
-	Mon,  1 Apr 2024 17:03:49 +0000 (UTC)
+	 MIME-Version; b=IN5MZTnz73iFLL9RWtJCWOzZdPCeCtbcjudMR+MJqSw5J+wc3z5W68IVheTHdEHaMiymiO6HYShQAHZo0et7H4M8i6nURmMlVUHov/o/hwo8voA4+QW63FgbUvZaedhKSyq4jI0KMW2ck8IDuczOhOXX96CKmsflPEPPw6viJ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxeeUxyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA6EC433C7;
+	Mon,  1 Apr 2024 16:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991030;
-	bh=TpMHaEso2mYRwTkYIKKUJpAkjr9byp0g7HAOGruS1hw=;
+	s=korg; t=1711988974;
+	bh=VLb04Zz37v9hyv/Gjutm5l3s6B6TQMuhoT+Fc4F/o/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jaRZ6WAalRDDTfXLnBPExScRMpuuB/P+J4xHuJiwk+zeI5sYHER09cuyS0oYKTbk1
-	 ZbOpJKHmUhY6+i3/ZLLbVhnZijXsl8yKgPGYeRO/G+wu1dY4nXMreApgrXQRxykX73
-	 FF4lluQa9AK2uKDGL17xFiS8o3fWH//t2ChW/1zM=
+	b=qxeeUxydSti3Jhhm8uB6MeV+lXgIRAj2lGBqWjcy+71/DIOB7rdr6NJLkOtqJN8km
+	 g5ZF8NH8eAYvx/stC5ZEirrEq5kLrPYDwx0sLXcELErceDrHCXeDi0fWJCxqKl7WkS
+	 kowInWlDBlO1VRKw263uPaw32mTShPGvqyaBDYUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Altaparmakov <anton@tuxera.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/272] x86/pm: Work around false positive kmemleak report in msr_build_context()
+	WA AM <waautomata@gmail.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 344/432] btrfs: zoned: use zone aware sb location for scrub
 Date: Mon,  1 Apr 2024 17:45:31 +0200
-Message-ID: <20240401152535.091304346@linuxfoundation.org>
+Message-ID: <20240401152603.500752392@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Altaparmakov <anton@tuxera.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit e3f269ed0accbb22aa8f25d2daffa23c3fccd407 ]
+commit 74098a989b9c3370f768140b7783a7aaec2759b3 upstream.
 
-Since:
+At the moment scrub_supers() doesn't grab the super block's location via
+the zoned device aware btrfs_sb_log_location() but via btrfs_sb_offset().
 
-  7ee18d677989 ("x86/power: Make restore_processor_context() sane")
+This leads to checksum errors on 'scrub' as we're not accessing the
+correct location of the super block.
 
-kmemleak reports this issue:
+So use btrfs_sb_log_location() for getting the super blocks location on
+scrub.
 
-  unreferenced object 0xf68241e0 (size 32):
-    comm "swapper/0", pid 1, jiffies 4294668610 (age 68.432s)
-    hex dump (first 32 bytes):
-      00 cc cc cc 29 10 01 c0 00 00 00 00 00 00 00 00  ....)...........
-      00 42 82 f6 cc cc cc cc cc cc cc cc cc cc cc cc  .B..............
-    backtrace:
-      [<461c1d50>] __kmem_cache_alloc_node+0x106/0x260
-      [<ea65e13b>] __kmalloc+0x54/0x160
-      [<c3858cd2>] msr_build_context.constprop.0+0x35/0x100
-      [<46635aff>] pm_check_save_msr+0x63/0x80
-      [<6b6bb938>] do_one_initcall+0x41/0x1f0
-      [<3f3add60>] kernel_init_freeable+0x199/0x1e8
-      [<3b538fde>] kernel_init+0x1a/0x110
-      [<938ae2b2>] ret_from_fork+0x1c/0x28
-
-Which is a false positive.
-
-Reproducer:
-
-  - Run rsync of whole kernel tree (multiple times if needed).
-  - start a kmemleak scan
-  - Note this is just an example: a lot of our internal tests hit these.
-
-The root cause is similar to the fix in:
-
-  b0b592cf0836 x86/pm: Fix false positive kmemleak report in msr_build_context()
-
-ie. the alignment within the packed struct saved_context
-which has everything unaligned as there is only "u16 gs;" at start of
-struct where in the past there were four u16 there thus aligning
-everything afterwards.  The issue is with the fact that Kmemleak only
-searches for pointers that are aligned (see how pointers are scanned in
-kmemleak.c) so when the struct members are not aligned it doesn't see
-them.
-
-Testing:
-
-We run a lot of tests with our CI, and after applying this fix we do not
-see any kmemleak issues any more whilst without it we see hundreds of
-the above report. From a single, simple test run consisting of 416 individual test
-cases on kernel 5.10 x86 with kmemleak enabled we got 20 failures due to this,
-which is quite a lot. With this fix applied we get zero kmemleak related failures.
-
-Fixes: 7ee18d677989 ("x86/power: Make restore_processor_context() sane")
-Signed-off-by: Anton Altaparmakov <anton@tuxera.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240314142656.17699-1-anton@tuxera.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: WA AM <waautomata@gmail.com>
+Link: http://lore.kernel.org/linux-btrfs/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/suspend_32.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/btrfs/scrub.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
-index a800abb1a9925..d8416b3bf832e 100644
---- a/arch/x86/include/asm/suspend_32.h
-+++ b/arch/x86/include/asm/suspend_32.h
-@@ -12,11 +12,6 @@
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -2809,7 +2809,17 @@ static noinline_for_stack int scrub_supe
+ 		gen = btrfs_get_last_trans_committed(fs_info);
  
- /* image of the saved processor state */
- struct saved_context {
--	/*
--	 * On x86_32, all segment registers except gs are saved at kernel
--	 * entry in pt_regs.
--	 */
--	u16 gs;
- 	unsigned long cr0, cr2, cr3, cr4;
- 	u64 misc_enable;
- 	struct saved_msrs saved_msrs;
-@@ -27,6 +22,11 @@ struct saved_context {
- 	unsigned long tr;
- 	unsigned long safety;
- 	unsigned long return_address;
-+	/*
-+	 * On x86_32, all segment registers except gs are saved at kernel
-+	 * entry in pt_regs.
-+	 */
-+	u16 gs;
- 	bool misc_enable_saved;
- } __attribute__((packed));
- 
--- 
-2.43.0
-
+ 	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
+-		bytenr = btrfs_sb_offset(i);
++		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
++		if (ret == -ENOENT)
++			break;
++
++		if (ret) {
++			spin_lock(&sctx->stat_lock);
++			sctx->stat.super_errors++;
++			spin_unlock(&sctx->stat_lock);
++			continue;
++		}
++
+ 		if (bytenr + BTRFS_SUPER_INFO_SIZE >
+ 		    scrub_dev->commit_total_bytes)
+ 			break;
 
 
 
