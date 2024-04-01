@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7A8893F9D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36EEE89415F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B18B01C20DDF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E29611F22FF6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C31247A76;
-	Mon,  1 Apr 2024 16:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C69347A6B;
+	Mon,  1 Apr 2024 16:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdF9Xtof"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjrcMevt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD16B47A74;
-	Mon,  1 Apr 2024 16:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9773BBC3;
+	Mon,  1 Apr 2024 16:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988339; cv=none; b=CG6lJoDwFqty4d0SNDMgjbe62GmZM+8+I18p9IocS2Uhjr8wkY+GD1BelK8l14OIIPcKNDL0uHwQe34ZT6CNVq045vCM3vE/ydpJQXSuXKBmXvUcQn5hZoObn+L4YBKnCo4y9desvVCA4on7PG4v9qV/ahaagfjBlM+0xm+NFBQ=
+	t=1711989686; cv=none; b=gBndvBujxFtknjK0DXQHPkCo1AgIHpu3bJemAjZM012ZFGvBi+MyAeArRvK7lfQymT7qkSkRpBsCA0gVI27OGcH7D9VOUxHouijya5f4wqoMW5SOOhNAykl/LU/6981e6tif/5H6OjO7JFPmAQ3wSPwNS3fA96bK7ZnnA/YFhaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988339; c=relaxed/simple;
-	bh=E+2d6KVodRoinNr7EeThB2ivt4v5vxwk+Kt4nTLwcXo=;
+	s=arc-20240116; t=1711989686; c=relaxed/simple;
+	bh=dXstbH0NCaYvQnGbvJCFDIgAJstZzmNlHvtplUKrKW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+r4vpj+8U5PxAsNwKzks1U+t1DI2S/1Jbz7lpXIVVfZo3RTj9NIFchN3XxW32de2O4wkIZDnR8LziwnsgNSdtczEALpeWPj6Dv/fOd3dAlTqR17EsG+5ri6SI461Bu1IxtCGthHTjRC99z5diIIzBJAwrOXeewv8ecXZ7DowKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdF9Xtof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D698C433C7;
-	Mon,  1 Apr 2024 16:18:58 +0000 (UTC)
+	 MIME-Version; b=BH9PWOLDAtZG4KQDXNgPIb035N084YbnnGXUOi8Vg+q9SGP7VTjBKOE5Xi46ePnmyafF++SCEjKFD7MflLSANn7jljdQG1AOSo16y2iSEPEIWeaL6ntNaVXIMW6hHXjKRq1ZBEInlJZRCh8uYUfaELCdeqy+R1g4+Gfnv7cAxQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjrcMevt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863D3C433F1;
+	Mon,  1 Apr 2024 16:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988339;
-	bh=E+2d6KVodRoinNr7EeThB2ivt4v5vxwk+Kt4nTLwcXo=;
+	s=korg; t=1711989686;
+	bh=dXstbH0NCaYvQnGbvJCFDIgAJstZzmNlHvtplUKrKW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdF9Xtof6uDA/RijM1H/V7kRMncx6JfU4K/25IYE+JySySYgvdhXF+yGBfv1kAYlv
-	 FVRpAyBlN6L/awzaJBaRpNA/Ve5NHpjkoLGpi5I78Kb7XZmIPa2SpZoxxjP9xbMBI3
-	 lWhKRBkbPgYvSiQcZvxPa8BCm3K/62bD/5Gd5/3U=
+	b=JjrcMevthXfAXSufW8dlyCDQVGwHa3541o4Kms1wanjHyyT8WOggG8xhPyRH8Dbda
+	 3xDyUj9CDWuWXck7jmdIeqMzYr4Vh/ZLoGSu13ZdHjxIAq6+ZOvyz2q4GQl9Otndpv
+	 zcQp9U8mBiP131DftPVkkzKxlsOuwOdQf/wjNRh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Niels van Aert <nvaert1986@hotmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 155/432] io_uring: clean rings on NO_MMAP alloc fail
-Date: Mon,  1 Apr 2024 17:42:22 +0200
-Message-ID: <20240401152557.766700385@linuxfoundation.org>
+Subject: [PATCH 6.6 094/396] PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports
+Date: Mon,  1 Apr 2024 17:42:23 +0200
+Message-ID: <20240401152550.724821533@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit cef59d1ea7170ec753182302645a0191c8aa3382 ]
+[ Upstream commit 627c6db20703b5d18d928464f411d0d4ec327508 ]
 
-We make a few cancellation judgements based on ctx->rings, so let's
-zero it afer deallocation for IORING_SETUP_NO_MMAP just like it's
-done with the mmap case. Likely, it's not a real problem, but zeroing
-is safer and better tested.
+Commit 5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root
+Ports") and commit 3b8803494a06 ("PCI/DPC: Quirk PIO log size for Intel Ice
+Lake Root Ports") add quirks for Ice, Tiger and Alder Lake Root Ports.
+System firmware for Raptor Lake still has the bug, so Linux logs the
+warning below on several Raptor Lake systems like Dell Precision 3581 with
+Intel Raptor Lake processor (0W18NX) system firmware/BIOS version 1.10.1.
 
-Cc: stable@vger.kernel.org
-Fixes: 03d89a2de25bbc ("io_uring: support for user allocated memory for rings/sqes")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/9ff6cdf91429b8a51699c210e1f6af6ea3f8bdcf.1710255382.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+  pci 0000:00:07.0: [8086:a76e] type 01 class 0x060400
+  pci 0000:00:07.0: DPC: RP PIO log size 0 is invalid
+  pci 0000:00:07.1: [8086:a73f] type 01 class 0x060400
+  pci 0000:00:07.1: DPC: RP PIO log size 0 is invalid
+
+Apply the quirk for Raptor Lake Root Ports as well.
+
+This also enables the DPC driver to dump the RP PIO Log registers when DPC
+is triggered.
+
+Link: https://lore.kernel.org/r/20240305113057.56468-1-pmenzel@molgen.mpg.de
+Reported-by: Niels van Aert <nvaert1986@hotmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218560
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: <stable@vger.kernel.org>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Niels van Aert <nvaert1986@hotmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 45d6e440bdc04..13a9d9fcd2ecd 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2757,14 +2757,15 @@ static void io_rings_free(struct io_ring_ctx *ctx)
- 	if (!(ctx->flags & IORING_SETUP_NO_MMAP)) {
- 		io_mem_free(ctx->rings);
- 		io_mem_free(ctx->sq_sqes);
--		ctx->rings = NULL;
--		ctx->sq_sqes = NULL;
- 	} else {
- 		io_pages_free(&ctx->ring_pages, ctx->n_ring_pages);
- 		ctx->n_ring_pages = 0;
- 		io_pages_free(&ctx->sqe_pages, ctx->n_sqe_pages);
- 		ctx->n_sqe_pages = 0;
- 	}
-+
-+	ctx->rings = NULL;
-+	ctx->sq_sqes = NULL;
- }
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 1739fd54a3106..b3976dcb71f10 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6219,6 +6219,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
+ #endif
  
- void *io_mem_alloc(size_t size)
+ /*
 -- 
 2.43.0
 
