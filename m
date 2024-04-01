@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-35154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856778942A6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E7C88943AF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6E091C21D91
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A76B1C21C7A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F6740876;
-	Mon,  1 Apr 2024 16:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13FF487BE;
+	Mon,  1 Apr 2024 17:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3OHCMpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUcRDArL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86F263E;
-	Mon,  1 Apr 2024 16:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2EE482DF;
+	Mon,  1 Apr 2024 17:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990480; cv=none; b=IVIpD98YDK/0d2ne4zBqP3oQ24jouxmRNQ7mMVfbHEuq2Q4PNpf+iswtlBigT0MpGqJuKahI+uvfHbnKNjLGC3MvfqT/C8XgywL8N5O0ssQExiC/8Hqr0TQIb7OM0orTg3lFZozK5lMX49XN79MB67ceRtqmJgSANmzpd7uBfHs=
+	t=1711991208; cv=none; b=m/YQq72vjjtuMv1lypByOAPav8oa5ksWp50I5smx10K9mUdfmmJC4BApqghf2+2qGOtoLAqNtCR+WgVCwgXUXBiIz/xu4AaGDOF+CgooCa84uc7Th5yq1GpAHAOFZbaaPwc3VGwpvmfRqqm8UiPzCYlH8fJOCefRF23NZJp5Txw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990480; c=relaxed/simple;
-	bh=B2cpJnooL38kJcI245iDpG4ZePx5VvZYisg71wlNK5M=;
+	s=arc-20240116; t=1711991208; c=relaxed/simple;
+	bh=LvefC8e+G82DIq1Zv71Uay3GTG9naCloffJfyZ1gJfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHAJ/QUoRPvbEAHHHPBmN1khSXvD5SlsscTxQNfEsjtZYSfT4UKAJo0gZXGQrfow3sMsbUHP0ACCsgsI805FQeG+awo4RrNRuWS3Zrd8z573GYOc54mpuHOOGpVzPrQ5WgjQ/anV5JSFPDzoXXvjioWvPjRixoCQlAuvN0UPCuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3OHCMpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EFEC433F1;
-	Mon,  1 Apr 2024 16:54:39 +0000 (UTC)
+	 MIME-Version; b=hfKdWjXg1TeFFVKQWx7UbCW5WWKrWAtxo4BEbNFzdNGMi+WXMtJI11OMirdlHfbM+6AXn9xSkRGACBXvnRZOZLBnUs3h1wX2FJcr3aGw8PyN94pheMmahzAEiv22QqKgWi7pgaflk6pcyTeQFXbdzU8Wo7uz0Cc2RfqZs5kYHEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUcRDArL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7963C433F1;
+	Mon,  1 Apr 2024 17:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990480;
-	bh=B2cpJnooL38kJcI245iDpG4ZePx5VvZYisg71wlNK5M=;
+	s=korg; t=1711991208;
+	bh=LvefC8e+G82DIq1Zv71Uay3GTG9naCloffJfyZ1gJfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3OHCMpYVQUHjkA408+bWpRmD++sWX7pMlJuNASQGzG4V91+SrgTrbArSuIAMErUD
-	 cIKzofw9r41gtIrWcsNwO9U2UBSGL0viRufAqSbfy+IipdhX53k6LjAgkSbzf43VLu
-	 HyJo11DXADZahC0SumvqnTU2pHB45cbqlbvFCQUk=
+	b=iUcRDArLjbO+ogxACyPq8cPA/+Hg7v8olU0S0utzyhllkQhs5A02w3d25abKaOnla
+	 lnmuiCgCikUxV6eRAIedKCdL81VE6Kxz1hlbyI7hkiqklN7qCUXZiXZuhNnDv3x7wE
+	 /uZnC9yV0YNMSC98ocAZ00U+VcNGrOqGcLkdEUEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@redhat.com>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 6.6 337/396] nouveau/dmem: handle kcalloc() allocation failure
+	stable <stable@kernel.org>,
+	Rickard x Andersson <rickaran@axis.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Subject: [PATCH 6.1 196/272] tty: serial: imx: Fix broken RS485
 Date: Mon,  1 Apr 2024 17:46:26 +0200
-Message-ID: <20240401152557.959659348@linuxfoundation.org>
+Message-ID: <20240401152537.001532776@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Rickard x Andersson <rickaran@axis.com>
 
-commit 16e87fe23d4af6df920406494ced5c0f4354567b upstream.
+commit 672448ccf9b6a676f96f9352cbf91f4d35f4084a upstream.
 
-The kcalloc() in nouveau_dmem_evict_chunk() will return null if
-the physical memory has run out. As a result, if we dereference
-src_pfns, dst_pfns or dma_addrs, the null pointer dereference bugs
-will happen.
+When about to transmit the function imx_uart_start_tx is called and in
+some RS485 configurations this function will call imx_uart_stop_rx. The
+problem is that imx_uart_stop_rx will enable loopback in order to
+release the RS485 bus, but when loopback is enabled transmitted data
+will just be looped to RX.
 
-Moreover, the GPU is going away. If the kcalloc() fails, we could not
-evict all pages mapping a chunk. So this patch adds a __GFP_NOFAIL
-flag in kcalloc().
+This patch fixes the above problem by not enabling loopback when about
+to transmit.
 
-Finally, as there is no need to have physically contiguous memory,
-this patch switches kcalloc() to kvcalloc() in order to avoid
-failing allocations.
+This driver now works well when used for RS485 half duplex master
+configurations.
 
-CC: <stable@vger.kernel.org> # v6.1
-Fixes: 249881232e14 ("nouveau/dmem: evict device private memory during release")
-Suggested-by: Danilo Krummrich <dakr@redhat.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240306050104.11259-1-duoming@zju.edu.cn
+Fixes: 79d0224f6bf2 ("tty: serial: imx: Handle RS485 DE signal active high")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Rickard x Andersson <rickaran@axis.com>
+Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Link: https://lore.kernel.org/r/20240221115304.509811-1-rickaran@axis.com
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_dmem.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/tty/serial/imx.c |   22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-@@ -378,9 +378,9 @@ nouveau_dmem_evict_chunk(struct nouveau_
- 	dma_addr_t *dma_addrs;
- 	struct nouveau_fence *fence;
- 
--	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
--	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
--	dma_addrs = kcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL);
-+	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dma_addrs = kvcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL | __GFP_NOFAIL);
- 
- 	migrate_device_range(src_pfns, chunk->pagemap.range.start >> PAGE_SHIFT,
- 			npages);
-@@ -406,11 +406,11 @@ nouveau_dmem_evict_chunk(struct nouveau_
- 	migrate_device_pages(src_pfns, dst_pfns, npages);
- 	nouveau_dmem_fence_done(&fence);
- 	migrate_device_finalize(src_pfns, dst_pfns, npages);
--	kfree(src_pfns);
--	kfree(dst_pfns);
-+	kvfree(src_pfns);
-+	kvfree(dst_pfns);
- 	for (i = 0; i < npages; i++)
- 		dma_unmap_page(chunk->drm->dev->dev, dma_addrs[i], PAGE_SIZE, DMA_BIDIRECTIONAL);
--	kfree(dma_addrs);
-+	kvfree(dma_addrs);
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -496,8 +496,7 @@ static void imx_uart_stop_tx(struct uart
+ 	}
  }
  
- void
+-/* called with port.lock taken and irqs off */
+-static void imx_uart_stop_rx(struct uart_port *port)
++static void imx_uart_stop_rx_with_loopback_ctrl(struct uart_port *port, bool loopback)
+ {
+ 	struct imx_port *sport = (struct imx_port *)port;
+ 	u32 ucr1, ucr2, ucr4, uts;
+@@ -519,7 +518,7 @@ static void imx_uart_stop_rx(struct uart
+ 	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
+ 	if (port->rs485.flags & SER_RS485_ENABLED &&
+ 	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
+-	    sport->have_rtscts && !sport->have_rtsgpio) {
++	    sport->have_rtscts && !sport->have_rtsgpio && loopback) {
+ 		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
+ 		uts |= UTS_LOOP;
+ 		imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
+@@ -532,6 +531,16 @@ static void imx_uart_stop_rx(struct uart
+ }
+ 
+ /* called with port.lock taken and irqs off */
++static void imx_uart_stop_rx(struct uart_port *port)
++{
++	/*
++	 * Stop RX and enable loopback in order to make sure RS485 bus
++	 * is not blocked. Se comment in imx_uart_probe().
++	 */
++	imx_uart_stop_rx_with_loopback_ctrl(port, true);
++}
++
++/* called with port.lock taken and irqs off */
+ static void imx_uart_enable_ms(struct uart_port *port)
+ {
+ 	struct imx_port *sport = (struct imx_port *)port;
+@@ -719,8 +728,13 @@ static void imx_uart_start_tx(struct uar
+ 				imx_uart_rts_inactive(sport, &ucr2);
+ 			imx_uart_writel(sport, ucr2, UCR2);
+ 
++			/*
++			 * Since we are about to transmit we can not stop RX
++			 * with loopback enabled because that will make our
++			 * transmitted data being just looped to RX.
++			 */
+ 			if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
+-				imx_uart_stop_rx(port);
++				imx_uart_stop_rx_with_loopback_ctrl(port, false);
+ 
+ 			sport->tx_state = WAIT_AFTER_RTS;
+ 
 
 
 
