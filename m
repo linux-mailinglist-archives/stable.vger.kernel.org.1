@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D8618941BE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A66E89401B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E8561C2123C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE4128369D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9111F4AED1;
-	Mon,  1 Apr 2024 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4F546B9F;
+	Mon,  1 Apr 2024 16:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pR8WjY3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRYseQOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD88495F0;
-	Mon,  1 Apr 2024 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592781CA8F;
+	Mon,  1 Apr 2024 16:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989927; cv=none; b=cC/BmgJLq7baOcNs6kHUmz0Mb0DRf5anOsVE16dJmZD/QsSSsv8KGuZwZodHVCEV+Bot73AqL65HnCWJ6d9nplJ52Y9i0NyC3dYemtIEUJXBnAXQxbwkm1MnODAEAtQsyFrJMffn9cel/MKDv28+x/YFMrj7LNm7O87niktkNjc=
+	t=1711988744; cv=none; b=eH5uOIiBKt5f0bkROMc6Tc1HB16++G80QB5V6+kTYzMA5986+XsY6ZwvCJb3x9RJEcmMuffE01SeZ+G+o48PN+KYyPvpMFtvsj35jP1fR40NR6EmhmgVLjzuy0MKgvxd0uQpx+d2/6lH0TPcf/f4mUb1HtvcQCs454SRW0bABjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989927; c=relaxed/simple;
-	bh=Zt1NRuVuXcuovdgA+BU8ApqsZdxrOpxhGya+B8oQaq0=;
+	s=arc-20240116; t=1711988744; c=relaxed/simple;
+	bh=8pA7y3cwkYtzn0vKjST+SR/FIIVYNqppU2b37K2Rsqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmlOd73YuDyM9F672WHLzcV0edFxxCv3BL4id7P6BrP1MdPt+uCu2PtIL8HeY5na9pu9bDQRD2fJxTsQRsrSeNfmRKZnl+AaNJdXN9X0rF85D1ap1ZMZsAZEJQ/7frpQCYINmew4PBqePlU2y/jHh65HE0Bl1MPR4UCVODO0+rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pR8WjY3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BF2C43142;
-	Mon,  1 Apr 2024 16:45:26 +0000 (UTC)
+	 MIME-Version; b=qwfaH5xAJEVXVPAzi6tuIGG8W5BezTR6R+8BZeRE5M2xRQU+N7gqy/1EdpMP9KNqZOVhmsWprd+0ZWJYdY3bPk8WssfGJPXg+7gdMKPc3qZvfG67RM3vd5RushTvGE64LcvQYOdkhbfOq5AIUqridJg90+/5dnOEYRZZr9vFqHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRYseQOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84A9C433F1;
+	Mon,  1 Apr 2024 16:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989927;
-	bh=Zt1NRuVuXcuovdgA+BU8ApqsZdxrOpxhGya+B8oQaq0=;
+	s=korg; t=1711988744;
+	bh=8pA7y3cwkYtzn0vKjST+SR/FIIVYNqppU2b37K2Rsqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pR8WjY3EHPgwgBkUBYKN46Rs13GLe6N8m2oeBnQXruhJ5NY783wjmMKmZEcpRCxqx
-	 yppI0t7r/1tcad1vTQPWWsntGVuAzB9hGY4Oj5/GCqnPR1GhRMwATURRiqXzDDhKEw
-	 bSORX0Mo0BAjQySvMb+XdNhfa6q7Ib4IiRMoJ/aU=
+	b=eRYseQOyupJHoZVpmGPoU+x9JhmpqL/GQv8sN1xvmP9zQ1jd+s2ND4w4ALYxqugo/
+	 VH7r3YY6nbeAnwiJoae3fgyGPa7UcQSNPcfEa97G3rM/uWoA8jWalDSyFmc6xgoW4g
+	 TboUoam+S/hF/hEiL7STb5oxY6zqiPulg0AA5Zuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 195/396] drm/amd/display: Use freesync when `DRM_EDID_FEATURE_CONTINUOUS_FREQ` found
-Date: Mon,  1 Apr 2024 17:44:04 +0200
-Message-ID: <20240401152553.750604080@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Rickard x Andersson <rickaran@axis.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Subject: [PATCH 6.7 258/432] tty: serial: imx: Fix broken RS485
+Date: Mon,  1 Apr 2024 17:44:05 +0200
+Message-ID: <20240401152600.835126792@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Rickard x Andersson <rickaran@axis.com>
 
-commit 2f14c0c8cae8e9e3b603a3f91909baba66540027 upstream.
+commit 672448ccf9b6a676f96f9352cbf91f4d35f4084a upstream.
 
-The monitor shipped with the Framework 16 supports VRR [1], but it's not
-being advertised.
+When about to transmit the function imx_uart_start_tx is called and in
+some RS485 configurations this function will call imx_uart_stop_rx. The
+problem is that imx_uart_stop_rx will enable loopback in order to
+release the RS485 bus, but when loopback is enabled transmitted data
+will just be looped to RX.
 
-This is because the detailed timing block doesn't contain
-`EDID_DETAIL_MONITOR_RANGE` which amdgpu looks for to find min and max
-frequencies.  This check however is superfluous for this case because
-update_display_info() calls drm_get_monitor_range() to get these ranges
-already.
+This patch fixes the above problem by not enabling loopback when about
+to transmit.
 
-So if the `DRM_EDID_FEATURE_CONTINUOUS_FREQ` EDID feature is found then
-turn on freesync without extra checks.
+This driver now works well when used for RS485 half duplex master
+configurations.
 
-v2: squash in fix from Harry
-
-Closes: https://www.reddit.com/r/framework/comments/1b4y2i5/no_variable_refresh_rate_on_the_framework_16_on/
-Closes: https://www.reddit.com/r/framework/comments/1b6vzcy/framework_16_variable_refresh_rate/
-Closes: https://community.frame.work/t/resolved-no-vrr-freesync-with-amd-version/42338
-Link: https://gist.github.com/superm1/e8fbacfa4d0f53150231d3a3e0a13faf
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 79d0224f6bf2 ("tty: serial: imx: Handle RS485 DE signal active high")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Rickard x Andersson <rickaran@axis.com>
+Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Link: https://lore.kernel.org/r/20240221115304.509811-1-rickaran@axis.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/tty/serial/imx.c |   22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10746,18 +10746,24 @@ void amdgpu_dm_update_freesync_caps(stru
- 	if (!adev->dm.freesync_module)
- 		goto update;
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -462,8 +462,7 @@ static void imx_uart_stop_tx(struct uart
+ 	}
+ }
  
--	if (sink->sink_signal == SIGNAL_TYPE_DISPLAY_PORT
--		|| sink->sink_signal == SIGNAL_TYPE_EDP) {
-+	if (edid && (sink->sink_signal == SIGNAL_TYPE_DISPLAY_PORT ||
-+		     sink->sink_signal == SIGNAL_TYPE_EDP)) {
- 		bool edid_check_required = false;
+-/* called with port.lock taken and irqs off */
+-static void imx_uart_stop_rx(struct uart_port *port)
++static void imx_uart_stop_rx_with_loopback_ctrl(struct uart_port *port, bool loopback)
+ {
+ 	struct imx_port *sport = (struct imx_port *)port;
+ 	u32 ucr1, ucr2, ucr4, uts;
+@@ -485,7 +484,7 @@ static void imx_uart_stop_rx(struct uart
+ 	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
+ 	if (port->rs485.flags & SER_RS485_ENABLED &&
+ 	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
+-	    sport->have_rtscts && !sport->have_rtsgpio) {
++	    sport->have_rtscts && !sport->have_rtsgpio && loopback) {
+ 		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
+ 		uts |= UTS_LOOP;
+ 		imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
+@@ -498,6 +497,16 @@ static void imx_uart_stop_rx(struct uart
+ }
  
--		if (edid) {
--			edid_check_required = is_dp_capable_without_timing_msa(
--						adev->dm.dc,
--						amdgpu_dm_connector);
-+		if (is_dp_capable_without_timing_msa(adev->dm.dc,
-+						     amdgpu_dm_connector)) {
-+			if (edid->features & DRM_EDID_FEATURE_CONTINUOUS_FREQ) {
-+				freesync_capable = true;
-+				amdgpu_dm_connector->min_vfreq = connector->display_info.monitor_range.min_vfreq;
-+				amdgpu_dm_connector->max_vfreq = connector->display_info.monitor_range.max_vfreq;
-+			} else {
-+				edid_check_required = edid->version > 1 ||
-+						      (edid->version == 1 &&
-+						       edid->revision > 1);
-+			}
- 		}
+ /* called with port.lock taken and irqs off */
++static void imx_uart_stop_rx(struct uart_port *port)
++{
++	/*
++	 * Stop RX and enable loopback in order to make sure RS485 bus
++	 * is not blocked. Se comment in imx_uart_probe().
++	 */
++	imx_uart_stop_rx_with_loopback_ctrl(port, true);
++}
++
++/* called with port.lock taken and irqs off */
+ static void imx_uart_enable_ms(struct uart_port *port)
+ {
+ 	struct imx_port *sport = (struct imx_port *)port;
+@@ -682,9 +691,14 @@ static void imx_uart_start_tx(struct uar
+ 				imx_uart_rts_inactive(sport, &ucr2);
+ 			imx_uart_writel(sport, ucr2, UCR2);
  
--		if (edid_check_required == true && (edid->version > 1 ||
--		   (edid->version == 1 && edid->revision > 1))) {
-+		if (edid_check_required) {
- 			for (i = 0; i < 4; i++) {
++			/*
++			 * Since we are about to transmit we can not stop RX
++			 * with loopback enabled because that will make our
++			 * transmitted data being just looped to RX.
++			 */
+ 			if (!(port->rs485.flags & SER_RS485_RX_DURING_TX) &&
+ 			    !port->rs485_rx_during_tx_gpio)
+-				imx_uart_stop_rx(port);
++				imx_uart_stop_rx_with_loopback_ctrl(port, false);
  
- 				timing	= &edid->detailed_timings[i];
+ 			sport->tx_state = WAIT_AFTER_RTS;
+ 
 
 
 
