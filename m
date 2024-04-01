@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-35152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF2B8942A4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E098943CD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 216FCB2120B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74994283934
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E3763E;
-	Mon,  1 Apr 2024 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4853E48781;
+	Mon,  1 Apr 2024 17:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHiWeNP+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1L25Nlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674B9BA3F;
-	Mon,  1 Apr 2024 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB154495F0;
+	Mon,  1 Apr 2024 17:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990474; cv=none; b=akBMu/Lz5BkEJjYOGrwY8hg8DZw2v6JffeZkA4+s5ABX2jYhMeEeZdp9Ujc0GiWh1mZFXwszgA7JbOxIf0Z3y9WlfVl71ifEDMDt2hbITdvkQGkMkje1b257InmfjQYlOaRB8Y3hrh1Mp1bM2W0YeqZYZij8W5u4YIrRCZiiB24=
+	t=1711991294; cv=none; b=MzjxpOjHg/OHH4IFkITBQE+KIIWU3KiXkfMyPaZY7MxFOD2+w6HeNpohbUvNJAhDotfwR+YYLQ2k3ol3yqE0x0mSyMgLToOSBTWOqG3npjQKsEavdwqH0+1cPULL/VA6BztTZDqwhtiO5pEG1yDfGPH+zFYRGgCj1pRJg3mFq18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990474; c=relaxed/simple;
-	bh=8rxyuGXHgirr3C7+0Q+CWa8jWy13srgXLvTWlimorvg=;
+	s=arc-20240116; t=1711991294; c=relaxed/simple;
+	bh=aUDt8qKoGnimdIe6NCssqfaDmpCvfqlhXZOLUv4ZMoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuP1DF3tUm7UpNx4PlrzMlE3LK/JkWDkxYCUJXqL5By6VkkIbZmRBfelX1Kbpt/nGC/H8Vs5hsgBAj81CRc0zGqIH8/dBqmmchrD8Z+3jbbrljhAHY3k29HrdKIjPcawL3lVgrHPsvnI76V8eHm/LyhdLrkXZRt4XBUChOtK61o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHiWeNP+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85DFC433F1;
-	Mon,  1 Apr 2024 16:54:33 +0000 (UTC)
+	 MIME-Version; b=c/cFu+14KEhYh8xYop/YSVlaBADBngT4AUzkuh/1C6WWgMkFMOM5QS17GUT/7m4rFHpTCbbmp1Yi3LWMQqJ3fBq5hgmXcwZQl3pRDdDrHx3Cj9aY8AehnDytxzgaxTh3XX7FY0lx7y04QD4oIxeBIvAuAoVtwjqfLl+VaOmuOjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1L25Nlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B13C433C7;
+	Mon,  1 Apr 2024 17:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990474;
-	bh=8rxyuGXHgirr3C7+0Q+CWa8jWy13srgXLvTWlimorvg=;
+	s=korg; t=1711991293;
+	bh=aUDt8qKoGnimdIe6NCssqfaDmpCvfqlhXZOLUv4ZMoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHiWeNP+LwTqk1//5bC2RP9oB2bChz+LC7ZV5s//hgeXFZWOH27ple/Uw2TDQ9Dvk
-	 FWfO+VWjrjYzD5UQDWkVuhmX+l4JbHPdkavpRltOXbx2NrAu6NJldSxNvkw8M/tvX+
-	 F6zjGJIeanLJpWh/J+TsOXS+ZIHeK6UwNfU3NmuM=
+	b=U1L25Nlxj3k3xWEeDa9HIkYUnbf9DRc45ySa1UA+V1DbveFAeXvGI3mQOdRu034Bt
+	 +t5YmpUQFQJWCRj+rIj2EOt7Zb8+g4ljGLNqnFO5GzQu8q2v4rqjK6iDm1uXjOMiZ7
+	 rfd3oVmAjkKzXBJNrN42mkNxj09xWNMMlSOv5PXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 363/396] USB: core: Fix deadlock in usb_deauthorize_interface()
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 222/272] block: Do not force full zone append completion in req_bio_endio()
 Date: Mon,  1 Apr 2024 17:46:52 +0200
-Message-ID: <20240401152558.742975641@linuxfoundation.org>
+Message-ID: <20240401152537.876410125@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 80ba43e9f799cbdd83842fc27db667289b3150f5 upstream.
+commit 55251fbdf0146c252ceff146a1bb145546f3e034 upstream.
 
-Among the attribute file callback routines in
-drivers/usb/core/sysfs.c, the interface_authorized_store() function is
-the only one which acquires a device lock on an ancestor device: It
-calls usb_deauthorize_interface(), which locks the interface's parent
-USB device.
+This reverts commit 748dc0b65ec2b4b7b3dbd7befcc4a54fdcac7988.
 
-The will lead to deadlock if another process already owns that lock
-and tries to remove the interface, whether through a configuration
-change or because the device has been disconnected.  As part of the
-removal procedure, device_del() waits for all ongoing sysfs attribute
-callbacks to complete.  But usb_deauthorize_interface() can't complete
-until the device lock has been released, and the lock won't be
-released until the removal has finished.
+Partial zone append completions cannot be supported as there is no
+guarantees that the fragmented data will be written sequentially in the
+same manner as with a full command. Commit 748dc0b65ec2 ("block: fix
+partial zone append completion handling in req_bio_endio()") changed
+req_bio_endio() to always advance a partially failed BIO by its full
+length, but this can lead to incorrect accounting. So revert this
+change and let low level device drivers handle this case by always
+failing completely zone append operations. With this revert, users will
+still see an IO error for a partially completed zone append BIO.
 
-The mechanism provided by sysfs to prevent this kind of deadlock is
-to use the sysfs_break_active_protection() function, which tells sysfs
-not to wait for the attribute callback.
-
-Reported-and-tested by: Yue Sun <samsun1006219@gmail.com>
-Reported by: xingwei lee <xrivendell7@gmail.com>
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/linux-usb/CAEkJfYO6jRVC8Tfrd_R=cjO0hguhrV31fDPrLrNOOHocDkPoAA@mail.gmail.com/#r
-Fixes: 310d2b4124c0 ("usb: interface authorization: SysFS part of USB interface authorization")
+Fixes: 748dc0b65ec2 ("block: fix partial zone append completion handling in req_bio_endio()")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1c37eea1-9f56-4534-b9d8-b443438dc869@rowland.harvard.edu
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240328004409.594888-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/sysfs.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ block/blk-mq.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/core/sysfs.c
-+++ b/drivers/usb/core/sysfs.c
-@@ -1168,14 +1168,24 @@ static ssize_t interface_authorized_stor
- {
- 	struct usb_interface *intf = to_usb_interface(dev);
- 	bool val;
-+	struct kernfs_node *kn;
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -761,16 +761,11 @@ static void req_bio_endio(struct request
+ 		/*
+ 		 * Partial zone append completions cannot be supported as the
+ 		 * BIO fragments may end up not being written sequentially.
+-		 * For such case, force the completed nbytes to be equal to
+-		 * the BIO size so that bio_advance() sets the BIO remaining
+-		 * size to 0 and we end up calling bio_endio() before returning.
+ 		 */
+-		if (bio->bi_iter.bi_size != nbytes) {
++		if (bio->bi_iter.bi_size != nbytes)
+ 			bio->bi_status = BLK_STS_IOERR;
+-			nbytes = bio->bi_iter.bi_size;
+-		} else {
++		else
+ 			bio->bi_iter.bi_sector = rq->__sector;
+-		}
+ 	}
  
- 	if (kstrtobool(buf, &val) != 0)
- 		return -EINVAL;
- 
--	if (val)
-+	if (val) {
- 		usb_authorize_interface(intf);
--	else
--		usb_deauthorize_interface(intf);
-+	} else {
-+		/*
-+		 * Prevent deadlock if another process is concurrently
-+		 * trying to unregister intf.
-+		 */
-+		kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
-+		if (kn) {
-+			usb_deauthorize_interface(intf);
-+			sysfs_unbreak_active_protection(kn);
-+		}
-+	}
- 
- 	return count;
- }
+ 	bio_advance(bio, nbytes);
 
 
 
