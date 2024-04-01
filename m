@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18329893EB1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8375F894053
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1B02282623
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B57881C20A19
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638D64778B;
-	Mon,  1 Apr 2024 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BD845BE4;
+	Mon,  1 Apr 2024 16:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpdgC9e1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8yq9S8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2208D1CA8F;
-	Mon,  1 Apr 2024 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CFAC129;
+	Mon,  1 Apr 2024 16:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987613; cv=none; b=R1CeBFVvxyxBWET7BQhDlhTqvTy2PpJjx9yZoINKFwm/ioKnG3iePsodwmtBn62t68+qqQ8QcKietZNIoFhterOLoK8OTgCniSctOgEY1c5Kizs2EzcOxHaYDLfuPJkwcUBPIMctGbxBE2xtq19GGDwWAa28/ORvx3eV3Jwb+ds=
+	t=1711988914; cv=none; b=thtqEjW37/jm/PD04zPIAhDn1MdyFIdcqERhFChptzMxjkJmlOrzAe4UQqe+njxSRvacNvlULNh8BvYgCzEWvp42ngNG3plRRhH+eVfenrn/NJ4HbWyPAYeQGjxT9s+921tzijHfxK0UblHk1zt61BEvS53upmxQY59qzC7iqkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987613; c=relaxed/simple;
-	bh=xoysuxUgTmLB3evs2CQ4pufXVMJ9hLumCcDs1HiFUiE=;
+	s=arc-20240116; t=1711988914; c=relaxed/simple;
+	bh=CVspGQLSDxGg1fW0kInT+gueqqdExUZuNesuM5KAW20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxKDx+CG2czeiDNmAmidrUu22O2KZWQHgEO8iPM2ffHAYKmG3WyJPXnoBYqecKP7TIvCjnsOCkFjBWvos3Rdlpqk/TfWnZv/YDBBlxuDHgwQiM4mvYjCbwKc2SZgfaIrDDJ0lHxs87AWfOiPYv/AEfsr61jOHuFVbkY3SBzegY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpdgC9e1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89548C433F1;
-	Mon,  1 Apr 2024 16:06:52 +0000 (UTC)
+	 MIME-Version; b=WHeL9i6+3wZya9KFaI8gGOLOn3jhiuIgXX1F56lU5uPe9n/y1rKa3OTHTpXYZUgGa8bQRJBorYHpLOwTON8/oDXTwCYc1GygZ6raxigCv89T1JwX/Hcn+heHO3psgvAvKm9u+HB/SjufQtpu29OPUQ1VktAXnvDkm90I2blVy1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8yq9S8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9AEC433C7;
+	Mon,  1 Apr 2024 16:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987613;
-	bh=xoysuxUgTmLB3evs2CQ4pufXVMJ9hLumCcDs1HiFUiE=;
+	s=korg; t=1711988914;
+	bh=CVspGQLSDxGg1fW0kInT+gueqqdExUZuNesuM5KAW20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpdgC9e1F6esRPDGF9Ax6XdKwsQIIGCdwQ2stpwOO3eIJCMKTvc7JjcQvo52EmTAX
-	 jBvhjk+VUjQZSFaQI46ACxPObGOqjLBD2egzrHK7vCvdk+HZpAKsp/aSQ0vdHwXP96
-	 X+cIyOlKmukFoTAI7SS2Byl74cMjBmVpz4FehPN4=
+	b=d8yq9S8qmtG8R70fK5tD3+NFJLJ+kahlDyE3Xn/+f5Gtv0ec1TSbdCC35zrkMlKUt
+	 qTa8XoLKvGf/FeQXMkStiwZKWoaW0yKieWxXRTLjMBMu9RMh2NIr/X6cNTR2roc9vl
+	 9ls7cNZXRJhK4ruQ9/0GPGC6+V42ayCh77mWBiE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Thorsten Leemhuis <linux@leemhuis.info>
-Subject: [PATCH 6.8 340/399] Bluetooth: hci_sync: Fix not checking error on hci_cmd_sync_cancel_sync
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 319/432] selftests/mm: gup_test: conform test to TAP format output
 Date: Mon,  1 Apr 2024 17:45:06 +0200
-Message-ID: <20240401152559.323999025@linuxfoundation.org>
+Message-ID: <20240401152602.716165478@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +63,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 1c3366abdbe884be62e5a7502b4db758aa3974c6 upstream.
+[ Upstream commit cb6e7cae18868422a23d62670110c61fd1b15029 ]
 
-hci_cmd_sync_cancel_sync shall check the error passed to it since it
-will be propagated using req_result which is __u32 it needs to be
-properly set to a positive value if it was passed as negative othertise
-IS_ERR will not trigger as -(errno) would be converted to a positive
-value.
+Conform the layout, informational and status messages to TAP.  No
+functional change is intended other than the layout of output messages.
 
-Fixes: 63298d6e752f ("Bluetooth: hci_core: Cancel request on command timeout")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Reported-and-tested-by: Thorsten Leemhuis <linux@leemhuis.info>
-Closes: https://lore.kernel.org/all/08275279-7462-4f4a-a0ee-8aa015f829bc@leemhuis.info/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240102053807.2114200-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 8b65ef5ad486 ("selftests/mm: Fix build with _FORTIFY_SOURCE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c |    6 +++---
- net/bluetooth/hci_sync.c |    5 ++++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/gup_test.c | 65 ++++++++++++++-------------
+ 1 file changed, 33 insertions(+), 32 deletions(-)
 
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2842,7 +2842,7 @@ static void hci_cancel_cmd_sync(struct h
- 	cancel_delayed_work_sync(&hdev->ncmd_timer);
- 	atomic_set(&hdev->cmd_cnt, 1);
+diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
+index ec22291363844..cbe99594d319b 100644
+--- a/tools/testing/selftests/mm/gup_test.c
++++ b/tools/testing/selftests/mm/gup_test.c
+@@ -50,39 +50,41 @@ static char *cmd_to_str(unsigned long cmd)
+ void *gup_thread(void *data)
+ {
+ 	struct gup_test gup = *(struct gup_test *)data;
+-	int i;
++	int i, status;
  
--	hci_cmd_sync_cancel_sync(hdev, -err);
-+	hci_cmd_sync_cancel_sync(hdev, err);
- }
+ 	/* Only report timing information on the *_BENCHMARK commands: */
+ 	if ((cmd == PIN_FAST_BENCHMARK) || (cmd == GUP_FAST_BENCHMARK) ||
+ 	     (cmd == PIN_LONGTERM_BENCHMARK)) {
+ 		for (i = 0; i < repeats; i++) {
+ 			gup.size = size;
+-			if (ioctl(gup_fd, cmd, &gup))
+-				perror("ioctl"), exit(1);
++			status = ioctl(gup_fd, cmd, &gup);
++			if (status)
++				break;
  
- /* Suspend HCI device */
-@@ -2862,7 +2862,7 @@ int hci_suspend_dev(struct hci_dev *hdev
- 		return 0;
+ 			pthread_mutex_lock(&print_mutex);
+-			printf("%s: Time: get:%lld put:%lld us",
+-			       cmd_to_str(cmd), gup.get_delta_usec,
+-			       gup.put_delta_usec);
++			ksft_print_msg("%s: Time: get:%lld put:%lld us",
++				       cmd_to_str(cmd), gup.get_delta_usec,
++				       gup.put_delta_usec);
+ 			if (gup.size != size)
+-				printf(", truncated (size: %lld)", gup.size);
+-			printf("\n");
++				ksft_print_msg(", truncated (size: %lld)", gup.size);
++			ksft_print_msg("\n");
+ 			pthread_mutex_unlock(&print_mutex);
+ 		}
+ 	} else {
+ 		gup.size = size;
+-		if (ioctl(gup_fd, cmd, &gup)) {
+-			perror("ioctl");
+-			exit(1);
+-		}
++		status = ioctl(gup_fd, cmd, &gup);
++		if (status)
++			goto return_;
  
- 	/* Cancel potentially blocking sync operation before suspend */
--	hci_cancel_cmd_sync(hdev, -EHOSTDOWN);
-+	hci_cancel_cmd_sync(hdev, EHOSTDOWN);
- 
- 	hci_req_sync_lock(hdev);
- 	ret = hci_suspend_sync(hdev);
-@@ -4178,7 +4178,7 @@ static void hci_send_cmd_sync(struct hci
- 
- 	err = hci_send_frame(hdev, skb);
- 	if (err < 0) {
--		hci_cmd_sync_cancel_sync(hdev, err);
-+		hci_cmd_sync_cancel_sync(hdev, -err);
- 		return;
+ 		pthread_mutex_lock(&print_mutex);
+-		printf("%s: done\n", cmd_to_str(cmd));
++		ksft_print_msg("%s: done\n", cmd_to_str(cmd));
+ 		if (gup.size != size)
+-			printf("Truncated (size: %lld)\n", gup.size);
++			ksft_print_msg("Truncated (size: %lld)\n", gup.size);
+ 		pthread_mutex_unlock(&print_mutex);
  	}
  
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -611,7 +611,10 @@ void hci_cmd_sync_cancel_sync(struct hci
- 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
++return_:
++	ksft_test_result(!status, "ioctl status %d\n", status);
+ 	return NULL;
+ }
  
- 	if (hdev->req_status == HCI_REQ_PEND) {
--		hdev->req_result = err;
-+		/* req_result is __u32 so error must be positive to be properly
-+		 * propagated.
-+		 */
-+		hdev->req_result = err < 0 ? -err : err;
- 		hdev->req_status = HCI_REQ_CANCELED;
+@@ -170,7 +172,7 @@ int main(int argc, char **argv)
+ 			touch = 1;
+ 			break;
+ 		default:
+-			return -1;
++			ksft_exit_fail_msg("Wrong argument\n");
+ 		}
+ 	}
  
- 		wake_up_interruptible(&hdev->req_wait_q);
+@@ -198,11 +200,12 @@ int main(int argc, char **argv)
+ 		}
+ 	}
+ 
++	ksft_print_header();
++	ksft_set_plan(nthreads);
++
+ 	filed = open(file, O_RDWR|O_CREAT);
+-	if (filed < 0) {
+-		perror("open");
+-		exit(filed);
+-	}
++	if (filed < 0)
++		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
+ 
+ 	gup.nr_pages_per_call = nr_pages;
+ 	if (write)
+@@ -213,27 +216,24 @@ int main(int argc, char **argv)
+ 		switch (errno) {
+ 		case EACCES:
+ 			if (getuid())
+-				printf("Please run this test as root\n");
++				ksft_print_msg("Please run this test as root\n");
+ 			break;
+ 		case ENOENT:
+-			if (opendir("/sys/kernel/debug") == NULL) {
+-				printf("mount debugfs at /sys/kernel/debug\n");
+-				break;
+-			}
+-			printf("check if CONFIG_GUP_TEST is enabled in kernel config\n");
++			if (opendir("/sys/kernel/debug") == NULL)
++				ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
++			ksft_print_msg("check if CONFIG_GUP_TEST is enabled in kernel config\n");
+ 			break;
+ 		default:
+-			perror("failed to open " GUP_TEST_FILE);
++			ksft_print_msg("failed to open %s: %s\n", GUP_TEST_FILE, strerror(errno));
+ 			break;
+ 		}
+-		exit(KSFT_SKIP);
++		ksft_test_result_skip("Please run this test as root\n");
++		return ksft_exit_pass();
+ 	}
+ 
+ 	p = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, filed, 0);
+-	if (p == MAP_FAILED) {
+-		perror("mmap");
+-		exit(1);
+-	}
++	if (p == MAP_FAILED)
++		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
+ 	gup.addr = (unsigned long)p;
+ 
+ 	if (thp == 1)
+@@ -264,7 +264,8 @@ int main(int argc, char **argv)
+ 		ret = pthread_join(tid[i], NULL);
+ 		assert(ret == 0);
+ 	}
++
+ 	free(tid);
+ 
+-	return 0;
++	return ksft_exit_pass();
+ }
+-- 
+2.43.0
+
 
 
 
