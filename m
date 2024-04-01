@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64198894388
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD03089424D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E04228389D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF2471C2138F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62537482CA;
-	Mon,  1 Apr 2024 17:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359614DA16;
+	Mon,  1 Apr 2024 16:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0P+V4Y8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXngDd7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B5A38DE5;
-	Mon,  1 Apr 2024 17:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16251E525;
+	Mon,  1 Apr 2024 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991089; cv=none; b=aGecFlU56NalCJUwIRUIM8rNFvq82aNLvbgF8KDIWir4qEjWjjjouu25jeZ7RmzzNLWlFRK0tHXFw6iM6vGRYBoq6eokvvKDY7kN9eAfeOBqvNNPE+qu0hSdTuJFCOC9i+jCuUhspNWUxKdgyykwImYqVDZ8dAPYT/deXxvzyWA=
+	t=1711990281; cv=none; b=hASwW4MqzD67YjOacHRjSttilljU2SGk1AFM4Ch9knxwY61UCmtiZBh9Rm98h/otZ7s17MI3DGMUhc2rdfbARw5IXjBFJBwpKudPs9Vb1Wb/9Eli2MJ/2+YE5dsZhsGTkENBF5tJkyc8qKd9s3qnO/I8AZz5Wt8/jRaTh5q+2b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991089; c=relaxed/simple;
-	bh=baZczth9mRZFnWqCfMes0BRjX3hT65DPe3hsxOmNd7o=;
+	s=arc-20240116; t=1711990281; c=relaxed/simple;
+	bh=5+nTIL7w0OtY1dz2J6kr94BjTtcvJxB28z9arG7W6So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MDhnlUxC7guxjHeEYNF7rDs7uNPnzNO38ogG+7h2ChTDuqrSh1J3x/NTYPeofdrNr1WLyK0hMqVE/Z66/dnRLhwl8rCv+HZEymihr7ZEY3ny6Lwy99pI14Nw/vNzONewoCLH6LxeYPd3p4c6TfPl9DCoO/Azgy/BUvhFbFQKjrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0P+V4Y8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85959C43390;
-	Mon,  1 Apr 2024 17:04:48 +0000 (UTC)
+	 MIME-Version; b=fxLkIlHlkI2oCkgACL4Z2acYzP8eGt2cu/MRMe4uRCh+heeJ4Or7+wKvsi8kL+zcKddLkzIrnVKgtUlNpzYO16p0piaOsrtDva/obHkdU8oZz89Eh2zxW4HRPtVv7FNXDTbR8ch6Q9u5MzbtOfixfmcYhXUmDmkIpWom1/Mqku4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXngDd7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E05C433A6;
+	Mon,  1 Apr 2024 16:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991089;
-	bh=baZczth9mRZFnWqCfMes0BRjX3hT65DPe3hsxOmNd7o=;
+	s=korg; t=1711990281;
+	bh=5+nTIL7w0OtY1dz2J6kr94BjTtcvJxB28z9arG7W6So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0P+V4Y8w+/x8Du4TTx9/helkFt1KHWIgzo5AG+HF5lhZX9HazQ8+xcbUK5XitvJNT
-	 SO/8nfk9RbT/7U1t52RiYGMN0I+I3quNbvUKTejw0GZCcdHhgjtyv8n9Y5nJ43uf5S
-	 i9aTZzHn/KUwSl3RTJDpxMA46thkdgz1GOcD/rDI=
+	b=jXngDd7HprONyjUk011/jvqOrXXadmEjO8t6jVJ2eCHmRWKBT2q58PhjZgMfxdTne
+	 /c07xQNlWRDzhzVJ2rO28McAFDbGdKD6G0/STwWrr9VfU0SVN38dhuOZGAu/I3vEF6
+	 NPViBTPAYUPFmmGO/Y0gprF/P3MvUHXeuetsMbrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Subject: [PATCH 6.1 160/272] tty: serial: fsl_lpuart: avoid idle preamble pending if CTS is enabled
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 301/396] x86/mpparse: Register APIC address only once
 Date: Mon,  1 Apr 2024 17:45:50 +0200
-Message-ID: <20240401152535.731323986@linuxfoundation.org>
+Message-ID: <20240401152556.874691756@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 74cb7e0355fae9641f825afa389d3fba3b617714 upstream.
+[ Upstream commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 ]
 
-If the remote uart device is not connected or not enabled after booting
-up, the CTS line is high by default. At this time, if we enable the flow
-control when opening the device(for example, using “stty -F /dev/ttyLP4
-crtscts” command), there will be a pending idle preamble(first writing 0
-and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
-cannot be sent out, resulting in the uart port fail to close(waiting for
-TX empty), so the user space stty will have to wait for a long time or
-forever.
+The APIC address is registered twice. First during the early detection and
+afterwards when actually scanning the table for APIC IDs. The APIC and
+topology core warn about the second attempt.
 
-This is an LPUART IP bug(idle preamble has higher priority than CTS),
-here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
-so that the idle preamble does not get stuck due to CTS is deasserted.
+Restrict it to the early detection call.
 
-Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20240305015706.1050769-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 81287ad65da5 ("x86/apic: Sanitize APIC address setup")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240322185305.297774848@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/kernel/mpparse.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2213,9 +2213,12 @@ lpuart32_set_termios(struct uart_port *p
+diff --git a/arch/x86/kernel/mpparse.c b/arch/x86/kernel/mpparse.c
+index b223922248e9f..15c700d358700 100644
+--- a/arch/x86/kernel/mpparse.c
++++ b/arch/x86/kernel/mpparse.c
+@@ -196,12 +196,12 @@ static int __init smp_read_mpc(struct mpc_table *mpc, unsigned early)
+ 	if (!smp_check_mpc(mpc, oem, str))
+ 		return 0;
  
- 	lpuart32_write(&sport->port, bd, UARTBAUD);
- 	lpuart32_serial_setbrg(sport, baud);
--	lpuart32_write(&sport->port, modem, UARTMODIR);
--	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
-+	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
- 	/* restore control register */
-+	lpuart32_write(&sport->port, ctrl, UARTCTRL);
-+	/* re-enable the CTS if needed */
-+	lpuart32_write(&sport->port, modem, UARTMODIR);
+-	/* Initialize the lapic mapping */
+-	if (!acpi_lapic)
+-		register_lapic_address(mpc->lapic);
+-
+-	if (early)
++	if (early) {
++		/* Initialize the lapic mapping */
++		if (!acpi_lapic)
++			register_lapic_address(mpc->lapic);
+ 		return 1;
++	}
  
- 	if ((ctrl & (UARTCTRL_PE | UARTCTRL_M)) == UARTCTRL_PE)
- 		sport->is_cs7 = true;
+ 	/* Now process the configuration blocks. */
+ 	while (count < mpc->length) {
+-- 
+2.43.0
+
 
 
 
