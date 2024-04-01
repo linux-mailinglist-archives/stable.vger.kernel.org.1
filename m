@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F9E894157
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB78893FB4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7601BB20C70
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 779CD2851F8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22054596E;
-	Mon,  1 Apr 2024 16:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F81BC129;
+	Mon,  1 Apr 2024 16:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRp2YsFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOy9frAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B623B2A4;
-	Mon,  1 Apr 2024 16:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8B747F60;
+	Mon,  1 Apr 2024 16:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989658; cv=none; b=k1iWad44D5WLaNVzVSIjyMElClYHMgs0aYXxhA9lo/QYwIiFxqnTfV4UIgk0/Y1HLf++cBNpLlGRksdh1hTVpjvdq0OIAck7yPMSiDy98UJXPESE5gLeBt+mxgL75zGbl/fijCohVlb/iE8Gz3DO3fXgsHyYX9YLxBL/i7fMRr8=
+	t=1711988407; cv=none; b=BQUZRDXqXsQlILP40RqpKq8IpDV2y5QkhZf5TbcJpsupt1StvThQpZfc0eMeo7sP/efB3IJ3/WytX1SQV7qV200t8yosRvvkgGg1MxDh72musrjMQ55LdLsDb/SQRn1ZPqupNc6i7zGlwU4xMHVa26e/9+XpCyy7cVnsdrlGeC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989658; c=relaxed/simple;
-	bh=2bDTntuTseL/OJVAqTRkulVnTwuhauun91Q+JIPa9yI=;
+	s=arc-20240116; t=1711988407; c=relaxed/simple;
+	bh=G9zgkfZjrUDiTrPOfFlklTuHli8niF3WPBYVCqL3zN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdspcT0l4gLg4Qmw5MI1uT1s33xGAvFpLI0yjx+CHjVijXEv5zFHKCVpo5YyPeiBRLf86zrUxUPcNuZdL4vjIxqmzX1gozVfAe+Xb9wGZX5J8oiS5OMzrd7zJtVcAiXXKSmS3HiY+IXGzD/Rd5oXtxUpE6i9UQm6/vtkaI5iwe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRp2YsFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E0DC433F1;
-	Mon,  1 Apr 2024 16:40:57 +0000 (UTC)
+	 MIME-Version; b=izQHNN7nt/o0kxSU4hVdcrQXzKKsiOT9KEJ+jyR/uZLP83sw8ealz9PXLdWga71i/Qvfg3xkWNEcZTqw0qPs+uyNe3up5+GvCWx+52En2d6l0f22Qk649vReVw6TRftuI7VIlwO1pFUxsmVj0FK7LeUHw/Uo6xSgHwrUTKtpK2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOy9frAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13C8C433C7;
+	Mon,  1 Apr 2024 16:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989658;
-	bh=2bDTntuTseL/OJVAqTRkulVnTwuhauun91Q+JIPa9yI=;
+	s=korg; t=1711988407;
+	bh=G9zgkfZjrUDiTrPOfFlklTuHli8niF3WPBYVCqL3zN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRp2YsFFgaVSREaTJdfIXGdbnNLa0vCq/udEJsH0D7TX41boEZnK+lu/Z6pf7FuGu
-	 hGbvm6YhfZKdflEEyOHGkdYh1bBKWKcNnjgomm1Fd39OnfzUmQlkh8tPCv82khhAKv
-	 EezL7UMcx2Sod9DmZpnjPuYbfveELB3xPno7Y2oc=
+	b=IOy9frAY6uIRNlQcn6KvKOSyEyvdcF16wXxU68UL3ZYXvACZ2N6Wu8ad5kFIveLqg
+	 LIBvVRyctpphBrHLBK9VoDOqtqLY81JTfSLNVq8wL4ET0LyvMCzHyGNkFvWNUkfZ0R
+	 vDkQKEmMu3ETlqKIJsgw7AmlFl6TnA2brbiC+4f8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/396] io_uring/net: correctly handle multishot recvmsg retry setup
+Subject: [PATCH 6.7 176/432] nilfs2: prevent kernel bug at submit_bh_wbc()
 Date: Mon,  1 Apr 2024 17:42:43 +0200
-Message-ID: <20240401152551.319074665@linuxfoundation.org>
+Message-ID: <20240401152558.397061023@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit deaef31bc1ec7966698a427da8c161930830e1cf ]
+[ Upstream commit 269cdf353b5bdd15f1a079671b0f889113865f20 ]
 
-If we loop for multishot receive on the initial attempt, and then abort
-later on to wait for more, we miss a case where we should be copying the
-io_async_msghdr from the stack to stable storage. This leads to the next
-retry potentially failing, if the application had the msghdr on the
-stack.
+Fix a bug where nilfs_get_block() returns a successful status when
+searching and inserting the specified block both fail inconsistently.  If
+this inconsistent behavior is not due to a previously fixed bug, then an
+unexpected race is occurring, so return a temporary error -EAGAIN instead.
 
-Cc: stable@vger.kernel.org
-Fixes: 9bb66906f23e ("io_uring: support multishot in recvmsg")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This prevents callers such as __block_write_begin_int() from requesting a
+read into a buffer that is not mapped, which would cause the BUG_ON check
+for the BH_Mapped flag in submit_bh_wbc() to fail.
+
+Link: https://lkml.kernel.org/r/20240313105827.5296-3-konishi.ryusuke@gmail.com
+Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nilfs2/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 4aaeada03f1e7..386a6745ae32f 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -915,7 +915,8 @@ int io_recvmsg(struct io_kiocb *req, unsigned int issue_flags)
- 			kfree(kmsg->free_iov);
- 		io_netmsg_recycle(req, issue_flags);
- 		req->flags &= ~REQ_F_NEED_CLEANUP;
--	}
-+	} else if (ret == -EAGAIN)
-+		return io_setup_async_msg(req, kmsg, issue_flags);
- 
- 	return ret;
- }
+diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
+index f861f3a0bf5cf..da97149f832f2 100644
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -112,7 +112,7 @@ int nilfs_get_block(struct inode *inode, sector_t blkoff,
+ 					   "%s (ino=%lu): a race condition while inserting a data block at offset=%llu",
+ 					   __func__, inode->i_ino,
+ 					   (unsigned long long)blkoff);
+-				err = 0;
++				err = -EAGAIN;
+ 			}
+ 			nilfs_transaction_abort(inode->i_sb);
+ 			goto out;
 -- 
 2.43.0
 
