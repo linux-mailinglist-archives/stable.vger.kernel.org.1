@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-33966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECA9893D1C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:49:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B3D893D1F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8B3C1F22B4C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:49:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADB26B21188
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E92646551;
-	Mon,  1 Apr 2024 15:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4829247768;
+	Mon,  1 Apr 2024 15:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNVngm3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hHxeyHY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8AD3FE2D;
-	Mon,  1 Apr 2024 15:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033163FE2D;
+	Mon,  1 Apr 2024 15:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711986576; cv=none; b=e3MyUmrX8FNv+k8ADPGBPSXIyI+GNzSyFLhahiV967tIMc3pkMHKFEYyIP43e95+P5rDNSH2qI1llwIKrk6CdPjM44+usiYtt+TjvnOIy3XLUTSWILnTro0a+cqNOUtO3QPy915c/vAgP6PBAaS3mvq35FbQGvQrRk0dl4KaFI8=
+	t=1711986583; cv=none; b=BwF1A0Lt5HGZXo9RPgKxG0iCvJfTcwMhD8fKv9NnutnbX08DoGpOug5ZFxYKPSO2DPFM9DBywLD2TBhM0ylh62N8zqqpRhIfyX9w6te+VSeIEXIjJ60Wq82IY77NOlnhkjlJJKoDf7hRF5JXLZOzcAYM5t2M0Iz/ZAF/fBMfaeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711986576; c=relaxed/simple;
-	bh=hDBFu8KBq0fUbJ3lYvPOI6F1C6bwPDXEU/FF72P9asQ=;
+	s=arc-20240116; t=1711986583; c=relaxed/simple;
+	bh=0Enh3qACiypt45F1iVL8gvC9WYYTDeXDA9htkuL9l0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWDx95Z6cOSfJb+YJblX8Q2lY4iUPcYGepMkETPjhqN5VahUXmJOotyk6vqJjYb9fxNX29TLdDsU8iCp3O+wRArmD/g2pHuMLAF2g7KFVMxbsVR1bdcDt/qOG0yvrV+nYwSvpBLlSg5XW1o8CyaAs27bzFOgbWfyy8xk3/u2hE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNVngm3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B4CC433C7;
-	Mon,  1 Apr 2024 15:49:35 +0000 (UTC)
+	 MIME-Version; b=I0t9XUxKKoqsN+lpP65RkFGkfQTubeoHUrQo4x2CVu0rW365GMCLkuvYfPo4tPFPiZ4ri4wNEOFVfD7MhL7Va+OZN8xZwRTnkQtEv93xYVwIEWblkSUujJqWVOMHrcxR5dkh7c9JyQq4DfO8Nog3ZZbWctP6yJq2nDNv2py5I0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hHxeyHY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4697CC433F1;
+	Mon,  1 Apr 2024 15:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711986576;
-	bh=hDBFu8KBq0fUbJ3lYvPOI6F1C6bwPDXEU/FF72P9asQ=;
+	s=korg; t=1711986582;
+	bh=0Enh3qACiypt45F1iVL8gvC9WYYTDeXDA9htkuL9l0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNVngm3vw6vS25cXvznjBDAWGNVWK4TQYbwb7I+PNWUfdHDEtdEtM8VxP0oNFN0TP
-	 onOhjirUJSuzIaJVEkKCa36bIdngYDTE0GxA7+w30OkrljAcgYl6/LNJ7+TYhnGmD6
-	 c9uSIajOFRyujSrflSTSJVHVuAtEn9iXsdPq7dAI=
+	b=0hHxeyHYhv4hjvxyyy3PugMgvstL9Fip1hXrO06ybTnZdMEK03oPAPorK9MvfUnCO
+	 fcCyOPYATvgPMaXR3dSn5ZHBM0aYd5rha2Evx6szqm1ycOi81XLriAhAkay6+A7q8+
+	 255r52omK3TSh+OdWDSA+9lkjn3CkIChcYz/acXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Fabio Estevam <festevam@gmail.com>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 019/399] media: nxp: imx8-isi: Check whether crossbar pad is non-NULL before access
-Date: Mon,  1 Apr 2024 17:39:45 +0200
-Message-ID: <20240401152549.734846162@linuxfoundation.org>
+Subject: [PATCH 6.8 020/399] media: mc: Add num_links flag to media_pad
+Date: Mon,  1 Apr 2024 17:39:46 +0200
+Message-ID: <20240401152549.764700573@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -70,54 +67,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit eb2f932100288dbb881eadfed02e1459c6b9504c ]
+[ Upstream commit baeddf94aa61879b118f2faa37ed126d772670cc ]
 
-When translating source to sink streams in the crossbar subdev, the
-driver tries to locate the remote subdev connected to the sink pad. The
-remote pad may be NULL, if userspace tries to enable a stream that ends
-at an unconnected crossbar sink. When that occurs, the driver
-dereferences the NULL pad, leading to a crash.
-
-Prevent the crash by checking if the pad is NULL before using it, and
-return an error if it is.
+Maintain a counter of the links connected to a pad in the media_pad
+structure. This helps checking if a pad is connected to anything, which
+will be used in the pipeline building code.
 
 Cc: stable@vger.kernel.org # 6.1
-Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20231201150614.63300-1-marex@denx.de
 Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/mc/mc-entity.c | 6 ++++++
+ include/media/media-entity.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-index 575f173373887..1bb1334ec6f2b 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-@@ -160,8 +160,14 @@ mxc_isi_crossbar_xlate_streams(struct mxc_isi_crossbar *xbar,
- 	}
+diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
+index 7839e3f68efa4..c2d8f59b62c12 100644
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -1038,6 +1038,9 @@ static void __media_entity_remove_link(struct media_entity *entity,
  
- 	pad = media_pad_remote_pad_first(&xbar->pads[sink_pad]);
--	sd = media_entity_to_v4l2_subdev(pad->entity);
-+	if (!pad) {
-+		dev_dbg(xbar->isi->dev,
-+			"no pad connected to crossbar input %u\n",
-+			sink_pad);
-+		return ERR_PTR(-EPIPE);
-+	}
+ 	/* Remove the reverse links for a data link. */
+ 	if ((link->flags & MEDIA_LNK_FL_LINK_TYPE) == MEDIA_LNK_FL_DATA_LINK) {
++		link->source->num_links--;
++		link->sink->num_links--;
++
+ 		if (link->source->entity == entity)
+ 			remote = link->sink->entity;
+ 		else
+@@ -1143,6 +1146,9 @@ media_create_pad_link(struct media_entity *source, u16 source_pad,
+ 	sink->num_links++;
+ 	source->num_links++;
  
-+	sd = media_entity_to_v4l2_subdev(pad->entity);
- 	if (!sd) {
- 		dev_dbg(xbar->isi->dev,
- 			"no entity connected to crossbar input %u\n",
++	link->source->num_links++;
++	link->sink->num_links++;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(media_create_pad_link);
+diff --git a/include/media/media-entity.h b/include/media/media-entity.h
+index 2b6cd343ee9e0..4d95893c89846 100644
+--- a/include/media/media-entity.h
++++ b/include/media/media-entity.h
+@@ -225,6 +225,7 @@ enum media_pad_signal_type {
+  * @graph_obj:	Embedded structure containing the media object common data
+  * @entity:	Entity this pad belongs to
+  * @index:	Pad index in the entity pads array, numbered from 0 to n
++ * @num_links:	Number of links connected to this pad
+  * @sig_type:	Type of the signal inside a media pad
+  * @flags:	Pad flags, as defined in
+  *		:ref:`include/uapi/linux/media.h <media_header>`
+@@ -236,6 +237,7 @@ struct media_pad {
+ 	struct media_gobj graph_obj;	/* must be first field in struct */
+ 	struct media_entity *entity;
+ 	u16 index;
++	u16 num_links;
+ 	enum media_pad_signal_type sig_type;
+ 	unsigned long flags;
+ 
 -- 
 2.43.0
 
