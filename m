@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B9A893F9A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6114289415B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82E06B20F56
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E30921F22B19
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023FC4778E;
-	Mon,  1 Apr 2024 16:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FA94778C;
+	Mon,  1 Apr 2024 16:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysnaIIVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGbItqPO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FED3F8F4;
-	Mon,  1 Apr 2024 16:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6DD1EB37;
+	Mon,  1 Apr 2024 16:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988329; cv=none; b=P0HfLd8cQLWIHiy1n6R0/Ynlv1KuJKPKPFfQNVtg0x+xAXzIwhnHUkms+o8C0lc6pQVCPbox5PdUWgQHifpRJPtCV1jLZAOXoY5GSWu9luXLwtn+dAVgfuYZ5vhJ0Zinkz+uTGoeI/eH/Q3BszJOUDQ0apNcADfksSRQ8Au/Q4w=
+	t=1711989672; cv=none; b=rWEb1HW7ZZFJ9QxSF2ToTeEaAjIsBt46dM6u3nFn4k3wqJeVtcuyDW4YATwbw9bZuVxy0nBgDd+U22nGTUWhantbOCxPCM9xQfkYarsIFBknvwrsYpMZGBYxAVfI9t46eY0HvYbTmQVE54XkzHy7+FClMyL8mV5Z4q827LWgKu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988329; c=relaxed/simple;
-	bh=pysIJr9buRZrZNHBllczyu8YSq8TNX+Mrn4y5sbTj3Y=;
+	s=arc-20240116; t=1711989672; c=relaxed/simple;
+	bh=y/ycodwzi+DaZpql/d20xNGMtfHHFNhoOLD2WI1lZvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4Tua/u/L+R42KKcvk8/qe3ayr5i/BmGgPFIt1qNGy0EllwG+Vq0CxTZj9weJuffts1pLVgqD3qrbU0M1fOgFTPTz9wuxsznk9PHYtrGxnaGIl/Yp81J0Y9RacpynwNFAc2uste/8G7fwHTa6jvXNcw6h7YYRWKLzlni/zby2b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysnaIIVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234D4C43390;
-	Mon,  1 Apr 2024 16:18:48 +0000 (UTC)
+	 MIME-Version; b=CR8PxQUdaziY70SLryix4/7eRhu5E/Sb/GtAT+31jB8nRTdufYCN+1CAKJepeLzdLHeddzAx4kBdGzLye2gGzZjCHJOoRzJ54jmUjV70KyWQCbImigA9vVjfnSyiM7Jr8ApRn838BdYURrpBeXDkgWuIbdh5WQ4cwBZnDxv9tzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGbItqPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FD5C433C7;
+	Mon,  1 Apr 2024 16:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988329;
-	bh=pysIJr9buRZrZNHBllczyu8YSq8TNX+Mrn4y5sbTj3Y=;
+	s=korg; t=1711989672;
+	bh=y/ycodwzi+DaZpql/d20xNGMtfHHFNhoOLD2WI1lZvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysnaIIVFf83nTvzrtDywCFBNA/ZRRvKgVTeJc5BvgfgBTdwXb2K/Z21z/UfUwXWk4
-	 Z+xLyOwm9fGrCsf6yZn6PIJ8GiW7eQ/GbSa3BlK/J175o6lKGQFtscAPK29U6q8n/J
-	 37hwAgJr1qa2aoFTRYk509lwFJcPeWR/mRnWx87A=
+	b=qGbItqPOOhkIHO9QOQ+V1qk5F3bsa8WLqAWS6FNjZsK88uK2Po8v3hGL7/tOf+Opb
+	 ITEfcYXK/UA21Z+0WdBXCzzk++PqAWJuYMzgWTQN97t8HLc60qnneXcKWMCItZWRZK
+	 Iml152dnIFezqNB6yxewG2sq6wHtLkf2+pVIXCr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Fabian Vogt <fvogt@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 152/432] ksmbd: retrieve number of blocks using vfs_getattr in set_file_allocation_info
+Subject: [PATCH 6.6 090/396] btrfs: qgroup: always free reserved space for extent records
 Date: Mon,  1 Apr 2024 17:42:19 +0200
-Message-ID: <20240401152557.669631617@linuxfoundation.org>
+Message-ID: <20240401152550.600030630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 34cd86b6632718b7df3999d96f51e63de41c5e4f ]
+[ Upstream commit d139ded8b9cdb897bb9539eb33311daf9a177fd2 ]
 
-Use vfs_getattr() to retrieve stat information, rather than make
-assumptions about how a filesystem fills inode structs.
+[BUG]
+If qgroup is marked inconsistent (e.g. caused by operations needing full
+subtree rescan, like creating a snapshot and assign to a higher level
+qgroup), btrfs would immediately start leaking its data reserved space.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The following script can easily reproduce it:
+
+  mkfs.btrfs -O quota -f $dev
+  mount $dev $mnt
+  btrfs subvolume create $mnt/subv1
+  btrfs qgroup create 1/0 $mnt
+
+  # This snapshot creation would mark qgroup inconsistent,
+  # as the ownership involves different higher level qgroup, thus
+  # we have to rescan both source and snapshot, which can be very
+  # time consuming, thus here btrfs just choose to mark qgroup
+  # inconsistent, and let users to determine when to do the rescan.
+  btrfs subv snapshot -i 1/0 $mnt/subv1 $mnt/snap1
+
+  # Now this write would lead to qgroup rsv leak.
+  xfs_io -f -c "pwrite 0 64k" $mnt/file1
+
+  # And at unmount time, btrfs would report 64K DATA rsv space leaked.
+  umount $mnt
+
+And we would have the following dmesg output for the unmount:
+
+  BTRFS info (device dm-1): last unmount of filesystem 14a3d84e-f47b-4f72-b053-a8a36eef74d3
+  BTRFS warning (device dm-1): qgroup 0/5 has unreleased space, type 0 rsv 65536
+
+[CAUSE]
+Since commit e15e9f43c7ca ("btrfs: introduce
+BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING to skip qgroup accounting"),
+we introduce a mode for btrfs qgroup to skip the timing consuming
+backref walk, if the qgroup is already inconsistent.
+
+But this skip also covered the data reserved freeing, thus the qgroup
+reserved space for each newly created data extent would not be freed,
+thus cause the leakage.
+
+[FIX]
+Make the data extent reserved space freeing mandatory.
+
+The qgroup reserved space handling is way cheaper compared to the
+backref walking part, and we always have the super sensitive leak
+detector, thus it's definitely worth to always free the qgroup
+reserved data space.
+
+Reported-by: Fabian Vogt <fvogt@suse.com>
+Fixes: e15e9f43c7ca ("btrfs: introduce BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING to skip qgroup accounting")
+CC: stable@vger.kernel.org # 6.1+
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1216196
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/btrfs/qgroup.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index f6cc5d2730ffb..199c31c275e5b 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5809,15 +5809,21 @@ static int set_file_allocation_info(struct ksmbd_work *work,
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 9acdd0f91a5ae..312c7f8853866 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -2833,11 +2833,6 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
+ 				ctx.roots = NULL;
+ 			}
  
- 	loff_t alloc_blks;
- 	struct inode *inode;
-+	struct kstat stat;
- 	int rc;
- 
- 	if (!(fp->daccess & FILE_WRITE_DATA_LE))
- 		return -EACCES;
- 
-+	rc = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
-+			 AT_STATX_SYNC_AS_STAT);
-+	if (rc)
-+		return rc;
-+
- 	alloc_blks = (le64_to_cpu(file_alloc_info->AllocationSize) + 511) >> 9;
- 	inode = file_inode(fp->filp);
- 
--	if (alloc_blks > inode->i_blocks) {
-+	if (alloc_blks > stat.blocks) {
- 		smb_break_all_levII_oplock(work, fp, 1);
- 		rc = vfs_fallocate(fp->filp, FALLOC_FL_KEEP_SIZE, 0,
- 				   alloc_blks * 512);
-@@ -5825,7 +5831,7 @@ static int set_file_allocation_info(struct ksmbd_work *work,
- 			pr_err("vfs_fallocate is failed : %d\n", rc);
- 			return rc;
+-			/* Free the reserved data space */
+-			btrfs_qgroup_free_refroot(fs_info,
+-					record->data_rsv_refroot,
+-					record->data_rsv,
+-					BTRFS_QGROUP_RSV_DATA);
+ 			/*
+ 			 * Use BTRFS_SEQ_LAST as time_seq to do special search,
+ 			 * which doesn't lock tree or delayed_refs and search
+@@ -2861,6 +2856,11 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
+ 			record->old_roots = NULL;
+ 			new_roots = NULL;
  		}
--	} else if (alloc_blks < inode->i_blocks) {
-+	} else if (alloc_blks < stat.blocks) {
- 		loff_t size;
- 
- 		/*
++		/* Free the reserved data space */
++		btrfs_qgroup_free_refroot(fs_info,
++				record->data_rsv_refroot,
++				record->data_rsv,
++				BTRFS_QGROUP_RSV_DATA);
+ cleanup:
+ 		ulist_free(record->old_roots);
+ 		ulist_free(new_roots);
 -- 
 2.43.0
 
