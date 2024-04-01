@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6ED89404B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179C98941E4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7620D282640
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC113B22447
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DAF481B4;
-	Mon,  1 Apr 2024 16:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451B81E525;
+	Mon,  1 Apr 2024 16:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FM2GcHjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCVN247K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028C73D961;
-	Mon,  1 Apr 2024 16:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B3940876;
+	Mon,  1 Apr 2024 16:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988892; cv=none; b=WkJM5AV84MyRW1/Fz1aRIoGMY2zizoCztn3wEwhQkjtpNu6R6ALHkrhTfzISJxzygyGF661ZU0JY2JDveJtv426IErfkJh6aPt/Az+ZWE4FL38c3l3p3a5qD1oSFLItfbAQJauNaMJ+i5eAfYEsuQQMlhE+tS92Rq9ucQIolCwc=
+	t=1711990044; cv=none; b=IZmOGBLaIHdKg+BFir4fsc4ozvef486bSkA6ZisqKrPrfqITutsHgBYGHnVe8ptc/WWvpMlw95RNixhnF0RT7D7s9fVhzg5vJMzTOcdIesrNhpIBoHaiBMD4b6y2uujt1D564rtMoNnWVsRF94DzEd3wZCkzW2jSe4bm6C/t/CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988892; c=relaxed/simple;
-	bh=ft1bF1l3jtgME2lC4EPIF0ZZGGG+1NRer9X76W+ABIE=;
+	s=arc-20240116; t=1711990044; c=relaxed/simple;
+	bh=Wnolj0mJMs5sg6Ua++1OuPK7GB2Xn+RDQjVbZcfFtHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAMtktWg2AmPgU51LAEtdveQ8W/KdwcIXTVpcaYt0yc+Z+SsonVrtWkz338zPYycZwsgNy7Z1rhESHgTPi6YYaP8LBsa1NLQHZ45CVpZpqvi7tl612BrupR7G9A80uVzdCHWc0PzhpW7HQoW3ac6pVz15kFcPd9RW3VGryk/dpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FM2GcHjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682A3C433C7;
-	Mon,  1 Apr 2024 16:28:11 +0000 (UTC)
+	 MIME-Version; b=p6ty1A2VxE3sgOFzqS3HkRUMPHHelAou5L9Zbe9+LCAbwR5rf25gLwAKbP9IvfjO2ojlqCEk1/uRoP5WSLPx1L+lCe8Fl8QjswlqfwAk5U/TqnkTr6gde9zRRehdDAJnG1o20AEJcYP3Yb1VDhrrJjM4yaRr2aZludaKsIMeYTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCVN247K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE05C433F1;
+	Mon,  1 Apr 2024 16:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988891;
-	bh=ft1bF1l3jtgME2lC4EPIF0ZZGGG+1NRer9X76W+ABIE=;
+	s=korg; t=1711990043;
+	bh=Wnolj0mJMs5sg6Ua++1OuPK7GB2Xn+RDQjVbZcfFtHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FM2GcHjXrKmZxUoeUOW8ahSHxQxhP9nCL9+FeCKswZnrCsVNFggq/ynmiK3STdwb6
-	 5vlG+psyZFG7MI/AY7hOhb8OkSdIGPm1w8uX4OdiGKv1GQWoQ1mhC7yl6fi9Z8KYgm
-	 fQcW8+Og0QbiSMjIjhsHl4FQwoVH6RjTydBok520=
+	b=GCVN247KhWH7128e5hvetIlFgatxgXT+QMBYQEKRDicUdYBHp2ftZneteWYa3Rq9K
+	 OgFmYpvPwbim0arp+1qmzEoAofO12Y7mlb6ivr3SUoHHvHFMDkpjNhHzsMOYvLh9qe
+	 tsfiTbbLylEF3/Rpt1YxyxOineZV7CBfZrcZlPTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.7 291/432] x86/efistub: Call mixed mode boot services on the firmwares stack
+	stable <stable@kernel.org>,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>,
+	Elliot Berman <quic_eberman@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.6 229/396] misc: fastrpc: Pass proper arguments to scm call
 Date: Mon,  1 Apr 2024 17:44:38 +0200
-Message-ID: <20240401152601.848978354@linuxfoundation.org>
+Message-ID: <20240401152554.747199023@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit cefcd4fe2e3aaf792c14c9e56dab89e3d7a65d02 upstream.
+commit a283d7f179ff83976af27bcc71f7474cb4d7c348 upstream.
 
-Normally, the EFI stub calls into the EFI boot services using the stack
-that was live when the stub was entered. According to the UEFI spec,
-this stack needs to be at least 128k in size - this might seem large but
-all asynchronous processing and event handling in EFI runs from the same
-stack and so quite a lot of space may be used in practice.
+For CMA memory allocation, ownership is assigned to DSP to make it
+accessible by the PD running on the DSP. With current implementation
+HLOS VM is stored in the channel structure during rpmsg_probe and
+this VM is passed to qcom_scm call as the source VM.
 
-In mixed mode, the situation is a bit different: the bootloader calls
-the 32-bit EFI stub entry point, which calls the decompressor's 32-bit
-entry point, where the boot stack is set up, using a fixed allocation
-of 16k. This stack is still in use when the EFI stub is started in
-64-bit mode, and so all calls back into the EFI firmware will be using
-the decompressor's limited boot stack.
+The qcom_scm call will overwrite the passed source VM with the next
+VM which would cause a problem in case the scm call is again needed.
+Adding a local copy of source VM whereever scm call is made to avoid
+this problem.
 
-Due to the placement of the boot stack right after the boot heap, any
-stack overruns have gone unnoticed. However, commit
-
-  5c4feadb0011983b ("x86/decompressor: Move global symbol references to C code")
-
-moved the definition of the boot heap into C code, and now the boot
-stack is placed right at the base of BSS, where any overruns will
-corrupt the end of the .data section.
-
-While it would be possible to work around this by increasing the size of
-the boot stack, doing so would affect all x86 systems, and mixed mode
-systems are a tiny (and shrinking) fraction of the x86 installed base.
-
-So instead, record the firmware stack pointer value when entering from
-the 32-bit firmware, and switch to this stack every time a EFI boot
-service call is made.
-
-Cc: <stable@kernel.org> # v6.1+
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240224114247.85953-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/misc/fastrpc.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -49,6 +49,11 @@ SYM_FUNC_START(startup_64_mixed_mode)
- 	lea	efi32_boot_args(%rip), %rdx
- 	mov	0(%rdx), %edi
- 	mov	4(%rdx), %esi
-+
-+	/* Switch to the firmware's stack */
-+	movl	efi32_boot_sp(%rip), %esp
-+	andl	$~7, %esp
-+
- #ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- 	mov	8(%rdx), %edx		// saved bootparams pointer
- 	test	%edx, %edx
-@@ -254,6 +259,9 @@ SYM_FUNC_START_LOCAL(efi32_entry)
- 	/* Store firmware IDT descriptor */
- 	sidtl	(efi32_boot_idt - 1b)(%ebx)
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -263,7 +263,6 @@ struct fastrpc_channel_ctx {
+ 	int domain_id;
+ 	int sesscount;
+ 	int vmcount;
+-	u64 perms;
+ 	struct qcom_scm_vmperm vmperms[FASTRPC_MAX_VMIDS];
+ 	struct rpmsg_device *rpdev;
+ 	struct fastrpc_session_ctx session[FASTRPC_MAX_SESSIONS];
+@@ -1279,9 +1278,11 @@ static int fastrpc_init_create_static_pr
  
-+	/* Store firmware stack pointer */
-+	movl	%esp, (efi32_boot_sp - 1b)(%ebx)
+ 		/* Map if we have any heap VMIDs associated with this ADSP Static Process. */
+ 		if (fl->cctx->vmcount) {
++			u64 src_perms = BIT(QCOM_SCM_VMID_HLOS);
 +
- 	/* Store boot arguments */
- 	leal	(efi32_boot_args - 1b)(%ebx), %ebx
- 	movl	%ecx, 0(%ebx)
-@@ -318,5 +326,6 @@ SYM_DATA_END(efi32_boot_idt)
+ 			err = qcom_scm_assign_mem(fl->cctx->remote_heap->phys,
+ 							(u64)fl->cctx->remote_heap->size,
+-							&fl->cctx->perms,
++							&src_perms,
+ 							fl->cctx->vmperms, fl->cctx->vmcount);
+ 			if (err) {
+ 				dev_err(fl->sctx->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d",
+@@ -1915,8 +1916,10 @@ static int fastrpc_req_mmap(struct fastr
  
- SYM_DATA_LOCAL(efi32_boot_cs, .word 0)
- SYM_DATA_LOCAL(efi32_boot_ds, .word 0)
-+SYM_DATA_LOCAL(efi32_boot_sp, .long 0)
- SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
- SYM_DATA(efi_is64, .byte 1)
+ 	/* Add memory to static PD pool, protection thru hypervisor */
+ 	if (req.flags == ADSP_MMAP_REMOTE_HEAP_ADDR && fl->cctx->vmcount) {
++		u64 src_perms = BIT(QCOM_SCM_VMID_HLOS);
++
+ 		err = qcom_scm_assign_mem(buf->phys, (u64)buf->size,
+-			&fl->cctx->perms, fl->cctx->vmperms, fl->cctx->vmcount);
++			&src_perms, fl->cctx->vmperms, fl->cctx->vmcount);
+ 		if (err) {
+ 			dev_err(fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
+ 					buf->phys, buf->size, err);
+@@ -2290,7 +2293,6 @@ static int fastrpc_rpmsg_probe(struct rp
+ 
+ 	if (vmcount) {
+ 		data->vmcount = vmcount;
+-		data->perms = BIT(QCOM_SCM_VMID_HLOS);
+ 		for (i = 0; i < data->vmcount; i++) {
+ 			data->vmperms[i].vmid = vmids[i];
+ 			data->vmperms[i].perm = QCOM_SCM_PERM_RWX;
 
 
 
