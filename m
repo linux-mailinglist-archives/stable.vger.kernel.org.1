@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-34857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D36894130
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0ECD893FA8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D785A1F22687
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F33DA1C20DE8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719F847A6B;
-	Mon,  1 Apr 2024 16:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1845F47A57;
+	Mon,  1 Apr 2024 16:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13gTUxzG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hI/df0Vy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E9F1E86C;
-	Mon,  1 Apr 2024 16:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA051CA8F;
+	Mon,  1 Apr 2024 16:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989531; cv=none; b=mnrTU/F2AWccm2g+AulH0PfL7f4cdh1VKyKpN1HOf+nkcj2HOjrtcWhH9wV8bxV4vwoQBY2YBs2O48uX+Q257woyboC0F+am3YxTC4FZ9oL4l2ixRFy0dfeA/wJJwT6iSNTAQjyisqxZFMwbiX9BLQo1QUfaTWoPMXPRXZmWxGE=
+	t=1711988376; cv=none; b=RE0fasXIRaVVsDJCyJ5cF83XTQUToi02AJv7axjsclPEQGlWDUSCbGBt5GmiRRQU/jCPE94+bXWbh4veOhY2P67If9DN2Ak12LpicuONriw9+NozkK4rwGcjkNv8vuA79N3Mn8+8vr1/N1MU6id951ozTKli6E6S7gG17pxnanU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989531; c=relaxed/simple;
-	bh=V2CT7vyOe9lrTI1rs0t33UJSvH8AoMPSaIipld0k6do=;
+	s=arc-20240116; t=1711988376; c=relaxed/simple;
+	bh=7dNYYEx/y5FKBGW07MNeFcFHaTXmFtQ8IwfXPzLrMbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sHIOg+aQOZtbSGAfEGJ+KamMynBx17vh037/SyCap8AHwbSIf0pcmjTWwAbl9hkJ5nOC4pBhY3cfEyvnzcS2bANlDJ5suGnKn3bNUt/NR5HgiLGdlwZ6aX9xMRFkZsV0eu/HM24o3ZdJVmYpln38RRglUDbwfoBjgu2nqFx3+EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13gTUxzG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97118C433C7;
-	Mon,  1 Apr 2024 16:38:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ArS0mVikPMAshDc02jBhLZH5JGlYE/KwzHuvb4r0HHJSXiAPtmz7QrvdNzjVlCiHvSBmmutdrg+fZG7RsLJOHlolJcKKsF8xdpAto487Gtd4rTA8eRfcqwu0J8hnvJiaFZzw8NKQrTa7hHdRiwtrYxmHojDMXMdz4zw0+5t/q4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hI/df0Vy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4885DC433F1;
+	Mon,  1 Apr 2024 16:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989531;
-	bh=V2CT7vyOe9lrTI1rs0t33UJSvH8AoMPSaIipld0k6do=;
+	s=korg; t=1711988376;
+	bh=7dNYYEx/y5FKBGW07MNeFcFHaTXmFtQ8IwfXPzLrMbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=13gTUxzGzeAoZBjKb7tziOuj5ZMDLn11MuXc+ZG1TvEp51GrYOCt41/6Cresh0Kxj
-	 LPeKiskt401CUTb6L6y+nWVJc+fKFJZRDDFkvjLJ/ErPiPUgMUUI0SeGwILdCRI6pA
-	 5RMnRX0zST1yDA3jfhRiKsa6Q5uw/IkzU1GmHezs=
+	b=hI/df0VyLWhOqdTt0/zl4m2pJncpVHY4O27ba4CtrIK7p0dCxvdBI6lMWrDnIg0pT
+	 v3ggwkd2OGsoglBHthab9llJ6/PdBNeJjMIQc4Gokjhl6r98gZhc6f1v1foZequ8JX
+	 YkuprSdgqaEeJkXsRsL6+m/Md30/ZQC+olkAKKNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20H=C3=A4ggstr=C3=B6m?= <christian.haggstrom@orexplore.com>,
-	Johan Hovold <johan@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+	Long Li <longli@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/396] USB: serial: cp210x: add ID for MGP Instruments PDS100
+Subject: [PATCH 6.7 138/432] PCI: hv: Fix ring buffer size calculation
 Date: Mon,  1 Apr 2024 17:42:05 +0200
-Message-ID: <20240401152550.184946858@linuxfoundation.org>
+Message-ID: <20240401152557.248817636@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +66,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Häggström <christian.haggstrom@orexplore.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit a0d9d868491a362d421521499d98308c8e3a0398 ]
+[ Upstream commit b5ff74c1ef50fe08e384026875fec660fadfaedd ]
 
-The radiation meter has the text MGP Instruments PDS-100G or PDS-100GN
-produced by Mirion Technologies. Tested by forcing the driver
-association with
+For a physical PCI device that is passed through to a Hyper-V guest VM,
+current code specifies the VMBus ring buffer size as 4 pages.  But this
+is an inappropriate dependency, since the amount of ring buffer space
+needed is unrelated to PAGE_SIZE. For example, on x86 the ring buffer
+size ends up as 16 Kbytes, while on ARM64 with 64 Kbyte pages, the ring
+size bloats to 256 Kbytes. The ring buffer for PCI pass-thru devices
+is used for only a few messages during device setup and removal, so any
+space above a few Kbytes is wasted.
 
-  echo 10c4 863c > /sys/bus/usb-serial/drivers/cp210x/new_id
+Fix this by declaring the ring buffer size to be a fixed 16 Kbytes.
+Furthermore, use the VMBUS_RING_SIZE() macro so that the ring buffer
+header is properly accounted for, and so the size is rounded up to a
+page boundary, using the page size for which the kernel is built. While
+w/64 Kbyte pages this results in a 64 Kbyte ring buffer header plus a
+64 Kbyte ring buffer, that's the smallest possible with that page size.
+It's still 128 Kbytes better than the current code.
 
-and then setting the serial port in 115200 8N1 mode. The device
-announces ID_USB_VENDOR_ENC=Silicon\x20Labs and ID_USB_MODEL_ENC=PDS100
-
-Signed-off-by: Christian Häggström <christian.haggstrom@orexplore.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/linux-pci/20240216202240.251818-1-mhklinux@outlook.com
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cp210x.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/pci-hyperv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
-index d339d81f6e8cf..2169b6549a260 100644
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -144,6 +144,7 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(0x10C4, 0x85EA) }, /* AC-Services IBUS-IF */
- 	{ USB_DEVICE(0x10C4, 0x85EB) }, /* AC-Services CIS-IBUS */
- 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
-+	{ USB_DEVICE(0x10C4, 0x863C) }, /* MGP Instruments PDS100 */
- 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
- 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
- 	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
+diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+index 30c7dfeccb16f..11cc354a30ea5 100644
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -49,6 +49,7 @@
+ #include <linux/refcount.h>
+ #include <linux/irqdomain.h>
+ #include <linux/acpi.h>
++#include <linux/sizes.h>
+ #include <asm/mshyperv.h>
+ 
+ /*
+@@ -465,7 +466,7 @@ struct pci_eject_response {
+ 	u32 status;
+ } __packed;
+ 
+-static int pci_ring_size = (4 * PAGE_SIZE);
++static int pci_ring_size = VMBUS_RING_SIZE(SZ_16K);
+ 
+ /*
+  * Driver specific state.
 -- 
 2.43.0
 
