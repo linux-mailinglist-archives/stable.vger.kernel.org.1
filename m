@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-34736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C384F89409B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 775C78943A2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C66E283346
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3151B2838D0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D44941C89;
-	Mon,  1 Apr 2024 16:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FB6482CA;
+	Mon,  1 Apr 2024 17:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqNdDSvK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBO89rZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF741E86C;
-	Mon,  1 Apr 2024 16:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B44438DE5;
+	Mon,  1 Apr 2024 17:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989125; cv=none; b=qBnKNh15Aoxk20QK17rkoZlCMBmkHlCPU5uAxjZGPc7ypbv+RTS37LxNZpKUtIpJaseaQoXivw7x8nYmtZSJE75ACMutK7RG9NnChwgCTErhFlNzUhbBsWO82ofgzseCXczX/iqcBiLv8LmGzh5uj8Rbi/euey04+v6FlkfBkls=
+	t=1711991175; cv=none; b=XojNw+Ej95lnu5npbwfXs7Gnf4QE7Tihjw5C2jLiw5waNO9n9S5oYwjLwPNhSiSV8OIqoK4P3sRI9Oc9yZvH8q253tgYOr/zkdjHi5Gdr6oBNHcqRkma228A0cSyUm6/dr6aVuzhfAWsPdR/Vq73IPUJlLo0tt9PCBdXvPxum2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989125; c=relaxed/simple;
-	bh=I6A9Ra4VquZ75zF+/IHSbbg6mHgCpUTE+YmebGYZaZs=;
+	s=arc-20240116; t=1711991175; c=relaxed/simple;
+	bh=WYFNX9S9Dc5FKKG1whSuqGrQ/0Z3g6THAiRZEoIDZKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxaV/bf6f9wK9IPvU/QTbhqSfHeiaixu1iABAGtfNIoowtsyypAZa26fGel+REuGnWX8hWGX8q/Jg/tr5waN8JzskEhHXqmeEy1+iH1/UiZY6ygt32wo2S+kz8nrbeLNM+p65/jsU7ctH86hxa7UMQACRTX5uezzdeb8/BOuWoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqNdDSvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58928C433F1;
-	Mon,  1 Apr 2024 16:32:05 +0000 (UTC)
+	 MIME-Version; b=NGY8Y11ffg1tDv7Xl4iI6ysTiQO4HacPgsZfo0bOeoJRqFXwyiDuH/Unb57iEAu3hkj04Q2zljST1YAdXkf8vOSVxeWPO2tHrauhCzCcCTidlCoNLUwcA5p0ePew8zeCORE+QOPA/PiL83fDUdfCr1OD5p+tqqxd1pJwan/erU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBO89rZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D459AC433C7;
+	Mon,  1 Apr 2024 17:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989125;
-	bh=I6A9Ra4VquZ75zF+/IHSbbg6mHgCpUTE+YmebGYZaZs=;
+	s=korg; t=1711991175;
+	bh=WYFNX9S9Dc5FKKG1whSuqGrQ/0Z3g6THAiRZEoIDZKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JqNdDSvKZ6t735Url0wZb50nzDBBMlaCzPxq+1pZ3g70i8TCPDFV511QTwaqJKphu
-	 yRQbHRP7wbZ7GKsTkClvmYWLWOPgb//ho9VjdaRAfDDeJmbTDpFGBFFJx6cu5+ywjS
-	 Dde9HTiHdMnEkG1QNTXbgpiagTlFd3mHGfH8v5Fg=
+	b=JBO89rZ/mHtMteMF3g7CA9PqMFMWGQX9YRslPTJEWYuy+YOai+6GHxTjK2TawYXHN
+	 l6O5f9kBvPrIGGGlvB2tSiA5q+z91erVKAe60rxQIy1CBhBIftEvcyJhn3KpuU7jcj
+	 TMy90ZYowsceCE0pPtHpENBKjufwvxcXOJ4Bg/7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.7 381/432] usb: cdc-wdm: close race between read and workqueue
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Nikhil V <quic_nprakash@quicinc.com>
+Subject: [PATCH 6.1 178/272] iommu: Avoid races around default domain allocations
 Date: Mon,  1 Apr 2024 17:46:08 +0200
-Message-ID: <20240401152604.662674303@linuxfoundation.org>
+Message-ID: <20240401152536.344429916@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Charan Teja Kalla <quic_charante@quicinc.com>
 
-commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
+This fix is applicable for LTS kernel, 6.1.y. In latest kernels, this race
+issue is fixed by the patch series [1] and [2]. The right thing to do here
+would have been propagating these changes from latest kernel to the stable
+branch, 6.1.y. However, these changes seems too intrusive to be picked for
+stable branches. Hence, the fix proposed can be taken as an alternative
+instead of backporting the patch series.
+[1] https://lore.kernel.org/all/0-v8-81230027b2fa+9d-iommu_all_defdom_jgg@nvidia.com/
+[2] https://lore.kernel.org/all/0-v5-1b99ae392328+44574-iommu_err_unwind_jgg@nvidia.com/
 
-wdm_read() cannot race with itself. However, in
-service_outstanding_interrupt() it can race with the
-workqueue, which can be triggered by error handling.
+Issue:
+A race condition is observed when arm_smmu_device_probe and
+modprobe of client devices happens in parallel. This results
+in the allocation of a new default domain for the iommu group
+even though it was previously allocated and the respective iova
+domain(iovad) was initialized. However, for this newly allocated
+default domain, iovad will not be initialized. As a result, for
+devices requesting dma allocations, this uninitialized iovad will
+be used, thereby causing NULL pointer dereference issue.
 
-Hence we need to make sure that the WDM_RESPONDING
-flag is not just only set but tested.
+Flow:
+- During arm_smmu_device_probe, bus_iommu_probe() will be called
+as part of iommu_device_register(). This results in the device probe,
+__iommu_probe_device().
 
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
+- When the modprobe of the client device happens in parallel, it
+sets up the DMA configuration for the device using of_dma_configure_id(),
+which inturn calls iommu_probe_device(). Later, default domain is
+allocated and attached using iommu_alloc_default_domain() and
+__iommu_attach_device() respectively. It then ends up initializing a
+mapping domain(IOVA domain) and rcaches for the device via
+arch_setup_dma_ops()->iommu_setup_dma_ops().
+
+- Now, in the bus_iommu_probe() path, it again tries to allocate
+a default domain via probe_alloc_default_domain(). This results in
+allocating a new default domain(along with IOVA domain) via
+__iommu_domain_alloc(). However, this newly allocated IOVA domain
+will not be initialized.
+
+- Now, when the same client device tries dma allocations via
+iommu_dma_alloc(), it ends up accessing the rcaches of the newly
+allocated IOVA domain, which is not initialized. This results
+into NULL pointer dereferencing.
+
+Fix this issue by adding a check in probe_alloc_default_domain()
+to see if the iommu_group already has a default domain allocated
+and initialized.
+
+Cc: <stable@vger.kernel.org> # see patch description, fix applicable only for 6.1.y
+Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Co-developed-by: Nikhil V <quic_nprakash@quicinc.com>
+Signed-off-by: Nikhil V <quic_nprakash@quicinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iommu/iommu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -485,6 +485,7 @@ out_free_mem:
- static int service_outstanding_interrupt(struct wdm_device *desc)
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -1741,6 +1741,9 @@ static void probe_alloc_default_domain(s
  {
- 	int rv = 0;
-+	int used;
+ 	struct __group_domain_type gtype;
  
- 	/* submit read urb only if the device is waiting for it */
- 	if (!desc->resp_count || !--desc->resp_count)
-@@ -499,7 +500,10 @@ static int service_outstanding_interrupt
- 		goto out;
- 	}
- 
--	set_bit(WDM_RESPONDING, &desc->flags);
-+	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
-+	if (used)
-+		goto out;
++	if (group->default_domain)
++		return;
 +
- 	spin_unlock_irq(&desc->iuspin);
- 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
- 	spin_lock_irq(&desc->iuspin);
+ 	memset(&gtype, 0, sizeof(gtype));
+ 
+ 	/* Ask for default domain requirements of all devices in the group */
 
 
 
