@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-35301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C1E894355
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6ED89404B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250A3283848
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7620D282640
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE21481C6;
-	Mon,  1 Apr 2024 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DAF481B4;
+	Mon,  1 Apr 2024 16:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aepf8i6+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FM2GcHjX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3051C0DE7;
-	Mon,  1 Apr 2024 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028C73D961;
+	Mon,  1 Apr 2024 16:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990949; cv=none; b=ZZeQkELJw3HmEDm9rn2SDJOv2T1fmln9pbrHQZtGGEFWOq7vJfsIE0uw/XZgL89GDT8RFr2Z/kcDfVLH97feW55emOY6B05tsq243wE4sMTbFXWM7FW3C15Dj33bwhEctb4lr+lLakmHEk9YEOd0BXT3XUNTdXggyfR1RPAQErQ=
+	t=1711988892; cv=none; b=WkJM5AV84MyRW1/Fz1aRIoGMY2zizoCztn3wEwhQkjtpNu6R6ALHkrhTfzISJxzygyGF661ZU0JY2JDveJtv426IErfkJh6aPt/Az+ZWE4FL38c3l3p3a5qD1oSFLItfbAQJauNaMJ+i5eAfYEsuQQMlhE+tS92Rq9ucQIolCwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990949; c=relaxed/simple;
-	bh=3ULS1fHPvT0t8tlj8hF1e6HZaCVfnCrEZZQB/skBJtI=;
+	s=arc-20240116; t=1711988892; c=relaxed/simple;
+	bh=ft1bF1l3jtgME2lC4EPIF0ZZGGG+1NRer9X76W+ABIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O96LJV/p8w4LVh4xKxFULOFS/wruZK2OMX2udvTFeQXcQBOFK4DjgIZPlJ3uuwZGSNWW/NdK/bDNa/PmK6uCyRPstH1D2+fHY9TcxBtzVpwJUglx8kYyj+Khs4lMX4f9EG8emD6kqzIZM1lEwjkespOVNw0kx7qdLA6+Ak4iXso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aepf8i6+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE674C433F1;
-	Mon,  1 Apr 2024 17:02:28 +0000 (UTC)
+	 MIME-Version; b=iAMtktWg2AmPgU51LAEtdveQ8W/KdwcIXTVpcaYt0yc+Z+SsonVrtWkz338zPYycZwsgNy7Z1rhESHgTPi6YYaP8LBsa1NLQHZ45CVpZpqvi7tl612BrupR7G9A80uVzdCHWc0PzhpW7HQoW3ac6pVz15kFcPd9RW3VGryk/dpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FM2GcHjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682A3C433C7;
+	Mon,  1 Apr 2024 16:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990949;
-	bh=3ULS1fHPvT0t8tlj8hF1e6HZaCVfnCrEZZQB/skBJtI=;
+	s=korg; t=1711988891;
+	bh=ft1bF1l3jtgME2lC4EPIF0ZZGGG+1NRer9X76W+ABIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aepf8i6+clT4p8NkkSI1IahgCHV/0oX6r7tx+w3oJ6uJ24+g2SuG9KAEBBeCnA7o4
-	 /HQVLRLUb0a61BhaZGNYZt6pg83dPVFm3I6doqsGxtdlZcIqLZNDpIhj/xvK33s72J
-	 LR4XxuwMQrmQclU5onz1Huw7BohUOZqOig4oEvzs=
+	b=FM2GcHjXrKmZxUoeUOW8ahSHxQxhP9nCL9+FeCKswZnrCsVNFggq/ynmiK3STdwb6
+	 5vlG+psyZFG7MI/AY7hOhb8OkSdIGPm1w8uX4OdiGKv1GQWoQ1mhC7yl6fi9Z8KYgm
+	 fQcW8+Og0QbiSMjIjhsHl4FQwoVH6RjTydBok520=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/272] phy: tegra: xusb: Add API to retrieve the port number of phy
+	Ard Biesheuvel <ardb@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.7 291/432] x86/efistub: Call mixed mode boot services on the firmwares stack
 Date: Mon,  1 Apr 2024 17:44:38 +0200
-Message-ID: <20240401152533.370013869@linuxfoundation.org>
+Message-ID: <20240401152601.848978354@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit d843f031d9e90462253015bc0bd9e3852d206bf2 ]
+commit cefcd4fe2e3aaf792c14c9e56dab89e3d7a65d02 upstream.
 
-This patch introduces a new API, tegra_xusb_padctl_get_port_number,
-to the Tegra XUSB Pad Controller driver. This API is used to identify
-the USB port that is associated with a given PHY.
+Normally, the EFI stub calls into the EFI boot services using the stack
+that was live when the stub was entered. According to the UEFI spec,
+this stack needs to be at least 128k in size - this might seem large but
+all asynchronous processing and event handling in EFI runs from the same
+stack and so quite a lot of space may be used in practice.
 
-The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
-and returns the corresponding port number. If the PHY pointer is invalid,
-it returns -ENODEV.
+In mixed mode, the situation is a bit different: the bootloader calls
+the 32-bit EFI stub entry point, which calls the decompressor's 32-bit
+entry point, where the boot stack is set up, using a fixed allocation
+of 16k. This stack is still in use when the EFI stub is started in
+64-bit mode, and so all calls back into the EFI firmware will be using
+the decompressor's limited boot stack.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20240307030328.1487748-2-waynec@nvidia.com
+Due to the placement of the boot stack right after the boot heap, any
+stack overruns have gone unnoticed. However, commit
+
+  5c4feadb0011983b ("x86/decompressor: Move global symbol references to C code")
+
+moved the definition of the boot heap into C code, and now the boot
+stack is placed right at the base of BSS, where any overruns will
+corrupt the end of the .data section.
+
+While it would be possible to work around this by increasing the size of
+the boot stack, doing so would affect all x86 systems, and mixed mode
+systems are a tiny (and shrinking) fraction of the x86 installed base.
+
+So instead, record the firmware stack pointer value when entering from
+the 32-bit firmware, and switch to this stack every time a EFI boot
+service call is made.
+
+Cc: <stable@kernel.org> # v6.1+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c       | 13 +++++++++++++
- include/linux/phy/tegra/xusb.h |  1 +
- 2 files changed, 14 insertions(+)
+ arch/x86/boot/compressed/efi_mixed.S |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-index 4d5b4071d47d5..dc22b1dd2c8ba 100644
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -1518,6 +1518,19 @@ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
- }
- EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_usb3_companion);
+--- a/arch/x86/boot/compressed/efi_mixed.S
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -49,6 +49,11 @@ SYM_FUNC_START(startup_64_mixed_mode)
+ 	lea	efi32_boot_args(%rip), %rdx
+ 	mov	0(%rdx), %edi
+ 	mov	4(%rdx), %esi
++
++	/* Switch to the firmware's stack */
++	movl	efi32_boot_sp(%rip), %esp
++	andl	$~7, %esp
++
+ #ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+ 	mov	8(%rdx), %edx		// saved bootparams pointer
+ 	test	%edx, %edx
+@@ -254,6 +259,9 @@ SYM_FUNC_START_LOCAL(efi32_entry)
+ 	/* Store firmware IDT descriptor */
+ 	sidtl	(efi32_boot_idt - 1b)(%ebx)
  
-+int tegra_xusb_padctl_get_port_number(struct phy *phy)
-+{
-+	struct tegra_xusb_lane *lane;
++	/* Store firmware stack pointer */
++	movl	%esp, (efi32_boot_sp - 1b)(%ebx)
 +
-+	if (!phy)
-+		return -ENODEV;
-+
-+	lane = phy_get_drvdata(phy);
-+
-+	return lane->index;
-+}
-+EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_port_number);
-+
- MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
- MODULE_DESCRIPTION("Tegra XUSB Pad Controller driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/phy/tegra/xusb.h b/include/linux/phy/tegra/xusb.h
-index 70998e6dd6fdc..6ca51e0080ec0 100644
---- a/include/linux/phy/tegra/xusb.h
-+++ b/include/linux/phy/tegra/xusb.h
-@@ -26,6 +26,7 @@ void tegra_phy_xusb_utmi_pad_power_down(struct phy *phy);
- int tegra_phy_xusb_utmi_port_reset(struct phy *phy);
- int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
- 					 unsigned int port);
-+int tegra_xusb_padctl_get_port_number(struct phy *phy);
- int tegra_xusb_padctl_enable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy,
- 					   enum usb_device_speed speed);
- int tegra_xusb_padctl_disable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy);
--- 
-2.43.0
-
+ 	/* Store boot arguments */
+ 	leal	(efi32_boot_args - 1b)(%ebx), %ebx
+ 	movl	%ecx, 0(%ebx)
+@@ -318,5 +326,6 @@ SYM_DATA_END(efi32_boot_idt)
+ 
+ SYM_DATA_LOCAL(efi32_boot_cs, .word 0)
+ SYM_DATA_LOCAL(efi32_boot_ds, .word 0)
++SYM_DATA_LOCAL(efi32_boot_sp, .long 0)
+ SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
+ SYM_DATA(efi_is64, .byte 1)
 
 
 
