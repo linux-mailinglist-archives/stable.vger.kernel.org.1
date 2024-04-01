@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-34674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8375F894053
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BF189436B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B57881C20A19
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69CE22838D7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BD845BE4;
-	Mon,  1 Apr 2024 16:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058CD4AED7;
+	Mon,  1 Apr 2024 17:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8yq9S8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chiWRSCo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CFAC129;
-	Mon,  1 Apr 2024 16:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C4C48CDD;
+	Mon,  1 Apr 2024 17:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988914; cv=none; b=thtqEjW37/jm/PD04zPIAhDn1MdyFIdcqERhFChptzMxjkJmlOrzAe4UQqe+njxSRvacNvlULNh8BvYgCzEWvp42ngNG3plRRhH+eVfenrn/NJ4HbWyPAYeQGjxT9s+921tzijHfxK0UblHk1zt61BEvS53upmxQY59qzC7iqkk=
+	t=1711991004; cv=none; b=dkmYp8N4PwZdm9DhOxhB8Br6KABXOtrhOca8HM9PGXeBLJ8fTdFBGAU0J2EUc5HVdQyBnC18ETgAkW5gr77fygdlSBPObAwi0UazMdjlkVQvJuIaYnIKjPQBLiJuag77Euvvf2wdjs0Ul+sx3MiBqvVCgLS14JL0AN2FzBjCSIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988914; c=relaxed/simple;
-	bh=CVspGQLSDxGg1fW0kInT+gueqqdExUZuNesuM5KAW20=;
+	s=arc-20240116; t=1711991004; c=relaxed/simple;
+	bh=SGDaTKwYb2uN1xx1LdnKvWkdn7r2T0mOAsAoCNqt9mE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHeL9i6+3wZya9KFaI8gGOLOn3jhiuIgXX1F56lU5uPe9n/y1rKa3OTHTpXYZUgGa8bQRJBorYHpLOwTON8/oDXTwCYc1GygZ6raxigCv89T1JwX/Hcn+heHO3psgvAvKm9u+HB/SjufQtpu29OPUQ1VktAXnvDkm90I2blVy1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8yq9S8q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9AEC433C7;
-	Mon,  1 Apr 2024 16:28:33 +0000 (UTC)
+	 MIME-Version; b=eicRs6loZRGmm1XGcvydnlCdXzLhjVRUK84nQW5vnSgZ0NpVRgXnZFOo/uSdT4/ZArdETbC6HZN/PaKQfQZMx19EBPhf9+PkuapdGfkkT9p/pUq/QRelXYdtE8gEMsVXtvrSn0sFVgBBB/1pRA8++ZDFEKPq2JL1ZhYlBshWlcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chiWRSCo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB836C433F1;
+	Mon,  1 Apr 2024 17:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988914;
-	bh=CVspGQLSDxGg1fW0kInT+gueqqdExUZuNesuM5KAW20=;
+	s=korg; t=1711991004;
+	bh=SGDaTKwYb2uN1xx1LdnKvWkdn7r2T0mOAsAoCNqt9mE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8yq9S8qmtG8R70fK5tD3+NFJLJ+kahlDyE3Xn/+f5Gtv0ec1TSbdCC35zrkMlKUt
-	 qTa8XoLKvGf/FeQXMkStiwZKWoaW0yKieWxXRTLjMBMu9RMh2NIr/X6cNTR2roc9vl
-	 9ls7cNZXRJhK4ruQ9/0GPGC6+V42ayCh77mWBiE8=
+	b=chiWRSCoe0Ivrkz4qJIoCnTG9n5a/ut8J1b8HfcCqVBjP91c0QIDGUOksbB+DH6Kl
+	 4WUyg2qMxW34VB1BJK9DbbO8NVDdTqgwBuCYKeqPbHZkjamhm1M9IGbkVrjHU8/TL4
+	 bBMA+E/m8LQiCKsB0aA3df8L3aOs6dT5OOov9+Fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 319/432] selftests/mm: gup_test: conform test to TAP format output
+Subject: [PATCH 6.1 116/272] drm/panel: do not return negative error codes from drm_panel_get_modes()
 Date: Mon,  1 Apr 2024 17:45:06 +0200
-Message-ID: <20240401152602.716165478@linuxfoundation.org>
+Message-ID: <20240401152534.285738521@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,160 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit cb6e7cae18868422a23d62670110c61fd1b15029 ]
+[ Upstream commit fc4e97726530241d96dd7db72eb65979217422c9 ]
 
-Conform the layout, informational and status messages to TAP.  No
-functional change is intended other than the layout of output messages.
+None of the callers of drm_panel_get_modes() expect it to return
+negative error codes. Either they propagate the return value in their
+struct drm_connector_helper_funcs .get_modes() hook (which is also not
+supposed to return negative codes), or add it to other counts leading to
+bogus values.
 
-Link: https://lkml.kernel.org/r/20240102053807.2114200-1-usama.anjum@collabora.com
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 8b65ef5ad486 ("selftests/mm: Fix build with _FORTIFY_SOURCE")
+On the other hand, many of the struct drm_panel_funcs .get_modes() hooks
+do return negative error codes, so handle them gracefully instead of
+propagating further.
+
+Return 0 for no modes, whatever the reason.
+
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/gup_test.c | 65 ++++++++++++++-------------
- 1 file changed, 33 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/drm_panel.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
-index ec22291363844..cbe99594d319b 100644
---- a/tools/testing/selftests/mm/gup_test.c
-+++ b/tools/testing/selftests/mm/gup_test.c
-@@ -50,39 +50,41 @@ static char *cmd_to_str(unsigned long cmd)
- void *gup_thread(void *data)
+diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+index f634371c717a8..7fd3de89ed079 100644
+--- a/drivers/gpu/drm/drm_panel.c
++++ b/drivers/gpu/drm/drm_panel.c
+@@ -207,19 +207,24 @@ EXPORT_SYMBOL(drm_panel_disable);
+  * The modes probed from the panel are automatically added to the connector
+  * that the panel is attached to.
+  *
+- * Return: The number of modes available from the panel on success or a
+- * negative error code on failure.
++ * Return: The number of modes available from the panel on success, or 0 on
++ * failure (no modes).
+  */
+ int drm_panel_get_modes(struct drm_panel *panel,
+ 			struct drm_connector *connector)
  {
- 	struct gup_test gup = *(struct gup_test *)data;
--	int i;
-+	int i, status;
+ 	if (!panel)
+-		return -EINVAL;
++		return 0;
  
- 	/* Only report timing information on the *_BENCHMARK commands: */
- 	if ((cmd == PIN_FAST_BENCHMARK) || (cmd == GUP_FAST_BENCHMARK) ||
- 	     (cmd == PIN_LONGTERM_BENCHMARK)) {
- 		for (i = 0; i < repeats; i++) {
- 			gup.size = size;
--			if (ioctl(gup_fd, cmd, &gup))
--				perror("ioctl"), exit(1);
-+			status = ioctl(gup_fd, cmd, &gup);
-+			if (status)
-+				break;
+-	if (panel->funcs && panel->funcs->get_modes)
+-		return panel->funcs->get_modes(panel, connector);
++	if (panel->funcs && panel->funcs->get_modes) {
++		int num;
  
- 			pthread_mutex_lock(&print_mutex);
--			printf("%s: Time: get:%lld put:%lld us",
--			       cmd_to_str(cmd), gup.get_delta_usec,
--			       gup.put_delta_usec);
-+			ksft_print_msg("%s: Time: get:%lld put:%lld us",
-+				       cmd_to_str(cmd), gup.get_delta_usec,
-+				       gup.put_delta_usec);
- 			if (gup.size != size)
--				printf(", truncated (size: %lld)", gup.size);
--			printf("\n");
-+				ksft_print_msg(", truncated (size: %lld)", gup.size);
-+			ksft_print_msg("\n");
- 			pthread_mutex_unlock(&print_mutex);
- 		}
- 	} else {
- 		gup.size = size;
--		if (ioctl(gup_fd, cmd, &gup)) {
--			perror("ioctl");
--			exit(1);
--		}
-+		status = ioctl(gup_fd, cmd, &gup);
-+		if (status)
-+			goto return_;
- 
- 		pthread_mutex_lock(&print_mutex);
--		printf("%s: done\n", cmd_to_str(cmd));
-+		ksft_print_msg("%s: done\n", cmd_to_str(cmd));
- 		if (gup.size != size)
--			printf("Truncated (size: %lld)\n", gup.size);
-+			ksft_print_msg("Truncated (size: %lld)\n", gup.size);
- 		pthread_mutex_unlock(&print_mutex);
- 	}
- 
-+return_:
-+	ksft_test_result(!status, "ioctl status %d\n", status);
- 	return NULL;
- }
- 
-@@ -170,7 +172,7 @@ int main(int argc, char **argv)
- 			touch = 1;
- 			break;
- 		default:
--			return -1;
-+			ksft_exit_fail_msg("Wrong argument\n");
- 		}
- 	}
- 
-@@ -198,11 +200,12 @@ int main(int argc, char **argv)
- 		}
- 	}
- 
-+	ksft_print_header();
-+	ksft_set_plan(nthreads);
+-	return -EOPNOTSUPP;
++		num = panel->funcs->get_modes(panel, connector);
++		if (num > 0)
++			return num;
++	}
 +
- 	filed = open(file, O_RDWR|O_CREAT);
--	if (filed < 0) {
--		perror("open");
--		exit(filed);
--	}
-+	if (filed < 0)
-+		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
- 
- 	gup.nr_pages_per_call = nr_pages;
- 	if (write)
-@@ -213,27 +216,24 @@ int main(int argc, char **argv)
- 		switch (errno) {
- 		case EACCES:
- 			if (getuid())
--				printf("Please run this test as root\n");
-+				ksft_print_msg("Please run this test as root\n");
- 			break;
- 		case ENOENT:
--			if (opendir("/sys/kernel/debug") == NULL) {
--				printf("mount debugfs at /sys/kernel/debug\n");
--				break;
--			}
--			printf("check if CONFIG_GUP_TEST is enabled in kernel config\n");
-+			if (opendir("/sys/kernel/debug") == NULL)
-+				ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
-+			ksft_print_msg("check if CONFIG_GUP_TEST is enabled in kernel config\n");
- 			break;
- 		default:
--			perror("failed to open " GUP_TEST_FILE);
-+			ksft_print_msg("failed to open %s: %s\n", GUP_TEST_FILE, strerror(errno));
- 			break;
- 		}
--		exit(KSFT_SKIP);
-+		ksft_test_result_skip("Please run this test as root\n");
-+		return ksft_exit_pass();
- 	}
- 
- 	p = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, filed, 0);
--	if (p == MAP_FAILED) {
--		perror("mmap");
--		exit(1);
--	}
-+	if (p == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
- 	gup.addr = (unsigned long)p;
- 
- 	if (thp == 1)
-@@ -264,7 +264,8 @@ int main(int argc, char **argv)
- 		ret = pthread_join(tid[i], NULL);
- 		assert(ret == 0);
- 	}
-+
- 	free(tid);
- 
--	return 0;
-+	return ksft_exit_pass();
++	return 0;
  }
+ EXPORT_SYMBOL(drm_panel_get_modes);
+ 
 -- 
 2.43.0
 
