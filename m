@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CAB18943B7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6E889428F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6A31F26530
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F33E6B20BD7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F4147A64;
-	Mon,  1 Apr 2024 17:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AE94EB38;
+	Mon,  1 Apr 2024 16:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZgLN8Z1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQAiFhHi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A22E38DE5;
-	Mon,  1 Apr 2024 17:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5AD4EB24;
+	Mon,  1 Apr 2024 16:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991232; cv=none; b=VfzF8KrqDhIb6BTovv5d1SXd7ws6DLMXsJRYYcvxj7KID0DmPoElrI+UEFZgl9RvTFupz2VtaUncTZmydMw8q0S4jKo8gdzfZlvKyhPWtEk9OCTgD3hIwCWgvTp4qzBbIs7i3P2yckW92UgNYglfRyHiK7fGXiFF4T0N5hzufmU=
+	t=1711990408; cv=none; b=diZu59vGybOOikgMGpKxurizn2mNdjiNasyObaTLCbNjjihqDF/giR/81nP+x+45IK8N1v+yhueEut+2M1hrcsIO3u0SHoae72LhXzgstPezwoxvc3Q6RT4UHhLfrVgpXBXFUPl1HI3eHDv5sX8tKN6IhVlSkHfaQH2syZ6m0vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991232; c=relaxed/simple;
-	bh=M7vZCH9bmNYck9j6HLF+DM8MKMWT+7kzBWibwNDDjco=;
+	s=arc-20240116; t=1711990408; c=relaxed/simple;
+	bh=u62Z3+QVD3e4QMHArHi801BYg3ckW8J5KaEJIAX3qCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QgwLwXnEKuEq5wi8AtkUBlI6KpYowvmeBrbGUfMh/27GWB3leL8jreqSE/idG/StBL/NPyzFb7erAEVYEpJVorZcho04OfttQ/n38KO5hj+cr7sXzfvk5UooDDwYmz1h1JObx/lhZ4M6c/wuw0oJBdoGs0BBcnYijEVKO6Wefjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZgLN8Z1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF90C433F1;
-	Mon,  1 Apr 2024 17:07:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dYIJXX2s+g9C84NdiWmdS9klELq4/iN/71PyadVgnCjxqH74sU1VHhjZV1aRPzbqOd5V0b/YalbY6o1FOH34u+eKCyk3ysj1qzqyVrYJ/LSQDtMz1jXwk0IAHfsF8agprxLjm3soVNiuzs+CNX0frxLifOAesovPAIhfnvyUkMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQAiFhHi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5DEC433C7;
+	Mon,  1 Apr 2024 16:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991232;
-	bh=M7vZCH9bmNYck9j6HLF+DM8MKMWT+7kzBWibwNDDjco=;
+	s=korg; t=1711990408;
+	bh=u62Z3+QVD3e4QMHArHi801BYg3ckW8J5KaEJIAX3qCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZgLN8Z1JMmIsXqNCw4yhD5f5QSZjJIPdufk57nYR0wQgW3alzTy5HM6k0xazeTgG
-	 NsDUjBHWC+Cr7Cst4frvmXfLZaqllSZCRfGjoMYAW5JhlwoOCfLUwWJ3MycCgC4dMd
-	 zcGziPWEA+l8f2J/WCwUVr5VhufFKCnWUAg0tdFE=
+	b=fQAiFhHiVFtCe59fm7EHh+VI2+UYY8fEWp6lkbrltHYqYmkn7iPvfPp1lUPa8t+F3
+	 H2ZB8tDvYlLgCG1Ozg3MirP59lPwohghci6fII3cC8NBw6zWqyA/bhnuGUPn6MRqZy
+	 UzTryQsy1seS/vHzJCxJrfCO8WSt5diW+/CLwyRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.1 202/272] vfio/pci: Create persistent INTx handler
-Date: Mon,  1 Apr 2024 17:46:32 +0200
-Message-ID: <20240401152537.201295012@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.6 344/396] drm/i915/dsi: Go back to the previous INIT_OTP/DISPLAY_ON order, mostly
+Date: Mon,  1 Apr 2024 17:46:33 +0200
+Message-ID: <20240401152558.174066120@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,261 +60,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 18c198c96a815c962adc2b9b77909eec0be7df4d ]
+commit 18846627ef1210dcd55d65342b055ea97a46ffff upstream.
 
-A vulnerability exists where the eventfd for INTx signaling can be
-deconfigured, which unregisters the IRQ handler but still allows
-eventfds to be signaled with a NULL context through the SET_IRQS ioctl
-or through unmask irqfd if the device interrupt is pending.
+Reinstate commit 88b065943cb5 ("drm/i915/dsi: Do display on
+sequence later on icl+"), for the most part. Turns out some
+machines (eg. Chuwi Minibook X) really do need that updated order.
+It is also the order the Windows driver uses.
 
-Ideally this could be solved with some additional locking; the igate
-mutex serializes the ioctl and config space accesses, and the interrupt
-handler is unregistered relative to the trigger, but the irqfd path
-runs asynchronous to those.  The igate mutex cannot be acquired from the
-atomic context of the eventfd wake function.  Disabling the irqfd
-relative to the eventfd registration is potentially incompatible with
-existing userspace.
+However we can't just undo the revert since that would again
+break Lenovo 82TQ. After staring at the VBT sequences for both
+machines I've concluded that the Lenovo 82TQ sequences look
+somewhat broken:
+ - INIT_OTP is not present at all
+ - what should be in INIT_OTP is found in DISPLAY_ON
+ - what should be in DISPLAY_ON is found in BACKLIGHT_ON
+   (along with the actual backlight stuff)
 
-As a result, the solution implemented here moves configuration of the
-INTx interrupt handler to track the lifetime of the INTx context object
-and irq_type configuration, rather than registration of a particular
-trigger eventfd.  Synchronization is added between the ioctl path and
-eventfd_signal() wrapper such that the eventfd trigger can be
-dynamically updated relative to in-flight interrupts or irqfd callbacks.
+The Chuwi Minibook X on the other hand has a full complement
+of sequences in its VBT.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-Reported-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-5-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+So let's try to deal with the broken sequences in the
+Lenovo 82TQ VBT by simply swapping the (non-existent)
+INIT_OTP sequence with the DISPLAY_ON sequence. Thus we
+execute DISPLAY_ON when intending to execute INIT_OTP,
+and execute nothing at all when intending to execute
+DISPLAY_ON. That should be 100% equivalent to the
+revert, for such broken VBTs.
+
+Cc: stable@vger.kernel.org
+Fixes: 6992eb815d08 ("Revert "drm/i915/dsi: Do display on sequence later on icl+"")
+References: https://gitlab.freedesktop.org/drm/intel/-/issues/10071
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10334
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240305083659.8396-1-ville.syrjala@linux.intel.com
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 94ae4612ea336bfc3c12b3fc68467c6711a4f39b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c |  149 ++++++++++++++++++++------------------
- 1 file changed, 82 insertions(+), 67 deletions(-)
+ drivers/gpu/drm/i915/display/icl_dsi.c    |    3 +-
+ drivers/gpu/drm/i915/display/intel_bios.c |   43 +++++++++++++++++++++++++-----
+ 2 files changed, 39 insertions(+), 7 deletions(-)
 
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -55,8 +55,13 @@ static void vfio_send_intx_eventfd(void
- {
- 	struct vfio_pci_core_device *vdev = opaque;
- 
--	if (likely(is_intx(vdev) && !vdev->virq_disabled))
--		eventfd_signal(vdev->ctx[0].trigger, 1);
-+	if (likely(is_intx(vdev) && !vdev->virq_disabled)) {
-+		struct eventfd_ctx *trigger;
-+
-+		trigger = READ_ONCE(vdev->ctx[0].trigger);
-+		if (likely(trigger))
-+			eventfd_signal(trigger, 1);
-+	}
- }
- 
- /* Returns true if the INTx vfio_pci_irq_ctx.masked value is changed. */
-@@ -191,98 +196,104 @@ static irqreturn_t vfio_intx_handler(int
- 	return ret;
- }
- 
--static int vfio_intx_enable(struct vfio_pci_core_device *vdev)
-+static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
-+			    struct eventfd_ctx *trigger)
- {
-+	struct pci_dev *pdev = vdev->pdev;
-+	unsigned long irqflags;
-+	char *name;
-+	int ret;
-+
- 	if (!is_irq_none(vdev))
- 		return -EINVAL;
- 
--	if (!vdev->pdev->irq)
-+	if (!pdev->irq)
- 		return -ENODEV;
- 
-+	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
-+	if (!name)
-+		return -ENOMEM;
-+
- 	vdev->ctx = kzalloc(sizeof(struct vfio_pci_irq_ctx), GFP_KERNEL_ACCOUNT);
- 	if (!vdev->ctx)
- 		return -ENOMEM;
- 
- 	vdev->num_ctx = 1;
- 
-+	vdev->ctx[0].name = name;
-+	vdev->ctx[0].trigger = trigger;
-+
- 	/*
--	 * If the virtual interrupt is masked, restore it.  Devices
--	 * supporting DisINTx can be masked at the hardware level
--	 * here, non-PCI-2.3 devices will have to wait until the
--	 * interrupt is enabled.
-+	 * Fill the initial masked state based on virq_disabled.  After
-+	 * enable, changing the DisINTx bit in vconfig directly changes INTx
-+	 * masking.  igate prevents races during setup, once running masked
-+	 * is protected via irqlock.
-+	 *
-+	 * Devices supporting DisINTx also reflect the current mask state in
-+	 * the physical DisINTx bit, which is not affected during IRQ setup.
-+	 *
-+	 * Devices without DisINTx support require an exclusive interrupt.
-+	 * IRQ masking is performed at the IRQ chip.  Again, igate protects
-+	 * against races during setup and IRQ handlers and irqfds are not
-+	 * yet active, therefore masked is stable and can be used to
-+	 * conditionally auto-enable the IRQ.
-+	 *
-+	 * irq_type must be stable while the IRQ handler is registered,
-+	 * therefore it must be set before request_irq().
- 	 */
- 	vdev->ctx[0].masked = vdev->virq_disabled;
--	if (vdev->pci_2_3)
--		pci_intx(vdev->pdev, !vdev->ctx[0].masked);
-+	if (vdev->pci_2_3) {
-+		pci_intx(pdev, !vdev->ctx[0].masked);
-+		irqflags = IRQF_SHARED;
-+	} else {
-+		irqflags = vdev->ctx[0].masked ? IRQF_NO_AUTOEN : 0;
-+	}
- 
- 	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
- 
-+	ret = request_irq(pdev->irq, vfio_intx_handler,
-+			  irqflags, vdev->ctx[0].name, vdev);
-+	if (ret) {
-+		vdev->irq_type = VFIO_PCI_NUM_IRQS;
-+		kfree(name);
-+		vdev->num_ctx = 0;
-+		kfree(vdev->ctx);
-+		return ret;
-+	}
-+
- 	return 0;
- }
- 
--static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
-+static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev,
-+				struct eventfd_ctx *trigger)
- {
- 	struct pci_dev *pdev = vdev->pdev;
--	unsigned long irqflags = IRQF_SHARED;
--	struct eventfd_ctx *trigger;
--	unsigned long flags;
--	int ret;
--
--	if (vdev->ctx[0].trigger) {
--		free_irq(pdev->irq, vdev);
--		kfree(vdev->ctx[0].name);
--		eventfd_ctx_put(vdev->ctx[0].trigger);
--		vdev->ctx[0].trigger = NULL;
--	}
--
--	if (fd < 0) /* Disable only */
--		return 0;
--
--	vdev->ctx[0].name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)",
--				      pci_name(pdev));
--	if (!vdev->ctx[0].name)
--		return -ENOMEM;
--
--	trigger = eventfd_ctx_fdget(fd);
--	if (IS_ERR(trigger)) {
--		kfree(vdev->ctx[0].name);
--		return PTR_ERR(trigger);
--	}
-+	struct eventfd_ctx *old;
- 
--	vdev->ctx[0].trigger = trigger;
-+	old = vdev->ctx[0].trigger;
- 
--	/*
--	 * Devices without DisINTx support require an exclusive interrupt,
--	 * IRQ masking is performed at the IRQ chip.  The masked status is
--	 * protected by vdev->irqlock. Setup the IRQ without auto-enable and
--	 * unmask as necessary below under lock.  DisINTx is unmodified by
--	 * the IRQ configuration and may therefore use auto-enable.
--	 */
--	if (!vdev->pci_2_3)
--		irqflags = IRQF_NO_AUTOEN;
-+	WRITE_ONCE(vdev->ctx[0].trigger, trigger);
- 
--	ret = request_irq(pdev->irq, vfio_intx_handler,
--			  irqflags, vdev->ctx[0].name, vdev);
--	if (ret) {
--		vdev->ctx[0].trigger = NULL;
--		kfree(vdev->ctx[0].name);
--		eventfd_ctx_put(trigger);
--		return ret;
-+	/* Releasing an old ctx requires synchronizing in-flight users */
-+	if (old) {
-+		synchronize_irq(pdev->irq);
-+		vfio_virqfd_flush_thread(&vdev->ctx[0].unmask);
-+		eventfd_ctx_put(old);
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -1155,7 +1155,6 @@ static void gen11_dsi_powerup_panel(stru
  	}
  
--	spin_lock_irqsave(&vdev->irqlock, flags);
--	if (!vdev->pci_2_3 && !vdev->ctx[0].masked)
--		enable_irq(pdev->irq);
--	spin_unlock_irqrestore(&vdev->irqlock, flags);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
+-	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+ 
+ 	/* ensure all panel commands dispatched before enabling transcoder */
+ 	wait_for_cmds_dispatched_to_panel(encoder);
+@@ -1256,6 +1255,8 @@ static void gen11_dsi_enable(struct inte
+ 	/* step6d: enable dsi transcoder */
+ 	gen11_dsi_enable_transcoder(encoder);
+ 
++	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
++
+ 	/* step7: enable backlight */
+ 	intel_backlight_enable(crtc_state, conn_state);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_BACKLIGHT_ON);
+--- a/drivers/gpu/drm/i915/display/intel_bios.c
++++ b/drivers/gpu/drm/i915/display/intel_bios.c
+@@ -1945,16 +1945,12 @@ static int get_init_otp_deassert_fragmen
+  * these devices we split the init OTP sequence into a deassert sequence and
+  * the actual init OTP part.
+  */
+-static void fixup_mipi_sequences(struct drm_i915_private *i915,
+-				 struct intel_panel *panel)
++static void vlv_fixup_mipi_sequences(struct drm_i915_private *i915,
++				     struct intel_panel *panel)
+ {
+ 	u8 *init_otp;
+ 	int len;
+ 
+-	/* Limit this to VLV for now. */
+-	if (!IS_VALLEYVIEW(i915))
+-		return;
 -
- 	return 0;
+ 	/* Limit this to v1 vid-mode sequences */
+ 	if (panel->vbt.dsi.config->is_cmd_mode ||
+ 	    panel->vbt.dsi.seq_version != 1)
+@@ -1990,6 +1986,41 @@ static void fixup_mipi_sequences(struct
+ 	panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP] = init_otp + len - 1;
  }
  
- static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
- {
-+	struct pci_dev *pdev = vdev->pdev;
++/*
++ * Some machines (eg. Lenovo 82TQ) appear to have broken
++ * VBT sequences:
++ * - INIT_OTP is not present at all
++ * - what should be in INIT_OTP is in DISPLAY_ON
++ * - what should be in DISPLAY_ON is in BACKLIGHT_ON
++ *   (along with the actual backlight stuff)
++ *
++ * To make those work we simply swap DISPLAY_ON and INIT_OTP.
++ *
++ * TODO: Do we need to limit this to specific machines,
++ *       or examine the contents of the sequences to
++ *       avoid false positives?
++ */
++static void icl_fixup_mipi_sequences(struct drm_i915_private *i915,
++				     struct intel_panel *panel)
++{
++	if (!panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP] &&
++	    panel->vbt.dsi.sequence[MIPI_SEQ_DISPLAY_ON]) {
++		drm_dbg_kms(&i915->drm, "Broken VBT: Swapping INIT_OTP and DISPLAY_ON sequences\n");
 +
- 	vfio_virqfd_disable(&vdev->ctx[0].unmask);
- 	vfio_virqfd_disable(&vdev->ctx[0].mask);
--	vfio_intx_set_signal(vdev, -1);
-+	free_irq(pdev->irq, vdev);
-+	if (vdev->ctx[0].trigger)
-+		eventfd_ctx_put(vdev->ctx[0].trigger);
-+	kfree(vdev->ctx[0].name);
- 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
- 	vdev->num_ctx = 0;
- 	kfree(vdev->ctx);
-@@ -534,19 +545,23 @@ static int vfio_pci_set_intx_trigger(str
- 		return -EINVAL;
- 
- 	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
-+		struct eventfd_ctx *trigger = NULL;
- 		int32_t fd = *(int32_t *)data;
- 		int ret;
- 
-+		if (fd >= 0) {
-+			trigger = eventfd_ctx_fdget(fd);
-+			if (IS_ERR(trigger))
-+				return PTR_ERR(trigger);
-+		}
++		swap(panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP],
++		     panel->vbt.dsi.sequence[MIPI_SEQ_DISPLAY_ON]);
++	}
++}
 +
- 		if (is_intx(vdev))
--			return vfio_intx_set_signal(vdev, fd);
-+			ret = vfio_intx_set_signal(vdev, trigger);
-+		else
-+			ret = vfio_intx_enable(vdev, trigger);
- 
--		ret = vfio_intx_enable(vdev);
--		if (ret)
--			return ret;
--
--		ret = vfio_intx_set_signal(vdev, fd);
--		if (ret)
--			vfio_intx_disable(vdev);
-+		if (ret && trigger)
-+			eventfd_ctx_put(trigger);
- 
- 		return ret;
- 	}
++static void fixup_mipi_sequences(struct drm_i915_private *i915,
++				 struct intel_panel *panel)
++{
++	if (DISPLAY_VER(i915) >= 11)
++		icl_fixup_mipi_sequences(i915, panel);
++	else if (IS_VALLEYVIEW(i915))
++		vlv_fixup_mipi_sequences(i915, panel);
++}
++
+ static void
+ parse_mipi_sequence(struct drm_i915_private *i915,
+ 		    struct intel_panel *panel)
 
 
 
