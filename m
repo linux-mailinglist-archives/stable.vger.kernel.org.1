@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-34608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762A089400A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2988942F3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 319F228388E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6B6283842
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B48446D5;
-	Mon,  1 Apr 2024 16:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B8B4CB35;
+	Mon,  1 Apr 2024 16:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qL/J+4G8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mknVgtSV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C0D1CA8F;
-	Mon,  1 Apr 2024 16:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA344D137;
+	Mon,  1 Apr 2024 16:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988692; cv=none; b=PIZosGaUTAyMkyKXu9eRA7ytZPuQKIQpAb26a8mlgvEo9RB6ivcD772jX/8hfB9c/qMVcBF/Lj90s+XVF6tp7LPTDRKwNB7SPC3LtU66Tant9L5hD25Fg2Z83meOqbmCAzrl5JsIGiph6C89bqksHsqXa3HafNS/GbQx5vIVZQ0=
+	t=1711990667; cv=none; b=e+W595Z2QL9kXRBzdyg7fgzI+/GU9TU4izg+WiKyuHxAvfNUqxpM9/GPC1CqUfKocNUJbFXJ1hPLZhAHnxtJ967d3dwM5xEQiIMiv8UV7YBLSRwOgg/7gCuYY+ZsGpPZmeVTwG8BgjvRf//sWZjf9gaKvw6Dz6IK3eRjKHnqmWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988692; c=relaxed/simple;
-	bh=KirYtTUyJ0yyNTpe5OjDAtrMQGdyAurcuQEMMN3SZhA=;
+	s=arc-20240116; t=1711990667; c=relaxed/simple;
+	bh=8RgxIasDXbj1qJSYcI82G+hUIXNZtPbXEpS7R10hjTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ywy4a4zycApNvmv/cyqVpYY3aqQX114nU2Flt/XTzKIR2SpKYPkkZYvvnDkVcPGisAwJVHi8WBtXtHp8Gvd5oxbImTI+xTv3rn//FntAc4jEI8asYG8jYNC3WyyR0a6oQMvMqiowT4dk8o7CwpbktQQ8BnhZLC4hUkgW2EdwZ3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qL/J+4G8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9951C433F1;
-	Mon,  1 Apr 2024 16:24:51 +0000 (UTC)
+	 MIME-Version; b=gOACgp4EZGVwhbYnzk1gCNwc1/BZrUreKrVKEGrQ+YbCyYrnwPBt2An2pAeDBu98YgLTrsO9hO3lyMlat9WVCNMNZ3FbjIQPSJNZJAZUvyDPX8Yz006L4lLghuntwH0++hVRkNfdnIm3amS1jMimKbYyaG9Qz/WZlxHPjgqyGhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mknVgtSV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85177C433F1;
+	Mon,  1 Apr 2024 16:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988692;
-	bh=KirYtTUyJ0yyNTpe5OjDAtrMQGdyAurcuQEMMN3SZhA=;
+	s=korg; t=1711990666;
+	bh=8RgxIasDXbj1qJSYcI82G+hUIXNZtPbXEpS7R10hjTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qL/J+4G8Qjh8RopsnhlEfUk72gpViyuxa/yJv43Yn2iECNylE6e+ljm3pkpttBEFU
-	 jQ3eRxLKETTMAKDub03q4WD8VcSi63riV6iAZoCKtobXArMdg+lzNgG41DDJrT+poY
-	 NLFvt+QodDM9TlSsbFuq/NfBST+rvagOKc/XYt7M=
+	b=mknVgtSVam+a5klpLLBNk6QNUj3AfUglv9VWCy3uTnz/PWm/Ta/8+Lh0JrCE+Ribp
+	 ku7vjGxsk7NOXSFCQXvuNbFFk3im6reMxAUOGVPzn8t6dzzlLh8nJYEL3lS3V4jUSz
+	 V1KpBls5fxRKaks0JWR3XvLuhztf/YFUMST4bX4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Audra Mitchell <audra@redhat.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.7 232/432] workqueue: Shorten events_freezable_power_efficient name
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/272] powerpc/smp: Increase nr_cpu_ids to include the boot CPU
 Date: Mon,  1 Apr 2024 17:43:39 +0200
-Message-ID: <20240401152600.055750002@linuxfoundation.org>
+Message-ID: <20240401152531.268755523@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Audra Mitchell <audra@redhat.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 8318d6a6362f5903edb4c904a8dd447e59be4ad1 upstream.
+[ Upstream commit 777f81f0a9c780a6443bcf2c7785f0cc2e87c1ef ]
 
-Since we have set the WQ_NAME_LEN to 32, decrease the name of
-events_freezable_power_efficient so that it does not trip the name length
-warning when the workqueue is created.
+If nr_cpu_ids is too low to include the boot CPU adjust nr_cpu_ids
+upward. Otherwise the kernel will BUG when trying to allocate a paca
+for the boot CPU and fail to boot.
 
-Signed-off-by: Audra Mitchell <audra@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231229120107.2281153-2-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/prom.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -7109,7 +7109,7 @@ void __init workqueue_init_early(void)
- 					      WQ_FREEZABLE, 0);
- 	system_power_efficient_wq = alloc_workqueue("events_power_efficient",
- 					      WQ_POWER_EFFICIENT, 0);
--	system_freezable_power_efficient_wq = alloc_workqueue("events_freezable_power_efficient",
-+	system_freezable_power_efficient_wq = alloc_workqueue("events_freezable_pwr_efficient",
- 					      WQ_FREEZABLE | WQ_POWER_EFFICIENT,
- 					      0);
- 	BUG_ON(!system_wq || !system_highpri_wq || !system_long_wq ||
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index a64f4fb332893..9531ab90feb8a 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -375,6 +375,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 			nr_cpu_ids);
+ 	}
+ 
++	if (boot_cpuid >= nr_cpu_ids) {
++		set_nr_cpu_ids(min(CONFIG_NR_CPUS, ALIGN(boot_cpuid + 1, nthreads)));
++		pr_warn("Boot CPU %d >= nr_cpu_ids, adjusted nr_cpu_ids to %d\n",
++			boot_cpuid, nr_cpu_ids);
++	}
++
+ 	/*
+ 	 * PAPR defines "logical" PVR values for cpus that
+ 	 * meet various levels of the architecture:
+-- 
+2.43.0
+
 
 
 
