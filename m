@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-35208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4988942EB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3592893FD8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69C71B22466
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A85FB20E56
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04B74CE04;
-	Mon,  1 Apr 2024 16:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20C246B9F;
+	Mon,  1 Apr 2024 16:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlDtJ01x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJBM6DVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC274CB4A;
-	Mon,  1 Apr 2024 16:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60409C129;
+	Mon,  1 Apr 2024 16:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990650; cv=none; b=SnDN6cDxA1uJFqp395YnyAxi4OcSvL5kDZC4i3C4LTZk+JjuV8TSL+PiNAamQdU+voXv81t0c4truIH6UqXRee1y/BzY0IP2ssuo8hUKpwm6XoO/MC4ltoDkZdVjIBaNcS1fKya4AePCIwAKAPfKaTTxh+oto04f7hHhUUZFDnI=
+	t=1711988522; cv=none; b=KgKi1q1oSEB5y538WrGhPbk6SEBp+po0tgInQMPB9jbkVWe598oSXgzFxjCHgkOnacjzXRR4beDx1o17eI1A2KO0lyzZKXO4Dtfb4jrN9Eb27CyvIPi02RRNWn14Vr6MdI+xTekEtcwGEVpGRJtOQvRq3b+s6Yoi10bOAcee8NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990650; c=relaxed/simple;
-	bh=9Og3EpXUF8+HutkmYLMU9zzqmM3oYy2I7PKjtOMpfNs=;
+	s=arc-20240116; t=1711988522; c=relaxed/simple;
+	bh=a3qKAe2JmsKH+LAzcf4TV8R2dSKHGVbgMh/JOYZUKcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9mZZxJ52jOXysgm0mZVwipZ958+OMb80VVwZ0z2eoF5SzPh9S40Gnosd3bjpWZtvIJALiY/4TG+/fMQzURFSjdJ9zQmKxYd+pWP3l2WoJS3C3WYUDPopm2gyL+dU7kRW+rPVTKuvrr+TnLWUyp4xIY1z7GVhliwIeAI1G8iwIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlDtJ01x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5914C43394;
-	Mon,  1 Apr 2024 16:57:29 +0000 (UTC)
+	 MIME-Version; b=D2Vjpd2zYEnoAxmf0bdq4Yo9HqHi8BsP3r3n/oz2/5/u88egKfP/UNcoRj7mdX8XKapWTaTXXM0tt0WJc97wO2e4h018U92tnYZUkujMcGRVhe6qVCPv6KWM9DNkStssnL41C2Id40lQYexWvonPSVM4aJQ7e3D0/IGdrz4BQFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJBM6DVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0595C433C7;
+	Mon,  1 Apr 2024 16:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990650;
-	bh=9Og3EpXUF8+HutkmYLMU9zzqmM3oYy2I7PKjtOMpfNs=;
+	s=korg; t=1711988522;
+	bh=a3qKAe2JmsKH+LAzcf4TV8R2dSKHGVbgMh/JOYZUKcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlDtJ01xAfST1ViYUHFaOUuNC2pNjlHPWlY/M3NOnV4oIaIuialAVqtTxCQK+H7c3
-	 t4wzAMKwOthQWFW4kFD32bqm3asjwFvO7ZcNQMVOXM8JQI6Gye15C4m2gmQAyLcX1z
-	 EdKmwRqi70dsRIIDPNz2fZ4eVHaU8l/+/FilKaow=
+	b=zJBM6DVlopmT9dSBqYLaSC9lxxFBQG3/nQOk74K5g7CgJRdI/eBhztb9JpPzCcToi
+	 75M6HgJdnMu5lssUDK9qAx4S2tY9CgMKqSTogwVyCwnny+HYYbnaMQx7VwNC0i/XLo
+	 JGDaNvjqTXF/zYRQLLnos8XOJy5mKLPRWLk0f8/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Lazar Lijo <lijo.lazar@amd.com>,
+	Alex Deucher <Alexander.Deucher@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/272] timers: Use del_timer_sync() even on UP
+Subject: [PATCH 6.7 210/432] drm/amdgpu/pm: Check the validity of overdiver power limit
 Date: Mon,  1 Apr 2024 17:43:17 +0200
-Message-ID: <20240401152530.510030738@linuxfoundation.org>
+Message-ID: <20240401152559.407514599@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 168f6b6ffbeec0b9333f3582e4cf637300858db5 ]
+[ Upstream commit e17718251addb31e1771fd28735ec410e6ca650a ]
 
-del_timer_sync() is assumed to be pointless on uniprocessor systems and can
-be mapped to del_timer() because in theory del_timer() can never be invoked
-while the timer callback function is executed.
+Check the validity of overdriver power limit before using it.
 
-This is not entirely true because del_timer() can be invoked from interrupt
-context and therefore hit in the middle of a running timer callback.
-
-Contrary to that del_timer_sync() is not allowed to be invoked from
-interrupt context unless the affected timer is marked with TIMER_IRQSAFE.
-del_timer_sync() has proper checks in place to detect such a situation.
-
-Give up on the UP optimization and make del_timer_sync() unconditionally
-available.
-
-Co-developed-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home
-Link: https://lore.kernel.org/all/20221110064101.429013735@goodmis.org
-Link: https://lore.kernel.org/r/20221123201624.888306160@linutronix.de
-Stable-dep-of: 0f7352557a35 ("wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach")
+Fixes: 7968e9748fbb ("drm/amdgpu/pm: Fix the power1_min_cap value")
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Suggested-by: Lazar Lijo <lijo.lazar@amd.com>
+Suggested-by: Alex Deucher <Alexander.Deucher@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/timer.h | 7 +------
- kernel/time/timer.c   | 2 --
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ .../gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c | 11 +++++----
+ .../gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c   |  9 ++++----
+ .../amd/pm/swsmu/smu11/sienna_cichlid_ppt.c   | 23 +++++++++++--------
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  | 10 ++++----
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  | 10 ++++----
+ 5 files changed, 37 insertions(+), 26 deletions(-)
 
-diff --git a/include/linux/timer.h b/include/linux/timer.h
-index 648f00105f588..82bb2e4d3b7c2 100644
---- a/include/linux/timer.h
-+++ b/include/linux/timer.h
-@@ -183,12 +183,7 @@ extern int timer_reduce(struct timer_list *timer, unsigned long expires);
- extern void add_timer(struct timer_list *timer);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+index df4e02d0d1264..ac04ed1e49f35 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+@@ -1285,6 +1285,7 @@ static int arcturus_get_power_limit(struct smu_context *smu,
+ {
+ 	struct smu_11_0_powerplay_table *powerplay_table =
+ 		(struct smu_11_0_powerplay_table *)smu->smu_table.power_play_table;
++	struct smu_11_0_overdrive_table *od_settings = smu->od_settings;
+ 	PPTable_t *pptable = smu->smu_table.driver_pptable;
+ 	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
  
- extern int try_to_del_timer_sync(struct timer_list *timer);
+@@ -1304,12 +1305,14 @@ static int arcturus_get_power_limit(struct smu_context *smu,
+ 		*default_power_limit = power_limit;
+ 
+ 	if (powerplay_table) {
+-		if (smu->od_enabled)
++		if (smu->od_enabled &&
++				od_settings->cap[SMU_11_0_ODCAP_POWER_LIMIT]) {
+ 			od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+-		else
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
++		} else if (od_settings->cap[SMU_11_0_ODCAP_POWER_LIMIT]) {
+ 			od_percent_upper = 0;
 -
--#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
--  extern int del_timer_sync(struct timer_list *timer);
--#else
--# define del_timer_sync(t)		del_timer(t)
--#endif
-+extern int del_timer_sync(struct timer_list *timer);
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
++		}
+ 	}
  
- #define del_singleshot_timer_sync(t) del_timer_sync(t)
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+index d36ad0e4e18e2..082101845968c 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+@@ -2358,12 +2358,13 @@ static int navi10_get_power_limit(struct smu_context *smu,
  
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index ab9688a2ae190..9d09a2a0ad708 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1394,7 +1394,6 @@ static inline void timer_sync_wait_running(struct timer_base *base) { }
- static inline void del_timer_wait_running(struct timer_list *timer) { }
- #endif
+ 	if (powerplay_table) {
+ 		if (smu->od_enabled &&
+-			    navi10_od_feature_is_supported(od_settings, SMU_11_0_ODCAP_POWER_LIMIT))
++			    navi10_od_feature_is_supported(od_settings, SMU_11_0_ODCAP_POWER_LIMIT)) {
+ 			od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+-		else
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
++		} else if (navi10_od_feature_is_supported(od_settings, SMU_11_0_ODCAP_POWER_LIMIT)) {
+ 			od_percent_upper = 0;
+-
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
++		}
+ 	}
  
--#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
- /**
-  * del_timer_sync - Deactivate a timer and wait for the handler to finish.
-  * @timer:	The timer to be deactivated
-@@ -1475,7 +1474,6 @@ int del_timer_sync(struct timer_list *timer)
- 	return ret;
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 3bb5856655181..6f37ca7a06184 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -617,6 +617,12 @@ static uint32_t sienna_cichlid_get_throttler_status_locked(struct smu_context *s
+ 	return throttler_status;
  }
- EXPORT_SYMBOL(del_timer_sync);
--#endif
  
- static void call_timer_fn(struct timer_list *timer,
- 			  void (*fn)(struct timer_list *),
++static bool sienna_cichlid_is_od_feature_supported(struct smu_11_0_7_overdrive_table *od_table,
++						   enum SMU_11_0_7_ODFEATURE_CAP cap)
++{
++	return od_table->cap[cap];
++}
++
+ static int sienna_cichlid_get_power_limit(struct smu_context *smu,
+ 					  uint32_t *current_power_limit,
+ 					  uint32_t *default_power_limit,
+@@ -625,6 +631,7 @@ static int sienna_cichlid_get_power_limit(struct smu_context *smu,
+ {
+ 	struct smu_11_0_7_powerplay_table *powerplay_table =
+ 		(struct smu_11_0_7_powerplay_table *)smu->smu_table.power_play_table;
++	struct smu_11_0_7_overdrive_table *od_settings = smu->od_settings;
+ 	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
+ 	uint16_t *table_member;
+ 
+@@ -641,12 +648,14 @@ static int sienna_cichlid_get_power_limit(struct smu_context *smu,
+ 		*default_power_limit = power_limit;
+ 
+ 	if (powerplay_table) {
+-		if (smu->od_enabled)
++		if (smu->od_enabled &&
++				sienna_cichlid_is_od_feature_supported(od_settings, SMU_11_0_7_ODCAP_POWER_LIMIT)) {
+ 			od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
+-		else
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
++		} else if ((sienna_cichlid_is_od_feature_supported(od_settings, SMU_11_0_7_ODCAP_POWER_LIMIT))) {
+ 			od_percent_upper = 0;
+-
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
++		}
+ 	}
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+@@ -1252,12 +1261,6 @@ static bool sienna_cichlid_is_support_fine_grained_dpm(struct smu_context *smu,
+ 	return dpm_desc->SnapToDiscrete == 0;
+ }
+ 
+-static bool sienna_cichlid_is_od_feature_supported(struct smu_11_0_7_overdrive_table *od_table,
+-						   enum SMU_11_0_7_ODFEATURE_CAP cap)
+-{
+-	return od_table->cap[cap];
+-}
+-
+ static void sienna_cichlid_get_od_setting_range(struct smu_11_0_7_overdrive_table *od_table,
+ 						enum SMU_11_0_7_ODSETTING_ID setting,
+ 						uint32_t *min, uint32_t *max)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index e5cae0919d474..9ac6c408d2b68 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2365,12 +2365,14 @@ static int smu_v13_0_0_get_power_limit(struct smu_context *smu,
+ 		*default_power_limit = power_limit;
+ 
+ 	if (powerplay_table) {
+-		if (smu->od_enabled)
++		if (smu->od_enabled &&
++				smu_v13_0_0_is_od_feature_supported(smu, PP_OD_FEATURE_PPT_BIT)) {
+ 			od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
+-		else
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
++		} else if (smu_v13_0_0_is_od_feature_supported(smu, PP_OD_FEATURE_PPT_BIT)) {
+ 			od_percent_upper = 0;
+-
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
++		}
+ 	}
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+index 374a4a954b944..402e0d184e147 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2329,12 +2329,14 @@ static int smu_v13_0_7_get_power_limit(struct smu_context *smu,
+ 		*default_power_limit = power_limit;
+ 
+ 	if (powerplay_table) {
+-		if (smu->od_enabled)
++		if (smu->od_enabled &&
++				(smu_v13_0_7_is_od_feature_supported(smu, PP_OD_FEATURE_PPT_BIT))) {
+ 			od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
+-		else
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
++		} else if (smu_v13_0_7_is_od_feature_supported(smu, PP_OD_FEATURE_PPT_BIT)) {
+ 			od_percent_upper = 0;
+-
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
++			od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
++		}
+ 	}
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
 -- 
 2.43.0
 
