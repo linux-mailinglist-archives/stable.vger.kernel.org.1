@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5AC1894195
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B02E8942FF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7BFC1C211A0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E842838AB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF4147A6B;
-	Mon,  1 Apr 2024 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E164AEFD;
+	Mon,  1 Apr 2024 16:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="II3AHrX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaILNUi4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC658F5C;
-	Mon,  1 Apr 2024 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91340876;
+	Mon,  1 Apr 2024 16:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989816; cv=none; b=CYKOliWqVH15kmhdnoXyncPLE9f+PGtL6IGjtLWnEtzlG/jQHUbrrm+smbIYiIAL8eycuFQaqlLq/n1t4kmEcgq9h/4U4VPEhSIxoZZd5tUhZg+dxFRff+HEFNaEepAhoRfbGJC5DGsW2Vzc04hd5Azb9GSJbJKH5NTvCk81GdU=
+	t=1711990698; cv=none; b=Q95wkhy84jXX5YW66hZgnPrs6liApyopS7IEjzEbh+qnOsRUsmojJFrXF2qTfBo1CE0O4sFebC7sWcDByp9bpS5fw+unwyRVaCg92TaX4qXCrYns7a6PiTVZJTQlkS+a/hhPd/2XuS+uQVnVDz5gG6cfkq81oFOaHYLDhE//reg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989816; c=relaxed/simple;
-	bh=BgGQ/XsXvChwN4wottrT5H+Cm0XfOSVbV9XhUo5Jdu4=;
+	s=arc-20240116; t=1711990698; c=relaxed/simple;
+	bh=qqZrsEoQf1zC4F2MmEBf6NgFD/4sIDlkBEYSljopo0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRtfMFaTfK+OyS42zrTZvdVwBJu0gy292dPpMX1PPRknyf/pfAkwVBpRU1+K3j2Bf4BM4/xdycTOKVDNT0aAM6BsQncTQI7ZpA+IvljV1sc4b23ABCNybCR5lNB3GrVxfuKw17YZDGo6PtQP6Ll80s/eei9KKd3IKzNjLXERU6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=II3AHrX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB47C433F1;
-	Mon,  1 Apr 2024 16:43:35 +0000 (UTC)
+	 MIME-Version; b=Eafue7S+Xn5WLYpUz0E/mPJH+V6Q5AfItnUSccHaqp86bq0VoatAD9cCBWANPsz1NTKVaZzcUpUcw18iapLJ+oDq0ilDL4eJ1ATfDtlSJI/hMauMThSvmr0kxmuqC8gPJU6Dp+cBfA1YvnTh0HNO5thgHYKpWf3KNhsjuvhG1lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaILNUi4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAE2C433F1;
+	Mon,  1 Apr 2024 16:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989816;
-	bh=BgGQ/XsXvChwN4wottrT5H+Cm0XfOSVbV9XhUo5Jdu4=;
+	s=korg; t=1711990698;
+	bh=qqZrsEoQf1zC4F2MmEBf6NgFD/4sIDlkBEYSljopo0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=II3AHrX241Sh/XGdfbBMYmpoKpDM9fEUPZjXAIqKLD8XL0qm0Qytaa4xqVleOgA4q
-	 dmpBwN+C7HeSvX6k/zJpnDcKJZ6pug+8kQYfo8zx2B2No11Bs0YAu31V7TXkEEvcwS
-	 jYo5XGik8xVDnucrBU5AjeL4T3j2Hu18Q6pduDxY=
+	b=BaILNUi41iMHfRATAy5+u3zd1wAJQPsiBGxg/+ApyBLaJL/vt/X/1B5BFnbdxPT+P
+	 vtiCdJm+IWaLnO36Nf5hPHYE/HQ3nCCqjqpNz0TJkysD70KSaDOb00U4hxSATpWIkh
+	 odqlmN6DUH2aRlnB06Ackyo57efDjzQfR/TTHUDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugene Korenevsky <ekorenevsky@astralinux.ru>,
-	Steve French <stfrench@microsoft.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/396] cifs: open_cached_dir(): add FILE_READ_EA to desired access
+Subject: [PATCH 6.1 021/272] media: mc: Add local pad to pipeline regardless of the link state
 Date: Mon,  1 Apr 2024 17:43:31 +0200
-Message-ID: <20240401152552.771060746@linuxfoundation.org>
+Message-ID: <20240401152530.988294264@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Korenevsky <ekorenevsky@astralinux.ru>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit f1b8224b4e6ed59e7e6f5c548673c67410098d8d ]
+[ Upstream commit 78f0daa026d4c5e192d31801d1be6caf88250220 ]
 
-Since smb2_query_eas() reads EA and uses cached directory,
-open_cached_dir() should request FILE_READ_EA access.
+When building pipelines by following links, the
+media_pipeline_explore_next_link() function only traverses enabled
+links. The remote pad of a disabled link is not added to the pipeline,
+and neither is the local pad. While the former is correct as disabled
+links should not be followed, not adding the local pad breaks processing
+of the MEDIA_PAD_FL_MUST_CONNECT flag.
 
-Otherwise listxattr() and getxattr() will fail with EACCES
-(0xc0000022 STATUS_ACCESS_DENIED SMB status).
+The MEDIA_PAD_FL_MUST_CONNECT flag is checked in the
+__media_pipeline_start() function that iterates over all pads after
+populating the pipeline. If the pad is not present, the check gets
+skipped, rendering it useless.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218543
-Cc: stable@vger.kernel.org
-Signed-off-by: Eugene Korenevsky <ekorenevsky@astralinux.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this by adding the local pad of all links regardless of their state,
+only skipping the remote pad for disabled links.
+
+Cc: stable@vger.kernel.org # 6.1
+Fixes: ae219872834a ("media: mc: entity: Rewrite media_pipeline_start()")
+Reported-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Closes: https://lore.kernel.org/linux-media/7658a15a-80c5-219f-2477-2a94ba6c6ba1@kontron.de
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cached_dir.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/mc/mc-entity.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index 5730c65ffb40d..15e1215bc4e5a 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -233,7 +233,8 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
- 		.tcon = tcon,
- 		.path = path,
- 		.create_options = cifs_create_options(cifs_sb, CREATE_NOT_FILE),
--		.desired_access =  FILE_READ_DATA | FILE_READ_ATTRIBUTES,
-+		.desired_access =  FILE_READ_DATA | FILE_READ_ATTRIBUTES |
-+				   FILE_READ_EA,
- 		.disposition = FILE_OPEN,
- 		.fid = pfid,
- 	};
+diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
+index f268cf66053e1..20a2630455f2c 100644
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -594,13 +594,6 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
+ 		link->source->entity->name, link->source->index,
+ 		link->sink->entity->name, link->sink->index);
+ 
+-	/* Skip links that are not enabled. */
+-	if (!(link->flags & MEDIA_LNK_FL_ENABLED)) {
+-		dev_dbg(walk->mdev->dev,
+-			"media pipeline: skipping link (disabled)\n");
+-		return 0;
+-	}
+-
+ 	/* Get the local pad and remote pad. */
+ 	if (link->source->entity == pad->entity) {
+ 		local = link->source;
+@@ -622,13 +615,20 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
+ 	}
+ 
+ 	/*
+-	 * Add the local and remote pads of the link to the pipeline and push
+-	 * them to the stack, if they're not already present.
++	 * Add the local pad of the link to the pipeline and push it to the
++	 * stack, if not already present.
+ 	 */
+ 	ret = media_pipeline_add_pad(pipe, walk, local);
+ 	if (ret)
+ 		return ret;
+ 
++	/* Similarly, add the remote pad, but only if the link is enabled. */
++	if (!(link->flags & MEDIA_LNK_FL_ENABLED)) {
++		dev_dbg(walk->mdev->dev,
++			"media pipeline: skipping link (disabled)\n");
++		return 0;
++	}
++
+ 	ret = media_pipeline_add_pad(pipe, walk, remote);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
