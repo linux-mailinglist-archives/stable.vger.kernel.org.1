@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665CC893EA2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0358941F4
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22A6F282592
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672A01F21B4D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63384776F;
-	Mon,  1 Apr 2024 16:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1306A481B7;
+	Mon,  1 Apr 2024 16:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVe4F9Gh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zr7Ab9+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CB11CA8F;
-	Mon,  1 Apr 2024 16:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EE2433DA;
+	Mon,  1 Apr 2024 16:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987566; cv=none; b=Y10GREZKSBrVPxL3LoTpwu+UUTJmVKukdYWiJ556Ch8yWkYcEr0k3nE7RuTL1teB2YzDNvsc2IJuaJbPO88QIBaXmrmxQYh8egfZy64gGvVlG2k3QiC5mwpjRwSNhwvnvcFwwuk+cNtwORPpMUaAjE/hASV0D++G2pbZUuXPVr0=
+	t=1711990090; cv=none; b=i6xxpRSgKezDKJ/FeW+8gKRL80ofSzpMe9kJpoH41SoYUK0D979tHadrDcnn33f5bjBwL7ENYYpMiulSyv8H8f+tbRsAIKAajOkln23YQQj2ZDZTCwXHBZojwdsi47/DJKzJ5+da8cI+Tv0zRKaCMHNdld2XG3+vagYpI3evSek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987566; c=relaxed/simple;
-	bh=Z3voKbpllvrOk3Owo4hK+ByfABGccYWW+ahdcC8xus0=;
+	s=arc-20240116; t=1711990090; c=relaxed/simple;
+	bh=7+vUlsOViiKit6/jAUgsKP1O1VS1hWXLqBLOAm93CYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwawwFSVvJ1U2kjmUIVJlZiIGFaaDmmx5CQhCdNjkiINQDeQNLtPRNMPqiZFgttBvxXeIIggnr0s+bKVnRri6d+95VZ0vMlK7JYGXEhSBlYMRUT+uokmAWec7C6Yol6n+sw68JCxI95wvBak1ULVDwXLYUgzaGTBC2IPE5zH8eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVe4F9Gh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84C4C43390;
-	Mon,  1 Apr 2024 16:06:05 +0000 (UTC)
+	 MIME-Version; b=kF3xg3z08Vv9Mwnn97TSK+GDROYHv7igHjdNaDy1BIsaMOF5a3R1D0vfWXOcc2L3ps0uLVZYIyIf780dQyXO5OrxqKY7MBDUoEKCcMsPLrRlX9KbbeM1bLESEI0L65N7YqmavO68Dmn6FaHaiVII6O7a8/a69SngmeZcf5urMgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zr7Ab9+a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F12DC433F1;
+	Mon,  1 Apr 2024 16:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987566;
-	bh=Z3voKbpllvrOk3Owo4hK+ByfABGccYWW+ahdcC8xus0=;
+	s=korg; t=1711990090;
+	bh=7+vUlsOViiKit6/jAUgsKP1O1VS1hWXLqBLOAm93CYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVe4F9GhEpj02GjqUz28VC/FSUhN4V7WDrOtiaQo+e3Kr62+0UtIuSx1RePUgRW8k
-	 Lt+O3WNjEpX90Y9XEq+JZ1mgnfRkuv5zRT/Nw8zSJakydbTXlUoHHDYTZ3Mr3y6h+/
-	 xPPsYQ+AomJekWfMSCRkZ/tQPBcvYlitaO7NEGus=
+	b=Zr7Ab9+aOJp+WvDFkGaiZN/YbPNyTiQcP9HMqvyjCAaOyD/uJ1RMSASN141xW89E9
+	 jPT2PUc2U257oznBUZMGySPtCrqr0eMHfFkX9kXNHWwzdpxA0/5vUv4UYu1F4+7/BC
+	 k/T4ne5bl7TpjYKapz7udjDyn5qChHAY5tEQrCM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 296/399] btrfs: zoned: dont skip block groups with 100% zone unusable
-Date: Mon,  1 Apr 2024 17:44:22 +0200
-Message-ID: <20240401152558.028179536@linuxfoundation.org>
+	Gabe Kirkpatrick <gkirkpatrick@google.com>,
+	Josh Eads <josheads@google.com>,
+	Peter Gonda <pgonda@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 214/396] KVM: SVM: Flush pages under kvm->lock to fix UAF in svm_register_enc_region()
+Date: Mon,  1 Apr 2024 17:44:23 +0200
+Message-ID: <20240401152554.304587595@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit a8b70c7f8600bc77d03c0b032c0662259b9e615e upstream.
+commit 5ef1d8c1ddbf696e47b226e11888eaf8d9e8e807 upstream.
 
-Commit f4a9f219411f ("btrfs: do not delete unused block group if it may be
-used soon") changed the behaviour of deleting unused block-groups on zoned
-filesystems. Starting with this commit, we're using
-btrfs_space_info_used() to calculate the number of used bytes in a
-space_info. But btrfs_space_info_used() also accounts
-btrfs_space_info::bytes_zone_unusable as used bytes.
+Do the cache flush of converted pages in svm_register_enc_region() before
+dropping kvm->lock to fix use-after-free issues where region and/or its
+array of pages could be freed by a different task, e.g. if userspace has
+__unregister_enc_region_locked() already queued up for the region.
 
-So if a block group is 100% zone_unusable it is skipped from the deletion
-step.
+Note, the "obvious" alternative of using local variables doesn't fully
+resolve the bug, as region->pages is also dynamically allocated.  I.e. the
+region structure itself would be fine, but region->pages could be freed.
 
-In order not to skip fully zone_unusable block-groups, also check if the
-block-group has bytes left that can be used on a zoned filesystem.
+Flushing multiple pages under kvm->lock is unfortunate, but the entire
+flow is a rare slow path, and the manual flush is only needed on CPUs that
+lack coherency for encrypted memory.
 
-Fixes: f4a9f219411f ("btrfs: do not delete unused block group if it may be used soon")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 19a23da53932 ("Fix unsynchronized access to sev members through svm_register_enc_region")
+Reported-by: Gabe Kirkpatrick <gkirkpatrick@google.com>
+Cc: Josh Eads <josheads@google.com>
+Cc: Peter Gonda <pgonda@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20240217013430.2079561-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1550,7 +1550,8 @@ void btrfs_delete_unused_bgs(struct btrf
- 		 * needing to allocate extents from the block group.
- 		 */
- 		used = btrfs_space_info_used(space_info, true);
--		if (space_info->total_bytes - block_group->length < used) {
-+		if (space_info->total_bytes - block_group->length < used &&
-+		    block_group->zone_unusable < block_group->length) {
- 			/*
- 			 * Add a reference for the list, compensate for the ref
- 			 * drop under the "next" label for the
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1975,20 +1975,22 @@ int sev_mem_enc_register_region(struct k
+ 		goto e_free;
+ 	}
+ 
+-	region->uaddr = range->addr;
+-	region->size = range->size;
+-
+-	list_add_tail(&region->list, &sev->regions_list);
+-	mutex_unlock(&kvm->lock);
+-
+ 	/*
+ 	 * The guest may change the memory encryption attribute from C=0 -> C=1
+ 	 * or vice versa for this memory range. Lets make sure caches are
+ 	 * flushed to ensure that guest data gets written into memory with
+-	 * correct C-bit.
++	 * correct C-bit.  Note, this must be done before dropping kvm->lock,
++	 * as region and its array of pages can be freed by a different task
++	 * once kvm->lock is released.
+ 	 */
+ 	sev_clflush_pages(region->pages, region->npages);
+ 
++	region->uaddr = range->addr;
++	region->size = range->size;
++
++	list_add_tail(&region->list, &sev->regions_list);
++	mutex_unlock(&kvm->lock);
++
+ 	return ret;
+ 
+ e_free:
 
 
 
