@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-35254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C2B894321
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF6A894323
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F12DAB20A64
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 383C3B20A7A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7253481C6;
-	Mon,  1 Apr 2024 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB32481C6;
+	Mon,  1 Apr 2024 17:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/kMcmY+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhJsO6O9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67465BA3F;
-	Mon,  1 Apr 2024 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D203D47A64;
+	Mon,  1 Apr 2024 17:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990798; cv=none; b=PBiXnZb3Ioo1bmj5x1cF7cE3wSROA3AkfDqth7qbuhl6Ro+kYChKCsDLgEw86PbMv4cxliyicWvRRE9anKqhonkafMGtBq+T0TdpDppt2Dbz9ElYnr06+gX6UuWO43t0pN5zPmTlyszB6FQSpApYXKPkb+pIQDoWtCwDFxLSgLE=
+	t=1711990804; cv=none; b=SLRmv8/CiXMGbnmpmAapl9CXWPNxjh6ChyBKwpYxfzG56onyB1U7Wh4Vm1lZvHfc8oj/UuSW5dtA8Y/Muf02h7gbYCXYr9gR6hDKsNb2p7yC+/2kylbkoXX9eBU0CSYyRnUmXJgEIffzA0i1GdCH6ER9mchqq1eDgIwZyrp358k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990798; c=relaxed/simple;
-	bh=RWkk9WiFIbIpX7NV7Eamws8gXtOOE9vQpkov7HrJLSA=;
+	s=arc-20240116; t=1711990804; c=relaxed/simple;
+	bh=7j2pdZ2R1I/+clyHNTa2o4MMp1JR+fWeUvEEXej+XCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EI7+PggETadQEU8nsSZ/74NfFwP99cYtkEAV5i1+7clKv9Li0R6T2Wd0UwmUFN/+odbJ308wO0IuvC8lSH1SB0vR6RoKrmD1+0Hrb5xLC13wqwYyaW2hsHhteVOt2dz8jqkiuwpyjRWxJ1OcuZCqfqRx1T8AkwNHqd9xe9WC+nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/kMcmY+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB16BC433F1;
-	Mon,  1 Apr 2024 16:59:57 +0000 (UTC)
+	 MIME-Version; b=ser/H3uSkEQYO0g7zM4yDEj6aFp/IlCNjIEO0MnpWl1ujYU174X10JK6WSQTdGaPPG5QgdrbdoKGeBC3foKZR0Zwq8AFIW+o0o8y16Ez07OY1Phnk7eHlDvwp9xTuPZCRLDqBvuA9sPdUMhP0Ck9GZ+FjiRTZ+Z2WbQpyavzXj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhJsO6O9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A059C433C7;
+	Mon,  1 Apr 2024 17:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990798;
-	bh=RWkk9WiFIbIpX7NV7Eamws8gXtOOE9vQpkov7HrJLSA=;
+	s=korg; t=1711990804;
+	bh=7j2pdZ2R1I/+clyHNTa2o4MMp1JR+fWeUvEEXej+XCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/kMcmY+XQBzR2r6/V+tbN/zaLCtcyS/t8vk1e1MjgPBOFQbqpylT1GTZ7JwBZIN2
-	 WzHuV6GMzeGJ2e9PDFGOD2TUsdEAu/VmSs14aBMOM7WL1z8sj3N9WMGNbm5IxctYBV
-	 xtodrFTqE0imhpYSNxsRGmCmEGAcAkrOlN5f8STo=
+	b=AhJsO6O91jS2X93RIHTPMfYDo/EdkLvfmsnjIXz2Lmw7+MDgtwK3uSpkZnPFkK8o6
+	 6SPZnQ7vg77IOOS7+rWbhIWbHSx1Pxq4fIFt6xYVpcdwzjC8F9jxxADwyBQJq1uzZG
+	 wTlW9n446w5aseqd0Y7X2Jb/z5sJX5FobNTURBoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	John Ogness <john.ogness@linutronix.de>,
+	Fabian Vogt <fvogt@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/272] serial: Lock console when calling into driver before registration
-Date: Mon,  1 Apr 2024 17:44:20 +0200
-Message-ID: <20240401152532.747633314@linuxfoundation.org>
+Subject: [PATCH 6.1 071/272] btrfs: qgroup: always free reserved space for extent records
+Date: Mon,  1 Apr 2024 17:44:21 +0200
+Message-ID: <20240401152532.780887472@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
 References: <20240401152530.237785232@linuxfoundation.org>
@@ -66,185 +68,98 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 801410b26a0e8b8a16f7915b2b55c9528b69ca87 ]
+[ Upstream commit d139ded8b9cdb897bb9539eb33311daf9a177fd2 ]
 
-During the handoff from earlycon to the real console driver, we have
-two separate drivers operating on the same device concurrently. In the
-case of the 8250 driver these concurrent accesses cause problems due
-to the driver's use of banked registers, controlled by LCR.DLAB. It is
-possible for the setup(), config_port(), pm() and set_mctrl() callbacks
-to set DLAB, which can cause the earlycon code that intends to access
-TX to instead access DLL, leading to missed output and corruption on
-the serial line due to unintended modifications to the baud rate.
+[BUG]
+If qgroup is marked inconsistent (e.g. caused by operations needing full
+subtree rescan, like creating a snapshot and assign to a higher level
+qgroup), btrfs would immediately start leaking its data reserved space.
 
-In particular, for setup() we have:
+The following script can easily reproduce it:
 
-univ8250_console_setup()
--> serial8250_console_setup()
--> uart_set_options()
--> serial8250_set_termios()
--> serial8250_do_set_termios()
--> serial8250_do_set_divisor()
+  mkfs.btrfs -O quota -f $dev
+  mount $dev $mnt
+  btrfs subvolume create $mnt/subv1
+  btrfs qgroup create 1/0 $mnt
 
-For config_port() we have:
+  # This snapshot creation would mark qgroup inconsistent,
+  # as the ownership involves different higher level qgroup, thus
+  # we have to rescan both source and snapshot, which can be very
+  # time consuming, thus here btrfs just choose to mark qgroup
+  # inconsistent, and let users to determine when to do the rescan.
+  btrfs subv snapshot -i 1/0 $mnt/subv1 $mnt/snap1
 
-serial8250_config_port()
--> autoconfig()
+  # Now this write would lead to qgroup rsv leak.
+  xfs_io -f -c "pwrite 0 64k" $mnt/file1
 
-For pm() we have:
+  # And at unmount time, btrfs would report 64K DATA rsv space leaked.
+  umount $mnt
 
-serial8250_pm()
--> serial8250_do_pm()
--> serial8250_set_sleep()
+And we would have the following dmesg output for the unmount:
 
-For set_mctrl() we have (for some devices):
+  BTRFS info (device dm-1): last unmount of filesystem 14a3d84e-f47b-4f72-b053-a8a36eef74d3
+  BTRFS warning (device dm-1): qgroup 0/5 has unreleased space, type 0 rsv 65536
 
-serial8250_set_mctrl()
--> omap8250_set_mctrl()
--> __omap8250_set_mctrl()
+[CAUSE]
+Since commit e15e9f43c7ca ("btrfs: introduce
+BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING to skip qgroup accounting"),
+we introduce a mode for btrfs qgroup to skip the timing consuming
+backref walk, if the qgroup is already inconsistent.
 
-To avoid such problems, let's make it so that the console is locked
-during pre-registration calls to these callbacks, which will prevent
-the earlycon driver from running concurrently.
+But this skip also covered the data reserved freeing, thus the qgroup
+reserved space for each newly created data extent would not be freed,
+thus cause the leakage.
 
-Remove the partial solution to this problem in the 8250 driver
-that locked the console only during autoconfig_irq(), as this would
-result in a deadlock with the new approach. The console continues
-to be locked during autoconfig_irq() because it can only be called
-through uart_configure_port().
+[FIX]
+Make the data extent reserved space freeing mandatory.
 
-Although this patch introduces more locking than strictly necessary
-(and in particular it also locks during the call to rs485_config()
-which is not affected by this issue as far as I can tell), it follows
-the principle that it is the responsibility of the generic console
-code to manage the earlycon handoff by ensuring that earlycon and real
-console driver code cannot run concurrently, and not the individual
-drivers.
+The qgroup reserved space handling is way cheaper compared to the
+backref walking part, and we always have the super sensitive leak
+detector, thus it's definitely worth to always free the qgroup
+reserved data space.
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240304214350.501253-1-pcc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Fabian Vogt <fvogt@suse.com>
+Fixes: e15e9f43c7ca ("btrfs: introduce BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING to skip qgroup accounting")
+CC: stable@vger.kernel.org # 6.1+
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1216196
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c |  6 ------
- drivers/tty/serial/serial_core.c    | 12 ++++++++++++
- kernel/printk/printk.c              | 21 ++++++++++++++++++---
- 3 files changed, 30 insertions(+), 9 deletions(-)
+ fs/btrfs/qgroup.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 8efe31448df3c..c744feabd7cdd 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1377,9 +1377,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
- 		inb_p(ICP);
- 	}
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index b3472bf6b288f..c14d4f70e84bd 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -2800,11 +2800,6 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
+ 					goto cleanup;
+ 			}
  
--	if (uart_console(port))
--		console_lock();
--
- 	/* forget possible initially masked and pending IRQ */
- 	probe_irq_off(probe_irq_on());
- 	save_mcr = serial8250_in_MCR(up);
-@@ -1410,9 +1407,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
- 	if (port->flags & UPF_FOURPORT)
- 		outb_p(save_ICP, ICP);
- 
--	if (uart_console(port))
--		console_unlock();
--
- 	port->irq = (irq > 0) ? irq : 0;
- }
- 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index f0ed30d0a697c..fe3f1d655dfe2 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -2561,7 +2561,12 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 			port->type = PORT_UNKNOWN;
- 			flags |= UART_CONFIG_TYPE;
+-			/* Free the reserved data space */
+-			btrfs_qgroup_free_refroot(fs_info,
+-					record->data_rsv_refroot,
+-					record->data_rsv,
+-					BTRFS_QGROUP_RSV_DATA);
+ 			/*
+ 			 * Use BTRFS_SEQ_LAST as time_seq to do special search,
+ 			 * which doesn't lock tree or delayed_refs and search
+@@ -2826,6 +2821,11 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
+ 			record->old_roots = NULL;
+ 			new_roots = NULL;
  		}
-+		/* Synchronize with possible boot console. */
-+		if (uart_console(port))
-+			console_lock();
- 		port->ops->config_port(port, flags);
-+		if (uart_console(port))
-+			console_unlock();
- 	}
- 
- 	if (port->type != PORT_UNKNOWN) {
-@@ -2569,6 +2574,10 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 
- 		uart_report_port(drv, port);
- 
-+		/* Synchronize with possible boot console. */
-+		if (uart_console(port))
-+			console_lock();
-+
- 		/* Power up port for set_mctrl() */
- 		uart_change_pm(state, UART_PM_STATE_ON);
- 
-@@ -2585,6 +2594,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 
- 		uart_rs485_config(port);
- 
-+		if (uart_console(port))
-+			console_unlock();
-+
- 		/*
- 		 * If this driver supports console, and it hasn't been
- 		 * successfully registered yet, try to re-register it.
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 981cdb00b8722..c55ee859dbd08 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -3045,6 +3045,21 @@ static int __init keep_bootcon_setup(char *str)
- 
- early_param("keep_bootcon", keep_bootcon_setup);
- 
-+static int console_call_setup(struct console *newcon, char *options)
-+{
-+	int err;
-+
-+	if (!newcon->setup)
-+		return 0;
-+
-+	/* Synchronize with possible boot console. */
-+	console_lock();
-+	err = newcon->setup(newcon, options);
-+	console_unlock();
-+
-+	return err;
-+}
-+
- /*
-  * This is called by register_console() to try to match
-  * the newly registered console with any of the ones selected
-@@ -3080,8 +3095,8 @@ static int try_enable_preferred_console(struct console *newcon,
- 			if (_braille_register_console(newcon, c))
- 				return 0;
- 
--			if (newcon->setup &&
--			    (err = newcon->setup(newcon, c->options)) != 0)
-+			err = console_call_setup(newcon, c->options);
-+			if (err)
- 				return err;
- 		}
- 		newcon->flags |= CON_ENABLED;
-@@ -3107,7 +3122,7 @@ static void try_enable_default_console(struct console *newcon)
- 	if (newcon->index < 0)
- 		newcon->index = 0;
- 
--	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
-+	if (console_call_setup(newcon, NULL) != 0)
- 		return;
- 
- 	newcon->flags |= CON_ENABLED;
++		/* Free the reserved data space */
++		btrfs_qgroup_free_refroot(fs_info,
++				record->data_rsv_refroot,
++				record->data_rsv,
++				BTRFS_QGROUP_RSV_DATA);
+ cleanup:
+ 		ulist_free(record->old_roots);
+ 		ulist_free(new_roots);
 -- 
 2.43.0
 
