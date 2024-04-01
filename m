@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A8089426C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A92893EF1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1B37283538
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8FB1C21419
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C0D4F1F9;
-	Mon,  1 Apr 2024 16:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216B84776F;
+	Mon,  1 Apr 2024 16:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/Bo9v4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNmEfm50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9204EB38;
-	Mon,  1 Apr 2024 16:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BBD446AC;
+	Mon,  1 Apr 2024 16:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990340; cv=none; b=g0DCXxD5C+iVNFMKpvRA+eDBLd/1Gzd5hLsEedrAFKCXP8sfJsjdHyw2zxncflDVx9FfGGSmjrCdQrqH02RnZU2oUxcAimd/hyUOLCulDQmEX14I4Lrw2dCWT4Oyf9NFoYf9rjp48WFq1ff3/VVNhHdpNojfmahLt322X+W1+KQ=
+	t=1711987796; cv=none; b=m8YM5PqonH6G8CIc0+js04PPMtb0Ol7vh+85VPQCjkkE1/IZzyN8UlXa3tgyjg+gLHaZK6+mcSv3mt+WlBZyHRPEQkWsTxT/KycrhCar4IszlnvpKGrLAnHL4ZsxPH+RV28sDbzdc5CAYGQ+pr+BoDbKIo6a0Fqylu5RI9mqJWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990340; c=relaxed/simple;
-	bh=xllGLTVNE+r9wYGRJVcF7Jug70InlXnI/j0pQAuQ/jg=;
+	s=arc-20240116; t=1711987796; c=relaxed/simple;
+	bh=Y4RKppoGazh+5s4S1E0tTzCHTUfFreL5kIkeZ+7KRlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sxz6rC+RfmplCZECmTwtR6+qr7uJY5ltj1gFH3XGyMgNqW9sD+lfB4ZdlYyUfZE6sDCLBTveJ01Ge71+K1GZuB34y66k+KTfR9RPAB59eIebzoVQ4lLbjyoObSMYwuRocI0U3ASWWWQ1hcie5mZX0lLU9YuxyPrVh1GI8DNHnV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/Bo9v4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E364C433C7;
-	Mon,  1 Apr 2024 16:52:19 +0000 (UTC)
+	 MIME-Version; b=remmAx02q5ar8PbhU3DmgwQX96WYSX+c3xpNwQTMajxa9ZG2O1Za5Wqn29eyQB/bbLmhhIOXd+OhliyJsS/khoV1IVjMnqHOSLtoLYDj6dMebJIov5tL27iBt5MQ6EXYHdryfprnDWvSFo6sUuybmdVk1Kg01WTGMG85N4J3D2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNmEfm50; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A759C433C7;
+	Mon,  1 Apr 2024 16:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990340;
-	bh=xllGLTVNE+r9wYGRJVcF7Jug70InlXnI/j0pQAuQ/jg=;
+	s=korg; t=1711987796;
+	bh=Y4RKppoGazh+5s4S1E0tTzCHTUfFreL5kIkeZ+7KRlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/Bo9v4diXW4AAcmINvoYA+Hek3tLglH2hSZoTYNudsH7jHOeq+Nk1XCgCVrsOUkR
-	 DkYB51yNwxN3PHCWEhsqjknTtjNoNMtomF36x3IZcW0nRYRPjPldZkeM7J6sSDUQ6i
-	 B9f24Cqr1fjyBzI1WQcWHsj3UfR750WpAHflQwYE=
+	b=iNmEfm50DqU6wQ/MfsdDqv5DlrOpsrc1/2HvGO4V0wyP66+rdI8Vg7m9octqMDyEc
+	 uDHgGelqYBYOrZMzCxrQQ/pkMsNYsRj3Lj10C2Mk52V0NrpluRTHA34++T18xbPZ9O
+	 f1r0yz8m9CdIbw55F6Kt1IfcyTVmOz6Hk6hPwGfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoltan HERPAI <wigyori@uid0.hu>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 304/396] pwm: img: fix pwm clock lookup
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.8 387/399] x86/bugs: Fix the SRSO mitigation on Zen3/4
 Date: Mon,  1 Apr 2024 17:45:53 +0200
-Message-ID: <20240401152556.979725447@linuxfoundation.org>
+Message-ID: <20240401152600.724360931@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zoltan HERPAI <wigyori@uid0.hu>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 9eb05877dbee03064d3d3483cd6702f610d5a358 ]
+commit 4535e1a4174c4111d92c5a9a21e542d232e0fcaa upstream.
 
-22e8e19 has introduced a regression in the imgchip->pwm_clk lookup, whereas
-the clock name has also been renamed to "imgchip". This causes the driver
-failing to load:
+The original version of the mitigation would patch in the calls to the
+untraining routines directly.  That is, the alternative() in UNTRAIN_RET
+will patch in the CALL to srso_alias_untrain_ret() directly.
 
-[    0.546905] img-pwm 18101300.pwm: failed to get imgchip clock
-[    0.553418] img-pwm: probe of 18101300.pwm failed with error -2
+However, even if commit e7c25c441e9e ("x86/cpu: Cleanup the untrain
+mess") meant well in trying to clean up the situation, due to micro-
+architectural reasons, the untraining routine srso_alias_untrain_ret()
+must be the target of a CALL instruction and not of a JMP instruction as
+it is done now.
 
-Fix this lookup by reverting the clock name back to "pwm".
+Reshuffle the alternative macros to accomplish that.
 
-Signed-off-by: Zoltan HERPAI <wigyori@uid0.hu>
-Link: https://lore.kernel.org/r/20240320083602.81592-1-wigyori@uid0.hu
-Fixes: 22e8e19a46f7 ("pwm: img: Rename variable pointing to driver private data")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e7c25c441e9e ("x86/cpu: Cleanup the untrain mess")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-img.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/asm-prototypes.h |    1 +
+ arch/x86/include/asm/nospec-branch.h  |   21 ++++++++++++++++-----
+ arch/x86/lib/retpoline.S              |   11 ++++++-----
+ 3 files changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pwm/pwm-img.c b/drivers/pwm/pwm-img.c
-index 326af85888e7b..fd1535c47b6db 100644
---- a/drivers/pwm/pwm-img.c
-+++ b/drivers/pwm/pwm-img.c
-@@ -289,9 +289,9 @@ static int img_pwm_probe(struct platform_device *pdev)
- 		return PTR_ERR(imgchip->sys_clk);
- 	}
+--- a/arch/x86/include/asm/asm-prototypes.h
++++ b/arch/x86/include/asm/asm-prototypes.h
+@@ -13,6 +13,7 @@
+ #include <asm/preempt.h>
+ #include <asm/asm.h>
+ #include <asm/gsseg.h>
++#include <asm/nospec-branch.h>
  
--	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "imgchip");
-+	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "pwm");
- 	if (IS_ERR(imgchip->pwm_clk)) {
--		dev_err(&pdev->dev, "failed to get imgchip clock\n");
-+		dev_err(&pdev->dev, "failed to get pwm clock\n");
- 		return PTR_ERR(imgchip->pwm_clk);
- 	}
+ #ifndef CONFIG_X86_CMPXCHG64
+ extern void cmpxchg8b_emu(void);
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -271,11 +271,20 @@
+ .Lskip_rsb_\@:
+ .endm
  
--- 
-2.43.0
-
++/*
++ * The CALL to srso_alias_untrain_ret() must be patched in directly at
++ * the spot where untraining must be done, ie., srso_alias_untrain_ret()
++ * must be the target of a CALL instruction instead of indirectly
++ * jumping to a wrapper which then calls it. Therefore, this macro is
++ * called outside of __UNTRAIN_RET below, for the time being, before the
++ * kernel can support nested alternatives with arbitrary nesting.
++ */
++.macro CALL_UNTRAIN_RET
+ #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO)
+-#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
+-#else
+-#define CALL_UNTRAIN_RET	""
++	ALTERNATIVE_2 "", "call entry_untrain_ret", X86_FEATURE_UNRET, \
++		          "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+ #endif
++.endm
+ 
+ /*
+  * Mitigate RETBleed for AMD/Hygon Zen uarch. Requires KERNEL CR3 because the
+@@ -291,8 +300,8 @@
+ .macro __UNTRAIN_RET ibpb_feature, call_depth_insns
+ #if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
+ 	VALIDATE_UNRET_END
+-	ALTERNATIVE_3 "",						\
+-		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
++	CALL_UNTRAIN_RET
++	ALTERNATIVE_2 "",						\
+ 		      "call entry_ibpb", \ibpb_feature,			\
+ 		     __stringify(\call_depth_insns), X86_FEATURE_CALL_DEPTH
+ #endif
+@@ -351,6 +360,8 @@ extern void retbleed_return_thunk(void);
+ static inline void retbleed_return_thunk(void) {}
+ #endif
+ 
++extern void srso_alias_untrain_ret(void);
++
+ #ifdef CONFIG_CPU_SRSO
+ extern void srso_return_thunk(void);
+ extern void srso_alias_return_thunk(void);
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -163,6 +163,7 @@ SYM_CODE_START_NOALIGN(srso_alias_untrai
+ 	lfence
+ 	jmp srso_alias_return_thunk
+ SYM_FUNC_END(srso_alias_untrain_ret)
++__EXPORT_THUNK(srso_alias_untrain_ret)
+ 	.popsection
+ 
+ 	.pushsection .text..__x86.rethunk_safe
+@@ -224,10 +225,12 @@ SYM_CODE_START(srso_return_thunk)
+ SYM_CODE_END(srso_return_thunk)
+ 
+ #define JMP_SRSO_UNTRAIN_RET "jmp srso_untrain_ret"
+-#define JMP_SRSO_ALIAS_UNTRAIN_RET "jmp srso_alias_untrain_ret"
+ #else /* !CONFIG_CPU_SRSO */
+ #define JMP_SRSO_UNTRAIN_RET "ud2"
+-#define JMP_SRSO_ALIAS_UNTRAIN_RET "ud2"
++/* Dummy for the alternative in CALL_UNTRAIN_RET. */
++SYM_CODE_START(srso_alias_untrain_ret)
++	RET
++SYM_FUNC_END(srso_alias_untrain_ret)
+ #endif /* CONFIG_CPU_SRSO */
+ 
+ #ifdef CONFIG_CPU_UNRET_ENTRY
+@@ -319,9 +322,7 @@ SYM_FUNC_END(retbleed_untrain_ret)
+ #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO)
+ 
+ SYM_FUNC_START(entry_untrain_ret)
+-	ALTERNATIVE_2 JMP_RETBLEED_UNTRAIN_RET,				\
+-		      JMP_SRSO_UNTRAIN_RET, X86_FEATURE_SRSO,		\
+-		      JMP_SRSO_ALIAS_UNTRAIN_RET, X86_FEATURE_SRSO_ALIAS
++	ALTERNATIVE JMP_RETBLEED_UNTRAIN_RET, JMP_SRSO_UNTRAIN_RET, X86_FEATURE_SRSO
+ SYM_FUNC_END(entry_untrain_ret)
+ __EXPORT_THUNK(entry_untrain_ret)
+ 
 
 
 
