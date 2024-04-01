@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81114894000
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7884F894308
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2121AB210F1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D9C282A36
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5AC4778E;
-	Mon,  1 Apr 2024 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ED2481C6;
+	Mon,  1 Apr 2024 16:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="musemjHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqglqdcn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6811C4087B;
-	Mon,  1 Apr 2024 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849AABA3F;
+	Mon,  1 Apr 2024 16:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988658; cv=none; b=ZqkixwkDtrWy9f4dVe/ZOW5qH39ItwEv1tC4Z30aq3bbSBii+7X+XxLSneDqur/A3PcaFWUoIm668UzU47ICNvK52eZbhRN8mSpyFv31n8q0Pet24Z9yz+dOfKSWx3nkPr8eySuZAb6YiFIWfpDgxIx+GibBH/NqGofcjI3iu+g=
+	t=1711990726; cv=none; b=kQv3/rbgK39XNXvshR0HwEgE+kbtSsN7wm0jalvzzXHi2FTE4qQXBcLl+lp6pjD2uLpRJ27kQwSnmpWKmVaGMVvr/jKtobNEF00/DNz55vmdFe+of53s2f9yOSHRhutRRlTuZTmU7hbZOjqc8COPwYljlFHk8Lkz2uispYOa53M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988658; c=relaxed/simple;
-	bh=nkL7qpIQxkdKexYKKamR9mHhd2EZ8QjuPgDb8OR3RT4=;
+	s=arc-20240116; t=1711990726; c=relaxed/simple;
+	bh=wHT0UBiQ7ZHGlHGXzw7fGqbJvE0qfpNLB3mFNN0FfjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kkom6D7eWev+op/y2CivjWpfBVAKYtyNdyNsVAsJ4/L/D/0iSIL28gJtiZblDstedlLQ8C4aC1km+5XdwETP/x97nbTweJNkzkIXqHHmRAu5snYW3kalAhom/ShgMJq4N8QmjJwmuG61eCvh9EMlMnI4hmZ4vxJYx2jrIGANVUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=musemjHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B53C433F1;
-	Mon,  1 Apr 2024 16:24:17 +0000 (UTC)
+	 MIME-Version; b=hK8iz8lTRFY2X33R69l8OEOL9cOP5bEXyMNLxHs68uDy85CtjKuClAGLeTCBGBdicaQQ+zUEFdeg3nLdN71jmf9ZQjR6C+lxsOppFoobxB/5G4yjkiRXKdofODeLSmWWTgNIUT6M8rIAS2u6CTsDaaUgjaYR7WGg/1DPUya4MYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqglqdcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1ABC433C7;
+	Mon,  1 Apr 2024 16:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988658;
-	bh=nkL7qpIQxkdKexYKKamR9mHhd2EZ8QjuPgDb8OR3RT4=;
+	s=korg; t=1711990726;
+	bh=wHT0UBiQ7ZHGlHGXzw7fGqbJvE0qfpNLB3mFNN0FfjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=musemjHK7mK55GXO5MTZiLArYEY4ao92gBsQ8E+zVNjV57lQFnSSCKQmEvJDnMhDI
-	 JlA7wcgYg43f87k0fWLkiEaQanAys6drJm2WfhNyDT//DFkjIC/u+vCoTVBLeo8mI/
-	 Kbfc3nFr+InwMXs1Mkz9tmw/HrCaCtmNEK8jwPvI=
+	b=nqglqdcnByGFrWr8Ig/WkuxkM1Z5xuMxpXQJ6xwmGvkuK1cpeWPDsG6RNq7/pBz2F
+	 dPJA762U0Am+xb7HtpiQiwxfnkppU0BNr61l+qf+CLFsOuzNWFo4lMujqTqGsWbCPB
+	 vEcVH1CmuNKYmUKteJEbrLlxoR0/rDYCBM9u6RrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Toledanes <chris.toledanes@hp.com>,
-	Carl Ng <carl.ng@hp.com>,
-	Max Nguyen <maxwell.nguyen@hp.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.7 250/432] Input: xpad - add additional HyperX Controller Identifiers
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 047/272] parisc: Fix csum_ipv6_magic on 32-bit systems
 Date: Mon,  1 Apr 2024 17:43:57 +0200
-Message-ID: <20240401152600.596359600@linuxfoundation.org>
+Message-ID: <20240401152531.867449843@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Nguyen <maxwell.nguyen@hp.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit dd50f771af20fb02b1aecde04fbd085c872a9139 upstream.
+[ Upstream commit 4408ba75e4ba80c91fde7e10bccccf388f5c09be ]
 
-Add additional HyperX device identifiers to xpad_device and xpad_table.
+Calculating the IPv6 checksum on 32-bit systems missed overflows when
+adding the proto+len fields into the checksum. This results in the
+following unit test failure.
 
-Suggested-by: Chris Toledanes<chris.toledanes@hp.com>
-Reviewed-by: Carl Ng <carl.ng@hp.com>
-Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
+    # test_csum_ipv6_magic: ASSERTION FAILED at lib/checksum_kunit.c:506
+    Expected ( u64)csum_result == ( u64)expected, but
+        ( u64)csum_result == 46722 (0xb682)
+        ( u64)expected == 46721 (0xb681)
+    not ok 5 test_csum_ipv6_magic
+
+This is probably rarely seen in the real world because proto+len are
+usually small values which will rarely result in overflows when calculating
+the checksum. However, the unit test code uses large values for the length
+field, causing the test to fail.
+
+Fix the problem by adding the missing carry into the final checksum.
+
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/44ad5ffa-76d8-4046-94ee-2ef171930ed2@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/parisc/include/asm/checksum.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -130,7 +130,12 @@ static const struct xpad_device {
- 	{ 0x0079, 0x18d4, "GPD Win 2 X-Box Controller", 0, XTYPE_XBOX360 },
- 	{ 0x03eb, 0xff01, "Wooting One (Legacy)", 0, XTYPE_XBOX360 },
- 	{ 0x03eb, 0xff02, "Wooting Two (Legacy)", 0, XTYPE_XBOX360 },
-+	{ 0x03f0, 0x038D, "HyperX Clutch", 0, XTYPE_XBOX360 },			/* wired */
-+	{ 0x03f0, 0x048D, "HyperX Clutch", 0, XTYPE_XBOX360 },			/* wireless */
- 	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
-+	{ 0x03f0, 0x07A0, "HyperX Clutch Gladiate RGB", 0, XTYPE_XBOXONE },
-+	{ 0x03f0, 0x08B6, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },		/* v2 */
-+	{ 0x03f0, 0x09B4, "HyperX Clutch Tanto", 0, XTYPE_XBOXONE },
- 	{ 0x044f, 0x0f00, "Thrustmaster Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f03, "Thrustmaster Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
-@@ -463,6 +468,7 @@ static const struct usb_device_id xpad_t
- 	{ USB_INTERFACE_INFO('X', 'B', 0) },	/* Xbox USB-IF not-approved class */
- 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 controller */
- 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
-+	XPAD_XBOX360_VENDOR(0x03f0),		/* HP HyperX Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One controllers */
- 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster Xbox 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft Xbox 360 controllers */
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index f705e5dd10742..e619e67440db9 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -163,7 +163,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ "	ldw,ma		4(%2), %7\n"	/* 4th daddr */
+ "	addc		%6, %0, %0\n"
+ "	addc		%7, %0, %0\n"
+-"	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
++"	addc		%3, %0, %0\n"	/* fold in proto+len */
++"	addc		0, %0, %0\n"	/* add carry */
+ 
+ #endif
+ 	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
+-- 
+2.43.0
+
 
 
 
