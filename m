@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3175894181
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C388942E7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539041F23D65
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6E242837AF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFDE4C3C3;
-	Mon,  1 Apr 2024 16:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CB44C601;
+	Mon,  1 Apr 2024 16:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuYrc6ZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CngWA4CG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BB7481B8;
-	Mon,  1 Apr 2024 16:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36D04AEE0;
+	Mon,  1 Apr 2024 16:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989763; cv=none; b=RcKzbMWhDIvDchKd9u1D9K/xsR6yjVjryTmy1IrpwrPaSMWqOR6NnHF0M1W5Xc3QGVH1A8oRh41Zzuv1W+LrBQACNPABLU5ftFr9hYfTgA27F06S+cJkqKai3LlQ3g0puL9NNBUaqtXUW53fE2HMgYoZDpvH5R2+OUmgvmZcJKQ=
+	t=1711990641; cv=none; b=Y8f2mUWDGZCTbpesxS4O4a46Fopa+uifbe/FeN8B1fO2VqMFySbyifNnqQaYvjkC6QC2o3fGTouyX11z7eAUkv9VG3OTwuLckErPOUqaU6qXEvwNRmUhYbbtuVoXDkmUNRV6JsA19Eg7/ej64kZzIHjP3qcNG6EOA6hajkfpvo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989763; c=relaxed/simple;
-	bh=voUdliA5hMHKoTLZ3sa0BBg/eHwkdpBfIH5DrrxODMw=;
+	s=arc-20240116; t=1711990641; c=relaxed/simple;
+	bh=MaQkGzn/vlMMKsaQBIfPjq6rFbT/1Hv6BI1uPZ1sk/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fN07zUjcMMQGjx+zkJH3kM7ECJI7Lg/jSpyyCJVlfpL8Uo+NiogVZWcAwokHoYTVX0kB/Xo8yn4+F9Am9YhMz44xUmwqfpGhlEG6EDSHfk3sr5BzhYUzckKVMlTB7W93XtFqjwGM3q4Z+lfATl3p1SrKpIT1lo85HzLQ1gPQ/H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuYrc6ZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA6AC433F1;
-	Mon,  1 Apr 2024 16:42:42 +0000 (UTC)
+	 MIME-Version; b=kQLKAKKGIOWvz1vrGlwhEafp5UVT6kqw7RI6PY0hPxQCOARSjxgVUgQkqNb/LXvdTkDUNJFk69IUatwjNjqqOX/2HFP+TKU3UOE6kx3sDPrvYXaJhQgrrMjjd8N6RxNuFLCNmUMstdvfrqXkRrnpknkZyYSZBlRAx31K3xuDJfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CngWA4CG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5306DC433C7;
+	Mon,  1 Apr 2024 16:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989763;
-	bh=voUdliA5hMHKoTLZ3sa0BBg/eHwkdpBfIH5DrrxODMw=;
+	s=korg; t=1711990640;
+	bh=MaQkGzn/vlMMKsaQBIfPjq6rFbT/1Hv6BI1uPZ1sk/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuYrc6ZHlMbIPjFM2QwdW1efkfLCGlUFCyBr7wKrn9oLWFGI3dwCk/5GxMugGD1xC
-	 Ulj9fro3C0iKVLidO/gIZU/9Q+t4UQ5dO62LrA37jYjA3JhsxpfodYqNkg/jRNs8hA
-	 87odc7/ByIuQSU8FSORluePgLrlxfDK5QQAAMcLc=
+	b=CngWA4CG5nVGOLKHIyV83uAQ6IzGfwjnddY1tY0xcUW41Mto2oMR99SB3Swa884gQ
+	 qSMBIQNvY0w9ozolMz5hRiYuIyZ2FcGt+jmn6Fp7RBbYmoWJs3EhA1l29x2aR+WiWV
+	 OSfQ8XtlyexFzJ0fL+VxK6p+Q+HzWXEQBi4l/65M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/396] drm/probe-helper: warn about negative .get_modes()
+	Jim Mattson <jmattson@google.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 004/272] KVM: x86: Advertise CPUID.(EAX=7,ECX=2):EDX[5:0] to userspace
 Date: Mon,  1 Apr 2024 17:43:14 +0200
-Message-ID: <20240401152552.269450433@linuxfoundation.org>
+Message-ID: <20240401152530.398243514@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Jim Mattson <jmattson@google.com>
 
-[ Upstream commit 7af03e688792293ba33149fb8df619a8dff90e80 ]
+commit eefe5e6682099445f77f2d97d4c525f9ac9d9b07 upstream.
 
-The .get_modes() callback is supposed to return the number of modes,
-never a negative error code. If a negative value is returned, it'll just
-be interpreted as a negative count, and added to previous calculations.
+The low five bits {INTEL_PSFD, IPRED_CTRL, RRSBA_CTRL, DDPD_U, BHI_CTRL}
+advertise the availability of specific bits in IA32_SPEC_CTRL. Since KVM
+dynamically determines the legal IA32_SPEC_CTRL bits for the underlying
+hardware, the hard work has already been done. Just let userspace know
+that a guest can use these IA32_SPEC_CTRL bits.
 
-Document the rules, but handle the negative values gracefully with an
-error message.
+The sixth bit (MCDT_NO) states that the processor does not exhibit MXCSR
+Configuration Dependent Timing (MCDT) behavior. This is an inherent
+property of the physical processor that is inherited by the virtual
+CPU. Pass that information on to userspace.
 
-Cc: stable@vger.kernel.org
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/50208c866facc33226a3c77b82bb96aeef8ef310.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20231024001636.890236-1-jmattson@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_probe_helper.c       | 7 +++++++
- include/drm/drm_modeset_helper_vtables.h | 3 ++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ arch/x86/kvm/cpuid.c         |   21 ++++++++++++++++++---
+ arch/x86/kvm/reverse_cpuid.h |   12 ++++++++++++
+ 2 files changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 3f479483d7d80..15ed974bcb988 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -419,6 +419,13 @@ static int drm_helper_probe_get_modes(struct drm_connector *connector)
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -652,6 +652,11 @@ void kvm_set_cpu_caps(void)
+ 		F(AVX_VNNI) | F(AVX512_BF16)
+ 	);
  
- 	count = connector_funcs->get_modes(connector);
- 
-+	/* The .get_modes() callback should not return negative values. */
-+	if (count < 0) {
-+		drm_err(connector->dev, ".get_modes() returned %pe\n",
-+			ERR_PTR(count));
-+		count = 0;
-+	}
++	kvm_cpu_cap_init_kvm_defined(CPUID_7_2_EDX,
++		F(INTEL_PSFD) | F(IPRED_CTRL) | F(RRSBA_CTRL) | F(DDPD_U) |
++		F(BHI_CTRL) | F(MCDT_NO)
++	);
 +
- 	/*
- 	 * Fallback for when DDC probe failed in drm_get_edid() and thus skipped
- 	 * override/firmware EDID.
-diff --git a/include/drm/drm_modeset_helper_vtables.h b/include/drm/drm_modeset_helper_vtables.h
-index e3c3ac6159094..159213786e6e1 100644
---- a/include/drm/drm_modeset_helper_vtables.h
-+++ b/include/drm/drm_modeset_helper_vtables.h
-@@ -898,7 +898,8 @@ struct drm_connector_helper_funcs {
- 	 *
- 	 * RETURNS:
- 	 *
--	 * The number of modes added by calling drm_mode_probed_add().
-+	 * The number of modes added by calling drm_mode_probed_add(). Return 0
-+	 * on failures (no modes) instead of negative error codes.
- 	 */
- 	int (*get_modes)(struct drm_connector *connector);
+ 	kvm_cpu_cap_mask(CPUID_D_1_EAX,
+ 		F(XSAVEOPT) | F(XSAVEC) | F(XGETBV1) | F(XSAVES) | f_xfd
+ 	);
+@@ -902,13 +907,13 @@ static inline int __do_cpuid_func(struct
+ 		break;
+ 	/* function 7 has additional index. */
+ 	case 7:
+-		entry->eax = min(entry->eax, 1u);
++		max_idx = entry->eax = min(entry->eax, 2u);
+ 		cpuid_entry_override(entry, CPUID_7_0_EBX);
+ 		cpuid_entry_override(entry, CPUID_7_ECX);
+ 		cpuid_entry_override(entry, CPUID_7_EDX);
  
--- 
-2.43.0
-
+-		/* KVM only supports 0x7.0 and 0x7.1, capped above via min(). */
+-		if (entry->eax == 1) {
++		/* KVM only supports up to 0x7.2, capped above via min(). */
++		if (max_idx >= 1) {
+ 			entry = do_host_cpuid(array, function, 1);
+ 			if (!entry)
+ 				goto out;
+@@ -918,6 +923,16 @@ static inline int __do_cpuid_func(struct
+ 			entry->ecx = 0;
+ 			entry->edx = 0;
+ 		}
++		if (max_idx >= 2) {
++			entry = do_host_cpuid(array, function, 2);
++			if (!entry)
++				goto out;
++
++			cpuid_entry_override(entry, CPUID_7_2_EDX);
++			entry->ecx = 0;
++			entry->ebx = 0;
++			entry->eax = 0;
++		}
+ 		break;
+ 	case 0xa: { /* Architectural Performance Monitoring */
+ 		union cpuid10_eax eax;
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -13,6 +13,7 @@
+  */
+ enum kvm_only_cpuid_leafs {
+ 	CPUID_12_EAX	 = NCAPINTS,
++	CPUID_7_2_EDX,
+ 	NR_KVM_CPU_CAPS,
+ 
+ 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
+@@ -36,6 +37,14 @@ enum kvm_only_cpuid_leafs {
+ #define KVM_X86_FEATURE_SGX1		KVM_X86_FEATURE(CPUID_12_EAX, 0)
+ #define KVM_X86_FEATURE_SGX2		KVM_X86_FEATURE(CPUID_12_EAX, 1)
+ 
++/* Intel-defined sub-features, CPUID level 0x00000007:2 (EDX) */
++#define X86_FEATURE_INTEL_PSFD		KVM_X86_FEATURE(CPUID_7_2_EDX, 0)
++#define X86_FEATURE_IPRED_CTRL		KVM_X86_FEATURE(CPUID_7_2_EDX, 1)
++#define KVM_X86_FEATURE_RRSBA_CTRL	KVM_X86_FEATURE(CPUID_7_2_EDX, 2)
++#define X86_FEATURE_DDPD_U		KVM_X86_FEATURE(CPUID_7_2_EDX, 3)
++#define X86_FEATURE_BHI_CTRL		KVM_X86_FEATURE(CPUID_7_2_EDX, 4)
++#define X86_FEATURE_MCDT_NO		KVM_X86_FEATURE(CPUID_7_2_EDX, 5)
++
+ struct cpuid_reg {
+ 	u32 function;
+ 	u32 index;
+@@ -61,6 +70,7 @@ static const struct cpuid_reg reverse_cp
+ 	[CPUID_12_EAX]        = {0x00000012, 0, CPUID_EAX},
+ 	[CPUID_8000_001F_EAX] = {0x8000001f, 0, CPUID_EAX},
+ 	[CPUID_8000_0021_EAX] = {0x80000021, 0, CPUID_EAX},
++	[CPUID_7_2_EDX]       = {         7, 2, CPUID_EDX},
+ };
+ 
+ /*
+@@ -91,6 +101,8 @@ static __always_inline u32 __feature_tra
+ 		return KVM_X86_FEATURE_SGX1;
+ 	else if (x86_feature == X86_FEATURE_SGX2)
+ 		return KVM_X86_FEATURE_SGX2;
++	else if (x86_feature == X86_FEATURE_RRSBA_CTRL)
++		return KVM_X86_FEATURE_RRSBA_CTRL;
+ 
+ 	return x86_feature;
+ }
 
 
 
