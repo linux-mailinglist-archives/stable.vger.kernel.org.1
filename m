@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A206F893E99
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E618589435B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FD9DB224F2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231621C21E55
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71704596E;
-	Mon,  1 Apr 2024 16:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDCF481C6;
+	Mon,  1 Apr 2024 17:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxd6RElW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LikL4vlC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7476B1CA8F;
-	Mon,  1 Apr 2024 16:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B23F1C0DE7;
+	Mon,  1 Apr 2024 17:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987535; cv=none; b=cZPPoh4XM+jxa0jGyJE4m5BWIWt2E9aH4w4xo51Qc6XGjMOgF0rv+p/+TjnJ6tDadn83RTkXzkb0TnS2PdiVgWh1o+aayRTvi3o5tUQlJ7L2aP6sSV+HhNUFZ+UwbKhdEDJIeskiPH59bhCyZ8iq24UOtOSB4rIo3cTiWi99Usg=
+	t=1711990962; cv=none; b=HZm4jZFnsyodYJhZJ7trnBV3whPzESvkjxPdV7LIpgCm4eITdqkF7glbXa18NvkphATLLZ9+DHFeTQGGpAbEQV8zgZga7/Ej0+zaYNopWi15aRcRByZSNs8sBiiCbQewUBy9ThJebohLiPibx8m5SVkBMKeJa29QSIFnko4Hcac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987535; c=relaxed/simple;
-	bh=DGN7cQOgdW0wvg8lJ8LY3AuvYfMhTQ6ZBsP3bKwzgcE=;
+	s=arc-20240116; t=1711990962; c=relaxed/simple;
+	bh=q8iHN/HzVjHL0CPSLRYlrke3elk0GE3T85ZhUfSWWb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SoziRPAqGNfne2HW+tp63JWesQcnWli3hI9t6V5XsjsolIG5u62ZLt2GIKvep3wsW/R3fdyzplN7RXkjjChHULppgq5SOBN3S5B+VbUTwBzx2KRnOYy0cUnuxre5c8XwpzMStUemux3k7wac374aY7oqC8H3uVK37KU2NOcKcp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxd6RElW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FFEC433F1;
-	Mon,  1 Apr 2024 16:05:34 +0000 (UTC)
+	 MIME-Version; b=Ft+yL6kkbANlNBQzEaNfuVxRxMbgGvT9FmSVST/3CLmGaZiFnk5E0gtcOUzWmSga24rQKGWYYug4YU5uriJUY5qJLqoyLyi83Qf+3glbzw9M3kzndPDN4cLnEgdbd4u34duXWfD/aqVOLF4Gbu5GHbGF33n95TTA13MrYiLdKg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LikL4vlC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD135C433C7;
+	Mon,  1 Apr 2024 17:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987535;
-	bh=DGN7cQOgdW0wvg8lJ8LY3AuvYfMhTQ6ZBsP3bKwzgcE=;
+	s=korg; t=1711990962;
+	bh=q8iHN/HzVjHL0CPSLRYlrke3elk0GE3T85ZhUfSWWb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qxd6RElW3CmVVdavoDbC1LbtK2bvWaCxJguqx/fo8ukbGIHGFx3jRaeFpWGVDXhmC
-	 ImebNVyfuHK1P5K72O2c9LWEBicA9SoM3DUeGb6gLV2TtVG4SB07WNHQ5msOfXkbci
-	 CiQVbmbp7HvAy1/4v35iU1MHRFGQsjTRaLbABndY=
+	b=LikL4vlCsp5pe6rBsqkqwpH2Fd7N+cTchG26/FFSgVvh7UBGdiqg5cW9ty+V3xAeR
+	 qv/9qnKQWsIoSWAoX5xbvvR/EkFpIkwY0xQuAhSWVU7BC1rGdR5Z3nNaq6tb28ujJ2
+	 TcOVxZvbpL9YHcDPNZXrgV9kluxWi3RmdA2GYtRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 316/399] block: Do not force full zone append completion in req_bio_endio()
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 092/272] io_uring/net: correctly handle multishot recvmsg retry setup
 Date: Mon,  1 Apr 2024 17:44:42 +0200
-Message-ID: <20240401152558.616641709@linuxfoundation.org>
+Message-ID: <20240401152533.509468759@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 55251fbdf0146c252ceff146a1bb145546f3e034 upstream.
+[ Upstream commit deaef31bc1ec7966698a427da8c161930830e1cf ]
 
-This reverts commit 748dc0b65ec2b4b7b3dbd7befcc4a54fdcac7988.
+If we loop for multishot receive on the initial attempt, and then abort
+later on to wait for more, we miss a case where we should be copying the
+io_async_msghdr from the stack to stable storage. This leads to the next
+retry potentially failing, if the application had the msghdr on the
+stack.
 
-Partial zone append completions cannot be supported as there is no
-guarantees that the fragmented data will be written sequentially in the
-same manner as with a full command. Commit 748dc0b65ec2 ("block: fix
-partial zone append completion handling in req_bio_endio()") changed
-req_bio_endio() to always advance a partially failed BIO by its full
-length, but this can lead to incorrect accounting. So revert this
-change and let low level device drivers handle this case by always
-failing completely zone append operations. With this revert, users will
-still see an IO error for a partially completed zone append BIO.
-
-Fixes: 748dc0b65ec2 ("block: fix partial zone append completion handling in req_bio_endio()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240328004409.594888-2-dlemoal@kernel.org
+Fixes: 9bb66906f23e ("io_uring: support multishot in recvmsg")
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ io_uring/net.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -771,16 +771,11 @@ static void req_bio_endio(struct request
- 		/*
- 		 * Partial zone append completions cannot be supported as the
- 		 * BIO fragments may end up not being written sequentially.
--		 * For such case, force the completed nbytes to be equal to
--		 * the BIO size so that bio_advance() sets the BIO remaining
--		 * size to 0 and we end up calling bio_endio() before returning.
- 		 */
--		if (bio->bi_iter.bi_size != nbytes) {
-+		if (bio->bi_iter.bi_size != nbytes)
- 			bio->bi_status = BLK_STS_IOERR;
--			nbytes = bio->bi_iter.bi_size;
--		} else {
-+		else
- 			bio->bi_iter.bi_sector = rq->__sector;
--		}
- 	}
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 0d4ee3d738fbf..b1b564c04d1e7 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -876,7 +876,8 @@ int io_recvmsg(struct io_kiocb *req, unsigned int issue_flags)
+ 			kfree(kmsg->free_iov);
+ 		io_netmsg_recycle(req, issue_flags);
+ 		req->flags &= ~REQ_F_NEED_CLEANUP;
+-	}
++	} else if (ret == -EAGAIN)
++		return io_setup_async_msg(req, kmsg, issue_flags);
  
- 	bio_advance(bio, nbytes);
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
