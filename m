@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-35032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D53C8941FF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 891D1894350
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32F8F1F22993
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 173511F21191
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4887481D0;
-	Mon,  1 Apr 2024 16:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB90F47A6B;
+	Mon,  1 Apr 2024 17:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNqtdsB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sLZE+0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841894653C;
-	Mon,  1 Apr 2024 16:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2001C0DE7;
+	Mon,  1 Apr 2024 17:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990116; cv=none; b=ctEonyGmAeizoQHz1UQssbkOtOjKXCX4U8QeUscOTIo8pAjzYE/nQTMyVsw9L3toEOeODUhjEzzdpc5C6Z+6u/ey830w0OTrDFNHHYC3VMXWAMbauj8jO/8o7NLV4lm+b1nPGUbFMrMRF/f2hWaw6IG5gpGUrMTgF6c9qzCIy9Q=
+	t=1711990933; cv=none; b=STD5roROH5Ry6nquDe101JYn9KWrTsJz+5Vi+nEOEAmblLgaw3qmMWuG4lAKoF2xEdu5wKSKPmUarGGIg9yGFhOJtXTpe0/MFJW5/m2kiVWLasvi4xvSraktp/ADr9jEQ4aHHazn3PeULHJ/x76mQNM7w35GaEt8WlOHngyGGCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990116; c=relaxed/simple;
-	bh=g7NbGwDHdm77VQE7+H+cg5muI5rk2QsyDENGCnxXpWo=;
+	s=arc-20240116; t=1711990933; c=relaxed/simple;
+	bh=l3GQ3OeuPcIMZuf6sex/HTKZbYVT+PAKcVUD0neOBe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8llDQ6uNLnVTk90qj6CYTxl9v8B7HhM0sjFMuPfZduOsPF2RWA8XP/Qnk2Bz+R5UpwrxwOvAI87oRfAtXH8sneeEKLj4NQoMlZc/tZGWH5Q5slGPTROjwHwpViFaaMq8KUiTBd9OKqrCbIX4bYD25HxasRzstI8jF/6qthbB0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNqtdsB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B15AC433C7;
-	Mon,  1 Apr 2024 16:48:35 +0000 (UTC)
+	 MIME-Version; b=Zq+9GehNj+URBOzLjP40s3jSEhEbg/JWy1r9tELUdxa31DOk/hjDGW3jibE4J0ByNF3DT2KTlOyyVbsNelfW+38inU06v0CmiBDVPxcUcI4mJJO/93Ok+EdJAfw/Sw6H7Qpa9hTO7bXttSSQpFMnFd0hk27DiAl1x4BWXnngD1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sLZE+0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50E5C433C7;
+	Mon,  1 Apr 2024 17:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990116;
-	bh=g7NbGwDHdm77VQE7+H+cg5muI5rk2QsyDENGCnxXpWo=;
+	s=korg; t=1711990933;
+	bh=l3GQ3OeuPcIMZuf6sex/HTKZbYVT+PAKcVUD0neOBe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNqtdsB5BfFqrcqwHGUfdSxRsuRdsZhrzO3+Rf2OxG7c1Z6u2Cpc/i9Z2kY8zz3zK
-	 fLV/XIqdfTo7eTFKvz9K1Q4mx8j+xX+7joj8jumEjYGvhREw/MBfqo/Dx4CDSi7HBF
-	 HGJvJO4DDDNfGrsiwoupZGq9l6ZnqJUzhnW6FJ9k=
+	b=2sLZE+0DtCuMWyR7iVD5RDh9YIT9x5MXa2U63+sHD9OMexp15YRYqa9LEpQVJHRIX
+	 upKuL0z9oqx1oqUd3uOGCRvCvccigGONySCyeHlLGmT9+3O9knoLmT3+G51rxdTUwc
+	 Hzycd+2QDs7FLW/dmMt6ibwTH4eAxfEf1yGkKIGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 252/396] wifi: rtw88: 8821cu: Fix connection failure
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linke li <lilinke99@qq.com>,
+	Rabin Vincent <rabin@rab.in>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 111/272] ring-buffer: Use wait_event_interruptible() in ring_buffer_wait()
 Date: Mon,  1 Apr 2024 17:45:01 +0200
-Message-ID: <20240401152555.422557555@linuxfoundation.org>
+Message-ID: <20240401152534.119666808@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +68,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 605d7c0b05eecb985273b1647070497142c470d3 upstream.
+[ Upstream commit 7af9ded0c2caac0a95f33df5cb04706b0f502588 ]
 
-Clear bit 8 of REG_SYS_STATUS1 after MAC power on.
+Convert ring_buffer_wait() over to wait_event_interruptible(). The default
+condition is to execute the wait loop inside __wait_event() just once.
 
-Without this, some RTL8821CU and RTL8811CU cannot connect to any
-network:
+This does not change the ring_buffer_wait() prototype yet, but
+restructures the code so that it can take a "cond" and "data" parameter
+and will call wait_event_interruptible() with a helper function as the
+condition.
 
-Feb 19 13:33:11 ideapad2 kernel: wlp3s0f3u2: send auth to
-	90:55:de:__:__:__ (try 1/3)
-Feb 19 13:33:13 ideapad2 kernel: wlp3s0f3u2: send auth to
-	90:55:de:__:__:__ (try 2/3)
-Feb 19 13:33:14 ideapad2 kernel: wlp3s0f3u2: send auth to
-	90:55:de:__:__:__ (try 3/3)
-Feb 19 13:33:15 ideapad2 kernel: wlp3s0f3u2: authentication with
-	90:55:de:__:__:__ timed out
+The helper function (rb_wait_cond) takes the cond function and data
+parameters. It will first check if the buffer hit the watermark defined by
+the "full" parameter and then call the passed in condition parameter. If
+either are true, it returns true.
 
-The RTL8822CU and RTL8822BU out-of-tree drivers do this as well, so do
-it for all three types of chips.
+If rb_wait_cond() does not return true, it will set the appropriate
+"waiters_pending" flag and returns false.
 
-Tested with RTL8811CU (Tenda U9 V2.0).
+Link: https://lore.kernel.org/linux-trace-kernel/CAHk-=wgsNgewHFxZAJiAQznwPMqEtQmi1waeS2O1v6L4c_Um5A@mail.gmail.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20240312121703.399598519@goodmis.org
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/aeeefad9-27c8-4506-a510-ef9a9a8731a4@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linke li <lilinke99@qq.com>
+Cc: Rabin Vincent <rabin@rab.in>
+Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/ring_buffer.h |   1 +
+ kernel/trace/ring_buffer.c  | 116 +++++++++++++++++++++---------------
+ 2 files changed, 69 insertions(+), 48 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -309,6 +309,13 @@ static int rtw_mac_power_switch(struct r
- 	pwr_seq = pwr_on ? chip->pwr_on_seq : chip->pwr_off_seq;
- 	ret = rtw_pwr_seq_parser(rtwdev, pwr_seq);
+diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
+index 3c7d295746f67..3e7bfc0f65aee 100644
+--- a/include/linux/ring_buffer.h
++++ b/include/linux/ring_buffer.h
+@@ -98,6 +98,7 @@ __ring_buffer_alloc(unsigned long size, unsigned flags, struct lock_class_key *k
+ 	__ring_buffer_alloc((size), (flags), &__key);	\
+ })
  
-+	if (pwr_on && rtw_hci_type(rtwdev) == RTW_HCI_TYPE_USB) {
-+		if (chip->id == RTW_CHIP_TYPE_8822C ||
-+		    chip->id == RTW_CHIP_TYPE_8822B ||
-+		    chip->id == RTW_CHIP_TYPE_8821C)
-+			rtw_write8_clr(rtwdev, REG_SYS_STATUS1 + 1, BIT(0));
-+	}
++typedef bool (*ring_buffer_cond_fn)(void *data);
+ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full);
+ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
+ 			  struct file *filp, poll_table *poll_table, int full);
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index e07f45d1890d3..431a922e5c89e 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -994,43 +994,15 @@ static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
+ 	return ret;
+ }
+ 
+-/**
+- * ring_buffer_wait - wait for input to the ring buffer
+- * @buffer: buffer to wait on
+- * @cpu: the cpu buffer to wait on
+- * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
+- *
+- * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
+- * as data is added to any of the @buffer's cpu buffers. Otherwise
+- * it will wait for data to be added to a specific cpu buffer.
+- */
+-int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
++static inline bool
++rb_wait_cond(struct rb_irq_work *rbwork, struct trace_buffer *buffer,
++	     int cpu, int full, ring_buffer_cond_fn cond, void *data)
+ {
+-	struct ring_buffer_per_cpu *cpu_buffer;
+-	DEFINE_WAIT(wait);
+-	struct rb_irq_work *work;
+-	int ret = 0;
+-
+-	/*
+-	 * Depending on what the caller is waiting for, either any
+-	 * data in any cpu buffer, or a specific buffer, put the
+-	 * caller on the appropriate wait queue.
+-	 */
+-	if (cpu == RING_BUFFER_ALL_CPUS) {
+-		work = &buffer->irq_work;
+-		/* Full only makes sense on per cpu reads */
+-		full = 0;
+-	} else {
+-		if (!cpumask_test_cpu(cpu, buffer->cpumask))
+-			return -ENODEV;
+-		cpu_buffer = buffer->buffers[cpu];
+-		work = &cpu_buffer->irq_work;
+-	}
++	if (rb_watermark_hit(buffer, cpu, full))
++		return true;
+ 
+-	if (full)
+-		prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
+-	else
+-		prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
++	if (cond(data))
++		return true;
+ 
+ 	/*
+ 	 * The events can happen in critical sections where
+@@ -1053,27 +1025,75 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
+ 	 * a task has been queued. It's OK for spurious wake ups.
+ 	 */
+ 	if (full)
+-		work->full_waiters_pending = true;
++		rbwork->full_waiters_pending = true;
+ 	else
+-		work->waiters_pending = true;
++		rbwork->waiters_pending = true;
+ 
+-	if (rb_watermark_hit(buffer, cpu, full))
+-		goto out;
++	return false;
++}
+ 
+-	if (signal_pending(current)) {
+-		ret = -EINTR;
+-		goto out;
++/*
++ * The default wait condition for ring_buffer_wait() is to just to exit the
++ * wait loop the first time it is woken up.
++ */
++static bool rb_wait_once(void *data)
++{
++	long *once = data;
 +
- 	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_SDIO)
- 		rtw_write32(rtwdev, REG_SDIO_HIMR, imr);
++	/* wait_event() actually calls this twice before scheduling*/
++	if (*once > 1)
++		return true;
++
++	(*once)++;
++	return false;
++}
++
++/**
++ * ring_buffer_wait - wait for input to the ring buffer
++ * @buffer: buffer to wait on
++ * @cpu: the cpu buffer to wait on
++ * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
++ *
++ * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
++ * as data is added to any of the @buffer's cpu buffers. Otherwise
++ * it will wait for data to be added to a specific cpu buffer.
++ */
++int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
++{
++	struct ring_buffer_per_cpu *cpu_buffer;
++	struct wait_queue_head *waitq;
++	ring_buffer_cond_fn cond;
++	struct rb_irq_work *rbwork;
++	void *data;
++	long once = 0;
++	int ret = 0;
++
++	cond = rb_wait_once;
++	data = &once;
++
++	/*
++	 * Depending on what the caller is waiting for, either any
++	 * data in any cpu buffer, or a specific buffer, put the
++	 * caller on the appropriate wait queue.
++	 */
++	if (cpu == RING_BUFFER_ALL_CPUS) {
++		rbwork = &buffer->irq_work;
++		/* Full only makes sense on per cpu reads */
++		full = 0;
++	} else {
++		if (!cpumask_test_cpu(cpu, buffer->cpumask))
++			return -ENODEV;
++		cpu_buffer = buffer->buffers[cpu];
++		rbwork = &cpu_buffer->irq_work;
+ 	}
  
+-	schedule();
+- out:
+ 	if (full)
+-		finish_wait(&work->full_waiters, &wait);
++		waitq = &rbwork->full_waiters;
+ 	else
+-		finish_wait(&work->waiters, &wait);
++		waitq = &rbwork->waiters;
+ 
+-	if (!ret && !rb_watermark_hit(buffer, cpu, full) && signal_pending(current))
+-		ret = -EINTR;
++	ret = wait_event_interruptible((*waitq),
++				rb_wait_cond(rbwork, buffer, cpu, full, cond, data));
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
