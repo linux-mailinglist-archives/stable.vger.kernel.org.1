@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF63893FA5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8E289412F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE0C2851A3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B31D1F2278F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5921A4778C;
-	Mon,  1 Apr 2024 16:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976F33F8F4;
+	Mon,  1 Apr 2024 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhMvwR+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMJm3CAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F7F1CA8F;
-	Mon,  1 Apr 2024 16:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566D51E86C;
+	Mon,  1 Apr 2024 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988367; cv=none; b=Hrh8w2N7lVExB5tzXKjyfIqSAtTjN9p8JC20CaoHzRm3yfYE9tG+waFh2Ierd4s+6LvlEDI6XTkJOLeacMFi33Le/PWpMyaj91YIR1JuSKDZtr7hZlFA4KHiJ0FHQRpsudGp2eZBN3mAOGjIAdkVzeIax20+3M/Ph/3eDFJ/eyI=
+	t=1711989524; cv=none; b=NgetxxbyYu7qel84M3o41Q2QnrOrKnpRX4pupsHD8TsIsU4QNl2NWc1OPAqHoApQSNf1q+VqfvBtOO6aWqj1d1iC5iQo8FhS7yfPGXF310RQi2x3iIqzVpHjjKYNgncbfMSE30ftLdO9xQprEkjGyYQdBUOpsOAuyys6UdCNoKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988367; c=relaxed/simple;
-	bh=pr+KYDa1mMM87Wy+PiYOx1ou3NdZueaH2nsdWMRyaJc=;
+	s=arc-20240116; t=1711989524; c=relaxed/simple;
+	bh=aGHvWIrIsEe4L0/HZAjsW1D70VvCTRGjP1bm8FtwXM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGJ3giMuXXqfpZvMJy215FLQj+V5TJtDOI3Zcz0Fn5VPLEz6a7uQlKVECtJdXjv4uPNdcPzBtY4AqgusjwDAlRYVYsEpphgaJ+tVpPAwApW1mEV/y68ShxH5z5x4yLSeczHQ3dkAvY+oyZrc8wfFnpXMe8LuomP0ohezYlgBork=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhMvwR+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F84C433C7;
-	Mon,  1 Apr 2024 16:19:26 +0000 (UTC)
+	 MIME-Version; b=Zqo/WtHVJ7qioRepTzg+OOvFE9ht8Hk0JBYZLBHn+BQnhJXAN644yRCNMOvt5wUXKUUjvfIRLL9DYT1Y3cOHuqnVM1hicRnRcK+45CFf81nC/FHz7AFp9PKeC4bsRovNEILNFBpewHVGK4OSdBy5YSE0qZvv/DDi8oUhpVd82DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMJm3CAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A9CC43390;
+	Mon,  1 Apr 2024 16:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988366;
-	bh=pr+KYDa1mMM87Wy+PiYOx1ou3NdZueaH2nsdWMRyaJc=;
+	s=korg; t=1711989524;
+	bh=aGHvWIrIsEe4L0/HZAjsW1D70VvCTRGjP1bm8FtwXM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GhMvwR+jePzBqoI1F51gJWZ4iMBAhDCvpSbwfkhEftcmHXQ53ylHjKeNZuOTeS3BC
-	 22r5aetrL2gqPfySeT+C2iHDjq+CnAmLfUkBjfS0EDkfp7ynKlhZDk/7y1Wwr5Pd9h
-	 kPoz4P1WnguHYwhqYOo5sfc9SO+uYu475F6xvyzY=
+	b=lMJm3CAqAhkuGrxv7rAMggvBiOve2ckayK2e9JzNXet5IcqTKw01g+hR6AETWQ5/L
+	 UNY4H6K6PkejwFfk/nzMZluHtjNKQQaX/hOC6vOz9kj+/4MA4FfYkZa01ZY25D9DpW
+	 RHy0KpU/xNoUOoaFCBWJxb7Gw0wBhhE0Ijtz/AMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Daniel Vogelbacher <daniel@chaospixel.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 135/432] kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1
-Date: Mon,  1 Apr 2024 17:42:02 +0200
-Message-ID: <20240401152557.159641303@linuxfoundation.org>
+Subject: [PATCH 6.6 074/396] USB: serial: ftdi_sio: add support for GMC Z216C Adapter IR-USB
+Date: Mon,  1 Apr 2024 17:42:03 +0200
+Message-ID: <20240401152550.126297280@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Daniel Vogelbacher <daniel@chaospixel.com>
 
-[ Upstream commit 75b5ab134bb5f657ef7979a59106dce0657e8d87 ]
+[ Upstream commit 3fb7bc4f3a98c48981318b87cf553c5f115fd5ca ]
 
-Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
-under -Wenum-conversion. A recent change in Clang strengthened these
-warnings and they appear frequently in common builds, primarily due to
-several instances in common headers but there are quite a few drivers
-that have individual instances as well.
+The GMC IR-USB adapter cable utilizes a FTDI FT232R chip.
 
-  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-    509 |                            item];
-        |                            ~~~~
+Add VID/PID for this adapter so it can be used as serial device via
+ftdi_sio.
 
-  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
-    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
-        |                                      ^ ~~~~~~~~~~~~~~~~~~
-    956 |                           : IWL_MAC_BEACON_CCK_V1;
-        |                             ~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
-   1120 |                                                0) > 10 ?
-        |                                                        ^
-   1121 |                         IWL_MAC_BEACON_FILS :
-        |                         ~~~~~~~~~~~~~~~~~~~
-   1122 |                         IWL_MAC_BEACON_FILS_V1;
-        |                         ~~~~~~~~~~~~~~~~~~~~~~
-
-Doing arithmetic between or returning two different types of enums could
-be a bug, so each of the instance of the warning needs to be evaluated.
-Unfortunately, as mentioned above, there are many instances of this
-warning in many different configurations, which can break the build when
-CONFIG_WERROR is enabled.
-
-To avoid introducing new instances of the warnings while cleaning up the
-disruption for the majority of users, disable these warnings for the
-default build while leaving them on for W=1 builds.
-
+Signed-off-by: Daniel Vogelbacher <daniel@chaospixel.com>
 Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
-Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.extrawarn | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/ftdi_sio.c     | 2 ++
+ drivers/usb/serial/ftdi_sio_ids.h | 6 ++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index 2fe6f2828d376..16c750bb95faf 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -143,6 +143,8 @@ KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
- KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
-+KBUILD_CFLAGS += -Wno-enum-compare-conditional
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
+diff --git a/drivers/usb/serial/ftdi_sio.c b/drivers/usb/serial/ftdi_sio.c
+index 13a56783830df..22d01a0f10fbc 100644
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1077,6 +1077,8 @@ static const struct usb_device_id id_table_combined[] = {
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	/* GMC devices */
++	{ USB_DEVICE(GMC_VID, GMC_Z216C_PID) },
+ 	{ }					/* Terminating entry */
+ };
  
- endif
+diff --git a/drivers/usb/serial/ftdi_sio_ids.h b/drivers/usb/serial/ftdi_sio_ids.h
+index 21a2b5a25fc09..5ee60ba2a73cd 100644
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -1606,3 +1606,9 @@
+ #define UBLOX_VID			0x1546
+ #define UBLOX_C099F9P_ZED_PID		0x0502
+ #define UBLOX_C099F9P_ODIN_PID		0x0503
++
++/*
++ * GMC devices
++ */
++#define GMC_VID				0x1cd7
++#define GMC_Z216C_PID			0x0217 /* GMC Z216C Adapter IR-USB */
 -- 
 2.43.0
 
