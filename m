@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940C589406D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE8E893EBA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C63A41C21401
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 280111C21E84
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C767045BE4;
-	Mon,  1 Apr 2024 16:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594114778E;
+	Mon,  1 Apr 2024 16:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KF3QeyPH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJowfOGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855671CA8F;
-	Mon,  1 Apr 2024 16:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1592B47A5D;
+	Mon,  1 Apr 2024 16:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988995; cv=none; b=No8yk6dWJ5h/wzRRlLoAb4+sYEOfcY7onqvj/dbh5HU58n5pJnnjaINjxXasEy2GcDnVBY5Or0LN6WJJHc6PV5xKhNAU/wGfm4SqUQJN7elQ4kjIr06505hvJkJAC/r/h/k118PrEQuDciXcVrCd4HpNIbkwZaHVF743VcfKMsk=
+	t=1711987626; cv=none; b=eni574CSra7Ug70GjzQLZsimNUG9ujP47P0FqF6eUNKP/Ri3ATgCUYpenw4HhTPXlBCbaC7TmIJo8i6AvtkK/iTzNiy2IpfOWe2la/SbPSKdFF8Px1rIp+1gP3BNbwd1ow+p8i1xl3JSKQDmzdMW0HLgdI44LE1ddEzq0T/XSAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988995; c=relaxed/simple;
-	bh=pc+NPIS8ByHTlPuNBpsh5IthWBYUFug3v5JeuE4+1zg=;
+	s=arc-20240116; t=1711987626; c=relaxed/simple;
+	bh=WLYOe5jv99Aj8NeQPpOqom0cXHPZ00yslFPnNQZhMPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmKE09r4Jt1zhBv6JHwTjPJ+xiikUWul3GHR8Ox7kgAh8kKAWMD8geisSMltouvzhRSVdlxWJMO7QPTkkmxcLVhn/i7WNOA4SsSj8L8vYtwD3C0iCXGYhb+JS89YZpF1BS1CkLB7eOsscrO6XdoeUlM7sh7vqy9XLeigs9Nq7Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KF3QeyPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DFCC433C7;
-	Mon,  1 Apr 2024 16:29:54 +0000 (UTC)
+	 MIME-Version; b=cfNd2Txs40eHEoC2EWqAk/48JTGfGNjHL94JFFvyoF3xhQ1NN6OGVf817hAYbDCNLlo3/UfWj8ibsMa+N/5paGNwLard+QRxCexbVNrjAC53QcGrUa5dDout9b35FUFXqlF20ABJY8mLqm4jt6sImkJN1n+Z0szyJxhTa1WRb9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJowfOGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78861C433F1;
+	Mon,  1 Apr 2024 16:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988995;
-	bh=pc+NPIS8ByHTlPuNBpsh5IthWBYUFug3v5JeuE4+1zg=;
+	s=korg; t=1711987625;
+	bh=WLYOe5jv99Aj8NeQPpOqom0cXHPZ00yslFPnNQZhMPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KF3QeyPHggBafFBKbEX2+//ZhGhARWoiFccnaUhLn146b7OBlUaJQtiQYhX0UYoA+
-	 JprrqU+Ug9yh526pHNhkZbCn5TD3bmSVi7wGkyitchnmmEkyZz9mKxRQTsK2cTPz/5
-	 QjhRMg/rbGqPA2JNH/wBofGDUjKenXUUluvaKmhg=
+	b=MJowfOGSN5xl/w4ddPxSuXv3quSVEIGlz0lpwzrniEI9iE0n7iU3Obl8vgf4F+0pJ
+	 ZhHOGhCw4bK35A5rYymhff0fb+8Mhnr565SpboKqj8mBZel7FztNw8kvnRcBr0Byxe
+	 hUACI4ilqhNcAdPn51pD3nUloaKI6KvbMXYG9DsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.7 322/432] mfd: intel-lpss: Switch to generalized quirk table
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.8 343/399] usb: cdc-wdm: close race between read and workqueue
 Date: Mon,  1 Apr 2024 17:45:09 +0200
-Message-ID: <20240401152602.803864741@linuxfoundation.org>
+Message-ID: <20240401152559.410915595@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit ac9538f6007e1c80f1b8a62db7ecc391b4d78ae5 upstream.
+commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
 
-Introduce generic quirk table, and port existing walkaround for select
-Microsoft devices to it. This is a preparation for
-QUIRK_CLOCK_DIVIDER_UNITY.
+wdm_read() cannot race with itself. However, in
+service_outstanding_interrupt() it can race with the
+workqueue, which can be triggered by error handling.
 
-Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231221185142.9224-2-alex.vinarskis@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Hence we need to make sure that the WDM_RESPONDING
+flag is not just only set but tested.
+
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/intel-lpss-pci.c |   23 +++++++++++++++--------
- drivers/mfd/intel-lpss.c     |    2 +-
- drivers/mfd/intel-lpss.h     |    9 ++++++++-
- 3 files changed, 24 insertions(+), 10 deletions(-)
+ drivers/usb/class/cdc-wdm.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/mfd/intel-lpss-pci.c
-+++ b/drivers/mfd/intel-lpss-pci.c
-@@ -18,18 +18,24 @@
- 
- #include "intel-lpss.h"
- 
--/* Some DSDTs have an unused GEXP ACPI device conflicting with I2C4 resources */
--static const struct pci_device_id ignore_resource_conflicts_ids[] = {
--	/* Microsoft Surface Go (version 1) I2C4 */
--	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1182), },
--	/* Microsoft Surface Go 2 I2C4 */
--	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1237), },
-+static const struct pci_device_id quirk_ids[] = {
-+	{
-+		/* Microsoft Surface Go (version 1) I2C4 */
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1182),
-+		.driver_data = QUIRK_IGNORE_RESOURCE_CONFLICTS,
-+	},
-+	{
-+		/* Microsoft Surface Go 2 I2C4 */
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1237),
-+		.driver_data = QUIRK_IGNORE_RESOURCE_CONFLICTS,
-+	},
- 	{ }
- };
- 
- static int intel_lpss_pci_probe(struct pci_dev *pdev,
- 				const struct pci_device_id *id)
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -485,6 +485,7 @@ out_free_mem:
+ static int service_outstanding_interrupt(struct wdm_device *desc)
  {
-+	const struct pci_device_id *quirk_pci_info;
- 	struct intel_lpss_platform_info *info;
- 	int ret;
+ 	int rv = 0;
++	int used;
  
-@@ -45,8 +51,9 @@ static int intel_lpss_pci_probe(struct p
- 	info->mem = &pdev->resource[0];
- 	info->irq = pdev->irq;
+ 	/* submit read urb only if the device is waiting for it */
+ 	if (!desc->resp_count || !--desc->resp_count)
+@@ -499,7 +500,10 @@ static int service_outstanding_interrupt
+ 		goto out;
+ 	}
  
--	if (pci_match_id(ignore_resource_conflicts_ids, pdev))
--		info->ignore_resource_conflicts = true;
-+	quirk_pci_info = pci_match_id(quirk_ids, pdev);
-+	if (quirk_pci_info)
-+		info->quirks = quirk_pci_info->driver_data;
- 
- 	pdev->d3cold_delay = 0;
- 
---- a/drivers/mfd/intel-lpss.c
-+++ b/drivers/mfd/intel-lpss.c
-@@ -401,7 +401,7 @@ int intel_lpss_probe(struct device *dev,
- 		return ret;
- 
- 	lpss->cell->swnode = info->swnode;
--	lpss->cell->ignore_resource_conflicts = info->ignore_resource_conflicts;
-+	lpss->cell->ignore_resource_conflicts = info->quirks & QUIRK_IGNORE_RESOURCE_CONFLICTS;
- 
- 	intel_lpss_init_dev(lpss);
- 
---- a/drivers/mfd/intel-lpss.h
-+++ b/drivers/mfd/intel-lpss.h
-@@ -11,16 +11,23 @@
- #ifndef __MFD_INTEL_LPSS_H
- #define __MFD_INTEL_LPSS_H
- 
-+#include <linux/bits.h>
- #include <linux/pm.h>
- 
-+/*
-+ * Some DSDTs have an unused GEXP ACPI device conflicting with I2C4 resources.
-+ * Set to ignore resource conflicts with ACPI declared SystemMemory regions.
-+ */
-+#define QUIRK_IGNORE_RESOURCE_CONFLICTS BIT(0)
+-	set_bit(WDM_RESPONDING, &desc->flags);
++	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
++	if (used)
++		goto out;
 +
- struct device;
- struct resource;
- struct software_node;
- 
- struct intel_lpss_platform_info {
- 	struct resource *mem;
--	bool ignore_resource_conflicts;
- 	int irq;
-+	unsigned int quirks;
- 	unsigned long clk_rate;
- 	const char *clk_con_id;
- 	const struct software_node *swnode;
+ 	spin_unlock_irq(&desc->iuspin);
+ 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
+ 	spin_lock_irq(&desc->iuspin);
 
 
 
