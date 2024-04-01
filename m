@@ -1,160 +1,123 @@
-Return-Path: <stable+bounces-35517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B0D8947AC
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 01:25:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769048947CB
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 01:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52ACE1C21968
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 23:25:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5D51F2284D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 23:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4830956B94;
-	Mon,  1 Apr 2024 23:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628D42E822;
+	Mon,  1 Apr 2024 23:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KY6eRwOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1lqbLKf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D84C43AD1
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 23:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE4257300
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 23:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712013931; cv=none; b=XJX9yGBxBiOvRIUTHp7NNh5Hs5xpdYsIn3DI/cQJushqvJlXR7cBYGnuzd4HW/mxPzIhCRUG14BxltLB4GzK2Pgn/0wYT/G14tMEQs0bHp8UpC9c5xH7/vBBh5kSR9WcUU5BnOj42pa0r+iHYn1alPwcuHt4N1XdqiqlyqemXSs=
+	t=1712014617; cv=none; b=tOnKzvaeAMO6QAfT2peRzXfvkMtMzJUOyY0oaYaXLxNRmuhQKZl1foHVWAIwuXH1gwykWABQkQot3MFDBCv0C3uCcSELagiPYNJIrPG1k5XrSTcSaaMQDJ8TdUy14V84v4XFVkKY2gpEVrmWwwbx98nMsatOnvwNJg8+Zi1gQ2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712013931; c=relaxed/simple;
-	bh=7O6ujO5rc0L0/KR/mKMdDyxpsqTMox7YCAlN6/iMYXE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ptt2ehb5dP5KCCQ45PBLKjUHq1nMhv6Xp8pelsHT3T3uz+couwuGrEruFjRahqR/zElN3ufA3H0G3eHe7fizgGDsTSEJpzBA7TIoiZA427hYKZcqpDs7LeD442EWybYrAym/rpJSeLSNsZTbekv3sv14zUpNvJ6myhj1XwqwPUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KY6eRwOS; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-42ee0c326e8so822941cf.0
-        for <stable@vger.kernel.org>; Mon, 01 Apr 2024 16:25:29 -0700 (PDT)
+	s=arc-20240116; t=1712014617; c=relaxed/simple;
+	bh=CqfeARlug8+zcjr8pia+tcq62XchzGu/UcL4fzI7plM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SGTxG/aykEtNZc1NnIHOpIVypKz0+0upGd5J2QE9tN4LFKXxa8Puv0uXhLwM6iNVgwHtXc4qJlobXfoRnBVUHIvysLDeoA4F1y80IXxvgakP801gjSXUVV8jjWUUVctu6acLYKWHSGbsZbHxfkJx+/wmxK708yk/HyQ5PkANc+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1lqbLKf; arc=none smtp.client-ip=209.85.166.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-7cc67249181so35848539f.1
+        for <stable@vger.kernel.org>; Mon, 01 Apr 2024 16:36:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712013928; x=1712618728; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RBFnvPatyDI2+u+ojuWnolOosfbwXQU3OHbOSZ7OXrI=;
-        b=KY6eRwOS14eHK97iE2iXuQOKSL0N9OGC4+SfBT8VsYoaGZ2Jj8XZjmEmp23StOk7B+
-         2hhN28j6uWwmekxqlyqoYehc5EJwkHPMMm8+xBjyWPVIYVphvvMiZUF84mpDEvOYFcLA
-         JFLdirO+zoJDgPAv9KTg/zhsLzklKjX/BLMc142PXtQQPgb1l52ugOcvLyWpeE+jeFom
-         UgQWRSawKDn7O750Gzetqu2wIr5VTEUT59wvS8gcrQSxuAIdMNqIJyhkoBVokrCo9kzE
-         hJzHpFj5vJ4Y1q4JMa6wHkdBHXilN7xwGqOWU7dh9QG1vLLHJLhgQaSWcninbBu6EeqU
-         ucmQ==
+        d=linuxfoundation.org; s=google; t=1712014614; x=1712619414; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RwQzHTQg7aKASMwhwisC553WH/Sq/sNTw6BLGLLQEgs=;
+        b=G1lqbLKf3SRoT8O1nrQVgZYcHiPCsHOFEO/iXPBDJRwjuoWpBUaeDUNdERpHMpGll9
+         syKyykJg9HxrYdakpO0J4uwADGFDWuOaRzk0YI6yss7HeEB+rU+/eeLT3z0BjfQrVtx+
+         7AefySGK/lA7ZdN16oI79rjwxNws3lZGAcNVQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712013928; x=1712618728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RBFnvPatyDI2+u+ojuWnolOosfbwXQU3OHbOSZ7OXrI=;
-        b=hzXulI4o62p+YD5MxF8ICQnp0U2IDGD9S6hjNYP/pKmEpwaNIRR7Q7X7+DPwuDHCfB
-         /ZaEpdmWvryD4ecmySItbndcX3Lg6N9HcqwfDSJt6EHxo/327ZUmJvaiZxyJL/0jzhrF
-         pmITmVmpL0fzuofC8J1lczsBffEDRM/4P5zwa6BEgEpk3SDL9/rPtcFI0EjR7A+Bpsvb
-         uvo4d3ITcEjA261+krWOarXiciCbcAGblagk3UWvsfPzT6JwrjojgAtQipKyHLZiGLsL
-         9hO+XcPE21tDjEdS/FDEGlRh6J4067svfBvYyoyfjSu4PSWWcbm9qcwhQdLgSADD0f8g
-         zoqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvxLUZBQMK+iB4vgmLvv06koaz/Yja2xU3+tFUqGa6H31y0N4oSxIJCjKCtTlLKsGGfD093w/5LPW3YeczCRZQyd/ZOHQv
-X-Gm-Message-State: AOJu0Yw0HHtM61GCLKq9rUt2pEEa1ssAESKBJwbfi5DzhSgGoQs4vkm4
-	yMF+b+rfUzpGh+wE/XsHOs6UtHT9z2vaZlFm1yLsP94E/l4wz2fk9jycQGWP75Xrg9fZ4uX6PQs
-	tTtFimaNv2vViB/wmjUvBjPmO/hZhnHUkxpF0
-X-Google-Smtp-Source: AGHT+IFcZ8LGPNpxD+CyijkSEakaabqejnuTmSNnd7xvNofgmBOU9Q+hLp0gjmEcQ9dp7UWhkk+oSQSje588a0Wc16k=
-X-Received: by 2002:ac8:7fc2:0:b0:432:fea5:e3b4 with SMTP id
- b2-20020ac87fc2000000b00432fea5e3b4mr179052qtk.3.1712013928247; Mon, 01 Apr
- 2024 16:25:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712014614; x=1712619414;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RwQzHTQg7aKASMwhwisC553WH/Sq/sNTw6BLGLLQEgs=;
+        b=ZQ76Up+i7wMuYMTeW8+U6lTJS4LwVs8P+eiLJpYM8sThBG76ACbEc3+LMnQ15H5HBO
+         8LygRUPtiiWDR+/3T0kryOqCbkdjjrTOsSX0d04/OWxdCznGsH3Kd3DpQJNK3Qe8Jm0h
+         sT5K+AHKYw4W5Nnezj8ugDamW5WiLckRhAQkGeXMQ/149aLY6a6gJiQxPvORgwlOWxi4
+         +UK5YuZi2ONv9q9t4OgPgcnLsLm9KEhsOaEy0R9tw/HttUiwl1LOENiOTG5S+4CaJ+YL
+         +Tkpk88gz1LL57DT2cRNrJkukOV6UetISLEtvQCNtGVwI+zZBE9CRKHcLYo69gKqGZAe
+         YZnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUoHZBZhCfTJawbdi+BN9qfWfNhNDIL3iPb19EEem0elnA+VliC98oSXZhRN+6CiupUuUCEW0Gz7u3qtZ/MWca2C97QKqRa
+X-Gm-Message-State: AOJu0YyTyzIgBGIOlsJJDN92LRJkJqRM6pbd6G/X1s8TjTzK/fOcWkc5
+	zC1oxR/5k2PNN8ohdx8h9susiKETvNq9/GepO4fPq7MFGx9c86ZHUlAAi0ON0UY=
+X-Google-Smtp-Source: AGHT+IF9VDrAkw8zM+JlSY1VR4/oU7l/OgNtFNLNupYNJ/J4MEr7YxZTlgnNdnDmkWerLIX7U/KH+g==
+X-Received: by 2002:a92:cc46:0:b0:368:9b64:fa7a with SMTP id t6-20020a92cc46000000b003689b64fa7amr9893308ilq.0.1712014614629;
+        Mon, 01 Apr 2024 16:36:54 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id v2-20020a92c6c2000000b00366a9dc823dsm2959187ilm.55.2024.04.01.16.36.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Apr 2024 16:36:54 -0700 (PDT)
+Message-ID: <92c40e6d-3db6-4cbb-838b-f4c875e747ea@linuxfoundation.org>
+Date: Mon, 1 Apr 2024 17:36:53 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <tQ0L3-34g4t-mzfQIP6KDe5OYelGnEo6Udzq6Kb_nEcljppSQUXOktpE__nL-CdLOu9gW-4tIIbjtSbqrdCrjEkdhZLPiiHTqRcCB6WORuM=@thefossguy.com>
- <ac4246bf3786230eb9ca85b329e7d0df@manjaro.org>
-In-Reply-To: <ac4246bf3786230eb9ca85b329e7d0df@manjaro.org>
-From: Saravana Kannan <saravanak@google.com>
-Date: Mon, 1 Apr 2024 16:24:51 -0700
-Message-ID: <CAGETcx89V5CJrAq6XwuGiusQnkR804pTgYAtS94v7Q+v=Cv+qA@mail.gmail.com>
-Subject: Re: Fixing the devicetree of Rock 5 Model B (and possibly others)
-To: Dragan Simic <dsimic@manjaro.org>
-Cc: Pratham Patel <prathampatel@thefossguy.com>, sebastian.reichel@collabora.com, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 000/432] 6.7.12-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Mar 23, 2024 at 10:10=E2=80=AFAM Dragan Simic <dsimic@manjaro.org> =
-wrote:
->
-> Hello Pratham,
->
-> On 2024-03-23 18:02, Pratham Patel wrote:
-> > Since the introduction of the `of: property: fw_devlink: Fix stupid
-> > bug in remote-endpoint parsing` patch, an issue with the device-tree
-> > of the Rock 5 Model B has been detected. All the stable kernels (6.7.y
-> > and 6.8.y) work on the Orange Pi 5, which has the Rockchip RK3588S SoC
-> > (same as the RK3588, but less I/O basically). So, being an owner of
-> > only two SBCs which use the RK3588* SoC, it appears that the Rock 5
-> > Model B's DT is incorrect.
-> >
-> > I looked at the patch and tried several things, neither resulted in
-> > anything that would point me to the core issue. Then I tried this:
->
-> Could you, please, clarify a bit what's the actual issue you're
-> experiencing on your Rock 5B?
+On 4/1/24 09:39, Greg Kroah-Hartman wrote:
+> Note, this will be the LAST 6.7.y kernel release.  After this one it
+> will be end-of-life.  Please move to 6.8.y now.
+> 
+> ------------------------------------------
+> 
+> This is the start of the stable review cycle for the 6.7.12 release.
+> There are 432 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-Pratham, can you reply to this please? I don't really understand what
-your issue is for me to be able to help.
+Compiled and booted on my test system. No dmesg regressions.
 
-Also, can you give the output of <debugfs>/devices_deferred for the
-good vs bad case?
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Thanks,
-Saravana
-
->
-> > ```
-> > $ grep -C 3 remote-endpoint
-> > arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
-> >
-> >                 port {
-> >                         es8316_p0_0: endpoint {
-> >                                 remote-endpoint =3D <&i2s0_8ch_p0_0>;
-> >                         };
-> >                 };
-> >         };
-> > --
-> >                 i2s0_8ch_p0_0: endpoint {
-> >                         dai-format =3D "i2s";
-> >                         mclk-fs =3D <256>;
-> >                         remote-endpoint =3D <&es8316_p0_0>;
-> >                 };
-> >         };
-> > };
-> > ```
-> >
-> > So, from a cursory look, the issue seems to be related to either the
-> > DT node for the audio codec or related to the es8316's binding itself.
-> > Though I doubt that the later is the issue because if that were the
-> > issue, _someone_ with a Pine64 Pinebook Pro would've raised alarms. So
-> > far, this seems to be related to the `rk3588-rock-5b.dts` and possibly
-> > with the `rk3588s-rock-5a.dts` too.
-> >
-> > I would **love** to help but I'm afraid I device-trees are not
-> > something that I am at-all familiar with. That said, I am open to
-> > methods of debugging this issue to provide a fix myself.
-> >
-> > I would have replied to the patch's link but unfortunately, I haven't
-> > yet setup neomutt and my email provider's web UI doesn't have a
-> > [straightforward] way to reply using the 'In-Reply-To' header, hence a
-> > new thread. Apologies for the inconvenience caused.
-> >
-> >   -- Pratham Patel
-> > _______________________________________________
-> > Linux-rockchip mailing list
-> > Linux-rockchip@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-rockchip
+thanks,
+-- Shuah
 
