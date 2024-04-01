@@ -1,87 +1,175 @@
-Return-Path: <stable+bounces-33952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4992C893CC9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:21:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B62893CD1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE5111F22784
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:21:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0230CB20F1B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D924643B;
-	Mon,  1 Apr 2024 15:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE83545C15;
+	Mon,  1 Apr 2024 15:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fg5ZiGTn"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="jnHP2wjm";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H8ViwOeG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from flow6-smtp.messagingengine.com (flow6-smtp.messagingengine.com [103.168.172.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C344AECF;
-	Mon,  1 Apr 2024 15:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F233FBBD;
+	Mon,  1 Apr 2024 15:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711984861; cv=none; b=LJfUwPRhG2oGlq+1RC721rqrELoqzc10mFDSKSh/4xPU2ik5i2iWtRstDII2q+/VawE26Uiaetf71w4yyocfT0T0k/WG+BrLzF4dc1Lp/2m9AwSD+TSNwiXcOrrm8duGXwzU0waCUQu8QoiWC47+MiHABL2uzzd7Q8aQoWbC+2A=
+	t=1711985057; cv=none; b=BIDk/e1hkGKjkapr9qBccv6lL6Kcr4ub3chqnwi9xq6g7WCJJ4h1JSkL2nIM8GOCEAMIMNIClc4DdxMnTXJOAWHKs7H5f9ONiuAmoFDE4NLbwrrOTtVAO5yH/H2skMHPZ5xRKn+kRHeOvJLZQix0uNX37/ry7vbz5M6N0G4Gqm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711984861; c=relaxed/simple;
-	bh=ZBiBE3qZkHMm5Z23/govMm0X9TLV1iM7mEWgmk1P+oU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AcYJbAI+ndsmzJ1PTcHkdkL+WQAKwXPxktbH9JKxR7NgkQGb6jkgLPXiblc0W9yRBhzvKWP0+hJ+JsA8nRzST+hRu7Oylo31nYw71oooqBMt3OLdvO/VzOkBA3sXEbFokRi1FkAjQyPRUefEvdgKt9DScChMHNu+glvwoDcb+i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fg5ZiGTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED925C433F1;
-	Mon,  1 Apr 2024 15:20:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711984860;
-	bh=ZBiBE3qZkHMm5Z23/govMm0X9TLV1iM7mEWgmk1P+oU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fg5ZiGTnwlWG59PKdduv+jm4pSBi8QM4G2Ox8yiViz/oWewJH5UFDzxvoxjcsmEYD
-	 pfUV3qkXIQW2Wgmb4vUz4L9E+SbduzgENEqefxfLzhRiTFXMsVSvYVmHsECK8jm3td
-	 nY5Ot3wf05bG59/VOI8568Rk3RPD309vB8RcTtEBhMJIwYdmbvwUnZUqQP/96ojCOz
-	 xi+zHt9sEuuwr8ZT/uTO/xh5J+84+71XEjmwhf7pVtxkPqMZIzFijlgVFLfyJ5TVyR
-	 JZHNlktj75gRwnYciOqFeq6WvxOkHX3cHX6TxpAtDTl+Hl1C6I/MWyx8hb302+tmqf
-	 spggwy8/Rj3MQ==
-Date: Mon, 1 Apr 2024 08:20:59 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Breno Leitao <leitao@debian.org>, hengqi@linux.alibaba.com,
- xuanzhuo@linux.alibaba.com, Jason Wang <jasowang@redhat.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Andrew Melnychenko <andrew@daynix.com>,
- rbc@meta.com, riel@surriel.com, stable@vger.kernel.org,
- qemu-devel@nongnu.org, "open list:VIRTIO CORE AND NET DRIVERS"
- <virtualization@lists.linux.dev>, "open list:NETWORKING DRIVERS"
- <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v3] virtio_net: Do not send RSS key if it is not
- supported
-Message-ID: <20240401082059.77df2ff0@kernel.org>
-In-Reply-To: <20240331160618-mutt-send-email-mst@kernel.org>
-References: <20240329171641.366520-1-leitao@debian.org>
-	<20240331160618-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1711985057; c=relaxed/simple;
+	bh=Vu9NJbqYq8DKSNj9RbFUIEuMF9BDspzO48JX9Fl5sic=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CnPkn9fQ0JxA4ZY99G+sVWZpKO7vEgYtA5jUf8PI+u1TrlwL9c0iIDSaCaZsuyycKbAc+rAqBUoz5SpnNRQ7SiwH0B7H/S3LteN+oAm6ia6DPfsnI1d6ZuMsSmn/eIVGoVSVYsVx2gONjvOZ5jzeOVVHqCPk+1MNI3te4RiXwjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=jnHP2wjm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H8ViwOeG; arc=none smtp.client-ip=103.168.172.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailflow.nyi.internal (Postfix) with ESMTP id 9DD8D2003F2;
+	Mon,  1 Apr 2024 11:24:14 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 01 Apr 2024 11:24:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1711985054;
+	 x=1711992254; bh=RrcJpR6o9gazuIRw+eN1bhtXNZiNsVKHCtdZLgD7j4Q=; b=
+	jnHP2wjmGtEGrFtLrX0/ULGt9yGo4k11CaiBLNQqQ5nV7yu3MV0sYpwvlLp2qv67
+	weGXSGWx2iArteij+jagEnnly7VEZGJVLrriVR99KN55+fwNa1KpaNvxkJth7CSB
+	90uRFsncryY990CQ/2AX/tg8BDJeMgDC8MyailmsZfj1FWbbmT40ve/6KFYnCVKZ
+	vkKhmYQFk4zjnEsMVAJJLB/8bK9ne4dh7bgxDynrdeqqiiObunh61/PoURupWQA6
+	GvB5Uj/PJX8Oo1yFBwCwQxKp0EwTYsncWSX9q87v6bYxotYlo0pGZqkFDfRkZEEp
+	Lf54LU2aEhfJWmalHjGIWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1711985054; x=
+	1711992254; bh=RrcJpR6o9gazuIRw+eN1bhtXNZiNsVKHCtdZLgD7j4Q=; b=H
+	8ViwOeGbbq+0ftgw9lG/q6Sdjq4sstv3j2cC3fs7fOHnewCJDDiRp8KHeb4eqEe4
+	6J68gmHTANZIX3mQlpy26hioYdl1oZGz31HdQKvoQgCzXyNX3WOpzO9hMt4Hn0i+
+	DTzd6mYgBPTskSGZfzB53y5O4UclDSY0vjv7aKyokvuN/Z/xNL985lSoFNRyuY2W
+	+7i4BzVYZGGdC7nRi1IPzUoSvMpt9FDLVWvIJ4LyiwuOI4yrmFpHODtv03T3x0KC
+	tlRobgtTo1YtI92uULA3LQFXWZfvY2/98nLk2B3BAkzOFfTelaStGUmzaoovksqz
+	q4byBey1VgsA43juLcSTw==
+X-ME-Sender: <xms:ntEKZozS0a8pOEmT36gLQdTsXIiId2RrOZbstEIqM38l41gH33HB-A>
+    <xme:ntEKZsSJhijCPaoJgOq2SgZpWN2v405Kxb6m0BGEUxDfdIqAGIPd-KKjITKkPDAfs
+    Of5PhHg2eKBnQ>
+X-ME-Received: <xmr:ntEKZqUYHxEaSurgUJG0KIUyZqyyr6BsoHkl_gmEY-ZObq5iHJu9PZub8-hSv0JGFIDHQLIKy2XNppSw15PilgaRxMnYmcTIBoBgOg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeftddgkeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefgke
+    ffieefieevkeelteejvdetvddtledugfdvhfetjeejieduledtfefffedvieenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
+    grhhdrtghomh
+X-ME-Proxy: <xmx:ntEKZmgoYU3GWP4Lanm9HM2Wkw_ui5LnCByHgaAmyZYmR5XMvDluBA>
+    <xmx:ntEKZqBoz-h9uJduIzKB4wgdu6evwXCw6iuwdDpy94Tl6w9WeOF7-w>
+    <xmx:ntEKZnLotSxXLlOOBQ1X9nU79PKr5AQmlhfERlfl4nkr5BE0PpvqSA>
+    <xmx:ntEKZhD2_w8X8IGFH6tyz8YolDWMMLcNVLSDigPgiaFDQG2T5rv6pQ>
+    <xmx:ntEKZswiv-wUVhV_XG16Q-u-D2OiXfIOCvt4w1dKcYpA9zB_4j3pH6EBqog>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Apr 2024 11:24:13 -0400 (EDT)
+Date: Mon, 1 Apr 2024 17:24:10 +0200
+From: Greg KH <greg@kroah.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Bagas Sanjaya <bagasdotme@gmail.com>, Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>, Daniel Xu <dxu@dxuuu.xyz>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Natanael Copa <ncopa@alpinelinux.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Linux Stable <stable@vger.kernel.org>
+Subject: Re: Fwd: stable kernels 6.6.23 and 6.1.83 fails to build: error:
+ unknown type name 'u32'
+Message-ID: <2024040100-skies-outplayed-c162@gregkh>
+References: <ZgrAM4NjZQWZ2Jq6@archie.me>
+ <2024040143-shrimp-congress-8263@gregkh>
+ <ZgrD-XtaG9D8jFnA@archie.me>
+ <CAADnVQ+3bGQL9tpAR-up0_bPeF-+zW9xPp=Li1xUYf-2SaRuCw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQ+3bGQL9tpAR-up0_bPeF-+zW9xPp=Li1xUYf-2SaRuCw@mail.gmail.com>
 
-On Sun, 31 Mar 2024 16:20:30 -0400 Michael S. Tsirkin wrote:
-> > Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-> > Cc: stable@vger.kernel.org  
+On Mon, Apr 01, 2024 at 08:09:40AM -0700, Alexei Starovoitov wrote:
+> On Mon, Apr 1, 2024 at 7:26 AM Bagas Sanjaya <bagasdotme@gmail.com> wrote:
+> >
+> > On Mon, Apr 01, 2024 at 04:15:25PM +0200, Greg KH wrote:
+> > > On Mon, Apr 01, 2024 at 09:09:55PM +0700, Bagas Sanjaya wrote:
+> > > > Hi,
+> > > >
+> > > > On Bugzilla, ncopa@alpinelinux.org reported resolve_btfids FTBFS regression
+> > > > on musl system [1]:
+> > > >
+> > > > > The latest releases fails to build with musl libc (Alpine Linux edge and v3.19):
+> > > > >
+> > > > > ```
+> > > > > rm -f -f /home/ncopa/aports/main/linux-lts/src/build-lts.x86_64/tools/bpf/resolve_btfids/libbpf/libbpf.a; ar rcs /home/ncopa/aports/main/linux-lts/src/build-lts.x86_64/tool
+> > > > > s/bpf/resolve_btfids/libbpf/libbpf.a /home/ncopa/aports/main/linux-lts/src/build-lts.x86_64/tools/bpf/resolve_btfids/libbpf/staticobjs/libbpf-in.o
+> > > > > In file included from main.c:73:
+> > > > > /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_ids.h:7:9: error: unknown type name 'u32'
+> > > > >     7 |         u32 cnt;
+> > > > >       |         ^~~
+> > > > > /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_ids.h:8:9: error: unknown type name 'u32'
+> > > > >     8 |         u32 ids[];
+> > > > >       |         ^~~
+> > > > > /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_ids.h:12:9: error: unknown type name 'u32'
+> > > > >    12 |         u32 cnt;
+> > > > >       |         ^~~
+> > > > > /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_ids.h:13:9: error: unknown type name 'u32'
+> > > > >    13 |         u32 flags;
+> > > > >       |         ^~~
+> > > > > /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_ids.h:15:17: error: unknown type name 'u32'
+> > > > >    15 |                 u32 id;
+> > > > >       |                 ^~~
+> > > > > /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_ids.h:16:17: error: unknown type name 'u32'
+> > > > >    16 |                 u32 flags;
+> > > > >       |                 ^~~
+> > > > > /home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/include/linux/btf_ids.h:215:8: error: unknown type name 'u32'
+> > > > >   215 | extern u32 btf_tracing_ids[];
+> > > > >       |        ^~~
+> > > > > make[4]: *** [/home/ncopa/aports/main/linux-lts/src/linux-6.6/tools/build/Makefile.build:98: /home/ncopa/aports/main/linux-lts/src/build-lts.x86_64/tools/bpf/resolve_btfids
+> > > > > /main.o] Error 1
+> > > > > make[4]: *** Waiting for unfinished jobs....
 > 
-> net has its own stable process, don't CC stable on net patches.
+> > > > > make[3]: *** [Makefile:83: /home/ncopa/aports/main/linux-lts/src/build-lts.x86_64/tools/bpf/resolve_btfids//resolve_btfids-in.o] Error 2
+> > > > > make[2]: *** [Makefile:76: bpf/resolve_btfids] Error 2
+> > > > > make[1]: *** [/home/ncopa/aports/main/linux-lts/src/linux-6.6/Makefile:1354: tools/bpf/resolve_btfids] Error 2
+> > > > > make: *** [/home/ncopa/aports/main/linux-lts/src/linux-6.6/Makefile:234: __sub-make] Error 2
+> > > > > ```
+> > > >
+> > > > Bisection led to upstream commit 9707ac4fe2f5ba ("tools/resolve_btfids:
+> > > > Refactor set sorting with types from btf_ids.h") as the culprit.
+> > > >
+> > > > See the report on Bugzilla for the full thread and proposed fix.
+> > >
+> > > Is the proposed fix a commit to backport?
+> >
+> > Nope (see below).
+> 
+> The fix is in bpf tree.
+> commit 62248b22d01e ("tools/resolve_btfids: fix build with musl libc")
 
-Not any more, FWIW:
+Thanks, I'll go queue that up now to make people's lives easier.
 
-  1.5.7. Stable tree
-
-  While it used to be the case that netdev submissions were not
-  supposed to carry explicit CC: stable@vger.kernel.org tags that is no
-  longer the case today. Please follow the standard stable rules in
-  Documentation/process/stable-kernel-rules.rst, and make sure you
-  include appropriate Fixes tags!
-
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#stable-tree
+greg k-h
 
