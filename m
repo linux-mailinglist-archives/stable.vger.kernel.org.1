@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-34827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F76894110
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC934893F8A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01C681C21048
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7118284D32
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460DC4AEE0;
-	Mon,  1 Apr 2024 16:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA90446AC;
+	Mon,  1 Apr 2024 16:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atZ2erkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5ncGGO0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030F0487A7;
-	Mon,  1 Apr 2024 16:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284171DFFC;
+	Mon,  1 Apr 2024 16:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989433; cv=none; b=QNXmTwxXBejyRkBNt7rkuabjLnpyRwy/oUqCUT4nugME//KQSEdll0/sPF+z/GytV7+gXTV60RTY8E1Ib8VgTvXOfuLJA2Dd3HrrxBHto2rPfm6y4Komn9W7WAYGL2qJerAlkglVzDaN4S/OmyisRSAXG5nx+4U+gJgVycxyFrg=
+	t=1711988276; cv=none; b=SU8avRe2TOPrX61bC3KQ4AVW+TeekPJnfdfvTILUSQ5ZnjOHPN1vwoflso5tIopxgWT04Y83kHt8vG5QSR974XSAes4iogRSY8yP2PNO7SvdQcDCYry9TEwIa0dLfYNwmL1OqT7DwWiKAyz5jdutaG0R108GOZOJznyJ9SjiunQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989433; c=relaxed/simple;
-	bh=0LxFDLGjneBgT9QEeJ+SjXptT2o1x8WzywR4dTAn1Cc=;
+	s=arc-20240116; t=1711988276; c=relaxed/simple;
+	bh=Xhf1/kEvgGY3wZLFgePGdyvDhntbAjMlOjt46iZZrEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXuFSFy4FjuPnHF8Wph51VKOqFN0hRAYw7NzNVUpWMpUEajuS4eLm5Xh63tnkN/ZuPEyPdWIIdE4ZLgYGx2ehSMzINhSmYbf4tafqvhAIaFfu1Z0LZMXQcZzkQ/PrrrLZL6pVXMJcTFcLWwyKxEaqWEIFqXRaP+52fbQKyP9jYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atZ2erkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77576C433C7;
-	Mon,  1 Apr 2024 16:37:12 +0000 (UTC)
+	 MIME-Version; b=lwy2G3Kw2rpgaKIGfXVx/tf5SMBtkWH8GbCbe5lm9ydCCQZBa19WrcOQJJjX7m1K9FKyO8v4m1emt8AhBpRLmmrKj9JUyix+qyfnP0hzzbxoskvW17mpCdJy5xknIWUdJcXG+c0RAzYK1y62Djh50/TWXPg4xAsJNF4sVSB6ldc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5ncGGO0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9090BC433C7;
+	Mon,  1 Apr 2024 16:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989432;
-	bh=0LxFDLGjneBgT9QEeJ+SjXptT2o1x8WzywR4dTAn1Cc=;
+	s=korg; t=1711988276;
+	bh=Xhf1/kEvgGY3wZLFgePGdyvDhntbAjMlOjt46iZZrEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atZ2erkgyHaXuPIwGPOdlLdr0eCvX51nzRyqadTXQwrpv6k3Qof37OhII5WhMajWS
-	 LlHUfPZAOoRDx8S3B00tFRtRrbJOGrgxBG1gPSdDf39Ydj5juCxxy+RNBcxtGu0oPN
-	 B9vVNbGAB6BAtpgm0zJl7MPnjOyhx9C2sBZiXBhs=
+	b=n5ncGGO0DCBEqHvaKI1uoVpxFJ+XfW3ZR7mufMjyCRvMFqhrPJoYEX33xvw0ya6oy
+	 61g7oCfxBxmx/cUG6HIavV26x+im1KoaPSomIe/1a4LfCDOFxXiH+h7nOBLdIA4Xwi
+	 apb6HYctnMyBLNl7npnv5Iw4zXjzWDxIFSqE6PlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Xu <howeyxu@tencent.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/396] fuse: fix VM_MAYSHARE and direct_io_allow_mmap
+Subject: [PATCH 6.7 108/432] dm-raid: fix lockdep waring in "pers->hot_add_disk"
 Date: Mon,  1 Apr 2024 17:41:35 +0200
-Message-ID: <20240401152549.302091195@linuxfoundation.org>
+Message-ID: <20240401152556.350220543@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernd Schubert <bschubert@ddn.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 9511176bbaee0ac60ecc84e7b01cf5972a59ea17 ]
+[ Upstream commit 95009ae904b1e9dca8db6f649f2d7c18a6e42c75 ]
 
-There were multiple issues with direct_io_allow_mmap:
+The lockdep assert is added by commit a448af25becf ("md/raid10: remove
+rcu protection to access rdev from conf") in print_conf(). And I didn't
+notice that dm-raid is calling "pers->hot_add_disk" without holding
+'reconfig_mutex'.
 
- - fuse_link_write_file() was missing, resulting in warnings in
-   fuse_write_file_get() and EIO from msync()
+"pers->hot_add_disk" read and write many fields that is protected by
+'reconfig_mutex', and raid_resume() already grab the lock in other
+contex. Hence fix this problem by protecting "pers->host_add_disk"
+with the lock.
 
- - "vma->vm_ops = &fuse_file_vm_ops" was not set, but especially
-   fuse_page_mkwrite is needed.
-
-The semantics of invalidate_inode_pages2() is so far not clearly defined in
-fuse_file_mmap.  It dates back to commit 3121bfe76311 ("fuse: fix
-"direct_io" private mmap") Though, as direct_io_allow_mmap is a new
-feature, that was for MAP_PRIVATE only.  As invalidate_inode_pages2() is
-calling into fuse_launder_folio() and writes out dirty pages, it should be
-safe to call invalidate_inode_pages2 for MAP_PRIVATE and MAP_SHARED as
-well.
-
-Cc: Hao Xu <howeyxu@tencent.com>
-Cc: stable@vger.kernel.org
-Fixes: e78662e818f9 ("fuse: add a new fuse init flag to relax restrictions in no cache mode")
-Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 9092c02d9435 ("DM RAID: Add ability to restore transiently failed devices on resume")
+Fixes: a448af25becf ("md/raid10: remove rcu protection to access rdev from conf")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240305072306.2562024-10-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index a660f1f21540a..cc9651a01351c 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -2467,7 +2467,8 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
- 		return fuse_dax_mmap(file, vma);
- 
- 	if (ff->open_flags & FOPEN_DIRECT_IO) {
--		/* Can't provide the coherency needed for MAP_SHARED
-+		/*
-+		 * Can't provide the coherency needed for MAP_SHARED
- 		 * if FUSE_DIRECT_IO_ALLOW_MMAP isn't set.
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index 063f1266ec462..d97355e9b9a6e 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -4091,7 +4091,9 @@ static void raid_resume(struct dm_target *ti)
+ 		 * Take this opportunity to check whether any failed
+ 		 * devices are reachable again.
  		 */
- 		if ((vma->vm_flags & VM_MAYSHARE) && !fc->direct_io_allow_mmap)
-@@ -2475,7 +2476,10 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
- 
- 		invalidate_inode_pages2(file->f_mapping);
- 
--		return generic_file_mmap(file, vma);
-+		if (!(vma->vm_flags & VM_MAYSHARE)) {
-+			/* MAP_PRIVATE */
-+			return generic_file_mmap(file, vma);
-+		}
++		mddev_lock_nointr(mddev);
+ 		attempt_restore_of_faulty_devices(rs);
++		mddev_unlock(mddev);
  	}
  
- 	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_MAYWRITE))
+ 	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
 -- 
 2.43.0
 
