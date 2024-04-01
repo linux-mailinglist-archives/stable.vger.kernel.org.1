@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCAD98943DC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9A88942B3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C7701F270D5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00A3F1F266A1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E88482EF;
-	Mon,  1 Apr 2024 17:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDBC47A6B;
+	Mon,  1 Apr 2024 16:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEurqE/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzKgAoib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7368D47A5D;
-	Mon,  1 Apr 2024 17:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFB64AEFA;
+	Mon,  1 Apr 2024 16:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991344; cv=none; b=PIh/h8g8TFFv/IxpMDeVHvv0bsKZfDkGnqsym1SSM5v/Qaea5C0AiNH3EA5fMvJpHPtpn2/Uh7ZZFW/N3E04uS3W5/7vLg4A6CeI9I0YxIyXsM0CjGhXBY8pI2bKFwsytk/JAYPShNLoXK0+1q9i7qeZapCNXA7LAHFBIXZfT98=
+	t=1711990514; cv=none; b=of2rA4GW7+oNZfy5+bbp74PxqcEAIICNQ3pUEqJjjowIKM4n5o+KEFUhk+212p3e7g4k88reKi0oq5/9I99a76BeXz2h6HbUHIT7xA+H2DuVuceWUQvLmWhEvevCgAF0V85Pgn68zlt8JYoyerPK3xx+4tWm7SJyhNOLMd8SNrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991344; c=relaxed/simple;
-	bh=6AMjOB5BwPyeXc3q0yTIdA0kNjf7PBNs9ZqYnDqML2s=;
+	s=arc-20240116; t=1711990514; c=relaxed/simple;
+	bh=VcHzR4/H9ShUh/SFIz0RdQOXIUIHQ1ay/vYdP8RXXF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USqEW+vELaxcpdW9x1WwKBHltBmF6DW159R94LADPJVE7HKuD4707JIfS4sKdv69cH6jeva1DxeJgQsvvkM0W7+3+nVg9p+Ij2o8NRNWktCbZMD4i8mE7LH6c5wVo8QmniMLAXy2GBXX9p/pFMN34xuttrBbheBfifYsuTDaZpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEurqE/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FA2C433C7;
-	Mon,  1 Apr 2024 17:09:03 +0000 (UTC)
+	 MIME-Version; b=qRik8Y9KUuSjTMZ1R+gKcfHfzGBQGeeCxkTUDVVFDK8IhOFvJQm4frzT/iIZecsCH+gaM6gWLY+GLb3PxsP9gZIoy12ZRPOuicdzSXnm20g9s7Rd2bwjGWefdkKnAce9nV4KAzRB+LmxE1ypA+pHetrzamNSnW4WtEDYT51VqUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzKgAoib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CFAC43390;
+	Mon,  1 Apr 2024 16:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991344;
-	bh=6AMjOB5BwPyeXc3q0yTIdA0kNjf7PBNs9ZqYnDqML2s=;
+	s=korg; t=1711990514;
+	bh=VcHzR4/H9ShUh/SFIz0RdQOXIUIHQ1ay/vYdP8RXXF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEurqE/EXXpWGdAgreqf0JOojbGwBiqPF7Gs0Lgd47TmqEn+UxAAx7Uy6T+v75+Xp
-	 b64eDgcuU4Ybcjtv39v2cyYw6Gp5JhcX5GW9X68FlSUJfJ36k6zheyJLwQdj0c6dkO
-	 XqC3TbYlA9NBWuKdyhbAmtLJS5Idp5eAiVF101qQ=
+	b=hzKgAoibhhAoLwY7DVKzhKac5tZZCUWw9cprtfKTy1Qgh/bChLaTElQNMOIsfqHOV
+	 hfrOpA1arKoA2d7FsWfK3s6J3Rl52MqQ0elOPQRjFW3N+jG5R/mWd1ENY0dtlk5vxr
+	 fWGL8mj+hJa4Y4fKFYK9YeBoHTUehxVDhjGvzYKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 6.1 236/272] ALSA: sh: aica: reorder cleanup operations to avoid UAF bugs
-Date: Mon,  1 Apr 2024 17:47:06 +0200
-Message-ID: <20240401152538.342706487@linuxfoundation.org>
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 378/396] scsi: qla2xxx: Prevent command send on chip reset
+Date: Mon,  1 Apr 2024 17:47:07 +0200
+Message-ID: <20240401152559.184273878@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 051e0840ffa8ab25554d6b14b62c9ab9e4901457 upstream.
+commit 4895009c4bb72f71f2e682f1e7d2c2d96e482087 upstream.
 
-The dreamcastcard->timer could schedule the spu_dma_work and the
-spu_dma_work could also arm the dreamcastcard->timer.
+Currently IOCBs are allowed to push through while chip reset could be in
+progress. During chip reset the outstanding_cmds array is cleared
+twice. Once when any command on this array is returned as failed and
+secondly when the array is initialize to zero. If a command is inserted on
+to the array between these intervals, then the command will be lost.  Check
+for chip reset before sending IOCB.
 
-When the snd_pcm_substream is closing, the aica_channel will be
-deallocated. But it could still be dereferenced in the worker
-thread. The reason is that del_timer() will return directly
-regardless of whether the timer handler is running or not and
-the worker could be rescheduled in the timer handler. As a result,
-the UAF bug will happen. The racy situation is shown below:
-
-      (Thread 1)                 |      (Thread 2)
-snd_aicapcm_pcm_close()          |
- ...                             |  run_spu_dma() //worker
-                                 |    mod_timer()
-  flush_work()                   |
-  del_timer()                    |  aica_period_elapsed() //timer
-  kfree(dreamcastcard->channel)  |    schedule_work()
-                                 |  run_spu_dma() //worker
-  ...                            |    dreamcastcard->channel-> //USE
-
-In order to mitigate this bug and other possible corner cases,
-call mod_timer() conditionally in run_spu_dma(), then implement
-PCM sync_stop op to cancel both the timer and worker. The sync_stop
-op will be called from PCM core appropriately when needed.
-
-Fixes: 198de43d758c ("[ALSA] Add ALSA support for the SEGA Dreamcast PCM device")
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Message-ID: <20240326094238.95442-1-duoming@zju.edu.cn>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-2-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/sh/aica.c |   17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c |    8 ++++++--
+ drivers/scsi/qla2xxx/qla_iocb.c |   33 +++++++++++++++++++++++++++++++--
+ 2 files changed, 37 insertions(+), 4 deletions(-)
 
---- a/sound/sh/aica.c
-+++ b/sound/sh/aica.c
-@@ -278,7 +278,8 @@ static void run_spu_dma(struct work_stru
- 		dreamcastcard->clicks++;
- 		if (unlikely(dreamcastcard->clicks >= AICA_PERIOD_NUMBER))
- 			dreamcastcard->clicks %= AICA_PERIOD_NUMBER;
--		mod_timer(&dreamcastcard->timer, jiffies + 1);
-+		if (snd_pcm_running(dreamcastcard->substream))
-+			mod_timer(&dreamcastcard->timer, jiffies + 1);
- 	}
- }
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -1193,8 +1193,12 @@ int qla24xx_async_gnl(struct scsi_qla_ho
+ 	return rval;
  
-@@ -290,6 +291,8 @@ static void aica_period_elapsed(struct t
- 	/*timer function - so cannot sleep */
- 	int play_period;
- 	struct snd_pcm_runtime *runtime;
-+	if (!snd_pcm_running(substream))
-+		return;
- 	runtime = substream->runtime;
- 	dreamcastcard = substream->pcm->private_data;
- 	/* Have we played out an additional period? */
-@@ -350,12 +353,19 @@ static int snd_aicapcm_pcm_open(struct s
- 	return 0;
- }
- 
-+static int snd_aicapcm_pcm_sync_stop(struct snd_pcm_substream *substream)
-+{
-+	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
-+
-+	del_timer_sync(&dreamcastcard->timer);
-+	cancel_work_sync(&dreamcastcard->spu_dma_work);
-+	return 0;
-+}
-+
- static int snd_aicapcm_pcm_close(struct snd_pcm_substream
- 				 *substream)
+ done_free_sp:
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++	/*
++	 * use qla24xx_async_gnl_sp_done to purge all pending gnl request.
++	 * kref_put is call behind the scene.
++	 */
++	sp->u.iocb_cmd.u.mbx.in_mb[0] = MBS_COMMAND_ERROR;
++	qla24xx_async_gnl_sp_done(sp, QLA_COMMAND_ERROR);
+ 	fcport->flags &= ~(FCF_ASYNC_SENT);
+ done:
+ 	fcport->flags &= ~(FCF_ASYNC_ACTIVE);
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -2587,6 +2587,33 @@ void
+ qla2x00_sp_release(struct kref *kref)
  {
- 	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
--	flush_work(&(dreamcastcard->spu_dma_work));
--	del_timer(&dreamcastcard->timer);
- 	dreamcastcard->substream = NULL;
- 	kfree(dreamcastcard->channel);
- 	spu_disable();
-@@ -401,6 +411,7 @@ static const struct snd_pcm_ops snd_aica
- 	.prepare = snd_aicapcm_pcm_prepare,
- 	.trigger = snd_aicapcm_pcm_trigger,
- 	.pointer = snd_aicapcm_pcm_pointer,
-+	.sync_stop = snd_aicapcm_pcm_sync_stop,
- };
+ 	struct srb *sp = container_of(kref, struct srb, cmd_kref);
++	struct scsi_qla_host *vha = sp->vha;
++
++	switch (sp->type) {
++	case SRB_CT_PTHRU_CMD:
++		/* GPSC & GFPNID use fcport->ct_desc.ct_sns for both req & rsp */
++		if (sp->u.iocb_cmd.u.ctarg.req &&
++			(!sp->fcport ||
++			 sp->u.iocb_cmd.u.ctarg.req != sp->fcport->ct_desc.ct_sns)) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp &&
++			(!sp->fcport ||
++			 sp->u.iocb_cmd.u.ctarg.rsp != sp->fcport->ct_desc.ct_sns)) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
++		break;
++	default:
++		break;
++	}
  
- /* TO DO: set up to handle more than one pcm instance */
+ 	sp->free(sp);
+ }
+@@ -2692,7 +2719,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	 */
+ 	sp = qla2x00_get_sp(vha, fcport, GFP_KERNEL);
+ 	if (!sp) {
+-		kfree(fcport);
++		qla2x00_free_fcport(fcport);
+ 		ql_log(ql_log_info, vha, 0x70e6,
+ 		 "SRB allocation failed\n");
+ 		return -ENOMEM;
+@@ -2747,6 +2774,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	if (rval != QLA_SUCCESS) {
+ 		/* ref: INIT */
+ 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
++		qla2x00_free_fcport(fcport);
+ 		return QLA_FUNCTION_FAILED;
+ 	}
+ 
+@@ -2756,6 +2784,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
+ 
+ 	wait_for_completion(&elsio->u.els_logo.comp);
++	qla2x00_free_fcport(fcport);
+ 
+ 	/* ref: INIT */
+ 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+@@ -3918,7 +3947,7 @@ qla2x00_start_sp(srb_t *sp)
+ 		return -EAGAIN;
+ 	}
+ 
+-	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
++	pkt = qla2x00_alloc_iocbs_ready(sp->qpair, sp);
+ 	if (!pkt) {
+ 		rval = -EAGAIN;
+ 		ql_log(ql_log_warn, vha, 0x700c,
 
 
 
