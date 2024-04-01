@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-34999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA6F8941D9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B36893E88
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F8211F25539
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE6F81F21891
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24219481C4;
-	Mon,  1 Apr 2024 16:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A094778B;
+	Mon,  1 Apr 2024 16:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWuLz8tk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ct51fF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D654647A6B;
-	Mon,  1 Apr 2024 16:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BD01CA8F;
+	Mon,  1 Apr 2024 16:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990007; cv=none; b=JzHAfkvwDXrDXQQ5xXiv7KtqjvXaB7O8qv97q2S4Q9Vfagcg5YWMAXbknPtaGkLNzBJfSD6izq7jwlJO6GM37FSDb5/ehW+rdBNQeTALK6hHhj0PbCPTuNkPCsaBt6tkK9Bpil/A+z8Grdfg0e8j3afkr+rxEmfijYRFmNBIyvY=
+	t=1711987485; cv=none; b=mEzL85vdzAPpeDZtnXVGkBMGxTbwJljorjMoMatatsaye93Dyu6IZiWleFKfzXkr/Brf6YlMle3tBUV7IMcku5IyzqNsGSvjrtR6juiX9LxTZ0+Bm7sRfaDaRazxfQnP2CVcTOya8Xda7DH1aSh4ALypDtXALtj4Rm8YYUDkAjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990007; c=relaxed/simple;
-	bh=bG+Mios9qKv/JM7f5IX5TdeFKSmUXfMl82RIW3qsdGM=;
+	s=arc-20240116; t=1711987485; c=relaxed/simple;
+	bh=ued8xSU9z0XZHVZXYseNe9k1Nm73AgyKFysYaGOhI3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5eKqTjz3lHEQv29uTke3qKloJ2ATuzGprs5T2Ki01w0BD0MzpE2QWllpAnU3lkAavqcckmneC/UDrHUWIy3u1cCuFKLVElEkjFTXO7RsZtil0ik/huzuGNSKQYAzLAXR1d6khZ1UcWor5FVXUQWdFkB2H6IhVo1vMEOLWPZyf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWuLz8tk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FB4C433F1;
-	Mon,  1 Apr 2024 16:46:46 +0000 (UTC)
+	 MIME-Version; b=l8pfJiNqfjfrc88zIRKXMf0nxzLZMt4X7CObIVh7y3hsgEL5pZDvWt4Tmw3y4XhuZ0RU1BqCQeu2j+uYPQ5vKa6mdZF3dGKdnXETt5HYeLn1ANqyIYVO4kzv9/syS6V1/W4qzfRtkwyzw1fj5txw1xDEvOmubYMiroYXs7EPF2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ct51fF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C851EC433F1;
+	Mon,  1 Apr 2024 16:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990007;
-	bh=bG+Mios9qKv/JM7f5IX5TdeFKSmUXfMl82RIW3qsdGM=;
+	s=korg; t=1711987485;
+	bh=ued8xSU9z0XZHVZXYseNe9k1Nm73AgyKFysYaGOhI3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWuLz8tkgLOYUcBFa/BZx4QNIkimiv6QUHHhsvhP+S2i0pWjgEJ26UC4K13lmxioV
-	 Ko7fh7MLyUrykInDIfscY4b739Nk/oJ6U6KFIJb4BwQD5bBep1Z7L6XjtwhU0yxy7m
-	 /DexvlKkYnPGnIs1icrkgV8Buoa9uL5Z3hROfRC0=
+	b=1ct51fF/QWb+eIssD1iFb6N2+/2W60kDG4mapdYYfDmDzbG7ifLt92Xz+J2cT8dPB
+	 h8VNpGQFkNBgLUvbhIcu6eFsEl9Jpngp+lrGSGOl6pry8NZfL9/j8Jyz65zj0CSVAw
+	 uovqgTPT3l7SyQjvQDaAfL0iQqPjoyOEC4z0YJcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Shawn Lee <shawn.c.lee@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.6 219/396] drm/i915: Check before removing mm notifier
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.8 302/399] wifi: iwlwifi: fw: dont always use FW dump trig
 Date: Mon,  1 Apr 2024 17:44:28 +0200
-Message-ID: <20240401152554.449769604@linuxfoundation.org>
+Message-ID: <20240401152558.206621121@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 01bb1ae35006e473138c90711bad1a6b614a1823 upstream.
+commit 045a5b645dd59929b0e05375f493cde3a0318271 upstream.
 
-Error in mmu_interval_notifier_insert() can leave a NULL
-notifier.mm pointer. Catch that and return early.
+Since the dump_data (struct iwl_fwrt_dump_data) is a union,
+it's not safe to unconditionally access and use the 'trig'
+member, it might be 'desc' instead. Access it only if it's
+known to be 'trig' rather than 'desc', i.e. if ini-debug
+is present.
 
-Fixes: ed29c2691188 ("drm/i915: Fix userptr so we do not have to worry about obj->mm.lock, v7.")
-Cc: <stable@vger.kernel.org> # v5.13+
-[tursulin: Added Fixes and cc stable.]
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Shawn Lee <shawn.c.lee@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240219125047.28906-1-nirmoy.das@intel.com
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-(cherry picked from commit db7bbd13f08774cde0332c705f042e327fe21e73)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 0eb50c674a1e ("iwlwifi: yoyo: send hcmd to fw after dump collection completes.")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.e2976bc58b29.I72fbd6135b3623227de53d8a2bb82776066cb72b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_userptr.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_userptr.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_userptr.c
-@@ -379,6 +379,9 @@ i915_gem_userptr_release(struct drm_i915
- {
- 	GEM_WARN_ON(obj->userptr.page_ref);
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -3074,8 +3074,6 @@ static void iwl_fw_dbg_collect_sync(stru
+ 	struct iwl_fw_dbg_params params = {0};
+ 	struct iwl_fwrt_dump_data *dump_data =
+ 		&fwrt->dump.wks[wk_idx].dump_data;
+-	u32 policy;
+-	u32 time_point;
+ 	if (!test_bit(wk_idx, &fwrt->dump.active_wks))
+ 		return;
  
-+	if (!obj->userptr.notifier.mm)
-+		return;
+@@ -3106,13 +3104,16 @@ static void iwl_fw_dbg_collect_sync(stru
+ 
+ 	iwl_fw_dbg_stop_restart_recording(fwrt, &params, false);
+ 
+-	policy = le32_to_cpu(dump_data->trig->apply_policy);
+-	time_point = le32_to_cpu(dump_data->trig->time_point);
+-
+-	if (policy & IWL_FW_INI_APPLY_POLICY_DUMP_COMPLETE_CMD) {
+-		IWL_DEBUG_FW_INFO(fwrt, "WRT: sending dump complete\n");
+-		iwl_send_dbg_dump_complete_cmd(fwrt, time_point, 0);
++	if (iwl_trans_dbg_ini_valid(fwrt->trans)) {
++		u32 policy = le32_to_cpu(dump_data->trig->apply_policy);
++		u32 time_point = le32_to_cpu(dump_data->trig->time_point);
 +
- 	mmu_interval_notifier_remove(&obj->userptr.notifier);
- 	obj->userptr.notifier.mm = NULL;
- }
++		if (policy & IWL_FW_INI_APPLY_POLICY_DUMP_COMPLETE_CMD) {
++			IWL_DEBUG_FW_INFO(fwrt, "WRT: sending dump complete\n");
++			iwl_send_dbg_dump_complete_cmd(fwrt, time_point, 0);
++		}
+ 	}
++
+ 	if (fwrt->trans->dbg.last_tp_resetfw == IWL_FW_INI_RESET_FW_MODE_STOP_FW_ONLY)
+ 		iwl_force_nmi(fwrt->trans);
+ 
 
 
 
