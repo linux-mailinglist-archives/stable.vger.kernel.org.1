@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0DF89430B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E25B8941B7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791D0282F2A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 919221C2190E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E531482CA;
-	Mon,  1 Apr 2024 16:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FAC4AEC3;
+	Mon,  1 Apr 2024 16:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxsa4tsx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQcj3XLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D94BA3F;
-	Mon,  1 Apr 2024 16:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025E747A6B;
+	Mon,  1 Apr 2024 16:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990736; cv=none; b=CX3SfqGUl0nVbGYxMoXzdsG9fw5/Ruk7benHHn751PBFyoaWvvopF0WUBzC7b1jsgw3ixd3tJA0c2zzGlsUIGOlqiQ+0MXQUDxqiHy0LXWjFv4CF0XF/Gi7I+jpNsSSlx5/Mkzb8IktXxA7zn3y61CU59gZacjxMZhKhvMDkjFA=
+	t=1711989911; cv=none; b=AAC/ljdyHeGwQSIFaoQf8E+u9pshi9qO7AZ735bJPNJBg0TksPF+lX+Xt8hc+yPuOnooun47tk6UMR9d/jEdG4as5C5VWO8vo4oXaIJjICMXsKLJPl9sdSjEu29+Dn/gsZU4BBmVqOcssPxUu9KFxzFJVlKrUrnvfWXps/UfIbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990736; c=relaxed/simple;
-	bh=CN7egjNP9qVWjZ7FBcz8S47pKlScW0FiYAj8NsLoKTU=;
+	s=arc-20240116; t=1711989911; c=relaxed/simple;
+	bh=wtqAlBKhRXWu1e2u31spVINzUITsP5wn0nTKqz3Th8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2B8VfL9uZS2l/94ihKMWTWPHUHJu60hZu41gzoO7NHL6JOpJeLYKyd71iH8kSvYH9yy+Tp4EJ00tdcQ4G53tMqa3yle/DGvGOdqlVB8+WgfhC7d8vuJ0gvBLJvtX5ruV6qOW8SgndHyEBocelfYdDRm2lmcpVijWUHHKxpeiMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxsa4tsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1C6C433C7;
-	Mon,  1 Apr 2024 16:58:54 +0000 (UTC)
+	 MIME-Version; b=Idv5LusjaUjQPpymywP69F9XyGgf+t2RGrVe3ycy71KGP178E96q7njN+AWUQcGj1bxbiDtalcC6iRNWPhHIbX603uANNDX9DlNqBEFcu1mD8gUJ4KNaaYh9lW70iVwEV4L+HlGQU9b4c2oMf6iCSpHdHlUr5xq2PP8ly7AHbfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQcj3XLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C2AC43390;
+	Mon,  1 Apr 2024 16:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990735;
-	bh=CN7egjNP9qVWjZ7FBcz8S47pKlScW0FiYAj8NsLoKTU=;
+	s=korg; t=1711989910;
+	bh=wtqAlBKhRXWu1e2u31spVINzUITsP5wn0nTKqz3Th8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxsa4tsx/xWYEkkxvCPpqhHo96eTuIsCas8HzL2LlpsCOluvsyvpooUtOKbh4QQ60
-	 nUrMqTpH2r+8/S73G/6ai5x6Req3+ZyktEOgGjnmv+CHJ3JS4ZM72hANNdNeVljRAL
-	 UMI+WYsUv5NE4QlSEoG5ou7tGZAyTHBW6JIdqI04=
+	b=VQcj3XLHkTpW8i+CG/gdDRl+Ydiui+rhh+rA5GgCwtaduUXZ3iTk+YG7VKofTxWpO
+	 FgWAAXhyeJyYm9PNcP8WmNW9/nAPsp32hDNvJdoB7u5ZAb+e6JbuYYncxcVup3mVG7
+	 7Oru5GArnSBr12f3NiQaRKb5/rvLDWr6iyJxHuN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/272] parisc: Strip upper 32 bit of sum in csum_ipv6_magic for 64-bit builds
+Subject: [PATCH 6.6 190/396] drm/bridge: add ->edid_read hook and drm_bridge_edid_read()
 Date: Mon,  1 Apr 2024 17:43:59 +0200
-Message-ID: <20240401152531.932100629@linuxfoundation.org>
+Message-ID: <20240401152553.603973480@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 0568b6f0d863643db2edcc7be31165740c89fa82 ]
+[ Upstream commit d807ad80d811ba0c22adfd871e2a46491f80d6e2 ]
 
-IPv6 checksum tests with unaligned addresses on 64-bit builds result
-in unexpected failures.
+Add new struct drm_edid based ->edid_read hook and
+drm_bridge_edid_read() function to call the hook.
 
-Expected expected == csum_result, but
-    expected == 46591 (0xb5ff)
-    csum_result == 46381 (0xb52d)
-with alignment offset 1
+v2: Include drm/drm_edid.h
 
-Oddly enough, the problem disappeared after adding test code into
-the beginning of csum_ipv6_magic().
-
-As it turns out, the 'sum' parameter of csum_ipv6_magic() is declared as
-__wsum, which is a 32-bit variable. However, it is treated as 64-bit
-variable in the 64-bit assembler code. Tests showed that the upper 32 bit
-of the register used to pass the variable are _not_ cleared when entering
-the function. This can result in checksum calculation errors.
-
-Clearing the upper 32 bit of 'sum' as first operation in the assembler
-code fixes the problem.
-
-Acked-by: Helge Deller <deller@gmx.de>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/9d08d22eaffcb9c59a2b677e45d7e61fc689bc2f.1706038510.git.jani.nikula@intel.com
+Stable-dep-of: 171b711b26cc ("drm/bridge: lt8912b: do not return negative values from .get_modes()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/checksum.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_bridge.c | 46 +++++++++++++++++++++++++++++++++++-
+ include/drm/drm_bridge.h     | 33 ++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index c949aa20fa162..2aceebcd695c8 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -126,6 +126,7 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	** Try to keep 4 registers with "live" values ahead of the ALU.
- 	*/
+diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+index 39e68e45bb124..67354afbd7168 100644
+--- a/drivers/gpu/drm/drm_bridge.c
++++ b/drivers/gpu/drm/drm_bridge.c
+@@ -27,8 +27,9 @@
+ #include <linux/mutex.h>
  
-+"	depdi		0, 31, 32, %0\n"/* clear upper half of incoming checksum */
- "	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
- "	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
- "	add		%4, %0, %0\n"
+ #include <drm/drm_atomic_state_helper.h>
+-#include <drm/drm_debugfs.h>
+ #include <drm/drm_bridge.h>
++#include <drm/drm_debugfs.h>
++#include <drm/drm_edid.h>
+ #include <drm/drm_encoder.h>
+ #include <drm/drm_file.h>
+ #include <drm/drm_of.h>
+@@ -1206,6 +1207,47 @@ int drm_bridge_get_modes(struct drm_bridge *bridge,
+ }
+ EXPORT_SYMBOL_GPL(drm_bridge_get_modes);
+ 
++/**
++ * drm_bridge_edid_read - read the EDID data of the connected display
++ * @bridge: bridge control structure
++ * @connector: the connector to read EDID for
++ *
++ * If the bridge supports output EDID retrieval, as reported by the
++ * DRM_BRIDGE_OP_EDID bridge ops flag, call &drm_bridge_funcs.edid_read to get
++ * the EDID and return it. Otherwise return NULL.
++ *
++ * If &drm_bridge_funcs.edid_read is not set, fall back to using
++ * drm_bridge_get_edid() and wrapping it in struct drm_edid.
++ *
++ * RETURNS:
++ * The retrieved EDID on success, or NULL otherwise.
++ */
++const struct drm_edid *drm_bridge_edid_read(struct drm_bridge *bridge,
++					    struct drm_connector *connector)
++{
++	if (!(bridge->ops & DRM_BRIDGE_OP_EDID))
++		return NULL;
++
++	/* Transitional: Fall back to ->get_edid. */
++	if (!bridge->funcs->edid_read) {
++		const struct drm_edid *drm_edid;
++		struct edid *edid;
++
++		edid = drm_bridge_get_edid(bridge, connector);
++		if (!edid)
++			return NULL;
++
++		drm_edid = drm_edid_alloc(edid, (edid->extensions + 1) * EDID_LENGTH);
++
++		kfree(edid);
++
++		return drm_edid;
++	}
++
++	return bridge->funcs->edid_read(bridge, connector);
++}
++EXPORT_SYMBOL_GPL(drm_bridge_edid_read);
++
+ /**
+  * drm_bridge_get_edid - get the EDID data of the connected display
+  * @bridge: bridge control structure
+@@ -1215,6 +1257,8 @@ EXPORT_SYMBOL_GPL(drm_bridge_get_modes);
+  * DRM_BRIDGE_OP_EDID bridge ops flag, call &drm_bridge_funcs.get_edid to
+  * get the EDID and return it. Otherwise return NULL.
+  *
++ * Deprecated. Prefer using drm_bridge_edid_read().
++ *
+  * RETURNS:
+  * The retrieved EDID on success, or NULL otherwise.
+  */
+diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
+index 103ff57fc83cf..b20cfe5bf30b3 100644
+--- a/include/drm/drm_bridge.h
++++ b/include/drm/drm_bridge.h
+@@ -555,6 +555,37 @@ struct drm_bridge_funcs {
+ 	int (*get_modes)(struct drm_bridge *bridge,
+ 			 struct drm_connector *connector);
+ 
++	/**
++	 * @edid_read:
++	 *
++	 * Read the EDID data of the connected display.
++	 *
++	 * The @edid_read callback is the preferred way of reporting mode
++	 * information for a display connected to the bridge output. Bridges
++	 * that support reading EDID shall implement this callback and leave
++	 * the @get_modes callback unimplemented.
++	 *
++	 * The caller of this operation shall first verify the output
++	 * connection status and refrain from reading EDID from a disconnected
++	 * output.
++	 *
++	 * This callback is optional. Bridges that implement it shall set the
++	 * DRM_BRIDGE_OP_EDID flag in their &drm_bridge->ops.
++	 *
++	 * The connector parameter shall be used for the sole purpose of EDID
++	 * retrieval, and shall not be stored internally by bridge drivers for
++	 * future usage.
++	 *
++	 * RETURNS:
++	 *
++	 * An edid structure newly allocated with drm_edid_alloc() or returned
++	 * from drm_edid_read() family of functions on success, or NULL
++	 * otherwise. The caller is responsible for freeing the returned edid
++	 * structure with drm_edid_free().
++	 */
++	const struct drm_edid *(*edid_read)(struct drm_bridge *bridge,
++					    struct drm_connector *connector);
++
+ 	/**
+ 	 * @get_edid:
+ 	 *
+@@ -888,6 +919,8 @@ drm_atomic_helper_bridge_propagate_bus_fmt(struct drm_bridge *bridge,
+ enum drm_connector_status drm_bridge_detect(struct drm_bridge *bridge);
+ int drm_bridge_get_modes(struct drm_bridge *bridge,
+ 			 struct drm_connector *connector);
++const struct drm_edid *drm_bridge_edid_read(struct drm_bridge *bridge,
++					    struct drm_connector *connector);
+ struct edid *drm_bridge_get_edid(struct drm_bridge *bridge,
+ 				 struct drm_connector *connector);
+ void drm_bridge_hpd_enable(struct drm_bridge *bridge,
 -- 
 2.43.0
 
