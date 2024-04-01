@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-34884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1491389414C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E57893FC8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43B9F1C2179B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E8B2851BF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A01B481D0;
-	Mon,  1 Apr 2024 16:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15664778C;
+	Mon,  1 Apr 2024 16:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAqrD3t3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhOl1SPT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58025481C4;
-	Mon,  1 Apr 2024 16:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FABFC129;
+	Mon,  1 Apr 2024 16:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989621; cv=none; b=ZM3lmXnMR4PXKtoAXIg2YqXs5b8qn9lScbqypH2jPddjDtDxpa8dAmUgAFmyi07bGAQlNYFDjCdP0W+nd//cYxxM2AU/TK/4wIR34aDPNbE6C1e19Mnw/PAkxcdp69zR0CwC9ZgACOwDc6n0zOm3HJQjNHxCsS07IieTAPhBJOQ=
+	t=1711988476; cv=none; b=V5NXBIqUrTMXwzXC0VZtUss2ICsu2G/ccLEJ/9YpxowZdg0fde65SSApfrWzRA7ExiNlO5fwMDRh0m7RVAdk+xJyvaW3WGhYgZmdKEWlFLGaAfxXLklXudYdd25a2B8mPSytOF17flP+mnWVyMakDyevRCcN+Z/c8B1I4Rv8GRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989621; c=relaxed/simple;
-	bh=tWsEPmiR7KGjcn1uJl9p9eFK1Cc2jEK9kBc63rWahFE=;
+	s=arc-20240116; t=1711988476; c=relaxed/simple;
+	bh=0/E7utxPg3R1d8OKdoo0aeuUtAvNYwUz5GHPUqmfbks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdxC19TTifxOKWXoR7tvelxQn5IcBWZoe6a4+tKAHbLvPYXfdX6080urI8K2okNWljR5uVqgaQRfeV7FzE4Fh7m9ycIwiNN5tEsfEqr4yRHZVKRGHwVpAga/65w9bsHvfjfJlv3yalcSna+bcx66JRYUkoWgfGeoePGHM0ZW6oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAqrD3t3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB579C43399;
-	Mon,  1 Apr 2024 16:40:20 +0000 (UTC)
+	 MIME-Version; b=qcdatUaxQZVeT2iRzfYSDb+7W+afF3l2b3plKpMdrfYbshuUM9BcgNg6q93wBAAqGAe0AUDxp04ageBGJprbIrOUuX2AfBbHqxd2Qid6NV1MpcXUqE54JCYXvlLikoQQ4vUKFNEdvGGjkUTqS1PUuk/fT3gkKyyIq3T/hWejqF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhOl1SPT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC6FC433C7;
+	Mon,  1 Apr 2024 16:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989621;
-	bh=tWsEPmiR7KGjcn1uJl9p9eFK1Cc2jEK9kBc63rWahFE=;
+	s=korg; t=1711988476;
+	bh=0/E7utxPg3R1d8OKdoo0aeuUtAvNYwUz5GHPUqmfbks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAqrD3t32aLxTi209taxqA2iZhu9/mVoRY/hHoh/NZzupJzY4/OyEqH+81JguvLMm
-	 rW1ngxM5dDSVparG2cMOprH2sw+/nN5BB9qFjURZP9jdjhOlwGQ99FAhPeI7cJtPPP
-	 ICURyq5PISw4LhxJVQ3w1ptCuE/wLFUBHDkRPQs4=
+	b=PhOl1SPTnz8vVEDrM9FXh68CdHELn61QnXQqwTnmSqlxSwnIB3CCND2CX1DImF18c
+	 +R9WFiKW7/p+LYrLqD0T05/KefmGdetigsjk8gewA2DklTOfPIxZY0aL/OejuojQ7l
+	 u/6XhWujoKtrl0nuBTBlv/VVpJ0SFdyUcOYWie90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Inki Dae <inki.dae@samsung.com>,
+	Seung-Woo Kim <sw0312.kim@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/396] drm/etnaviv: Restore some id values
-Date: Mon,  1 Apr 2024 17:42:33 +0200
-Message-ID: <20240401152551.022129732@linuxfoundation.org>
+Subject: [PATCH 6.7 167/432] drm/exynos: do not return negative values from .get_modes()
+Date: Mon,  1 Apr 2024 17:42:34 +0200
+Message-ID: <20240401152558.131324011@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Gmeiner <cgmeiner@igalia.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit b735ee173f84d5d0d0733c53946a83c12d770d05 ]
+[ Upstream commit 13d5b040363c7ec0ac29c2de9cf661a24a8aa531 ]
 
-The hwdb selection logic as a feature that allows it to mark some fields
-as 'don't care'. If we match with such a field we memcpy(..)
-the current etnaviv_chip_identity into ident.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
-This step can overwrite some id values read from the GPU with the
-'don't care' value.
-
-Fix this issue by restoring the affected values after the memcpy(..).
-
-As this is crucial for user space to know when this feature works as
-expected increment the minor version too.
-
-Fixes: 4078a1186dd3 ("drm/etnaviv: update hwdb selection logic")
+Cc: Inki Dae <inki.dae@samsung.com>
+Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
+Cc: Kyungmin Park <kyungmin.park@samsung.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
-Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/d8665f620d9c252aa7d5a4811ff6b16e773903a2.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_drv.c  | 2 +-
- drivers/gpu/drm/etnaviv/etnaviv_hwdb.c | 9 +++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c | 4 ++--
+ drivers/gpu/drm/exynos/exynos_hdmi.c     | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-index a8d3fa81e4ec5..f9bc837e22bdd 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-@@ -494,7 +494,7 @@ static const struct drm_driver etnaviv_drm_driver = {
- 	.desc               = "etnaviv DRM",
- 	.date               = "20151214",
- 	.major              = 1,
--	.minor              = 3,
-+	.minor              = 4,
- };
- 
- /*
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
-index 67201242438be..8665f2658d51b 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
-@@ -265,6 +265,9 @@ static const struct etnaviv_chip_identity etnaviv_chip_identities[] = {
- bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
- {
- 	struct etnaviv_chip_identity *ident = &gpu->identity;
-+	const u32 product_id = ident->product_id;
-+	const u32 customer_id = ident->customer_id;
-+	const u32 eco_id = ident->eco_id;
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(etnaviv_chip_identities); i++) {
-@@ -278,6 +281,12 @@ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
- 			 etnaviv_chip_identities[i].eco_id == ~0U)) {
- 			memcpy(ident, &etnaviv_chip_identities[i],
- 			       sizeof(*ident));
-+
-+			/* Restore some id values as ~0U aka 'don't care' might been used. */
-+			ident->product_id = product_id;
-+			ident->customer_id = customer_id;
-+			ident->eco_id = eco_id;
-+
- 			return true;
- 		}
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+index f5e1adfcaa514..fb941a8c99f0f 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -316,14 +316,14 @@ static int vidi_get_modes(struct drm_connector *connector)
+ 	 */
+ 	if (!ctx->raw_edid) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "raw_edid is null.\n");
+-		return -EFAULT;
++		return 0;
  	}
+ 
+ 	edid_len = (1 + ctx->raw_edid->extensions) * EDID_LENGTH;
+ 	edid = kmemdup(ctx->raw_edid, edid_len, GFP_KERNEL);
+ 	if (!edid) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "failed to allocate edid\n");
+-		return -ENOMEM;
++		return 0;
+ 	}
+ 
+ 	drm_connector_update_edid_property(connector, edid);
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index dd9903eab563e..eff51bfc46440 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -887,11 +887,11 @@ static int hdmi_get_modes(struct drm_connector *connector)
+ 	int ret;
+ 
+ 	if (!hdata->ddc_adpt)
+-		return -ENODEV;
++		return 0;
+ 
+ 	edid = drm_get_edid(connector, hdata->ddc_adpt);
+ 	if (!edid)
+-		return -ENODEV;
++		return 0;
+ 
+ 	hdata->dvi_mode = !connector->display_info.is_hdmi;
+ 	DRM_DEV_DEBUG_KMS(hdata->dev, "%s : width[%d] x height[%d]\n",
 -- 
 2.43.0
 
