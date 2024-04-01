@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE8E893EBA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0417289406E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 280111C21E84
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E19282200
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594114778E;
-	Mon,  1 Apr 2024 16:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6452B46B9F;
+	Mon,  1 Apr 2024 16:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJowfOGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBHwCjU1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1592B47A5D;
-	Mon,  1 Apr 2024 16:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213FA1CA8F;
+	Mon,  1 Apr 2024 16:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987626; cv=none; b=eni574CSra7Ug70GjzQLZsimNUG9ujP47P0FqF6eUNKP/Ri3ATgCUYpenw4HhTPXlBCbaC7TmIJo8i6AvtkK/iTzNiy2IpfOWe2la/SbPSKdFF8Px1rIp+1gP3BNbwd1ow+p8i1xl3JSKQDmzdMW0HLgdI44LE1ddEzq0T/XSAQ=
+	t=1711988999; cv=none; b=GDk3CDAKyv7UyNi4503YvNazNOROrgrk0GY7/pdQzCRqMNETxUosajRR8DMg3lF42NAOJLdvBBO1ZjkeJI1DFE79INIf39kkH8U9beAsV9Ou0KankRTi5/gm9R/Xf7HVtPV5R6rfa3E8pOVVTO+sTbMVSoerED1CxWd1xc80//w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987626; c=relaxed/simple;
-	bh=WLYOe5jv99Aj8NeQPpOqom0cXHPZ00yslFPnNQZhMPA=;
+	s=arc-20240116; t=1711988999; c=relaxed/simple;
+	bh=ZKS4Jzkz4HKQEFM4jDkSSt47Hrz2y9OTtHZRxVp4jqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfNd2Txs40eHEoC2EWqAk/48JTGfGNjHL94JFFvyoF3xhQ1NN6OGVf817hAYbDCNLlo3/UfWj8ibsMa+N/5paGNwLard+QRxCexbVNrjAC53QcGrUa5dDout9b35FUFXqlF20ABJY8mLqm4jt6sImkJN1n+Z0szyJxhTa1WRb9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJowfOGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78861C433F1;
-	Mon,  1 Apr 2024 16:07:05 +0000 (UTC)
+	 MIME-Version; b=BN51/OxOI2rvpl+EwnRpd9YZbJoaa1dmyo7E2RCSuviVt6BOnfro4JJBrT7ddLR2ZJuYAV8REz8WcIeoBjgqru5tigiijDW1J5/eEYjHMwdiQLtBVkd7NQsWg1rkJVlJ4UYE5ZoNNDGw8BYTUtTY4+ogUozHhitL4oS3fYyUx1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBHwCjU1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5308DC43390;
+	Mon,  1 Apr 2024 16:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987625;
-	bh=WLYOe5jv99Aj8NeQPpOqom0cXHPZ00yslFPnNQZhMPA=;
+	s=korg; t=1711988999;
+	bh=ZKS4Jzkz4HKQEFM4jDkSSt47Hrz2y9OTtHZRxVp4jqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJowfOGSN5xl/w4ddPxSuXv3quSVEIGlz0lpwzrniEI9iE0n7iU3Obl8vgf4F+0pJ
-	 ZhHOGhCw4bK35A5rYymhff0fb+8Mhnr565SpboKqj8mBZel7FztNw8kvnRcBr0Byxe
-	 hUACI4ilqhNcAdPn51pD3nUloaKI6KvbMXYG9DsQ=
+	b=iBHwCjU1pvn1VrpL5KXOOeD4HslsqkqM5g7xO5dV7Yfb2EEAhUC8bPHoJ8mY78BN4
+	 3Zwf/objVISJMlvraafYB3kVDNWLhqO13d+4VILmq71NOUJQ3Dy70gTCEaJCqRACgG
+	 EC1G/Udw9NbROCtrvLXYhAjASInAXX3h82uwAm5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.8 343/399] usb: cdc-wdm: close race between read and workqueue
-Date: Mon,  1 Apr 2024 17:45:09 +0200
-Message-ID: <20240401152559.410915595@linuxfoundation.org>
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.7 323/432] mfd: intel-lpss: Introduce QUIRK_CLOCK_DIVIDER_UNITY for XPS 9530
+Date: Mon,  1 Apr 2024 17:45:10 +0200
+Message-ID: <20240401152602.832783067@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
+commit 1d8c51ed2ddcc4161e6496cf14fcd83921c50ec8 upstream.
 
-wdm_read() cannot race with itself. However, in
-service_outstanding_interrupt() it can race with the
-workqueue, which can be triggered by error handling.
+Some devices (eg. Dell XPS 9530, 2023) due to a firmware bug have a
+misconfigured clock divider, which should've been 1:1. This introduces
+quirk which conditionally re-configures the clock divider to 1:1.
 
-Hence we need to make sure that the WDM_RESPONDING
-flag is not just only set but tested.
-
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231221185142.9224-3-alex.vinarskis@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mfd/intel-lpss-pci.c |    5 +++++
+ drivers/mfd/intel-lpss.c     |    7 +++++++
+ drivers/mfd/intel-lpss.h     |    5 +++++
+ 3 files changed, 17 insertions(+)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -485,6 +485,7 @@ out_free_mem:
- static int service_outstanding_interrupt(struct wdm_device *desc)
+--- a/drivers/mfd/intel-lpss-pci.c
++++ b/drivers/mfd/intel-lpss-pci.c
+@@ -29,6 +29,11 @@ static const struct pci_device_id quirk_
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1237),
+ 		.driver_data = QUIRK_IGNORE_RESOURCE_CONFLICTS,
+ 	},
++	{
++		/* Dell XPS 9530 (2023) */
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x51fb, 0x1028, 0x0beb),
++		.driver_data = QUIRK_CLOCK_DIVIDER_UNITY,
++	},
+ 	{ }
+ };
+ 
+--- a/drivers/mfd/intel-lpss.c
++++ b/drivers/mfd/intel-lpss.c
+@@ -292,6 +292,7 @@ static int intel_lpss_register_clock_div
  {
- 	int rv = 0;
-+	int used;
+ 	char name[32];
+ 	struct clk *tmp = *clk;
++	int ret;
  
- 	/* submit read urb only if the device is waiting for it */
- 	if (!desc->resp_count || !--desc->resp_count)
-@@ -499,7 +500,10 @@ static int service_outstanding_interrupt
- 		goto out;
- 	}
+ 	snprintf(name, sizeof(name), "%s-enable", devname);
+ 	tmp = clk_register_gate(NULL, name, __clk_get_name(tmp), 0,
+@@ -308,6 +309,12 @@ static int intel_lpss_register_clock_div
+ 		return PTR_ERR(tmp);
+ 	*clk = tmp;
  
--	set_bit(WDM_RESPONDING, &desc->flags);
-+	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
-+	if (used)
-+		goto out;
++	if (lpss->info->quirks & QUIRK_CLOCK_DIVIDER_UNITY) {
++		ret = clk_set_rate(tmp, lpss->info->clk_rate);
++		if (ret)
++			return ret;
++	}
 +
- 	spin_unlock_irq(&desc->iuspin);
- 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
- 	spin_lock_irq(&desc->iuspin);
+ 	snprintf(name, sizeof(name), "%s-update", devname);
+ 	tmp = clk_register_gate(NULL, name, __clk_get_name(tmp),
+ 				CLK_SET_RATE_PARENT, lpss->priv, 31, 0, NULL);
+--- a/drivers/mfd/intel-lpss.h
++++ b/drivers/mfd/intel-lpss.h
+@@ -19,6 +19,11 @@
+  * Set to ignore resource conflicts with ACPI declared SystemMemory regions.
+  */
+ #define QUIRK_IGNORE_RESOURCE_CONFLICTS BIT(0)
++/*
++ * Some devices have misconfigured clock divider due to a firmware bug.
++ * Set this to force the clock divider to 1:1 ratio.
++ */
++#define QUIRK_CLOCK_DIVIDER_UNITY		BIT(1)
+ 
+ struct device;
+ struct resource;
 
 
 
