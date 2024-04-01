@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BF7894043
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB6AF89422C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 838881F21C6A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A709F283469
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197D74596E;
-	Mon,  1 Apr 2024 16:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5770F4653C;
+	Mon,  1 Apr 2024 16:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+K6UXrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfVj5bxH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAA0C129;
-	Mon,  1 Apr 2024 16:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1599A1C0DE7;
+	Mon,  1 Apr 2024 16:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988868; cv=none; b=fynX1JyVkIVKmEnSN5xaB8EVQeK61eDlMsXD5YXUgSazU0jNZt61WWLkg3jL0U9B4CftuIq73lcqTLqjihLR92BIlCFfXX0b8Mrqo6PWfS2IMH+W62FqbV8/LjzE/UfzH+jc6Jen3WlJwQdmScBSWyj8esieocqNCU1ByfyFfkM=
+	t=1711990203; cv=none; b=I52cUEI3aTD/mXd9bFBpX1qRn7pmpxVzgpH7U6PiEIO0cbQYfHyy3PR3Vvb0ROeMCkQ3VUSZgexqSv35s50eGoW+DtpBaw9md/4E+5WQL6lEoX/z4zZwd9NBwCQKx3tMs52+EKs7gu2JrKmeZ9RrRzp0fiddLgmPVD5BZKSBmiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988868; c=relaxed/simple;
-	bh=w5qyJyfOaw+zns+reLew8y0CPbHWusGWk2knOKVZnvM=;
+	s=arc-20240116; t=1711990203; c=relaxed/simple;
+	bh=lTR3VigZjn2/CLMQ2hUlhTjKLTIGZqrHEATBCuOOsOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjQw1mOQnS/2trd0zudt9HiYPHm8RcKSW8Lqucll79R+Mm9gdqU4g1mszxTStWQ4zfTuZ9ivzTVmAfeiVKb2ooqUmbaCEZ2VXquSKeKYflHT2vaaXTo0fdqgccLzMzWTMsfM431V+UFabb65kouikw6hNeVCmcriO2DVth2C/QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+K6UXrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40238C433C7;
-	Mon,  1 Apr 2024 16:27:48 +0000 (UTC)
+	 MIME-Version; b=t2SU45jnjQJb3u1zFUe/A8L4L8JMeTGaMCnQquJR0PrAkZfc1bc6sSrOPG7l67K1CSXubV4ngicy08PrDMkB+m9Fo1+G75TEK/dX5/4vYHBVLlNnp+viFaqXwYRrOjAq94u/Nw9f5ZUBUOi9GYGST8Qh+Tgzbn0MyJAZlf49+kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfVj5bxH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7466AC433C7;
+	Mon,  1 Apr 2024 16:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988868;
-	bh=w5qyJyfOaw+zns+reLew8y0CPbHWusGWk2knOKVZnvM=;
+	s=korg; t=1711990202;
+	bh=lTR3VigZjn2/CLMQ2hUlhTjKLTIGZqrHEATBCuOOsOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+K6UXrTbYYWNC4FUZEj4csAMxm1CS4+UNIa/SjYpzfPcwJcx9yjwWmZ1VqRaydQU
-	 60hjWsw8MFcK2gM3z/TZs3FjbO7wSEcYU1glx+2WF2MJmSUNpvAJfFBIWO9zzrY5T7
-	 3FoQsnk+qkQrC3PRRc7vhWymh8Tzjh9xWSCF+Jwg=
+	b=SfVj5bxHh56cmT+NtH3JlPyMhYQCZw901GJ8Y7XXbHRsa4IETGxJeOum0U/ol6Di+
+	 8Z10lgnHb+adJQvocG3tVSbnSQj1egEpxHe1ld3UfUqYu8+4S4+pM2vIjpTsLiYkWo
+	 JxadpX4/II8B1QFtE8Yvi7ZZrfAZ3f/esxcem2JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 312/432] irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type
+	Jiawei Wang <me@jwang.link>,
+	Mark Brown <broonie@kernel.org>,
+	Luca Stefani <luca.stefani.ge1@gmail.com>
+Subject: [PATCH 6.6 250/396] ASoC: amd: yc: Revert "Fix non-functional mic on Lenovo 21J2"
 Date: Mon,  1 Apr 2024 17:44:59 +0200
-Message-ID: <20240401152602.492876857@linuxfoundation.org>
+Message-ID: <20240401152555.365204178@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Jiawei Wang <me@jwang.link>
 
-[ Upstream commit 853a6030303f8a8fa54929b68e5665d9b21aa405 ]
+commit 861b3415e4dee06cc00cd1754808a7827b9105bf upstream.
 
-RZ/G2L interrupt chips require that the interrupt is masked before changing
-the NMI, IRQ, TINT interrupt settings. Aside of that, after setting an edge
-trigger type it is required to clear the interrupt status register in order
-to avoid spurious interrupts.
+This reverts commit ed00a6945dc32462c2d3744a3518d2316da66fcc,
+which added a quirk entry to enable the Yellow Carp (YC)
+driver for the Lenovo 21J2 laptop.
 
-The current implementation fails to do either of that and therefore is
-prone to generate spurious interrupts when setting the trigger type.
+Although the microphone functioned with the YC driver, it
+resulted in incorrect driver usage. The Lenovo 21J2 is not a
+Yellow Carp platform, but a Pink Sardine platform, which
+already has an upstreamed driver.
 
-Address this by:
+The microphone on the Lenovo 21J2 operates correctly with the
+CONFIG_SND_SOC_AMD_PS flag enabled and does not require the
+quirk entry. So this patch removes the quirk entry.
 
-  - Ensuring that the interrupt is masked at the chip level across the
-    update for the TINT chip
+Thanks to Mukunda Vijendar [1] for pointing this out.
 
-  - Clearing the interrupt status register after updating the trigger mode
-    for edge type interrupts
+Link: https://lore.kernel.org/linux-sound/023092e1-689c-4b00-b93f-4092c3724fb6@amd.com/ [1]
 
-[ tglx: Massaged changelog and reverted the spin_lock_irqsave() change as
-  	the set_type() callback is always called with interrupts disabled. ]
-
-Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jiawei Wang <me@jwang.link>
+Link: https://lore.kernel.org/linux-sound/023092e1-689c-4b00-b93f-4092c3724fb6@amd.com/ [1]
+Link: https://msgid.link/r/20240313015853.3573242-2-me@jwang.link
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Luca Stefani <luca.stefani.ge1@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 36 +++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 762bb90b74e61..dc822111fc5d5 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -162,8 +162,10 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
- 
- static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
- {
--	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
- 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
-+	unsigned int hwirq = irqd_to_hwirq(d);
-+	u32 iitseln = hwirq - IRQC_IRQ_START;
-+	bool clear_irq_int = false;
- 	u16 sense, tmp;
- 
- 	switch (type & IRQ_TYPE_SENSE_MASK) {
-@@ -173,14 +175,17 @@ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
- 
- 	case IRQ_TYPE_EDGE_FALLING:
- 		sense = IITSR_IITSEL_EDGE_FALLING;
-+		clear_irq_int = true;
- 		break;
- 
- 	case IRQ_TYPE_EDGE_RISING:
- 		sense = IITSR_IITSEL_EDGE_RISING;
-+		clear_irq_int = true;
- 		break;
- 
- 	case IRQ_TYPE_EDGE_BOTH:
- 		sense = IITSR_IITSEL_EDGE_BOTH;
-+		clear_irq_int = true;
- 		break;
- 
- 	default:
-@@ -189,21 +194,40 @@ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
- 
- 	raw_spin_lock(&priv->lock);
- 	tmp = readl_relaxed(priv->base + IITSR);
--	tmp &= ~IITSR_IITSEL_MASK(hw_irq);
--	tmp |= IITSR_IITSEL(hw_irq, sense);
-+	tmp &= ~IITSR_IITSEL_MASK(iitseln);
-+	tmp |= IITSR_IITSEL(iitseln, sense);
-+	if (clear_irq_int)
-+		rzg2l_clear_irq_int(priv, hwirq);
- 	writel_relaxed(tmp, priv->base + IITSR);
- 	raw_spin_unlock(&priv->lock);
- 
- 	return 0;
- }
- 
-+static u32 rzg2l_disable_tint_and_set_tint_source(struct irq_data *d, struct rzg2l_irqc_priv *priv,
-+						  u32 reg, u32 tssr_offset, u8 tssr_index)
-+{
-+	u32 tint = (u32)(uintptr_t)irq_data_get_irq_chip_data(d);
-+	u32 tien = reg & (TIEN << TSSEL_SHIFT(tssr_offset));
-+
-+	/* Clear the relevant byte in reg */
-+	reg &= ~(TSSEL_MASK << TSSEL_SHIFT(tssr_offset));
-+	/* Set TINT and leave TIEN clear */
-+	reg |= tint << TSSEL_SHIFT(tssr_offset);
-+	writel_relaxed(reg, priv->base + TSSR(tssr_index));
-+
-+	return reg | tien;
-+}
-+
- static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
- {
- 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
- 	unsigned int hwirq = irqd_to_hwirq(d);
- 	u32 titseln = hwirq - IRQC_TINT_START;
-+	u32 tssr_offset = TSSR_OFFSET(titseln);
-+	u8 tssr_index = TSSR_INDEX(titseln);
- 	u8 index, sense;
--	u32 reg;
-+	u32 reg, tssr;
- 
- 	switch (type & IRQ_TYPE_SENSE_MASK) {
- 	case IRQ_TYPE_EDGE_RISING:
-@@ -225,10 +249,14 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
- 	}
- 
- 	raw_spin_lock(&priv->lock);
-+	tssr = readl_relaxed(priv->base + TSSR(tssr_index));
-+	tssr = rzg2l_disable_tint_and_set_tint_source(d, priv, tssr, tssr_offset, tssr_index);
- 	reg = readl_relaxed(priv->base + TITSR(index));
- 	reg &= ~(IRQ_MASK << (titseln * TITSEL_WIDTH));
- 	reg |= sense << (titseln * TITSEL_WIDTH);
- 	writel_relaxed(reg, priv->base + TITSR(index));
-+	rzg2l_clear_tint_int(priv, hwirq);
-+	writel_relaxed(tssr, priv->base + TSSR(tssr_index));
- 	raw_spin_unlock(&priv->lock);
- 
- 	return 0;
--- 
-2.43.0
-
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -203,13 +203,6 @@ static const struct dmi_system_id yc_acp
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "21J2"),
+-		}
+-	},
+-	{
+-		.driver_data = &acp6x_card,
+-		.matches = {
+-			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21J0"),
+ 		}
+ 	},
 
 
 
