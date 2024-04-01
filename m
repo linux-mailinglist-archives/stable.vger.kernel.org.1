@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-33899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20DC5893995
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 580C6893996
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4145A1C21540
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:42:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B7C31C214F5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5905C101EB;
-	Mon,  1 Apr 2024 09:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749751095A;
+	Mon,  1 Apr 2024 09:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPvneCs9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWICqbGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2FC10788
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3280C10788
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711964522; cv=none; b=faX0ISDHRoipemlP9Q+Nw7tfbYyUyZGWHNKY7pEv50mInNt3/A0urLUYPkq18fTH4MEOTzy1p8osWECmB2Fpvx/S0Wvzh8Lysm3gLd/Jq80J7DM/Paienr9xz+hXCUYOfUWc8hDukN4QuhDWTB7yvuLB8OhHWeva06VmfdOCE0M=
+	t=1711964526; cv=none; b=UKWuSPpvaaIsrsIGCz+jS9PGXa8FgrB5OVp23UYKhpjvejXbmbFO1uCk804ELO7YdeaB3amV2asLgEHgc5ciiHEwP3mLsl5f7j+4DhG5e3J49N1+EHyq/8gBAjHEJMYW1QTErHyLXvoLYVVyaz2WSEoEl3S7NweOcrBPXObLMbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711964522; c=relaxed/simple;
-	bh=qj4r6vBfDjdnFweToxpsTmfrq6On2fmKJipfzGh5t9o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tIJsoi3MsYWSj8QLoIr52d+WC50DOmcsTb7Wnf5WD4kzsD/U9YRrjYZgnKvHVHzcUtmBvBw3pmQ9StZaB/cT+1horklKiz1McFe9GQYKqZoxb045KyKUN47aLkf7TdsOnqx5xBEoZitabsOwa4Oqet1HmAe2uiXIeIidvA38OiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPvneCs9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF5DC433C7;
-	Mon,  1 Apr 2024 09:42:01 +0000 (UTC)
+	s=arc-20240116; t=1711964526; c=relaxed/simple;
+	bh=55WCH0mQIpzVVToTkD8dAGn6m/au7XDHsQf0WqX3lWc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nbpMpX/RENaZ379pm6iX4En6eJu1TiYelRgia2PEQPm9gbtv8EFmeWgMurzFXw1iDJksfUY4c6VfnWo4jTsI1IlK7IJBxqBtnciIv+syLuOmRYSAbwrDkdHgpLlQUStqSeJPZy1NLLPa4Gg9HsX34MfozBwueMbmki+ocDsEILc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWICqbGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919E4C433C7;
+	Mon,  1 Apr 2024 09:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711964522;
-	bh=qj4r6vBfDjdnFweToxpsTmfrq6On2fmKJipfzGh5t9o=;
+	s=korg; t=1711964526;
+	bh=55WCH0mQIpzVVToTkD8dAGn6m/au7XDHsQf0WqX3lWc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XPvneCs9MghDJP6aj5gM3yBf0MXAwQuda9gWOPac2ESqZFGY0m/gcc+Tgbsqu2lN7
-	 r5nhODsf1bv+37UcLSxWx/h17WF/tBKAbZfrj0SnYfjfkJrWlIZy4eak/us0B8vQkj
-	 VJlUbS2kS5vOKZNBaB2h3fo7pEZIuq48CWcZJn1M=
-Subject: FAILED: patch "[PATCH] usb: dwc3: Properly set system wakeup" failed to apply to 6.1-stable tree
+	b=pWICqbGXjl6PwicDsvhY4zGw3QryMm+0EDCWtwDvjaNQKFdjKyiPLYGWbw4e4QsMM
+	 yB1/Q0MJa2f65dFSlrp8ErkwxtrDUgIaRvYf6I/z039hkjkbYeMUFPS1o5/OTr+QrW
+	 q3lMfuQWFeezjnIaZXeXQybHodLOjTSus/prX/HU=
+Subject: FAILED: patch "[PATCH] usb: dwc3: Properly set system wakeup" failed to apply to 5.15-stable tree
 To: Thinh.Nguyen@synopsys.com,Sanath.S@amd.com,gpiccoli@igalia.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Apr 2024 11:41:58 +0200
-Message-ID: <2024040158-headrest-purge-7899@gregkh>
+Date: Mon, 01 Apr 2024 11:42:00 +0200
+Message-ID: <2024040159-entrench-bogged-287d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x f9aa41130ac69d13a53ce2a153ca79c70d43f39c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040158-headrest-purge-7899@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040159-entrench-bogged-287d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 f9aa41130ac6 ("usb: dwc3: Properly set system wakeup")
 047161686b81 ("usb: dwc3: Add remote wakeup handling")
+63c4c320ccf7 ("usb: dwc3: gadget: Check for L1/L2/U3 for Start Transfer")
 
 thanks,
 
