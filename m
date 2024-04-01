@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-35257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1824F894322
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD38589401A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4917B1C21EFB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDA361C21269
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67884BA3F;
-	Mon,  1 Apr 2024 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EDE45BE4;
+	Mon,  1 Apr 2024 16:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOQkTWU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY94Ahm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DB1482DF;
-	Mon,  1 Apr 2024 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34BB1CA8F;
+	Mon,  1 Apr 2024 16:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990808; cv=none; b=RzmEMyFG30PFaTRn5GwN8iWNklau84ix9TlZ+L3Z9ECB3mr+9JM+MynEFY/hgP7jD+0XHxf7h4M9ayl/C4cNIoWmOvtaj3VRp9xafhmk2Mm6xtuXVb2LD6WKAmXcC/A8of1TkLu0skngxmzJBhXUZsUL6T1HKuEjp/WYS0RJHtU=
+	t=1711988741; cv=none; b=Vr5XX/8qFmkCRW+uFqsvNBp2ah0xRTXXcm7c1/lCf7JCYbKq+8TZMd5WxTmeLxxJHgv+X9eb3J759XQUbwB7yOyaVEtzG7jMhSfJ3Eclep3i8E0h6WOxaA6Te7em4vIT18yeMllST4245S7Fn7/44So+GHOb+0tfOiZfmCUdxdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990808; c=relaxed/simple;
-	bh=ZORA2BOmxMn91wopf6YwZSCVvLS3wef1RyW4J77QThI=;
+	s=arc-20240116; t=1711988741; c=relaxed/simple;
+	bh=YBrUas1maVJ0rtH7K5zii4TuPwC+Gx9h4EnNP1dHNBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9erqgKnLIBLh97sMOd+HC0Lx+OEKsGi8wqW83HHniHTDzr2nmxZvx+h+IQb80mTkICVRNYFdlqGPFasJYPgikxGlWSYBDjiIsd3egpKJ0C7u4Iym0i9xgPAPDR59qYohE/Dy0C8m/1eyMqPcyEoE6+QvRUGCJsW0mMlWS0iP1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOQkTWU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899F6C43390;
-	Mon,  1 Apr 2024 17:00:07 +0000 (UTC)
+	 MIME-Version; b=SrRutNpUlHMJCQbZiuugaBE+MHOewqv/BSDimBAGyNUpPvwMrsMpiNRzPfO9AglfwsTyZbknK7leXj5swvj/A+HIFrfW+V6DtQB2g6gSwgaYjQEdXVft2gvs7ixhDH4kkuKVCY9cpUWPHr4fcQfxj3DM+elKZ/YqQ5KrmmlYZbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY94Ahm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF492C433F1;
+	Mon,  1 Apr 2024 16:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990808;
-	bh=ZORA2BOmxMn91wopf6YwZSCVvLS3wef1RyW4J77QThI=;
+	s=korg; t=1711988740;
+	bh=YBrUas1maVJ0rtH7K5zii4TuPwC+Gx9h4EnNP1dHNBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOQkTWU0v3sd2/JJkEWc+aB6X4mx0YFv5Ia9FM4qnSLzJpnG6CwwunuqLqZ7KFp85
-	 Z3m2uug4wTHYGB5bmdeKL+s6Xq7tXQdjHUfxCm5PcLLBrDxnnZMrwx6xKZvTQP1ZWN
-	 R//OTsQ93GB/+RHsDa/c2Ykz5JG5bZpd9EIrQBb0=
+	b=iY94Ahm2zjUojYVgpabpjqVvfq3nFpbRcwmZB0Ivi4jFUu5PXVpUZEA95cI7qFze0
+	 lcZBO6qunKjF72daMDlr/DrqJIse1qsIZIEUqeGACsXYyKo9xtnfXm9F6RijQ0CsiO
+	 rqP9ckzmjGWaxgN4jGrp0KzSAhPz98/iQkWZlFFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Lyakas <alex.lyakas@zadara.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/272] btrfs: fix off-by-one chunk length calculation at contains_pending_extent()
+	Eric Biggers <ebiggers@kernel.org>,
+	Benjamin LaHaise <ben@communityfibre.ca>,
+	Eric Biggers <ebiggers@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.7 275/432] fs/aio: Check IOCB_AIO_RW before the struct aio_kiocb conversion
 Date: Mon,  1 Apr 2024 17:44:22 +0200
-Message-ID: <20240401152532.812688108@linuxfoundation.org>
+Message-ID: <20240401152601.376334277@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +69,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit ae6bd7f9b46a29af52ebfac25d395757e2031d0d ]
+commit 961ebd120565cb60cebe21cb634fbc456022db4a upstream.
 
-At contains_pending_extent() the value of the end offset of a chunk we
-found in the device's allocation state io tree is inclusive, so when
-we calculate the length we pass to the in_range() macro, we must sum
-1 to the expression "physical_end - physical_offset".
+The first kiocb_set_cancel_fn() argument may point at a struct kiocb
+that is not embedded inside struct aio_kiocb. With the current code,
+depending on the compiler, the req->ki_ctx read happens either before
+the IOCB_AIO_RW test or after that test. Move the req->ki_ctx read such
+that it is guaranteed that the IOCB_AIO_RW test happens first.
 
-In practice the wrong calculation should be harmless as chunks sizes
-are never 1 byte and we should never have 1 byte ranges of unallocated
-space. Nevertheless fix the wrong calculation.
-
-Reported-by: Alex Lyakas <alex.lyakas@zadara.com>
-Link: https://lore.kernel.org/linux-btrfs/CAOcd+r30e-f4R-5x-S7sV22RJPe7+pgwherA6xqN2_qe7o4XTg@mail.gmail.com/
-Fixes: 1c11b63eff2a ("btrfs: replace pending/pinned chunks lists with io tree")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Benjamin LaHaise <ben@communityfibre.ca>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Fixes: b820de741ae4 ("fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240304235715.3790858-1-bvanassche@acm.org
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/aio.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 6fc2d99270c18..03cfb425ea4ea 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -1444,7 +1444,7 @@ static bool contains_pending_extent(struct btrfs_device *device, u64 *start,
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -590,8 +590,8 @@ static int aio_setup_ring(struct kioctx
  
- 		if (in_range(physical_start, *start, len) ||
- 		    in_range(*start, physical_start,
--			     physical_end - physical_start)) {
-+			     physical_end + 1 - physical_start)) {
- 			*start = physical_end + 1;
- 			return true;
- 		}
--- 
-2.43.0
-
+ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+ {
+-	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
+-	struct kioctx *ctx = req->ki_ctx;
++	struct aio_kiocb *req;
++	struct kioctx *ctx;
+ 	unsigned long flags;
+ 
+ 	/*
+@@ -601,9 +601,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
+ 	if (!(iocb->ki_flags & IOCB_AIO_RW))
+ 		return;
+ 
++	req = container_of(iocb, struct aio_kiocb, rw);
++
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+ 		return;
+ 
++	ctx = req->ki_ctx;
++
+ 	spin_lock_irqsave(&ctx->ctx_lock, flags);
+ 	list_add_tail(&req->ki_list, &ctx->active_reqs);
+ 	req->ki_cancel = cancel;
 
 
 
