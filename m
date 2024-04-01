@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD1E893F83
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEA7894127
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169392848B4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730831F21BDC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6AC47A76;
-	Mon,  1 Apr 2024 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064D847A6B;
+	Mon,  1 Apr 2024 16:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yS+xRvuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mkk1DMH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753CD47A62;
-	Mon,  1 Apr 2024 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74A71C0DE7;
+	Mon,  1 Apr 2024 16:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988253; cv=none; b=EpBZZCMqbAznTDN6pZAAiKk16w22Z7PTLATeXwc7THpOeO4/tPTc9vwksmIqu5tE+Xfp+HTI0knm9nAxU8FI+NK9tTCsomuTYBJC3WVNXvGyAT55NIWHE7dTk2X4J+7cvHBbVdQuKRbqbjGXT6ckhM8gglW/O9oS+p3+38QXol8=
+	t=1711989501; cv=none; b=izJRT/xQgk9CPdYjAb7OBgiC0VPDaZRu3YFrnA+C+xYWyRHsetdpcuG9ksACZv6gNJRrJvQa4yUieZl85dJY4sEC5LTn+k4qD6qOodJRaK1VsIi1GJ/T/IhGUnzeBgpL4wHttlS3PtGsFkWJNh2vOX7DGy2Yqfa80zyZnO/60Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988253; c=relaxed/simple;
-	bh=k1I2oGFAjBCVDpxCUmQ3oUNBZqnrOqvaH0u6Qxm1Wao=;
+	s=arc-20240116; t=1711989501; c=relaxed/simple;
+	bh=XIXmG8wyOLq0f9JfWJqw4ia8RrT63tlXBvjx4baBJlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CA84qG2DtpCQM5c44cX5L6t4HnZ2Mev89WRTL4QQQacMKFb9kiJPfH0hq9fnB31P1djTc3SKwBtdBCl/VYEXgfVJQqXuNPYaEaLfBrOeWG0ABXk5fcQGuwsIEDXRPGqfFyATqs3ETRLMlIL4ZXYaXUYRQ1538P1AWwKU6ZbLXYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yS+xRvuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8DFC433F1;
-	Mon,  1 Apr 2024 16:17:32 +0000 (UTC)
+	 MIME-Version; b=R67tcIcE0k5lwOQB9oEKgipc3da3/UlvaY/sT/3O1DxYXMNLs25TbPONx9EDVIdL5lJ55WfyBB+WiBnQFdI9cTLlDJax1mqIiVhofggQ9zrDggdp0t08YVJJ/yLBAACXmSPKCyLd4qJr89RzxgUANIDhHjJe1+j/DvyXTVMOi3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mkk1DMH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4003C433C7;
+	Mon,  1 Apr 2024 16:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988253;
-	bh=k1I2oGFAjBCVDpxCUmQ3oUNBZqnrOqvaH0u6Qxm1Wao=;
+	s=korg; t=1711989500;
+	bh=XIXmG8wyOLq0f9JfWJqw4ia8RrT63tlXBvjx4baBJlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yS+xRvuTh+Btfmf2P2X04UsvAIkLfMk3f/F7ZI7ivoNummPTI2n1IWvjuZe2ANxzS
-	 POb28HZEaPy3shAEDH9WOCnPFqXXp2xpq7Hh8rMNLhqZC5WUcllK+q9Whms1+DcTjU
-	 hSXjzW45QNA27jv+9wv6vhtws3+/tdcg+DJlfQYo=
+	b=Mkk1DMH93bytsDA7dz7A3OUeGPkbLSKIO0i4MnuJBW9H5Ohp6Yjmp7nyW9Rby465R
+	 XnVckENr/sPWBbiZhHePPsWE+8uI4QKIPNFfhbPC0rBQSHzRK5GnBRsjN2kuf1rMCA
+	 I6PiZIvzF8QOdrU0XT5pXe9hY7qX+VRUAg+rsYqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 129/432] io_uring/net: correctly handle multishot recvmsg retry setup
-Date: Mon,  1 Apr 2024 17:41:56 +0200
-Message-ID: <20240401152556.979448279@linuxfoundation.org>
+Subject: [PATCH 6.6 068/396] clk: qcom: gcc-ipq8074: fix terminating of frequency table arrays
+Date: Mon,  1 Apr 2024 17:41:57 +0200
+Message-ID: <20240401152549.950258288@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit deaef31bc1ec7966698a427da8c161930830e1cf ]
+[ Upstream commit 1040ef5ed95d6fd2628bad387d78a61633e09429 ]
 
-If we loop for multishot receive on the initial attempt, and then abort
-later on to wait for more, we miss a case where we should be copying the
-io_async_msghdr from the stack to stable storage. This leads to the next
-retry potentially failing, if the application had the msghdr on the
-stack.
+The frequency table arrays are supposed to be terminated with an
+empty element. Add such entry to the end of the arrays where it
+is missing in order to avoid possible out-of-bound access when
+the table is traversed by functions like qcom_find_freq() or
+qcom_find_freq_floor().
 
+Only compile tested.
+
+Fixes: 9607f6224b39 ("clk: qcom: ipq8074: add PCIE, USB and SDCC clocks")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 9bb66906f23e ("io_uring: support multishot in recvmsg")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-3-074334f0905c@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-ipq8074.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 4aaeada03f1e7..386a6745ae32f 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -915,7 +915,8 @@ int io_recvmsg(struct io_kiocb *req, unsigned int issue_flags)
- 			kfree(kmsg->free_iov);
- 		io_netmsg_recycle(req, issue_flags);
- 		req->flags &= ~REQ_F_NEED_CLEANUP;
--	}
-+	} else if (ret == -EAGAIN)
-+		return io_setup_async_msg(req, kmsg, issue_flags);
+diff --git a/drivers/clk/qcom/gcc-ipq8074.c b/drivers/clk/qcom/gcc-ipq8074.c
+index b7faf12a511a1..7bc679871f324 100644
+--- a/drivers/clk/qcom/gcc-ipq8074.c
++++ b/drivers/clk/qcom/gcc-ipq8074.c
+@@ -644,6 +644,7 @@ static struct clk_rcg2 pcie0_axi_clk_src = {
  
- 	return ret;
- }
+ static const struct freq_tbl ftbl_pcie_aux_clk_src[] = {
+ 	F(19200000, P_XO, 1, 0, 0),
++	{ }
+ };
+ 
+ static const struct clk_parent_data gcc_xo_gpll0_sleep_clk[] = {
+@@ -795,6 +796,7 @@ static const struct freq_tbl ftbl_sdcc_ice_core_clk_src[] = {
+ 	F(19200000, P_XO, 1, 0, 0),
+ 	F(160000000, P_GPLL0, 5, 0, 0),
+ 	F(308570000, P_GPLL6, 3.5, 0, 0),
++	{ }
+ };
+ 
+ static const struct clk_parent_data gcc_xo_gpll0_gpll6_gpll0_div2[] = {
 -- 
 2.43.0
 
