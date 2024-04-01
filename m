@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DB789425C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:52:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46901894064
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDDBD1C217B0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:52:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAB3E1F224EF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4FD481C4;
-	Mon,  1 Apr 2024 16:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A3947A62;
+	Mon,  1 Apr 2024 16:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDd3TDp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPh675ig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D031641232;
-	Mon,  1 Apr 2024 16:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318E43D961;
+	Mon,  1 Apr 2024 16:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990300; cv=none; b=fO12tO8u/BEAmQyUIsqLDMBCD4n5Gat7SisMi8ZzDR3uPjMX+6Ak8UaL51AXZf4R0PYoXHCXZbfYZ4OnfZ4e4xshNn4jOBjvoLMVxd6REH8UlH0wnXuGCI3MKxLvTWcJayJqtwke4q6+HKYw/+boTn/9CCuwWtGTEBt7/6OYE5I=
+	t=1711988968; cv=none; b=G3gN5E6UBFjcuHwmqUds6flr4MMwdMCCB8vtRmMT31pjnG7eb1IPo4V8Z9Jz3d1IzNTIsFcRcQ6Y4RBFJPLzkW+BmTMI7Ss1ZrCVow81G+oHYX2rMH0QeWjL3iLE9pIgRs5hT4EGyg4dTvDrgNxiKlRCwq1LxEZ0zTsM5USYC0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990300; c=relaxed/simple;
-	bh=oNVBze9dpgeLUXaqf0JhBPF77utMdcR+PlmWslXq/L0=;
+	s=arc-20240116; t=1711988968; c=relaxed/simple;
+	bh=eNEK+3pvD4PrDJ0BsRlkpT+KjmZUWINTxl9W8KMKdqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiXpk15EvY+J7DagzOdcZBZXNsEjMtAIqI7IhRE/D9EO3pKLt/z1nxiDQ2KByfF4WdN1wb7hKnY5kTlJ48hcwTBqWVPb/QedsqjJr5acfSj6NRdH9cb/muwya/TCF3++Odo6f7Vq+z3isiR5u6swFkOaOjrg5sHVKBjksuxb4WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDd3TDp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4C0C433C7;
-	Mon,  1 Apr 2024 16:51:39 +0000 (UTC)
+	 MIME-Version; b=G5MfQgN7Xur6uLZOOF3R0zNR5n6JxOQoMqVDewyE4zPFwQ8NxlO31g7AANzRGsJNN0dXqyTJUxstJQnuNCVBACQ7MjgOlmnbvmOu9Sg1IJ7+9jyOC0fwjng5Nfh2sKiMb6hmn8gN3Klt9bo7qQr4EBwhri8LjAirhpbyY366xio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPh675ig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6973C433F1;
+	Mon,  1 Apr 2024 16:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990300;
-	bh=oNVBze9dpgeLUXaqf0JhBPF77utMdcR+PlmWslXq/L0=;
+	s=korg; t=1711988968;
+	bh=eNEK+3pvD4PrDJ0BsRlkpT+KjmZUWINTxl9W8KMKdqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDd3TDp6xINmMr8w7M8KFL9Qig+NU8aavFghpBEiQg0+ceLnYK84utAZZDBSQiUcR
-	 AYsQX6ylcdap5fitrkME/IJeOoVvtrjsUC38vPdK2u4d+qG/USgk2IzD1cHaBlJ4Cu
-	 xPpiqTFYSTCAuU6zFWO4bwQHzwQzDn01ZjWN0UzE=
+	b=hPh675igVxTbv8T+HzL7gGIKz5+5/xWSxiuJZc/HMlUbEvomyc1y9TqUkhFMvBQ6z
+	 jHHkhKRliqmr1Z4Fy7Zoj2xXv2kpyl+JutWXAninuoKz6UYN+Y+B8h4lfMw/3roTOb
+	 8SbQB/4dHQ+B0FPVR0TUEiWcDPyJVCNyr2gRqds0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Auger <eric.auger@redhat.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.6 280/396] vfio/platform: Create persistent IRQ handlers
+	Qu Wenruo <wqu@suse.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Tavian Barnes <tavianator@tavianator.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 342/432] btrfs: fix race in read_extent_buffer_pages()
 Date: Mon,  1 Apr 2024 17:45:29 +0200
-Message-ID: <20240401152556.258242829@linuxfoundation.org>
+Message-ID: <20240401152603.438227691@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,254 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Tavian Barnes <tavianator@tavianator.com>
 
-commit 675daf435e9f8e5a5eab140a9864dfad6668b375 upstream.
+commit ef1e68236b9153c27cb7cf29ead0c532870d4215 upstream.
 
-The vfio-platform SET_IRQS ioctl currently allows loopback triggering of
-an interrupt before a signaling eventfd has been configured by the user,
-which thereby allows a NULL pointer dereference.
+There are reports from tree-checker that detects corrupted nodes,
+without any obvious pattern so possibly an overwrite in memory.
+After some debugging it turns out there's a race when reading an extent
+buffer the uptodate status can be missed.
 
-Rather than register the IRQ relative to a valid trigger, register all
-IRQs in a disabled state in the device open path.  This allows mask
-operations on the IRQ to nest within the overall enable state governed
-by a valid eventfd signal.  This decouples @masked, protected by the
-@locked spinlock from @trigger, protected via the @igate mutex.
+To prevent concurrent reads for the same extent buffer,
+read_extent_buffer_pages() performs these checks:
 
-In doing so, it's guaranteed that changes to @trigger cannot race the
-IRQ handlers because the IRQ handler is synchronously disabled before
-modifying the trigger, and loopback triggering of the IRQ via ioctl is
-safe due to serialization with trigger changes via igate.
+    /* (1) */
+    if (test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))
+        return 0;
 
-For compatibility, request_irq() failures are maintained to be local to
-the SET_IRQS ioctl rather than a fatal error in the open device path.
-This allows, for example, a userspace driver with polling mode support
-to continue to work regardless of moving the request_irq() call site.
-This necessarily blocks all SET_IRQS access to the failed index.
+    /* (2) */
+    if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
+        goto done;
 
-Cc: Eric Auger <eric.auger@redhat.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: 57f972e2b341 ("vfio/platform: trigger an interrupt via eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-7-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+At this point, it seems safe to start the actual read operation. Once
+that completes, end_bbio_meta_read() does
+
+    /* (3) */
+    set_extent_buffer_uptodate(eb);
+
+    /* (4) */
+    clear_bit(EXTENT_BUFFER_READING, &eb->bflags);
+
+Normally, this is enough to ensure only one read happens, and all other
+callers wait for it to finish before returning.  Unfortunately, there is
+a racey interleaving:
+
+    Thread A | Thread B | Thread C
+    ---------+----------+---------
+       (1)   |          |
+             |    (1)   |
+       (2)   |          |
+       (3)   |          |
+       (4)   |          |
+             |    (2)   |
+             |          |    (1)
+
+When this happens, thread B kicks of an unnecessary read. Worse, thread
+C will see UPTODATE set and return immediately, while the read from
+thread B is still in progress.  This race could result in tree-checker
+errors like this as the extent buffer is concurrently modified:
+
+    BTRFS critical (device dm-0): corrupted node, root=256
+    block=8550954455682405139 owner mismatch, have 11858205567642294356
+    expect [256, 18446744073709551360]
+
+Fix it by testing UPTODATE again after setting the READING bit, and if
+it's been set, skip the unnecessary read.
+
+Fixes: d7172f52e993 ("btrfs: use per-buffer locking for extent_buffer reading")
+Link: https://lore.kernel.org/linux-btrfs/CAHk-=whNdMaN9ntZ47XRKP6DBes2E5w7fi-0U3H2+PS18p+Pzw@mail.gmail.com/
+Link: https://lore.kernel.org/linux-btrfs/f51a6d5d7432455a6a858d51b49ecac183e0bbc9.1706312914.git.wqu@suse.com/
+Link: https://lore.kernel.org/linux-btrfs/c7241ea4-fcc6-48d2-98c8-b5ea790d6c89@gmx.com/
+CC: stable@vger.kernel.org # 6.5+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Tavian Barnes <tavianator@tavianator.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ minor update of changelog ]
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/platform/vfio_platform_irq.c |  100 ++++++++++++++++++++----------
- 1 file changed, 68 insertions(+), 32 deletions(-)
+ fs/btrfs/extent_io.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/vfio/platform/vfio_platform_irq.c
-+++ b/drivers/vfio/platform/vfio_platform_irq.c
-@@ -136,6 +136,16 @@ static int vfio_platform_set_irq_unmask(
- 	return 0;
- }
- 
-+/*
-+ * The trigger eventfd is guaranteed valid in the interrupt path
-+ * and protected by the igate mutex when triggered via ioctl.
-+ */
-+static void vfio_send_eventfd(struct vfio_platform_irq *irq_ctx)
-+{
-+	if (likely(irq_ctx->trigger))
-+		eventfd_signal(irq_ctx->trigger, 1);
-+}
-+
- static irqreturn_t vfio_automasked_irq_handler(int irq, void *dev_id)
- {
- 	struct vfio_platform_irq *irq_ctx = dev_id;
-@@ -155,7 +165,7 @@ static irqreturn_t vfio_automasked_irq_h
- 	spin_unlock_irqrestore(&irq_ctx->lock, flags);
- 
- 	if (ret == IRQ_HANDLED)
--		eventfd_signal(irq_ctx->trigger, 1);
-+		vfio_send_eventfd(irq_ctx);
- 
- 	return ret;
- }
-@@ -164,52 +174,40 @@ static irqreturn_t vfio_irq_handler(int
- {
- 	struct vfio_platform_irq *irq_ctx = dev_id;
- 
--	eventfd_signal(irq_ctx->trigger, 1);
-+	vfio_send_eventfd(irq_ctx);
- 
- 	return IRQ_HANDLED;
- }
- 
- static int vfio_set_trigger(struct vfio_platform_device *vdev, int index,
--			    int fd, irq_handler_t handler)
-+			    int fd)
- {
- 	struct vfio_platform_irq *irq = &vdev->irqs[index];
- 	struct eventfd_ctx *trigger;
--	int ret;
- 
- 	if (irq->trigger) {
--		irq_clear_status_flags(irq->hwirq, IRQ_NOAUTOEN);
--		free_irq(irq->hwirq, irq);
--		kfree(irq->name);
-+		disable_irq(irq->hwirq);
- 		eventfd_ctx_put(irq->trigger);
- 		irq->trigger = NULL;
- 	}
- 
- 	if (fd < 0) /* Disable only */
- 		return 0;
--	irq->name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-irq[%d](%s)",
--			      irq->hwirq, vdev->name);
--	if (!irq->name)
--		return -ENOMEM;
- 
- 	trigger = eventfd_ctx_fdget(fd);
--	if (IS_ERR(trigger)) {
--		kfree(irq->name);
-+	if (IS_ERR(trigger))
- 		return PTR_ERR(trigger);
--	}
- 
- 	irq->trigger = trigger;
- 
--	irq_set_status_flags(irq->hwirq, IRQ_NOAUTOEN);
--	ret = request_irq(irq->hwirq, handler, 0, irq->name, irq);
--	if (ret) {
--		kfree(irq->name);
--		eventfd_ctx_put(trigger);
--		irq->trigger = NULL;
--		return ret;
--	}
--
--	if (!irq->masked)
--		enable_irq(irq->hwirq);
-+	/*
-+	 * irq->masked effectively provides nested disables within the overall
-+	 * enable relative to trigger.  Specifically request_irq() is called
-+	 * with NO_AUTOEN, therefore the IRQ is initially disabled.  The user
-+	 * may only further disable the IRQ with a MASK operations because
-+	 * irq->masked is initially false.
-+	 */
-+	enable_irq(irq->hwirq);
- 
- 	return 0;
- }
-@@ -228,7 +226,7 @@ static int vfio_platform_set_irq_trigger
- 		handler = vfio_irq_handler;
- 
- 	if (!count && (flags & VFIO_IRQ_SET_DATA_NONE))
--		return vfio_set_trigger(vdev, index, -1, handler);
-+		return vfio_set_trigger(vdev, index, -1);
- 
- 	if (start != 0 || count != 1)
- 		return -EINVAL;
-@@ -236,7 +234,7 @@ static int vfio_platform_set_irq_trigger
- 	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
- 		int32_t fd = *(int32_t *)data;
- 
--		return vfio_set_trigger(vdev, index, fd, handler);
-+		return vfio_set_trigger(vdev, index, fd);
- 	}
- 
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
-@@ -260,6 +258,14 @@ int vfio_platform_set_irqs_ioctl(struct
- 		    unsigned start, unsigned count, uint32_t flags,
- 		    void *data) = NULL;
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -4052,6 +4052,19 @@ int read_extent_buffer_pages(struct exte
+ 	if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
+ 		goto done;
  
 +	/*
-+	 * For compatibility, errors from request_irq() are local to the
-+	 * SET_IRQS path and reflected in the name pointer.  This allows,
-+	 * for example, polling mode fallback for an exclusive IRQ failure.
++	 * Between the initial test_bit(EXTENT_BUFFER_UPTODATE) and the above
++	 * test_and_set_bit(EXTENT_BUFFER_READING), someone else could have
++	 * started and finished reading the same eb.  In this case, UPTODATE
++	 * will now be set, and we shouldn't read it in again.
 +	 */
-+	if (IS_ERR(vdev->irqs[index].name))
-+		return PTR_ERR(vdev->irqs[index].name);
-+
- 	switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
- 	case VFIO_IRQ_SET_ACTION_MASK:
- 		func = vfio_platform_set_irq_mask;
-@@ -280,7 +286,7 @@ int vfio_platform_set_irqs_ioctl(struct
- 
- int vfio_platform_irq_init(struct vfio_platform_device *vdev)
- {
--	int cnt = 0, i;
-+	int cnt = 0, i, ret = 0;
- 
- 	while (vdev->get_irq(vdev, cnt) >= 0)
- 		cnt++;
-@@ -292,29 +298,54 @@ int vfio_platform_irq_init(struct vfio_p
- 
- 	for (i = 0; i < cnt; i++) {
- 		int hwirq = vdev->get_irq(vdev, i);
-+		irq_handler_t handler = vfio_irq_handler;
- 
--		if (hwirq < 0)
-+		if (hwirq < 0) {
-+			ret = -EINVAL;
- 			goto err;
-+		}
- 
- 		spin_lock_init(&vdev->irqs[i].lock);
- 
- 		vdev->irqs[i].flags = VFIO_IRQ_INFO_EVENTFD;
- 
--		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK)
-+		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK) {
- 			vdev->irqs[i].flags |= VFIO_IRQ_INFO_MASKABLE
- 						| VFIO_IRQ_INFO_AUTOMASKED;
-+			handler = vfio_automasked_irq_handler;
-+		}
- 
- 		vdev->irqs[i].count = 1;
- 		vdev->irqs[i].hwirq = hwirq;
- 		vdev->irqs[i].masked = false;
-+		vdev->irqs[i].name = kasprintf(GFP_KERNEL_ACCOUNT,
-+					       "vfio-irq[%d](%s)", hwirq,
-+					       vdev->name);
-+		if (!vdev->irqs[i].name) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+
-+		ret = request_irq(hwirq, handler, IRQF_NO_AUTOEN,
-+				  vdev->irqs[i].name, &vdev->irqs[i]);
-+		if (ret) {
-+			kfree(vdev->irqs[i].name);
-+			vdev->irqs[i].name = ERR_PTR(ret);
-+		}
- 	}
- 
- 	vdev->num_irqs = cnt;
- 
- 	return 0;
- err:
-+	for (--i; i >= 0; i--) {
-+		if (!IS_ERR(vdev->irqs[i].name)) {
-+			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
-+			kfree(vdev->irqs[i].name);
-+		}
++	if (unlikely(test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))) {
++		clear_bit(EXTENT_BUFFER_READING, &eb->bflags);
++		smp_mb__after_atomic();
++		wake_up_bit(&eb->bflags, EXTENT_BUFFER_READING);
++		return 0;
 +	}
- 	kfree(vdev->irqs);
--	return -EINVAL;
-+	return ret;
- }
- 
- void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
-@@ -324,7 +355,12 @@ void vfio_platform_irq_cleanup(struct vf
- 	for (i = 0; i < vdev->num_irqs; i++) {
- 		vfio_virqfd_disable(&vdev->irqs[i].mask);
- 		vfio_virqfd_disable(&vdev->irqs[i].unmask);
--		vfio_set_trigger(vdev, i, -1, NULL);
-+		if (!IS_ERR(vdev->irqs[i].name)) {
-+			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
-+			if (vdev->irqs[i].trigger)
-+				eventfd_ctx_put(vdev->irqs[i].trigger);
-+			kfree(vdev->irqs[i].name);
-+		}
- 	}
- 
- 	vdev->num_irqs = 0;
++
+ 	clear_bit(EXTENT_BUFFER_READ_ERR, &eb->bflags);
+ 	eb->read_mirror = 0;
+ 	check_buffer_tree_ref(eb);
 
 
 
