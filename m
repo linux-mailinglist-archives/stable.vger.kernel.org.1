@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-34682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866E189405B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6731989424E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A041A1C21401
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB262B21FF3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E202481B4;
-	Mon,  1 Apr 2024 16:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB28482E4;
+	Mon,  1 Apr 2024 16:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RAD3y7/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMLFPFnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB8D47A7C;
-	Mon,  1 Apr 2024 16:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A402481D1;
+	Mon,  1 Apr 2024 16:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988941; cv=none; b=rCBout0Zs3TJQzQd+4KweFrKLN362osC2AW7ejea/tyk7647gWbqd0LzWYuKqIaa0e+GJnBx1Q2NBnpTAnMNMJh+L4WCoaZFNpwa3z9mw5GV9w63wdbm2ErKguM0HbCRgL+sJy2w/oUPTZ5tCc3/AHb0dyQYhdzunb2XfDJ2lmA=
+	t=1711990279; cv=none; b=P5a2N46QjaVjZZ5O+RACCwHak2m6Os1Hfq9sTDI4T7ldHIusqAZhyQT3VOTpNax4DAbxkRizSFZ1y6fKALqX6jgHuzSxiQzw2kqtIRqfrHAnz1pNj035qinTRP21rvUfRcHkEf5ojeCAHGnr9RO31Uv07BQXiCc0ysygcrilVFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988941; c=relaxed/simple;
-	bh=la33AS4tOeTJUqde26JQmnpRBDjVQsyKoGWitPwHxms=;
+	s=arc-20240116; t=1711990279; c=relaxed/simple;
+	bh=HS/JVhM1COEUTYhyaGHvp22rW+4QUy6+c62E+T+IcSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWqKwmRK8LhJJz4eOh5iEJxSF7nd3GUzO9A0vWs4dalA85lfMmtrIh57uecqQ+qpUMpeq7MdNsPaclSiquSW2TYAbBtwavmJ3hsWOyH6lTydpxzfBde9b3JS8TWF5CotLhduY+19L8HJsRPk3F+N4XX1Z0ldbdQMiva4aMXYLXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RAD3y7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C81EC433C7;
-	Mon,  1 Apr 2024 16:29:00 +0000 (UTC)
+	 MIME-Version; b=KZH6lLYsdMCC5hQ0vbF7CCeAMM/yZsbrvU1FFxgjRINjhPywa7hIhNDMyX/Bl2Ba7xw/pSfjR7bDLWQ8N9sPM988706tWH+5qs10DNQTZ16mXZsTFerB+MDstc6WDIpkzhzi3lZUE6MLxtJsKQgWxdMFYZ3zjsG8nBWCgfUHlRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMLFPFnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC93C43390;
+	Mon,  1 Apr 2024 16:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988941;
-	bh=la33AS4tOeTJUqde26JQmnpRBDjVQsyKoGWitPwHxms=;
+	s=korg; t=1711990278;
+	bh=HS/JVhM1COEUTYhyaGHvp22rW+4QUy6+c62E+T+IcSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1RAD3y7/VQe/o0UqFl1pOtiXCnt8O0ktvOS0c07kmFr0ILlZvAwZe3ap6Bh72qwj4
-	 nUE1Y2ZYhre1GF2+uRYlSvt43PW9VLAw+nCcUhzhPcCuSuoToUXcsIz7+Vhw3DfMce
-	 oG3XgnAjbK5p2BL7GXS/zDL23dVabRcPEV1Qeeik=
+	b=FMLFPFnkfRoeF0Vtw9tHL595K2iRnj//FG1+PWRYlf8ylBzr/dXTXSoJDdoipwQRn
+	 IuZ+TeVE+vXy+12ul2WpxKMVZjifZwzRUt/6cxjnxKK7zkDNoBSx3hfR9yzX4o1pM1
+	 li7SMIew3krYHuO3H9fyI72cQUB9rtnk3RnXQxAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clayton Craft <clayton@craftyguy.net>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.7 335/432] x86/efistub: Add missing boot_params for mixed mode compat entry
-Date: Mon,  1 Apr 2024 17:45:22 +0200
-Message-ID: <20240401152603.214653502@linuxfoundation.org>
+	linux-xfs@vger.kernel.org,
+	Zhang Tianci <zhangtianci.1997@bytedance.com>,
+	Dave Chinner <david@fromorbit.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 274/396] xfs: update dir3 leaf block metadata after swap
+Date: Mon,  1 Apr 2024 17:45:23 +0200
+Message-ID: <20240401152556.080265421@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Zhang Tianci <zhangtianci.1997@bytedance.com>
 
-commit d21f5a59ea773826cc489acb287811d690b703cc upstream.
+commit 5759aa4f956034b289b0ae2c99daddfc775442e1 upstream.
 
-The pure EFI stub entry point does not take a struct boot_params from
-the boot loader, but creates it from scratch, and populates only the
-fields that still have meaning in this context (command line, initrd
-base and size, etc)
+xfs_da3_swap_lastblock() copy the last block content to the dead block,
+but do not update the metadata in it. We need update some metadata
+for some kinds of type block, such as dir3 leafn block records its
+blkno, we shall update it to the dead block blkno. Otherwise,
+before write the xfs_buf to disk, the verify_write() will fail in
+blk_hdr->blkno != xfs_buf->b_bn, then xfs will be shutdown.
 
-The original mixed mode implementation used the EFI handover protocol
-instead, where the boot loader (i.e., GRUB) populates a boot_params
-struct and passes it to a special Linux specific EFI entry point that
-takes the boot_params pointer as its third argument.
+We will get this warning:
 
-When the new mixed mode implementation was introduced, using a special
-32-bit PE entrypoint in the 64-bit kernel, it adopted the pure approach,
-and relied on the EFI stub to create the struct boot_params.  This is
-preferred because it makes the bootloader side much easier to implement,
-as it does not need any x86-specific knowledge on how struct boot_params
-and struct setup_header are put together. This mixed mode implementation
-was adopted by systemd-boot version 252 and later.
+  XFS (dm-0): Metadata corruption detected at xfs_dir3_leaf_verify+0xa8/0xe0 [xfs], xfs_dir3_leafn block 0x178
+  XFS (dm-0): Unmount and run xfs_repair
+  XFS (dm-0): First 128 bytes of corrupted metadata buffer:
+  00000000e80f1917: 00 80 00 0b 00 80 00 07 3d ff 00 00 00 00 00 00  ........=.......
+  000000009604c005: 00 00 00 00 00 00 01 a0 00 00 00 00 00 00 00 00  ................
+  000000006b6fb2bf: e4 44 e3 97 b5 64 44 41 8b 84 60 0e 50 43 d9 bf  .D...dDA..`.PC..
+  00000000678978a2: 00 00 00 00 00 00 00 83 01 73 00 93 00 00 00 00  .........s......
+  00000000b28b247c: 99 29 1d 38 00 00 00 00 99 29 1d 40 00 00 00 00  .).8.....).@....
+  000000002b2a662c: 99 29 1d 48 00 00 00 00 99 49 11 00 00 00 00 00  .).H.....I......
+  00000000ea2ffbb8: 99 49 11 08 00 00 45 25 99 49 11 10 00 00 48 fe  .I....E%.I....H.
+  0000000069e86440: 99 49 11 18 00 00 4c 6b 99 49 11 20 00 00 4d 97  .I....Lk.I. ..M.
+  XFS (dm-0): xfs_do_force_shutdown(0x8) called from line 1423 of file fs/xfs/xfs_buf.c.  Return address = 00000000c0ff63c1
+  XFS (dm-0): Corruption of in-memory data detected.  Shutting down filesystem
+  XFS (dm-0): Please umount the filesystem and rectify the problem(s)
 
-When commit
+>>From the log above, we know xfs_buf->b_no is 0x178, but the block's hdr record
+its blkno is 0x1a0.
 
-  e2ab9eab324c ("x86/boot/compressed: Move 32-bit entrypoint code into .text section")
-
-refactored this code and moved it out of head_64.S, the fact that ESI
-was populated with the address of the base of the image was overlooked,
-and to simplify the code flow, ESI is now zeroed and stored to memory
-unconditionally in shared code, so that the NULL-ness of that variable
-can still be used later to determine which mixed mode boot protocol is
-in use.
-
-With ESI pointing to the base of the image, it can serve as a struct
-boot_params pointer for startup_32(), which only accesses the init_data
-and kernel_alignment fields (and the scratch field as a temporary
-stack). Zeroing ESI means that those accesses produce garbage now, even
-though things appear to work if the first page of memory happens to be
-zeroed, and the region right before LOAD_PHYSICAL_ADDR (== 16 MiB)
-happens to be free.
-
-The solution is to pass a special, temporary struct boot_params to
-startup_32() via ESI, one that is sufficient for getting it to create
-the page tables correctly and is discarded right after. This involves
-setting a minimal alignment of 4k, only to get the statically allocated
-page tables line up correctly, and setting init_size to the executable
-image size (_end - startup_32). This ensures that the page tables are
-covered by the static footprint of the PE image.
-
-Given that EFI boot no longer calls the decompressor and no longer pads
-the image to permit the decompressor to execute in place, the same
-temporary struct boot_params should be used in the EFI handover protocol
-based mixed mode implementation as well, to prevent the page tables from
-being placed outside of allocated memory.
-
-Fixes: e2ab9eab324c ("x86/boot/compressed: Move 32-bit entrypoint code into .text section")
-Cc: <stable@kernel.org> # v6.1+
-Closes: https://lore.kernel.org/all/20240321150510.GI8211@craftyguy.net/
-Reported-by: Clayton Craft <clayton@craftyguy.net>
-Tested-by: Clayton Craft <clayton@craftyguy.net>
-Tested-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 24df33b45ecf ("xfs: add CRC checking to dir2 leaf blocks")
+Signed-off-by: Zhang Tianci <zhangtianci.1997@bytedance.com>
+Suggested-by: Dave Chinner <david@fromorbit.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ fs/xfs/libxfs/xfs_da_btree.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -15,10 +15,12 @@
-  */
- 
- #include <linux/linkage.h>
-+#include <asm/asm-offsets.h>
- #include <asm/msr.h>
- #include <asm/page_types.h>
- #include <asm/processor-flags.h>
- #include <asm/segment.h>
-+#include <asm/setup.h>
- 
- 	.code64
- 	.text
-@@ -149,6 +151,7 @@ SYM_FUNC_END(__efi64_thunk)
- SYM_FUNC_START(efi32_stub_entry)
- 	call	1f
- 1:	popl	%ecx
-+	leal	(efi32_boot_args - 1b)(%ecx), %ebx
- 
- 	/* Clear BSS */
- 	xorl	%eax, %eax
-@@ -163,6 +166,7 @@ SYM_FUNC_START(efi32_stub_entry)
- 	popl	%ecx
- 	popl	%edx
- 	popl	%esi
-+	movl	%esi, 8(%ebx)
- 	jmp	efi32_entry
- SYM_FUNC_END(efi32_stub_entry)
- #endif
-@@ -239,8 +243,6 @@ SYM_FUNC_END(efi_enter32)
-  *
-  * Arguments:	%ecx	image handle
-  * 		%edx	EFI system table pointer
-- *		%esi	struct bootparams pointer (or NULL when not using
-- *			the EFI handover protocol)
-  *
-  * Since this is the point of no return for ordinary execution, no registers
-  * are considered live except for the function parameters. [Note that the EFI
-@@ -266,9 +268,18 @@ SYM_FUNC_START_LOCAL(efi32_entry)
- 	leal	(efi32_boot_args - 1b)(%ebx), %ebx
- 	movl	%ecx, 0(%ebx)
- 	movl	%edx, 4(%ebx)
--	movl	%esi, 8(%ebx)
- 	movb	$0x0, 12(%ebx)          // efi_is64
- 
-+	/*
-+	 * Allocate some memory for a temporary struct boot_params, which only
-+	 * needs the minimal pieces that startup_32() relies on.
-+	 */
-+	subl	$PARAM_SIZE, %esp
-+	movl	%esp, %esi
-+	movl	$PAGE_SIZE, BP_kernel_alignment(%esi)
-+	movl	$_end - 1b, BP_init_size(%esi)
-+	subl	$startup_32 - 1b, BP_init_size(%esi)
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -2316,10 +2316,17 @@ xfs_da3_swap_lastblock(
+ 		return error;
+ 	/*
+ 	 * Copy the last block into the dead buffer and log it.
++	 * On CRC-enabled file systems, also update the stamped in blkno.
+ 	 */
+ 	memcpy(dead_buf->b_addr, last_buf->b_addr, args->geo->blksize);
++	if (xfs_has_crc(mp)) {
++		struct xfs_da3_blkinfo *da3 = dead_buf->b_addr;
 +
- 	/* Disable paging */
- 	movl	%cr0, %eax
- 	btrl	$X86_CR0_PG_BIT, %eax
-@@ -294,8 +305,7 @@ SYM_FUNC_START(efi32_pe_entry)
- 
- 	movl	8(%ebp), %ecx			// image_handle
- 	movl	12(%ebp), %edx			// sys_table
--	xorl	%esi, %esi
--	jmp	efi32_entry			// pass %ecx, %edx, %esi
-+	jmp	efi32_entry			// pass %ecx, %edx
- 						// no other registers remain live
- 
- 2:	popl	%edi				// restore callee-save registers
++		da3->blkno = cpu_to_be64(xfs_buf_daddr(dead_buf));
++	}
+ 	xfs_trans_log_buf(tp, dead_buf, 0, args->geo->blksize - 1);
+ 	dead_info = dead_buf->b_addr;
++
+ 	/*
+ 	 * Get values from the moved block.
+ 	 */
 
 
 
