@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5454C893F7E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EC289413E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A2041F21A28
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 743471C212CB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD42647A5D;
-	Mon,  1 Apr 2024 16:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F383B2A4;
+	Mon,  1 Apr 2024 16:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nj+84rol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl4A5wGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D764778C;
-	Mon,  1 Apr 2024 16:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652411E86C;
+	Mon,  1 Apr 2024 16:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988237; cv=none; b=aeSnNnVq1OnSdfpOucOHS4aPrtAewwUrnhFuny57wha8mfl/G63JIEfROJuppb8igZzNAqdIEX9zuoliv0acPU8lU7BlfeWa85yifoaBoFMnAbX3qQA/K7p3VnxjBIly527q4ggPaiFbNDdN1lirc1smBlCz2+m8Q+/DPpsFOFQ=
+	t=1711989578; cv=none; b=T33YkiIIPIDzIBshuGyuWvMhe3NHIPgo+h/6MuaEuoFjROISHL5lrklkCWU7eueIU4Pd3Zo13i/5eMn7H9Y2/lZC31R+iYjO/68vynjUjd6Q7VsIpM+xrym51sJUGuGd1yh+KTGQycXKbnBC4wZO6R3oNELznm5b9oGDUm0Tw8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988237; c=relaxed/simple;
-	bh=9LTkHSvAiY1GxbsRDJcpyf1Cd7vRkm9L2Nyiukej+Gk=;
+	s=arc-20240116; t=1711989578; c=relaxed/simple;
+	bh=Li3rMVHiVwxn+YQ5PpW9j9gWojv1k2xG2i5tqHCkDkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bv4tDhtzgbI84lJ8kWb+Ln5K6SM9rLui2p7rONPmdZx5BEzNbi5Xf9r9j2lM6cCVsVhEAQRriKwrfLR0HFluZLMfEGBFwnYDpBz3hBFf/l2xAvkkAUyngSK/euMx0jI3EDF5pQjlBbZI0vsE1BGZz9MmpMk0SfssDBSGjJFIJMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nj+84rol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C57EC433F1;
-	Mon,  1 Apr 2024 16:17:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BsWLzOa+g1yActUI+s2vqqPQk4k7J2xz4vK7FYYRSatsASGCh+f+wfsw1GRL9jVkT3yOUYdh23y/zK4jFz1A054KKeJCB1MzBRCzeLU5rnw1C/wz3jWmB6IiOTIA6LAM4w/41NBgjTl75kNLheEhFN2+4ZIsPxVCFcZ0QZulmis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl4A5wGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA02AC433F1;
+	Mon,  1 Apr 2024 16:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988237;
-	bh=9LTkHSvAiY1GxbsRDJcpyf1Cd7vRkm9L2Nyiukej+Gk=;
+	s=korg; t=1711989578;
+	bh=Li3rMVHiVwxn+YQ5PpW9j9gWojv1k2xG2i5tqHCkDkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nj+84rolqA16P2RgQmh8QPeNaqSB1x0pK59htuoF1cD5XdHRaQlZRGk0LiI0ZsrET
-	 1qPVyV8i4exPOQiDZy8aWw44uKrdnfXSS47MBiTGR7cXGAwSbTst+4UJarnRA3QaFu
-	 qnMuqRApPMZ0mm0aKpBmBO/1GrMhApNt4r1txaaI=
+	b=bl4A5wGQ6KHlIJi+7Ukor3jnc/4jAFIkHaNnGO+bUeKZQUlpyE/eYIlsA9K71SlGQ
+	 7iFtXcXwGDjwSylNS0eutIwoGbD7a0uFjxD6Ajd4iy/bcK1fujp565rZKTJuhgp996
+	 iLcs55419vl5LemiA1cSQb+nbYclBBQuZA2P5e7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 124/432] phy: tegra: xusb: Add API to retrieve the port number of phy
+Subject: [PATCH 6.6 062/396] docs: Restore "smart quotes" for quotes
 Date: Mon,  1 Apr 2024 17:41:51 +0200
-Message-ID: <20240401152556.819499544@linuxfoundation.org>
+Message-ID: <20240401152549.772639647@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Akira Yokosawa <akiyks@gmail.com>
 
-[ Upstream commit d843f031d9e90462253015bc0bd9e3852d206bf2 ]
+[ Upstream commit fe2562582bffe675721e77e00b3bf5bfa1d7aeab ]
 
-This patch introduces a new API, tegra_xusb_padctl_get_port_number,
-to the Tegra XUSB Pad Controller driver. This API is used to identify
-the USB port that is associated with a given PHY.
+Commit eaae75754d81 ("docs: turn off "smart quotes" in the HTML build")
+disabled conversion of quote marks along with that of dashes.
+Despite the short summary, the change affects not only HTML build
+but also other build targets including PDF.
 
-The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
-and returns the corresponding port number. If the PHY pointer is invalid,
-it returns -ENODEV.
+However, as "smart quotes" had been enabled for more than half a
+decade already, quite a few readers of HTML pages are likely expecting
+conversions of "foo" -> “foo” and 'bar' -> ‘bar’.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20240307030328.1487748-2-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Furthermore, in LaTeX typesetting convention, it is common to use
+distinct marks for opening and closing quote marks.
+
+To satisfy such readers' expectation, restore conversion of quotes
+only by setting smartquotes_action [1].
+
+Link: [1] https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-smartquotes_action
+Cc: stable@vger.kernel.org  # v6.4
+Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20240225094600.65628-1-akiyks@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c       | 13 +++++++++++++
- include/linux/phy/tegra/xusb.h |  1 +
- 2 files changed, 14 insertions(+)
+ Documentation/conf.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-index 142ebe0247cc0..983a6e6173bd2 100644
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -1531,6 +1531,19 @@ int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
- }
- EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_usb3_companion);
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index dfc19c915d5c4..e385e24fe9e72 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -345,9 +345,9 @@ sys.stderr.write("Using %s theme\n" % html_theme)
+ html_static_path = ['sphinx-static']
  
-+int tegra_xusb_padctl_get_port_number(struct phy *phy)
-+{
-+	struct tegra_xusb_lane *lane;
-+
-+	if (!phy)
-+		return -ENODEV;
-+
-+	lane = phy_get_drvdata(phy);
-+
-+	return lane->index;
-+}
-+EXPORT_SYMBOL_GPL(tegra_xusb_padctl_get_port_number);
-+
- MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
- MODULE_DESCRIPTION("Tegra XUSB Pad Controller driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/phy/tegra/xusb.h b/include/linux/phy/tegra/xusb.h
-index 70998e6dd6fdc..6ca51e0080ec0 100644
---- a/include/linux/phy/tegra/xusb.h
-+++ b/include/linux/phy/tegra/xusb.h
-@@ -26,6 +26,7 @@ void tegra_phy_xusb_utmi_pad_power_down(struct phy *phy);
- int tegra_phy_xusb_utmi_port_reset(struct phy *phy);
- int tegra_xusb_padctl_get_usb3_companion(struct tegra_xusb_padctl *padctl,
- 					 unsigned int port);
-+int tegra_xusb_padctl_get_port_number(struct phy *phy);
- int tegra_xusb_padctl_enable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy,
- 					   enum usb_device_speed speed);
- int tegra_xusb_padctl_disable_phy_sleepwalk(struct tegra_xusb_padctl *padctl, struct phy *phy);
+ # If true, Docutils "smart quotes" will be used to convert quotes and dashes
+-# to typographically correct entities.  This will convert "--" to "—",
+-# which is not always what we want, so disable it.
+-smartquotes = False
++# to typographically correct entities.  However, conversion of "--" to "—"
++# is not always what we want, so enable only quotes.
++smartquotes_action = 'q'
+ 
+ # Custom sidebar templates, maps document names to template names.
+ # Note that the RTD theme ignores this
 -- 
 2.43.0
 
