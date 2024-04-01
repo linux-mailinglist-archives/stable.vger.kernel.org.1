@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BE18941DD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552E7894333
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 831411F2558F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B08F8B21093
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E17481B8;
-	Mon,  1 Apr 2024 16:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2632487BE;
+	Mon,  1 Apr 2024 17:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gyr1cXMq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxFL7G15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF6F40876;
-	Mon,  1 Apr 2024 16:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AA147A5D;
+	Mon,  1 Apr 2024 17:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990020; cv=none; b=cx/x/zBFi56LZDnAw2gUGa4wF90lA3yfq4izT2gp7kq1tiYpyKVDmY4ix0WY0ar+FwehdJgmuweQXuQchkVRXbm5TuMG2zsAxui+M24GzcACC8Jw6U4P9mAD9cic25p8SzHcVpHBZFWb0kRQZ537oS6+W4hK3hZP+OTWUR9yv90=
+	t=1711990844; cv=none; b=H/8pUty3CpwBdrl93yVrGEyGQhGQFm6TNeZ5f9S3/DVQ8JadXfHMyzevbHypBv5SL+ncodacbbQVz+i8Mx7pyWV75hT0si77vlH2X5RgKZ+2Jx8+/KtCRygKzlXySxgPbIlTXbWVKphquhRc6zIK6bIU2JLG03+LFAnC08PnQFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990020; c=relaxed/simple;
-	bh=aleZN7/mTXCq4f+776UgnDbePwa9n1oyogL5GA728dU=;
+	s=arc-20240116; t=1711990844; c=relaxed/simple;
+	bh=kasMF0Kn0qn21sH7Gm52FmC2TEgTiiWESiVQyS0WM/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nDw31tOgkjbrA3YWKCmM4Yf8gZNWhQOkK73CNTZFCeFvbWAXOP8kxQp7ML1IHa/1vKQjKQRNENNne0dFmcg3Ubo6RBO0fI3hTKY9kWLNvSajrnimn5mFnyq+TNROyxdAqmVtY6BAM7YWVzr3lXOwsDlPc/OaHnywwzMGs+ajrd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gyr1cXMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3EBC433F1;
-	Mon,  1 Apr 2024 16:47:00 +0000 (UTC)
+	 MIME-Version; b=GZNd5xZ6CrtP7ate8Tm5Br8JCYnJ3YzdJz+9DuVsiVcr9cJtE9YbfiniWkts5yaDfB6Xmy3jlwrJq+SNiwdT/WHfIec3KtFzjzOle/s0x2tlzgyEU/YpSVvqFGbhX7XMHv+nazrxMV5zWUX8FDja1v6s4u+Vrq25rqWoRgb2wck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxFL7G15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A42C43399;
+	Mon,  1 Apr 2024 17:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990020;
-	bh=aleZN7/mTXCq4f+776UgnDbePwa9n1oyogL5GA728dU=;
+	s=korg; t=1711990844;
+	bh=kasMF0Kn0qn21sH7Gm52FmC2TEgTiiWESiVQyS0WM/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gyr1cXMqrI8a66rgJfsd7Tuf34Gh1MZXqPG7mJq14eusTy6fAaGB5071Ey+YsP2Lv
-	 RZaegnIgv3ihRxol1vNn64TYu7fjnl5rDMfXcJD9hzVXm+y2935bNtKuBRnAQs663t
-	 IL5TBTVC/ESePHveaMDCr+lBhY6wxqM0b3WZOcmw=
+	b=sxFL7G15LIJKlt+iEbXmDh79DH51KQbVUV1ubaoFSOn8XXefjw9BAkq02a0xDRm/l
+	 X3Bp8P7jg17uldv08Rklgmy+j2AEiK8gRhFmqDw4vCat44GHrxVOzwByNNIT/Oe1D3
+	 y5NPv6eC5A49XguD4Xpg6zycPCJEUTZJtPdlEsCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
-Subject: [PATCH 6.6 223/396] usb: gadget: ncm: Fix handling of zero block length packets
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 082/272] drm/etnaviv: Restore some id values
 Date: Mon,  1 Apr 2024 17:44:32 +0200
-Message-ID: <20240401152554.568470749@linuxfoundation.org>
+Message-ID: <20240401152533.170690051@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-commit f90ce1e04cbcc76639d6cba0fdbd820cd80b3c70 upstream.
+[ Upstream commit b735ee173f84d5d0d0733c53946a83c12d770d05 ]
 
-While connecting to a Linux host with CDC_NCM_NTB_DEF_SIZE_TX
-set to 65536, it has been observed that we receive short packets,
-which come at interval of 5-10 seconds sometimes and have block
-length zero but still contain 1-2 valid datagrams present.
+The hwdb selection logic as a feature that allows it to mark some fields
+as 'don't care'. If we match with such a field we memcpy(..)
+the current etnaviv_chip_identity into ident.
 
-According to the NCM spec:
+This step can overwrite some id values read from the GPU with the
+'don't care' value.
 
-"If wBlockLength = 0x0000, the block is terminated by a
-short packet. In this case, the USB transfer must still
-be shorter than dwNtbInMaxSize or dwNtbOutMaxSize. If
-exactly dwNtbInMaxSize or dwNtbOutMaxSize bytes are sent,
-and the size is a multiple of wMaxPacketSize for the
-given pipe, then no ZLP shall be sent.
+Fix this issue by restoring the affected values after the memcpy(..).
 
-wBlockLength= 0x0000 must be used with extreme care, because
-of the possibility that the host and device may get out of
-sync, and because of test issues.
+As this is crucial for user space to know when this feature works as
+expected increment the minor version too.
 
-wBlockLength = 0x0000 allows the sender to reduce latency by
-starting to send a very large NTB, and then shortening it when
-the sender discovers that there’s not sufficient data to justify
-sending a large NTB"
-
-However, there is a potential issue with the current implementation,
-as it checks for the occurrence of multiple NTBs in a single
-giveback by verifying if the leftover bytes to be processed is zero
-or not. If the block length reads zero, we would process the same
-NTB infintely because the leftover bytes is never zero and it leads
-to a crash. Fix this by bailing out if block length reads zero.
-
+Fixes: 4078a1186dd3 ("drm/etnaviv: update hwdb selection logic")
 Cc: stable@vger.kernel.org
-Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Link: https://lore.kernel.org/r/20240228115441.2105585-1-quic_kriskura@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/etnaviv/etnaviv_drv.c  | 2 +-
+ drivers/gpu/drm/etnaviv/etnaviv_hwdb.c | 9 +++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1333,7 +1333,7 @@ parse_ntb:
- 	if (to_process == 1 &&
- 	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
- 		to_process--;
--	} else if (to_process > 0) {
-+	} else if ((to_process > 0) && (block_len != 0)) {
- 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
- 		goto parse_ntb;
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+index 1d2b4fb4bcf8b..f29952a55c05d 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+@@ -488,7 +488,7 @@ static const struct drm_driver etnaviv_drm_driver = {
+ 	.desc               = "etnaviv DRM",
+ 	.date               = "20151214",
+ 	.major              = 1,
+-	.minor              = 3,
++	.minor              = 4,
+ };
+ 
+ /*
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
+index f2fc645c79569..212e7050c4ba6 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
+@@ -135,6 +135,9 @@ static const struct etnaviv_chip_identity etnaviv_chip_identities[] = {
+ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
+ {
+ 	struct etnaviv_chip_identity *ident = &gpu->identity;
++	const u32 product_id = ident->product_id;
++	const u32 customer_id = ident->customer_id;
++	const u32 eco_id = ident->eco_id;
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(etnaviv_chip_identities); i++) {
+@@ -148,6 +151,12 @@ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
+ 			 etnaviv_chip_identities[i].eco_id == ~0U)) {
+ 			memcpy(ident, &etnaviv_chip_identities[i],
+ 			       sizeof(*ident));
++
++			/* Restore some id values as ~0U aka 'don't care' might been used. */
++			ident->product_id = product_id;
++			ident->customer_id = customer_id;
++			ident->eco_id = eco_id;
++
+ 			return true;
+ 		}
  	}
+-- 
+2.43.0
+
 
 
 
