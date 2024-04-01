@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CC28943BB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207A68940B3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 274B9B222D9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C427B20C49
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE81B482F6;
-	Mon,  1 Apr 2024 17:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015BE38DD8;
+	Mon,  1 Apr 2024 16:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neJZBwtF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmV+dgd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD726481B8;
-	Mon,  1 Apr 2024 17:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12BC1C0DE7;
+	Mon,  1 Apr 2024 16:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991241; cv=none; b=SLm4p/XsIfMMDh66EGmJG7mgghvBP2rAuPd5rPyPsN+1BC2V4uWtyu90qfBAHctkI5ST/LLdEMOhPAMx/zyuagYzOoYULkg+VDYI4JHdCrfEzQDa2MWZIDkcVVfwjnrflaftF1siAiqB11pLHd8iAzVpz3tay9Y3RCq3NDORYVA=
+	t=1711989190; cv=none; b=FW1I+IMm88CKCUeW+YzPOwYVMsuwfbv4+vZma/cK/5eoCJFV17HxC49oU3EgX83/YrE9HKVqL5hKyjCKDasDbDeFdxnLNNWIrEdm7rwVymiZWRK11A/NNaI50NLOq2chHSmgyJEbJgZpFa9lcCKAPTsjlkcZCJ5Nda6h8ZsDlv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991241; c=relaxed/simple;
-	bh=ijvwvVPozOxAF87l694yubBP7RzZQBLzXicUQAr0UDA=;
+	s=arc-20240116; t=1711989190; c=relaxed/simple;
+	bh=iOVzTB9blBh8ldD+O7cuSgiTUJBMQk79GpZOIZSeHgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kl6W/LDpZVMWLo4xh61Q1WwRQMWWKKeWhx3QINx3FXkYADR5g6llmaB8K95SDoNMxQO/+yMvJ8l7FSbmVLQfCMCOy8hUktjEDCd091WowGgbe/PLsdLAMe2GewgJNv2jJrIVVV8RiLJ4E12AcWdkcXyWUZKMu9JHiWlab8kbMRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neJZBwtF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323BAC433C7;
-	Mon,  1 Apr 2024 17:07:21 +0000 (UTC)
+	 MIME-Version; b=OxLMmdhmCDMuBQnEX8RBS48rsvBFp2tFkThZ/ZvFy5wLOROYtFBx+lkKPkG2JFxeYFDrsKinfHwJ6bRJ7i+gvLtUpiouA4QSgfGRfVQkQOrb1OzW3/dqSS6U/gFx+JufA3bwC9o4TjRroOV9y5vi59QiSc2xABqOGU1henxWWNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmV+dgd6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DBBC433F1;
+	Mon,  1 Apr 2024 16:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991241;
-	bh=ijvwvVPozOxAF87l694yubBP7RzZQBLzXicUQAr0UDA=;
+	s=korg; t=1711989190;
+	bh=iOVzTB9blBh8ldD+O7cuSgiTUJBMQk79GpZOIZSeHgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neJZBwtF8aOsPXlPnGmcz8yz02wSmokYOOeYVp2iDvAtCa1VYfJIc48ujhsZZL+El
-	 zO9FHRIp6oJIACPTdGLn0PLX1DHxgy8ZQl6zJGBZR2yVo7C4atInXyE3Ask/jMIu1+
-	 BeNEvCCBA7rcfj16ohE+/cg1aUw5hYA7QbLkv/Mg=
+	b=OmV+dgd6W8ZViO8VRtrO/gNH1uQ0ni/JOiVFUAuLz34QG7gvUAFjqMx3F31Q5mD2G
+	 7SAaU7w4q8nap9TptsD4iWyReTrrUZcj9cFmoD579lZwL8dsuIV6eUiHSvEDVnG0dF
+	 mnFosSnToml+YhZxR53OFf4a5j37tyHKD152fCII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 205/272] x86/coco: Export cc_vendor
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.7 408/432] usb: typec: ucsi: Check for notifications after init
 Date: Mon,  1 Apr 2024 17:46:35 +0200
-Message-ID: <20240401152537.307637014@linuxfoundation.org>
+Message-ID: <20240401152605.555270258@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 3d91c537296794d5d0773f61abbe7b63f2f132d8 upstream.
+commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
 
-It will be used in different checks in future changes. Export it directly
-and provide accessor functions and stubs so this can be used in general
-code when CONFIG_ARCH_HAS_CC_PLATFORM is not set.
+The completion notification for the final SET_NOTIFICATION_ENABLE
+command during initialization can include a connector change
+notification.  However, at the time this completion notification is
+processed, the ucsi struct is not ready to handle this notification.
+As a result the notification is ignored and the controller
+never sends an interrupt again.
 
-No functional changes.
+Re-check CCI for a pending connector state change after
+initialization is complete. Adjust the corresponding debug
+message accordingly.
 
-[ tglx: Add accessor functions ]
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230318115634.9392-2-bp@alien8.de
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/coco/core.c        |   13 ++++---------
- arch/x86/include/asm/coco.h |   23 ++++++++++++++++++++---
- 2 files changed, 24 insertions(+), 12 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -13,7 +13,7 @@
- #include <asm/coco.h>
- #include <asm/processor.h>
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -955,7 +955,7 @@ void ucsi_connector_change(struct ucsi *
+ 	struct ucsi_connector *con = &ucsi->connector[num - 1];
  
--static enum cc_vendor vendor __ro_after_init;
-+enum cc_vendor cc_vendor __ro_after_init;
- static u64 cc_mask __ro_after_init;
+ 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
+-		dev_dbg(ucsi->dev, "Bogus connector change event\n");
++		dev_dbg(ucsi->dev, "Early connector change event\n");
+ 		return;
+ 	}
  
- static bool intel_cc_platform_has(enum cc_attr attr)
-@@ -83,7 +83,7 @@ static bool hyperv_cc_platform_has(enum
- 
- bool cc_platform_has(enum cc_attr attr)
+@@ -1352,6 +1352,7 @@ static int ucsi_init(struct ucsi *ucsi)
  {
--	switch (vendor) {
-+	switch (cc_vendor) {
- 	case CC_VENDOR_AMD:
- 		return amd_cc_platform_has(attr);
- 	case CC_VENDOR_INTEL:
-@@ -105,7 +105,7 @@ u64 cc_mkenc(u64 val)
- 	 * - for AMD, bit *set* means the page is encrypted
- 	 * - for Intel *clear* means encrypted.
- 	 */
--	switch (vendor) {
-+	switch (cc_vendor) {
- 	case CC_VENDOR_AMD:
- 		return val | cc_mask;
- 	case CC_VENDOR_INTEL:
-@@ -118,7 +118,7 @@ u64 cc_mkenc(u64 val)
- u64 cc_mkdec(u64 val)
- {
- 	/* See comment in cc_mkenc() */
--	switch (vendor) {
-+	switch (cc_vendor) {
- 	case CC_VENDOR_AMD:
- 		return val & ~cc_mask;
- 	case CC_VENDOR_INTEL:
-@@ -129,11 +129,6 @@ u64 cc_mkdec(u64 val)
- }
- EXPORT_SYMBOL_GPL(cc_mkdec);
+ 	struct ucsi_connector *con, *connector;
+ 	u64 command, ntfy;
++	u32 cci;
+ 	int ret;
+ 	int i;
  
--__init void cc_set_vendor(enum cc_vendor v)
--{
--	vendor = v;
--}
--
- __init void cc_set_mask(u64 mask)
- {
- 	cc_mask = mask;
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -11,13 +11,30 @@ enum cc_vendor {
- 	CC_VENDOR_INTEL,
- };
+@@ -1404,6 +1405,13 @@ static int ucsi_init(struct ucsi *ucsi)
  
--void cc_set_vendor(enum cc_vendor v);
--void cc_set_mask(u64 mask);
--
- #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
-+extern enum cc_vendor cc_vendor;
+ 	ucsi->connector = connector;
+ 	ucsi->ntfy = ntfy;
 +
-+static inline enum cc_vendor cc_get_vendor(void)
-+{
-+	return cc_vendor;
-+}
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret)
++		return ret;
++	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
++		ucsi_connector_change(ucsi, cci);
 +
-+static inline void cc_set_vendor(enum cc_vendor vendor)
-+{
-+	cc_vendor = vendor;
-+}
-+
-+void cc_set_mask(u64 mask);
- u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
- #else
-+static inline enum cc_vendor cc_get_vendor(void)
-+{
-+	return CC_VENDOR_NONE;
-+}
-+
-+static inline void cc_set_vendor(enum cc_vendor vendor) { }
-+
- static inline u64 cc_mkenc(u64 val)
- {
- 	return val;
+ 	return 0;
+ 
+ err_unregister:
 
 
 
