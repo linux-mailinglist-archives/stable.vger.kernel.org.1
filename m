@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A7D893ED0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8412B894067
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB3C282DB9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 238531F224B2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D5D446AC;
-	Mon,  1 Apr 2024 16:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF7447A62;
+	Mon,  1 Apr 2024 16:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vz2qE96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZj4Us6k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E572A1CA8F;
-	Mon,  1 Apr 2024 16:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F31D3D961;
+	Mon,  1 Apr 2024 16:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987699; cv=none; b=e/3Id91mMN+gNL/VN12Rqb0k0dt9g60cAHkjXGC81Z4nnmgB7bASZDURLN7mYir2ikpJH8ZeguYhFCNmZJsQbSyndRoctvx22npoup0fpK6kMLeRkhTEYUWULAxv6LFwVXiRRuY7u+1bY8oXIjf/I98NzBkf2EeBb4LKATIpywM=
+	t=1711988978; cv=none; b=qyr31XkzpJCHglIt19dlV1izgRCUoJuLUTwVRXsdzjUshuptnbsC6hg/a32zXjjZH7xCxKgfzW4tSPpOyyb2u0E5Xue2eU0IIXqNSsMf5pM9Z0hJOqLgxQ0le7xW+P2ZIO94WBZm//qJZahGiGwcOJKEZzaOH19nVWVOetGM86k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987699; c=relaxed/simple;
-	bh=yEAZq02YpB/ui4kyM9XOXGEwNNKomrttTfXpjmHCd78=;
+	s=arc-20240116; t=1711988978; c=relaxed/simple;
+	bh=Ps+lxVMn5n+895Ra2M/y8actCQ/Fv7vZ17VUho0kHlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enE+e/3NaPhf/fuxSQgOYEO4cLe0jsj7XUY8s0l1G6Xqqgp1w+6/q/PK91spEgdKcKq/ht3bO6hSAyE4SBeTiE/EJwghPiPwvGg8NcgMvOmjldNTaAkwq8LFDaILrxXqDPW/6gU3vjUBxkGCrKGf+B89+V5OKgRRfsnJiDC8IBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vz2qE96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5662AC433C7;
-	Mon,  1 Apr 2024 16:08:18 +0000 (UTC)
+	 MIME-Version; b=GI6JbBe4WFIeK6bObKZG1EEiDiQlh7Ufg2T40ADIDg54X8ZM8b7ZPylGzFKU9QocKaj+d6HZfTp/9QtF14hJFNvmzScmL+xitwdiV4Fd77vTgxRj4hvN6L/0d9Oh1zfQVV/htae49zk4JDa0WKA6tABC5Qh4PUoR4HIaMhojflE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZj4Us6k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28E4C433F1;
+	Mon,  1 Apr 2024 16:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987698;
-	bh=yEAZq02YpB/ui4kyM9XOXGEwNNKomrttTfXpjmHCd78=;
+	s=korg; t=1711988978;
+	bh=Ps+lxVMn5n+895Ra2M/y8actCQ/Fv7vZ17VUho0kHlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vz2qE96Olqy4QhPK3EZ67oaFuUUJB2TYh94/F8DRYmjMgrjDIsSqWbOmiyeHMcX9
-	 BzG2MJxMvVqZ0cre6ElbGkgTGHSWn2oRU4IOCvNh0/Ssp/p76hR+3JmQKwnijw0g8m
-	 ACMVyx6CxWDKVetCCB1BVjJ2yrkM5wIFwrBLWqNk=
+	b=kZj4Us6kNgEhmRqKQS0c3wmm0OB/ewQfNiZ95jyFf4VExZRePrdW/MfFi2cDaNjpv
+	 1sGefKLY7szzRNHpNrmH5uzFW8g0eqbRW58Mp3j76rb+Dnz1PMsebsuNxqZF5b6+/g
+	 +yjH6TomZZQBUyGzZ/8OkhTDSadQa319CJHaB7SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	yuan linyu <yuanlinyu@hihonor.com>
-Subject: [PATCH 6.8 366/399] usb: udc: remove warning when queue disabled ep
+	ranygh@riseup.net,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.7 345/432] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
 Date: Mon,  1 Apr 2024 17:45:32 +0200
-Message-ID: <20240401152600.099965980@linuxfoundation.org>
+Message-ID: <20240401152603.531412117@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yuan linyu <yuanlinyu@hihonor.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 2a587a035214fa1b5ef598aea0b81848c5b72e5e upstream.
+commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
 
-It is possible trigger below warning message from mass storage function,
+When moving a station out of a VLAN and deleting the VLAN afterwards, the
+fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
+use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
+after the VLAN change.
 
-WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
-pc : usb_ep_queue+0x7c/0x104
-lr : fsg_main_thread+0x494/0x1b3c
-
-Root cause is mass storage function try to queue request from main thread,
-but other thread may already disable ep when function disable.
-
-As there is no function failure in the driver, in order to avoid effort
-to fix warning, change WARN_ON_ONCE() in usb_ep_queue() to pr_debug().
-
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
 Cc: stable@vger.kernel.org
-Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240315020144.2715575-1-yuanlinyu@hihonor.com
+Reported-by: ranygh@riseup.net
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/cfg.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -292,7 +292,9 @@ int usb_ep_queue(struct usb_ep *ep,
- {
- 	int ret = 0;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2164,15 +2164,14 @@ static int ieee80211_change_station(stru
+ 		}
  
--	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
-+	if (!ep->enabled && ep->address) {
-+		pr_debug("USB gadget: queue request to disabled ep 0x%x (%s)\n",
-+				 ep->address, ep->name);
- 		ret = -ESHUTDOWN;
- 		goto out;
- 	}
+ 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
+-		    sta->sdata->u.vlan.sta) {
+-			ieee80211_clear_fast_rx(sta);
++		    sta->sdata->u.vlan.sta)
+ 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
+-		}
+ 
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
+ 			ieee80211_vif_dec_num_mcast(sta->sdata);
+ 
+ 		sta->sdata = vlansdata;
++		ieee80211_check_fast_rx(sta);
+ 		ieee80211_check_fast_xmit(sta);
+ 
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
 
 
 
