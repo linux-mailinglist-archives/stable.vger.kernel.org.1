@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-35347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CFD89438B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A8089426C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E585928378F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1B37283538
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E32481B8;
-	Mon,  1 Apr 2024 17:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C0D4F1F9;
+	Mon,  1 Apr 2024 16:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Um5vyvsc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/Bo9v4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551A51DFF4;
-	Mon,  1 Apr 2024 17:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9204EB38;
+	Mon,  1 Apr 2024 16:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991099; cv=none; b=sRi8L5SDqnpjmnKkOLNkAFFN7OSNcXusEYvhqUEraRSSCVB1XxfB383wXSG29VvigpPI4zq1wTmKLHDRh8LVvdn7A2VOe4C926n8jfGu7Rv/io4xyXZWnFPxmfLxaqGaahRIPx/OpTxOBJqemvA59Zb++x19uTpv4/Se4+0ReSM=
+	t=1711990340; cv=none; b=g0DCXxD5C+iVNFMKpvRA+eDBLd/1Gzd5hLsEedrAFKCXP8sfJsjdHyw2zxncflDVx9FfGGSmjrCdQrqH02RnZU2oUxcAimd/hyUOLCulDQmEX14I4Lrw2dCWT4Oyf9NFoYf9rjp48WFq1ff3/VVNhHdpNojfmahLt322X+W1+KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991099; c=relaxed/simple;
-	bh=evBYGhR0AhtBGx+leHY3lkf5awXl2UDfbWmdOhqEfOY=;
+	s=arc-20240116; t=1711990340; c=relaxed/simple;
+	bh=xllGLTVNE+r9wYGRJVcF7Jug70InlXnI/j0pQAuQ/jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0laHr9BaxFUpz4v2qIdoKux8P6bHWEE4XAgZ0Br+m95F7ahM6TzEzYeHR53XNpJxBB8JgqZfbyHtjiY9dELjvHD1PUJeHxIuW0iCGr3I3pZLWSZGI2LR8/vyJg8/rQN7vLGXm9EZXCE54KAz+yB9GUjOBHz8s2NxBQ9IKHo2ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Um5vyvsc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF607C433C7;
-	Mon,  1 Apr 2024 17:04:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Sxz6rC+RfmplCZECmTwtR6+qr7uJY5ltj1gFH3XGyMgNqW9sD+lfB4ZdlYyUfZE6sDCLBTveJ01Ge71+K1GZuB34y66k+KTfR9RPAB59eIebzoVQ4lLbjyoObSMYwuRocI0U3ASWWWQ1hcie5mZX0lLU9YuxyPrVh1GI8DNHnV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/Bo9v4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E364C433C7;
+	Mon,  1 Apr 2024 16:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991099;
-	bh=evBYGhR0AhtBGx+leHY3lkf5awXl2UDfbWmdOhqEfOY=;
+	s=korg; t=1711990340;
+	bh=xllGLTVNE+r9wYGRJVcF7Jug70InlXnI/j0pQAuQ/jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Um5vyvscgaQDC199e291QyhfuzXhs9ZKpadMw0J4SWFA8U0W2zOSwTX6V97uLrzlY
-	 awWsMrLeb4l9o2y92AZAE0VdoRlXVtRVFT+2aHQNJklS94/U25z44bhPv6h/d7YpXY
-	 AVsX02sZcsf2OruEpd14pNPLmqEqJrii55+ubR5E=
+	b=s/Bo9v4diXW4AAcmINvoYA+Hek3tLglH2hSZoTYNudsH7jHOeq+Nk1XCgCVrsOUkR
+	 DkYB51yNwxN3PHCWEhsqjknTtjNoNMtomF36x3IZcW0nRYRPjPldZkeM7J6sSDUQ6i
+	 B9f24Cqr1fjyBzI1WQcWHsj3UfR750WpAHflQwYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 6.1 163/272] mei: me: add arrow lake point S DID
+	Zoltan HERPAI <wigyori@uid0.hu>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 304/396] pwm: img: fix pwm clock lookup
 Date: Mon,  1 Apr 2024 17:45:53 +0200
-Message-ID: <20240401152535.831587852@linuxfoundation.org>
+Message-ID: <20240401152556.979725447@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Zoltan HERPAI <wigyori@uid0.hu>
 
-commit 7a9b9012043e126f6d6f4683e67409312d1b707b upstream.
+[ Upstream commit 9eb05877dbee03064d3d3483cd6702f610d5a358 ]
 
-Add Arrow Lake S device id.
+22e8e19 has introduced a regression in the imgchip->pwm_clk lookup, whereas
+the clock name has also been renamed to "imgchip". This causes the driver
+failing to load:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240211103912.117105-1-tomas.winkler@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    0.546905] img-pwm 18101300.pwm: failed to get imgchip clock
+[    0.553418] img-pwm: probe of 18101300.pwm failed with error -2
+
+Fix this lookup by reverting the clock name back to "pwm".
+
+Signed-off-by: Zoltan HERPAI <wigyori@uid0.hu>
+Link: https://lore.kernel.org/r/20240320083602.81592-1-wigyori@uid0.hu
+Fixes: 22e8e19a46f7 ("pwm: img: Rename variable pointing to driver private data")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    1 +
- drivers/misc/mei/pci-me.c     |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/pwm/pwm-img.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -112,6 +112,7 @@
- #define MEI_DEV_ID_RPL_S      0x7A68  /* Raptor Lake Point S */
+diff --git a/drivers/pwm/pwm-img.c b/drivers/pwm/pwm-img.c
+index 326af85888e7b..fd1535c47b6db 100644
+--- a/drivers/pwm/pwm-img.c
++++ b/drivers/pwm/pwm-img.c
+@@ -289,9 +289,9 @@ static int img_pwm_probe(struct platform_device *pdev)
+ 		return PTR_ERR(imgchip->sys_clk);
+ 	}
  
- #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
-+#define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
+-	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "imgchip");
++	imgchip->pwm_clk = devm_clk_get(&pdev->dev, "pwm");
+ 	if (IS_ERR(imgchip->pwm_clk)) {
+-		dev_err(&pdev->dev, "failed to get imgchip clock\n");
++		dev_err(&pdev->dev, "failed to get pwm clock\n");
+ 		return PTR_ERR(imgchip->pwm_clk);
+ 	}
  
- /*
-  * MEI HW Section
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -119,6 +119,7 @@ static const struct pci_device_id mei_me
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
- 
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
- 
- 	/* required last entry */
- 	{0, }
+-- 
+2.43.0
+
 
 
 
