@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-35034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02C7894203
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65196894048
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DEB01C21AF1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B9B81C2031E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E16482F6;
-	Mon,  1 Apr 2024 16:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718A747F60;
+	Mon,  1 Apr 2024 16:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jx+NSk8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIyGNOLU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615F61DFF4;
-	Mon,  1 Apr 2024 16:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D9345BE4;
+	Mon,  1 Apr 2024 16:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990123; cv=none; b=a5kLhvYmIqFqYRHe7U7vwXDWMZtUt184FPhrQHlU3i3eUwqkSfgwZKigsHJH/X4Ka2qkXGJK8MCFqAyFp09L8H7S3ZUzO5r88b2bUBppJVDU46O/1Z8u8TBLQHF9ZpYpop+Zao5XuwzjCOv9R9YMRlCBHUUsaUUYIBBu9jGv2RU=
+	t=1711988882; cv=none; b=MlAL/K9dwW9blFclyx7kgmgeAgmFgdBp1DydK9oB5q21dRnpDUg5QnEuj2fDzyipkV7dJMVKCrzZNQgIRFsK90xZrtgjujQlMaacjNlqPPGCtUpTkTrsyTefBo2Yi7s3GFjumooexXB8AMq+eadGvqCXyCIx/bZ+PyD9zcddo6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990123; c=relaxed/simple;
-	bh=VE2IyDcsw1dI1AvU3FXCaOuxFVI3OwNTMTPtAiHS0sg=;
+	s=arc-20240116; t=1711988882; c=relaxed/simple;
+	bh=Py09tB+BCHZS9pgQSpZd8bb2chompbvAihx42/eAF9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbfXje3THLfU05wGpS6EcflDEySnYABbMiosedS7zI+QMICxMHqwF0aRrngeLiZ3z2fbVdW/0WtVOKv3Tz/FTPoztstB0UcSpv8iqD7nYva4HTRj5HbEiBQzDKANZogvOePuSTCLhFTyBsv3ilCvSZFUP7LDaanfdyMAL3WVE7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jx+NSk8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BC5C433C7;
-	Mon,  1 Apr 2024 16:48:42 +0000 (UTC)
+	 MIME-Version; b=GtQp+wGru4mAHswYpEyrQUziI9ffDJ/wJPG6ZRa7Mcc1WdIPC6HwaAmb8kZyiJb7YTZIxY1oZKLL2ZcTwuMdbh0EbVudawDEWRQpU29kE4BbsUCUqZghQq52OS1vUlWRoIHWqfnGDTZcuYNDW0jIVW2MRusO/WzvHMWfqiWRJFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIyGNOLU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB328C43390;
+	Mon,  1 Apr 2024 16:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990123;
-	bh=VE2IyDcsw1dI1AvU3FXCaOuxFVI3OwNTMTPtAiHS0sg=;
+	s=korg; t=1711988882;
+	bh=Py09tB+BCHZS9pgQSpZd8bb2chompbvAihx42/eAF9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jx+NSk8wrLC/GuC0zMok3TzKKMQGThI1Y4vRYl6ZNnQ6nM4k1TPTgiFTkqGWai3rc
-	 gx7BHlDe6nEcl11T1IQIe6r0mXrtAOPso5Hk3F47UjFxLSGj6g7qF9aMi4tGRCPTt7
-	 SBUWXeRYLf3BKtz8HyK+jyNa7VwVDpuHXhATl+2c=
+	b=SIyGNOLUqDx9dHJnGLiaac33a4EiNTWbNYqkaspBIHfCtp3WhgkyFK6r0tOOtpUVP
+	 zFnaqgPTSCh9RaL5mBGo0xXHdbpHNNAvkeBjlzYMXcrTmQU+0FI/IauX7UVfV+fpzT
+	 D2tyFa9KzirP9kY+XPrXIhy2NcFUI/sdxX8P0Yws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 254/396] xfs: convert rt bitmap extent lengths to xfs_rtbxlen_t
+	Adamos Ttofari <attofari@amazon.de>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 316/432] x86/fpu: Keep xfd_state in sync with MSR_IA32_XFD
 Date: Mon,  1 Apr 2024 17:45:03 +0200
-Message-ID: <20240401152555.481212362@linuxfoundation.org>
+Message-ID: <20240401152602.618653654@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Adamos Ttofari <attofari@amazon.de>
 
-commit f29c3e745dc253bf9d9d06ddc36af1a534ba1dd0 upstream.
+[ Upstream commit 10e4b5166df9ff7a2d5316138ca668b42d004422 ]
 
-XFS uses xfs_rtblock_t for many different uses, which makes it much more
-difficult to perform a unit analysis on the codebase.  One of these
-(ab)uses is when we need to store the length of a free space extent as
-stored in the realtime bitmap.  Because there can be up to 2^64 realtime
-extents in a filesystem, we need a new type that is larger than
-xfs_rtxlen_t for callers that are querying the bitmap directly.  This
-means scrub and growfs.
+Commit 672365477ae8 ("x86/fpu: Update XFD state where required") and
+commit 8bf26758ca96 ("x86/fpu: Add XFD state to fpstate") introduced a
+per CPU variable xfd_state to keep the MSR_IA32_XFD value cached, in
+order to avoid unnecessary writes to the MSR.
 
-Create this type as "xfs_rtbxlen_t" and use it to store 64-bit rtx
-lengths.  'b' stands for 'bitmap' or 'big'; reader's choice.
+On CPU hotplug MSR_IA32_XFD is reset to the init_fpstate.xfd, which
+wipes out any stale state. But the per CPU cached xfd value is not
+reset, which brings them out of sync.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a consequence a subsequent xfd_update_state() might fail to update
+the MSR which in turn can result in XRSTOR raising a #NM in kernel
+space, which crashes the kernel.
+
+To fix this, introduce xfd_set_state() to write xfd_state together
+with MSR_IA32_XFD, and use it in all places that set MSR_IA32_XFD.
+
+Fixes: 672365477ae8 ("x86/fpu: Update XFD state where required")
+Signed-off-by: Adamos Ttofari <attofari@amazon.de>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240322230439.456571-1-chang.seok.bae@intel.com
+
+Closes: https://lore.kernel.org/lkml/20230511152818.13839-1-attofari@amazon.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_format.h   |    2 +-
- fs/xfs/libxfs/xfs_rtbitmap.h |    2 +-
- fs/xfs/libxfs/xfs_types.h    |    1 +
- fs/xfs/scrub/trace.h         |    3 ++-
- 4 files changed, 5 insertions(+), 3 deletions(-)
+ arch/x86/kernel/fpu/xstate.c |  5 +++--
+ arch/x86/kernel/fpu/xstate.h | 14 ++++++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_format.h
-+++ b/fs/xfs/libxfs/xfs_format.h
-@@ -98,7 +98,7 @@ typedef struct xfs_sb {
- 	uint32_t	sb_blocksize;	/* logical block size, bytes */
- 	xfs_rfsblock_t	sb_dblocks;	/* number of data blocks */
- 	xfs_rfsblock_t	sb_rblocks;	/* number of realtime blocks */
--	xfs_rtblock_t	sb_rextents;	/* number of realtime extents */
-+	xfs_rtbxlen_t	sb_rextents;	/* number of realtime extents */
- 	uuid_t		sb_uuid;	/* user-visible file system unique id */
- 	xfs_fsblock_t	sb_logstart;	/* starting block of log if internal */
- 	xfs_ino_t	sb_rootino;	/* root inode number */
---- a/fs/xfs/libxfs/xfs_rtbitmap.h
-+++ b/fs/xfs/libxfs/xfs_rtbitmap.h
-@@ -13,7 +13,7 @@
-  */
- struct xfs_rtalloc_rec {
- 	xfs_rtblock_t		ar_startext;
--	xfs_rtblock_t		ar_extcount;
-+	xfs_rtbxlen_t		ar_extcount;
- };
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 117e74c44e756..33a214b1a4cec 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -178,10 +178,11 @@ void fpu__init_cpu_xstate(void)
+ 	 * Must happen after CR4 setup and before xsetbv() to allow KVM
+ 	 * lazy passthrough.  Write independent of the dynamic state static
+ 	 * key as that does not work on the boot CPU. This also ensures
+-	 * that any stale state is wiped out from XFD.
++	 * that any stale state is wiped out from XFD. Reset the per CPU
++	 * xfd cache too.
+ 	 */
+ 	if (cpu_feature_enabled(X86_FEATURE_XFD))
+-		wrmsrl(MSR_IA32_XFD, init_fpstate.xfd);
++		xfd_set_state(init_fpstate.xfd);
  
- typedef int (*xfs_rtalloc_query_range_fn)(
---- a/fs/xfs/libxfs/xfs_types.h
-+++ b/fs/xfs/libxfs/xfs_types.h
-@@ -31,6 +31,7 @@ typedef uint64_t	xfs_rfsblock_t;	/* bloc
- typedef uint64_t	xfs_rtblock_t;	/* extent (block) in realtime area */
- typedef uint64_t	xfs_fileoff_t;	/* block number in a file */
- typedef uint64_t	xfs_filblks_t;	/* number of blocks in a file */
-+typedef uint64_t	xfs_rtbxlen_t;	/* rtbitmap extent length in rtextents */
+ 	/*
+ 	 * XCR_XFEATURE_ENABLED_MASK (aka. XCR0) sets user features
+diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
+index 3518fb26d06b0..19ca623ffa2ac 100644
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -148,20 +148,26 @@ static inline void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rs
+ #endif
  
- typedef int64_t		xfs_srtblock_t;	/* signed version of xfs_rtblock_t */
+ #ifdef CONFIG_X86_64
++static inline void xfd_set_state(u64 xfd)
++{
++	wrmsrl(MSR_IA32_XFD, xfd);
++	__this_cpu_write(xfd_state, xfd);
++}
++
+ static inline void xfd_update_state(struct fpstate *fpstate)
+ {
+ 	if (fpu_state_size_dynamic()) {
+ 		u64 xfd = fpstate->xfd;
  
---- a/fs/xfs/scrub/trace.h
-+++ b/fs/xfs/scrub/trace.h
-@@ -1037,7 +1037,8 @@ TRACE_EVENT(xfarray_sort_stats,
- #ifdef CONFIG_XFS_RT
- TRACE_EVENT(xchk_rtsum_record_free,
- 	TP_PROTO(struct xfs_mount *mp, xfs_rtblock_t start,
--		 uint64_t len, unsigned int log, loff_t pos, xfs_suminfo_t v),
-+		 xfs_rtbxlen_t len, unsigned int log, loff_t pos,
-+		 xfs_suminfo_t v),
- 	TP_ARGS(mp, start, len, log, pos, v),
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
+-		if (__this_cpu_read(xfd_state) != xfd) {
+-			wrmsrl(MSR_IA32_XFD, xfd);
+-			__this_cpu_write(xfd_state, xfd);
+-		}
++		if (__this_cpu_read(xfd_state) != xfd)
++			xfd_set_state(xfd);
+ 	}
+ }
+ 
+ extern int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu);
+ #else
++static inline void xfd_set_state(u64 xfd) { }
++
+ static inline void xfd_update_state(struct fpstate *fpstate) { }
+ 
+ static inline int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu) {
+-- 
+2.43.0
+
 
 
 
