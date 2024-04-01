@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6E78940A9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5B289426A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A01A283373
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82D371F25884
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386793613C;
-	Mon,  1 Apr 2024 16:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDEF4D58E;
+	Mon,  1 Apr 2024 16:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVdhLc/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJVa6Reo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A871C0DE7;
-	Mon,  1 Apr 2024 16:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED814D584;
+	Mon,  1 Apr 2024 16:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989162; cv=none; b=VbIf94MVmdV+NqZUDbFpwUnWXxA9bNdvrDLK2gAjpcqsAqvjNS7mDI2//wxlDU92bolhLICsgjZqJ6qTAWlGN7zRXlmVM7gDwvnxEsQ1aXuYqPYkpM3y2trHS9N0mUBghaOOmsAYrd07HAyXeeAuOGomfuUs4fCbJT4qRaRugO0=
+	t=1711990335; cv=none; b=NQru2zDjSTKimKGmHymdWVenBV5hSHU+elpLsHMk1odyJqwlV2saGol8YEh8AYqT2a/2uxOHga5GScSxqhDA3sV/lifBmOoVC+Ab9DBhddOBN75hgqz1HH9fI2HtycaaYUmXMfmjTfu47YtSJIlYrz0U/OU2HPIgdnOayDZlD7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989162; c=relaxed/simple;
-	bh=Y5IWac73Ru1akYpVu+Ls7wIx7GVHilQFWgY43zcSOKg=;
+	s=arc-20240116; t=1711990335; c=relaxed/simple;
+	bh=7nNbRTPd3OSrNVp6bnRQyeyfjWc+oO9rvrC7Ef8NyI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrfcIDEZqYHvfULDgD9KRxYhtnTcfoB8gIePc7RiOXW4DOwUn+DvUGsEEfM0yXUqxxbFnwMO1I6MBEdbyo8/IjNWlDV8WVKHSsdzVRCTxHGqQNJWVPX8rTXmWPqLxP01d5SmivFA+mqxQBJFcokxwSlO/F5ufNqeTQkdaFKe18I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVdhLc/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58447C433C7;
-	Mon,  1 Apr 2024 16:32:41 +0000 (UTC)
+	 MIME-Version; b=pJa4e9kRmStz06fQQGsMny+myEmRAfzgGN15qngpJgEzH4HQONiO7FW8b2qN99EuDXWGDUOPNk/61ObkAtUvdAD6WXsPvfICP2BmXk+xWbHtnzIGoM60j7/7+kaEA/cSCKfj8mM8lhybXJG2lf+TK0vFO/WiOSybstnjEAKEcfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJVa6Reo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD1AC433C7;
+	Mon,  1 Apr 2024 16:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989161;
-	bh=Y5IWac73Ru1akYpVu+Ls7wIx7GVHilQFWgY43zcSOKg=;
+	s=korg; t=1711990334;
+	bh=7nNbRTPd3OSrNVp6bnRQyeyfjWc+oO9rvrC7Ef8NyI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVdhLc/yZxqACzDjQ9faMMKSErex0KXrimemcYHoXPI2AYVVa/tx8LdaGUUrlXljc
-	 Dah8Bd4ndKdN/+klaRmyqmB3+FnRyaRcqB73+fKmJI9owSVKeStGhV0t/leREIbWaN
-	 Z6dNxN/nm4RokdEwQ8RGJQX3e/uzq4yKZDIeTYl0=
+	b=hJVa6ReoGtEd+Gc2mqpHuS7Cc4VnpckBhKROCpWIPet/v49Be+3W0pD7E4LYdjPZO
+	 L9QK41HsKuv6iXIOZ8UTf7ZDO3cYJGadV5y72uMMsloZ63J16ozdMX9l2bV8gvvkhG
+	 Qkd+9YR1o7Tq7+AfTzOFKbUUiwzkS/YfAD9TjYWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yongzhi Liu <hyperlyzcs@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.7 382/432] usb: misc: ljca: Fix double free in error handling path
+	ranygh@riseup.net,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 320/396] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
 Date: Mon,  1 Apr 2024 17:46:09 +0200
-Message-ID: <20240401152604.692690072@linuxfoundation.org>
+Message-ID: <20240401152557.453416257@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongzhi Liu <hyperlyzcs@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 7c9631969287a5366bc8e39cd5abff154b35fb80 upstream.
+commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
 
-When auxiliary_device_add() returns error and then calls
-auxiliary_device_uninit(), callback function ljca_auxdev_release
-calls kfree(auxdev->dev.platform_data) to free the parameter data
-of the function ljca_new_client_device. The callers of
-ljca_new_client_device shouldn't call kfree() again
-in the error handling path to free the platform data.
+When moving a station out of a VLAN and deleting the VLAN afterwards, the
+fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
+use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
+after the VLAN change.
 
-Fix this by cleaning up the redundant kfree() in all callers and
-adding kfree() the passed in platform_data on errors which happen
-before auxiliary_device_init() succeeds .
-
-Fixes: acd6199f195d ("usb: Add support for Intel LJCA device")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yongzhi Liu <hyperlyzcs@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240311125748.28198-1-hyperlyzcs@gmail.com
+Cc: stable@vger.kernel.org
+Reported-by: ranygh@riseup.net
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/usb-ljca.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ net/mac80211/cfg.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/misc/usb-ljca.c b/drivers/usb/misc/usb-ljca.c
-index 35770e608c64..2d30fc1be306 100644
---- a/drivers/usb/misc/usb-ljca.c
-+++ b/drivers/usb/misc/usb-ljca.c
-@@ -518,8 +518,10 @@ static int ljca_new_client_device(struct ljca_adapter *adap, u8 type, u8 id,
- 	int ret;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2187,15 +2187,14 @@ static int ieee80211_change_station(stru
+ 		}
  
- 	client = kzalloc(sizeof *client, GFP_KERNEL);
--	if (!client)
-+	if (!client) {
-+		kfree(data);
- 		return -ENOMEM;
-+	}
- 
- 	client->type = type;
- 	client->id = id;
-@@ -535,8 +537,10 @@ static int ljca_new_client_device(struct ljca_adapter *adap, u8 type, u8 id,
- 	auxdev->dev.release = ljca_auxdev_release;
- 
- 	ret = auxiliary_device_init(auxdev);
--	if (ret)
-+	if (ret) {
-+		kfree(data);
- 		goto err_free;
-+	}
- 
- 	ljca_auxdev_acpi_bind(adap, auxdev, adr, id);
- 
-@@ -590,12 +594,8 @@ static int ljca_enumerate_gpio(struct ljca_adapter *adap)
- 		valid_pin[i] = get_unaligned_le32(&desc->bank_desc[i].valid_pins);
- 	bitmap_from_arr32(gpio_info->valid_pin_map, valid_pin, gpio_num);
- 
--	ret = ljca_new_client_device(adap, LJCA_CLIENT_GPIO, 0, "ljca-gpio",
-+	return ljca_new_client_device(adap, LJCA_CLIENT_GPIO, 0, "ljca-gpio",
- 				     gpio_info, LJCA_GPIO_ACPI_ADR);
--	if (ret)
--		kfree(gpio_info);
--
--	return ret;
- }
- 
- static int ljca_enumerate_i2c(struct ljca_adapter *adap)
-@@ -629,10 +629,8 @@ static int ljca_enumerate_i2c(struct ljca_adapter *adap)
- 		ret = ljca_new_client_device(adap, LJCA_CLIENT_I2C, i,
- 					     "ljca-i2c", i2c_info,
- 					     LJCA_I2C1_ACPI_ADR + i);
--		if (ret) {
--			kfree(i2c_info);
-+		if (ret)
- 			return ret;
+ 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
+-		    sta->sdata->u.vlan.sta) {
+-			ieee80211_clear_fast_rx(sta);
++		    sta->sdata->u.vlan.sta)
+ 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
 -		}
- 	}
  
- 	return 0;
-@@ -669,10 +667,8 @@ static int ljca_enumerate_spi(struct ljca_adapter *adap)
- 		ret = ljca_new_client_device(adap, LJCA_CLIENT_SPI, i,
- 					     "ljca-spi", spi_info,
- 					     LJCA_SPI1_ACPI_ADR + i);
--		if (ret) {
--			kfree(spi_info);
-+		if (ret)
- 			return ret;
--		}
- 	}
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
+ 			ieee80211_vif_dec_num_mcast(sta->sdata);
  
- 	return 0;
--- 
-2.44.0
-
+ 		sta->sdata = vlansdata;
++		ieee80211_check_fast_rx(sta);
+ 		ieee80211_check_fast_xmit(sta);
+ 
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
 
 
 
