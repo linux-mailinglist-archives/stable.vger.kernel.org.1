@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-34991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30DC8941D0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7DE893FFB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74A62B228ED
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04C051F21E12
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F51481B7;
-	Mon,  1 Apr 2024 16:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975844778E;
+	Mon,  1 Apr 2024 16:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qn74Zb4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQ87ufjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5649663E;
-	Mon,  1 Apr 2024 16:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563E8C129;
+	Mon,  1 Apr 2024 16:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989980; cv=none; b=egMppc4a/E6VQU5XbU50SJgGu7IaucKwjQjfZ6Tm/O2U9TTL2ycZ3GdT788pi+G74856jU8rMniJP/+PeWqOzsqTAhm3ATEB431fGtaIkCvu8XRWqKLrasAL6Lm5ymEgH0H0D8a/rBLLZwAxbCv0L6b9D9xZz4C2zTOJ6KlBjJo=
+	t=1711988641; cv=none; b=B+5nFtvR63k8hV9Ul1D5NXa5HEbyIZofn1ApXxjM3s9eQ7TqtMR3iC2MYWjfiJ5sywvfFgX8bTGbM8JaM+VIunEOsYD1XQSrNrRmLP6J8gjQXop+2GokoH/5gPLNlc5/5FYTjePZNYHQTTGL0j+zJcP5xEP0LvaYRPPNqyXPJtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989980; c=relaxed/simple;
-	bh=YY5CWJXpAo6XT6aQZKqkA8v/E1zJ2kxoN1ikF6IB4G8=;
+	s=arc-20240116; t=1711988641; c=relaxed/simple;
+	bh=H0J0LSH3bd+nSWcUVdg3D7zfz7hzfnrF+ezI/zof+hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1CO7+7ptk0MoGzddoGRhE0MXtiq+BvPLGeC1wBdruNDCG7bmixH8z0l8dtKXQbhA5LPLbwK7C6pv0WoT+H1RUTREg/3kHCi7Cla1bEJW3IsCzZDNe6iGVRqegM305Fif3hL8eyfDaJa0cbftahRfKRWgmHAg+ThjS1UNH4Qb/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qn74Zb4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15E2C433C7;
-	Mon,  1 Apr 2024 16:46:19 +0000 (UTC)
+	 MIME-Version; b=aeHOze5AL7Lj87bKwj0nF9w8rteICwq6CLGzgnrCfIVmB6IjKMh9lELsfKYMbaH1xcqrdHBSookTsFbSLkOv0Pa2W2vMSnho6niao5sdKKKY1vcHj7BYKusdtBAlc+A8NlRh0bH1Iz9oX6YJ/+4Fav37tKjgz8IVsSYReDq0J4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQ87ufjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D65C433C7;
+	Mon,  1 Apr 2024 16:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989980;
-	bh=YY5CWJXpAo6XT6aQZKqkA8v/E1zJ2kxoN1ikF6IB4G8=;
+	s=korg; t=1711988641;
+	bh=H0J0LSH3bd+nSWcUVdg3D7zfz7hzfnrF+ezI/zof+hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qn74Zb4MNrnkC0RTJuDNRDZD0gh+ADPVxHh5YPeczodrjOYKi8C3CODoZw2wJqJRk
-	 JEX4/Oo+pn3px1s02Df36polEXllQsLN4UJXN1eO0HyAA8cPglXSqW+iZ6+EK+RZg3
-	 4nROG1NVThg8rODLsRZiEDTH3geW96z5UNs/9hjQ=
+	b=lQ87ufjo2KcrzrcljzL3VLzuI8E27mm+X87eWLf7lzKtl6Ljhwt15mB0NJUQieUuE
+	 xGYA9k5SH3FbJUqvoAl7uap58u0DrQDj7VoE/m9xQ52WhcwoSOByGfbQ/+wAMqan4M
+	 h/P5nxed86D7XcF91iEZfPdlArTKn3dA4vK01KGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/396] drm/amd/display: Return the correct HDCP error code
-Date: Mon,  1 Apr 2024 17:43:51 +0200
-Message-ID: <20240401152553.367495213@linuxfoundation.org>
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.7 245/432] selftests: mptcp: diag: return KSFT_FAIL not test_cnt
+Date: Mon,  1 Apr 2024 17:43:52 +0200
+Message-ID: <20240401152600.447919734@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit e64b3f55e458ce7e2087a0051f47edabf74545e7 ]
+commit 45bcc0346561daa3f59e19a753cc7f3e08e8dff1 upstream.
 
-[WHY & HOW]
-If the display is null when creating an HDCP session, return a proper
-error code.
+The test counter 'test_cnt' should not be returned in diag.sh, e.g. what
+if only the 4th test fail? Will do 'exit 4' which is 'exit ${KSFT_SKIP}',
+the whole test will be marked as skipped instead of 'failed'!
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+So we should do ret=${KSFT_FAIL} instead.
+
+Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
 Cc: stable@vger.kernel.org
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 42fb6cddec3b ("selftests: mptcp: more stable diag tests")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/mptcp/diag.sh |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-index ee67a35c2a8ed..ff930a71e496a 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-@@ -513,6 +513,9 @@ enum mod_hdcp_status mod_hdcp_hdcp2_create_session(struct mod_hdcp *hdcp)
- 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
- 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
- 
-+	if (!display)
-+		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
-+
- 	hdcp_cmd->in_msg.hdcp2_create_session_v2.display_handle = display->index;
- 
- 	if (hdcp->connection.link.adjust.hdcp2.force_type == MOD_HDCP_FORCE_TYPE_0)
--- 
-2.43.0
-
+--- a/tools/testing/selftests/net/mptcp/diag.sh
++++ b/tools/testing/selftests/net/mptcp/diag.sh
+@@ -69,7 +69,7 @@ __chk_nr()
+ 		else
+ 			echo "[ fail ] expected $expected found $nr"
+ 			mptcp_lib_result_fail "${msg}"
+-			ret=$test_cnt
++			ret=${KSFT_FAIL}
+ 		fi
+ 	else
+ 		echo "[  ok  ]"
+@@ -115,11 +115,11 @@ wait_msk_nr()
+ 	if [ $i -ge $timeout ]; then
+ 		echo "[ fail ] timeout while expecting $expected max $max last $nr"
+ 		mptcp_lib_result_fail "${msg} # timeout"
+-		ret=$test_cnt
++		ret=${KSFT_FAIL}
+ 	elif [ $nr != $expected ]; then
+ 		echo "[ fail ] expected $expected found $nr"
+ 		mptcp_lib_result_fail "${msg} # unexpected result"
+-		ret=$test_cnt
++		ret=${KSFT_FAIL}
+ 	else
+ 		echo "[  ok  ]"
+ 		mptcp_lib_result_pass "${msg}"
 
 
 
