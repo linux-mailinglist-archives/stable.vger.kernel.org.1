@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-34818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFDD894108
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1137B893F8C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F10EB2205A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 430DB1C21019
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BC1481DB;
-	Mon,  1 Apr 2024 16:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0651DFFC;
+	Mon,  1 Apr 2024 16:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssWV6SC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkWG4PJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D24D10A3B;
-	Mon,  1 Apr 2024 16:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F228F3E47B;
+	Mon,  1 Apr 2024 16:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989402; cv=none; b=MCfsYhMVG6Jf1eN/OX/m+tab+Ms1TRnRiX44Pc+e5zlq3MRp5zWcKbKOyyuEwZAc/pvcHpndbVeg1wk2WZ0i7S1QbHbYDoIsh7GP9SIxQ40ZI9rhH630j1SDo+j73KzAjg5CzYRPP5lvd/bA8Cm0V3FcQuO7TvVe8Q++Ohbb/bw=
+	t=1711988283; cv=none; b=QE2us7pOrZeEyDZvKUTta8sew5axp9IA2Cc3UdmM6J88neJ3G3DFMWeZ+NfenZI8HOASYa/Gxo2NytnTORdCevuG0UAd5xFZrbFFcg4Z2WwzrY/sZVj6nc5BhxD6iOKay3Utu8HTsqU03DbnfBwUnqxdZRUIUIayfM5LSCK2yyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989402; c=relaxed/simple;
-	bh=q66EdeyN037VbLZDLsdsSeALKiJXFmfQyhxNSU9iqg0=;
+	s=arc-20240116; t=1711988283; c=relaxed/simple;
+	bh=3edgxXf534sPOgZyKc/vGNXh0hcbFQNqAkuHoyW2g2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mL9cUTuxyZEmMY9UIvN8kr8XnhUNhES3mjJzm63GFi0/bjul0UnL2VNGLyI9yRDi3I04wen36yWpuMA+bB9s7wj1FC88wwZU/Taabz8iiuWydMAHSUTUXX/tSXQkkIAOJayReGD4Uf0RvBYL6NrqSRh2UX2xDOag3FCfofsKabQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssWV6SC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B14EC433C7;
-	Mon,  1 Apr 2024 16:36:41 +0000 (UTC)
+	 MIME-Version; b=cHtsl7ev18dkvbPVDoalTpXV2DhCgPXI/AhKUrMs/BswoQ1tI8oPRzlOfsYC2LMzht/VjA4L4zhVTvNkpUvcAyqr/AxOzSmb3lzpWNVCGdErWjXu6UyD3vDdcKVqJD0RAXM7Az06gonK5pKBX2jKxEQq44MnC6Hc+pmkxihcifw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkWG4PJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4AAC433F1;
+	Mon,  1 Apr 2024 16:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989402;
-	bh=q66EdeyN037VbLZDLsdsSeALKiJXFmfQyhxNSU9iqg0=;
+	s=korg; t=1711988282;
+	bh=3edgxXf534sPOgZyKc/vGNXh0hcbFQNqAkuHoyW2g2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ssWV6SC58jpSy9krIBHmY0bdhNHzHARAqIHVa6hiCSIDVyVLqR3JA3oCRIyEfmPsH
-	 S1eKdhnZBntyLw9op+lkDca4HgcF37JIJ2c7pHVIdas7jIXIWCUg9+PTxnod1IYWPQ
-	 bO7CWUpNdqTnQwcnFmc/n1IvvD04xZdJWIMRdf7w=
+	b=ZkWG4PJ5LjG5GobOQvpejGIvYpIHAfj0xnHqMpikKTMEKXEaTZB+5lM7KP0q7TKGV
+	 pWPVCdMkBafOBQ18s7KZxdstNrRxv2zHoC2jpu0zqQws1ByXszl4RPcOQYA9gjT1UD
+	 ujBTpKRz3wx7Q3TgREkWLc9qCrJpylhYEm1oav8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Igor Zhbanov <izh1979@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	sparclinux@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Nick Alcock <nick.alcock@oracle.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/396] sparc: vDSO: fix return value of __setup handler
+Subject: [PATCH 6.7 100/432] md: dont clear MD_RECOVERY_FROZEN for new dm-raid until resume
 Date: Mon,  1 Apr 2024 17:41:27 +0200
-Message-ID: <20240401152549.064652404@linuxfoundation.org>
+Message-ID: <20240401152556.107099792@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,59 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 5378f00c935bebb846b1fdb0e79cb76c137c56b5 ]
+[ Upstream commit 2f03d0c2cd451c7ac2f317079d4ec518f0986b55 ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from vdso_setup().
+After commit 9dbd1aa3a81c ("dm raid: add reshaping support to the
+target") raid_ctr() will set MD_RECOVERY_FROZEN before md_run() and
+expect to keep array frozen until resume. However, md_run() will clear
+the flag by setting mddev->recovery to 0.
 
-Fixes: 9a08862a5d2e ("vDSO for sparc")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Nick Alcock <nick.alcock@oracle.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240211052808.22635-1-rdunlap@infradead.org
+Before commit 1baae052cccd ("md: Don't ignore suspended array in
+md_check_recovery()"), dm-raid actually relied on suspending to prevent
+starting new sync_thread.
+
+Fix this problem by keeping 'MD_RECOVERY_FROZEN' for dm-raid in
+md_run().
+
+Fixes: 1baae052cccd ("md: Don't ignore suspended array in md_check_recovery()")
+Fixes: 9dbd1aa3a81c ("dm raid: add reshaping support to the target")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240305072306.2562024-2-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/vdso/vma.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/md/md.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
-index 136c78f28f8ba..1bbf4335de454 100644
---- a/arch/sparc/vdso/vma.c
-+++ b/arch/sparc/vdso/vma.c
-@@ -449,9 +449,8 @@ static __init int vdso_setup(char *s)
- 	unsigned long val;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 40dea4c06457f..007fd071b44ed 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -6064,7 +6064,10 @@ int md_run(struct mddev *mddev)
+ 			pr_warn("True protection against single-disk failure might be compromised.\n");
+ 	}
  
- 	err = kstrtoul(s, 10, &val);
--	if (err)
--		return err;
--	vdso_enabled = val;
--	return 0;
-+	if (!err)
-+		vdso_enabled = val;
-+	return 1;
- }
- __setup("vdso=", vdso_setup);
+-	mddev->recovery = 0;
++	/* dm-raid expect sync_thread to be frozen until resume */
++	if (mddev->gendisk)
++		mddev->recovery = 0;
++
+ 	/* may be over-ridden by personality */
+ 	mddev->resync_max_sectors = mddev->dev_sectors;
+ 
 -- 
 2.43.0
 
