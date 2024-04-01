@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E74D893FF8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF228941CF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B03A1F21CFB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F353B210F2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A674445BE4;
-	Mon,  1 Apr 2024 16:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2D28F5C;
+	Mon,  1 Apr 2024 16:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFd0BP0d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5I0Ptv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66990C129;
-	Mon,  1 Apr 2024 16:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94AF63E;
+	Mon,  1 Apr 2024 16:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988631; cv=none; b=JvyHG1gCWwXIk1yN2ulbgs4kFSvYg2YU9xc0XLWpQrDMT0l0apxVS2DLv2bK/eT46x2tRJyWqCOjHu3vW/n1GfHWm9n6rqZZV1SWYYIJnpEtTSc4e5LvcmhdK3nfKo7a3jwafNt4MGkejYcublVcjk3kz/490VPpKqvkVEo1s/c=
+	t=1711989973; cv=none; b=DwfmWOjh1bHNDKXtRhgOOHy1v/b/Y6N4c0npinknhzDT+2By0iiRdT5GBWsckxBbj25VJYQN9ObuBQmiHdOIgAkMFbu1DL16Ei7Emfkqr2NlYbdAuLeM7qAhT1EY6ExygthtNHhI6FfF1XADIf7owwGCqIA/je4BQTrZuUVzbA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988631; c=relaxed/simple;
-	bh=xhgo8PQnkMkQc7FnSLsmwRiNF5zs8tC7tGk6OvIYdP8=;
+	s=arc-20240116; t=1711989973; c=relaxed/simple;
+	bh=rdTFRxs812F5JtWTLhsSnbdg8PTuXj685BF0Fhx3CDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqDfYsQUttW924hxu7AsLfnTFIu4V4ah4R53T5K+f25hEoTCMx7Jv081vfh7WdiYk7MCGCOtslt9RDfDc9F9pgmm6g88Nwn36HvgxJ3SbSniP7i7GjxVkyiK3pJ5EEprhJJ8XUGyXkwzOMZIYHkvTLJw1UkFwWXjv21cTTViSuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFd0BP0d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83A3C433F1;
-	Mon,  1 Apr 2024 16:23:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U5VyL2A1GLFwoUTLA0YObJKHQXLJWmOe4Wh9y2NKpsRPV88rnaRqYPwNVDegrAk2vPA4lxC7lrcmLawm8qLfC528qTT6qo0jLQY7kj+Sf6utolRGlA5XJ7x+CZUaGisI+8CEz7jMj2z+qiczaJrgyBYkPbkZRQbkjCY2DZrleyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5I0Ptv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176CBC433F1;
+	Mon,  1 Apr 2024 16:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988631;
-	bh=xhgo8PQnkMkQc7FnSLsmwRiNF5zs8tC7tGk6OvIYdP8=;
+	s=korg; t=1711989973;
+	bh=rdTFRxs812F5JtWTLhsSnbdg8PTuXj685BF0Fhx3CDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFd0BP0diTTDFG5yL6TW6YgeQoZR4MMqR++a9P/zOIZjMsskzdttCts0fLlpTf24z
-	 g5tBNbhMmgn00ryxLven1pjh3xH8BuAJZU0uynA+6qLBz91v+nIFhqSGM5Z9+46aQJ
-	 06cF6XPq28NGdAw67hDB1WTxtXhqA61ZiPi2Y5O4=
+	b=g5I0Ptv+ocZ/rJke5Z1CwD1T/60sQHq3BvDcTbR+EtlGYc7nwAfQQRHajrmBTNWQl
+	 bOm0zsL1ZQBQiVB6tmpbYt2HU47+zGUwpo4sucksjdGm5TxU9xNzCbRuLtXioamMUk
+	 xsLjldHLDoEOvkO99+vquag0JA9A5iRIwYt47xWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.7 243/432] xfrm: Avoid clang fortify warning in copy_to_user_tmpl()
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 181/396] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
 Date: Mon,  1 Apr 2024 17:43:50 +0200
-Message-ID: <20240401152600.383950345@linuxfoundation.org>
+Message-ID: <20240401152553.338970333@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit 1a807e46aa93ebad1dfbed4f82dc3bf779423a6e upstream.
+[ Upstream commit 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 ]
 
-After a couple recent changes in LLVM, there is a warning (or error with
-CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
-specifically the memset() in copy_to_user_tmpl().
-
-  In file included from net/xfrm/xfrm_user.c:14:
-  ...
-  include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-    438 |                         __write_overflow_field(p_size_field, size);
-        |                         ^
-  1 error generated.
-
-While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
-is first assigned in copy_templates() by calling validate_tmpl() first
-(so there should not be any issue in practice), LLVM/clang cannot really
-deduce that across the boundaries of these functions. Without that
-knowledge, it cannot assume that the loop stops before i is greater than
-XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
-memset().
-
-To make the bounds of ->xfrm_nr clear to the compiler and add additional
-defense in case copy_to_user_tmpl() is ever used in a path where
-->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
-add an explicit bound check and early return, which clears up the
-warning.
+Otherwise after the GTT bo is released, the GTT and gart space is freed
+but amdgpu_ttm_backend_unbind will not clear the gart page table entry
+and leave valid mapping entry pointing to the stale system page. Then
+if GPU access the gart address mistakely, it will read undefined value
+instead page fault, harder to debug and reproduce the real issue.
 
 Cc: stable@vger.kernel.org
-Link: https://github.com/ClangBuiltLinux/linux/issues/1985
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2017,6 +2017,9 @@ static int copy_to_user_tmpl(struct xfrm
- 	if (xp->xfrm_nr == 0)
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index f573909332c01..928107d0bfea4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -869,6 +869,7 @@ static void amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
+ 		amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
+ 				 gtt->ttm.dma_address, flags);
+ 	}
++	gtt->bound = true;
+ }
  
-+	if (xp->xfrm_nr > XFRM_MAX_DEPTH)
-+		return -ENOBUFS;
-+
- 	for (i = 0; i < xp->xfrm_nr; i++) {
- 		struct xfrm_user_tmpl *up = &vec[i];
- 		struct xfrm_tmpl *kp = &xp->xfrm_vec[i];
+ /*
+-- 
+2.43.0
+
 
 
 
