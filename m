@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-35025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C438941F6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74301894325
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87D481F22066
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14EECB2079A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D615481C6;
-	Mon,  1 Apr 2024 16:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B39487BC;
+	Mon,  1 Apr 2024 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0Urk2aT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ao+ok+PE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB53433DA;
-	Mon,  1 Apr 2024 16:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08201482E4;
+	Mon,  1 Apr 2024 17:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990094; cv=none; b=EMSuqtf/zLmbxCJo0qD3c3u/NpFOfbIAOE/OE3HtVlggZ+vwTQ/o2zK8tPNaPoksP2mOpEVfxmImYR8llSz/YELxEbiY7drvgzWu0EnbGDIsmfGp/p7Gd3+MK0zTlEKInRdeVYT4PqAuIFJwDX7Z9Y2Ip8jJbDKXrYZitWERdu0=
+	t=1711990815; cv=none; b=K1aGgeJ3RzLNxx8/UnGA7VbPVaqHpV62mMiUEfwIcNrM7ud+OOO2TX51YQFKxnQz/awS2QwWREQl/H+DZQ23uwrVeMVQVrpUOvqP6OnvUNEaf4VL+iaeuSstS4NBzYKwVBbO2OyzjeXBRy+WNNzYoyLT1QlQHsB6a4amrBxFrtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990094; c=relaxed/simple;
-	bh=T6vIuoyUbQEzka1q0syozSZLq9G6dfSOhyrsPyhHYkM=;
+	s=arc-20240116; t=1711990815; c=relaxed/simple;
+	bh=X9MVovDmRQdNLp+SQ6XalAwsT73jYnGYG0DNruABDR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4HQXcqN0SiE0E7+4UYzX3xWMIaDHDMkXwJjFH+j5k11cq5z2z1heu9ukuYSx2sn2rxqgX3I8qfMR0PdaGA/ZYwM7BmTE3BQMCNDw1yf3gh7/g83zHn0v+PAzta5a8JWp2h6Uhs2vvS400oWxoedQYNElbVJE6hwfhUHxcZF6FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0Urk2aT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E3FC433F1;
-	Mon,  1 Apr 2024 16:48:13 +0000 (UTC)
+	 MIME-Version; b=t/lWhwYwuQHhSqk54Je4kkga4SO9RDaV1Us3z1TWvD3nXOrKV0TAo8mjASRIGuCeq3j9gbtkeuBDusO+/5bzAD7imQaOQwRCN3nUr8x5Hs+kcrrdcNXGqbqAjLFR9HtO4fVphWHIf0XKjql8FDv+V4JQ5mZ3wzc2vr/VdzKPct4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ao+ok+PE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BACBC433C7;
+	Mon,  1 Apr 2024 17:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990093;
-	bh=T6vIuoyUbQEzka1q0syozSZLq9G6dfSOhyrsPyhHYkM=;
+	s=korg; t=1711990814;
+	bh=X9MVovDmRQdNLp+SQ6XalAwsT73jYnGYG0DNruABDR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0Urk2aTKRx2q9EnS/bAvjURdsTCxePiRiyH1U9rjpAiEaVN0Qe8K3W/0UGyRlFxG
-	 bKT4rVqkEHjMklIcD/O8oVa3YWXwEv14F3JqPJSDmAYz5J2TAmn5tVD+OtDGqfsZSZ
-	 W8uwAhnczF9orO2sPXetkpcnewUTSP8a2x5fqDvk=
+	b=Ao+ok+PE9p7rXXKMQOZkOTz5rvm+Ypngopez/FO2TPma2/fNSNnEheDN0mvAsxi4s
+	 NxkKP7n63oe/qcIlNgHVzdoWLkViVrMEQF+FB2RH4PsX4dXKdHkdoBMU4tW1y/0rUr
+	 7SvQi7i0KD7/j+NSDgUGxxtQY7AGEx+XD63Zop5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 215/396] SEV: disable SEV-ES DebugSwap by default
+	Niels van Aert <nvaert1986@hotmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 074/272] PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports
 Date: Mon,  1 Apr 2024 17:44:24 +0200
-Message-ID: <20240401152554.334076078@linuxfoundation.org>
+Message-ID: <20240401152532.878282256@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-commit 5abf6dceb066f2b02b225fd561440c98a8062681 upstream.
+[ Upstream commit 627c6db20703b5d18d928464f411d0d4ec327508 ]
 
-The DebugSwap feature of SEV-ES provides a way for confidential guests to use
-data breakpoints.  However, because the status of the DebugSwap feature is
-recorded in the VMSA, enabling it by default invalidates the attestation
-signatures.  In 6.10 we will introduce a new API to create SEV VMs that
-will allow enabling DebugSwap based on what the user tells KVM to do.
-Contextually, we will change the legacy KVM_SEV_ES_INIT API to never
-enable DebugSwap.
+Commit 5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root
+Ports") and commit 3b8803494a06 ("PCI/DPC: Quirk PIO log size for Intel Ice
+Lake Root Ports") add quirks for Ice, Tiger and Alder Lake Root Ports.
+System firmware for Raptor Lake still has the bug, so Linux logs the
+warning below on several Raptor Lake systems like Dell Precision 3581 with
+Intel Raptor Lake processor (0W18NX) system firmware/BIOS version 1.10.1.
 
-For compatibility with kernels that pre-date the introduction of DebugSwap,
-as well as with those where KVM_SEV_ES_INIT will never enable it, do not enable
-the feature by default.  If anybody wants to use it, for now they can enable
-the sev_es_debug_swap_enabled module parameter, but this will result in a
-warning.
+  pci 0000:00:07.0: [8086:a76e] type 01 class 0x060400
+  pci 0000:00:07.0: DPC: RP PIO log size 0 is invalid
+  pci 0000:00:07.1: [8086:a73f] type 01 class 0x060400
+  pci 0000:00:07.1: DPC: RP PIO log size 0 is invalid
 
-Fixes: d1f85fbe836e ("KVM: SEV: Enable data breakpoints in SEV-ES")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Apply the quirk for Raptor Lake Root Ports as well.
+
+This also enables the DPC driver to dump the RP PIO Log registers when DPC
+is triggered.
+
+Link: https://lore.kernel.org/r/20240305113057.56468-1-pmenzel@molgen.mpg.de
+Reported-by: Niels van Aert <nvaert1986@hotmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218560
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: <stable@vger.kernel.org>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Niels van Aert <nvaert1986@hotmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index a132547fcfb5..a8ce5226b3b5 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -57,7 +57,7 @@ static bool sev_es_enabled = true;
- module_param_named(sev_es, sev_es_enabled, bool, 0444);
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index c175b70a984c6..289ba6902e41b 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6078,6 +6078,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
+ #endif
  
- /* enable/disable SEV-ES DebugSwap support */
--static bool sev_es_debug_swap_enabled = true;
-+static bool sev_es_debug_swap_enabled = false;
- module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
- #else
- #define sev_enabled false
-@@ -612,8 +612,11 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
- 	save->xss  = svm->vcpu.arch.ia32_xss;
- 	save->dr6  = svm->vcpu.arch.dr6;
- 
--	if (sev_es_debug_swap_enabled)
-+	if (sev_es_debug_swap_enabled) {
- 		save->sev_features |= SVM_SEV_FEAT_DEBUG_SWAP;
-+		pr_warn_once("Enabling DebugSwap with KVM_SEV_ES_INIT. "
-+			     "This will not work starting with Linux 6.10\n");
-+	}
- 
- 	pr_debug("Virtual Machine Save Area (VMSA):\n");
- 	print_hex_dump_debug("", DUMP_PREFIX_NONE, 16, 1, save, sizeof(*save), false);
+ /*
 -- 
-2.44.0
+2.43.0
 
 
 
