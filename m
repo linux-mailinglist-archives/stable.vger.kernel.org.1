@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-35044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0358B894215
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EB9894380
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C011F2282E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8CB61C21DF1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2100D4653C;
-	Mon,  1 Apr 2024 16:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85FE482CA;
+	Mon,  1 Apr 2024 17:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8TYyixN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozaX24GN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDE78F5C;
-	Mon,  1 Apr 2024 16:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9374838DE5;
+	Mon,  1 Apr 2024 17:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990156; cv=none; b=ZJOtd9Su+xbMORc0gsec4AjNrauFAmTqGSUZVOIBnNTNsyJX1pQPWYcS395yVn51d1VAelL1hakjEFOtppKgVhH3pShKv7eEY0LLk3xk1XriWKxEEW3wTAfdomtW55oA8Gsh+jKrvxSIobYpeS7q0EuQnLMMJacrZ6o3AQUV8pE=
+	t=1711991062; cv=none; b=Ro6bk6Et1IPlx10rlfeaBv2iFWHZej8UHLt1uisoIBUQ4XE6SXmu7YD3gjpzsSHnzVXTBQy6+TkqknyDGsrD97FlESB60TtyK16Eyk+Ns1E3bgnDnc9ggjXMtFSF+Gf0NPeeNNv/g0PpapaYGVHa7MYZY3VH81h9RLOO9Xz4Dko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990156; c=relaxed/simple;
-	bh=MlqOcIYCoMHqKB7YyrX10lv+D1oQkEVU0Isk+5M2K+M=;
+	s=arc-20240116; t=1711991062; c=relaxed/simple;
+	bh=uJhhnljXq4/QXKMT702IiXrVDJItCRbUnMDxB8GVPAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HigZbKKCg2fd9bz294dq8qYzDaC4WUCOQIBVE2vyRjsQJARIB1pz0PZEUDj5ad+eQgvNOcE3ZJ5u22ttGP2aUhmda5EOeKSUAM8Fx46V+4IkWSxxEX5FVMDRmfeH+SNbFwikqGYJT6zj/lip+fStOeKKKTCvEbx/NFRmkWq4lUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8TYyixN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6809C433C7;
-	Mon,  1 Apr 2024 16:49:15 +0000 (UTC)
+	 MIME-Version; b=rFN3wOw9E/xiXUp7Xj9yqAdwJEZUIJlnPhmWBunHwHPRPj3elUfVv4QRsWjqnZhkaFbSpe1wTvjUH2rnfadLiPArlYu3gvp3EIa8kyMSsw6lkHqFw2KRiDknAFItmChV1+pN5vGZEiCFotioo+rmQIPQXg4IRCM+5AA6zdI9s3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozaX24GN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DD2C433C7;
+	Mon,  1 Apr 2024 17:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990156;
-	bh=MlqOcIYCoMHqKB7YyrX10lv+D1oQkEVU0Isk+5M2K+M=;
+	s=korg; t=1711991062;
+	bh=uJhhnljXq4/QXKMT702IiXrVDJItCRbUnMDxB8GVPAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8TYyixNbc4HsvUjcRa62/kmcIFhw2VnxErIk2s1ktarArV/Axn6ERNMh9YhaIeFx
-	 YaLu27TegfR92Oh7l9scIHed62NaH15bBnld29uK9lB1bWMBptYEI9IUeZWm6KiBFV
-	 G4LFPKB/ZZtJd6agz3drnq4fxG0zbSTn8KCbJH4E=
+	b=ozaX24GNZG4AnYE7UniYeZlITpw25K9KFJUD/qYJ+SkclRMRCSbyv9shVwOtIwiuU
+	 MoeU+YazhtXVRDWc1v1mHrZ+DRX6mZ6WmZcEX186txSYiBJJn3DnuhFHv1Mo3m1tER
+	 A/tGZGfTLZFcP4M2MGZ6FpvhmsoAnRBf5M18uG0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 263/396] xfs: make xchk_iget safer in the presence of corrupt inode btrees
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 122/272] f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag
 Date: Mon,  1 Apr 2024 17:45:12 +0200
-Message-ID: <20240401152555.747717568@linuxfoundation.org>
+Message-ID: <20240401152534.477460113@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Sunmin Jeong <s_min.jeong@samsung.com>
 
-commit 3f113c2739b1b068854c7ffed635c2bd790d1492 upstream.
+[ Upstream commit 4bf78322346f6320313683dc9464e5423423ad5c ]
 
-When scrub is trying to iget an inode, ensure that it won't end up
-deadlocked on a cycle in the inode btree by using an empty transaction
-to store all the buffers.
+In f2fs_update_inode, i_size of the atomic file isn't updated until
+FI_ATOMIC_COMMITTED flag is set. When committing atomic write right
+after the writeback of the inode, i_size of the raw inode will not be
+updated. It can cause the atomicity corruption due to a mismatch between
+old file size and new data.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To prevent the problem, let's mark inode dirty for FI_ATOMIC_COMMITTED
+
+Atomic write thread                   Writeback thread
+                                        __writeback_single_inode
+                                          write_inode
+                                            f2fs_update_inode
+                                              - skip i_size update
+  f2fs_ioc_commit_atomic_write
+    f2fs_commit_atomic_write
+      set_inode_flag(inode, FI_ATOMIC_COMMITTED)
+    f2fs_do_sync_file
+      f2fs_fsync_node_pages
+        - skip f2fs_update_inode since the inode is clean
+
+Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
+Cc: stable@vger.kernel.org #v5.19+
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/scrub/common.c |    6 ++++--
- fs/xfs/scrub/common.h |   25 +++++++++++++++++++++++++
- fs/xfs/scrub/inode.c  |    4 ++--
- 3 files changed, 31 insertions(+), 4 deletions(-)
+ fs/f2fs/f2fs.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/xfs/scrub/common.c
-+++ b/fs/xfs/scrub/common.c
-@@ -733,6 +733,8 @@ xchk_iget(
- 	xfs_ino_t		inum,
- 	struct xfs_inode	**ipp)
- {
-+	ASSERT(sc->tp != NULL);
-+
- 	return xfs_iget(sc->mp, sc->tp, inum, XFS_IGET_UNTRUSTED, 0, ipp);
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 5ae1c4aa3ae92..b54d681c6457d 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3000,6 +3000,7 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
+ 	case FI_INLINE_DOTS:
+ 	case FI_PIN_FILE:
+ 	case FI_COMPRESS_RELEASED:
++	case FI_ATOMIC_COMMITTED:
+ 		f2fs_mark_inode_dirty_sync(inode, true);
+ 	}
  }
- 
-@@ -882,8 +884,8 @@ xchk_iget_for_scrubbing(
- 	if (!xfs_verify_ino(sc->mp, sc->sm->sm_ino))
- 		return -ENOENT;
- 
--	/* Try a regular untrusted iget. */
--	error = xchk_iget(sc, sc->sm->sm_ino, &ip);
-+	/* Try a safe untrusted iget. */
-+	error = xchk_iget_safe(sc, sc->sm->sm_ino, &ip);
- 	if (!error)
- 		return xchk_install_handle_inode(sc, ip);
- 	if (error == -ENOENT)
---- a/fs/xfs/scrub/common.h
-+++ b/fs/xfs/scrub/common.h
-@@ -151,6 +151,11 @@ void xchk_iunlock(struct xfs_scrub *sc,
- 
- void xchk_buffer_recheck(struct xfs_scrub *sc, struct xfs_buf *bp);
- 
-+/*
-+ * Grab the inode at @inum.  The caller must have created a scrub transaction
-+ * so that we can confirm the inumber by walking the inobt and not deadlock on
-+ * a loop in the inobt.
-+ */
- int xchk_iget(struct xfs_scrub *sc, xfs_ino_t inum, struct xfs_inode **ipp);
- int xchk_iget_agi(struct xfs_scrub *sc, xfs_ino_t inum,
- 		struct xfs_buf **agi_bpp, struct xfs_inode **ipp);
-@@ -158,6 +163,26 @@ void xchk_irele(struct xfs_scrub *sc, st
- int xchk_install_handle_inode(struct xfs_scrub *sc, struct xfs_inode *ip);
- 
- /*
-+ * Safe version of (untrusted) xchk_iget that uses an empty transaction to
-+ * avoid deadlocking on loops in the inobt.  This should only be used in a
-+ * scrub or repair setup routine, and only prior to grabbing a transaction.
-+ */
-+static inline int
-+xchk_iget_safe(struct xfs_scrub *sc, xfs_ino_t inum, struct xfs_inode **ipp)
-+{
-+	int	error;
-+
-+	ASSERT(sc->tp == NULL);
-+
-+	error = xchk_trans_alloc(sc, 0);
-+	if (error)
-+		return error;
-+	error = xchk_iget(sc, inum, ipp);
-+	xchk_trans_cancel(sc);
-+	return error;
-+}
-+
-+/*
-  * Don't bother cross-referencing if we already found corruption or cross
-  * referencing discrepancies.
-  */
---- a/fs/xfs/scrub/inode.c
-+++ b/fs/xfs/scrub/inode.c
-@@ -94,8 +94,8 @@ xchk_setup_inode(
- 	if (!xfs_verify_ino(sc->mp, sc->sm->sm_ino))
- 		return -ENOENT;
- 
--	/* Try a regular untrusted iget. */
--	error = xchk_iget(sc, sc->sm->sm_ino, &ip);
-+	/* Try a safe untrusted iget. */
-+	error = xchk_iget_safe(sc, sc->sm->sm_ino, &ip);
- 	if (!error)
- 		return xchk_install_handle_iscrub(sc, ip);
- 	if (error == -ENOENT)
+-- 
+2.43.0
+
 
 
 
