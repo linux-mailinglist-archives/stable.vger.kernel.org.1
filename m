@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-33909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D352D8939A2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:44:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E238939A6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F9431F22197
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:44:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07B14284507
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D861078F;
-	Mon,  1 Apr 2024 09:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99AF10A3F;
+	Mon,  1 Apr 2024 09:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfWdEqb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJVgViwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBC311CB0
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A70B10A11
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711964642; cv=none; b=bZKWT+xP7KLasrtkjAEvNxaBeVqtx71DJrGoP3rEFgAISDSmyPdmMCqrxAjN1DFy9aG4gOxnglfI3OtUuDC1GPLeE9RXVrBkwAixxmNVWzUDf3xhzOYfXLffxEMxXghgWSgWmBXKDjyxZ4ikGwp3QmgsMKu5y4JHgiIZT/AwDio=
+	t=1711964651; cv=none; b=EuV04Z3gzScsxJtbGt9nUFnkR3kFrH8k1eM+ggqFL564VqqMalaxHsC/DVIEAG4Wu1a8xdMu2ePZ1QjJxEA4l+yRPiwb/Dr+SzbdD8qWuGt1YqjjK4Q8UDdxQ8BNv7Hfu3xS+ABS89vxRq513E6t+78IXF/Fabnv7tW6F8UMTA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711964642; c=relaxed/simple;
-	bh=tMtoUCVwAXJI1F/0FXhu5HB8CqJtnVZNIDOiXejMNWM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pMVJzi7Wuw1VPKU48I71LFGMOyLePNE15dRFn5eU6zvL2cIiwYhVAJJI4RjiF+4jgMP1VYsGphtu7qqfZt4IT8E4Mav+fDoBbRM8wiV+JlvrLEHQSABRzcw2LvgVAdT3SPJPLAlk+ZQKiJUqOtEyqEbqr4XGbQIU69/KUCwdyZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfWdEqb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD87DC433F1;
-	Mon,  1 Apr 2024 09:44:01 +0000 (UTC)
+	s=arc-20240116; t=1711964651; c=relaxed/simple;
+	bh=dF/34zmL9HZwoag/nCEjO62jb+fZWK3SCZOqOfgMs3U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PUCWonO6QIh8fjDnhb4NZa6yKxHB6MfiAXwRN4TNgAwk8omVW7zV0O5Q22yaGFnaSycn+cy0QjVbj6mKgUyPty3P2Q6f49R4RnHrT26nRbJqwZlqW5/rehnuQh4YmnSehRHhPLnPOH/FYEfYH99KcYXhORYIw1Bfi+mDtchhyHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJVgViwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98416C433C7;
+	Mon,  1 Apr 2024 09:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711964642;
-	bh=tMtoUCVwAXJI1F/0FXhu5HB8CqJtnVZNIDOiXejMNWM=;
+	s=korg; t=1711964651;
+	bh=dF/34zmL9HZwoag/nCEjO62jb+fZWK3SCZOqOfgMs3U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZfWdEqb6U2Pay3TszkDQnNotGeXfCKAqbYOci1kw0B7jZ6cjwrHVJrnisg7cE8jwQ
-	 EeuXA4p3smXw4xtKYYii7sx10PL6vsHO7AxoX7ysePFDpAGH0Lqyc5DqEY1fQO8I3Q
-	 2UjeXWUIXzxL7kOUrXv2ihI/ODOdjcOcx3tUT2Ks=
-Subject: FAILED: patch "[PATCH] USB: core: Add hub_get() and hub_put() routines" failed to apply to 5.4-stable tree
+	b=QJVgViwYwtzky39kwrCsiiPomSMVINnVxwCfXATGu7/saGdKbpVvWOhndwTwHWZ2L
+	 iXKlnm3u2DRYAySgQwL4EPdppF2cm1sqBVum1Ff36XeM+10BsAsgskAXKUlWYMtyC/
+	 F5Gp0rlKvu1oDjUn6JUEwbn0S1zBk4fxW6q+bRsA=
+Subject: FAILED: patch "[PATCH] USB: core: Add hub_get() and hub_put() routines" failed to apply to 4.19-stable tree
 To: stern@rowland.harvard.edu,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Apr 2024 11:43:58 +0200
-Message-ID: <2024040158-stump-bucked-e91c@gregkh>
+Date: Mon, 01 Apr 2024 11:43:59 +0200
+Message-ID: <2024040159-scurvy-gestation-ae70@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x ee113b860aa169e9a4d2c167c95d0f1961c6e1b8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040158-stump-bucked-e91c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040159-scurvy-gestation-ae70@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,7 @@ ee113b860aa1 ("USB: core: Add hub_get() and hub_put() routines")
 3a6bf4a08142 ("usb: core: hub: Create platform devices for onboard hubs in hub_probe()")
 1208f9e1d758 ("USB: hub: Fix the broken detection of USB3 device in SMSC hub")
 95d23dc27bde ("usb, kcov: collect coverage from hub_event")
+8eb58994dd96 ("usb: hub: add retry routine after intr URB submit error")
 
 thanks,
 
