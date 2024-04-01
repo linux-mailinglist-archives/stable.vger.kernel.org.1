@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828BE89420A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D746589437C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A66401C21826
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 919502812E1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C133A481D7;
-	Mon,  1 Apr 2024 16:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305D5482CA;
+	Mon,  1 Apr 2024 17:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8zWU/2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCRfSzAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B10F8F5C;
-	Mon,  1 Apr 2024 16:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29DB1DFF4;
+	Mon,  1 Apr 2024 17:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990136; cv=none; b=Fk1lJuR4ZdTDxA8YijJSlR8G4qimDcaa1/UG9oQeAgSvhRbj2NTOX3J23hmGIkPN3HJ9unJIjfHkIas5OQ7CoMzQ6bkmeFfiymeuu5+c8a9Y0Ba5DC0QtOqCuOuowPhXE75A0S4wm2wnknFEwIxbHyd+p9tAx4SpWPnm5PZremo=
+	t=1711991050; cv=none; b=kfH4NweXP4CKrZV5hNIPFdjN5c/s45dd3NtLDstMmaX7/KM3tH8Yf5UGkBgHvfuYUT+ReJsefGQDSRZhM+cIFYPHyPA+IGC5Bt8WpmZruM/04gyheZ93Lqcwf77BaoeE+MsmT3CMgunThdbLjf/AYI/MhOFJoSGcj/2lDNRNspU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990136; c=relaxed/simple;
-	bh=Cdcgk/h/HpkAfUFFiA97EH2rXNRCFE7vdl3rQiST2vc=;
+	s=arc-20240116; t=1711991050; c=relaxed/simple;
+	bh=/koHFeNz+HL+427PvVIYvN6/Jw3eIdAohm3Wtmp0RkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBT112fS30mAiSV+lOTIS8d00GI77UckVY6YXoFwfRHwCJRvghdQNjRoJ3R3p1z125RIfkIAbRMN7LgntzLyGnOE2Mkuowv+6Gv12JDBIZ68WIPu02xtAihY5pwc5Ez8Su5hPsRjadjoCjhJI8rqob0qyFfA6+mPyjvV5xnM/aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8zWU/2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE88FC433C7;
-	Mon,  1 Apr 2024 16:48:55 +0000 (UTC)
+	 MIME-Version; b=lWPFvZc4aCdsd5BlwzYRRx62HzHzPZxlFTZ77H623o6Kin/mVfsIvlOdyNNvBpg2E31w1P1rQZzqWFrIstSLqP32uQh1dX36BZsy/JMG1XixOh9yYKb0Q0+32DoQUeHwuQQTH3MmiC9liCfrUt2icC7ELKA36koH9J4WIfYpK50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCRfSzAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511EDC433C7;
+	Mon,  1 Apr 2024 17:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990136;
-	bh=Cdcgk/h/HpkAfUFFiA97EH2rXNRCFE7vdl3rQiST2vc=;
+	s=korg; t=1711991049;
+	bh=/koHFeNz+HL+427PvVIYvN6/Jw3eIdAohm3Wtmp0RkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8zWU/2cX7BF1pySmkWZdY7a4m1gyPhr/8/S7ykf37mJvWW61cz6fh8BpkHt0JFJI
-	 TKR0R2a3+yZJekAILv6gZDn2lqGlgSlxBJ9wfXoEhSoZ4RDRzP3wzQ9RoPPZlAxVwF
-	 fZyQlPPD65bQ1+XyFQ1mav35lfG/1hoittfHRlWc=
+	b=dCRfSzAsSfeLCgiyuTGsUorkWsk/i07AdiDYyl1mfPQuZEGJQNKYkTQmY0dIvocpv
+	 sRF4wIt2IrlDA34tEyJ9x038vHNgLnx8BocSHCqGtMWKil7Kj86YDtp4anGUXLop7H
+	 ZgqGq7wHpxM5xZzHQl68k5dVjSmO6qF22ivXACzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 258/396] xfs: pass the xfs_defer_pending object to iop_recover
-Date: Mon,  1 Apr 2024 17:45:07 +0200
-Message-ID: <20240401152555.600298115@linuxfoundation.org>
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 118/272] drm/imx/ipuv3: do not return negative values from .get_modes()
+Date: Mon,  1 Apr 2024 17:45:08 +0200
+Message-ID: <20240401152534.357033630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit a050acdfa8003a44eae4558fddafc7afb1aef458 upstream.
+[ Upstream commit c2da9ada64962fcd2e6395ed9987b9874ea032d3 ]
 
-Now that log intent item recovery recreates the xfs_defer_pending state,
-we should pass that into the ->iop_recover routines so that the intent
-item can finish the recreation work.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: stable@vger.kernel.org
+Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/311f6eec96d47949b16a670529f4d89fcd97aefa.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_attr_item.c     |    3 ++-
- fs/xfs/xfs_bmap_item.c     |    3 ++-
- fs/xfs/xfs_extfree_item.c  |    3 ++-
- fs/xfs/xfs_log_recover.c   |    2 +-
- fs/xfs/xfs_refcount_item.c |    3 ++-
- fs/xfs/xfs_rmap_item.c     |    3 ++-
- fs/xfs/xfs_trans.h         |    4 +++-
- 7 files changed, 14 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/imx/parallel-display.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_attr_item.c
-+++ b/fs/xfs/xfs_attr_item.c
-@@ -545,9 +545,10 @@ xfs_attri_validate(
-  */
- STATIC int
- xfs_attri_item_recover(
--	struct xfs_log_item		*lip,
-+	struct xfs_defer_pending	*dfp,
- 	struct list_head		*capture_list)
- {
-+	struct xfs_log_item		*lip = dfp->dfp_intent;
- 	struct xfs_attri_log_item	*attrip = ATTRI_ITEM(lip);
- 	struct xfs_attr_intent		*attr;
- 	struct xfs_mount		*mp = lip->li_log->l_mp;
---- a/fs/xfs/xfs_bmap_item.c
-+++ b/fs/xfs/xfs_bmap_item.c
-@@ -486,11 +486,12 @@ xfs_bui_validate(
-  */
- STATIC int
- xfs_bui_item_recover(
--	struct xfs_log_item		*lip,
-+	struct xfs_defer_pending	*dfp,
- 	struct list_head		*capture_list)
- {
- 	struct xfs_bmap_intent		fake = { };
- 	struct xfs_trans_res		resv;
-+	struct xfs_log_item		*lip = dfp->dfp_intent;
- 	struct xfs_bui_log_item		*buip = BUI_ITEM(lip);
- 	struct xfs_trans		*tp;
- 	struct xfs_inode		*ip = NULL;
---- a/fs/xfs/xfs_extfree_item.c
-+++ b/fs/xfs/xfs_extfree_item.c
-@@ -657,10 +657,11 @@ xfs_efi_validate_ext(
-  */
- STATIC int
- xfs_efi_item_recover(
--	struct xfs_log_item		*lip,
-+	struct xfs_defer_pending	*dfp,
- 	struct list_head		*capture_list)
- {
- 	struct xfs_trans_res		resv;
-+	struct xfs_log_item		*lip = dfp->dfp_intent;
- 	struct xfs_efi_log_item		*efip = EFI_ITEM(lip);
- 	struct xfs_mount		*mp = lip->li_log->l_mp;
- 	struct xfs_efd_log_item		*efdp;
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2583,7 +2583,7 @@ xlog_recover_process_intents(
- 		 * The recovery function can free the log item, so we must not
- 		 * access lip after it returns.
- 		 */
--		error = ops->iop_recover(lip, &capture_list);
-+		error = ops->iop_recover(dfp, &capture_list);
- 		if (error) {
- 			trace_xlog_intent_recovery_failed(log->l_mp, error,
- 					ops->iop_recover);
---- a/fs/xfs/xfs_refcount_item.c
-+++ b/fs/xfs/xfs_refcount_item.c
-@@ -474,10 +474,11 @@ xfs_cui_validate_phys(
-  */
- STATIC int
- xfs_cui_item_recover(
--	struct xfs_log_item		*lip,
-+	struct xfs_defer_pending	*dfp,
- 	struct list_head		*capture_list)
- {
- 	struct xfs_trans_res		resv;
-+	struct xfs_log_item		*lip = dfp->dfp_intent;
- 	struct xfs_cui_log_item		*cuip = CUI_ITEM(lip);
- 	struct xfs_cud_log_item		*cudp;
- 	struct xfs_trans		*tp;
---- a/fs/xfs/xfs_rmap_item.c
-+++ b/fs/xfs/xfs_rmap_item.c
-@@ -504,10 +504,11 @@ xfs_rui_validate_map(
-  */
- STATIC int
- xfs_rui_item_recover(
--	struct xfs_log_item		*lip,
-+	struct xfs_defer_pending	*dfp,
- 	struct list_head		*capture_list)
- {
- 	struct xfs_trans_res		resv;
-+	struct xfs_log_item		*lip = dfp->dfp_intent;
- 	struct xfs_rui_log_item		*ruip = RUI_ITEM(lip);
- 	struct xfs_rud_log_item		*rudp;
- 	struct xfs_trans		*tp;
---- a/fs/xfs/xfs_trans.h
-+++ b/fs/xfs/xfs_trans.h
-@@ -66,6 +66,8 @@ struct xfs_log_item {
- 	{ (1u << XFS_LI_DIRTY),		"DIRTY" }, \
- 	{ (1u << XFS_LI_WHITEOUT),	"WHITEOUT" }
+diff --git a/drivers/gpu/drm/imx/parallel-display.c b/drivers/gpu/drm/imx/parallel-display.c
+index 06723b2e9b847..64b6bc2de873e 100644
+--- a/drivers/gpu/drm/imx/parallel-display.c
++++ b/drivers/gpu/drm/imx/parallel-display.c
+@@ -72,14 +72,14 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
+ 		int ret;
  
-+struct xfs_defer_pending;
-+
- struct xfs_item_ops {
- 	unsigned flags;
- 	void (*iop_size)(struct xfs_log_item *, int *, int *);
-@@ -78,7 +80,7 @@ struct xfs_item_ops {
- 	xfs_lsn_t (*iop_committed)(struct xfs_log_item *, xfs_lsn_t);
- 	uint (*iop_push)(struct xfs_log_item *, struct list_head *);
- 	void (*iop_release)(struct xfs_log_item *);
--	int (*iop_recover)(struct xfs_log_item *lip,
-+	int (*iop_recover)(struct xfs_defer_pending *dfp,
- 			   struct list_head *capture_list);
- 	bool (*iop_match)(struct xfs_log_item *item, uint64_t id);
- 	struct xfs_log_item *(*iop_relog)(struct xfs_log_item *intent,
+ 		if (!mode)
+-			return -EINVAL;
++			return 0;
+ 
+ 		ret = of_get_drm_display_mode(np, &imxpd->mode,
+ 					      &imxpd->bus_flags,
+ 					      OF_USE_NATIVE_MODE);
+ 		if (ret) {
+ 			drm_mode_destroy(connector->dev, mode);
+-			return ret;
++			return 0;
+ 		}
+ 
+ 		drm_mode_copy(mode, &imxpd->mode);
+-- 
+2.43.0
+
 
 
 
