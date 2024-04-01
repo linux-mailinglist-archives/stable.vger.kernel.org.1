@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-35363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5C689439A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FAB894242
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBE9028370C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7454AB2205C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB50482CA;
-	Mon,  1 Apr 2024 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB894D9F2;
+	Mon,  1 Apr 2024 16:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qR4b7Hnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JymegGuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCB11DFF4;
-	Mon,  1 Apr 2024 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27918481B8;
+	Mon,  1 Apr 2024 16:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991152; cv=none; b=sdOuFliKbx44BVxsnvwGWw/sJgkE0hYr1ZjXRGcnRajs2cRPS5pQimIs7dGX3UkKO1XkLLwnIobBwowaX7QW8L1qGQAIcU6LnQwZ9obKXToA3/I01CC3uZdvqRflzjoqXA7VkeIp7Lc8BfuTD5Zt1NYouH1t6TrXt+5l1d/38AY=
+	t=1711990247; cv=none; b=A2+9x4zIepNjiY+GSZew3DezFLbUlbn10mq08y4AWnFp04OCwbYwtM481w7X1I02hl0qPpdsQu0Lo1DeuW/mkS6cW9xDtPchYJpCMYAMdFpN9v0NdDaly2iUXoWpukzTZS0i0ypsyFqWOzYza21vMFMtn2zz0R/XFgx8jtsDsaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991152; c=relaxed/simple;
-	bh=+oJLAjKb9soYZZX/prvsCFXe3LHAYFmeHwqRJSX/NwE=;
+	s=arc-20240116; t=1711990247; c=relaxed/simple;
+	bh=pkFuaD9qGm7ty1TP56SpecGC0JIk+ivpxe1gPg+uI5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J9q1Td13aCnVfhP9OaA6jDz7ywqlUZKNMEeAr6hgbTYbTdNw4TPzEfEW1YDufK/XHzHECfhYkxyYdMIWOrrfsGnNtPhavJIpzJWEfz52x0EnX+E7n8FK9WxSyiajOZafn7iZy4nGI2e+PbaLOw0bS44ilpsIFdK/LwogJeV+5iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qR4b7Hnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B555C433C7;
-	Mon,  1 Apr 2024 17:05:51 +0000 (UTC)
+	 MIME-Version; b=hj28BDP1wfOglPX/HDnDXUj32GriEMQoSqWlu7PwHZLszCj8itGGGhxDnVk2jOC7q6W1CtK00x2Cmnt7Y7YVK7aRDMrGKkp7mFohISfLvFPnw5rNM1M3DzG4wDJmEL0SQxopx5rEovunrLu7yITU82wHOJRPXbyOyAo87iLV7mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JymegGuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A192EC433F1;
+	Mon,  1 Apr 2024 16:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991152;
-	bh=+oJLAjKb9soYZZX/prvsCFXe3LHAYFmeHwqRJSX/NwE=;
+	s=korg; t=1711990247;
+	bh=pkFuaD9qGm7ty1TP56SpecGC0JIk+ivpxe1gPg+uI5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qR4b7HnlxQ5lEzlPP5xyf7rVufqVcKe7IpGfFujALdkN/M0S7ybRFgiTzPH5Trcxh
-	 6xodswoTjpgtHBvKLyY03gELHS1AA5rXUhtgyWXzFWonQs3ccYloBeRbOLkRb7go61
-	 dALGRMN7OZt9oigQ0NYUQv3HKdHHUvMVWmbkNZZw=
+	b=JymegGuCqwmfscBiqaPG/xM+KBRkrbaCKS2Zr7cpdrcoSkxjiccok1BnwfNZfq71E
+	 GPCkFzW3oYx/IajF6MztL2qEPgaZzhI1N4/TJLGDRO3XKKk5HlK2qho07cmfJSmfCY
+	 7rNG8BGD6dSYfMbVctaspWa8/90qikj/tBxF349M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Yao <yaolu@kylinos.cn>,
-	Kees Cook <keescook@chromium.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 150/272] init/Kconfig: lower GCC version check for -Warray-bounds
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 291/396] iommu/dma: Force swiotlb_max_mapping_size on an untrusted device
 Date: Mon,  1 Apr 2024 17:45:40 +0200
-Message-ID: <20240401152535.387716413@linuxfoundation.org>
+Message-ID: <20240401152556.580912721@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,69 +63,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 3e00f5802fabf2f504070a591b14b648523ede13 upstream.
+[ Upstream commit afc5aa46ed560f01ceda897c053c6a40c77ce5c4 ]
 
-We continue to see false positives from -Warray-bounds even in GCC 10,
-which is getting reported in a few places[1] still:
+The swiotlb does not support a mapping size > swiotlb_max_mapping_size().
+On the other hand, with a 64KB PAGE_SIZE configuration, it's observed that
+an NVME device can map a size between 300KB~512KB, which certainly failed
+the swiotlb mappings, though the default pool of swiotlb has many slots:
+    systemd[1]: Started Journal Service.
+ => nvme 0000:00:01.0: swiotlb buffer is full (sz: 327680 bytes), total 32768 (slots), used 32 (slots)
+    note: journal-offline[392] exited with irqs disabled
+    note: journal-offline[392] exited with preempt_count 1
 
-security/security.c:811:2: warning: `memcpy' offset 32 is out of the bounds [0, 0] [-Warray-bounds]
+Call trace:
+[    3.099918]  swiotlb_tbl_map_single+0x214/0x240
+[    3.099921]  iommu_dma_map_page+0x218/0x328
+[    3.099928]  dma_map_page_attrs+0x2e8/0x3a0
+[    3.101985]  nvme_prep_rq.part.0+0x408/0x878 [nvme]
+[    3.102308]  nvme_queue_rqs+0xc0/0x300 [nvme]
+[    3.102313]  blk_mq_flush_plug_list.part.0+0x57c/0x600
+[    3.102321]  blk_add_rq_to_plug+0x180/0x2a0
+[    3.102323]  blk_mq_submit_bio+0x4c8/0x6b8
+[    3.103463]  __submit_bio+0x44/0x220
+[    3.103468]  submit_bio_noacct_nocheck+0x2b8/0x360
+[    3.103470]  submit_bio_noacct+0x180/0x6c8
+[    3.103471]  submit_bio+0x34/0x130
+[    3.103473]  ext4_bio_write_folio+0x5a4/0x8c8
+[    3.104766]  mpage_submit_folio+0xa0/0x100
+[    3.104769]  mpage_map_and_submit_buffers+0x1a4/0x400
+[    3.104771]  ext4_do_writepages+0x6a0/0xd78
+[    3.105615]  ext4_writepages+0x80/0x118
+[    3.105616]  do_writepages+0x90/0x1e8
+[    3.105619]  filemap_fdatawrite_wbc+0x94/0xe0
+[    3.105622]  __filemap_fdatawrite_range+0x68/0xb8
+[    3.106656]  file_write_and_wait_range+0x84/0x120
+[    3.106658]  ext4_sync_file+0x7c/0x4c0
+[    3.106660]  vfs_fsync_range+0x3c/0xa8
+[    3.106663]  do_fsync+0x44/0xc0
 
-Lower the GCC version check from 11 to 10.
+Since untrusted devices might go down the swiotlb pathway with dma-iommu,
+these devices should not map a size larger than swiotlb_max_mapping_size.
 
-Link: https://lkml.kernel.org/r/20240223170824.work.768-kees@kernel.org
-Reported-by: Lu Yao <yaolu@kylinos.cn>
-Closes: https://lore.kernel.org/lkml/20240117014541.8887-1-yaolu@kylinos.cn/
-Link: https://lore.kernel.org/linux-next/65d84438.620a0220.7d171.81a7@mx.google.com [1]
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Marc Aurèle La France <tsi@tuyoix.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this bug, add iommu_dma_max_mapping_size() for untrusted devices to
+take into account swiotlb_max_mapping_size() v.s. iova_rcache_range() from
+the iommu_dma_opt_mapping_size().
+
+Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+Link: https://lore.kernel.org/r/ee51a3a5c32cf885b18f6416171802669f4a718a.1707851466.git.nicolinc@nvidia.com
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+[will: Drop redundant is_swiotlb_active(dev) check]
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iommu/dma-iommu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -902,14 +902,14 @@ config CC_IMPLICIT_FALLTHROUGH
- 	default "-Wimplicit-fallthrough=5" if CC_IS_GCC && $(cc-option,-Wimplicit-fallthrough=5)
- 	default "-Wimplicit-fallthrough" if CC_IS_CLANG && $(cc-option,-Wunreachable-code-fallthrough)
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index e5d087bd6da15..2da969fc89900 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -1602,6 +1602,14 @@ static size_t iommu_dma_opt_mapping_size(void)
+ 	return iova_rcache_range();
+ }
  
--# Currently, disable gcc-11+ array-bounds globally.
-+# Currently, disable gcc-10+ array-bounds globally.
- # It's still broken in gcc-13, so no upper bound yet.
--config GCC11_NO_ARRAY_BOUNDS
-+config GCC10_NO_ARRAY_BOUNDS
- 	def_bool y
++static size_t iommu_dma_max_mapping_size(struct device *dev)
++{
++	if (dev_is_untrusted(dev))
++		return swiotlb_max_mapping_size(dev);
++
++	return SIZE_MAX;
++}
++
+ static const struct dma_map_ops iommu_dma_ops = {
+ 	.flags			= DMA_F_PCI_P2PDMA_SUPPORTED,
+ 	.alloc			= iommu_dma_alloc,
+@@ -1624,6 +1632,7 @@ static const struct dma_map_ops iommu_dma_ops = {
+ 	.unmap_resource		= iommu_dma_unmap_resource,
+ 	.get_merge_boundary	= iommu_dma_get_merge_boundary,
+ 	.opt_mapping_size	= iommu_dma_opt_mapping_size,
++	.max_mapping_size       = iommu_dma_max_mapping_size,
+ };
  
- config CC_NO_ARRAY_BOUNDS
- 	bool
--	default y if CC_IS_GCC && GCC_VERSION >= 110000 && GCC11_NO_ARRAY_BOUNDS
-+	default y if CC_IS_GCC && GCC_VERSION >= 100000 && GCC10_NO_ARRAY_BOUNDS
- 
- #
- # For architectures that know their GCC __int128 support is sound
+ /*
+-- 
+2.43.0
+
 
 
 
