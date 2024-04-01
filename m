@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D0C893FE3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677B1894191
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E86FF1F21D9C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08F6AB22927
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFCD47A74;
-	Mon,  1 Apr 2024 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D93482DF;
+	Mon,  1 Apr 2024 16:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRlBM8Bs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5ap9f+b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2936947A5D;
-	Mon,  1 Apr 2024 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F04E47A76;
+	Mon,  1 Apr 2024 16:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988561; cv=none; b=exI3WkDzRU5YCL5+dKh0BiOAaUtZt3qX5ypQsSOM1lkK6O98tQu10sK6xYZhM2J+KqLTHyK/Dgt2k5rlD6cnazGH05Ar7h2K1xjvjLh+Gv7ssTHOF087Bvta+Vrlte6lUPLt9cgpBuUVXkLF647oqQXHRt3wFD9JEquT8a9CH4U=
+	t=1711989806; cv=none; b=EiTYIslT5mNHAdgJ2b+7JAN5qj5JWTIXs3e0MVERaTS+jU7JOUmzQ12o5tJv4/AARpndE5JBefu8x7gsMPB1WM1FeEE1PLG/S1Iv0HMhMsY9r1fsNmiktT7/Dc2QbEmMJ0YQVI+H6WrgDi/cfFOG371e2AgszC4RoLTi9uuWH8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988561; c=relaxed/simple;
-	bh=b/mJey1o3qIfXtNfD3Axse5ucfDHdSbVhItT9e3Ge0w=;
+	s=arc-20240116; t=1711989806; c=relaxed/simple;
+	bh=/Ji4Eur922rMJ30Oa18uYyvW/dXSKtWN4tCBkmB6b60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6xDO6RigFiqxq8qBHlHg0Uo/lqGWcDV2hM99HGKhMjFhTrGIfto/xO3G1ZYa2Mc5w3U8V3b8ZsAZ3bRVUd9RwgzhNAFsZ5a0uDePP7hmRvnxOTcSptsIlLOyFsZjE2hs7vKfw3sPUu4PkShxuonbGKsketAgPjYcdGYv9C7sOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRlBM8Bs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A054FC433C7;
-	Mon,  1 Apr 2024 16:22:40 +0000 (UTC)
+	 MIME-Version; b=rKB2H7NAlp4rkpcrIRIZR+kVPmZSwOg7VihK++I69Qa/cexK2r+aMCgT7tC7aywT6Xu60lKhBbHptWpzmKtCoyptVUQButltyP0WyiuoRWSDcL6P4JPdWEgWHNWixMhKmidadNzN1Pz1lJl9nsd215wItmcrL9f0thWJMRvc1G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5ap9f+b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26C9C433F1;
+	Mon,  1 Apr 2024 16:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988561;
-	bh=b/mJey1o3qIfXtNfD3Axse5ucfDHdSbVhItT9e3Ge0w=;
+	s=korg; t=1711989806;
+	bh=/Ji4Eur922rMJ30Oa18uYyvW/dXSKtWN4tCBkmB6b60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRlBM8BsYBWLF+TXNOLZNuYIx3TuxdVzvIBzwhmvnkOjSZJeGxTq6fptwiP1pCEBj
-	 etjFZzH+ikzc3cyvSh7lEzunxeak6TSZ2Vhy6omOv0zMgthDgXptA7gXCPMauvtZo0
-	 egBHpEI3er9MGAjfWNRmcnNgzjmhMtrFEUXQsPHw=
+	b=j5ap9f+blqUQK8W9yz3/jc59g/VDESYeVC/jJ20JDD5YbrPS9pscKA++1jrBsH8NK
+	 dGc3PoYimzMSpbwMXFmgZbpKKuV9bfm6x74Gv43AzPg7CVgmfp5ceNC7KlQL2XTjbH
+	 qf+v4f2jWr0sroeNThHXXWFh/kj9f/ld1XhKY5Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Altaparmakov <anton@tuxera.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 221/432] x86/pm: Work around false positive kmemleak report in msr_build_context()
+Subject: [PATCH 6.6 159/396] cifs: delete unnecessary NULL checks in cifs_chan_update_iface()
 Date: Mon,  1 Apr 2024 17:43:28 +0200
-Message-ID: <20240401152559.729209057@linuxfoundation.org>
+Message-ID: <20240401152552.683095555@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Altaparmakov <anton@tuxera.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit e3f269ed0accbb22aa8f25d2daffa23c3fccd407 ]
+[ Upstream commit c3a11c0ec66c1e0652e3a2bb4f5cc74eea0ba486 ]
 
-Since:
+We return early if "iface" is NULL so there is no need to check here.
+Delete those checks.
 
-  7ee18d677989 ("x86/power: Make restore_processor_context() sane")
-
-kmemleak reports this issue:
-
-  unreferenced object 0xf68241e0 (size 32):
-    comm "swapper/0", pid 1, jiffies 4294668610 (age 68.432s)
-    hex dump (first 32 bytes):
-      00 cc cc cc 29 10 01 c0 00 00 00 00 00 00 00 00  ....)...........
-      00 42 82 f6 cc cc cc cc cc cc cc cc cc cc cc cc  .B..............
-    backtrace:
-      [<461c1d50>] __kmem_cache_alloc_node+0x106/0x260
-      [<ea65e13b>] __kmalloc+0x54/0x160
-      [<c3858cd2>] msr_build_context.constprop.0+0x35/0x100
-      [<46635aff>] pm_check_save_msr+0x63/0x80
-      [<6b6bb938>] do_one_initcall+0x41/0x1f0
-      [<3f3add60>] kernel_init_freeable+0x199/0x1e8
-      [<3b538fde>] kernel_init+0x1a/0x110
-      [<938ae2b2>] ret_from_fork+0x1c/0x28
-
-Which is a false positive.
-
-Reproducer:
-
-  - Run rsync of whole kernel tree (multiple times if needed).
-  - start a kmemleak scan
-  - Note this is just an example: a lot of our internal tests hit these.
-
-The root cause is similar to the fix in:
-
-  b0b592cf0836 x86/pm: Fix false positive kmemleak report in msr_build_context()
-
-ie. the alignment within the packed struct saved_context
-which has everything unaligned as there is only "u16 gs;" at start of
-struct where in the past there were four u16 there thus aligning
-everything afterwards.  The issue is with the fact that Kmemleak only
-searches for pointers that are aligned (see how pointers are scanned in
-kmemleak.c) so when the struct members are not aligned it doesn't see
-them.
-
-Testing:
-
-We run a lot of tests with our CI, and after applying this fix we do not
-see any kmemleak issues any more whilst without it we see hundreds of
-the above report. From a single, simple test run consisting of 416 individual test
-cases on kernel 5.10 x86 with kmemleak enabled we got 20 failures due to this,
-which is quite a lot. With this fix applied we get zero kmemleak related failures.
-
-Fixes: 7ee18d677989 ("x86/power: Make restore_processor_context() sane")
-Signed-off-by: Anton Altaparmakov <anton@tuxera.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240314142656.17699-1-anton@tuxera.com
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 16a57d768111 ("cifs: reduce warning log level for server not advertising interfaces")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/suspend_32.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/smb/client/sess.c | 26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
-index a800abb1a9925..d8416b3bf832e 100644
---- a/arch/x86/include/asm/suspend_32.h
-+++ b/arch/x86/include/asm/suspend_32.h
-@@ -12,11 +12,6 @@
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 0d76757528e49..8dadb21292d16 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -464,27 +464,23 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 			 &old_iface->sockaddr);
+ 	} else if (!chan_index) {
+ 		/* special case: update interface for primary channel */
+-		if (iface) {
+-			cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
+-				 &iface->sockaddr);
+-			iface->num_channels++;
+-			iface->weight_fulfilled++;
+-		}
++		cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
++			 &iface->sockaddr);
++		iface->num_channels++;
++		iface->weight_fulfilled++;
+ 	}
+ 	spin_unlock(&ses->iface_lock);
  
- /* image of the saved processor state */
- struct saved_context {
--	/*
--	 * On x86_32, all segment registers except gs are saved at kernel
--	 * entry in pt_regs.
--	 */
--	u16 gs;
- 	unsigned long cr0, cr2, cr3, cr4;
- 	u64 misc_enable;
- 	struct saved_msrs saved_msrs;
-@@ -27,6 +22,11 @@ struct saved_context {
- 	unsigned long tr;
- 	unsigned long safety;
- 	unsigned long return_address;
-+	/*
-+	 * On x86_32, all segment registers except gs are saved at kernel
-+	 * entry in pt_regs.
-+	 */
-+	u16 gs;
- 	bool misc_enable_saved;
- } __attribute__((packed));
+-	if (iface) {
+-		spin_lock(&ses->chan_lock);
+-		chan_index = cifs_ses_get_chan_index(ses, server);
+-		if (chan_index == CIFS_INVAL_CHAN_INDEX) {
+-			spin_unlock(&ses->chan_lock);
+-			return 0;
+-		}
+-
+-		ses->chans[chan_index].iface = iface;
++	spin_lock(&ses->chan_lock);
++	chan_index = cifs_ses_get_chan_index(ses, server);
++	if (chan_index == CIFS_INVAL_CHAN_INDEX) {
+ 		spin_unlock(&ses->chan_lock);
++		return 0;
+ 	}
+ 
++	ses->chans[chan_index].iface = iface;
++	spin_unlock(&ses->chan_lock);
++
+ 	return rc;
+ }
  
 -- 
 2.43.0
