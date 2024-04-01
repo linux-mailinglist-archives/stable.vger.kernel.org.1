@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-35223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B02E8942FF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F36894196
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E842838AB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1D46282FAE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E164AEFD;
-	Mon,  1 Apr 2024 16:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220ED481D7;
+	Mon,  1 Apr 2024 16:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaILNUi4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugfqDmxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91340876;
-	Mon,  1 Apr 2024 16:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D60481B8;
+	Mon,  1 Apr 2024 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990698; cv=none; b=Q95wkhy84jXX5YW66hZgnPrs6liApyopS7IEjzEbh+qnOsRUsmojJFrXF2qTfBo1CE0O4sFebC7sWcDByp9bpS5fw+unwyRVaCg92TaX4qXCrYns7a6PiTVZJTQlkS+a/hhPd/2XuS+uQVnVDz5gG6cfkq81oFOaHYLDhE//reg=
+	t=1711989819; cv=none; b=CdHcwIIEtw51qZ8+ODsuPXDDlB/gRH3C55Ui0/enwymJODizghP5WOIHdEzlUhSLSQDWdIQxI+5wYp3h85+fV1YfM+PQkbElbIlBnCBYMBlv8IZ7/PUPiGbgnnx7H0PPFwvReU81P6zINoXgrJvCJ+HA7zQIfDSTDyS6ZepoR7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990698; c=relaxed/simple;
-	bh=qqZrsEoQf1zC4F2MmEBf6NgFD/4sIDlkBEYSljopo0Y=;
+	s=arc-20240116; t=1711989819; c=relaxed/simple;
+	bh=r47pnePTRTnMWcBUD+42Tdfp+MGhu/CHx5yO+j3g2ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eafue7S+Xn5WLYpUz0E/mPJH+V6Q5AfItnUSccHaqp86bq0VoatAD9cCBWANPsz1NTKVaZzcUpUcw18iapLJ+oDq0ilDL4eJ1ATfDtlSJI/hMauMThSvmr0kxmuqC8gPJU6Dp+cBfA1YvnTh0HNO5thgHYKpWf3KNhsjuvhG1lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaILNUi4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAE2C433F1;
-	Mon,  1 Apr 2024 16:58:17 +0000 (UTC)
+	 MIME-Version; b=pMGlZ7gH94C0/859z/6hOcw4Y71CDgoDw6Y8whNNaF9j2661ZKFJtbEEm+QmvH6HmnTPmUH5dO1SUuYaJea/mBIthCKTFBs+ajNN+gid9/zyjYjT3qgn07Y8E98S0UoaBDdThgtiksbY4XvKJtH5wCVgwali3L9bFgBISYgbV8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugfqDmxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9B0C433F1;
+	Mon,  1 Apr 2024 16:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990698;
-	bh=qqZrsEoQf1zC4F2MmEBf6NgFD/4sIDlkBEYSljopo0Y=;
+	s=korg; t=1711989819;
+	bh=r47pnePTRTnMWcBUD+42Tdfp+MGhu/CHx5yO+j3g2ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BaILNUi41iMHfRATAy5+u3zd1wAJQPsiBGxg/+ApyBLaJL/vt/X/1B5BFnbdxPT+P
-	 vtiCdJm+IWaLnO36Nf5hPHYE/HQ3nCCqjqpNz0TJkysD70KSaDOb00U4hxSATpWIkh
-	 odqlmN6DUH2aRlnB06Ackyo57efDjzQfR/TTHUDQ=
+	b=ugfqDmxLsvNlCz00+mE1jY1/OOrbTZolzY9FwUfA4sdCVW1woNZ/TBeOebvSI+HRK
+	 MB2n5Xq1v8K6WAo9u3hq4UoeF6joc2b2Pnm8yavbeXkqlpH6zUOsjCv7yJw1wYVpQg
+	 ouBvr+Tgr5kp9MtAIUXICw9k0gpMeLl4tHv0OFtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/272] media: mc: Add local pad to pipeline regardless of the link state
-Date: Mon,  1 Apr 2024 17:43:31 +0200
-Message-ID: <20240401152530.988294264@linuxfoundation.org>
+Subject: [PATCH 6.6 163/396] mtd: rawnand: Fix and simplify again the continuous read derivations
+Date: Mon,  1 Apr 2024 17:43:32 +0200
+Message-ID: <20240401152552.799872444@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 78f0daa026d4c5e192d31801d1be6caf88250220 ]
+[ Upstream commit c7ee7c8d4b60fe46d4861b1200bc1c7ab657960a ]
 
-When building pipelines by following links, the
-media_pipeline_explore_next_link() function only traverses enabled
-links. The remote pad of a disabled link is not added to the pipeline,
-and neither is the local pad. While the former is correct as disabled
-links should not be followed, not adding the local pad breaks processing
-of the MEDIA_PAD_FL_MUST_CONNECT flag.
+We need to avoid the first page if we don't read it entirely.
+We need to avoid the last page if we don't read it entirely.
+While rather simple, this logic has been failed in the previous
+fix. This time I wrote about 30 unit tests locally to check each
+possible condition, hopefully I covered them all.
 
-The MEDIA_PAD_FL_MUST_CONNECT flag is checked in the
-__media_pipeline_start() function that iterates over all pads after
-populating the pipeline. If the pad is not present, the check gets
-skipped, rendering it useless.
-
-Fix this by adding the local pad of all links regardless of their state,
-only skipping the remote pad for disabled links.
-
-Cc: stable@vger.kernel.org # 6.1
-Fixes: ae219872834a ("media: mc: entity: Rewrite media_pipeline_start()")
-Reported-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Closes: https://lore.kernel.org/linux-media/7658a15a-80c5-219f-2477-2a94ba6c6ba1@kontron.de
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Closes: https://lore.kernel.org/linux-mtd/20240221175327.42f7076d@xps-13/T/#m399bacb10db8f58f6b1f0149a1df867ec086bb0a
+Suggested-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Fixes: 828f6df1bcba ("mtd: rawnand: Clarify conditions to enable continuous reads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Link: https://lore.kernel.org/linux-mtd/20240223115545.354541-2-miquel.raynal@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-entity.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/mtd/nand/raw/nand_base.c | 34 +++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
-index f268cf66053e1..20a2630455f2c 100644
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -594,13 +594,6 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 		link->source->entity->name, link->source->index,
- 		link->sink->entity->name, link->sink->index);
+diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+index 76167b8ca9dda..9118b5753c553 100644
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -3461,30 +3461,36 @@ static void rawnand_enable_cont_reads(struct nand_chip *chip, unsigned int page,
+ 				      u32 readlen, int col)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+-	unsigned int end_page, end_col;
++	unsigned int first_page, last_page;
  
--	/* Skip links that are not enabled. */
--	if (!(link->flags & MEDIA_LNK_FL_ENABLED)) {
--		dev_dbg(walk->mdev->dev,
--			"media pipeline: skipping link (disabled)\n");
--		return 0;
--	}
+ 	chip->cont_read.ongoing = false;
+ 
+ 	if (!chip->controller->supported_op.cont_read)
+ 		return;
+ 
+-	end_page = DIV_ROUND_UP(col + readlen, mtd->writesize);
+-	end_col = (col + readlen) % mtd->writesize;
++	/*
++	 * Don't bother making any calculations if the length is too small.
++	 * Side effect: avoids possible integer underflows below.
++	 */
++	if (readlen < (2 * mtd->writesize))
++		return;
+ 
++	/* Derive the page where continuous read should start (the first full page read) */
++	first_page = page;
+ 	if (col)
+-		page++;
 -
- 	/* Get the local pad and remote pad. */
- 	if (link->source->entity == pad->entity) {
- 		local = link->source;
-@@ -622,13 +615,20 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 	}
+-	if (end_col && end_page)
+-		end_page--;
++		first_page++;
  
- 	/*
--	 * Add the local and remote pads of the link to the pipeline and push
--	 * them to the stack, if they're not already present.
-+	 * Add the local pad of the link to the pipeline and push it to the
-+	 * stack, if not already present.
- 	 */
- 	ret = media_pipeline_add_pad(pipe, walk, local);
- 	if (ret)
- 		return ret;
+-	if (page + 1 > end_page)
+-		return;
+-
+-	chip->cont_read.first_page = page;
+-	chip->cont_read.last_page = end_page;
+-	chip->cont_read.ongoing = true;
++	/* Derive the page where continuous read should stop (the last full page read) */
++	last_page = page + ((col + readlen) / mtd->writesize) - 1;
  
-+	/* Similarly, add the remote pad, but only if the link is enabled. */
-+	if (!(link->flags & MEDIA_LNK_FL_ENABLED)) {
-+		dev_dbg(walk->mdev->dev,
-+			"media pipeline: skipping link (disabled)\n");
-+		return 0;
+-	rawnand_cap_cont_reads(chip);
++	/* Configure and enable continuous read when suitable */
++	if (first_page < last_page) {
++		chip->cont_read.first_page = first_page;
++		chip->cont_read.last_page = last_page;
++		chip->cont_read.ongoing = true;
++		/* May reset the ongoing flag */
++		rawnand_cap_cont_reads(chip);
 +	}
-+
- 	ret = media_pipeline_add_pad(pipe, walk, remote);
- 	if (ret)
- 		return ret;
+ }
+ 
+ static void rawnand_cont_read_skip_first_page(struct nand_chip *chip, unsigned int page)
 -- 
 2.43.0
 
