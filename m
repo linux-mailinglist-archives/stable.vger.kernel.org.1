@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD155894384
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56593894246
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 770CA283841
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88A3C1C21A91
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1863D481B8;
-	Mon,  1 Apr 2024 17:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE7A4AEFD;
+	Mon,  1 Apr 2024 16:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaoERNk3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxPMmEML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3751DFF4;
-	Mon,  1 Apr 2024 17:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E159D4AEF0;
+	Mon,  1 Apr 2024 16:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991075; cv=none; b=pyvDJg2IiRVrVpwh2CSAiIJHUhmIj8lQHnp65aOvI3hBciAklJPi5nqBhjWMw+9WVYwfJlz9II9NJQJTyyihtmzbegXA1Iwl87QRdCpR/jLitj4IUP1I98NONHZAfdKiiEcES8QQK5WZ4MBzFqLpM/bQh1a1TIBGlIpZmvq1ofU=
+	t=1711990266; cv=none; b=rTwoP55QvyKQdS8hadw7BFFRubZtDmmIwrnNJ1g4pNfrvctjjco/Z1Sgidz7Zq6+ll2VfGlQS9De5JPSrzEUQKjTL62npSsURse9WwGVYPvL9bSt18zMAJRkrwrrx3muc7mMcPBjlkDTQJJKZQdgyScxn1lLC8NaEzkZ5aKSc9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991075; c=relaxed/simple;
-	bh=t5nR42r44b9VUoB67KIbOQIDt0GuQgleOp/uCxOiRXw=;
+	s=arc-20240116; t=1711990266; c=relaxed/simple;
+	bh=H1Z7a4aObt2gOuiSEAFBdl/Fb/auva7T6A9tOcvgzcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsiW5liSmuVibeAXMKUgQNlZkVhrfmUoKr6+j/kUYRWOgRJKPt1FlFxXRsfsswUG8DDJtUXdW2MCOBf9STlri0kCk3/3tWnmWPhTzF26/Zv3aDXqvSZ2Ve+TgPexodybw7J9ATHbhjYU40WoUu4M4ybRZCYLY+cQBf6fQ6zsm9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaoERNk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F98C43390;
-	Mon,  1 Apr 2024 17:04:35 +0000 (UTC)
+	 MIME-Version; b=QOuC5X1KTRJYV6L9SaE1n94DLEsO5srtwFCqH60GUIloMIEJtd4cEHTRFy6mY7Ep4w1VXKHdCIETJVCNEUpX5zqR5UnE/olOJTErJrNjOFmo2XBE8wyGurqonWBHass+zGxLcvR2O+2Oy/mfh8u9acq1h3jvc5YXYQkWoC2THtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxPMmEML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B530C433C7;
+	Mon,  1 Apr 2024 16:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991075;
-	bh=t5nR42r44b9VUoB67KIbOQIDt0GuQgleOp/uCxOiRXw=;
+	s=korg; t=1711990265;
+	bh=H1Z7a4aObt2gOuiSEAFBdl/Fb/auva7T6A9tOcvgzcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VaoERNk3HqAiPTAGmgk157MddY/6NyVLL8ptov6teOwoBIhv8Ppik66PQktB4vsZD
-	 3lCFcb1tZ9445SExeuG+dChKec6uAKttQrjFMsz9oTkbJ4Zbfcvfroo+iu52x5pEkn
-	 2Ej96M7z5iYZu9oFtHm1h+K52pdj5zEmctISlyx4=
+	b=xxPMmEMLXyehchRJf8wYoDZVPZDgwlnOkPzchHWL+UL/SUsppnv3ASMmxVAEEDULZ
+	 L2PS7cP+DxXWA+cqtF2owCmMpQwbWPl4KBhhLeTGURDbOHqoR2Q9D8GqqZkJ46z9mZ
+	 LsNpwpFCrCy4/AWtK95roQ3gEudyqV3xNR60K3HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 156/272] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 297/396] irqchip/renesas-rzg2l: Rename rzg2l_irq_eoi()
 Date: Mon,  1 Apr 2024 17:45:46 +0200
-Message-ID: <20240401152535.585811250@linuxfoundation.org>
+Message-ID: <20240401152556.757734978@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
+[ Upstream commit b4b5cd61a6fdd92ede0dc39f0850a182affd1323 ]
 
-Headset Mic will no show at resume back.
-This patch will fix this issue.
+Rename rzg2l_irq_eoi()->rzg2l_clear_irq_int() and simplify the code by
+removing redundant priv local variable.
 
-Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11439,8 +11439,7 @@ static void alc897_hp_automute_hook(stru
- 
- 	snd_hda_gen_hp_automute(codec, jack);
- 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
--	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
--			    vref);
-+	snd_hda_set_pin_ctl(codec, 0x1b, vref);
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 2fcd63bfb44d2..80cbe96505c92 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -66,10 +66,9 @@ static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
+ 	return data->domain->host_data;
  }
  
- static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
-@@ -11449,6 +11448,10 @@ static void alc897_fixup_lenovo_headset_
- 	struct alc_spec *spec = codec->spec;
- 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
- 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
-+		spec->no_shutup_pins = 1;
-+	}
-+	if (action == HDA_FIXUP_ACT_PROBE) {
-+		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
- 	}
- }
+-static void rzg2l_irq_eoi(struct irq_data *d)
++static void rzg2l_clear_irq_int(struct rzg2l_irqc_priv *priv, unsigned int hwirq)
+ {
+-	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
+-	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
++	unsigned int hw_irq = hwirq - IRQC_IRQ_START;
+ 	u32 bit = BIT(hw_irq);
+ 	u32 iitsr, iscr;
  
+@@ -113,7 +112,7 @@ static void rzg2l_irqc_eoi(struct irq_data *d)
+ 
+ 	raw_spin_lock(&priv->lock);
+ 	if (hw_irq >= IRQC_IRQ_START && hw_irq <= IRQC_IRQ_COUNT)
+-		rzg2l_irq_eoi(d);
++		rzg2l_clear_irq_int(priv, hw_irq);
+ 	else if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ)
+ 		rzg2l_clear_tint_int(priv, hw_irq);
+ 	raw_spin_unlock(&priv->lock);
+-- 
+2.43.0
+
 
 
 
