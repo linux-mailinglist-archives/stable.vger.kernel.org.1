@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-34741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FCF8940A2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79AFB8943A9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E7951C215E1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB62A1C2181F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F3D1E895;
-	Mon,  1 Apr 2024 16:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B89948781;
+	Mon,  1 Apr 2024 17:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQHJqUFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uROaSiNa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657E91C0DE7;
-	Mon,  1 Apr 2024 16:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5944438DE5;
+	Mon,  1 Apr 2024 17:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989142; cv=none; b=ClcDjuSs4dKEOPj6lICta/w3oCkQ5twkIFMy+9Kr37dnasxHNlhhb9Tb39r7e6stUPb2gRxjaHJToP4MJSkgMlGIvKOojNSHB6WNHc9eZZoFVn9otxR/kZyDUmVae9MwGr5XOhueQSU5SR9gwC9TN89jzC5t1oJ0+9W8pk+PwTw=
+	t=1711991192; cv=none; b=BGJmJbSRH0j5m+H3kBGw43L+wmZJKl0nZax7fRIH3XKKW1MJh3wK1ZLyt7pYMMDepDt6kLdYDMIIkGJDiWcPCRvrfu1TW5OnZr52CGdpFtEJztvOiEECY77/XveQI1ShjNdkxGKsOLQnnNk5YCG8bAsi7z7c0kM9M241/FCGF6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989142; c=relaxed/simple;
-	bh=1xIuWTROmIsl13SV6LZQD/t9LoeRhO0BsfRmfbUlA2s=;
+	s=arc-20240116; t=1711991192; c=relaxed/simple;
+	bh=boNGyxLP+ccP8pzeDF25naNb/w1of8WQWDm01K+Uc6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8obNGm8Eg5UyYcQ0j7rwv1iEfZVP4c6bdFLtMnvO/28eMR1f9+wkfHGy3YSltFgmBXVk5JE1LjctR+/m8p/IudYf7GEF2POGBcnINgusXBzfjSbFN+tE62Ot9Vk2Q3LLGyrs0oAhR1MO3gZUM0tVRy8472pP7maxWcnKEt0Vwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQHJqUFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC54FC433C7;
-	Mon,  1 Apr 2024 16:32:21 +0000 (UTC)
+	 MIME-Version; b=q8FTd45OcPPHhqUohT70m71z/gitmgAajjp4/C15ROdJF+LDH4/oaB0R1jM2ozlsBEZ6RPtFterepRZhf02i0G4zuKW+REdeF4uUdXTcqhZcCTeUSUnBrReHkVcKRy4kfi7UyGSqKVy79Hd686O2lG3LfEONX66NV9HblhpUPy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uROaSiNa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BD8C433C7;
+	Mon,  1 Apr 2024 17:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989142;
-	bh=1xIuWTROmIsl13SV6LZQD/t9LoeRhO0BsfRmfbUlA2s=;
+	s=korg; t=1711991192;
+	bh=boNGyxLP+ccP8pzeDF25naNb/w1of8WQWDm01K+Uc6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQHJqUFhjDIns5negrGbl5NzBNwedUe/wRNGwiXoWhRBZIc4ddxUNRWHg6JraP/AR
-	 b8HKpXcXTw9MR20xbFMn/37ZZXtMB2AvQRw9YwHgl1HK6jjJf4TvBMYjSsIg0A2+Pr
-	 hgt/wR9oFXs6pIulNi+u0JmqaDZTHIhb3fCmzTZM=
+	b=uROaSiNapupSsVTr4dTfW6ZMYYmdEOxuVeIdLsbBk1OOU9y675tZbE2eavdXamRIN
+	 h1+mNXRmaiMV6oP4IVov67xhb0lvdAtoTEv0nyIZLNyzPFVqc15k6KM2CHls/Eqod4
+	 iL6sXRt1ZsRgueHZ1St2/v6PdKLCj/wFtCINpVfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.7 394/432] staging: vc04_services: fix information leak in create_component()
+	Qiang Zhang <zzqq0103.hey@gmail.com>,
+	Jinghao Jia <jinghao7@illinois.edu>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 191/272] kprobes/x86: Use copy_from_kernel_nofault() to read from unsafe address
 Date: Mon,  1 Apr 2024 17:46:21 +0200
-Message-ID: <20240401152605.098633638@linuxfoundation.org>
+Message-ID: <20240401152536.849568705@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit f37e76abd614b68987abc8e5c22d986013349771 upstream.
+[ Upstream commit 4e51653d5d871f40f1bd5cf95cc7f2d8b33d063b ]
 
-The m.u.component_create.pid field is for debugging and in the mainline
-kernel it's not used anything.  However, it still needs to be set to
-something to prevent disclosing uninitialized stack data.  Set it to
-zero.
+Read from an unsafe address with copy_from_kernel_nofault() in
+arch_adjust_kprobe_addr() because this function is used before checking
+the address is in text or not. Syzcaller bot found a bug and reported
+the case if user specifies inaccessible data area,
+arch_adjust_kprobe_addr() will cause a kernel panic.
 
-Fixes: 7b3ad5abf027 ("staging: Import the BCM2835 MMAL-based V4L2 camera driver.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/2d972847-9ebd-481b-b6f9-af390f5aabd3@moroto.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ mingo: Clarified the comment. ]
+
+Fixes: cc66bb914578 ("x86/ibt,kprobes: Cure sym+0 equals fentry woes")
+Reported-by: Qiang Zhang <zzqq0103.hey@gmail.com>
+Tested-by: Jinghao Jia <jinghao7@illinois.edu>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/171042945004.154897.2221804961882915806.stgit@devnote2
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/kprobes/core.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-+++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
-@@ -939,6 +939,7 @@ static int create_component(struct vchiq
- 	m.u.component_create.client_component = component->client_component;
- 	strscpy_pad(m.u.component_create.name, name,
- 		    sizeof(m.u.component_create.name));
-+	m.u.component_create.pid = 0;
- 
- 	ret = send_synchronous_mmal_msg(instance, &m,
- 					sizeof(m.u.component_create),
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index 6120f25b0d5cc..991f00c817e6c 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -301,7 +301,16 @@ static int can_probe(unsigned long paddr)
+ kprobe_opcode_t *arch_adjust_kprobe_addr(unsigned long addr, unsigned long offset,
+ 					 bool *on_func_entry)
+ {
+-	if (is_endbr(*(u32 *)addr)) {
++	u32 insn;
++
++	/*
++	 * Since 'addr' is not guaranteed to be safe to access, use
++	 * copy_from_kernel_nofault() to read the instruction:
++	 */
++	if (copy_from_kernel_nofault(&insn, (void *)addr, sizeof(u32)))
++		return NULL;
++
++	if (is_endbr(insn)) {
+ 		*on_func_entry = !offset || offset == 4;
+ 		if (*on_func_entry)
+ 			offset = 4;
+-- 
+2.43.0
+
 
 
 
