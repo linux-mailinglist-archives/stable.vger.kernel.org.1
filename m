@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0ADB89404D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB16F894204
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75164B221E9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED4491C21AF1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07947481AB;
-	Mon,  1 Apr 2024 16:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E31F3BBC3;
+	Mon,  1 Apr 2024 16:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aieXda2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtY6SkXf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77AA4596E;
-	Mon,  1 Apr 2024 16:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD435481C6;
+	Mon,  1 Apr 2024 16:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988888; cv=none; b=cgM8UHcwRIfjer3UgasdQZ6vpmyAo/kz/p28hvogA30XpbqLqcba5F6tV6E82w3v8vk+istfL0uK3JYNgt1ZdyqqB1Qw1AkS3oOQt7D2xp9sPHPshnBPS6kCrmMJEB2/sGWaM4dGVVUrefPLBTbm15wfYbmGbwkMcxPOiz+Kjik=
+	t=1711990126; cv=none; b=mx79L/JsIYgudk2unw4/rhCg8lWvCeutdvkfVjav4J4wSTm0nTbzglDc95slHzF1KsUiN3+eA8dR0MrIHAzTSVEY5tN83grBN0ltHrRVgJGPK8QYRh/XOb2w37DvY5Xo1wdJyJ7w0mNvEq+ktVjrX6UihJXS7DlpARcjDfJoIT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988888; c=relaxed/simple;
-	bh=yA+vNWWKs2lzl+7YLAR3ZUXLBP6PARkD3EP7maoMk4Y=;
+	s=arc-20240116; t=1711990126; c=relaxed/simple;
+	bh=ieEYIWM104rwG6p7ORblzwF88ePi3/AKa8/D0+linRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVcJcEgfuvcFEnbQyuCW2ZrTCStFJutb0JvlSfvc2zWr0tdpo5YFu83PZtHPCjpDhx4OQy25d83Z10pgCYr5+J33pBhld0i+CpHUSd31QuJv+T5YFoZqgiUX/Orh9ds/E+PnYtPmKZwKo71NksD8tQhmUuC8n32HEYOKcj1NdqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aieXda2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3D8C433C7;
-	Mon,  1 Apr 2024 16:28:08 +0000 (UTC)
+	 MIME-Version; b=PFAtOqMo5unZkXMQ0UA6p7imGH+ArdooG6wtwtc/CllGet8E9X0naMuISBLNNhL0qbyw1WE7DtXPHJHH4M53J6tZpWQFWTGHallmOmmPxCYrdjlk5Lc3TjlUXyuBgnROgLrqMg5rpobsayy7QhW4sBXYxKe4XYgaGHdeDDxUoUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtY6SkXf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2724DC433F1;
+	Mon,  1 Apr 2024 16:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988888;
-	bh=yA+vNWWKs2lzl+7YLAR3ZUXLBP6PARkD3EP7maoMk4Y=;
+	s=korg; t=1711990126;
+	bh=ieEYIWM104rwG6p7ORblzwF88ePi3/AKa8/D0+linRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aieXda2DdlBcs18zBslu/Y4Te1w+wj2xyXnUc+dVdQfAux69PluRcBlW04OIT+Y2W
-	 TBit0kkBnCLm1sWtI11FkOsrEpgrQbP3Q074VaM8jldufgq1Z9fvw+BIhdYdXzZM4j
-	 x+mVDOC1Z+fZm2zEI7oOR2jey6kx6Aac3xI6RhHo=
+	b=mtY6SkXfWFo9ZvmtB4NR8Q0KWxC+XIbqh2lB2cI9/3g5GYS1EHYKpID2kPSInvXsf
+	 3xHzJXu6CsO0dOilBq0E3SNrF4oUGPrqwg+laEdNVqQXMvOv0vNG6gv2Rafsp4ghwI
+	 AU26VVL7e9MlX4lYO7lYV5njhnKjIg61OrU/0Q5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Tymoshenko <ovt@google.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 317/432] efi: fix panic in kdump kernel
+	linux-xfs@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 255/396] xfs: consider minlen sized extents in xfs_rtallocate_extent_block
 Date: Mon,  1 Apr 2024 17:45:04 +0200
-Message-ID: <20240401152602.647606029@linuxfoundation.org>
+Message-ID: <20240401152555.510182619@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Tymoshenko <ovt@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 62b71cd73d41ddac6b1760402bbe8c4932e23531 ]
+commit 944df75958807d56f2db9fdc769eb15dd9f0366a upstream.
 
-Check if get_next_variable() is actually valid pointer before
-calling it. In kdump kernel this method is set to NULL that causes
-panic during the kexec-ed kernel boot.
+[backport: resolve merge conflict due to missing xfs_rtxlen_t type]
 
-Tested with QEMU and OVMF firmware.
+minlen is the lower bound on the extent length that the caller can
+accept, and maxlen is at this point the maximal available length.
+This means a minlen extent is perfectly fine to use, so do it.  This
+matches the equivalent logic in xfs_rtallocate_extent_exact that also
+accepts a minlen sized extent.
 
-Fixes: bad267f9e18f ("efi: verify that variable services are supported")
-Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/efi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/xfs/xfs_rtalloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 9d3910d1abe19..abdfcb5aa470c 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -199,6 +199,8 @@ static bool generic_ops_supported(void)
+--- a/fs/xfs/xfs_rtalloc.c
++++ b/fs/xfs/xfs_rtalloc.c
+@@ -318,7 +318,7 @@ xfs_rtallocate_extent_block(
+ 	/*
+ 	 * Searched the whole thing & didn't find a maxlen free extent.
+ 	 */
+-	if (minlen < maxlen && besti != -1) {
++	if (minlen <= maxlen && besti != -1) {
+ 		xfs_extlen_t	p;	/* amount to trim length by */
  
- 	name_size = sizeof(name);
- 
-+	if (!efi.get_next_variable)
-+		return false;
- 	status = efi.get_next_variable(&name_size, &name, &guid);
- 	if (status == EFI_UNSUPPORTED)
- 		return false;
--- 
-2.43.0
-
+ 		/*
 
 
 
