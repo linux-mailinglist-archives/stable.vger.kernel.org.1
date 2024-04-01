@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875FA893EA6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33F289431A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24C1DB20DBC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 746741F26E3E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695E84778E;
-	Mon,  1 Apr 2024 16:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB496482CA;
+	Mon,  1 Apr 2024 16:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZ1VOGIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZO4Xakd3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274F51CA8F;
-	Mon,  1 Apr 2024 16:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1FE47A64;
+	Mon,  1 Apr 2024 16:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987580; cv=none; b=adoa8SbubrsidaN0E1K/tkzGoODbCdbvHmq3/u6AU66YehYcph3q1ovIHzdIwrm+ODt8pbz0hOOp5i4b69KCZbZFzdom7XI8Uq+KE68MoEaGBY7JJgA9qoWgNP3pSb4wTftf1MQvN53p1p/Cc0gZihS4SSNa8JRZpVC3LHCKkps=
+	t=1711990785; cv=none; b=Y4llUR4B+o7KyfxjbW7n4nRAeNFPkq8nqwzHdon1Ld/OovgY4F679OHGHOnLmVuzzqWyA/CVfFwYf3GqMASeADDxyvhGnggz8cekZhk8wLcp7CLZC7M7EX1Uqr9k/D+ZTYDVm4g+J2uWFdA9ybrFHUtUMZEzYwxnojOvkBd8/wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987580; c=relaxed/simple;
-	bh=OU+r4reZe1UkLKVbwLihC4fOftRkkCljSSkEgTH3/qE=;
+	s=arc-20240116; t=1711990785; c=relaxed/simple;
+	bh=Af6UDBI4l/bDbsmmmae6g6t/CYd9P8w7wzE2+0kJp3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntkBOhjWjznN17BrtMkGYCfGLun/zWFhRx6lxbhG0pmwawBzM6sGI6usvTRMD9Pq62b/zdbe++vOXOprcTuvUX1h8hRvsIf6VTFsUcvcPYi+Zv+NuoWS44T/Nf1z+KOCoYEgTwsNq0Sc101H34B4OIGVcwT45MRsuP+h5JHVE4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZ1VOGIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A455C433C7;
-	Mon,  1 Apr 2024 16:06:19 +0000 (UTC)
+	 MIME-Version; b=u5G0iI+fHedMPBax1BLmwHEHyDxDxq6VMquT6AdubrZB1GVVUjoQjQkkM4JwE5pmfqXL4xaWgkbQ0i0mwYLv9YjfrHlQ28sZRqa3VYlKaRrvikWFK6z8ClfP5Ze6khM3A8IYlcME2FDfdoU6porlqae+w070bTYMyyFhouUy8uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZO4Xakd3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B71C433F1;
+	Mon,  1 Apr 2024 16:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987580;
-	bh=OU+r4reZe1UkLKVbwLihC4fOftRkkCljSSkEgTH3/qE=;
+	s=korg; t=1711990785;
+	bh=Af6UDBI4l/bDbsmmmae6g6t/CYd9P8w7wzE2+0kJp3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZ1VOGIblnP36mJl/6IbJg5dyqL92whorNngtdRAhrGXABph/YmvKc74/LBsn3BMS
-	 I/u3BXfjZlYPZJwbAPr7PfIjwNEvYD2qwAAyJE0WTml2tU7kbATJfLJUcx20gDUZdE
-	 gAQFyER7IAkgnmz1LH7prZ9gf8NEP7yIZXnGIDpc=
+	b=ZO4Xakd3r523UUemXW7Si79FKZ2oIroNhW1sBXxHRpPp7NKQ043hs4xIZITUDJQYq
+	 ClqngPgfkOuJjdiQdYN5W8/CZdxmYP1W2mNvqoNEgD4nBnEt20xpU6LJ2ujVQKWNq/
+	 k+Q6XAZf95m+E0c3RBOEG8D52zP/cms37r1wuyDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radek Podgorny <radek@podgorny.cz>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.8 290/399] x86/efistub: Reinstate soft limit for initrd loading
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 066/272] mmc: tmio: avoid concurrent runs of mmc_request_done()
 Date: Mon,  1 Apr 2024 17:44:16 +0200
-Message-ID: <20240401152557.842127804@linuxfoundation.org>
+Message-ID: <20240401152532.615681663@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit decd347c2a75d32984beb8807d470b763a53b542 upstream.
+[ Upstream commit e8d1b41e69d72c62865bebe8f441163ec00b3d44 ]
 
-Commit
+With the to-be-fixed commit, the reset_work handler cleared 'host->mrq'
+outside of the spinlock protected critical section. That leaves a small
+race window during execution of 'tmio_mmc_reset()' where the done_work
+handler could grab a pointer to the now invalid 'host->mrq'. Both would
+use it to call mmc_request_done() causing problems (see link below).
 
-  8117961d98fb2 ("x86/efi: Disregard setup header of loaded image")
+However, 'host->mrq' cannot simply be cleared earlier inside the
+critical section. That would allow new mrqs to come in asynchronously
+while the actual reset of the controller still needs to be done. So,
+like 'tmio_mmc_set_ios()', an ERR_PTR is used to prevent new mrqs from
+coming in but still avoiding concurrency between work handlers.
 
-dropped the memcopy of the image's setup header into the boot_params
-struct provided to the core kernel, on the basis that EFI boot does not
-need it and should rely only on a single protocol to interface with the
-boot chain. It is also a prerequisite for being able to increase the
-section alignment to 4k, which is needed to enable memory protections
-when running in the boot services.
-
-So only the setup_header fields that matter to the core kernel are
-populated explicitly, and everything else is ignored. One thing was
-overlooked, though: the initrd_addr_max field in the setup_header is not
-used by the core kernel, but it is used by the EFI stub itself when it
-loads the initrd, where its default value of INT_MAX is used as the soft
-limit for memory allocation.
-
-This means that, in the old situation, the initrd was virtually always
-loaded in the lower 2G of memory, but now, due to initrd_addr_max being
-0x0, the initrd may end up anywhere in memory. This should not be an
-issue principle, as most systems can deal with this fine. However, it
-does appear to tickle some problems in older UEFI implementations, where
-the memory ends up being corrupted, resulting in errors when unpacking
-the initramfs.
-
-So set the initrd_addr_max field to INT_MAX like it was before.
-
-Fixes: 8117961d98fb2 ("x86/efi: Disregard setup header of loaded image")
-Reported-by: Radek Podgorny <radek@podgorny.cz>
-Closes: https://lore.kernel.org/all/a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/all/20240220061356.3001761-1-dirk.behme@de.bosch.com/
+Fixes: df3ef2d3c92c ("mmc: protect the tmio_mmc driver against a theoretical race")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: stable@vger.kernel.org # 3.0+
+Link: https://lore.kernel.org/r/20240305104423.3177-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/tmio_mmc_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -487,6 +487,7 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 	hdr->vid_mode	= 0xffff;
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index 437048bb80273..5024cae411d3a 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -259,6 +259,8 @@ static void tmio_mmc_reset_work(struct work_struct *work)
+ 	else
+ 		mrq->cmd->error = -ETIMEDOUT;
  
- 	hdr->type_of_loader = 0x21;
-+	hdr->initrd_addr_max = INT_MAX;
++	/* No new calls yet, but disallow concurrent tmio_mmc_done_work() */
++	host->mrq = ERR_PTR(-EBUSY);
+ 	host->cmd = NULL;
+ 	host->data = NULL;
  
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
+-- 
+2.43.0
+
 
 
 
