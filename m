@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-35111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E73894276
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B6B89409F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E779B28340E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1F11283466
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC59482EF;
-	Mon,  1 Apr 2024 16:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2EE1E525;
+	Mon,  1 Apr 2024 16:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp1kn3Kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNsTiuul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DEF4DA10;
-	Mon,  1 Apr 2024 16:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3EF1C0DE7;
+	Mon,  1 Apr 2024 16:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990368; cv=none; b=FI6sQUB2IFMAw0s9yWx8SP1Wdu4mIxjdoyBbd/Z1mLqQsgYui20izkGviyKpFjEoLqzDnLmYvZu/YI7A3dhZBOtaLV5MhrWx44vt8+L3vy/llRUJwhLhCUJReA2VIA6Veks083Wt9ao9kEqCB5pWSC+SUg7WVl/ASmWT7B0VFVw=
+	t=1711989135; cv=none; b=RZWqsdo4qVKr8E67uIgu9cOj+PDWouzvkvneSxmcw76GwFvRwfmCugc9+NIQ5QMN80sjC/lRC++f1m9w0LWWiNoBE8oq+lrJgUNBOWXFmnKM7+bG93coZKwBHRhEp2/qiFkfnesJcJ4rBFeNWx8EI0Y708/DdpZzyfqPQH2B+Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990368; c=relaxed/simple;
-	bh=o3IE693d365Ayud37RpmMDwAZryHs0Tb/Tdkp3/k0TY=;
+	s=arc-20240116; t=1711989135; c=relaxed/simple;
+	bh=7S7JOTEYapkUryWQtW24zVpKKDF4I5NjYAfg6ENGWjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHUaNFmPPeZqVCVwR605Nijy/0t4wKPHVQv4sWEblmQjOybCxM2x456rTJKtTQ8/0y6PuOeFF+d1OHAjPtUPahJDjdsPo7W5XO84FjuzKUPw9/1PZQ4g5OoHuv3SG2SUJ6m38L3xCKRYFp91yu1hD3o2eSMdmKHh3wb+gZTTPII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp1kn3Kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF5FC433F1;
-	Mon,  1 Apr 2024 16:52:47 +0000 (UTC)
+	 MIME-Version; b=AJQnqcDW7oF/NYpaxVTkqWlMtfMoHPkSTYKe1jttQlQdtnoRXBxOuOngr+RbtSvWJfEKp/cRId3wusvmsZKZxN+6raeSihBk+8e8hap6j7AWqa8pMoucDfJ9D5KkCNLs2HAf8Y9TqrWoCSlo4N6Qlw7ScwN8JzpMP/U4k3oAxIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNsTiuul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EDFC433C7;
+	Mon,  1 Apr 2024 16:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990368;
-	bh=o3IE693d365Ayud37RpmMDwAZryHs0Tb/Tdkp3/k0TY=;
+	s=korg; t=1711989135;
+	bh=7S7JOTEYapkUryWQtW24zVpKKDF4I5NjYAfg6ENGWjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xp1kn3KfiFsxOGIE2VWuz87qF0ZPlBfvlbbnpwgRSnfv1Kxs0cJvKKmiZHVGEGsQT
-	 4UHBvb+TjOx7zg72cRIme9XcMA0rCOFtXmTIHXyIthjagAIulUbuFiXpYh4xXFWnsA
-	 D5nF3BSE6AnjV0zUvvYy7Fy+k5NRFWq4QpLAEtv4=
+	b=BNsTiuulP2Hx9HnhnVUkbbgl3hGspkqdyNnSIXrlm/t7Q9aPTGK4EjpkqDWytzPjX
+	 rPqqU7PrZ6LCqBPqBd5iLf6IEkUiry2FmKHuB8U8f7aMCNQpIiO1mV1utx19+qD8i5
+	 kcx1NYN6iEJlDxPegwK3xBeaFd5lgQ45C4eH2FbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Edward Liaw <edliaw@google.com>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 330/396] selftests/mm: fix ARM related issue with fork after pthread_create
+	syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
+	Bart Van Assche <bvanassche@acm.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 392/432] scsi: core: Fix unremoved procfs host directory regression
 Date: Mon,  1 Apr 2024 17:46:19 +0200
-Message-ID: <20240401152557.754533339@linuxfoundation.org>
+Message-ID: <20240401152605.027782206@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-commit 8c864371b2a15a23ce35aa7e2bd241baaad6fbe8 upstream.
+commit f23a4d6e07570826fe95023ca1aa96a011fa9f84 upstream.
 
-Following issue was observed while running the uffd-unit-tests selftest
-on ARM devices. On x86_64 no issues were detected:
+Commit fc663711b944 ("scsi: core: Remove the /proc/scsi/${proc_name}
+directory earlier") fixed a bug related to modules loading/unloading, by
+adding a call to scsi_proc_hostdir_rm() on scsi_remove_host(). But that led
+to a potential duplicate call to the hostdir_rm() routine, since it's also
+called from scsi_host_dev_release(). That triggered a regression report,
+which was then fixed by commit be03df3d4bfe ("scsi: core: Fix a procfs host
+directory removal regression"). The fix just dropped the hostdir_rm() call
+from dev_release().
 
-pthread_create followed by fork caused deadlock in certain cases wherein
-fork required some work to be completed by the created thread.  Used
-synchronization to ensure that created thread's start function has started
-before invoking fork.
+But it happens that this proc directory is created on scsi_host_alloc(),
+and that function "pairs" with scsi_host_dev_release(), while
+scsi_remove_host() pairs with scsi_add_host(). In other words, it seems the
+reason for removing the proc directory on dev_release() was meant to cover
+cases in which a SCSI host structure was allocated, but the call to
+scsi_add_host() didn't happen. And that pattern happens to exist in some
+error paths, for example.
 
-[edliaw@google.com: refactored to use atomic_bool]
-Link: https://lkml.kernel.org/r/20240325194100.775052-1-edliaw@google.com
-Fixes: 760aee0b71e3 ("selftests/mm: add tests for RO pinning vs fork()")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Syzkaller causes that by using USB raw gadget device, error'ing on
+usb-storage driver, at usb_stor_probe2(). By checking that path, we can see
+that the BadDevice label leads to a scsi_host_put() after a SCSI host
+allocation, but there's no call to scsi_add_host() in such path. That leads
+to messages like this in dmesg (and a leak of the SCSI host proc
+structure):
+
+usb-storage 4-1:87.51: USB Mass Storage device detected
+proc_dir_entry 'scsi/usb-storage' already registered
+WARNING: CPU: 1 PID: 3519 at fs/proc/generic.c:377 proc_register+0x347/0x4e0 fs/proc/generic.c:376
+
+The proper fix seems to still call scsi_proc_hostdir_rm() on dev_release(),
+but guard that with the state check for SHOST_CREATED; there is even a
+comment in scsi_host_dev_release() detailing that: such conditional is
+meant for cases where the SCSI host was allocated but there was no calls to
+{add,remove}_host(), like the usb-storage case.
+
+This is what we propose here and with that, the error path of usb-storage
+does not trigger the warning anymore.
+
+Reported-by: syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com
+Fixes: be03df3d4bfe ("scsi: core: Fix a procfs host directory removal regression")
+Cc: stable@vger.kernel.org
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Link: https://lore.kernel.org/r/20240313113006.2834799-1-gpiccoli@igalia.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/uffd-common.c     |    3 +++
- tools/testing/selftests/mm/uffd-common.h     |    2 ++
- tools/testing/selftests/mm/uffd-unit-tests.c |   10 ++++++++++
- 3 files changed, 15 insertions(+)
+ drivers/scsi/hosts.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/mm/uffd-common.c
-+++ b/tools/testing/selftests/mm/uffd-common.c
-@@ -17,6 +17,7 @@ bool map_shared;
- bool test_uffdio_wp = true;
- unsigned long long *count_verify;
- uffd_test_ops_t *uffd_test_ops;
-+atomic_bool ready_for_fork;
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -353,12 +353,13 @@ static void scsi_host_dev_release(struct
  
- static int uffd_mem_fd_create(off_t mem_size, bool hugetlb)
- {
-@@ -507,6 +508,8 @@ void *uffd_poll_thread(void *arg)
- 	pollfd[1].fd = pipefd[cpu*2];
- 	pollfd[1].events = POLLIN;
+ 	if (shost->shost_state == SHOST_CREATED) {
+ 		/*
+-		 * Free the shost_dev device name here if scsi_host_alloc()
+-		 * and scsi_host_put() have been called but neither
++		 * Free the shost_dev device name and remove the proc host dir
++		 * here if scsi_host_{alloc,put}() have been called but neither
+ 		 * scsi_host_add() nor scsi_remove_host() has been called.
+ 		 * This avoids that the memory allocated for the shost_dev
+-		 * name is leaked.
++		 * name as well as the proc dir structure are leaked.
+ 		 */
++		scsi_proc_hostdir_rm(shost->hostt);
+ 		kfree(dev_name(&shost->shost_dev));
+ 	}
  
-+	ready_for_fork = true;
-+
- 	for (;;) {
- 		ret = poll(pollfd, 2, -1);
- 		if (ret <= 0) {
---- a/tools/testing/selftests/mm/uffd-common.h
-+++ b/tools/testing/selftests/mm/uffd-common.h
-@@ -32,6 +32,7 @@
- #include <inttypes.h>
- #include <stdint.h>
- #include <sys/random.h>
-+#include <stdatomic.h>
- 
- #include "../kselftest.h"
- #include "vm_util.h"
-@@ -97,6 +98,7 @@ extern bool map_shared;
- extern bool test_uffdio_wp;
- extern unsigned long long *count_verify;
- extern volatile bool test_uffdio_copy_eexist;
-+extern atomic_bool ready_for_fork;
- 
- extern uffd_test_ops_t anon_uffd_test_ops;
- extern uffd_test_ops_t shmem_uffd_test_ops;
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -770,6 +770,8 @@ static void uffd_sigbus_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
-+	ready_for_fork = false;
-+
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 
- 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
-@@ -785,6 +787,9 @@ static void uffd_sigbus_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
-+	while (!ready_for_fork)
-+		; /* Wait for the poll_thread to start executing before forking */
-+
- 	pid = fork();
- 	if (pid < 0)
- 		err("fork");
-@@ -824,6 +829,8 @@ static void uffd_events_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
-+	ready_for_fork = false;
-+
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
- 			  true, wp, false))
-@@ -833,6 +840,9 @@ static void uffd_events_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
-+	while (!ready_for_fork)
-+		; /* Wait for the poll_thread to start executing before forking */
-+
- 	pid = fork();
- 	if (pid < 0)
- 		err("fork");
 
 
 
