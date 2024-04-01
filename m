@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-33903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7985E893999
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:42:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FE189399A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3E631F21FB0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:42:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A9131F22064
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F06101EB;
-	Mon,  1 Apr 2024 09:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B620510788;
+	Mon,  1 Apr 2024 09:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niiHEQpF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYi9ZtfB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67214FBFD
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B7C101E3
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711964544; cv=none; b=ezVKcQIcddBO/rA5lYFLPhWtGNJGssMHFrHInsaez+rL6w0BpmUh+UnUL+mzU1bzP1ktxl0aKVyJAwhyh8q/J1YZykQRaqY/UxDL+dG3JDCeZDdPgvNZ/FX50R09YOKn0nmyKr/cnnnkSEC5I+i/qpFKilGzxKLd4YBNbcR/fo8=
+	t=1711964575; cv=none; b=E0E3054hhlhvOoeOBecICy8SY7waiOWZpWhhBoT7QtcTXC8o76hSqFgPe+RkCuAHBci8EutyXYuOuExBgQjE7/GXEU4/1a3A1VGrMOXbeSRIqXIOVux8FNrQVmRJwDSj7/ZuBDVwURVbUISfQMDVQtTddHkqKym6XdbHEjaDhwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711964544; c=relaxed/simple;
-	bh=X8VBXmPwjn4W6YN2UHhWW9dZ95DxDlrAhYlr0da/Imk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=utGGMcLEkLZTkhTUuUFvn3MkhUsIP62DKKRpRyrkbDBvvqug4iWbwHxoQNctt7A+RPDN5phfKMcGYfvUkff2+q2XMxiGtsTCw+wYqFX5LnyFrBCL++nMH/zb9GkMRZzn5UqjyBZjRvh+jZhjs1MNSNRcEIDVEJUnsBzU7OotL8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niiHEQpF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79EFC433C7;
-	Mon,  1 Apr 2024 09:42:23 +0000 (UTC)
+	s=arc-20240116; t=1711964575; c=relaxed/simple;
+	bh=LstlTlaoKXEHVV6Q1nXA7QTYPkaZh1NHFiSdb2MYGQM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WMZ0/xb9b34mK2Xzz0kRM7I0aHReY9a+niI1eeH/hclmsyAQdmuBqJG4B8eAg9FIRkNCtxIHHw7IAZVsfjT0QDIY07uHifaFxmqG95l6mnKUGectabLbT6b+Ng8ye+Pmz2YU1NTcr193O2oEyd4g/PfESxsEi/mettM1Ie7PDog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYi9ZtfB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C306C433F1;
+	Mon,  1 Apr 2024 09:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711964544;
-	bh=X8VBXmPwjn4W6YN2UHhWW9dZ95DxDlrAhYlr0da/Imk=;
+	s=korg; t=1711964575;
+	bh=LstlTlaoKXEHVV6Q1nXA7QTYPkaZh1NHFiSdb2MYGQM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=niiHEQpFKPDurBgR8FidztG4LSFw5N0aRWhOM20WCt/kvPH0N+R3x76Gebu/RXdho
-	 dARwRCzsywMmCBEH8/yaWf9CWcTAP+jR5VNmWAp8GLFuQsSWihfTBCEQqYLUjbbzic
-	 caQQ1UdsD5YZDjtvf744X0q7l8/cgnQoV/2Vk7cE=
-Subject: FAILED: patch "[PATCH] usb: dwc3: Properly set system wakeup" failed to apply to 4.19-stable tree
-To: Thinh.Nguyen@synopsys.com,Sanath.S@amd.com,gpiccoli@igalia.com,gregkh@linuxfoundation.org
+	b=VYi9ZtfBclNsoaDakGp1kuzLZp5Dr/EddGPE6Ln2nUWv3SYlu0YXiPUHzSh/enDDY
+	 ee0jmA1ub6jXsUjUmMTQhgw2zedAZsExGVtKoxRpb6IhixPECoVnHZxbQvJYOLSWn8
+	 WDZUug8UtkF/Gdoh3GPfVma4mlw0LXXaUj4yCkgI=
+Subject: FAILED: patch "[PATCH] USB: core: Fix deadlock in usb_deauthorize_interface()" failed to apply to 6.1-stable tree
+To: stern@rowland.harvard.edu,gregkh@linuxfoundation.org,samsun1006219@gmail.com,xrivendell7@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Apr 2024 11:42:04 +0200
-Message-ID: <2024040103-preheated-anthology-d288@gregkh>
+Date: Mon, 01 Apr 2024 11:42:52 +0200
+Message-ID: <2024040151-singular-unfunded-b5a8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x f9aa41130ac69d13a53ce2a153ca79c70d43f39c
+git cherry-pick -x 80ba43e9f799cbdd83842fc27db667289b3150f5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040103-preheated-anthology-d288@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040151-singular-unfunded-b5a8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-f9aa41130ac6 ("usb: dwc3: Properly set system wakeup")
-047161686b81 ("usb: dwc3: Add remote wakeup handling")
-63c4c320ccf7 ("usb: dwc3: gadget: Check for L1/L2/U3 for Start Transfer")
-40edb52298df ("usb: dwc3: avoid NULL access of usb_gadget_driver")
-c560e76319a9 ("usb: dwc3: gadget: Fix START_TRANSFER link state check")
-475e8be53d04 ("usb: dwc3: gadget: Check for disabled LPM quirk")
-6f0764b5adea ("usb: dwc3: add a power supply for current control")
-82c46b8ed9dc ("usb: dwc3: gadget: Introduce a DWC3 VBUS draw callback")
-f580170f135a ("usb: dwc3: Add splitdisable quirk for Hisilicon Kirin Soc")
-e81a7018d93a ("usb: dwc3: allocate gadget structure dynamically")
-c5a7092f4015 ("usb: dwc3: gadget: make starting isoc transfers more robust")
-9af21dd6faeb ("usb: dwc3: Add support for DWC_usb32 IP")
-8bb14308a869 ("usb: dwc3: core: Use role-switch default dr_mode")
-d0550cd20e52 ("usb: dwc3: gadget: Do link recovery for SS and SSP")
-d94ea5319813 ("usb: dwc3: gadget: Properly set maxpacket limit")
-586f4335700f ("usb: dwc3: Fix GTXFIFOSIZ.TXFDEP macro name")
-5eb5afb07853 ("usb: dwc3: use proper initializers for property entries")
-9ba3aca8fe82 ("usb: dwc3: Disable phy suspend after power-on reset")
-a0a465569b45 ("usb: dwc3: remove generic PHY calibrate() calls")
-c09b73cfac2a ("usb: dwc3: don't set gadget->is_otg flag")
+80ba43e9f799 ("USB: core: Fix deadlock in usb_deauthorize_interface()")
 
 thanks,
 
@@ -96,131 +77,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f9aa41130ac69d13a53ce2a153ca79c70d43f39c Mon Sep 17 00:00:00 2001
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Date: Fri, 8 Mar 2024 02:40:25 +0000
-Subject: [PATCH] usb: dwc3: Properly set system wakeup
+From 80ba43e9f799cbdd83842fc27db667289b3150f5 Mon Sep 17 00:00:00 2001
+From: Alan Stern <stern@rowland.harvard.edu>
+Date: Tue, 12 Mar 2024 11:48:23 -0400
+Subject: [PATCH] USB: core: Fix deadlock in usb_deauthorize_interface()
 
-If the device is configured for system wakeup, then make sure that the
-xHCI driver knows about it and make sure to permit wakeup only at the
-appropriate time.
+Among the attribute file callback routines in
+drivers/usb/core/sysfs.c, the interface_authorized_store() function is
+the only one which acquires a device lock on an ancestor device: It
+calls usb_deauthorize_interface(), which locks the interface's parent
+USB device.
 
-For host mode, if the controller goes through the dwc3 code path, then a
-child xHCI platform device is created. Make sure the platform device
-also inherits the wakeup setting for xHCI to enable remote wakeup.
+The will lead to deadlock if another process already owns that lock
+and tries to remove the interface, whether through a configuration
+change or because the device has been disconnected.  As part of the
+removal procedure, device_del() waits for all ongoing sysfs attribute
+callbacks to complete.  But usb_deauthorize_interface() can't complete
+until the device lock has been released, and the lock won't be
+released until the removal has finished.
 
-For device mode, make sure to disable system wakeup if no gadget driver
-is bound. We may experience unwanted system wakeup due to the wakeup
-signal from the controller PMU detecting connection/disconnection when
-in low power (D3). E.g. In the case of Steam Deck, the PCI PME prevents
-the system staying in suspend.
+The mechanism provided by sysfs to prevent this kind of deadlock is
+to use the sysfs_break_active_protection() function, which tells sysfs
+not to wait for the attribute callback.
 
+Reported-and-tested by: Yue Sun <samsun1006219@gmail.com>
+Reported by: xingwei lee <xrivendell7@gmail.com>
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/CAEkJfYO6jRVC8Tfrd_R=cjO0hguhrV31fDPrLrNOOHocDkPoAA@mail.gmail.com/#r
+Fixes: 310d2b4124c0 ("usb: interface authorization: SysFS part of USB interface authorization")
 Cc: stable@vger.kernel.org
-Reported-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Closes: https://lore.kernel.org/linux-usb/70a7692d-647c-9be7-00a6-06fc60f77294@igalia.com/T/#mf00d6669c2eff7b308d1162acd1d66c09f0853c7
-Fixes: d07e8819a03d ("usb: dwc3: add xHCI Host support")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Sanath S <Sanath.S@amd.com>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Link: https://lore.kernel.org/r/667cfda7009b502e08462c8fb3f65841d103cc0a.1709865476.git.Thinh.Nguyen@synopsys.com
+Link: https://lore.kernel.org/r/1c37eea1-9f56-4534-b9d8-b443438dc869@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 3e55838c0001..31684cdaaae3 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1519,6 +1519,8 @@ static void dwc3_get_properties(struct dwc3 *dwc)
- 	else
- 		dwc->sysdev = dwc->dev;
- 
-+	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
-+
- 	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
- 	if (ret >= 0) {
- 		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index c07edfc954f7..7e80dd3d466b 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1133,6 +1133,7 @@ struct dwc3_scratchpad_array {
-  *	3	- Reserved
-  * @dis_metastability_quirk: set to disable metastability quirk.
-  * @dis_split_quirk: set to disable split boundary.
-+ * @sys_wakeup: set if the device may do system wakeup.
-  * @wakeup_configured: set if the device is configured for remote wakeup.
-  * @suspended: set to track suspend event due to U3/L2.
-  * @imod_interval: set the interrupt moderation interval in 250ns
-@@ -1357,6 +1358,7 @@ struct dwc3 {
- 
- 	unsigned		dis_split_quirk:1;
- 	unsigned		async_callbacks:1;
-+	unsigned		sys_wakeup:1;
- 	unsigned		wakeup_configured:1;
- 	unsigned		suspended:1;
- 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 40c52dbc28d3..4df2661f6675 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2955,6 +2955,9 @@ static int dwc3_gadget_start(struct usb_gadget *g,
- 	dwc->gadget_driver	= driver;
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	if (dwc->sys_wakeup)
-+		device_wakeup_enable(dwc->sysdev);
-+
- 	return 0;
- }
- 
-@@ -2970,6 +2973,9 @@ static int dwc3_gadget_stop(struct usb_gadget *g)
- 	struct dwc3		*dwc = gadget_to_dwc(g);
- 	unsigned long		flags;
- 
-+	if (dwc->sys_wakeup)
-+		device_wakeup_disable(dwc->sysdev);
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc->gadget_driver	= NULL;
- 	dwc->max_cfg_eps = 0;
-@@ -4651,6 +4657,10 @@ int dwc3_gadget_init(struct dwc3 *dwc)
- 	else
- 		dwc3_gadget_set_speed(dwc->gadget, dwc->maximum_speed);
- 
-+	/* No system wakeup if no gadget driver bound */
-+	if (dwc->sys_wakeup)
-+		device_wakeup_disable(dwc->sysdev);
-+
- 	return 0;
- 
- err5:
-diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
-index 5a5cb6ce9946..0204787df81d 100644
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -173,6 +173,14 @@ int dwc3_host_init(struct dwc3 *dwc)
- 		goto err;
- 	}
- 
-+	if (dwc->sys_wakeup) {
-+		/* Restore wakeup setting if switched from device */
-+		device_wakeup_enable(dwc->sysdev);
-+
-+		/* Pass on wakeup setting to the new xhci platform device */
-+		device_init_wakeup(&xhci->dev, true);
-+	}
-+
- 	return 0;
- err:
- 	platform_device_put(xhci);
-@@ -181,6 +189,9 @@ int dwc3_host_init(struct dwc3 *dwc)
- 
- void dwc3_host_exit(struct dwc3 *dwc)
+diff --git a/drivers/usb/core/sysfs.c b/drivers/usb/core/sysfs.c
+index f98263e21c2a..d83231d6736a 100644
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -1217,14 +1217,24 @@ static ssize_t interface_authorized_store(struct device *dev,
  {
-+	if (dwc->sys_wakeup)
-+		device_init_wakeup(&dwc->xhci->dev, false);
-+
- 	platform_device_unregister(dwc->xhci);
- 	dwc->xhci = NULL;
+ 	struct usb_interface *intf = to_usb_interface(dev);
+ 	bool val;
++	struct kernfs_node *kn;
+ 
+ 	if (kstrtobool(buf, &val) != 0)
+ 		return -EINVAL;
+ 
+-	if (val)
++	if (val) {
+ 		usb_authorize_interface(intf);
+-	else
+-		usb_deauthorize_interface(intf);
++	} else {
++		/*
++		 * Prevent deadlock if another process is concurrently
++		 * trying to unregister intf.
++		 */
++		kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
++		if (kn) {
++			usb_deauthorize_interface(intf);
++			sysfs_unbreak_active_protection(kn);
++		}
++	}
+ 
+ 	return count;
  }
 
 
