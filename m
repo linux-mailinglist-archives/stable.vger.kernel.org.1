@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A0F893F03
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB57894283
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A68E1C21371
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D27C51C21DEB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A694776F;
-	Mon,  1 Apr 2024 16:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3FB4D583;
+	Mon,  1 Apr 2024 16:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSZD/txc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8HkTQBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68B38F5C;
-	Mon,  1 Apr 2024 16:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397824CE0F;
+	Mon,  1 Apr 2024 16:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987830; cv=none; b=VBEYyiWFFuxgO8q1zKAOc55tTLDCICPFvWf60Kk5+6XDp0mObVSwhILOh1hQ21x077J6U5+e0Y3JpguJWeDA3ZS0VncjhBnhITu5DhzOf/0JNIBFStZ3lI4hPB/vcVsOKIipdRXzCsbb1YgvOdmOFkxmJpQMhKQt2WwZl1oopU0=
+	t=1711990396; cv=none; b=jqBF8Ai9neyRtZN5tNVwI3WJeqjiaWCqqAc6I1Kc6mF00r76P6Ifmn1woz0RiM7+PUyGwilIEGDKCHO8bRBksYvhFXIhIxGOHdqNo1J7oUM2SCPEs5BoUf1Roq2m7g8Q7fqUHCEXHQyqnDB6uK9pXjrUkpVRooTjWLXkNwLONzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987830; c=relaxed/simple;
-	bh=aMGSdHBxSBmAH63roOmWNt8i0qjdufzq5yWUk4nrBbk=;
+	s=arc-20240116; t=1711990396; c=relaxed/simple;
+	bh=VT72vu7I8ZUr50r3HsGaECCmozOj2VCY7flfNi9OTX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrGEXRfmnlsf75+O15TPiHrmdxdwxftABQ8ZrAcloOo6+fDHRbF+RF4Gxq4VEu3K869NS/6nzmvJ/ZKkYwPcPk6CO+VEL9AzNffFOuuZoHARa6qlYYlAF9FXJ6A3jS7w7hTqMsWoJsqlc+axOB6WZY+Y3tImwHHfFg9QJmWWoQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSZD/txc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25579C433C7;
-	Mon,  1 Apr 2024 16:10:29 +0000 (UTC)
+	 MIME-Version; b=YJ6gU8qHpysY9pt7eu/8vDXzQA4pmLIvEPV6ix4tl0EnyABre0E4Fxoirf+ghpHz6W1d/CcQg935t3PsVRlBVHUhwK1vIKfO0zZYI9PeQET11EQmUnXd67fu0ylOo1kIymOIIBVr2X5w8tllXfMzaBznqixlpUwVcabkdICQbPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8HkTQBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD091C43330;
+	Mon,  1 Apr 2024 16:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987830;
-	bh=aMGSdHBxSBmAH63roOmWNt8i0qjdufzq5yWUk4nrBbk=;
+	s=korg; t=1711990396;
+	bh=VT72vu7I8ZUr50r3HsGaECCmozOj2VCY7flfNi9OTX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSZD/txcIkaYaA+Zv9Qon1vShs0ZWdee3RYm/BaSm7KdZ62Uu6Xg0PgL1/q2C3E+w
-	 eDr6AmhL9Ey9XgoKv1ajAg+YIt2WXmJeowXClHvD7yGysIz3nAKGXqoYxCNUILK6C5
-	 raF41OnrMAix/fQGf/iIcjxaip6VP2bWXO6JvdN8=
+	b=J8HkTQBQcKLXCiEj6HgUm47NLyxlMEqn5OnD+5pnAWcbv+A1z8wkH+DNXxELsUlhR
+	 7c9w+kjMJrRt6zsxDF8YCs6PbOxbC4wlqs5cob029b/rTaR69TkE/nuKfqzxB5JyoA
+	 NUxcqq+4eERldrzbZYyEPKVMIq+z3HQgC/kbUyO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 393/399] scsi: lpfc: Correct size for cmdwqe/rspwqe for memset()
-Date: Mon,  1 Apr 2024 17:45:59 +0200
-Message-ID: <20240401152600.898958073@linuxfoundation.org>
+	Clayton Craft <clayton@craftyguy.net>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 311/396] x86/efistub: Add missing boot_params for mixed mode compat entry
+Date: Mon,  1 Apr 2024 17:46:00 +0200
+Message-ID: <20240401152557.186416324@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 16cc2ba71b9f6440805aef7f92ba0f031f79b765 upstream.
+commit d21f5a59ea773826cc489acb287811d690b703cc upstream.
 
-The cmdwqe and rspwqe are of type lpfc_wqe128. They should be memset() with
-the same type.
+The pure EFI stub entry point does not take a struct boot_params from
+the boot loader, but creates it from scratch, and populates only the
+fields that still have meaning in this context (command line, initrd
+base and size, etc)
 
-Fixes: 61910d6a5243 ("scsi: lpfc: SLI path split: Refactor CT paths")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240304091119.847060-1-usama.anjum@collabora.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The original mixed mode implementation used the EFI handover protocol
+instead, where the boot loader (i.e., GRUB) populates a boot_params
+struct and passes it to a special Linux specific EFI entry point that
+takes the boot_params pointer as its third argument.
+
+When the new mixed mode implementation was introduced, using a special
+32-bit PE entrypoint in the 64-bit kernel, it adopted the pure approach,
+and relied on the EFI stub to create the struct boot_params.  This is
+preferred because it makes the bootloader side much easier to implement,
+as it does not need any x86-specific knowledge on how struct boot_params
+and struct setup_header are put together. This mixed mode implementation
+was adopted by systemd-boot version 252 and later.
+
+When commit
+
+  e2ab9eab324c ("x86/boot/compressed: Move 32-bit entrypoint code into .text section")
+
+refactored this code and moved it out of head_64.S, the fact that ESI
+was populated with the address of the base of the image was overlooked,
+and to simplify the code flow, ESI is now zeroed and stored to memory
+unconditionally in shared code, so that the NULL-ness of that variable
+can still be used later to determine which mixed mode boot protocol is
+in use.
+
+With ESI pointing to the base of the image, it can serve as a struct
+boot_params pointer for startup_32(), which only accesses the init_data
+and kernel_alignment fields (and the scratch field as a temporary
+stack). Zeroing ESI means that those accesses produce garbage now, even
+though things appear to work if the first page of memory happens to be
+zeroed, and the region right before LOAD_PHYSICAL_ADDR (== 16 MiB)
+happens to be free.
+
+The solution is to pass a special, temporary struct boot_params to
+startup_32() via ESI, one that is sufficient for getting it to create
+the page tables correctly and is discarded right after. This involves
+setting a minimal alignment of 4k, only to get the statically allocated
+page tables line up correctly, and setting init_size to the executable
+image size (_end - startup_32). This ensures that the page tables are
+covered by the static footprint of the PE image.
+
+Given that EFI boot no longer calls the decompressor and no longer pads
+the image to permit the decompressor to execute in place, the same
+temporary struct boot_params should be used in the EFI handover protocol
+based mixed mode implementation as well, to prevent the page tables from
+being placed outside of allocated memory.
+
+Fixes: e2ab9eab324c ("x86/boot/compressed: Move 32-bit entrypoint code into .text section")
+Cc: <stable@kernel.org> # v6.1+
+Closes: https://lore.kernel.org/all/20240321150510.GI8211@craftyguy.net/
+Reported-by: Clayton Craft <clayton@craftyguy.net>
+Tested-by: Clayton Craft <clayton@craftyguy.net>
+Tested-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_bsg.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/efi_mixed.S |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/lpfc/lpfc_bsg.c
-+++ b/drivers/scsi/lpfc/lpfc_bsg.c
-@@ -3169,10 +3169,10 @@ lpfc_bsg_diag_loopback_run(struct bsg_jo
- 	}
+--- a/arch/x86/boot/compressed/efi_mixed.S
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -15,10 +15,12 @@
+  */
  
- 	cmdwqe = &cmdiocbq->wqe;
--	memset(cmdwqe, 0, sizeof(union lpfc_wqe));
-+	memset(cmdwqe, 0, sizeof(*cmdwqe));
- 	if (phba->sli_rev < LPFC_SLI_REV4) {
- 		rspwqe = &rspiocbq->wqe;
--		memset(rspwqe, 0, sizeof(union lpfc_wqe));
-+		memset(rspwqe, 0, sizeof(*rspwqe));
- 	}
+ #include <linux/linkage.h>
++#include <asm/asm-offsets.h>
+ #include <asm/msr.h>
+ #include <asm/page_types.h>
+ #include <asm/processor-flags.h>
+ #include <asm/segment.h>
++#include <asm/setup.h>
  
- 	INIT_LIST_HEAD(&head);
+ 	.code64
+ 	.text
+@@ -149,6 +151,7 @@ SYM_FUNC_END(__efi64_thunk)
+ SYM_FUNC_START(efi32_stub_entry)
+ 	call	1f
+ 1:	popl	%ecx
++	leal	(efi32_boot_args - 1b)(%ecx), %ebx
+ 
+ 	/* Clear BSS */
+ 	xorl	%eax, %eax
+@@ -163,6 +166,7 @@ SYM_FUNC_START(efi32_stub_entry)
+ 	popl	%ecx
+ 	popl	%edx
+ 	popl	%esi
++	movl	%esi, 8(%ebx)
+ 	jmp	efi32_entry
+ SYM_FUNC_END(efi32_stub_entry)
+ #endif
+@@ -239,8 +243,6 @@ SYM_FUNC_END(efi_enter32)
+  *
+  * Arguments:	%ecx	image handle
+  * 		%edx	EFI system table pointer
+- *		%esi	struct bootparams pointer (or NULL when not using
+- *			the EFI handover protocol)
+  *
+  * Since this is the point of no return for ordinary execution, no registers
+  * are considered live except for the function parameters. [Note that the EFI
+@@ -266,9 +268,18 @@ SYM_FUNC_START_LOCAL(efi32_entry)
+ 	leal	(efi32_boot_args - 1b)(%ebx), %ebx
+ 	movl	%ecx, 0(%ebx)
+ 	movl	%edx, 4(%ebx)
+-	movl	%esi, 8(%ebx)
+ 	movb	$0x0, 12(%ebx)          // efi_is64
+ 
++	/*
++	 * Allocate some memory for a temporary struct boot_params, which only
++	 * needs the minimal pieces that startup_32() relies on.
++	 */
++	subl	$PARAM_SIZE, %esp
++	movl	%esp, %esi
++	movl	$PAGE_SIZE, BP_kernel_alignment(%esi)
++	movl	$_end - 1b, BP_init_size(%esi)
++	subl	$startup_32 - 1b, BP_init_size(%esi)
++
+ 	/* Disable paging */
+ 	movl	%cr0, %eax
+ 	btrl	$X86_CR0_PG_BIT, %eax
+@@ -294,8 +305,7 @@ SYM_FUNC_START(efi32_pe_entry)
+ 
+ 	movl	8(%ebp), %ecx			// image_handle
+ 	movl	12(%ebp), %edx			// sys_table
+-	xorl	%esi, %esi
+-	jmp	efi32_entry			// pass %ecx, %edx, %esi
++	jmp	efi32_entry			// pass %ecx, %edx
+ 						// no other registers remain live
+ 
+ 2:	popl	%edi				// restore callee-save registers
 
 
 
