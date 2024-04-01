@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28AF4894034
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D38B5893E9B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D15881F21E74
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 886A71F21761
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623A2C129;
-	Mon,  1 Apr 2024 16:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E336E4779E;
+	Mon,  1 Apr 2024 16:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snwh/eI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYkqj4hN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229521CA8F;
-	Mon,  1 Apr 2024 16:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F49D4596E;
+	Mon,  1 Apr 2024 16:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988820; cv=none; b=UdYh5OVAbeRudURkCLo7SIuHCYz3nVO7HjDLz0W8QlhUF3NN1/xkMmG8RmsGU6JQWObAVotIlS63sc9gRa+XzhuFCVVSSQX+3zBYOsXTBGtbciZGLz5cneNXgQQ4iZh3Lh32A5HuEFOyBQcsYFmz0+qNSJvdxH6d0zEP+6Ti+C8=
+	t=1711987545; cv=none; b=P/cj+ZvxPkhIvQHPJV+eul8LRbGcquULI/tnuESkGyQiwqpIVSB++3fayHcu+pc6MFFHAaX7Z0YSELIz+ViUR9EzGmILzchNJzlJx2EQbEpEAjurGEqRurC1MJnxSPdRbQ0rSuSd+BfZ7VOW3MpsOKu18x7L/cCfxiEnnQdnHsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988820; c=relaxed/simple;
-	bh=zHTPkPzGPa5ZDc2ue5AaxnxO89hSXJsOBEgwDiNWdRI=;
+	s=arc-20240116; t=1711987545; c=relaxed/simple;
+	bh=2s2Y0iStsN5SR7qNSB8Yg2gdT34EvzBp7JoRR81pTUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebeoAQPE4CNoOJJVw+1SrKxX3DAp6efkEVD0HkN94b5srHPgk0eBHkX/xwC9pYRLgpnKgoqyCmYVoyr1rOKKciT1Tnt89Se9Araj382NS0NoYByvvmg5OD+d4nY/eNbujHS+t/Tu69wFKDYS4WGHDWODT1ovLmpoUQTpM+LpMHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snwh/eI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A12C433C7;
-	Mon,  1 Apr 2024 16:26:59 +0000 (UTC)
+	 MIME-Version; b=EFbTOqX0oluJTe9fXUnZz5tV3WiNF2lMeGVHCZRL5J6QxxzJeV0Cd5B79JME+KBNIA0IURhIFZ7oXRoxB8N8xHl94VjQp1OdkudVkGDqV6QpX7Z97UJ7Bg2p50BvDs5eSRBCNFbdrauWLkqMr3WgYhjM4tKhjq7Vth5P7THm1Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYkqj4hN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1093AC433C7;
+	Mon,  1 Apr 2024 16:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988820;
-	bh=zHTPkPzGPa5ZDc2ue5AaxnxO89hSXJsOBEgwDiNWdRI=;
+	s=korg; t=1711987545;
+	bh=2s2Y0iStsN5SR7qNSB8Yg2gdT34EvzBp7JoRR81pTUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snwh/eI/Vofu4iKwCZA55L6klMkUFRxoA9GyAGviTeDim6EoeH8qhNGI/LS4T/Fw7
-	 fxhDbfzK2dQmm/u3s2dBf/0//qzxdlfakze2ZQY45SiSdrGeg/LypTxkZAeui9dqE/
-	 O+JBnCAuHvQY4VWHSuDRPG10w22G1Yiy0CY1G2mA=
+	b=MYkqj4hNXJHxS7Xwhf21rw85HpUc04BIban5Jn0XAVpo4QU/BluvdMNjcmh94bwhy
+	 qtpw1AdSnG8aw1Sty+YfHtXuQiMiYacUVy/A9dGyXY8su37FgyJFlX3DcPQFS5WgwI
+	 Xxe6e+2h2AtjRb2ZQJvKieVh4S5N77dvMt0XsKdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 298/432] clocksource/drivers/arm_global_timer: Fix maximum prescaler value
+	Danilo Krummrich <dakr@redhat.com>,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH 6.8 319/399] nouveau/dmem: handle kcalloc() allocation failure
 Date: Mon,  1 Apr 2024 17:44:45 +0200
-Message-ID: <20240401152602.071700898@linuxfoundation.org>
+Message-ID: <20240401152558.704853759@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit b34b9547cee41575a4fddf390f615570759dc999 ]
+commit 16e87fe23d4af6df920406494ced5c0f4354567b upstream.
 
-The prescaler in the "Global Timer Control Register bit assignments" is
-documented to use bits [15:8], which means that the maximum prescaler
-register value is 0xff.
+The kcalloc() in nouveau_dmem_evict_chunk() will return null if
+the physical memory has run out. As a result, if we dereference
+src_pfns, dst_pfns or dma_addrs, the null pointer dereference bugs
+will happen.
 
-Fixes: 171b45a4a70e ("clocksource/drivers/arm_global_timer: Implement rate compensation whenever source clock changes")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240218174138.1942418-2-martin.blumenstingl@googlemail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Moreover, the GPU is going away. If the kcalloc() fails, we could not
+evict all pages mapping a chunk. So this patch adds a __GFP_NOFAIL
+flag in kcalloc().
+
+Finally, as there is no need to have physically contiguous memory,
+this patch switches kcalloc() to kvcalloc() in order to avoid
+failing allocations.
+
+CC: <stable@vger.kernel.org> # v6.1
+Fixes: 249881232e14 ("nouveau/dmem: evict device private memory during release")
+Suggested-by: Danilo Krummrich <dakr@redhat.com>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240306050104.11259-1-duoming@zju.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/arm_global_timer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_dmem.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
-index 44a61dc6f9320..e1c773bb55359 100644
---- a/drivers/clocksource/arm_global_timer.c
-+++ b/drivers/clocksource/arm_global_timer.c
-@@ -32,7 +32,7 @@
- #define GT_CONTROL_IRQ_ENABLE		BIT(2)	/* banked */
- #define GT_CONTROL_AUTO_INC		BIT(3)	/* banked */
- #define GT_CONTROL_PRESCALER_SHIFT      8
--#define GT_CONTROL_PRESCALER_MAX        0xF
-+#define GT_CONTROL_PRESCALER_MAX        0xFF
- #define GT_CONTROL_PRESCALER_MASK       (GT_CONTROL_PRESCALER_MAX << \
- 					 GT_CONTROL_PRESCALER_SHIFT)
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -378,9 +378,9 @@ nouveau_dmem_evict_chunk(struct nouveau_
+ 	dma_addr_t *dma_addrs;
+ 	struct nouveau_fence *fence;
  
--- 
-2.43.0
-
+-	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
+-	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
+-	dma_addrs = kcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL);
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dma_addrs = kvcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL | __GFP_NOFAIL);
+ 
+ 	migrate_device_range(src_pfns, chunk->pagemap.range.start >> PAGE_SHIFT,
+ 			npages);
+@@ -406,11 +406,11 @@ nouveau_dmem_evict_chunk(struct nouveau_
+ 	migrate_device_pages(src_pfns, dst_pfns, npages);
+ 	nouveau_dmem_fence_done(&fence);
+ 	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ 	for (i = 0; i < npages; i++)
+ 		dma_unmap_page(chunk->drm->dev->dev, dma_addrs[i], PAGE_SIZE, DMA_BIDIRECTIONAL);
+-	kfree(dma_addrs);
++	kvfree(dma_addrs);
+ }
+ 
+ void
 
 
 
