@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F6C89412C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF63893FA5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3FA8283426
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE0C2851A3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059F14596E;
-	Mon,  1 Apr 2024 16:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5921A4778C;
+	Mon,  1 Apr 2024 16:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bf1hKnUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhMvwR+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAD11E86C;
-	Mon,  1 Apr 2024 16:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F7F1CA8F;
+	Mon,  1 Apr 2024 16:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989517; cv=none; b=M+ZswP/8o/yC/KzSPKmjUPCCk9z31Gs79+VuEqDeOXIbdLgqx8v/CNMv9+GE4Y/BMXbrYpMcbkCNRI4Q+Aaf9eZBAC4xd31yqWJLirlP0LcsI57oDD19WothRPkeLbHk8AuQwZOxhSuRWWQ18SgmvKQr96kN4QF4Bda1lfjKgOg=
+	t=1711988367; cv=none; b=Hrh8w2N7lVExB5tzXKjyfIqSAtTjN9p8JC20CaoHzRm3yfYE9tG+waFh2Ierd4s+6LvlEDI6XTkJOLeacMFi33Le/PWpMyaj91YIR1JuSKDZtr7hZlFA4KHiJ0FHQRpsudGp2eZBN3mAOGjIAdkVzeIax20+3M/Ph/3eDFJ/eyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989517; c=relaxed/simple;
-	bh=UZAm8W/HhUHetzB6gxul5PrTbP5oE3rNfH4pWWJ4poI=;
+	s=arc-20240116; t=1711988367; c=relaxed/simple;
+	bh=pr+KYDa1mMM87Wy+PiYOx1ou3NdZueaH2nsdWMRyaJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDNH5JbJo75gIlCOGX+5pS7f/qEESxO+10youp0Qs3z8prmMuqFAJ53RKVerb53msPb77aQtwa+QaO82l4ToTaWZeC0z3Z6Yzi9zv52LfxMti+uqZ8aY65AOquInfIHfqcy38wuqIC3fHLkVZCTT0HQdm6+YS+MADjVAcFW2ZCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bf1hKnUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1B9C433F1;
-	Mon,  1 Apr 2024 16:38:36 +0000 (UTC)
+	 MIME-Version; b=DGJ3giMuXXqfpZvMJy215FLQj+V5TJtDOI3Zcz0Fn5VPLEz6a7uQlKVECtJdXjv4uPNdcPzBtY4AqgusjwDAlRYVYsEpphgaJ+tVpPAwApW1mEV/y68ShxH5z5x4yLSeczHQ3dkAvY+oyZrc8wfFnpXMe8LuomP0ohezYlgBork=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhMvwR+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F84C433C7;
+	Mon,  1 Apr 2024 16:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989517;
-	bh=UZAm8W/HhUHetzB6gxul5PrTbP5oE3rNfH4pWWJ4poI=;
+	s=korg; t=1711988366;
+	bh=pr+KYDa1mMM87Wy+PiYOx1ou3NdZueaH2nsdWMRyaJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bf1hKnUp1EPmFlzo0AwdfUZG2UI39oUw8kocSfBzJW7z1TaXPqJdeigs+sTkSUYOU
-	 I6H4iODgqppHAF1V4qR+WoJ0KYjBwsoC2TidJ3snfvXeRrIoxUM2ifhEbpuhPsZIg8
-	 hgewAKjaZbKKTHym8y0aZgGb/2AZT8nNHXDDtC10=
+	b=GhMvwR+jePzBqoI1F51gJWZ4iMBAhDCvpSbwfkhEftcmHXQ53ylHjKeNZuOTeS3BC
+	 22r5aetrL2gqPfySeT+C2iHDjq+CnAmLfUkBjfS0EDkfp7ynKlhZDk/7y1Wwr5Pd9h
+	 kPoz4P1WnguHYwhqYOo5sfc9SO+uYu475F6xvyzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan-Benedict Glaw <jbglaw@lug-owl.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/396] powerpc/fsl: Fix mfpmr build errors with newer binutils
+Subject: [PATCH 6.7 135/432] kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1
 Date: Mon,  1 Apr 2024 17:42:02 +0200
-Message-ID: <20240401152550.097628182@linuxfoundation.org>
+Message-ID: <20240401152557.159641303@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 5f491356b7149564ab22323ccce79c8d595bfd0c ]
+[ Upstream commit 75b5ab134bb5f657ef7979a59106dce0657e8d87 ]
 
-Binutils 2.38 complains about the use of mfpmr when building
-ppc6xx_defconfig:
+Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
+under -Wenum-conversion. A recent change in Clang strengthened these
+warnings and they appear frequently in common builds, primarily due to
+several instances in common headers but there are quite a few drivers
+that have individual instances as well.
 
-    CC      arch/powerpc/kernel/pmc.o
-  {standard input}: Assembler messages:
-  {standard input}:45: Error: unrecognized opcode: `mfpmr'
-  {standard input}:56: Error: unrecognized opcode: `mtpmr'
+  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+    509 |                            item];
+        |                            ~~~~
 
-This is because by default the kernel is built with -mcpu=powerpc, and
-the mt/mfpmr instructions are not defined.
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
+        |                                      ^ ~~~~~~~~~~~~~~~~~~
+    956 |                           : IWL_MAC_BEACON_CCK_V1;
+        |                             ~~~~~~~~~~~~~~~~~~~~~
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+   1120 |                                                0) > 10 ?
+        |                                                        ^
+   1121 |                         IWL_MAC_BEACON_FILS :
+        |                         ~~~~~~~~~~~~~~~~~~~
+   1122 |                         IWL_MAC_BEACON_FILS_V1;
+        |                         ~~~~~~~~~~~~~~~~~~~~~~
 
-It can be avoided by enabling CONFIG_E300C3_CPU, but just adding that to
-the defconfig will leave open the possibility of randconfig failures.
+Doing arithmetic between or returning two different types of enums could
+be a bug, so each of the instance of the warning needs to be evaluated.
+Unfortunately, as mentioned above, there are many instances of this
+warning in many different configurations, which can break the build when
+CONFIG_WERROR is enabled.
 
-So add machine directives around the mt/mfpmr instructions to tell
-binutils how to assemble them.
+To avoid introducing new instances of the warnings while cleaning up the
+disruption for the majority of users, disable these warnings for the
+default build while leaving them on for W=1 builds.
 
 Cc: stable@vger.kernel.org
-Reported-by: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240229122521.762431-3-mpe@ellerman.id.au
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
+Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/reg_fsl_emb.h | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ scripts/Makefile.extrawarn | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/reg_fsl_emb.h b/arch/powerpc/include/asm/reg_fsl_emb.h
-index a21f529c43d96..8359c06d92d9f 100644
---- a/arch/powerpc/include/asm/reg_fsl_emb.h
-+++ b/arch/powerpc/include/asm/reg_fsl_emb.h
-@@ -12,9 +12,16 @@
- #ifndef __ASSEMBLY__
- /* Performance Monitor Registers */
- #define mfpmr(rn)	({unsigned int rval; \
--			asm volatile("mfpmr %0," __stringify(rn) \
-+			asm volatile(".machine push; " \
-+				     ".machine e300; " \
-+				     "mfpmr %0," __stringify(rn) ";" \
-+				     ".machine pop; " \
- 				     : "=r" (rval)); rval;})
--#define mtpmr(rn, v)	asm volatile("mtpmr " __stringify(rn) ",%0" : : "r" (v))
-+#define mtpmr(rn, v)	asm volatile(".machine push; " \
-+				     ".machine e300; " \
-+				     "mtpmr " __stringify(rn) ",%0; " \
-+				     ".machine pop; " \
-+				     : : "r" (v))
- #endif /* __ASSEMBLY__ */
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 2fe6f2828d376..16c750bb95faf 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -143,6 +143,8 @@ KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
+ KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
+ KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
+ KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
++KBUILD_CFLAGS += -Wno-enum-compare-conditional
++KBUILD_CFLAGS += -Wno-enum-enum-conversion
+ endif
  
- /* Freescale Book E Performance Monitor APU Registers */
+ endif
 -- 
 2.43.0
 
