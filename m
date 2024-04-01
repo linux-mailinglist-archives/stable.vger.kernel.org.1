@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-34249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B36893E88
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E2478941DA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE6F81F21891
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E01B1F253C5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A094778B;
-	Mon,  1 Apr 2024 16:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A854653C;
+	Mon,  1 Apr 2024 16:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ct51fF/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZyspUfY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BD01CA8F;
-	Mon,  1 Apr 2024 16:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6588B1E525;
+	Mon,  1 Apr 2024 16:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987485; cv=none; b=mEzL85vdzAPpeDZtnXVGkBMGxTbwJljorjMoMatatsaye93Dyu6IZiWleFKfzXkr/Brf6YlMle3tBUV7IMcku5IyzqNsGSvjrtR6juiX9LxTZ0+Bm7sRfaDaRazxfQnP2CVcTOya8Xda7DH1aSh4ALypDtXALtj4Rm8YYUDkAjY=
+	t=1711990011; cv=none; b=MFBcl9fIhKLDPwDjRwXZx8vqUpIWAf7pTV7RdzHxTOK2hrX8NZemeb0wTScslGPoqv3yrpt13h/hnZ/wPyKoeD2QPtTbJ/aESUPSCa5JaueN9JnfegrUS2jqLB75TSfs2+UOLzotnbnfjdLO1NFD5Y6VWDTKXLWggaCrUCfHQBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987485; c=relaxed/simple;
-	bh=ued8xSU9z0XZHVZXYseNe9k1Nm73AgyKFysYaGOhI3M=;
+	s=arc-20240116; t=1711990011; c=relaxed/simple;
+	bh=2ela1B7qnq+5k06GW1vebAs38nPPE9y6T4c2SsvhS9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8pfJiNqfjfrc88zIRKXMf0nxzLZMt4X7CObIVh7y3hsgEL5pZDvWt4Tmw3y4XhuZ0RU1BqCQeu2j+uYPQ5vKa6mdZF3dGKdnXETt5HYeLn1ANqyIYVO4kzv9/syS6V1/W4qzfRtkwyzw1fj5txw1xDEvOmubYMiroYXs7EPF2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ct51fF/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C851EC433F1;
-	Mon,  1 Apr 2024 16:04:44 +0000 (UTC)
+	 MIME-Version; b=jI3j0swq/Qx45FlAU4CUz4mBkyZ3p7nM6hjjnLWOQMgz/j+w3DoEGmZt7OITlbGmhiH4fHTnR/b95VPGmqjoQIKkRcSGCa4VTrigWVdTFQhqfzwFdqGZyymsiZCmvtqTl3R4mZVEWxSWSGWlIO6arZnauA3lN+3wNNPR0c1KJoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZyspUfY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28662C433F1;
+	Mon,  1 Apr 2024 16:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987485;
-	bh=ued8xSU9z0XZHVZXYseNe9k1Nm73AgyKFysYaGOhI3M=;
+	s=korg; t=1711990010;
+	bh=2ela1B7qnq+5k06GW1vebAs38nPPE9y6T4c2SsvhS9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ct51fF/QWb+eIssD1iFb6N2+/2W60kDG4mapdYYfDmDzbG7ifLt92Xz+J2cT8dPB
-	 h8VNpGQFkNBgLUvbhIcu6eFsEl9Jpngp+lrGSGOl6pry8NZfL9/j8Jyz65zj0CSVAw
-	 uovqgTPT3l7SyQjvQDaAfL0iQqPjoyOEC4z0YJcQ=
+	b=GZyspUfY2PG29KfZXQ/jSKWvKZzEuPfwJTcBzcyMWqCB/tCc56QSpEtmi6SDwmMgu
+	 usdJq8TlYcQuhobvu6RSKj2HuPRGEqLEIWxkb+3Ge2+aciOcNEmQ4yQRwa4IMU0mn0
+	 sohHEHb9rLFfTycDEb5DF2kd4QSamFvXbvS7VNes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.8 302/399] wifi: iwlwifi: fw: dont always use FW dump trig
-Date: Mon,  1 Apr 2024 17:44:28 +0200
-Message-ID: <20240401152558.206621121@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 220/396] ALSA: hda/realtek - Fix headset Mic no show at resume back for Lenovo ALC897 platform
+Date: Mon,  1 Apr 2024 17:44:29 +0200
+Message-ID: <20240401152554.480220140@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 045a5b645dd59929b0e05375f493cde3a0318271 upstream.
+commit d397b6e56151099cf3b1f7bfccb204a6a8591720 upstream.
 
-Since the dump_data (struct iwl_fwrt_dump_data) is a union,
-it's not safe to unconditionally access and use the 'trig'
-member, it might be 'desc' instead. Access it only if it's
-known to be 'trig' rather than 'desc', i.e. if ini-debug
-is present.
+Headset Mic will no show at resume back.
+This patch will fix this issue.
 
-Cc: stable@vger.kernel.org
-Fixes: 0eb50c674a1e ("iwlwifi: yoyo: send hcmd to fw after dump collection completes.")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240319100755.e2976bc58b29.I72fbd6135b3623227de53d8a2bb82776066cb72b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: d7f32791a9fc ("ALSA: hda/realtek - Add headset Mic support for Lenovo ALC897 platform")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/4713d48a372e47f98bba0c6120fd8254@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ sound/pci/hda/patch_realtek.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -3074,8 +3074,6 @@ static void iwl_fw_dbg_collect_sync(stru
- 	struct iwl_fw_dbg_params params = {0};
- 	struct iwl_fwrt_dump_data *dump_data =
- 		&fwrt->dump.wks[wk_idx].dump_data;
--	u32 policy;
--	u32 time_point;
- 	if (!test_bit(wk_idx, &fwrt->dump.active_wks))
- 		return;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11624,8 +11624,7 @@ static void alc897_hp_automute_hook(stru
  
-@@ -3106,13 +3104,16 @@ static void iwl_fw_dbg_collect_sync(stru
+ 	snd_hda_gen_hp_automute(codec, jack);
+ 	vref = spec->gen.hp_jack_present ? (PIN_HP | AC_PINCTL_VREF_100) : PIN_HP;
+-	snd_hda_codec_write(codec, 0x1b, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
+-			    vref);
++	snd_hda_set_pin_ctl(codec, 0x1b, vref);
+ }
  
- 	iwl_fw_dbg_stop_restart_recording(fwrt, &params, false);
- 
--	policy = le32_to_cpu(dump_data->trig->apply_policy);
--	time_point = le32_to_cpu(dump_data->trig->time_point);
--
--	if (policy & IWL_FW_INI_APPLY_POLICY_DUMP_COMPLETE_CMD) {
--		IWL_DEBUG_FW_INFO(fwrt, "WRT: sending dump complete\n");
--		iwl_send_dbg_dump_complete_cmd(fwrt, time_point, 0);
-+	if (iwl_trans_dbg_ini_valid(fwrt->trans)) {
-+		u32 policy = le32_to_cpu(dump_data->trig->apply_policy);
-+		u32 time_point = le32_to_cpu(dump_data->trig->time_point);
-+
-+		if (policy & IWL_FW_INI_APPLY_POLICY_DUMP_COMPLETE_CMD) {
-+			IWL_DEBUG_FW_INFO(fwrt, "WRT: sending dump complete\n");
-+			iwl_send_dbg_dump_complete_cmd(fwrt, time_point, 0);
-+		}
+ static void alc897_fixup_lenovo_headset_mic(struct hda_codec *codec,
+@@ -11634,6 +11633,10 @@ static void alc897_fixup_lenovo_headset_
+ 	struct alc_spec *spec = codec->spec;
+ 	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
+ 		spec->gen.hp_automute_hook = alc897_hp_automute_hook;
++		spec->no_shutup_pins = 1;
++	}
++	if (action == HDA_FIXUP_ACT_PROBE) {
++		snd_hda_set_pin_ctl_cache(codec, 0x1a, PIN_IN | AC_PINCTL_VREF_100);
  	}
-+
- 	if (fwrt->trans->dbg.last_tp_resetfw == IWL_FW_INI_RESET_FW_MODE_STOP_FW_ONLY)
- 		iwl_force_nmi(fwrt->trans);
+ }
  
 
 
