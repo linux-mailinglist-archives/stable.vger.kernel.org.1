@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492B5894389
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B51B893EE6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE4B5B20CC5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 364B0283477
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D35481B8;
-	Mon,  1 Apr 2024 17:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607A3446AC;
+	Mon,  1 Apr 2024 16:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piUxCEK1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhzfgjLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CF31DFF4;
-	Mon,  1 Apr 2024 17:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5573FE2D;
+	Mon,  1 Apr 2024 16:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991093; cv=none; b=bwee7bfYwb+ooyEh4kuakFALKotskAhliancWur60715/JKRSkDudZrTTHCqCHaDZUyCPECKdVGBgtJIVwq2rsrEJ0xCqkcy8iF1nXEBjM58QK47Ko5lBAcCgtozGEsZYxOnxOEAIo0mfPUQ2RRRHcU3ZrMpsuvaoiLgpKUrmpc=
+	t=1711987770; cv=none; b=NiZhdgT6Vi0u3Kb+fktzb1etVV3kzlITrnRK06xrvvJpYgMumOvvNkJ0Wb+YXYlibiu9yRx6YWELIo5BxOi4j/870Bs/kBG2TJChGpnidplUaQqTM1cwU18/oNlmnJ2iOStlfmiv4gzlpwtJTXMz/m55oH96lU2CJ9eOvxky+ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991093; c=relaxed/simple;
-	bh=7oe3U/q5xgGdILxcACAYj4Nfi1U/yFiuFGC5zRrd32s=;
+	s=arc-20240116; t=1711987770; c=relaxed/simple;
+	bh=zU/kVcYKRiRoEqCQMrtrDegs0NTkmTLleuJrHeP1xWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFmr22cA2Kq2iVL/oYepRzkyy+xUkXFJNnvKxH9Tl0ONPZBOLbYjEBWxUG1vopvnWCIyHXOti6Kayi2Oy0svJHofzyyjYlQRbgvQx/JlU7/rhUa1Zfm4wZh1ajZPuz9AIP/7dJCNFer0BwM2fKigj/UnxIXMhRCigrE+XG+P2LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piUxCEK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AACC433F1;
-	Mon,  1 Apr 2024 17:04:51 +0000 (UTC)
+	 MIME-Version; b=AvC5zMfLTRSBoqWFxmwJElXofXT6KZY0qkEOUCiTnjWPIK83NWwqeRI88BCoEEUgqFmXkEWSdEVfxj+T4/bUWx0CWhh5u8Tntzm9xWoj8nnFw19EafK8WR1nTQeSFTY5VdQkI4q5TD83idf7IQ9JB1bMBhemjV6d9buJMOdUcJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhzfgjLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801F2C433F1;
+	Mon,  1 Apr 2024 16:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991092;
-	bh=7oe3U/q5xgGdILxcACAYj4Nfi1U/yFiuFGC5zRrd32s=;
+	s=korg; t=1711987770;
+	bh=zU/kVcYKRiRoEqCQMrtrDegs0NTkmTLleuJrHeP1xWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=piUxCEK1G0Q/a9RZUoUxiq1RVYxuSE1+TiHq4w8NHTXmNiplZEFaU3kkNeSFFKR1R
-	 QlwpSpKjkEuRoCEFCA5xY7zHQiQtUdrD1sozz2V2uFf2VkU1N82NVGFei3p/AuCouq
-	 KZ24gFRDMucv8Djk9C6Tsb74zF4RKnDaC3C+7WXw=
+	b=nhzfgjLPBRXh4FDmMU63l6JWiJtfq4M4ITvWZIBG83HjtymIoHXbKc5eQgcdcf2tX
+	 Phvx1JtEaW7qkcJRFgbcLlXnsJQyIaghLO2Tzq3jVHehr+OULMXcHpw9trNbBn+zyV
+	 CyqddmLKNzLmOXb2SVfUoaLX4bhIB85jvUuFagEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.1 161/272] serial: 8250_dw: Do not reclock if already at correct rate
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.8 385/399] scsi: qla2xxx: Change debug message during driver unload
 Date: Mon,  1 Apr 2024 17:45:51 +0200
-Message-ID: <20240401152535.771156476@linuxfoundation.org>
+Message-ID: <20240401152600.666326589@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-commit e5d6bd25f93d6ae158bb4cd04956cb497a85b8ef upstream.
+commit b5a30840727a3e41d12a336d19f6c0716b299161 upstream.
 
-When userspace opens the console, we call set_termios() passing a
-termios with the console's configured baud rate. Currently this causes
-dw8250_set_termios() to disable and then re-enable the UART clock at
-the same frequency as it was originally. This can cause corruption
-of any concurrent console output. Fix it by skipping the reclocking
-if we are already at the correct rate.
+Upon driver unload, purge_mbox flag is set and the heartbeat monitor thread
+detects this flag and does not send the mailbox command down to FW with a
+debug message "Error detected: purge[1] eeh[0] cmd=0x0, Exiting".  This
+being not a real error, change the debug message.
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Fixes: 4e26b134bd17 ("serial: 8250_dw: clock rate handling for all ACPI platforms")
 Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240222192635.1050502-1-pcc@google.com
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-10-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_mbx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -357,9 +357,9 @@ static void dw8250_set_termios(struct ua
- 	long rate;
- 	int ret;
- 
--	clk_disable_unprepare(d->clk);
- 	rate = clk_round_rate(d->clk, newrate);
--	if (rate > 0) {
-+	if (rate > 0 && p->uartclk != rate) {
-+		clk_disable_unprepare(d->clk);
- 		/*
- 		 * Note that any clock-notifer worker will block in
- 		 * serial8250_update_uartclk() until we are done.
-@@ -367,8 +367,8 @@ static void dw8250_set_termios(struct ua
- 		ret = clk_set_rate(d->clk, newrate);
- 		if (!ret)
- 			p->uartclk = rate;
-+		clk_prepare_enable(d->clk);
- 	}
--	clk_prepare_enable(d->clk);
- 
- 	dw8250_do_set_termios(p, termios, old);
- }
+--- a/drivers/scsi/qla2xxx/qla_mbx.c
++++ b/drivers/scsi/qla2xxx/qla_mbx.c
+@@ -194,7 +194,7 @@ qla2x00_mailbox_command(scsi_qla_host_t
+ 	if (ha->flags.purge_mbox || chip_reset != ha->chip_reset ||
+ 	    ha->flags.eeh_busy) {
+ 		ql_log(ql_log_warn, vha, 0xd035,
+-		       "Error detected: purge[%d] eeh[%d] cmd=0x%x, Exiting.\n",
++		       "Purge mbox: purge[%d] eeh[%d] cmd=0x%x, Exiting.\n",
+ 		       ha->flags.purge_mbox, ha->flags.eeh_busy, mcp->mb[0]);
+ 		rval = QLA_ABORTED;
+ 		goto premature_exit;
 
 
 
