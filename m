@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-34289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930FB893EB3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3EC89403A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B67C91C21227
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E00AAB20F43
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97304776F;
-	Mon,  1 Apr 2024 16:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7527547A6B;
+	Mon,  1 Apr 2024 16:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ss7KJgCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODAUKGUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AEC1CA8F;
-	Mon,  1 Apr 2024 16:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347381CA8F;
+	Mon,  1 Apr 2024 16:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987619; cv=none; b=J7MyoVbk5Jfzn0ldpOXWpRe9fhKnbPsbgcgTsV/iSbW9i17vIf96JEPpJOiWDue0Fx9aoODqneoVb5DsMmeeln5uov6oFf+qOSiIhDzIfsZ82zZX9xh6qfpeYUKZeVArGE0MhCSIo4QWWsWzEMnquKO5shVYfB4aSjfo0jXKatg=
+	t=1711988836; cv=none; b=GuHngIyVfNvkKNhhHhQUo97BzGjtLUpwb49a1WV4E1hKEewZzcKhF5xJERXinybtyGOrVbpJICgg4LcJclu1lcU/lsKIYO6kMzKsUyI4Fbm5uKqISf2/OnltGyuyjR9ufII3Cvmgzhq4+QuGE3cOOQBQQyOJF4sWSAb2iJFiWnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987619; c=relaxed/simple;
-	bh=TlRSHhQIAVuig52fdF6hT6nrD/FaNtAB1XMqx7KN6co=;
+	s=arc-20240116; t=1711988836; c=relaxed/simple;
+	bh=YP9ZhuwGjOKgnEI3RIyrpcvhgNeHRhyopjMAlHBMjds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3jFqO1WQK34aIyyn7WJVXfaxsjZm1SCeKC+NtalX8qecaCqyEPEkZai2gv64Nl/bozyH8YyHT+/ENDyCQOef7roZVv5qPf3/63y8Bef3kIUA+G6AQ8QK+knuFZcIZUFXNU0q8Cja1FSyK1s8cjAUHdIaugk+Q+HPQoBkQVt/JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss7KJgCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18235C433C7;
-	Mon,  1 Apr 2024 16:06:58 +0000 (UTC)
+	 MIME-Version; b=hnyiPiJKHR8WxZJ/earhTrjD/+iRG3nRsBKSsRZ5BA8Dtd5IGCrDhScbp436CiUlP+EEsQm7jESXhQIVZEvDiFPEkWwWDRNXFQ5ooSC/ZgzdY2PQB3RKUYn2boS0DxwnmjpeD/DGY0jO3tjxZzd9iDhXkhsOUIjZytSiBfhmM7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODAUKGUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973D8C433C7;
+	Mon,  1 Apr 2024 16:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987619;
-	bh=TlRSHhQIAVuig52fdF6hT6nrD/FaNtAB1XMqx7KN6co=;
+	s=korg; t=1711988836;
+	bh=YP9ZhuwGjOKgnEI3RIyrpcvhgNeHRhyopjMAlHBMjds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ss7KJgCe8d2yHNpgXRJ4UtFIHKocBfxohfF1EtKuuAxSP2AD+x9AYqjnASCRWqnpX
-	 +ttiVK2bCkSwjfTRRLyfWaAIta3Tvc7m3uC84Ag0XJakXpuoeU38PW9czOW+K+MrJh
-	 NMBGDmmo/Jkc1F7ozklLe4f+BwAC6s368W8pqtA0=
+	b=ODAUKGUKdXjPK49WyQjnDJWqUbhbk58b2th031IKJ6ifUOLysJ1+XAkpWlWeZobL+
+	 hBDFYeaJBCZ6bVfNSEHZkZCS/DB3GDSrSOVQg7vlfUOI2IAzyVs/a/vTCSlULZ66Ny
+	 +7QkInY2M+cAfyh/7H37dtDNvAyEMOrOnh3TrM14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Deak <imre.deak@intel.com>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>
-Subject: [PATCH 6.8 324/399] drm/dp: Fix divide-by-zero regression on DP MST unplug with nouveau
+	Will Deacon <will@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 303/432] swiotlb: Honour dma_alloc_coherent() alignment in swiotlb_alloc()
 Date: Mon,  1 Apr 2024 17:44:50 +0200
-Message-ID: <20240401152558.852384921@linuxfoundation.org>
+Message-ID: <20240401152602.229140671@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,146 +63,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
+From: Will Deacon <will@kernel.org>
 
-commit 9cbd1dae842737bfafa4b10a87909fa209dde250 upstream.
+[ Upstream commit cbf53074a528191df82b4dba1e3d21191102255e ]
 
-Fix a regression when using nouveau and unplugging a StarTech MSTDP122DP
-DisplayPort 1.2 MST hub (the same regression does not appear when using
-a Cable Matters DisplayPort 1.4 MST hub). Trace:
+core-api/dma-api-howto.rst states the following properties of
+dma_alloc_coherent():
 
- divide error: 0000 [#1] PREEMPT SMP PTI
- CPU: 7 PID: 2962 Comm: Xorg Not tainted 6.8.0-rc3+ #744
- Hardware name: Razer Blade/DANA_MB, BIOS 01.01 08/31/2018
- RIP: 0010:drm_dp_bw_overhead+0xb4/0x110 [drm_display_helper]
- Code: c6 b8 01 00 00 00 75 61 01 c6 41 0f af f3 41 0f af f1 c1 e1 04 48 63=
- c7 31 d2 89 ff 48 8b 5d f8 c9 48 0f af f1 48 8d 44 06 ff <48> f7 f7 31 d2 =
-31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 45 31
- RSP: 0018:ffffb2c5c211fa30 EFLAGS: 00010206
- RAX: ffffffffffffffff RBX: 0000000000000000 RCX: 0000000000f59b00
- RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
- RBP: ffffb2c5c211fa48 R08: 0000000000000001 R09: 0000000000000020
- R10: 0000000000000004 R11: 0000000000000000 R12: 0000000000023b4a
- R13: ffff91d37d165800 R14: ffff91d36fac6d80 R15: ffff91d34a764010
- FS:  00007f4a1ca3fa80(0000) GS:ffff91d6edbc0000(0000) knlGS:00000000000000=
-00
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000559491d49000 CR3: 000000011d180002 CR4: 00000000003706f0
- Call Trace:
-  <TASK>
-  ? show_regs+0x6d/0x80
-  ? die+0x37/0xa0
-  ? do_trap+0xd4/0xf0
-  ? do_error_trap+0x71/0xb0
-  ? drm_dp_bw_overhead+0xb4/0x110 [drm_display_helper]
-  ? exc_divide_error+0x3a/0x70
-  ? drm_dp_bw_overhead+0xb4/0x110 [drm_display_helper]
-  ? asm_exc_divide_error+0x1b/0x20
-  ? drm_dp_bw_overhead+0xb4/0x110 [drm_display_helper]
-  ? drm_dp_calc_pbn_mode+0x2e/0x70 [drm_display_helper]
-  nv50_msto_atomic_check+0xda/0x120 [nouveau]
-  drm_atomic_helper_check_modeset+0xa87/0xdf0 [drm_kms_helper]
-  drm_atomic_helper_check+0x19/0xa0 [drm_kms_helper]
-  nv50_disp_atomic_check+0x13f/0x2f0 [nouveau]
-  drm_atomic_check_only+0x668/0xb20 [drm]
-  ? drm_connector_list_iter_next+0x86/0xc0 [drm]
-  drm_atomic_commit+0x58/0xd0 [drm]
-  ? __pfx___drm_printfn_info+0x10/0x10 [drm]
-  drm_atomic_connector_commit_dpms+0xd7/0x100 [drm]
-  drm_mode_obj_set_property_ioctl+0x1c5/0x450 [drm]
-  ? __pfx_drm_connector_property_set_ioctl+0x10/0x10 [drm]
-  drm_connector_property_set_ioctl+0x3b/0x60 [drm]
-  drm_ioctl_kernel+0xb9/0x120 [drm]
-  drm_ioctl+0x2d0/0x550 [drm]
-  ? __pfx_drm_connector_property_set_ioctl+0x10/0x10 [drm]
-  nouveau_drm_ioctl+0x61/0xc0 [nouveau]
-  __x64_sys_ioctl+0xa0/0xf0
-  do_syscall_64+0x76/0x140
-  ? do_syscall_64+0x85/0x140
-  ? do_syscall_64+0x85/0x140
-  entry_SYSCALL_64_after_hwframe+0x6e/0x76
- RIP: 0033:0x7f4a1cd1a94f
- Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44=
- 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41> 89 c0 3d 00 =
-f0 ff ff 77 1f 48 8b 44 24 18 64 48 2b 04 25 28 00
- RSP: 002b:00007ffd2f1df520 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
- RAX: ffffffffffffffda RBX: 00007ffd2f1df5b0 RCX: 00007f4a1cd1a94f
- RDX: 00007ffd2f1df5b0 RSI: 00000000c01064ab RDI: 000000000000000f
- RBP: 00000000c01064ab R08: 000056347932deb8 R09: 000056347a7d99c0
- R10: 0000000000000000 R11: 0000000000000246 R12: 000056347938a220
- R13: 000000000000000f R14: 0000563479d9f3f0 R15: 0000000000000000
-  </TASK>
- Modules linked in: rfcomm xt_conntrack nft_chain_nat xt_MASQUERADE nf_nat =
-nf_conntrack_netlink nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xfrm_user x=
-frm_algo xt_addrtype nft_compat nf_tables nfnetlink br_netfilter bridge stp=
- llc ccm cmac algif_hash overlay algif_skcipher af_alg bnep binfmt_misc snd=
-_sof_pci_intel_cnl snd_sof_intel_hda_common snd_soc_hdac_hda snd_sof_pci sn=
-d_sof_xtensa_dsp snd_sof_intel_hda snd_sof snd_sof_utils snd_soc_acpi_intel=
-_match snd_soc_acpi snd_soc_core snd_compress snd_sof_intel_hda_mlink snd_h=
-da_ext_core iwlmvm intel_rapl_msr intel_rapl_common intel_tcc_cooling x86_p=
-kg_temp_thermal intel_powerclamp mac80211 coretemp kvm_intel snd_hda_codec_=
-hdmi kvm snd_hda_codec_realtek snd_hda_codec_generic uvcvideo libarc4 snd_h=
-da_intel snd_intel_dspcfg snd_hda_codec iwlwifi videobuf2_vmalloc videobuf2=
-_memops uvc irqbypass btusb videobuf2_v4l2 snd_seq_midi crct10dif_pclmul hi=
-d_multitouch crc32_pclmul snd_seq_midi_event btrtl snd_hwdep videodev polyv=
-al_clmulni polyval_generic snd_rawmidi
-  ghash_clmulni_intel aesni_intel btintel crypto_simd snd_hda_core cryptd s=
-nd_seq btbcm ee1004 8250_dw videobuf2_common btmtk rapl nls_iso8859_1 mei_h=
-dcp thunderbolt bluetooth intel_cstate wmi_bmof intel_wmi_thunderbolt cfg80=
-211 snd_pcm mc snd_seq_device i2c_i801 r8169 ecdh_generic snd_timer i2c_smb=
-us ecc snd mei_me intel_lpss_pci mei ahci intel_lpss soundcore realtek liba=
-hci idma64 intel_pch_thermal i2c_hid_acpi i2c_hid acpi_pad sch_fq_codel msr=
- parport_pc ppdev lp parport efi_pstore ip_tables x_tables autofs4 dm_crypt=
- raid10 raid456 libcrc32c async_raid6_recov async_memcpy async_pq async_xor=
- xor async_tx raid6_pq raid1 raid0 joydev input_leds hid_generic usbhid hid=
- nouveau i915 drm_ttm_helper gpu_sched drm_gpuvm drm_exec i2c_algo_bit drm_=
-buddy ttm drm_display_helper drm_kms_helper cec rc_core drm nvme nvme_core =
-mxm_wmi xhci_pci xhci_pci_renesas video wmi pinctrl_cannonlake mac_hid
- ---[ end trace 0000000000000000 ]---
+  | The CPU virtual address and the DMA address are both guaranteed to
+  | be aligned to the smallest PAGE_SIZE order which is greater than or
+  | equal to the requested size.
 
-Fix this by avoiding the divide if bpp is 0.
+However, swiotlb_alloc() passes zero for the 'alloc_align_mask'
+parameter of swiotlb_find_slots() and so this property is not upheld.
+Instead, allocations larger than a page are aligned to PAGE_SIZE,
 
-Fixes: c1d6a22b7219 ("drm/dp: Add helpers to calculate the link BW overhead=
-")
-Cc: stable@vger.kernel.org
-Acked-by: Imre Deak <imre.deak@intel.com>
-Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/ZfWLJwYikw2K7B6c@debian=
-.local
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Calculate the mask corresponding to the page order suitable for holding
+the allocation and pass that to swiotlb_find_slots().
+
+Fixes: e81e99bacc9f ("swiotlb: Support aligned swiotlb buffers")
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/dma/swiotlb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/disp=
-lay/drm_dp_helper.c
-index b1ca3a1100da..26c188ce5f1c 100644
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -3982,6 +3982,13 @@ int drm_dp_bw_overhead(int lane_count, int hactive,
- 	u32 overhead =3D 1000000;
- 	int symbol_cycles;
-=20
-+	if (lane_count =3D=3D 0 || hactive =3D=3D 0 || bpp_x16 =3D=3D 0) {
-+		DRM_DEBUG_KMS("Invalid BW overhead params: lane_count %d, hactive %d, bp=
-p_x16 %d.%04d\n",
-+			      lane_count, hactive,
-+			      bpp_x16 >> 4, (bpp_x16 & 0xf) * 625);
-+		return 0;
-+	}
-+
- 	/*
- 	 * DP Standard v2.1 2.6.4.1
- 	 * SSC downspread and ref clock variation margin:
---=20
-2.44.0
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 8fba61069b84d..2d347685cf566 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -1610,12 +1610,14 @@ struct page *swiotlb_alloc(struct device *dev, size_t size)
+ 	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+ 	struct io_tlb_pool *pool;
+ 	phys_addr_t tlb_addr;
++	unsigned int align;
+ 	int index;
+ 
+ 	if (!mem)
+ 		return NULL;
+ 
+-	index = swiotlb_find_slots(dev, 0, size, 0, &pool);
++	align = (1 << (get_order(size) + PAGE_SHIFT)) - 1;
++	index = swiotlb_find_slots(dev, 0, size, align, &pool);
+ 	if (index == -1)
+ 		return NULL;
+ 
+-- 
+2.43.0
 
 
 
