@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AC9893F54
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4109D8940FC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:36:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7AA01F213AC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A060CB20B3A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751044778E;
-	Mon,  1 Apr 2024 16:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4404C630;
+	Mon,  1 Apr 2024 16:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOxUhzxz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7CjfTyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D413D961;
-	Mon,  1 Apr 2024 16:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D994C622;
+	Mon,  1 Apr 2024 16:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988102; cv=none; b=tlNzLma6Xdre8jTBrUUlIsvETFyYt1IweaUDwEqO3wx81OUNtWSYkBHdyn54EXPKb1FhMmm887El3SGhBOp6OTJD/TFmxKLWDPw9MjSMw7GTqYBsbqwnx6XxdzCgJQaSn+eWubbeWiA5h1xKlQKlnRG7iWgqum0UEyagtgnxKyI=
+	t=1711989382; cv=none; b=K3Nn/GKrKVmqLeeQl6tmYWMXlmkLHWvu737yi73bsr1zg7PRE98vzFUBsUN6m7sIqrb9NLTWBUFzQ8EiWCH5zJghD4RKtv2XeixKlzRNRzeCVls24e1PgpKRIntXdbO8ZE5m72x986j5yiBllS4kz4QGBLJfRrImMS58Aum25rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988102; c=relaxed/simple;
-	bh=nC9mRdXnAu3BUrWFVRocod8BLs3cA8bG4AnlUQX+I7o=;
+	s=arc-20240116; t=1711989382; c=relaxed/simple;
+	bh=WvNbZ1FQI1ERTk8MOv54GD8DNCDwU1MN1n2XUVvhd2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aANNZvJcWVWSNqWgOygFMrMJtQU4DyJQLSq7UKThDetK/Xs8IgxMy2IwI+cKR6Y5Do17O9D/ZXkWDnYjvsrTNcmFycq34rI9WRbCIl3eu6WGX9MGK9TYZA2az7afnmH2s8qHMkvreyhERpxp292qlD093orz1/gZls0cS6GVxBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOxUhzxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9689BC433C7;
-	Mon,  1 Apr 2024 16:15:01 +0000 (UTC)
+	 MIME-Version; b=VM8sexT20E9Ivx95sjYG7CdMgpRT4j4DDs74znH+Sxp9EhKHl4xpbxdJOpSA5As2edwSennxLdMUCcNs21JmoK39OFedVTqnwigB6GW9W5ge8avMdxsD9UUiI/L/GuLzKKjmZ0mHX94WBKRTniVexnJ5G3vRA5v35cD/rGX7rHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7CjfTyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAEDC433C7;
+	Mon,  1 Apr 2024 16:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988102;
-	bh=nC9mRdXnAu3BUrWFVRocod8BLs3cA8bG4AnlUQX+I7o=;
+	s=korg; t=1711989381;
+	bh=WvNbZ1FQI1ERTk8MOv54GD8DNCDwU1MN1n2XUVvhd2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOxUhzxzwXpr4aQpEd4yp4YtagkQHG76PHs8amzEPZyR7gqUO2URBH3KDHpLJqGID
-	 sEhzjnDGFiewfFHa5zS+r7iiCGY6VveD4S22euUzMzkXdd5mj/kCUCzusWnUkNntYb
-	 vd7FEPnLrNzoRXGQx3LN8KnH+KJ/gPy2VpGMARQA=
+	b=v7CjfTyKC+ixlZrXKR6X2fs8qoCIUVdcIDmaUcT309r16O01ZGs/MWmUwvz9Clv7w
+	 Q8yTI4cgBF5VGwxdyXuUQQ6klfKXDlHzjGsjFAj2dYAPwmVoLx9Bom3Mo9IirvxmWJ
+	 52yT0KBBElVHqWgQL3vWtZQsDMXNjPcZ6vB1bV14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 085/432] mmc: tmio: avoid concurrent runs of mmc_request_done()
-Date: Mon,  1 Apr 2024 17:41:12 +0200
-Message-ID: <20240401152555.656468350@linuxfoundation.org>
+Subject: [PATCH 6.6 024/396] media: nxp: imx8-isi: Mark all crossbar sink pads as MUST_CONNECT
+Date: Mon,  1 Apr 2024 17:41:13 +0200
+Message-ID: <20240401152548.622491123@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit e8d1b41e69d72c62865bebe8f441163ec00b3d44 ]
+[ Upstream commit 9b71021b2ea537632b01e51e3f003df24a637858 ]
 
-With the to-be-fixed commit, the reset_work handler cleared 'host->mrq'
-outside of the spinlock protected critical section. That leaves a small
-race window during execution of 'tmio_mmc_reset()' where the done_work
-handler could grab a pointer to the now invalid 'host->mrq'. Both would
-use it to call mmc_request_done() causing problems (see link below).
+All the sink pads of the crossbar switch require an active link if
+they're part of the pipeline. Mark them with the
+MEDIA_PAD_FL_MUST_CONNECT flag to fail pipeline validation if they're
+not connected. This allows removing a manual check when translating
+streams.
 
-However, 'host->mrq' cannot simply be cleared earlier inside the
-critical section. That would allow new mrqs to come in asynchronously
-while the actual reset of the controller still needs to be done. So,
-like 'tmio_mmc_set_ios()', an ERR_PTR is used to prevent new mrqs from
-coming in but still avoiding concurrency between work handlers.
-
-Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
-Closes: https://lore.kernel.org/all/20240220061356.3001761-1-dirk.behme@de.bosch.com/
-Fixes: df3ef2d3c92c ("mmc: protect the tmio_mmc driver against a theoretical race")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: stable@vger.kernel.org # 3.0+
-Link: https://lore.kernel.org/r/20240305104423.3177-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/tmio_mmc_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../media/platform/nxp/imx8-isi/imx8-isi-crossbar.c    | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index be7f18fd4836a..c253d176db691 100644
---- a/drivers/mmc/host/tmio_mmc_core.c
-+++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -259,6 +259,8 @@ static void tmio_mmc_reset_work(struct work_struct *work)
- 	else
- 		mrq->cmd->error = -ETIMEDOUT;
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+index 44354931cf8a1..c9a4d091b5707 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+@@ -160,13 +160,6 @@ mxc_isi_crossbar_xlate_streams(struct mxc_isi_crossbar *xbar,
+ 	}
  
-+	/* No new calls yet, but disallow concurrent tmio_mmc_done_work() */
-+	host->mrq = ERR_PTR(-EBUSY);
- 	host->cmd = NULL;
- 	host->data = NULL;
+ 	pad = media_pad_remote_pad_first(&xbar->pads[sink_pad]);
+-	if (!pad) {
+-		dev_dbg(xbar->isi->dev,
+-			"no pad connected to crossbar input %u\n",
+-			sink_pad);
+-		return ERR_PTR(-EPIPE);
+-	}
+-
+ 	sd = media_entity_to_v4l2_subdev(pad->entity);
+ 	if (!sd) {
+ 		dev_dbg(xbar->isi->dev,
+@@ -471,7 +464,8 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
+ 	}
+ 
+ 	for (i = 0; i < xbar->num_sinks; ++i)
+-		xbar->pads[i].flags = MEDIA_PAD_FL_SINK;
++		xbar->pads[i].flags = MEDIA_PAD_FL_SINK
++				    | MEDIA_PAD_FL_MUST_CONNECT;
+ 	for (i = 0; i < xbar->num_sources; ++i)
+ 		xbar->pads[i + xbar->num_sinks].flags = MEDIA_PAD_FL_SOURCE;
  
 -- 
 2.43.0
