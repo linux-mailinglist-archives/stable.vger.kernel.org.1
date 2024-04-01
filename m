@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-33898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823B9893994
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:41:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DC5893995
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 379D31F22133
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:41:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4145A1C21540
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8D9101EB;
-	Mon,  1 Apr 2024 09:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5905C101EB;
+	Mon,  1 Apr 2024 09:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIck0IAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPvneCs9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7D7FBFD
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2FC10788
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711964504; cv=none; b=q8Zrnm/uC1ksDpuXBdYmBef2ZrV/jID5D3DTbnDJyZvxGWmjYFnEdFUl0a5Enr/HH/gnodZPBlOiCSmmOgouvYzHU9MyMBSF+ZQLZrB336Joo0v9JpNEfm05UxY/K7+S1kGedrUUIDRsOYJyDq1FRSupsMPNXHuuw6PpE84g+5k=
+	t=1711964522; cv=none; b=faX0ISDHRoipemlP9Q+Nw7tfbYyUyZGWHNKY7pEv50mInNt3/A0urLUYPkq18fTH4MEOTzy1p8osWECmB2Fpvx/S0Wvzh8Lysm3gLd/Jq80J7DM/Paienr9xz+hXCUYOfUWc8hDukN4QuhDWTB7yvuLB8OhHWeva06VmfdOCE0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711964504; c=relaxed/simple;
-	bh=qmBu2S+Pb6X5NmpPuXkxLgXvtJFWYAjjdhMYsPA3g2E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kYea+wcEe7p3pWYS3yn8czoZSeS0q8fbQXO3tF2xj8XKWLlwrPXX+CQHnID9tcwzJ0qFfudr/5eaX3DGaSRTCcGGHsB6F2sSZnOAplTpPTzikrw/1gWxp5vKlNP8utv3NRmHgY0PaK4AV+iKm6ORW7K7f8u0FohvF8wH6d3lY7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIck0IAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB60C433C7;
-	Mon,  1 Apr 2024 09:41:43 +0000 (UTC)
+	s=arc-20240116; t=1711964522; c=relaxed/simple;
+	bh=qj4r6vBfDjdnFweToxpsTmfrq6On2fmKJipfzGh5t9o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tIJsoi3MsYWSj8QLoIr52d+WC50DOmcsTb7Wnf5WD4kzsD/U9YRrjYZgnKvHVHzcUtmBvBw3pmQ9StZaB/cT+1horklKiz1McFe9GQYKqZoxb045KyKUN47aLkf7TdsOnqx5xBEoZitabsOwa4Oqet1HmAe2uiXIeIidvA38OiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPvneCs9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF5DC433C7;
+	Mon,  1 Apr 2024 09:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711964504;
-	bh=qmBu2S+Pb6X5NmpPuXkxLgXvtJFWYAjjdhMYsPA3g2E=;
+	s=korg; t=1711964522;
+	bh=qj4r6vBfDjdnFweToxpsTmfrq6On2fmKJipfzGh5t9o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=oIck0IAhOAE6CdkPrcXq5jgvXTxdkrdVYB4P4/lYOCBj4Zucv3DIv3MAVG6sbCv7v
-	 VvKWQDz9Axlll5gJcRUrAElNz9BAvAV6vXOGK4hwA7oIQNsgCZodoLa5nRbiI+rfEL
-	 vzZV/+6WL4LJNSunYwIAYFe5/Ink/qQ0otXrQB+Q=
-Subject: FAILED: patch "[PATCH] Revert "x86/mm/ident_map: Use gbpages only where full GB page" failed to apply to 4.19-stable tree
-To: mingo@kernel.org,dave.hansen@linux.intel.com,rja@hpe.com,stable@vger.kernel.org,steve.wahl@hpe.com
+	b=XPvneCs9MghDJP6aj5gM3yBf0MXAwQuda9gWOPac2ESqZFGY0m/gcc+Tgbsqu2lN7
+	 r5nhODsf1bv+37UcLSxWx/h17WF/tBKAbZfrj0SnYfjfkJrWlIZy4eak/us0B8vQkj
+	 VJlUbS2kS5vOKZNBaB2h3fo7pEZIuq48CWcZJn1M=
+Subject: FAILED: patch "[PATCH] usb: dwc3: Properly set system wakeup" failed to apply to 6.1-stable tree
+To: Thinh.Nguyen@synopsys.com,Sanath.S@amd.com,gpiccoli@igalia.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Apr 2024 11:41:24 +0200
-Message-ID: <2024040123-denial-syndrome-2d01@gregkh>
+Date: Mon, 01 Apr 2024 11:41:58 +0200
+Message-ID: <2024040158-headrest-purge-7899@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x c567f2948f57bdc03ed03403ae0234085f376b7d
+git cherry-pick -x f9aa41130ac69d13a53ce2a153ca79c70d43f39c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040123-denial-syndrome-2d01@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040158-headrest-purge-7899@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-c567f2948f57 ("Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."")
-0a845e0f6348 ("mm/treewide: replace pud_large() with pud_leaf()")
-d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-27af67f35631 ("powerpc/book3s64/mm: enable transparent pud hugepage")
-104c49d5b6dc ("powerpc/mm/trace: convert trace event to trace event class")
-040ec6202bb8 ("powerpc/mm/book3s64: Use pmdp_ptep helper instead of typecasting.")
-bb1520d581a3 ("s390/mm: start kernel with DAT enabled")
-9c3205b2b062 ("s390/boot: cleanup decompressor header files")
-47477c84b891 ("Merge tag 's390-6.2-1' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux")
+f9aa41130ac6 ("usb: dwc3: Properly set system wakeup")
+047161686b81 ("usb: dwc3: Add remote wakeup handling")
 
 thanks,
 
@@ -85,74 +78,131 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c567f2948f57bdc03ed03403ae0234085f376b7d Mon Sep 17 00:00:00 2001
-From: Ingo Molnar <mingo@kernel.org>
-Date: Mon, 25 Mar 2024 11:47:51 +0100
-Subject: [PATCH] Revert "x86/mm/ident_map: Use gbpages only where full GB page
- should be mapped."
+From f9aa41130ac69d13a53ce2a153ca79c70d43f39c Mon Sep 17 00:00:00 2001
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Date: Fri, 8 Mar 2024 02:40:25 +0000
+Subject: [PATCH] usb: dwc3: Properly set system wakeup
 
-This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
+If the device is configured for system wakeup, then make sure that the
+xHCI driver knows about it and make sure to permit wakeup only at the
+appropriate time.
 
-While the original change tries to fix a bug, it also unintentionally broke
-existing systems, see the regressions reported at:
+For host mode, if the controller goes through the dwc3 code path, then a
+child xHCI platform device is created. Make sure the platform device
+also inherits the wakeup setting for xHCI to enable remote wakeup.
 
-  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+For device mode, make sure to disable system wakeup if no gadget driver
+is bound. We may experience unwanted system wakeup due to the wakeup
+signal from the controller PMU detecting connection/disconnection when
+in low power (D3). E.g. In the case of Steam Deck, the PCI PME prevents
+the system staying in suspend.
 
-Since d794734c9bbf was also marked for -stable, let's back it out before
-causing more damage.
+Cc: stable@vger.kernel.org
+Reported-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Closes: https://lore.kernel.org/linux-usb/70a7692d-647c-9be7-00a6-06fc60f77294@igalia.com/T/#mf00d6669c2eff7b308d1162acd1d66c09f0853c7
+Fixes: d07e8819a03d ("usb: dwc3: add xHCI Host support")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Tested-by: Sanath S <Sanath.S@amd.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
+Link: https://lore.kernel.org/r/667cfda7009b502e08462c8fb3f65841d103cc0a.1709865476.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Note that due to another upstream change the revert was not 100% automatic:
-
-  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
-
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Russ Anderson <rja@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index a204a332c71f..968d7005f4a7 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
--		bool use_gbpage;
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 3e55838c0001..31684cdaaae3 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1519,6 +1519,8 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 	else
+ 		dwc->sysdev = dwc->dev;
  
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
- 
--		/* if this is already a gbpage, this portion is already mapped */
--		if (pud_leaf(*pud))
--			continue;
--
--		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
--
--		/* Don't use gbpage if it maps more than the requested region. */
--		/* at the begining: */
--		use_gbpage &= ((addr & ~PUD_MASK) == 0);
--		/* ... or at the end: */
--		use_gbpage &= ((next & ~PUD_MASK) == 0);
--
--		/* Never overwrite existing mappings */
--		use_gbpage &= !pud_present(*pud);
--
--		if (use_gbpage) {
-+		if (info->direct_gbpages) {
- 			pud_t pudval;
- 
-+			if (pud_present(*pud))
-+				continue;
++	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
 +
-+			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+ 	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
+ 	if (ret >= 0) {
+ 		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index c07edfc954f7..7e80dd3d466b 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1133,6 +1133,7 @@ struct dwc3_scratchpad_array {
+  *	3	- Reserved
+  * @dis_metastability_quirk: set to disable metastability quirk.
+  * @dis_split_quirk: set to disable split boundary.
++ * @sys_wakeup: set if the device may do system wakeup.
+  * @wakeup_configured: set if the device is configured for remote wakeup.
+  * @suspended: set to track suspend event due to U3/L2.
+  * @imod_interval: set the interrupt moderation interval in 250ns
+@@ -1357,6 +1358,7 @@ struct dwc3 {
+ 
+ 	unsigned		dis_split_quirk:1;
+ 	unsigned		async_callbacks:1;
++	unsigned		sys_wakeup:1;
+ 	unsigned		wakeup_configured:1;
+ 	unsigned		suspended:1;
+ 
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 40c52dbc28d3..4df2661f6675 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2955,6 +2955,9 @@ static int dwc3_gadget_start(struct usb_gadget *g,
+ 	dwc->gadget_driver	= driver;
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	if (dwc->sys_wakeup)
++		device_wakeup_enable(dwc->sysdev);
++
+ 	return 0;
+ }
+ 
+@@ -2970,6 +2973,9 @@ static int dwc3_gadget_stop(struct usb_gadget *g)
+ 	struct dwc3		*dwc = gadget_to_dwc(g);
+ 	unsigned long		flags;
+ 
++	if (dwc->sys_wakeup)
++		device_wakeup_disable(dwc->sysdev);
++
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc->gadget_driver	= NULL;
+ 	dwc->max_cfg_eps = 0;
+@@ -4651,6 +4657,10 @@ int dwc3_gadget_init(struct dwc3 *dwc)
+ 	else
+ 		dwc3_gadget_set_speed(dwc->gadget, dwc->maximum_speed);
+ 
++	/* No system wakeup if no gadget driver bound */
++	if (dwc->sys_wakeup)
++		device_wakeup_disable(dwc->sysdev);
++
+ 	return 0;
+ 
+ err5:
+diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
+index 5a5cb6ce9946..0204787df81d 100644
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -173,6 +173,14 @@ int dwc3_host_init(struct dwc3 *dwc)
+ 		goto err;
+ 	}
+ 
++	if (dwc->sys_wakeup) {
++		/* Restore wakeup setting if switched from device */
++		device_wakeup_enable(dwc->sysdev);
++
++		/* Pass on wakeup setting to the new xhci platform device */
++		device_init_wakeup(&xhci->dev, true);
++	}
++
+ 	return 0;
+ err:
+ 	platform_device_put(xhci);
+@@ -181,6 +189,9 @@ int dwc3_host_init(struct dwc3 *dwc)
+ 
+ void dwc3_host_exit(struct dwc3 *dwc)
+ {
++	if (dwc->sys_wakeup)
++		device_init_wakeup(&dwc->xhci->dev, false);
++
+ 	platform_device_unregister(dwc->xhci);
+ 	dwc->xhci = NULL;
+ }
 
 
