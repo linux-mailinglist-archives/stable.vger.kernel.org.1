@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-34316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48210893ED4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43EE689437A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F190E282632
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 760DB1C21F4D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A069847A5D;
-	Mon,  1 Apr 2024 16:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15FF48CE0;
+	Mon,  1 Apr 2024 17:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xtc5icRb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMNG1wBo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E83E481C6;
-	Mon,  1 Apr 2024 16:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85056487BE;
+	Mon,  1 Apr 2024 17:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987709; cv=none; b=BBrs5tI1iNOmhg0NbNa4zh+lkd3RtuyVMPKEAyeJNsD0H95Osv2Eugdkj2L49uXntRcaG/Egk7Uz0eFDOupUAl3B3AruH28raMo5CwVnt26qjBOo1ajE0+NKBxxr2rcK9vpHJ3gZZs2X8MpRdgGCLco9o0cnD0Spx9wT8gmS0yQ=
+	t=1711991046; cv=none; b=njrvbcaMUQCDuls0z9GHTBKvs6Caz/8s8uwOZ811SgfY+mPZyfDChKQlJFvNj+Dv3Qr4qzb6gIl6SCRB2GH7dHBy2Ktl4PLkunCG/h0Qc+L9DmzxWWy05P+wtN0b1pe7fgnl7J2W5DCF9hCi8Dy+eVhObxBZmX7PlKRVHn93Abc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987709; c=relaxed/simple;
-	bh=+iDSsduQsBF1L1X8ULMAvCau10F+2KukV1MO9hNDekc=;
+	s=arc-20240116; t=1711991046; c=relaxed/simple;
+	bh=RE/EdN/mqQ2Cme8u0LE8eZ/4IdtHarU+vyRZLO4KNVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PN9MWNOUZqaXLNHXsGGXm9Zlwa+0mDtByi1tsk7F0Dj4EfHaQDrIXe5PRemIoAJIc5rPN8+Y6pcx/XbSZw0asDx1nm31/wTrlUfTCoFsYBlYoGXp5ngEpa8N8meCJTNehM1YqG5KxALoidZGflXHa1gGA1XY67EsyEiTonCDZ5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xtc5icRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9ED3C43394;
-	Mon,  1 Apr 2024 16:08:28 +0000 (UTC)
+	 MIME-Version; b=GLtVOMx4ksvyTkCKTXIV//lqt6S6dy3dMrfvbfSkV0CP78EsShbdxZZSP9ucYwqvVCLr77ru3xHaBg0FHXj/+KqmB5xtfzrMyX03g2GSGN4Q0E9DXbVvq2Imt/mimppNUHfV47ar0XOJAi0Ivhu+6OTFynzhsIkBm3UmECv21JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMNG1wBo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8188C433F1;
+	Mon,  1 Apr 2024 17:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987709;
-	bh=+iDSsduQsBF1L1X8ULMAvCau10F+2KukV1MO9hNDekc=;
+	s=korg; t=1711991046;
+	bh=RE/EdN/mqQ2Cme8u0LE8eZ/4IdtHarU+vyRZLO4KNVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xtc5icRbA0MUV+qxP0jyWoMO6kN+PQNEGrM8sspk+7/tz2ZQTDFgkW8HBMqswu+19
-	 kHgqFCzr2WM6v/6znWdxiShTbYOJIN1VrDMmmxPiFcUeECluObd731qa8lkdPjz+Ma
-	 XzjiQIgTDX2CbIQ9YeyNOxa/j6ESWUIrWHn+aqqc=
+	b=rMNG1wBorL3cTm+Qj3Sf/EXHN4GSuPWNU7fd++lK7AlB65Bo/qyOBj5CyLH8uohF4
+	 tok1sxctgvxVVSoOKe1Yq34txaAIr25OojBUdBEJo6ixFlI6/UDL8CtZmfqCPWbzq8
+	 s6iNitqIsQbKRxkpuDBoQbcFm3JZCQhQRXNtK6fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.8 369/399] usb: typec: tcpm: Correct port source pdo array in pd_set callback
+	Mingi Cho <mgcho.minic@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 145/272] netfilter: nf_tables: mark set as dead when unbinding anonymous set with timeout
 Date: Mon,  1 Apr 2024 17:45:35 +0200
-Message-ID: <20240401152600.191642477@linuxfoundation.org>
+Message-ID: <20240401152535.219616375@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 893cd9469c68a89a34956121685617dbb37497b1 upstream.
+commit 552705a3650bbf46a22b1adedc1b04181490fc36 upstream.
 
-In tcpm_pd_set, the array of port source capabilities is port->src_pdo,
-not port->snk_pdo.
+While the rhashtable set gc runs asynchronously, a race allows it to
+collect elements from anonymous sets with timeouts while it is being
+released from the commit path.
 
-Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
+Mingi Cho originally reported this issue in a different path in 6.1.x
+with a pipapo set with low timeouts which is not possible upstream since
+7395dfacfff6 ("netfilter: nf_tables: use timestamp to check for set
+element timeout").
+
+Fix this by setting on the dead flag for anonymous sets to skip async gc
+in this case.
+
+According to 08e4c8c5919f ("netfilter: nf_tables: mark newset as dead on
+transaction abort"), Florian plans to accelerate abort path by releasing
+objects via workqueue, therefore, this sets on the dead flag for abort
+path too.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240311144500.3694849-1-kyletso@google.com
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Reported-by: Mingi Cho <mgcho.minic@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6117,7 +6117,7 @@ static int tcpm_pd_set(struct typec_port
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5132,6 +5132,7 @@ static void nf_tables_unbind_set(const s
  
- 	if (data->source_desc.pdo[0]) {
- 		for (i = 0; i < PDO_MAX_OBJECTS && data->source_desc.pdo[i]; i++)
--			port->snk_pdo[i] = data->source_desc.pdo[i];
-+			port->src_pdo[i] = data->source_desc.pdo[i];
- 		port->nr_src_pdo = i + 1;
- 	}
- 
+ 	if (list_empty(&set->bindings) && nft_set_is_anonymous(set)) {
+ 		list_del_rcu(&set->list);
++		set->dead = 1;
+ 		if (event)
+ 			nf_tables_set_notify(ctx, set, NFT_MSG_DELSET,
+ 					     GFP_KERNEL);
 
 
 
