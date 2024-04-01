@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-34109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EAB0893DE7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:57:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A28893DF1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0EA9B228E0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:57:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D00D28345E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E7247768;
-	Mon,  1 Apr 2024 15:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B68047768;
+	Mon,  1 Apr 2024 15:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7lbTuDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H252e6En"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D9C17552;
-	Mon,  1 Apr 2024 15:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B8417552;
+	Mon,  1 Apr 2024 15:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987028; cv=none; b=GA4yPov+43SsDNWIGvY09o/M2OaY4+d+F734TFVsnBtNj1+aQKP3GfHNAMMmp9MmROXB/4d8j42MuVV24zFyx7VovJuDCJMb4OYmGFnSYqHtblX62xlpDGNyacvqTFcD0nC/ggwdri3Z1v1i2NDlVAbCKpwon/V9nDH0+2Wwj0Q=
+	t=1711987041; cv=none; b=ny0HaCDDxMq3PuwT1qCJgMUgDLCk9010ZSV+R4Es9h0eGT7aLE7nIfD7ND1iSOEIDkobgHxqoDGJgUuJT9h6gutRP1uP3ZP7/4V6pdfeLCHYnge2wSpzoZYsZ/tL4ewQgfs7uxqZPbBW9hpx2jSLCBikJ4CI1b6ytkhz9M0HUx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987028; c=relaxed/simple;
-	bh=C383EhdycxfArOnLJFnrYPH5dBGdcaqxEyCOBkqD2To=;
+	s=arc-20240116; t=1711987041; c=relaxed/simple;
+	bh=aGPVU3Uhl4pIDU0ZCPOvWb6rH91nPHQb84BHtUXqcxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFH312ZwZBhfQZsANGzDN4Z6bm5aSiUWstuvUe85eniaPuPk09PI93/oIdjiyKHHnv5LSgQcHiHSrKUOp7Zd/e5FloSh6ENww0FnmxdrjsojTi7n/77/YAEDMQAng8Ep9XewDMbxA4ioFG3MA9unLDi5NUNI1sFXB3vv5/jgZo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7lbTuDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF4AC433C7;
-	Mon,  1 Apr 2024 15:57:07 +0000 (UTC)
+	 MIME-Version; b=sWtiR3IunAKOzOD1GqEvrL7zqftzUzVbGTdadRFKxfnp3S0MslNLvqaMXlWSMvgwqkuVlS2V+JoaxsReelUbPpDp7+jEtvB+XL2P9ibCQo4HGiTCdAr07ZyXBNzBvKVr1M4JjO+e3jjxCr42vxXxg2JmT6lYPRKLaDQFVgzGh+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H252e6En; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8108BC433C7;
+	Mon,  1 Apr 2024 15:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987028;
-	bh=C383EhdycxfArOnLJFnrYPH5dBGdcaqxEyCOBkqD2To=;
+	s=korg; t=1711987040;
+	bh=aGPVU3Uhl4pIDU0ZCPOvWb6rH91nPHQb84BHtUXqcxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I7lbTuDCE6xZIIS9t6ddrB9AknwTjf3G0NQpDK5esHiFyjPgfRYxRnbpTIeei7D8j
-	 GFBGitUGxN4wUW4SNpGb9sqtlZBvZdD9QHhRAak6kR8bTJS753wa45vSiPLFMv4vuw
-	 3McpgyprTLM1ySnYgMVc+afK97VX6YPedawNh5zE=
+	b=H252e6Env7dBIf/wkaugKcNIaOqXU6jijhvuH5zEyA1chYmqTv4EjEq5JoOJNd1U6
+	 XX4WOmtSI/t1Owdgntd/UUJCMu39ZQtpYm6c4oL/vQBX7omQ79PuLf2yAhn7n9ocoN
+	 sl02e802n9JkRjX+Gh3aex2Fo6uXQ7j7d60xlAWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 134/399] io_uring: fix mshot io-wq checks
-Date: Mon,  1 Apr 2024 17:41:40 +0200
-Message-ID: <20240401152553.189985801@linuxfoundation.org>
+Subject: [PATCH 6.8 135/399] PCI: qcom: Disable ASPM L0s for sc8280xp, sa8540p and sa8295p
+Date: Mon,  1 Apr 2024 17:41:41 +0200
+Message-ID: <20240401152553.219028127@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -66,38 +67,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 3a96378e22cc46c7c49b5911f6c8631527a133a9 ]
+[ Upstream commit d1997c98781459f7b6d0bf1858f538f48454a97b ]
 
-When checking for concurrent CQE posting, we're not only interested in
-requests running from the poll handler but also strayed requests ended
-up in normal io-wq execution. We're disallowing multishots in general
-from io-wq, not only when they came in a certain way.
+Commit 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting
+1.9.0 ops") started enabling ASPM unconditionally when the hardware
+claims to support it. This triggers Correctable Errors for some PCIe
+devices on machines like the Lenovo ThinkPad X13s when L0s is enabled,
+which could indicate an incomplete driver ASPM implementation or that
+the hardware does in fact not support L0s.
 
-Cc: stable@vger.kernel.org
-Fixes: 17add5cea2bba ("io_uring: force multishot CQEs into task context")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/d8c5b36a39258036f93301cd60d3cd295e40653d.1709905727.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This has now been confirmed by Qualcomm to be the case for sc8280xp and
+its derivate platforms (e.g. sa8540p and sa8295p). Specifically, the PHY
+configuration used on these platforms is not correctly tuned for L0s and
+there is currently no updated configuration available.
+
+Add a new flag to the driver configuration data and use it to disable
+ASPM L0s on sc8280xp, sa8540p and sa8295p for now.
+
+Note that only the 1.9.0 ops enable ASPM currently.
+
+Link: https://lore.kernel.org/r/20240306095651.4551-4-johan+linaro@kernel.org
+Fixes: 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org      # 6.7
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 31 ++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 386a6745ae32f..5a4001139e288 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -87,7 +87,7 @@ static inline bool io_check_multishot(struct io_kiocb *req,
- 	 * generic paths but multipoll may decide to post extra cqes.
- 	 */
- 	return !(issue_flags & IO_URING_F_IOWQ) ||
--		!(issue_flags & IO_URING_F_MULTISHOT) ||
-+		!(req->flags & REQ_F_APOLL_MULTISHOT) ||
- 		!req->ctx->task_complete;
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 2ce2a3bd932bd..9f83a1611a207 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -229,6 +229,7 @@ struct qcom_pcie_ops {
+ 
+ struct qcom_pcie_cfg {
+ 	const struct qcom_pcie_ops *ops;
++	bool no_l0s;
+ };
+ 
+ struct qcom_pcie {
+@@ -272,6 +273,26 @@ static int qcom_pcie_start_link(struct dw_pcie *pci)
+ 	return 0;
  }
  
++static void qcom_pcie_clear_aspm_l0s(struct dw_pcie *pci)
++{
++	struct qcom_pcie *pcie = to_qcom_pcie(pci);
++	u16 offset;
++	u32 val;
++
++	if (!pcie->cfg->no_l0s)
++		return;
++
++	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++
++	dw_pcie_dbi_ro_wr_en(pci);
++
++	val = readl(pci->dbi_base + offset + PCI_EXP_LNKCAP);
++	val &= ~PCI_EXP_LNKCAP_ASPM_L0S;
++	writel(val, pci->dbi_base + offset + PCI_EXP_LNKCAP);
++
++	dw_pcie_dbi_ro_wr_dis(pci);
++}
++
+ static void qcom_pcie_clear_hpc(struct dw_pcie *pci)
+ {
+ 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+@@ -961,6 +982,7 @@ static int qcom_pcie_init_2_7_0(struct qcom_pcie *pcie)
+ 
+ static int qcom_pcie_post_init_2_7_0(struct qcom_pcie *pcie)
+ {
++	qcom_pcie_clear_aspm_l0s(pcie->pci);
+ 	qcom_pcie_clear_hpc(pcie->pci);
+ 
+ 	return 0;
+@@ -1358,6 +1380,11 @@ static const struct qcom_pcie_cfg cfg_2_9_0 = {
+ 	.ops = &ops_2_9_0,
+ };
+ 
++static const struct qcom_pcie_cfg cfg_sc8280xp = {
++	.ops = &ops_1_9_0,
++	.no_l0s = true,
++};
++
+ static const struct dw_pcie_ops dw_pcie_ops = {
+ 	.link_up = qcom_pcie_link_up,
+ 	.start_link = qcom_pcie_start_link,
+@@ -1629,11 +1656,11 @@ static const struct of_device_id qcom_pcie_match[] = {
+ 	{ .compatible = "qcom,pcie-ipq8074-gen3", .data = &cfg_2_9_0 },
+ 	{ .compatible = "qcom,pcie-msm8996", .data = &cfg_2_3_2 },
+ 	{ .compatible = "qcom,pcie-qcs404", .data = &cfg_2_4_0 },
+-	{ .compatible = "qcom,pcie-sa8540p", .data = &cfg_1_9_0 },
++	{ .compatible = "qcom,pcie-sa8540p", .data = &cfg_sc8280xp },
+ 	{ .compatible = "qcom,pcie-sa8775p", .data = &cfg_1_9_0},
+ 	{ .compatible = "qcom,pcie-sc7280", .data = &cfg_1_9_0 },
+ 	{ .compatible = "qcom,pcie-sc8180x", .data = &cfg_1_9_0 },
+-	{ .compatible = "qcom,pcie-sc8280xp", .data = &cfg_1_9_0 },
++	{ .compatible = "qcom,pcie-sc8280xp", .data = &cfg_sc8280xp },
+ 	{ .compatible = "qcom,pcie-sdm845", .data = &cfg_2_7_0 },
+ 	{ .compatible = "qcom,pcie-sdx55", .data = &cfg_1_9_0 },
+ 	{ .compatible = "qcom,pcie-sm8150", .data = &cfg_1_9_0 },
 -- 
 2.43.0
 
