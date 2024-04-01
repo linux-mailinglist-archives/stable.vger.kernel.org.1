@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B8F89415E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7A8893F9D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E7C1C21387
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B18B01C20DDF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2695D4654F;
-	Mon,  1 Apr 2024 16:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C31247A76;
+	Mon,  1 Apr 2024 16:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTP6MSuY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdF9Xtof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3CC3BBC3;
-	Mon,  1 Apr 2024 16:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD16B47A74;
+	Mon,  1 Apr 2024 16:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989682; cv=none; b=VJ9pcJ3g/rzNKWCTCyxcg6aFY7kfbVEzUOsdLpxEWLRgjDfyFA2e5Hnza4CukkFOxIA1ZTbjfCCkHL2h2fnTaQdpkQwodEX1i3UysadE96Q3NFSeQQ0j3PSIjpnDQ8vnVNQ22myT7iUEuMuta1RGwsv8QavuybtY/BIVv7EF1do=
+	t=1711988339; cv=none; b=CG6lJoDwFqty4d0SNDMgjbe62GmZM+8+I18p9IocS2Uhjr8wkY+GD1BelK8l14OIIPcKNDL0uHwQe34ZT6CNVq045vCM3vE/ydpJQXSuXKBmXvUcQn5hZoObn+L4YBKnCo4y9desvVCA4on7PG4v9qV/ahaagfjBlM+0xm+NFBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989682; c=relaxed/simple;
-	bh=g1u4GcYDZ5hyoQ4MfOnV/wCqy1pcLnuCFPcyOVRybBk=;
+	s=arc-20240116; t=1711988339; c=relaxed/simple;
+	bh=E+2d6KVodRoinNr7EeThB2ivt4v5vxwk+Kt4nTLwcXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syqZPRCVBv0lNTF1PeGBGuKoTNJFKwiepvJoWw6znBtOLTrzaVgfxheeuZyPKJXRX2S+1yGOsSRTS2SE2lKQj4Fa8OdciudAoonlUY4sFRQY3v/bwxrJNilxsDSiHJ5Qu42BLFKtZkzcIkMByO+w5AXw7oUiR0E+3ClR7C0mJL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTP6MSuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EDCC433F1;
-	Mon,  1 Apr 2024 16:41:22 +0000 (UTC)
+	 MIME-Version; b=X+r4vpj+8U5PxAsNwKzks1U+t1DI2S/1Jbz7lpXIVVfZo3RTj9NIFchN3XxW32de2O4wkIZDnR8LziwnsgNSdtczEALpeWPj6Dv/fOd3dAlTqR17EsG+5ri6SI461Bu1IxtCGthHTjRC99z5diIIzBJAwrOXeewv8ecXZ7DowKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdF9Xtof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D698C433C7;
+	Mon,  1 Apr 2024 16:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989682;
-	bh=g1u4GcYDZ5hyoQ4MfOnV/wCqy1pcLnuCFPcyOVRybBk=;
+	s=korg; t=1711988339;
+	bh=E+2d6KVodRoinNr7EeThB2ivt4v5vxwk+Kt4nTLwcXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTP6MSuYReviUUWPl0LhYEBeFVd539dJtPRdAE4aQ78OHSr0luYVhgc450sDiilRB
-	 Oz59zvTi/irztvgu7U51jazj5kJiDYLVI01qqiPNzbHM48P49F48rkDeicEFncdQod
-	 dcT4nKHpnOG6rzl+U02yX4Ad9MF81gzgYw5EPPb8=
+	b=RdF9Xtof6uDA/RijM1H/V7kRMncx6JfU4K/25IYE+JySySYgvdhXF+yGBfv1kAYlv
+	 FVRpAyBlN6L/awzaJBaRpNA/Ve5NHpjkoLGpi5I78Kb7XZmIPa2SpZoxxjP9xbMBI3
+	 lWhKRBkbPgYvSiQcZvxPa8BCm3K/62bD/5Gd5/3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ricky Wu <ricky_wu@realtek.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/396] PCI/PM: Drain runtime-idle callbacks before driver removal
+Subject: [PATCH 6.7 155/432] io_uring: clean rings on NO_MMAP alloc fail
 Date: Mon,  1 Apr 2024 17:42:22 +0200
-Message-ID: <20240401152550.695416519@linuxfoundation.org>
+Message-ID: <20240401152557.766700385@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 9d5286d4e7f68beab450deddbb6a32edd5ecf4bf ]
+[ Upstream commit cef59d1ea7170ec753182302645a0191c8aa3382 ]
 
-A race condition between the .runtime_idle() callback and the .remove()
-callback in the rtsx_pcr PCI driver leads to a kernel crash due to an
-unhandled page fault [1].
+We make a few cancellation judgements based on ctx->rings, so let's
+zero it afer deallocation for IORING_SETUP_NO_MMAP just like it's
+done with the mmap case. Likely, it's not a real problem, but zeroing
+is safer and better tested.
 
-The problem is that rtsx_pci_runtime_idle() is not expected to be running
-after pm_runtime_get_sync() has been called, but the latter doesn't really
-guarantee that.  It only guarantees that the suspend and resume callbacks
-will not be running when it returns.
-
-However, if a .runtime_idle() callback is already running when
-pm_runtime_get_sync() is called, the latter will notice that the runtime PM
-status of the device is RPM_ACTIVE and it will return right away without
-waiting for the former to complete.  In fact, it cannot wait for
-.runtime_idle() to complete because it may be called from that callback (it
-arguably does not make much sense to do that, but it is not strictly
-prohibited).
-
-Thus in general, whoever is providing a .runtime_idle() callback needs
-to protect it from running in parallel with whatever code runs after
-pm_runtime_get_sync().  [Note that .runtime_idle() will not start after
-pm_runtime_get_sync() has returned, but it may continue running then if it
-has started earlier.]
-
-One way to address that race condition is to call pm_runtime_barrier()
-after pm_runtime_get_sync() (not before it, because a nonzero value of the
-runtime PM usage counter is necessary to prevent runtime PM callbacks from
-being invoked) to wait for the .runtime_idle() callback to complete should
-it be running at that point.  A suitable place for doing that is in
-pci_device_remove() which calls pm_runtime_get_sync() before removing the
-driver, so it may as well call pm_runtime_barrier() subsequently, which
-will prevent the race in question from occurring, not just in the rtsx_pcr
-driver, but in any PCI drivers providing .runtime_idle() callbacks.
-
-Link: https://lore.kernel.org/lkml/20240229062201.49500-1-kai.heng.feng@canonical.com/ # [1]
-Link: https://lore.kernel.org/r/5761426.DvuYhMxLoT@kreacher
-Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Ricky Wu <ricky_wu@realtek.com>
-Acked-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: <stable@vger.kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 03d89a2de25bbc ("io_uring: support for user allocated memory for rings/sqes")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/9ff6cdf91429b8a51699c210e1f6af6ea3f8bdcf.1710255382.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ io_uring/io_uring.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 51ec9e7e784f0..9c59bf03d6579 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -473,6 +473,13 @@ static void pci_device_remove(struct device *dev)
- 
- 	if (drv->remove) {
- 		pm_runtime_get_sync(dev);
-+		/*
-+		 * If the driver provides a .runtime_idle() callback and it has
-+		 * started to run already, it may continue to run in parallel
-+		 * with the code below, so wait until all of the runtime PM
-+		 * activity has completed.
-+		 */
-+		pm_runtime_barrier(dev);
- 		drv->remove(pci_dev);
- 		pm_runtime_put_noidle(dev);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 45d6e440bdc04..13a9d9fcd2ecd 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2757,14 +2757,15 @@ static void io_rings_free(struct io_ring_ctx *ctx)
+ 	if (!(ctx->flags & IORING_SETUP_NO_MMAP)) {
+ 		io_mem_free(ctx->rings);
+ 		io_mem_free(ctx->sq_sqes);
+-		ctx->rings = NULL;
+-		ctx->sq_sqes = NULL;
+ 	} else {
+ 		io_pages_free(&ctx->ring_pages, ctx->n_ring_pages);
+ 		ctx->n_ring_pages = 0;
+ 		io_pages_free(&ctx->sqe_pages, ctx->n_sqe_pages);
+ 		ctx->n_sqe_pages = 0;
  	}
++
++	ctx->rings = NULL;
++	ctx->sq_sqes = NULL;
+ }
+ 
+ void *io_mem_alloc(size_t size)
 -- 
 2.43.0
 
