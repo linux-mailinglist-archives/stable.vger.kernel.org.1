@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-34669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554FB89404E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4C18941E6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B4451F2213B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 604481F22D9D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA99481B3;
-	Mon,  1 Apr 2024 16:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0FA481B8;
+	Mon,  1 Apr 2024 16:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIxUvIKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hXZlLTO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2854F3D961;
-	Mon,  1 Apr 2024 16:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1FA433DA;
+	Mon,  1 Apr 2024 16:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988898; cv=none; b=jZyG3Qw0LOmjxi7TXjbQA+8cDrKzUkq1kJ6/KS+ogdk4dPV7J5hPrLAJuny3lL9zk3lRsiYJ5xYrOgj0qvDIEh/ByjbiiJC0VUMc3Cn4EWMNPFGKESLI9k9VtcJ3BX5J3by8+AD3t8O0AMI85ygP55eduWMhPge7tdQ6txAGvd0=
+	t=1711990050; cv=none; b=UwsrMwEdcHU10mLOmFu1IY9jjC2BUpACVKIocxTcAdW8O/Qt2lXoNs4Cr580BFKNoLv/GRdzrPB7/DddWREZl02aBjtLdON6r7TrpmCVw1Q1axFqWplEf+4J7QUrjir2AxEU8kRfKlQQuInjKUjHRY4GA3AgoG4IH0mMRogmAJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988898; c=relaxed/simple;
-	bh=IvTe5IArURdZYNjl8W/Sjx4IdV+Ir+7h40dKFN09IeU=;
+	s=arc-20240116; t=1711990050; c=relaxed/simple;
+	bh=78jwE1bXNZLWw/oOFyZBDcg0VVeChEfmxjTxcmF3UQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G38VLmkEr57n+Z4rAtO4NLoQXrRbTyAYNp2EwwJxxesyQ2YItLGflg5Lg3VUYwMuhgvLHLwqjGZ095LUMYRjm9RYgKK8i+2xkwl9tR0+DdK/q8JwWUBJS79tOjzGgXLm0Cu7HHuX/MAhj6mzn1HcROs9TNaKebLL1mHx8Iy0OXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIxUvIKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2F6C433C7;
-	Mon,  1 Apr 2024 16:28:17 +0000 (UTC)
+	 MIME-Version; b=t5GEed2OI9Of85meSADh0TtsQowSDDwZdSyIvYH4OxlkipIe3Qw2jSTd40Htm1Y9CwSBg0pV5CGRF+uzYtVDYxVdvFlHJN21503ymcsC+2Xbq+RspOKH/ZyY9Pj7nAubzXQGbR6fsREdvZho5xcBXucIhgwHo4roF56UyM8kJAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hXZlLTO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D38C433C7;
+	Mon,  1 Apr 2024 16:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988898;
-	bh=IvTe5IArURdZYNjl8W/Sjx4IdV+Ir+7h40dKFN09IeU=;
+	s=korg; t=1711990050;
+	bh=78jwE1bXNZLWw/oOFyZBDcg0VVeChEfmxjTxcmF3UQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIxUvIKy+bP1nGPjVOV9ZT76565xn3VQ+eRaTcSgESu4/fdjX+X7UOEewQyg2VhiM
-	 yB6PTmxpBQlmhIb5PKVPej1mhwyIaYb20N+CYLZxwCL9gLWRbk5eGzCF7tspL9R+/Q
-	 myczZIU7FZBvr7jT/3HQ7gGLO8tEtqeWZCqEpVbI=
+	b=2hXZlLTOVYO3fhDabWUMkLCBxEs/t6v/kbbQvumS00A5p83B4ezDE0hKo958epbgN
+	 lpyJqhKkZx3eYawoAKAOAQh+yQogEWApazGGvy+3QKtXAGKmxP4xX+PW8cESxhHVjH
+	 QtZ0R+wl0g6STivWMFU+lFQ+4SWloWkcITWvxEhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohit Keshri <rkeshri@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Linus Torvalds <torvalds@linuxfoundation.org>
-Subject: [PATCH 6.7 293/432] Fix memory leak in posix_clock_open()
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 6.6 231/396] mei: me: add arrow lake point S DID
 Date: Mon,  1 Apr 2024 17:44:40 +0200
-Message-ID: <20240401152601.908758564@linuxfoundation.org>
+Message-ID: <20240401152554.805080986@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 5b4cdd9c5676559b8a7c944ac5269b914b8c0bb8 upstream.
+commit 7a9b9012043e126f6d6f4683e67409312d1b707b upstream.
 
-If the clk ops.open() function returns an error, we don't release the
-pccontext we allocated for this clock.
+Add Arrow Lake S device id.
 
-Re-organize the code slightly to make it all more obvious.
-
-Reported-by: Rohit Keshri <rkeshri@redhat.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Fixes: 60c6946675fc ("posix-clock: introduce posix_clock_context concept")
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240211103912.117105-1-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/posix-clock.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -129,15 +129,17 @@ static int posix_clock_open(struct inode
- 		goto out;
- 	}
- 	pccontext->clk = clk;
--	fp->private_data = pccontext;
--	if (clk->ops.open)
-+	if (clk->ops.open) {
- 		err = clk->ops.open(pccontext, fp->f_mode);
--	else
--		err = 0;
--
--	if (!err) {
--		get_device(clk->dev);
-+		if (err) {
-+			kfree(pccontext);
-+			goto out;
-+		}
- 	}
-+
-+	fp->private_data = pccontext;
-+	get_device(clk->dev);
-+	err = 0;
- out:
- 	up_read(&clk->rwsem);
- 	return err;
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -112,6 +112,7 @@
+ #define MEI_DEV_ID_RPL_S      0x7A68  /* Raptor Lake Point S */
+ 
+ #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
++#define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
+ 
+ /*
+  * MEI HW Section
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -119,6 +119,7 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
++	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
+ 	{0, }
 
 
 
