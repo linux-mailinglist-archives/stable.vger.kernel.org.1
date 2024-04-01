@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-34748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BF88940AA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C67E8943B2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7DCC1F22684
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDF041C21BB7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D92438DD8;
-	Mon,  1 Apr 2024 16:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6900748CDD;
+	Mon,  1 Apr 2024 17:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/7GnEQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMfgDf1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D031C0DE7;
-	Mon,  1 Apr 2024 16:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268DB38DE5;
+	Mon,  1 Apr 2024 17:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989165; cv=none; b=qqCK7/KpxNkSFOuNC+1SVQk29j5PyoeOfsjTU81VUmZA2penEk+WQD7vBMcp0AZz0WTcMQk53eW9e66HlrDA/1rPCVQjXjBm6Yy7BBnhL2HzLf7/ws1PwIqEB6/3BksbTB9+3qYROgV9dC8aIYJbVAtkA+9JMkehqF9L/5LxWeA=
+	t=1711991216; cv=none; b=Ae1i0mQXUy2brSLHqK8SIWpmlZ7ocb6Nkiizp5VZs6ZqJIPvpVqcotLJ+HJgSrVJEVPHWAMmS5ZxFI7EFoO6tMSk8gy6Zchk8/kRbKFhRtGmakM/kqZZsb9G/DuEFPJmgLEEzauSKpAqi8jaLwAv37wQW2fxlj0GN++fICmTy7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989165; c=relaxed/simple;
-	bh=OrDzF7crZN2eltkiWiUvqfoT630wTMQ0iGjZV5Yb5EY=;
+	s=arc-20240116; t=1711991216; c=relaxed/simple;
+	bh=W9HKN0ve170sj9I8vC1bD5k+OGtu2E0m7Seej9T9fyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MpPM+LREDeJqVh9z1VErQmI9MLDHpCEP6TWzzm5RyKjwkjozsANTsgoMgrDImlkwljODwDxcJN03FXz+Zhlh1m2P6URPGryvugI+NN465YO7fMwSpYMJ/XMok61bMS+cMIVkrxJ1bqkT3y4PftPN8CCM2SVyiFOGswZoVgehdAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/7GnEQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7DDC43390;
-	Mon,  1 Apr 2024 16:32:44 +0000 (UTC)
+	 MIME-Version; b=uA6RSqkHxYT0jxIYJC2kYIS3TyekgvlHOrIA+ncaL1SUTJxxQiBVYp1XLTsMzu+ss7l/CjUNbKEGWreYxBAPqbThfM1QMHOO1wOmtUN4/0FY8P+lk8UQr3hg8HUbJWBoOURhXagfNG4QkDfSRqZhewqJiOkoUgFMzgtVDNMgH4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMfgDf1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D5AC433F1;
+	Mon,  1 Apr 2024 17:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989164;
-	bh=OrDzF7crZN2eltkiWiUvqfoT630wTMQ0iGjZV5Yb5EY=;
+	s=korg; t=1711991215;
+	bh=W9HKN0ve170sj9I8vC1bD5k+OGtu2E0m7Seej9T9fyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/7GnEQvrta5M6E8im2B3lzHJhO/ZBki2Qm7rlHJVDgJU+cg1peaxGrFq9DLT1STn
-	 tq8wDk/XZRPS1RuhyuZ+hnTNB9x3HmeiFPHoZETs4PeUCyExVGk1bDSoH8e9ZPggw8
-	 d69wMfKn1dL3OPope/sKcap7tJvcl9z2rguIZWvU=
+	b=YMfgDf1TH0Yur6ErNZelfvf+LrSEXhfSxrDgrcAafL35DCARwu7hG5t/v+oHWMpU2
+	 IyRJSkpadcrb5QXBDqAS7jg2QmBvYMAhdbpFB/eklL0itrEQGzzgAmkHt4XFgVYVmZ
+	 3TrgJ3QdJmOfDoisDEeLVvP5IBo8Xv+fJW7auFuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.7 400/432] usb: dwc2: host: Fix hibernation flow
+	Tony Battersby <tonyb@cybernetics.com>,
+	Greg Edwards <gedwards@ddn.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 197/272] block: Fix page refcounts for unaligned buffers in __bio_release_pages()
 Date: Mon,  1 Apr 2024 17:46:27 +0200
-Message-ID: <20240401152605.298646072@linuxfoundation.org>
+Message-ID: <20240401152537.042085411@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-commit 3c7b9856a82227db01a20171d2e24c7ce305d59b upstream.
+commit 38b43539d64b2fa020b3b9a752a986769f87f7a6 upstream.
 
-Added to backup/restore registers HFLBADDR, HCCHARi, HCSPLTi,
-HCTSIZi, HCDMAi and HCDMABi.
+Fix an incorrect number of pages being released for buffers that do not
+start at the beginning of a page.
 
-Fixes: 58e52ff6a6c3 ("usb: dwc2: Move register save and restore functions")
-Fixes: d17ee77b3044 ("usb: dwc2: add controller hibernation support")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/c2d10ee6098b9b009a8e94191e046004747d3bdd.1708945444.git.Minas.Harutyunyan@synopsys.com
+Fixes: 1b151e2435fc ("block: Remove special-casing of compound pages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Tested-by: Greg Edwards <gedwards@ddn.com>
+Link: https://lore.kernel.org/r/86e592a9-98d4-4cff-a646-0c0084328356@cybernetics.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Tony: backport to v6.1 by replacing bio_release_page() loop with
+  folio_put_refs() as commits fd363244e883 and e4cc64657bec are not
+  present. ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/core.h |   12 ++++++++++++
- drivers/usb/dwc2/hcd.c  |   18 ++++++++++++++++--
- 2 files changed, 28 insertions(+), 2 deletions(-)
+ block/bio.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -729,8 +729,14 @@ struct dwc2_dregs_backup {
-  * struct dwc2_hregs_backup - Holds host registers state before
-  * entering partial power down
-  * @hcfg:		Backup of HCFG register
-+ * @hflbaddr:		Backup of HFLBADDR register
-  * @haintmsk:		Backup of HAINTMSK register
-+ * @hcchar:		Backup of HCCHAR register
-+ * @hcsplt:		Backup of HCSPLT register
-  * @hcintmsk:		Backup of HCINTMSK register
-+ * @hctsiz:		Backup of HCTSIZ register
-+ * @hdma:		Backup of HCDMA register
-+ * @hcdmab:		Backup of HCDMAB register
-  * @hprt0:		Backup of HPTR0 register
-  * @hfir:		Backup of HFIR register
-  * @hptxfsiz:		Backup of HPTXFSIZ register
-@@ -738,8 +744,14 @@ struct dwc2_dregs_backup {
-  */
- struct dwc2_hregs_backup {
- 	u32 hcfg;
-+	u32 hflbaddr;
- 	u32 haintmsk;
-+	u32 hcchar[MAX_EPS_CHANNELS];
-+	u32 hcsplt[MAX_EPS_CHANNELS];
- 	u32 hcintmsk[MAX_EPS_CHANNELS];
-+	u32 hctsiz[MAX_EPS_CHANNELS];
-+	u32 hcidma[MAX_EPS_CHANNELS];
-+	u32 hcidmab[MAX_EPS_CHANNELS];
- 	u32 hprt0;
- 	u32 hfir;
- 	u32 hptxfsiz;
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -5406,9 +5406,16 @@ int dwc2_backup_host_registers(struct dw
- 	/* Backup Host regs */
- 	hr = &hsotg->hr_backup;
- 	hr->hcfg = dwc2_readl(hsotg, HCFG);
-+	hr->hflbaddr = dwc2_readl(hsotg, HFLBADDR);
- 	hr->haintmsk = dwc2_readl(hsotg, HAINTMSK);
--	for (i = 0; i < hsotg->params.host_channels; ++i)
-+	for (i = 0; i < hsotg->params.host_channels; ++i) {
-+		hr->hcchar[i] = dwc2_readl(hsotg, HCCHAR(i));
-+		hr->hcsplt[i] = dwc2_readl(hsotg, HCSPLT(i));
- 		hr->hcintmsk[i] = dwc2_readl(hsotg, HCINTMSK(i));
-+		hr->hctsiz[i] = dwc2_readl(hsotg, HCTSIZ(i));
-+		hr->hcidma[i] = dwc2_readl(hsotg, HCDMA(i));
-+		hr->hcidmab[i] = dwc2_readl(hsotg, HCDMAB(i));
-+	}
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1112,19 +1112,16 @@ void __bio_release_pages(struct bio *bio
+ 	struct folio_iter fi;
  
- 	hr->hprt0 = dwc2_read_hprt0(hsotg);
- 	hr->hfir = dwc2_readl(hsotg, HFIR);
-@@ -5442,10 +5449,17 @@ int dwc2_restore_host_registers(struct d
- 	hr->valid = false;
+ 	bio_for_each_folio_all(fi, bio) {
+-		struct page *page;
+-		size_t done = 0;
++		size_t nr_pages;
  
- 	dwc2_writel(hsotg, hr->hcfg, HCFG);
-+	dwc2_writel(hsotg, hr->hflbaddr, HFLBADDR);
- 	dwc2_writel(hsotg, hr->haintmsk, HAINTMSK);
- 
--	for (i = 0; i < hsotg->params.host_channels; ++i)
-+	for (i = 0; i < hsotg->params.host_channels; ++i) {
-+		dwc2_writel(hsotg, hr->hcchar[i], HCCHAR(i));
-+		dwc2_writel(hsotg, hr->hcsplt[i], HCSPLT(i));
- 		dwc2_writel(hsotg, hr->hcintmsk[i], HCINTMSK(i));
-+		dwc2_writel(hsotg, hr->hctsiz[i], HCTSIZ(i));
-+		dwc2_writel(hsotg, hr->hcidma[i], HCDMA(i));
-+		dwc2_writel(hsotg, hr->hcidmab[i], HCDMAB(i));
-+	}
- 
- 	dwc2_writel(hsotg, hr->hprt0, HPRT0);
- 	dwc2_writel(hsotg, hr->hfir, HFIR);
+ 		if (mark_dirty) {
+ 			folio_lock(fi.folio);
+ 			folio_mark_dirty(fi.folio);
+ 			folio_unlock(fi.folio);
+ 		}
+-		page = folio_page(fi.folio, fi.offset / PAGE_SIZE);
+-		do {
+-			folio_put(fi.folio);
+-			done += PAGE_SIZE;
+-		} while (done < fi.length);
++		nr_pages = (fi.offset + fi.length - 1) / PAGE_SIZE -
++			   fi.offset / PAGE_SIZE + 1;
++		folio_put_refs(fi.folio, nr_pages);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(__bio_release_pages);
 
 
 
