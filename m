@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-34546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468D0893FCB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EF7894153
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8211F22175
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28CF8B20B17
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75574C129;
-	Mon,  1 Apr 2024 16:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00993BBC3;
+	Mon,  1 Apr 2024 16:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVyzrueL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NW/3RRrg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AB543AD6;
-	Mon,  1 Apr 2024 16:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A027C1E86C;
+	Mon,  1 Apr 2024 16:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988486; cv=none; b=RrSpo5NaJmlrizx2jT/PeU16Eq2U8Xl5R4UM3d17ZWW+V7YXTotIREtHYzW0bG+eApByY53bjjSHuunTjqOBE/V+MIDs3t2UCUMsCAscyoUDAdeKD79TmuHz87y7DwhHFkJaSsvHL4MnaE1BOhSNRajr2CYPtyBCsRx2vJYrIoI=
+	t=1711989641; cv=none; b=fQLupZtUBB4u01BGZp1xXyZMgczupKLoBB8n0zew8N0M4Ozr1qsfyRSUb1IiJUkn4YKnvyyCnC/ei5r/9hfGtdcgHPVGj1+ddCqr9m7A/HyPCVqfgyz56u/m5vQ6Qmy7yc1cEM6giuwn0GjNGyBaiqb1TnuocIa+Z/WBeEEMlE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988486; c=relaxed/simple;
-	bh=o3mz9TJ8eVGFABPUrshBN/IY+Rw6lGqrlUSjzE0UnrQ=;
+	s=arc-20240116; t=1711989641; c=relaxed/simple;
+	bh=FNQnGKW/68zelpx1pwGlWeDEONGyyuY1IHg1yppW4/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnQwlgnBg3yNbyBknzTVrbJbKxDhkY/3ypwzc1EZcWIJiVTptg/tyoOOP9v5OITLQa0s+hevotIVjClOvWW2ESXEfrHL2h8LqoGMB2y+giYTj0XiJCwc9gyBCJcBIWbtTL0TpSmnOLVBTB8RaKlgIAAmAk2xfTORRvLqxuFwgbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVyzrueL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE85BC433C7;
-	Mon,  1 Apr 2024 16:21:25 +0000 (UTC)
+	 MIME-Version; b=dC0+zMBwYJG44A7I9srDEVcszbtAtaz80qnB9jLQXJSNv7XUQ4Tt1Ws8FeR80qolUyKHp5SsEyVFOASy4cZOBBBDwNV8EhSnSyzAKEqYnUoLfbT8WYdwQIXADN3iL6S7eD5XbIzItng4Wch86HueFcLaJdW+UrS9oh6D4AOXDxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NW/3RRrg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32D5C433F1;
+	Mon,  1 Apr 2024 16:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988486;
-	bh=o3mz9TJ8eVGFABPUrshBN/IY+Rw6lGqrlUSjzE0UnrQ=;
+	s=korg; t=1711989641;
+	bh=FNQnGKW/68zelpx1pwGlWeDEONGyyuY1IHg1yppW4/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVyzrueLljU+SOmKjpl+GzKsiAt9LGdJGD15ZVQ+eAAbmSTxtMRDLegG0v2v/u2SZ
-	 7NSruOL0a2rDuKxiBYXBYPbcL6gJaECM+KXSG3ivp+SwiOURTGSwW+h63Uj6gn1LT4
-	 QzzZk28yRWILt8sohvL7qO6mBKfGlhCUeqfda2pg=
+	b=NW/3RRrguvraGLmntG8IT5dqadEYGFHvV2yWAExJc/PGVt7KTElRm5fF0Jtb4Wvy6
+	 TZYaDQaaME8ZvQ6uGC8kAasifTD77acwYojfV6UFV01SGHF8w3zQzwRwRpLjoCRvH2
+	 GLsqwLvrwHCpjLZlK3h6iaWPR0HEnEPBWHHNQU0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Stable@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 170/432] clocksource/drivers/timer-riscv: Clear timer interrupt on timer initialization
-Date: Mon,  1 Apr 2024 17:42:37 +0200
-Message-ID: <20240401152558.219641470@linuxfoundation.org>
+Subject: [PATCH 6.6 109/396] slimbus: core: Remove usage of the deprecated ida_simple_xx() API
+Date: Mon,  1 Apr 2024 17:42:38 +0200
+Message-ID: <20240401152551.168700611@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 8248ca30ef89f9cc74ace62ae1b9a22b5f16736c ]
+[ Upstream commit 89ffa4cccec54467446f141a79b9e36893079fb8 ]
 
-In the RISC-V specification, the stimecmp register doesn't have a default
-value. To prevent the timer interrupt from being triggered during timer
-initialization, clear the timer interrupt by writing stimecmp with a
-maximum value.
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Tested-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240306172330.255844-1-leyfoon.tan@starfivetech.com
+Note that the upper limit of ida_simple_get() is exclusive, but the one of
+ida_alloc_range() is inclusive. So change this change allows one more
+device. Previously address 0xFE was never used.
+
+Fixes: 46a2bb5a7f7e ("slimbus: core: Add slim controllers support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240224114137.85781-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-riscv.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/slimbus/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index 57857c0dfba97..1c732479a2c8d 100644
---- a/drivers/clocksource/timer-riscv.c
-+++ b/drivers/clocksource/timer-riscv.c
-@@ -101,6 +101,9 @@ static int riscv_timer_starting_cpu(unsigned int cpu)
- {
- 	struct clock_event_device *ce = per_cpu_ptr(&riscv_clock_event, cpu);
+diff --git a/drivers/slimbus/core.c b/drivers/slimbus/core.c
+index d43873bb5fe6d..01cbd46219810 100644
+--- a/drivers/slimbus/core.c
++++ b/drivers/slimbus/core.c
+@@ -436,8 +436,8 @@ static int slim_device_alloc_laddr(struct slim_device *sbdev,
+ 		if (ret < 0)
+ 			goto err;
+ 	} else if (report_present) {
+-		ret = ida_simple_get(&ctrl->laddr_ida,
+-				     0, SLIM_LA_MANAGER - 1, GFP_KERNEL);
++		ret = ida_alloc_max(&ctrl->laddr_ida,
++				    SLIM_LA_MANAGER - 1, GFP_KERNEL);
+ 		if (ret < 0)
+ 			goto err;
  
-+	/* Clear timer interrupt */
-+	riscv_clock_event_stop();
-+
- 	ce->cpumask = cpumask_of(cpu);
- 	ce->irq = riscv_clock_event_irq;
- 	if (riscv_timer_cannot_wake_cpu)
 -- 
 2.43.0
 
