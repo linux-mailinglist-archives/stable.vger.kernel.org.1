@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AD98940BB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8468943A3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A65421C214F4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1F57B21293
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C4A3613C;
-	Mon,  1 Apr 2024 16:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B5B481B8;
+	Mon,  1 Apr 2024 17:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9/1D2T2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXn2WwLu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0481C0DE7;
-	Mon,  1 Apr 2024 16:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E793438DE5;
+	Mon,  1 Apr 2024 17:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989221; cv=none; b=UHwQfGZ0VTRtsDHIPb6H0GgG+XiCjdfaJ0OVMszKczSb7giKiIhPjkKbQAmSCsAPZr/UmlzQBSiy1f9D1USvAhwVed2Tsb0/liPXouWlZoAiPyopdRgtFxeCrwMSasfNT9VVRxlIJn/cX/T9lu2zQ9OYzJjdkqHAYSoLkDH2aDA=
+	t=1711991179; cv=none; b=BEC9u5TLaHUQvZ0TsNF8+FKnJGdjDi9vRZs5mFLG8tzO0LZ58zFFABeuVK208BAaTPZMbhriaJsoPiwk5PQBS+OMM4lXHoyII2K3bhMgTfxoK0hB1IAGFp5Ql0FBFeEWZPGNqhDptfaPhiKvo7PAuYak/6cc8gsMPU0aEBwvhaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989221; c=relaxed/simple;
-	bh=sHKIn+dzk7gxoZUar1BwuJSRhTULBVt1fHBC4t1RQLc=;
+	s=arc-20240116; t=1711991179; c=relaxed/simple;
+	bh=jrcATL5q+VXGE06sjnBNf7AmJKEiZctN0VCBmhavxdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OwwbN6I2EwniC9gDGNMNZ2YoGLTx/V6i6YEDcSWTdDO0/fL9cpp3pM3+40yuIOm6kaQB6RNuyXKbDGZ+GTcjZlugLP1Szn9KhYfpmDas03t34lRFV0ZyFW7+M30h3HfYdeDRr16kuXOOXVMS2njsYAqIWjKKu9zY9Co/mqMG0EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9/1D2T2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5998C433C7;
-	Mon,  1 Apr 2024 16:33:40 +0000 (UTC)
+	 MIME-Version; b=suwn/7/2Cf07FOkSOoGFKOPbtfVkOhz04rJ17C+2NGkDFZNt9+fyhogZZKaZIrXdqMtok8BeslZhuhojHm2DBnC4/TQZjHmdfZkMJfOoMfRnu2n7np1ERbGv4GUlGL1KBeHb1slZBvxdMiaCfA6hIl0i2BwGcgT4TU7K+rfsKpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXn2WwLu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BE2C433C7;
+	Mon,  1 Apr 2024 17:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989221;
-	bh=sHKIn+dzk7gxoZUar1BwuJSRhTULBVt1fHBC4t1RQLc=;
+	s=korg; t=1711991178;
+	bh=jrcATL5q+VXGE06sjnBNf7AmJKEiZctN0VCBmhavxdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9/1D2T24LxGqRbEZC/YdZVRF3B+YT+oo3EWNblSGgYTZ284I8aMiIyssga1Gvm3B
-	 Xt8+Fn2MacgNGlY0veXyRCPmOsIV+I/LQWiQb1y02ICLl4vy77HIIBcTOQybpjYdmq
-	 Lf5DcBz9LJSkaKPvPELaMAU+WUMkpIcKzvTFaCd8=
+	b=nXn2WwLuN/YN7MqfKk1UDJ1nepXO2Jht++4K3cii3SLH/wT2kEY9N83ve0ARBNunW
+	 7eL9EBtOPllF860RUx2/K86I8wp1ptPsOPPtatiDVafspFbNVty6xVspwZceP3Ce1t
+	 sW13LsJN6kaVw7UOB3sUjrfwGu7GSjgkiQ+tMpHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Rawat <quic_nitirawa@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.7 389/432] scsi: ufs: qcom: Provide default cycles_in_1us value
-Date: Mon,  1 Apr 2024 17:46:16 +0200
-Message-ID: <20240401152604.922088100@linuxfoundation.org>
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 187/272] irqchip/renesas-rzg2l: Add macro to retrieve TITSR register offset based on registers index
+Date: Mon,  1 Apr 2024 17:46:17 +0200
+Message-ID: <20240401152536.695840646@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 81e2c1a0f8d3f62f4c9e80b20270aa3481c40524 upstream.
+[ Upstream commit 2eca4731cc66563b3919d8753dbd74d18c39f662 ]
 
-The MSM8996 DT doesn't provide frequency limits for the core_clk_unipro
-clock, which results in miscalculation of the cycles_in_1us value.  Provide
-the backwards-compatible default to support existing MSM8996 DT files.
+There are 2 TITSR registers available on the IA55 interrupt controller.
 
-Fixes: b4e13e1ae95e ("scsi: ufs: qcom: Add multiple frequency support for MAX_CORE_CLK_1US_CYCLES")
-Cc: Nitin Rawat <quic_nitirawa@quicinc.com>
-Cc: stable@vger.kernel.org # 6.7.x
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240218-msm8996-fix-ufs-v3-1-40aab49899a3@linaro.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a macro that retrieves the TITSR register offset based on it's
+index. This macro is useful in when adding suspend/resume support so both
+TITSR registers can be accessed in a for loop.
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231120111820.87398-7-claudiu.beznea.uj@bp.renesas.com
+Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -1397,8 +1397,10 @@ static int ufs_qcom_set_core_clk_ctrl(st
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 454af6faf42bc..a74391615ab38 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -28,8 +28,7 @@
+ #define ISCR				0x10
+ #define IITSR				0x14
+ #define TSCR				0x20
+-#define TITSR0				0x24
+-#define TITSR1				0x28
++#define TITSR(n)			(0x24 + (n) * 4)
+ #define TITSR0_MAX_INT			16
+ #define TITSEL_WIDTH			0x2
+ #define TSSR(n)				(0x30 + ((n) * 4))
+@@ -206,8 +205,7 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 	unsigned int hwirq = irqd_to_hwirq(d);
+ 	u32 titseln = hwirq - IRQC_TINT_START;
+-	u32 offset;
+-	u8 sense;
++	u8 index, sense;
+ 	u32 reg;
  
- 	list_for_each_entry(clki, head, list) {
- 		if (!IS_ERR_OR_NULL(clki->clk) &&
--			!strcmp(clki->name, "core_clk_unipro")) {
--			if (is_scale_up)
-+		    !strcmp(clki->name, "core_clk_unipro")) {
-+			if (!clki->max_freq)
-+				cycles_in_1us = 150; /* default for backwards compatibility */
-+			else if (is_scale_up)
- 				cycles_in_1us = ceil(clki->max_freq, (1000 * 1000));
- 			else
- 				cycles_in_1us = ceil(clk_get_rate(clki->clk), (1000 * 1000));
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+@@ -223,17 +221,17 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 		return -EINVAL;
+ 	}
+ 
+-	offset = TITSR0;
++	index = 0;
+ 	if (titseln >= TITSR0_MAX_INT) {
+ 		titseln -= TITSR0_MAX_INT;
+-		offset = TITSR1;
++		index = 1;
+ 	}
+ 
+ 	raw_spin_lock(&priv->lock);
+-	reg = readl_relaxed(priv->base + offset);
++	reg = readl_relaxed(priv->base + TITSR(index));
+ 	reg &= ~(IRQ_MASK << (titseln * TITSEL_WIDTH));
+ 	reg |= sense << (titseln * TITSEL_WIDTH);
+-	writel_relaxed(reg, priv->base + offset);
++	writel_relaxed(reg, priv->base + TITSR(index));
+ 	raw_spin_unlock(&priv->lock);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
