@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-34439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B4A893F5C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C53889411E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B47CB2046E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64201C21072
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF7847A79;
-	Mon,  1 Apr 2024 16:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366704778C;
+	Mon,  1 Apr 2024 16:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPbX6KuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/CimBdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674DB47A76;
-	Mon,  1 Apr 2024 16:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812D38DD8;
+	Mon,  1 Apr 2024 16:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988125; cv=none; b=Hq7+IjyjPp5cqFwGdZGejMhEtSxucJCdL6cJpntHeKJieRUk9zPQuB1mlBuZSlXlP7OkBNEBF7zL03SDL0VTJw/12g0jLFNWtMtLTj4b6lPudxXr5Bs5EMVzuO/VN55VjyZV+fP3/1yP8TzH5hbhH5nhmqnnPB8L/0P1klQ4gug=
+	t=1711989472; cv=none; b=Ikoq1X2+4TwdK+tlWKhKrjGLP3OUarArCauTsL5TbxGYwql9IM9AGyviIBSdvEFMmyEIDGzaiHG5HJG4PM1w4JvWYskBdTksV4waMa7hpZIKTJh1+JZHgIDbT5StuinIm/MpneRmare1guLamFJwVXgwp2P0u6EQbvKUkAv35i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988125; c=relaxed/simple;
-	bh=CSlI9hoty/O2jVCnQNOSrmxmhuQb2GvKMdiapVhLjjc=;
+	s=arc-20240116; t=1711989472; c=relaxed/simple;
+	bh=j5vHoVnODiCffhk7BgoLJNeMRN3k/u/d0UWgJnOl13g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OB1ZLywATlS6k41PRuO96+vz08nfgq9ahsS4b1JKVROsZ8i+bS9noi2nhE9NRs+imharfRVxNamxZ0gj7bpnbDp8Wev6Duy7mmWobzPw1IuWi++y8GYmhS9kSksXrCpnJ1nO7e4rrO/VGJFHcSCFEECTbsCZ2ZfjGPR0sg+6/Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPbX6KuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85486C433F1;
-	Mon,  1 Apr 2024 16:15:24 +0000 (UTC)
+	 MIME-Version; b=VzQ6NsTr9QZP3L3vIhqEXSEdFg2FuwScXK5FBvvRVqgGO5J4LbBnJWH+KceJlobuMdbwmARjC1jOYuwbZlcOubIQzWC1Ttg+BfCQFqoZ9N647Fg0LoNsLYaRkdpb5MQvT9p4fhiPBg7Ep444s4FXjAc6eB8NboZm2za5aqhXQjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/CimBdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E54C433F1;
+	Mon,  1 Apr 2024 16:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988125;
-	bh=CSlI9hoty/O2jVCnQNOSrmxmhuQb2GvKMdiapVhLjjc=;
+	s=korg; t=1711989471;
+	bh=j5vHoVnODiCffhk7BgoLJNeMRN3k/u/d0UWgJnOl13g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPbX6KuJnvHLM6R/XO320vCasyzsWAOR1pxohsvZ0rwijT49twdCUiwwtVkvGTTgT
-	 ZZgJyCa0EMRHqKx9+i0jDXhl9DZsj0kH3Hd+gg1leaWKWyk+Ll641XfhogvpiU1F/Y
-	 c6AEGf/M2W+Vj5FAYHg/7o/b8LlFsKZZzlRiJv84=
+	b=E/CimBdvGkGO9L/3EsNpR3hp6bXzqCzO9/3ixdVMbB8kR/aNGUvfR8E7lziW1oG3t
+	 KKggqAENnXh1yGIL2ALf0Ufn01lH19/B7K/Vqd0/92gQMluC9OQTBsfoKrfRCjXf+I
+	 hBtmz4vlEuTkioItRY/0PDXTJ4BWeHJX2AHIxfdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 091/432] usb: dwc3-am62: Disable wakeup at remove
-Date: Mon,  1 Apr 2024 17:41:18 +0200
-Message-ID: <20240401152555.839004017@linuxfoundation.org>
+Subject: [PATCH 6.6 030/396] powercap: intel_rapl: Fix a NULL pointer dereference
+Date: Mon,  1 Apr 2024 17:41:19 +0200
+Message-ID: <20240401152548.804256385@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 4ead695e6b3cac06543d7bc7241ab75aee4ea6a6 ]
+[ Upstream commit 2d1f5006ff95770da502f8cee2a224a1ff83866e ]
 
-Disable wakeup at remove.
-Fixes the below warnings on module unload and reload.
+A NULL pointer dereference is triggered when probing the MMIO RAPL
+driver on platforms with CPU ID not listed in intel_rapl_common CPU
+model list.
 
-> dwc3-am62 f900000.dwc3-usb: couldn't enable device as a wakeup source: -17
-> dwc3-am62 f910000.dwc3-usb: couldn't enable device as a wakeup source: -17
+This is because the intel_rapl_common module still probes on such
+platforms even if 'defaults_msr' is not set after commit 1488ac990ac8
+("powercap: intel_rapl: Allow probing without CPUID match"). Thus the
+MMIO RAPL rp->priv->defaults is NULL when registering to RAPL framework.
 
-Fixes: 4e3972b589da ("usb: dwc3-am62: Enable as a wakeup source by default")
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20240227-for-v6-9-am62-usb-errata-3-0-v4-2-0ada8ddb0767@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the problem by adding sanity check to ensure rp->priv->rapl_defaults
+is always valid.
+
+Fixes: 1488ac990ac8 ("powercap: intel_rapl: Allow probing without CPUID match")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Cc: 6.5+ <stable@vger.kernel.org> # 6.5+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-am62.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/powercap/intel_rapl_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/dwc3/dwc3-am62.c b/drivers/usb/dwc3/dwc3-am62.c
-index f85603b7f7c5e..ea6e29091c0c9 100644
---- a/drivers/usb/dwc3/dwc3-am62.c
-+++ b/drivers/usb/dwc3/dwc3-am62.c
-@@ -274,6 +274,7 @@ static void dwc3_ti_remove(struct platform_device *pdev)
- 	u32 reg;
+diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
+index 2feed036c1cd4..1a739afd47d96 100644
+--- a/drivers/powercap/intel_rapl_common.c
++++ b/drivers/powercap/intel_rapl_common.c
+@@ -759,6 +759,11 @@ static int rapl_config(struct rapl_package *rp)
+ 	default:
+ 		return -EINVAL;
+ 	}
++
++	/* defaults_msr can be NULL on unsupported platforms */
++	if (!rp->priv->defaults || !rp->priv->rpi)
++		return -ENODEV;
++
+ 	return 0;
+ }
  
- 	pm_runtime_get_sync(dev);
-+	device_init_wakeup(dev, false);
- 	of_platform_depopulate(dev);
- 
- 	/* Clear mode valid bit */
 -- 
 2.43.0
 
