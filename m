@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-34651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEF0894039
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED76894343
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25622281482
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45496B220A9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD25C129;
-	Mon,  1 Apr 2024 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F32481B8;
+	Mon,  1 Apr 2024 17:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TyWYbDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzpSD6YY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6FA446AC;
-	Mon,  1 Apr 2024 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F95EBA3F;
+	Mon,  1 Apr 2024 17:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988839; cv=none; b=TgpIwuB1kh6EhZsAjAx6UC2NKaUZt9NMBSIawX1RexQfWs8ffdWx2nGRrOLyAjVBjfF7eZD87QOai+jAtv0aSWlteklVHPC0cniWz4PHtB9ZRj5sYqUeGhqAuoDW2WMvRwRtdoSme+OeqpTlXhHs2ig9wTA1XYiF2OqpvmY8oOc=
+	t=1711990899; cv=none; b=XCz1vaEW8LzLC/PJ8vynbQn8V6atF1JxIXD67dEgv4MLL8i+RYXFOiSmD+N/nnmHENYUYC0TpOF1VYkucYBrCXkY4eW6zEcpqGLTMEB0Rm1dOZcgScmOkXE7c3dIQS5X/mAbb/oLXelNnSMF9onpQjZKmMhLmrYIFauXNhzlS2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988839; c=relaxed/simple;
-	bh=5W/PH10U5zcQzJ/Mwsq91dJaSPfuN0chxKayjG6/rhg=;
+	s=arc-20240116; t=1711990899; c=relaxed/simple;
+	bh=dXVbM1sVoEPjH6IQlvWbhJihCX3yx/YruJdzkUoIdWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9l00yCAZ4HDJ8AK3QcsDRLcg7ODDeQ1ST1YphGCI3pt29VfAxfSPEzfHdKqL0MxlmfMjCpNE5RnRESOHRCtpa+xIEQrct8JJM2PPoX5At95Y3RDnwOWkMM30craWuD78RtLzDArd4cv2PEfLXlMg3IvnRGSPv0TTgDcN+ojyf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TyWYbDT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D5EC433C7;
-	Mon,  1 Apr 2024 16:27:18 +0000 (UTC)
+	 MIME-Version; b=gSdhs+RmraNaoKiu5E82+pG7ZF+58tvkn8Urx7H2RgOtMMDESovFt/QIRkE/HX+HOOQ9njbI5bBP1jtdE/UkNoIlFwaetFbC6KLETpEImVWFw3/HFwHVM2Oe9fus3RZ6Cno3afViwRa6asL0mfQdXahPJClhy29cSDhL595fqDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzpSD6YY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7791BC433C7;
+	Mon,  1 Apr 2024 17:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988839;
-	bh=5W/PH10U5zcQzJ/Mwsq91dJaSPfuN0chxKayjG6/rhg=;
+	s=korg; t=1711990898;
+	bh=dXVbM1sVoEPjH6IQlvWbhJihCX3yx/YruJdzkUoIdWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TyWYbDTUk3xJ+OP3bXkeuj8INQwb7jZUV6M0cgmMkWy1bdrVV1hMfn5TEpjbwYQU
-	 9lLTzOnkyT84WtlXQfA52RUFHQFvy58v87iKpc93oyHjZNkemhTZXUU+OINSfmyo3w
-	 k3ywqRjP1/mNkSoawwhdUV+NXto4MuG4fkRuuAyQ=
+	b=qzpSD6YYRD8ZUehmqNnFrB0ax4H/M8hKfU//AATijViUobcSLBIbl3nZHcjnypSpi
+	 0Wlv5MOdYDgeJTn63sVpLABNYusQquzutLpUaDhoFqORggV0mTajlelco56mvHbRld
+	 Egy2cEzAZGiYeAkTErIKIinz+rkNWcZ2udllOcwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 304/432] swiotlb: Fix alignment checks when both allocation and DMA masks are present
+Subject: [PATCH 6.1 101/272] vfio: Use GFP_KERNEL_ACCOUNT for userspace persistent allocations
 Date: Mon,  1 Apr 2024 17:44:51 +0200
-Message-ID: <20240401152602.258326466@linuxfoundation.org>
+Message-ID: <20240401152533.798174239@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 51b30ecb73b481d5fac6ccf2ecb4a309c9ee3310 ]
+[ Upstream commit 0886196ca8810c5b1f5097b71c4bc0df40b10208 ]
 
-Nicolin reports that swiotlb buffer allocations fail for an NVME device
-behind an IOMMU using 64KiB pages. This is because we end up with a
-minimum allocation alignment of 64KiB (for the IOMMU to map the buffer
-safely) but a minimum DMA alignment mask corresponding to a 4KiB NVME
-page (i.e. preserving the 4KiB page offset from the original allocation).
-If the original address is not 4KiB-aligned, the allocation will fail
-because swiotlb_search_pool_area() erroneously compares these unmasked
-bits with the 64KiB-aligned candidate allocation.
+Use GFP_KERNEL_ACCOUNT for userspace persistent allocations.
 
-Tweak swiotlb_search_pool_area() so that the DMA alignment mask is
-reduced based on the required alignment of the allocation.
+The GFP_KERNEL_ACCOUNT option lets the memory allocator know that this
+is untrusted allocation triggered from userspace and should be a subject
+of kmem accounting, and as such it is controlled by the cgroup
+mechanism.
 
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Link: https://lore.kernel.org/r/cover.1707851466.git.nicolinc@nvidia.com
-Reported-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+The way to find the relevant allocations was for example to look at the
+close_device function and trace back all the kfrees to their
+allocations.
+
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20230108154427.32609-4-yishaih@nvidia.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Stable-dep-of: fe9a7082684e ("vfio/pci: Disable auto-enable of exclusive INTx IRQ")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/vfio/container.c           |  2 +-
+ drivers/vfio/pci/vfio_pci_config.c |  6 +++---
+ drivers/vfio/pci/vfio_pci_core.c   |  7 ++++---
+ drivers/vfio/pci/vfio_pci_igd.c    |  2 +-
+ drivers/vfio/pci/vfio_pci_intrs.c  | 10 ++++++----
+ drivers/vfio/pci/vfio_pci_rdwr.c   |  2 +-
+ drivers/vfio/virqfd.c              |  2 +-
+ 7 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 2d347685cf566..9edfb3b7702bb 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -981,8 +981,7 @@ static int swiotlb_area_find_slots(struct device *dev, struct io_tlb_pool *pool,
- 	dma_addr_t tbl_dma_addr =
- 		phys_to_dma_unencrypted(dev, pool->start) & boundary_mask;
- 	unsigned long max_slots = get_max_slots(boundary_mask);
--	unsigned int iotlb_align_mask =
--		dma_get_min_align_mask(dev) & ~(IO_TLB_SIZE - 1);
-+	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
- 	unsigned int nslots = nr_slots(alloc_size), stride;
- 	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
- 	unsigned int index, slots_checked, count = 0, i;
-@@ -993,6 +992,14 @@ static int swiotlb_area_find_slots(struct device *dev, struct io_tlb_pool *pool,
- 	BUG_ON(!nslots);
- 	BUG_ON(area_index >= pool->nareas);
+diff --git a/drivers/vfio/container.c b/drivers/vfio/container.c
+index d74164abbf401..ab9d8e3481f75 100644
+--- a/drivers/vfio/container.c
++++ b/drivers/vfio/container.c
+@@ -366,7 +366,7 @@ static int vfio_fops_open(struct inode *inode, struct file *filep)
+ {
+ 	struct vfio_container *container;
  
-+	/*
-+	 * Ensure that the allocation is at least slot-aligned and update
-+	 * 'iotlb_align_mask' to ignore bits that will be preserved when
-+	 * offsetting into the allocation.
-+	 */
-+	alloc_align_mask |= (IO_TLB_SIZE - 1);
-+	iotlb_align_mask &= ~alloc_align_mask;
-+
- 	/*
- 	 * For mappings with an alignment requirement don't bother looping to
- 	 * unaligned slots once we found an aligned one.
+-	container = kzalloc(sizeof(*container), GFP_KERNEL);
++	container = kzalloc(sizeof(*container), GFP_KERNEL_ACCOUNT);
+ 	if (!container)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+index 4a350421c5f62..523e0144c86fa 100644
+--- a/drivers/vfio/pci/vfio_pci_config.c
++++ b/drivers/vfio/pci/vfio_pci_config.c
+@@ -1244,7 +1244,7 @@ static int vfio_msi_cap_len(struct vfio_pci_core_device *vdev, u8 pos)
+ 	if (vdev->msi_perm)
+ 		return len;
+ 
+-	vdev->msi_perm = kmalloc(sizeof(struct perm_bits), GFP_KERNEL);
++	vdev->msi_perm = kmalloc(sizeof(struct perm_bits), GFP_KERNEL_ACCOUNT);
+ 	if (!vdev->msi_perm)
+ 		return -ENOMEM;
+ 
+@@ -1731,11 +1731,11 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
+ 	 * no requirements on the length of a capability, so the gap between
+ 	 * capabilities needs byte granularity.
+ 	 */
+-	map = kmalloc(pdev->cfg_size, GFP_KERNEL);
++	map = kmalloc(pdev->cfg_size, GFP_KERNEL_ACCOUNT);
+ 	if (!map)
+ 		return -ENOMEM;
+ 
+-	vconfig = kmalloc(pdev->cfg_size, GFP_KERNEL);
++	vconfig = kmalloc(pdev->cfg_size, GFP_KERNEL_ACCOUNT);
+ 	if (!vconfig) {
+ 		kfree(map);
+ 		return -ENOMEM;
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index e030c2120183e..f357fd157e1ed 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -141,7 +141,8 @@ static void vfio_pci_probe_mmaps(struct vfio_pci_core_device *vdev)
+ 			 * of the exclusive page in case that hot-add
+ 			 * device's bar is assigned into it.
+ 			 */
+-			dummy_res = kzalloc(sizeof(*dummy_res), GFP_KERNEL);
++			dummy_res =
++				kzalloc(sizeof(*dummy_res), GFP_KERNEL_ACCOUNT);
+ 			if (dummy_res == NULL)
+ 				goto no_mmap;
+ 
+@@ -856,7 +857,7 @@ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
+ 
+ 	region = krealloc(vdev->region,
+ 			  (vdev->num_regions + 1) * sizeof(*region),
+-			  GFP_KERNEL);
++			  GFP_KERNEL_ACCOUNT);
+ 	if (!region)
+ 		return -ENOMEM;
+ 
+@@ -1637,7 +1638,7 @@ static int __vfio_pci_add_vma(struct vfio_pci_core_device *vdev,
+ {
+ 	struct vfio_pci_mmap_vma *mmap_vma;
+ 
+-	mmap_vma = kmalloc(sizeof(*mmap_vma), GFP_KERNEL);
++	mmap_vma = kmalloc(sizeof(*mmap_vma), GFP_KERNEL_ACCOUNT);
+ 	if (!mmap_vma)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_igd.c b/drivers/vfio/pci/vfio_pci_igd.c
+index 5e6ca59269548..dd70e2431bd74 100644
+--- a/drivers/vfio/pci/vfio_pci_igd.c
++++ b/drivers/vfio/pci/vfio_pci_igd.c
+@@ -180,7 +180,7 @@ static int vfio_pci_igd_opregion_init(struct vfio_pci_core_device *vdev)
+ 	if (!addr || !(~addr))
+ 		return -ENODEV;
+ 
+-	opregionvbt = kzalloc(sizeof(*opregionvbt), GFP_KERNEL);
++	opregionvbt = kzalloc(sizeof(*opregionvbt), GFP_KERNEL_ACCOUNT);
+ 	if (!opregionvbt)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 40c3d7cf163f6..bffb0741518b9 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -177,7 +177,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev)
+ 	if (!vdev->pdev->irq)
+ 		return -ENODEV;
+ 
+-	vdev->ctx = kzalloc(sizeof(struct vfio_pci_irq_ctx), GFP_KERNEL);
++	vdev->ctx = kzalloc(sizeof(struct vfio_pci_irq_ctx), GFP_KERNEL_ACCOUNT);
+ 	if (!vdev->ctx)
+ 		return -ENOMEM;
+ 
+@@ -216,7 +216,7 @@ static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
+ 	if (fd < 0) /* Disable only */
+ 		return 0;
+ 
+-	vdev->ctx[0].name = kasprintf(GFP_KERNEL, "vfio-intx(%s)",
++	vdev->ctx[0].name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)",
+ 				      pci_name(pdev));
+ 	if (!vdev->ctx[0].name)
+ 		return -ENOMEM;
+@@ -284,7 +284,8 @@ static int vfio_msi_enable(struct vfio_pci_core_device *vdev, int nvec, bool msi
+ 	if (!is_irq_none(vdev))
+ 		return -EINVAL;
+ 
+-	vdev->ctx = kcalloc(nvec, sizeof(struct vfio_pci_irq_ctx), GFP_KERNEL);
++	vdev->ctx = kcalloc(nvec, sizeof(struct vfio_pci_irq_ctx),
++			    GFP_KERNEL_ACCOUNT);
+ 	if (!vdev->ctx)
+ 		return -ENOMEM;
+ 
+@@ -343,7 +344,8 @@ static int vfio_msi_set_vector_signal(struct vfio_pci_core_device *vdev,
+ 	if (fd < 0)
+ 		return 0;
+ 
+-	vdev->ctx[vector].name = kasprintf(GFP_KERNEL, "vfio-msi%s[%d](%s)",
++	vdev->ctx[vector].name = kasprintf(GFP_KERNEL_ACCOUNT,
++					   "vfio-msi%s[%d](%s)",
+ 					   msix ? "x" : "", vector,
+ 					   pci_name(pdev));
+ 	if (!vdev->ctx[vector].name)
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+index e352a033b4aef..e27de61ac9fe7 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -470,7 +470,7 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
+ 		goto out_unlock;
+ 	}
+ 
+-	ioeventfd = kzalloc(sizeof(*ioeventfd), GFP_KERNEL);
++	ioeventfd = kzalloc(sizeof(*ioeventfd), GFP_KERNEL_ACCOUNT);
+ 	if (!ioeventfd) {
+ 		ret = -ENOMEM;
+ 		goto out_unlock;
+diff --git a/drivers/vfio/virqfd.c b/drivers/vfio/virqfd.c
+index 414e98d82b02e..a928c68df4763 100644
+--- a/drivers/vfio/virqfd.c
++++ b/drivers/vfio/virqfd.c
+@@ -115,7 +115,7 @@ int vfio_virqfd_enable(void *opaque,
+ 	int ret = 0;
+ 	__poll_t events;
+ 
+-	virqfd = kzalloc(sizeof(*virqfd), GFP_KERNEL);
++	virqfd = kzalloc(sizeof(*virqfd), GFP_KERNEL_ACCOUNT);
+ 	if (!virqfd)
+ 		return -ENOMEM;
+ 
 -- 
 2.43.0
 
