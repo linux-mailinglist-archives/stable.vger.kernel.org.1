@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-35313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B489D894365
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EBA3894224
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D431283957
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D68EB223F1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11BA4AEF0;
-	Mon,  1 Apr 2024 17:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0794E41232;
+	Mon,  1 Apr 2024 16:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIbw0Zn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lBcjAYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB20D47A64;
-	Mon,  1 Apr 2024 17:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B529E1C0DE7;
+	Mon,  1 Apr 2024 16:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990988; cv=none; b=MroO8g+qH3592LvcFvWWyuYS+ERHL4tfgAaz/T8yc3San2SwLbs+EuLxfyvWLbKR17L91jvCQ4Zg+vqUxkkcITnxLUj7wweBlOet/D2JaJnRPjXBniIchxXYe9XqseZCvGqugXngQpuxDEIxsAF09W9Z5XD1plt+T+pPAQgm8dY=
+	t=1711990180; cv=none; b=mfvwactLU8w7AHIWdQ0YEnp3xZT5OIC2riqd6oz740IKNUpeZYRLtEpvE3ZICqzBwWggDHptyspqULbJXEpZMrISW+5AyIxiVkjT4kzlMAB/tkaRV1LBgM5IsYeD4n3FtNx5Uvi3g7FFyegYNd+tMjOLLNxznUiTWo1PzdnrUGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990988; c=relaxed/simple;
-	bh=N0AwHkp3QQut8MObPlgOI7vPn78xdbBkmWcCJwXcmBs=;
+	s=arc-20240116; t=1711990180; c=relaxed/simple;
+	bh=JnbtSbRfTw+puw4aFKCZx+WGdj4K2GzwRu+hnWg8BPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eRfIKViW6dQpLX6y6Uark7JE7Rjk5dvfkmM50Pbc4NNGwoY1cq8iaTOabI0MG4/4zWcoR3D7kSGWA5f2quYu0UnOGaCD7ezKzvbdmiEUMAOq0+JMBa8QX9cYzhgbqDeY8p7IjidW+kcnFsX6AYhjtpj6aW1UFIVeXxTAQFFcQvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIbw0Zn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88EAC433C7;
-	Mon,  1 Apr 2024 17:03:07 +0000 (UTC)
+	 MIME-Version; b=BA71vcEs1nMZUF10jrlZGWwrbix8Mbhew0VV0g1kS7tShZUbDF6orJtvJKvs/cyeWE+iM3ZFpHZKfw+fu2dA2hT15j1/tGE+4zIFwoWfyy1R0CiDsFxGLNrWG/1SErOGmfKHBWwvlazr2JMerctsLyuUq/ibo7cXe8Ybo62BnE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lBcjAYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24116C433C7;
+	Mon,  1 Apr 2024 16:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990988;
-	bh=N0AwHkp3QQut8MObPlgOI7vPn78xdbBkmWcCJwXcmBs=;
+	s=korg; t=1711990180;
+	bh=JnbtSbRfTw+puw4aFKCZx+WGdj4K2GzwRu+hnWg8BPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIbw0Zn9WoEbW3fmhB/yDctqU7BFvtocNCQQ50+JAl+FWK3h/PfbzIeaOB3Jxo+QB
-	 HRjBbdDVct0zs7Y3W9UP9vAeLraCJhqKfqM0pM92vwFETY2BHTDIL7kL/2BQVENdGU
-	 ZLDlRzT3oboC2zcmK7LxvpbSeSMh5SWGX+UDErvU=
+	b=2lBcjAYlEPNt/pcD26ckfM03DeEoMN8bLyeuOysv0hHVNjSwq5Rg2vd/X3EkW0+/e
+	 7iobFeihYTFCnBTx9UY++vxMTNYFbPwBvWMCc8Fco/Y+O38KEInYO2exNUMCRs5ylW
+	 SLBeErxdtaaJfnlhHCNl5UR0UPIXOux09LrXRJ/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Brown <neilb@suse.de>,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/272] NFSD: Fix nfsd_clid_class use of __string_len() macro
+	linux-xfs@vger.kernel.org,
+	Eric Sandeen <sandeen@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 270/396] xfs: short circuit xfs_growfs_data_private() if delta is zero
 Date: Mon,  1 Apr 2024 17:45:19 +0200
-Message-ID: <20240401152534.707073228@linuxfoundation.org>
+Message-ID: <20240401152555.962560699@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,62 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 9388a2aa453321bcf1ad2603959debea9e6ab6d4 ]
+commit 84712492e6dab803bf595fb8494d11098b74a652 upstream.
 
-I'm working on restructuring the __string* macros so that it doesn't need
-to recalculate the string twice. That is, it will save it off when
-processing __string() and the __assign_str() will not need to do the work
-again as it currently does.
+Although xfs_growfs_data() doesn't call xfs_growfs_data_private()
+if in->newblocks == mp->m_sb.sb_dblocks, xfs_growfs_data_private()
+further massages the new block count so that we don't i.e. try
+to create a too-small new AG.
 
-Currently __string_len(item, src, len) doesn't actually use "src", but my
-changes will require src to be correct as that is where the __assign_str()
-will get its value from.
+This may lead to a delta of "0" in xfs_growfs_data_private(), so
+we end up in the shrink case and emit the EXPERIMENTAL warning
+even if we're not changing anything at all.
 
-The event class nfsd_clid_class has:
+Fix this by returning straightaway if the block delta is zero.
 
-  __string_len(name, name, clp->cl_name.len)
+(nb: in older kernels, the result of entering the shrink case
+with delta == 0 may actually let an -ENOSPC escape to userspace,
+which is confusing for users.)
 
-But the second "name" does not exist and causes my changes to fail to
-build. That second parameter should be: clp->cl_name.data.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240222122828.3d8d213c@gandalf.local.home
-
-Cc: Neil Brown <neilb@suse.de>
-Cc: Olga Kornievskaia <kolga@netapp.com>
-Cc: Dai Ngo <Dai.Ngo@oracle.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: stable@vger.kernel.org
-Fixes: d27b74a8675ca ("NFSD: Use new __string_len C macros for nfsd_clid_class")
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fb2fc1720185 ("xfs: support shrinking unused space in the last AG")
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_fsops.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 4183819ea0829..84f26f281fe9f 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -842,7 +842,7 @@ DECLARE_EVENT_CLASS(nfsd_clid_class,
- 		__array(unsigned char, addr, sizeof(struct sockaddr_in6))
- 		__field(unsigned long, flavor)
- 		__array(unsigned char, verifier, NFS4_VERIFIER_SIZE)
--		__string_len(name, name, clp->cl_name.len)
-+		__string_len(name, clp->cl_name.data, clp->cl_name.len)
- 	),
- 	TP_fast_assign(
- 		__entry->cl_boot = clp->cl_clientid.cl_boot;
--- 
-2.43.0
-
+--- a/fs/xfs/xfs_fsops.c
++++ b/fs/xfs/xfs_fsops.c
+@@ -134,6 +134,10 @@ xfs_growfs_data_private(
+ 	if (delta < 0 && nagcount < 2)
+ 		return -EINVAL;
+ 
++	/* No work to do */
++	if (delta == 0)
++		return 0;
++
+ 	oagcount = mp->m_sb.sb_agcount;
+ 	/* allocate the new per-ag structures */
+ 	if (nagcount > oagcount) {
 
 
 
