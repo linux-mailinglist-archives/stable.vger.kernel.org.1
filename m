@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-34673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEB1894052
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94DC893E90
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E70B1C2156A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16E411C2122D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE8046B9F;
-	Mon,  1 Apr 2024 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A2F446AC;
+	Mon,  1 Apr 2024 16:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVShhMrA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHn0BtBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2EEC129;
-	Mon,  1 Apr 2024 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F5D1CA8F;
+	Mon,  1 Apr 2024 16:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988911; cv=none; b=PSM2kUgFM/IzmaTQDNjhzNOKKKSMmm6AcPxYNfrrtSGG6lPyeTzhky87mwHmDfzDApQCr+ZD6j8xDmbF3eaaL76Ss7ij0HGws7NZlOj7eHlSEWIX1mgIAMrh+fLU58Dp60YNFEa0oqiFyzntlvz7Re5r/m64Ntsa5l1PJBZhW8M=
+	t=1711987505; cv=none; b=k7vFucozxcerBdIwvYJWtQLwKQgcpMad9cA7oAESiA++S72QOBts/JfRAcVH/aRNqSfoFZQYYoTbNVZ5e0tYrxsnP/Jruw3VjR/ccypLBK2Z7HCBKkz7/b0d5ohKDP0hv2g5vnRGnzB74J+99FyUKGFvQu3oD3kdCM8CjO7pm40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988911; c=relaxed/simple;
-	bh=E/GtYUNN3Vj1FFMul7R37PvXEC5P811f0OgPHzxfb2o=;
+	s=arc-20240116; t=1711987505; c=relaxed/simple;
+	bh=NVT7NE2bQzqMOrIKkivoaTR0uMDikq+g1WQXctmy4Pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+0DZxEmSJcb/Juco9UbkULDqu9ogpJ/UEC43DzlSZ37/Lz7SL435j/u/qX+Q6oqsr1obLg+t4WasEfEER1AsfpiMzCDRDIRGFl46SAsPOlycoIZlh5IYHZ1Kyk96zvAkcO4R8cON/8HmLqrUs5ywpWy9NJrRj6FejhOwC2aNds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVShhMrA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE979C433F1;
-	Mon,  1 Apr 2024 16:28:30 +0000 (UTC)
+	 MIME-Version; b=ZJYJ2V1ApgzT6OYouTbAjHUrltLOCsztLLXVPsMl8ZkwS/pL4mToeI/nlCOdxtk24w6pMKN4o9LThuXOpFwqVsVdDjjfsqIgecduBg+DNR1+cJr7CXzPe3zcTfaa++zueHVQ/RakEJRSXn3jODwnhAqCa4DSgfFQhJvpH+2VUFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHn0BtBs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F29AC433C7;
+	Mon,  1 Apr 2024 16:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988911;
-	bh=E/GtYUNN3Vj1FFMul7R37PvXEC5P811f0OgPHzxfb2o=;
+	s=korg; t=1711987505;
+	bh=NVT7NE2bQzqMOrIKkivoaTR0uMDikq+g1WQXctmy4Pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVShhMrAhor5VGvCtl0UvNRR4QYjAp4QzoRC3Qse1Nf/l/Rjcnp8IZ7n+dbwBfp9i
-	 lguwc8PwqdYTxRXjEdg27OdMxH1x8/HJ/A6kxhpPXQsn/uCh1URxe5uBLuaD8UNNPo
-	 GCa76lrpp5/ic51EqFdpYHvuqdpRUDMM8GjM7vfM=
+	b=ZHn0BtBserTG7qi1euZn8BO1ya3sVaUReiOyoB0ysI/V1tGdUIArsedIhr57S+hpv
+	 oRKF8cvzJXr6NqMl7jPeQZTTlOtK8nQCmQVEC9ojRduV8pq3vA62xO5IUbE3t0ks2E
+	 4c1e3lL+oetxc4xNLD9RTovEh74POKU/1krxuA5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.7 287/432] iio: imu: inv_mpu6050: fix FIFO parsing when empty
+	Nathan Chancellor <nathan@kernel.org>,
+	Brian Cain <bcain@quicinc.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 308/399] hexagon: vmlinux.lds.S: handle attributes section
 Date: Mon,  1 Apr 2024 17:44:34 +0200
-Message-ID: <20240401152601.731738278@linuxfoundation.org>
+Message-ID: <20240401152558.382209597@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 60caa8b33bd682a9ed99d1fc3f91d74e1acc9922 upstream.
+commit 549aa9678a0b3981d4821bf244579d9937650562 upstream.
 
-Now that we are reading the full FIFO in the interrupt handler,
-it is possible to have an emply FIFO since we are still receiving
-1 interrupt per data. Handle correctly this case instead of having
-an error causing a reset of the FIFO.
+After the linked LLVM change, the build fails with
+CONFIG_LD_ORPHAN_WARN_LEVEL="error", which happens with allmodconfig:
 
-Fixes: 0829edc43e0a ("iio: imu: inv_mpu6050: read the full fifo when processing data")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://lore.kernel.org/r/20240219154825.90656-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  ld.lld: error: vmlinux.a(init/main.o):(.hexagon.attributes) is being placed in '.hexagon.attributes'
+
+Handle the attributes section in a similar manner as arm and riscv by
+adding it after the primary ELF_DETAILS grouping in vmlinux.lds.S, which
+fixes the error.
+
+Link: https://lkml.kernel.org/r/20240319-hexagon-handle-attributes-section-vmlinux-lds-s-v1-1-59855dab8872@kernel.org
+Fixes: 113616ec5b64 ("hexagon: select ARCH_WANT_LD_ORPHAN_WARN")
+Link: https://github.com/llvm/llvm-project/commit/31f4b329c8234fab9afa59494d7f8bdaeaefeaad
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Brian Cain <bcain@quicinc.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/hexagon/kernel/vmlinux.lds.S |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -109,6 +109,8 @@ irqreturn_t inv_mpu6050_read_fifo(int ir
- 	/* compute and process only all complete datum */
- 	nb = fifo_count / bytes_per_datum;
- 	fifo_count = nb * bytes_per_datum;
-+	if (nb == 0)
-+		goto end_session;
- 	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
- 	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
- 	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, pf->timestamp);
+--- a/arch/hexagon/kernel/vmlinux.lds.S
++++ b/arch/hexagon/kernel/vmlinux.lds.S
+@@ -63,6 +63,7 @@ SECTIONS
+ 	STABS_DEBUG
+ 	DWARF_DEBUG
+ 	ELF_DETAILS
++	.hexagon.attributes 0 : { *(.hexagon.attributes) }
+ 
+ 	DISCARDS
+ }
 
 
 
