@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-34553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A54893FD3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D1D894180
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88CB31F22175
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 048501F23D5B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB3147A62;
-	Mon,  1 Apr 2024 16:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B264CB4A;
+	Mon,  1 Apr 2024 16:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wONPKtRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFYlhet1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB9B43AD6;
-	Mon,  1 Apr 2024 16:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993AF4C624;
+	Mon,  1 Apr 2024 16:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988508; cv=none; b=gWBKrth/186lBFjX/YwJbn0xELK+ce3tydJujbdN2H+qMQyiq1dBvmnOWDjv+4k5X7uZLCsMOYPR8VcJFrE8fgpKWXMzXrpkGLjxH9pVG0znskMlaUBW8f+aQ1B5kbOFjfgU7YhDmIaRZTBiJJHUWMOrFqamGVdeTcNfrA2wS9o=
+	t=1711989760; cv=none; b=sU0NoLfsOk2gQz837K6OX5mdXhldZtiKqSbUS7K3KJb8bWdtvuxeGF/zj0jC36K9QuxSA6xKWErsGqa7lBERkZJSuOw5KzZynmw6RWPh9l3Xy2sS25H4J3ecdlleqqLezIiWxSflkH6G+DVLLKbr1aQ8xJH6QfY8ERadnfNCmCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988508; c=relaxed/simple;
-	bh=V19j8Le84iitx6OPut0SBy4DGJ9sVPyCaTGgXmPafRA=;
+	s=arc-20240116; t=1711989760; c=relaxed/simple;
+	bh=G4apjOFfICOy8SA63JUFfm3xyYCqX1SFp4tyaFoZHM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEWtQlUi77k3zg1RbYKXtXTIFIN1ftYCohrOZGNHthK9RbHsvI6IMyDuxTGjy4Bfshh9ZnjHhXwW8JB3QZ/TY7TJOmVZ1NL4FMG5cWiqq/BElpY19zM+zsjfFPzgQTRyFLHmG9T4ocT90Fy+g3OVfKb3ZtcG8cf/fhSzbvQ1S6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wONPKtRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DD2C433C7;
-	Mon,  1 Apr 2024 16:21:48 +0000 (UTC)
+	 MIME-Version; b=fl0htYB1lTNokPiOiH5Dtit9C98ll1c/O2IJzN6flvVK7msMZRoJtP+RecRw6VYUHhBbMrKsm9dGC1yJszm2xzLsX+b1IlouFJmCzazPjKhjsKXDRqRnacs05l0+Um3DANWyFBf+LfA/9A3fYaPKoczn151lXKMVrw2zD7CWP60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFYlhet1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14F0C433F1;
+	Mon,  1 Apr 2024 16:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988508;
-	bh=V19j8Le84iitx6OPut0SBy4DGJ9sVPyCaTGgXmPafRA=;
+	s=korg; t=1711989760;
+	bh=G4apjOFfICOy8SA63JUFfm3xyYCqX1SFp4tyaFoZHM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wONPKtRPpirV6rD4pc0AJw0ZjWyOnSGSk9bbTKNFP41MiY+0hUt71thSiMcfKmh7F
-	 tsKCl157NMAuzFI+A1zt2lr1WQyLvPFMWqKgMCeQGZILZSz8MH2WZoTh47UtCoOV5H
-	 N78744tg1gtgWlslpesJIBLoFc1O5xaoUb5Zvc1U=
+	b=xFYlhet1Lfc+/ZDfrEx1AoqVCCKZVGkaver9xbeSSKvfH/nmITywLle+9V5lbDCHd
+	 my9Kbaq3bajYpGTFIyqCtI2hV6pCFlyK3kzwFVEFMXc9s9574k2Zg5PqYwmicbmRQ8
+	 qPfVMlmCTnfQfQmPrTd2nqNA1b2LK4/kjbxK00bU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt <cryptearth@googlemail.com>,
-	Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 206/432] ahci: asm1064: asm1166: dont limit reported ports
+Subject: [PATCH 6.6 144/396] s390/zcrypt: fix reference counting on zcrypt card objects
 Date: Mon,  1 Apr 2024 17:43:13 +0200
-Message-ID: <20240401152559.279083002@linuxfoundation.org>
+Message-ID: <20240401152552.239660523@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conrad Kostecki <conikost@gentoo.org>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-[ Upstream commit 6cd8adc3e18960f6e59d797285ed34ef473cc896 ]
+[ Upstream commit 50ed48c80fecbe17218afed4f8bed005c802976c ]
 
-Previously, patches have been added to limit the reported count of SATA
-ports for asm1064 and asm1166 SATA controllers, as those controllers do
-report more ports than physically having.
+Tests with hot-plugging crytpo cards on KVM guests with debug
+kernel build revealed an use after free for the load field of
+the struct zcrypt_card. The reason was an incorrect reference
+handling of the zcrypt card object which could lead to a free
+of the zcrypt card object while it was still in use.
 
-While it is allowed to report more ports than physically having in CAP.NP,
-it is not allowed to report more ports than physically having in the PI
-(Ports Implemented) register, which is what these HBAs do.
-(This is a AHCI spec violation.)
+This is an example of the slab message:
 
-Unfortunately, it seems that the PMP implementation in these ASMedia HBAs
-is also violating the AHCI and SATA-IO PMP specification.
+    kernel: 0x00000000885a7512-0x00000000885a7513 @offset=1298. First byte 0x68 instead of 0x6b
+    kernel: Allocated in zcrypt_card_alloc+0x36/0x70 [zcrypt] age=18046 cpu=3 pid=43
+    kernel:  kmalloc_trace+0x3f2/0x470
+    kernel:  zcrypt_card_alloc+0x36/0x70 [zcrypt]
+    kernel:  zcrypt_cex4_card_probe+0x26/0x380 [zcrypt_cex4]
+    kernel:  ap_device_probe+0x15c/0x290
+    kernel:  really_probe+0xd2/0x468
+    kernel:  driver_probe_device+0x40/0xf0
+    kernel:  __device_attach_driver+0xc0/0x140
+    kernel:  bus_for_each_drv+0x8c/0xd0
+    kernel:  __device_attach+0x114/0x198
+    kernel:  bus_probe_device+0xb4/0xc8
+    kernel:  device_add+0x4d2/0x6e0
+    kernel:  ap_scan_adapter+0x3d0/0x7c0
+    kernel:  ap_scan_bus+0x5a/0x3b0
+    kernel:  ap_scan_bus_wq_callback+0x40/0x60
+    kernel:  process_one_work+0x26e/0x620
+    kernel:  worker_thread+0x21c/0x440
+    kernel: Freed in zcrypt_card_put+0x54/0x80 [zcrypt] age=9024 cpu=3 pid=43
+    kernel:  kfree+0x37e/0x418
+    kernel:  zcrypt_card_put+0x54/0x80 [zcrypt]
+    kernel:  ap_device_remove+0x4c/0xe0
+    kernel:  device_release_driver_internal+0x1c4/0x270
+    kernel:  bus_remove_device+0x100/0x188
+    kernel:  device_del+0x164/0x3c0
+    kernel:  device_unregister+0x30/0x90
+    kernel:  ap_scan_adapter+0xc8/0x7c0
+    kernel:  ap_scan_bus+0x5a/0x3b0
+    kernel:  ap_scan_bus_wq_callback+0x40/0x60
+    kernel:  process_one_work+0x26e/0x620
+    kernel:  worker_thread+0x21c/0x440
+    kernel:  kthread+0x150/0x168
+    kernel:  __ret_from_fork+0x3c/0x58
+    kernel:  ret_from_fork+0xa/0x30
+    kernel: Slab 0x00000372022169c0 objects=20 used=18 fp=0x00000000885a7c88 flags=0x3ffff00000000a00(workingset|slab|node=0|zone=1|lastcpupid=0x1ffff)
+    kernel: Object 0x00000000885a74b8 @offset=1208 fp=0x00000000885a7c88
+    kernel: Redzone  00000000885a74b0: bb bb bb bb bb bb bb bb                          ........
+    kernel: Object   00000000885a74b8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a74c8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a74d8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a74e8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a74f8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+    kernel: Object   00000000885a7508: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 68 4b 6b 6b 6b a5  kkkkkkkkkkhKkkk.
+    kernel: Redzone  00000000885a7518: bb bb bb bb bb bb bb bb                          ........
+    kernel: Padding  00000000885a756c: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a              ZZZZZZZZZZZZ
+    kernel: CPU: 0 PID: 387 Comm: systemd-udevd Not tainted 6.8.0-HF #2
+    kernel: Hardware name: IBM 3931 A01 704 (KVM/Linux)
+    kernel: Call Trace:
+    kernel:  [<00000000ca5ab5b8>] dump_stack_lvl+0x90/0x120
+    kernel:  [<00000000c99d78bc>] check_bytes_and_report+0x114/0x140
+    kernel:  [<00000000c99d53cc>] check_object+0x334/0x3f8
+    kernel:  [<00000000c99d820c>] alloc_debug_processing+0xc4/0x1f8
+    kernel:  [<00000000c99d852e>] get_partial_node.part.0+0x1ee/0x3e0
+    kernel:  [<00000000c99d94ec>] ___slab_alloc+0xaf4/0x13c8
+    kernel:  [<00000000c99d9e38>] __slab_alloc.constprop.0+0x78/0xb8
+    kernel:  [<00000000c99dc8dc>] __kmalloc+0x434/0x590
+    kernel:  [<00000000c9b4c0ce>] ext4_htree_store_dirent+0x4e/0x1c0
+    kernel:  [<00000000c9b908a2>] htree_dirblock_to_tree+0x17a/0x3f0
+    kernel:  [<00000000c9b919dc>] ext4_htree_fill_tree+0x134/0x400
+    kernel:  [<00000000c9b4b3d0>] ext4_dx_readdir+0x160/0x2f0
+    kernel:  [<00000000c9b4bedc>] ext4_readdir+0x5f4/0x760
+    kernel:  [<00000000c9a7efc4>] iterate_dir+0xb4/0x280
+    kernel:  [<00000000c9a7f1ea>] __do_sys_getdents64+0x5a/0x120
+    kernel:  [<00000000ca5d6946>] __do_syscall+0x256/0x310
+    kernel:  [<00000000ca5eea10>] system_call+0x70/0x98
+    kernel: INFO: lockdep is turned off.
+    kernel: FIX kmalloc-96: Restoring Poison 0x00000000885a7512-0x00000000885a7513=0x6b
+    kernel: FIX kmalloc-96: Marking all objects used
 
-What these HBAs do is that they do not report that they support PMP
-(CAP.SPM (Supports Port Multiplier) is not set).
+The fix is simple: Before use of the queue not only the queue object
+but also the card object needs to increase it's reference count
+with a call to zcrypt_card_get(). Similar after use of the queue
+not only the queue but also the card object's reference count is
+decreased with zcrypt_card_put().
 
-Instead, they have decided to add extra "virtual" ports in the PI register
-that is used if a port multiplier is connected to any of the physical
-ports of the HBA.
-
-Enumerating the devices behind the PMP as specified in the AHCI and
-SATA-IO specifications, by using PMP READ and PMP WRITE commands to the
-physical ports of the HBA is not possible, you have to use the "virtual"
-ports.
-
-This is of course bad, because this gives us no way to detect the device
-and vendor ID of the PMP actually connected to the HBA, which means that
-we can not apply the proper PMP quirks for the PMP that is connected to
-the HBA.
-
-Limiting the port map will thus stop these controllers from working with
-SATA Port Multipliers.
-
-This patch reverts both patches for asm1064 and asm1166, so old behavior
-is restored and SATA PMP will work again, but it will also reintroduce the
-(minutes long) extra boot time for the ASMedia controllers that do not
-have a PMP connected (either on the PCIe card itself, or an external PMP).
-
-However, a longer boot time for some, is the lesser evil compared to some
-other users not being able to detect their drives at all.
-
-Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
-Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
 Cc: stable@vger.kernel.org
-Reported-by: Matt <cryptearth@googlemail.com>
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-[cassel: rewrote commit message]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/s390/crypto/zcrypt_api.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 682ff550ccfb9..df3fd6474bf21 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -671,19 +671,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
+diff --git a/drivers/s390/crypto/zcrypt_api.c b/drivers/s390/crypto/zcrypt_api.c
+index ce04caa7913fb..357889cc03f0a 100644
+--- a/drivers/s390/crypto/zcrypt_api.c
++++ b/drivers/s390/crypto/zcrypt_api.c
+@@ -579,6 +579,7 @@ static inline struct zcrypt_queue *zcrypt_pick_queue(struct zcrypt_card *zc,
  {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
--		switch (pdev->device) {
--		case 0x1166:
--			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--			hpriv->saved_port_map = 0x3f;
--			break;
--		case 0x1064:
--			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
--			hpriv->saved_port_map = 0xf;
--			break;
--		}
--	}
--
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->saved_port_map = 1;
+ 	if (!zq || !try_module_get(zq->queue->ap_dev.device.driver->owner))
+ 		return NULL;
++	zcrypt_card_get(zc);
+ 	zcrypt_queue_get(zq);
+ 	get_device(&zq->queue->ap_dev.device);
+ 	atomic_add(weight, &zc->load);
+@@ -598,6 +599,7 @@ static inline void zcrypt_drop_queue(struct zcrypt_card *zc,
+ 	atomic_sub(weight, &zq->load);
+ 	put_device(&zq->queue->ap_dev.device);
+ 	zcrypt_queue_put(zq);
++	zcrypt_card_put(zc);
+ 	module_put(mod);
+ }
+ 
 -- 
 2.43.0
 
