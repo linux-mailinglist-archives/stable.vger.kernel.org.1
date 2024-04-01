@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6C589403E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF607894348
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA47B280F1D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61525B22350
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5626045BE4;
-	Mon,  1 Apr 2024 16:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E0C482CA;
+	Mon,  1 Apr 2024 17:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2nwBhLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5AWl2rn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16025C129;
-	Mon,  1 Apr 2024 16:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B6C1C0DE7;
+	Mon,  1 Apr 2024 17:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988852; cv=none; b=qfFv09thKuyBoGltSfTStJpZyIheS5W0KV2675s5m95xwkvk2iWWuhmCxquAn3gkGdbG2BjTS2TKW3MCN85JzNJ+POwa0Se+89hlSZYQ39IAVaFrjMTAG4+7BVg4yPQ7uUI8mw+JPL2JRzsSXNZBMwubGpIlHySoIb4hNCn7lIA=
+	t=1711990911; cv=none; b=eeTm+ZqZoIMiWkZZ0hqqu95g96mp5xrkWOx1PPyEKkHYUKXvQqaU2HKPlUeql806DE9/FErVXgvoU8luR5KQcy339sDaIq+u/1tYCSWeEHUInoN5bgcLADQ31TergmAY7nP41nS4zWSR76rFoz/or2Prdv3BamDieEPf7gIJl7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988852; c=relaxed/simple;
-	bh=2eDDBvULM18W2uvLSlZOXdc/OH8YWcYEX6155EOzTaw=;
+	s=arc-20240116; t=1711990911; c=relaxed/simple;
+	bh=2NvEycjIQIv8mDAKuLbBdJeXB7NpvKlV7yxO+WW3GI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqyuOdr1blYej85LKbYvNfv/FPbogyJFqtx0bBg4yVQX6DA7F62Z+8+yj0Vpcgs5KukQr+H7Hl8SZqF/gU4ZHSdvCg4XFsD4SdXyI4rDVZptRJwaHXd9VHkijUww8cLT9SGgzU+8JFyYD+/4zR6N7DUKUy7qvNXoVHX4aEHDDZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2nwBhLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8215BC433F1;
-	Mon,  1 Apr 2024 16:27:31 +0000 (UTC)
+	 MIME-Version; b=XDp1geFnIsbBxAFb5GTabNGHpb9J5djyhXH7UPBdMNlv5tF8y25ohWqIFlS2WUPMmeWcAh6gWOF3pfqSINZqngXRYlunfAhowt4CIP46czVVGOuQlpstQ/iVEuTcAwtgYxdj9F7SWeyZo1sribmyQHVd2tUIegVbs0k2z8vEzFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5AWl2rn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED84C433F1;
+	Mon,  1 Apr 2024 17:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988852;
-	bh=2eDDBvULM18W2uvLSlZOXdc/OH8YWcYEX6155EOzTaw=;
+	s=korg; t=1711990911;
+	bh=2NvEycjIQIv8mDAKuLbBdJeXB7NpvKlV7yxO+WW3GI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2nwBhLTKZFdkuc/7Uxs+tllc3Gnitj0yZO8DCN65G4bQCPKwkfy2b0pjDl5+5959
-	 rimwVg8y0wj0irIdPL2fi8wcN/Iv0dH/ggNi78dzMz5YHyGQxXScK03fHoWWyUV2NX
-	 fh7oMc1SZF+DFw+rnZBbuRCqfYocBvm4k42y8ZSo=
+	b=n5AWl2rnJvTYo3ycVVDJMg0Q9av1eTUXiGd0oUaYP7NqpA7GOtDTzkTHycb8J7EKN
+	 v2ZQoyBr5bFxKgqE/sYjcFGsb1u7dtqRNNJRxeLzhE4p1CTur/RWXzQMsEhuI4bCbp
+	 hyyWT1Kck0PReeWyRw3pLztTWzjUQ3JppYYkA7Zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 307/432] irqchip/renesas-rzg2l: Implement restriction when writing ISCR register
+Subject: [PATCH 6.1 104/272] vfio/pci: Lock external INTx masking ops
 Date: Mon,  1 Apr 2024 17:44:54 +0200
-Message-ID: <20240401152602.346321938@linuxfoundation.org>
+Message-ID: <20240401152533.887479931@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit ef88eefb1a81a8701eabb7d5ced761a66a465a49 ]
+[ Upstream commit 810cd4bb53456d0503cc4e7934e063835152c1b7 ]
 
-The RZ/G2L manual (chapter "IRQ Status Control Register (ISCR)") describes
-the operation to clear interrupts through the ISCR register as follows:
+Mask operations through config space changes to DisINTx may race INTx
+configuration changes via ioctl.  Create wrappers that add locking for
+paths outside of the core interrupt code.
 
-[Write operation]
+In particular, irq_type is updated holding igate, therefore testing
+is_intx() requires holding igate.  For example clearing DisINTx from
+config space can otherwise race changes of the interrupt configuration.
 
-  When "Falling-edge detection", "Rising-edge detection" or
-  "Falling/Rising-edge detection" is set in IITSR:
+This aligns interfaces which may trigger the INTx eventfd into two
+camps, one side serialized by igate and the other only enabled while
+INTx is configured.  A subsequent patch introduces synchronization for
+the latter flows.
 
-    - In case ISTAT is 1
-	0: IRQn interrupt detection status is cleared.
-	1: Invalid to write.
-    - In case ISTAT is 0
-	Invalid to write.
-
-  When "Low-level detection" is set in IITSR.:
-        Invalid to write.
-
-Take the interrupt type into account when clearing interrupts through the
-ISCR register to avoid writing the ISCR when the interrupt type is level.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231120111820.87398-6-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: 9eec61df55c5 ("irqchip/renesas-rzg2l: Flush posted write in irq_eoi()")
+Cc:  <stable@vger.kernel.org>
+Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+Reported-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-3-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/vfio/pci/vfio_pci_intrs.c |   34 ++++++++++++++++++++++++++++------
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index fe8d516f36149..3dc2b3867f219 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -72,11 +72,17 @@ static void rzg2l_irq_eoi(struct irq_data *d)
- 	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
- 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
- 	u32 bit = BIT(hw_irq);
--	u32 reg;
-+	u32 iitsr, iscr;
- 
--	reg = readl_relaxed(priv->base + ISCR);
--	if (reg & bit)
--		writel_relaxed(reg & ~bit, priv->base + ISCR);
-+	iscr = readl_relaxed(priv->base + ISCR);
-+	iitsr = readl_relaxed(priv->base + IITSR);
-+
-+	/*
-+	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
-+	 * falling/rising-edge.
-+	 */
-+	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
-+		writel_relaxed(iscr & ~bit, priv->base + ISCR);
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -60,12 +60,14 @@ static void vfio_send_intx_eventfd(void
  }
  
- static void rzg2l_tint_eoi(struct irq_data *d)
--- 
-2.43.0
-
+ /* Returns true if the INTx vfio_pci_irq_ctx.masked value is changed. */
+-bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
++static bool __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
+ {
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	unsigned long flags;
+ 	bool masked_changed = false;
+ 
++	lockdep_assert_held(&vdev->igate);
++
+ 	spin_lock_irqsave(&vdev->irqlock, flags);
+ 
+ 	/*
+@@ -95,6 +97,17 @@ bool vfio_pci_intx_mask(struct vfio_pci_
+ 	return masked_changed;
+ }
+ 
++bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
++{
++	bool mask_changed;
++
++	mutex_lock(&vdev->igate);
++	mask_changed = __vfio_pci_intx_mask(vdev);
++	mutex_unlock(&vdev->igate);
++
++	return mask_changed;
++}
++
+ /*
+  * If this is triggered by an eventfd, we can't call eventfd_signal
+  * or else we'll deadlock on the eventfd wait queue.  Return >0 when
+@@ -137,12 +150,21 @@ static int vfio_pci_intx_unmask_handler(
+ 	return ret;
+ }
+ 
+-void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
++static void __vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
+ {
++	lockdep_assert_held(&vdev->igate);
++
+ 	if (vfio_pci_intx_unmask_handler(vdev, NULL) > 0)
+ 		vfio_send_intx_eventfd(vdev, NULL);
+ }
+ 
++void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
++{
++	mutex_lock(&vdev->igate);
++	__vfio_pci_intx_unmask(vdev);
++	mutex_unlock(&vdev->igate);
++}
++
+ static irqreturn_t vfio_intx_handler(int irq, void *dev_id)
+ {
+ 	struct vfio_pci_core_device *vdev = dev_id;
+@@ -457,11 +479,11 @@ static int vfio_pci_set_intx_unmask(stru
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_pci_intx_unmask(vdev);
++		__vfio_pci_intx_unmask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t unmask = *(uint8_t *)data;
+ 		if (unmask)
+-			vfio_pci_intx_unmask(vdev);
++			__vfio_pci_intx_unmask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		int32_t fd = *(int32_t *)data;
+ 		if (fd >= 0)
+@@ -484,11 +506,11 @@ static int vfio_pci_set_intx_mask(struct
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_pci_intx_mask(vdev);
++		__vfio_pci_intx_mask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t mask = *(uint8_t *)data;
+ 		if (mask)
+-			vfio_pci_intx_mask(vdev);
++			__vfio_pci_intx_mask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		return -ENOTTY; /* XXX implement me */
+ 	}
 
 
 
