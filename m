@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D302893FF4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AF498942FC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EB061C21265
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8AD9283835
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0AE4778E;
-	Mon,  1 Apr 2024 16:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9311F1E86C;
+	Mon,  1 Apr 2024 16:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZjTav0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRnJmw7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07D9C129;
-	Mon,  1 Apr 2024 16:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C72BA3F;
+	Mon,  1 Apr 2024 16:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988617; cv=none; b=iZfVgaAgRU8+llLO4CNgflOBVo/V+OtujZal7Sk5CykEoFDuolRsyLdafY9jD7G8gqfku/s4/rHkMhn+VqHBndEsDQzfNoajpPCPkvwtW/JsyRgxTykRoZ2CPy3ZPyKxgZDgelTSIZcvqVJjA0zSC2uYfEElTblvPVDrxCu+bow=
+	t=1711990688; cv=none; b=Xrrb0icB6cRdFtoyqy0GS5cmDVyu3U9+xK4vdqFKBtrOEohDiwBLabY/OENWVlXnBNwuFATbJlN91G+Bw38Vm7rBSt4WUN6gz9KKLweLA+mN+qyT6oPvfzpL6t5Hjl+HOcpIDxuVIa+H6pnzXHewscL20oSI8xPCjUAeKrc/AZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988617; c=relaxed/simple;
-	bh=PIYSN0sN+e3Q7EPpVMVdPLVwOixmy9Yig7SVGIiUTd0=;
+	s=arc-20240116; t=1711990688; c=relaxed/simple;
+	bh=BfvTd+x6dOWDhT6Ry7pxTJK8/1EmukK80UTC1pfFo0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nz63BhEd47AIsquNs7vFq1aMWg+sEXoXM2jmgMwugXaSOjSYIkaLBfl5Jxwkivl/PBI3jOx2vyJH7OmzQKDevHx0zHCfKLliuXgwc4f2qtnH7t/hO08l3251DawJNouDgSnwFEQ4efP0MrIOKVQDTWYYCPSi6w2Y/Bp6ohV33yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZjTav0j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A20C433F1;
-	Mon,  1 Apr 2024 16:23:36 +0000 (UTC)
+	 MIME-Version; b=PgnFj/OYR9nBty/lDmn29xuWcpJc+QRKE9gKXJACeePiM8jw4csgW4L7PeV6x8GBd98ruA1rZKZJG+xbVcIDHvstSFH07wM+TGchAdEvMItjcGCiPheVSQBlnQFzmsq3dSZWVgf0IG2xBGJB4LRZ68yg3LZB20QtWwTi86QJcr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRnJmw7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A2DC433C7;
+	Mon,  1 Apr 2024 16:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988617;
-	bh=PIYSN0sN+e3Q7EPpVMVdPLVwOixmy9Yig7SVGIiUTd0=;
+	s=korg; t=1711990688;
+	bh=BfvTd+x6dOWDhT6Ry7pxTJK8/1EmukK80UTC1pfFo0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZjTav0jWz7lKfq90TVLXLFKW34YWkPsea76ijQudxrlGbi7M6v52nWAFh54NAYnR
-	 m09lZ7RGxr0vpXOZl9Ai+x8ggfK/Dcprvln7XcnC6VncyzY/ALM2wgefHfRg8DkFYE
-	 +AFSAu6bplU65OrcAtKw6LMCVuQiyYy4b6Q5WIcM=
+	b=vRnJmw7cCXrxEnJrVQKvAbm2mpSnW2VcWfuRDW6L1g3orK2sm6roIIdrkUg08wZUo
+	 9GPGx5tWNtT+CwknSCgPYYAO/TFQfB+1GZCLnMm/sYDx6Ql0wfk5SNyWkhdXQu6FLV
+	 Isc5Zi3UF5qsZpWqqo2H3QlliF4YnKIeGrwcoF1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@redhat.com>,
-	Karol Herbst <kherbst@redhat.com>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 6.7 239/432] drm/nouveau: fix stale locked mutex in nouveau_gem_ioctl_pushbuf
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/272] block: Clear zone limits for a non-zoned stacked queue
 Date: Mon,  1 Apr 2024 17:43:46 +0200
-Message-ID: <20240401152600.265821595@linuxfoundation.org>
+Message-ID: <20240401152531.505016431@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Herbst <kherbst@redhat.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit daf8739c3322a762ce84f240f50e0c39181a41ab upstream.
+[ Upstream commit c8f6f88d25929ad2f290b428efcae3b526f3eab0 ]
 
-If VM_BIND is enabled on the client the legacy submission ioctl can't be
-used, however if a client tries to do so regardless it will return an
-error. In this case the clients mutex remained unlocked leading to a
-deadlock inside nouveau_drm_postclose or any other nouveau ioctl call.
+Device mapper may create a non-zoned mapped device out of a zoned device
+(e.g., the dm-zoned target). In such case, some queue limit such as the
+max_zone_append_sectors and zone_write_granularity endup being non zero
+values for a block device that is not zoned. Avoid this by clearing
+these limits in blk_stack_limits() when the stacked zoned limit is
+false.
 
-Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
-Cc: Danilo Krummrich <dakr@redhat.com>
-Cc: <stable@vger.kernel.org> # v6.6+
-Signed-off-by: Karol Herbst <kherbst@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240305133853.2214268-1-kherbst@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3093a479727b ("block: inherit the zoned characteristics in blk_stack_limits")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240222131724.1803520-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_gem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-settings.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_gem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -758,7 +758,7 @@ nouveau_gem_ioctl_pushbuf(struct drm_dev
- 		return -ENOMEM;
- 
- 	if (unlikely(nouveau_cli_uvmm(cli)))
--		return -ENOSYS;
-+		return nouveau_abi16_put(abi16, -ENOSYS);
- 
- 	list_for_each_entry(temp, &abi16->channels, head) {
- 		if (temp->chan->chid == req->channel) {
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index bbca4ce77a2d3..c702f408bbc0a 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -680,6 +680,10 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 	t->zone_write_granularity = max(t->zone_write_granularity,
+ 					b->zone_write_granularity);
+ 	t->zoned = max(t->zoned, b->zoned);
++	if (!t->zoned) {
++		t->zone_write_granularity = 0;
++		t->max_zone_append_sectors = 0;
++	}
+ 	return ret;
+ }
+ EXPORT_SYMBOL(blk_stack_limits);
+-- 
+2.43.0
+
 
 
 
