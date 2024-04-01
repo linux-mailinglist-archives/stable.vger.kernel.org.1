@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F12894241
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09FA893EDB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B7052835A5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 749131F21B2B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD6B4A99C;
-	Mon,  1 Apr 2024 16:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA52D4778E;
+	Mon,  1 Apr 2024 16:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFQCclWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH+vDhA2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5557263E;
-	Mon,  1 Apr 2024 16:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989C71CA8F;
+	Mon,  1 Apr 2024 16:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990253; cv=none; b=EoGII9p0BvRl26cOTUd6/3QhGTkaYNgWyTk8WK3RWruN61JNXivtR1fJG79aNvQnYbgRU/1dpYTTi33OjLaqRKbEDT+x+XjMFZpfmM27wHWWPQ9i1wf+NyK0T0vT/OxnhOdb0JXYFalYUYc5w+NTH4jrOpZ9ohbx9uT6EY5p01A=
+	t=1711987736; cv=none; b=rpnnxce1lH0ndWLgQpvB+Lom7yhKKL0zyVUWYuVVuAvFqY8XHAqmW/31ejX/n++TPnfdJYwdP/Oq/rzsxGOF+zRXjcqZdu08s2brguPZaTAUPY9AMHfAqD6WWNV8Sx13rcqSZkmTc8wX82RKUAAP5q8cSgZ2ZEBRzESbWaKQV+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990253; c=relaxed/simple;
-	bh=GSXeu6m9dIiKdjj9DkDEP0ZdM2h+XkmJJbAdeT9+HQM=;
+	s=arc-20240116; t=1711987736; c=relaxed/simple;
+	bh=nPL9yUUNlEESLxAwaliLg/1+i/rc+SP85+e18WH+4AQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHqxAEr1E7+Y0vsH5UvhsCEcsimvDyYh1VlMSe+mlpXQTcV7cvNtwHPuZX23+81Nhf9IS9ioD+Tvqg10tnYbNUvamcWZYQwUZCLASouye/V6rlndlf8GwsfqcH9eag8o+vrMqaBGpyxg6iKf3cQjo6PBQ44+zonNK8dMh3cBKCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFQCclWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE43BC433F1;
-	Mon,  1 Apr 2024 16:50:52 +0000 (UTC)
+	 MIME-Version; b=FeOMH8aOiJl9+GBJD1yQhlvdmu+EX+wQCh0e1QVfXukOjPdZ7C8PJ5HW+HavSfX3BScXpM08OD/eE97TMh2ejljUY3XmN7nwKEbujHntrEHA0SaRQpy57VpC3HqO79lqoJ5PLkvJagnXaC7l5+LRPjMv/5tmwLT4gPKSR5sYLsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH+vDhA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B6DC433C7;
+	Mon,  1 Apr 2024 16:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990253;
-	bh=GSXeu6m9dIiKdjj9DkDEP0ZdM2h+XkmJJbAdeT9+HQM=;
+	s=korg; t=1711987736;
+	bh=nPL9yUUNlEESLxAwaliLg/1+i/rc+SP85+e18WH+4AQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFQCclWwz4uEkgFLTlGfWRQhWA0I9eDC6kuTNyhp5CQU93jzgGvT+pHLOySm3gR7m
-	 iXbX8J+10/SSClQKjB0PnN3YMxISRYo1V/nbmy2IYm2Xx9rHF+IK8F3kCCcf8apqWH
-	 9fNr1+240Dop8pvsx3hT6rAccBp3s6WUHD6qvqf4=
+	b=wH+vDhA2f3KbqjUJXcUdmHlUwGku9nDMzlOe1OVjFvtYZ/Npk3IbAUimkKeQOoCG6
+	 vMHL7rrtSjPB03IW6loZA6DOdeT9nD3dFukM7DSqJE0O2fkK5q48RGTHJgjjG03XSc
+	 AB2yZqVxQ1JmZC4Ss2j6HpEW3Ti1wOA4Ao8ArHvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/396] irqchip/renesas-rzg2l: Implement restriction when writing ISCR register
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.8 376/399] usb: typec: ucsi: Clear UCSI_CCI_RESET_COMPLETE before reset
 Date: Mon,  1 Apr 2024 17:45:42 +0200
-Message-ID: <20240401152556.639402630@linuxfoundation.org>
+Message-ID: <20240401152600.403407717@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit ef88eefb1a81a8701eabb7d5ced761a66a465a49 ]
+commit 3de4f996a0b5412aa451729008130a488f71563e upstream.
 
-The RZ/G2L manual (chapter "IRQ Status Control Register (ISCR)") describes
-the operation to clear interrupts through the ISCR register as follows:
+Check the UCSI_CCI_RESET_COMPLETE complete flag before starting
+another reset. Use a UCSI_SET_NOTIFICATION_ENABLE command to clear
+the flag if it is set.
 
-[Write operation]
-
-  When "Falling-edge detection", "Rising-edge detection" or
-  "Falling/Rising-edge detection" is set in IITSR:
-
-    - In case ISTAT is 1
-	0: IRQn interrupt detection status is cleared.
-	1: Invalid to write.
-    - In case ISTAT is 0
-	Invalid to write.
-
-  When "Low-level detection" is set in IITSR.:
-        Invalid to write.
-
-Take the interrupt type into account when clearing interrupts through the
-ISCR register to avoid writing the ISCR when the interrupt type is level.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231120111820.87398-6-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: 9eec61df55c5 ("irqchip/renesas-rzg2l: Flush posted write in irq_eoi()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-6-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |   36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 96f4e322ed6b7..8e0b15c7fe7f1 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -72,11 +72,17 @@ static void rzg2l_irq_eoi(struct irq_data *d)
- 	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
- 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
- 	u32 bit = BIT(hw_irq);
--	u32 reg;
-+	u32 iitsr, iscr;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -985,13 +985,47 @@ static int ucsi_reset_connector(struct u
  
--	reg = readl_relaxed(priv->base + ISCR);
--	if (reg & bit)
--		writel_relaxed(reg & ~bit, priv->base + ISCR);
-+	iscr = readl_relaxed(priv->base + ISCR);
-+	iitsr = readl_relaxed(priv->base + IITSR);
+ static int ucsi_reset_ppm(struct ucsi *ucsi)
+ {
+-	u64 command = UCSI_PPM_RESET;
++	u64 command;
+ 	unsigned long tmo;
+ 	u32 cci;
+ 	int ret;
+ 
+ 	mutex_lock(&ucsi->ppm_lock);
+ 
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret < 0)
++		goto out;
 +
 +	/*
-+	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
-+	 * falling/rising-edge.
++	 * If UCSI_CCI_RESET_COMPLETE is already set we must clear
++	 * the flag before we start another reset. Send a
++	 * UCSI_SET_NOTIFICATION_ENABLE command to achieve this.
++	 * Ignore a timeout and try the reset anyway if this fails.
 +	 */
-+	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
-+		writel_relaxed(iscr & ~bit, priv->base + ISCR);
- }
- 
- static void rzg2l_tint_eoi(struct irq_data *d)
--- 
-2.43.0
-
++	if (cci & UCSI_CCI_RESET_COMPLETE) {
++		command = UCSI_SET_NOTIFICATION_ENABLE;
++		ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
++					     sizeof(command));
++		if (ret < 0)
++			goto out;
++
++		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
++		do {
++			ret = ucsi->ops->read(ucsi, UCSI_CCI,
++					      &cci, sizeof(cci));
++			if (ret < 0)
++				goto out;
++			if (cci & UCSI_CCI_COMMAND_COMPLETE)
++				break;
++			if (time_is_before_jiffies(tmo))
++				break;
++			msleep(20);
++		} while (1);
++
++		WARN_ON(cci & UCSI_CCI_RESET_COMPLETE);
++	}
++
++	command = UCSI_PPM_RESET;
+ 	ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
+ 				     sizeof(command));
+ 	if (ret < 0)
 
 
 
