@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-35245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3EF894315
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD6889402F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35CDE283551
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1480B21231
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE52A481C6;
-	Mon,  1 Apr 2024 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19239446D5;
+	Mon,  1 Apr 2024 16:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhYmoZDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9QMDfFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D764BA3F;
-	Mon,  1 Apr 2024 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0D91CA8F;
+	Mon,  1 Apr 2024 16:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990769; cv=none; b=UR/caBGh05Zu4bk8AN0CqP/XF9Hg+c6667ZJvKkZAyK3X8o7+UeMQYoCUj9R3WEIkY9NpNhM7GxpVzN1TndtitmdU8h9a9EzvokrKfhOM81b924iVQmzBU9HYi36gOviyw14h31cvAHFPQj3D0MuqGeEkIGJjjUkfTzvCrNrxQU=
+	t=1711988802; cv=none; b=oMaKaRB/9p8n/TCxuf5iGctAroYpedIhtnzwQMTFSSOkVZhdWF950ApT4+gulEdWPIumBOP0uOnR4pAdPCve4GBdCaycYl83H1TQ/kBkvLk+RYS8JFDpk5PYQ5RAwsXEQyXFhwBQ4gtTSwIzB5OrmnF3X30EngwJjZWCdbL50mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990769; c=relaxed/simple;
-	bh=1gYQFvwPtYUVwka4tY3A/nNaKvF9yVp5+qTxnTG/lD4=;
+	s=arc-20240116; t=1711988802; c=relaxed/simple;
+	bh=BqvUUmDS1h9ks/M29z5D4KY/hx1YpjQRjjCE6EHkk1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CQbNsLuCii0y13QyUyABmDw7KO5eZ39S2doaSLyzt5sSHdiI35YCJyRPM8bwzPVVNOQwN0TE6jpds4xQ36tBVNi6B1G9dxwpLKxQI4fQrC3WPqZ01xKWgvWIrMwpYpc2nTGPxjk6whT4colJx6sY+yVvorq5KDKyndF+x/LwG1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhYmoZDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0929C433C7;
-	Mon,  1 Apr 2024 16:59:28 +0000 (UTC)
+	 MIME-Version; b=MYGU8d92LyJoZ5IunCyM8mmXNu2KUPhoAdPqzpq8meNUO4FyjcAHh7qnSqgw7I10js5Jti8Pua3VKfNYr8/vZv3OEa/RhDAhu4Np5C2jt4MbBNFRs73hR4GgL85W86oh5eaQ9nSpm6xNrfQzojtD56bfL3juCjo6QvAiSsJKrQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9QMDfFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A42DC433C7;
+	Mon,  1 Apr 2024 16:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990769;
-	bh=1gYQFvwPtYUVwka4tY3A/nNaKvF9yVp5+qTxnTG/lD4=;
+	s=korg; t=1711988802;
+	bh=BqvUUmDS1h9ks/M29z5D4KY/hx1YpjQRjjCE6EHkk1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HhYmoZDeIxbAKz8hoech6dGGDQwIUquCzdIzqzc9IIDYZlvmQR2pHKJVWEjxEt3tu
-	 6kdle/w9DaD0be5H7dm5XEf4ZQ2R4m4tFavWB5LcJXVQhm1nYamHgIxw5yaq/+4s9F
-	 ZfXwq2wSJOUS6IEleay8ep+Tz69mkPtwZqXqAhWw=
+	b=y9QMDfFpvsveWUIKqyhzi/I9D9mvkg/4SMr+PwWAi1rXZt9ZJQpW4eL0iJqrA3Uls
+	 hSm5uPxnMHS1h77qake2mEu/123741v3aGRU7jg85SRVzDO/NES0OurzKI70fNrSq2
+	 8zN7yiUIreud9TjzFCUXGKH1UAU7MM3TA9P/hzfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20H=C3=A4ggstr=C3=B6m?= <christian.haggstrom@orexplore.com>,
-	Johan Hovold <johan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/272] USB: serial: cp210x: add ID for MGP Instruments PDS100
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.7 264/432] usb: port: Dont try to peer unused USB ports based on location
 Date: Mon,  1 Apr 2024 17:44:11 +0200
-Message-ID: <20240401152532.459732079@linuxfoundation.org>
+Message-ID: <20240401152601.024472351@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Häggström <christian.haggstrom@orexplore.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit a0d9d868491a362d421521499d98308c8e3a0398 ]
+commit 69c63350e573367f9c8594162288cffa8a26d0d1 upstream.
 
-The radiation meter has the text MGP Instruments PDS-100G or PDS-100GN
-produced by Mirion Technologies. Tested by forcing the driver
-association with
+Unused USB ports may have bogus location data in ACPI PLD tables.
+This causes port peering failures as these unused USB2 and USB3 ports
+location may match.
 
-  echo 10c4 863c > /sys/bus/usb-serial/drivers/cp210x/new_id
+Due to these failures the driver prints a
+"usb: port power management may be unreliable" warning, and
+unnecessarily blocks port power off during runtime suspend.
 
-and then setting the serial port in 115200 8N1 mode. The device
-announces ID_USB_VENDOR_ENC=Silicon\x20Labs and ID_USB_MODEL_ENC=PDS100
+This was debugged on a couple DELL systems where the unused ports
+all returned zeroes in their location data.
+Similar bugreports exist for other systems.
 
-Signed-off-by: Christian Häggström <christian.haggstrom@orexplore.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Don't try to peer or match ports that have connect type set to
+USB_PORT_NOT_USED.
+
+Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
+Cc: stable@vger.kernel.org # v3.16+
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
+Link: https://lore.kernel.org/r/20240222233343.71856-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/cp210x.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/core/port.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
-index bd0632e77d8b0..e9ee8da8cc296 100644
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -144,6 +144,7 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(0x10C4, 0x85EA) }, /* AC-Services IBUS-IF */
- 	{ USB_DEVICE(0x10C4, 0x85EB) }, /* AC-Services CIS-IBUS */
- 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
-+	{ USB_DEVICE(0x10C4, 0x863C) }, /* MGP Instruments PDS100 */
- 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
- 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
- 	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
--- 
-2.43.0
-
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -573,7 +573,7 @@ static int match_location(struct usb_dev
+ 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
+ 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
+ 
+-	if (!peer_hub)
++	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
+ 		return 0;
+ 
+ 	hcd = bus_to_hcd(hdev->bus);
+@@ -584,7 +584,8 @@ static int match_location(struct usb_dev
+ 
+ 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
+ 		peer = peer_hub->ports[port1 - 1];
+-		if (peer && peer->location == port_dev->location) {
++		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
++		    peer->location == port_dev->location) {
+ 			link_peers_report(port_dev, peer);
+ 			return 1; /* done */
+ 		}
 
 
 
