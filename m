@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874F5893EA1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3D68941EE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8EAD1C211D1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 952AA1F21C4F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC51B4778B;
-	Mon,  1 Apr 2024 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A0C4654F;
+	Mon,  1 Apr 2024 16:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJ03pUHD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xV0x1u/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9241CA8F;
-	Mon,  1 Apr 2024 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AA940876;
+	Mon,  1 Apr 2024 16:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987562; cv=none; b=iuOlfALIE0EmI4KbGSL6G9NCUlGkTWTRDgCtM/8O9etq1inv7egYg+VddTT2spUY/EqVPIcq0lUCZ57fECIc/lP0yYNIZ1S/V7j7wRh/YJDrTOEGteYrnuAbcHIhkeMFY+/9m2/9gPQ05imxWDn7w7H+ufOjqkSOmcsuUZvN/mo=
+	t=1711990078; cv=none; b=i9s+J9s24oXGOfkJdYjqSwnJ86vQVZHStBTwcBwqBloRnnPQ1/zbMAvBzlotzpAaWvmI2UTa7R7n5ozovZpLt5ZUOGnPZe2sSzsQpN5rTTu5N4Olg7quYz76MuRZLwimk3wLYp58Oe51WRvch2YvLNYsZbebXpLgGqn69MkEy0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987562; c=relaxed/simple;
-	bh=wb+K7Ockx7SFzbrl0qhXLSDE/stAkgHpCRCWRqtG1ow=;
+	s=arc-20240116; t=1711990078; c=relaxed/simple;
+	bh=A2kqNJBgZftFhnfKiHQiUNajmG3duAa0ukg9Kw0gd1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSx62ZCF56Ej/hFF/lfuEXe7uSokFUwYQZQ6r1XvVYqIMlNNGdgX8LjlyWF32G38TU455fosAYIAi29dSFnr/zodLq7bGIIVqzR/D5nGg2OpySs3zK8+z8AUxIusYamOcGLN0h8tEPp+PBfJeP6x+YAcSzuJK9d+ykDHmaK5NvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJ03pUHD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CA3C433C7;
-	Mon,  1 Apr 2024 16:06:02 +0000 (UTC)
+	 MIME-Version; b=vGdsb4T7FDiPYIpH4vW2qHFZZOEyp/BdzencOZiZaLHKLUGcepnAEdZd4+MbCM5FkTyZSD5OJsEW5MpS4v+Be7fG+fDITFqyMAWy4L1PLmftZ5APcgHj6qDx8uAEAtV1EJ+Ghazg6q+A7E8C63NvYnUt2hK89AMGZcQWyXWIesY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xV0x1u/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6470EC433F1;
+	Mon,  1 Apr 2024 16:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987562;
-	bh=wb+K7Ockx7SFzbrl0qhXLSDE/stAkgHpCRCWRqtG1ow=;
+	s=korg; t=1711990077;
+	bh=A2kqNJBgZftFhnfKiHQiUNajmG3duAa0ukg9Kw0gd1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJ03pUHDjEIkcz2K3aCJW6tD7g8yvRE9I44HLHlfjrWTBe6dExCZdHLLsGP04wkXs
-	 O0ulXy1iro3CG/5DS8NdcFF+fxUnMVuwxgGzaVv9jQP24Q0HJea98Z8O8yI3HGmt3j
-	 HrtO3e942KXlP83OZsa0MZSHoKRvqiIrWRseX6rw=
+	b=xV0x1u/16/62ziY74C4TNDkghxscZvsLAUS/Wot3tDLyI5rTM0R10RvClyJ1jZDlf
+	 /Eo3zF5VKJQq8W5PqZX1lSreS+SPhAMbP6rhUlvrdAR0k77tl/k5UGFONekdpnAGbt
+	 bS1lKGD2BmbcfW6bES+HwZ1QFRsGjra2a1J8X8K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Tavian Barnes <tavianator@tavianator.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 295/399] btrfs: fix race in read_extent_buffer_pages()
+	Edmund Raile <edmund.raile@proton.me>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 6.6 212/396] firewire: ohci: prevent leak of left-over IRQ on unbind
 Date: Mon,  1 Apr 2024 17:44:21 +0200
-Message-ID: <20240401152557.994118386@linuxfoundation.org>
+Message-ID: <20240401152554.246577183@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tavian Barnes <tavianator@tavianator.com>
+From: Edmund Raile <edmund.raile@proton.me>
 
-commit ef1e68236b9153c27cb7cf29ead0c532870d4215 upstream.
+commit 575801663c7dc38f826212b39e3b91a4a8661c33 upstream.
 
-There are reports from tree-checker that detects corrupted nodes,
-without any obvious pattern so possibly an overwrite in memory.
-After some debugging it turns out there's a race when reading an extent
-buffer the uptodate status can be missed.
+Commit 5a95f1ded28691e6 ("firewire: ohci: use devres for requested IRQ")
+also removed the call to free_irq() in pci_remove(), leading to a
+leftover irq of devm_request_irq() at pci_disable_msi() in pci_remove()
+when unbinding the driver from the device
 
-To prevent concurrent reads for the same extent buffer,
-read_extent_buffer_pages() performs these checks:
+remove_proc_entry: removing non-empty directory 'irq/136', leaking at
+least 'firewire_ohci'
+Call Trace:
+ ? remove_proc_entry+0x19c/0x1c0
+ ? __warn+0x81/0x130
+ ? remove_proc_entry+0x19c/0x1c0
+ ? report_bug+0x171/0x1a0
+ ? console_unlock+0x78/0x120
+ ? handle_bug+0x3c/0x80
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? remove_proc_entry+0x19c/0x1c0
+ unregister_irq_proc+0xf4/0x120
+ free_desc+0x3d/0xe0
+ ? kfree+0x29f/0x2f0
+ irq_free_descs+0x47/0x70
+ msi_domain_free_locked.part.0+0x19d/0x1d0
+ msi_domain_free_irqs_all_locked+0x81/0xc0
+ pci_free_msi_irqs+0x12/0x40
+ pci_disable_msi+0x4c/0x60
+ pci_remove+0x9d/0xc0 [firewire_ohci
+     01b483699bebf9cb07a3d69df0aa2bee71db1b26]
+ pci_device_remove+0x37/0xa0
+ device_release_driver_internal+0x19f/0x200
+ unbind_store+0xa1/0xb0
 
-    /* (1) */
-    if (test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))
-        return 0;
+remove irq with devm_free_irq() before pci_disable_msi()
+also remove it in fail_msi: of pci_probe() as this would lead to
+an identical leak
 
-    /* (2) */
-    if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
-        goto done;
-
-At this point, it seems safe to start the actual read operation. Once
-that completes, end_bbio_meta_read() does
-
-    /* (3) */
-    set_extent_buffer_uptodate(eb);
-
-    /* (4) */
-    clear_bit(EXTENT_BUFFER_READING, &eb->bflags);
-
-Normally, this is enough to ensure only one read happens, and all other
-callers wait for it to finish before returning.  Unfortunately, there is
-a racey interleaving:
-
-    Thread A | Thread B | Thread C
-    ---------+----------+---------
-       (1)   |          |
-             |    (1)   |
-       (2)   |          |
-       (3)   |          |
-       (4)   |          |
-             |    (2)   |
-             |          |    (1)
-
-When this happens, thread B kicks of an unnecessary read. Worse, thread
-C will see UPTODATE set and return immediately, while the read from
-thread B is still in progress.  This race could result in tree-checker
-errors like this as the extent buffer is concurrently modified:
-
-    BTRFS critical (device dm-0): corrupted node, root=256
-    block=8550954455682405139 owner mismatch, have 11858205567642294356
-    expect [256, 18446744073709551360]
-
-Fix it by testing UPTODATE again after setting the READING bit, and if
-it's been set, skip the unnecessary read.
-
-Fixes: d7172f52e993 ("btrfs: use per-buffer locking for extent_buffer reading")
-Link: https://lore.kernel.org/linux-btrfs/CAHk-=whNdMaN9ntZ47XRKP6DBes2E5w7fi-0U3H2+PS18p+Pzw@mail.gmail.com/
-Link: https://lore.kernel.org/linux-btrfs/f51a6d5d7432455a6a858d51b49ecac183e0bbc9.1706312914.git.wqu@suse.com/
-Link: https://lore.kernel.org/linux-btrfs/c7241ea4-fcc6-48d2-98c8-b5ea790d6c89@gmx.com/
-CC: stable@vger.kernel.org # 6.5+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Tavian Barnes <tavianator@tavianator.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ minor update of changelog ]
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: 5a95f1ded28691e6 ("firewire: ohci: use devres for requested IRQ")
+Signed-off-by: Edmund Raile <edmund.raile@proton.me>
+Link: https://lore.kernel.org/r/20240229144723.13047-2-edmund.raile@proton.me
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/firewire/ohci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -4319,6 +4319,19 @@ int read_extent_buffer_pages(struct exte
- 	if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
- 		goto done;
+--- a/drivers/firewire/ohci.c
++++ b/drivers/firewire/ohci.c
+@@ -3773,6 +3773,7 @@ static int pci_probe(struct pci_dev *dev
+ 	return 0;
  
-+	/*
-+	 * Between the initial test_bit(EXTENT_BUFFER_UPTODATE) and the above
-+	 * test_and_set_bit(EXTENT_BUFFER_READING), someone else could have
-+	 * started and finished reading the same eb.  In this case, UPTODATE
-+	 * will now be set, and we shouldn't read it in again.
-+	 */
-+	if (unlikely(test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))) {
-+		clear_bit(EXTENT_BUFFER_READING, &eb->bflags);
-+		smp_mb__after_atomic();
-+		wake_up_bit(&eb->bflags, EXTENT_BUFFER_READING);
-+		return 0;
-+	}
-+
- 	clear_bit(EXTENT_BUFFER_READ_ERR, &eb->bflags);
- 	eb->read_mirror = 0;
- 	check_buffer_tree_ref(eb);
+  fail_msi:
++	devm_free_irq(&dev->dev, dev->irq, ohci);
+ 	pci_disable_msi(dev);
+ 
+ 	return err;
+@@ -3800,6 +3801,7 @@ static void pci_remove(struct pci_dev *d
+ 
+ 	software_reset(ohci);
+ 
++	devm_free_irq(&dev->dev, dev->irq, ohci);
+ 	pci_disable_msi(dev);
+ 
+ 	dev_notice(&dev->dev, "removing fw-ohci device\n");
 
 
 
