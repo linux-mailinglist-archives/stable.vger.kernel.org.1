@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DF8894385
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57924894247
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C0E283861
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B54A1C213D7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5C8487BE;
-	Mon,  1 Apr 2024 17:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF194AED7;
+	Mon,  1 Apr 2024 16:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBW1r9Jf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPPyK4wu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7537F1DFF4;
-	Mon,  1 Apr 2024 17:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC88BA3F;
+	Mon,  1 Apr 2024 16:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991079; cv=none; b=lvkCWAr7lxzsubKgoO2/usz4uBU2+nKpb7JnVBxfcDPwdgu5wcxC8f/wYhN9aiOfklMwGibuBpbtdgBvgswaqxClRKHRnjZTMe00qh9rata596a7reaS/Ax7EQ3jtg3ZywJsfoNmfHDXVbysrwTricGNqeM3YKiSdBrrgyobMAk=
+	t=1711990269; cv=none; b=lu9Hg0hV5bGrtiC+0ZgfrWsbgIicIwYa95RyrQWAXsO07adubpp0yyNouv9Kf+/3zeXeRUxR47N57W/ok6m1opuEO9BFbvVCtLDhmOAdXu7qNhTdYhLBFe7ysLA/XpxaRMZWjaEXJNr579HfHqw3lsEVsTjyfYjczaxvaoUCbBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991079; c=relaxed/simple;
-	bh=qpGs4MR2uhCcR7PhKgANbzlhsEzC/f8IcQQgzXmNDjY=;
+	s=arc-20240116; t=1711990269; c=relaxed/simple;
+	bh=KT6guxKC4FOg4obVl0AMpoiQESAGt0lGJ0ULxNP59RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpAPecxlC64gILVro9db+WQq4G17TA7JcmyyJXt6MbiOQWczZU79RZQagjCGjcNZxoqTISclB+z7Iu3d6h9A1KhotaROtRzfSJSnCwoHtEc0rCV4nPAl8efVC70qLUomrxW2KtpkiB+IINwptL4oDW3D1hhjNUrZ3WPJiAV7mvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBW1r9Jf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB1DC433C7;
-	Mon,  1 Apr 2024 17:04:38 +0000 (UTC)
+	 MIME-Version; b=gVcLQazka9Ka9dApF3nWKYXre/z0DLD0XH6jJAoa8SdcrZDcYxbQQxUV5yctiwaAwx7FvqIfRHDiwn0fbcsbO3MI/zhABh4ubMVlqL2q5Vo0fENG8SpyI416jWPzPkzTUExiZGsYp0CiXnSMfXQUK1AmSIkLGIm+ax+s+0ze3nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPPyK4wu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BE8C433F1;
+	Mon,  1 Apr 2024 16:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991079;
-	bh=qpGs4MR2uhCcR7PhKgANbzlhsEzC/f8IcQQgzXmNDjY=;
+	s=korg; t=1711990268;
+	bh=KT6guxKC4FOg4obVl0AMpoiQESAGt0lGJ0ULxNP59RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBW1r9JfFrp/aZ3AJPbsZn/4gTu/sOW2G8Owdk3V/9GCZcVUy8qQGO9aseHgeA1wi
-	 Sueix0hsJV+rtoWe3VeXGH//6BsimqwEhBSGylmUI98XXWteDP6YJKuSARTCqqp7WW
-	 /BXL/L1oDQsmxk2oNVm6CHiUCwtDu6ekcC7rJqO0=
+	b=CPPyK4wunEfAjqNAqasMPRAwNaIXGKtnPi6oJSjzWEf9LmNcP0S8f2Rfq/6FS+4RK
+	 tzyhXvkjL6rVeeVAzBWTARrVw/jlkrt7eZEm0Kz1gcJ5ZdYZv0PJigRttbvO6LIvI3
+	 ESBK0dCSMcJOziVOEkJMe9yd3X7mF7+tkhzbhhWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 157/272] USB: usb-storage: Prevent divide-by-0 error in isd200_ata_command
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 298/396] irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type
 Date: Mon,  1 Apr 2024 17:45:47 +0200
-Message-ID: <20240401152535.628974887@linuxfoundation.org>
+Message-ID: <20240401152556.787100651@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 014bcf41d946b36a8f0b8e9b5d9529efbb822f49 upstream.
+[ Upstream commit 853a6030303f8a8fa54929b68e5665d9b21aa405 ]
 
-The isd200 sub-driver in usb-storage uses the HEADS and SECTORS values
-in the ATA ID information to calculate cylinder and head values when
-creating a CDB for READ or WRITE commands.  The calculation involves
-division and modulus operations, which will cause a crash if either of
-these values is 0.  While this never happens with a genuine device, it
-could happen with a flawed or subversive emulation, as reported by the
-syzbot fuzzer.
+RZ/G2L interrupt chips require that the interrupt is masked before changing
+the NMI, IRQ, TINT interrupt settings. Aside of that, after setting an edge
+trigger type it is required to clear the interrupt status register in order
+to avoid spurious interrupts.
 
-Protect against this possibility by refusing to bind to the device if
-either the ATA_ID_HEADS or ATA_ID_SECTORS value in the device's ID
-information is 0.  This requires isd200_Initialization() to return a
-negative error code when initialization fails; currently it always
-returns 0 (even when there is an error).
+The current implementation fails to do either of that and therefore is
+prone to generate spurious interrupts when setting the trigger type.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-usb/0000000000003eb868061245ba7f@google.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/b1e605ea-333f-4ac0-9511-da04f411763e@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Address this by:
+
+  - Ensuring that the interrupt is masked at the chip level across the
+    update for the TINT chip
+
+  - Clearing the interrupt status register after updating the trigger mode
+    for edge type interrupts
+
+[ tglx: Massaged changelog and reverted the spin_lock_irqsave() change as
+  	the set_type() callback is always called with interrupts disabled. ]
+
+Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/isd200.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 36 +++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/storage/isd200.c
-+++ b/drivers/usb/storage/isd200.c
-@@ -1105,7 +1105,7 @@ static void isd200_dump_driveid(struct u
- static int isd200_get_inquiry_data( struct us_data *us )
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 80cbe96505c92..02ab6a944539f 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -162,8 +162,10 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
+ 
+ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
  {
- 	struct isd200_info *info = (struct isd200_info *)us->extra;
--	int retStatus = ISD200_GOOD;
-+	int retStatus;
- 	u16 *id = info->id;
+-	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
++	unsigned int hwirq = irqd_to_hwirq(d);
++	u32 iitseln = hwirq - IRQC_IRQ_START;
++	bool clear_irq_int = false;
+ 	u16 sense, tmp;
  
- 	usb_stor_dbg(us, "Entering isd200_get_inquiry_data\n");
-@@ -1137,6 +1137,13 @@ static int isd200_get_inquiry_data( stru
- 				isd200_fix_driveid(id);
- 				isd200_dump_driveid(us, id);
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+@@ -173,14 +175,17 @@ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
  
-+				/* Prevent division by 0 in isd200_scsi_to_ata() */
-+				if (id[ATA_ID_HEADS] == 0 || id[ATA_ID_SECTORS] == 0) {
-+					usb_stor_dbg(us, "   Invalid ATA Identify data\n");
-+					retStatus = ISD200_ERROR;
-+					goto Done;
-+				}
-+
- 				memset(&info->InquiryData, 0, sizeof(info->InquiryData));
+ 	case IRQ_TYPE_EDGE_FALLING:
+ 		sense = IITSR_IITSEL_EDGE_FALLING;
++		clear_irq_int = true;
+ 		break;
  
- 				/* Standard IDE interface only supports disks */
-@@ -1202,6 +1209,7 @@ static int isd200_get_inquiry_data( stru
- 		}
- 	}
+ 	case IRQ_TYPE_EDGE_RISING:
+ 		sense = IITSR_IITSEL_EDGE_RISING;
++		clear_irq_int = true;
+ 		break;
  
-+ Done:
- 	usb_stor_dbg(us, "Leaving isd200_get_inquiry_data %08X\n", retStatus);
+ 	case IRQ_TYPE_EDGE_BOTH:
+ 		sense = IITSR_IITSEL_EDGE_BOTH;
++		clear_irq_int = true;
+ 		break;
  
- 	return(retStatus);
-@@ -1481,22 +1489,27 @@ static int isd200_init_info(struct us_da
+ 	default:
+@@ -189,21 +194,40 @@ static int rzg2l_irq_set_type(struct irq_data *d, unsigned int type)
  
- static int isd200_Initialization(struct us_data *us)
- {
-+	int rc = 0;
-+
- 	usb_stor_dbg(us, "ISD200 Initialization...\n");
+ 	raw_spin_lock(&priv->lock);
+ 	tmp = readl_relaxed(priv->base + IITSR);
+-	tmp &= ~IITSR_IITSEL_MASK(hw_irq);
+-	tmp |= IITSR_IITSEL(hw_irq, sense);
++	tmp &= ~IITSR_IITSEL_MASK(iitseln);
++	tmp |= IITSR_IITSEL(iitseln, sense);
++	if (clear_irq_int)
++		rzg2l_clear_irq_int(priv, hwirq);
+ 	writel_relaxed(tmp, priv->base + IITSR);
+ 	raw_spin_unlock(&priv->lock);
  
- 	/* Initialize ISD200 info struct */
- 
--	if (isd200_init_info(us) == ISD200_ERROR) {
-+	if (isd200_init_info(us) < 0) {
- 		usb_stor_dbg(us, "ERROR Initializing ISD200 Info struct\n");
-+		rc = -ENOMEM;
- 	} else {
- 		/* Get device specific data */
- 
--		if (isd200_get_inquiry_data(us) != ISD200_GOOD)
-+		if (isd200_get_inquiry_data(us) != ISD200_GOOD) {
- 			usb_stor_dbg(us, "ISD200 Initialization Failure\n");
--		else
-+			rc = -EINVAL;
-+		} else {
- 			usb_stor_dbg(us, "ISD200 Initialization complete\n");
-+		}
- 	}
- 
--	return 0;
-+	return rc;
+ 	return 0;
  }
  
++static u32 rzg2l_disable_tint_and_set_tint_source(struct irq_data *d, struct rzg2l_irqc_priv *priv,
++						  u32 reg, u32 tssr_offset, u8 tssr_index)
++{
++	u32 tint = (u32)(uintptr_t)irq_data_get_irq_chip_data(d);
++	u32 tien = reg & (TIEN << TSSEL_SHIFT(tssr_offset));
++
++	/* Clear the relevant byte in reg */
++	reg &= ~(TSSEL_MASK << TSSEL_SHIFT(tssr_offset));
++	/* Set TINT and leave TIEN clear */
++	reg |= tint << TSSEL_SHIFT(tssr_offset);
++	writel_relaxed(reg, priv->base + TSSR(tssr_index));
++
++	return reg | tien;
++}
++
+ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ {
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 	unsigned int hwirq = irqd_to_hwirq(d);
+ 	u32 titseln = hwirq - IRQC_TINT_START;
++	u32 tssr_offset = TSSR_OFFSET(titseln);
++	u8 tssr_index = TSSR_INDEX(titseln);
+ 	u8 index, sense;
+-	u32 reg;
++	u32 reg, tssr;
  
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+ 	case IRQ_TYPE_EDGE_RISING:
+@@ -225,10 +249,14 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 	}
+ 
+ 	raw_spin_lock(&priv->lock);
++	tssr = readl_relaxed(priv->base + TSSR(tssr_index));
++	tssr = rzg2l_disable_tint_and_set_tint_source(d, priv, tssr, tssr_offset, tssr_index);
+ 	reg = readl_relaxed(priv->base + TITSR(index));
+ 	reg &= ~(IRQ_MASK << (titseln * TITSEL_WIDTH));
+ 	reg |= sense << (titseln * TITSEL_WIDTH);
+ 	writel_relaxed(reg, priv->base + TITSR(index));
++	rzg2l_clear_tint_int(priv, hwirq);
++	writel_relaxed(tssr, priv->base + TSSR(tssr_index));
+ 	raw_spin_unlock(&priv->lock);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
