@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FCA8942B5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C338943EA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 348351C21E77
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AA1AB20D14
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27F3482DF;
-	Mon,  1 Apr 2024 16:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54694481B8;
+	Mon,  1 Apr 2024 17:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZLG1H7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJhvBtlN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFAA433DA;
-	Mon,  1 Apr 2024 16:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C3E4AEE0;
+	Mon,  1 Apr 2024 17:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990523; cv=none; b=IXO8EDPcRkBJbXBOearLUK9yjHemQXpooRbhHjZg7bVl2xwE/FoP1kxTH7ZLNWjwjKWhLUOjhWr4b0G0SdQWJXEd++q6n1HOAai0KLVfd4zZhAK9rRFPKqPvvUZ02Gej9uBJr7TUZrFAPh1ABv2u3T97iuCfXutCswWQfyE7YW8=
+	t=1711991385; cv=none; b=f8ajdsp6VqAE1Bod01hFK1jPRNskSF8zcLrYe4ncQn22ZCneR6IvqGHBzHD+a3ngupjMcD3htHEj4VPncsNrtYIaMLIJeLdIX46I6DhN1Keg/V0y716rQFBN3IgqMaBOP1dwf05oRgbhxV6NTjda6orND8SF3ovuo+1QA0PK7X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990523; c=relaxed/simple;
-	bh=70eQIHSWtVlagrysCnD32K8tzR2QLQENWTAulpxrhDA=;
+	s=arc-20240116; t=1711991385; c=relaxed/simple;
+	bh=dXkOCjV19EPkKh2ihqfVdtwPWBgJKXUzCmK/2bGsEsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNHYy+qzI1LnL28dXVGeNdxPdqUfmeOJNq6B3zvkLhAhfQh41I1ddLsLzHYtgd4W2zrn+6Kr1FY+cK1eui63FBY2E7ei2xj99uQPYZsPpsT2A4ST2bifRvjmfXtAngNDdxvitN3LBk1PjSgus1fcpKdFOBmDCs/+ONZDqaNzwKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZLG1H7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A432C433C7;
-	Mon,  1 Apr 2024 16:55:22 +0000 (UTC)
+	 MIME-Version; b=AZY9jNvUA5zTLoOGQhy1PCJtXXGocOn66d4rzS3efmoMpY/vsyKChgAJFhuqeMU4d6061eXNDitgRG+4Zo7kkjGAPXY2jhCefvPyTu6p1LmTsVcqLBv7VRunD2zNFdMT9TVfWCzwYJm2CjXdT7AizFiGl4V4Y/vTxWOwUkKSybQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJhvBtlN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8827DC433C7;
+	Mon,  1 Apr 2024 17:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990523;
-	bh=70eQIHSWtVlagrysCnD32K8tzR2QLQENWTAulpxrhDA=;
+	s=korg; t=1711991384;
+	bh=dXkOCjV19EPkKh2ihqfVdtwPWBgJKXUzCmK/2bGsEsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZLG1H7oJG1BfrTNHWR4c1I4LVBk7/TNQzRWCnp7o7OGcI/InpcbWZgAKe0LDMVZe
-	 BDUpELku/cPS2ilLFiynuprplpgrOw+GIA2obxvt1mDFvfo0z0ddfPs6kBSAp1Fx7N
-	 S9z7ynuAj+NxfcotipqxEG7pj5O5GvsodVdWSRCw=
+	b=RJhvBtlNx1GUrAD6tC5WV/+ggy2w/r0oDIsf6FYwh+L3u9fK+UM/+k1xtzrXp2j3T
+	 99cZE0Uv6WIG3j5qbFIuc4EBovJS08w9hWiaNn57Pcnhgvris8Y4fkbrz/CtcMwn+W
+	 wExlOQ+llFIZLYOIJsp28zFy4tZUrLmXQm8/3nSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bikash Hazarika <bhazarika@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 381/396] scsi: qla2xxx: Update manufacturer detail
-Date: Mon,  1 Apr 2024 17:47:10 +0200
-Message-ID: <20240401152559.272500808@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 241/272] USB: core: Fix deadlock in port "disable" sysfs attribute
+Date: Mon,  1 Apr 2024 17:47:11 +0200
+Message-ID: <20240401152538.500427258@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bikash Hazarika <bhazarika@marvell.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 688fa069fda6fce24d243cddfe0c7024428acb74 upstream.
+commit f4d1960764d8a70318b02f15203a1be2b2554ca1 upstream.
 
-Update manufacturer detail from "Marvell Semiconductor, Inc." to
-"Marvell".
+The show and store callback routines for the "disable" sysfs attribute
+file in port.c acquire the device lock for the port's parent hub
+device.  This can cause problems if another process has locked the hub
+to remove it or change its configuration:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bikash Hazarika <bhazarika@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+	Removing the hub or changing its configuration requires the
+	hub interface to be removed, which requires the port device
+	to be removed, and device_del() waits until all outstanding
+	sysfs attribute callbacks for the ports have returned.  The
+	lock can't be released until then.
+
+	But the disable_show() or disable_store() routine can't return
+	until after it has acquired the lock.
+
+The resulting deadlock can be avoided by calling
+sysfs_break_active_protection().  This will cause the sysfs core not
+to wait for the attribute's callback routine to return, allowing the
+removal to proceed.  The disadvantage is that after making this call,
+there is no guarantee that the hub structure won't be deallocated at
+any moment.  To prevent this, we have to acquire a reference to it
+first by calling hub_get().
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/f7a8c135-a495-4ce6-bd49-405a45e7ea9a@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/port.c |   38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -82,7 +82,7 @@ typedef union {
- #include "qla_nvme.h"
- #define QLA2XXX_DRIVER_NAME	"qla2xxx"
- #define QLA2XXX_APIDEV		"ql2xapidev"
--#define QLA2XXX_MANUFACTURER	"Marvell Semiconductor, Inc."
-+#define QLA2XXX_MANUFACTURER	"Marvell"
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -28,11 +28,22 @@ static ssize_t disable_show(struct devic
+ 	u16 portstatus, unused;
+ 	bool disabled;
+ 	int rc;
++	struct kernfs_node *kn;
  
- /*
-  * We have MAILBOX_REGISTER_COUNT sized arrays in a few places,
++	hub_get(hub);
+ 	rc = usb_autopm_get_interface(intf);
+ 	if (rc < 0)
+-		return rc;
++		goto out_hub_get;
+ 
++	/*
++	 * Prevent deadlock if another process is concurrently
++	 * trying to unregister hdev.
++	 */
++	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
++	if (!kn) {
++		rc = -ENODEV;
++		goto out_autopm;
++	}
+ 	usb_lock_device(hdev);
+ 	if (hub->disconnected) {
+ 		rc = -ENODEV;
+@@ -42,9 +53,13 @@ static ssize_t disable_show(struct devic
+ 	usb_hub_port_status(hub, port1, &portstatus, &unused);
+ 	disabled = !usb_port_is_power_on(hub, portstatus);
+ 
+-out_hdev_lock:
++ out_hdev_lock:
+ 	usb_unlock_device(hdev);
++	sysfs_unbreak_active_protection(kn);
++ out_autopm:
+ 	usb_autopm_put_interface(intf);
++ out_hub_get:
++	hub_put(hub);
+ 
+ 	if (rc)
+ 		return rc;
+@@ -62,15 +77,26 @@ static ssize_t disable_store(struct devi
+ 	int port1 = port_dev->portnum;
+ 	bool disabled;
+ 	int rc;
++	struct kernfs_node *kn;
+ 
+ 	rc = strtobool(buf, &disabled);
+ 	if (rc)
+ 		return rc;
+ 
++	hub_get(hub);
+ 	rc = usb_autopm_get_interface(intf);
+ 	if (rc < 0)
+-		return rc;
++		goto out_hub_get;
+ 
++	/*
++	 * Prevent deadlock if another process is concurrently
++	 * trying to unregister hdev.
++	 */
++	kn = sysfs_break_active_protection(&dev->kobj, &attr->attr);
++	if (!kn) {
++		rc = -ENODEV;
++		goto out_autopm;
++	}
+ 	usb_lock_device(hdev);
+ 	if (hub->disconnected) {
+ 		rc = -ENODEV;
+@@ -91,9 +117,13 @@ static ssize_t disable_store(struct devi
+ 	if (!rc)
+ 		rc = count;
+ 
+-out_hdev_lock:
++ out_hdev_lock:
+ 	usb_unlock_device(hdev);
++	sysfs_unbreak_active_protection(kn);
++ out_autopm:
+ 	usb_autopm_put_interface(intf);
++ out_hub_get:
++	hub_put(hub);
+ 
+ 	return rc;
+ }
 
 
 
