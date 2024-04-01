@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-35432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B828943E9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC64D894294
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8561F274A7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D5891F2605E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294EC48781;
-	Mon,  1 Apr 2024 17:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4C1482DF;
+	Mon,  1 Apr 2024 16:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o887GtsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yc09CQiy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD13E47A64;
-	Mon,  1 Apr 2024 17:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0C51DFF4;
+	Mon,  1 Apr 2024 16:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991382; cv=none; b=ThF4KWf4NBmtoW+IztpjrBkIt0OlskkXl7XAZF5cMGDHLJrahyMVE+sDKJiRJYPxSFGhaXe5LvcUWrwzkZlOxsRqCpBP7wdIQuLe+ckGrDOrzym+78QWZrDOxKRl4xrFZxYIzAboHnRH9ValhhcM4RtlESfJ1pwgzooDkPN40LA=
+	t=1711990427; cv=none; b=ecxFWdpfHXuzp4Y2nYES175t9w6LSL0ODX3oPLvh/CDbGFHJRsdGYu/HhmnQI3FXpmZzfCLalNFVsRmbBUyRQ6KARKdW2cmxbRFi/cTlLHLZ12n7kHMf8TpU7Qh1sriBrflaNMHfHfLF1lA/UcSfONpi9ZEMGH3XQcW1Gq84hm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991382; c=relaxed/simple;
-	bh=0j5Z+kgeCqVXjIC3i/npApGI00sfYF6JgyIgXnbc0nc=;
+	s=arc-20240116; t=1711990427; c=relaxed/simple;
+	bh=SEJL9b6D9G+oWpvqkQ8tDyf0Ewe7rY5WmmU6n6tGUr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcrCbJifF2xXVjRnXt4mQrjsZxNccProAgxW/VM3yYUXLGXpXGAwZ1OYr2j+tdCyFcUhSLnCl5P11cRr+OYdUHN/8ixL1nJbOCDkKzcStBQnufn7WLjbEUTUQhq1Yw/TbLT752G1F3HBe7uSlFjWiUc7/HVSvzrycXk0bV0Y7tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o887GtsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65719C433C7;
-	Mon,  1 Apr 2024 17:09:41 +0000 (UTC)
+	 MIME-Version; b=ddges65oxEjLH5ENyGRjEEFpEAbUwDgreexKhbvAv+Krnh1vJsrr4ABCQ8FyULFInaRmAmm5Vo/CvuHblr9iTtwwWFolMMNXYwZY2PndmCVNjV7Yep5n0qNQPc8INibntiux8F7x5Nj5YtDStzhqeDDPoOdS3Bxdxo0E1Ym5uBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yc09CQiy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60C5C433F1;
+	Mon,  1 Apr 2024 16:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991381;
-	bh=0j5Z+kgeCqVXjIC3i/npApGI00sfYF6JgyIgXnbc0nc=;
+	s=korg; t=1711990427;
+	bh=SEJL9b6D9G+oWpvqkQ8tDyf0Ewe7rY5WmmU6n6tGUr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o887GtsLH02QhcI3nCXSv9r3TjHBEri97kUnYuDFs9O0uSGVt+DHQXldtZiKOI0n1
-	 GWSMKAVW2ZnOndPjmxhdS/hR1YUWHDGvYK9OQwA1A3nccmQ0/fluMYMsZSFkVAQVPc
-	 C5jNBxqe3AJRTJ6JYDKOG/TWvvLLDiR3U/D0AU7E=
+	b=yc09CQiyRI3M2QK0fUrjonyGgqCR9hdt8enUiE2LZy1XyMqGCl/2/GgBBGaIRzZSu
+	 3020n5w8oM0gcAmWs1mICfMXKbzUtQdud3AyJ5ilJN3rxH3KvJ7Mlr57EuGmEA4K/q
+	 MnXXTCah262oZGPBLyEY9SvAlKX1kHlbpdY0f0hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: [PATCH 6.1 209/272] mm/migrate: set swap entry values of THP tail pages properly.
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.6 350/396] usb: cdc-wdm: close race between read and workqueue
 Date: Mon,  1 Apr 2024 17:46:39 +0200
-Message-ID: <20240401152537.445741433@linuxfoundation.org>
+Message-ID: <20240401152558.349546927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-The tail pages in a THP can have swap entry information stored in their
-private field. When migrating to a new page, all tail pages of the new
-page need to update ->private to avoid future data corruption.
+commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
 
-This fix is stable-only, since after commit 07e09c483cbe ("mm/huge_memory:
-work on folio->swap instead of page->private when splitting folio"),
-subpages of a swapcached THP no longer requires the maintenance.
+wdm_read() cannot race with itself. However, in
+service_outstanding_interrupt() it can race with the
+workqueue, which can be triggered by error handling.
 
-Adding THPs to the swapcache was introduced in commit
-38d8b4e6bdc87 ("mm, THP, swap: delay splitting THP during swap out"),
-where each subpage of a THP added to the swapcache had its own swapcache
-entry and required the ->private field to point to the correct swapcache
-entry. Later, when THP migration functionality was implemented in commit
-616b8371539a6 ("mm: thp: enable thp migration in generic path"),
-it initially did not handle the subpages of swapcached THPs, failing to
-update their ->private fields or replace the subpage pointers in the
-swapcache. Subsequently, commit e71769ae5260 ("mm: enable thp migration
-for shmem thp") addressed the swapcache update aspect. This patch fixes
-the update of subpage ->private fields.
+Hence we need to make sure that the WDM_RESPONDING
+flag is not just only set but tested.
 
-Closes: https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic_charante@quicinc.com/
-Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reported-and-tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/migrate.c |    6 +++++-
+ drivers/usb/class/cdc-wdm.c |    6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -423,8 +423,12 @@ int folio_migrate_mapping(struct address
- 	if (folio_test_swapbacked(folio)) {
- 		__folio_set_swapbacked(newfolio);
- 		if (folio_test_swapcache(folio)) {
-+			int i;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -485,6 +485,7 @@ out_free_mem:
+ static int service_outstanding_interrupt(struct wdm_device *desc)
+ {
+ 	int rv = 0;
++	int used;
+ 
+ 	/* submit read urb only if the device is waiting for it */
+ 	if (!desc->resp_count || !--desc->resp_count)
+@@ -499,7 +500,10 @@ static int service_outstanding_interrupt
+ 		goto out;
+ 	}
+ 
+-	set_bit(WDM_RESPONDING, &desc->flags);
++	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
++	if (used)
++		goto out;
 +
- 			folio_set_swapcache(newfolio);
--			newfolio->private = folio_get_private(folio);
-+			for (i = 0; i < nr; i++)
-+				set_page_private(folio_page(newfolio, i),
-+					page_private(folio_page(folio, i)));
- 		}
- 		entries = nr;
- 	} else {
+ 	spin_unlock_irq(&desc->iuspin);
+ 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
+ 	spin_lock_irq(&desc->iuspin);
 
 
 
