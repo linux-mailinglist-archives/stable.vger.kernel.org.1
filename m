@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC0F893FFC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CD48941D1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19819282E01
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C514B28305C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD5047A57;
-	Mon,  1 Apr 2024 16:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9187D47A6B;
+	Mon,  1 Apr 2024 16:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTopp63L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJ2sr+E8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F08EC129;
-	Mon,  1 Apr 2024 16:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0251C0DE7;
+	Mon,  1 Apr 2024 16:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988644; cv=none; b=oeTMmIlHCrardHJR+6nYYlkFxS/JzJwByecPhuLw0NZIMT3F4ZB7LBqJ0Yar+J3gMGcVZKrjM6AsrRP4Y+HGhqSmX+kIzm9eifwtSVHdykiA6DutABzSoE+0brwQOzNtnzS7IlIoaXUbJzDqavoiaFgdyvfek/Wu1vrPWu0V80U=
+	t=1711989987; cv=none; b=l4eGdiTlH+Z63y7TzM5W8kr9LYSFUMnDZoI2/cMaoL2WIRlGQ+gQ9EM+55+uozv8U10tEpnngYOp+6OlL/vlTBuRKKhQmBJoQW20/X/Enbc6NXyRynB9kdYhkiytSmAYMlS8zMnCcuRXuzs1EJxAZZb6gywVKZdeQVeSzgivc44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988644; c=relaxed/simple;
-	bh=S6SP5mHOpAvVUo4+lvIm91dcBW+uUIsanHOlIvgWji8=;
+	s=arc-20240116; t=1711989987; c=relaxed/simple;
+	bh=8bPielUPj091FCau8e63UmZh/qWE0FXC+4JoN0WwcB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfdFwicUV0oaOsP+qrXAFf8uYjEv1quMapvZo+SVEFRDhSeiMcUGGxutsEfcA00fAUmF5FRAdiGp2VvXksphjXn0MjlTDOYbW9+Y59JchkdFpoThQC4d8f/Z45UhJWvYhqt5UuBLF9S+wevZ3I1bTyXOmwdsx5eI8QZN7s75RHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTopp63L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19F9C433F1;
-	Mon,  1 Apr 2024 16:24:03 +0000 (UTC)
+	 MIME-Version; b=El9iJPVDscc46i/Oo0kCtOsDqsOcf+AgSecPldHCA9QZ4dTKSdql2MqxyOk4X1ZPdNa5b9Ds8HuMxfZta1o+YxDHA50gSsUqu7dKkrhzbXPXJkaZ+yKnQYOdWWRIvQ5IdhYKjhi7PSsvYUkfuShgJpdp6tim4fclwXJqE8iC+p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJ2sr+E8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD69CC433F1;
+	Mon,  1 Apr 2024 16:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988644;
-	bh=S6SP5mHOpAvVUo4+lvIm91dcBW+uUIsanHOlIvgWji8=;
+	s=korg; t=1711989987;
+	bh=8bPielUPj091FCau8e63UmZh/qWE0FXC+4JoN0WwcB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTopp63L2mX43PoM9wqL7xQsunLygQAirEd8vMC5NqrwWYxgkuqsuOeRW3O7XslCa
-	 YMYYNG/VgrZCLwKlqMfpdfFp0OYm3ftgBhFGS2J+iMBnx4P+S636/URwjjEJPxduFd
-	 CKg1GDVCDwJ0HCNhpk6vw441JPlUM2hNqvrfsJ6c=
+	b=oJ2sr+E8yQ4CAKCPfoeGU8zC2jYV6aqagDUcjc6pC9wGZeW6ueIL6bbkIeL99mUdV
+	 0usA/ac0kG8GTTSiU3oO6PBRAzwqdoFQNcDsQ7Ap8PP0UdULOQQsmo41TPcT2ZIi9h
+	 DND/m2IdWaAzLCvOUGXpI4ouPOqCKVe+BdBOhnLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 6.7 246/432] usb: typec: tpcm: Fix PORT_RESET behavior for self powered devices
+	John Pittman <jpittman@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 184/396] dm snapshot: fix lockup in dm_exception_table_exit
 Date: Mon,  1 Apr 2024 17:43:53 +0200
-Message-ID: <20240401152600.477281318@linuxfoundation.org>
+Message-ID: <20240401152553.426683007@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 197331b27ac890d0209232d5f669830cd00e8918 upstream.
+[ Upstream commit 6e7132ed3c07bd8a6ce3db4bb307ef2852b322dc ]
 
-While commit 69f89168b310 ("usb: typec: tpcm: Fix issues with power being
-removed during reset") fixes the boot issues for bus powered devices such
-as LibreTech Renegade Elite/Firefly, it trades off the CC pins NOT being
-Hi-Zed during errory recovery (i.e PORT_RESET) for devices which are NOT
-bus powered(a.k.a self powered). This change Hi-Zs the CC pins only for
-self powered devices, thus preventing brown out for bus powered devices
+There was reported lockup when we exit a snapshot with many exceptions.
+Fix this by adding "cond_resched" to the loop that frees the exceptions.
 
-Adhering to spec is gaining more importance due to the Common charger
-initiative enforced by the European Union.
-
-Quoting from the spec:
-    4.5.2.2.2.1 ErrorRecovery State Requirements
-    The port shall not drive VBUS or VCONN, and shall present a
-    high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
-
-Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
-CC pins are set to default state after tErrorRecovery in
-PORT_RESET_WAIT_OFF.
-
-    4.5.2.2.2.2 Exiting From ErrorRecovery State
-    A Sink shall transition to Unattached.SNK after tErrorRecovery.
-    A Source shall transition to Unattached.SRC after tErrorRecovery.
-
-Fixes: 69f89168b310 ("usb: typec: tpcm: Fix issues with power being removed during reset")
+Reported-by: John Pittman <jpittman@redhat.com>
 Cc: stable@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Tested-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240228000512.746252-1-badhri@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/md/dm-snap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4859,8 +4859,11 @@ static void run_state_machine(struct tcp
- 		break;
- 	case PORT_RESET:
- 		tcpm_reset_port(port);
--		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
--			    TYPEC_CC_RD : tcpm_rp_cc(port));
-+		if (port->self_powered)
-+			tcpm_set_cc(port, TYPEC_CC_OPEN);
-+		else
-+			tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
-+				    TYPEC_CC_RD : tcpm_rp_cc(port));
- 		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
- 			       PD_T_ERROR_RECOVERY);
- 		break;
+diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
+index bf7a574499a34..0ace06d1bee38 100644
+--- a/drivers/md/dm-snap.c
++++ b/drivers/md/dm-snap.c
+@@ -684,8 +684,10 @@ static void dm_exception_table_exit(struct dm_exception_table *et,
+ 	for (i = 0; i < size; i++) {
+ 		slot = et->table + i;
+ 
+-		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list)
++		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list) {
+ 			kmem_cache_free(mem, ex);
++			cond_resched();
++		}
+ 	}
+ 
+ 	kvfree(et->table);
+-- 
+2.43.0
+
 
 
 
