@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-35228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D01894304
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC0F893FFC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 776BC1C21CF6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19819282E01
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D2148CDD;
-	Mon,  1 Apr 2024 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD5047A57;
+	Mon,  1 Apr 2024 16:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnSy4G4l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTopp63L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10834482F6;
-	Mon,  1 Apr 2024 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F08EC129;
+	Mon,  1 Apr 2024 16:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990714; cv=none; b=n24USqQT1cNn+BPt2kYGNigjFtTpPQIhAfsY8wAV6CGulD7gr/Bm6iBddOh/9fq8ZFmJ8b4L46tiOBaPnjzaQL01ZZcQ0ZeKxD7sUzesjNQnuHGXnkDWrHSAsky4IgmZG+94iPHvVhtC2x2ecTdSgTz/MKY6PoR+1BBkDfTAB+w=
+	t=1711988644; cv=none; b=oeTMmIlHCrardHJR+6nYYlkFxS/JzJwByecPhuLw0NZIMT3F4ZB7LBqJ0Yar+J3gMGcVZKrjM6AsrRP4Y+HGhqSmX+kIzm9eifwtSVHdykiA6DutABzSoE+0brwQOzNtnzS7IlIoaXUbJzDqavoiaFgdyvfek/Wu1vrPWu0V80U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990714; c=relaxed/simple;
-	bh=PiEbMEJLmNyx4V5zf5m4q9tR6TAbC3MDCl03gNybDok=;
+	s=arc-20240116; t=1711988644; c=relaxed/simple;
+	bh=S6SP5mHOpAvVUo4+lvIm91dcBW+uUIsanHOlIvgWji8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suv3Y3uowSXKXE5cEe1cR4GDLWg+jqezt3o4E01CU8hm3xmMXFUVaArOYHU4xOMff6FA3PtbJAZmZBoO4Ra/3iFUHFL43P8NFZwAdm2Z6SjNWhf4cm7kY3BAQj2hv6qNyx5K/y2bxFkJGB2BUcSyMyFELyDVS2Q+6kdKKQxAbak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnSy4G4l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B138C433C7;
-	Mon,  1 Apr 2024 16:58:33 +0000 (UTC)
+	 MIME-Version; b=lfdFwicUV0oaOsP+qrXAFf8uYjEv1quMapvZo+SVEFRDhSeiMcUGGxutsEfcA00fAUmF5FRAdiGp2VvXksphjXn0MjlTDOYbW9+Y59JchkdFpoThQC4d8f/Z45UhJWvYhqt5UuBLF9S+wevZ3I1bTyXOmwdsx5eI8QZN7s75RHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTopp63L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19F9C433F1;
+	Mon,  1 Apr 2024 16:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990713;
-	bh=PiEbMEJLmNyx4V5zf5m4q9tR6TAbC3MDCl03gNybDok=;
+	s=korg; t=1711988644;
+	bh=S6SP5mHOpAvVUo4+lvIm91dcBW+uUIsanHOlIvgWji8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnSy4G4ltMyiAlmoiLZdT0f4JfFILuT1XxNFP9OZsNnSlUSkD9dSRaPUUlHnrcnu0
-	 i/S42A6TiPDXWNb+Gg71G5w3XErTqR7V+iQAGmvYvBf3zwUWsiPK5YD1N8jvxvWlom
-	 SHears7Q1WR0yFMKRGe+bV0oUlF+JLpwK6JjmLxE=
+	b=GTopp63L2mX43PoM9wqL7xQsunLygQAirEd8vMC5NqrwWYxgkuqsuOeRW3O7XslCa
+	 YMYYNG/VgrZCLwKlqMfpdfFp0OYm3ftgBhFGS2J+iMBnx4P+S636/URwjjEJPxduFd
+	 CKg1GDVCDwJ0HCNhpk6vw441JPlUM2hNqvrfsJ6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stable@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/272] mtd: rawnand: meson: fix scrambling mode value in command macro
+	Mark Brown <broonie@kernel.org>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.7 246/432] usb: typec: tpcm: Fix PORT_RESET behavior for self powered devices
 Date: Mon,  1 Apr 2024 17:43:53 +0200
-Message-ID: <20240401152531.746616243@linuxfoundation.org>
+Message-ID: <20240401152600.477281318@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-[ Upstream commit ef6f463599e16924cdd02ce5056ab52879dc008c ]
+commit 197331b27ac890d0209232d5f669830cd00e8918 upstream.
 
-Scrambling mode is enabled by value (1 << 19). NFC_CMD_SCRAMBLER_ENABLE
-is already (1 << 19), so there is no need to shift it again in CMDRWGEN
-macro.
+While commit 69f89168b310 ("usb: typec: tpcm: Fix issues with power being
+removed during reset") fixes the boot issues for bus powered devices such
+as LibreTech Renegade Elite/Firefly, it trades off the CC pins NOT being
+Hi-Zed during errory recovery (i.e PORT_RESET) for devices which are NOT
+bus powered(a.k.a self powered). This change Hi-Zs the CC pins only for
+self powered devices, thus preventing brown out for bus powered devices
 
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: <Stable@vger.kernel.org>
-Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240210214551.441610-1-avkrasnov@salutedevices.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adhering to spec is gaining more importance due to the Common charger
+initiative enforced by the European Union.
+
+Quoting from the spec:
+    4.5.2.2.2.1 ErrorRecovery State Requirements
+    The port shall not drive VBUS or VCONN, and shall present a
+    high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
+
+Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
+CC pins are set to default state after tErrorRecovery in
+PORT_RESET_WAIT_OFF.
+
+    4.5.2.2.2.2 Exiting From ErrorRecovery State
+    A Sink shall transition to Unattached.SNK after tErrorRecovery.
+    A Source shall transition to Unattached.SRC after tErrorRecovery.
+
+Fixes: 69f89168b310 ("usb: typec: tpcm: Fix issues with power being removed during reset")
+Cc: stable@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Tested-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240228000512.746252-1-badhri@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/meson_nand.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/meson_nand.c b/drivers/mtd/nand/raw/meson_nand.c
-index 0aeac8ccbd0ee..05925fb694602 100644
---- a/drivers/mtd/nand/raw/meson_nand.c
-+++ b/drivers/mtd/nand/raw/meson_nand.c
-@@ -63,7 +63,7 @@
- #define CMDRWGEN(cmd_dir, ran, bch, short_mode, page_size, pages)	\
- 	(								\
- 		(cmd_dir)			|			\
--		((ran) << 19)			|			\
-+		(ran)				|			\
- 		((bch) << 14)			|			\
- 		((short_mode) << 13)		|			\
- 		(((page_size) & 0x7f) << 6)	|			\
--- 
-2.43.0
-
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4859,8 +4859,11 @@ static void run_state_machine(struct tcp
+ 		break;
+ 	case PORT_RESET:
+ 		tcpm_reset_port(port);
+-		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
+-			    TYPEC_CC_RD : tcpm_rp_cc(port));
++		if (port->self_powered)
++			tcpm_set_cc(port, TYPEC_CC_OPEN);
++		else
++			tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
++				    TYPEC_CC_RD : tcpm_rp_cc(port));
+ 		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
+ 			       PD_T_ERROR_RECOVERY);
+ 		break;
 
 
 
