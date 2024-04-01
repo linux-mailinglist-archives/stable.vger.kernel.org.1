@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-34182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFBD893E3E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:01:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8ECB893E1C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC82D282404
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:01:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 792D71F21875
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0324779E;
-	Mon,  1 Apr 2024 16:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0C64778C;
+	Mon,  1 Apr 2024 15:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZOIuJ+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtkGKRO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A02745BE4;
-	Mon,  1 Apr 2024 16:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3DB4778B;
+	Mon,  1 Apr 2024 15:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987265; cv=none; b=dp4zkVGusMVYesDu/B3D4JFRAEamXdeWC/HWkOseBTgdDJDheZvOuouLnqLJiO/Kiz2lb9J+Xwrmc0ihixnFSbpXSd0hWG1yGT4QZqdWB8v83Zd+vUUhGdFx3oStK2CB/TtRujpfdjnZLBdxJpl60KRTiq3feOBKoulQGQutPU0=
+	t=1711987171; cv=none; b=cYQtgoosmRbBUh092YoLdszGrnECvo03+1tyf1NgyeA4z1kE+NTEK1ZqUXAanxmOhaxDnotdSLg+4a4XAmGtdU3nJhbs06erdwo+I5++GF5TKZVUu4uDtmABU2J9hCsfu7oZJupkrBpDzTM40fThjKzPMjTfsI9Hm1TXO9BGQO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987265; c=relaxed/simple;
-	bh=01ZhgTsuPlqs56DiBeGpZuFINt5Vq97xbIz9f35kiXA=;
+	s=arc-20240116; t=1711987171; c=relaxed/simple;
+	bh=XDrXM6bTuwju/mgNhsBaFM0qeYxhYbVofr3UdVO8DG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ee5Hp9+CyduXCD4B8t+TMQ2hGIH9u+HsYE3jgcyBzrmnJxegLOKEZ5lOLfNvRMgngq6B3Mag22a7ibYN24cAaQ/VJSBDKUVYMxPI1Oo+aehv0WdTgZUdfb4nwLWIe8YeUgnRFxhqruGg+fgdhVbXcaUIqJB7U62yu0IFtLUggtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZOIuJ+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF000C433C7;
-	Mon,  1 Apr 2024 16:01:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HyN3eH4LnF5/Cm6wT14A3i/d3kH8P3cr81p2Y1yK6eIwT4LcwJImh6rtG9r/tP5AQvkfOcdYmAcugqCzt9goVyndVgWiFykFN8j3Wzl/wx8U7lHchL9MQQkPciWJhQuXFMM22uBwgwZTiBrIAyW2ERzyolMmPHQmpY/dYDv2veE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtkGKRO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48202C433C7;
+	Mon,  1 Apr 2024 15:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987265;
-	bh=01ZhgTsuPlqs56DiBeGpZuFINt5Vq97xbIz9f35kiXA=;
+	s=korg; t=1711987171;
+	bh=XDrXM6bTuwju/mgNhsBaFM0qeYxhYbVofr3UdVO8DG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZOIuJ+NoU5b7LuLobGknwWIlyoPDqcd0OCfc1gQRywO0yZuV5ThyXzTnxLXoFoTd
-	 /3AT1JioNv81Fo6CEGzd/IXB8W/3HfX2OPRUQmDP9oRUijiewUjl5yym6B/mNSUG0R
-	 cdcPV4EM8GtL4vM8L0c7+i6W7hdbd8stacoeyqAI=
+	b=OtkGKRO5qslRp6wyG8YMLXljUAL6fZBnP0qDv365ruAhNayFY8RF0ukJO/ogsIQLc
+	 vOofAFIzQehKWFGvAfaKHsudpYbGPOGrpYye66IeXd1uCSi3yaj6sQDr5x9KyvXAvN
+	 cYHrt9dCG09wrOnDYcOfzWcSDnZbT6onnLUhkesI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Chaitanya Dhere <chaitanya.dhere@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Swapnil Patel <swapnil.patel@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 205/399] drm/amd/display: Change default size for dummy plane in DML2
-Date: Mon,  1 Apr 2024 17:42:51 +0200
-Message-ID: <20240401152555.303113845@linuxfoundation.org>
+Subject: [PATCH 6.8 206/399] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
+Date: Mon,  1 Apr 2024 17:42:52 +0200
+Message-ID: <20240401152555.332013662@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -64,76 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Swapnil Patel <swapnil.patel@amd.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 75eb8f7df65c5e6eb22a5aff8deb60ce0b65de1a ]
+[ Upstream commit 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 ]
 
-[WHY & HOW]
-Currently, to map dc states into dml_display_cfg,
-We create a dummy plane if the stream doesn't have any planes
-attached to it. This dummy plane uses max addersable width height.
-This results in certain mode validations failing when they shouldn't.
+Otherwise after the GTT bo is released, the GTT and gart space is freed
+but amdgpu_ttm_backend_unbind will not clear the gart page table entry
+and leave valid mapping entry pointing to the stale system page. Then
+if GPU access the gart address mistakely, it will read undefined value
+instead page fault, harder to debug and reproduce the real issue.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/dml2/dml2_translation_helper.c  | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index 1ba6933d2b361..17a58f41fc6a8 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -824,13 +824,25 @@ static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 75c9fd2c6c2a1..b0ed10f4de609 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -869,6 +869,7 @@ static void amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
+ 		amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
+ 				 gtt->ttm.dma_address, flags);
+ 	}
++	gtt->bound = true;
+ }
  
- static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_stream_state *in)
- {
-+	dml_uint_t width, height;
-+
-+	if (in->timing.h_addressable > 3840)
-+		width = 3840;
-+	else
-+		width = in->timing.h_addressable;	// 4K max
-+
-+	if (in->timing.v_addressable > 2160)
-+		height = 2160;
-+	else
-+		height = in->timing.v_addressable;	// 4K max
-+
- 	out->CursorBPP[location] = dml_cur_32bit;
- 	out->CursorWidth[location] = 256;
- 
- 	out->GPUVMMinPageSizeKBytes[location] = 256;
- 
--	out->ViewportWidth[location] = in->timing.h_addressable;
--	out->ViewportHeight[location] = in->timing.v_addressable;
-+	out->ViewportWidth[location] = width;
-+	out->ViewportHeight[location] = height;
- 	out->ViewportStationary[location] = false;
- 	out->ViewportWidthChroma[location] = 0;
- 	out->ViewportHeightChroma[location] = 0;
-@@ -849,7 +861,7 @@ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned
- 	out->HTapsChroma[location] = 0;
- 	out->VTapsChroma[location] = 0;
- 	out->SourceScan[location] = dml_rotation_0;
--	out->ScalerRecoutWidth[location] = in->timing.h_addressable;
-+	out->ScalerRecoutWidth[location] = width;
- 
- 	out->LBBitPerPixel[location] = 57;
- 
+ /*
 -- 
 2.43.0
 
