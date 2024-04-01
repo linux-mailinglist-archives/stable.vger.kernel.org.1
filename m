@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB0089434D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60199894042
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C1D5B224C4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15C391F218D6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88999481C6;
-	Mon,  1 Apr 2024 17:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C7A47A62;
+	Mon,  1 Apr 2024 16:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvsLVNci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmLryoda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434A11C0DE7;
-	Mon,  1 Apr 2024 17:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61243C129;
+	Mon,  1 Apr 2024 16:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990924; cv=none; b=r1d4+7qYv5tLMChAleS64amZANoRcNW6f+d5CzGCA+OmF5iGmdQ9hJLqdspJSq5LCYhuVEcs1RHrn3Oy4avGI2ljOeEurJ4rhj0HOfHTcroMTeufaT3UZDr82kkGe5KjaUjq+SzIqJlQKPxSICFHg4b1pRl9yQL6RP0mHZg+uFQ=
+	t=1711988865; cv=none; b=c+Hzvtr18J5LEkY/zNE8aP5s1Jd5zFkbUhvmScJIvva4zu4nZFqDOeE4LhFCPuRLidV27XOkDGSCU0UvX3+Si+mnuKIt3qyweG/8Rs2qkTZ7LHqdjsZYkE3s0UOV1jFqo+gAoLdzAle7gNzxPvu5G9frGl/C9T1jjQlUhtmQdoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990924; c=relaxed/simple;
-	bh=ONXXWMPIhn8AQhOQQtvyBHf7+k8kW0lEUgKkLeJ7t4M=;
+	s=arc-20240116; t=1711988865; c=relaxed/simple;
+	bh=VVul250uIBatrnVnoIiIheoRiD2M0oBKXBSjYlRJ/rY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYiveYhQrbMO1nJCFf4qX/IO9M7ijrlprU/l6deLgzcfHWSZGlsO3AHfc6uRgHJbfohFDrGDNstaoHbCxSJH6VWzvtaJuEjOPteamGosZ8skeoE8Om1UhVVC7uxlTeKCj0fNCkSMcs2PDYzxcTCELNyi7ZmLos9ubM5FtIS58vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvsLVNci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA917C433F1;
-	Mon,  1 Apr 2024 17:02:03 +0000 (UTC)
+	 MIME-Version; b=WcvghZz4bmIi3Rg3npG1U7jF8LWDs5txU6DAcPnqtz+sxfDnVRu6vwzVh/SKitGqUFL3ioxHnymZ56a1/kusO6au04E0rmZS9B88XjIhyF971Y5WuQcIGaoZ83L9+C4fL39TNRx8adiy4NAwB6pO58quRLW3IdxCHieQYg+upGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmLryoda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43B4C433F1;
+	Mon,  1 Apr 2024 16:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990924;
-	bh=ONXXWMPIhn8AQhOQQtvyBHf7+k8kW0lEUgKkLeJ7t4M=;
+	s=korg; t=1711988865;
+	bh=VVul250uIBatrnVnoIiIheoRiD2M0oBKXBSjYlRJ/rY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvsLVNciGiK/AaXjzvpUmTXDR7aFl2YEVA5HnSrfXJDBElxYsJmrKZpvwYBhpy8D6
-	 J4X1Hr+2Oxx7EK0TqAzGut34xdTxh5XnJdY7OWJP2f96klnSlQADu48kHTsm9w1VmN
-	 vI7Jco5hJjAYpoCx6rjboybJOMescD6EkQqluO5g=
+	b=mmLryodaXAuF0bPxySywnIRXR4Izy7qJEs2RBrWOv7oIIhOHvz0Q3zfFucHUi+4fQ
+	 L0RP1B3nl1f1JLmI7GUMLGpxtaeT/fkP7H2ime1RihxfB4bLeRvONodCKQbArh7fcA
+	 8/u2sFDsDLAmeKGMnhr4oVxWPgFJnUY7ldz/V3FI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/272] ring-buffer: Do not set shortest_full when full target is hit
+Subject: [PATCH 6.7 311/432] irqchip/renesas-rzg2l: Rename rzg2l_irq_eoi()
 Date: Mon,  1 Apr 2024 17:44:58 +0200
-Message-ID: <20240401152534.027922353@linuxfoundation.org>
+Message-ID: <20240401152602.462446841@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 761d9473e27f0c8782895013a3e7b52a37c8bcfc ]
+[ Upstream commit b4b5cd61a6fdd92ede0dc39f0850a182affd1323 ]
 
-The rb_watermark_hit() checks if the amount of data in the ring buffer is
-above the percentage level passed in by the "full" variable. If it is, it
-returns true.
+Rename rzg2l_irq_eoi()->rzg2l_clear_irq_int() and simplify the code by
+removing redundant priv local variable.
 
-But it also sets the "shortest_full" field of the cpu_buffer that informs
-writers that it needs to call the irq_work if the amount of data on the
-ring buffer is above the requested amount.
-
-The rb_watermark_hit() always sets the shortest_full even if the amount in
-the ring buffer is what it wants. As it is not going to wait, because it
-has what it wants, there's no reason to set shortest_full.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240312115641.6aa8ba08@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Suggested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 3c4d62f499505..c934839f625df 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -974,9 +974,10 @@ static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
- 		pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
- 		ret = !pagebusy && full_hit(buffer, cpu, full);
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 51dda1745ffaa..762bb90b74e61 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -66,10 +66,9 @@ static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
+ 	return data->domain->host_data;
+ }
  
--		if (!cpu_buffer->shortest_full ||
--		    cpu_buffer->shortest_full > full)
--			cpu_buffer->shortest_full = full;
-+		if (!ret && (!cpu_buffer->shortest_full ||
-+			     cpu_buffer->shortest_full > full)) {
-+		    cpu_buffer->shortest_full = full;
-+		}
- 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- 	}
- 	return ret;
+-static void rzg2l_irq_eoi(struct irq_data *d)
++static void rzg2l_clear_irq_int(struct rzg2l_irqc_priv *priv, unsigned int hwirq)
+ {
+-	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
+-	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
++	unsigned int hw_irq = hwirq - IRQC_IRQ_START;
+ 	u32 bit = BIT(hw_irq);
+ 	u32 iitsr, iscr;
+ 
+@@ -113,7 +112,7 @@ static void rzg2l_irqc_eoi(struct irq_data *d)
+ 
+ 	raw_spin_lock(&priv->lock);
+ 	if (hw_irq >= IRQC_IRQ_START && hw_irq <= IRQC_IRQ_COUNT)
+-		rzg2l_irq_eoi(d);
++		rzg2l_clear_irq_int(priv, hw_irq);
+ 	else if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ)
+ 		rzg2l_clear_tint_int(priv, hw_irq);
+ 	raw_spin_unlock(&priv->lock);
 -- 
 2.43.0
 
