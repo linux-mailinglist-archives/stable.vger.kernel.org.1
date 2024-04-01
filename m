@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-34266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC9A893E9C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7334689433D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DC8E281F75
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF97E1F26ECE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A024A4778E;
-	Mon,  1 Apr 2024 16:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C19482E4;
+	Mon,  1 Apr 2024 17:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1akve0aB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdHaoRjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C8446AC;
-	Mon,  1 Apr 2024 16:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9141C0DE7;
+	Mon,  1 Apr 2024 17:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987542; cv=none; b=JakVNbv2be4OlJUpir8CovV6kPwyH9x3A/NglCPwUMFx7rfUJ9JwMRtwy8vZR4YVOPJSn7npVq+2OZv2C5uXe3zhiIoNjJqBg4BZwENGLZF6fQob7BeeJN9bkf8xU8Q2I2dUrrLna2HdSo1OAx0HQTDpZ5zI6jOnbWv1AbU0dBA=
+	t=1711990876; cv=none; b=P/rfUoRSiR3Hndy94VqLQ5W437qn/07feiQmIhRFunTijdvYWU0XM1UE/1iWvvKQ8MY2HpS43NL507heexXvKW/0L5c4EZ+q8Rl0XhxlbildG65SdGtcqLkxLRyN3bqP8f0Na5qaN/46Wu6ahtP+tyAXB2hBj19XkQyHvXYvf70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987542; c=relaxed/simple;
-	bh=+U89dGBWdFfd88jIQNbvQ1uJBHBV6Ikz53JrhE8ATjw=;
+	s=arc-20240116; t=1711990876; c=relaxed/simple;
+	bh=c2/PCSaX/U9pHdM03wL5uERYz+6IGDeOa4pkNAdayK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IaX+FeYwnf1ZY47bGGkcPrets8siL4SEyN903mLsQveXySStCzrQn1veWmzkpBZMOxYvySdZaZyh7uK9e2vqJ7EMItlukq60mdKbesF+5O8RU4cO1f1V4rqnQVYgY+tb+koIDoTBG2YxBI7hBy9Id4Rg94J5k8UJAlbOhCTdgBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1akve0aB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2654C433C7;
-	Mon,  1 Apr 2024 16:05:41 +0000 (UTC)
+	 MIME-Version; b=TsVNwqZ4BXAfT++c0yttTHar7cX/339zN5lFIUxMBxciXSPs2sFpJ0bDBgLxDFc6sznqm67aBYq9JIINpY/kd/lPzQ+Tz9ihhinfeA3jI91jSgQmyb+/aA+6xl059t4JndAAiXwDmNTNokIAZzO7iU9HtD1OKTdpz4Z+ml3GSGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdHaoRjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C1DC433C7;
+	Mon,  1 Apr 2024 17:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987542;
-	bh=+U89dGBWdFfd88jIQNbvQ1uJBHBV6Ikz53JrhE8ATjw=;
+	s=korg; t=1711990876;
+	bh=c2/PCSaX/U9pHdM03wL5uERYz+6IGDeOa4pkNAdayK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1akve0aB7vMRDVik0Db8EMc9bxCJ1nYEjENNFoNEJgJngWmSgU6+yga2b1EHHqxpt
-	 5g7+pKcwT69ZGPGsos9u8+PAlrmwUBAqJUylhzU7MO5L3q6d3bCxa7URjCDsxiw2Wm
-	 7xtBgKiDzNajcQAke+NS8Y+PgjqzHVo/DSvvkkjI=
+	b=mdHaoRjVPl3GlFMcXm0OzmhtTt4hBPtAjaDHWwWdxoTYCJ0SETxVV4MnXLe0SmNJA
+	 jeLAzvtPS+TL089NByWLPRoAYEILikOzZR7gjY4GVHTmO9TDU+YutpzBmjSC+UVipr
+	 hwyb507e52UFT4SdMK8WufR+51CM8rnkjO3dJiok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.8 318/399] Revert "thermal: core: Dont update trip points inside the hysteresis range"
+	Sam Ravnborg <sam@ravnborg.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 094/272] sparc32: Fix parport build with sparc32
 Date: Mon,  1 Apr 2024 17:44:44 +0200
-Message-ID: <20240401152558.675311146@linuxfoundation.org>
+Message-ID: <20240401152533.569230889@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,172 +63,579 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Sam Ravnborg <sam@ravnborg.org>
 
-commit f67cf45deedb118af302534643627ce59074e8eb upstream.
+[ Upstream commit 91d3ff922c346d6d8cb8de5ff8d504fe0ca9e17e ]
 
-It has been reported the commit cf3986f8c01d3 introduced a regression
-when the temperature is wavering in the hysteresis region. The
-mitigation stops leading to an uncontrolled temperature increase until
-reaching the critical trip point.
+include/asm/parport.h is sparc64 specific.
+Rename it to parport_64.h and use the generic version for sparc32.
 
-Here what happens:
+This fixed all{mod,yes}config build errors like:
 
- * 'throttle' is when the current temperature is greater than the trip
-   point temperature
- * 'target' is the mitigation level
- * 'passive' is positive when there is a mitigation, zero otherwise
- * these values are computed in the step_wise governor
+parport_pc.c:(.text):undefined-reference-to-ebus_dma_enable
+parport_pc.c:(.text):undefined-reference-to-ebus_dma_irq_enable
+parport_pc.c:(.text):undefined-reference-to-ebus_dma_register
 
-Configuration:
+The errors occur as the sparc32 build references sparc64 symbols.
 
- trip point 1: temp=95°C, hyst=5°C (passive)
- trip point 2: temp=115°C, hyst=0°C (critical)
- governor: step_wise
-
- 1. The temperature crosses the way up the trip point 1 at 95°C
-
-   - trend=raising
-   - throttle=1, target=1
-   - passive=1
-   - set_trips: low=90°C, high=115°C
-
- 2. The temperature decreases but stays in the hysteresis region at
-    93°C
-
-   - trend=dropping
-   - throttle=0, target=0
-   - passive=1
-
-   Before cf3986f8c01d3
-   - set_trips: low=90°C, high=95°C
-
-   After cf3986f8c01d3
-   - set_trips: low=90°C, high=115°C
-
- 3. The temperature increases a bit but stays in the hysteresis region
-    at 94°C (so below the trip point 1 temp 95°C)
-
-   - trend=raising
-   - throttle=0, target=0
-   - passive=1
-
-   Before cf3986f8c01d3
-   - set_trips: low=90°C, high=95°C
-
-   After cf3986f8c01d3
-   - set_trips: low=90°C, high=115°C
-
- 4. The temperature decreases but stays in the hysteresis region at
-    93°C
-
-   - trend=dropping
-   - throttle=0, target=THERMAL_NO_TARGET
-   - passive=0
-
-   Before cf3986f8c01d3
-   - set_trips: low=90°C, high=95°C
-
-   After cf3986f8c01d3
-   - set_trips: low=90°C, high=115°C
-
-At this point, the 'passive' value is zero, there is no mitigation,
-the temperature is in the hysteresis region, the next trip point is
-115°C. As 'passive' is zero, the timer to monitor the thermal zone is
-disabled. Consequently if the temperature continues to increase, no
-mitigation will happen and it will reach the 115°C trip point and
-reboot.
-
-Before the optimization, the high boundary would have been 95°C, thus
-triggering the mitigation again and rearming the polling timer.
-
-The optimization make sense but given the current implementation of
-the step_wise governor collaborating via this 'passive' flag with the
-core framework it can not work.
-
->From a higher perspective it seems like there is a problem between the
-governor which sets a variable to be used by the core framework. That
-sounds akward and it would make much more sense if the core framework
-controls the governor and not the opposite. But as the devil hides in
-the details, there are some subtilities to be addressed before.
-
-Elaborating those would be out of the scope this changelog. So let's
-stay simple and revert the change first to fixup all broken mobile
-platforms.
-
-This reverts commit cf3986f8c01d3 ("thermal: core: Don't update trip
-points inside the hysteresis range") and takes a conflict with commit
-0c0c4740c9d26 ("0c0c4740c9d2 thermal: trip: Use for_each_trip() in
-__thermal_zone_set_trips()") in drivers/thermal/thermal_trip.c into
-account.
-
-Fixes: cf3986f8c01d3 ("thermal: core: Don't update trip points inside the hysteresis range")
-Reported-by: Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Cc: 6.7+ <stable@vger.kernel.org> # 6.7+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Maciej W. Rozycki <macro@orcam.me.uk>
+Closes: https://lore.kernel.org/r/20230406160548.25721-1-rdunlap@infradead.org/
+Fixes: 66bcd06099bb ("parport_pc: Also enable driver for PCI systems")
+Cc: stable@vger.kernel.org # v5.18+
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20240224-sam-fix-sparc32-all-builds-v2-6-1f186603c5c4@ravnborg.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_trip.c |   19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ arch/sparc/include/asm/parport.h    | 259 +---------------------------
+ arch/sparc/include/asm/parport_64.h | 256 +++++++++++++++++++++++++++
+ 2 files changed, 263 insertions(+), 252 deletions(-)
+ create mode 100644 arch/sparc/include/asm/parport_64.h
 
---- a/drivers/thermal/thermal_trip.c
-+++ b/drivers/thermal/thermal_trip.c
-@@ -65,7 +65,6 @@ void __thermal_zone_set_trips(struct the
- {
- 	const struct thermal_trip *trip;
- 	int low = -INT_MAX, high = INT_MAX;
--	bool same_trip = false;
- 	int ret;
+diff --git a/arch/sparc/include/asm/parport.h b/arch/sparc/include/asm/parport.h
+index 0a7ffcfd59cda..e2eed8f97665f 100644
+--- a/arch/sparc/include/asm/parport.h
++++ b/arch/sparc/include/asm/parport.h
+@@ -1,256 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* parport.h: sparc64 specific parport initialization and dma.
+- *
+- * Copyright (C) 1999  Eddie C. Dost  (ecd@skynet.be)
+- */
++#ifndef ___ASM_SPARC_PARPORT_H
++#define ___ASM_SPARC_PARPORT_H
  
- 	lockdep_assert_held(&tz->lock);
-@@ -74,36 +73,22 @@ void __thermal_zone_set_trips(struct the
- 		return;
- 
- 	for_each_trip(tz, trip) {
--		bool low_set = false;
- 		int trip_low;
- 
- 		trip_low = trip->temperature - trip->hysteresis;
- 
--		if (trip_low < tz->temperature && trip_low > low) {
-+		if (trip_low < tz->temperature && trip_low > low)
- 			low = trip_low;
--			low_set = true;
--			same_trip = false;
--		}
- 
- 		if (trip->temperature > tz->temperature &&
--		    trip->temperature < high) {
-+		    trip->temperature < high)
- 			high = trip->temperature;
--			same_trip = low_set;
--		}
- 	}
- 
- 	/* No need to change trip points */
- 	if (tz->prev_low_trip == low && tz->prev_high_trip == high)
- 		return;
- 
--	/*
--	 * If "high" and "low" are the same, skip the change unless this is the
--	 * first time.
--	 */
--	if (same_trip && (tz->prev_low_trip != -INT_MAX ||
--	    tz->prev_high_trip != INT_MAX))
--		return;
+-#ifndef _ASM_SPARC64_PARPORT_H
+-#define _ASM_SPARC64_PARPORT_H 1
 -
- 	tz->prev_low_trip = low;
- 	tz->prev_high_trip = high;
+-#include <linux/of.h>
+-#include <linux/platform_device.h>
+-
+-#include <asm/ebus_dma.h>
+-#include <asm/ns87303.h>
+-#include <asm/prom.h>
+-
+-#define PARPORT_PC_MAX_PORTS	PARPORT_MAX
+-
+-/*
+- * While sparc64 doesn't have an ISA DMA API, we provide something that looks
+- * close enough to make parport_pc happy
+- */
+-#define HAS_DMA
+-
+-#ifdef CONFIG_PARPORT_PC_FIFO
+-static DEFINE_SPINLOCK(dma_spin_lock);
+-
+-#define claim_dma_lock() \
+-({	unsigned long flags; \
+-	spin_lock_irqsave(&dma_spin_lock, flags); \
+-	flags; \
+-})
+-
+-#define release_dma_lock(__flags) \
+-	spin_unlock_irqrestore(&dma_spin_lock, __flags);
++#if defined(__sparc__) && defined(__arch64__)
++#include <asm/parport_64.h>
++#else
++#include <asm-generic/parport.h>
++#endif
+ #endif
  
+-static struct sparc_ebus_info {
+-	struct ebus_dma_info info;
+-	unsigned int addr;
+-	unsigned int count;
+-	int lock;
+-
+-	struct parport *port;
+-} sparc_ebus_dmas[PARPORT_PC_MAX_PORTS];
+-
+-static DECLARE_BITMAP(dma_slot_map, PARPORT_PC_MAX_PORTS);
+-
+-static inline int request_dma(unsigned int dmanr, const char *device_id)
+-{
+-	if (dmanr >= PARPORT_PC_MAX_PORTS)
+-		return -EINVAL;
+-	if (xchg(&sparc_ebus_dmas[dmanr].lock, 1) != 0)
+-		return -EBUSY;
+-	return 0;
+-}
+-
+-static inline void free_dma(unsigned int dmanr)
+-{
+-	if (dmanr >= PARPORT_PC_MAX_PORTS) {
+-		printk(KERN_WARNING "Trying to free DMA%d\n", dmanr);
+-		return;
+-	}
+-	if (xchg(&sparc_ebus_dmas[dmanr].lock, 0) == 0) {
+-		printk(KERN_WARNING "Trying to free free DMA%d\n", dmanr);
+-		return;
+-	}
+-}
+-
+-static inline void enable_dma(unsigned int dmanr)
+-{
+-	ebus_dma_enable(&sparc_ebus_dmas[dmanr].info, 1);
+-
+-	if (ebus_dma_request(&sparc_ebus_dmas[dmanr].info,
+-			     sparc_ebus_dmas[dmanr].addr,
+-			     sparc_ebus_dmas[dmanr].count))
+-		BUG();
+-}
+-
+-static inline void disable_dma(unsigned int dmanr)
+-{
+-	ebus_dma_enable(&sparc_ebus_dmas[dmanr].info, 0);
+-}
+-
+-static inline void clear_dma_ff(unsigned int dmanr)
+-{
+-	/* nothing */
+-}
+-
+-static inline void set_dma_mode(unsigned int dmanr, char mode)
+-{
+-	ebus_dma_prepare(&sparc_ebus_dmas[dmanr].info, (mode != DMA_MODE_WRITE));
+-}
+-
+-static inline void set_dma_addr(unsigned int dmanr, unsigned int addr)
+-{
+-	sparc_ebus_dmas[dmanr].addr = addr;
+-}
+-
+-static inline void set_dma_count(unsigned int dmanr, unsigned int count)
+-{
+-	sparc_ebus_dmas[dmanr].count = count;
+-}
+-
+-static inline unsigned int get_dma_residue(unsigned int dmanr)
+-{
+-	return ebus_dma_residue(&sparc_ebus_dmas[dmanr].info);
+-}
+-
+-static int ecpp_probe(struct platform_device *op)
+-{
+-	unsigned long base = op->resource[0].start;
+-	unsigned long config = op->resource[1].start;
+-	unsigned long d_base = op->resource[2].start;
+-	unsigned long d_len;
+-	struct device_node *parent;
+-	struct parport *p;
+-	int slot, err;
+-
+-	parent = op->dev.of_node->parent;
+-	if (of_node_name_eq(parent, "dma")) {
+-		p = parport_pc_probe_port(base, base + 0x400,
+-					  op->archdata.irqs[0], PARPORT_DMA_NOFIFO,
+-					  op->dev.parent->parent, 0);
+-		if (!p)
+-			return -ENOMEM;
+-		dev_set_drvdata(&op->dev, p);
+-		return 0;
+-	}
+-
+-	for (slot = 0; slot < PARPORT_PC_MAX_PORTS; slot++) {
+-		if (!test_and_set_bit(slot, dma_slot_map))
+-			break;
+-	}
+-	err = -ENODEV;
+-	if (slot >= PARPORT_PC_MAX_PORTS)
+-		goto out_err;
+-
+-	spin_lock_init(&sparc_ebus_dmas[slot].info.lock);
+-
+-	d_len = (op->resource[2].end - d_base) + 1UL;
+-	sparc_ebus_dmas[slot].info.regs =
+-		of_ioremap(&op->resource[2], 0, d_len, "ECPP DMA");
+-
+-	if (!sparc_ebus_dmas[slot].info.regs)
+-		goto out_clear_map;
+-
+-	sparc_ebus_dmas[slot].info.flags = 0;
+-	sparc_ebus_dmas[slot].info.callback = NULL;
+-	sparc_ebus_dmas[slot].info.client_cookie = NULL;
+-	sparc_ebus_dmas[slot].info.irq = 0xdeadbeef;
+-	strcpy(sparc_ebus_dmas[slot].info.name, "parport");
+-	if (ebus_dma_register(&sparc_ebus_dmas[slot].info))
+-		goto out_unmap_regs;
+-
+-	ebus_dma_irq_enable(&sparc_ebus_dmas[slot].info, 1);
+-
+-	/* Configure IRQ to Push Pull, Level Low */
+-	/* Enable ECP, set bit 2 of the CTR first */
+-	outb(0x04, base + 0x02);
+-	ns87303_modify(config, PCR,
+-		       PCR_EPP_ENABLE |
+-		       PCR_IRQ_ODRAIN,
+-		       PCR_ECP_ENABLE |
+-		       PCR_ECP_CLK_ENA |
+-		       PCR_IRQ_POLAR);
+-
+-	/* CTR bit 5 controls direction of port */
+-	ns87303_modify(config, PTR,
+-		       0, PTR_LPT_REG_DIR);
+-
+-	p = parport_pc_probe_port(base, base + 0x400,
+-				  op->archdata.irqs[0],
+-				  slot,
+-				  op->dev.parent,
+-				  0);
+-	err = -ENOMEM;
+-	if (!p)
+-		goto out_disable_irq;
+-
+-	dev_set_drvdata(&op->dev, p);
+-
+-	return 0;
+-
+-out_disable_irq:
+-	ebus_dma_irq_enable(&sparc_ebus_dmas[slot].info, 0);
+-	ebus_dma_unregister(&sparc_ebus_dmas[slot].info);
+-
+-out_unmap_regs:
+-	of_iounmap(&op->resource[2], sparc_ebus_dmas[slot].info.regs, d_len);
+-
+-out_clear_map:
+-	clear_bit(slot, dma_slot_map);
+-
+-out_err:
+-	return err;
+-}
+-
+-static int ecpp_remove(struct platform_device *op)
+-{
+-	struct parport *p = dev_get_drvdata(&op->dev);
+-	int slot = p->dma;
+-
+-	parport_pc_unregister_port(p);
+-
+-	if (slot != PARPORT_DMA_NOFIFO) {
+-		unsigned long d_base = op->resource[2].start;
+-		unsigned long d_len;
+-
+-		d_len = (op->resource[2].end - d_base) + 1UL;
+-
+-		ebus_dma_irq_enable(&sparc_ebus_dmas[slot].info, 0);
+-		ebus_dma_unregister(&sparc_ebus_dmas[slot].info);
+-		of_iounmap(&op->resource[2],
+-			   sparc_ebus_dmas[slot].info.regs,
+-			   d_len);
+-		clear_bit(slot, dma_slot_map);
+-	}
+-
+-	return 0;
+-}
+-
+-static const struct of_device_id ecpp_match[] = {
+-	{
+-		.name = "ecpp",
+-	},
+-	{
+-		.name = "parallel",
+-		.compatible = "ecpp",
+-	},
+-	{
+-		.name = "parallel",
+-		.compatible = "ns87317-ecpp",
+-	},
+-	{
+-		.name = "parallel",
+-		.compatible = "pnpALI,1533,3",
+-	},
+-	{},
+-};
+-
+-static struct platform_driver ecpp_driver = {
+-	.driver = {
+-		.name = "ecpp",
+-		.of_match_table = ecpp_match,
+-	},
+-	.probe			= ecpp_probe,
+-	.remove			= ecpp_remove,
+-};
+-
+-static int parport_pc_find_nonpci_ports(int autoirq, int autodma)
+-{
+-	return platform_driver_register(&ecpp_driver);
+-}
+-
+-#endif /* !(_ASM_SPARC64_PARPORT_H */
+diff --git a/arch/sparc/include/asm/parport_64.h b/arch/sparc/include/asm/parport_64.h
+new file mode 100644
+index 0000000000000..0a7ffcfd59cda
+--- /dev/null
++++ b/arch/sparc/include/asm/parport_64.h
+@@ -0,0 +1,256 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* parport.h: sparc64 specific parport initialization and dma.
++ *
++ * Copyright (C) 1999  Eddie C. Dost  (ecd@skynet.be)
++ */
++
++#ifndef _ASM_SPARC64_PARPORT_H
++#define _ASM_SPARC64_PARPORT_H 1
++
++#include <linux/of.h>
++#include <linux/platform_device.h>
++
++#include <asm/ebus_dma.h>
++#include <asm/ns87303.h>
++#include <asm/prom.h>
++
++#define PARPORT_PC_MAX_PORTS	PARPORT_MAX
++
++/*
++ * While sparc64 doesn't have an ISA DMA API, we provide something that looks
++ * close enough to make parport_pc happy
++ */
++#define HAS_DMA
++
++#ifdef CONFIG_PARPORT_PC_FIFO
++static DEFINE_SPINLOCK(dma_spin_lock);
++
++#define claim_dma_lock() \
++({	unsigned long flags; \
++	spin_lock_irqsave(&dma_spin_lock, flags); \
++	flags; \
++})
++
++#define release_dma_lock(__flags) \
++	spin_unlock_irqrestore(&dma_spin_lock, __flags);
++#endif
++
++static struct sparc_ebus_info {
++	struct ebus_dma_info info;
++	unsigned int addr;
++	unsigned int count;
++	int lock;
++
++	struct parport *port;
++} sparc_ebus_dmas[PARPORT_PC_MAX_PORTS];
++
++static DECLARE_BITMAP(dma_slot_map, PARPORT_PC_MAX_PORTS);
++
++static inline int request_dma(unsigned int dmanr, const char *device_id)
++{
++	if (dmanr >= PARPORT_PC_MAX_PORTS)
++		return -EINVAL;
++	if (xchg(&sparc_ebus_dmas[dmanr].lock, 1) != 0)
++		return -EBUSY;
++	return 0;
++}
++
++static inline void free_dma(unsigned int dmanr)
++{
++	if (dmanr >= PARPORT_PC_MAX_PORTS) {
++		printk(KERN_WARNING "Trying to free DMA%d\n", dmanr);
++		return;
++	}
++	if (xchg(&sparc_ebus_dmas[dmanr].lock, 0) == 0) {
++		printk(KERN_WARNING "Trying to free free DMA%d\n", dmanr);
++		return;
++	}
++}
++
++static inline void enable_dma(unsigned int dmanr)
++{
++	ebus_dma_enable(&sparc_ebus_dmas[dmanr].info, 1);
++
++	if (ebus_dma_request(&sparc_ebus_dmas[dmanr].info,
++			     sparc_ebus_dmas[dmanr].addr,
++			     sparc_ebus_dmas[dmanr].count))
++		BUG();
++}
++
++static inline void disable_dma(unsigned int dmanr)
++{
++	ebus_dma_enable(&sparc_ebus_dmas[dmanr].info, 0);
++}
++
++static inline void clear_dma_ff(unsigned int dmanr)
++{
++	/* nothing */
++}
++
++static inline void set_dma_mode(unsigned int dmanr, char mode)
++{
++	ebus_dma_prepare(&sparc_ebus_dmas[dmanr].info, (mode != DMA_MODE_WRITE));
++}
++
++static inline void set_dma_addr(unsigned int dmanr, unsigned int addr)
++{
++	sparc_ebus_dmas[dmanr].addr = addr;
++}
++
++static inline void set_dma_count(unsigned int dmanr, unsigned int count)
++{
++	sparc_ebus_dmas[dmanr].count = count;
++}
++
++static inline unsigned int get_dma_residue(unsigned int dmanr)
++{
++	return ebus_dma_residue(&sparc_ebus_dmas[dmanr].info);
++}
++
++static int ecpp_probe(struct platform_device *op)
++{
++	unsigned long base = op->resource[0].start;
++	unsigned long config = op->resource[1].start;
++	unsigned long d_base = op->resource[2].start;
++	unsigned long d_len;
++	struct device_node *parent;
++	struct parport *p;
++	int slot, err;
++
++	parent = op->dev.of_node->parent;
++	if (of_node_name_eq(parent, "dma")) {
++		p = parport_pc_probe_port(base, base + 0x400,
++					  op->archdata.irqs[0], PARPORT_DMA_NOFIFO,
++					  op->dev.parent->parent, 0);
++		if (!p)
++			return -ENOMEM;
++		dev_set_drvdata(&op->dev, p);
++		return 0;
++	}
++
++	for (slot = 0; slot < PARPORT_PC_MAX_PORTS; slot++) {
++		if (!test_and_set_bit(slot, dma_slot_map))
++			break;
++	}
++	err = -ENODEV;
++	if (slot >= PARPORT_PC_MAX_PORTS)
++		goto out_err;
++
++	spin_lock_init(&sparc_ebus_dmas[slot].info.lock);
++
++	d_len = (op->resource[2].end - d_base) + 1UL;
++	sparc_ebus_dmas[slot].info.regs =
++		of_ioremap(&op->resource[2], 0, d_len, "ECPP DMA");
++
++	if (!sparc_ebus_dmas[slot].info.regs)
++		goto out_clear_map;
++
++	sparc_ebus_dmas[slot].info.flags = 0;
++	sparc_ebus_dmas[slot].info.callback = NULL;
++	sparc_ebus_dmas[slot].info.client_cookie = NULL;
++	sparc_ebus_dmas[slot].info.irq = 0xdeadbeef;
++	strcpy(sparc_ebus_dmas[slot].info.name, "parport");
++	if (ebus_dma_register(&sparc_ebus_dmas[slot].info))
++		goto out_unmap_regs;
++
++	ebus_dma_irq_enable(&sparc_ebus_dmas[slot].info, 1);
++
++	/* Configure IRQ to Push Pull, Level Low */
++	/* Enable ECP, set bit 2 of the CTR first */
++	outb(0x04, base + 0x02);
++	ns87303_modify(config, PCR,
++		       PCR_EPP_ENABLE |
++		       PCR_IRQ_ODRAIN,
++		       PCR_ECP_ENABLE |
++		       PCR_ECP_CLK_ENA |
++		       PCR_IRQ_POLAR);
++
++	/* CTR bit 5 controls direction of port */
++	ns87303_modify(config, PTR,
++		       0, PTR_LPT_REG_DIR);
++
++	p = parport_pc_probe_port(base, base + 0x400,
++				  op->archdata.irqs[0],
++				  slot,
++				  op->dev.parent,
++				  0);
++	err = -ENOMEM;
++	if (!p)
++		goto out_disable_irq;
++
++	dev_set_drvdata(&op->dev, p);
++
++	return 0;
++
++out_disable_irq:
++	ebus_dma_irq_enable(&sparc_ebus_dmas[slot].info, 0);
++	ebus_dma_unregister(&sparc_ebus_dmas[slot].info);
++
++out_unmap_regs:
++	of_iounmap(&op->resource[2], sparc_ebus_dmas[slot].info.regs, d_len);
++
++out_clear_map:
++	clear_bit(slot, dma_slot_map);
++
++out_err:
++	return err;
++}
++
++static int ecpp_remove(struct platform_device *op)
++{
++	struct parport *p = dev_get_drvdata(&op->dev);
++	int slot = p->dma;
++
++	parport_pc_unregister_port(p);
++
++	if (slot != PARPORT_DMA_NOFIFO) {
++		unsigned long d_base = op->resource[2].start;
++		unsigned long d_len;
++
++		d_len = (op->resource[2].end - d_base) + 1UL;
++
++		ebus_dma_irq_enable(&sparc_ebus_dmas[slot].info, 0);
++		ebus_dma_unregister(&sparc_ebus_dmas[slot].info);
++		of_iounmap(&op->resource[2],
++			   sparc_ebus_dmas[slot].info.regs,
++			   d_len);
++		clear_bit(slot, dma_slot_map);
++	}
++
++	return 0;
++}
++
++static const struct of_device_id ecpp_match[] = {
++	{
++		.name = "ecpp",
++	},
++	{
++		.name = "parallel",
++		.compatible = "ecpp",
++	},
++	{
++		.name = "parallel",
++		.compatible = "ns87317-ecpp",
++	},
++	{
++		.name = "parallel",
++		.compatible = "pnpALI,1533,3",
++	},
++	{},
++};
++
++static struct platform_driver ecpp_driver = {
++	.driver = {
++		.name = "ecpp",
++		.of_match_table = ecpp_match,
++	},
++	.probe			= ecpp_probe,
++	.remove			= ecpp_remove,
++};
++
++static int parport_pc_find_nonpci_ports(int autoirq, int autodma)
++{
++	return platform_driver_register(&ecpp_driver);
++}
++
++#endif /* !(_ASM_SPARC64_PARPORT_H */
+-- 
+2.43.0
+
 
 
 
