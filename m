@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-33920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD62893A46
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 12:44:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A05893A4A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 12:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60166281EBC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 10:44:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D37D9B20D02
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 10:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3020171C1;
-	Mon,  1 Apr 2024 10:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B14200CD;
+	Mon,  1 Apr 2024 10:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOqJdiJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDDwBRlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6355C1119F
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 10:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE441F602
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 10:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711968291; cv=none; b=d3NPEIormwZCj3VKg+YOf+Wlk6mtunjy8JQTE6r0xUcoBNIkyET34iZiYcwjOzIbZUDP85oncV6jXik9cVlT2tfr4g2l+cNpG983Dc63kOpeJswijWwAAeG6gd+xQbjDp/489NoONetagHcngscULOX+nL9XCMCDWFs3vsBeFyY=
+	t=1711968361; cv=none; b=u2tcRSi6VkCAZOcZ8iWE/MseYLUWLLwXGadTUYJ+synl51QM9BLS0Ajcb9uFPmlPZBLi+wgzEwkYh158hS34kHoc5f3lEcQtG9K47JacCyoiFidRhfTOYhak2NqmReE/BBMlcRqnugsoCjVZhNueUsT7eH6k294toNEHiJA+zYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711968291; c=relaxed/simple;
-	bh=AntwOfzzGfJhX2sZUL/CxwaktPpZ+BvSYOhtA8/MWEA=;
+	s=arc-20240116; t=1711968361; c=relaxed/simple;
+	bh=6Qzto1faXWRdxOC52l6PKuWnbp7qp3Y9qlyjsldis3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sD+nAl+nvzeU3L3T0GAsCwdMnXJ4JIYTImnEi+bfc050YW5mHtg2o+koeyHOnsYYjMi5ZU27ReL+mHxKWwau9EKaR7bOYIUrE21lj8O9JaQrytdhDWrJStP2fMkBi5AdQhKgVBTVMdc8N15wb207/SOhSj9/5b1r/LEy0TCVmEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOqJdiJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B144C433C7;
-	Mon,  1 Apr 2024 10:44:49 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JSuH0YN7IQWDj64LR3ha1UypSRqyy/w5g+xwDFoaFoxhK0htGPnwbxgzGBPzOa3dRFSOj98lXoT7HooNx+2Ogolqj2bfu6EGy1xEj2mX24pHbSqGMwTzaxjNxJgOqYaHNzH9gWS+xscU4DnUfMw5skHheOOujzlKNtw0FMD3Yfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDDwBRlD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ACDC43399;
+	Mon,  1 Apr 2024 10:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711968290;
-	bh=AntwOfzzGfJhX2sZUL/CxwaktPpZ+BvSYOhtA8/MWEA=;
+	s=korg; t=1711968360;
+	bh=6Qzto1faXWRdxOC52l6PKuWnbp7qp3Y9qlyjsldis3I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dOqJdiJKP/ZQ5ln9K0BK8C5vDegKGP3n9nQzINSOy2/5Pc7j09oDUY+SDWUTXU9Zm
-	 eZGnqguBcWT0Gr1JLzkK/ehwd346lv8I5gkBYmQZbL4k7Af6XKvLJXN+sVucVdrRqX
-	 eb6zKf/rvWrr54uvb/Y1y2f23jHdqPpOX/qYNp8k=
-Date: Mon, 1 Apr 2024 12:44:47 +0200
+	b=iDDwBRlDNzlqYpy641PXcspJjYyxUkAUeC/m7sO0VlyJDEWal01l4QRnRMgmXFO5a
+	 4L5KIqjvH22dd+o6ICjBFMeBxC+ndZ4Xlf61bYAbzxWXEl0BUtO4FqtjoeZnokbFZU
+	 CGq/BUQFXNvEjRRi3jFLKOziOoM2+0VmJhftlozk=
+Date: Mon, 1 Apr 2024 12:45:57 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: mingo@kernel.org, torvalds@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] x86/bugs: Fix the SRSO mitigation on
- Zen3/4" failed to apply to 6.7-stable tree
-Message-ID: <2024040138-pardon-recharger-a097@gregkh>
-References: <2024033028-lumpiness-pouch-475f@gregkh>
- <20240331094945.GAZgkxuZYOCg8jwh82@fat_crate.local>
+To: Baoquan He <bhe@redhat.com>
+Cc: akpm@linux-foundation.org, chenhuacai@loongson.cn, dyoung@redhat.com,
+	jbohac@suse.cz, lihuafei1@huawei.com, mingo@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] crash: use macro to add crashk_res into
+ iomem early for" failed to apply to 6.8-stable tree
+Message-ID: <2024040150-cattle-fragility-b813@gregkh>
+References: <2024033005-graded-dangle-3a21@gregkh>
+ <Zgp0vZityCen4Ngd@MiWiFi-R3L-srv>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,24 +57,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240331094945.GAZgkxuZYOCg8jwh82@fat_crate.local>
+In-Reply-To: <Zgp0vZityCen4Ngd@MiWiFi-R3L-srv>
 
-On Sun, Mar 31, 2024 at 11:49:45AM +0200, Borislav Petkov wrote:
-> On Sat, Mar 30, 2024 at 10:46:28AM +0100, gregkh@linuxfoundation.org wrote:
+On Mon, Apr 01, 2024 at 04:47:57PM +0800, Baoquan He wrote:
+> On 03/30/24 at 10:29am, gregkh@linuxfoundation.org wrote:
 > > 
-> > The patch below does not apply to the 6.7-stable tree.
+> > The patch below does not apply to the 6.8-stable tree.
 > > If someone wants it applied there, or to any other stable or longterm
 > > tree, then please email the backport, including the original git commit
 > > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 32fbe5246582af4f611ccccee33fd6e559087252
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033005-graded-dangle-3a21@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+> > 
+> > Possible dependencies:
+> > 
+> > 32fbe5246582 ("crash: use macro to add crashk_res into iomem early for specific arch")
+> > 85fcde402db1 ("kexec: split crashkernel reservation code out from crash_core.c")
 > 
-> ---
-> From: "Borislav Petkov (AMD)" <bp@alien8.de>
-> Date: Thu, 28 Mar 2024 13:59:05 +0100
-> Subject: [PATCH] x86/bugs: Fix the SRSO mitigation on Zen3/4
-> 
-> Commit 4535e1a4174c4111d92c5a9a21e542d232e0fcaa upstream.
+> I back ported it to 6.8 stable tree according to above steps of
+> git operation as below. Please feel free to add it in.
 
-Thanks, both now queued up.
+Now queued up, thanks!
 
 greg k-h
 
