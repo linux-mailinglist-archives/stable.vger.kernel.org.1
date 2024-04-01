@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-35055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178A0894228
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32572894040
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48E161C219E7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63DD21C20D6F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB9141232;
-	Mon,  1 Apr 2024 16:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A3D446D5;
+	Mon,  1 Apr 2024 16:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omwWhnvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R49LIvHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7E88F5C;
-	Mon,  1 Apr 2024 16:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876D7C129;
+	Mon,  1 Apr 2024 16:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990193; cv=none; b=Py8Afit2fIujVWNqaF3NO/iQoczwQdItGNovzWnGxJV/lQTCQ2J8zdnHJZzPDUl1N7B6il4OKnFCTM/laci2R8STXXTSdLN/6TMT8q+YuqXEVHbTdNPI4c73CNSYpnEY4kf+6LfYCTGsa00k9ztkaOcF5ECaasUmXXyo6garJkg=
+	t=1711988858; cv=none; b=Yw2C8HT1KCtdcFvRHRcK/fjdeD8pWFdRd95fHiNdH24dzwN8gvmcNaWveAzbDQAF0bYSR7KKbI/5DpKa7YTHst0oBXaRj0W2ne9RWGzwf7AkPnmMzWpL56ssTGamChxoM7iswIC5uBmVaNcSjqXrv9oNfE6w12UU6XnWLtjeeCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990193; c=relaxed/simple;
-	bh=cqNUJb6iJHZQxBbdTOp2eR4ZtxurUoZRKC09Y1RPpTM=;
+	s=arc-20240116; t=1711988858; c=relaxed/simple;
+	bh=1C/mkq0sQWPksnO6NNeFKYZ8z3Fz6NA/UJJaQMmu9Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aoT4uc27s4jVLZqdFsXUTr9+yuhhug/OhENjbXxaNHdL1R7PospxzRHvMsRk93DKKNEIyyBCA7+2a2QKCqdXU0t3ewnlgT/5APSVG2imW9ix8AGYb68ssLWhu46YjgJXDv83RxQbCiz0OzR4tylRuKU7DRQvWVvxsksigil2qd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omwWhnvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3ECAC433C7;
-	Mon,  1 Apr 2024 16:49:52 +0000 (UTC)
+	 MIME-Version; b=R4AejG40TfOi5CGK1MH7k6tJ/4S26TbckwxtOZ4YoW0YJayB5xU83Bd/75BdnFFURzR+D5Q9YMuOURUNSbhUGEP1O/qOY5dnEEKTKi+f37Kt6y/Deqhop+iwGOjGLDwATbPkt9o69XAcqXy0iUgqi6OsBjXHDPu4gxx49pCWx0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R49LIvHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02116C433C7;
+	Mon,  1 Apr 2024 16:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990193;
-	bh=cqNUJb6iJHZQxBbdTOp2eR4ZtxurUoZRKC09Y1RPpTM=;
+	s=korg; t=1711988858;
+	bh=1C/mkq0sQWPksnO6NNeFKYZ8z3Fz6NA/UJJaQMmu9Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omwWhnvD0i6PjomJLQTTLJub8eaOhsAkhKSTj1LIRUjTPKWhsPIdtNC/XM9TZhYSv
-	 7qUWkMGvZdypgQfFVsbCqK/+vj/goUDjx5OGT46pF9OHF5KZIECzSWrQWol0A95G7k
-	 JOnfpEJufIOQuW0JbNVU4uHG9WHuE87CzvpDdp5o=
+	b=R49LIvHH2dBypmKhZm2Kc2R8GgBvUXUUkF7fGfQFM/DV2ahv1d4dC608uB9+Q5Don
+	 vJYXdTX5XRtZcEHK9Hc49MhjCo1H104YE6IHwju3YxQls6Oxp1nGZgFYTGZa6aI59E
+	 9197yK5JD915g+D5tTX5u5Yz2uTfm5+un199+pxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.6 247/396] drm/i915: Dont explode when the dig port we dont have an AUX CH
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 309/432] irqchip/renesas-rzg2l: Add macro to retrieve TITSR register offset based on registers index
 Date: Mon,  1 Apr 2024 17:44:56 +0200
-Message-ID: <20240401152555.277114977@linuxfoundation.org>
+Message-ID: <20240401152602.404578328@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,104 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 0b385be4c3ccd5636441923d7cad5eda6b4651cb upstream.
+[ Upstream commit 2eca4731cc66563b3919d8753dbd74d18c39f662 ]
 
-The icl+ power well code currently assumes that every AUX power
-well maps to an encoder which is using said power well. That is
-by no menas guaranteed as we:
-- only register encoders for ports declared in the VBT
-- combo PHY HDMI-only encoder no longer get an AUX CH since
-  commit 9856308c94ca ("drm/i915: Only populate aux_ch if really needed")
+There are 2 TITSR registers available on the IA55 interrupt controller.
 
-However we have places such as intel_power_domains_sanitize_state()
-that blindly traverse all the possible power wells. So these bits
-of code may very well encounbter an aux power well with no associated
-encoder.
+Add a macro that retrieves the TITSR register offset based on it's
+index. This macro is useful in when adding suspend/resume support so both
+TITSR registers can be accessed in a for loop.
 
-In this particular case the BIOS seems to have left one AUX power
-well enabled even though we're dealing with a HDMI only encoder
-on a combo PHY. We then proceed to turn off said power well and
-explode when we can't find a matching encoder. As a short term fix
-we should be able to just skip the PHY related parts of the power
-well programming since we know this situation can only happen with
-combo PHYs.
-
-Another option might be to go back to always picking an AUX CH for
-all encoders. However I'm a bit wary about that since we might in
-theory end up conflicting with the VBT AUX CH assignment. Also
-that wouldn't help with encoders not declared in the VBT, should
-we ever need to poke the corresponding power wells.
-
-Longer term we need to figure out what the actual relationship
-is between the PHY vs. AUX CH vs. AUX power well. Currently this
-is entirely unclear.
-
-Cc: stable@vger.kernel.org
-Fixes: 9856308c94ca ("drm/i915: Only populate aux_ch if really needed")
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10184
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240223203216.15210-1-ville.syrjala@linux.intel.com
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-(cherry picked from commit 6a8c66bf0e565c34ad0a18f820e0bb17951f7f91)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231120111820.87398-7-claudiu.beznea.uj@bp.renesas.com
+Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/i915/display/intel_display_power_well.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_power_well.c b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-index 47cd6bb04366..06900ff307b2 100644
---- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-@@ -246,7 +246,14 @@ static enum phy icl_aux_pw_to_phy(struct drm_i915_private *i915,
- 	enum aux_ch aux_ch = icl_aux_pw_to_ch(power_well);
- 	struct intel_digital_port *dig_port = aux_ch_to_digital_port(i915, aux_ch);
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index d6514f2d51aff..3f2f4ebfe4da6 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -28,8 +28,7 @@
+ #define ISCR				0x10
+ #define IITSR				0x14
+ #define TSCR				0x20
+-#define TITSR0				0x24
+-#define TITSR1				0x28
++#define TITSR(n)			(0x24 + (n) * 4)
+ #define TITSR0_MAX_INT			16
+ #define TITSEL_WIDTH			0x2
+ #define TSSR(n)				(0x30 + ((n) * 4))
+@@ -206,8 +205,7 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 	unsigned int hwirq = irqd_to_hwirq(d);
+ 	u32 titseln = hwirq - IRQC_TINT_START;
+-	u32 offset;
+-	u8 sense;
++	u8 index, sense;
+ 	u32 reg;
  
--	return intel_port_to_phy(i915, dig_port->base.port);
-+	/*
-+	 * FIXME should we care about the (VBT defined) dig_port->aux_ch
-+	 * relationship or should this be purely defined by the hardware layout?
-+	 * Currently if the port doesn't appear in the VBT, or if it's declared
-+	 * as HDMI-only and routed to a combo PHY, the encoder either won't be
-+	 * present at all or it will not have an aux_ch assigned.
-+	 */
-+	return dig_port ? intel_port_to_phy(i915, dig_port->base.port) : PHY_NONE;
- }
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+@@ -223,17 +221,17 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
+ 		return -EINVAL;
+ 	}
  
- static void hsw_wait_for_power_well_enable(struct drm_i915_private *dev_priv,
-@@ -414,7 +421,8 @@ icl_combo_phy_aux_power_well_enable(struct drm_i915_private *dev_priv,
+-	offset = TITSR0;
++	index = 0;
+ 	if (titseln >= TITSR0_MAX_INT) {
+ 		titseln -= TITSR0_MAX_INT;
+-		offset = TITSR1;
++		index = 1;
+ 	}
  
- 	intel_de_rmw(dev_priv, regs->driver, 0, HSW_PWR_WELL_CTL_REQ(pw_idx));
+ 	raw_spin_lock(&priv->lock);
+-	reg = readl_relaxed(priv->base + offset);
++	reg = readl_relaxed(priv->base + TITSR(index));
+ 	reg &= ~(IRQ_MASK << (titseln * TITSEL_WIDTH));
+ 	reg |= sense << (titseln * TITSEL_WIDTH);
+-	writel_relaxed(reg, priv->base + offset);
++	writel_relaxed(reg, priv->base + TITSR(index));
+ 	raw_spin_unlock(&priv->lock);
  
--	if (DISPLAY_VER(dev_priv) < 12)
-+	/* FIXME this is a mess */
-+	if (phy != PHY_NONE)
- 		intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy),
- 			     0, ICL_LANE_ENABLE_AUX);
- 
-@@ -437,7 +445,10 @@ icl_combo_phy_aux_power_well_disable(struct drm_i915_private *dev_priv,
- 
- 	drm_WARN_ON(&dev_priv->drm, !IS_ICELAKE(dev_priv));
- 
--	intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy), ICL_LANE_ENABLE_AUX, 0);
-+	/* FIXME this is a mess */
-+	if (phy != PHY_NONE)
-+		intel_de_rmw(dev_priv, ICL_PORT_CL_DW12(phy),
-+			     ICL_LANE_ENABLE_AUX, 0);
- 
- 	intel_de_rmw(dev_priv, regs->driver, HSW_PWR_WELL_CTL_REQ(pw_idx), 0);
- 
+ 	return 0;
 -- 
-2.44.0
+2.43.0
 
 
 
