@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5590C893FD5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997868942E8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 878F71C21561
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5569128375A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC3246B9F;
-	Mon,  1 Apr 2024 16:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265D84653C;
+	Mon,  1 Apr 2024 16:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvAmqb5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgvUu3+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A788C129;
-	Mon,  1 Apr 2024 16:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C921DFF4;
+	Mon,  1 Apr 2024 16:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988515; cv=none; b=tTIjBngrFP9Mfm4JlT+7PfzIPCzDBqRaQn16v8t4bsg9rsk808ffEXMOnKE8WwqDl1uphma4rFaQt8nV+9YNzP3NXgDgBmSSs3WeXAMeC/CTztvg7Qj9rpYmQo7feMsZM/tVg7c5M9AzyQDF7gqCiB2+QM5ToYKsB6JGf0Ar2f4=
+	t=1711990643; cv=none; b=T+sF5YzpotLG01x5FkdiEZyseQ9Aag3PrnznDigr2glH4+Ph/gFenmmDHqGALRtcQNDE35J7F/2qg212gMuvmntxX2gUWgW08smshkaP9V88Wljr447IJ4yd+xBo1EuV+Izo35Z5x97+fmHjnAHOJwbYaFBBRLuhpgVwsZzPgSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988515; c=relaxed/simple;
-	bh=VjYJ9KcQVy6Rts3Fbx40NG4KgWPAVxcazVtcsl0Dtu0=;
+	s=arc-20240116; t=1711990643; c=relaxed/simple;
+	bh=BJ9s33zGqxDHmqIRuAsB8dH8hPSitdVPVq4VRgpqkMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=un+gAjy0nkv3PksgKrVv3zfmEC0Wf83pzb+QvKpFAtjz75f/jY2mlhLg36QLedYDAJSHL7VKGRnJ2sMcA/31Gfs7cyVXxALz9vCVa2JApkg/kgO3m/13vOosWfsi+BVff4eJBAFj322a6ZBavxRlpUC1FwEIs/CUuW1drF4pNik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvAmqb5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F4DC433C7;
-	Mon,  1 Apr 2024 16:21:54 +0000 (UTC)
+	 MIME-Version; b=EHVPuuGQSd7JtB6tFZLuDAnWF+zme1aAv3ho58V7xprwyJqChWbAGk4Wfp/dI+KEvgafUYZ1zHzAFkINTMvU/Ya3vRjb/suiytcg8K2FgeemX+1yYFQyyFoWy5rR/DOJiIK5no7cObVA5HIDVaDvgNaikRofkJbWnriEVnVI7ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgvUu3+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C057C433F1;
+	Mon,  1 Apr 2024 16:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988515;
-	bh=VjYJ9KcQVy6Rts3Fbx40NG4KgWPAVxcazVtcsl0Dtu0=;
+	s=korg; t=1711990643;
+	bh=BJ9s33zGqxDHmqIRuAsB8dH8hPSitdVPVq4VRgpqkMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UvAmqb5QQnWE3jsJoYlOertXup4IZ0jxn85MLZ3slrqtdN6erblU1gYaalhmycNTt
-	 69gaTkaCWbKNzD3OqE5+SCiyHEM96PIGUIepC2gQW8AOQjbmUPvBJxCd/vQm1WXKBp
-	 dinkw9FXgPhvmwVeLhbZtnD7uJIN0gi9BPy2twv4=
+	b=KgvUu3+fcg6nOJWh9D4OwmwcKj5AvH67f46ca8rn59Fk6Ic+O0t933aA47g0lWd/D
+	 AvVewST5ZIofTArFJDus7T6t/RBltg185ka1xO3Owq/ZWbaGbX03/xetUVnMwpdMUo
+	 lTas2oVmdo0owCtzgymR9Izv7Matur0QjorDdXuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 208/432] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 005/272] KVM: x86: Use a switch statement and macros in __feature_translate()
 Date: Mon,  1 Apr 2024 17:43:15 +0200
-Message-ID: <20240401152559.343000923@linuxfoundation.org>
+Message-ID: <20240401152530.438741679@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +59,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Jim Mattson <jmattson@google.com>
 
-[ Upstream commit 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 ]
+commit 80c883db87d9ffe2d685e91ba07a087b1c246c78 upstream.
 
-Otherwise after the GTT bo is released, the GTT and gart space is freed
-but amdgpu_ttm_backend_unbind will not clear the gart page table entry
-and leave valid mapping entry pointing to the stale system page. Then
-if GPU access the gart address mistakely, it will read undefined value
-instead page fault, harder to debug and reproduce the real issue.
+Use a switch statement with macro-generated case statements to handle
+translating feature flags in order to reduce the probability of runtime
+errors due to copy+paste goofs, to make compile-time errors easier to
+debug, and to make the code more readable.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+E.g. the compiler won't directly generate an error for duplicate if
+statements
+
+	if (x86_feature == X86_FEATURE_SGX1)
+		return KVM_X86_FEATURE_SGX1;
+	else if (x86_feature == X86_FEATURE_SGX2)
+		return KVM_X86_FEATURE_SGX1;
+
+and so instead reverse_cpuid_check() will fail due to the untranslated
+entry pointing at a Linux-defined leaf, which provides practically no
+hint as to what is broken
+
+  arch/x86/kvm/reverse_cpuid.h:108:2: error: call to __compiletime_assert_450 declared with 'error' attribute:
+                                      BUILD_BUG_ON failed: x86_leaf == CPUID_LNX_4
+          BUILD_BUG_ON(x86_leaf == CPUID_LNX_4);
+          ^
+whereas duplicate case statements very explicitly point at the offending
+code:
+
+  arch/x86/kvm/reverse_cpuid.h:125:2: error: duplicate case value '361'
+          KVM_X86_TRANSLATE_FEATURE(SGX2);
+          ^
+  arch/x86/kvm/reverse_cpuid.h:124:2: error: duplicate case value '360'
+          KVM_X86_TRANSLATE_FEATURE(SGX1);
+          ^
+
+And without macros, the opposite type of copy+paste goof doesn't generate
+any error at compile-time, e.g. this yields no complaints:
+
+        case X86_FEATURE_SGX1:
+                return KVM_X86_FEATURE_SGX1;
+        case X86_FEATURE_SGX2:
+                return KVM_X86_FEATURE_SGX1;
+
+Note, __feature_translate() is forcibly inlined and the feature is known
+at compile-time, so the code generation between an if-elif sequence and a
+switch statement should be identical.
+
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20231024001636.890236-2-jmattson@google.com
+[sean: use a macro, rewrite changelog]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/reverse_cpuid.h |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index 75c9fd2c6c2a1..b0ed10f4de609 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -869,6 +869,7 @@ static void amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
- 		amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
- 				 gtt->ttm.dma_address, flags);
- 	}
-+	gtt->bound = true;
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -97,14 +97,16 @@ static __always_inline void reverse_cpui
+  */
+ static __always_inline u32 __feature_translate(int x86_feature)
+ {
+-	if (x86_feature == X86_FEATURE_SGX1)
+-		return KVM_X86_FEATURE_SGX1;
+-	else if (x86_feature == X86_FEATURE_SGX2)
+-		return KVM_X86_FEATURE_SGX2;
+-	else if (x86_feature == X86_FEATURE_RRSBA_CTRL)
+-		return KVM_X86_FEATURE_RRSBA_CTRL;
++#define KVM_X86_TRANSLATE_FEATURE(f)	\
++	case X86_FEATURE_##f: return KVM_X86_FEATURE_##f
+ 
+-	return x86_feature;
++	switch (x86_feature) {
++	KVM_X86_TRANSLATE_FEATURE(SGX1);
++	KVM_X86_TRANSLATE_FEATURE(SGX2);
++	KVM_X86_TRANSLATE_FEATURE(RRSBA_CTRL);
++	default:
++		return x86_feature;
++	}
  }
  
- /*
--- 
-2.43.0
-
+ static __always_inline u32 __feature_leaf(int x86_feature)
 
 
 
