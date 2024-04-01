@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-34120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128B4893DF9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:57:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9964893E03
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88792B22B6C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:57:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83EB2283400
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9374778C;
-	Mon,  1 Apr 2024 15:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083B54776F;
+	Mon,  1 Apr 2024 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OarPpwqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJGppWzS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3929F46B9F;
-	Mon,  1 Apr 2024 15:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAB817552;
+	Mon,  1 Apr 2024 15:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987063; cv=none; b=RTPizuk4JnEIImH3QbPAwTvMefCsyknymFZpviBC9ecUpkmo30c1/0yKebIr+Eq7HltVGskEZ8XS1sSgQg8bfwsWMFt04OK8ESQLyiBjzCDjip7h/8HMYHejvy0TGdVwg7oIxV/1bpNYqI57kx10G/ChRMCuH1RYXWoEsdRC18I=
+	t=1711987098; cv=none; b=kKtwuYh/SzOiJ4ycCX0GKwPflY+ddIMTDJLb/sZ4Kv61ZEM7KnKV3EaEJxUjBOOJBMPMXJtsAS/3o9DQRJ5cOT3mcJtRG7AqjOaDikaQGNGAetmnkaOiBmee444MSJNDFVnGKnFCMU9tQAyG7vxx8SfogqlJ65KUO1dMqNRxjcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987063; c=relaxed/simple;
-	bh=vBF/J+RgoH7CmLGMfeFSy+elH0JIdItHVDkhbxw9efk=;
+	s=arc-20240116; t=1711987098; c=relaxed/simple;
+	bh=VMXdYOl0RJ4IjAjyJMAgUT3dA4a2SOCPYxivh8cc1Nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2XIud3fcDKRjpQ/EbqYGJOXjMYBP3Ls3yrhFIMVDLz1UTOxQ7EPQHi/boXq6GS8GFgjbuQdvTUvy16rqJAREj3HscfWnjw1tewXSrD8Clfi8+LnqcoFAQ/NycbQKoC0/wOQBh+aGuG4ivqrzdNEIPywsfvz/S9E91YTsfLoD4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OarPpwqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAC2C433C7;
-	Mon,  1 Apr 2024 15:57:42 +0000 (UTC)
+	 MIME-Version; b=qLQlVdaPVD7J5/p933Q0t2AFCehbwxRBggYdqqyS2lDvPK5i8QBvDci/MHp+XTmO1MRzfyMCMlx+LrF7WDp7v/Yepf4ofJJwEyuXm2zf1omqtodEE6C8p6kipyB6hXB75vXteD/qkEoRIjO+MFrSN/mi9DU2VL4YoMxLdJMl2bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJGppWzS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AD9C433C7;
+	Mon,  1 Apr 2024 15:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987063;
-	bh=vBF/J+RgoH7CmLGMfeFSy+elH0JIdItHVDkhbxw9efk=;
+	s=korg; t=1711987098;
+	bh=VMXdYOl0RJ4IjAjyJMAgUT3dA4a2SOCPYxivh8cc1Nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OarPpwqp21Mvv8EAfUW51k/p9WNY8wZmtZQPIlbbvaTi+kJyHqaNmLdEH36MKcYrc
-	 P3TTYQTpNwXnm8NwmIoBzft9TgHQ+Szct8YCtMdgrx1lUW5lMWcC4Adn9phsCG39+d
-	 DHxHl+mc59xnipqVjAoBplVzQymVIDB+A/cyWrCA=
+	b=aJGppWzSMTUO7VDVd8UAdCyHUbp+dqZNF0TNeK0IOyCoMqp57nuhTdqGp/W2UEEYi
+	 5B0hSH5ACe8BaFxQ3ElJR1IAO9Tkk6RfMvMYxB+N7C6/MKF7eVwUaPxb6ktrqpcdeP
+	 6Y6wUYGET3vHUBOCvhYlrRZJXpfbLWcitPWBvvKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 165/399] drm/probe-helper: warn about negative .get_modes()
-Date: Mon,  1 Apr 2024 17:42:11 +0200
-Message-ID: <20240401152554.105933281@linuxfoundation.org>
+Subject: [PATCH 6.8 166/399] drm/panel: do not return negative error codes from drm_panel_get_modes()
+Date: Mon,  1 Apr 2024 17:42:12 +0200
+Message-ID: <20240401152554.135176506@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -68,56 +71,68 @@ Content-Transfer-Encoding: 8bit
 
 From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 7af03e688792293ba33149fb8df619a8dff90e80 ]
+[ Upstream commit fc4e97726530241d96dd7db72eb65979217422c9 ]
 
-The .get_modes() callback is supposed to return the number of modes,
-never a negative error code. If a negative value is returned, it'll just
-be interpreted as a negative count, and added to previous calculations.
+None of the callers of drm_panel_get_modes() expect it to return
+negative error codes. Either they propagate the return value in their
+struct drm_connector_helper_funcs .get_modes() hook (which is also not
+supposed to return negative codes), or add it to other counts leading to
+bogus values.
 
-Document the rules, but handle the negative values gracefully with an
-error message.
+On the other hand, many of the struct drm_panel_funcs .get_modes() hooks
+do return negative error codes, so handle them gracefully instead of
+propagating further.
 
+Return 0 for no modes, whatever the reason.
+
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
 Cc: stable@vger.kernel.org
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/50208c866facc33226a3c77b82bb96aeef8ef310.1709913674.git.jani.nikula@intel.com
+Link: https://patchwork.freedesktop.org/patch/msgid/79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_probe_helper.c       | 7 +++++++
- include/drm/drm_modeset_helper_vtables.h | 3 ++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 23b4e9a3361d8..744cde9db246b 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -419,6 +419,13 @@ static int drm_helper_probe_get_modes(struct drm_connector *connector)
+diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+index e814020bbcd3b..cfbe020de54e0 100644
+--- a/drivers/gpu/drm/drm_panel.c
++++ b/drivers/gpu/drm/drm_panel.c
+@@ -274,19 +274,24 @@ EXPORT_SYMBOL(drm_panel_disable);
+  * The modes probed from the panel are automatically added to the connector
+  * that the panel is attached to.
+  *
+- * Return: The number of modes available from the panel on success or a
+- * negative error code on failure.
++ * Return: The number of modes available from the panel on success, or 0 on
++ * failure (no modes).
+  */
+ int drm_panel_get_modes(struct drm_panel *panel,
+ 			struct drm_connector *connector)
+ {
+ 	if (!panel)
+-		return -EINVAL;
++		return 0;
  
- 	count = connector_funcs->get_modes(connector);
+-	if (panel->funcs && panel->funcs->get_modes)
+-		return panel->funcs->get_modes(panel, connector);
++	if (panel->funcs && panel->funcs->get_modes) {
++		int num;
  
-+	/* The .get_modes() callback should not return negative values. */
-+	if (count < 0) {
-+		drm_err(connector->dev, ".get_modes() returned %pe\n",
-+			ERR_PTR(count));
-+		count = 0;
+-	return -EOPNOTSUPP;
++		num = panel->funcs->get_modes(panel, connector);
++		if (num > 0)
++			return num;
 +	}
 +
- 	/*
- 	 * Fallback for when DDC probe failed in drm_get_edid() and thus skipped
- 	 * override/firmware EDID.
-diff --git a/include/drm/drm_modeset_helper_vtables.h b/include/drm/drm_modeset_helper_vtables.h
-index 881b03e4dc288..9ed42469540eb 100644
---- a/include/drm/drm_modeset_helper_vtables.h
-+++ b/include/drm/drm_modeset_helper_vtables.h
-@@ -898,7 +898,8 @@ struct drm_connector_helper_funcs {
- 	 *
- 	 * RETURNS:
- 	 *
--	 * The number of modes added by calling drm_mode_probed_add().
-+	 * The number of modes added by calling drm_mode_probed_add(). Return 0
-+	 * on failures (no modes) instead of negative error codes.
- 	 */
- 	int (*get_modes)(struct drm_connector *connector);
++	return 0;
+ }
+ EXPORT_SYMBOL(drm_panel_get_modes);
  
 -- 
 2.43.0
