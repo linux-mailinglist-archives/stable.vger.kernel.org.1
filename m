@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-34954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED04F8941A5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545EF893FF0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29E461C2161E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9E501F21D0B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A00C4AEC3;
-	Mon,  1 Apr 2024 16:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B84547A57;
+	Mon,  1 Apr 2024 16:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjOQG4c4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wHOMl8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490804778C;
-	Mon,  1 Apr 2024 16:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48430C129;
+	Mon,  1 Apr 2024 16:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989857; cv=none; b=jmuAt18SoKlt6sJKA/o9XTt8X41p/P4trOL3UdYnUwomlritNUMHcybHbJ8ft8wRIS+pkLXkCL7KuhvNvo4eLPlk6LkwXduRoFqIGyWw4QS2tM86nqf9tOrMtJepT/xlkNd7RVYwfh0EP7joCjKesi2GsciFT32hQXSWrQ0k1Tw=
+	t=1711988604; cv=none; b=APrjMOvnsjkDOw+GbWk0HR0BmevObu17X8OqKeII4pa4AUvncIwpmXWarActzn8xVT3IJPfomw/zbPHyAA6i34JHO2ponrP/ggvvX/Z6p4vLXSkhbq6+rjFbsqqG4lLzxNjKUZZWKaZY6Uco/4YIWNyxG5LrJ19iM2M5UdeA3p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989857; c=relaxed/simple;
-	bh=h6nm+Z5TfYGEPCJ7w6F1mRVR137XQNOB4PyIZqLJUuE=;
+	s=arc-20240116; t=1711988604; c=relaxed/simple;
+	bh=rzzbD7FvATK2uFkf3w6SXyAE2CZb6uYHP9lddivl7WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5C6UJFqEyZJ0rsgXk5TR0MyKS1g42jzwyYqdNDC+8ckmYGyQldFBqCpO5oG0TlN9Pl9dSR7tUHeeWzIp7UhNInwjBDGVG2HS1Zok6qgt4gCJIXDx8y6Oykn+ntTAElA+N4VXT8pBg/xH962mT2Ko4+d8/F3PVPSeb/eTiQCj0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjOQG4c4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391A0C433C7;
-	Mon,  1 Apr 2024 16:44:16 +0000 (UTC)
+	 MIME-Version; b=eU7bp2NWXQgnZxef1eE+EZt8rwwhibbcaInmyXBrvRhe3a6rNcSRAyQr59vPdTdyIpwTnG+Gy/OIdKhaGj55NzX4+jOH+M8ihmHwK0vP0i2MsQB6/Q8EzY5SSo8HvSsRj7/w4ONQp6m2dpG+SRimzX8fSuDWTjDGYfeqhw9V6n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wHOMl8I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A084FC433F1;
+	Mon,  1 Apr 2024 16:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989856;
-	bh=h6nm+Z5TfYGEPCJ7w6F1mRVR137XQNOB4PyIZqLJUuE=;
+	s=korg; t=1711988604;
+	bh=rzzbD7FvATK2uFkf3w6SXyAE2CZb6uYHP9lddivl7WI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjOQG4c4E/Gs3oGoGEcpakbkXyAVJLldVzyTH9gDYspXV2OERyXjDMqWu9NyDPeIm
-	 DLixOxpTn63Eko0pTdCCyJWRZfkloPCeJMczg5Pjs0b2KcXiKcH5CWZhTOcl+uU/eD
-	 FKQblnzTTbwoM2S8iSuWTx0DPFxll/s/uOWcJiSw=
+	b=2wHOMl8I4t1mztiWBvVjy5qlVL7cOkxB3CKYXvHL/tMI8VZwXUxrW0T9Z1iKE6g6L
+	 MQpfBA6TZTcENb2HABjEVzDp4AQomNDFcXvFlrb9oWZh79BcnNk4lsk055LeOesiSf
+	 zDCIn5pOZHzCkODkkJCgRzpLVTwtEOc35DQbCsGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaotian Wu <wuxiaotian@loongson.cn>,
-	Miao Wang <shankerwangmiao@gmail.com>,
-	Xing Li <lixing@loongson.cn>,
-	Hongchen Zhang <zhanghongchen@loongson.cn>,
-	Rui Wang <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/396] LoongArch: Change __my_cpu_offset definition to avoid mis-optimization
+	lonial con <kongln9170@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.7 235/432] netfilter: nf_tables: disallow anonymous set with timeout flag
 Date: Mon,  1 Apr 2024 17:43:42 +0200
-Message-ID: <20240401152553.101934630@linuxfoundation.org>
+Message-ID: <20240401152600.144772596@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit c87e12e0e8c1241410e758e181ca6bf23efa5b5b ]
+commit 16603605b667b70da974bea8216c93e7db043bf1 upstream.
 
->From GCC commit 3f13154553f8546a ("df-scan: remove ad-hoc handling of
-global regs in asms"), global registers will no longer be forced to add
-to the def-use chain. Then current_thread_info(), current_stack_pointer
-and __my_cpu_offset may be lifted out of the loop because they are no
-longer treated as "volatile variables".
-
-This optimization is still correct for the current_thread_info() and
-current_stack_pointer usages because they are associated to a thread.
-However it is wrong for __my_cpu_offset because it is associated to a
-CPU rather than a thread: if the thread migrates to a different CPU in
-the loop, __my_cpu_offset should be changed.
-
-Change __my_cpu_offset definition to treat it as a "volatile variable",
-in order to avoid such a mis-optimization.
+Anonymous sets are never used with timeout from userspace, reject this.
+Exception to this rule is NFT_SET_EVAL to ensure legacy meters still work.
 
 Cc: stable@vger.kernel.org
-Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
-Reported-by: Miao Wang <shankerwangmiao@gmail.com>
-Signed-off-by: Xing Li <lixing@loongson.cn>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Rui Wang <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 761da2935d6e ("netfilter: nf_tables: add set timeout API support")
+Reported-by: lonial con <kongln9170@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/percpu.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include/asm/percpu.h
-index ed5da02b1cf6f..7e804140500f1 100644
---- a/arch/loongarch/include/asm/percpu.h
-+++ b/arch/loongarch/include/asm/percpu.h
-@@ -29,7 +29,12 @@ static inline void set_my_cpu_offset(unsigned long off)
- 	__my_cpu_offset = off;
- 	csr_write64(off, PERCPU_BASE_KS);
- }
--#define __my_cpu_offset __my_cpu_offset
-+
-+#define __my_cpu_offset					\
-+({							\
-+	__asm__ __volatile__("":"+r"(__my_cpu_offset));	\
-+	__my_cpu_offset;				\
-+})
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5000,6 +5000,9 @@ static int nf_tables_newset(struct sk_bu
+ 		if ((flags & (NFT_SET_EVAL | NFT_SET_OBJECT)) ==
+ 			     (NFT_SET_EVAL | NFT_SET_OBJECT))
+ 			return -EOPNOTSUPP;
++		if ((flags & (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT | NFT_SET_EVAL)) ==
++			     (NFT_SET_ANONYMOUS | NFT_SET_TIMEOUT))
++			return -EOPNOTSUPP;
+ 	}
  
- #define PERCPU_OP(op, asm_op, c_op)					\
- static __always_inline unsigned long __percpu_##op(void *ptr,		\
--- 
-2.43.0
-
+ 	desc.dtype = 0;
 
 
 
