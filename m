@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3876894349
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF20989403F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 847EEB22396
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 660101F2108B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D34482DF;
-	Mon,  1 Apr 2024 17:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976C746B9F;
+	Mon,  1 Apr 2024 16:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDi5Yt/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvjkfK7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85F41C0DE7;
-	Mon,  1 Apr 2024 17:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C83C129;
+	Mon,  1 Apr 2024 16:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990914; cv=none; b=YpMvoDzcD2go05MdFt/Ha/AzT03Pi6zPC/cwJTZRH1dOIVw8IU4KJAmToYsoS9pZi1tznR578awOBgoDKf7K8h3HxqkWp1nvOUiBiasUx2YfhrwzN5yveV+2F/YMexK/BS094Ly0e8s2LRdWSUVgyQK7H2q4wQPJnG8A19jPkzM=
+	t=1711988855; cv=none; b=ffeeTQQAmAfweD27IdZ+Hc2/VxvtXB9hxhlQAYyiUJXWlEIFnHSRhwK7ICU3yApmBXAl6wVGTRLWOIbM8bRH4T5+VhRXNTqFj+NRUtc2d/qcOsRJc0sk7i66nJgMBxXfykor2utpripz9KzwkBiYjib722b5tn8YWiKI9UdID6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990914; c=relaxed/simple;
-	bh=+FW9FZEAk9tq0QZBFeJCZUuaaZWOg38z6PIZnKjnuBQ=;
+	s=arc-20240116; t=1711988855; c=relaxed/simple;
+	bh=p0lTGP+0U63X4sHeXwOjFFGCvX5NYqBu8nrttRFxCA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rwb/uL64/KL496bZdAAfw8uwqniRht3rnW11LW8qOHlrh0oLeU+8+Yn27/1ukVntRVUplmLzu67MQCWGQv4eSjzKfkWv5ZS8tJrRs7HYy5SRY1QJyzBgL4CqWxztAWKCk7vWII3vq4tPISCVmf+zVTzMS0aLCzyxCNHShzg8P9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDi5Yt/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA77C433F1;
-	Mon,  1 Apr 2024 17:01:53 +0000 (UTC)
+	 MIME-Version; b=ual+8fS+hjpVJBJEzI4HcodPLDkj7r828G37Klw0Lffn0gstT/dlNxuvarnosd93qQMR80mhM4FD9xN7SPbUOpHLnMcfXBg4Yo3Sp/1Lv+zZFqGZJ9UnHdViwEcEDGlPNMqiibXrnQUWBTq4k6LR7Lzl2VFDevlO6MKpcVo1Nmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvjkfK7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCF6C433C7;
+	Mon,  1 Apr 2024 16:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990914;
-	bh=+FW9FZEAk9tq0QZBFeJCZUuaaZWOg38z6PIZnKjnuBQ=;
+	s=korg; t=1711988855;
+	bh=p0lTGP+0U63X4sHeXwOjFFGCvX5NYqBu8nrttRFxCA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iDi5Yt/O+EZQ/XrNyD9vlGa/CKC6Ec3OG6MlGzWdlEB089zFDcQgfAabCe6KsOOG4
-	 uQmCtDUR0K3v6aaazYdtPNGGA1Yu/QhGBwmvDvOgXNdYUGsMIko40hnUMIk8DPnIL3
-	 6bz4Aew4Ghfr94GeU9p0Pu3GebpK8+lrCcVfGymE=
+	b=TvjkfK7qLIKzsHrLg5m+eEL4VRv2gccpaEqOkDLKCSiV0QddKlyTQglR7rehyg4n2
+	 IV30uxWj3prOoimlPaE0XMxpk2DRyfnkGGHlHIdFO49r0fJzV+yaAMYrX+fmFJhGSM
+	 kHekhF8nXMsyoDloVhUZcgPGWd3EQlGRhZvj6mi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Auger <eric.auger@redhat.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/272] vfio/platform: Disable virqfds on cleanup
+Subject: [PATCH 6.7 308/432] irqchip/renesas-rzg2l: Flush posted write in irq_eoi()
 Date: Mon,  1 Apr 2024 17:44:55 +0200
-Message-ID: <20240401152533.916784205@linuxfoundation.org>
+Message-ID: <20240401152602.375896010@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit fcdc0d3d40bc26c105acf8467f7d9018970944ae ]
+[ Upstream commit 9eec61df55c51415409c7cc47e9a1c8de94a0522 ]
 
-irqfds for mask and unmask that are not specifically disabled by the
-user are leaked.  Remove any irqfds during cleanup
+The irq_eoi() callback of the RZ/G2L interrupt chip clears the relevant
+interrupt cause bit in the TSCR register by writing to it.
 
-Cc: Eric Auger <eric.auger@redhat.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: a7fa7c77cf15 ("vfio/platform: implement IRQ masking/unmasking via an eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-6-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+This write is not sufficient because the write is posted and therefore not
+guaranteed to immediately clear the bit. Due to that delay the CPU can
+raise the just handled interrupt again.
+
+Prevent this by reading the register back which causes the posted write to
+be flushed to the hardware before the read completes.
+
+Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/platform/vfio_platform_irq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/platform/vfio_platform_irq.c b/drivers/vfio/platform/vfio_platform_irq.c
-index c5b09ec0a3c98..f2893f2fcaabd 100644
---- a/drivers/vfio/platform/vfio_platform_irq.c
-+++ b/drivers/vfio/platform/vfio_platform_irq.c
-@@ -321,8 +321,11 @@ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
- {
- 	int i;
- 
--	for (i = 0; i < vdev->num_irqs; i++)
-+	for (i = 0; i < vdev->num_irqs; i++) {
-+		vfio_virqfd_disable(&vdev->irqs[i].mask);
-+		vfio_virqfd_disable(&vdev->irqs[i].unmask);
- 		vfio_set_trigger(vdev, i, -1, NULL);
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 3dc2b3867f219..d6514f2d51aff 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -81,8 +81,14 @@ static void rzg2l_irq_eoi(struct irq_data *d)
+ 	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
+ 	 * falling/rising-edge.
+ 	 */
+-	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
++	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq))) {
+ 		writel_relaxed(iscr & ~bit, priv->base + ISCR);
++		/*
++		 * Enforce that the posted write is flushed to prevent that the
++		 * just handled interrupt is raised again.
++		 */
++		readl_relaxed(priv->base + ISCR);
 +	}
+ }
  
- 	vdev->num_irqs = 0;
- 	kfree(vdev->irqs);
+ static void rzg2l_tint_eoi(struct irq_data *d)
+@@ -93,8 +99,14 @@ static void rzg2l_tint_eoi(struct irq_data *d)
+ 	u32 reg;
+ 
+ 	reg = readl_relaxed(priv->base + TSCR);
+-	if (reg & bit)
++	if (reg & bit) {
+ 		writel_relaxed(reg & ~bit, priv->base + TSCR);
++		/*
++		 * Enforce that the posted write is flushed to prevent that the
++		 * just handled interrupt is raised again.
++		 */
++		readl_relaxed(priv->base + TSCR);
++	}
+ }
+ 
+ static void rzg2l_irqc_eoi(struct irq_data *d)
 -- 
 2.43.0
 
