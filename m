@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-34685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147CF89405F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAB1893EB2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 807DDB20F29
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E68F1F21DCC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1766547A7C;
-	Mon,  1 Apr 2024 16:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D552B4596E;
+	Mon,  1 Apr 2024 16:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olZ+7gAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1fxRmYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78AF45BE4;
-	Mon,  1 Apr 2024 16:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958951CA8F;
+	Mon,  1 Apr 2024 16:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988951; cv=none; b=aruqrxQXPRvDa4cO2aiF1XU8q/acnkt+MyYmyrbNVgml8Ma06k5iacSG24zns0KBSWoF4J3faI+523y3tDpHKLnKZAGCbVcNIKB00C5mXKZ+4xe4dpyoo92oR3xPdKYG2sJNchpEEGtW7a11ladtQH9QJlOONVInazA5B3QyiE0=
+	t=1711987616; cv=none; b=h4EfEAOn2yD3lxjk5UOLdc5Fi35whGaZrRfgj/RWzVbR3FINIzGLm94197W464dB0hHPJ7f2+2Opi9mSy8S/ggvZ5x+fAZDUIzYy6LapfnuGQ4MRLRw5cVpWnFWp/c0Ibuw2yKcTDCkLWlUTZq9asqJ/Rb+Az3FddDV1z7CUrN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988951; c=relaxed/simple;
-	bh=WIzCII/aDQDRhLtMTmiEQHE900E4ZJj/yR/fTcKLh6A=;
+	s=arc-20240116; t=1711987616; c=relaxed/simple;
+	bh=EPe03qv3NFEoSBCeR769xWLm2Hoi5dX/NdnsfSgzQRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hv3/3x5vSKTaV3cvxjz1GweMTVHMerwll+B8ySubKjLx4en0JlTBxK8b6dy+eZ54X/qMUapDRGQBCseZHC+Wfdo2y2gRnqmjbqzL3jbQe774W8DiuFEbEf4yHxLbXClPZn2fON99IXwyDFrJkf2r31/G6E5uSHmAvA9jftG9bf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olZ+7gAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51577C433C7;
-	Mon,  1 Apr 2024 16:29:11 +0000 (UTC)
+	 MIME-Version; b=obFGh+04b/iHiRbZ3yB0V9zkwgC8HCqzj/qTW+F/i5FWgAQu/ljfxTTmAx03tQeHwFo50EiwEF4/8HhFRtThO7yPOzFnKMyvpQ8TY91HIdXTcAUe+3Ch93t8bqBcxGtK+UpxBIf39Xc0Luybr4Dd0Xz7wquxouBZwN62smwmMbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1fxRmYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15E3C433C7;
+	Mon,  1 Apr 2024 16:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988951;
-	bh=WIzCII/aDQDRhLtMTmiEQHE900E4ZJj/yR/fTcKLh6A=;
+	s=korg; t=1711987616;
+	bh=EPe03qv3NFEoSBCeR769xWLm2Hoi5dX/NdnsfSgzQRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olZ+7gADSkUjnNY4D4O71vb02t6leCEeHmInhesnsDA7Oi+jTW4GylaIdZZ4oFMyX
-	 qDeroPESxs8daOt306aDcWSGp06zCF1umTDEU7L8aBzMiUOyPSQ2cfLhzMxMUZ6sdD
-	 jhJHsuZMbpBcGpHXJSr/hmgsN1lTh744YcOaTRNY=
+	b=E1fxRmYP9du9LnjqZdyqPNpxI68C5zXaBK7yHeB/PMg9U3m583GIGyZaf6f+sWxnR
+	 wqWtvZBrNJUo5qLNa4atvEPY0+hFQx+zq2gbuVsKoi02pAFC4vbpJX6E1fNOv7i2TJ
+	 RObkW0Bbf6pVWe/Fsbm0vD7jnhSWJ7fWNIdqYYho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Nadav Amit <nadav.amit@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 320/432] selftests/mm: Fix build with _FORTIFY_SOURCE
+	Ezra Buehler <ezra.buehler@husqvarnagroup.com>,
+	Martin Kurbanov <mmkurbanov@salutedevices.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 6.8 341/399] mtd: spinand: Add support for 5-byte IDs
 Date: Mon,  1 Apr 2024 17:45:07 +0200
-Message-ID: <20240401152602.744919045@linuxfoundation.org>
+Message-ID: <20240401152559.352734404@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Chikunov <vt@altlinux.org>
+From: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
 
-[ Upstream commit 8b65ef5ad4862904e476a8f3d4e4418c950ddb90 ]
+commit 34a956739d295de6010cdaafeed698ccbba87ea4 upstream.
 
-Add missing flags argument to open(2) call with O_CREAT.
+E.g. ESMT chips will return an identification code with a length of 5
+bytes. In order to prevent ambiguity, flash chips would actually need to
+return IDs that are up to 17 or more bytes long due to JEDEC's
+continuation scheme. I understand that if a manufacturer ID is located
+in bank N of JEDEC's database (there are currently 16 banks), N - 1
+continuation codes (7Fh) need to be added to the identification code
+(comprising of manufacturer ID and device ID). However, most flash chip
+manufacturers don't seem to implement this (correctly).
 
-Some tests fail to compile if _FORTIFY_SOURCE is defined (to any valid
-value) (together with -O), resulting in similar error messages such as:
-
-  In file included from /usr/include/fcntl.h:342,
-                   from gup_test.c:1:
-  In function 'open',
-      inlined from 'main' at gup_test.c:206:10:
-  /usr/include/bits/fcntl2.h:50:11: error: call to '__open_missing_mode' declared with attribute error: open with O_CREAT or O_TMPFILE in second argument needs 3 arguments
-     50 |           __open_missing_mode ();
-        |           ^~~~~~~~~~~~~~~~~~~~~~
-
-_FORTIFY_SOURCE is enabled by default in some distributions, so the
-tests are not built by default and are skipped.
-
-open(2) man-page warns about missing flags argument: "if it is not
-supplied, some arbitrary bytes from the stack will be applied as the
-file mode."
-
-Link: https://lkml.kernel.org/r/20240318023445.3192922-1-vt@altlinux.org
-Fixes: aeb85ed4f41a ("tools/testing/selftests/vm/gup_benchmark.c: allow user specified file")
-Fixes: fbe37501b252 ("mm: huge_memory: debugfs for file-backed THP split")
-Fixes: c942f5bd17b3 ("selftests: soft-dirty: add test for mprotect")
-Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Keith Busch <kbusch@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Nadav Amit <nadav.amit@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+Reviewed-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
+Tested-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240125200108.24374-2-ezra@easyb.ch
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/gup_test.c             | 2 +-
- tools/testing/selftests/mm/soft-dirty.c           | 2 +-
- tools/testing/selftests/mm/split_huge_page_test.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ include/linux/mtd/spinand.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
-index cbe99594d319b..18a49c70d4c63 100644
---- a/tools/testing/selftests/mm/gup_test.c
-+++ b/tools/testing/selftests/mm/gup_test.c
-@@ -203,7 +203,7 @@ int main(int argc, char **argv)
- 	ksft_print_header();
- 	ksft_set_plan(nthreads);
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -169,7 +169,7 @@
+ struct spinand_op;
+ struct spinand_device;
  
--	filed = open(file, O_RDWR|O_CREAT);
-+	filed = open(file, O_RDWR|O_CREAT, 0664);
- 	if (filed < 0)
- 		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
- 
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index cc5f144430d4d..7dbfa53d93a05 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -137,7 +137,7 @@ static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
- 		if (!map)
- 			ksft_exit_fail_msg("anon mmap failed\n");
- 	} else {
--		test_fd = open(fname, O_RDWR | O_CREAT);
-+		test_fd = open(fname, O_RDWR | O_CREAT, 0664);
- 		if (test_fd < 0) {
- 			ksft_test_result_skip("Test %s open() file failed\n", __func__);
- 			return;
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 0e74635c8c3d9..dff3be23488b4 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -253,7 +253,7 @@ void split_file_backed_thp(void)
- 		goto cleanup;
- 	}
- 
--	fd = open(testfile, O_CREAT|O_WRONLY);
-+	fd = open(testfile, O_CREAT|O_WRONLY, 0664);
- 	if (fd == -1) {
- 		perror("Cannot open testing file\n");
- 		goto cleanup;
--- 
-2.43.0
-
+-#define SPINAND_MAX_ID_LEN	4
++#define SPINAND_MAX_ID_LEN	5
+ /*
+  * For erase, write and read operation, we got the following timings :
+  * tBERS (erase) 1ms to 4ms
 
 
 
