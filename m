@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-35362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB68C89439B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28AB894264
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86EB0B216CE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62B5B1F25525
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35376446B6;
-	Mon,  1 Apr 2024 17:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518454AEFA;
+	Mon,  1 Apr 2024 16:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0nNXeae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLdnj47I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DF51DFF4;
-	Mon,  1 Apr 2024 17:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078F941232;
+	Mon,  1 Apr 2024 16:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991149; cv=none; b=idbOLK0cM1MPqBY8cCiuLUlntIcF4uonkdSAmFNNbqPK933P5Vjs8F5ObVxmKbSzrn/aEduhZ/qOoYuC8Izrxz3zn8qNx2hFgDKZ69AHgsxsRsrgyK2b4glw1c4UYTi6F0fbWlYQ0QZZ8xGfUIGkoq+nKrNG/yVi2gbppDN8PV0=
+	t=1711990325; cv=none; b=V1JFAn+PkEj35wIqZSt2T/C7XAwJquH3cVxjF8QzKRXJ7GsRM/2doHnb6+3tDq8ncEV54oC0hx0ch/8I1rzPwCTl9lOoVeDNUgU2EGLO64p/JlV0HiJ4pIidQvKhYFiSfcyZJvlUWS+E0pA5TwDgfLbeTNDGBP0uOq2NQosQLhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991149; c=relaxed/simple;
-	bh=DbLpIw+u/oJWw/r8Ya6yoYmu6bfverxvHSh0EGhlVX8=;
+	s=arc-20240116; t=1711990325; c=relaxed/simple;
+	bh=79ucNpWDOWo+tkq2wX+3OeNoXI6ySD9mOaXBFlQANH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjha9uql5/mFJCR4eBkS34w6ns9uk3BBGAauPndA4SMOmF5rIZI9m4vyZK7rkSo8olhnWAISE1zHm9tfBAJl5gGJ4WEIC2vOYXFCkDdrLI/lQxhPJ8e2SQIb+VcMYfDFEzyH9Bp1yThdj5U1EvceznRTwq5mjhf2d5RRYrWUAQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0nNXeae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8BFC433C7;
-	Mon,  1 Apr 2024 17:05:48 +0000 (UTC)
+	 MIME-Version; b=kENLnkm6xrC6/Nffafe2cxwYkFrXpf4f5rQZgREn6RtZsyRieE/TMSGRWyocuII/h1z4VJaV+p4MaK5UqAFDrHNWKbxgdZ0zi53B0wgkzY2hgp9h2WlnlrSHMvAW3+63ZHBA/CwIcOPGOzjJYbc+R+jGDYhmsS9CTAb/ihZqhiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLdnj47I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9D5C433F1;
+	Mon,  1 Apr 2024 16:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991148;
-	bh=DbLpIw+u/oJWw/r8Ya6yoYmu6bfverxvHSh0EGhlVX8=;
+	s=korg; t=1711990324;
+	bh=79ucNpWDOWo+tkq2wX+3OeNoXI6ySD9mOaXBFlQANH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0nNXeaesckfUk/ldCGkXrxG9gWJgNbxTWvDyCTDKnbpIqoU3ArsZFQeXn80bGnUs
-	 +pRvigM5/Z+cQXdhmnU3Tj1ddVbZfGBbAERSKOHXUYjvQLKmy4jqsyQEidbFbVRdun
-	 sKly8nvHduK9L97GJZo4l2gTOAiZjT+0XhDRJutU=
+	b=SLdnj47ILwY3h7hoEsxjq5/D1bTQ5nYeldoDv8S+3UEn8HJ+NhidZE2Ms8mNspAIV
+	 xnRuaN5JdmHwtAUYErMU/1pxrCrVAIY9sw1iE9JWe9b23EiywB9YzbLCNSFHbi8viM
+	 Osu96ArzdYAXPYfrZpWn4dt5r5dSpQpjAJUGMMTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Srish Srinivasan <srish.srinivasan@broadcom.com>
-Subject: [PATCH 6.1 176/272] net: tls: handle backlogging of crypto requests
+	Qu Wenruo <wqu@suse.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Tavian Barnes <tavianator@tavianator.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 317/396] btrfs: fix race in read_extent_buffer_pages()
 Date: Mon,  1 Apr 2024 17:46:06 +0200
-Message-ID: <20240401152536.269663992@linuxfoundation.org>
+Message-ID: <20240401152557.363167202@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Tavian Barnes <tavianator@tavianator.com>
 
-commit 8590541473188741055d27b955db0777569438e3 upstream.
+commit ef1e68236b9153c27cb7cf29ead0c532870d4215 upstream.
 
-Since we're setting the CRYPTO_TFM_REQ_MAY_BACKLOG flag on our
-requests to the crypto API, crypto_aead_{encrypt,decrypt} can return
- -EBUSY instead of -EINPROGRESS in valid situations. For example, when
-the cryptd queue for AESNI is full (easy to trigger with an
-artificially low cryptd.cryptd_max_cpu_qlen), requests will be enqueued
-to the backlog but still processed. In that case, the async callback
-will also be called twice: first with err == -EINPROGRESS, which it
-seems we can just ignore, then with err == 0.
+There are reports from tree-checker that detects corrupted nodes,
+without any obvious pattern so possibly an overwrite in memory.
+After some debugging it turns out there's a race when reading an extent
+buffer the uptodate status can be missed.
 
-Compared to Sabrina's original patch this version uses the new
-tls_*crypt_async_wait() helpers and converts the EBUSY to
-EINPROGRESS to avoid having to modify all the error handling
-paths. The handling is identical.
+To prevent concurrent reads for the same extent buffer,
+read_extent_buffer_pages() performs these checks:
 
-Fixes: a54667f6728c ("tls: Add support for encryption using async offload accelerator")
-Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
-Co-developed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/netdev/9681d1febfec295449a62300938ed2ae66983f28.1694018970.git.sd@queasysnail.net/
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[Srish: v2: fixed hunk failures
-        fixed merge-conflict in stable branch linux-6.1.y,
-        needs to go on top of https://lore.kernel.org/stable/20240307155930.913525-1-lee@kernel.org/]
-Signed-off-by: Srish Srinivasan <srish.srinivasan@broadcom.com>
+    /* (1) */
+    if (test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))
+        return 0;
+
+    /* (2) */
+    if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
+        goto done;
+
+At this point, it seems safe to start the actual read operation. Once
+that completes, end_bbio_meta_read() does
+
+    /* (3) */
+    set_extent_buffer_uptodate(eb);
+
+    /* (4) */
+    clear_bit(EXTENT_BUFFER_READING, &eb->bflags);
+
+Normally, this is enough to ensure only one read happens, and all other
+callers wait for it to finish before returning.  Unfortunately, there is
+a racey interleaving:
+
+    Thread A | Thread B | Thread C
+    ---------+----------+---------
+       (1)   |          |
+             |    (1)   |
+       (2)   |          |
+       (3)   |          |
+       (4)   |          |
+             |    (2)   |
+             |          |    (1)
+
+When this happens, thread B kicks of an unnecessary read. Worse, thread
+C will see UPTODATE set and return immediately, while the read from
+thread B is still in progress.  This race could result in tree-checker
+errors like this as the extent buffer is concurrently modified:
+
+    BTRFS critical (device dm-0): corrupted node, root=256
+    block=8550954455682405139 owner mismatch, have 11858205567642294356
+    expect [256, 18446744073709551360]
+
+Fix it by testing UPTODATE again after setting the READING bit, and if
+it's been set, skip the unnecessary read.
+
+Fixes: d7172f52e993 ("btrfs: use per-buffer locking for extent_buffer reading")
+Link: https://lore.kernel.org/linux-btrfs/CAHk-=whNdMaN9ntZ47XRKP6DBes2E5w7fi-0U3H2+PS18p+Pzw@mail.gmail.com/
+Link: https://lore.kernel.org/linux-btrfs/f51a6d5d7432455a6a858d51b49ecac183e0bbc9.1706312914.git.wqu@suse.com/
+Link: https://lore.kernel.org/linux-btrfs/c7241ea4-fcc6-48d2-98c8-b5ea790d6c89@gmx.com/
+CC: stable@vger.kernel.org # 6.5+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Tavian Barnes <tavianator@tavianator.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ minor update of changelog ]
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ fs/btrfs/extent_io.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -195,6 +195,17 @@ static void tls_decrypt_done(crypto_comp
- 	struct sock *sk;
- 	int aead_size;
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -4047,6 +4047,19 @@ int read_extent_buffer_pages(struct exte
+ 	if (test_and_set_bit(EXTENT_BUFFER_READING, &eb->bflags))
+ 		goto done;
  
-+	/* If requests get too backlogged crypto API returns -EBUSY and calls
-+	 * ->complete(-EINPROGRESS) immediately followed by ->complete(0)
-+	 * to make waiting for backlog to flush with crypto_wait_req() easier.
-+	 * First wait converts -EBUSY -> -EINPROGRESS, and the second one
-+	 * -EINPROGRESS -> 0.
-+	 * We have a single struct crypto_async_request per direction, this
-+	 * scheme doesn't help us, so just ignore the first ->complete().
++	/*
++	 * Between the initial test_bit(EXTENT_BUFFER_UPTODATE) and the above
++	 * test_and_set_bit(EXTENT_BUFFER_READING), someone else could have
++	 * started and finished reading the same eb.  In this case, UPTODATE
++	 * will now be set, and we shouldn't read it in again.
 +	 */
-+	if (err == -EINPROGRESS)
-+		return;
-+
- 	aead_size = sizeof(*aead_req) + crypto_aead_reqsize(aead);
- 	aead_size = ALIGN(aead_size, __alignof__(*dctx));
- 	dctx = (void *)((u8 *)aead_req + aead_size);
-@@ -268,6 +279,10 @@ static int tls_do_decryption(struct sock
- 	}
- 
- 	ret = crypto_aead_decrypt(aead_req);
-+	if (ret == -EBUSY) {
-+		ret = tls_decrypt_async_wait(ctx);
-+		ret = ret ?: -EINPROGRESS;
++	if (unlikely(test_bit(EXTENT_BUFFER_UPTODATE, &eb->bflags))) {
++		clear_bit(EXTENT_BUFFER_READING, &eb->bflags);
++		smp_mb__after_atomic();
++		wake_up_bit(&eb->bflags, EXTENT_BUFFER_READING);
++		return 0;
 +	}
- 	if (ret == -EINPROGRESS) {
- 		if (darg->async)
- 			return 0;
-@@ -451,6 +466,9 @@ static void tls_encrypt_done(crypto_comp
- 	struct tls_rec *rec;
- 	struct sock *sk;
- 
-+	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
-+		return;
 +
- 	rec = container_of(aead_req, struct tls_rec, aead_req);
- 	msg_en = &rec->msg_encrypted;
- 
-@@ -556,6 +574,10 @@ static int tls_do_encryption(struct sock
- 	atomic_inc(&ctx->encrypt_pending);
- 
- 	rc = crypto_aead_encrypt(aead_req);
-+	if (rc == -EBUSY) {
-+		rc = tls_encrypt_async_wait(ctx);
-+		rc = rc ?: -EINPROGRESS;
-+	}
- 	if (!rc || rc != -EINPROGRESS) {
- 		atomic_dec(&ctx->encrypt_pending);
- 		sge->offset -= prot->prepend_size;
+ 	clear_bit(EXTENT_BUFFER_READ_ERR, &eb->bflags);
+ 	eb->read_mirror = 0;
+ 	check_buffer_tree_ref(eb);
 
 
 
