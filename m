@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57B7894106
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C1B893F6C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5B2A1C21355
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4CD01C216B3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C60E4AED9;
-	Mon,  1 Apr 2024 16:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED13C1DFFC;
+	Mon,  1 Apr 2024 16:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njOT3ZcS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PD/R6Jdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DAC4AED4;
-	Mon,  1 Apr 2024 16:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B1F482D1;
+	Mon,  1 Apr 2024 16:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989405; cv=none; b=SRK/Uw/1l5XlixWh5SQaqDo+MvZ+AeBO4GXCLcMTEl7lVFEaRZL+frFq1T0bHtGME932rmM42z5ptufZu0+VY5SgFCBMHEr3cQ9MmlWcH9HK80F1Eu+nOlzkAUd8rGauLRtRbXhuiWRCumtWxH8+hTaQrbNyfkLihdTgq5JUf90=
+	t=1711988184; cv=none; b=R4jPCcr8tlsiJRj1uN9tCVJe6JxfvBqn1eDof3QgHTHqU1v0+647B7fZo9oizI5RQXzZOMm007GJZJ/du4YHDUYKIyKk1l46lNAJE44tfeGnZxx9W2PfIVxsE4sR/VXRfDJPLtn+8UByPOMsnoB5MgifynhM0Rk2HDBusJAz3G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989405; c=relaxed/simple;
-	bh=RzTx8L/5063BNpXYGJ8o4wkdoyh46wBGjk0xK9v4cWY=;
+	s=arc-20240116; t=1711988184; c=relaxed/simple;
+	bh=CNd17Tu/Hm0mcmtmBT8mK25EMlSmUCARQbM3v3P+I3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Np9xpnNMWHIEilOw8yeRKR81z7ny6y/2jdoLHERAIVu6dXMkxxgu5PItEnkC5A06/atw623BZuuz0nZWS4wuE50IiZhMJeWMH+qz/J5IuzUFlt95W5Q7qRvGaHPUWeMUUBmBIFdftMqcw1910FjZQTgtaj1Qqe6FuJ3hUL8gv/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njOT3ZcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEAAC433C7;
-	Mon,  1 Apr 2024 16:36:44 +0000 (UTC)
+	 MIME-Version; b=mAcnmg1Bhz+nLfClOgI89vMU4CQ38eT0f7IkEJ+XmB01p9r0/8FDl0iUiO7T3Lj0hUw8KGrhnNhmC9pk9LuHlJnHi59irAMSeiC48zW6JSU4lbit9ymATOm4UGMVwGPxwLR3GU+tiiP+piYxRiJRK/elrvPmgNsUWw49IOoFBwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PD/R6Jdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4334FC433C7;
+	Mon,  1 Apr 2024 16:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989404;
-	bh=RzTx8L/5063BNpXYGJ8o4wkdoyh46wBGjk0xK9v4cWY=;
+	s=korg; t=1711988182;
+	bh=CNd17Tu/Hm0mcmtmBT8mK25EMlSmUCARQbM3v3P+I3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njOT3ZcSRX+daflg1FdYBc+R6SB7K55WTXs26RF5DT54jQ5kDIqTb9zfnfGaorlvO
-	 igWTYxQhOLxUE7fEUWo74N9cMk0MiJRVEqi3+Pi3HX/6KAfmOUF3+okRjgKa2Dnm2e
-	 voeAle90E11gJU7QBAnFtIQTHYVVUGRpC+w3QoiU=
+	b=PD/R6JddQAIpBGpEcycTz4UuhfURyNhFCAa2Cq9mKwxV/fWr9H4nRMzf97SNmMrAU
+	 zK0RzqrmR9nNjHh0oTdXAFbd04terDrF0mxNTtfzfM9kn6bF7AFlUDXuJfI6LY+Kr5
+	 0YVuP/P7IahCK91FHvqrIDl8LGdFwHlyrV3YbYfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/396] crypto: qat - resolve race condition during AER recovery
+Subject: [PATCH 6.7 101/432] md: export helpers to stop sync_thread
 Date: Mon,  1 Apr 2024 17:41:28 +0200
-Message-ID: <20240401152549.094287536@linuxfoundation.org>
+Message-ID: <20240401152556.137567289@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damian Muszynski <damian.muszynski@intel.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 7d42e097607c4d246d99225bf2b195b6167a210c ]
+[ Upstream commit 7a2347e284d7ec2f0759be4db60fa7ca937284fc ]
 
-During the PCI AER system's error recovery process, the kernel driver
-may encounter a race condition with freeing the reset_data structure's
-memory. If the device restart will take more than 10 seconds the function
-scheduling that restart will exit due to a timeout, and the reset_data
-structure will be freed. However, this data structure is used for
-completion notification after the restart is completed, which leads
-to a UAF bug.
+Add new helpers:
 
-This results in a KFENCE bug notice.
+  void md_idle_sync_thread(struct mddev *mddev);
+  void md_frozen_sync_thread(struct mddev *mddev);
+  void md_unfrozen_sync_thread(struct mddev *mddev);
 
-  BUG: KFENCE: use-after-free read in adf_device_reset_worker+0x38/0xa0 [intel_qat]
-  Use-after-free read at 0x00000000bc56fddf (in kfence-#142):
-  adf_device_reset_worker+0x38/0xa0 [intel_qat]
-  process_one_work+0x173/0x340
+The helpers will be used in dm-raid in later patches to fix regressions
+and prevent calling md_reap_sync_thread() directly.
 
-To resolve this race condition, the memory associated to the container
-of the work_struct is freed on the worker if the timeout expired,
-otherwise on the function that schedules the worker.
-The timeout detection can be done by checking if the caller is
-still waiting for completion or not by using completion_done() function.
-
-Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Damian Muszynski <damian.muszynski@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240305072306.2562024-3-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_aer.c | 22 ++++++++++++++-----
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/md/md.c | 29 +++++++++++++++++++++++++++++
+ drivers/md/md.h |  3 +++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_aer.c b/drivers/crypto/intel/qat/qat_common/adf_aer.c
-index a39e70bd4b21b..621d14ea3b81a 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_aer.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_aer.c
-@@ -92,7 +92,8 @@ static void adf_device_reset_worker(struct work_struct *work)
- 	if (adf_dev_restart(accel_dev)) {
- 		/* The device hanged and we can't restart it so stop here */
- 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
--		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
-+		if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
-+		    completion_done(&reset_data->compl))
- 			kfree(reset_data);
- 		WARN(1, "QAT: device restart failed. Device is unusable\n");
- 		return;
-@@ -100,11 +101,19 @@ static void adf_device_reset_worker(struct work_struct *work)
- 	adf_dev_restarted_notify(accel_dev);
- 	clear_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
- 
--	/* The dev is back alive. Notify the caller if in sync mode */
--	if (reset_data->mode == ADF_DEV_RESET_SYNC)
--		complete(&reset_data->compl);
--	else
-+	/*
-+	 * The dev is back alive. Notify the caller if in sync mode
-+	 *
-+	 * If device restart will take a more time than expected,
-+	 * the schedule_reset() function can timeout and exit. This can be
-+	 * detected by calling the completion_done() function. In this case
-+	 * the reset_data structure needs to be freed here.
-+	 */
-+	if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
-+	    completion_done(&reset_data->compl))
- 		kfree(reset_data);
-+	else
-+		complete(&reset_data->compl);
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 007fd071b44ed..740541f6cad98 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -4945,6 +4945,35 @@ static void stop_sync_thread(struct mddev *mddev, bool locked, bool check_seq)
+ 		mddev_lock_nointr(mddev);
  }
  
- static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
-@@ -137,8 +146,9 @@ static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
- 			dev_err(&GET_DEV(accel_dev),
- 				"Reset device timeout expired\n");
- 			ret = -EFAULT;
-+		} else {
-+			kfree(reset_data);
- 		}
--		kfree(reset_data);
- 		return ret;
- 	}
- 	return 0;
++void md_idle_sync_thread(struct mddev *mddev)
++{
++	lockdep_assert_held(&mddev->reconfig_mutex);
++
++	clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
++	stop_sync_thread(mddev, true, true);
++}
++EXPORT_SYMBOL_GPL(md_idle_sync_thread);
++
++void md_frozen_sync_thread(struct mddev *mddev)
++{
++	lockdep_assert_held(&mddev->reconfig_mutex);
++
++	set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
++	stop_sync_thread(mddev, true, false);
++}
++EXPORT_SYMBOL_GPL(md_frozen_sync_thread);
++
++void md_unfrozen_sync_thread(struct mddev *mddev)
++{
++	lockdep_assert_held(&mddev->reconfig_mutex);
++
++	clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
++	set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
++	md_wakeup_thread(mddev->thread);
++	sysfs_notify_dirent_safe(mddev->sysfs_action);
++}
++EXPORT_SYMBOL_GPL(md_unfrozen_sync_thread);
++
+ static void idle_sync_thread(struct mddev *mddev)
+ {
+ 	mutex_lock(&mddev->sync_mutex);
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index 27d187ca6258a..0d06d640aa06d 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -782,6 +782,9 @@ extern void md_rdev_clear(struct md_rdev *rdev);
+ extern void md_handle_request(struct mddev *mddev, struct bio *bio);
+ extern int mddev_suspend(struct mddev *mddev, bool interruptible);
+ extern void mddev_resume(struct mddev *mddev);
++extern void md_idle_sync_thread(struct mddev *mddev);
++extern void md_frozen_sync_thread(struct mddev *mddev);
++extern void md_unfrozen_sync_thread(struct mddev *mddev);
+ 
+ extern void md_reload_sb(struct mddev *mddev, int raid_disk);
+ extern void md_update_sb(struct mddev *mddev, int force);
 -- 
 2.43.0
 
