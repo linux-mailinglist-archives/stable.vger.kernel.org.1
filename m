@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-35161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8E78942AD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9308940C7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE57F1F263A6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EC6A1F2265D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42297433DA;
-	Mon,  1 Apr 2024 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE37C38F84;
+	Mon,  1 Apr 2024 16:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmcfyq7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9/+/b6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E3963E;
-	Mon,  1 Apr 2024 16:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA2E249E4;
+	Mon,  1 Apr 2024 16:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990502; cv=none; b=mTT0WACPtPvIs49CBT28tfbBonSYWfGYi7UFfUzmTgUEFkVQRsuJDAqa2dGGl79YYPLUVwc1jL0kfnTMLuMKgYS5Wp8BGhA18arw2p+kXSog5Febg7rukYP8mvFN6YW8eFV/x+Jnjqzn0iHRrYX3gdIxzetjNIywGGAwaoUj7vc=
+	t=1711989255; cv=none; b=CQ+67Xw+0GN/NQjEbye5aMFyUQkzwWO77NLlJLxgwK4VLXmLkBDWp7vUVOBONdxyhZZWw38j1KE1h4P34nh17bz5pSXXemrjoEDbDO4RO+HYUyNTREZ/HkxeIuHQIvKs+5yQASJpYMFFu/PLEATYr/+X2dhFhuBHEgnsk1LBt4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990502; c=relaxed/simple;
-	bh=Yus/QkRM4ZkDhz1OVUOnakFXZAASW5hFNz4huozV+gA=;
+	s=arc-20240116; t=1711989255; c=relaxed/simple;
+	bh=kyUgOuqtmQkB0gfKIGnFEQnq2hpX8Pu6NxG//1rt+kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJJspwVwKd4QX6IBY1IffUuZ7qtEcO6lh2QiejVahhSqI75m2KQWrN3UXN40vX0lBY5S4/FBvYxdk6461vBJEXEZDqF1iNYcWwlLG+/wChxsF80LMX8EmEA4R/mURk22gD5IYWBsWDomtajUOEXE/l0FNMdM3urcwrbYry5gEys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmcfyq7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B583C43390;
-	Mon,  1 Apr 2024 16:55:01 +0000 (UTC)
+	 MIME-Version; b=ATAR1nCyU5cWCBYkvOtY3bbhAG3eCi95ayT2VlwXQI94xYk8ESvMaqyCG11wfUEaUQ+YU88ry/QZCdMJE6Ifa3lYFrNySyBMPM3fwVEhxi4iy0OizWAbSiIEOx+vbGGF717bZ/ymt37BA4fV8K2oGkiRkdlSfYccQY9BwbaXd6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9/+/b6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81BDC433F1;
+	Mon,  1 Apr 2024 16:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990501;
-	bh=Yus/QkRM4ZkDhz1OVUOnakFXZAASW5hFNz4huozV+gA=;
+	s=korg; t=1711989255;
+	bh=kyUgOuqtmQkB0gfKIGnFEQnq2hpX8Pu6NxG//1rt+kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmcfyq7bm7TiEkwzAritk6ljXX4sIRSiVB6I46QgcrLDJMi2mGxx1wtDt55tim7FC
-	 3KV+PGmT2iWyAUht6CEmwJEySC+gIpxwcKIYnfm79FQtoXbqwipJX/8ajTG7FYztTw
-	 O/2uJ4HIu13cL6ibgGXAmHBC7EzepDWBVogq2aq0=
+	b=T9/+/b6+XdWHwZQgAtWVUH6I+g/p5oHJPGXc3jCZ+lHxUy83uHx33Nv1UnYANin9g
+	 O4JI5yspfihZi6N46APlQeospyTjXMJOZ018VttXQxnF5AKkCEtJyoc0+Pc6+V79Vk
+	 CrmrUBx6NC2PrtZXviEWNamKKY4u+BufydE+9PEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.6 366/396] usb: dwc2: host: Fix remote wakeup from hibernation
+	John Garry <john.g.garry@oracle.com>,
+	Xingui Yang <yangxingui@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 428/432] scsi: libsas: Add a helper sas_get_sas_addr_and_dev_type()
 Date: Mon,  1 Apr 2024 17:46:55 +0200
-Message-ID: <20240401152558.829436163@linuxfoundation.org>
+Message-ID: <20240401152606.213308412@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
+commit a57345279fd311ba679b8083feb0eec5272c7729 upstream.
 
-Starting from core v4.30a changed order of programming
-GPWRDN_PMUACTV to 0 in case of exit from hibernation on
-remote wakeup signaling from device.
+Add a helper to get attached_sas_addr and device type from disc_resp.
 
-Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
+Suggested-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20240307141413.48049-2-yangxingui@huawei.com
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/core.h |    1 +
- drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/scsi/libsas/sas_expander.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -1086,6 +1086,7 @@ struct dwc2_hsotg {
- 	bool needs_byte_swap;
+--- a/drivers/scsi/libsas/sas_expander.c
++++ b/drivers/scsi/libsas/sas_expander.c
+@@ -1621,6 +1621,16 @@ out_err:
  
- 	/* DWC OTG HW Release versions */
-+#define DWC2_CORE_REV_4_30a	0x4f54430a
- #define DWC2_CORE_REV_2_71a	0x4f54271a
- #define DWC2_CORE_REV_2_72a     0x4f54272a
- #define DWC2_CORE_REV_2_80a	0x4f54280a
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -5610,10 +5610,12 @@ int dwc2_host_exit_hibernation(struct dw
- 	dwc2_writel(hsotg, hr->hcfg, HCFG);
+ /* ---------- Domain revalidation ---------- */
  
- 	/* De-assert Wakeup Logic */
--	gpwrdn = dwc2_readl(hsotg, GPWRDN);
--	gpwrdn &= ~GPWRDN_PMUACTV;
--	dwc2_writel(hsotg, gpwrdn, GPWRDN);
--	udelay(10);
-+	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
-+		gpwrdn = dwc2_readl(hsotg, GPWRDN);
-+		gpwrdn &= ~GPWRDN_PMUACTV;
-+		dwc2_writel(hsotg, gpwrdn, GPWRDN);
-+		udelay(10);
-+	}
++static void sas_get_sas_addr_and_dev_type(struct smp_disc_resp *disc_resp,
++					  u8 *sas_addr,
++					  enum sas_device_type *type)
++{
++	memcpy(sas_addr, disc_resp->disc.attached_sas_addr, SAS_ADDR_SIZE);
++	*type = to_dev_type(&disc_resp->disc);
++	if (*type == SAS_PHY_UNUSED)
++		memset(sas_addr, 0, SAS_ADDR_SIZE);
++}
++
+ static int sas_get_phy_discover(struct domain_device *dev,
+ 				int phy_id, struct smp_disc_resp *disc_resp)
+ {
+@@ -1674,13 +1684,8 @@ int sas_get_phy_attached_dev(struct doma
+ 		return -ENOMEM;
  
- 	hprt0 = hr->hprt0;
- 	hprt0 |= HPRT0_PWR;
-@@ -5638,6 +5640,13 @@ int dwc2_host_exit_hibernation(struct dw
- 		hprt0 |= HPRT0_RES;
- 		dwc2_writel(hsotg, hprt0, HPRT0);
- 
-+		/* De-assert Wakeup Logic */
-+		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
-+			gpwrdn = dwc2_readl(hsotg, GPWRDN);
-+			gpwrdn &= ~GPWRDN_PMUACTV;
-+			dwc2_writel(hsotg, gpwrdn, GPWRDN);
-+			udelay(10);
-+		}
- 		/* Wait for Resume time and then program HPRT again */
- 		mdelay(100);
- 		hprt0 &= ~HPRT0_RES;
+ 	res = sas_get_phy_discover(dev, phy_id, disc_resp);
+-	if (res == 0) {
+-		memcpy(sas_addr, disc_resp->disc.attached_sas_addr,
+-		       SAS_ADDR_SIZE);
+-		*type = to_dev_type(&disc_resp->disc);
+-		if (*type == 0)
+-			memset(sas_addr, 0, SAS_ADDR_SIZE);
+-	}
++	if (res == 0)
++		sas_get_sas_addr_and_dev_type(disc_resp, sas_addr, type);
+ 	kfree(disc_resp);
+ 	return res;
+ }
 
 
 
