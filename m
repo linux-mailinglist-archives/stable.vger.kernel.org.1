@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-34508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AE1893FA2
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB66894146
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B29721F214B0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830AD282EC8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E66B47A62;
-	Mon,  1 Apr 2024 16:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331E84596E;
+	Mon,  1 Apr 2024 16:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gc4/FTK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kU7YF3pZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9D3446AC;
-	Mon,  1 Apr 2024 16:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F631E86C;
+	Mon,  1 Apr 2024 16:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988357; cv=none; b=gw/ocBLKiEp0Q0erEIeGXANIufnn2VofwX7wp2wCE4uJQiao2HTzGBjY0pUObcxLL6Xb8x4vqTIjlX6D0jO0u+uJUQzTVOIEHQMu5oGqIjb0YL54sHUmdDs5xZpLL7sGA943CBS84elAPtWKotI7CAL59z3x9VvlWOhN2bgdmv4=
+	t=1711989605; cv=none; b=VbRxT4XXNVsZs1io2ZP4Sz4rck9kqptaWuyJpmPwkW0keVvO2XDSx6y+f2F/G7ZOkarKfu/OzuEQ5yGNenTdYexKVSB8f3b+O8MMVRhgS+8q0vvD0PqWCl4ds1WpnsDnlKbt8x5ud/9OkqXEh5Kim+RZh9OEuICZe2Isp1yNP0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988357; c=relaxed/simple;
-	bh=FfLJF14BKH7Ee1g7ksOI34RPx3fanjg0j8OeFwX7Mdg=;
+	s=arc-20240116; t=1711989605; c=relaxed/simple;
+	bh=FAqS05B8tkPP7RIpfAa+mhqTco02aMlotvXZIKq43/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBbNZc7pSnlCbqZRHk3yyY2vTipkVO5vBEPUoA1Kt2a0b0FUB/4VdkPFNSlnWlP1TYDEoqhoaWBdkvcaDqFphxkjz2Y0qmE6JBIFOr1yEwBktZ62aYl4LLhYJNrmXTECfp4lLKmDTnvDydUof2/vVdriI0mqL87ZFAD/jBz/D8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gc4/FTK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6A1C433F1;
-	Mon,  1 Apr 2024 16:19:15 +0000 (UTC)
+	 MIME-Version; b=Zbbdiryx55uSeLW+lP1Vk5mMMPFZj3yM8832Qtq1OhuSC5fnawNoQvImeJjsgPL5rJi9ydha0EOONzgPCQdvENjRmF9+LdvIX+pUs36f8QAh6Mx8SVtGML4BJlfm4vi2JKKeS6q+AFd0JuaOAfYvs/EufGbNTrlLJ7TGNLt/XrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kU7YF3pZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F78C433C7;
+	Mon,  1 Apr 2024 16:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988356;
-	bh=FfLJF14BKH7Ee1g7ksOI34RPx3fanjg0j8OeFwX7Mdg=;
+	s=korg; t=1711989604;
+	bh=FAqS05B8tkPP7RIpfAa+mhqTco02aMlotvXZIKq43/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gc4/FTK3XYPIIFjD8F+M+NzWHLSU6NGS9nE7Z54DzI2q02t1wTfY8Xwkr3gVBDFuA
-	 pbXltriz+FXxH1ZelCMJDJUv4/xkSjUjK5QXaV3e2KwLSEwb52cGNE0FsR5fim0y64
-	 3q3wVTxbygYlEukqJrqrIK2zev88wuRJ9TawUFGQ=
+	b=kU7YF3pZCp1BUsNk4aHdSIR4chPRpYhU6aCXaaGHgM/GkXLYJoQtbH3zN+rPjVxAf
+	 OYcakl7uDdQPxE1Y1QvjL+RcxGPT2WlVC96NP7fRe0M1TZKZpYEXYdq3wrQwIN298Z
+	 LlJN9Tv+k2H+pMS6D+yNLpRkiWTOIIgZTrUtAPYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linke li <lilinke99@qq.com>,
-	Rabin Vincent <rabin@rab.in>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexander Aring <aahringo@redhat.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 160/432] ring-buffer: Use wait_event_interruptible() in ring_buffer_wait()
-Date: Mon,  1 Apr 2024 17:42:27 +0200
-Message-ID: <20240401152557.911369328@linuxfoundation.org>
+Subject: [PATCH 6.6 099/396] mac802154: fix llsec key resources release in mac802154_llsec_key_del
+Date: Mon,  1 Apr 2024 17:42:28 +0200
+Message-ID: <20240401152550.873596657@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,205 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 7af9ded0c2caac0a95f33df5cb04706b0f502588 ]
+[ Upstream commit e8a1e58345cf40b7b272e08ac7b32328b2543e40 ]
 
-Convert ring_buffer_wait() over to wait_event_interruptible(). The default
-condition is to execute the wait loop inside __wait_event() just once.
+mac802154_llsec_key_del() can free resources of a key directly without
+following the RCU rules for waiting before the end of a grace period. This
+may lead to use-after-free in case llsec_lookup_key() is traversing the
+list of keys in parallel with a key deletion:
 
-This does not change the ring_buffer_wait() prototype yet, but
-restructures the code so that it can take a "cond" and "data" parameter
-and will call wait_event_interruptible() with a helper function as the
-condition.
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 4 PID: 16000 at lib/refcount.c:25 refcount_warn_saturate+0x162/0x2a0
+Modules linked in:
+CPU: 4 PID: 16000 Comm: wpan-ping Not tainted 6.7.0 #19
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x162/0x2a0
+Call Trace:
+ <TASK>
+ llsec_lookup_key.isra.0+0x890/0x9e0
+ mac802154_llsec_encrypt+0x30c/0x9c0
+ ieee802154_subif_start_xmit+0x24/0x1e0
+ dev_hard_start_xmit+0x13e/0x690
+ sch_direct_xmit+0x2ae/0xbc0
+ __dev_queue_xmit+0x11dd/0x3c20
+ dgram_sendmsg+0x90b/0xd60
+ __sys_sendto+0x466/0x4c0
+ __x64_sys_sendto+0xe0/0x1c0
+ do_syscall_64+0x45/0xf0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-The helper function (rb_wait_cond) takes the cond function and data
-parameters. It will first check if the buffer hit the watermark defined by
-the "full" parameter and then call the passed in condition parameter. If
-either are true, it returns true.
+Also, ieee802154_llsec_key_entry structures are not freed by
+mac802154_llsec_key_del():
 
-If rb_wait_cond() does not return true, it will set the appropriate
-"waiters_pending" flag and returns false.
+unreferenced object 0xffff8880613b6980 (size 64):
+  comm "iwpan", pid 2176, jiffies 4294761134 (age 60.475s)
+  hex dump (first 32 bytes):
+    78 0d 8f 18 80 88 ff ff 22 01 00 00 00 00 ad de  x.......".......
+    00 00 00 00 00 00 00 00 03 00 cd ab 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81dcfa62>] __kmem_cache_alloc_node+0x1e2/0x2d0
+    [<ffffffff81c43865>] kmalloc_trace+0x25/0xc0
+    [<ffffffff88968b09>] mac802154_llsec_key_add+0xac9/0xcf0
+    [<ffffffff8896e41a>] ieee802154_add_llsec_key+0x5a/0x80
+    [<ffffffff8892adc6>] nl802154_add_llsec_key+0x426/0x5b0
+    [<ffffffff86ff293e>] genl_family_rcv_msg_doit+0x1fe/0x2f0
+    [<ffffffff86ff46d1>] genl_rcv_msg+0x531/0x7d0
+    [<ffffffff86fee7a9>] netlink_rcv_skb+0x169/0x440
+    [<ffffffff86ff1d88>] genl_rcv+0x28/0x40
+    [<ffffffff86fec15c>] netlink_unicast+0x53c/0x820
+    [<ffffffff86fecd8b>] netlink_sendmsg+0x93b/0xe60
+    [<ffffffff86b91b35>] ____sys_sendmsg+0xac5/0xca0
+    [<ffffffff86b9c3dd>] ___sys_sendmsg+0x11d/0x1c0
+    [<ffffffff86b9c65a>] __sys_sendmsg+0xfa/0x1d0
+    [<ffffffff88eadbf5>] do_syscall_64+0x45/0xf0
+    [<ffffffff890000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-Link: https://lore.kernel.org/linux-trace-kernel/CAHk-=wgsNgewHFxZAJiAQznwPMqEtQmi1waeS2O1v6L4c_Um5A@mail.gmail.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240312121703.399598519@goodmis.org
+Handle the proper resource release in the RCU callback function
+mac802154_llsec_key_del_rcu().
 
+Note that if llsec_lookup_key() finds a key, it gets a refcount via
+llsec_key_get() and locally copies key id from key_entry (which is a
+list element). So it's safe to call llsec_key_put() and free the list
+entry after the RCU grace period elapses.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 5d637d5aabd8 ("mac802154: add llsec structures and mutators")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linke li <lilinke99@qq.com>
-Cc: Rabin Vincent <rabin@rab.in>
-Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Alexander Aring <aahringo@redhat.com>
+Message-ID: <20240228163840.6667-1-pchelkin@ispras.ru>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ring_buffer.h |   1 +
- kernel/trace/ring_buffer.c  | 116 +++++++++++++++++++++---------------
- 2 files changed, 69 insertions(+), 48 deletions(-)
+ include/net/cfg802154.h |  1 +
+ net/mac802154/llsec.c   | 18 +++++++++++++-----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
-index 782e14f62201f..ded528d23f855 100644
---- a/include/linux/ring_buffer.h
-+++ b/include/linux/ring_buffer.h
-@@ -98,6 +98,7 @@ __ring_buffer_alloc(unsigned long size, unsigned flags, struct lock_class_key *k
- 	__ring_buffer_alloc((size), (flags), &__key);	\
- })
+diff --git a/include/net/cfg802154.h b/include/net/cfg802154.h
+index f79ce133e51a7..519d23941b541 100644
+--- a/include/net/cfg802154.h
++++ b/include/net/cfg802154.h
+@@ -378,6 +378,7 @@ struct ieee802154_llsec_key {
  
-+typedef bool (*ring_buffer_cond_fn)(void *data);
- int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full);
- __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 			  struct file *filp, poll_table *poll_table, int full);
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index df4fe1447e5f2..140f8eed83da6 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -990,43 +990,15 @@ static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
- 	return ret;
+ struct ieee802154_llsec_key_entry {
+ 	struct list_head list;
++	struct rcu_head rcu;
+ 
+ 	struct ieee802154_llsec_key_id id;
+ 	struct ieee802154_llsec_key *key;
+diff --git a/net/mac802154/llsec.c b/net/mac802154/llsec.c
+index 8d2eabc71bbeb..f13b07ebfb98a 100644
+--- a/net/mac802154/llsec.c
++++ b/net/mac802154/llsec.c
+@@ -265,19 +265,27 @@ int mac802154_llsec_key_add(struct mac802154_llsec *sec,
+ 	return -ENOMEM;
  }
  
--/**
-- * ring_buffer_wait - wait for input to the ring buffer
-- * @buffer: buffer to wait on
-- * @cpu: the cpu buffer to wait on
-- * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-- *
-- * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
-- * as data is added to any of the @buffer's cpu buffers. Otherwise
-- * it will wait for data to be added to a specific cpu buffer.
-- */
--int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
-+static inline bool
-+rb_wait_cond(struct rb_irq_work *rbwork, struct trace_buffer *buffer,
-+	     int cpu, int full, ring_buffer_cond_fn cond, void *data)
++static void mac802154_llsec_key_del_rcu(struct rcu_head *rcu)
++{
++	struct ieee802154_llsec_key_entry *pos;
++	struct mac802154_llsec_key *mkey;
++
++	pos = container_of(rcu, struct ieee802154_llsec_key_entry, rcu);
++	mkey = container_of(pos->key, struct mac802154_llsec_key, key);
++
++	llsec_key_put(mkey);
++	kfree_sensitive(pos);
++}
++
+ int mac802154_llsec_key_del(struct mac802154_llsec *sec,
+ 			    const struct ieee802154_llsec_key_id *key)
  {
--	struct ring_buffer_per_cpu *cpu_buffer;
--	DEFINE_WAIT(wait);
--	struct rb_irq_work *work;
--	int ret = 0;
+ 	struct ieee802154_llsec_key_entry *pos;
+ 
+ 	list_for_each_entry(pos, &sec->table.keys, list) {
+-		struct mac802154_llsec_key *mkey;
 -
--	/*
--	 * Depending on what the caller is waiting for, either any
--	 * data in any cpu buffer, or a specific buffer, put the
--	 * caller on the appropriate wait queue.
--	 */
--	if (cpu == RING_BUFFER_ALL_CPUS) {
--		work = &buffer->irq_work;
--		/* Full only makes sense on per cpu reads */
--		full = 0;
--	} else {
--		if (!cpumask_test_cpu(cpu, buffer->cpumask))
--			return -ENODEV;
--		cpu_buffer = buffer->buffers[cpu];
--		work = &cpu_buffer->irq_work;
--	}
-+	if (rb_watermark_hit(buffer, cpu, full))
-+		return true;
- 
--	if (full)
--		prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
--	else
--		prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
-+	if (cond(data))
-+		return true;
- 
- 	/*
- 	 * The events can happen in critical sections where
-@@ -1049,27 +1021,75 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
- 	 * a task has been queued. It's OK for spurious wake ups.
- 	 */
- 	if (full)
--		work->full_waiters_pending = true;
-+		rbwork->full_waiters_pending = true;
- 	else
--		work->waiters_pending = true;
-+		rbwork->waiters_pending = true;
- 
--	if (rb_watermark_hit(buffer, cpu, full))
--		goto out;
-+	return false;
-+}
- 
--	if (signal_pending(current)) {
--		ret = -EINTR;
--		goto out;
-+/*
-+ * The default wait condition for ring_buffer_wait() is to just to exit the
-+ * wait loop the first time it is woken up.
-+ */
-+static bool rb_wait_once(void *data)
-+{
-+	long *once = data;
-+
-+	/* wait_event() actually calls this twice before scheduling*/
-+	if (*once > 1)
-+		return true;
-+
-+	(*once)++;
-+	return false;
-+}
-+
-+/**
-+ * ring_buffer_wait - wait for input to the ring buffer
-+ * @buffer: buffer to wait on
-+ * @cpu: the cpu buffer to wait on
-+ * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-+ *
-+ * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
-+ * as data is added to any of the @buffer's cpu buffers. Otherwise
-+ * it will wait for data to be added to a specific cpu buffer.
-+ */
-+int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
-+{
-+	struct ring_buffer_per_cpu *cpu_buffer;
-+	struct wait_queue_head *waitq;
-+	ring_buffer_cond_fn cond;
-+	struct rb_irq_work *rbwork;
-+	void *data;
-+	long once = 0;
-+	int ret = 0;
-+
-+	cond = rb_wait_once;
-+	data = &once;
-+
-+	/*
-+	 * Depending on what the caller is waiting for, either any
-+	 * data in any cpu buffer, or a specific buffer, put the
-+	 * caller on the appropriate wait queue.
-+	 */
-+	if (cpu == RING_BUFFER_ALL_CPUS) {
-+		rbwork = &buffer->irq_work;
-+		/* Full only makes sense on per cpu reads */
-+		full = 0;
-+	} else {
-+		if (!cpumask_test_cpu(cpu, buffer->cpumask))
-+			return -ENODEV;
-+		cpu_buffer = buffer->buffers[cpu];
-+		rbwork = &cpu_buffer->irq_work;
+-		mkey = container_of(pos->key, struct mac802154_llsec_key, key);
+-
+ 		if (llsec_key_id_equal(&pos->id, key)) {
+ 			list_del_rcu(&pos->list);
+-			llsec_key_put(mkey);
++			call_rcu(&pos->rcu, mac802154_llsec_key_del_rcu);
+ 			return 0;
+ 		}
  	}
- 
--	schedule();
-- out:
- 	if (full)
--		finish_wait(&work->full_waiters, &wait);
-+		waitq = &rbwork->full_waiters;
- 	else
--		finish_wait(&work->waiters, &wait);
-+		waitq = &rbwork->waiters;
- 
--	if (!ret && !rb_watermark_hit(buffer, cpu, full) && signal_pending(current))
--		ret = -EINTR;
-+	ret = wait_event_interruptible((*waitq),
-+				rb_wait_cond(rbwork, buffer, cpu, full, cond, data));
- 
- 	return ret;
- }
 -- 
 2.43.0
 
