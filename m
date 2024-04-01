@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A7E894041
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D434589422A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9DC41F21E07
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64B6AB21639
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BD84596E;
-	Mon,  1 Apr 2024 16:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9943BBC3;
+	Mon,  1 Apr 2024 16:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfDIt+0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCUdUY+b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02423C129;
-	Mon,  1 Apr 2024 16:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5018F5C;
+	Mon,  1 Apr 2024 16:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988862; cv=none; b=VfQghCb/5DLJBpJz+R2G/35R5y2GVVXnt6csO6elX48NMAFXnSfemW4scQBPCjcTk4IV+76PhhAwCpjs9qvSd41+WOPIDyuQZZGlh5thYlUWEJrlR4zX+X46OGTLuwszC36qQ1zSweaReYMvEwxHIwyfTdHiOVRNQz7DsymZcKA=
+	t=1711990196; cv=none; b=ptPCZi7lRe0RWe68Aj5tH7BuGG+CqY0aCGdbRzCJO1CewTOiv38u1nE8s5DqXuooZKTiqpEirF2gAnkuDwYUBiodxo1oTa6JyLxUOBtmp32H73WrrTd1cdNOQcapkRza3zJnwfx8zzOYFEGt7irqMd4p2K7MJhL5RPPzG+rmG04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988862; c=relaxed/simple;
-	bh=zEq66HuMsW19f5ZgRCTqqclFYPfKtk6yQ07QDyoPOo4=;
+	s=arc-20240116; t=1711990196; c=relaxed/simple;
+	bh=k4c28xBGYfeisFJ1sE/DVYVio82JrapwXdqUnHs8L9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mF0UbgVVVS9m0alZMYydcD3RtxuIw6/vlscQyAAnhHgH1Ynqws/eF8EQfreklcUHyVvtN1rWQe/nhM2ebs9BM4SSzoRpFzniVQrSc3JoLufYAZNvjqP61alb55xLpSct2tDvrDXWOCUwlMmcNu1d5MvHlsOOlxkyuVki4ZijxUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfDIt+0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6848FC433F1;
-	Mon,  1 Apr 2024 16:27:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qcYo0H3VzbaDu9KhC9W6ucX1XIMsL5YZJynwMNZxa2TbZfdSpfZgxCKwebPvF5htyXRF0HT2zI+zlFjZmR7B650b6yGON0bCZsJaGzLpsrsHK8KQQJceC4BgQ/TgP552YeOK04XcU8/cEyvZr7u4FRO3PJ5VruK9dB6fEzBOMJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCUdUY+b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1595EC433C7;
+	Mon,  1 Apr 2024 16:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988861;
-	bh=zEq66HuMsW19f5ZgRCTqqclFYPfKtk6yQ07QDyoPOo4=;
+	s=korg; t=1711990196;
+	bh=k4c28xBGYfeisFJ1sE/DVYVio82JrapwXdqUnHs8L9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfDIt+0BRl589tWk2CoEM+X/zhg/m4/fce4UUAR188wiMSHzU+jm1lY2lARYIWWKn
-	 +2ZSrZJdn+XD9/zUW0RCOM/CSLsKhxioPT0Kmr4rdnqU03ikXIERDuL0EWCCXnRevb
-	 EJM9d304PkVX1ayJtuBcKLoPZQBb/1STyRvPejvk=
+	b=aCUdUY+b62XSXPYB9oJm6DFTYodg9GQtt7KmtBXY6BuNMpjhZBfZGKr9BLuStmykX
+	 03zD02y98MIp10XxfD0BefTM10wEDnqA8MLZnIldkQkCe11QHR2T3IzvVNBJbdYeD8
+	 vo0qk1WZWLsutw26I9wTLnzww82WZQ1/UfWtiICc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 310/432] irqchip/renesas-rzg2l: Rename rzg2l_tint_eoi()
+	=?UTF-8?q?Mano=20S=C3=A9gransan?= <mano.segransan@protonmail.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 248/396] drm/amd/display: handle range offsets in VRR ranges
 Date: Mon,  1 Apr 2024 17:44:57 +0200
-Message-ID: <20240401152602.433645324@linuxfoundation.org>
+Message-ID: <20240401152555.306337982@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 7cb6362c63df233172eaecddaf9ce2ce2f769112 ]
+commit 937844d661354bf142dc1c621396fdab10ecbacc upstream.
 
-Rename rzg2l_tint_eoi()->rzg2l_clear_tint_int() and simplify the code by
-removing redundant priv and hw_irq local variables.
+Need to check the offset bits for values greater than 255.
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: also update amdgpu_dm_connector values.
+
+Suggested-by: Mano Ségransan <mano.segransan@protonmail.com>
+Tested-by: Mano Ségransan <mano.segransan@protonmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3203
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 3f2f4ebfe4da6..51dda1745ffaa 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -90,11 +90,9 @@ static void rzg2l_irq_eoi(struct irq_data *d)
- 	}
- }
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10783,14 +10783,23 @@ void amdgpu_dm_update_freesync_caps(stru
+ 				if (range->flags != 1)
+ 					continue;
  
--static void rzg2l_tint_eoi(struct irq_data *d)
-+static void rzg2l_clear_tint_int(struct rzg2l_irqc_priv *priv, unsigned int hwirq)
- {
--	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_TINT_START;
--	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
--	u32 bit = BIT(hw_irq);
-+	u32 bit = BIT(hwirq - IRQC_TINT_START);
- 	u32 reg;
+-				amdgpu_dm_connector->min_vfreq = range->min_vfreq;
+-				amdgpu_dm_connector->max_vfreq = range->max_vfreq;
+-				amdgpu_dm_connector->pixel_clock_mhz =
+-					range->pixel_clock_mhz * 10;
+-
+ 				connector->display_info.monitor_range.min_vfreq = range->min_vfreq;
+ 				connector->display_info.monitor_range.max_vfreq = range->max_vfreq;
  
- 	reg = readl_relaxed(priv->base + TSCR);
-@@ -117,7 +115,7 @@ static void rzg2l_irqc_eoi(struct irq_data *d)
- 	if (hw_irq >= IRQC_IRQ_START && hw_irq <= IRQC_IRQ_COUNT)
- 		rzg2l_irq_eoi(d);
- 	else if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ)
--		rzg2l_tint_eoi(d);
-+		rzg2l_clear_tint_int(priv, hw_irq);
- 	raw_spin_unlock(&priv->lock);
- 	irq_chip_eoi_parent(d);
- }
--- 
-2.43.0
-
++				if (edid->revision >= 4) {
++					if (data->pad2 & DRM_EDID_RANGE_OFFSET_MIN_VFREQ)
++						connector->display_info.monitor_range.min_vfreq += 255;
++					if (data->pad2 & DRM_EDID_RANGE_OFFSET_MAX_VFREQ)
++						connector->display_info.monitor_range.max_vfreq += 255;
++				}
++
++				amdgpu_dm_connector->min_vfreq =
++					connector->display_info.monitor_range.min_vfreq;
++				amdgpu_dm_connector->max_vfreq =
++					connector->display_info.monitor_range.max_vfreq;
++				amdgpu_dm_connector->pixel_clock_mhz =
++					range->pixel_clock_mhz * 10;
++
+ 				break;
+ 			}
+ 
 
 
 
