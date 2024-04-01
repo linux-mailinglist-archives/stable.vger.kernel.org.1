@@ -1,72 +1,56 @@
-Return-Path: <stable+bounces-35094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9B5894262
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC195894396
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3180EB2132C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:52:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9661528383F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2481A4AEE0;
-	Mon,  1 Apr 2024 16:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B62481B8;
+	Mon,  1 Apr 2024 17:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17kFA3IQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkyX8mHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E47487BC;
-	Mon,  1 Apr 2024 16:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083A71DFF4;
+	Mon,  1 Apr 2024 17:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990315; cv=none; b=OHXKco5Hfc7i0KCU6K6+AG3d+9TlZqIClp9R2mI/3RD9YX9ZDmEDKrff3xl/yusFOXK2ksZW8frdYWYjyqSPEE/+rnZ5ynnV+M8eY8K9CrLgXurC5jI9m3Qv/NfLrUWuWcf4KAbb3AChqI4rrRkywq5dapuWH2gyuYUnVI8/53I=
+	t=1711991136; cv=none; b=LHvEZKVBqobBzHm3t3xlPYclVrqIbWRAkceN7NpXgjbYhxO552pmf6bvmO7ZG7VImlGSqoIxcXXgiatFsYTxzNuvLGSoWUxOR1KAVPN73ir5e57vOqZLTNBhB2fNKXqa7XMYSDOxWwDQBeG5JUV5gYnSYIdX12xWa+Bj63c8KTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990315; c=relaxed/simple;
-	bh=6Z5pSzI1leVm7kPoWvhMMlvSKoKMU4JK96ZPrNks8G4=;
+	s=arc-20240116; t=1711991136; c=relaxed/simple;
+	bh=XAtt1RdGWmQyUf+Dj3W4WjTJGHZS59yOtUB+dFmSo9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqenu3puNV7WsrWzTGgO7PSHg6pvpCPCzMXTg/33JCoUeu1aCFF3H0rW+1RBTSopBzyMUYB8kzw7KlVJhBDvz2bX7BJVb0nAox/EQ8W4vlOTFLmOepU75RVlrTpSzOFJGL6HqSSGVHZ02p+1J6GBWAqrjuXfYmkH+FJF34RZZDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17kFA3IQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E570C433F1;
-	Mon,  1 Apr 2024 16:51:55 +0000 (UTC)
+	 MIME-Version; b=RwNe1ofooou88TRJX5UxTwEv8lllvGNyg/sYSxJvKp7LJa6EZin27o7nnelEhUu1jT5tqvbh2hKsbwKqEBJOHWIe/qkQGeZnTqUj+W7DJUT0uK7KGZtP8Ksaat+vVnBymuCrjunx/npdh7xRyzS0xLzLgYuIpI3RAqKLQJXnJmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkyX8mHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA78C433F1;
+	Mon,  1 Apr 2024 17:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990315;
-	bh=6Z5pSzI1leVm7kPoWvhMMlvSKoKMU4JK96ZPrNks8G4=;
+	s=korg; t=1711991135;
+	bh=XAtt1RdGWmQyUf+Dj3W4WjTJGHZS59yOtUB+dFmSo9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17kFA3IQj/Fz5qcpr9bavmq9S6AQm9upWVM0A7RixUohmiZFKLwheTwkgVeuD1sQD
-	 v9c2LzPiCEJwD5+NMCiMmOmoUUQl0UNviwvJoKyiCLDu3+34GkP9/9WcMFF78u+o7+
-	 iKqoJWERmm9LJ4EqbvOOdpkTTf9TIPUs0i7c/PaE=
+	b=wkyX8mHsgOW8gan3YhqsFJ1q5VIoGExfezZvzKkyOF9pP3AKYkcSmjJkXcpsQAqqN
+	 eK+/OxNeb4ggK2WJFwnYyWs9RvVageYKd8wt5Y7c5S6l9PssFfmVcTDlOVBhAm/GoU
+	 xV7aDAOcQO6qTxYZU5HKAaXBZwf73Y1AdzMSEKig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zev Weiss <zev@bewilderbeest.net>,
-	Borislav Petkov <bp@alien8.de>,
-	David Hildenbrand <david@redhat.com>,
-	Florent Revest <revest@chromium.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Kees Cook <keescook@chromium.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Sam James <sam@gentoo.org>,
-	Stefan Roesch <shr@devkernel.io>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yin Fengwei <fengwei.yin@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 314/396] prctl: generalize PR_SET_MDWE support check to be per-arch
+	Andi Shyti <andi.shyti@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH 6.1 173/272] i2c: i801: Avoid potential double call to gpiod_remove_lookup_table
 Date: Mon,  1 Apr 2024 17:46:03 +0200
-Message-ID: <20240401152557.273858649@linuxfoundation.org>
+Message-ID: <20240401152536.170590319@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,123 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zev Weiss <zev@bewilderbeest.net>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit d5aad4c2ca057e760a92a9a7d65bd38d72963f27 upstream.
+commit ceb013b2d9a2946035de5e1827624edc85ae9484 upstream.
 
-Patch series "ARM: prctl: Reject PR_SET_MDWE where not supported".
+If registering the platform device fails, the lookup table is
+removed in the error path. On module removal we would try to
+remove the lookup table again. Fix this by setting priv->lookup
+only if registering the platform device was successful.
+In addition free the memory allocated for the lookup table in
+the error path.
 
-I noticed after a recent kernel update that my ARM926 system started
-segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After some
-investigation it appears that ARMv5 is incapable of providing the
-appropriate protections for MDWE, since any readable memory is also
-implicitly executable.
-
-The prctl_set_mdwe() function already had some special-case logic added
-disabling it on PARISC (commit 793838138c15, "prctl: Disable
-prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
-check to use an arch_*() function, and (2) adds a corresponding override
-for ARM to disable MDWE on pre-ARMv6 CPUs.
-
-With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
-subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
-succeed instead of unconditionally failing; on ARMv6 the prctl works as it
-did previously.
-
-[0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
-
-
-This patch (of 2):
-
-There exist systems other than PARISC where MDWE may not be feasible to
-support; rather than cluttering up the generic code with additional
-arch-specific logic let's add a generic function for checking MDWE support
-and allow each arch to override it as needed.
-
-Link: https://lkml.kernel.org/r/20240227013546.15769-4-zev@bewilderbeest.net
-Link: https://lkml.kernel.org/r/20240227013546.15769-5-zev@bewilderbeest.net
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Acked-by: Helge Deller <deller@gmx.de>	[parisc]
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Florent Revest <revest@chromium.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Ondrej Mosnacek <omosnace@redhat.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Russell King (Oracle) <linux@armlinux.org.uk>
-Cc: Sam James <sam@gentoo.org>
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: Yin Fengwei <fengwei.yin@intel.com>
-Cc: <stable@vger.kernel.org>	[6.3+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d308dfbf62ef ("i2c: mux/i801: Switch to use descriptor passing")
+Cc: stable@vger.kernel.org
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/asm/mman.h |   14 ++++++++++++++
- include/linux/mman.h           |    8 ++++++++
- kernel/sys.c                   |    7 +++++--
- 3 files changed, 27 insertions(+), 2 deletions(-)
- create mode 100644 arch/parisc/include/asm/mman.h
+ drivers/i2c/busses/i2c-i801.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- /dev/null
-+++ b/arch/parisc/include/asm/mman.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_MMAN_H__
-+#define __ASM_MMAN_H__
-+
-+#include <uapi/asm/mman.h>
-+
-+/* PARISC cannot allow mdwe as it needs writable stacks */
-+static inline bool arch_memory_deny_write_exec_supported(void)
-+{
-+	return false;
-+}
-+#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
-+
-+#endif /* __ASM_MMAN_H__ */
---- a/include/linux/mman.h
-+++ b/include/linux/mman.h
-@@ -161,6 +161,14 @@ calc_vm_flag_bits(unsigned long flags)
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1422,7 +1422,6 @@ static void i801_add_mux(struct i801_pri
+ 		lookup->table[i] = GPIO_LOOKUP(mux_config->gpio_chip,
+ 					       mux_config->gpios[i], "mux", 0);
+ 	gpiod_add_lookup_table(lookup);
+-	priv->lookup = lookup;
  
- unsigned long vm_commit_limit(void);
+ 	/*
+ 	 * Register the mux device, we use PLATFORM_DEVID_NONE here
+@@ -1436,7 +1435,10 @@ static void i801_add_mux(struct i801_pri
+ 				sizeof(struct i2c_mux_gpio_platform_data));
+ 	if (IS_ERR(priv->mux_pdev)) {
+ 		gpiod_remove_lookup_table(lookup);
++		devm_kfree(dev, lookup);
+ 		dev_err(dev, "Failed to register i2c-mux-gpio device\n");
++	} else {
++		priv->lookup = lookup;
+ 	}
+ }
  
-+#ifndef arch_memory_deny_write_exec_supported
-+static inline bool arch_memory_deny_write_exec_supported(void)
-+{
-+	return true;
-+}
-+#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
-+#endif
-+
- /*
-  * Denies creating a writable executable mapping or gaining executable permissions.
-  *
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -2395,8 +2395,11 @@ static inline int prctl_set_mdwe(unsigne
- 	if (bits & PR_MDWE_NO_INHERIT && !(bits & PR_MDWE_REFUSE_EXEC_GAIN))
- 		return -EINVAL;
- 
--	/* PARISC cannot allow mdwe as it needs writable stacks */
--	if (IS_ENABLED(CONFIG_PARISC))
-+	/*
-+	 * EOPNOTSUPP might be more appropriate here in principle, but
-+	 * existing userspace depends on EINVAL specifically.
-+	 */
-+	if (!arch_memory_deny_write_exec_supported())
- 		return -EINVAL;
- 
- 	current_bits = get_current_mdwe();
 
 
 
