@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2535E893FB6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE7D894159
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A228EB2111D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CB651C2137F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02506481AB;
-	Mon,  1 Apr 2024 16:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B7747A6B;
+	Mon,  1 Apr 2024 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnPH1TC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S505E3KQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23031CA8F;
-	Mon,  1 Apr 2024 16:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703693BBC3;
+	Mon,  1 Apr 2024 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988410; cv=none; b=jXxzaAhF+dgKTF42f6yy//A074iUU6eqEXOAn3wneaCn3BanRoEDtQBql+QmVxZkZI5R6BBxgV+FKKl2OdzNOKf4dI47q8d4D5fEcYK5RNg/RcjHcAXNNP4GUZqy/WgG6lmb4cqaA6Qi6drsIBdMo0BauzXcwFNUXvyTq6T1O8U=
+	t=1711989665; cv=none; b=gKK464g/gRy0AtFQhnGGOyCqpJLfqMiXSPFqrjqUvdr9RGuukihXn9boIZ2T+1FlBKKZzsBafaeec/D0Af5UEerNHlbunWwzNOuAz0waHWBT1ktMXkzQxMixHXSyiXwzcp6E0j8g9N8xibdPEALJ1LGyczj49g1tVDHxMYOunug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988410; c=relaxed/simple;
-	bh=iDmwm5dCFSLi1ACggF2eMu8UF+NMsp4wnGkdiki//nY=;
+	s=arc-20240116; t=1711989665; c=relaxed/simple;
+	bh=xZeFaF18BME/yxFIKlDja1ePrbc5pG3+CXRWeR/jZAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U1LKnVV07H8rz0PRnO64D1X6bcgMIhXW6DG6E4pYLjhTAeYqG9W7arCmZ4T0baZ+Pka+sq7OFr3z/k61TcSYvxPyV5JyCn4/2zaajQskflq1XHThB7o1QO/7/TcYWVbseWM3wz1E9H2y/cVrBYJoEGkR9aPs028U1dBVmknIB6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnPH1TC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2441AC433C7;
-	Mon,  1 Apr 2024 16:20:09 +0000 (UTC)
+	 MIME-Version; b=KkyGdsdsHACMG5AM5ZgFMAHVOnuGIAJZEGS+/HiG5i8ZMhkTxP7V2KLv+P4642DkM2lzuue2YkUMvZUG3TndJ89xrpBZSqm4K6i6j6rfIBps0nE+Yq5Gv4N8tNdpFhLnhHEnMPdGwHWVqx85UDskLbyW/PyOXiZDGz1rOD6El9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S505E3KQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48BCC433C7;
+	Mon,  1 Apr 2024 16:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988410;
-	bh=iDmwm5dCFSLi1ACggF2eMu8UF+NMsp4wnGkdiki//nY=;
+	s=korg; t=1711989665;
+	bh=xZeFaF18BME/yxFIKlDja1ePrbc5pG3+CXRWeR/jZAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnPH1TC8ontwNQv94Ri9JVS0oJ1M6orPLqgsYbPfEMRq9vAKin/9t8iGzu/3h0krB
-	 hOTUmvU2wP52p8AhUkVSJthW6SdYH3fsjGoIAwZVpa0Zh7Ksk8yjsfx/6yb6Lc+Qq4
-	 q+wO8H1PlvBLCuxMn8mG+plgRHVt6qJDCP9aO1EE=
+	b=S505E3KQUcq3eb3NER+zPpoSPCcZmqnqIlgXgeuc/kcUWCjRqPUOmGqXttt8cffLK
+	 bsux/tOQBC4GY5+m6TPb4PJEuYT0J1JYzTn/yVkS8f2HnI7yOaLlsLI7Jv8V4eS55a
+	 8a0zDSPpN6+p3HgfvWS3Ju6RF+GaP5Li6+2+Y92E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20=C4=8Cerm=C3=A1k?= <sairon@sairon.cz>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 177/432] cifs: make sure server interfaces are requested only for SMB3+
+Subject: [PATCH 6.6 115/396] io_uring: fix mshot io-wq checks
 Date: Mon,  1 Apr 2024 17:42:44 +0200
-Message-ID: <20240401152558.427097472@linuxfoundation.org>
+Message-ID: <20240401152551.347117868@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 13c0a74747cb7fdadf58c5d3a7d52cfca2d51736 ]
+[ Upstream commit 3a96378e22cc46c7c49b5911f6c8631527a133a9 ]
 
-Some code paths for querying server interfaces make a false
-assumption that it will only get called for SMB3+. Since this
-function now can get called from a generic code paths, the correct
-thing to do is to have specific handler for this functionality
-per SMB dialect, and call this handler.
-
-This change adds such a handler and implements this handler only
-for SMB 3.0 and 3.1.1.
+When checking for concurrent CQE posting, we're not only interested in
+requests running from the poll handler but also strayed requests ended
+up in normal io-wq execution. We're disallowing multishots in general
+from io-wq, not only when they came in a certain way.
 
 Cc: stable@vger.kernel.org
-Cc: Jan Čermák <sairon@sairon.cz>
-Reported-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 17add5cea2bba ("io_uring: force multishot CQEs into task context")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/d8c5b36a39258036f93301cd60d3cd295e40653d.1709905727.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h | 3 +++
- fs/smb/client/connect.c  | 6 +++++-
- fs/smb/client/smb2ops.c  | 2 ++
- fs/smb/client/smb2pdu.c  | 5 +++--
- 4 files changed, 13 insertions(+), 3 deletions(-)
+ io_uring/net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 91a4061233f1a..35a12413bbee6 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -339,6 +339,9 @@ struct smb_version_operations {
- 	/* informational QFS call */
- 	void (*qfs_tcon)(const unsigned int, struct cifs_tcon *,
- 			 struct cifs_sb_info *);
-+	/* query for server interfaces */
-+	int (*query_server_interfaces)(const unsigned int, struct cifs_tcon *,
-+				       bool);
- 	/* check if a path is accessible or not */
- 	int (*is_path_accessible)(const unsigned int, struct cifs_tcon *,
- 				  struct cifs_sb_info *, const char *);
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index c3d805ecb7f11..bc8d09bab18bb 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -123,12 +123,16 @@ static void smb2_query_server_interfaces(struct work_struct *work)
- 	struct cifs_tcon *tcon = container_of(work,
- 					struct cifs_tcon,
- 					query_interfaces.work);
-+	struct TCP_Server_Info *server = tcon->ses->server;
- 
- 	/*
- 	 * query server network interfaces, in case they change
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 386a6745ae32f..5a4001139e288 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -87,7 +87,7 @@ static inline bool io_check_multishot(struct io_kiocb *req,
+ 	 * generic paths but multipoll may decide to post extra cqes.
  	 */
-+	if (!server->ops->query_server_interfaces)
-+		return;
-+
- 	xid = get_xid();
--	rc = SMB3_request_interfaces(xid, tcon, false);
-+	rc = server->ops->query_server_interfaces(xid, tcon, false);
- 	free_xid(xid);
+ 	return !(issue_flags & IO_URING_F_IOWQ) ||
+-		!(issue_flags & IO_URING_F_MULTISHOT) ||
++		!(req->flags & REQ_F_APOLL_MULTISHOT) ||
+ 		!req->ctx->task_complete;
+ }
  
- 	if (rc) {
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index ba734395b0360..4852afe3929be 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -5429,6 +5429,7 @@ struct smb_version_operations smb30_operations = {
- 	.tree_connect = SMB2_tcon,
- 	.tree_disconnect = SMB2_tdis,
- 	.qfs_tcon = smb3_qfs_tcon,
-+	.query_server_interfaces = SMB3_request_interfaces,
- 	.is_path_accessible = smb2_is_path_accessible,
- 	.can_echo = smb2_can_echo,
- 	.echo = SMB2_echo,
-@@ -5543,6 +5544,7 @@ struct smb_version_operations smb311_operations = {
- 	.tree_connect = SMB2_tcon,
- 	.tree_disconnect = SMB2_tdis,
- 	.qfs_tcon = smb3_qfs_tcon,
-+	.query_server_interfaces = SMB3_request_interfaces,
- 	.is_path_accessible = smb2_is_path_accessible,
- 	.can_echo = smb2_can_echo,
- 	.echo = SMB2_echo,
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index fca55702b51ad..4d7d0bdf7a472 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -409,14 +409,15 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 	spin_unlock(&ses->ses_lock);
- 
- 	if (!rc &&
--	    (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
-+	    (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL) &&
-+	    server->ops->query_server_interfaces) {
- 		mutex_unlock(&ses->session_mutex);
- 
- 		/*
- 		 * query server network interfaces, in case they change
- 		 */
- 		xid = get_xid();
--		rc = SMB3_request_interfaces(xid, tcon, false);
-+		rc = server->ops->query_server_interfaces(xid, tcon, false);
- 		free_xid(xid);
- 
- 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
 -- 
 2.43.0
 
