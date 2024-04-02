@@ -1,138 +1,116 @@
-Return-Path: <stable+bounces-35545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77696894BA5
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 08:42:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE5C894C88
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1682BB223DC
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 06:42:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED2EF282D1A
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E550A339BC;
-	Tue,  2 Apr 2024 06:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37D538DE4;
+	Tue,  2 Apr 2024 07:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="gOEBAKo+"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="bszLAKDj";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="q2xTIGu+"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from wfhigh6-smtp.messagingengine.com (wfhigh6-smtp.messagingengine.com [64.147.123.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0B12C683;
-	Tue,  2 Apr 2024 06:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D642C689
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 07:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712040157; cv=none; b=jTo2fDk2hplyxq9ISDlpnLOS9yCeXn1BqUUTyyaYotmXToLMMB8e0+vamBrWpmr80Hw39Qqzlw5WoNhrnTXpwLbMPuHXqqwq3ON/XbtsyKkbVGSbw25C//gsUMUHgBEkHM+DaAkLUsXLonBksFAU1vesaOrs+thyfGGKATWgVm8=
+	t=1712042383; cv=none; b=W5JgBKcxSx8ftkIFTb1SXIIELaSuZJZ1XFOIl4GICNwl43TR9UuDablIC+3i+B4U72mVpyRScLZKCj2lvmonWH5C3zZf/DWo/q5BJOjWbHzmA4ZeaA9acVa0biddOxoR7TCcY673+Wtc+fuzT4WDv3eIgI3F/ri7OHnIMAvIeOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712040157; c=relaxed/simple;
-	bh=4Ciphw3v/0eaq2NINfS6PY2B58XLCzpIwHinJUIINd4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uaOGeI6Bb1+BQuaK07Wa15opDUhFoI0T2zeB5slgUNtWW1ibqEJpBQaxmf4J/hoQaFKRoNpU21eYfe6fSAvZfINwDzZVAl3HqfMLNeiSMCmmbGSzCge+mzXOpPo6VgEXfRrAuX99twJrl+iFQc21wepCHx/d69VexyH41jYkaYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=gOEBAKo+; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=4Ciphw3v/0eaq2NINfS6PY2B58XLCzpIwHinJUIINd4=;
-	t=1712040155; x=1712472155; b=gOEBAKo+PX3TPbICgSuNXG864kAMpFsdxyqFZqZvw5LkgC/
-	cFDa2lRpy8k/xMaKM5r/STAQ96vuRnmDzFQV2nDYPuXiwsGBAHlHYXjYw8uHVGin96LBuBb0Ec2/u
-	LEfLq+IZQ+Z1j0fNSIJBH2P5Lkfi3j5dB/yKrQAwDwbsuYMM819jQSlcg/wMajyT6phc0C9i/3XYH
-	yj+GA/CuNFlckV0bDKh9vsXv3pK1wXxXlxKg2s7aT/1iBjO3s5ljNE+13oM9tc5QZ2vDmW9M4yxSJ
-	9g0+a7O4p9biDsTOaUwqGiB9hlpsw8YGZSoAMYG8j3AKsD8bOi7XTkzryMRrOmpg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rrXqq-0006Mx-BC; Tue, 02 Apr 2024 08:42:32 +0200
-Message-ID: <84da1f26-0457-451c-b4fd-128cb9bd860d@leemhuis.info>
-Date: Tue, 2 Apr 2024 08:42:31 +0200
+	s=arc-20240116; t=1712042383; c=relaxed/simple;
+	bh=t3+dbsfIPQbeWr+q9uViuQaTIjBdHTYZlXXnXSbWL8Y=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=CnLoHrgDZwNhkRm8j6TF2R8HcdRJgmzwqvmCqWOc/zprEZMjjvd0zB34QqfJRv9bKN7ta7qi3TavBJC07h6HoXpr7xHhK9zH+XBBUOdZ4GDA9FNbM+W/FYKtxWWHWA5pU9pg2godcW+2ph6cMLxh/zDbOrGWc/WAQ5qDFS3pdzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=bszLAKDj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=q2xTIGu+; arc=none smtp.client-ip=64.147.123.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 1B9221800083;
+	Tue,  2 Apr 2024 03:19:40 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Tue, 02 Apr 2024 03:19:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1712042379; x=1712128779; bh=oa7kRr3e8B
+	3txZcQabphYPUectsNgHIIATUahJ1A5rw=; b=bszLAKDj5LEPuTvHOj52mL5WZq
+	vvpWCNli2adlBnon9dc4SFGYwKLWycmGqOC0rJbdHW4CjCSTlAxQKbvKTWZgAEXE
+	K6TzcvUdV0xuL4zShdQW8+zAJGQJBdkSi6njZ+uf4L73VGZsJXAsp+Wcc/q3Z4al
+	kkRNxkfw2n4BYNbrIcGXdhnoWSNSdNLf47sN/VrNhNovsUeZj7DOLsajR2Nh4NXx
+	cD5q68p8ZakyLgesQQK94HaiobYBLeD52qpW0z+yVlZYqANPNqldkM0zE308tM6Z
+	Ctf5OHkxw3zCuCzTI7CTSuBZrQlxUqYp71xg8ONhxjFoAAOhmo05VHltin7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1712042379; x=1712128779; bh=oa7kRr3e8B3txZcQabphYPUectsN
+	gHIIATUahJ1A5rw=; b=q2xTIGu+1UjJmJHHOAJJLn2b0N8sskvyVBEUcv/IhTk0
+	BU1Vu2HOSrGBiPBc+4KcAt+AIe4dxyoaJyHvRMAIFp0EcOnscMakNIw35eVHcDqS
+	unaCHKcl0Yq3CTM2IPDI/BIHgJE8/4wOHCotCy8WNe1ME2UMoA/dL05i26OtlCVH
+	e1p9NYb4ecVkwyksqMh0ysJc2VG/nGbq72ZDbDplQa6OOQUwXC16jof8fdkwDxj7
+	8SfeGU2kgarGZhpFtRyPR/B1OxHIjHo2K9ddTo6mFOIuNCMtIKPGR/UxsQt5UgnQ
+	l5+y5qK3BUlHBR/ZsDln0Soxfu7Yaki08hGDHQi8Lw==
+X-ME-Sender: <xms:i7ELZtXO-ISc2wGaCvIE99R5doTTm0EMqs9iZ5PLnXKTj8b58ejR0Q>
+    <xme:i7ELZtmKFdJ0T18i-tv3McxJpRqpKb8xhnFDkVN6l2JpqeBhoYqGdiZFibc1siCvd
+    cWHdyWN6uJr2LgFgOw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudefuddguddulecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:i7ELZpZsV_PIZ8N7ejmazo-Bj_zfjgGWSdcySafZ_1GaJR4KpQtOwQ>
+    <xmx:i7ELZgVs85q325RzUvX6bFJBTby34AUFs1VbtCpirl-NeWpdUVLmHg>
+    <xmx:i7ELZnlAkdP3BQTXbv4a8E_iagD6v5r-OTjyDg-Hxr0HZCtOTYPIWw>
+    <xmx:i7ELZtfFN3N0ZYDwcGxBgJguMiQj_OKLReGS8DlXz4AcJmDnsLRqXw>
+    <xmx:i7ELZgiY_y0IrzydCVh5QrSFZTlk0TaOuHkODM7KcUbNK3KzoQLqyh3D>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 14674B6008D; Tue,  2 Apr 2024 03:19:39 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-333-gbfea15422e-fm-20240327.001-gbfea1542
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bluetooth broken for some people with 6.8.2 [Was: [PATCH 6.8
- 308/715] Bluetooth: hci_core: Cancel request on command timeout]
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
- Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-References: <20240324223455.1342824-1-sashal@kernel.org>
- <20240324223455.1342824-309-sashal@kernel.org>
- <bf267566-c18c-4ad9-9263-8642ecfdef1f@leemhuis.info>
- <2024033018-speller-supremacy-5436@gregkh>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2024033018-speller-supremacy-5436@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1712040155;5860bd99;
-X-HE-SMSGID: 1rrXqq-0006Mx-BC
+Message-Id: <44381e5a-cab6-4abb-b928-ebea7ce3d65b@app.fastmail.com>
+In-Reply-To: <20240401152556.751891519@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
+ <20240401152556.751891519@linuxfoundation.org>
+Date: Tue, 02 Apr 2024 09:19:17 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, "Linus Walleij" <linus.walleij@linaro.org>,
+ "Nicolas Pitre" <nico@fluxnic.net>, "Jisheng Zhang" <jszhang@kernel.org>,
+ "Ard Biesheuvel" <ardb@kernel.org>,
+ "Russell King" <rmk+kernel@armlinux.org.uk>,
+ "Sasha Levin" <sashal@kernel.org>
+Subject: Re: [PATCH 6.8 254/399] ARM: 9352/1: iwmmxt: Remove support for PJ4/PJ4B cores
+Content-Type: text/plain
 
-On 30.03.24 17:23, Greg KH wrote:
-> On Sat, Mar 30, 2024 at 03:59:22PM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
->> On 24.03.24 23:28, Sasha Levin wrote:
->>> From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
->>>
->>> [ Upstream commit 63298d6e752fc0ec7f5093860af8bc9f047b30c8 ]
->>>
->>> If command has timed out call __hci_cmd_sync_cancel to notify the
->>> hci_req since it will inevitably cause a timeout.
-> [...]
->>> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
->>> Stable-dep-of: 2615fd9a7c25 ("Bluetooth: hci_sync: Fix overwriting request callback")
->>> Signed-off-by: Sasha Levin <sashal@kernel.org>
->>
->> Hey stable team, I wonder if it might be wise to pick up 1c3366abdbe884
->> ("Bluetooth: hci_sync: Fix not checking error on hci_cmd_sync_cancel_sync") from next
->> (https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=1c3366abdbe884)
->> for the next releases of all series that a few days ago received
->> 63298d6e752fc0 ("Bluetooth: hci_core: Cancel request on command timeout").
->>
->> The latter patch sadly on quite a few systems causes a Oops due to a
->> NULL pointer dereference and breaks Bluetooth. This was reported for
->> mainline here (yes, coincidentally it was reported by yours truly):
->> https://lore.kernel.org/all/08275279-7462-4f4a-a0ee-8aa015f829bc@leemhuis.info/
->>
->> Now that the patch landed in 6.8.2 it seems to happen there as well
->> (guess in 6.7 and others, too), as can be seen from this bug report
->> where multiple people already joined:
->> https://bugzilla.kernel.org/show_bug.cgi?id=218651
-> [...]
-> Now queued up, thanks for letting us know.
+On Mon, Apr 1, 2024, at 17:43, Greg Kroah-Hartman wrote:
+> 6.8-stable review patch.  If anyone has any objections, please let me know.
 
-FWIW, at least one user reported additional BT problems in bugzilla that
-might or might not be related to the backports. But I write for a
-different reason:
+I think we should not backport the feature removal, this was
+intentionally done separately from the bugfix in 303d6da167dc
+("ARM: iwmmxt: Use undef hook to enable coprocessor for task")
+that is indeed needed in stable kernels.
 
-Luiz replied in bugzilla
-(https://bugzilla.kernel.org/show_bug.cgi?id=218651#c20) and you might
-want to know about it:
+It still makes sense for everyone to just turn iwmmxt support
+off on pj4.
 
-"'"
-Hmm, was the original change [63298d6e752fc0 ("Bluetooth: hci_core:
-Cancel request on command timeout")] backported to stable kernels, afaik
-I didn't mark it to Cc stable: [...]
-
-I wonder why it got selected to be backported, in any case I don't think
-it is a good idea to attempt to do backporting without having at least a
-Fixes tag to begin with otherwise we risk having problems like this
-widespread to people not really running the latest where this sort of
-problem is sort of expected during the early rc phase, so instead of
-having these 2 patches backported we could just remove the above from
-the stable trees.
-"'"
-
-Luiz: Sasha and Greg can speak for themselves, but the "Stable-dep-of:
-2615fd9a7c25 ("Bluetooth: hci_sync: Fix overwriting request callback")"
-tag above is a strong indicator why 63298d6e752fc0 was backported.
-
-Ciao, Thorsten (who now hopes the developers sort this out without him
-as accidentally man-in-the-middle)
+     Arnd
 
