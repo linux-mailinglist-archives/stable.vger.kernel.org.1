@@ -1,140 +1,129 @@
-Return-Path: <stable+bounces-35566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C76B894D54
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E64894D77
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B9B21F22A49
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 08:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC09C1F21BFB
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 08:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EF33D968;
-	Tue,  2 Apr 2024 08:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="qrWbYszj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OrYdw0Oz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8790645BEF;
+	Tue,  2 Apr 2024 08:29:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh7-smtp.messagingengine.com (wfhigh7-smtp.messagingengine.com [64.147.123.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FD938DFC
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 08:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.158
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF02D45008
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 08:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712045950; cv=none; b=aKSmTiNI8O6ZJ+3FOoVtkDMeNlRorp+wwScW6vUzzwV4Kk1RaLjx8BSJI1E76s819/suo+SzL+75MIAGytxIzXtNhwTcp5GFPS2nNkzoqeRMcxTwTn011/uz6SoZgp4hymUS4eG+nIFx8hWmM9b+dRi8l6cFPYIn1r22BdUTgBY=
+	t=1712046597; cv=none; b=uo9OtEe3Q+gm09IG3LpBBGR5CibGzXdMbrMenXHb4P+7OaDGIKQvTLAUG/R3gVJySqgFAQBtS/1flbZTC4KUIJDqf3jPV1gqWc7uE2C6WWQSB2pB6uF7IIyDfm7cfX/KjndRg2K3eyBt4Opdo8MnSdmpvvR+ggMy8lmDepEsbbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712045950; c=relaxed/simple;
-	bh=hUSe/ZzPXtdo6I1JciZQzogzafIhalDt/gckhld+CG8=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=ofMJtccyADTV/EeE9oeqy0TSGXGpUMKGs8LwPbCztgzSLHDQMOFCmpt5G+KsSBYdJF5hjTYSYadl4v3JT7WYbvQr0+MPXPKAgqxsKkZBwqSZeM2PSdXWNNchF1rQS3WffEVr/a5fVqCVLoODreB3cDAS1nipZd/PUjxwTlaWTcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=qrWbYszj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OrYdw0Oz; arc=none smtp.client-ip=64.147.123.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.west.internal (Postfix) with ESMTP id B3AB118000EA;
-	Tue,  2 Apr 2024 04:19:07 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 02 Apr 2024 04:19:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1712045947; x=1712132347; bh=82uhAIT7d+
-	hEIkE/Im/lXrix8+p5YrsV9BVER62xRjE=; b=qrWbYszjpE/02QDrFmopJVd/LX
-	vWju+vqFuNQgrWNYrSLSgMRZXwh0Kzx8j8nPFk3UXzJRJHFo1aX2ckPJ3PrdY9dM
-	AJ8et+2nlTmt0tEoF4dFTLi7H7TWOnksyPh3M415HBB55LeOAGSxJpoRu8X7aWGO
-	DTVVsCQhGLa+0OmndQgMAH7lHq+sXf2UUcvXhJsd3DRro1V/6OhBTl3xxuZLJ6kx
-	Y3TB+y6AU+4ZWczBVVIqDkRSHCIjM53FvCVPwKXlWwTnLGpAOKuIDpLGRMNL8Z0g
-	MbFNk4q4cFudtHZqz0+Ay7/bdnmO/YID5Hwr8ePHasgYDJHiV5pnjn0ZO9pw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1712045947; x=1712132347; bh=82uhAIT7d+hEIkE/Im/lXrix8+p5
-	YrsV9BVER62xRjE=; b=OrYdw0Ozo+sTRXFgKDuUsfWtGM0BrI/O2aapIY6BTxjb
-	I9LHOWUvZGv7or9aYXXfUnS/Yxa59p98fiL8skpr+Gb7dwqMb9XY7y/WGcl0yF16
-	3vbHS/0czjBPrSP/pC9DXkQbJpKWq7vb1+l+59aHVXFvfuduu6IDXGElkL6Zz7B5
-	bc8S4XdQ6ScCr+9KHaTmVP+O8n7vKHejWm6i6LXuj6ijVgwE6IuTa7AOJDqSMFv2
-	AP1f6ZlXxP318INGIORCnqtr26TmBiFgT3QPkHy3HkAvu2FNRwFdJQJ9t5NFMFXc
-	9DCljjYdSSMVl5hADU+imPL9qVC//bITJRUyi5xtHA==
-X-ME-Sender: <xms:er8LZnejrXriasx7668fHN_HzPR0VyXZAtRiRSM4fBInkExmGBFyuw>
-    <xme:er8LZtOfdWgcwRJ_NVkHYTr5qOLpgAy25P-xc1SqJLY4dl7wsi9xVE3mP-_yPZIjk
-    qif60UxQt1-b_J9WZQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudefvddgtdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:er8LZgj3kG8DZxj_SBKNkK1M9l4UHvanD4dklSWWsZXb7Kqmv98J4g>
-    <xmx:er8LZo_K7a79ZqoPMCuTANl0CJ9wNMqT3i-CPVIKo7AjmpZwXrKviA>
-    <xmx:er8LZjt9UxkHIc2HeVyrhMyxA2JvpQb664MZf1FYVxrRnIWnE0KdsA>
-    <xmx:er8LZnHwWehhA2g7acVFOUcvpfV3t5Qd98hi3_-bjvPi5s08ThRw0Q>
-    <xmx:e78LZhKt1svR_SR0iJvwF1QV-0bCeNiHzHClZOCbxFdkTd1iGb6aP6aj>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 788FCB6008F; Tue,  2 Apr 2024 04:19:06 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-333-gbfea15422e-fm-20240327.001-gbfea1542
+	s=arc-20240116; t=1712046597; c=relaxed/simple;
+	bh=wq4ownMckaMf+Xfp6j7rIGn8vh+r7+TaYCO52U11Yjg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=GfnmW9fDXvZ8PS679hqh8QBynGkSChYBbaBIOBMF31G9sHFxmzdDrMBk+C97/lMm4hfRRlfWjCtcI+QvU6fcLo0XW4nkSl/sPloPgMaZ6qTuW22zk2Goqof6lLUIPs1sALPJRH6484z93QdEMTq2y4zONOUgYrYbCNfmxehG3nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D9451042;
+	Tue,  2 Apr 2024 01:30:26 -0700 (PDT)
+Received: from [10.57.72.194] (unknown [10.57.72.194])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4023D3F64C;
+	Tue,  2 Apr 2024 01:29:53 -0700 (PDT)
+Message-ID: <945689b3-445d-4915-857e-dda84cc8352c@arm.com>
+Date: Tue, 2 Apr 2024 09:29:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <64d8ca78-75e8-4fe7-bc50-fde6af4e7bb2@app.fastmail.com>
-In-Reply-To: 
- <CAMj1kXHwW83uNPKZsj1==5Mof+K1k6-N3bbKk-Cn6U6692UzGg@mail.gmail.com>
-References: <20240401152549.131030308@linuxfoundation.org>
- <20240401152556.751891519@linuxfoundation.org>
- <44381e5a-cab6-4abb-b928-ebea7ce3d65b@app.fastmail.com>
- <CAMj1kXHwW83uNPKZsj1==5Mof+K1k6-N3bbKk-Cn6U6692UzGg@mail.gmail.com>
-Date: Tue, 02 Apr 2024 10:17:22 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Ard Biesheuvel" <ardb@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, "Linus Walleij" <linus.walleij@linaro.org>,
- "Nicolas Pitre" <nico@fluxnic.net>, "Jisheng Zhang" <jszhang@kernel.org>,
- "Russell King" <rmk+kernel@armlinux.org.uk>,
- "Sasha Levin" <sashal@kernel.org>
-Subject: Re: [PATCH 6.8 254/399] ARM: 9352/1: iwmmxt: Remove support for PJ4/PJ4B cores
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] thermal: devfreq_cooling: Fix perf state
+ when calculate dfc" failed to apply to 5.15-stable tree
+Content-Language: en-US
+To: gregkh@linuxfoundation.org
+References: <2024033050-imitation-unmixed-ef53@gregkh>
+Cc: ye.zhang@rock-chips.com, d-gole@ti.com, rafael.j.wysocki@intel.com,
+ stable@vger.kernel.org
+From: Lukasz Luba <lukasz.luba@arm.com>
+In-Reply-To: <2024033050-imitation-unmixed-ef53@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 2, 2024, at 09:30, Ard Biesheuvel wrote:
-> On Tue, 2 Apr 2024 at 10:19, Arnd Bergmann <arnd@arndb.de> wrote:
->>
->> On Mon, Apr 1, 2024, at 17:43, Greg Kroah-Hartman wrote:
->> > 6.8-stable review patch.  If anyone has any objections, please let me know.
->>
->> I think we should not backport the feature removal, this was
->> intentionally done separately from the bugfix in 303d6da167dc
->> ("ARM: iwmmxt: Use undef hook to enable coprocessor for task")
->> that is indeed needed in stable kernels.
->>
->
-> 303d6da167dc is not a bugfix - it moves the undef handling into C code
-> for PJ4 but only for ARM not Thumb.
->
-> Subsequently, 8bcba70cb5c22 removed the Thumb exception handling,
-> leading to the regression.
->
-> So without this fix, the Thumb case remains broken unless iwmmxt
-> support is disabled in Kconfig.
->
->> It still makes sense for everyone to just turn iwmmxt support
->> off on pj4.
->>
->
-> If that is deemed sufficient for stable kernels, then we can drop this
-> backport. Otherwise, we need to do something else if this patch is not
-> suitable for -stable
+Hi Greg,
 
-My mistake, I misremembered what you did in the end.
-Let's keep this one in stable then.
+On 3/30/24 09:46, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-       Arnd
+Would you like my help? I can create a backport to v5.15.y and send
+to the list.
+
+Regards,
+Lukasz
+
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x a26de34b3c77ae3a969654d94be49e433c947e3b
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033050-imitation-unmixed-ef53@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> 
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+>  From a26de34b3c77ae3a969654d94be49e433c947e3b Mon Sep 17 00:00:00 2001
+> From: Ye Zhang <ye.zhang@rock-chips.com>
+> Date: Thu, 21 Mar 2024 18:21:00 +0800
+> Subject: [PATCH] thermal: devfreq_cooling: Fix perf state when calculate dfc
+>   res_util
+> MIME-Version: 1.0
+> Content-Type: text/plain; charset=UTF-8
+> Content-Transfer-Encoding: 8bit
+> 
+> The issue occurs when the devfreq cooling device uses the EM power model
+> and the get_real_power() callback is provided by the driver.
+> 
+> The EM power table is sorted ascending，can't index the table by cooling
+> device state，so convert cooling state to performance state by
+> dfc->max_state - dfc->capped_state.
+> 
+> Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+> Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+> Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
+> Reviewed-by: Dhruva Gole <d-gole@ti.com>
+> Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
+> index 50dec24e967a..8fd7cf1932cd 100644
+> --- a/drivers/thermal/devfreq_cooling.c
+> +++ b/drivers/thermal/devfreq_cooling.c
+> @@ -214,7 +214,7 @@ static int devfreq_cooling_get_requested_power(struct thermal_cooling_device *cd
+>   
+>   		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
+>   		if (!res) {
+> -			state = dfc->capped_state;
+> +			state = dfc->max_state - dfc->capped_state;
+>   
+>   			/* Convert EM power into milli-Watts first */
+>   			rcu_read_lock();
+> 
 
