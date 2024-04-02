@@ -1,131 +1,113 @@
-Return-Path: <stable+bounces-35536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235F9894AD7
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:23:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC3A894AE0
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE946B22F7F
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:23:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA06283EEA
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053D818042;
-	Tue,  2 Apr 2024 05:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76807182D4;
+	Tue,  2 Apr 2024 05:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="iD3GJsl7"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="o5SNWltq"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC32118028
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 05:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76841805A;
+	Tue,  2 Apr 2024 05:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712035388; cv=none; b=N7+NOHx/cRHS7q3SJRPWSjtG1vITuBshbveKVF8yTC5BY6REEH2geqI/hw4AYOrr9kgFI5FWipp9qtCUITCdloVWLusTZ2HGvVzqeKUsQNq1nJJY+YqwkepVqR6kjZq0RrjTXTccgTaodO5/+2uc49ewikC67JJbRTSsjs2Gsy4=
+	t=1712036040; cv=none; b=r56YcHOBVo1M+CTovoDuT3Vvmi0/bJpSKhUy7APu7BB+pXQOApSNbX37BV5e7+SGnlQfu73etlBAu1zBxeYiSGz7MUjtdP5YfXbTun+lKWvjaVYiCznRMsl31YNhFCC/rMXY1u2EJJCqUNdZyqy7O8y7k9M60c7hAxnh8hhvDZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712035388; c=relaxed/simple;
-	bh=o9JqQU4pt1QfRlOQu21GoPMKrOOCIXPEfH5LBAIp6L4=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=fM5jwdtane8OdmJhhhKScPOd7M/OvB5yatJ3WH5zBNemOWwa0/tlv51oo8h+KVFU0EvpygS+OvGS0KqTPVJiBIg+4BX1SLrf5bIVXoLJqJCNHysknnf21u8A/tsAIovVxabtcV0ZI82FbcPkOIj2+yldEb9eobGZEEkq5GByO98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=iD3GJsl7; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
-	by cmsmtp with ESMTPS
-	id rWPxrUn8wQr4SrWbsrVAT5; Tue, 02 Apr 2024 05:23:00 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id rWbrrXY4iiKqRrWbsroVW9; Tue, 02 Apr 2024 05:23:00 +0000
-X-Authority-Analysis: v=2.4 cv=I9quR8gg c=1 sm=1 tr=0 ts=660b9634
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=raytVjVEu-sA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=u83x1h+5LHq9SftQChawmhCm98M6VZCKcE9nJ2kSJFQ=; b=iD3GJsl7Jl8+N029Q7hgVXgcK6
-	9e2mFMrDEMKQI67WOAsR/HGri4Ge+1tZVYCHX/DBoBQDMLYBA14z3G+/5sS7it/T5b4IrlEwxjjkd
-	TBmjnZsiogPLEQRsRhWY3qWRjQMFsOiiXr/MT3KEpigw6q35OvS4whwNp8VA62hfgwIqaVwtqL3sq
-	oOOtlhmPnIqDw+du8sle8banKou33yD2aIQ5Rwa1zAhRxMEDMkC7Kda/uppqH8kKgdt4Yyr2CLr6A
-	/MThA+A0Brc3jZsRpUjUrs+vx7A7gm82al71MAIMuTD0F4xsoSLCnufQOstuBvzCIobbyI3m5q3Qq
-	3Vm2tTtg==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:55212 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rrWbp-0024p2-1v;
-	Mon, 01 Apr 2024 23:22:57 -0600
-Subject: Re: [PATCH 6.1 000/272] 6.1.84-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240401152530.237785232@linuxfoundation.org>
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <2919e282-6c72-7bd2-d4e3-5427d3d27bcd@w6rz.net>
-Date: Mon, 1 Apr 2024 22:22:54 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1712036040; c=relaxed/simple;
+	bh=/XDMOAH0zgBJ+JWms6+5MCYJwxngTNToGSNYTncbdAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HTLWEVuCIqzUcrthY8iLGhZ3vDTgDS/DgkQsyxK5RuaM3drq/VJpHxzxHmeD+b/9TK9J/SXkq2Oh3u8WSsphaeOGRUKZBWYGi18ELzzyc6Fnks5wLPQGYKL1RqNQ90Csiq3iZVm+QqAnl5AEFOF7dhVqZiWlLxV7+fACCuf5U6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=o5SNWltq; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=hjLgNLhFLW4hN7k/B3OvpVJsjxBcTs6HemIA9FmIj8M=; b=o5SNWltqSwrtoE6l+7NaQpj6Ls
+	SNh3k15mQztIVwni1JOQOeF257R2q9ZJ6EufcW9N04cq5kJ6PhHAzrYickWkjj0fuXKRmAz8j652y
+	C662IDwEvd6dN90TIiEbZzUG/fzEdARfo0ODa5t+Wwd8Y1pw6AQxYHe0901q7YHoFVuIcpl0CFURT
+	zQM6vF4QcLaQKgFkta0iLT51au5GKFk4CtF6D3Cqx47C0hrMg7dEE5tSB61i8U5iaOIvSGJLrEZkt
+	ElHrc2zTvvOcm53FzAmH1qp12/jhlU7WYWcrR15Poo4/pQZuIrW1qiTOB3blWzEqHIJHsbefD8sZr
+	1C4VJsiA==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rrWmR-00000002IaN-3ush;
+	Tue, 02 Apr 2024 05:33:56 +0000
+Date: Tue, 2 Apr 2024 06:33:55 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Rik van Riel <riel@surriel.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: FAILED: Patch "bounds: support non-power-of-two CONFIG_NR_CPUS"
+ failed to apply to 5.4-stable tree
+Message-ID: <ZguYw9Dke_uq5UZU@casper.infradead.org>
+References: <20240327122125.2836828-1-sashal@kernel.org>
+ <ZgQowqqGf-E7Cpcz@casper.infradead.org>
+ <2024032935-antsy-imitation-1453@gregkh>
+ <2024032959-ladies-circling-3a5e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rrWbp-0024p2-1v
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:55212
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfGbYXqSaW5XTdm0C45REfjsvptjbVguJA4BKbFjnsZQfdM/ofnhc4lAJvcHG8v1jFCqCmpJiBvXGTtCQIXLvdVmG9rCTSvHAkV9XtT73pGAkjvPItmJl
- xtS5jQ6NMrJErEhs+ooU5Xw+YA+i9t3+LE3FQph4FC8RPArOJ982BLQlMKkyO1K88y5KRoQNC0+9KA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024032959-ladies-circling-3a5e@gregkh>
 
-On 4/1/24 8:43 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.84 release.
-> There are 272 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.84-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Fri, Mar 29, 2024 at 06:05:20PM +0100, Greg KH wrote:
+> On Fri, Mar 29, 2024 at 02:34:43PM +0100, Greg KH wrote:
+> > On Wed, Mar 27, 2024 at 02:10:10PM +0000, Matthew Wilcox wrote:
+> > > On Wed, Mar 27, 2024 at 08:21:25AM -0400, Sasha Levin wrote:
+> > > > The patch below does not apply to the 5.4-stable tree.
+> > > > If someone wants it applied there, or to any other stable or longterm
+> > > > tree, then please email the backport, including the original git commit
+> > > > id to <stable@vger.kernel.org>.
+> > > 
+> > > Looks like you just need a little more fuzz on the patch.
+> > > 
+> > > diff --git a/kernel/bounds.c b/kernel/bounds.c
+> > > index 9795d75b09b2..a94e3769347e 100644
+> > > --- a/kernel/bounds.c
+> > > +++ b/kernel/bounds.c
+> > > @@ -19,7 +19,7 @@ int main(void)
+> > >  	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
+> > >  	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
+> > >  #ifdef CONFIG_SMP
+> > > -	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
+> > > +	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
+> > >  #endif
+> > >  	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
+> > >  	/* End of constants */
+> > 
+> > Now fuzzed, thanks.
+> 
+> But it breaks the build on 4.19.y, so I'll go drop it from there.  If
+> you want it added there, please provide a working fix.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Looks like bits_per() didn't exist in 4.19.  It was added as part of commit 69842cba9ace84849bb9b8edcdf2cefccd97901c
+Author: Patrick Bellasi <patrick.bellasi@arm.com>
+Date:   Fri Jun 21 09:42:02 2019 +0100
 
-Tested-by: Ron Economos <re@w6rz.net>
+    sched/uclamp: Add CPU's clamp buckets refcounting
 
+Up to you; I can provide bits_per() to 4.19 which will aid backporting
+other fixes (we currently have 17 uses of bits_per() in 6.9), or we can
+just drop this whole thing for 4.19.
 
