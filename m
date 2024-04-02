@@ -1,99 +1,154 @@
-Return-Path: <stable+bounces-35576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18B2894E84
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:21:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 033AF894ED1
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 908821F22574
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:21:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86D081F23E10
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5059F5731E;
-	Tue,  2 Apr 2024 09:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F41E59161;
+	Tue,  2 Apr 2024 09:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="P9zSsXeP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="u/RGbcsL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C11617C7C
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 09:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9897558ABC
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 09:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712049664; cv=none; b=ERXxqeZKaSWDwv0MvLyf5lISytA8FAgIMGA04ykwr5GnIwjhkyOWJ0lZzd4kPcPrejW39gMiI0Wdbty96e7KYue8U/2jEKQh1LKIiZIsHI+jOhCcVKRiNwCZAvRN5920UkFmraTk9IUR9JCqyQx5+6NKe/my+GTEfCK3IVsew60=
+	t=1712050546; cv=none; b=lK/4D0FhajuwB/S9D/vQ3uiehup7dq/Qd8J0K0tInklIohR7ReJEQMQAMqpioYtSsxPQi0lpGXzxnqfezgCVUUJ58gS+MtfOnXoF5RpJzCg4pNfrnqySS0vg0wyPUBEKHvaQvIcoDz8Ufqj5k8F0K8QPss8t3DaCMhpzEYdrd6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712049664; c=relaxed/simple;
-	bh=kU4w9mZPkArpd/1WTe+18dIYLHxqOq2xXdxJatGF8aE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=svEkP84TR5dUpZJXoNn95FapbZVGPel7ZHKi2slzjsQKIHFnfUvTf0fVgQdoIfzTyQFSFYJkHrW64Lh7DI74SHI18RPGBfOInae/SQj2pKUJPVWhMj+KcUmC815DQbf8WFnRthzlKvV1cyD0BnfCTkcgxn0YCRI5EwnhnybSCsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=P9zSsXeP; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
-Message-ID: <b03bb68c-0244-4780-8e65-8aa3b15aab0b@manjaro.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1712049658;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XjSVpZBaGmwIAT1/iQs1HK4kXx1CR1ldX0l8Um+nGRU=;
-	b=P9zSsXePkCUpllTsdbisEss7tT+1wD0p8Pq5Vff4aRUjwmJqrdH6xV0/LFzHqmLNoxxjOh
-	Tr/HeBFOtqQ9Ks3JLjWNwqCdUCKcBGLeC6Yes/vwS83GbRmuXrrFCvNLMXrDkClBMoqHXJ
-	/6DRlwE9sBB2TMp9aB75rtl4O+TYZKwyL086+QbZZ0FIFcxp01Estn7FocxXJau2iYXwo2
-	NGMQFEsm1hK80+LERX5eMaIMlp3BrNUKWjXAlAfRjbzIow29X11MJjvAWfzdKhLueQ/+46
-	YyrGgCNu9wD2N2spMzb1fnoVFllEhxzNPhDJujWoLCShE67qxAOX0b8Hugeb1g==
-Date: Tue, 2 Apr 2024 16:20:52 +0700
+	s=arc-20240116; t=1712050546; c=relaxed/simple;
+	bh=dO7oowceia5z6uD/euKMmYBfbNPXV2/gty88RnnYLZ4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lvCCHUMA9FfaEKp1tri9/h13Cu+rqINQJCs68hKP2AznOcLWySMSIQySZ8B5rC3J7Gx/gBeagYtjKm6PrSnYuM3muiONuhttqRu1S3rCKG4bclJequB5RMpoHS4qPWn1j4akviW6H+H3L1kDYdw6qyx6JZ6HY+ROHzowFvNEQZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=u/RGbcsL; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6e6f69e850bso5498475b3a.0
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 02:35:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712050544; x=1712655344; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q0/xMG/vZR/3A0eW39V5o6jJuzfrUuTNZVL7doHpsBQ=;
+        b=u/RGbcsLosf6/yapuzs5ej+JmyKGsLX7K/IHK4KCnf3HuzlWTd+EDuK7Z3ZN52jCuZ
+         C+XZvEoy6zRIEa9ZKwwCgyjLi7csgDmtwMXv8plJpmJXV0MLbiQp3heAd0oigI23dXfI
+         TvO0BnhlTpvtcXaGqBtejuy+rgoByKLKzNE7vB1dO1qA7FEF7+ujP0mKJWivT6691u5n
+         NvBePC4qyiDXogU9Q5euQ8ULoVv4iXtZFmMMKTQfUReJDDk+pGfuKp788FSNozJN1YFE
+         oFj7Qogfk6lmcxBIMuIKIivk8bw0epfXA4zqvwFF5zWYBMYRI5UoAGOGy3tXj6sqgv+K
+         ChAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712050544; x=1712655344;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q0/xMG/vZR/3A0eW39V5o6jJuzfrUuTNZVL7doHpsBQ=;
+        b=fI33Hamg5AkFiMONLWf2zG3HZkVeO9pT4syY+u5KgyDAtFlFOU+de6SYmylDuAqaE4
+         T/pxMMmbGfDmF+DPOFWQACHy1x9WwTkxdcYZVPIxcLyDe3OWNUCRSWmKaJRPpJF2jeFh
+         CE/yLffNB8hIVKfLNol6MQvo0jSFtutHTWL5+7cFmiD8D2eB0NHCiprzPwPJ4C7rL+ej
+         iAOonLUeaSPExCMfJddq4QJubH1LAoV50mUbocxrgV39GX1E8fzo0fh36PFMbCxJCY1N
+         DWH4KJEIMNepcwAQhm3IO9MGTKoaGZZFWaxbg2pCedVnmOsE/KS4tMFqzJYGIvDt+mjD
+         6RjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUq5Si9X1VDFLLfX2R81gP2IjSLpNR28YwGQjLbbxRa84NNVYGqqj3TiwBeoOCwsvXDiSB43A4HRiPwX16CHRx5bgWbqfW5
+X-Gm-Message-State: AOJu0Yynt19vUnOJNwa/vkufV4N2LyLTOdWsA1WJ6Dm1CmysTp9nlIPn
+	z+82+uiaPjZyGjfvClcxkmrMKrPJDP6T2IlE1gyf5Qa249zitSuiM77UQ7SEsws=
+X-Google-Smtp-Source: AGHT+IGgct7/DUBiFX54SFcRd/msb4Prp84SUeQ3a4S0US+XydZct/QJBwDiHWNudvqF9uSLqugHMw==
+X-Received: by 2002:a05:6a00:1703:b0:6ea:d17f:ae9e with SMTP id h3-20020a056a00170300b006ead17fae9emr15924261pfc.4.1712050543742;
+        Tue, 02 Apr 2024 02:35:43 -0700 (PDT)
+Received: from localhost.localdomain ([2405:201:c00c:2308:970:8782:f539:c9c7])
+        by smtp.gmail.com with ESMTPSA id h25-20020a62b419000000b006e5597994c8sm9389303pfn.5.2024.04.02.02.35.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Apr 2024 02:35:43 -0700 (PDT)
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+To: linus.walleij@linaro.org
+Cc: adobriyan@gmail.com,
+	bartosz.golaszewski@linaro.org,
+	brgl@bgdev.pl,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	wahrenst@gmx.net,
+	warthog618@gmail.com,
+	lkft-triage@lists.linaro.org,
+	anders.roxell@linaro.org,
+	Linux Kernel Functional Testing <lkft@linaro.org>
+Subject: Re: [PATCH v3] gpio: cdev: sanitize the label before requesting the interrupt
+Date: Tue,  2 Apr 2024 15:05:34 +0530
+Message-Id: <20240402093534.212283-1-naresh.kamboju@linaro.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <CACRpkdZf5-QR0aU+jhqpsCbNbD+57TN6Yq_Naq8JoLSWSsM8kw@mail.gmail.com>
+References: <CACRpkdZf5-QR0aU+jhqpsCbNbD+57TN6Yq_Naq8JoLSWSsM8kw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [Regression] 6.8 - i2c_hid_acpi: probe of i2c-XXX0001:00 failed
- with error -110
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <9a880b2b-2a28-4647-9f0f-223f9976fdee@manjaro.org>
- <a587f3f3-e0d5-4779-80a4-a9f7110b0bd2@manjaro.org>
- <2ae8b161-b0e6-404a-afab-3822b8b223f4@redhat.com>
- <fea82ffc-a8fe-4fab-b626-71ddd23d9da7@manjaro.org>
- <122c6af1-b850-4c21-927e-337d9cef6d9c@redhat.com>
- <b41ea2c9-9bf3-4491-ac20-00edfc130a87@manjaro.org>
- <599f96d2-31d6-49ac-9623-1dd03c5407a2@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
-Organization: Manjaro Community
-Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
- <philm@manjaro.org>
-In-Reply-To: <599f96d2-31d6-49ac-9623-1dd03c5407a2@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
+Content-Type: text/plain; charset=yes
+Content-Transfer-Encoding: 8bit
 
-On 02/04/2024 15:52, Hans de Goede wrote:
-> Hi Philip,
-> 
-> Someone else has hit the same problem and has correctly pinpointed
-> it to another commit (in the same series) and submitted a fix
-> upstream:
-> 
-> https://lore.kernel.org/linux-input/20240331182440.14477-1-kl@kl.wtf/T/#u
-> 
-> I'll be reviewing this patch shortly.
-> 
-> Regards,
-> 
-> Hans
+Results from Linaro’s test farm.
+Regressions on arm64, arm, x86_64, and i386 with libgpiod tests.
 
-Hi Hans,
+libgpiod test regressions noticed on Linux stable-rc 6.8, 6.7 and 6.6
+and Linux next and mainline master v6.9-rc2.
 
-I already tested that patch and it works.
+Anders bisected and found this first bad commit,
+  gpio: cdev: sanitize the label before requesting the interrupt
+  commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
 
--- 
-Best, Philip
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+LKFT is running libgpiod test suite version
+  v2.0.1-0-gae275c3 (and also tested v2.1)
+
+libgpiod
+  - _gpiod_edge-event_edge_event_wait_timeout
+  - _gpiod_edge-event_event_copy
+  - _gpiod_edge-event_null_buffer
+  - _gpiod_edge-event_read_both_events
+  - _gpiod_edge-event_read_both_events_blocking
+  - _gpiod_edge-event_read_falling_edge_event
+  - _gpiod_edge-event_read_rising_edge_event
+  - _gpiod_edge-event_read_rising_edge_event_polled
+  - _gpiod_edge-event_reading_more_events_than_the_queue_contains_doesnt_block
+  - _gpiod_edge-event_seqno
+  - _gpiod_line-info_edge_detection_settings
+
+Test log:
+-------
+ok 16 /gpiod/edge-event/edge_event_buffer_max_capacity
+**
+gpiod-test:ERROR:tests-edge-event.c:52:_gpiod_test_func_edge_event_wait_timeout: '_request' should not be NULL
+# gpiod-test:ERROR:tests-edge-event.c:52:_gpiod_test_func_edge_event_wait_timeout: '_request' should not be NULL
+not ok 17 /gpiod/edge-event/edge_event_wait_timeout
+ok 18 /gpiod/edge-event/cannot_request_lines_in_output_mode_with_edge_detection
+**
+gpiod-test:ERROR:tests-edge-event.c:125:_gpiod_test_func_read_both_events: '_request' should not be NULL
+# gpiod-test:ERROR:tests-edge-event.c:125:_gpiod_test_func_read_both_events: '_request' should not be NULL
+not ok 19 /gpiod/edge-event/read_both_events
+
+Steps to reproduce:
+-----
+https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2eUlyN8HN4R1u0RyLwN6hx7IV0I/reproducer
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240402/testrun/23265184/suite/libgpiod/tests/
+ - https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.9-rc2/testrun/23244617/suite/libgpiod/tests/
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2eUlyN8HN4R1u0RyLwN6hx7IV0I
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.2-400-gbffeaccf18b5/testrun/23252337/suite/libgpiod/tests/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.7.y/build/v6.7.11-433-gb15156435f06/testrun/23252698/suite/libgpiod/tests/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.23-397-g75a2533b74d0/testrun/23254910/suite/libgpiod/tests/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
