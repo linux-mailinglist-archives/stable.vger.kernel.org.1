@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-35557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D78894CFA
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:55:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042EA894CFC
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 036CA1C21AEB
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:55:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DE131F227F0
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4712E648;
-	Tue,  2 Apr 2024 07:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3983D0A9;
+	Tue,  2 Apr 2024 07:55:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B532BD1C
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 07:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350DA3B182
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 07:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712044500; cv=none; b=IOthXBJOjpd/M/o/doq3Ioo9rV6OKnr1aijbw+8Mko328cRN4xDe/VD5K+pTCPyck55n0ud7NTg+vq1BFrb9kLk+X2l7UADL8zbcAFPd/PaUffc9fgHFlyLGkwWXsOhA25fy9Ah+q2knpDsZj7MRTwLwiudrxrU6n2+pBTWfIuE=
+	t=1712044517; cv=none; b=k3uK2bqr4akE6DY/LfPvK/C7ZpiUqwoG15VksYQR6Et3aXT1rE/lKaPUb48qQZP6UjHuBYhBkKGKtV+oxfhHGAwJZSk4WAjHVvWyDc6cLbU8juymfnZxftaAo5/gigeWtVKz3FckhgCtnDjzAP13GeUAB99r1l1EgklWtKZjzmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712044500; c=relaxed/simple;
-	bh=Xada8Kkuv6c9gPboHs+cZ8DIdhlvdTxfEPDsVm7WgAw=;
+	s=arc-20240116; t=1712044517; c=relaxed/simple;
+	bh=pkDrgI4cwGNdPGL5YHccOBzQWAmIAJyhXqCvS9+ib+Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GSREFRWgzi0SaLqLqc5WIahNBneFKtr/+cZ7nPpBd8C+bgnRfQ/fiIL+J9zT40pXz353EOls1Cpy+qDZdw1Cd67tGZRC8D5oLb1RReZjLd4c6e/KJ9MdHHcMgKhoiy9Xl/h7oxueLe/cGfadsA/alkyCxjL4qi95yC6f6H5ACTA=
+	 In-Reply-To:Content-Type; b=nQJkFNNQXhgvCq/JhNYXAvx4o4GvXFPajuIivBGp5BUy4+5VuCd/+sR6Aa7jKFEhnoUb0hVK+Jy/1iKr39HHWCAvmcxqqoLl9dO3aoHbhgUa1q1q4vsgbmQNiW1ufqHSRwcWAORcXeX0o3b6xuoJnfrzxn3GSR4MIUb0s60grxc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 675A61042;
-	Tue,  2 Apr 2024 00:55:30 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 89CC11042;
+	Tue,  2 Apr 2024 00:55:46 -0700 (PDT)
 Received: from [10.57.73.65] (unknown [10.57.73.65])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0CA473F64C;
-	Tue,  2 Apr 2024 00:54:56 -0700 (PDT)
-Message-ID: <ffaa1c70-fb64-4982-92b7-8a68091369cb@arm.com>
-Date: Tue, 2 Apr 2024 08:54:55 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A0D883F64C;
+	Tue,  2 Apr 2024 00:55:12 -0700 (PDT)
+Message-ID: <38e3a29c-3c78-489e-bd76-a7d060a307d4@arm.com>
+Date: Tue, 2 Apr 2024 08:55:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,22 +42,22 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 100/396] mm: swap: fix race between
+Subject: Re: [PATCH 6.7 112/432] mm: swap: fix race between
  free_swap_and_cache() and swapoff()
 Content-Language: en-GB
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
  "Huang, Ying" <ying.huang@intel.com>,
  Andrew Morton <akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>
-References: <20240401152547.867452742@linuxfoundation.org>
- <20240401152550.902916260@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
+ <20240401152556.469367725@linuxfoundation.org>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20240401152550.902916260@linuxfoundation.org>
+In-Reply-To: <20240401152556.469367725@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 01/04/2024 16:42, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
+On 01/04/2024 16:41, Greg Kroah-Hartman wrote:
+> 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 LGTM!
 
@@ -139,7 +139,7 @@ LGTM!
 >  1 file changed, 12 insertions(+), 1 deletion(-)
 > 
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 750314fff0c46..eada1351753e3 100644
+> index 022581ec40be3..91397a2539cbe 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
 > @@ -1226,6 +1226,11 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
