@@ -1,74 +1,93 @@
-Return-Path: <stable+bounces-35583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273B6895013
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 12:30:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 283C8895074
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 12:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D266D285A40
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:30:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 943771F217E2
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B5B5C8F4;
-	Tue,  2 Apr 2024 10:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336D55FDA5;
+	Tue,  2 Apr 2024 10:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kTWzZDq0"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l5/YNDdW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2F75B698;
-	Tue,  2 Apr 2024 10:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9B15FBB2
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 10:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712053793; cv=none; b=OA7WgTfOSM47UDG+CwHkMWmZZHp9QeaMG13D1vXPk21XqLjfbkRQ9mCCymr27S/mOLGc6FhHc/9CRjw0z2lTkKhDN/aU67NHEeangfakE/AiYtC7GJkTjsN5gy66bAoCyy5dMks2B/TG6s7UWPZVh3zrExdyqK2uzdT8sGQKYHA=
+	t=1712054278; cv=none; b=apDY8pgZI3iHNrvOLoOy+g8LTgLH1vZTnEK16iBNHqGQEYetGiFeVWobD9RoVr96MvtbR/v+4VNzOzlknBLGSLt8+MMrwCPxMWzm2gAkn3mD0AK7BT4x10BJ2kT/6OwDVSvKBmf6tZBAoEdaidnoc7KpspWZ6ZHd8l0+tXqdFhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712053793; c=relaxed/simple;
-	bh=oIiOFD4tOsDcXxfhOViTyo9H+o3zw8XySy+NN8JBh9U=;
+	s=arc-20240116; t=1712054278; c=relaxed/simple;
+	bh=r91xpWnGr3JVgNBrgKZPO2sDxnqrY2gA5+Cyn/xLnOk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GJkLgmr7JQVFiSFqc4cDmNSl7Miq9DPhbwJu+eQP1hIkfmW3nNow3WmPY2V0ecj+Ev2V4MY+mVArrmc3SJS1lL9KheXqRO2bvIktxFPmpQ35DBuvOlWylMdCGKekWs054QZVF2tPSFaTfzHZ/AgKdiRfwNj8fMkzYPerZOJ3/OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kTWzZDq0; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712053792; x=1743589792;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oIiOFD4tOsDcXxfhOViTyo9H+o3zw8XySy+NN8JBh9U=;
-  b=kTWzZDq0K3SCWX9z9jt950SpCDLE/j36PRJkZncfuXzZhOwyPOuRQEUQ
-   3PJYNAcoyiHZqORB5MAymM0RFrMIZkAfLsTsoxJcexmveh+VVQzceoNXi
-   qCT4kHn4FcFJAqn/apD1wluUDG1KdoP891SHdmpINECFpcE949KUjg9lR
-   udHM9Y5QJChGQ9kStExh04jlvUYchIwzmzY647CUyJlOKG4twCvADCXx/
-   9e/O5OFDlRCrgAKGOQTL22kU4iw8VUofduIx5luzRH23yHKAU20vUaZW0
-   /bmzIAmHfw7GkhG1DwVsdjNb7RcHwM2kUSXoTkZUso+iht33rmu1JhbOt
-   w==;
-X-CSE-ConnectionGUID: DP+Xt5nZRR6pcas6Wz3r5A==
-X-CSE-MsgGUID: DBVrAvh+QruDidARgCZNZQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11031"; a="7085043"
-X-IronPort-AV: E=Sophos;i="6.07,174,1708416000"; 
-   d="scan'208";a="7085043"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 03:29:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11031"; a="937083293"
-X-IronPort-AV: E=Sophos;i="6.07,174,1708416000"; 
-   d="scan'208";a="937083293"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 02 Apr 2024 03:29:48 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 02 Apr 2024 13:29:47 +0300
-Date: Tue, 2 Apr 2024 13:29:47 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Javier Carrasco <javier.carrasco@wolfvision.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Abdel Alkuor <abdelalkuor@geotab.com>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND 2/2] usb: typec: tipd: fix event checking for
- tps6598x
-Message-ID: <ZgveG5Ly3mw0O0eo@kuha.fi.intel.com>
-References: <20240328-tps6598x_fix_event_handling-v1-0-502721ff705b@wolfvision.net>
- <20240328-tps6598x_fix_event_handling-v1-2-502721ff705b@wolfvision.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DAv5NxeIQjU/SUqvMk9D2Rkwx/F/sXp6S4fHebgkGc3fkIoKkGR8eCzd3njJJws+/uoO4lypgH8XW/EnWsO492dA2+ILbsHs95ASqikeXFW/PjZkHTh4AsdWFURfW4NZIRZU/u90eUDzUy7AnZg1kYs0ek1HUjsiBgW42zwIncg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l5/YNDdW; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56c583f5381so6583631a12.1
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 03:37:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712054274; x=1712659074; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jz9Y9PjigYVKEbCw1GNYP1RDI4ZuVwZ4udJg2a4ZlkM=;
+        b=l5/YNDdWIxpd8NcoQzu5rRG8SXremuJJWNZIrc1Jz8q8JWz76HkdpNxicvZpdg/7nz
+         VVdwibMzeH5Xz616ppJzJoeZtUlIN4DMKhaNv3sTtWqY0efSDc7mCMG06SPzYmxQBf7R
+         KCPkhVamaeT7jSe9R2omuF6e1q9WKpXvAgiIHbjwEci5cptrgmS4htxgw7knUJQRCIL5
+         WY+aUjvv8ul0aAJ2RETu7Vg6HEV5puMhw/vBDYIkjX85i5UrkUdIdv9mcyDZkBk2qf/k
+         D6RbkXHjEtua5V2ZaSV3v0Ok2g9+Dv8vii8DD0aetQbnFL4IZJsCXaErTRrdkoW/Tzr0
+         111Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712054274; x=1712659074;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jz9Y9PjigYVKEbCw1GNYP1RDI4ZuVwZ4udJg2a4ZlkM=;
+        b=gcTutCZdJE20VN2asUORiStR6hZYA+M3/R+tgfsynVCkdfsKMeBXoe6xzeveB72Kgx
+         BEFUc+UPMXHpN7up+xESwCvlnW9ta7WDjF/bxD7YwzQXOxYkv8cTz0B+p8nBhbhNpvqz
+         UiDYbOsbRcTa/j4v9clMbhIHklyFNfmIIPNZ+I/8NQUJ07w7ezsKkV1W+ivGRUon9T7o
+         9eyeAT8y73AiRrWDn9forSlRO5rz96rm57mEDvr+EruF5h461dZFEgmRuzbXdCr6FdO6
+         0iVE+KbJmy64v4zbrigk4YUDMIr4nDTwHbWQ1gOUifxNVTlrLCkyPLTL5ibJeEgWyTRP
+         4MgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQkXUpxj7LU++4Brkj8YIV5u/eLY0QXgLCk7X7hcnPd/eEUmWpePYURt7H9yWMHgV0VFwJgXGXbdPjJpfZH+bTyigTXe3b
+X-Gm-Message-State: AOJu0YxS1Q/rEtrhslT0i11GbMrqtCvHv8XYwt0JtLVp2WRezYVXzcdR
+	My9qXAe/aRvYIV78w95r436UZWO277m2MQYn96jnTO9CaI2r1lC2pCa1TKS+6vY=
+X-Google-Smtp-Source: AGHT+IFLXanUhL+rTkL5dhPieUFNxekE62yhWKGrRFO2Vdc9oBu4cKCdI7vD6zG/l7HO+KOWLoErNA==
+X-Received: by 2002:a50:d5c8:0:b0:568:aced:e5a0 with SMTP id g8-20020a50d5c8000000b00568acede5a0mr13872744edj.14.1712054274194;
+        Tue, 02 Apr 2024 03:37:54 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id k7-20020aa7c047000000b0056c443ce781sm6591488edo.85.2024.04.02.03.37.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Apr 2024 03:37:53 -0700 (PDT)
+Date: Tue, 2 Apr 2024 13:37:50 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Alexander Wetzel <alexander@wetzel-home.de>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	LTP List <ltp@lists.linux.it>
+Subject: Re: [PATCH 6.6 000/396] 6.6.24-rc1 review
+Message-ID: <1d1071f3-641a-4b7c-bd35-a629ba8d5a7b@moroto.mountain>
+References: <20240401152547.867452742@linuxfoundation.org>
+ <CA+G9fYvewkbwR_i07HHTM=8E2yS-0wRhOT-C45LP3SNtzgd+4Q@mail.gmail.com>
+ <29a7a1e5-da67-47fc-b1fd-ef65902ec252@wetzel-home.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,111 +96,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240328-tps6598x_fix_event_handling-v1-2-502721ff705b@wolfvision.net>
+In-Reply-To: <29a7a1e5-da67-47fc-b1fd-ef65902ec252@wetzel-home.de>
 
-On Thu, Mar 28, 2024 at 05:55:52PM +0100, Javier Carrasco wrote:
-> The current interrupt service routine of the tps6598x only reads the
-> first 64 bits of the INT_EVENT1 and INT_EVENT2 registers, which means
-> that any event above that range will be ignored, leaving interrupts
-> unattended. Moreover, those events will not be cleared, and the device
-> will keep the interrupt enabled.
+On Mon, Apr 01, 2024 at 09:22:52PM +0200, Alexander Wetzel wrote:
 > 
-> This issue has been observed while attempting to load patches, and the
-> 'ReadyForPatch' field (bit 81) of INT_EVENT1 was set.
+> > Following kernel warnings have been noticed on qemu-x86_64 while running LTP
+> > cve ioctl_sg01 tests the kernel with stable-rc 6.6.24-rc1, 6.7.12-rc1 and
+> > 6.8.3-rc1.
+> > 
+> > We have started bi-secting this issue.
+> > Always reproduced.
+> > 
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > 
+> > ioctl_sg01.c:81: TINFO: Found SCSI device /dev/sg0
+> > ------------[ cut here ]------------
+> > [   36.606841] WARNING: CPU: 0 PID: 8 at drivers/scsi/sg.c:2237
+> > sg_remove_sfp_usercontext+0x145/0x150
+> > [   36.609445] Modules linked in:
+> > [   36.610793] CPU: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.6.24-rc1 #1
+> > [   36.611568] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+> > BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+> > [   36.612872] Workqueue: events sg_remove_sfp_usercontext
+> > [   36.613691] RIP: 0010:sg_remove_sfp_usercontext+0x145/0x150
+> > 
+> > <trim>
+> > 
+> > [   36.621539] Call Trace:
+> > [   36.621953]  <TASK>
+> > [   36.622444]  ? show_regs+0x69/0x80
+> > [   36.622819]  ? __warn+0x8d/0x150
+> > [   36.623078]  ? sg_remove_sfp_usercontext+0x145/0x150
+> > [   36.623558]  ? report_bug+0x171/0x1a0
+> > [   36.623881]  ? handle_bug+0x42/0x80
+> > [   36.624070]  ? exc_invalid_op+0x1c/0x70
+> > [   36.624491]  ? asm_exc_invalid_op+0x1f/0x30
+> > [   36.624897]  ? sg_remove_sfp_usercontext+0x145/0x150
+> > [   36.625408]  process_one_work+0x141/0x300
+> > [   36.625769]  worker_thread+0x2f6/0x430
+> > [   36.626073]  ? __pfx_worker_thread+0x10/0x10
+> > [   36.626529]  kthread+0x105/0x140
+> > [   36.626778]  ? __pfx_kthread+0x10/0x10
+> > [   36.627059]  ret_from_fork+0x41/0x60
+> > [   36.627441]  ? __pfx_kthread+0x10/0x10
+> > [   36.627735]  ret_from_fork_asm+0x1b/0x30
+> > [   36.628293]  </TASK>
+> > [   36.628604] ---[ end trace 0000000000000000 ]---
+> > ioctl_sg01.c:122: TPASS: Output buffer is empty, no data leaked
+> > 
+> > Suspecting commit:
+> > -----
+> > scsi: sg: Avoid sg device teardown race
+> > commit 27f58c04a8f438078583041468ec60597841284d upstream.
+> > 
 > 
-> Read the complete INT_EVENT registers to handle all interrupts generated
-> by the device in a similar fashion to what is already done for the
-> tps25750.
+> Correct. The issue is already been worked on.
 > 
-> Fixes: 0a4c005bd171 ("usb: typec: driver for TI TPS6598x USB Power Delivery controllers")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
-> ---
->  drivers/usb/typec/tipd/core.c | 31 ++++++++++++++++++-------------
->  1 file changed, 18 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
-> index 7c2f01344860..308748d6cae6 100644
-> --- a/drivers/usb/typec/tipd/core.c
-> +++ b/drivers/usb/typec/tipd/core.c
-> @@ -637,48 +637,53 @@ static irqreturn_t tps25750_interrupt(int irq, void *data)
->  static irqreturn_t tps6598x_interrupt(int irq, void *data)
->  {
->  	struct tps6598x *tps = data;
-> -	u64 event1 = 0;
-> -	u64 event2 = 0;
-> +	u64 event1[2] = { };
-> +	u64 event2[2] = { };
->  	u32 status;
->  	int ret;
->  
->  	mutex_lock(&tps->lock);
->  
-> -	ret = tps6598x_read64(tps, TPS_REG_INT_EVENT1, &event1);
-> -	ret |= tps6598x_read64(tps, TPS_REG_INT_EVENT2, &event2);
-> +	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT1, event1, 11);
+> commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race") fixed a real
+> issue. But also added an incorrect WARN_ON_ONCE(). Thus the scary - but
+> otherwise harmless - error message.
 
-This is not going to work with the older TI PD controllers.
+If you have Reboot on Oops turned on (apparently Android enables this)
+then WARN() will reboot the system so it can be pretty annoying.
 
-The lenght of these registers is 8 bytes on the older TI PD
-controllers (TPS65981, TPS65982, etc.). I think we need to split this
-function.
+regards,
+dan carpenter
 
->  	if (ret) {
-> -		dev_err(tps->dev, "%s: failed to read events\n", __func__);
-> +		dev_err(tps->dev, "%s: failed to read event1\n", __func__);
->  		goto err_unlock;
->  	}
-> -	trace_tps6598x_irq(event1, event2);
-> +	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT2, event2, 11);
-> +	if (ret) {
-> +		dev_err(tps->dev, "%s: failed to read event2\n", __func__);
-> +		goto err_unlock;
-> +	}
-> +	trace_tps6598x_irq(event1[0], event2[0]);
->  
-> -	if (!(event1 | event2))
-> +	if (!(event1[0] | event1[1] | event2[0] | event2[1]))
->  		goto err_unlock;
->  
->  	if (!tps6598x_read_status(tps, &status))
->  		goto err_clear_ints;
->  
-> -	if ((event1 | event2) & TPS_REG_INT_POWER_STATUS_UPDATE)
-> +	if ((event1[0] | event2[0]) & TPS_REG_INT_POWER_STATUS_UPDATE)
->  		if (!tps6598x_read_power_status(tps))
->  			goto err_clear_ints;
->  
-> -	if ((event1 | event2) & TPS_REG_INT_DATA_STATUS_UPDATE)
-> +	if ((event1[0] | event2[0]) & TPS_REG_INT_DATA_STATUS_UPDATE)
->  		if (!tps6598x_read_data_status(tps))
->  			goto err_clear_ints;
->  
->  	/* Handle plug insert or removal */
-> -	if ((event1 | event2) & TPS_REG_INT_PLUG_EVENT)
-> +	if ((event1[0] | event2[0]) & TPS_REG_INT_PLUG_EVENT)
->  		tps6598x_handle_plug_event(tps, status);
->  
->  err_clear_ints:
-> -	tps6598x_write64(tps, TPS_REG_INT_CLEAR1, event1);
-> -	tps6598x_write64(tps, TPS_REG_INT_CLEAR2, event2);
-> +	tps6598x_block_write(tps, TPS_REG_INT_CLEAR1, event1, 11);
-> +	tps6598x_block_write(tps, TPS_REG_INT_CLEAR2, event2, 11);
->  
->  err_unlock:
->  	mutex_unlock(&tps->lock);
->  
-> -	if (event1 | event2)
-> +	if (event1[0] | event1[1] | event2[0] | event2[1])
->  		return IRQ_HANDLED;
-> +
->  	return IRQ_NONE;
->  }
->  
-> 
-> -- 
-> 2.40.1
-
--- 
-heikki
 
