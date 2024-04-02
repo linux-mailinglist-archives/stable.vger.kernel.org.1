@@ -1,221 +1,123 @@
-Return-Path: <stable+bounces-35609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB00689559B
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 15:43:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B598B895597
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 15:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C971C21BBD
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:43:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709FB289430
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387CE84A27;
-	Tue,  2 Apr 2024 13:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103B885650;
+	Tue,  2 Apr 2024 13:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zd/YRuxa";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Cs4X7DBl"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="2EZej/8t"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1897583CD5;
-	Tue,  2 Apr 2024 13:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E7C81AB6
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 13:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712065364; cv=none; b=SxcvEtoDP3NrR1e+AtsVFBD4TRTq77RDgwvveO5Ayt0Q435EOSModMhjpjr1l5EX3kC3fgalNl07Z5CrE+zltFLfOUiq0L7kMdsS585mhJCEwRiXty4DqM3bvcmBsNuwKw2ZxFHk7iLKn6PsOGK5ZiPvDd/cCuJL0E5gTbbQTx4=
+	t=1712065301; cv=none; b=njirHTleHz2Z0/LpgbK37Z1WrZf/vKOCYQ1v10ZC021aeZfNLMbx7QTogMHtY7RimQQp892XIzEVm1SF9AK+/PyifagK4Ao6JsHdaairotX/hxLO1De1VESXPerO6JHgEdFD6rtH0ly268IUlHJQ3c+ujfZG514Yep+QVlYYMNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712065364; c=relaxed/simple;
-	bh=MlUycxdS6lVRK2S85U44UNUostkZFlkZoAURLsGl2bk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RH5L/gyHI/oN/pNXbKHGNkKgOYQQFK5u4AOXp10ZodZIA4z8pSZvIE7hZiEegufss6MbDcB1i1vm/XFuRivRARlA8NjYy085oGTuezZa39QFdXHrKiidWS0f8bNTirhTDgB7Me1DHJFBLzGYGmYYlRu2iL2yy8OtMJVg/vO+NaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=zd/YRuxa; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Cs4X7DBl; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3C11121019;
-	Tue,  2 Apr 2024 13:42:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712065359;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MRUafwF6yROA4D7wJATslOW8UadIrcpth9o6WHeqWmg=;
-	b=zd/YRuxat3eux15NUNS1MrFs0RCvA67w232Ra+Fz0LqdG6wVl1p72TutzvOu+YWtaI8URp
-	7iC7ITRyNSf6vjaG+ZXoQUcw09RSoSlTYRbupJuKwdCQNV32Ku39rljqlylZyeoBKL2yGg
-	LNp7qXxgnTljR2j9OvN8dcb3MKQeVSE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712065359;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MRUafwF6yROA4D7wJATslOW8UadIrcpth9o6WHeqWmg=;
-	b=Cs4X7DBlEb1Vkr3FffQ8jiwpEihkd16OrV22I8ip1Q+pzc1bGMcEfY8Q0gDWt7tQDwVARt
-	D0nTJgWbj5gesDAg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=none
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 1650813A90;
-	Tue,  2 Apr 2024 13:42:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id 1x5KBU8LDGaDWQAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Tue, 02 Apr 2024 13:42:39 +0000
-Date: Tue, 2 Apr 2024 15:35:18 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Filipe Manana <fdmanana@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-	clm@fb.com, linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.8 59/68] btrfs: preallocate temporary extent
- buffer for inode logging when needed
-Message-ID: <20240402133518.GD14596@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <20240329122652.3082296-1-sashal@kernel.org>
- <20240329122652.3082296-59-sashal@kernel.org>
+	s=arc-20240116; t=1712065301; c=relaxed/simple;
+	bh=0LtRApWIgSlpJ9ww/YIqK7ZhGrxEnPNn5T2jGau3Mqg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=TP2J75XX+x8F0Oi2Ioi/q6pmFRVr3tSE0vI6zrkjswhnCJv6skyq3Lkzuh2wSJp+swVO0mtFPx+CjhuNTWPUEzq2WisRLMvUf0jafRQNJYqGpGcnAy9KX5MArtYe/j5nv40RPSB2JOItJIqNTMe9VBCBT6XTLlhqMkq67KVBCf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=2EZej/8t; arc=none smtp.client-ip=209.85.166.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-7c8e4c0412dso32155639f.1
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 06:41:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1712065299; x=1712670099; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4ayu5f1JpVyjh9EymQM1sQHOrd/giDk3ss1JwfvraeE=;
+        b=2EZej/8tfFfaTOOX95T9KAJg10lp4PXkT6jn1C7LiXCjN5WS3dwzcy1DCWxNFCGGfv
+         8kiAglMtxO69/47BJASC6t5M0R4dE4M4+FvlzJcuICsomBrtDXmIP4VEzsquX648L6ZV
+         0hNcdiRxQGRMu9khCkr6mpOdLt3TOkmBaZHh4cg+0y2S9CvgcShknHjWeWdWWNJ77Lo0
+         gJxs9MPG67Mx3qdNOCUSIO+0i88BJki+DOeIa8ZxuTcrmIKOFqNRDu9labKWvMTg9Qpx
+         rhpkVkkCaAYyuJAS5meMpvzDjvqV3aKKsKhcu2XtEVSEhEW+ZNqT5EG6DU/cnV5zK+6R
+         XtUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712065299; x=1712670099;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ayu5f1JpVyjh9EymQM1sQHOrd/giDk3ss1JwfvraeE=;
+        b=IiC9HPRP2cE41SL3B335bl17U6FcyzjOIu1JtUNOKItsyWN3zzSOxerrRGzfK436VR
+         64bLYYxuWdCN8obs9PALMUksEm0EecGGN7v+0GAtBEroYn4nel+hGWV6HZnvwG7/WqBa
+         dFNugOrbXamU+4wtV9XR4JJ4GBaq8GinPbkd7QRAZ0KBo3TwateIWy9MTRjSHKMM6wqq
+         BdnhR5P/vtlbHO70vM2aRXRkyVA0eg1lWpFMtpuIDKhEKHsjTRiyRZVH4MMhTeRPK0TO
+         YJ1Js07tVcvBqQDB/4CMe3Ll0l+rkKNeEOoaxHrfvVinSv0xONjBsesWznd1STPMJEbv
+         hXAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUonvW0S9jrBYQbwdtkntwIawmpHnWTmSYKZlTFasCTW7mlwQcTAXlljabfP4Sp3j7B2TLNwVB+buyvpCO3OuBoZHQOj83K
+X-Gm-Message-State: AOJu0YzQ9HPDCWK80ZmX0Z662mKndbIdrzp0owTZFNd2bjqd2G8d9Loz
+	GspbC3lg6Nqfv1lvAzzTKB0BLy9L7Xja0+gCao+QaX/O6IxMCdy37ntEyyPuUAI=
+X-Google-Smtp-Source: AGHT+IGDUMItsDY7XwZRAzi1VsGUdRgc2+dwdqgArOafC34sSXfwfBgED9VOJLRu6JugwPpSDO3KfQ==
+X-Received: by 2002:a6b:7d0c:0:b0:7d0:3f6b:6af9 with SMTP id c12-20020a6b7d0c000000b007d03f6b6af9mr12019000ioq.0.1712065298876;
+        Tue, 02 Apr 2024 06:41:38 -0700 (PDT)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id it37-20020a05663885a500b00476f1daad44sm3194814jab.54.2024.04.02.06.41.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Apr 2024 06:41:38 -0700 (PDT)
+Message-ID: <2ff5d891-2120-475d-be8e-82bf20a8b7b7@kernel.dk>
+Date: Tue, 2 Apr 2024 07:41:37 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240329122652.3082296-59-sashal@kernel.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Score: -1.29
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-1.29 / 50.00];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 MX_GOOD(-0.01)[];
-	 NEURAL_HAM_SHORT(-0.20)[-0.999];
-	 RCPT_COUNT_SEVEN(0.00)[8];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 R_DKIM_NA(2.20)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_MATCH_FROM(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-0.48)[-0.481];
-	 MIME_GOOD(-0.10)[text/plain];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:98:from]
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 3C11121019
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.8 015/715] io_uring: remove unconditional looping in
+ local task_work handling
+Content-Language: en-US
+To: Jiri Slaby <jirislaby@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240324223455.1342824-1-sashal@kernel.org>
+ <20240324223455.1342824-16-sashal@kernel.org>
+ <bcf80774-98c2-4c14-a1e7-6efcb79a7fee@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <bcf80774-98c2-4c14-a1e7-6efcb79a7fee@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 29, 2024 at 08:25:55AM -0400, Sasha Levin wrote:
-> From: Filipe Manana <fdmanana@suse.com>
+On 4/2/24 2:12 AM, Jiri Slaby wrote:
+> On 24. 03. 24, 23:23, Sasha Levin wrote:
+>> From: Jens Axboe <axboe@kernel.dk>
+>>
+>> [ Upstream commit 9fe3eaea4a3530ca34a8d8ff00b1848c528789ca ]
+>>
+>> If we have a ton of notifications coming in, we can be looping in here
+>> for a long time. This can be problematic for various reasons, mostly
+>> because we can starve userspace. If the application is waiting on N
+>> events, then only re-run if we need more events.
 > 
-> [ Upstream commit e383e158ed1b6abc2d2d3e6736d77a46393f80fa ]
+> This commit breaks test/recv-multishot.c from liburing:
+> early error: res 4
+> test stream=1 wait_each=0 recvmsg=0 early_error=0  defer=1 failed
 > 
-> When logging an inode and we require to copy items from subvolume leaves
-> to the log tree, we clone each subvolume leaf and than use that clone to
-> copy items to the log tree. This is required to avoid possible deadlocks
-> as stated in commit 796787c978ef ("btrfs: do not modify log tree while
-> holding a leaf from fs tree locked").
+> The behaviour is the same in 6.9-rc2 (which contains the commit too).
 > 
-> The cloning requires allocating an extent buffer (struct extent_buffer)
-> and then allocating pages (folios) to attach to the extent buffer. This
-> may be slow in case we are under memory pressure, and since we are doing
-> the cloning while holding a read lock on a subvolume leaf, it means we
-> can be blocking other operations on that leaf for significant periods of
-> time, which can increase latency on operations like creating other files,
-> renaming files, etc. Similarly because we're under a log transaction, we
-> may also cause extra delay on other tasks doing an fsync, because syncing
-> the log requires waiting for tasks that joined a log transaction to exit
-> the transaction.
+> Reverting the commit on the top of 6.8.2 makes it pass again.
 > 
-> So to improve this, for any inode logging operation that needs to copy
-> items from a subvolume leaf ("full sync" or "copy everything" bit set
-> in the inode), preallocate a dummy extent buffer before locking any
-> extent buffer from the subvolume tree, and even before joining a log
-> transaction, add it to the log context and then use it when we need to
-> copy items from a subvolume leaf to the log tree. This avoids making
-> other operations get extra latency when waiting to lock a subvolume
-> leaf that is used during inode logging and we are under heavy memory
-> pressure.
-> 
-> The following test script with bonnie++ was used to test this:
-> 
->   $ cat test.sh
->   #!/bin/bash
-> 
->   DEV=/dev/sdh
->   MNT=/mnt/sdh
->   MOUNT_OPTIONS="-o ssd"
-> 
->   MEMTOTAL_BYTES=`free -b | grep Mem: | awk '{ print $2 }'`
->   NR_DIRECTORIES=20
->   NR_FILES=20480
->   DATASET_SIZE=$((MEMTOTAL_BYTES * 2 / 1048576))
->   DIRECTORY_SIZE=$((MEMTOTAL_BYTES * 2 / NR_FILES))
->   NR_FILES=$((NR_FILES / 1024))
-> 
->   echo "performance" | \
->       tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
-> 
->   umount $DEV &> /dev/null
->   mkfs.btrfs -f $MKFS_OPTIONS $DEV
->   mount $MOUNT_OPTIONS $DEV $MNT
-> 
->   bonnie++ -u root -d $MNT \
->       -n $NR_FILES:$DIRECTORY_SIZE:$DIRECTORY_SIZE:$NR_DIRECTORIES \
->       -r 0 -s $DATASET_SIZE -b
-> 
->   umount $MNT
-> 
-> The results of this test on a 8G VM running a non-debug kernel (Debian's
-> default kernel config), were the following.
-> 
-> Before this change:
-> 
->   Version 2.00a       ------Sequential Output------ --Sequential Input- --Random-
->                       -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
->   Name:Size etc        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
->   debian0       7501M  376k  99  1.4g  96  117m  14 1510k  99  2.5g  95 +++++ +++
->   Latency             35068us   24976us    2944ms   30725us   71770us   26152us
->   Version 2.00a       ------Sequential Create------ --------Random Create--------
->   debian0             -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
->   files:max:min        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
->   20:384100:384100/20 20480  32 20480  58 20480  48 20480  39 20480  56 20480  61
->   Latency               411ms   11914us     119ms     617ms   10296us     110ms
-> 
-> After this change:
-> 
->   Version 2.00a       ------Sequential Output------ --Sequential Input- --Random-
->                       -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
->   Name:Size etc        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
->   debian0       7501M  375k  99  1.4g  97  117m  14 1546k  99  2.3g  98 +++++ +++
->   Latency             35975us  20945us    2144ms   10297us    2217us    6004us
->   Version 2.00a       ------Sequential Create------ --------Random Create--------
->   debian0             -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
->   files:max:min        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
->   20:384100:384100/20 20480  35 20480  58 20480  48 20480  40 20480  57 20480  59
->   Latency               320ms   11237us   77779us     518ms    6470us   86389us
-> 
-> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Should the test be updated or is the commit wrong?
 
-This is a performance improvement, how does this qualify for stable? I
-read only about notable perfromance fixes but this is not one.
+The commit is fine, it's the test that is buggy. Sometimes test cases
+make odd assumptions that are just wrong but happen to work, for some
+definition of work. Eg it would work fine on an idle system, but not
+necessarily if not. For this one, the fix is in liburing:
+
+https://git.kernel.dk/cgit/liburing/commit/test/recv-multishot.c?id=a1d5e4b863a60af93d0cab9d4bbf578733337a90
+
+-- 
+Jens Axboe
+
 
