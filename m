@@ -1,81 +1,78 @@
-Return-Path: <stable+bounces-35591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE36895136
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:01:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947B3895184
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:11:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF862B26DEF
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 501A9285E8B
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C125877F11;
-	Tue,  2 Apr 2024 10:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0576757FB;
+	Tue,  2 Apr 2024 11:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qQ/QZzXd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TVRM3ogD"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E6E76048;
-	Tue,  2 Apr 2024 10:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AFF757EA
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 11:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712055523; cv=none; b=DF+dGpviY6NZvZYyfqiqMIWi0K7+GjgJuIX4lU1vh/h5TWGdzubCdhprhwN4zgyQoal1sbuqMrHRaUxEP8D6P4RCzaSPzXKDxplVJmG4SMs39SwrdaU/XLbMKxGlPWLkN+E/SC1/OEuFPsW7O40ABZWeoLvOJ8V+L7o7e4QRA44=
+	t=1712056227; cv=none; b=f+KQx7cDx/vQQpbGeY17bFmJRrp64yCd591Jz5ppLWZ1hunfC2ypfFo7CZWXPywiqEzbwQ0tcxeRTCRWh6QajHjIvc4Y3UeWQBb+NLxCyrppX4kM29d1xotRfGTK3aAA/a9EI/x4qomakJxFSn5IMOpTGiEQd4YljiMMgiwru3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712055523; c=relaxed/simple;
-	bh=+Ydi6LkKPpIwGCjEGUPKUAynMc6uP14NLPzukWdFjm4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y9YbR/kYWvr+G5fOyjheTLgWRlKfMtrr79aDUjN67uqlLKpiK/oO+ZO0kVaLQd7jR7SlSjCiovbhSIcrVOTFxwV3Ug4KMEVBxPdJAU+eL2ymf5NE5KSHthj3MXnizueuec1N2/+WgBPuaeG9O2nBTz+ijoid5x7zYxZk1Kg8oVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qQ/QZzXd; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 432AM04L008981;
-	Tue, 2 Apr 2024 10:58:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=1ww2COLBTJ7bgaqnVHBGXC4jLJucs8Cb646lLA0cG04=;
- b=qQ/QZzXddIXh983H3uImULbsCLmIgChfDaoNO8dVbcBOiqsDI4TC7nrxFwdxKzbpQVsK
- t3peLKBDNP2o9foNzRzQ5+gR9CppF3KUVA0/6fdqTMAjOMuJUNJeVVRBuQZ2iXP11tPQ
- 2S0yfDKVPYOMqo2sDU1VZfVaH+wTjdm0lCRT5Roo9xHXvQW8P/APS6sDXP3aj1YiERgQ
- GyKaD3Rb403KSsw2f2Q9PDS1WJH0xeHFfWzMSu7HsDibfQX8N0fNzStNxAL07JU4KGkC
- f75fChqGSgZs0R8rE3NVlMqFs2A6Hkw+bg9y6A1nSFQV1vUcsOw0M3P0YVPFZzSNeJQ/ ng== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x8eyagbgp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Apr 2024 10:58:13 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4329B4JQ015207;
-	Tue, 2 Apr 2024 10:58:13 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x6y9kwmqc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Apr 2024 10:58:13 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 432Aw9oH47186180
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Apr 2024 10:58:11 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 57E1F20043;
-	Tue,  2 Apr 2024 10:58:09 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 45E0520040;
-	Tue,  2 Apr 2024 10:58:07 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.203.115.195])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  2 Apr 2024 10:58:06 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-        Martin KaFai Lau <martin.lau@linux.dev>, stable@vger.kernel.org
-Subject: [PATCH v3 1/2] powerpc64/bpf: fix tail calls for PCREL addressing
-Date: Tue,  2 Apr 2024 16:28:05 +0530
-Message-ID: <20240402105806.352037-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1712056227; c=relaxed/simple;
+	bh=D82Cu+k7soY7muyH2dTK24VwPrkWKYANjR2Lou+kH1Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OJZNLBH1/XiM0MJ8a5rAYEB1OkFLK44qZ3JNu2ROok8na8jMsd4lrCwH4QwHlT1h7CUts9EIqa61R/FtpM1HKZ0z/Q909/1FKk68eNoSNW9U9OIAebZmASd6zY/RsfGJObOdwkSKCUagHF3TlfX5b0yMjwB8JzRe0iCxdHyZ2UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TVRM3ogD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712056223;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DLT5ckQGMXEvE99iwSwMB8TwwirxI50ACS3O2c0dAd0=;
+	b=TVRM3ogD1q3SLIv/jY0cd1PTbSKE0UDh6hno/k/senosAEo6X55Z538Lv1Z3JjsZ37xoqL
+	2pMwCxyqXNtzdoiFwAD8iQvMhdmGs15xa9KPyuj5Lj9jBaMBRhEuGCEywr5FMKTwdF1nNe
+	j//nHf8t1gXbCLcPuk6blQW/EHiRwZU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-592-xwur5C-EPCmniNxv3V7M-w-1; Tue, 02 Apr 2024 07:10:18 -0400
+X-MC-Unique: xwur5C-EPCmniNxv3V7M-w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 530F8101A533;
+	Tue,  2 Apr 2024 11:10:17 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.194.45])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 11F73492BD4;
+	Tue,  2 Apr 2024 11:10:13 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Kenny Levinsen <kl@kl.wtf>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Julian Sax <jsbc@gmx.de>,
+	ahormann@gmx.net,
+	Bruno Jesus <bruno.fl.jesus@gmail.com>,
+	Dietrich <enaut.w@googlemail.com>,
+	kloxdami@yahoo.com,
+	Tim Aldridge <taldridge@mac.com>,
+	Rene Wagner <redhatbugzilla@callerid.de>,
+	Federico Ricchiuto <fed.ricchiuto@gmail.com>,
+	linux-input@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] HID: i2c-hid: Revert to await reset ACK before reading report descriptor
+Date: Tue,  2 Apr 2024 13:10:04 +0200
+Message-ID: <20240402111004.161434-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,58 +80,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: V-_q5Nr3V6K8HGWUHWkNp2QfkgIABNiX
-X-Proofpoint-ORIG-GUID: V-_q5Nr3V6K8HGWUHWkNp2QfkgIABNiX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-02_04,2024-04-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- impostorscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 malwarescore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2404020079
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-With PCREL addressing, there is no kernel TOC. So, it is not setup in
-prologue when PCREL addressing is used. But the number of instructions
-to skip on a tail call was not adjusted accordingly. That resulted in
-not so obvious failures while using tailcalls. 'tailcalls' selftest
-crashed the system with the below call trace:
+From: Kenny Levinsen <kl@kl.wtf>
 
-  bpf_test_run+0xe8/0x3cc (unreliable)
-  bpf_prog_test_run_skb+0x348/0x778
-  __sys_bpf+0xb04/0x2b00
-  sys_bpf+0x28/0x38
-  system_call_exception+0x168/0x340
-  system_call_vectored_common+0x15c/0x2ec
+In af93a167eda9, i2c_hid_parse was changed to continue with reading the
+report descriptor before waiting for reset to be acknowledged.
 
-Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
+This has lead to two regressions:
+
+1. We fail to handle reset acknowledgment if it happens while reading
+   the report descriptor. The transfer sets I2C_HID_READ_PENDING, which
+   causes the IRQ handler to return without doing anything.
+
+   This affects both a Wacom touchscreen and a Sensel touchpad.
+
+2. On a Sensel touchpad, reading the report descriptor this quickly
+   after reset results in all zeroes or partial zeroes.
+
+The issues were observed on the Lenovo Thinkpad Z16 Gen 2.
+
+The change in question was made based on a Microsoft article[0] stating
+that Windows 8 *may* read the report descriptor in parallel with
+awaiting reset acknowledgment, intended as a slight reset performance
+optimization. Perhaps they only do this if reset is not completing
+quickly enough for their tastes?
+
+As the code is not currently ready to read registers in parallel with a
+pending reset acknowledgment, and as reading quickly breaks the report
+descriptor on the Sensel touchpad, revert to waiting for reset
+acknowledgment before proceeding to read the report descriptor.
+
+[0]: https://learn.microsoft.com/en-us/windows-hardware/drivers/hid/plug-and-play-support-and-power-management
+
+Fixes: af93a167eda9 ("HID: i2c-hid: Move i2c_hid_finish_hwreset() to after reading the report-descriptor")
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2271136
 Cc: stable@vger.kernel.org
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Kenny Levinsen <kl@kl.wtf>
+Link: https://lore.kernel.org/r/20240331182440.14477-1-kl@kl.wtf
+[hdegoede@redhat.com Drop no longer necessary abort_reset error exit path]
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
+ drivers/hid/i2c-hid/i2c-hid-core.c | 29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
-* Changes in v3:
-  - New patch to fix tailcall issues with PCREL addressing.
-
-
- arch/powerpc/net/bpf_jit_comp64.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 79f23974a320..7f62ac4b4e65 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -285,8 +285,10 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
- 	int b2p_index = bpf_to_ppc(BPF_REG_3);
- 	int bpf_tailcall_prologue_size = 8;
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index 2df1ab3c31cc..13d67d7c67b4 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -735,12 +735,15 @@ static int i2c_hid_parse(struct hid_device *hid)
+ 	mutex_lock(&ihid->reset_lock);
+ 	do {
+ 		ret = i2c_hid_start_hwreset(ihid);
+-		if (ret)
++		if (ret == 0)
++			ret = i2c_hid_finish_hwreset(ihid);
++		else
+ 			msleep(1000);
+ 	} while (tries-- > 0 && ret);
++	mutex_unlock(&ihid->reset_lock);
  
-+#ifndef CONFIG_PPC_KERNEL_PCREL
- 	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
- 		bpf_tailcall_prologue_size += 4; /* skip past the toc load */
-+#endif
+ 	if (ret)
+-		goto abort_reset;
++		return ret;
  
- 	/*
- 	 * if (index >= array->map.max_entries)
+ 	use_override = i2c_hid_get_dmi_hid_report_desc_override(client->name,
+ 								&rsize);
+@@ -750,11 +753,8 @@ static int i2c_hid_parse(struct hid_device *hid)
+ 		i2c_hid_dbg(ihid, "Using a HID report descriptor override\n");
+ 	} else {
+ 		rdesc = kzalloc(rsize, GFP_KERNEL);
+-
+-		if (!rdesc) {
+-			ret = -ENOMEM;
+-			goto abort_reset;
+-		}
++		if (!rdesc)
++			return -ENOMEM;
+ 
+ 		i2c_hid_dbg(ihid, "asking HID report descriptor\n");
+ 
+@@ -763,23 +763,10 @@ static int i2c_hid_parse(struct hid_device *hid)
+ 					    rdesc, rsize);
+ 		if (ret) {
+ 			hid_err(hid, "reading report descriptor failed\n");
+-			goto abort_reset;
++			goto out;
+ 		}
+ 	}
+ 
+-	/*
+-	 * Windows directly reads the report-descriptor after sending reset
+-	 * and then waits for resets completion afterwards. Some touchpads
+-	 * actually wait for the report-descriptor to be read before signalling
+-	 * reset completion.
+-	 */
+-	ret = i2c_hid_finish_hwreset(ihid);
+-abort_reset:
+-	clear_bit(I2C_HID_RESET_PENDING, &ihid->flags);
+-	mutex_unlock(&ihid->reset_lock);
+-	if (ret)
+-		goto out;
+-
+ 	i2c_hid_dbg(ihid, "Report Descriptor: %*ph\n", rsize, rdesc);
+ 
+ 	ret = hid_parse_report(hid, rdesc, rsize);
 -- 
 2.44.0
 
