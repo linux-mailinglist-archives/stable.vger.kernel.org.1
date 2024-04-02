@@ -1,149 +1,113 @@
-Return-Path: <stable+bounces-35604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302228953C7
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 14:47:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7B5895514
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 15:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C589D1F21F68
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 12:47:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA7F1C220B1
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3634778676;
-	Tue,  2 Apr 2024 12:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B72D81752;
+	Tue,  2 Apr 2024 13:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TG+kzr3T"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=preining.info header.i=@preining.info header.b="YqZ08d2Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from hz.preining.info (hz.preining.info [95.216.25.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DBA77F15;
-	Tue,  2 Apr 2024 12:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B4F7A158;
+	Tue,  2 Apr 2024 13:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.216.25.247
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712062064; cv=none; b=PjE4dOKzrmy7CPZP9CLo0aWZNkQxq2qKhpGVW4Mws16cT9XbnkbcN3YhKxHKM9nUlCYe0F0SqgQHDFqMVO/DRf4uog6eOAUfRshx2F292gv59djitX1Ak3xryby2MBarQGm3zVx+QnrXOmHIQvVaGq2xYbrYJ8nrCXKlExS5XhA=
+	t=1712063890; cv=none; b=TlQhn3VFqLXdVoWWD63EThK4JVj7EKXnvfTAgsbEMOQIk36Xy18Q77FJdWC7/vVQdN8VOm4JV+o++mHHcMl8LsMVHM9h34WUxBk71Qpn3Sd6axB37iYgLC+SsdM++5J1BCyE9pQa5DbR75a6N90G5Yxshi4xT5cOxs4AaT9Xypg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712062064; c=relaxed/simple;
-	bh=tv77wEY2gXIZxwexHBZDtQXMh//LD9JALwsTToG42s0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p8T7ZtUXEYjxXHjYy1YivlldfV56+1JYEVItdgIfv0ZBytb6nKPjNKo1BGO6/F3I5xsqVReCyqd9FjXBlxL6u/xtBqv0p97rRxHWTUjIuOiUAv2O9oCuJfsCvjP1RIFlzyZObMHOW+Jy5fjJ0zOWtKksUV8MOvZCJ3TgNiukPZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TG+kzr3T; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1712062059; x=1712321259;
-	bh=9xyuTCGaaAe31ycaYB+ZYD6nsgUvzbGxycpDYEU663s=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=TG+kzr3TwsqWUcLbtWZ6PfdIh3iPg/oJ5W4qWGbI0K5IiRAjwggyJuXOQnxm+8hSL
-	 YmiNT9OyPZGO61rWBLv+7aeZWLe5yrw373XGF4ufEKO5MCANKNmiu6wDwEvg6w8/h6
-	 a6djz9Ga2cVYRPd3PuVtvchroM2sSLb9HWbwCqqaFivjh9zgp1B2OZtxlbo2AlO9uU
-	 Wbzo6C/viRR8gBHPlTcknRsSdec9oJQssEV2hAeCtjb2eXtqxiZRUkbcgTTVQpTabK
-	 AEQzqdoESVFRa8ccs+00opCqXH2EQfYMEJQB0scv77yNeh5HQN0g0vMkjCeHyHVhTW
-	 l2mEfF8g2ZdaQ==
-Date: Tue, 02 Apr 2024 12:47:34 +0000
-To: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
-Message-ID: <bcbc1c4c-1e26-4afc-86ad-5cefa3dd26e0@proton.me>
-In-Reply-To: <ZgsykVwMBsULtxce@boqun-archlinux>
-References: <20240401185222.12015-1-benno.lossin@proton.me> <Zgsiumknfshjbi9J@boqun-archlinux> <20fcbbd0-4a7a-49b1-a383-f8b388153066@proton.me> <ZgsykVwMBsULtxce@boqun-archlinux>
-Feedback-ID: 71780778:user:proton
+	s=arc-20240116; t=1712063890; c=relaxed/simple;
+	bh=80IhwDgD1gPqa9vTqSCEAKUjeZBU8j6RuuQa/+lWtsA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AgVBpQh+hx7zopbR0Zn+7Fj5DF4ltIf5A6CNJKr194pxsN100vCeFIvrUwSQOBosBk+SOy5vamtNfcL6AtIeYAIjicU5WH5t8rbmKpydnJQ94OcsfoT362hxpowe4iwxkotc9nUpJISlvyqK8Fmn5m7i7QqHImn8M8cqQfQWPCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=preining.info; spf=pass smtp.mailfrom=preining.info; dkim=pass (2048-bit key) header.d=preining.info header.i=@preining.info header.b=YqZ08d2Z; arc=none smtp.client-ip=95.216.25.247
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=preining.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=preining.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=preining.info; s=201909; h=In-Reply-To:Content-Type:MIME-Version:References
+	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
+	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=G5P4FMG63I9JSCmj4VgPs+r9J18nRxq7QCCPof1NWb8=; b=YqZ08d2Z55jJgnSijAQ1kJ/xiU
+	qw+x1trC64zVlt/IHhIH4HJZK0FUVKR5dasr1NNg8iuj7ea3pVyeQ4s20Z2QNF/pzi2BdWX0U4DtY
+	4Fu0Tc/57NbcycLX2WLoMuZvhSZb8ZFEvl7B8AEd4P/1okPvaDGDqdtWpknjaK2oFPndpfenHGLuj
+	3RSjSVVACHHBWJoEunfnDdCOTV74ouAqIYSZSxP6Lh8a2s/bJwtRPG8M+xhaBSvHaMReAZGbeNxO/
+	iWSIH9sZfqLEgRq+OhSrYLUEc3+iiesbSOj4JxcLdXKIXDoeDvaNWvxTTLcIGHqjn5jT4tez9CDof
+	QljD9XAQ==;
+Received: from tvk215040.tvk.ne.jp ([180.94.215.40] helo=bulldog.preining.info)
+	by hz.preining.info with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <norbert@preining.info>)
+	id 1rre1d-00F0hY-2F;
+	Tue, 02 Apr 2024 13:18:06 +0000
+Received: by bulldog.preining.info (Postfix, from userid 1000)
+	id 464361DF3C0A; Tue,  2 Apr 2024 22:18:01 +0900 (JST)
+Date: Tue, 2 Apr 2024 22:18:01 +0900
+From: Norbert Preining <norbert@preining.info>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: stable@vger.kernel.org
+Subject: Re: Regression in kernel 6.8.2 fails in various ways (USB, BT, ...)
+Message-ID: <ZgwFiaLefPAaH3tw@bulldog>
+References: <ZgvkIZFN23rkYhtS@burischnitzel>
+ <1c698f8e-c7ca-4909-8872-057d6ae149ff@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1c698f8e-c7ca-4909-8872-057d6ae149ff@leemhuis.info>
 
-On 02.04.24 00:17, Boqun Feng wrote:
-> On Mon, Apr 01, 2024 at 10:01:34PM +0000, Benno Lossin wrote:
->> On 01.04.24 23:10, Boqun Feng wrote:
->>> On Mon, Apr 01, 2024 at 06:52:50PM +0000, Benno Lossin wrote:
->>> [...]
->>>> +            // Double nested modules, since then nobody can access th=
-e public items inside.
->>>> +            mod __module_init {{
->>>> +                mod __module_init {{
->>>> +                    use super::super::{type_};
->>>> +
->>>> +                    /// The \"Rust loadable module\" mark.
->>>> +                    //
->>>> +                    // This may be best done another way later on, e.=
-g. as a new modinfo
->>>> +                    // key or a new section. For the moment, keep it =
-simple.
->>>> +                    #[cfg(MODULE)]
->>>> +                    #[doc(hidden)]
->>>> +                    #[used]
->>>> +                    static __IS_RUST_MODULE: () =3D ();
->>>> +
->>>> +                    static mut __MOD: Option<{type_}> =3D None;
->>>> +
->>>> +                    // SAFETY: `__this_module` is constructed by the =
-kernel at load time and will not be
->>>> +                    // freed until the module is unloaded.
->>>> +                    #[cfg(MODULE)]
->>>> +                    static THIS_MODULE: kernel::ThisModule =3D unsafe=
- {{
->>>> +                        kernel::ThisModule::from_ptr(&kernel::binding=
-s::__this_module as *const _ as *mut _)
->>>
->>> While we're at it, probably we want the following as well? I.e. using
->>> `Opaque` and extern block, because __this_module is certainly something
->>> interior mutable and !Unpin.
->>>
->>> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
->>> index 293beca0a583..8aa4eed6578c 100644
->>> --- a/rust/macros/module.rs
->>> +++ b/rust/macros/module.rs
->>> @@ -219,7 +219,11 @@ mod __module_init {{
->>>                        // freed until the module is unloaded.
->>>                        #[cfg(MODULE)]
->>>                        static THIS_MODULE: kernel::ThisModule =3D unsaf=
-e {{
->>> -                        kernel::ThisModule::from_ptr(&kernel::bindings=
-::__this_module as *const _ as *mut _)
->>> +                        extern \"C\" {{
->>> +                            static __this_module: kernel::types::Opaqu=
-e<kernel::bindings::module>;
->>> +                        }}
->>> +
->>> +                        kernel::ThisModule::from_ptr(__this_module.get=
-())
->>>                        }};
->>>                        #[cfg(not(MODULE))]
->>>                        static THIS_MODULE: kernel::ThisModule =3D unsaf=
-e {{
->>>
->>> Thoughts?
->>
->> I am not sure we need it. Bindgen generates
->>
->>       extern "C" {
->>           pub static mut __this_module: module;
->>       }
->>
->> And the `mut` should take care of the "it might be modified by other
->> threads".
->=20
-> Hmm.. but there could a C thread modifies some field of __this_module
-> while Rust code uses it, e.g. struct module has a list_head in it, which
-> could be used by C code to put another module next to it.
+Hi Thorsten,
 
-This still should not be a problem, since we never actually read or
-write to the mutable static. The only thing we are doing is taking its
-address. `addr_of_mut!` should be sufficient. (AFAIK `static mut` is
-designed such that it can be mutated at any time by any thread. Maybe
-Gary knows more?)
+thanks for your quick answer, much appreciated.
 
---=20
-Cheers,
-Benno
+> Thx for your reports. Nitpicking: next time, please report each issue in
+> separate mails, as mentioned by
+> https://docs.kernel.org/admin-guide/reporting-issues.html
 
+Ok, will remember. It wasn't clear to me whether this is just one issue
+or multiple.
+
+> > * Plugging in my Yubikey C does not trigger any reaction
+> >   (as a consequence scdaemon hangs)
+> 
+> Have not heard about a problem like this yet.
+> 
+> Could you bisect?
+
+Will do.
+
+> > * sending of bluetooth firmware data fails with Oops (see below)
+> 
+> A changes that hopefully fixes this is in 6.8.3-rc1:
+
+Nice, good to hear.
+
+> > * shutdown hangs and does not turn off the computer
+> 
+> That might or might not be a follow-up problem due to one of the other
+> two problems. :-/
+
+I agree. I will see what bisect tells me.
+
+Best regards
+
+Norbert
+
+--
+PREINING Norbert                              https://www.preining.info
+arXiv / Cornell University   +   IFMGA Guide   +   TU Wien  +  TeX Live
+GPG: 0x860CDC13   fp: F7D8 A928 26E3 16A1 9FA0 ACF0 6CAC A448 860C DC13
 
