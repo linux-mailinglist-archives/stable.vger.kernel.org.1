@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-35539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0C7894AE6
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:42:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6117C894AEE
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5000B1F236D9
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:42:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCEFB283A18
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352D91805E;
-	Tue,  2 Apr 2024 05:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CBF18050;
+	Tue,  2 Apr 2024 05:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pP7xSJuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0rT5yX4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DA017BBB;
-	Tue,  2 Apr 2024 05:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819EB323D
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 05:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712036563; cv=none; b=kcrM28podk1aXzBnJZk0tIIjrIQRSrnFfwCHAjmBu9JG1xuOGRyrf8xMJOgdgFRPVPlQJCqcd/XpjhmthFpC7v1do7Ifg5IFhB9C0WoDk0aBkNvEV2iptJLNlAK9kbZIdF6bIn+in8c4b4JeXkKG+Pt1coH2Z5zNG+vfxIg2U3Y=
+	t=1712036712; cv=none; b=tAU13ep2X6HNzYxsz/j/mmFIBaLVMTebPd7t01NgJ0NbUz5eElbmH0yCslRcQZ+M3Aqtuc+kLTE9nlHMpF3VnBpbJpS9djDiby5E5u0j/vj313mZFBa/6fhewPp3FVa9g0lGxvrJi/qi8HH092/+Hv80wL9WMwBv5GAGw+ki46U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712036563; c=relaxed/simple;
-	bh=wjKa61zXYDVrcZt81c4gmK2Wg06oWwgdqgv0grMT/jE=;
+	s=arc-20240116; t=1712036712; c=relaxed/simple;
+	bh=XyvL3YfexGCf40Z4b7HNBUbFqtksITvuq8OJnDzp5oA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wg6aRER3pVxnNHmK1Ep07dnqUHGJFceV1B1pVtm4p/0BTtaNn+m9r8uwfACtZLBjUi23jWgjwn4UPSMJMhAyxiLp5PGsu1X0jnX7d8pgMtmHSfKCzVytTIvamEQ6VTDev08iQ30XC0YCvYc04og+aeYp7h+igByc0S1P/tg9dMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pP7xSJuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA920C433F1;
-	Tue,  2 Apr 2024 05:42:41 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=KopEWJ6cwRCIWKycdB0ij0b3loA03Y6/1b4f964Ng/YGOUikMEcE9nye9NAkcTI4NDWT0pKTLSowtFuReq9zNXcNq+QFgjxyRZQwSFHRPdq9s4/1ONCRhdlE2MGfR1C7rCfEiql8LpqvNAA/S792Dd5R86/gEV52zj6F8IBtsXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0rT5yX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23ABC433F1;
+	Tue,  2 Apr 2024 05:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712036562;
-	bh=wjKa61zXYDVrcZt81c4gmK2Wg06oWwgdqgv0grMT/jE=;
+	s=korg; t=1712036712;
+	bh=XyvL3YfexGCf40Z4b7HNBUbFqtksITvuq8OJnDzp5oA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pP7xSJuSg8hNGaX8I9wu2sPgg52gpHylYTWcqHdZALSVZJb3uhwCLJStNscRjZIRF
-	 9QjCR6x9HeMHNp3pyymfeBY2FxvKFFvUHg0veDgWZSdFxhjHYMcGMyeLbfWgiD2zXI
-	 3sfmcvvDZGensxPElDl9jnhDh0fM0+/T9o76GA4o=
-Date: Tue, 2 Apr 2024 07:42:39 +0200
+	b=q0rT5yX4T8xT9ixL96BRSHx1iwaPgK+QGeyqsfHe9LA75xkW6Jh0+k07K3PjSWu3g
+	 qHP1rMmJsUhIJE1dPHin8YV9VrqH1Sb1AZQCUV8fCww8Oqez9vK5C4qvRwUcEJxGan
+	 YLFNmTOUmpsPtp8FKcoIpMNbc45pI0ZKdFi1oj2A=
+Date: Tue, 2 Apr 2024 07:45:08 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Laine Taffin Altman <alexanderaltman@me.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	stable@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] rust: init: remove impl Zeroable for Infallible
-Message-ID: <2024040209-cardiac-recede-06bc@gregkh>
-References: <98DBB275-AEA9-4B1A-94B0-99C01BD3BE50@me.com>
+To: "Nguyen, Max" <hphyperxdev@gmail.com>
+Cc: stable@vger.kernel.org, Chris Toledanes <chris.toledanes@hp.com>,
+	Carl Ng <carl.ng@hp.com>, Max Nguyen <maxwell.nguyen@hp.com>
+Subject: Re: [PATCH 1/2] Add additional HyperX IDs to xpad.c on LTS v4.19 to
+ v6.1
+Message-ID: <2024040230-undivided-illusion-3930@gregkh>
+References: <20240315215918.38652-1-hphyperxdev@gmail.com>
+ <2024031724-flakily-urchin-eed6@gregkh>
+ <fb216446-26d5-4d73-a5f8-faf1ba689c3c@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,13 +57,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <98DBB275-AEA9-4B1A-94B0-99C01BD3BE50@me.com>
+In-Reply-To: <fb216446-26d5-4d73-a5f8-faf1ba689c3c@gmail.com>
 
-On Mon, Apr 01, 2024 at 06:57:57PM -0700, Laine Taffin Altman wrote:
-> A type is inhabited if at least one valid value of that type exists; a type is uninhabited if no valid values of that type exist.  The terms "inhabited" and "uninhabited" in this sense originate in type theory, a branch of mathematics.
+On Mon, Apr 01, 2024 at 02:52:24PM -0700, Nguyen, Max wrote:
+> 
+> On 3/17/2024 12:07 PM, Greg KH wrote:
+> > On Fri, Mar 15, 2024 at 02:59:19PM -0700, Max Nguyen wrote:
+> > > Add additional HyperX Ids to xpad_device and xpad_table
+> > > 
+> > > Add to LTS versions 4.19, 5.4, 5.10, 5.15, 6.1
+> > > 
+> > > Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
+> > > Reviewed-by: Carl Ng <carl.ng@hp.com>
+> > > Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
+> > > ---
+> > >   drivers/input/joystick/xpad.c | 10 ++++++++--
+> > >   1 file changed, 8 insertions(+), 2 deletions(-)
+> > <formletter>
+> > 
+> > This is not the correct way to submit patches for inclusion in the
+> > stable kernel tree.  Please read:
+> >      https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > for how to do this properly.
+> > 
+> > </formletter>
+> 
+> Hi Greg,
+> Thanks for your help so far.  I am committed to figuring this out so thank you again your patience.  I had a couple questions to confirm before I resubmit.
+> 
+> I had done option 1 to include in stable when I submitted to mainline.  I saw that my patch was picked up in the latest stable.  Will it be eventually picked up by the older LTS versions?
 
-Always run checkpatch.pl on your changes so you don't get maintainers
-asking you why you didn't run checkpatch.pl on your changes.
+Depends, did it apply to older LTS versions?  If not, then no.
+
+> I need to add the upstream commit ID to my patches.  I intended to go with option 3 since there is some deviation in my patch from the upstream.  Am I just missing the upstream commit ID and deviation explanation for my patch?
+
+That is a start, yes.  Try it and see!
 
 thanks,
 
