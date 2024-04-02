@@ -1,165 +1,120 @@
-Return-Path: <stable+bounces-35584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283C8895074
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 12:40:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5448950CE
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 12:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 943771F217E2
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:40:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD4031C22405
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336D55FDA5;
-	Tue,  2 Apr 2024 10:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0697162147;
+	Tue,  2 Apr 2024 10:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l5/YNDdW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oBxwDqPg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9B15FBB2
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 10:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DF160B96
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 10:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712054278; cv=none; b=apDY8pgZI3iHNrvOLoOy+g8LTgLH1vZTnEK16iBNHqGQEYetGiFeVWobD9RoVr96MvtbR/v+4VNzOzlknBLGSLt8+MMrwCPxMWzm2gAkn3mD0AK7BT4x10BJ2kT/6OwDVSvKBmf6tZBAoEdaidnoc7KpspWZ6ZHd8l0+tXqdFhc=
+	t=1712055009; cv=none; b=opsaxWw/T3wZX6CmVoyU7n9JKNskTf4q7cyz3N7MIXOyI9dCL15PLPPnIe93+kaPSt8oVhF497mXi5+5hFfxD5u0t9pVqOsanre3328MD2pVB40MQf3wdEdy51b+aG0IEDEh2N+i/CIaat401/3lus52YbCkNbwGh6wleBLR9ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712054278; c=relaxed/simple;
-	bh=r91xpWnGr3JVgNBrgKZPO2sDxnqrY2gA5+Cyn/xLnOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DAv5NxeIQjU/SUqvMk9D2Rkwx/F/sXp6S4fHebgkGc3fkIoKkGR8eCzd3njJJws+/uoO4lypgH8XW/EnWsO492dA2+ILbsHs95ASqikeXFW/PjZkHTh4AsdWFURfW4NZIRZU/u90eUDzUy7AnZg1kYs0ek1HUjsiBgW42zwIncg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l5/YNDdW; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56c583f5381so6583631a12.1
-        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 03:37:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712054274; x=1712659074; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jz9Y9PjigYVKEbCw1GNYP1RDI4ZuVwZ4udJg2a4ZlkM=;
-        b=l5/YNDdWIxpd8NcoQzu5rRG8SXremuJJWNZIrc1Jz8q8JWz76HkdpNxicvZpdg/7nz
-         VVdwibMzeH5Xz616ppJzJoeZtUlIN4DMKhaNv3sTtWqY0efSDc7mCMG06SPzYmxQBf7R
-         KCPkhVamaeT7jSe9R2omuF6e1q9WKpXvAgiIHbjwEci5cptrgmS4htxgw7knUJQRCIL5
-         WY+aUjvv8ul0aAJ2RETu7Vg6HEV5puMhw/vBDYIkjX85i5UrkUdIdv9mcyDZkBk2qf/k
-         D6RbkXHjEtua5V2ZaSV3v0Ok2g9+Dv8vii8DD0aetQbnFL4IZJsCXaErTRrdkoW/Tzr0
-         111Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712054274; x=1712659074;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jz9Y9PjigYVKEbCw1GNYP1RDI4ZuVwZ4udJg2a4ZlkM=;
-        b=gcTutCZdJE20VN2asUORiStR6hZYA+M3/R+tgfsynVCkdfsKMeBXoe6xzeveB72Kgx
-         BEFUc+UPMXHpN7up+xESwCvlnW9ta7WDjF/bxD7YwzQXOxYkv8cTz0B+p8nBhbhNpvqz
-         UiDYbOsbRcTa/j4v9clMbhIHklyFNfmIIPNZ+I/8NQUJ07w7ezsKkV1W+ivGRUon9T7o
-         9eyeAT8y73AiRrWDn9forSlRO5rz96rm57mEDvr+EruF5h461dZFEgmRuzbXdCr6FdO6
-         0iVE+KbJmy64v4zbrigk4YUDMIr4nDTwHbWQ1gOUifxNVTlrLCkyPLTL5ibJeEgWyTRP
-         4MgA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQkXUpxj7LU++4Brkj8YIV5u/eLY0QXgLCk7X7hcnPd/eEUmWpePYURt7H9yWMHgV0VFwJgXGXbdPjJpfZH+bTyigTXe3b
-X-Gm-Message-State: AOJu0YxS1Q/rEtrhslT0i11GbMrqtCvHv8XYwt0JtLVp2WRezYVXzcdR
-	My9qXAe/aRvYIV78w95r436UZWO277m2MQYn96jnTO9CaI2r1lC2pCa1TKS+6vY=
-X-Google-Smtp-Source: AGHT+IFLXanUhL+rTkL5dhPieUFNxekE62yhWKGrRFO2Vdc9oBu4cKCdI7vD6zG/l7HO+KOWLoErNA==
-X-Received: by 2002:a50:d5c8:0:b0:568:aced:e5a0 with SMTP id g8-20020a50d5c8000000b00568acede5a0mr13872744edj.14.1712054274194;
-        Tue, 02 Apr 2024 03:37:54 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id k7-20020aa7c047000000b0056c443ce781sm6591488edo.85.2024.04.02.03.37.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Apr 2024 03:37:53 -0700 (PDT)
-Date: Tue, 2 Apr 2024 13:37:50 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Alexander Wetzel <alexander@wetzel-home.de>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	LTP List <ltp@lists.linux.it>
-Subject: Re: [PATCH 6.6 000/396] 6.6.24-rc1 review
-Message-ID: <1d1071f3-641a-4b7c-bd35-a629ba8d5a7b@moroto.mountain>
-References: <20240401152547.867452742@linuxfoundation.org>
- <CA+G9fYvewkbwR_i07HHTM=8E2yS-0wRhOT-C45LP3SNtzgd+4Q@mail.gmail.com>
- <29a7a1e5-da67-47fc-b1fd-ef65902ec252@wetzel-home.de>
+	s=arc-20240116; t=1712055009; c=relaxed/simple;
+	bh=bn1O6jpz8P3aPcwD7qpRxdk76si1wGA4aXAasuYV0pU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ChL3cYYyUaiS3L2bxCWYrJWoA8aBcoPwBUdr8lnLk4OUaAMvG2gLprn5G/k6DWrLQcMQdaGiARkrjdGBppijW6HZKdUz4+Cmqfm0J5y/NVjjJ1YxSEtNDOjnDRfoX6UfatthsmPqqQY4G6JoeCyIrO01uF4G1hGmAnsk5Eh4Kcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oBxwDqPg; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712055008; x=1743591008;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=bn1O6jpz8P3aPcwD7qpRxdk76si1wGA4aXAasuYV0pU=;
+  b=oBxwDqPgDIod2roqjKQq6rO+a09ZimLMi+1MI69QfcguCKz61ptbyH9W
+   4rwgs2QO/PUES3AhPJEmZQD6DDWgYNI3laf1Ah+e0DRCPOTtDHHHXepDy
+   Jr/1xyFQYlr2QuBd30HSSOTLrqNeYS74yaK3Fcv/TGkftzAA+GmV8y8Pn
+   jZlhT1zwkSlbOlHm1QCOwFm5TFuCOl81p1M/qxaxBGH5i08o7OYm6czYH
+   OAmVgWIPPCcUxZBIPtc6bYz18gmH1egNvuxbnvVmWBuqXr7RBdwGRelW9
+   o/+YQqzO4smED8j1AvNdTGkMBmOi2WRYWhFEqTcrYTBT4p4+86c6dQQsA
+   g==;
+X-CSE-ConnectionGUID: ymH5vtJ9TfKZwXf/LVRong==
+X-CSE-MsgGUID: CKu9/r9bSH2FfGg7kTHPKA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11031"; a="17944407"
+X-IronPort-AV: E=Sophos;i="6.07,174,1708416000"; 
+   d="scan'208";a="17944407"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 03:50:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,174,1708416000"; 
+   d="scan'208";a="18002492"
+Received: from jlawryno.igk.intel.com ([10.91.220.59])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 03:50:06 -0700
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+To: dri-devel@lists.freedesktop.org
+Cc: oded.gabbay@gmail.com,
+	quic_jhugo@quicinc.com,
+	"Wachowski, Karol" <karol.wachowski@intel.com>,
+	stable@vger.kernel.org,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 1/8] accel/ivpu: Check return code of ipc->lock init
+Date: Tue,  2 Apr 2024 12:49:22 +0200
+Message-ID: <20240402104929.941186-2-jacek.lawrynowicz@linux.intel.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240402104929.941186-1-jacek.lawrynowicz@linux.intel.com>
+References: <20240402104929.941186-1-jacek.lawrynowicz@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <29a7a1e5-da67-47fc-b1fd-ef65902ec252@wetzel-home.de>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 01, 2024 at 09:22:52PM +0200, Alexander Wetzel wrote:
-> 
-> > Following kernel warnings have been noticed on qemu-x86_64 while running LTP
-> > cve ioctl_sg01 tests the kernel with stable-rc 6.6.24-rc1, 6.7.12-rc1 and
-> > 6.8.3-rc1.
-> > 
-> > We have started bi-secting this issue.
-> > Always reproduced.
-> > 
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > 
-> > ioctl_sg01.c:81: TINFO: Found SCSI device /dev/sg0
-> > ------------[ cut here ]------------
-> > [   36.606841] WARNING: CPU: 0 PID: 8 at drivers/scsi/sg.c:2237
-> > sg_remove_sfp_usercontext+0x145/0x150
-> > [   36.609445] Modules linked in:
-> > [   36.610793] CPU: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.6.24-rc1 #1
-> > [   36.611568] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-> > BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-> > [   36.612872] Workqueue: events sg_remove_sfp_usercontext
-> > [   36.613691] RIP: 0010:sg_remove_sfp_usercontext+0x145/0x150
-> > 
-> > <trim>
-> > 
-> > [   36.621539] Call Trace:
-> > [   36.621953]  <TASK>
-> > [   36.622444]  ? show_regs+0x69/0x80
-> > [   36.622819]  ? __warn+0x8d/0x150
-> > [   36.623078]  ? sg_remove_sfp_usercontext+0x145/0x150
-> > [   36.623558]  ? report_bug+0x171/0x1a0
-> > [   36.623881]  ? handle_bug+0x42/0x80
-> > [   36.624070]  ? exc_invalid_op+0x1c/0x70
-> > [   36.624491]  ? asm_exc_invalid_op+0x1f/0x30
-> > [   36.624897]  ? sg_remove_sfp_usercontext+0x145/0x150
-> > [   36.625408]  process_one_work+0x141/0x300
-> > [   36.625769]  worker_thread+0x2f6/0x430
-> > [   36.626073]  ? __pfx_worker_thread+0x10/0x10
-> > [   36.626529]  kthread+0x105/0x140
-> > [   36.626778]  ? __pfx_kthread+0x10/0x10
-> > [   36.627059]  ret_from_fork+0x41/0x60
-> > [   36.627441]  ? __pfx_kthread+0x10/0x10
-> > [   36.627735]  ret_from_fork_asm+0x1b/0x30
-> > [   36.628293]  </TASK>
-> > [   36.628604] ---[ end trace 0000000000000000 ]---
-> > ioctl_sg01.c:122: TPASS: Output buffer is empty, no data leaked
-> > 
-> > Suspecting commit:
-> > -----
-> > scsi: sg: Avoid sg device teardown race
-> > commit 27f58c04a8f438078583041468ec60597841284d upstream.
-> > 
-> 
-> Correct. The issue is already been worked on.
-> 
-> commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race") fixed a real
-> issue. But also added an incorrect WARN_ON_ONCE(). Thus the scary - but
-> otherwise harmless - error message.
+From: "Wachowski, Karol" <karol.wachowski@intel.com>
 
-If you have Reboot on Oops turned on (apparently Android enables this)
-then WARN() will reboot the system so it can be pretty annoying.
+Return value of drmm_mutex_init(ipc->lock) was unchecked.
 
-regards,
-dan carpenter
+Fixes: 5d7422cfb498 ("accel/ivpu: Add IPC driver and JSM messages")
+Cc: <stable@vger.kernel.org> # v6.3+
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+---
+ drivers/accel/ivpu/ivpu_ipc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/accel/ivpu/ivpu_ipc.c b/drivers/accel/ivpu/ivpu_ipc.c
+index 04ac4b9840fb..56ff067f63e2 100644
+--- a/drivers/accel/ivpu/ivpu_ipc.c
++++ b/drivers/accel/ivpu/ivpu_ipc.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (C) 2020-2023 Intel Corporation
++ * Copyright (C) 2020-2024 Intel Corporation
+  */
+ 
+ #include <linux/genalloc.h>
+@@ -501,7 +501,11 @@ int ivpu_ipc_init(struct ivpu_device *vdev)
+ 	spin_lock_init(&ipc->cons_lock);
+ 	INIT_LIST_HEAD(&ipc->cons_list);
+ 	INIT_LIST_HEAD(&ipc->cb_msg_list);
+-	drmm_mutex_init(&vdev->drm, &ipc->lock);
++	ret = drmm_mutex_init(&vdev->drm, &ipc->lock);
++	if (ret) {
++		ivpu_err(vdev, "Failed to initialize ipc->lock, ret %d\n", ret);
++		goto err_free_rx;
++	}
+ 	ivpu_ipc_reset(vdev);
+ 	return 0;
+ 
+-- 
+2.43.2
 
 
