@@ -1,260 +1,240 @@
-Return-Path: <stable+bounces-35602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6108953B3
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 14:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA328953C5
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 14:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BE001C2336D
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 12:44:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C32D1C2227C
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 12:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAA37EF10;
-	Tue,  2 Apr 2024 12:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CB578676;
+	Tue,  2 Apr 2024 12:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LQX3tqrv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wkWzJ353"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A2D79B87
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 12:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9648F3839A
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 12:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712061710; cv=none; b=T/kFN8BSIYlAmD3mN8OkBrUdXSxgxFXGMBDEiPglasNBx1dUkfn0eQmeZZUcokMLslU5nGq8SkPsDt2OXNyPnNOlmyLflBaPW7TRcLIVuA5tbvOr2YEjqDy5D5je22EKC3YAGz0dB/oMRmNQndtKfuthxXM+rHLmz2wBftfvSYs=
+	t=1712062033; cv=none; b=maCSd3dstWYjM9XzkYM2WQQF4pMrAQ+J45gfgALgvUZL6i/ElPQ59gCJndQSq+gxdMEMzDk+0ce6s9IDEthC639X8ofVEAFTopSzB/6jBx3xqpi3lmN844auIU5urAnvoX34AhHwz5gi8QWu+DKPoJSS65w/2T5xAXxbAV6Rq5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712061710; c=relaxed/simple;
-	bh=cAaXOzNj4gx2uVO0flaEMuQGtPXXscwYvHlRSn83Wc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c5FlyPgw2CBL4pdB6a7Z2vkmkMMMjqAUdy/hAkxz4Ut9QUn/hZuT7lPo2q7mRKTZpz+RZ4azwQFhgeHViGzijH7EeUSuY2MXUfHso+oIh61sgYAqx3/Wbb3sjncU5aaWWOhQlUQ7I5i0Jb7T7ugheMjr9A+RnHPAdoR0Bz0ANBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LQX3tqrv; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5d3907ff128so4045093a12.3
-        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 05:41:48 -0700 (PDT)
+	s=arc-20240116; t=1712062033; c=relaxed/simple;
+	bh=y7r81xGJhGvZo4UNu8tcAQh6Pm1cop4NxxV+9nrHJUg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H1171gZLkceW15Snas2gZfOQ96o+KCSSxLIsYVR/VVUFOIvxjDHKC7IBSk9LN3iG8rXyMndqobnVZ7KsqaTWNIZg0UsT9GhZoTyDsxQnMH4DS+QbbLMADSX7xPmHxujD3Wig8JsHVtEckBp1QvdfkODtJadGg9aHI8jpfFjXsqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wkWzJ353; arc=none smtp.client-ip=209.85.217.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4765cffb446so1567266137.0
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 05:47:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1712061708; x=1712666508; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Bxs75gdHX2nR8/yo4Vh8vsOi4QtOkvFr1ue9rcJd2Cs=;
-        b=LQX3tqrvtfG9SVxTu827EjAFiHZkT7fsLSfaFibKwDZlQpUopAKHWGfsCcNeQwiy6A
-         HmKZnhEtrcBrE0HTv5QETDzjn2+NW5fToZqWunqSufc/whMhSPRVRCE/LFr1polxcK8k
-         A8eax4JE1EZ8hY/iWHLAwOChiVcce5cewtu+M=
+        d=linaro.org; s=google; t=1712062030; x=1712666830; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KCvuoEY2B7r6zo9f6eT/+ISmVC7xlAWxrfabw7NgzmU=;
+        b=wkWzJ353cfz1drPEsIjmvd2j2tlAynyMp6mbgnCFGQKlYXBo2kXERJdPKppe4MHG84
+         8XmUwD0R3AhmXlxGyY25iL/Sv+IVHPfVVjSX+qiECC4ShUp5bS82rXwOvuq4+rNeMLJL
+         SkWdS6spunuUqf3G2pr3WEwPqxKxssQ9DHdmITdoh3UbIYL8oPwGUuU4lDmmv1Rc6tyd
+         uJTI83IfeqLKfb6u3WAAqryP2Tsbp/ggwoem4gkgJX6QFcdKLsUgENMQXJTzbKoV/UNb
+         UbrWu+8XxhnI23wbGLCQDPYwCvtFQ0fBPdcHpojV91LYpmgfKpIy+dPeH3inB2oEx5Ce
+         r6TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712061708; x=1712666508;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Bxs75gdHX2nR8/yo4Vh8vsOi4QtOkvFr1ue9rcJd2Cs=;
-        b=HUn0fmSmJLayIT/NfQQ7LyHRG85bHWlU6w0i9f36LrT5CZGP5r3vbQCKp2S/eLyEW5
-         YuCqHAemuiFGZ9fkvaeEJgi9Ax2nQGcF7ilINXTHDKmNAgz4oz/E0x40YqV/7WFjUFO+
-         /B6k6D8zGN/5w9k+MtFNAcdNoUByQU0g963XwOLdEVf9pmdMpAaO1Vl/ockL7xwI8ENU
-         P1TKKHBEbWVUZnSf/HW9y/XYtFgWKtP6Pg0j1UY2HpHk6ryWyW3WRxFeIu4jdZ9GZNp5
-         Jme0YdvrRim68MAE0b7QWu9b47J7tawOjGtv4Tpqv5SB11VIG94dkjGd29CbSmq+fzYY
-         HYSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZjBYx76NxSUrKMxgzH5+KpipV/8oXAHa/hfbM43uRWqeS9zxJ6+EMGCDBVs+YtaYGoxd/sSXYZK/L3UxtGC9zRveMkJ3n
-X-Gm-Message-State: AOJu0YxVxnclvDjad470Uh6FEGZ7HJeNxHjlaqOKb4IPzOU4qsGQd3mg
-	iKo3nV8w5x7ivMkRdSNa/oZxVjnUIq/fY/Ijl3UcdE6W05VkE7yGGysVt2R82A==
-X-Google-Smtp-Source: AGHT+IFTmhg/YCATNRIudVFKJN0P5/OlANFmd167GedwPGmF7XCzT5+tQbaObLV2muoSph54+Y5q3w==
-X-Received: by 2002:a17:903:8cd:b0:1e2:588:7737 with SMTP id lk13-20020a17090308cd00b001e205887737mr16417634plb.24.1712061708201;
-        Tue, 02 Apr 2024 05:41:48 -0700 (PDT)
-Received: from ?IPV6:2600:8802:b00:ba1:283f:ce3e:1cbd:c25b? ([2600:8802:b00:ba1:283f:ce3e:1cbd:c25b])
-        by smtp.gmail.com with ESMTPSA id p2-20020a170902780200b001e00e17c6e2sm11109549pll.138.2024.04.02.05.41.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Apr 2024 05:41:47 -0700 (PDT)
-Message-ID: <888b10eb-cdd5-43bb-a501-471aa28b1153@broadcom.com>
-Date: Tue, 2 Apr 2024 05:41:44 -0700
+        d=1e100.net; s=20230601; t=1712062030; x=1712666830;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KCvuoEY2B7r6zo9f6eT/+ISmVC7xlAWxrfabw7NgzmU=;
+        b=HRXmI7Wz9doE+E40yeP0cGFGcNY0pqbbATN/njMbB0gydNFte0aebEAltF/eaSrTDx
+         S/G0pLOkq3pUVGM0SQgEYW+nEnqKyYIYGv84VrWpMB8ZbuDjlqfBXYBjiqtaa9yRGFUn
+         HRJ9+/dSrXGoUK8ZdEOwYdvuuoKGuugDrRr13GXDO3j4njUrojLUY26a3dM5p0fjtI0D
+         XvkNeSnJ3H9/y5D6TmzLlW+A1+OWkcl2WycVOWhLO57rMYSHPDUObJ1pvwQMP5Vt8rWy
+         aod8HgS64w4gBfEsSg0Krz/ajhcF0Xq+YimmcoYByeyA9MK8W7OK60+op217fHL0BspE
+         Qj6Q==
+X-Gm-Message-State: AOJu0Yxy/0kGBdFDnBXwHdDJzkk0QcNkY2jRrrm2TjoML5RPhjloyEMH
+	5JtsutE5k+OHKzuBx6gFgyg1hPOpsFdYIdjVBCK8VgDWKwld1h0ifpABQZ6j+QYmsLKxkX6W3Lr
+	9V3F8rP0z+fEcpayszMC4xl3Zk0Ev1m1qvrYZfzd0xy3/W4KnhZs=
+X-Google-Smtp-Source: AGHT+IER0olSgqW7huR3aO5YCPv6vu0CrtUUvbpJpH9rBf81cDKDA5UdfqUkMF3GdSGlM6Yl39uhsd8lOSxDgMt7MJo=
+X-Received: by 2002:a05:6102:2ad0:b0:478:92a6:67d3 with SMTP id
+ eh16-20020a0561022ad000b0047892a667d3mr915738vsb.14.1712062029047; Tue, 02
+ Apr 2024 05:47:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.8 39/68] net: mdio: mdio-bcm-unimac: Manage
- clock around I/O accesses
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: Jacob Keller <jacob.e.keller@intel.com>,
- "David S . Miller" <davem@davemloft.net>, opendmb@gmail.com, andrew@lunn.ch,
- hkallweit1@gmail.com, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org
-References: <20240329122652.3082296-1-sashal@kernel.org>
- <20240329122652.3082296-39-sashal@kernel.org>
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20240329122652.3082296-39-sashal@kernel.org>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000fbb31206151c6dff"
+References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 2 Apr 2024 18:16:57 +0530
+Message-ID: <CA+G9fYvMX1=ueS0SRKK00JrXt_OrkBON1-+Mp3QS51Yeiu=U8g@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/272] 6.1.84-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---000000000000fbb31206151c6dff
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Mon, 1 Apr 2024 at 22:27, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.84 release.
+> There are 272 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.84-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
 
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-On 3/29/2024 5:25 AM, Sasha Levin wrote:
-> From: Florian Fainelli <florian.fainelli@broadcom.com>
-> 
-> [ Upstream commit ee975351cf0c2a11cdf97eae58265c126cb32850 ]
-> 
-> Up until now we have managed not to have the mdio-bcm-unimac manage its
-> clock except during probe and suspend/resume. This works most of the
-> time, except where it does not.
-> 
-> With a fully modular build, we can get into a situation whereby the
-> GENET driver is fully registered, and so is the mdio-bcm-unimac driver,
-> however the Ethernet PHY driver is not yet, because it depends on a
-> resource that is not yet available (e.g.: GPIO provider). In that state,
-> the network device is not usable yet, and so to conserve power, the
-> GENET driver will have turned off its "main" clock which feeds its MDIO
-> controller.
-> 
-> When the PHY driver finally probes however, we make an access to the PHY
-> registers to e.g.: disable interrupts, and this causes a bus error
-> within the MDIO controller space because the MDIO controller clock(s)
-> are turned off.
-> 
-> To remedy that, we manage the clock around all of the I/O accesses to
-> the hardware which are done exclusively during read, write and clock
-> divider configuration.
-> 
-> This ensures that the register space is accessible, and this also
-> ensures that there are not unnecessarily elevated reference counts
-> keeping the clocks active when the network device is administratively
-> turned off. It would be the case with the previous way of managing the
-> clock.
-> 
-> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> Signed-off-by: David S. Miller <davem@davemloft.net>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Please drop this patch, it is usable in isolation and needs 2 additional 
-patches to be meaningful:
+## Build
+* kernel: 6.1.84-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: aa2042702765a33750c326a9e153901b313636ac
+* git describe: v6.1.83-273-gaa2042702765
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.8=
+3-273-gaa2042702765
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ee2b4cf8b281606bbf332cbd73ce2a73eac417f0
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-/commit/?id=ba0b78371c46b2104197ff2c244f13f011ddfa80
+## Test Regressions (compared to v6.1.83)
 
-Thanks!
--- 
-Florian
+## Metric Regressions (compared to v6.1.83)
 
---000000000000fbb31206151c6dff
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+## Test Fixes (compared to v6.1.83)
 
-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
-riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
-QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
-UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
-M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
-Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
-14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
-a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
-XzCCBVgwggRAoAMCAQICDBP8P9hKRVySg3Qv5DANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
-RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
-UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAxMjE4MTFaFw0yNTA5MTAxMjE4MTFaMIGW
-MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
-BgNVBAoTDUJyb2FkY29tIEluYy4xGTAXBgNVBAMTEEZsb3JpYW4gRmFpbmVsbGkxLDAqBgkqhkiG
-9w0BCQEWHWZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tMIIBIjANBgkqhkiG9w0BAQEFAAOC
-AQ8AMIIBCgKCAQEA+oi3jMmHltY4LMUy8Up5+1zjd1iSgUBXhwCJLj1GJQF+GwP8InemBbk5rjlC
-UwbQDeIlOfb8xGqHoQFGSW8p9V1XUw+cthISLkycex0AJ09ufePshLZygRLREU0H4ecNPMejxCte
-KdtB4COST4uhBkUCo9BSy1gkl8DJ8j/BQ1KNUx6oYe0CntRag+EnHv9TM9BeXBBLfmMRnWNhvOSk
-nSmRX0J3d9/G2A3FIC6WY2XnLW7eAZCQPa1Tz3n2B5BGOxwqhwKLGLNu2SRCPHwOdD6e0drURF7/
-Vax85/EqkVnFNlfxtZhS0ugx5gn2pta7bTdBm1IG4TX+A3B1G57rVwIDAQABo4IB3jCCAdowDgYD
-VR0PAQH/BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDovL3NlY3Vy
-ZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3J0MEEG
-CCsGAQUFBzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWdu
-MmNhMjAyMDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93
-d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBAMD6gPKA6
-hjhodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNy
-bDAoBgNVHREEITAfgR1mbG9yaWFuLmZhaW5lbGxpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggr
-BgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUUwwfJ6/F
-KL0fRdVROal/Lp4lAF0wDQYJKoZIhvcNAQELBQADggEBAKBgfteDc1mChZjKBY4xAplC6uXGyBrZ
-kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
-2s1RH00JOkO5SkYdwCHj4DB9B7KEnLatJtD8MBorvt+QxTuSh4ze96Jz3kEIoHMvwGFkgObWblsc
-3/YcLBmCgaWpZ3Ksev1vJPr5n8riG3/N4on8gO5qinmmr9Y7vGeuf5dmZrYMbnb+yCBalkUmZQwY
-NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
-AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
-LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
-/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIKTdLp0ACj07azpa
-qDs9WqWk0pdHVTmlIWgJOQZHWQgyMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
-AQkFMQ8XDTI0MDQwMjEyNDE0OFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
-AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
-MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQDCwQ5qX5C/LYNylo2A8QLUq/o7pFwpK0yv
-dy33JWvWZTpuQImi3oUv/CsC91law0HiL8OFxrKyRDgwP4QTN5MZp6jhishRu3d6M5HYtj6ny105
-xePhsukmXKrswaT0NJX2PLmZBJHlmUCfiIlkW8hIs2+RoaXmG0XGfMmKSi6me+MuPj7E5lhdXAzO
-wNEll4yVGWen84bZiaejslIc9suUT27fqYEkULbgDTYx2YfQqh1vqplteIpayTW34WF8aluQLfuH
-eFclA2RU4aG/QIMOh7EJbn5cSE7S1z/grlKe3NlRxRDRFbGl30oLUsVbVwVS3vyFOTYB+0YXHWaS
-1d3l
---000000000000fbb31206151c6dff--
+## Metric Fixes (compared to v6.1.83)
+
+## Test result summary
+total: 146089, pass: 124663, fail: 2421, skip: 18867, xfail: 138
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 138 total, 138 passed, 0 failed
+* arm64: 41 total, 40 passed, 1 failed
+* i386: 30 total, 30 passed, 0 failed
+* mips: 25 total, 25 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 16 total, 15 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 35 total, 34 passed, 1 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-drivers-dma-buf
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
