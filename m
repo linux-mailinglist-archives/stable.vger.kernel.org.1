@@ -1,169 +1,228 @@
-Return-Path: <stable+bounces-35630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C41895AA9
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 19:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA301895AAB
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 19:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 302F928444E
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 17:29:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FBDD2896E0
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 17:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536A715A494;
-	Tue,  2 Apr 2024 17:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED3F15A494;
+	Tue,  2 Apr 2024 17:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="MzDlPrPE"
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="soY+nlW7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93B714AD3D
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 17:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712078988; cv=none; b=mUo9ce6A+w9sgfr/D4XYKJjjZ1o9/NHwvksjB2X8P8w9J3jZ3MRncr6defMy6cfzQayxJaaFU8CZg/ejP8ExK1mLEjuZRLZ0atzvsrAZvsiDzMSjvHwwdjvN8gv5t/iX7bmuAwsbIYtXrN88ydZQeTHG1TYiaQuyEKYGEZL9udA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712078988; c=relaxed/simple;
-	bh=nJkbyzDzJu8AbBlxu9MvWWyNm4g05xRBGV7WbEoqo5k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OppYxVn61YkpowpNtbhwguJrErKzkXfr7SfPGfR6u8kifIXWLMcgDa26v0o/vPWEghIb4XyHgJVfhjs0M2tYcIDBfMPDx3s4HfiGGESEZmV/z/A5ACBCm4392DY8Y6yWiyGuAu6vspLdAbxdpYWZZwIuEw87BgFdj4eNQ+8K+ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=MzDlPrPE; arc=none smtp.client-ip=148.163.143.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 432FkL8Q011117;
-	Tue, 2 Apr 2024 17:29:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pps0720;
- bh=hGhf+lmO4aytr+VvPpt9iQuxaJHC+acbTWmO/AeqEd4=;
- b=MzDlPrPE1pIy3GtqhjKNoQxKMZr+ET3j+pGZCVnWukB4sjb1EfjT44R6eJpQmGz1k9dX
- Rs8uCcwcWVkO4vwO9DkuyY0VCCsEInOHAvdHhQc6bME8AMaa3+KVrH6VxDM4ZAZEnd2p
- uOrR1d1w7ayGueIvbcqdURAokjUfW686AiZ5EtgOQipnDs8IWaBXiaQGlkwmdVKaomQM
- UqTQ/ro0rgPDVorQb6juUNDIJhaAnEuIpv7SdxHZ0I2dOBYw/xn0u/8GxUrsiCqDcDK5
- V3K1boIQmRExkkz1J7EKP539HWHkslhHYmWdyyWQe7t7qFWXrLSrth6cV3Eo58kizY8z iA== 
-Received: from p1lg14879.it.hpe.com ([16.230.97.200])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3x8my00v96-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Apr 2024 17:29:39 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA33014AD3D;
+	Tue,  2 Apr 2024 17:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712079046; cv=pass; b=rCIKuX7oHQXEot2I6ULmMUnsgdThiyrlRhwFXnKllvtsZ8Ixdsa/OBJLGWpBg3Ma+KfawEw9sBOzeTkI3wlETBdyYaeeeNz56TynfoE3N37/5Eicz8fUzlF5gX5tcVw19vxD7wmUCR55AGjeRSn1ecqevRAgiboCDa1tArmZnss=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712079046; c=relaxed/simple;
+	bh=gC2pA2vWQ6LUhjc0hRn0YhksA3GM4Z3DfGgguX9e8C8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J3wdl4LdeP/zEA9wkAvLuNSmXXm8nsZqmVY1zvWRQxGVPna1CULsxPLLQyITUanmYhcnI/W4+KQkhpxlTuIc5BroYcvzwI7O4+mbSdJTNnDcezjHnbNc81f+2r/4TNrKleXIvx2jNuUiy3Ah7Kmz1cH3wjjy0yECmlkPAtWy5tU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=soY+nlW7; arc=pass smtp.client-ip=195.140.195.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from darkstar.musicnaut.iki.fi (85-76-140-31-nat.elisa-mobile.fi [85.76.140.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 2671C13045;
-	Tue,  2 Apr 2024 17:29:39 +0000 (UTC)
-Received: from dog.eag.rdlabs.hpecorp.net (unknown [16.231.227.39])
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id A59A7809D37;
-	Tue,  2 Apr 2024 17:29:38 +0000 (UTC)
-Received: by dog.eag.rdlabs.hpecorp.net (Postfix, from userid 200934)
-	id 1D9E1300009E4; Tue,  2 Apr 2024 12:29:38 -0500 (CDT)
-From: Steve Wahl <steve.wahl@hpe.com>
-To: stable@vger.kernel.org
-Cc: Ingo Molnar <mingo@kernel.org>, Russ Anderson <rja@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.6.y] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
-Date: Tue,  2 Apr 2024 12:29:09 -0500
-Message-Id: <20240402172908.4137792-1-steve.wahl@hpe.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <2024040118-disgrace-tanning-bf41@gregkh>
-References: <2024040118-disgrace-tanning-bf41@gregkh>
-X-Proofpoint-ORIG-GUID: 6ADEnI1daT8gfPCbgX40JZSsL1dJeHO4
-X-Proofpoint-GUID: 6ADEnI1daT8gfPCbgX40JZSsL1dJeHO4
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	(Authenticated sender: aaro.koskinen)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4V8FJp17psz101C;
+	Tue,  2 Apr 2024 20:30:34 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1712079037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZZoAGDk83WlTFJh5LgmwBGfnksQY7qdEgy6pI2WrPHw=;
+	b=soY+nlW7HENa3hDAwHLxlV0Pf9t4ASlDCMm51FIBNSKq2/JXoHhWfyQ6VsdPvH1hyG4HdS
+	smHcCTVSIgBdpqwRoIjT8L8aCP5Kfu8LIOwCBIXyQqOhXce1x5g/yUbecZkhYePTp5vLj3
+	zk/djvn8UJEOthVjCnj4Vub8mkQMQWI=
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1712079037; a=rsa-sha256; cv=none;
+	b=eLwKpyw2TdfpoYptWQ7/fi8hYu5Gdtf2gKXcozU+0x8J07M/LvMtN4IxcT0vJxXlaIz8jP
+	vxjAyAr58c66b+x6T8pC0aNt9BN7CMYB8QLOTqxvVJAzaXIIW8XfOsB1ri5OmtHajt/QdX
+	Wd0gx4yRiAhTlZKVSaAQQM8TNceIuYE=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1712079036;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZZoAGDk83WlTFJh5LgmwBGfnksQY7qdEgy6pI2WrPHw=;
+	b=BQ+8UxObZ/ckvU0VrFjlCszlQ2bvDwX2zmEly4x+xji5FYczvx4DJYBiWosJmU55DlnIyn
+	P35+eXloQBV7FdOYk2ws3W6WzVNDYa6iWiM8PiHIRw2/Mk9QMqxUAGuAMVcMUsR4plexER
+	mAaOmCT64NPzCRz648QxnGqZD1dvia8=
+Date: Tue, 2 Apr 2024 20:30:32 +0300
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+To: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Cc: Waiman Long <longman@redhat.com>, Mukesh Ojha <quic_mojha@quicinc.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Greg KH <gregkh@linuxfoundation.org>, mingo@redhat.com,
+	will@kernel.org, boqun.feng@gmail.com, linux-kernel@vger.kernel.org,
+	Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] locking/rwsem: Disable preemption while trying for
+ rwsem lock
+Message-ID: <20240402173032.GC91663@darkstar.musicnaut.iki.fi>
+References: <1662661467-24203-1-git-send-email-quic_mojha@quicinc.com>
+ <20240305110402.GA72649@darkstar.musicnaut.iki.fi>
+ <b92644e5-529b-4403-aba7-d316262cc8ac@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-02_10,2024-04-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- mlxscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0 lowpriorityscore=0
- malwarescore=0 phishscore=0 priorityscore=1501 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2403210000
- definitions=main-2404020129
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b92644e5-529b-4403-aba7-d316262cc8ac@redhat.com>
 
-From: Ingo Molnar <mingo@kernel.org>
+Stable team,
 
-This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
+Please cherry-pick this patch into v5.15 stable:
 
-While the original change tries to fix a bug, it also unintentionally broke
-existing systems, see the regressions reported at:
+	locking/rwsem: Disable preemption while trying for rwsem lock
 
-  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+	commit 48dfb5d2560d36fb16c7d430c229d1604ea7d185
 
-Since d794734c9bbf was also marked for -stable, let's back it out before
-causing more damage.
+It fixes the following bug present in v5.15:
 
-Note that due to another upstream change the revert was not 100% automatic:
+> > > From: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+> > > We observe RT task is hogging CPU when trying to acquire rwsem lock
+> > > which was acquired by a kworker task but before the rwsem owner was set.
+> > > 
+> > > Here is the scenario:
+> > > 1. CFS task (affined to a particular CPU) takes rwsem lock.
+> > > 
+> > > 2. CFS task gets preempted by a RT task before setting owner.
+> > > 
+> > > 3. RT task (FIFO) is trying to acquire the lock, but spinning until
+> > > RT throttling happens for the lock as the lock was taken by CFS task.
 
-  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
+If the RT throttling is disabled, the RT task will remain looping forever
+in the kernel. If the system is UP, it will lock up completely.
 
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Russ Anderson <rja@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-(cherry picked from commit c567f2948f57bdc03ed03403ae0234085f376b7d)
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
----
+The issue can be easily reproduced by running RT task and normal task which
+are affined to the same CPU core.
 
-Thought I'd try and be of help.  The pud_large() / pud_leaf() change
-is what caused the difficulty in reversion.
+A.
 
- arch/x86/mm/ident_map.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
-
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index f50cc210a981..968d7005f4a7 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
--		bool use_gbpage;
- 
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
- 
--		/* if this is already a gbpage, this portion is already mapped */
--		if (pud_large(*pud))
--			continue;
--
--		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
--
--		/* Don't use gbpage if it maps more than the requested region. */
--		/* at the begining: */
--		use_gbpage &= ((addr & ~PUD_MASK) == 0);
--		/* ... or at the end: */
--		use_gbpage &= ((next & ~PUD_MASK) == 0);
--
--		/* Never overwrite existing mappings */
--		use_gbpage &= !pud_present(*pud);
--
--		if (use_gbpage) {
-+		if (info->direct_gbpages) {
- 			pud_t pudval;
- 
-+			if (pud_present(*pud))
-+				continue;
-+
-+			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
--- 
-2.26.2
-
+On Tue, Mar 05, 2024 at 09:55:47AM -0500, Waiman Long wrote:
+> On 3/5/24 06:04, Aaro Koskinen wrote:
+> > Hi,
+> > 
+> > It seems this patch (commit 48dfb5d2560d) is missing from
+> > at least 5.15 stable tree.
+> > 
+> > Based on quick test, it seems to fix an issue where system locks up
+> > easily when RT throttling is disabled, and also it applies cleanly, so
+> > I think it should be good to have it 5.15?
+> 
+> You need to cc stable as the locking maintainers are not responsible for
+> merging patches to stable trees.
+> 
+> Cheers,
+> Longman
+> 
+> > 
+> > A.
+> > 
+> > On Thu, Sep 08, 2022 at 11:54:27PM +0530, Mukesh Ojha wrote:
+> > > From: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+> > > 
+> > > Make the region inside the rwsem_write_trylock non preemptible.
+> > > 
+> > > We observe RT task is hogging CPU when trying to acquire rwsem lock
+> > > which was acquired by a kworker task but before the rwsem owner was set.
+> > > 
+> > > Here is the scenario:
+> > > 1. CFS task (affined to a particular CPU) takes rwsem lock.
+> > > 
+> > > 2. CFS task gets preempted by a RT task before setting owner.
+> > > 
+> > > 3. RT task (FIFO) is trying to acquire the lock, but spinning until
+> > > RT throttling happens for the lock as the lock was taken by CFS task.
+> > > 
+> > > This patch attempts to fix the above issue by disabling preemption
+> > > until owner is set for the lock. While at it also fix the issues
+> > > at the places where rwsem_{set,clear}_owner() are called.
+> > > 
+> > > This also adds lockdep annotation of preemption disable in
+> > > rwsem_{set,clear}_owner() on Peter Z. suggestion.
+> > > 
+> > > Signed-off-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+> > > Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+> > > ---
+> > > Changes in v2:
+> > >   - Remove preempt disable code in rwsem_try_write_lock_unqueued()
+> > >   - Addressed suggestion from Peter Z.
+> > >   - Modified commit text
+> > >   kernel/locking/rwsem.c | 14 ++++++++++++--
+> > >   1 file changed, 12 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+> > > index 65f0262..4487359 100644
+> > > --- a/kernel/locking/rwsem.c
+> > > +++ b/kernel/locking/rwsem.c
+> > > @@ -133,14 +133,19 @@
+> > >    * the owner value concurrently without lock. Read from owner, however,
+> > >    * may not need READ_ONCE() as long as the pointer value is only used
+> > >    * for comparison and isn't being dereferenced.
+> > > + *
+> > > + * Both rwsem_{set,clear}_owner() functions should be in the same
+> > > + * preempt disable section as the atomic op that changes sem->count.
+> > >    */
+> > >   static inline void rwsem_set_owner(struct rw_semaphore *sem)
+> > >   {
+> > > +	lockdep_assert_preemption_disabled();
+> > >   	atomic_long_set(&sem->owner, (long)current);
+> > >   }
+> > >   static inline void rwsem_clear_owner(struct rw_semaphore *sem)
+> > >   {
+> > > +	lockdep_assert_preemption_disabled();
+> > >   	atomic_long_set(&sem->owner, 0);
+> > >   }
+> > > @@ -251,13 +256,16 @@ static inline bool rwsem_read_trylock(struct rw_semaphore *sem, long *cntp)
+> > >   static inline bool rwsem_write_trylock(struct rw_semaphore *sem)
+> > >   {
+> > >   	long tmp = RWSEM_UNLOCKED_VALUE;
+> > > +	bool ret = false;
+> > > +	preempt_disable();
+> > >   	if (atomic_long_try_cmpxchg_acquire(&sem->count, &tmp, RWSEM_WRITER_LOCKED)) {
+> > >   		rwsem_set_owner(sem);
+> > > -		return true;
+> > > +		ret = true;
+> > >   	}
+> > > -	return false;
+> > > +	preempt_enable();
+> > > +	return ret;
+> > >   }
+> > >   /*
+> > > @@ -1352,8 +1360,10 @@ static inline void __up_write(struct rw_semaphore *sem)
+> > >   	DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) &&
+> > >   			    !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE), sem);
+> > > +	preempt_disable();
+> > >   	rwsem_clear_owner(sem);
+> > >   	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
+> > > +	preempt_enable();
+> > >   	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
+> > >   		rwsem_wake(sem);
+> > >   }
+> > > -- 
+> > > 2.7.4
+> > > 
+> > > 
+> 
+> 
 
