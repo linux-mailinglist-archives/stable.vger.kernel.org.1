@@ -1,164 +1,299 @@
-Return-Path: <stable+bounces-35572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E1C894E10
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48264894E5D
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67EB3283DDC
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 08:58:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FB55282EE1
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7066F4D5A0;
-	Tue,  2 Apr 2024 08:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD69B57306;
+	Tue,  2 Apr 2024 09:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ydzVSgoO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CB51755A;
-	Tue,  2 Apr 2024 08:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF0E32C8B
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 09:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712048278; cv=none; b=i4aURAQLj3qVGPZJjZr8H9pvIdidQanLZeAHn2LbQHWp7QaWVrRNrF8EXgHAaNvxzah4tIPS8eGWEWl0sjPcHNF7Gq4mAw4wFN4nJwV+rGOAWJWNv4C3olHwyhHDtH0EvZ05ZKvPced3QDvZ+k+ALqURtdbaK4C2BU0nJHwEmXQ=
+	t=1712049013; cv=none; b=U8VCA/+siyIcj/rX97hyYLGy4VmsvwHl2JNDy9wzpZ7J2xiI9zJTACHaiA26mQDEYLCCwEp6czXWZxjHMQdsy3vN2sdE62XBO1Vf+aHAnOnXc9s4dawcrW52fgAuG2XXP8I9cPeZaE2PgNTuZvLgEckCN94tMWzKsV/opQ+Vd/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712048278; c=relaxed/simple;
-	bh=4mGyip3A2vxVFiIMykn/ckhzlQc9ZJ9gaeuHR/O/fZs=;
+	s=arc-20240116; t=1712049013; c=relaxed/simple;
+	bh=yhpWW/IT8Uwo5I32LF3idDM8PUHV1qO06MNqoFv0P4E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FojOsJwOw199AYJAfM0mWLtZvS48/fuFc0vHDEnMJCMhz6V/Zsikvs3cNtZ7YGrEyocNSW4CQZkktfNxoDw1z7zKQES9HscMIcfk9CuDHGDEvvQcQKMFuBtqeih6saKkTfamswnOmdgghkLhQ5U4babX4uP5gMBFhvOHryPlLWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so4679269276.1;
-        Tue, 02 Apr 2024 01:57:56 -0700 (PDT)
+	 To:Cc:Content-Type; b=hA1qDPpXQpMLSZ43yVKc4nyREsB17y+sHULJ7vpGAGmi9VVUamxCztgzLK44TMxYuVbFPCX1QCChiYTh379RwSMntn2+zJbek4fqeOsp2uiBwyIWLWWAA5wAhUR6MnDWYEH0eDoYQAH8mNM1xlOSpjBNFs3kMENrq/DH26/uqLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ydzVSgoO; arc=none smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4785c788ba6so650179137.0
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 02:10:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712049010; x=1712653810; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W7BMxshBQJ7ZHa0LY4aOPHFxmzLIewnqFyNl/JiJoJk=;
+        b=ydzVSgoO6M3J9iYSxLARklWbzyR4HCFGuYKybCDpfT4XfySRuZhF6kSMdqH5A6vwf3
+         MumI5aj9kxO/r18F+P8+OhoLdJipHXSfzjJy5MOzYEztPcAGfBdKfsy0PKJiHPOMZdDu
+         AFfK21Y6CK3hs4+8n/1WxndgTwGKY5LfqWYxnIo5OD9hhg7/whEc4Hw3cpGYtWby7D7R
+         Bj/EopSO/RuPXaBYGQAZomhqq+tvtL4VDyuvJeu/pRrphApgw3dEa2PgwEA4K3SoDMYp
+         xqRELmPVa0iriTVehFlFOzpyqmsHK6w2bBEowe1IxvTxaFiOGp7UPkgZ7NqcZI6XVAyu
+         04PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712048274; x=1712653074;
+        d=1e100.net; s=20230601; t=1712049010; x=1712653810;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aVhWIofaeGGyMSfZkv2tkxmuwwN8jEo36pNRCgIT+Ys=;
-        b=ObOhPGt8GfG/i3NRtnPqde2CXyJeWx/eyHo/TYmzGWK55NL7IL3wxC3vSIdr931noa
-         iTI3iJ2pOzFeJ8pmDe5lkG5HxW+MZLzO0eUZBfEMcxAb8ZJkUclZ67bNGKaBqdk6clYK
-         kSADdoBz/gvGm59kgjk/YA7O/TjUuPQ7UqDXal7T85Vmc8JloWH6m2ecHH0kw0D8w3Uf
-         RTNo5CWasW1e8jiqXMTnmyaLtDUaHm8Zbc9tMx+KtYBvn6d1+UlM9zmWVHbJ3WN+VaR7
-         S1vGRhMjXxvFUOhyyQ3V4cWSOksJ+gF5DGQictLbFL1p6ohhEkMGpzZHPFoBnhYin/OT
-         v0EA==
-X-Forwarded-Encrypted: i=1; AJvYcCXuB7rrlB3gNodQ1sVsvasHDeDXkbF0GacSCTyeAnLcsX5ISxTkQUto+Z7L2a4Xj1eBhmrKY83VQky5lhFruFqeILErlIZd
-X-Gm-Message-State: AOJu0YxTJkb34vxKv0eJqYeHWTaMs0O5BgbSSDOaxYIBk7QA1WKDFs3a
-	ZiAb0tvE0+lrSicGxOD/dYswDrEx60UjtVplW65kSi1hp9tDlhKzqO4Hpmd5fYE=
-X-Google-Smtp-Source: AGHT+IEbgoiD9Uu1JaAjRsoE9MbIs5GzOHUG3wheIAsp2wKPthdyM/m5DBYTJyIRgXbL5j+Qy/GYuQ==
-X-Received: by 2002:a5b:b91:0:b0:dd0:467:2e48 with SMTP id l17-20020a5b0b91000000b00dd004672e48mr9645824ybq.40.1712048274460;
-        Tue, 02 Apr 2024 01:57:54 -0700 (PDT)
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
-        by smtp.gmail.com with ESMTPSA id m3-20020a255803000000b00dcd25ce965esm2440779ybb.41.2024.04.02.01.57.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Apr 2024 01:57:54 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so4679252276.1;
-        Tue, 02 Apr 2024 01:57:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWeMlcabTQARu1weLQD4DTgF5b8MLpZKDgJ3q/fCOE7Q+emTlIKiXpJ3ZBTOqSgcvQ7h//7fwm9ud6+X/FEaaCTIbvE9uAP
-X-Received: by 2002:a25:5f0a:0:b0:dd9:20d6:fd2 with SMTP id
- t10-20020a255f0a000000b00dd920d60fd2mr8002219ybb.27.1712048273931; Tue, 02
- Apr 2024 01:57:53 -0700 (PDT)
+        bh=W7BMxshBQJ7ZHa0LY4aOPHFxmzLIewnqFyNl/JiJoJk=;
+        b=KJqMkxbE01jgDRuh7+1Xcaqk9EFSQasbGEN2s6mOZOghvdHb+JuZF6MSew930P8s0B
+         XRPxZfZlVc1OfuuANFibt5UsCyfMRNVmNYuJL4KPToDFFO6qxOJVcLMqcBnWB1Nir58y
+         36XuLtHxv4gpHd7WNuisCCUTeVCN9XyIdiijT+Nml1OaI/jq71nrifXI7FkWjJACt0kE
+         dXq+NiOnCfTQhXANpwzuY0cdMi0iHE+6UEyDGGRyhMtQAN3SEAG+TSiurQzmieduYGau
+         3lUD+yUz8QtwRzI66z8JtldMBh305Bu4cVlMEUEGkVeKGDEC05IeOrK5XOe5MVbmyjMa
+         MsZA==
+X-Gm-Message-State: AOJu0YwcohSgZDcnyZ5XcEw7m3vE6Hg2+buR7Z+78oW6oPlkiJTeHaqr
+	I/PQxXrULAPa24nBSRm96SGsZWmzlGec0xF9jnmdKMheYGOKOOr+uyNnQ9j62euA+6c/MRdnEOr
+	Dj9oRzQBXl+YT/gTVMaEQQ5sVAzdBp3S4mdSJpA==
+X-Google-Smtp-Source: AGHT+IHUhrMRqZBe61EWvS/5n4DW7KdCE5I4UvfMbfeSIQSs2UUIFQU50DQGojCXvjHaJP2OmbuZLI0CMjUH+BF/oaA=
+X-Received: by 2002:a67:fe99:0:b0:478:7149:20dc with SMTP id
+ b25-20020a67fe99000000b00478714920dcmr4020589vsr.8.1712049009942; Tue, 02 Apr
+ 2024 02:10:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240324233458.1352854-1-sashal@kernel.org> <20240324233458.1352854-111-sashal@kernel.org>
-In-Reply-To: <20240324233458.1352854-111-sashal@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 2 Apr 2024 10:57:41 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdW9yQsq15Lc_uqULw4LXAzrKwOZe+KCGLrCkiFG9kuVnw@mail.gmail.com>
-Message-ID: <CAMuHMdW9yQsq15Lc_uqULw4LXAzrKwOZe+KCGLrCkiFG9kuVnw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 110/317] arm64: dts: renesas: r8a779a0: Update to
- R-Car Gen4 compatible values
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
+References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 2 Apr 2024 14:39:58 +0530
+Message-ID: <CA+G9fYt+LiPtb3jP8QqgfrfBtQBNWawCqGUabg+GBqXZSVa5pg@mail.gmail.com>
+Subject: Re: [PATCH 6.8 000/399] 6.8.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Sasha,
-
-Looks like I missed some things in my previous review...
-
-On Mon, Mar 25, 2024 at 12:36=E2=80=AFAM Sasha Levin <sashal@kernel.org> wr=
-ote:
-> From: Geert Uytterhoeven <geert+renesas@glider.be>
+On Mon, 1 Apr 2024 at 21:20, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> [ Upstream commit a1721bbbdb5c6687d157f8b8714bba837f6028ac ]
-
-This is not the corresponding upstream commit for this commit
-(a022251c2f950cd2 in v5.15.153).
-It should be a1ca409cc050166a9e8ed183c1d4192f511cf6a2.
-How could that happen? Interestingly, the backport in v6.1.83
-(efab55e16c55c637) does have the correct upstream commit.
-
-> Despite the name, R-Car V3U is the first member of the R-Car Gen4
-> family.  Hence update the compatible properties in various device nodes
-> to include family-specific compatible values for R-Car Gen4 instead of
-> R-Car Gen3:
->   - DMAC,
->   - (H)SCIF,
->   - I2C,
->   - IPMMU,
->   - WDT.
-
-Likewise, the description should be:
-
-    Despite the name, R-Car V3U is the first member of the R-Car Gen4
-    family.  Hence update the compatible properties in various device nodes
-    to include family-specific compatible values for R-Car Gen4 instead of
-    R-Car Gen3:
-      - EtherAVB,
-      - MSIOF.
-
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-Likewise, bogus tag never given...
-
-> Link: https://lore.kernel.org/r/73cea9d5e1a6639422c67e4df4285042e31c9fd5.=
-1651497071.git.geert+renesas@glider.be
-
-and a wrong link.
-
-> Stable-dep-of: 0c51912331f8 ("arm64: dts: renesas: r8a779a0: Correct avb[=
-01] reg sizes")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-
-> --- a/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-> +++ b/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-
-> @@ -935,7 +935,7 @@ scif4: serial@e6c40000 {
+> This is the start of the stable review cycle for the 6.8.3 release.
+> There are 399 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
->                 msiof0: spi@e6e90000 {
->                         compatible =3D "renesas,msiof-r8a779a0",
-> -                                    "renesas,rcar-gen3-msiof";
-> +                                    "renesas,rcar-gen4-msiof";
+> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.8.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The Renesas MSIOF driver in v5.15.153 does not handle
-"renesas,rcar-gen4-msiof" yet.  Please backport commit ea9d001550abaf2f
-("spi: sh-msiof: add generic Gen4 binding") in v6.1 to fix that.
 
->                         reg =3D <0 0xe6e90000 0 0x0064>;
->                         interrupts =3D <GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>;
->                         clocks =3D <&cpg CPG_MOD 618>;
+Results from Linaro=E2=80=99s test farm.
+Regressions on arm64, arm, x86_64, and i386 with libgpiod tests.
 
-Thanks!
+libgpiod test regressions noticed on Linux stable-rc 6.8, 6.7 and 6.6
+and Linux next and mainline master.
 
-Gr{oetje,eeting}s,
+Anders bisected and found this first bad commit,
+  gpio: cdev: sanitize the label before requesting the interrupt
+  commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
 
-                        Geert
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+LKFT is running libgpiod test suite version
+  v2.0.1-0-gae275c3 ( and also tested v2.1 )
+
+libgpiod
+  - _gpiod_edge-event_edge_event_wait_timeout
+  - _gpiod_edge-event_event_copy
+  - _gpiod_edge-event_null_buffer
+  - _gpiod_edge-event_read_both_events
+  - _gpiod_edge-event_read_both_events_blocking
+  - _gpiod_edge-event_read_falling_edge_event
+  - _gpiod_edge-event_read_rising_edge_event
+  - _gpiod_edge-event_read_rising_edge_event_polled
+  - _gpiod_edge-event_reading_more_events_than_the_queue_contains_doesnt_bl=
+ock
+  - _gpiod_edge-event_seqno
+  - _gpiod_line-info_edge_detection_settings
+
+Test log:
+-------
+ok 16 /gpiod/edge-event/edge_event_buffer_max_capacity
+**
+gpiod-test:ERROR:tests-edge-event.c:52:_gpiod_test_func_edge_event_wait_tim=
+eout:
+'_request' should not be NULL
+# gpiod-test:ERROR:tests-edge-event.c:52:_gpiod_test_func_edge_event_wait_t=
+imeout:
+'_request' should not be NULL
+not ok 17 /gpiod/edge-event/edge_event_wait_timeout
+ok 18 /gpiod/edge-event/cannot_request_lines_in_output_mode_with_edge_detec=
+tion
+**
+gpiod-test:ERROR:tests-edge-event.c:125:_gpiod_test_func_read_both_events:
+'_request' should not be NULL
+# gpiod-test:ERROR:tests-edge-event.c:125:_gpiod_test_func_read_both_events=
+:
+'_request' should not be NULL
+not ok 19 /gpiod/edge-event/read_both_events
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.=
+8.2-400-gbffeaccf18b5/testrun/23252337/suite/libgpiod/tests/
+
+## Build
+* kernel: 6.8.3-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.8.y
+* git commit: bffeaccf18b5433577a5f823e5b98bee675d530c
+* git describe: v6.8.2-400-gbffeaccf18b5
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.2=
+-400-gbffeaccf18b5
+
+## Test Regressions (compared to v6.8.2)
+* libgpiod
+  - _gpiod_edge-event_edge_event_wait_timeout
+  - _gpiod_edge-event_event_copy
+  - _gpiod_edge-event_null_buffer
+  - _gpiod_edge-event_read_both_events
+  - _gpiod_edge-event_read_both_events_blocking
+  - _gpiod_edge-event_read_falling_edge_event
+  - _gpiod_edge-event_read_rising_edge_event
+  - _gpiod_edge-event_read_rising_edge_event_polled
+  - _gpiod_edge-event_reading_more_events_than_the_queue_contains_doesnt_bl=
+ock
+  - _gpiod_edge-event_seqno
+  - _gpiod_line-info_edge_detection_settings
+
+
+## Metric Regressions (compared to v6.8.2)
+
+## Test Fixes (compared to v6.8.2)
+
+## Metric Fixes (compared to v6.8.2)
+
+## Test result summary
+total: 256232, pass: 222485, fail: 2538, skip: 30869, xfail: 340
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 130 total, 128 passed, 2 failed
+* arm64: 41 total, 40 passed, 1 failed
+* i386: 32 total, 32 passed, 0 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 18 total, 18 passed, 0 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 6 passed, 2 failed
+* x86_64: 36 total, 35 passed, 1 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Linaro LKFT
+https://lkft.linaro.org
 
