@@ -1,80 +1,131 @@
-Return-Path: <stable+bounces-35534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E290F894AC6
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:14:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235F9894AD7
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A08A81F2250F
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:14:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE946B22F7F
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6451802B;
-	Tue,  2 Apr 2024 05:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053D818042;
+	Tue,  2 Apr 2024 05:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMvy71Lr"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="iD3GJsl7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8392817C95
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 05:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC32118028
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 05:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712034839; cv=none; b=Oue4khSinHNTGxaT+Cd72sbfgRelIh/qPbgMvzpVoLnsMTod6+MqW/pf6VSnccQmWyrDPq4osAkvpyy89TmOieCD3FJ7qYTKM5cxk7P4c8Ii9Synhaq8OST7nqWAPhC3MXMr+haarr6NpHFJM+GVgr8jao5+IKw0rojpMZo3H0k=
+	t=1712035388; cv=none; b=N7+NOHx/cRHS7q3SJRPWSjtG1vITuBshbveKVF8yTC5BY6REEH2geqI/hw4AYOrr9kgFI5FWipp9qtCUITCdloVWLusTZ2HGvVzqeKUsQNq1nJJY+YqwkepVqR6kjZq0RrjTXTccgTaodO5/+2uc49ewikC67JJbRTSsjs2Gsy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712034839; c=relaxed/simple;
-	bh=6S8kijq+Oysb6k53uD58oNqLvCrKfXIjTpa2nh+Uy8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bu4v2fBykA7QgqPJS6Tq03RZENG6jsu2/Q8fwPTxDlQcyr7OOlnq7qMPed744H9jJP4en6s8uzISo29rTEsyc7O2JfgUYNIGvcj68cvUxNC5iyays9ZN4ertKzJywNErSQIv+igARqKIiXevlXoXxaqhbQadrCzp/tFV/8W4lJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMvy71Lr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD849C43390;
-	Tue,  2 Apr 2024 05:13:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712034839;
-	bh=6S8kijq+Oysb6k53uD58oNqLvCrKfXIjTpa2nh+Uy8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zMvy71LraeVlJGIBha1Iv5YJEqvT4yT0u1hyeCBkZqXjT2SVUgAl32ygnjKs1WwH5
-	 OSc1oTszO739om4jJNSVWHtnnEbik9wrLjdJ1JYylJfh+RuugX/oRm/UqyTnbfy8U2
-	 cHllEeW0TM8Czlqy8A0Sh31Jr5IXXtd5lWZzH78U=
-Date: Tue, 2 Apr 2024 07:13:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: stable@vger.kernel.org
-Subject: Re: Request to cherry-pick a patch for v5.15 (locking/rwsem: Disable
- preemption while trying for rwsem lock)
-Message-ID: <2024040214-unhinge-espresso-0a66@gregkh>
-References: <20240401215445.GA91663@darkstar.musicnaut.iki.fi>
+	s=arc-20240116; t=1712035388; c=relaxed/simple;
+	bh=o9JqQU4pt1QfRlOQu21GoPMKrOOCIXPEfH5LBAIp6L4=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=fM5jwdtane8OdmJhhhKScPOd7M/OvB5yatJ3WH5zBNemOWwa0/tlv51oo8h+KVFU0EvpygS+OvGS0KqTPVJiBIg+4BX1SLrf5bIVXoLJqJCNHysknnf21u8A/tsAIovVxabtcV0ZI82FbcPkOIj2+yldEb9eobGZEEkq5GByO98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=iD3GJsl7; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
+	by cmsmtp with ESMTPS
+	id rWPxrUn8wQr4SrWbsrVAT5; Tue, 02 Apr 2024 05:23:00 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id rWbrrXY4iiKqRrWbsroVW9; Tue, 02 Apr 2024 05:23:00 +0000
+X-Authority-Analysis: v=2.4 cv=I9quR8gg c=1 sm=1 tr=0 ts=660b9634
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=raytVjVEu-sA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=u83x1h+5LHq9SftQChawmhCm98M6VZCKcE9nJ2kSJFQ=; b=iD3GJsl7Jl8+N029Q7hgVXgcK6
+	9e2mFMrDEMKQI67WOAsR/HGri4Ge+1tZVYCHX/DBoBQDMLYBA14z3G+/5sS7it/T5b4IrlEwxjjkd
+	TBmjnZsiogPLEQRsRhWY3qWRjQMFsOiiXr/MT3KEpigw6q35OvS4whwNp8VA62hfgwIqaVwtqL3sq
+	oOOtlhmPnIqDw+du8sle8banKou33yD2aIQ5Rwa1zAhRxMEDMkC7Kda/uppqH8kKgdt4Yyr2CLr6A
+	/MThA+A0Brc3jZsRpUjUrs+vx7A7gm82al71MAIMuTD0F4xsoSLCnufQOstuBvzCIobbyI3m5q3Qq
+	3Vm2tTtg==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:55212 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rrWbp-0024p2-1v;
+	Mon, 01 Apr 2024 23:22:57 -0600
+Subject: Re: [PATCH 6.1 000/272] 6.1.84-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <2919e282-6c72-7bd2-d4e3-5427d3d27bcd@w6rz.net>
+Date: Mon, 1 Apr 2024 22:22:54 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240401215445.GA91663@darkstar.musicnaut.iki.fi>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rrWbp-0024p2-1v
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:55212
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 59
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGbYXqSaW5XTdm0C45REfjsvptjbVguJA4BKbFjnsZQfdM/ofnhc4lAJvcHG8v1jFCqCmpJiBvXGTtCQIXLvdVmG9rCTSvHAkV9XtT73pGAkjvPItmJl
+ xtS5jQ6NMrJErEhs+ooU5Xw+YA+i9t3+LE3FQph4FC8RPArOJ982BLQlMKkyO1K88y5KRoQNC0+9KA==
 
-On Tue, Apr 02, 2024 at 12:54:45AM +0300, Aaro Koskinen wrote:
-> Dear stable team,
-> 
-> Would you please cherry-pick the following patch into v5.15 stable:
-> 
->   locking/rwsem: Disable preemption while trying for rwsem lock
-> 
->   commit 48dfb5d2560d36fb16c7d430c229d1604ea7d185
+On 4/1/24 8:43 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.84 release.
+> There are 272 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.84-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Why?  What does it fix?  Why is it needed there?  And why not cc: any of
-the people and maintainers involved in it?
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-> Earlier discussion:
-> 
->   https://marc.info/?l=linux-kernel&m=170965048500766&w=2
+Tested-by: Ron Economos <re@w6rz.net>
 
-Please use lore.kernel.org for mailing list archive links.
-
-thanks,
-
-greg k-h
 
