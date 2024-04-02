@@ -1,51 +1,74 @@
-Return-Path: <stable+bounces-35562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80BD894D28
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:08:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFAE894D2D
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F709282FDA
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 08:08:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47FC41F227AD
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 08:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD5F3D548;
-	Tue,  2 Apr 2024 08:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72573D548;
+	Tue,  2 Apr 2024 08:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="SkizkYbp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aMQPio9Q"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B93F3F8ED;
-	Tue,  2 Apr 2024 08:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C843D544;
+	Tue,  2 Apr 2024 08:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712045296; cv=none; b=B61INxpjY9O9yC7EJ5m13eVJMMvW/HBdTimbxJKIsky9a/vmI6J48XD8kA/nQeunQRM84Qb/DzcLPNE28v9mrCIiH+oeX3vpMBRx/XLxqJ4pTekr0PNdsp4D8zD8xitGUquGL5bkqLPeJ6oFn67HzxhKGM66i5+lwUCGwFkQWgE=
+	t=1712045371; cv=none; b=E2AL/h9y3/aJQt2564/7BRxb5GXPm5Glmp5fXfUZu/3z+/WJOHEP/dPeUK4/YFIK2wgV0ey18C5UiAQyJ39vvn2M41fBwCnt6ecASRqYjiu6RIl8sumb53OA9vujuzxBelgk/YLDqLLL8tphzrgFWLPpALeX/dtwDWf1pGQF7ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712045296; c=relaxed/simple;
-	bh=2O7ENS4DaPqKazJcAvbhuoD+if/RT22k+vpwtmsvWOc=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=YJp4CUKUr9xpKN6G/qzZfF+p5ZUbgrCDnxwFQp1CZu3Z2afYHnPDTxB+QmrB5U1TwPXtYTIMOEA5D91qa32E6QrvIOIrMJ3J8zPX9er/QvjYPRHnCpWTfxG1XX3ooQVOgblE4y5B37WHYAi+ShX4iA6ehHG5kjEWb+dXZUqGKOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=SkizkYbp; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	Reply-To:Subject:Cc:To:From:MIME-Version:Date:Message-ID:From:Sender:Reply-To
-	:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=2O7ENS4DaPqKazJcAvbhuoD+if/RT22k+vpwtmsvWOc=; t=1712045294;
-	x=1712477294; b=SkizkYbp3XQEuqMEmUfLUaJPezMpxziSUUrpuloDEctapSDdoNooP8j9Giqtd
-	4pV6x5wXY+He3MWXKoXwxLKyX0seVVUHiaMzhp+GIcciWLfhTXNJ22r8AxLdTaUFPf5VK+M6PEVb4
-	NPaRWhfcPCn7IYTZAN7KvBBTUOJ3HUfwVhnOsIyJG5EFHXn2cRveF7vE4rFLMdfttBDHzJB++q7Wa
-	xqyrfAi1xVRocOqqzEpJLUuqqaF0wRf2snNgn0l5YAn9Vz51l8W03D/Rkr2PYUjnFtZGF+TuZFft1
-	P7QDBB24zhWlceCPeqnplHluIYVl9RTc0JFLes7snpj4nRiT+Q==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rrZBj-0000I0-UY; Tue, 02 Apr 2024 10:08:12 +0200
-Message-ID: <ce4c2f67-c298-48a0-87a3-f933d646c73b@leemhuis.info>
-Date: Tue, 2 Apr 2024 10:08:11 +0200
+	s=arc-20240116; t=1712045371; c=relaxed/simple;
+	bh=ZzCmfLlRmQWAd8BZFDzu2/Q5ZhppnoVamII+p9EovOo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AJnqqI30NOC2bqsO9iWnm9XcRDhjYXNBLIh9VBmTVj6J42k2D1gYujcoZjoO8XlfIVMPxw04hOGwT1GDgiB4JfGrtHSLOnaiu0s54zuMib2WvlW0cLOXDcsD5C5ytbwxnYWgqpk27tVCIjdiE/UFlcBG1ccgAYkTNj19jMadjfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aMQPio9Q; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-5d8b887bb0cso3973967a12.2;
+        Tue, 02 Apr 2024 01:09:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712045369; x=1712650169; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aPabVevQpgCOqyU7yl6aNZ4AREaAFhD+eH9lVYEoxAU=;
+        b=aMQPio9QYPO4Rgct2mAlylee3sOKH+jOqV8cuELnQLrGaoM2MmGBeOtdah8eiBduRm
+         CPTMT/T/KHrdrK2zlpgNWxsZEwBxeEPX+VdRREEAIXAng3+2RwVo6svD3+fdedR7q4w1
+         AS2Y0F5Bl6N9FA0Pd9KnK7GTa7L7lcco9bUXuZ35c4a1fPALq9hN4TB19FyEwXxwcbdB
+         2qj07SOxLlvosp+6p9drilE8enhJus71Lh0qBdk+hkkeBCPIW8mu5QS8MNbRL8XMK9pR
+         DHojccyICA5QKCypd9/fqHkvxT8O3YYt9hDm0tqbNCR3huNUb291Cm8UzFd8hV49NqmP
+         RIUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712045369; x=1712650169;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aPabVevQpgCOqyU7yl6aNZ4AREaAFhD+eH9lVYEoxAU=;
+        b=ae3xNjvvDBhqZ4Ead4TIvxE5/7NcbWYPtZJqZGzpTLKyz8crmYjBolbrFdOO3XzgBE
+         6dZ81psVJm7UjbsjfHQ9frjCt2tSAt5IKlsgao/Mp5beYhLcXXulwFnciyVwFjI/fQqN
+         Od2bECa2DIcRcSoOT9/NsWyQ5KCbiWd3kg+qqCLWLZf3pS9Kr/LNVewk/VRrmHpHCkor
+         1MwT0rkTtCBwcP6A4sPupDDzQ6+a69bmLF48r1p6knoyJRptItAIm2RbxrW1Wsp6QNNA
+         FEWYG+k3xv8VnJrcMqaiW3dohqYb9xOBK0bfxoCvnDWQdKQdg129ZIjwOu5rxjTRDWct
+         kJiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVM88iCWFZYkUDzlTKf16ZCHIm/jN854IhUZKgPWy4Kl9i5aeocmjj6iS+pgx3EqBE6boQLg293rnDl+ASLJI9pwFqPOlUSsRB9
+X-Gm-Message-State: AOJu0YzsDBVZHYu2P+VcJx5CLU2UH1DQ4wtfi4k5wwmAY+iLTqckEFQD
+	zSYxVJeG2wjOg1Kiahu6kCZNO2ttjBc46YycGvDDSLqfpgPW6v2QzkyXH8YL
+X-Google-Smtp-Source: AGHT+IHTP2mpj+NEMTTvSo0+EkhBbGLzl0pC82IDkvx3xKRk8pK6f7Cd2YOdQRnbzDY/SCssbK8CaQ==
+X-Received: by 2002:a05:6a20:3d0b:b0:1a7:2463:ae3b with SMTP id y11-20020a056a203d0b00b001a72463ae3bmr405372pzi.7.1712045369408;
+        Tue, 02 Apr 2024 01:09:29 -0700 (PDT)
+Received: from [192.168.43.30] ([1.47.155.123])
+        by smtp.googlemail.com with ESMTPSA id e14-20020a170902784e00b001e010c1628fsm10524655pln.124.2024.04.02.01.09.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Apr 2024 01:09:28 -0700 (PDT)
+Message-ID: <64053ff1-c447-45c5-ba87-e85307143dd4@gmail.com>
+Date: Tue, 2 Apr 2024 15:09:12 +0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,100 +76,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- Tejun Heo <tj@kernel.org>
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-Subject: Hibernate stuck after recent kernel/workqueue.c changes in Stable
- 6.6.23
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 1/2] USB: serial: option: add Lonsung U8300/U9300 product
+ Update the USB serial option driver to support Longsung U8300/U9300.
+To: Coia Prant <coiaprant@gmail.com>, linux-usb@vger.kernel.org,
+ Johan Hovold <johan@kernel.org>
+Cc: stable@vger.kernel.org
+References: <20240402073451.1751984-1-coiaprant@gmail.com>
+Content-Language: en-US
+From: Lars Melin <larsm17@gmail.com>
+In-Reply-To: <20240402073451.1751984-1-coiaprant@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1712045294;88b002ec;
-X-HE-SMSGID: 1rrZBj-0000I0-UY
 
-Hi stable team, there is a report that the recent backport of
-5797b1c18919cd ("workqueue: Implement system-wide nr_active enforcement
-for unbound workqueues") [from Tejun] to 6.6.y (as 5a70baec2294) broke
-hibernate for a user. 6.6.24-rc1 did not fix this problem; reverting the
-culprit does.
+On 2024-04-02 14:34, Coia Prant wrote:
+> ID 1c9e:9b05 OMEGA TECHNOLOGY (U8300)
+> ID 1c9e:9b3c OMEGA TECHNOLOGY (U9300)
+> 
+> U8300
+>   /: Bus
+>      |__ Port 1: Dev 3, If 0, Class=Vendor Specific Class, Driver=option, 480M (Debug)
+>          ID 1c9e:9b05 OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 1, Class=Vendor Specific Class, Driver=option, 480M (Modem / AT)
+>          ID 1c9e:9b05 OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 2, Class=Vendor Specific Class, Driver=option, 480M (AT)
+>          ID 1c9e:9b05 OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 3, Class=Vendor Specific Class, Driver=option, 480M (AT / Pipe / PPP)
+>          ID 1c9e:9b05 OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 4, Class=Vendor Specific Class, Driver=qmi_wwan, 480M (NDIS / GobiNet / QMI WWAN)
+>          ID 1c9e:9b05 OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 5, Class=Vendor Specific Class, Driver=, 480M (ADB)
+>          ID 1c9e:9b05 OMEGA TECHNOLOGY
+> 
+> U9300
+>   /: Bus
+>      |__ Port 1: Dev 3, If 0, Class=Vendor Specific Class, Driver=, 480M (ADB)
+>          ID 1c9e:9b3c OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 1, Class=Vendor Specific Class, Driver=option, 480M (Modem / AT)
+>          ID 1c9e:9b3c OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 2, Class=Vendor Specific Class, Driver=option, 480M (AT)
+>          ID 1c9e:9b3c OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 3, Class=Vendor Specific Class, Driver=option, 480M (AT / Pipe / PPP)
+>          ID 1c9e:9b3c OMEGA TECHNOLOGY
+>      |__ Port 1: Dev 3, If 4, Class=Vendor Specific Class, Driver=qmi_wwan, 480M (NDIS / GobiNet / QMI WWAN)
+>          ID 1c9e:9b3c OMEGA TECHNOLOGY
+> 
+> Tested successfully using Modem Manager on U9300.
+> Tested successfully AT commands using If=1, If=2 and If=3 on U9300.
+> 
+> Signed-off-by: Coia Prant <coiaprant@gmail.com>
+> Cc: stable@vger.kernel.org
+> ---
+>   drivers/usb/serial/option.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+> index 55a65d941ccb..27a116901459 100644
+> --- a/drivers/usb/serial/option.c
+> +++ b/drivers/usb/serial/option.c
+> @@ -412,6 +412,10 @@ static void option_instat_callback(struct urb *urb);
+>    */
+>   #define LONGCHEER_VENDOR_ID			0x1c9e
+>   
+> +/* Longsung products */
+> +#define LONGSUNG_U8300_PRODUCT_ID		0x9b05
+> +#define LONGSUNG_U9300_PRODUCT_ID		0x9b3c
+> +
+>   /* 4G Systems products */
+>   /* This one was sold as the VW and Skoda "Carstick LTE" */
+>   #define FOUR_G_SYSTEMS_PRODUCT_CARSTICK_LTE	0x7605
+> @@ -2054,6 +2058,10 @@ static const struct usb_device_id option_ids[] = {
+>   	  .driver_info = RSVD(4) },
+>   	{ USB_DEVICE(LONGCHEER_VENDOR_ID, ZOOM_PRODUCT_4597) },
+>   	{ USB_DEVICE(LONGCHEER_VENDOR_ID, IBALL_3_5G_CONNECT) },
+> +	{ USB_DEVICE(LONGCHEER_VENDOR_ID, LONGSUNG_U8300_PRODUCT_ID),
+> +	  .driver_info = RSVD(4) | RSVD(5) },
+> +	{ USB_DEVICE(LONGCHEER_VENDOR_ID, LONGSUNG_U9300_PRODUCT_ID),
+> +	  .driver_info = RSVD(0) | RSVD(4) },
+>   	{ USB_DEVICE(HAIER_VENDOR_ID, HAIER_PRODUCT_CE100) },
+>   	{ USB_DEVICE_AND_INTERFACE_INFO(HAIER_VENDOR_ID, HAIER_PRODUCT_CE81B, 0xff, 0xff, 0xff) },
+>   	/* Pirelli  */
 
-> With kernel 6.6.23 hibernating usually hangs here: the display stays
-> on but the mouse pointer does not move and the keyboard does not work.
-> But SysRq REISUB does reboot. Sometimes it seems to hibernate: the
-> computer powers down and can be waked up and the previous display comes
-> visible, but it is stuck there.
+Reviewed-by Lars Melin (larsm17@gmail.com
 
-See https://bugzilla.kernel.org/show_bug.cgi?id=218658 for details.
-Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
-not CCed them in mails like this.
-
-Side note: there is a mainline report about problems due to
-5797b1c18919cd ("workqueue: Implement system-wide nr_active enforcement
-for unbound workqueues") as well, but it's about "nohz_full=0 prevents
-kernel from booting":
-https://bugzilla.kernel.org/show_bug.cgi?id=218665; will forward that
-separately to Tejun.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
-[1] because bugzilla.kernel.org tells users upon registration their
-"email address will never be displayed to logged out users"
-
-#regzbot introduced: 5a70baec2294e8a7d0fcc4558741c23e752dad
-#regzbot from: Petri Kaukasoina
-#regzbot duplicate: https://bugzilla.kernel.org/show_bug.cgi?id=218658
-#regzbot title: workqueue: hubernate usually hangs when going to sleep
-#regzbot ignore-activity
+added the maintainer to the recipient list
 
