@@ -1,123 +1,166 @@
-Return-Path: <stable+bounces-35608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B598B895597
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 15:42:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFDF895713
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 16:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709FB289430
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:42:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1F421C2230C
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 14:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103B885650;
-	Tue,  2 Apr 2024 13:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007B312C53A;
+	Tue,  2 Apr 2024 14:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="2EZej/8t"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pfs30WC1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E7C81AB6
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 13:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8B21292D1
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 14:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712065301; cv=none; b=njirHTleHz2Z0/LpgbK37Z1WrZf/vKOCYQ1v10ZC021aeZfNLMbx7QTogMHtY7RimQQp892XIzEVm1SF9AK+/PyifagK4Ao6JsHdaairotX/hxLO1De1VESXPerO6JHgEdFD6rtH0ly268IUlHJQ3c+ujfZG514Yep+QVlYYMNI=
+	t=1712068655; cv=none; b=imKGflQXtvw20uGGh3dlG0q3uLFEgKET6WBaPInS14MDB8GkDc2KKUraNAH+qbl1TBLbLx7VaxqWFVT2Zh4+Z7GIA7lIYEG4yFQLaL/9j9nKE3CmtDazov54vZxoDu+acENi6w/jJ1Grh+a6Q58jzbugBEi0f/YPXW2N69Sq49U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712065301; c=relaxed/simple;
-	bh=0LtRApWIgSlpJ9ww/YIqK7ZhGrxEnPNn5T2jGau3Mqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=TP2J75XX+x8F0Oi2Ioi/q6pmFRVr3tSE0vI6zrkjswhnCJv6skyq3Lkzuh2wSJp+swVO0mtFPx+CjhuNTWPUEzq2WisRLMvUf0jafRQNJYqGpGcnAy9KX5MArtYe/j5nv40RPSB2JOItJIqNTMe9VBCBT6XTLlhqMkq67KVBCf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=2EZej/8t; arc=none smtp.client-ip=209.85.166.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-7c8e4c0412dso32155639f.1
-        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 06:41:39 -0700 (PDT)
+	s=arc-20240116; t=1712068655; c=relaxed/simple;
+	bh=Fd/HwzaztITUJxMyj+qfecZwF8tVFkeNovH6sh9rg4k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eBpWT+zONnQBCyIRH61kQ2GCbHtaQKW6FoA4iAfdeNxbLSB+5PJQGLqFBD6fwrwwUka359rQzSiJiM9B30aNAbxW+wKIvH0oJeRJkZpJO4AmNZ0QUO64gp/Dbb6lIlIr5VoKfRXebwLCmTwxdggoxaoEh+tNQTtsI2DUu7mYK4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pfs30WC1; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-78c4db9fc7fso40687585a.1
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 07:37:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1712065299; x=1712670099; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4ayu5f1JpVyjh9EymQM1sQHOrd/giDk3ss1JwfvraeE=;
-        b=2EZej/8tfFfaTOOX95T9KAJg10lp4PXkT6jn1C7LiXCjN5WS3dwzcy1DCWxNFCGGfv
-         8kiAglMtxO69/47BJASC6t5M0R4dE4M4+FvlzJcuICsomBrtDXmIP4VEzsquX648L6ZV
-         0hNcdiRxQGRMu9khCkr6mpOdLt3TOkmBaZHh4cg+0y2S9CvgcShknHjWeWdWWNJ77Lo0
-         gJxs9MPG67Mx3qdNOCUSIO+0i88BJki+DOeIa8ZxuTcrmIKOFqNRDu9labKWvMTg9Qpx
-         rhpkVkkCaAYyuJAS5meMpvzDjvqV3aKKsKhcu2XtEVSEhEW+ZNqT5EG6DU/cnV5zK+6R
-         XtUg==
+        d=linaro.org; s=google; t=1712068653; x=1712673453; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yj505szOiMmI3AOU7YTk/JHlLza6EgQ1B7WbRbTjg30=;
+        b=pfs30WC1dMzVm/JgbPXfR3mN+GP6iCqOUiugP3PSLcu4uQZwcUtg41EhCHaaQTpYVH
+         uXh/fTM3Ydag3huc4gXZ0rbLS6Fqgg23zMdHw11DkZGiGp1fO9HzI9DWBIcT+g6dF20Y
+         WGhsMshyQhoWmLwLMt6fh6ZcvWJhlt2EQz4j1knhU1sBlcsB6RKK1+dSQHEbPXhMuczh
+         Oh50zjupfH3Lgn5F9iyq9unLVsM1J3B/JwzTYQpSa2qGTJ3MF/zly5RqJX+jGJVjbaNa
+         1K4P2ytWxGY+lxkC1kE6WlnkoV07qxK2Qn+en1P7D0P9frBDKgQe1WMEAhY8lSVF1imy
+         tM6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712065299; x=1712670099;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ayu5f1JpVyjh9EymQM1sQHOrd/giDk3ss1JwfvraeE=;
-        b=IiC9HPRP2cE41SL3B335bl17U6FcyzjOIu1JtUNOKItsyWN3zzSOxerrRGzfK436VR
-         64bLYYxuWdCN8obs9PALMUksEm0EecGGN7v+0GAtBEroYn4nel+hGWV6HZnvwG7/WqBa
-         dFNugOrbXamU+4wtV9XR4JJ4GBaq8GinPbkd7QRAZ0KBo3TwateIWy9MTRjSHKMM6wqq
-         BdnhR5P/vtlbHO70vM2aRXRkyVA0eg1lWpFMtpuIDKhEKHsjTRiyRZVH4MMhTeRPK0TO
-         YJ1Js07tVcvBqQDB/4CMe3Ll0l+rkKNeEOoaxHrfvVinSv0xONjBsesWznd1STPMJEbv
-         hXAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUonvW0S9jrBYQbwdtkntwIawmpHnWTmSYKZlTFasCTW7mlwQcTAXlljabfP4Sp3j7B2TLNwVB+buyvpCO3OuBoZHQOj83K
-X-Gm-Message-State: AOJu0YzQ9HPDCWK80ZmX0Z662mKndbIdrzp0owTZFNd2bjqd2G8d9Loz
-	GspbC3lg6Nqfv1lvAzzTKB0BLy9L7Xja0+gCao+QaX/O6IxMCdy37ntEyyPuUAI=
-X-Google-Smtp-Source: AGHT+IGDUMItsDY7XwZRAzi1VsGUdRgc2+dwdqgArOafC34sSXfwfBgED9VOJLRu6JugwPpSDO3KfQ==
-X-Received: by 2002:a6b:7d0c:0:b0:7d0:3f6b:6af9 with SMTP id c12-20020a6b7d0c000000b007d03f6b6af9mr12019000ioq.0.1712065298876;
-        Tue, 02 Apr 2024 06:41:38 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id it37-20020a05663885a500b00476f1daad44sm3194814jab.54.2024.04.02.06.41.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Apr 2024 06:41:38 -0700 (PDT)
-Message-ID: <2ff5d891-2120-475d-be8e-82bf20a8b7b7@kernel.dk>
-Date: Tue, 2 Apr 2024 07:41:37 -0600
+        d=1e100.net; s=20230601; t=1712068653; x=1712673453;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yj505szOiMmI3AOU7YTk/JHlLza6EgQ1B7WbRbTjg30=;
+        b=F1a8YxnvXqW/v0xpECE3U/+FIg2vZVBTSsoaQE+xEpgIHJsAPfezsirqrydBYtaLbs
+         ubvmfgDYV0UDMsHxO56oE8KGKJPEmlsIwWN/hVPgqvsBBY8AKUAIJ+NC0yQIZjKaPsqF
+         I7WCDWKjG41uQa93GY4q1slnxBVwUFTSQdn8lqTXc+HIthtIABkd0jxCT49gTVbwg5Mc
+         2FKYQOtRj1UsLp1gRyEBxZU2Ntc+030yDEmvkqfXE0BdQiHA54UQmtn0oxHPVqRDfbo7
+         9oHbBKCu4YQZyZAWLQociJrL9SVi0IKUGBCcikjHAvYFPoW1rAcVwBxN1jRRqC0V3f95
+         nDZw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXJqCq63GWl6IT4lqIqxKMCUDfGLtobog+nHgJYZCxV3mcU1Jrhcu2NscBKHTd/cD8gE1dmkDwOza/qQ8FLd0Aogyma69m
+X-Gm-Message-State: AOJu0YyoQw6pkAJjibaJWeefB13g8tLrVDa3+361mxSOf8NhhrIslfBl
+	yZx6l27/CLWAje4a3TX4t2nYVPPD3Wf/bWlPr8frXkC1p2b1g2YIBCj+T+hXDMDH3O4YdJrwuZb
+	Q16c4qwU1pI9jsum0uXjApvGnszK9m6953yxq6g==
+X-Google-Smtp-Source: AGHT+IFyEOBYmCLSqQYNdbqQlreYLQqXbs4IG0N6ntPCkLO4z9b5DuFz0gSNB5+cj3PS0S8i6gj1En3J70FKvsWu9Vg=
+X-Received: by 2002:a0c:ff4b:0:b0:698:ff7e:7ad6 with SMTP id
+ y11-20020a0cff4b000000b00698ff7e7ad6mr8744063qvt.15.1712068652960; Tue, 02
+ Apr 2024 07:37:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.8 015/715] io_uring: remove unconditional looping in
- local task_work handling
-Content-Language: en-US
-To: Jiri Slaby <jirislaby@kernel.org>, Sasha Levin <sashal@kernel.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240324223455.1342824-1-sashal@kernel.org>
- <20240324223455.1342824-16-sashal@kernel.org>
- <bcf80774-98c2-4c14-a1e7-6efcb79a7fee@kernel.org>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <bcf80774-98c2-4c14-a1e7-6efcb79a7fee@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240402114159.32920-1-brgl@bgdev.pl>
+In-Reply-To: <20240402114159.32920-1-brgl@bgdev.pl>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Tue, 2 Apr 2024 16:37:21 +0200
+Message-ID: <CADYN=9+Cz=MSLq++P6e+VOYo=ndP-nrjY2gj0LhV2Jvba2hMEw@mail.gmail.com>
+Subject: Re: [PATCH] gpio: cdev: check for NULL labels when sanitizing them
+ for irqs
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Kent Gibson <warthog618@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alexey Dobriyan <adobriyan@gmail.com>, stable@vger.kernel.org, 
+	Stefan Wahren <wahrenst@gmx.net>, Naresh Kamboju <naresh.kamboju@linaro.org>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Linux Kernel Functional Testing <lkft@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 4/2/24 2:12 AM, Jiri Slaby wrote:
-> On 24. 03. 24, 23:23, Sasha Levin wrote:
->> From: Jens Axboe <axboe@kernel.dk>
->>
->> [ Upstream commit 9fe3eaea4a3530ca34a8d8ff00b1848c528789ca ]
->>
->> If we have a ton of notifications coming in, we can be looping in here
->> for a long time. This can be problematic for various reasons, mostly
->> because we can starve userspace. If the application is waiting on N
->> events, then only re-run if we need more events.
-> 
-> This commit breaks test/recv-multishot.c from liburing:
-> early error: res 4
-> test stream=1 wait_each=0 recvmsg=0 early_error=0  defer=1 failed
-> 
-> The behaviour is the same in 6.9-rc2 (which contains the commit too).
-> 
-> Reverting the commit on the top of 6.8.2 makes it pass again.
-> 
-> Should the test be updated or is the commit wrong?
+On Tue, 2 Apr 2024 at 13:42, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> We need to take into account that a line's consumer label may be NULL
+> and not try to kstrdup() it in that case but rather pass the NULL
+> pointer up the stack to the interrupt request function.
+>
+> To that end: let make_irq_label() return NULL as a valid return value
+> and use ERR_PTR() instead to signal an allocation failure to callers.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: b34490879baa ("gpio: cdev: sanitize the label before requesting the interrupt")
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Closes: https://lore.kernel.org/lkml/20240402093534.212283-1-naresh.kamboju@linaro.org/
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-The commit is fine, it's the test that is buggy. Sometimes test cases
-make odd assumptions that are just wrong but happen to work, for some
-definition of work. Eg it would work fine on an idle system, but not
-necessarily if not. For this one, the fix is in liburing:
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
 
-https://git.kernel.dk/cgit/liburing/commit/test/recv-multishot.c?id=a1d5e4b863a60af93d0cab9d4bbf578733337a90
+Thank you for the quick fix Bartosz,
+I applied this patch ontop of linux-next, tag next-20240402. the
+libgpiod testsuite passed.
 
--- 
-Jens Axboe
+Cheers,
+Anders
 
+> ---
+>  drivers/gpio/gpiolib-cdev.c | 19 ++++++++++++++-----
+>  1 file changed, 14 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+> index fa9635610251..1426cc1c4a28 100644
+> --- a/drivers/gpio/gpiolib-cdev.c
+> +++ b/drivers/gpio/gpiolib-cdev.c
+> @@ -1085,7 +1085,16 @@ static u32 gpio_v2_line_config_debounce_period(struct gpio_v2_line_config *lc,
+>
+>  static inline char *make_irq_label(const char *orig)
+>  {
+> -       return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
+> +       char *new;
+> +
+> +       if (!orig)
+> +               return NULL;
+> +
+> +       new = kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
+> +       if (!new)
+> +               return ERR_PTR(-ENOMEM);
+> +
+> +       return new;
+>  }
+>
+>  static inline void free_irq_label(const char *label)
+> @@ -1158,8 +1167,8 @@ static int edge_detector_setup(struct line *line,
+>         irqflags |= IRQF_ONESHOT;
+>
+>         label = make_irq_label(line->req->label);
+> -       if (!label)
+> -               return -ENOMEM;
+> +       if (IS_ERR(label))
+> +               return PTR_ERR(label);
+>
+>         /* Request a thread to read the events */
+>         ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+> @@ -2217,8 +2226,8 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
+>                 goto out_free_le;
+>
+>         label = make_irq_label(le->label);
+> -       if (!label) {
+> -               ret = -ENOMEM;
+> +       if (IS_ERR(label)) {
+> +               ret = PTR_ERR(label);
+>                 goto out_free_le;
+>         }
+>
+> --
+> 2.40.1
+>
 
