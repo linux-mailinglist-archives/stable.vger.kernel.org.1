@@ -1,142 +1,143 @@
-Return-Path: <stable+bounces-35552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C37894CB9
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:37:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB378894CB7
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:36:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4493B22328
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:37:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD001F223AE
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2BE3B29A;
-	Tue,  2 Apr 2024 07:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADF53BBC3;
+	Tue,  2 Apr 2024 07:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iSBKhc4J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="feOc3UGH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com [209.85.167.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365AD36AEF;
-	Tue,  2 Apr 2024 07:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68FB2BD1C;
+	Tue,  2 Apr 2024 07:36:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712043419; cv=none; b=PYlSxJFrHFpN8aUx0o374fCA4Lcn26cxazdA42Ewa5EsrZetFfdqu0z0+uZsr3MW49ukRpClnUbxWT7ydnGLfQTiFcOqnb1Shybcf4xJpc92L+FcQj3ikV/lh+3A95RSwnHcH2c8tPhhCrI6irXqtZMqnSdF4JZY4yJRt2Q0BCE=
+	t=1712043394; cv=none; b=Qly2A858kZ98LARLN2h47sxIIyjAHqmzpvNJAWVEiX1Yh0BU6NpEqLKpA7FQgFG2nfETFsihifM5Vo4SsNw/7iY2jz4MOgSUb5UquORoBGUnMLRdMyA2FuskAOWlT5KEXrHQXIQL1fMELZXEFMuHeIfnnlCSEQvl0Y4NQWsjHos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712043419; c=relaxed/simple;
-	bh=nQuUXMffA4WwM69FITwsN2YbrcKETHbVPRcQPamcnj0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e/nUP44Ia5atEEnVZ2PSqp0gAOklpo2Gat9Ev88NRW17TsVFu0UVVuqIktz1dhkgwFBG7k8dR8uxdVgxm6CVhsqjuKb+GsoX/g+yFyRpt+noISVsHwqcsSAfWHpJKlArf5qcvXOJ1o7m+SRREGxILCsWXWXbxbRA6nYzHKGwRS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iSBKhc4J; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1712043394; c=relaxed/simple;
+	bh=zox4SvndtX2IQYH7dF2si0RyU8QV/fnDqLEkZtb7Hc0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uTWIPzfGzgeeLAdX5vtED1p6GQqotq1BNqL0meG+kwx654ORs7zAarGefivGBBHlRR1kvQaCUNCP9TblMNlb4fNT0ATJU+NM1Iuv7RWeL14/LaBTWuiforDRkdqlHvoCQTC53/wi0EIEeRr7NMZcQrUOohDneP7PsdoxPsGM48o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=feOc3UGH; arc=none smtp.client-ip=209.85.167.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so3667831a12.1;
-        Tue, 02 Apr 2024 00:36:58 -0700 (PDT)
+Received: by mail-oi1-f195.google.com with SMTP id 5614622812f47-3c3d404225dso2782281b6e.3;
+        Tue, 02 Apr 2024 00:36:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712043417; x=1712648217; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mvA4XlQG31Oac/CL2P251TxTxsp49nq3BgjpTreKMJo=;
-        b=iSBKhc4J0fLiZHJFzTEsrZoYb911aMeYgBp97QuH3W5IsnFLAShnCWTzFobouO/DJo
-         EvPWVNaysKbRLrpj4ykfWIxd+ICqdiyCBodZsX7vhXdIQ/QK2EVPe7YTRXPPzqf/gWAg
-         1sk2Ru3Ht/AR7WwgeRP874olMDOnrXYqWLuMRK7fWakQFBfHsvkIo2QNCIY30i/iyBi6
-         q5jy6ITCxVyMn2OSZPIsKYThlTJBLh53of2tk/CjW0KETvMTgJWuPR+sbrZwq+L3r1S8
-         6BoEamGG7LRpkK9hlBhZaqOgn9tQxyWF58/wSb4CsDjIvN3rSdle24Hvx42891rI9+ti
-         2DUw==
+        d=gmail.com; s=20230601; t=1712043391; x=1712648191; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IOSjhq4e8oxtj3qoYtkivIs58UqN+jVmwQhUZgEoH9Y=;
+        b=feOc3UGHWsQXqqkSERZyjzl3dgDJRo9PK8jWuCfGROJaOsfJng6cDVu2xUhKqQxCUL
+         XevMbXPTZhvRNLYQmNRAfBWW55Jz1M7JW7g9MemG5gRVLuB1wVrJnv1ZfQw+SJErD28K
+         bp2qlsYQ34hNL2HsuckQxARZvGpyL8UWsdGGHc9WAbvgCUcrsQS5E2TboUJgLIvFKMx4
+         2zYt2wEd7IThK0ZhittMT9v3w/vFaHRfnb5H5AvLX4VldSPZ5AJPIwuwyY15mmCBucSN
+         p8bOCfzBPUtNmDizapHm9Pk2wP07g9ID5hZ2oDeBii0Yb36MREge0C65VT1sb+yUl43+
+         26RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712043417; x=1712648217;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mvA4XlQG31Oac/CL2P251TxTxsp49nq3BgjpTreKMJo=;
-        b=U9BBRf8GxcZ+K43ZCaYcPwI1UI41p9eQCTAZpb/5RNmPSkFNsYsuTqlmqWkwrPYTHj
-         anWyZBHvcDJfEGAsFmMeZofT8EMrT/kS9Mj3oTjUmWX0ZrLS/ZYF4lIz5u0F+gCy1Rd0
-         QZxHEv62IUYDGA2EulS98/cryDJKcoS7SCSv7NdcMrljv4iKTadVxvo/Ka2VGO/jPar5
-         sAl83S00Yn7QnOMndEDHfWfbWMBXZtA0M2X9p/dMT1O4/ruCnnZUCINURzPb8ed9VlOJ
-         BrFmV+CHDRHEE5z+h8Y2sH2UzowgsOVKrNV9bTsRQoeiaTRjjWkN0leaRC07na9d0D66
-         hxOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXF/SMVWsLoJ2rKmYWhTSZoYLes1m7bJRbn4q2SDD62Fh42LZU93ldnFj05zyRbgXvUBo0Ab0T5GdcihwyzOLB+Yi9frr9egR1BmSAVIgeSytTTrIEQbJEwFfXERPSH819K7BPSaRWSha34Y2t99THb7kSarEzed9BbXrXarZgj7jGQq0Q=
-X-Gm-Message-State: AOJu0YwX5BKOpNxnHtF6BpLVmmXihOckRgRVRNpjoyWo+54DJK8dg2dp
-	9kUQ7dZHzFJkdo6fdi8eKK85VwVzC+r3ha6wKBbeexuVA+Kq3Y4sNI9s8hykpl/helS4iA+5H5Y
-	6UTjoDXZa9G8LrqZ7v4v1EIzKPUk=
-X-Google-Smtp-Source: AGHT+IFEUvd1yE1nbw06r4wTEb1sXFYeMkMQN2S0bow6ijv/7I5Tx828lFINSC7g7909AWI8L2qEgfI3K3LGOORaszA=
-X-Received: by 2002:a17:90b:3907:b0:2a2:40c4:5175 with SMTP id
- ob7-20020a17090b390700b002a240c45175mr4290548pjb.14.1712043417507; Tue, 02
- Apr 2024 00:36:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712043391; x=1712648191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IOSjhq4e8oxtj3qoYtkivIs58UqN+jVmwQhUZgEoH9Y=;
+        b=iLe9nRQ3MDiSZTZg78JwUNkhczLTH8Bw59L4B8+eDdWleQh2HPm5MiT1h8bCYG8UV1
+         ZGVSpSgduFGp/HKdEojqo3g/lhDkczzkM3KcusnouWRcDeJLn5zzJ2OS3ukCCS/IJxb2
+         prAPGvPK9IS6ZrKkjN+m1iH3vBJz6rVFd49wpj1G2LvCksSROFJXDnk2dEpYtnXF6lHQ
+         370D0iWllT8BHcXexg/4NCTBEjSq66KTVLZ7Er2iIYMb5vEAfju8r4RV8cQ8El8Nd79y
+         gtQ9wLHoaFsKkmMFgdwSBTgO3bwPBisFKIRruGWFg1qV0pIx+Q9SA22avSFq3//f21Ew
+         JolA==
+X-Forwarded-Encrypted: i=1; AJvYcCXtrTuylhCoLVI2HnM4LLwIwXytqhsGneYCY2cR21pNYks6lPEnf6q1pBe0Kxi5SmkXgJ2qenMAXTf3IBQ7qvPCuutKRqZV
+X-Gm-Message-State: AOJu0YzeZx3E1nhTeURolREXQM/0P99ENJ67D2Tl5hzt6pBMOO5bN5Dz
+	CJc+ydnBd7rj4UilDy2K8s7TQnnoz+urlukPFTxVxlKlvoPYUuPLTgBLDOp6IvIJHube9dvOWw=
+	=
+X-Google-Smtp-Source: AGHT+IF3+j06WxIYHgTCU8OLKQ8y4EXT06Ty4po+TJM8RiHUA84r+T1QS9NlVpI+1c5fvZIN5ph7vw==
+X-Received: by 2002:a05:6808:1246:b0:3c4:e208:b784 with SMTP id o6-20020a056808124600b003c4e208b784mr9342057oiv.27.1712043391580;
+        Tue, 02 Apr 2024 00:36:31 -0700 (PDT)
+Received: from localhost.localdomain ([2604:abc0:1234:22::2])
+        by smtp.gmail.com with ESMTPSA id ef1-20020a056808234100b003c3e07cc6a1sm2036927oib.46.2024.04.02.00.36.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Apr 2024 00:36:31 -0700 (PDT)
+From: Coia Prant <coiaprant@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Coia Prant <coiaprant@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/2] net: usb: qmi_wwan: add Lonsung U8300/U9300 product Update the net usb qmi_wwan driver to support Longsung U8300/U9300.
+Date: Tue,  2 Apr 2024 00:36:27 -0700
+Message-Id: <20240402073627.1753526-1-coiaprant@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <9D0C95D2-6239-4A3B-B9DD-66299B9911EF@me.com>
-In-Reply-To: <9D0C95D2-6239-4A3B-B9DD-66299B9911EF@me.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 2 Apr 2024 09:36:22 +0200
-Message-ID: <CANiq72n72jO9v5Yo380VXTyaKiKG58U67f8XCP_--g2fHzeAzw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: init: remove impl Zeroable for Infallible
-To: Laine Taffin Altman <alexanderaltman@me.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 2, 2024 at 3:53=E2=80=AFAM Laine Taffin Altman
-<alexanderaltman@me.com> wrote:
->
-> A type is inhabited if at least one valid value of that type exists; a ty=
-pe is uninhabited if no valid values of that type exist.  The terms "inhabi=
-ted" and "uninhabited" in this sense originate in type theory, a branch of =
-mathematics.
->
-> In Rust, producing an invalid value of any type is immediate undefined be=
-havior (UB); this includes via zeroing memory.  Therefore, since an uninhab=
-ited type has no valid values, producing any values at all for it is UB.
->
-> The Rust standard library type `core::convert::Infallible` is uninhabited=
-, by virtue of having been declared as an enum with no cases, which always =
-produces uninhabited types in Rust.
->
-> The current kernel code allows this UB to be triggered, for example by co=
-de like:
-> `pr_info!("{}=E2=80=9D, Box::<core::convert::Infallible>::init(kernel::in=
-it::zeroed())?);`
->
-> Thus, remove the implementation of `Zeroable` for `Infallible`, thereby a=
-voiding the UB.
+Enabling DTR on this modem was necessary to ensure stable operation.
 
-Do you agree with replacing the last part here with "avoiding the
-unsoundness issue" or similar instead?
+ID 1c9e:9b05 OMEGA TECHNOLOGY (U8300)
+ID 1c9e:9b3c OMEGA TECHNOLOGY (U9300)
 
-i.e. there is no UB in the kernel (related to this), so it isn't
-avoided in that sense. Of course, you mean that we avoid potential UB
-to be written in the future, but I think it is useful to distinguish
-between patches for "holes" in the extra layer of "protection" vs.
-patches that actually triggered UB.
+U8300
+ /: Bus
+    |__ Port 1: Dev 3, If 0, Class=Vendor Specific Class, Driver=option, 480M (Debug)
+        ID 1c9e:9b05 OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 1, Class=Vendor Specific Class, Driver=option, 480M (Modem / AT)
+        ID 1c9e:9b05 OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 2, Class=Vendor Specific Class, Driver=option, 480M (AT)
+        ID 1c9e:9b05 OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 3, Class=Vendor Specific Class, Driver=option, 480M (AT / Pipe / PPP)
+        ID 1c9e:9b05 OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 4, Class=Vendor Specific Class, Driver=qmi_wwan, 480M (NDIS / GobiNet / QMI WWAN)
+        ID 1c9e:9b05 OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 5, Class=Vendor Specific Class, Driver=, 480M (ADB)
+        ID 1c9e:9b05 OMEGA TECHNOLOGY
 
-> +    // SAFETY: These are inhabited ZSTs; there is nothing to zero and a =
-valid value exists.
+U9300
+ /: Bus
+    |__ Port 1: Dev 3, If 0, Class=Vendor Specific Class, Driver=, 480M (ADB)
+        ID 1c9e:9b3c OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 1, Class=Vendor Specific Class, Driver=option, 480M (Modem / AT)
+        ID 1c9e:9b3c OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 2, Class=Vendor Specific Class, Driver=option, 480M (AT)
+        ID 1c9e:9b3c OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 3, Class=Vendor Specific Class, Driver=option, 480M (AT / Pipe / PPP)
+        ID 1c9e:9b3c OMEGA TECHNOLOGY
+    |__ Port 1: Dev 3, If 4, Class=Vendor Specific Class, Driver=qmi_wwan, 480M (NDIS / GobiNet / QMI WWAN)
+        ID 1c9e:9b3c OMEGA TECHNOLOGY
 
-Typically we would add an empty line here, and we would put the SAFETY
-comment below (i.e. closer to the code) while the rest above.
+Tested successfully using Modem Manager on U9300.
+Tested successfully using qmicli on U9300.
 
-> +    // Note: do not add uninhabited types (such as ! or Infallible) to t=
-his list; creating an instance of an uninhabited type is immediate undefine=
-d behavior.
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/net/usb/qmi_wwan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Nit: this could use Markdown (`!`, `Infallible`).
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index e2e181378f41..3dd8a2e24837 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1380,6 +1380,8 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9801, 3)},	/* Telewell TW-3G HSPA+ */
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9803, 4)},	/* Telewell TW-3G HSPA+ */
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9b01, 3)},	/* XS Stick W100-2 from 4G Systems */
++	{QMI_QUIRK_SET_DTR(0x1c9e, 0x9b05, 4)},	/* Longsung U8300 */
++	{QMI_QUIRK_SET_DTR(0x1c9e, 0x9b3c, 4)},	/* Longsung U9300 */
+ 	{QMI_FIXED_INTF(0x0b3c, 0xc000, 4)},	/* Olivetti Olicard 100 */
+ 	{QMI_FIXED_INTF(0x0b3c, 0xc001, 4)},	/* Olivetti Olicard 120 */
+ 	{QMI_FIXED_INTF(0x0b3c, 0xc002, 4)},	/* Olivetti Olicard 140 */
+-- 
+2.39.2
 
-Otherwise, apart from these nits and the formatting bit, it looks good to m=
-e.
-
-If you could send a quick v4, that would be great, thanks a lot!
-
-Cheers,
-Miguel
 
