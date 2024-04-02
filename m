@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-35622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30A0895996
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 18:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A36895939
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 18:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A2261F243F8
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 16:21:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F9B91F22527
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 16:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D2D14AD38;
-	Tue,  2 Apr 2024 16:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C01140396;
+	Tue,  2 Apr 2024 16:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="UIbsKLyf"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="TiRnpczB"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C68A14AD2B
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 16:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCCB13F44C
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 16:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712074877; cv=none; b=lKJOvpd8VqSnHWTa7l+fnXsvcYT5kH+oL8uIlnYMZ3tO92HG4rVmhcdxJvy3FXp3PTLS43OFEjxPhOukfsPkC+x5B3LxwUUkYStbDqBRlEDjTerXDA6XIPhzqhFHwa3QeAIF3HzeSxLSdrJrM9+y0etH7KCp44/qpFBtNA+EmRs=
+	t=1712073913; cv=none; b=Q7qI2ZWtU/GcWoQqU4Pb1s6Idd0saguCj3tfa2rTHdzopeRVHQ4hSCnv5LUn03JjIpA7HbwaV3niyVL2pOCeFwY5jSULzWK7SHyPBLFHyfRc39ywVvuIiJf0fmcsM9YDgyK4eTAY7PYgu4NVJnwSl/WVHPXHrfdINOseGW4iRi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712074877; c=relaxed/simple;
+	s=arc-20240116; t=1712073913; c=relaxed/simple;
 	bh=nJkbyzDzJu8AbBlxu9MvWWyNm4g05xRBGV7WbEoqo5k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=arJ+MVOiXQFRD8ir3mQNjHuF5xnp3zujL/Pd3gpmieJdwSkoUcX8Qa28tuYxhVn4UriP7e+a1uBUMwGqsxzaTYOf+9SqrLB0paBK387OlaPWK8cyDosdgynA1HLqM/4STBk93OAOs/cvpZ166MY7fcx/yQK/Z8LQfgGzL3T0FPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=UIbsKLyf; arc=none smtp.client-ip=148.163.143.35
+	 MIME-Version; b=iCrWCG8bwYZyAfuDhj0OYu2Xy0UL2M0L6Q4+/rKTTHqy/KbiF+LCIJVSB0Om/4s6BerMuRpxxvzlh2xsegarC+g7j6M2WlrB6GW6CjySqA46cn4+cz4R/8NrAFOdWuo8L29lgxMHQFZ7GZZtiP6F/gEmOg/dBp5sOPgbcGnD2Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=TiRnpczB; arc=none smtp.client-ip=148.163.143.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 432FkCNP010735;
-	Tue, 2 Apr 2024 15:58:31 GMT
+Received: from pps.filterd (m0148664.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 432EFSIb005034;
+	Tue, 2 Apr 2024 16:05:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : content-transfer-encoding
  : mime-version; s=pps0720;
  bh=hGhf+lmO4aytr+VvPpt9iQuxaJHC+acbTWmO/AeqEd4=;
- b=UIbsKLyfPX9k0B2u2jWuWq+1DPyfta3gGzBF7OdbfGQxsPzrslrE+hLXleXX6iYjDLpR
- uwajW1v7RfXLDgzKrxeaTwRzgaDUQBooyxeYobFEfXPLXTt2AurkUFrYPa+utbVvSjl3
- SkjMHNx9REtYoRBPWZxVR5LMTfiXnSRM+QzWSB0Tkqwn4qKxIIBGDNTEJRRrkiO3bqTQ
- dTDDRGvIsdJ41EkEcPD946aFap7JbHmPTzNgM3wrUjayF5fwW0DBjBlFiBI1Trhru/fZ
- qHRzBcW50biZ0++cKbbyZfMOF1Wud50dL0HzYEQNpQ1aiHN851zJOU+3daEiB30fa0OM zw== 
-Received: from p1lg14881.it.hpe.com ([16.230.97.202])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3x8my003n0-1
+ b=TiRnpczBG0VdXG7dTMdQ1jQfPxD/SPST1U26Loi88w6L5mrN/evUTMWyH7aLDiMRVmjO
+ HergtahexyQoiyBh7SvDiAQizJelWCuxlWnxxkh2lGC0J2t9FfHYbYP8dQwmZsl60A4I
+ G6EbZ1j+fWkLNgNfID7VO334oLNtWKbTM0r+5Jhn+44HHlCn7Xq0VWjvgxmUVsudwbus
+ JBVNQ9Xfz498+enuewUXIKHKQZgNMtJ1fevgMu7u86j805STgmCdML5symKxwLFUCHdW
+ SMXofWHG0Q6KQ1cSySDAU9/GItuXKANX+h8TQfBuAmHY1VCByWPEe8/vbwkMlyBpffYJ Vg== 
+Received: from p1lg14880.it.hpe.com ([16.230.97.201])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3x8jd821gk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Apr 2024 15:58:30 +0000
+	Tue, 02 Apr 2024 16:05:05 +0000
 Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 10097805EB0;
-	Tue,  2 Apr 2024 15:58:22 +0000 (UTC)
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 21D25800264;
+	Tue,  2 Apr 2024 16:05:05 +0000 (UTC)
 Received: from dog.eag.rdlabs.hpecorp.net (unknown [16.231.227.39])
-	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 70D89801D88;
-	Tue,  2 Apr 2024 15:58:22 +0000 (UTC)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTP id 7E434801FC5;
+	Tue,  2 Apr 2024 16:04:46 +0000 (UTC)
 Received: by dog.eag.rdlabs.hpecorp.net (Postfix, from userid 200934)
-	id D5C9130000A0D; Tue,  2 Apr 2024 10:58:21 -0500 (CDT)
+	id F3F84300009E4; Tue,  2 Apr 2024 11:04:45 -0500 (CDT)
 From: Steve Wahl <steve.wahl@hpe.com>
 To: stable@vger.kernel.org
 Cc: Ingo Molnar <mingo@kernel.org>, Russ Anderson <rja@hpe.com>,
         Steve Wahl <steve.wahl@hpe.com>,
         Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 5.4.y] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
-Date: Tue,  2 Apr 2024 10:55:50 -0500
-Message-Id: <20240402155549.2883270-1-steve.wahl@hpe.com>
+Subject: [PATCH 4.19.y] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
+Date: Tue,  2 Apr 2024 11:04:12 -0500
+Message-Id: <20240402160411.2902198-1-steve.wahl@hpe.com>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <2024040122-implosive-although-530c@gregkh>
-References: <2024040122-implosive-although-530c@gregkh>
-X-Proofpoint-ORIG-GUID: lKu_iFprX4--KD3fYEabkNZNYD60rjRz
-X-Proofpoint-GUID: lKu_iFprX4--KD3fYEabkNZNYD60rjRz
+In-Reply-To: <2024040123-denial-syndrome-2d01@gregkh>
+References: <2024040123-denial-syndrome-2d01@gregkh>
+X-Proofpoint-GUID: 3y9rutSujqFPxgoF9Oi2gvy47mDUXEG7
+X-Proofpoint-ORIG-GUID: 3y9rutSujqFPxgoF9Oi2gvy47mDUXEG7
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
@@ -83,11 +83,11 @@ X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-04-02_09,2024-04-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- mlxscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0 lowpriorityscore=0
- malwarescore=0 phishscore=0 priorityscore=1501 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2403210000
- definitions=main-2404020117
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0 spamscore=0
+ mlxscore=0 phishscore=0 suspectscore=0 adultscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2404020118
 
 From: Ingo Molnar <mingo@kernel.org>
 
