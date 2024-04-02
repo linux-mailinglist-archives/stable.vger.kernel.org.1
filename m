@@ -1,169 +1,124 @@
-Return-Path: <stable+bounces-35627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE43F895A57
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 19:06:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5342B895A85
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 19:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA55D28231A
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 17:06:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11C391F223F3
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 17:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CE4159906;
-	Tue,  2 Apr 2024 17:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BEE15990F;
+	Tue,  2 Apr 2024 17:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="fBIKWMQ8"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="YJ9XlS73"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31572132C38
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 17:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712077570; cv=none; b=O+ieh07qrj8JaQqg2L49NyohIFA8LKUnqEo8KJwppAlVnQ4+uuoVaKaom8oMQki0t/uYVy5hsscK7i81Ncfn85HM369w5ZkUi3iPZJSun4N4n+uV2XoIssh2BdISXk4l0O/1Y1i75zIReX9FYrDv8BBizv6pKytGmvoMmRZO9i0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712077570; c=relaxed/simple;
-	bh=nJkbyzDzJu8AbBlxu9MvWWyNm4g05xRBGV7WbEoqo5k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=msc4pVFtShn0U28VboEjNjvylltjECOw4nsLrN0bkfD3n1h2y6D5zPNKYV3/b9f2+azQ2VMR8+KfDeGXdNkKvnFPnkEEjUWlpxdsCV9zuRStqdSI5R6MbZ1ApoHWcxzLHd6gI7c1jXu9/5GzuAMakZ1GI7K5JZ1OG0aBcflUy/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=fBIKWMQ8; arc=none smtp.client-ip=148.163.147.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0134420.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4329rhFw004564;
-	Tue, 2 Apr 2024 17:06:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pps0720;
- bh=hGhf+lmO4aytr+VvPpt9iQuxaJHC+acbTWmO/AeqEd4=;
- b=fBIKWMQ8swK71hjqWGKB+h3HczpveTp4Hb4FEt4j/t6ofgA9kyzjjfxvBe303/2kMEMf
- n8WADVH33vKUEs1bk28JyAVIR4KHdP34QKEZK0U4WoJkJL83Q4WRTZ2esD1WuNuck028
- Fihdg8PJfhayAyCO1F4UgODvjvOkr83mO3mORxYQ49CYinYveCJnx9+nRamhLRo6bwHQ
- Fvpedjyu0H5GLvijMPSZcOM9ZTYeZUuPf/XuqvFwgonvgI69KgdVjbFdyyOxf4vudnBT
- olgJ+IS/tRX/opsAuJ/XAPlz2WA/7Pp2p4l1rjgw2DhlBxULhZpnPozz4eNW7hzsZbhO 6A== 
-Received: from p1lg14880.it.hpe.com ([16.230.97.201])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3x8fsh42mp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Apr 2024 17:06:01 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8878B129E78
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 17:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712078303; cv=pass; b=kcBgrFHx+z0MiFwUjyIwgs0SYqAhBgeJKhU36N2Gwzj6WfyUdP7TRcigUjNHsbGgKPE0Z2bDcxEl6oV58SN5+1yU2/TbcBtYv8CggoUBYG+oNJPLCiN3LfrLZ8a+PRq9dKMV1oU3WzM8iYfR5O1qHEckkQA7CNXAFNAen6Y/qWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712078303; c=relaxed/simple;
+	bh=LHoJRIV32/MQppd8SJNTftmfwtdHGhBmGQIk+Eaa7wI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oxe6mdyvRtJnfqqRNiQXk5wCmQ7wK/D/0aw1krAU9uxkYV6KJdJAD0hBsGP7bFH/tqq/sKjAREPTD+B3Z4KK3HF4aztluVMfC62h7MgUfiUVYlLz1Ix/wYOVfXJyaD8OmlkxpoSJPYY2S9uI54iIx/Hlt1DgKVz9sp1yBbYxBMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=YJ9XlS73; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from darkstar.musicnaut.iki.fi (85-76-140-31-nat.elisa-mobile.fi [85.76.140.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id D5A288005E3;
-	Tue,  2 Apr 2024 17:06:00 +0000 (UTC)
-Received: from dog.eag.rdlabs.hpecorp.net (unknown [16.231.227.36])
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 7B99D809D1D;
-	Tue,  2 Apr 2024 17:06:00 +0000 (UTC)
-Received: by dog.eag.rdlabs.hpecorp.net (Postfix, from userid 200934)
-	id EF6EF300009FD; Tue,  2 Apr 2024 12:05:59 -0500 (CDT)
-From: Steve Wahl <steve.wahl@hpe.com>
-To: stable@vger.kernel.org
-Cc: Ingo Molnar <mingo@kernel.org>, Russ Anderson <rja@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 5.10.y] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
-Date: Tue,  2 Apr 2024 12:05:27 -0500
-Message-Id: <20240402170526.3919945-1-steve.wahl@hpe.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <2024040121-luminous-outlast-f9b6@gregkh>
-References: <2024040121-luminous-outlast-f9b6@gregkh>
-X-Proofpoint-ORIG-GUID: -_vybGHvmKJJkSghHI3pdsVSD1vFa-l5
-X-Proofpoint-GUID: -_vybGHvmKJJkSghHI3pdsVSD1vFa-l5
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	(Authenticated sender: aaro.koskinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4V8F2f5KTsz49Psw;
+	Tue,  2 Apr 2024 20:18:18 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1712078298;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8wpEkQ4uaqAmccT7n62vg/EKg4B1k8sNx6O56b1CN10=;
+	b=YJ9XlS73tPLWUm6wZXYz1SeiSwStM/6jPjYX1+zlJjuA1Jjpy426Rc8x22//yQ7haWZtPn
+	BI+VmcJupW7hl2mxtWKuxVU1GAZx7swoLVXn+DeYDaCeriBMHrKs3vFk/N6WhIjwxERSdY
+	1AKEPrUe/gdKffW88f0ZvBqBLFaribr/36TnhV3f7IEfB8qnKQCGvVHfuNio1Co6FtwCDC
+	FciB7ba3R2xFDMfp5Y6q8AYmDOoGu8LQwEYxI70aBk8lTru8+6Xobp2ZTN2da7WROy1lsM
+	eeEit+dVkuxQyIwVgDZLm/Dg2y26uNxbkHrPoTPzqptTG1REOWDPY7t1/0xGjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1712078298;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8wpEkQ4uaqAmccT7n62vg/EKg4B1k8sNx6O56b1CN10=;
+	b=e+Ww9ottyH/V8OphmgVjlu8EsFR2KLflrbH53SJC6Bixu1kz3dzBuKdqMWo/UbLRMIwF/6
+	gIwNEq6a1VYOatZDJeyfYK6ZWxKq/akpLaxhJNPeuSfIfBUAx+5BNl7hMuw1z5F7Qp8zVD
+	SDz7aeCWOf6q40fHTlDrF0szrdHy68GzSFGP7ZwGJCXZF7qpS6LRYufnJMzoxWoJ/F2Rqg
+	sRi1cGgtwSe7mNF7/VDnMgNcgroE0PXQEhhlNOehCIyNovl5ZX9pSkCbSDtfb6HC7uaUQc
+	BBmCDju49wOwPjjf+x3FdhPr/3LbCDhhyenp79GUQsWECST5Hs3r8345e7+Tiw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1712078298; a=rsa-sha256;
+	cv=none;
+	b=g9BFABEgvE0Ky4KpHbVdOy8ekgPPt63uH8+tLkOcABzH2EYu+vxcs76UGFhzErXGKnmkB5
+	QJfL/xE5gSMKjBQ19xT5HDynorPDXpMbtgGvE20erAR11XzokgRzI28HbgReUH2AtOao/y
+	ysuSuqoNRJphP/+VPS/OI0WjRpkWqBATCmlTL/oVXTtJFrgq7s53G5QjCqKm3Z3uXgCwe7
+	c7suJSqv3w3rJub3u1FLnyPTtyo6y0ERp/9Bf6VbsLMBrpaT/oC6J0RQKdcqv37y6g3aoO
+	mW9xIhiZTnsQed0PX6fgZE4SBSyYJNChtuCOlvGnbKOcXrslX9XHbiyPoT3vmQ==
+Date: Tue, 2 Apr 2024 20:18:17 +0300
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Subject: Re: Request to cherry-pick a patch for v5.15 (locking/rwsem: Disable
+ preemption while trying for rwsem lock)
+Message-ID: <20240402171817.GB91663@darkstar.musicnaut.iki.fi>
+References: <20240401215445.GA91663@darkstar.musicnaut.iki.fi>
+ <2024040214-unhinge-espresso-0a66@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-02_10,2024-04-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- suspectscore=0 impostorscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0
- malwarescore=0 priorityscore=1501 mlxscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2404020126
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024040214-unhinge-espresso-0a66@gregkh>
 
-From: Ingo Molnar <mingo@kernel.org>
+Hi,
 
-This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
+On Tue, Apr 02, 2024 at 07:13:56AM +0200, Greg KH wrote:
+> On Tue, Apr 02, 2024 at 12:54:45AM +0300, Aaro Koskinen wrote:
+> > Dear stable team,
+> > 
+> > Would you please cherry-pick the following patch into v5.15 stable:
+> > 
+> >   locking/rwsem: Disable preemption while trying for rwsem lock
+> > 
+> >   commit 48dfb5d2560d36fb16c7d430c229d1604ea7d185
+> 
+> Why?  What does it fix?  Why is it needed there?  And why not cc: any of
+> the people and maintainers involved in it?
 
-While the original change tries to fix a bug, it also unintentionally broke
-existing systems, see the regressions reported at:
+The original thread included all parties:
+https://lore.kernel.org/lkml/b92644e5-529b-4403-aba7-d316262cc8ac@redhat.com/#r
 
-  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+Anyway, I will repost this request to that thread with details that
+you requested, so that it gets properly archived.
 
-Since d794734c9bbf was also marked for -stable, let's back it out before
-causing more damage.
+A.
 
-Note that due to another upstream change the revert was not 100% automatic:
-
-  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
-
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Russ Anderson <rja@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-(cherry picked from commit c567f2948f57bdc03ed03403ae0234085f376b7d)
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
----
-
-Thought I'd try and be of help.  The pud_large() / pud_leaf() change
-is what caused the difficulty in reversion.
-
- arch/x86/mm/ident_map.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
-
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index f50cc210a981..968d7005f4a7 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
--		bool use_gbpage;
- 
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
- 
--		/* if this is already a gbpage, this portion is already mapped */
--		if (pud_large(*pud))
--			continue;
--
--		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
--
--		/* Don't use gbpage if it maps more than the requested region. */
--		/* at the begining: */
--		use_gbpage &= ((addr & ~PUD_MASK) == 0);
--		/* ... or at the end: */
--		use_gbpage &= ((next & ~PUD_MASK) == 0);
--
--		/* Never overwrite existing mappings */
--		use_gbpage &= !pud_present(*pud);
--
--		if (use_gbpage) {
-+		if (info->direct_gbpages) {
- 			pud_t pudval;
- 
-+			if (pud_present(*pud))
-+				continue;
-+
-+			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
--- 
-2.26.2
-
+> > Earlier discussion:
+> > 
+> >   https://marc.info/?l=linux-kernel&m=170965048500766&w=2
+> 
+> Please use lore.kernel.org for mailing list archive links.
+> 
+> thanks,
+> 
+> greg k-h
 
