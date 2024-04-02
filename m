@@ -1,132 +1,106 @@
-Return-Path: <stable+bounces-35595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0777F8951E5
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:33:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A79D8951EE
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66F86B245E4
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:32:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB7691C22A43
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076C36341B;
-	Tue,  2 Apr 2024 11:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA15265BAA;
+	Tue,  2 Apr 2024 11:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="SD+ylnYY"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="jYZE6pOL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B1060266
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 11:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAAB657AD;
+	Tue,  2 Apr 2024 11:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712057572; cv=none; b=Y2gRxOgmAkQM9niKNoETX55V+b8ZFyVyM/dnepGb/0OkKWfZGhcDsQAEUnNtsfEQwn559mlRiCZCzcA3PxI2JC6ViCqFsrwpfrALUwqM1XkEZFyAhHH7HfwzUIGnl7Q8q9c/Z4AkrEb1tx5u68X5FgOCfX+b9ynXZJBZMgO+wvs=
+	t=1712057740; cv=none; b=jwT+sjhJrSdx3TQa2qmvx4c5vYIayAXx1xxbW6jHxCoYNx22Og80HXXvq/5PW7PSN4ib90AGZgChMjUO65LB6yyGNomilHQ3rfwmjQePr/NikGuqQ3wAW7ok2iwDyb6DcK1QfphOP1242FTYS4qVPFiOZr5o/inl0pPlsTEkcrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712057572; c=relaxed/simple;
-	bh=YRmGqypfvRqmg3mcQPuCwYHUt0Glp5uhzSXwBXtnwMY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QMWQHWRBbobEvYGlx8ctCjGnMudTYfWLbdYI4fKROBQTzQh4ktNxvuav6emuP1lg8ORwX1fBZ7UNyQRTkBizNHw6XTt0fIMWJPnDsySiaBVXG9zX8B8N8Z9Sjwj1EdJtYNwfJ6Y/J2XcBjR4HBjp4A7DgtpIaaHX+tor0crr/2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=SD+ylnYY; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2a07b092c4fso3826386a91.0
-        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 04:32:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1712057570; x=1712662370; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mWJ1eWNsf3mDKXSgx9qyOAX+jE4gBs0xL5TwqXBogn4=;
-        b=SD+ylnYYl5ksxZRaLXdfpJjlANPjSxBnLs7bxHMnNf++xrPJf2fHzCobbYHVOYIAv4
-         NGRFpha5Iouu5GlAhX2tlY6sL37eo4cfTVoQb08mTm+7O7bc+IjNdwjDJHlxkLk5IYgz
-         bVTYwbGmkZQ2xkoMpVM1yZM4iyKJOmz4/d5S0H4pT+srs7xQBrbnLbkCHpsVDjkf5BxU
-         apenIiPq14MGrIPtMNIAhTFpo8H2jbjzfu7OV/mSJ6SktxiQKjZJTn4CzXRjC7yWUR6g
-         5zcr21De3A+f43CcMIRYtwox6eI5fSMFOPEjjKSSXRPB5akdP5A9CRWLHrgmWRFKEWxD
-         1AiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712057570; x=1712662370;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mWJ1eWNsf3mDKXSgx9qyOAX+jE4gBs0xL5TwqXBogn4=;
-        b=F2QnPOFRXUVbHWxgSO35KtN208CKBQmQotD3OjI2isPsLfn8HujnckWdVy5+pyNfTA
-         mk9n3/gP00Q9oxo7KuJT4aPTlNdEJtpOtOM2WuNlYwVcgFPsgHhZgF5Mtu74gnqPknW/
-         uVf8vJvq8fj/UPJEiTWFXHrY5VKmSa1gNo5kEfCB7QCfMwCgSBIUT1/qMoLxCyGtl/ev
-         lWD3Z3U3uZ8LQCjQyp5ykjqTgTw2aKYyOA2bEcfrOGPWvqaaTuZCl9vlIQpz1rUpkkmI
-         lr9adeV5IpTbHSWx/+3GO+IkxTV5kyFRCLaXZwLBA6VsufLQBhE7P/thu7N7VVRfWx+p
-         y+Wg==
-X-Gm-Message-State: AOJu0YzPPWe49Yjhwnl2QLlCk4UKP31vH/m/xBDKubsvPJ9I4UFaj9cj
-	M/V/CHQiaqAgSHlVtRtMfzCFZxH/grYM6yl3fQiQHdFnSQIR/4LZx9cQM+WNYE2WDwYl5TC65mz
-	e7D36+C0iwqBlZ3RkKg8xaE1yPl2UvfTI1tRovw==
-X-Google-Smtp-Source: AGHT+IHx7EUuj7nvRf9Fi4J4iGIeWWtS0WlmsxgcMUaOaz7SMmHrxBW5v4aSmkZaEIencF5agCUbDZwn4zRGfIEOf2I=
-X-Received: by 2002:a17:90a:a092:b0:2a2:2dad:66a3 with SMTP id
- r18-20020a17090aa09200b002a22dad66a3mr6122871pjp.13.1712057570207; Tue, 02
- Apr 2024 04:32:50 -0700 (PDT)
+	s=arc-20240116; t=1712057740; c=relaxed/simple;
+	bh=q/eZjUWAugq5q/OxFoUEqB9Q/iPA9gpO4VsEYccFMtE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D6TmSkpW5v4CI2JRQrp+DAUJeEuc/UfmUwihrx5ChP4TIZtWDbCtv9AGHMjivQzWVeKYV/z2f/SXk/RJTJVUE80Pk1NPNatmNYX09YUw2DG3KgoPjRZorc/nHI84qvZ5LnpBrJCwi05I/zQOb9eQ2Wj+nEmG12PoZ7+jiMs6Wrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=jYZE6pOL; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=7awxh5qbtdWbV+znG2uCAsRKZ70Rg1TLE8l9FPivOcg=;
+	t=1712057738; x=1712489738; b=jYZE6pOL9CTNxFy4o4qhSgDd2FmLrrY+yPzf/48v7XwBj1S
+	D90bq63kbNxBTCVvx1D7gZNNTTHPuBywceRMUnGYGIW/+68Ja9Q8Pc1pyGLl5AVn55vW8b+wesrK0
+	bZ+xncx12TBBrlKzzqqucITicUDqne2loh/ZWObTAeiK4J3g31aHMXgu5hTNUrn08WB7s44KMvofg
+	iyUtBVAbV4R+RXHkiscK/TpFpnhqLK9fX4/n/RfONiZjgljkiQc0GcX/q8LKHrev3xZWuAycDs9Ap
+	a5kydLVIlW352hCwe2wvfFxOOGddagAOUTTYwN6FiZ3ssGYy84j7/ATZDrh4EWQA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rrcQR-0002IY-3Q; Tue, 02 Apr 2024 13:35:35 +0200
+Message-ID: <1c698f8e-c7ca-4909-8872-057d6ae149ff@leemhuis.info>
+Date: Tue, 2 Apr 2024 13:35:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240401152547.867452742@linuxfoundation.org>
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 2 Apr 2024 20:32:39 +0900
-Message-ID: <CAKL4bV4EQ0SMMCE2fYqovSm3PHThObmKHNJpaNSNOWKGP59CDg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/396] 6.6.24-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression in kernel 6.8.2 fails in various ways (USB, BT, ...)
+To: Norbert Preining <norbert@preining.info>, stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+References: <ZgvkIZFN23rkYhtS@burischnitzel>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <ZgvkIZFN23rkYhtS@burischnitzel>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1712057738;d6f7ad17;
+X-HE-SMSGID: 1rrcQR-0002IY-3Q
 
-Hi Greg
+On 02.04.24 12:55, Norbert Preining wrote:
+> 
+> I am running Arch Linux on a Lenovo X1 Carbon Gen 10.
+> Tests are made with uptodate system, and besides the kernel no
+> difference.
+> The kernels are as distributed by Arch, but if necessary I can compile
+> locally.
 
-On Tue, Apr 2, 2024 at 1:36=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.24 release.
-> There are 396 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.24-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Thx for your reports. Nitpicking: next time, please report each issue in
+separate mails, as mentioned by
+https://docs.kernel.org/admin-guide/reporting-issues.html
 
-6.6.24-rc1 tested.
+ > Arch Linux kernel 6.8.1 works without any problems.
+> Upgrading to 6.8.2 breaks a lot of things:
+> 
+> * Plugging in my Yubikey C does not trigger any reaction
+>   (as a consequence scdaemon hangs)
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Have not heard about a problem like this yet.
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+Could you bisect?
+https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.html
 
-[    0.000000] Linux version 6.6.24-rc1rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 13.2.1 20230801, GNU ld (GNU
-Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Tue Apr  2 19:48:41 JST 2024
+> * sending of bluetooth firmware data fails with Oops (see below)
 
-Thanks
+A changes that hopefully fixes this is in 6.8.3-rc1:
+https://lore.kernel.org/all/bf267566-c18c-4ad9-9263-8642ecfdef1f@leemhuis.info/
+But from other reports there might be more problems. Could you check?
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+> * shutdown hangs and does not turn off the computer
+
+That might or might not be a follow-up problem due to one of the other
+two problems. :-/
+
+Ciao, Thorsten
 
