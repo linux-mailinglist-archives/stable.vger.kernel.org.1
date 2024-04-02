@@ -1,90 +1,103 @@
-Return-Path: <stable+bounces-35547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A1F894C91
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:24:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFF2894CA8
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6208C282B70
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EF8A1C21F10
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6D23C478;
-	Tue,  2 Apr 2024 07:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526FF3B299;
+	Tue,  2 Apr 2024 07:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSsCwMxz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WaPYkLBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193553A1CB;
-	Tue,  2 Apr 2024 07:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EB839AD5
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 07:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712042637; cv=none; b=hJqaEr/p81RqfnWnnYFjucqqNbP5/4d3Z3RrR5vNKdJKgoivUkPjOdfmzebDP2P0hHrXirSTPbjrvap1ih7Ia81jiUPAhvuHPwlwKiDVMjzH/ZRutmKMDyOiHh2+GNDsT4Hgz74bo8ybfqaEKb9qFU+fU0mqSAPPwHvXwGFvzgw=
+	t=1712043070; cv=none; b=VScaqx3KfpnkLxddxx0KBnkYuUxUQuB4xg0arPSal5J3L5mQDvZQ297iwNGb94nVvgVbzQU73PBs/MPDfBG+nejvrowOsRiIVZe+A61hWOKsKIx8KxrDUhnOCBu9K/nFk5olScQLsEVcr4+harFPqfJ0Y5af0qfDBQfqDUo+2h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712042637; c=relaxed/simple;
-	bh=/k8682TRmouJoXcVHje6f0bVVq1K2vQIKjhlfsY1dZk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NNQT36thzN8ZLtLVk5Y+nZ0fFtfZOrkC6XaL0UNOse37pAFOTIuBiMUykdMDz+83c+/MXJOxj8eLEBf0OiC2HZ4WKzOBsvKI1ETGobZ+sOeztDOZ2AxXw7NkxNqOM0gXpsQbaQF7wPKg/dfsCpsluuV59FXDkb/HQQBO1ZnDEig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSsCwMxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D05C433C7;
-	Tue,  2 Apr 2024 07:23:56 +0000 (UTC)
+	s=arc-20240116; t=1712043070; c=relaxed/simple;
+	bh=2iyQU//mPFxOrfGTw/1PEz5m2k4PG+bxVc1FS/9pT38=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M+NdAMWoNzeCLYeWeZnkw+cn/7VQWHkNNMv3kXj1oM8PQDFJYCdKyv75jkwaEQiQFbYccX/2Dm7RberIOasnfSwkjbzR2OAnuVgmLYAOnXMgpJ/JPeX/+jJUpKazGhOT35KnpRdrSffvaOLGq697CQw52e0VoWhO88NNxZRh2cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WaPYkLBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA1EC433B2
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 07:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712042636;
-	bh=/k8682TRmouJoXcVHje6f0bVVq1K2vQIKjhlfsY1dZk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YSsCwMxzo84q0Mef98yGQ/v1X6jYcd3uTUF45SGemMQ2/ENutrtsmIgRADPnFSOHs
-	 mPBLL59usZGk68eqSpnaBlLVRoEKhWoWTX89JqYTm4/ILbhamjs2JJd0PcD3ggdbDg
-	 IxVbWtpfeEMAtE46wCmRfQwdXe6asVbbHODj/taeRC5DP5jYGEBfFi3rqEeM0PMqyI
-	 I75WGYwHvwrMNrE3cbI81iDrCx5l/IiiO998/reNljRElJoxIsGiveAE+HuVo9AkDs
-	 jon5UejQ3pFFMhZuRTp//1r4/Dg478W86/m9n9imM4dHeCdicn4XMEe3jwUaE2PQoV
-	 RYX1yxtOh180A==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rrYUs-000000004KE-3RU6;
-	Tue, 02 Apr 2024 09:23:55 +0200
-Date: Tue, 2 Apr 2024 09:23:54 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>, konrad.dybcio@linaro.org,
-	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.8 36/98] arm64: dts: sc8280xp: correct DMIC2
- and DMIC3 pin config node names
-Message-ID: <Zguyil0WVwEudPga@hovoldconsulting.com>
-References: <20240329123919.3087149-1-sashal@kernel.org>
- <20240329123919.3087149-36-sashal@kernel.org>
+	s=k20201202; t=1712043069;
+	bh=2iyQU//mPFxOrfGTw/1PEz5m2k4PG+bxVc1FS/9pT38=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WaPYkLBCe/8sVaeyEww0SmdPl3XOJJgu2s5RsU0DEiAcS4fjExRI/UjX2SxC+7IP7
+	 v7x64Q0c0LtRFM4x2IigEqExZKICfs/KMpq3KYlcg2oQaohPL6uLnvlw3vSaIeTj8T
+	 hT6yJYxOvOudX5LixEINRk41hC7RWIjRAFKPelh0cK0TXqVfXyIxkocyNLJmm8INOY
+	 2ztpYm53cGRnn546otLXc9PB2WemAdgThwwgLlcmFNw4479ELCkieiFQOjbypVcOFP
+	 9weEWFeRqCeMA37/zSYoDd25KObEF44V4da+W0C/eGsFxCDqGaY/qoFk1atkfJvszA
+	 TENavywDYK3pw==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-515a97846b5so5113273e87.2
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 00:31:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVFlPsZROIXY4y/nELffaKvcYjTDywomIQrzOeNyVyG3gml1Le4l+g0aHZ4T6whqejaJv1IrTPyd1pUTyNpkzdFjhWzAJ1K
+X-Gm-Message-State: AOJu0YwOcIsGzTi709qu+8U9FmIrtBjQOZSi6irwlp9yMBPQD67UtGhy
+	LZ2daQykJW0BneXSXHoDSijmW6Bb5Q/raWGs/ze6pPLnxSi/7nRs3dh2vd41ifjkYUUSC+abfWB
+	IHOSZV8TkvB6HVdxWQQAHUvtOGSc=
+X-Google-Smtp-Source: AGHT+IFU+f+Yqqj1aMTAvUvSg6OvOexbH4cjU+zUy51qxN4jVM9bPqWFVRvoDExJB+WKuyESe6IMTTcql+KVKyARnXE=
+X-Received: by 2002:a2e:2a03:0:b0:2d8:2710:f7dc with SMTP id
+ q3-20020a2e2a03000000b002d82710f7dcmr1307780ljq.17.1712043067708; Tue, 02 Apr
+ 2024 00:31:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240329123919.3087149-36-sashal@kernel.org>
+References: <20240401152549.131030308@linuxfoundation.org> <20240401152556.751891519@linuxfoundation.org>
+ <44381e5a-cab6-4abb-b928-ebea7ce3d65b@app.fastmail.com>
+In-Reply-To: <44381e5a-cab6-4abb-b928-ebea7ce3d65b@app.fastmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 2 Apr 2024 10:30:56 +0300
+X-Gmail-Original-Message-ID: <CAMj1kXHwW83uNPKZsj1==5Mof+K1k6-N3bbKk-Cn6U6692UzGg@mail.gmail.com>
+Message-ID: <CAMj1kXHwW83uNPKZsj1==5Mof+K1k6-N3bbKk-Cn6U6692UzGg@mail.gmail.com>
+Subject: Re: [PATCH 6.8 254/399] ARM: 9352/1: iwmmxt: Remove support for
+ PJ4/PJ4B cores
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>, 
+	Nicolas Pitre <nico@fluxnic.net>, Jisheng Zhang <jszhang@kernel.org>, 
+	Russell King <rmk+kernel@armlinux.org.uk>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Mar 29, 2024 at 08:37:07AM -0400, Sasha Levin wrote:
-> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> [ Upstream commit 61474b18e762671a69b2df9665f3cec5c87a38af ]
-> 
-> Correct the TLMM pin configuration and muxing node names used for DMIC2
-> and DMIC3 (dmic01 -> dmic23).  This has no functional impact, but
-> improves code readability and avoids any confusion when reading the DTS.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Link: https://lore.kernel.org/r/20240212172335.124845-1-krzysztof.kozlowski@linaro.org
-> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Tue, 2 Apr 2024 at 10:19, Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Mon, Apr 1, 2024, at 17:43, Greg Kroah-Hartman wrote:
+> > 6.8-stable review patch.  If anyone has any objections, please let me know.
+>
+> I think we should not backport the feature removal, this was
+> intentionally done separately from the bugfix in 303d6da167dc
+> ("ARM: iwmmxt: Use undef hook to enable coprocessor for task")
+> that is indeed needed in stable kernels.
+>
 
-This is not a bug fix. Please drop from all stable queues (e.g. 6.8 and
-6.6).
+303d6da167dc is not a bugfix - it moves the undef handling into C code
+for PJ4 but only for ARM not Thumb.
 
-Johan
+Subsequently, 8bcba70cb5c22 removed the Thumb exception handling,
+leading to the regression.
+
+So without this fix, the Thumb case remains broken unless iwmmxt
+support is disabled in Kconfig.
+
+> It still makes sense for everyone to just turn iwmmxt support
+> off on pj4.
+>
+
+If that is deemed sufficient for stable kernels, then we can drop this
+backport. Otherwise, we need to do something else if this patch is not
+suitable for -stable
 
