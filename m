@@ -1,99 +1,229 @@
-Return-Path: <stable+bounces-35540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6117C894AEE
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:45:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4EB894AFC
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCEFB283A18
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:45:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C8821C22032
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CBF18050;
-	Tue,  2 Apr 2024 05:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93140182BD;
+	Tue,  2 Apr 2024 05:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0rT5yX4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I/dnPRsv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819EB323D
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 05:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712036712; cv=none; b=tAU13ep2X6HNzYxsz/j/mmFIBaLVMTebPd7t01NgJ0NbUz5eElbmH0yCslRcQZ+M3Aqtuc+kLTE9nlHMpF3VnBpbJpS9djDiby5E5u0j/vj313mZFBa/6fhewPp3FVa9g0lGxvrJi/qi8HH092/+Hv80wL9WMwBv5GAGw+ki46U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712036712; c=relaxed/simple;
-	bh=XyvL3YfexGCf40Z4b7HNBUbFqtksITvuq8OJnDzp5oA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KopEWJ6cwRCIWKycdB0ij0b3loA03Y6/1b4f964Ng/YGOUikMEcE9nye9NAkcTI4NDWT0pKTLSowtFuReq9zNXcNq+QFgjxyRZQwSFHRPdq9s4/1ONCRhdlE2MGfR1C7rCfEiql8LpqvNAA/S792Dd5R86/gEV52zj6F8IBtsXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0rT5yX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23ABC433F1;
-	Tue,  2 Apr 2024 05:45:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712036712;
-	bh=XyvL3YfexGCf40Z4b7HNBUbFqtksITvuq8OJnDzp5oA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q0rT5yX4T8xT9ixL96BRSHx1iwaPgK+QGeyqsfHe9LA75xkW6Jh0+k07K3PjSWu3g
-	 qHP1rMmJsUhIJE1dPHin8YV9VrqH1Sb1AZQCUV8fCww8Oqez9vK5C4qvRwUcEJxGan
-	 YLFNmTOUmpsPtp8FKcoIpMNbc45pI0ZKdFi1oj2A=
-Date: Tue, 2 Apr 2024 07:45:08 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Nguyen, Max" <hphyperxdev@gmail.com>
-Cc: stable@vger.kernel.org, Chris Toledanes <chris.toledanes@hp.com>,
-	Carl Ng <carl.ng@hp.com>, Max Nguyen <maxwell.nguyen@hp.com>
-Subject: Re: [PATCH 1/2] Add additional HyperX IDs to xpad.c on LTS v4.19 to
- v6.1
-Message-ID: <2024040230-undivided-illusion-3930@gregkh>
-References: <20240315215918.38652-1-hphyperxdev@gmail.com>
- <2024031724-flakily-urchin-eed6@gregkh>
- <fb216446-26d5-4d73-a5f8-faf1ba689c3c@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20B61803A
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 05:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712037491; cv=fail; b=NKxdlz2tOLVPjZSNSEePo+1btXWWfTmH4C07WidE4oFTnwYTZvjwoSHEHmjw3FrXSpz3pFm4zL8HPHmCr1qbF1/SIZLm1SlzjdoBAnwt+NFiuHnOwWDPnkF2RxWtYN4qD3yo8REMWu2U9VGx6aPZyqfjhX0hQN/SNRRr0/RLnL0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712037491; c=relaxed/simple;
+	bh=I/oPRc2y43Mv1Rlz+RIBIwZF1SjRA50Jl5mqdhmVAgA=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=YlEtPlp/Lfu8obB/LZi4LFcQRDBgkUlMrshIfshr5KXgAw+7+dGV9kgFuDY2mpx4fhZssy0ODyqsP7lRdqoTUbtrUEyvNX5xSDokKlQ5qD2YcQQze3ldFq2oIGhJUejY6NaGaY0UxilrQcubU2jkvklBAZLxTib5R6WVS0+hkm0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I/dnPRsv; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712037488; x=1743573488;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=I/oPRc2y43Mv1Rlz+RIBIwZF1SjRA50Jl5mqdhmVAgA=;
+  b=I/dnPRsvxWzw1qm0DBoZIXvRXh8Vn3aWACCAAIjjDxqOlYhE6Hz4qQp+
+   j5g8AgAUe3wUbsOUrRBUWkaJ5Tl97zzx0+88vKw0RsqmxkgqXHP4/o4/N
+   yQQlGwpaA+CvDpz4x6vUNEXcYIe8I70XtTA8SuJN0Ie75ARUfDXhjefvN
+   DCfnxd8zSojt6oKXIJmKT8p95tNXJgBB5mPLCalMMoqzFBP4v0/FTJXpR
+   sWI2lT1w0mOXTR+H3ZRX6VsKDA5IRze++uUmuPDqROc7C7/m5AJUit/f+
+   Aoq2gEqDl/xPnMTRqpCPaynVhzcqcfZC6scdya5AVDuc5h3cqjGH/epaS
+   w==;
+X-CSE-ConnectionGUID: izKYfD+aTaucxpHA+IcQQw==
+X-CSE-MsgGUID: 8oamcclSSKqJBRJP497S1g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11031"; a="29665155"
+X-IronPort-AV: E=Sophos;i="6.07,174,1708416000"; 
+   d="scan'208";a="29665155"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2024 22:58:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,174,1708416000"; 
+   d="scan'208";a="48952324"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 01 Apr 2024 22:58:07 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 1 Apr 2024 22:58:06 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 1 Apr 2024 22:58:06 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Mon, 1 Apr 2024 22:58:06 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 1 Apr 2024 22:57:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ITmMcjxqrjzUZZHHVHZcCUdCbKmqwu8mUAGHP1/xu8qy+e394xEssFnRRxOfS8Tg6vFpayXlbMuNz673OlIqEhW7Ym48jg3ApHhhJiLGbjMJaoNIkTY/FjxGLppZzBhUWpr7p80OyrBdcQN3dtOfjFA2fh+jNG3Zjvap7pVeHKxyXLqMjIDH/C/d4oBo6zlyIx7dbEj8Xg0W77vFb4tvi86dXekq1oSggvXSLaKPt0eL/GkTiCMTpoSRkQnr/ypO8vimXwTfnl74SK5V7IAIua8xOYBrDzwXuOd+bZpDx88+/Loadi4qwOSlqXVVn9ni5alQW3gnJQBzYkeUlFSonQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wMFTVrkOhUtwwvNSvSM8Q/rjkhC0FykYX/pHpyzrPXY=;
+ b=WnrTaQKT4l6d4DAGPoTbybiC1ZzVU/P9YyhU5gzdI17s/cjlcK5eBsjHaxjmoRsaYJq7xesM04313fOyeh3/q+h13SN5JfNGCAk3HB2t4v+wbGvRvE7LvJy0YhY7Sr2PCjDIOaZLvQ/LrgqxpCGCE0GdVPY2mc/qvG6M+84joZan8i0GgMp1weGAbXLUqOzQYmGM/JWDOS5mdiQHl5VhAZbGPYz/FZ4TKrSk6vY4rsJnkaDKCbZAhLgL3S0k240Xkz6IMp5fNklSt3SpFK9ZNS4tayqRgTDnxJdgXOhJAtkvB97Bh+yWn89HML1L0QyjUpiDj/X5jbJ0ButA7Y/6sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
+ by SJ0PR11MB4989.namprd11.prod.outlook.com (2603:10b6:a03:2d9::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Tue, 2 Apr
+ 2024 05:57:19 +0000
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::31a1:93ed:8501:f2c9]) by DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::31a1:93ed:8501:f2c9%3]) with mapi id 15.20.7452.019; Tue, 2 Apr 2024
+ 05:57:18 +0000
+Message-ID: <c79bbdbf-73f9-4fa4-8769-30839abab09c@intel.com>
+Date: Tue, 2 Apr 2024 11:27:11 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/i915/dp: Fix the computation for compressed_bpp for
+ DISPLAY < 13
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>,
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+CC: "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>,
+	"jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240305054443.2489895-1-ankit.k.nautiyal@intel.com>
+ <SN7PR11MB67505CB6CA830E1553138A31E3342@SN7PR11MB6750.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <SN7PR11MB67505CB6CA830E1553138A31E3342@SN7PR11MB6750.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0183.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:be::8) To DM4PR11MB5341.namprd11.prod.outlook.com
+ (2603:10b6:5:390::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fb216446-26d5-4d73-a5f8-faf1ba689c3c@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|SJ0PR11MB4989:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qfiVOZh6FOmC1speLxPjoT+xDQdgphZ2qWUjlJ40rYlhRYptFzDDCf4+rtSIOUeu06rrssMvh8DQL1N++yj/DsBSIF/mSiK2apnMPnHmnBtFih8+17EZgSq0lUvsv4xh9QxGhu0+FDxPzDdcLK2/4RYEe5iXVVMC+yIt+xNmZM92cYn533oZZ9iDjmGSJtmbVmDSpgblrvYdhIG8Yccktuk3QP4J7lEKWdq7x3mmx6DlkHpd0cqZwqDQx+sI4EiokpaT9uj3TKi8BKrYkqpXTbvXfp8Q3I3Dj/PHOKnyB7a92RDOEs+3KiGBKoFgY3rJ7aG5N1DQbuqIHecyU5rmtB7Ie8LqZt/G1ppP2OH1TpzV+BH/5cDayXCX17EO1VHkht4g/QdOnyxTaNvOpXLJUEVwpCfAVfMkodF3vrt2C/UsHFSOyxryPAGN2ARDH8835v7f5kKgwBUXnMTnEaW/fHVHx1fQKuMtBfSsqX3MyHBP6ojgHDLPBsDAcWIebiVUSZmyFucy8g9+Y+05Q0ipzAE/2fQ3hZavWJnfj0r7oH47dCBhdGzI34Cii+e1nhsknVce72lfBdUqDk/Tmb6EU5IpPO09bjhNBRa9Zxq59Po=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5341.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UFUwOGlrNHhyK25ZeldodzhTMFJkWEVkWmhSZmFxa1Z5WENnVXhYV0c0dzdN?=
+ =?utf-8?B?SThnZHRuYndkMkFIWWcrSldPVXF2emJYdXJ2SllZSkNQOXhmazUwR3p1Q01q?=
+ =?utf-8?B?cVBQQlVNUDFEMkNyS3dtQ25aZXByaUJ1amlCRThYUndXV2VwU3kyTjBSalBo?=
+ =?utf-8?B?NWR5VGp5bTJZc09lWmxmTnAwYVJ0TytLa2FYcDYySUhUK3FiYVJzTUc3SnVU?=
+ =?utf-8?B?eWY5WnExVW53OHdWbCtrU3pjZ21RMW1iWElWN2N4RDVvQWlxTllmMGxIZ3VR?=
+ =?utf-8?B?QmdtcmVKMXB6c05FSTQ5SnBlUUc1bmIvRGpleDlKY3ZGcmVMYkh4QmJjeVJR?=
+ =?utf-8?B?cmpQM2dyaTdPb0VtMFF4Q3JBK2IwM1hoQkdvT3NreGpOL2JuS1hLdGlVc09x?=
+ =?utf-8?B?ZjdDTnRRL0J3czBQQktVZHp2SncvTG9iTGJMc3c3aTZhQW5xeDlMR3BHNTVU?=
+ =?utf-8?B?REMrOVVYUDBHRnlLRkxoeCtHUE5IVk9oWklLeVhDRjJkbG50WVM2TUFVUEFv?=
+ =?utf-8?B?MTNCdzNXYXJhbEdPc2dRNmJXYURCaTJEMnVuRUpnbnR1NTRjbFZFVy9BTnRM?=
+ =?utf-8?B?NHgyTWtkTzMwWFpvYy9CWnFjUmxjS3lEN2VpRDQ0M2dnZGY1dlg2aHNXanB3?=
+ =?utf-8?B?Znlxbm9EZ3BNR0dYSzVVNFZaNHpqM29YclZBWmMrRnRIZ1pWempVaDRRcnFq?=
+ =?utf-8?B?UFJYY1lBazgwMEY3SncyaWdNSy9aSFU0ekRGM1hvbHNtRTN5aTk4UDVaMlha?=
+ =?utf-8?B?clYvUktoZitjbHIwWFZLdzhCNnltUWJuNWN0cFJZTFZoU3N6RTlYeEdTRHZm?=
+ =?utf-8?B?K0dHdCtzRmpjbHljV0hMOU0wWEoxU0hUNlMrUXhlK2hmMEdZSmZHdTBXT3lH?=
+ =?utf-8?B?ZlM3QTIrZmJKK1lqUHBCT2pXYXNXVVNyWjBPQ3VYcEZ5WThJRXhLNEZqTEhV?=
+ =?utf-8?B?emhKWWozcVlodEZtSXE1dVJKN3ZlSzFNd2grVWNqTTRZa2k4bFF4dmdaaFkz?=
+ =?utf-8?B?YnpVcFZEdUFhSWlTYzdyVHlyWWd1QlNKNk9FbGo5TkFxc0tDeVRmcVErTi94?=
+ =?utf-8?B?bXFHOTd2cjltQVdVSlI4T1ExOVNaNitOVDdMK3RUc3hNSDNYNVlacE0weThM?=
+ =?utf-8?B?Z1FMSU10ZnZLdjVVOXE3U2ZxMmpjKzM1YXJWa29FZ2hFN0tneFhYcnFMekM4?=
+ =?utf-8?B?UmVaZWE0V2hJdnNlTXVmaExONnp4dGlZTnFxSXlOOUEzay9xbkFpNjRIczdx?=
+ =?utf-8?B?Tk5EejczL0lpNzd4ZzF1dE5jNXBUN1FsMkVEZ0FkeGVGVXRVMDVjUytvUmlN?=
+ =?utf-8?B?MFl5a3A4Ukpia3o0RWNlUmtEaVFMcVZhY09NSEpSNU1WTW9sZHIxc2VPbjdk?=
+ =?utf-8?B?MjJiUWQ1aVByODBtb3VhRmFkSExQcmUycDZHdkV5N0FvY0ZsckIxZnE3UXJE?=
+ =?utf-8?B?MUVjVm40SG5ZcmxHMDJwcTFQdURhMERVTkFaTHhEbW1OeEZSOGJsYlpLSGpZ?=
+ =?utf-8?B?SGJZS3BXN0xYL1kvRlprRGw3czcyUW5uVE1SczdJbVJTdW5jdmJHNUdyYTJx?=
+ =?utf-8?B?ejdyN0V4RHNyd045c3V0RnZUYkRmNjBVVWdiU3oreFZSS2prTWVkMU1BdEtU?=
+ =?utf-8?B?RTgyaEFDR0k4N01aeWEvZWpxcy9mSU5lWGczdGJZTEltc3FvbzdZUGxWUWQ0?=
+ =?utf-8?B?ZjJKdlNaNWg4b1NEVnNqRWdFSDhuRXI1SDlvUHRGQ2RhR0c3SGJrVDMwc0k4?=
+ =?utf-8?B?MWtTbWNjb2YwT2ZYeEcreXlaeTZ4d2tnSVFyZ05OUzZ6dUJjZS8rT21Id09u?=
+ =?utf-8?B?Z01jUkhORisxblZnaWE5SnF3SDdXdUQ1Y0hraVZheStSRDErOW16N1NHTjNG?=
+ =?utf-8?B?YlRrd3BTbFJZKzl1NDJySFZoQ3BOd1BkTUF0alpWL1RsTWpnbGltQWM5MFhq?=
+ =?utf-8?B?cVhzNWptRUdMZXJqam1wYVB0d1ZZcGRKeWxlL0FmTm5vaWNnSUd2K1h5TWtx?=
+ =?utf-8?B?NlI3ME8wOG1rT3NmMkNpbWlYSEduY1Y0Y0YrRVVKOThWRjE0cGFyNGF5STRq?=
+ =?utf-8?B?YXFkR3E3T3ZnQ2NGZ0tpQ0EvTXZ1WnhPUmFxYTZpMUhiVEVzS0ZBK0V5b3ZV?=
+ =?utf-8?B?cTg0aXRkTHNUSXN2bE5HRmJ1WThYS1lVYUdBZkVveHhyZjkvSWp5RlUzRWpq?=
+ =?utf-8?B?RUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b0f57184-039d-4e7d-13f1-08dc52d9c14d
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 05:57:18.7546
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YvsqJj0ik6R6cqFtuB23yWHmRpX2q0uNC0mfmu96KabakSf9yoBz9Iz4O4iSfnvJy1PrsoG4f5ZfnlezE651Os6kJVAKyWKWkm+WfMKWKDE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4989
+X-OriginatorOrg: intel.com
 
-On Mon, Apr 01, 2024 at 02:52:24PM -0700, Nguyen, Max wrote:
-> 
-> On 3/17/2024 12:07 PM, Greg KH wrote:
-> > On Fri, Mar 15, 2024 at 02:59:19PM -0700, Max Nguyen wrote:
-> > > Add additional HyperX Ids to xpad_device and xpad_table
-> > > 
-> > > Add to LTS versions 4.19, 5.4, 5.10, 5.15, 6.1
-> > > 
-> > > Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
-> > > Reviewed-by: Carl Ng <carl.ng@hp.com>
-> > > Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
-> > > ---
-> > >   drivers/input/joystick/xpad.c | 10 ++++++++--
-> > >   1 file changed, 8 insertions(+), 2 deletions(-)
-> > <formletter>
-> > 
-> > This is not the correct way to submit patches for inclusion in the
-> > stable kernel tree.  Please read:
-> >      https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > for how to do this properly.
-> > 
-> > </formletter>
-> 
-> Hi Greg,
-> Thanks for your help so far.  I am committed to figuring this out so thank you again your patience.  I had a couple questions to confirm before I resubmit.
-> 
-> I had done option 1 to include in stable when I submitted to mainline.  I saw that my patch was picked up in the latest stable.  Will it be eventually picked up by the older LTS versions?
 
-Depends, did it apply to older LTS versions?  If not, then no.
+On 3/27/2024 9:35 AM, Kandpal, Suraj wrote:
+>> Subject: [PATCH] drm/i915/dp: Fix the computation for compressed_bpp for
+>> DISPLAY < 13
+>>
+>> For DISPLAY < 13, compressed bpp is chosen from a list of supported
+>> compressed bpps. Fix the condition to choose the appropriate compressed
+>> bpp from the list.
+>>
+> LGTM,
+> Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 
-> I need to add the upstream commit ID to my patches.  I intended to go with option 3 since there is some deviation in my patch from the upstream.  Am I just missing the upstream commit ID and deviation explanation for my patch?
+Thanks for the review. Patch was pushed to drm-intel-next.
 
-That is a start, yes.  Try it and see!
+Regards,
 
-thanks,
+Ankit
 
-greg k-h
+>
+>> Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best
+>> compressed bpp")
+>> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>> Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+>> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+>> Cc: <stable@vger.kernel.org> # v6.7+
+>> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10162
+>> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>> ---
+>>   drivers/gpu/drm/i915/display/intel_dp.c | 5 +++--
+>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c
+>> b/drivers/gpu/drm/i915/display/intel_dp.c
+>> index e13121dc3a03..d579195f84ee 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+>> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+>> @@ -1918,8 +1918,9 @@ icl_dsc_compute_link_config(struct intel_dp
+>> *intel_dp,
+>>   	dsc_max_bpp = min(dsc_max_bpp, pipe_bpp - 1);
+>>
+>>   	for (i = 0; i < ARRAY_SIZE(valid_dsc_bpp); i++) {
+>> -		if (valid_dsc_bpp[i] < dsc_min_bpp ||
+>> -		    valid_dsc_bpp[i] > dsc_max_bpp)
+>> +		if (valid_dsc_bpp[i] < dsc_min_bpp)
+>> +			continue;
+>> +		if (valid_dsc_bpp[i] > dsc_max_bpp)
+>>   			break;
+>>
+>>   		ret = dsc_compute_link_config(intel_dp,
+>> --
+>> 2.40.1
 
