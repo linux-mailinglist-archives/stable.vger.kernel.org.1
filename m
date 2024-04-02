@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-35537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC3A894AE0
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:34:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D5A894AE5
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA06283EEA
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:34:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC8B528286E
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76807182D4;
-	Tue,  2 Apr 2024 05:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE69D18050;
+	Tue,  2 Apr 2024 05:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="o5SNWltq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2N0+7FN2"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76841805A;
-	Tue,  2 Apr 2024 05:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7325B17BBB;
+	Tue,  2 Apr 2024 05:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712036040; cv=none; b=r56YcHOBVo1M+CTovoDuT3Vvmi0/bJpSKhUy7APu7BB+pXQOApSNbX37BV5e7+SGnlQfu73etlBAu1zBxeYiSGz7MUjtdP5YfXbTun+lKWvjaVYiCznRMsl31YNhFCC/rMXY1u2EJJCqUNdZyqy7O8y7k9M60c7hAxnh8hhvDZo=
+	t=1712036447; cv=none; b=AFUK2GkSvM8uGUxz8VRXIz+mk0WLiIhfMLcsZs4I29rZF6vi9nQNDeqKq2QcjLZ+DkcJYA9dZS7Ycby5sHu6ZyoM4daNC92xqLjaCEwvVe748SugYTw+BeSiBQ6tDmfZtBSaTbCha65J++Qh7RrKnKzfzQ4wFVKtXzrxwQjTlAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712036040; c=relaxed/simple;
-	bh=/XDMOAH0zgBJ+JWms6+5MCYJwxngTNToGSNYTncbdAw=;
+	s=arc-20240116; t=1712036447; c=relaxed/simple;
+	bh=+RXMODCJPF9BeRgEEKhCXn02zZG7tPP6TJksESLam+4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HTLWEVuCIqzUcrthY8iLGhZ3vDTgDS/DgkQsyxK5RuaM3drq/VJpHxzxHmeD+b/9TK9J/SXkq2Oh3u8WSsphaeOGRUKZBWYGi18ELzzyc6Fnks5wLPQGYKL1RqNQ90Csiq3iZVm+QqAnl5AEFOF7dhVqZiWlLxV7+fACCuf5U6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=o5SNWltq; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hjLgNLhFLW4hN7k/B3OvpVJsjxBcTs6HemIA9FmIj8M=; b=o5SNWltqSwrtoE6l+7NaQpj6Ls
-	SNh3k15mQztIVwni1JOQOeF257R2q9ZJ6EufcW9N04cq5kJ6PhHAzrYickWkjj0fuXKRmAz8j652y
-	C662IDwEvd6dN90TIiEbZzUG/fzEdARfo0ODa5t+Wwd8Y1pw6AQxYHe0901q7YHoFVuIcpl0CFURT
-	zQM6vF4QcLaQKgFkta0iLT51au5GKFk4CtF6D3Cqx47C0hrMg7dEE5tSB61i8U5iaOIvSGJLrEZkt
-	ElHrc2zTvvOcm53FzAmH1qp12/jhlU7WYWcrR15Poo4/pQZuIrW1qiTOB3blWzEqHIJHsbefD8sZr
-	1C4VJsiA==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrWmR-00000002IaN-3ush;
-	Tue, 02 Apr 2024 05:33:56 +0000
-Date: Tue, 2 Apr 2024 06:33:55 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Rik van Riel <riel@surriel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: FAILED: Patch "bounds: support non-power-of-two CONFIG_NR_CPUS"
- failed to apply to 5.4-stable tree
-Message-ID: <ZguYw9Dke_uq5UZU@casper.infradead.org>
-References: <20240327122125.2836828-1-sashal@kernel.org>
- <ZgQowqqGf-E7Cpcz@casper.infradead.org>
- <2024032935-antsy-imitation-1453@gregkh>
- <2024032959-ladies-circling-3a5e@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=XxWdnwg2YHyMEvlGcTEAOmuCREBcJXLM+OzwMji4MyLGb1qWoQ/+5/LBR3NonSIWdFT7PvEuRWuiXHYTZpOIywkB4WWtvvj8tviwNcC6CXXcuCEU3dCIA4Xx+4iNfyC7TDgKgeymBZP+9Ds+DHAPhsr4MXJNA81EFRrGOsnPMo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2N0+7FN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A8EC433C7;
+	Tue,  2 Apr 2024 05:40:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712036447;
+	bh=+RXMODCJPF9BeRgEEKhCXn02zZG7tPP6TJksESLam+4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=2N0+7FN2zo0VrrxakmLB0zetXw8EWIBVNXweXG4CSxXzfBlDHjqwXJdeH9YhKQ4xX
+	 ooUV9NPioeHBJ0d4pEqC7bnriAghOOwIg2kXeP3gPz77RG9lPAFQLKaedRWdpNPHfj
+	 8SUseO/buT6tshdHIAQfNft9r6pjVDt1cooVjaoE=
+Date: Tue, 2 Apr 2024 07:40:43 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Christian A. Ehrhardt" <lk@c--e.de>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH 6.1 251/272] usb: typec: ucsi: Check for notifications
+ after init
+Message-ID: <2024040216-cahoots-gizzard-4ffb@gregkh>
+References: <20240401152530.237785232@linuxfoundation.org>
+ <20240401152538.859016197@linuxfoundation.org>
+ <ZgsWLUHW8nqUv7pi@cae.in-ulm.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,45 +58,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024032959-ladies-circling-3a5e@gregkh>
+In-Reply-To: <ZgsWLUHW8nqUv7pi@cae.in-ulm.de>
 
-On Fri, Mar 29, 2024 at 06:05:20PM +0100, Greg KH wrote:
-> On Fri, Mar 29, 2024 at 02:34:43PM +0100, Greg KH wrote:
-> > On Wed, Mar 27, 2024 at 02:10:10PM +0000, Matthew Wilcox wrote:
-> > > On Wed, Mar 27, 2024 at 08:21:25AM -0400, Sasha Levin wrote:
-> > > > The patch below does not apply to the 5.4-stable tree.
-> > > > If someone wants it applied there, or to any other stable or longterm
-> > > > tree, then please email the backport, including the original git commit
-> > > > id to <stable@vger.kernel.org>.
-> > > 
-> > > Looks like you just need a little more fuzz on the patch.
-> > > 
-> > > diff --git a/kernel/bounds.c b/kernel/bounds.c
-> > > index 9795d75b09b2..a94e3769347e 100644
-> > > --- a/kernel/bounds.c
-> > > +++ b/kernel/bounds.c
-> > > @@ -19,7 +19,7 @@ int main(void)
-> > >  	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
-> > >  	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
-> > >  #ifdef CONFIG_SMP
-> > > -	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
-> > > +	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
-> > >  #endif
-> > >  	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
-> > >  	/* End of constants */
-> > 
-> > Now fuzzed, thanks.
+On Mon, Apr 01, 2024 at 10:16:45PM +0200, Christian A. Ehrhardt wrote:
 > 
-> But it breaks the build on 4.19.y, so I'll go drop it from there.  If
-> you want it added there, please provide a working fix.
+> Hi Greg,
+> 
+> On Mon, Apr 01, 2024 at 05:47:21PM +0200, Greg Kroah-Hartman wrote:
+> > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Christian A. Ehrhardt <lk@c--e.de>
+> > 
+> > commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
+> > 
+> > The completion notification for the final SET_NOTIFICATION_ENABLE
+> > command during initialization can include a connector change
+> > notification.  However, at the time this completion notification is
+> > processed, the ucsi struct is not ready to handle this notification.
+> > As a result the notification is ignored and the controller
+> > never sends an interrupt again.
+> > 
+> > Re-check CCI for a pending connector state change after
+> > initialization is complete. Adjust the corresponding debug
+> > message accordingly.
+> > 
+> > Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+> > Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+> > Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
+> >  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> This change has an out of bounds memory access. Please drop it from
+> the stable trees until a fix is available.
 
-Looks like bits_per() didn't exist in 4.19.  It was added as part of commit 69842cba9ace84849bb9b8edcdf2cefccd97901c
-Author: Patrick Bellasi <patrick.bellasi@arm.com>
-Date:   Fri Jun 21 09:42:02 2019 +0100
+Shouldn't we get a fix for Linus's tree too?  Have I missed that
+somewhere?  Or should this just be reverted now?
 
-    sched/uclamp: Add CPU's clamp buckets refcounting
+thanks,
 
-Up to you; I can provide bits_per() to 4.19 which will aid backporting
-other fixes (we currently have 17 uses of bits_per() in 6.9), or we can
-just drop this whole thing for 4.19.
+greg k-h
 
