@@ -1,75 +1,76 @@
-Return-Path: <stable+bounces-35579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5DCF894F31
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:54:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C853B894FE1
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 12:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 303311F25A6B
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:54:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8776D284EC5
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86E65731E;
-	Tue,  2 Apr 2024 09:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FC25FDC8;
+	Tue,  2 Apr 2024 10:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SYkEkt1j";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kx05Nsyz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SxFWYttq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89379454;
-	Tue,  2 Apr 2024 09:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F4862171
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 10:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712051693; cv=none; b=m58oXBF9XbfePTZ/zfAT+Z3Pqg3Pw7prt+ZbO5ZkJ+Af0khu5OBikoo63TFkVQA601ICj8SqNTAL/7n59Ytdksgt+uyuEH1l4Wihcj+z44m7FDpG7j48an3KeIQG1nnLMqNkECP1IWrtD/mtCLFsOJHrN9CRC877p+gjeecuo58=
+	t=1712053034; cv=none; b=ZVEAdRng/hO5zmg/nzEENs+Zok/LAOves94lNeeRcbaRlYu0exuWb/xfBnjH9q8Vdim8+MhnzMmBVwiRZvPCtjAjaS40Uo2Wu4gfSxkIP1HLm3hBSsPyFl/ErWKdrfSQ9xyDKjaTiqJv07C9+1IGaD7StOEIOAsK4WK+XITKyxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712051693; c=relaxed/simple;
-	bh=6/N3UP7vL7GHx0qWSgrSlYTnJTOsV6KmnYfX374J4X8=;
+	s=arc-20240116; t=1712053034; c=relaxed/simple;
+	bh=hOYs5mW4aCZuvA7nNKcV/Zz0GepZtVGqvOBxdanCnxA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a45LwoShG6An7n9o2KQ5ppWu8jubql9PqCGDvTGNTOicLfcTe50TKx0XzXWVeFj4aFF5P+dsRsV9EnRuAy23QqNOO6vU1BMX0zoE71EOHRYkceApYpHqFPmEdMZxErHar72E0Uvu5HdGOlcvKnf48MPy8c/EF2axoeMDwxznouc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SYkEkt1j; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kx05Nsyz; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 19A9C20F14;
-	Tue,  2 Apr 2024 09:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1712051690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gBPbUu8Imat77PQrgTuqku3txKkbAPIguPO8wk1Ajv8=;
-	b=SYkEkt1jueEur79OpZhutROwuCwOGZ1UISwoV71W3rj0sh+ELNvbNnEjSJiQA9qToCjGT9
-	9+YNaUm/Pq6deaWOGQMHLmz9CRrCrnPBEo/DSB8cCtwcJxSlXtctA/xcDf9WAfmJ3UduLK
-	YbGSkupVus6H15ZHgrFndSoAvgA1Uy8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1712051690;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gBPbUu8Imat77PQrgTuqku3txKkbAPIguPO8wk1Ajv8=;
-	b=kx05NsyzG1JKkF68ZrIXwukGblpBZQFYN/ieIs2aZyI35HBgA4Vn14g8BV5ijUjlsrJNRH
-	VPzdKU0OJ1JbPeCg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=none
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id BAF6913A90;
-	Tue,  2 Apr 2024 09:54:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id Vqo+LOnVC2b2BgAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Tue, 02 Apr 2024 09:54:49 +0000
-Message-ID: <f1e4e73d-7fe4-435a-b301-c11eaf4e10e6@suse.de>
-Date: Tue, 2 Apr 2024 11:54:49 +0200
+	 In-Reply-To:Content-Type; b=UFQ/6dHMsVGGSLuk21a+BFhp5z4cQ+yNc8QEpQfYHhzCr0y2BhuqDKz2inwNSAzGHRXN5sCLCEv0PS4/yomoVSA8nnv/Eo1diK1/HWXl2o5plfftPFYCQTlacNSaS5jjSk7t3weknmIACXoULWhPZqoRdCqFKptG9ZnSDy+VRxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SxFWYttq; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a46ba938de0so653906666b.3
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 03:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712053030; x=1712657830; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=V2UB5q7PxMg2H8tTWOOwPRrfPhWSL4MfYy9ckYZc/SA=;
+        b=SxFWYttqO41UzZCuK4wHbqeSBzcejIutIzPrvMlPKwU435dO2TdKMbYAOfyUBVuNFA
+         lbBduyc1V21vY67TtZpnXZAWSwZYqU0HZv8R248K2QOCcTxp0w4u7VpN0/ctv29C+Iz+
+         mHCZTI4jmQTCQ3lD8YX+Rf8gCRBW+UsWovmJOrmmSgtOdaIC4kdjAJJjH2f3x831Zqnp
+         USQFuJbcEppIooKEgEXuCt7icDlyu+lArlXDdaRA58Iqi0kjc2HrYj1HLZfI6hTFpH/+
+         VaRPLk5WS75968OYCzPHjI9pbqVk+UVtoi9JE2uHZXvjRmpzWZqe81aQtS9iiMJf+I/X
+         lQww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712053030; x=1712657830;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V2UB5q7PxMg2H8tTWOOwPRrfPhWSL4MfYy9ckYZc/SA=;
+        b=GuCccOncvrVRQ5StvG8eESqo9SMvcpubASqStTc74SYFyjjn5147cn1H8cF8MErRDF
+         Tr8y+K0amlMF+ArpySdKKoeb8vuqOHwjE48nOFn0vpMJvhlYL0GLUh8LpHs34Ri03b8O
+         927r9AIp5avnJLeQwJJQk5wLNn5qeFu+pDzNuG/n5kn3O7BNHkgdUjq5R6XV67NRV9bf
+         QMlLM05UVYumlUGRMfq13roS4nwYiH3NjMlk+vxMNcZub4036pC6sT7+sKmtGd7GZEAk
+         ez7NYK2g6M++0SOIdGMAyTttjrLbi6M3YJFv3MehEjDW2NLIdPVxwcfc010F5VGM68SX
+         KfCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCK8yXhT+YMu4bDhww5Ibp6ccCgSEla3+N2s2mwoGKtdauC+NXYEqVdWsyvsqc9fXmp+nVlfZz9ZQGdpUfaHDeNOQcqeD0
+X-Gm-Message-State: AOJu0YyrtRefY+LEWTwyfhAgufSfR+NHbMkXvCk8FUpg3ug6D7GQS7l5
+	+WbtYx6KP6i3OJpPWNj3o6+CLGhB2kagpeoiFf//alp+WS0sn7d9UU8OTG6TqNxznIEkVynR4/L
+	t
+X-Google-Smtp-Source: AGHT+IEKmmFTDLkXApYk+inK5xfcigqZbWv1DQbz2OicdVZRm1InOl7WCzggrcwdDww32q7oC0gdOg==
+X-Received: by 2002:a17:906:e83:b0:a46:e8dc:5d51 with SMTP id p3-20020a1709060e8300b00a46e8dc5d51mr7581337ejf.25.1712053030416;
+        Tue, 02 Apr 2024 03:17:10 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id d1-20020a1709063ec100b00a4674ad8ab9sm6309187ejj.211.2024.04.02.03.17.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Apr 2024 03:17:09 -0700 (PDT)
+Message-ID: <730ac728-a333-46cc-aa0c-5e922b3c871e@linaro.org>
+Date: Tue, 2 Apr 2024 12:17:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,152 +78,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/ast: Fix soft lockup
-To: =?UTF-8?B?6buD56uL6YqY?= <orbit.huang@gmail.com>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, airlied@redhat.com, airlied@gmail.com, daniel@ffwll.ch,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- Jammy Huang <jammy_huang@aspeedtech.com>, stable@vger.kernel.org
-References: <20240325033515.814-1-jammy_huang@aspeedtech.com>
- <c04ebd16-f0b0-45be-a831-fae8b50b7011@redhat.com>
- <5df1d391-7683-4d9c-accc-9b446d46a150@suse.de>
- <CAOj9kT3=UA-5wkVXb8Rk2h3D=vtZDbhzxe4MY=Nwzod96DeppA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.8 36/98] arm64: dts: sc8280xp: correct DMIC2 and
+ DMIC3 pin config node names
+To: Johan Hovold <johan@kernel.org>, Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Bjorn Andersson <andersson@kernel.org>, konrad.dybcio@linaro.org,
+ robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+References: <20240329123919.3087149-1-sashal@kernel.org>
+ <20240329123919.3087149-36-sashal@kernel.org>
+ <Zguyil0WVwEudPga@hovoldconsulting.com>
 Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <CAOj9kT3=UA-5wkVXb8Rk2h3D=vtZDbhzxe4MY=Nwzod96DeppA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: 2.30
-X-Spam-Flag: NO
-X-Spamd-Bar: ++
-X-Spamd-Result: default: False [2.30 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 TO_DN_SOME(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 MX_GOOD(-0.01)[];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_SEVEN(0.00)[11];
-	 FREEMAIL_TO(0.00)[gmail.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 R_DKIM_NA(2.20)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_MATCH_FROM(0.00)[];
-	 BAYES_HAM(-0.10)[65.09%];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FREEMAIL_CC(0.00)[redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org,aspeedtech.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[];
-	 RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:98:from]
-X-Spam-Level: **
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 19A9C20F14
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <Zguyil0WVwEudPga@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi
-
-Am 01.04.24 um 04:20 schrieb 黃立銘:
-> Hi Thomas and Jocelyn,
->
-> What we do in ast_dp_set_on_off() is a handshake between host driver
-> and bmc-fw to confirm
-> the operation, on/off, is completed.
->
-> We use some scratch registers in bmc to handshake with host. This
-> handshake only work if
-> BMC's scu-lock is opened. If scu-lock is opened too late, then it
-> could lead to this issue.
-
-Thanks a lot. Can you please send a new version of this patch with this 
-information in the commit message? Please also mention why 200 ms is a 
-good upper limit.
-
-The code currently waits and then possibly breaks the loop. Should the 
-if-branch be located before the mdelay() statement to avoid any 
-unnecessary waiting?
-
-Please also send the patch from your Aspeed email address. Our scripts 
-do not accept patches where the sender differs from the Signed-off-by tag.
-
-Best regards
-Thomas
-
->
-> Best regards
-> Jammy
->
-> Thomas Zimmermann <tzimmermann@suse.de> 於 2024年3月28日 週四 上午4:28寫道：
->> Hi
+On 02/04/2024 09:23, Johan Hovold wrote:
+> On Fri, Mar 29, 2024 at 08:37:07AM -0400, Sasha Levin wrote:
+>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 >>
->> Am 27.03.24 um 09:53 schrieb Jocelyn Falempe:
->>> Hi,
->>>
->>> Thanks for your patch.
->>> I'm wondering how you can trigger this infinite loop ?
->> Yeah, a bit more context for this bug would be welcome. It's hard to
->> judge the fix without.
+>> [ Upstream commit 61474b18e762671a69b2df9665f3cec5c87a38af ]
 >>
->> Best regards
->> Thomas
+>> Correct the TLMM pin configuration and muxing node names used for DMIC2
+>> and DMIC3 (dmic01 -> dmic23).  This has no functional impact, but
+>> improves code readability and avoids any confusion when reading the DTS.
 >>
->>> Also this looks like a simple fix, that can be easily backported, so
->>> I'm adding stable in Cc.
->>>
->>> If Thomas has no objections, I can push it to drm-misc-fixes.
->>>
->>> Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
->>>
->>
->>
->> --
->> --
->> Thomas Zimmermann
->> Graphics Driver Developer
->> SUSE Software Solutions Germany GmbH
->> Frankenstrasse 146, 90461 Nuernberg, Germany
->> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
->> HRB 36809 (AG Nuernberg)
->>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> Link: https://lore.kernel.org/r/20240212172335.124845-1-krzysztof.kozlowski@linaro.org
+>> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> This is not a bug fix. Please drop from all stable queues (e.g. 6.8 and
+> 6.6).
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+I should just avoid names "fix" and "correct" :)
+
+Best regards,
+Krzysztof
 
 
