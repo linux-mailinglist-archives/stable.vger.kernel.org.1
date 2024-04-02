@@ -1,102 +1,100 @@
-Return-Path: <stable+bounces-35529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAACB894A52
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 06:12:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F9B894AA7
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 06:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75BD0286749
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 04:12:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 438D8B23DFB
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 04:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A4C1798E;
-	Tue,  2 Apr 2024 04:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4281517C8D;
+	Tue,  2 Apr 2024 04:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkTzWbGD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+6UZRsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FA0168B1;
-	Tue,  2 Apr 2024 04:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5542175A9;
+	Tue,  2 Apr 2024 04:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712031155; cv=none; b=WWGAcXRZBG6WqcYFo/kcCH5a5j/yLX3toKSm3um8JujzmesowbABT1jaxLFhK01MotoXEK7xbLvvHu76aD6qN1DOIV/3AZecCXPoh0DI0AJfkap00rj8z3cUPVcpMSL9VUooBEYkZKaiIyHSZnscbQjhAZI9B3H2FMQIAI//u+c=
+	t=1712033429; cv=none; b=cLGrEkpHuECwOF4l2Z5TwpYFE3uX4ec7wIYHFyHDK/Vsl0UrbuOFBiebK01a91bGMbRXDMyIVFcDP+QLUcCwRBCaTTL8Ou7nqVUOSWYNHtYyowW3diEwUmJA2+UFG4Dw39mn0SDsV0Jorom8/bqCCsue4jIkeZ6wPte8NRWmLtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712031155; c=relaxed/simple;
-	bh=aI3eJF8HniXat2ib1QyBX8zCGp45TAApFBysvadGBQs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=noVgS2SVCt8ST8HcgSW+vNT5yM6YTB2kvMzM5h9Md/Hyi/DhO+2/FLepbpY6osHTfoCDfVwIbX2PRmGxum5CO0NrgUgCWw+l9iiL+/XMMZ4y353fO0rgUexLmXMA7rdI4xD9yAkwUnVUluuuiGqV2AIBWLwRybJW8vH/kDDst3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkTzWbGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672A3C433C7;
-	Tue,  2 Apr 2024 04:12:33 +0000 (UTC)
+	s=arc-20240116; t=1712033429; c=relaxed/simple;
+	bh=nHHWCjMhRh6CPqMNONkTsy8+0GPYXavAgdEu3JRVI/g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FhScFzdgTKhIaE0gcsToFqYJLoklsQcRRpQFy3OW3Sg73ZM6xVuOA1OVCSQ4FD2uHfF/+mafP1ujt5OgbkfE9rYvVsRN6CM5fH4VKp7L1VlL+eVUXCjMLCa7jKebXb8xwmnUhXWFFm+wZIrU4lURX3zF/irRAnhsF53XitxYIdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+6UZRsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 633F5C433C7;
+	Tue,  2 Apr 2024 04:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712031154;
-	bh=aI3eJF8HniXat2ib1QyBX8zCGp45TAApFBysvadGBQs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nkTzWbGDGnmj8/6m7801zLy+B6JjA/ZXpJtp/FkRdEg9tN9IzGfm0CgMNlSQZ95KA
-	 HqxuhIuo0Z8jXpeg7+WS8AqPQMI3opBF15vPciltVh6dp1j4k9FufIgrSaC/5V2kCt
-	 YEPK5SKsvPPG6KBRWKu0WIHe8/jRr1UzS/lOZBFygL9M7mX0OYThU3fLemJ6C6UhXx
-	 eZZxq598IWatnRW/We9rCVsWeiyKs8JcHDpSLnBbSEV5DuEgCQtyF4olFeKEa5c0ou
-	 eYO3Jbd1Y/f6t6QROP/ViG0ZZliYkzMGtNSo1LuXTlS+lLNb7DndsBZc/K6DXHLcv+
-	 82IVNF+FUIJlA==
-Date: Mon, 1 Apr 2024 21:12:32 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>, "linux-hyperv@vger.kernel.org"
- <linux-hyperv@vger.kernel.org>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, Wei Hu <weh@microsoft.com>, stephen
- <stephen@networkplumber.org>, KY Srinivasan <kys@microsoft.com>, Paul
- Rosswurm <paulros@microsoft.com>, "olaf@aepfle.de" <olaf@aepfle.de>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>, "davem@davemloft.net"
- <davem@davemloft.net>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "leon@kernel.org" <leon@kernel.org>, Long Li
- <longli@microsoft.com>, "ssengar@linux.microsoft.com"
- <ssengar@linux.microsoft.com>, "linux-rdma@vger.kernel.org"
- <linux-rdma@vger.kernel.org>, "daniel@iogearbox.net"
- <daniel@iogearbox.net>, "john.fastabend@gmail.com"
- <john.fastabend@gmail.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "ast@kernel.org" <ast@kernel.org>, "sharmaajay@microsoft.com"
- <sharmaajay@microsoft.com>, "hawk@kernel.org" <hawk@kernel.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH net] net: mana: Fix Rx DMA datasize and skb_over_panic
-Message-ID: <20240401211232.57b17081@kernel.org>
-In-Reply-To: <CY5PR21MB37590FD539C1E380FBDC96B0BF3E2@CY5PR21MB3759.namprd21.prod.outlook.com>
-References: <1711748213-30517-1-git-send-email-haiyangz@microsoft.com>
-	<CY5PR21MB375904FD3437BA610E6BDBD1BF392@CY5PR21MB3759.namprd21.prod.outlook.com>
-	<CH2PR21MB1480E02C74E7BB5A52A71859CA3F2@CH2PR21MB1480.namprd21.prod.outlook.com>
-	<CY5PR21MB37590FD539C1E380FBDC96B0BF3E2@CY5PR21MB3759.namprd21.prod.outlook.com>
+	s=k20201202; t=1712033428;
+	bh=nHHWCjMhRh6CPqMNONkTsy8+0GPYXavAgdEu3JRVI/g=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=E+6UZRsFmbiPaSUetiBItB0Zn5fYCxeGL7ZqJHo66GLbawfTMJMqlhqcY/o51dW7X
+	 RMWFrVDRPndjWyYoZytx6AY0ehmXFc+x0Msybhcp5tPWkTrHAwK65C4p05XX3IXLg1
+	 kBTlqaF7+Uzlt1/IrHMjRg4dhN9FZBO6wo8E7rqdypGIiB6Cxc78DVls0GNbWGd83s
+	 z3SJPbujicHzJt+qOA7+CSc+hm3BH9vinZsx2aKh+l1O21llSeO6/Kl0wIt5+BWH2D
+	 syPlTpFXk3AaKzkFrxoCX6+7+9Lb7IY996OZF9QP7AW7eL12FkHSS6n0deWfjvuE8+
+	 nloYTcjBexrjQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 53179D9A158;
+	Tue,  2 Apr 2024 04:50:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/2] mptcp: fix fallback MIB counter and wrong var in
+ selftests
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171203342833.12415.12309302923089138092.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Apr 2024 04:50:28 +0000
+References: <20240329-upstream-net-20240329-fallback-mib-v1-0-324a8981da48@kernel.org>
+In-Reply-To: <20240329-upstream-net-20240329-fallback-mib-v1-0-324a8981da48@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ shuah@kernel.org, fw@strlen.de, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ dcaratti@redhat.com, stable@vger.kernel.org, cpaasch@apple.com,
+ tanggeliang@kylinos.cn
 
-On Tue, 2 Apr 2024 01:23:08 +0000 Dexuan Cui wrote:
-> > > I suggest the Fixes tag should be updated. Otherwise the fix
-> > > looks good to me.  
-> > 
-> > Thanks for the suggestion. I actually thought about this before
-> > submission.
-> > I was worried about someone back ports the jumbo frame feature,
-> > they may not automatically know this patch should be backported
-> > too.   
-> 
-> The jumbo frame commit (2fbbd712baf1) depends on the MTU
-> commit (2fbbd712baf1), so adding "Fixes: 2fbbd712baf1" (
-> instead of "Fixes: ca9c54d2d6a5") might make it easier for people
-> to notice and pick up this fix.
-> 
-> I'm OK if the patch remains as is. Just wanted to make  sure I
-> understand the issue here.
+Hello:
 
-Please update the tag to where the bug was actually first exposed.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 29 Mar 2024 13:08:51 +0100 you wrote:
+> Here are two fixes related to MPTCP.
+> 
+> The first patch fixes when the MPTcpExtMPCapableFallbackACK MIB counter
+> is modified: it should only be incremented when a connection was using
+> MPTCP options, but then a fallback to TCP has been done. This patch also
+> checks the counter is not incremented by mistake during the connect
+> selftests. This counter was wrongly incremented since its introduction
+> in v5.7.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/2] mptcp: don't account accept() of non-MPC client as fallback to TCP
+    https://git.kernel.org/netdev/net/c/7a1b3490f47e
+  - [net,2/2] selftests: mptcp: join: fix dev in check_endpoint
+    https://git.kernel.org/netdev/net/c/40061817d95b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
