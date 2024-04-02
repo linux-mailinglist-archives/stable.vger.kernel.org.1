@@ -1,169 +1,211 @@
-Return-Path: <stable+bounces-35621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64DF89598B
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 18:21:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564CA8959A9
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 18:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6F981C22F58
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 16:21:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D71261F2302E
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 16:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9B414B067;
-	Tue,  2 Apr 2024 16:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855EA13341A;
+	Tue,  2 Apr 2024 16:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="fjs5Fi1C"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HXiiNE5u"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1B614AD1D
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 16:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712074836; cv=none; b=JJJEAPCDiP7f3dnqtAi/tpwkyZCXQpcYnCKp+9uYwk+3Pp4EdIoKtnLN5+DKPPscODjF1pVGF7ee9zqeqg5sNXTYu+Kojj6b8HzH7fDDYF/X3fL+xzr25kCddt1Nk0AHr5XyKw1wyQgHzs3Py9RrFdWP4eIi2w5PmVIPN+2Fd9E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712074836; c=relaxed/simple;
-	bh=nJkbyzDzJu8AbBlxu9MvWWyNm4g05xRBGV7WbEoqo5k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uq0d2Y4ZYq6MJ9nuRhEdQhVZEGBqTACLK6JPpPCDPgPqDh7nH2MSrwakdk5Za6ZDmpAGeqcsdInYtcjAjBpLb1yQhbQPBiFxTOw02nBY0r+ME8lBID5Zhtb98N+e/GhI2XrER4oZM8MvPwS+wBAE4qnVyxfvRGDj+4rtYiRbHRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=fjs5Fi1C; arc=none smtp.client-ip=148.163.147.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 432FWNVQ032359;
-	Tue, 2 Apr 2024 16:20:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pps0720;
- bh=hGhf+lmO4aytr+VvPpt9iQuxaJHC+acbTWmO/AeqEd4=;
- b=fjs5Fi1CYPGYnPi+zoI44sAIGzepNPgRQOcyqLddjaJ599Ajxaz59HzJUrbYM8xrYGY5
- dpuDfKnq0xLxmxY/+mpKF7kung3eWBdZ+3rJBlO2/zqU3CX68/+UlORg7JnDXHYxulIs
- vgMBBH9qXimoQJmiPU0xDALX29jLA/rukXxCULR2HnSxF44jJ/K1y20aS072njpOcSxq
- TdqS8dTq5bdDdBTynfmIu1prwQRtipSnRUk5Cum++WJf/a+xA7dGJD2lH6TEmdgxjVn2
- mlxBbMsU3N2IWaqA5anFIm8yB7YxOQbfcmKTrSOplDPNJP1K9YC05Ty0/7e1JJf1dsAC oA== 
-Received: from p1lg14878.it.hpe.com ([16.230.97.204])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3x8k9m9hc1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Apr 2024 16:20:19 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 250E8137B5;
-	Tue,  2 Apr 2024 16:20:19 +0000 (UTC)
-Received: from dog.eag.rdlabs.hpecorp.net (unknown [16.231.227.36])
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id C44D780A3F0;
-	Tue,  2 Apr 2024 16:20:18 +0000 (UTC)
-Received: by dog.eag.rdlabs.hpecorp.net (Postfix, from userid 200934)
-	id 3F232300009E4; Tue,  2 Apr 2024 11:20:18 -0500 (CDT)
-From: Steve Wahl <steve.wahl@hpe.com>
-To: stable@vger.kernel.org
-Cc: Ingo Molnar <mingo@kernel.org>, Russ Anderson <rja@hpe.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.8.y] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
-Date: Tue,  2 Apr 2024 11:19:37 -0500
-Message-Id: <20240402161936.3110908-1-steve.wahl@hpe.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <2024040116-epidermis-early-a05d@gregkh>
-References: <2024040116-epidermis-early-a05d@gregkh>
-X-Proofpoint-GUID: i4tk4Hv7grWFSbaH0kUAPurr-o6I2HeY
-X-Proofpoint-ORIG-GUID: i4tk4Hv7grWFSbaH0kUAPurr-o6I2HeY
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB0B14B066
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 16:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712075095; cv=fail; b=Gk3aNfagwoiuLtyTgXIOCeg2dgWglRAzkCstF1re8kp9mF1PXkb1BKznTlHWY4BY3MIpr02rXi+xcM7kJs+CSD5nkoX09kyz3DsEiqmzYfaTTYmdMeX009e+l4XDalT1TkBgrs5/NL4gv9kygRV8zuMHWfbvsJQnJhARrvGT7k8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712075095; c=relaxed/simple;
+	bh=kZGMruTuSJ/1LR3iSwDlOKx3OZnR9kPr0/JYPppH6SM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=P+7jeiJ0q7thMgoWwxqTJ/n1FI+fq4wkV7EKY+EfTgEUtzKlfn6thc0CAlwS1KaX0gq+IVnWkHX3qQlzR+0IGGoWib7jDW9tcFKWG3Gti8eZ1dW1UcQVC9mFHytUFvUEQLyXITJb0hAph+5vb0ATmLGTlYOupiHFbjHHEToIlvs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HXiiNE5u; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712075093; x=1743611093;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=kZGMruTuSJ/1LR3iSwDlOKx3OZnR9kPr0/JYPppH6SM=;
+  b=HXiiNE5ubQFsuVb4M16T+hL2DKq7EXga1HpqH/ZUYFlMa8y0Rg8CcwP6
+   Yq6x2hEg7XhJXR4D1555gSkYc2Uq7KDAe4zg3dZAwF1UUcFW7vnALSXGT
+   nDPRyK6SB/h0LKkALjINivLiDIRqwkDEaZOd1Xp5o4B7XybxV+CUd/tRb
+   KslOfb/XZitPnmZkPMPN55Yrrhnz5NcZdSxhUhFMd6GFa+eEdiE6CNlvh
+   dl8L7MWRtwI6UTcGscM+R7U8E7EkzlaMQrvx/H/zCv00LCH9PoxXXMW+u
+   1mvM/LlrfVipDSPoR+L9l6qwiFDp87xCs/YwIqYXAE5eYIJgfiWAJh8HX
+   g==;
+X-CSE-ConnectionGUID: V4Mgz4gLT3Oe5sWXhq32KA==
+X-CSE-MsgGUID: k5QWR69BTTCDUeo8DSPfcw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="18621914"
+X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
+   d="scan'208";a="18621914"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 09:24:52 -0700
+X-CSE-ConnectionGUID: jusmplKQT9SwTMG6jT7H2g==
+X-CSE-MsgGUID: 80HMuDH7S4iNl7YkpN3Tew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
+   d="scan'208";a="22830235"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Apr 2024 09:24:52 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 2 Apr 2024 09:24:51 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 2 Apr 2024 09:24:51 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 2 Apr 2024 09:24:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XtHDT3XjueV2uGWx0JwbSkoA9DbcdQOGv8Tsu0xYg8yfHV0iPLhssY55htoxMToOKZZp9QidBNQXMmWTSUXDfxHU1/Y2urtgwnfR5YgfmrldKDe7GjXq4I4k4+CtGUJjAKaObOQ407x2o7/Eyf6JoxNXoCMwhtpq5DbWysfVYsS1UzwULUsAczttN2t1Uky28P1kToYhwYUYWxbCEqzpLB9qYtwOdkyPC9A9wkIzO62oYeGr/lDTaqWqef++2DA3Q4R4brdHU6xCKAcu2F6DsZgpBc8bdlXB9gGmql+pLeZ8MqXlWS4oK7LH9x4u5zP1AfGOZ16Si6lQlaNWw4sBzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zJMacvYmPnd57vyDAl7ViP4ZXrJz2PEAjv4jnPDpqEc=;
+ b=kSzsEVUy6DRDcUirRXkxHWXUZwvQdsAg1o5vF3uJmtxGmrggkTn6k8tyn1J9M+VHL1OV7/RSsOUlIUlaknR80Hj/E6HfCTxJ4f4xL9m4eYOYzuJx5B74ayA+yNwykOw5XiK4+67tm988egM5JYC/+awVUDu7VnPxTLXfHGPbNTxfz2cBcbr93mlcdbmhcXFZSIXtIHYVFdXyW0ntMTW5TesgVWbgpomnMvd/W/s3zRHiMh//19PZzf+T2ZfYpEfD5Vee15Yw1xnT8l5m9h87V63FpG8S3E8HbC/ShPMTkJbmUrbK3+xUnBi3SwQ3ygmJRxKQFyw32AlGmbPCByFqnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by SA1PR11MB7109.namprd11.prod.outlook.com (2603:10b6:806:2ba::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.21; Tue, 2 Apr
+ 2024 16:24:48 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::e9dd:320:976f:e257]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::e9dd:320:976f:e257%4]) with mapi id 15.20.7452.019; Tue, 2 Apr 2024
+ 16:24:48 +0000
+Date: Tue, 2 Apr 2024 11:24:36 -0500
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+CC: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>, Jouni
+ =?utf-8?B?SMO2Z2FuZGVy?= <jouni.hogander@intel.com>, Luca Coelho
+	<luciano.coelho@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/i915/display: fix display param dup for NULL char *
+ params
+Message-ID: <wujbboih3iscmkadgre3xpur26nt37xeo3grryjgpsefmxwe2t@ovdcfpfe5cbo>
+References: <20240402155534.1788466-1-jani.nikula@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20240402155534.1788466-1-jani.nikula@intel.com>
+X-ClientProxiedBy: BYAPR08CA0003.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::16) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-02_09,2024-04-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- bulkscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
- clxscore=1015 spamscore=0 adultscore=0 suspectscore=0 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2404020120
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|SA1PR11MB7109:EE_
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: VEfDiM0zT+6TgnHtGKvFSuSuRD//UU2gy0/nhHKhIe0clbGnTdPTrJgolW4FewPTC1hZDhN70DXB2GV2VdWzMPqdtDjGyudo9hmagkaTjCf0pApqqjqpwGRpgOVe3ZL3PkNKO7VdRkHZn8TJxzeLnqKavPPhP447vfaAM4hTZEy0WmXCpyy5c4b/9Zd3nRJQG2p4RRWMmcb4s8NJqnFIn/oCse+HvzJ3a3xAuZuMYRbJzpY1H1Wnkud11cfoCMY+JeJzVJgJp+ohInafhjdQBcc3zPWuAh2hrCNnt+5Qe7+xi0gqM2QU6U+hCaScuhZ8Ij31ASavn1j32WMFzdq4N7aAzmVGOGhNO/zYNO+CKmTtpTy0N91AmmI62ak8i0CpQeLTI/4sugJhTwjeyqkOzaGnqZEpr/l5Ll7gkQFc2hutBu/oWWDqlAAgH7DwkHGLmccuwnLHQ/5NI4E0vZ94c+ImYvT91v48rSgouRQJc4oWZNDuqWr5cCuVNibxc0BNqIB1boDYXtC/BVTbcWW92bHKs2DZU6gxn58SIZxm7iY7YwLWN66zu1fEtNV5Dr4m57fPSaQtmzrtQ21nQ3IqdkqEIpo5VRNFPWNGycXVhGc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?JXnWerA6zrZV49ktdN2E5U97MiKqs+/n8M1Q4zdiET9g1Soq2GE3NN9oGZ?=
+ =?iso-8859-1?Q?Ekwt+H9XH29Q784yVBps8HiU3nHzMsZcR05W35pq01M8e12g4iK4Fe0hTj?=
+ =?iso-8859-1?Q?i71ng1MooxOoFmJVV5OBHTPQfuOhaE/pMVzVpcytbS8I17tvICVDfdf7Tv?=
+ =?iso-8859-1?Q?Dh+/2jJaBW140bDTQRCwr8U797/JdpeUqrgvyQtArDmJTOEfRw/mNmdI3U?=
+ =?iso-8859-1?Q?InZsh8+F8E/u5dIhQW5f2HbwIKpZjoQzgmnuwNBdpT+jYIrtdqr3smWcmQ?=
+ =?iso-8859-1?Q?vjri5/d2APAYPZgv+xWK6QcT4+CtObIsBSD61KcqoUUFhllpHFTJppjIJU?=
+ =?iso-8859-1?Q?nJHD1P+FcauPofAx3c1uvw+2kFsHH6CafvphEjL0fWQ/M/I7EXrWskwbuJ?=
+ =?iso-8859-1?Q?J4wJINh6I0QyfevLj2tcn2f9QAGMpH6ZfPBoaPzDwNDtuqySTIxnRiu9VV?=
+ =?iso-8859-1?Q?vycOlBCjikfbmleFXGCcz23kKyq5tG1iEntQv2+VKptbcAuvWPLAKqW7Gd?=
+ =?iso-8859-1?Q?ipJ+UkoWp7ieJMjUq+XRmSptp5pp4PiQnI+v93oVc/9AtNx5jrcy1KmaMY?=
+ =?iso-8859-1?Q?52O6Zhl12FlA4sXbwBO5Z9Y+uzljnaGQlRpJMTMPgUzhvBLaOJYWZkt6Ms?=
+ =?iso-8859-1?Q?4nMX5aREQtuaHNbcdHKlpI5EaZMNa/YziApNe1KOHVVAOZNQJSJAZUrv62?=
+ =?iso-8859-1?Q?vAsUqXzO+/dEyOdXY2nTPKpKQFApkYuxOEgS7yyPHPPbNQWvm+M/GmXllb?=
+ =?iso-8859-1?Q?A6vMwA738CUxG4FmgDaC3eNp+J8naG0ZoNuQP4CCdQXz3UFXd5q4cN08eB?=
+ =?iso-8859-1?Q?NR+0LB/nyI4QzPUcuSLVHn0piC8KWFsGAtD3VRdjV/9tlGfmyaMfMWIytb?=
+ =?iso-8859-1?Q?PQ/pNYnsvFN8zCT/WUQj1U3H6ERfrMaO8T9deumcZ9QUMk2Xg/9bz9eKnZ?=
+ =?iso-8859-1?Q?15ecd/+KlxyjbnevmxWNUueWSnBeks2IQ2JL+9C9bj7XmINzRxZFuN2Th3?=
+ =?iso-8859-1?Q?1Kh3SUUie2kMFte7Hb6HLjQS6TXIcaBm3M4RkdIJ38Qd+QnmjoDREwrfvx?=
+ =?iso-8859-1?Q?Rdirks8DWLD/RDjg+avCubpRafn+ufCgomnCu9ObZ6NxtWW9bLJvCAEin6?=
+ =?iso-8859-1?Q?hbvusi+dxwiSoWphC7op5xY87qheASYjjM8nfnhPYgRu7t5/zGbDWCNOFo?=
+ =?iso-8859-1?Q?ggBRLDLdKEjMdkJ6L2P6GPZEotgc1LRT/3/iPjs1BWlVpOnTVw1NMH01Xx?=
+ =?iso-8859-1?Q?myB5jHjDlcTWq6bzeAiFFbPr6CKf9dQZzu8/PAjg2MBi7vcA8zAQm/MJ1W?=
+ =?iso-8859-1?Q?1QN6oLct/l+98mc4DdmYjx32iPA/1DLDqpWSluhJnCvz8SLOSDK7Kkaxqf?=
+ =?iso-8859-1?Q?782rI6nhwfgmXZogq0QUsgzfoxQnYCq9Uw+1vzXAASdOsX1wvBA4Hl595/?=
+ =?iso-8859-1?Q?/JaP0KOUr6GHwsyflf9LHbhfI1mxJdMjIuVr4ZlsJBcz6+ob6qqmjviB6v?=
+ =?iso-8859-1?Q?i21S9C4HQM3lKCfcTFNG0AXyc17CBHAkx+j0vajB59D1QX5/c2p/Z98rI3?=
+ =?iso-8859-1?Q?5ykD4pxuylZHTsU/F88caw/xOgNIppVRnNQDweAT7zBHrh/XMENYGax8RT?=
+ =?iso-8859-1?Q?FKO9YJcJqhXNFvpi3AackzYiytQQ9tMYCjbtRQaFNpiB0zJVWf7nCJNA?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3742053-fc8b-4f35-cb69-08dc53316a59
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 16:24:48.5081
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xM4PYMU++jm9jIzpDfJJgT9utaDXYxjYD8+zgVk+LKMu4/lf5QtHc0OTxZhnClKokL9oE0bwbiC1OSGSOu2rY1emygPIfY2NLZGvLNedtHk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7109
+X-OriginatorOrg: intel.com
 
-From: Ingo Molnar <mingo@kernel.org>
+On Tue, Apr 02, 2024 at 06:55:34PM +0300, Jani Nikula wrote:
+>The display param duplication deviates from the original param
+>duplication in that it converts NULL params to to allocated empty
+>strings. This works for the vbt_firmware parameter, but not for
+>dmc_firmware_path, the user of which interprets NULL and the empty
+>string as distinct values. Specifically, the empty dmc_firmware_path
+>leads to DMC and PM being disabled.
+>
+>Just remove the NULL check and pass it to kstrdup(), which safely
+>returns NULL for NULL input.
+>
+>Fixes: 8015bee0bfec ("drm/i915/display: Add framework to add parameters specific to display")
+>Fixes: 0d82a0d6f556 ("drm/i915/display: move dmc_firmware_path to display params")
+>Cc: Jouni Högander <jouni.hogander@intel.com>
+>Cc: Luca Coelho <luciano.coelho@intel.com>
+>Cc: <stable@vger.kernel.org> # v6.8+
+>Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-While the original change tries to fix a bug, it also unintentionally broke
-existing systems, see the regressions reported at:
+... but what's the purpose of the duplication?  How one is supposed to
+use the dmc_firmware with e.g. LNL + BMG? Setting it later via debugfs
+doesn´t change the behavior. AFAIR this was done to support multiple
+devices, but I don't think it achieves its purpose or I'm missing
+something.
 
-  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+By leaving a param writable and not duplicate it at all, we are at
+least be allowed to:
 
-Since d794734c9bbf was also marked for -stable, let's back it out before
-causing more damage.
+1) disable autoprobe
+2) load module
+3) bind do LNL
+4) set dmc_firmware param
+5) bind to BMG
 
-Note that due to another upstream change the revert was not 100% automatic:
+Yeah, it's manual and not intuitive, but should only be used by
+developers with targeted debug.  How would we do something like that
+with the current code?
 
-  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
+I know that for params via sysfs, it's impossible to get them back to
+NULL, so I think we should make sure NULL and empty is handled the same
+way. Getting it back to empty is hard enough but at least possible (see
+https://lore.kernel.org/igt-dev/20240228223134.3908035-4-lucas.demarchi@intel.com/),
+but I think this is not the case for debugfs.
 
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Russ Anderson <rja@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-(cherry picked from commit c567f2948f57bdc03ed03403ae0234085f376b7d)
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
----
-
-Thought I'd try and be of help.  The pud_large() / pud_leaf() change
-is what caused the difficulty in reversion.
-
- arch/x86/mm/ident_map.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
-
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index f50cc210a981..968d7005f4a7 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
--		bool use_gbpage;
- 
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
- 
--		/* if this is already a gbpage, this portion is already mapped */
--		if (pud_large(*pud))
--			continue;
--
--		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
--
--		/* Don't use gbpage if it maps more than the requested region. */
--		/* at the begining: */
--		use_gbpage &= ((addr & ~PUD_MASK) == 0);
--		/* ... or at the end: */
--		use_gbpage &= ((next & ~PUD_MASK) == 0);
--
--		/* Never overwrite existing mappings */
--		use_gbpage &= !pud_present(*pud);
--
--		if (use_gbpage) {
-+		if (info->direct_gbpages) {
- 			pud_t pudval;
- 
-+			if (pud_present(*pud))
-+				continue;
-+
-+			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
--- 
-2.26.2
-
+Lucas De Marchi
 
