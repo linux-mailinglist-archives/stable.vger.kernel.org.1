@@ -1,163 +1,222 @@
-Return-Path: <stable+bounces-35635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B04895B67
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 20:07:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75968895B74
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 20:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFD861F23CCE
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 18:07:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022741F222D4
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 18:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B29115AACD;
-	Tue,  2 Apr 2024 18:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1DD60264;
+	Tue,  2 Apr 2024 18:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="nD9wU31h"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="pE7oSw9m";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Yk7NveVb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.142])
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7EF15A48E
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 18:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBEC15AAC4;
+	Tue,  2 Apr 2024 18:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712081259; cv=none; b=LbVmfanOL530+kDUw5VdC2Vs3fKhxa2tu1V+8LmP34UvOD3fqjcZDDcj6lf76x6LK1yjM12RUx3sIUPzHLV6E/Kvwc7gKG8Gd8gMCYJ508lDCYa4hUozUNIwnJjN+p9//Ce+4aPJC0LkTRgScSp3+otSS1ZbQT39YThdfWka3+g=
+	t=1712081364; cv=none; b=udPV8xG+J5D4jL4eNsjTiMgS1lcGu7mKRtW84Gid0j8PHipAZdmCPnXGTkX/JpINi0KL23n2CP+54YbPLf5wYX3Jx03PQt6Hyd5xIqv+Zytza+nZDijTXENZ4vYF/v1SDRXA4n2PDmjLOvgx4SAmCiuROFwczv3dBS5FHJceJR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712081259; c=relaxed/simple;
-	bh=YF9mt1xPV6SmzGUDBnOuK+ideXdolwq66JBggwvRZdg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DX/+I/Znmi2i18wdDWc29mCv2ncBS3uSBJc1kbSLft+1Bb3cZBqHtjhrBgnWZhXgsk67uJjXLOAwauiODXaeZ66Gl5nUAyoCPUtzEREyNuyPc9+e4bpsCVVT/S9cijlHHC1MxSxg18acp67D7aO6lJOdO5oVTwcxqVcbjvmKWqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=nD9wU31h; arc=none smtp.client-ip=193.222.135.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 15848 invoked from network); 2 Apr 2024 20:00:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1712080854; bh=UlyImwIdJiZpMK2AIxHwKQ2iFbqI6fAJrztUDQKXru4=;
-          h=Subject:To:Cc:From;
-          b=nD9wU31h+/iVlA/VP3F5BiX+3/Z7uAFPwHiayzV6CqenSbJ5pNbNksoK1oAjUj9Ay
-           s4BUNbXf6tS6/wXLJO8s2pTxLAiuzCQObeIdkyGD54XHewxvIJeszFbW0NKkzCSGS7
-           +UoPwU88HACXo9ZPhJ5X1BpSHlMsOY+nl92EEIeE=
-Received: from aaer216.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.121.216])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <gregkh@linuxfoundation.org>; 2 Apr 2024 20:00:54 +0200
-Message-ID: <e643104e-b394-4be0-b0e8-b892d42b543f@o2.pl>
-Date: Tue, 2 Apr 2024 20:00:52 +0200
+	s=arc-20240116; t=1712081364; c=relaxed/simple;
+	bh=eSF486bhbpd75a/BWfmuqOapsioPFBXp/oMUvs4USyM=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=uuKxSRzp2km2KAY/FBn64b07V7B9vi+GXQFW60F2GxJWPKjk9EZOXcoobMW0V7Y6cp6UZ7qxUOaAoPuWvKIZZEylMogDtKk6ar3yqk4Klcf9wy2GFSFdUuAyCCP2WFvZIEu4+1d1nTJCZrUDuK05TbtDPTCt0Ivy7looZ2u1gNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=pE7oSw9m; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Yk7NveVb; arc=none smtp.client-ip=66.111.4.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.nyi.internal (Postfix) with ESMTP id C95E55C00A5;
+	Tue,  2 Apr 2024 14:09:20 -0400 (EDT)
+Received: from imap52 ([10.202.2.102])
+  by compute3.internal (MEProxy); Tue, 02 Apr 2024 14:09:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1712081360; x=1712167760; bh=HabFGBn5xo
+	ej8VapqUlPZ+A61A4Kk7VPro0ZHdOSHkc=; b=pE7oSw9mhFlmf6L/KPPzI95g/k
+	empRXXg7iLP0+rQk4lMg6xReZSFygYHC2DqcrRW8DNCxmFXtsnxu15XEeR/D45Y3
+	tCIR+Xns+uT9y2+RkFouaq5MID7fyCNc1a3yKr8UnG54aTcMmVb0fgKI1/mrjDhu
+	hzIzUhVKf0BdUvhbA7R8v7On9eRE5OYYcMFTaB0e7NvyKDLTFRj/ko16jCWgB9HL
+	ez6Ki7KDNP+WU6aauY9lGp63ynX4E+TtBOx4ULRkucamjFoELQH3eLJ9448CC/+h
+	pQG34k0Ph/KwVb+poICIvZR7WEMU+uvUPHmQEULpwujvCb+1xZU5Di9Ab2EA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1712081360; x=1712167760; bh=HabFGBn5xoej8VapqUlPZ+A61A4K
+	k7VPro0ZHdOSHkc=; b=Yk7NveVb2BNjUyC2U2akg9LF/2XIpMuQi78sIRwBLTUb
+	h6wU8xkDqnCB9p0JDN4qdSwosRIDk1GJpEV8Lzapf1H3nr2GPQfKqbSZn/DOCU5c
+	RD1HSceqUA4yS+sCFfG8ysiNNO6aGdPjaBBUMLOiXtcjVxYR0qvRyAAUKs31mAe/
+	uKYpFef1T1CL0eiOWnjKfLl3oVxJFjIdfO6Tohw2XrUg9qVeP97XKlvArMvoBUXN
+	dPtVIce4APBmYbWfcMG5zQT6om1tNzDvBq7EHW7yomRiaQJQ5qld/Vn5l0QmIneD
+	bZ6aJkhacuO4Qml5Y0gdMwpZwxbq5Et7BWwJa13g6Q==
+X-ME-Sender: <xms:z0kMZnzWbEChQt7X6W8a4B44PFxThYGb8jJHDKcYFit_p8IRocje-g>
+    <xme:z0kMZvTWUMHtNsl-em80VRghsPIo6wPkHSSpHQHkh6OHS5K7AG4VVRxxTZfo8vsQv
+    YaUgpYOIJ-y5H4FQQY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudefvddguddvvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdfo
+    rghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnsehsqhhuvggssgdrtggrqeenuc
+    ggtffrrghtthgvrhhnpedtieethfdvudffhedvhfduveeluddukeduffehgeduieehtdeh
+    gedvueelhfetgeenucffohhmrghinhepmhhitghrohhsohhfthdrtghomhdprhgvughhrg
+    htrdgtohhmpdhkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpehmphgvrghrshhonhesshhquhgvsggsrdgtrg
+X-ME-Proxy: <xmx:z0kMZhUW26ilRsf2byQwgWu-_n1qiKwG0CogwsUsNHyXF2T12_60fw>
+    <xmx:z0kMZhixXpEG707aLN51M9wrHb1rLCIKO7BhC7ukWlqYhan5T16nhg>
+    <xmx:z0kMZpC70EasxqEBF0WkznTjYf3WP-pv84xvVxFSK-8LV1i2rtk4_w>
+    <xmx:z0kMZqLYCflC36jaFNBIpJsGmm8lHe92pQx6WrdQ_qJzrb9aRFjikw>
+    <xmx:0EkMZrwWiSH7_eOukuO52w9SIMhihZwgfR2LJOOQ80QgL16HDqj4z4lmusgn>
+Feedback-ID: ic2b14614:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 8D54AC60097; Tue,  2 Apr 2024 14:09:19 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-333-gbfea15422e-fm-20240327.001-gbfea1542
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/272] 6.1.84-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240401152530.237785232@linuxfoundation.org>
-Content-Language: en-GB
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
- 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
- TANkZ3QqXNX2
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: 851a5b2856e545195fd35fbc0daddf9c
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [wVM0]                               
+Message-Id: <e941980b-5efb-4ba7-aaf9-f0ed694fb39d@app.fastmail.com>
+In-Reply-To: <20240402111004.161434-1-hdegoede@redhat.com>
+References: <20240402111004.161434-1-hdegoede@redhat.com>
+Date: Tue, 02 Apr 2024 14:09:32 -0400
+From: "Mark Pearson" <mpearson@squebb.ca>
+To: "Hans de Goede" <hdegoede@redhat.com>, "Jiri Kosina" <jikos@kernel.org>,
+ "Benjamin Tissoires" <benjamin.tissoires@redhat.com>,
+ "Kenny Levinsen" <kl@kl.wtf>
+Cc: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>,
+ "Douglas Anderson" <dianders@chromium.org>, "Julian Sax" <jsbc@gmx.de>,
+ ahormann@gmx.net, "Bruno Jesus" <bruno.fl.jesus@gmail.com>,
+ Dietrich <enaut.w@googlemail.com>, kloxdami@yahoo.com,
+ "Tim Aldridge" <taldridge@mac.com>,
+ "Rene Wagner" <redhatbugzilla@callerid.de>,
+ "Federico Ricchiuto" <fed.ricchiuto@gmail.com>, linux-input@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v3] HID: i2c-hid: Revert to await reset ACK before reading report
+ descriptor
+Content-Type: text/plain
 
-W dniu 1.04.2024 o 17:43, Greg Kroah-Hartman pisze:
-> This is the start of the stable review cycle for the 6.1.84 release.
-> There are 272 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Apr 2, 2024, at 7:10 AM, Hans de Goede wrote:
+> From: Kenny Levinsen <kl@kl.wtf>
 >
-> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
-> Anything received after that time might be too late.
+> In af93a167eda9, i2c_hid_parse was changed to continue with reading the
+> report descriptor before waiting for reset to be acknowledged.
 >
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.84-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> This has lead to two regressions:
 >
-> thanks,
+> 1. We fail to handle reset acknowledgment if it happens while reading
+>    the report descriptor. The transfer sets I2C_HID_READ_PENDING, which
+>    causes the IRQ handler to return without doing anything.
 >
-> greg k-h
-Hello,
+>    This affects both a Wacom touchscreen and a Sensel touchpad.
+>
+> 2. On a Sensel touchpad, reading the report descriptor this quickly
+>    after reset results in all zeroes or partial zeroes.
+>
+> The issues were observed on the Lenovo Thinkpad Z16 Gen 2.
+>
+> The change in question was made based on a Microsoft article[0] stating
+> that Windows 8 *may* read the report descriptor in parallel with
+> awaiting reset acknowledgment, intended as a slight reset performance
+> optimization. Perhaps they only do this if reset is not completing
+> quickly enough for their tastes?
+>
+> As the code is not currently ready to read registers in parallel with a
+> pending reset acknowledgment, and as reading quickly breaks the report
+> descriptor on the Sensel touchpad, revert to waiting for reset
+> acknowledgment before proceeding to read the report descriptor.
+>
+> [0]: 
+> https://learn.microsoft.com/en-us/windows-hardware/drivers/hid/plug-and-play-support-and-power-management
+>
+> Fixes: af93a167eda9 ("HID: i2c-hid: Move i2c_hid_finish_hwreset() to 
+> after reading the report-descriptor")
+> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2271136
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kenny Levinsen <kl@kl.wtf>
+> Link: https://lore.kernel.org/r/20240331182440.14477-1-kl@kl.wtf
+> [hdegoede@redhat.com Drop no longer necessary abort_reset error exit 
+> path]
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/hid/i2c-hid/i2c-hid-core.c | 29 ++++++++---------------------
+>  1 file changed, 8 insertions(+), 21 deletions(-)
+>
+> diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c 
+> b/drivers/hid/i2c-hid/i2c-hid-core.c
+> index 2df1ab3c31cc..13d67d7c67b4 100644
+> --- a/drivers/hid/i2c-hid/i2c-hid-core.c
+> +++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+> @@ -735,12 +735,15 @@ static int i2c_hid_parse(struct hid_device *hid)
+>  	mutex_lock(&ihid->reset_lock);
+>  	do {
+>  		ret = i2c_hid_start_hwreset(ihid);
+> -		if (ret)
+> +		if (ret == 0)
+> +			ret = i2c_hid_finish_hwreset(ihid);
+> +		else
+>  			msleep(1000);
+>  	} while (tries-- > 0 && ret);
+> +	mutex_unlock(&ihid->reset_lock);
+> 
+>  	if (ret)
+> -		goto abort_reset;
+> +		return ret;
+> 
+>  	use_override = i2c_hid_get_dmi_hid_report_desc_override(client->name,
+>  								&rsize);
+> @@ -750,11 +753,8 @@ static int i2c_hid_parse(struct hid_device *hid)
+>  		i2c_hid_dbg(ihid, "Using a HID report descriptor override\n");
+>  	} else {
+>  		rdesc = kzalloc(rsize, GFP_KERNEL);
+> -
+> -		if (!rdesc) {
+> -			ret = -ENOMEM;
+> -			goto abort_reset;
+> -		}
+> +		if (!rdesc)
+> +			return -ENOMEM;
+> 
+>  		i2c_hid_dbg(ihid, "asking HID report descriptor\n");
+> 
+> @@ -763,23 +763,10 @@ static int i2c_hid_parse(struct hid_device *hid)
+>  					    rdesc, rsize);
+>  		if (ret) {
+>  			hid_err(hid, "reading report descriptor failed\n");
+> -			goto abort_reset;
+> +			goto out;
+>  		}
+>  	}
+> 
+> -	/*
+> -	 * Windows directly reads the report-descriptor after sending reset
+> -	 * and then waits for resets completion afterwards. Some touchpads
+> -	 * actually wait for the report-descriptor to be read before signalling
+> -	 * reset completion.
+> -	 */
+> -	ret = i2c_hid_finish_hwreset(ihid);
+> -abort_reset:
+> -	clear_bit(I2C_HID_RESET_PENDING, &ihid->flags);
+> -	mutex_unlock(&ihid->reset_lock);
+> -	if (ret)
+> -		goto out;
+> -
+>  	i2c_hid_dbg(ihid, "Report Descriptor: %*ph\n", rsize, rdesc);
+> 
+>  	ret = hid_parse_report(hid, rdesc, rsize);
 
-Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
+Tested on my Z13 G2 system and confirmed this fixes the issue.
 
-Stack:
-- amd64,
-- ext4 on top of LVM on top of LUKS on top of mdraid on top of
-  NVMe and SATA drives (the SATA drive in the write-mostly mode).
-
-Tested (lightly):
-- suspend to RAM,
-- suspend to disk,
-- GPU (Intel HD Graphics 620, with an old game on Wine and ~3 Unigine benchmarks)
-- WiFi (Realtek RTL8822BE),
-- Bluetooth (Realtek RTL8822BE),
-- PCI soundcard (Intel HD Audio),
-- USB soundcard (Logitech Pro X),
-- webcam,
-
-Filesystems tested very lightly (mounting, listing and opening files):
-- NFS,
-- exFAT
-- vfat,
-- NTFS via FUSE
-
-Nitpicks:
-- I got the following error in dmesg from Bluetooth after resume from suspend:
-    [ 4058.056834] usb 1-3: 1:1: cannot get freq at ep 0x81
-
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-
-Greetings,
-
-Mateusz
-
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
 
