@@ -1,179 +1,128 @@
-Return-Path: <stable+bounces-35560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A2B894CFF
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 09:55:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1DD894D21
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 10:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87C08B21FCF
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 07:55:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5186128306A
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 08:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073AA3D0A9;
-	Tue,  2 Apr 2024 07:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60E43D3BD;
+	Tue,  2 Apr 2024 08:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KJP5E1EK"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4352E3D0D9
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 07:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456943D3BE;
+	Tue,  2 Apr 2024 08:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712044527; cv=none; b=XM4kgqKvliAQSEB9jCUP/HNRIupZxpbi5Cja7+dfqguJ/cwlnASqHPUMPOoGoG8Nk1NQJE9Xk/QGTkqQ80C71cYEJibnHPOqHHEvC4b38RnHou/0caL2WufVSyx9PdH2tqun2kqKkuvS9DntcIhlqzjpAX9hbPeznbdSdzXhmxk=
+	t=1712045183; cv=none; b=ARd3JKforE5I/OD8QXwWRzPvnzbWQQaRm4hiLfwaJEFpGSry+kubRUpXYfVuSOMGWS+GNKsZJ3t3Uc5MCQDbiw0/hSI9eROOHR6KHmX9RPUf49S9AFkJXLEg70oug5M+utT5vSvyDjPlG+MDd4FC3v4Cd8sydOL39xaO5ZKDvgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712044527; c=relaxed/simple;
-	bh=vrjkzzyRlmXPlrs/YQ3qsMgAm5d/QF+iFNqts+rjI5Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YXsmm33zL5d2l6AerHCrtw8Gpb5ZJBgssmvYmhtzwxVdy09fOu+bg2WCPNzENgpvenAe9exMiQzke7yEhXygDIl1gVdTXiW4qryQielneiKWF7D3nYYdzUZS95RRXB6xI3nkLruWB5wz1y5H3F4FSyLPNrBCs+Ur9570eksd1os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C160F1042;
-	Tue,  2 Apr 2024 00:55:57 -0700 (PDT)
-Received: from [10.57.73.65] (unknown [10.57.73.65])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 246C93F64C;
-	Tue,  2 Apr 2024 00:55:24 -0700 (PDT)
-Message-ID: <6009297b-bb22-41a9-b337-a597fcec54d7@arm.com>
-Date: Tue, 2 Apr 2024 08:55:22 +0100
+	s=arc-20240116; t=1712045183; c=relaxed/simple;
+	bh=kJgQirTI1I953hqjFcUemxh/SZX8R5I6aDYfAnAz6fo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PyFYCJ3WfLlI+giD1svpbhJojCW2AiWV6/lKR8pKEeqwu/4s7l8wDOP+zoo2AUD+sMzcqXtbXAk6CSa2cukmWnodQbMbFTLra6TJSkbK9Z8n9iZg5PtihvLZIwfTQk/es4GJghws8UMqKrjmtHDmNcEeQyCDEuhbTEywxTqDskQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KJP5E1EK; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3c4f55a1bd6so158095b6e.0;
+        Tue, 02 Apr 2024 01:06:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712045181; x=1712649981; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DPHs2hPWTLntkIggErFbbhASWchhF98xlAmk0EF4jpQ=;
+        b=KJP5E1EKaBsJLMbYoQTSCiIwNUnuPFSlLQswwAhdi+txcJ4rlu/qCuYSP9tU3+VpKE
+         dm0R6pxieEn0bEQ735eaqf2ZW2RmrHCadsq4ry6NQUGu2QRzl7nGxH78Aja/hCm6bcqp
+         yC9cHaOMG1OS/V9pgBQlRTGvkgJ9Ex/+XwdLOgKvHLhHb/EqGkRLbdUU5xCyKTHfvJfA
+         MKjKa9VlAWWeREk3oeDk9uqBURqQ2OVGOcG5Ih4p0lVgvNRh5OuP/oBo+ANo7dReIL7+
+         /jHevvNpgA5SEqpYHIesElV+u9EpKiuOHLRi63NbI7uJr2EJTXixkHKMDO+knAph7AnN
+         okGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712045181; x=1712649981;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DPHs2hPWTLntkIggErFbbhASWchhF98xlAmk0EF4jpQ=;
+        b=GdNwYWw+5xNSfJHMfdUn/bmGHO6d0aNz7TZn7A7svaMFYCVi/xL7BKDXfCaSdE+UbW
+         y/WPnhofQfaLkmeqt+FoMlvvRBY31my9n/eHXWtr4cyMqOZRodEZxH1MfNSd8yIC/EcP
+         deH/MuIyo7SXgrOBckV8/MoZ+3ajX8gtl+ueHc2eNWrmu2gJIsabOV4AreRtyP8Io/B5
+         FVhWlsgjOPAIv/yg4VDSsUc9kMkX0wcDDDPr63/Hox58bxkNirkpG2eTtvyJdCukK5F2
+         HrBzWn3Q6KyaHdhA9pIY9WtUNKB5dx3k0x6YM6nTWGJRhNMEF5W97GcsIOtwqFIXXOfz
+         nclw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwpsDPPk2OVNSH/fsipLgpukIVeW394Uq2fzqj214IBTPtLQDj2MtK5AqwONMnHwQsCG5wvfjkjz2esA0ZRxlZgTmvO3GpbtMxTevhgKASZB0eF/ysGVkeac94ix0dLphkEo37
+X-Gm-Message-State: AOJu0YyYKFWgR1BhDThmnrfBhhqvE0z5/7wU4wudPgkbA0QKmDI0kDZL
+	bG9eiXRoUBXFl8I2k6fDQYh3Rf/Lq0U4cKyTZOeu44r7xdpXBEwp
+X-Google-Smtp-Source: AGHT+IGqmSpF0yhkNZdjEM3dvk67w/vLKdWfjypi6wQ2vQ2Fo/gMkH29noVnqfITEUtTUNfT1+Wpeg==
+X-Received: by 2002:a05:6870:a19e:b0:221:bcde:29cc with SMTP id a30-20020a056870a19e00b00221bcde29ccmr14025852oaf.21.1712045181208;
+        Tue, 02 Apr 2024 01:06:21 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id j23-20020a62e917000000b006eae33e2ad0sm7713803pfh.30.2024.04.02.01.06.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Apr 2024 01:06:20 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 1A302184797C2; Tue,  2 Apr 2024 15:06:17 +0700 (WIB)
+Date: Tue, 2 Apr 2024 15:06:17 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.7 000/432] 6.7.12-rc1 review
+Message-ID: <Zgu8eRIe-8V4EFu2@archie.me>
+References: <20240401152553.125349965@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.8 116/399] mm: swap: fix race between
- free_swap_and_cache() and swapoff()
-Content-Language: en-GB
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
- "Huang, Ying" <ying.huang@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>
-References: <20240401152549.131030308@linuxfoundation.org>
- <20240401152552.653009386@linuxfoundation.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20240401152552.653009386@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="XFKL76haxz2xDr+I"
+Content-Disposition: inline
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
 
-On 01/04/2024 16:41, Greg Kroah-Hartman wrote:
-> 6.8-stable review patch.  If anyone has any objections, please let me know.
 
-LGTM!
+--XFKL76haxz2xDr+I
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> ------------------
-> 
-> From: Ryan Roberts <ryan.roberts@arm.com>
-> 
-> [ Upstream commit 82b1c07a0af603e3c47b906c8e991dc96f01688e ]
-> 
-> There was previously a theoretical window where swapoff() could run and
-> teardown a swap_info_struct while a call to free_swap_and_cache() was
-> running in another thread.  This could cause, amongst other bad
-> possibilities, swap_page_trans_huge_swapped() (called by
-> free_swap_and_cache()) to access the freed memory for swap_map.
-> 
-> This is a theoretical problem and I haven't been able to provoke it from a
-> test case.  But there has been agreement based on code review that this is
-> possible (see link below).
-> 
-> Fix it by using get_swap_device()/put_swap_device(), which will stall
-> swapoff().  There was an extra check in _swap_info_get() to confirm that
-> the swap entry was not free.  This isn't present in get_swap_device()
-> because it doesn't make sense in general due to the race between getting
-> the reference and swapoff.  So I've added an equivalent check directly in
-> free_swap_and_cache().
-> 
-> Details of how to provoke one possible issue (thanks to David Hildenbrand
-> for deriving this):
-> 
-> --8<-----
-> 
-> __swap_entry_free() might be the last user and result in
-> "count == SWAP_HAS_CACHE".
-> 
-> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
-> 
-> So the question is: could someone reclaim the folio and turn
-> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
-> 
-> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
-> still references by swap entries.
-> 
-> Process 1 still references subpage 0 via swap entry.
-> Process 2 still references subpage 1 via swap entry.
-> 
-> Process 1 quits. Calls free_swap_and_cache().
-> -> count == SWAP_HAS_CACHE
-> [then, preempted in the hypervisor etc.]
-> 
-> Process 2 quits. Calls free_swap_and_cache().
-> -> count == SWAP_HAS_CACHE
-> 
-> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
-> __try_to_reclaim_swap().
-> 
-> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
-> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
-> swap_entry_free()->swap_range_free()->
-> ...
-> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
-> 
-> What stops swapoff to succeed after process 2 reclaimed the swap cache
-> but before process1 finished its call to swap_page_trans_huge_swapped()?
-> 
-> --8<-----
-> 
-> Link: https://lkml.kernel.org/r/20240306140356.3974886-1-ryan.roberts@arm.com
-> Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
-> Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: "Huang, Ying" <ying.huang@intel.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  mm/swapfile.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 746aa9da53025..6fe0cc25535f5 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1227,6 +1227,11 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
->   * with get_swap_device() and put_swap_device(), unless the swap
->   * functions call get/put_swap_device() by themselves.
->   *
-> + * Note that when only holding the PTL, swapoff might succeed immediately
-> + * after freeing a swap entry. Therefore, immediately after
-> + * __swap_entry_free(), the swap info might become stale and should not
-> + * be touched without a prior get_swap_device().
-> + *
->   * Check whether swap entry is valid in the swap device.  If so,
->   * return pointer to swap_info_struct, and keep the swap entry valid
->   * via preventing the swap device from being swapoff, until
-> @@ -1604,13 +1609,19 @@ int free_swap_and_cache(swp_entry_t entry)
->  	if (non_swap_entry(entry))
->  		return 1;
->  
-> -	p = _swap_info_get(entry);
-> +	p = get_swap_device(entry);
->  	if (p) {
-> +		if (WARN_ON(data_race(!p->swap_map[swp_offset(entry)]))) {
-> +			put_swap_device(p);
-> +			return 0;
-> +		}
-> +
->  		count = __swap_entry_free(p, entry);
->  		if (count == SWAP_HAS_CACHE &&
->  		    !swap_page_trans_huge_swapped(p, entry))
->  			__try_to_reclaim_swap(p, swp_offset(entry),
->  					      TTRS_UNMAPPED | TTRS_FULL);
-> +		put_swap_device(p);
->  	}
->  	return p != NULL;
->  }
+On Mon, Apr 01, 2024 at 05:39:47PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.12 release.
+> There are 432 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--XFKL76haxz2xDr+I
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZgu8dQAKCRD2uYlJVVFO
+o0vEAQDaf16bnXQX8ruA/3MxP04Imds1t7wRYp4OW4lxH0a78gEA8ClknHqRVh5O
+SShmSC4erOY/HEUqZ/IpxgcpZj1tTg8=
+=ypa4
+-----END PGP SIGNATURE-----
+
+--XFKL76haxz2xDr+I--
 
