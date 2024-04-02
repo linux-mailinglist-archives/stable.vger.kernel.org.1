@@ -1,156 +1,139 @@
-Return-Path: <stable+bounces-35598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E01895212
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08456895225
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74BF6B23C6A
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:42:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 687F3B24EDB
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 11:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2586996A;
-	Tue,  2 Apr 2024 11:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882A06995D;
+	Tue,  2 Apr 2024 11:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="vyQAQvjz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keTjQP/T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD981EA8D
-	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 11:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0B71EA8D;
+	Tue,  2 Apr 2024 11:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712058130; cv=none; b=c1cGn0y4/QFBo5Lx5+mE/04lOFh8oAqX4UhVWf3psHMhktMQldOdD9YnOLfxwqL7L4frBrZrbL9RLapkTsEaIZmCsuCMEm+4z7uUhpmF5sKEF41UPGiHHlwFqxh9v1EUUwpGyqN7rNXzTDMyFug7V0e00yYDmLo4oD4xAlCV6/k=
+	t=1712058257; cv=none; b=fGzAEjT/u+RPHqPBMtIEY7Ee7iriLqe/fFkjtjPmFTfufx119PIRXsIAZSoqgb5CHkkUMs+HrMJHYf4790+/80RjQexYqp3xh30yKuc6eiIZQG/Vlh4QCJxlUCr0xK3wipuj76jcnhSEXFHZSbgbHzYtUDFwTWDeL3tbTyv924k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712058130; c=relaxed/simple;
-	bh=4JZgCjJUm3vYm3YzQEvW4qxgetUWkPZYeaBKSxKI9SM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jQJDOg9XOfiD7fpwdZbbVkKpF2zDd5d+glqjUU9E0ENJEaY43vpcdpA6RwPtCSJ5Hp4LK5LWLjaSX2mA0KUhrcih9wfCsAvWZ00KPD4PIYRTjYaVxdb9zDZ7CKYM8aAm7MPa9qoRQhUOLxcd9R4+xo1tfdUHA5SrYr3dp0Qgj5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=vyQAQvjz; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4156a29ff70so10063595e9.3
-        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 04:42:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1712058126; x=1712662926; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yCosdLqhfQl3fw66HOWtcsInpfXJnB5cNYDVDMw2WSI=;
-        b=vyQAQvjzOhcZjIoQSb1pJBJp69T77RkzVbCP00fi8WzG5mesmSSpnQxzJIPFxGYIc3
-         ZISCC73UIp2+N4SXjS+ad20mTTf908vECJLCTe5oJaIy8yRx7Gpq8c7lGsrVSn8SLK+a
-         9rOmvaYkBZfue7WphAw+4PvN9MR8MVdl+eaiqc0sMsT1aqcZz7FMDYKtOOJtUBlFV4CN
-         QiYsQpoEwcyOJAbeGGFEAymLUvyxoc1CEsFcqMXIi5nB22vnXXOJXHCEW23IIY3bz95u
-         iAsCn3DkJRmI6uUi4ZZiWnPwRV5JPgk+eSP6YaKM+jFvUixvYpBX0+OHKzaG9+tBCT6u
-         bNvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712058126; x=1712662926;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yCosdLqhfQl3fw66HOWtcsInpfXJnB5cNYDVDMw2WSI=;
-        b=DXWwz+qWaTpiZCGD1A38Mrm8yC9bMr2EDkMsVL8r5ZcwgqNFj7oSsGHfZdj+cgw+fc
-         1CKVGOnMXiUBsDS1UdxbOtjGCL9h70jczBCOAZRgflBoElBjZxhbF1ho1qhEEczl2Ocw
-         yYCpZJPkArldWmUelBNiMplFvxOdlsxBMh1I1UGiR+juLnI0r0ftUHHY4RjkXucpbENL
-         3x6H5t6aRw6UE2dZLGwsLvL5GlzCOcqwIqzO3lqNi4YYYAuvm4YSeVVgd2hJIgfYFd3w
-         VIZay4kHf8yVkEyR1TzlFwSuKyoPZl3vbGOqjjdHQXS9XHZvBBAlfauqozyaSxBbf26+
-         4R7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWxFjonUnW/aLwjxRhNB04sbn71Rp1L9eCGbzoNUWHV73GLNbXxr6acN4CJwyAvrSr5aNkd83tlZocwl6OuYGM/Mlm8lXJL
-X-Gm-Message-State: AOJu0Yx9pRdchEXKN0fT1bdxE0IXAZB6V5NTPubLKnWJwI2lKbD4wXXe
-	KNUSqmxUh1P3AINxWRxluFvwYqLq4Nzm555g0hvy8ZSzfecofdS1MwpBf/1pOtk=
-X-Google-Smtp-Source: AGHT+IFXB2QwBRnINWQare9T4ey+AHwU7Qtcx5TtMce6E0RHGApROYLfjdwlFyKGfSKX+HUQkjSu0A==
-X-Received: by 2002:a05:600c:35d5:b0:414:1363:539f with SMTP id r21-20020a05600c35d500b004141363539fmr9360988wmq.8.1712058125519;
-        Tue, 02 Apr 2024 04:42:05 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:75a:e000:d26c:f9fe:8de3:38f5])
-        by smtp.gmail.com with ESMTPSA id je14-20020a05600c1f8e00b00414887d9329sm17631524wmb.46.2024.04.02.04.42.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Apr 2024 04:42:05 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Kent Gibson <warthog618@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	stable@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>
-Subject: [PATCH] gpio: cdev: check for NULL labels when sanitizing them for irqs
-Date: Tue,  2 Apr 2024 13:41:59 +0200
-Message-Id: <20240402114159.32920-1-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1712058257; c=relaxed/simple;
+	bh=DpQ1x3R3SARZhczID3H+l6QkUcoWZQNWBI3Aop4zjd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sr5tSKqmxPUA1RAqyWbDvhscOD2twTAjnVq/+8RToSiAMraj0O71OcosxA6/dEVZIDgErECUu3/27D06CddbVaWTC2Huvwh48SzJ0QLe3Skc2EFYFxhIjPWDprHpFFBHHrczQH2n6uk9P8OYyK8Dwu7qzS7qKT89tyytpsjWbn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keTjQP/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A7EC43390;
+	Tue,  2 Apr 2024 11:44:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712058256;
+	bh=DpQ1x3R3SARZhczID3H+l6QkUcoWZQNWBI3Aop4zjd4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=keTjQP/TuNEFmuDJ/ndqUWVWzKYfOvgfFKfqNN1VFR3mFZpD/bcMF19oRva66l40J
+	 TP/WZx/xGTr8svgzpHSpdKh5uRIaL6B1pdxeAPF1TKw+E7yTlclI8Iukm0ycrapwyk
+	 tHj9SQQbNxN8roAmHWpZH3e6duGhE77ioZFxRHhk=
+Date: Tue, 2 Apr 2024 13:44:12 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Alexander Wetzel <alexander@wetzel-home.de>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	LTP List <ltp@lists.linux.it>
+Subject: Re: [PATCH 6.6 000/396] 6.6.24-rc1 review
+Message-ID: <2024040258-disk-smokiness-5baf@gregkh>
+References: <20240401152547.867452742@linuxfoundation.org>
+ <CA+G9fYvewkbwR_i07HHTM=8E2yS-0wRhOT-C45LP3SNtzgd+4Q@mail.gmail.com>
+ <29a7a1e5-da67-47fc-b1fd-ef65902ec252@wetzel-home.de>
+ <1d1071f3-641a-4b7c-bd35-a629ba8d5a7b@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1d1071f3-641a-4b7c-bd35-a629ba8d5a7b@moroto.mountain>
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Tue, Apr 02, 2024 at 01:37:50PM +0300, Dan Carpenter wrote:
+> On Mon, Apr 01, 2024 at 09:22:52PM +0200, Alexander Wetzel wrote:
+> > 
+> > > Following kernel warnings have been noticed on qemu-x86_64 while running LTP
+> > > cve ioctl_sg01 tests the kernel with stable-rc 6.6.24-rc1, 6.7.12-rc1 and
+> > > 6.8.3-rc1.
+> > > 
+> > > We have started bi-secting this issue.
+> > > Always reproduced.
+> > > 
+> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > > 
+> > > ioctl_sg01.c:81: TINFO: Found SCSI device /dev/sg0
+> > > ------------[ cut here ]------------
+> > > [   36.606841] WARNING: CPU: 0 PID: 8 at drivers/scsi/sg.c:2237
+> > > sg_remove_sfp_usercontext+0x145/0x150
+> > > [   36.609445] Modules linked in:
+> > > [   36.610793] CPU: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.6.24-rc1 #1
+> > > [   36.611568] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+> > > BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+> > > [   36.612872] Workqueue: events sg_remove_sfp_usercontext
+> > > [   36.613691] RIP: 0010:sg_remove_sfp_usercontext+0x145/0x150
+> > > 
+> > > <trim>
+> > > 
+> > > [   36.621539] Call Trace:
+> > > [   36.621953]  <TASK>
+> > > [   36.622444]  ? show_regs+0x69/0x80
+> > > [   36.622819]  ? __warn+0x8d/0x150
+> > > [   36.623078]  ? sg_remove_sfp_usercontext+0x145/0x150
+> > > [   36.623558]  ? report_bug+0x171/0x1a0
+> > > [   36.623881]  ? handle_bug+0x42/0x80
+> > > [   36.624070]  ? exc_invalid_op+0x1c/0x70
+> > > [   36.624491]  ? asm_exc_invalid_op+0x1f/0x30
+> > > [   36.624897]  ? sg_remove_sfp_usercontext+0x145/0x150
+> > > [   36.625408]  process_one_work+0x141/0x300
+> > > [   36.625769]  worker_thread+0x2f6/0x430
+> > > [   36.626073]  ? __pfx_worker_thread+0x10/0x10
+> > > [   36.626529]  kthread+0x105/0x140
+> > > [   36.626778]  ? __pfx_kthread+0x10/0x10
+> > > [   36.627059]  ret_from_fork+0x41/0x60
+> > > [   36.627441]  ? __pfx_kthread+0x10/0x10
+> > > [   36.627735]  ret_from_fork_asm+0x1b/0x30
+> > > [   36.628293]  </TASK>
+> > > [   36.628604] ---[ end trace 0000000000000000 ]---
+> > > ioctl_sg01.c:122: TPASS: Output buffer is empty, no data leaked
+> > > 
+> > > Suspecting commit:
+> > > -----
+> > > scsi: sg: Avoid sg device teardown race
+> > > commit 27f58c04a8f438078583041468ec60597841284d upstream.
+> > > 
+> > 
+> > Correct. The issue is already been worked on.
+> > 
+> > commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race") fixed a real
+> > issue. But also added an incorrect WARN_ON_ONCE(). Thus the scary - but
+> > otherwise harmless - error message.
+> 
+> If you have Reboot on Oops turned on (apparently Android enables this)
+> then WARN() will reboot the system so it can be pretty annoying.
 
-We need to take into account that a line's consumer label may be NULL
-and not try to kstrdup() it in that case but rather pass the NULL
-pointer up the stack to the interrupt request function.
+Agreed, I've dropped this stable change for now because of this.
 
-To that end: let make_irq_label() return NULL as a valid return value
-and use ERR_PTR() instead to signal an allocation failure to callers.
-
-Cc: stable@vger.kernel.org
-Fixes: b34490879baa ("gpio: cdev: sanitize the label before requesting the interrupt")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/lkml/20240402093534.212283-1-naresh.kamboju@linaro.org/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/gpio/gpiolib-cdev.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index fa9635610251..1426cc1c4a28 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1085,7 +1085,16 @@ static u32 gpio_v2_line_config_debounce_period(struct gpio_v2_line_config *lc,
- 
- static inline char *make_irq_label(const char *orig)
- {
--	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
-+	char *new;
-+
-+	if (!orig)
-+		return NULL;
-+
-+	new = kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
-+	if (!new)
-+		return ERR_PTR(-ENOMEM);
-+
-+	return new;
- }
- 
- static inline void free_irq_label(const char *label)
-@@ -1158,8 +1167,8 @@ static int edge_detector_setup(struct line *line,
- 	irqflags |= IRQF_ONESHOT;
- 
- 	label = make_irq_label(line->req->label);
--	if (!label)
--		return -ENOMEM;
-+	if (IS_ERR(label))
-+		return PTR_ERR(label);
- 
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
-@@ -2217,8 +2226,8 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
- 		goto out_free_le;
- 
- 	label = make_irq_label(le->label);
--	if (!label) {
--		ret = -ENOMEM;
-+	if (IS_ERR(label)) {
-+		ret = PTR_ERR(label);
- 		goto out_free_le;
- 	}
- 
--- 
-2.40.1
-
+greg k-h
 
