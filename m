@@ -1,64 +1,82 @@
-Return-Path: <stable+bounces-35605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7B5895514
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 15:18:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12603895575
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 15:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA7F1C220B1
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:18:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6A628376F
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 13:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B72D81752;
-	Tue,  2 Apr 2024 13:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790F285C5E;
+	Tue,  2 Apr 2024 13:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=preining.info header.i=@preining.info header.b="YqZ08d2Z"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="LqgcBNSk"
 X-Original-To: stable@vger.kernel.org
-Received: from hz.preining.info (hz.preining.info [95.216.25.247])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B4F7A158;
-	Tue,  2 Apr 2024 13:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.216.25.247
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E5285298
+	for <stable@vger.kernel.org>; Tue,  2 Apr 2024 13:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712063890; cv=none; b=TlQhn3VFqLXdVoWWD63EThK4JVj7EKXnvfTAgsbEMOQIk36Xy18Q77FJdWC7/vVQdN8VOm4JV+o++mHHcMl8LsMVHM9h34WUxBk71Qpn3Sd6axB37iYgLC+SsdM++5J1BCyE9pQa5DbR75a6N90G5Yxshi4xT5cOxs4AaT9Xypg=
+	t=1712064759; cv=none; b=qzSDuh2/AwQZ1ZtTOyV0ZlzGF+eerr45kuH60C7Y/RyaIll3A1DwYYgbpYPj2eHj/zi6xhZ0jH6YJJO6b9sRokPcOHvO1HKN8fs41uQmMVr5Y5FokqSc1Z/9wLxrRTknCjyRnrgo/N3f6VdvetiQR1EWZKY7FWFelPDKx8/quaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712063890; c=relaxed/simple;
-	bh=80IhwDgD1gPqa9vTqSCEAKUjeZBU8j6RuuQa/+lWtsA=;
+	s=arc-20240116; t=1712064759; c=relaxed/simple;
+	bh=bYMjyk4hxADDHJfM0n08rS8SVAMEDwCn1gh7K6kIzjI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AgVBpQh+hx7zopbR0Zn+7Fj5DF4ltIf5A6CNJKr194pxsN100vCeFIvrUwSQOBosBk+SOy5vamtNfcL6AtIeYAIjicU5WH5t8rbmKpydnJQ94OcsfoT362hxpowe4iwxkotc9nUpJISlvyqK8Fmn5m7i7QqHImn8M8cqQfQWPCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=preining.info; spf=pass smtp.mailfrom=preining.info; dkim=pass (2048-bit key) header.d=preining.info header.i=@preining.info header.b=YqZ08d2Z; arc=none smtp.client-ip=95.216.25.247
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=preining.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=preining.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=preining.info; s=201909; h=In-Reply-To:Content-Type:MIME-Version:References
-	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=G5P4FMG63I9JSCmj4VgPs+r9J18nRxq7QCCPof1NWb8=; b=YqZ08d2Z55jJgnSijAQ1kJ/xiU
-	qw+x1trC64zVlt/IHhIH4HJZK0FUVKR5dasr1NNg8iuj7ea3pVyeQ4s20Z2QNF/pzi2BdWX0U4DtY
-	4Fu0Tc/57NbcycLX2WLoMuZvhSZb8ZFEvl7B8AEd4P/1okPvaDGDqdtWpknjaK2oFPndpfenHGLuj
-	3RSjSVVACHHBWJoEunfnDdCOTV74ouAqIYSZSxP6Lh8a2s/bJwtRPG8M+xhaBSvHaMReAZGbeNxO/
-	iWSIH9sZfqLEgRq+OhSrYLUEc3+iiesbSOj4JxcLdXKIXDoeDvaNWvxTTLcIGHqjn5jT4tez9CDof
-	QljD9XAQ==;
-Received: from tvk215040.tvk.ne.jp ([180.94.215.40] helo=bulldog.preining.info)
-	by hz.preining.info with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <norbert@preining.info>)
-	id 1rre1d-00F0hY-2F;
-	Tue, 02 Apr 2024 13:18:06 +0000
-Received: by bulldog.preining.info (Postfix, from userid 1000)
-	id 464361DF3C0A; Tue,  2 Apr 2024 22:18:01 +0900 (JST)
-Date: Tue, 2 Apr 2024 22:18:01 +0900
-From: Norbert Preining <norbert@preining.info>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: stable@vger.kernel.org
-Subject: Re: Regression in kernel 6.8.2 fails in various ways (USB, BT, ...)
-Message-ID: <ZgwFiaLefPAaH3tw@bulldog>
-References: <ZgvkIZFN23rkYhtS@burischnitzel>
- <1c698f8e-c7ca-4909-8872-057d6ae149ff@leemhuis.info>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LEPrX4B8eSmiDXq2hEgDX+xW89XqNy3mrBF/6E1lHpvfASB4Cjg//J0/Xe/yb8DejLibUX0M306ONXKBNTA+qfGH0iHFjlzr/cko9h/lPz3/udLxt3SHnmFeJTFH7Y1QeIiq6E+o/kdmOEFcCJr+A61S8PfWvLu8YKTNqrII37g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=LqgcBNSk; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3c38396c965so3638466b6e.1
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 06:32:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1712064756; x=1712669556; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rFk53LgoUmRncPhQOHRWVLYTVzn8/nw+iy7GK4q/aeM=;
+        b=LqgcBNSk2KlI84Jp5FEm4vKHcRnskk0zBMemeVtZ3PnMLpLva0+1OLKvix/f0ARmcd
+         c8w5b9Zu9p5wegRL5zFKKsh7pB+qrgTlbEUkh+1MMtqltJZlN0CbnjVdy0WhxVqdPf4Z
+         MA+0vDsbZcNZ6tWhwHrHLmgproUddPFT8QR+0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712064756; x=1712669556;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rFk53LgoUmRncPhQOHRWVLYTVzn8/nw+iy7GK4q/aeM=;
+        b=vtRB7JoBDKudG32XGLfFnFI170a/3vgw1WO523yG4iEfXcaihpY5XsryccXW6dqFks
+         g3efno/TT89OPqoR01f92wDsLSkK5uWbquEnlD2R5uvWBcW1NQ/ol7HUrw/G+Er0WI0X
+         lxCY8AzxKd4shjWIyxxyK3Mtdal7HVSDPWx9ME9SsW5YXICthlASvqzPcco3KA1iA438
+         49qtM+MBYIWrRFWwNabasLcqd3JQmIY+ILeLNXsKAHNJym1eiBY7VonodS3LCXnIyG9q
+         jLzDUzLutm7lwlwCTWznRXZFmXYWIgRghXtv54LCfunlU2I7nGCUO2EaHdokoAVCl5cu
+         cu+g==
+X-Gm-Message-State: AOJu0YxQJnn2hJttQpItMqj7IzX0ugSikLvDplbDtwqgYD15GdqcjXDQ
+	yZbrm3/ZEW0D0ZUvcmmvdv/oTLx5baE3pXd6gebuUW435xPJ/xEjOE4lah09lg==
+X-Google-Smtp-Source: AGHT+IGwAyzVLBJg6cCeBEnPPvIFGhOsxaFmkiLKmxkHHNwNG6Xh7kFK8xRSsAXbk5e0fkCkA1YUzw==
+X-Received: by 2002:a54:4788:0:b0:3c3:d203:2081 with SMTP id o8-20020a544788000000b003c3d2032081mr2609629oic.8.1712064755686;
+        Tue, 02 Apr 2024 06:32:35 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id eu8-20020a056808288800b003c4f4873bf7sm224576oib.29.2024.04.02.06.32.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Apr 2024 06:32:35 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Tue, 2 Apr 2024 08:32:33 -0500
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.7 000/432] 6.7.12-rc1 review
+Message-ID: <ZgwI8ZzV7OgNezw6@fedora64.linuxtx.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,47 +85,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1c698f8e-c7ca-4909-8872-057d6ae149ff@leemhuis.info>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
 
-Hi Thorsten,
-
-thanks for your quick answer, much appreciated.
-
-> Thx for your reports. Nitpicking: next time, please report each issue in
-> separate mails, as mentioned by
-> https://docs.kernel.org/admin-guide/reporting-issues.html
-
-Ok, will remember. It wasn't clear to me whether this is just one issue
-or multiple.
-
-> > * Plugging in my Yubikey C does not trigger any reaction
-> >   (as a consequence scdaemon hangs)
+On Mon, Apr 01, 2024 at 05:39:47PM +0200, Greg Kroah-Hartman wrote:
+> Note, this will be the LAST 6.7.y kernel release.  After this one it
+> will be end-of-life.  Please move to 6.8.y now.
 > 
-> Have not heard about a problem like this yet.
+> ------------------------------------------
 > 
-> Could you bisect?
-
-Will do.
-
-> > * sending of bluetooth firmware data fails with Oops (see below)
+> This is the start of the stable review cycle for the 6.7.12 release.
+> There are 432 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> A changes that hopefully fixes this is in 6.8.3-rc1:
-
-Nice, good to hear.
-
-> > * shutdown hangs and does not turn off the computer
+> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> Anything received after that time might be too late.
 > 
-> That might or might not be a follow-up problem due to one of the other
-> two problems. :-/
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-I agree. I will see what bisect tells me.
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-Best regards
-
-Norbert
-
---
-PREINING Norbert                              https://www.preining.info
-arXiv / Cornell University   +   IFMGA Guide   +   TU Wien  +  TeX Live
-GPG: 0x860CDC13   fp: F7D8 A928 26E3 16A1 9FA0 ACF0 6CAC A448 860C DC13
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
