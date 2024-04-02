@@ -1,63 +1,76 @@
-Return-Path: <stable+bounces-35528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AEB894A26
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 05:51:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAACB894A52
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 06:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E63A61F240B1
-	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 03:51:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75BD0286749
+	for <lists+stable@lfdr.de>; Tue,  2 Apr 2024 04:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06ED11759F;
-	Tue,  2 Apr 2024 03:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A4C1798E;
+	Tue,  2 Apr 2024 04:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hROEiqAF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkTzWbGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1261426F;
-	Tue,  2 Apr 2024 03:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FA0168B1;
+	Tue,  2 Apr 2024 04:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712029866; cv=none; b=ZXmX39UaRBIu5eYE7WNggFC/6YZnLMpnSIm7Zz1bCMq7uIkes3F478qYobxab+5R31UydOIjQ19csGpgyUyUk+AP15I9WuZGCUDfgWB4yk+Cpl0Yo4quVGB20W8etxc9m6imF1q5SxMYRCernAe9KRzfIOlPYf8IGRsIwMNP0KY=
+	t=1712031155; cv=none; b=WWGAcXRZBG6WqcYFo/kcCH5a5j/yLX3toKSm3um8JujzmesowbABT1jaxLFhK01MotoXEK7xbLvvHu76aD6qN1DOIV/3AZecCXPoh0DI0AJfkap00rj8z3cUPVcpMSL9VUooBEYkZKaiIyHSZnscbQjhAZI9B3H2FMQIAI//u+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712029866; c=relaxed/simple;
-	bh=WMeus+9z+os5yRKCGjNzYgYzIutPvTegtUqNJyOVU14=;
+	s=arc-20240116; t=1712031155; c=relaxed/simple;
+	bh=aI3eJF8HniXat2ib1QyBX8zCGp45TAApFBysvadGBQs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WCOAKpJytJelPyWZ7Nn1l+omLAzTU4ze3jcCc/dPPDRVUManC0uqxcARWqBiQn5lEo1/2Py3Lzp5R6FmOMCbsL9uc+q5XqmsurJGprC/rz4EqJHMpEVS5MsSCJ7OEozBR9M0qytANwioFyqKhLj1lH9p7FeooMnBjPOcLcNn1Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hROEiqAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE14C433C7;
-	Tue,  2 Apr 2024 03:51:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=noVgS2SVCt8ST8HcgSW+vNT5yM6YTB2kvMzM5h9Md/Hyi/DhO+2/FLepbpY6osHTfoCDfVwIbX2PRmGxum5CO0NrgUgCWw+l9iiL+/XMMZ4y353fO0rgUexLmXMA7rdI4xD9yAkwUnVUluuuiGqV2AIBWLwRybJW8vH/kDDst3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkTzWbGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672A3C433C7;
+	Tue,  2 Apr 2024 04:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712029866;
-	bh=WMeus+9z+os5yRKCGjNzYgYzIutPvTegtUqNJyOVU14=;
+	s=k20201202; t=1712031154;
+	bh=aI3eJF8HniXat2ib1QyBX8zCGp45TAApFBysvadGBQs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hROEiqAF8JPVjwyxxVNXQgq/D3Y3t1UkjQdUAmA7XeXMQvX3ZOIDoZjXCGQ51VH60
-	 9dsOPlorjq3/QEZLR3DPiVKtesMRUWqkA8B29el0rgQ2+oNmfM2fYe94Hzhz5b2ho0
-	 37Dhly3rlc0QVL9doCxoQJiWmEAK0r7R8+4VlP/3DODB/p6G3VpogOEqkiEZrKXYaE
-	 GlCJ4LNQpbW/d1mWrazakeepPhZZDv7gBTVrUx/uqe4zsiyLPKT8oZSilRhxxYmxH9
-	 eUB47u2ZohGT6QC0mbO+zuWQwjJU20q8caWN5f2ur46Nys9+KeW9JpERDNqtEk6zeR
-	 gp4RoglGM+nNw==
-Date: Mon, 1 Apr 2024 20:51:03 -0700
+	b=nkTzWbGDGnmj8/6m7801zLy+B6JjA/ZXpJtp/FkRdEg9tN9IzGfm0CgMNlSQZ95KA
+	 HqxuhIuo0Z8jXpeg7+WS8AqPQMI3opBF15vPciltVh6dp1j4k9FufIgrSaC/5V2kCt
+	 YEPK5SKsvPPG6KBRWKu0WIHe8/jRr1UzS/lOZBFygL9M7mX0OYThU3fLemJ6C6UhXx
+	 eZZxq598IWatnRW/We9rCVsWeiyKs8JcHDpSLnBbSEV5DuEgCQtyF4olFeKEa5c0ou
+	 eYO3Jbd1Y/f6t6QROP/ViG0ZZliYkzMGtNSo1LuXTlS+lLNb7DndsBZc/K6DXHLcv+
+	 82IVNF+FUIJlA==
+Date: Mon, 1 Apr 2024 21:12:32 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
- Netdev <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Arnd Bergmann <arnd@arndb.de>, Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH 6.8 000/399] 6.8.3-rc1 review
-Message-ID: <20240401205103.606cba95@kernel.org>
-In-Reply-To: <CA+G9fYuHZ9TCsGYMuxisqSFVoJ3brQx4C5Xk7=FJ+23PHbhKWw@mail.gmail.com>
-References: <20240401152549.131030308@linuxfoundation.org>
-	<CA+G9fYuHZ9TCsGYMuxisqSFVoJ3brQx4C5Xk7=FJ+23PHbhKWw@mail.gmail.com>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>, "linux-hyperv@vger.kernel.org"
+ <linux-hyperv@vger.kernel.org>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, Wei Hu <weh@microsoft.com>, stephen
+ <stephen@networkplumber.org>, KY Srinivasan <kys@microsoft.com>, Paul
+ Rosswurm <paulros@microsoft.com>, "olaf@aepfle.de" <olaf@aepfle.de>,
+ "vkuznets@redhat.com" <vkuznets@redhat.com>, "davem@davemloft.net"
+ <davem@davemloft.net>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
+ "edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "leon@kernel.org" <leon@kernel.org>, Long Li
+ <longli@microsoft.com>, "ssengar@linux.microsoft.com"
+ <ssengar@linux.microsoft.com>, "linux-rdma@vger.kernel.org"
+ <linux-rdma@vger.kernel.org>, "daniel@iogearbox.net"
+ <daniel@iogearbox.net>, "john.fastabend@gmail.com"
+ <john.fastabend@gmail.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "ast@kernel.org" <ast@kernel.org>, "sharmaajay@microsoft.com"
+ <sharmaajay@microsoft.com>, "hawk@kernel.org" <hawk@kernel.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net] net: mana: Fix Rx DMA datasize and skb_over_panic
+Message-ID: <20240401211232.57b17081@kernel.org>
+In-Reply-To: <CY5PR21MB37590FD539C1E380FBDC96B0BF3E2@CY5PR21MB3759.namprd21.prod.outlook.com>
+References: <1711748213-30517-1-git-send-email-haiyangz@microsoft.com>
+	<CY5PR21MB375904FD3437BA610E6BDBD1BF392@CY5PR21MB3759.namprd21.prod.outlook.com>
+	<CH2PR21MB1480E02C74E7BB5A52A71859CA3F2@CH2PR21MB1480.namprd21.prod.outlook.com>
+	<CY5PR21MB37590FD539C1E380FBDC96B0BF3E2@CY5PR21MB3759.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,13 +80,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 2 Apr 2024 01:10:11 +0530 Naresh Kamboju wrote:
-> The following kernel BUG: unable to handle page fault for address and followed
-> by Kernel panic - not syncing: Fatal exception in interrupt noticed
-> on the qemu-i386 running  selftests: net: pmtu.sh test case and the kernel
-> built with kselftest merge net configs with clang.
+On Tue, 2 Apr 2024 01:23:08 +0000 Dexuan Cui wrote:
+> > > I suggest the Fixes tag should be updated. Otherwise the fix
+> > > looks good to me.  
+> > 
+> > Thanks for the suggestion. I actually thought about this before
+> > submission.
+> > I was worried about someone back ports the jumbo frame feature,
+> > they may not automatically know this patch should be backported
+> > too.   
 > 
-> We are investigating this problem on qemu-i386.
+> The jumbo frame commit (2fbbd712baf1) depends on the MTU
+> commit (2fbbd712baf1), so adding "Fixes: 2fbbd712baf1" (
+> instead of "Fixes: ca9c54d2d6a5") might make it easier for people
+> to notice and pick up this fix.
+> 
+> I'm OK if the patch remains as is. Just wanted to make  sure I
+> understand the issue here.
 
-One-off or does it repro?
+Please update the tag to where the bug was actually first exposed.
 
