@@ -1,203 +1,148 @@
-Return-Path: <stable+bounces-35723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533948971C6
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 15:56:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229F38971F8
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 16:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09688282D45
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 13:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D11E0288975
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 14:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7EA148FEA;
-	Wed,  3 Apr 2024 13:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E65148FE4;
+	Wed,  3 Apr 2024 14:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="ckKe8nfK"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ej5TuduV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56136148FF1
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 13:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4383148831;
+	Wed,  3 Apr 2024 14:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712152576; cv=none; b=TwFPtqdB8A/JWt6fPlwxA/v3pn68RdvcBFSKAardvXOG6+yKkdSlrkTveOdSfzMYENKdwlPorgVxrp88vLlAjBJxKj9nDIPAivV89KMgyk8fce25hq6JoJp0Bsx7X03qdAzu58EjaevwDmDs89+F35uzFwBKoNzfNpAsaZ3cg0s=
+	t=1712153361; cv=none; b=YB+2F0tDP1mwS3W4RkTQ8axqmognJkOFMrOYw45oSBAfo3iXqdZhChQ6hi8QkAajSAuKty2+AqMMEr0zDFLFVyPVdVecHbgh18MW1jtOSrhEuMYCsvBd99eUZZQ82AZdkEH68m3ukSkac0TUyCztz/YZNluTCfthYBpAzpIcMiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712152576; c=relaxed/simple;
-	bh=xBW+RidIDSaDi5t9YoWxK8yP48UNn3X5QEgKFKpA+hU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2ouP+ZkbKEumpHLhWPKDxZTUPDOJMNDIFNAuW9oCkVqp2mu0KFPK+GHSk0eNztwGFVb/zhxkhkf3c4K43BEhJIK75wtDjFscOVM2wdd2hVfy8v5DaMtHOoRIi9C0vhkZCYp93OB8HrUakfPFVEaBJaueniPXkfLkaik9yRae00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=ckKe8nfK; arc=none smtp.client-ip=209.85.166.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3688f1b7848so3848485ab.0
-        for <stable@vger.kernel.org>; Wed, 03 Apr 2024 06:56:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1712152574; x=1712757374; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qyjiacDLhmmFlItH/f0t7RHBaXaSqUN8QHctrPBrOeE=;
-        b=ckKe8nfKxnLIImX85CR/HuwNn2tKRo1UU+XcZmsur3R0MJ5Bqe6+r1kujDPogTODVi
-         2CDLJ5kMDHuwH06X1jzZxcbLwDvYBHBuv0NJQ2XODfy5vbCiyv/vN80wKglQJ4GiKJct
-         8qlXs9jYT9GxFTBpAHxIra2b7Zscf23IjHF/kq1jzEUOa915nVhy0yfhsA4OotPmtJfS
-         8sQGPYWM1CN/jZnrAG0yDS+kZXHHDGxjaZvXexh29yK3hE0MxPQUo/EEcz6ICw9K5qsu
-         zH9u5r5alU+Di9gJmUvDNbKax4+9Fx+Rl5EMXSJHtwRvwT544YkK9TYZ2YnOqsa4z/+T
-         rmng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712152574; x=1712757374;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qyjiacDLhmmFlItH/f0t7RHBaXaSqUN8QHctrPBrOeE=;
-        b=dnyJ4iWT21Qd63d1qbZghfAQB+t1giBlSU1c72XaseB1yPzk9LrxamVvgADN47tlbS
-         15BRcNeOfNCUVKEMdvl/T1qcUhtTPSygJqnzPe2iO1CQwQwvLSHIjDKSktNCOMaJ/T0H
-         6c+eLbjLOMs2FATbLnaUOYCWTZyXXJOSj0D6PnQuNML7TS1Mhjbm5o2LNpnd5Pa9X3HH
-         86AoslsMs7TVbcCfS9TR9UhBeIij4RsY/6wQ0n+ilcOWDzUWfS5BN6BALHPIk4DROMxR
-         MB4hFdDuuZtiPyJ75xBpQtGB4Yj6/2km6GMwU5R7L+rVo52MBMOUuHvc61v6xGktUJcb
-         I2Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvHztAQWWFqyTegBAE53hFV1DWGC6wEaGnfNkYAsVRwd2rpRyit3S5o1D5Sh3xOmQeBPQN9FqnfMpx4J2qj3RDla214GGE
-X-Gm-Message-State: AOJu0Yy4q+GTFiIt8x2RuadZoHVYDLm0ZF1CajIV+sRhd6+4GgjBZGxS
-	J9sL897VWAL2BdxSlkUzi8N/7Q5MJOxeTYX6b6HTczHV3AuiB9/P8qQQVnRoW3s=
-X-Google-Smtp-Source: AGHT+IGYgQYm7nodhPxgrPIWI3m469yFPtVR9OSIwyCmRhjwkKXK+ZGyKgjdmmaaK+nKZ4WkMSFK2g==
-X-Received: by 2002:a5e:9914:0:b0:7d3:433a:d33d with SMTP id t20-20020a5e9914000000b007d3433ad33dmr2951968ioj.2.1712152574556;
-        Wed, 03 Apr 2024 06:56:14 -0700 (PDT)
-Received: from localhost.localdomain ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id l14-20020a02ccee000000b0047ec296d3c1sm3839460jaq.19.2024.04.03.06.56.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Apr 2024 06:56:13 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: io-uring@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
+	s=arc-20240116; t=1712153361; c=relaxed/simple;
+	bh=agTHV4kamLLPYcNHOfaIhrtk8c/lda8kF/YWjh1kBJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Puvw8YLfBR2R+vytGC0dMLTmM8FSXNesMLWJaQd5pI6rnI0zEib8F7jB4sQSsUpXgwCIMjHpabBV6+B6+nJodh05t6DX8G2wUieyR8090qOpLrdvb+HgVADZhBpkNEqPnzDEfSTxRF53lRM1aWXYwyqaipM2+JdDQ/Tl5o5gXtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ej5TuduV; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1712153358;
+	bh=agTHV4kamLLPYcNHOfaIhrtk8c/lda8kF/YWjh1kBJo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ej5TuduVQzkPKOqmLXBWFS4juFDp4MmlKPVPcTaeoSqlAy48WAn1nq0ecYlAIQow6
+	 J6TlBihY4qc7QNKs9/1bOWSpoNpAndiX5VWK+c5LnV7z1vcADEOzZUEdLIQ0EwxrS0
+	 Ru8uWgGZZOmthtVp/8LCe/1/PDhwVA33EnZUzGvCqClWTmlJXIdZODfRAzRdcsw6QO
+	 LEUPf4ZMmk8WIvt/EKwilFZ3oOXrIV2eSy66+zHF9cH9tPVoajTUo/RLplO5XmtOp0
+	 tBZ65nThRBz5Fp2SVGYPf4AuGbV4z0R+xST8gP6it6QkMgNgk3yg6qlDrc96fmLaRr
+	 9ul7GpGOBrqGQ==
+Received: from mercury (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sre)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id E10B037814A4;
+	Wed,  3 Apr 2024 14:09:17 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id D07B01060E07; Wed,  3 Apr 2024 15:52:11 +0200 (CEST)
+Date: Wed, 3 Apr 2024 15:52:11 +0200
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Pratham Patel <prathampatel@thefossguy.com>
+Cc: Saravana Kannan <saravanak@google.com>, 
+	Dragan Simic <dsimic@manjaro.org>, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
 	stable@vger.kernel.org
-Subject: [PATCH 4/4] io_uring/kbuf: hold io_buffer_list reference over mmap
-Date: Wed,  3 Apr 2024 07:52:37 -0600
-Message-ID: <20240403135602.1623312-5-axboe@kernel.dk>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240403135602.1623312-1-axboe@kernel.dk>
-References: <20240403135602.1623312-1-axboe@kernel.dk>
+Subject: Re: Fixing the devicetree of Rock 5 Model B (and possibly others)
+Message-ID: <4zlnwwycmjt4p2efqvvxirgcxqyyptf4ndqmbm5uxjjbk2toyz@uyxh2lmwb2fz>
+References: <tQ0L3-34g4t-mzfQIP6KDe5OYelGnEo6Udzq6Kb_nEcljppSQUXOktpE__nL-CdLOu9gW-4tIIbjtSbqrdCrjEkdhZLPiiHTqRcCB6WORuM=@thefossguy.com>
+ <ac4246bf3786230eb9ca85b329e7d0df@manjaro.org>
+ <CAGETcx89V5CJrAq6XwuGiusQnkR804pTgYAtS94v7Q+v=Cv+qA@mail.gmail.com>
+ <D0A122WK7CB9.33B2TP6UCMJBJ@thefossguy.com>
+ <CAGETcx_ToHsp_c+Yt0qqST4Zd-GC7dPn_j=PpB1n1xpZtOnMfg@mail.gmail.com>
+ <D0A2ZL6S8UG6.2BQKIBQWYB36D@thefossguy.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4danktmrrrxcg4g2"
+Content-Disposition: inline
+In-Reply-To: <D0A2ZL6S8UG6.2BQKIBQWYB36D@thefossguy.com>
 
-If we look up the kbuf, ensure that it doesn't get unregistered until
-after we're done with it. Since we're inside mmap, we cannot safely use
-the io_uring lock. Rely on the fact that we can lookup the buffer list
-under RCU now and grab a reference to it, preventing it from being
-unregistered until we're done with it. The lookup returns the
-io_buffer_list directly with it referenced.
 
-Cc: stable@vger.kernel.org # v6.4+
-Fixes: 5cf4f52e6d8a ("io_uring: free io_buffer_list entries via RCU")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
- io_uring/io_uring.c | 11 ++++++-----
- io_uring/kbuf.c     | 35 +++++++++++++++++++++++++++--------
- io_uring/kbuf.h     |  4 +++-
- 3 files changed, 36 insertions(+), 14 deletions(-)
+--4danktmrrrxcg4g2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index bc730f59265f..4521c2b66b98 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3447,14 +3447,15 @@ static void *io_uring_validate_mmap_request(struct file *file,
- 		ptr = ctx->sq_sqes;
- 		break;
- 	case IORING_OFF_PBUF_RING: {
-+		struct io_buffer_list *bl;
- 		unsigned int bgid;
- 
- 		bgid = (offset & ~IORING_OFF_MMAP_MASK) >> IORING_OFF_PBUF_SHIFT;
--		rcu_read_lock();
--		ptr = io_pbuf_get_address(ctx, bgid);
--		rcu_read_unlock();
--		if (!ptr)
--			return ERR_PTR(-EINVAL);
-+		bl = io_pbuf_get_bl(ctx, bgid);
-+		if (IS_ERR(bl))
-+			return bl;
-+		ptr = bl->buf_ring;
-+		io_put_bl(ctx, bl);
- 		break;
- 		}
- 	default:
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index 2edc6854f6f3..3aa16e27f509 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -266,7 +266,7 @@ static int __io_remove_buffers(struct io_ring_ctx *ctx,
- 	return i;
- }
- 
--static void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
-+void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
- {
- 	if (atomic_dec_and_test(&bl->refs)) {
- 		__io_remove_buffers(ctx, bl, -1U);
-@@ -719,16 +719,35 @@ int io_register_pbuf_status(struct io_ring_ctx *ctx, void __user *arg)
- 	return 0;
- }
- 
--void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid)
-+struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
-+				      unsigned long bgid)
- {
- 	struct io_buffer_list *bl;
-+	bool ret;
- 
--	bl = __io_buffer_get_list(ctx, bgid);
--
--	if (!bl || !bl->is_mmap)
--		return NULL;
--
--	return bl->buf_ring;
-+	/*
-+	 * We have to be a bit careful here - we're inside mmap and cannot grab
-+	 * the uring_lock. This means the buffer_list could be simultaneously
-+	 * going away, if someone is trying to be sneaky. Look it up under rcu
-+	 * so we know it's not going away, and attempt to grab a reference to
-+	 * it. If the ref is already zero, then fail the mapping. If successful,
-+	 * the caller will call io_put_bl() to drop the the reference at at the
-+	 * end. This may then safely free the buffer_list (and drop the pages)
-+	 * at that point, vm_insert_pages() would've already grabbed the
-+	 * necessary vma references.
-+	 */
-+	rcu_read_lock();
-+	bl = xa_load(&ctx->io_bl_xa, bgid);
-+	/* must be a mmap'able buffer ring and have pages */
-+	ret = false;
-+	if (bl && bl->is_mmap)
-+		ret = atomic_inc_not_zero(&bl->refs);
-+	rcu_read_unlock();
-+
-+	if (ret)
-+		return bl;
-+
-+	return ERR_PTR(-EINVAL);
- }
- 
- /*
-diff --git a/io_uring/kbuf.h b/io_uring/kbuf.h
-index 8b868a1744e2..df365b8860cf 100644
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -61,7 +61,9 @@ void __io_put_kbuf(struct io_kiocb *req, unsigned issue_flags);
- 
- bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
- 
--void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid);
-+void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl);
-+struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
-+				      unsigned long bgid);
- 
- static inline bool io_kbuf_recycle_ring(struct io_kiocb *req)
- {
--- 
-2.43.0
+Hi,
 
+On Wed, Apr 03, 2024 at 01:03:07AM +0000, Pratham Patel wrote:
+> > > > Also, can you give the output of <debugfs>/devices_deferred for the
+> > > > good vs bad case?
+> > >
+> > > I can't provide you with requested output from the bad case, since the
+> > > kernel never moves past this to an initramfs rescue shell, but follow=
+ing
+> > > is the output from v6.8.1 (**with aforementioned patch reverted**).
+> > >
+> > > # cat /sys/kernel/debug/devices_deferred
+> > > fc400000.usb    platform: wait for supplier /phy@fed90000/usb3-port
+> > > 1-0022  typec_fusb302: cannot register tcpm port
+> > > fc000000.usb    platform: wait for supplier /phy@fed80000/usb3-port
+> > >
+> > > It seems that v6.8.2 works _without needing to revert the patch_. I w=
+ill
+> > > have to look into this sometime this week but it seems like
+> > > a8037ceb8964 (arm64: dts: rockchip: drop rockchip,trcm-sync-tx-only f=
+rom rk3588 i2s)
+> > > seems to be the one that fixed the root issue. I will have to test it
+> > > sometime later this week.
+> >
+> > Ok, once you find the patch that fixes things, let me know too.
+>=20
+> Will do!
+
+FWIW the v6.8.1 kernel referenced above is definitely patched, since
+upstream's Rock 5B DT does neither describe fusb302, nor the USB
+port it is connected to.
+
+We have a few Rock 5B in Kernel CI and upstream boots perfectly
+fine:
+
+https://lava.collabora.dev/scheduler/device_type/rk3588-rock-5b
+
+So it could be one of your downstream patches, which is introducing
+this problem.
+
+-- Sebastian
+
+--4danktmrrrxcg4g2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmYNXwcACgkQ2O7X88g7
++ppSBQ//WsXoLg+w00Vt6lS7Fu+Ry1/gMQ7+0b0R66GBVrconK+w8cdxwNCmJe+z
+0/5ehaf6Wd4Btp2YcDywLFVFv+nHEg6H3t+PSyVzST2EnEGpJBzL9FBGq/J8XIVv
+TSyMJPEb911F63xSgZXoqlLa/Jti4ccqYIJUy6LYLJ97/3Wm1rtzPvPyrs2ySJ8I
+5l3zLA4POdS6I7vdbPNVjzY4LVEG9CwQIJIwGoScCwoxESlMpiB1+hLYil/2GsVq
+1OKAwEZuRycmROdMobiYYsO/a1GQU2FcIcZ4ocmX5e1U94qmP578endIVW+lFz8+
+S5FXoSOmxCZY6x4mczQ2nrGNI0vHfUuiNZHOxpoUZa2Y6Lw1D1v2a9Ek1IKH0LUt
+t8vp4w2k9nvMAXpRXaCK17zR/x92osn5SNNKz7RCd2Q9yGeB4a0iSDoA82xCYpGd
+lTtrxBkBSLKJlraVeeCuuwRxINRRg5DFwhleXfSEvIFXOHPVV+Fc/UPoq1bNzgF/
+jDVLTdRtfiWgl0c833WyLvCU7A3AjuFmO3AmxV+Z6gvv97o7JknuX5fsW5cjfAHx
+UIp/OBj+aEG/fZc5cG74LxfVZbxpK9McusBysf8BsFNAmHIzMoCsnGstfmSNHGr+
+fRntqsaKh8rDFgN5rKRB7svYg2dmFVKjtH7uPmQl9DPhfx5zSG8=
+=feq8
+-----END PGP SIGNATURE-----
+
+--4danktmrrrxcg4g2--
 
