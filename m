@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-35814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CAA897708
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:40:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDB189770D
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 792C11C21DBA
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:40:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FC729858C
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A41116C877;
-	Wed,  3 Apr 2024 17:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE28B16D4D4;
+	Wed,  3 Apr 2024 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G85DY4fx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Meqnw+s4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E9716C857;
-	Wed,  3 Apr 2024 17:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64C916D4CB;
+	Wed,  3 Apr 2024 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164800; cv=none; b=POVX+ctzr63glvEp8opddjk5GReqYloJf818+KEKuCL2Q5zFt+tgTYVnnx6XWZTk1c+EMxuiyPgaUwj3CIosIAww6UOzQzKlrQDZ9MysOZOdBGpKCWur84Lmgz2wfivAOu4UOiJ0Hz5jAVdFG2m9tlFvV5hXRFbxcrdL8A3TlMQ=
+	t=1712164808; cv=none; b=cOISAaOGDYAhhqdifqBNN7HPIlsydygZcwXf6EY5LTw3OyPk6akrKF2aJ96k8HZyNYIMfwNtclFKuKyjl8OrfTFfHtigqxPoTZZiHLUZipvuu2vh7ZuoSkW/3SZrwKv8BPg3K6cNJTtvSu2PBrCfEDG4cwlnKy5eh0+74UkOBxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164800; c=relaxed/simple;
-	bh=3R/oYCngnfBm8uj5KvKZdVhP62XlJbJ3bOKSaBb7XQ0=;
+	s=arc-20240116; t=1712164808; c=relaxed/simple;
+	bh=eH6n/XrrBzShozVSMmjhzduWadISNU3nrGIZ3CDYUjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lR26KLDKrzau7JDJd40dvU1NR/C2SZtVFuvibrXPa05etztmFcWn38nXYEeGAcfX/akUvWwPXYglJHCW6GdYH+8caetQj4NTiKgXVmHMlK8cO9Ee/qZRdHA/y3cyPTC60scSP9T+ROdIkbIha5aT7lstbEppLjEkonq7XkRssIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G85DY4fx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51D6C43390;
-	Wed,  3 Apr 2024 17:19:58 +0000 (UTC)
+	 MIME-Version; b=niKIXi1SmltMC5aCXbwHboFK2qd5kag1QGK4WudexoS/YmrcdDt4mON/mDu+7gs7Xecbkx4A1RBwRE7CsZog6RYyplT6/X4oKG7EZFUmSWbo7D9QVw4WsBOZC+ffHodJIChzzHVJgUkGaYfhNRaHJ9Hf2L8xIUgEkth3eBVejH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Meqnw+s4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86976C433A6;
+	Wed,  3 Apr 2024 17:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164799;
-	bh=3R/oYCngnfBm8uj5KvKZdVhP62XlJbJ3bOKSaBb7XQ0=;
+	s=k20201202; t=1712164808;
+	bh=eH6n/XrrBzShozVSMmjhzduWadISNU3nrGIZ3CDYUjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G85DY4fxTerc+Lcygm+DlD3x1/JQqpbcQkn8H217N1M8zbvirgHxittpRrDdFdyvQ
-	 DJ/iDNcHqVQmm5hT15POIlfMQOgWfko5IAJ+e36m5tkYOmX8q8JHnyfQmms68pOmHL
-	 Z/fLHM9C186FDscG2jyHCRsm3lvHkLJ8q43pucWtOT9ZRv9uic+0kOh7pQUH9ffhl5
-	 kmSlrmb8/k1hSlpYnzdbZzy/De+iURKMJAKCgMAjyvYZ/g3o2mTcEDv6I84lNE+0cH
-	 9YNDWX+qGqqf6BhJ7IESjiVNUU0odrXgly8uXiCkTg8XEBAGk1KLfz+gC6WlhAfgVi
-	 +cGL6jigWo9DA==
+	b=Meqnw+s4HJH324rt71RaZJ5XtPjuYB1pIAEiM4oCwULM0asOgTl2sVuMZSHiyLs0S
+	 EtovsMxFw+FC3h5jNmtBf4icHPl70n8OT+LPi//ph6Bweer25Pf71rf0GCuxU1OwIk
+	 GlgPhcZC0rDVh6ijusnNpxF1LLux4g+2dNGVms4cnmGtb4lOS/irRczZ6NlF1Zb7wP
+	 NYHrm6oS+p+a9Ocm23Cs3mj7Ej8N07saujC5rU5PQJ/xmG+vCkR8vsKtcxruijRWya
+	 YgAg3fgupqBwcXvK3vUNtpeOkl8E3Uk8MuVEtdipVZk+7OxbmWFj3hcIRxMx7BcYt1
+	 9FQ5dvDgj6utQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roman Smirnov <r.smirnov@omp.ru>,
+Cc: Karina Yankevich <k.yankevich@omp.ru>,
 	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Helge Deller <deller@gmx.de>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@ffwll.ch,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 8/8] fbmon: prevent division by zero in fb_videomode_from_videomode()
-Date: Wed,  3 Apr 2024 13:19:41 -0400
-Message-ID: <20240403171945.350716-8-sashal@kernel.org>
+	linux-usb@vger.kernel.org,
+	usb-storage@lists.one-eyed-alien.net
+Subject: [PATCH AUTOSEL 5.10 2/8] usb: storage: sddr55: fix sloppy typing in sddr55_{read|write}_data()
+Date: Wed,  3 Apr 2024 13:19:56 -0400
+Message-ID: <20240403172006.353022-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240403171945.350716-1-sashal@kernel.org>
-References: <20240403171945.350716-1-sashal@kernel.org>
+In-Reply-To: <20240403172006.353022-1-sashal@kernel.org>
+References: <20240403172006.353022-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,52 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.153
+X-stable-base: Linux 5.10.214
 Content-Transfer-Encoding: 8bit
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Karina Yankevich <k.yankevich@omp.ru>
 
-[ Upstream commit c2d953276b8b27459baed1277a4fdd5dd9bd4126 ]
+[ Upstream commit d6429a3555fb29f380c5841a12f5ac3f7444af03 ]
 
-The expression htotal * vtotal can have a zero value on
-overflow. It is necessary to prevent division by zero like in
-fb_var_to_videomode().
+In sddr55_{read|write}_data(), the address variables are needlessly typed
+as *unsigned long* -- which is 32-bit type on the 32-bit arches and 64-bit
+type on the 64-bit arches; those variables' value should fit into just 3
+command bytes and consists of 10-bit block # (or at least the max block #
+seems to be 1023) and 4-/5-bit page # within a block, so 32-bit *unsigned*
+*int* type should be more than enough...
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+[Sergey: rewrote the patch subject/description]
+
+Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/4c9485f2-0bfc-591b-bfe7-2059289b554e@omp.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbmon.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/storage/sddr55.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
-index b0e690f41025a..9ca99da3a56a0 100644
---- a/drivers/video/fbdev/core/fbmon.c
-+++ b/drivers/video/fbdev/core/fbmon.c
-@@ -1311,7 +1311,7 @@ int fb_get_mode(int flags, u32 val, struct fb_var_screeninfo *var, struct fb_inf
- int fb_videomode_from_videomode(const struct videomode *vm,
- 				struct fb_videomode *fbmode)
- {
--	unsigned int htotal, vtotal;
-+	unsigned int htotal, vtotal, total;
+diff --git a/drivers/usb/storage/sddr55.c b/drivers/usb/storage/sddr55.c
+index 15dc25801cdcc..0aa079405d23c 100644
+--- a/drivers/usb/storage/sddr55.c
++++ b/drivers/usb/storage/sddr55.c
+@@ -196,7 +196,7 @@ static int sddr55_read_data(struct us_data *us,
+ 	unsigned char *buffer;
  
- 	fbmode->xres = vm->hactive;
- 	fbmode->left_margin = vm->hback_porch;
-@@ -1344,8 +1344,9 @@ int fb_videomode_from_videomode(const struct videomode *vm,
- 	vtotal = vm->vactive + vm->vfront_porch + vm->vback_porch +
- 		 vm->vsync_len;
- 	/* prevent division by zero */
--	if (htotal && vtotal) {
--		fbmode->refresh = vm->pixelclock / (htotal * vtotal);
-+	total = htotal * vtotal;
-+	if (total) {
-+		fbmode->refresh = vm->pixelclock / total;
- 	/* a mode must have htotal and vtotal != 0 or it is invalid */
- 	} else {
- 		fbmode->refresh = 0;
+ 	unsigned int pba;
+-	unsigned long address;
++	unsigned int address;
+ 
+ 	unsigned short pages;
+ 	unsigned int len, offset;
+@@ -316,7 +316,7 @@ static int sddr55_write_data(struct us_data *us,
+ 
+ 	unsigned int pba;
+ 	unsigned int new_pba;
+-	unsigned long address;
++	unsigned int address;
+ 
+ 	unsigned short pages;
+ 	int i;
 -- 
 2.43.0
 
