@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-35674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0C28964B1
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 08:44:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A6A8964D8
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 08:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 191A01C21DD1
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 06:44:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BAFF1F2330B
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 06:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4598414006;
-	Wed,  3 Apr 2024 06:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77B117C64;
+	Wed,  3 Apr 2024 06:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uhz6PC8d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4bw69Mc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6984D210F8
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 06:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062601757A
+	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 06:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712126643; cv=none; b=Ych2B36u7uyvLZbVcfYMaGQge1LmG0EAbAkkK+NqqZlYugEfbU2cak92XlyQLiJgxrSCGY1Wp4NdC/7t2x21V8Ck+wxfwyOH2Avpr7PlZtprK87NulaGBGqqsDJG2UnBiRG0coNhEY3D/0zqPfW9CfGkoSmNQX/vxFjyeorZMN0=
+	t=1712126948; cv=none; b=HlGReGCmHv4E/ST5FohllMmVaGgdNZblZNPs2mkjxyJFYnSK6AxYDdLGJpTlDvQTo/25luCFbUcHYZKC7IjEBnZA8mP2UQiYgBpWcREn/Ld8pq+3+x7GcgUkAINlzyYk4BnTZJ4O5b0l2nJv11iOT14wmqvIVsPy4tZTeAS+Xu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712126643; c=relaxed/simple;
-	bh=VctjFfQK7eQ2QoWPuR3Hw9A+wXNjnkhCJcylwd3L+es=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=PCQNAESR4OBGqyyOcA37YtPITl5K9RAh0ZnvQI2NpKBQvmUUdaxMyQhTtX6u+j2yC90TxrY4ecedAoITG21d5T9VD4U+zAPCboi9jrHJQWlBJpvhg4oFk90ZimxgDr0iWSh+UdS5qbmdl2DjQohgt1c68NklzRjuY9SSwTreLZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uhz6PC8d; arc=none smtp.client-ip=209.85.208.52
+	s=arc-20240116; t=1712126948; c=relaxed/simple;
+	bh=Hc32XsXTiOiAZAk1wzP5TaLJmjS8QG0YId6ztoOkC+w=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=qXbK7hqzklMIqoLDtAPlW8N/g4pACvS6bSbiThY2TrG4be0pJodViJiT8YbBqhHg7j0WO1Tu25WqeoNtBLs9OVOSs8pLzorZX4N870H9lvmVHoP7xV9aNZ/0c/Il23rUR4EKKaxBGSg7iNlF2IYxD4vlA+m/DFRdSh5O5OYi1LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4bw69Mc; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56c5d05128dso4662333a12.0
-        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 23:44:01 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-56845954ffeso8784886a12.2
+        for <stable@vger.kernel.org>; Tue, 02 Apr 2024 23:49:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712126639; x=1712731439; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1712126945; x=1712731745; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=VctjFfQK7eQ2QoWPuR3Hw9A+wXNjnkhCJcylwd3L+es=;
-        b=Uhz6PC8dG4Dpd5ennmGPPlcR3rjbR5e8Far48FnvS9ywyMj3LJMun4J4RoYv5ND/9R
-         MfSXPRFXqNarBSbVu+24yiycwYf85sJpmn6OMys92Rxix7P4mXydz3SFF6vxysObBc3q
-         odrzY09QryWSE6bj0pEVJWjnbRZxlm51Xtcptx4UoIWPLTfHpI2EbwrJG6Ze1IFb5nZc
-         HnSePwDQ6hZ3fG5KIIvY3RCYNtAe8b5d2uijzK0Gn14BnLSS/1+yNzI82rJFb/anrWSJ
-         J+hm/t6KAQzrdZgisUhwHdhetKAQnh7YpfmGS8hiYDKFK7jRFTROPhz21f5DOtwLLFHG
-         N+yA==
+        bh=ngJ5UYt9SKlT6saxHknsrt2d0sXpyYKWRs8/VSUtHVk=;
+        b=S4bw69McdEQ7c2Zh27sr4nJS53/8cl03B5sS1nRvm+Mg4DP6gzfDvLijTKJULCp5ol
+         /jTqYBmIJ1ktF2uEiecFdfRnSBBOH1OBfq4lJezJsV9zD/TRDB8dN1e6Am4GrD2DvOk0
+         2ZjPpnNLm0Bw0HYU1qHpqOV8WJnHIl2O5w0QFNwCx5mEI3dh3LUjEa9s8IWRa/hv9I9g
+         Obhd3X/iTkh0UZL9O0UKvgcMqmqkExAGvNizyUQ/2Cou217Ihkcek0S0209yiinqP51J
+         YdFWTm2nTGw6/kVOBCLi+n31lgM50HvAxRnNNAq20SBnHB//W8/On+Xz4gUjiXrQ4z5R
+         KitA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712126639; x=1712731439;
+        d=1e100.net; s=20230601; t=1712126945; x=1712731745;
         h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=VctjFfQK7eQ2QoWPuR3Hw9A+wXNjnkhCJcylwd3L+es=;
-        b=t6/8/wEtC1d++pBrOPxHLMli6s+J2PWfKMlYUxL88Cyf/q1nAjmtdpPT6sV2qIAE2a
-         780Sz6S8bsjucGugtaU/+mIoQ7O0HthwZgUiF2TNy6a9FRp1t/rJ5fmCqMA3XExWTPoo
-         lSiIg1FCcnizyR6C6/9C8QDuZFT24aCT4Qr9VDU/YNunUL57rikd6znpt2toyegb2roy
-         NwT/Y3hySud5Mo8UuHNcUgUaSwZPYqfOHqWevWuIBhhvosUpIevSR67nDfduPS1TLtKt
-         oCyFmpHzrgLI66CIqVk6OIGvFQYjqQw60b3l/cY82ZGbf6vgwx+L2ZPPVS0PEx/6bYC0
-         +Fuw==
-X-Gm-Message-State: AOJu0Yy+jFiPDcuu7LNF9xxt3zUxQKasctNnI/dkmnbiaszt3vD86+Ot
-	BkC84pViX+/OgsBvN2Ee0gfXY9FN5jNm5jqDMnCXB2Fy2DKLlYd5XuVDFIUVDjNOQuoqUOFW0mD
-	ZbXyMWSmXkhdQ0CKg66evVWmSRGn3sP3C2Uo=
-X-Google-Smtp-Source: AGHT+IGp/zEA/6gxqT/dVckZTzLcWiOa2/HklU0KYe67P3QrTePycBq/KYGrh1xrZu2YIeOSt5t7M2mLKvErg9OMHnU=
-X-Received: by 2002:a05:6402:26d1:b0:56d:c4eb:6328 with SMTP id
- x17-20020a05640226d100b0056dc4eb6328mr8339513edd.29.1712126639405; Tue, 02
- Apr 2024 23:43:59 -0700 (PDT)
+        bh=ngJ5UYt9SKlT6saxHknsrt2d0sXpyYKWRs8/VSUtHVk=;
+        b=Kqp3Mpfx0HksPqVK53WQh9Yld1/rVrKhcDHbR/CB/usPP8zeH4MvbUWJ4/izRpw0te
+         xMu5XEiKHqra4PfGi1tGEl8RRsdruYbvjYoYGlnQJ5kwhk1xE81M1Tn8QLDEcVzjiWCn
+         iWBwfQhGOqrDXtCo7Vs4axSxH/2z09twJPbaIrfXkt+3W1LbrDJsCryte7W+JJba/k7/
+         ZW9n+OiXgseCCAyiIvPLBlkUG1RjQtBsl+sfutIGx9KcRjjOxpIezFm2fG21NtiTt5RZ
+         ThviNNF0iZntVaMI7VzleHMXZCe/yLhJC86gYlaHuY5rNZMjbWyXY26DLhToeVwCTD3O
+         ImMQ==
+X-Gm-Message-State: AOJu0Yxc+J6ZxXN77vsd1WBLdSBGITi7QwiTBswYHUCWqfB8hHBxZze1
+	il8LzyDFsqE+Y9Qc4MhCeDGA+gDp4Kjbch2wAAdHvHV0SMTDTf8Fh5Xt6Ff5JjOR2jPly/kJ1u1
+	GwYNNaRnL3kr7KIgKSjYNEvQ0H3V2PiWl+xc=
+X-Google-Smtp-Source: AGHT+IH2ZNKurN3f8+36r2ripMVJPL8DpU26g28oRTjRGbzaKBcN/jd5zR+pV7BpZyySMqjvlaGQK7SycQYzpvfwvxA=
+X-Received: by 2002:a17:907:1b21:b0:a4e:3715:7f4a with SMTP id
+ mp33-20020a1709071b2100b00a4e37157f4amr11773768ejc.71.1712126944990; Tue, 02
+ Apr 2024 23:49:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,34 +68,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
-Date: Wed, 3 Apr 2024 12:13:48 +0530
-Message-ID: <CAFTVevX6=4qFo6nwV14sCnfPRO9yb9q+YsP3XPaHMsP08E05iQ@mail.gmail.com>
-Subject: Requesting backport for ffceb7640cb (smb: client: do not defer close
- open handles to deleted files)
+Date: Wed, 3 Apr 2024 12:18:53 +0530
+Message-ID: <CAFTVevX6Yzjm40EoGZzex6G-f3T-YNG2CZMAuy=fBSwx9hm8Jw@mail.gmail.com>
+Subject: Requesting backport for 71f15c90e78 (smb: client: retry compound
+ request without reusing lease)
 To: stable@vger.kernel.org
 Cc: Steve French <smfrench@gmail.com>, Shyam Prasad N <nspmangalore@gmail.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, bharathsm@microsoft.com
+	Shyam Prasad N <sprasad@microsoft.com>, bharathsm@microsoft.com, 
+	Meetakshi Setiya <msetiya@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 
-commit ffceb7640cbfe6ea60e7769e107451d63a2fe3d3 upstream
-smb: client: do not defer close open handles to deleted files
+commit 71f15c90e785d1de4bcd65a279e7256684c25c0d upstream
+smb: client: retry compound request without reusing lease
 requesting backport to 6.8.x, 6.6.x, 6.5.x and 6.1.x
 
-This patch fixes an issue with deferred closes on the smb client exposed by
-patch 1 of this patch series:
+This patch fixes a potential regression  (eg. failure of xfstests generic 002
+and 013) that is introduced by patch 1 of this patch series:
 https://lore.kernel.org/stable/CAFTVevWEnEDAQbw59N-R03ppFgqa3qwTySfn61-+T4Vodq97Gw@mail.gmail.com/
 commit 2c7d399e551ccfd87bcae4ef5573097f3313d779
 (smb: client: reuse file lease key in compound operations)
 
-Without this patch applied, when an application deletes a file before closing
-all open handles to the said file, the smb client can defer close its handles.
-Consequentially, creating another file with the same name fails until all
-deferred handles close (specified by closetimeo value). When the rename, delete
-and set_path_size compound operations did not reuse leases, the lease breaks
-took care of degrading the file handle leases everytime one of these operations
-happened (even when on the same client). Without these (redundant) lease
-breaks on the same client, the handles still remain valid and this fix becomes
-necessary. Eg: Patch 1 without this patch would regress xfstest generic 591.
+As per MS-SMB2, lease keys are associated with the filename. The smb client
+maintains lease keys with the inode. Consequently, if a file has hardlinks,
+it is possible that the lease for a file be wrongly reused for an operation on
+its hardlink or vice versa. In cases such as this, the rename, delete and
+set_path_size compound operations that reuse the lease key (courtesy of patch 1)
+fail with STATUS_INVALID_PARAMETER.
+This behaviour (and the fact that lease keys are being associated with the inode
+and not the filename) was being concealed by the lease breaks issued after
+each of the mentioned compound operations (even on the same client) since the
+lease was never being reused. Hence, the fix becomes important.
 
 Thanks
 Meetakshi
