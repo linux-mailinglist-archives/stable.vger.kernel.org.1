@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-35804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388928976F1
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:36:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3F38976F3
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4596C1C21B9A
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:36:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99BD2296A82
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5A5161930;
-	Wed,  3 Apr 2024 17:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E916F161B6A;
+	Wed,  3 Apr 2024 17:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rp/Ot69v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqJPqQfB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FC6161925;
-	Wed,  3 Apr 2024 17:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0D161B52;
+	Wed,  3 Apr 2024 17:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164775; cv=none; b=Fqej9b6j+OVfjph9185kqRG7npJopRVfk6b0yJBGW4RFU4z+OAaG6pPqUihe6Yc1wrhGmlyH8Hnf+u2vHWNMawaBIi5mXqZhDh4XPw+2DU/MuSzq0QsxNFQ00sfkuqqZ7UONEoZ9GTaX+wOMFYubB9od014e0TeBnM6H3C/uwOA=
+	t=1712164776; cv=none; b=lbXwMRRbPr6BoUBK0Zi/5aBk47+rgZMlBjp0DP5Mp//wz1tnkvhB1+qe6huOXHPkfraeigFKcsPsLS85oEZ/vRzKNQ4oyqEc0AOiOWVzTgLtFrMlp5pR2jmik0YEE7NWI0Tn7awhzshsuHmmfP9Yp4WmEKbApbDrTEUEl6lHRvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164775; c=relaxed/simple;
-	bh=n+x5StEYqh8YD8dXWMUWdPHZZcntEZPt79LHRQAtZi0=;
+	s=arc-20240116; t=1712164776; c=relaxed/simple;
+	bh=mz4McjuT2qlYoiEkicjh9v8R7sroxYM+U54rgIlhYMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpzhhEeiA34R1OsW+FMQVI1fHziGiGSLovQMxr4pd5csnYZWGmtjOjJauibxu9XjoP4mzDmW5F7spDyHYcS/gJ+tiE8kAycVVDW52jIEbizMLTJJtO5rsyAEtke/RntjAT+Q2N6tf6fvDn2VIfCi37xiyNHI5lg5FsgS0CMlXxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rp/Ot69v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F02DC433C7;
-	Wed,  3 Apr 2024 17:19:34 +0000 (UTC)
+	 MIME-Version; b=tR3n6Ki6l1ahAujE3IwC18ZSAYTo7imwtU/cAVJntCz6Qy1Hr8yK8OfvRwtv8fudqeS9v9erWLqapx13ggnFeTm8bM0WMlQumzyULMu84sMWUDu7sAODJDT+n2ljXoa71trcr84wCzlREKvjuBB5IVVcrzcyzvNLicr/qD29G0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqJPqQfB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A504BC433F1;
+	Wed,  3 Apr 2024 17:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164775;
-	bh=n+x5StEYqh8YD8dXWMUWdPHZZcntEZPt79LHRQAtZi0=;
+	s=k20201202; t=1712164776;
+	bh=mz4McjuT2qlYoiEkicjh9v8R7sroxYM+U54rgIlhYMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rp/Ot69vv2/90JJPfvjfTxPw2bnCit8dnViSKwUzL0eXcNbD8cUMhR33/n1ZsDp0e
-	 zWtxuwM1wHvlSM0tD6xHeyPdzNVLn/R2rkE7sZAPEMGXZI/Ycp+fq82QrXG0pO+7E8
-	 p90BFf7Z9mRVXicjv2eDgXBvbuV3sTQwljcn37AQNDpHY6a/JebJuST1QNp3aN6Jjk
-	 803s23a/EO+kl1/e9467cLafcz8OhP20DrmyVbukLRk5YAEER1F/0PQzpU6a2JF20c
-	 KqR5gpAzAvHYSykoF3eQLdhrNj/dq3Lcdu4XSgHvZeN6jWZdFai96mCYUsbWPPRcgj
-	 +F/KKIJmb59+A==
+	b=LqJPqQfBS+X0lpIunFesSxKqiiuBt0JjrxyZNc9oU+QVNdY1ae1H0pixH69ANKJak
+	 cQj4g4Yvun4ikTGMpdsomuwan2LCm9k1CCHfDVNAY5J6NgsrsRZ1YMk4HhI6Uu3Yq2
+	 WM5bv5HJv/Y7jvJcflAIt2/i7THW08LpAEpf4rZ7c7qIdzgLPSN0rVQO5OVyYIZEPw
+	 /i58Zt+HIg5op4FRcJoetwpM5bNuJOiKG9xi0LroMHhiK4SGa44nzEaA1p7AYz75Fn
+	 z6rc+Facrbv3PihIQRT4PRGOA0az1qHqxzQG/fm9AkgvAM30rEQgGfbxR3Trb9dUGD
+	 9hXvNkuSgeDlg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	syzbot+f8e9a371388aa62ecab4@syzkaller.appspotmail.com,
+Cc: "Jiawei Fu (iBug)" <i@ibugone.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	io-uring@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 13/15] io_uring: clear opcode specific data for an early failure
-Date: Wed,  3 Apr 2024 13:18:57 -0400
-Message-ID: <20240403171909.345570-13-sashal@kernel.org>
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 14/15] drivers/nvme: Add quirks for device 126f:2262
+Date: Wed,  3 Apr 2024 13:18:58 -0400
+Message-ID: <20240403171909.345570-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240403171909.345570-1-sashal@kernel.org>
 References: <20240403171909.345570-1-sashal@kernel.org>
@@ -65,103 +67,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.84
 Content-Transfer-Encoding: 8bit
 
-From: Jens Axboe <axboe@kernel.dk>
+From: "Jiawei Fu (iBug)" <i@ibugone.com>
 
-[ Upstream commit e21e1c45e1fe2e31732f40256b49c04e76a17cee ]
+[ Upstream commit e89086c43f0500bc7c4ce225495b73b8ce234c1f ]
 
-If failure happens before the opcode prep handler is called, ensure that
-we clear the opcode specific area of the request, which holds data
-specific to that request type. This prevents errors where opcode
-handlers either don't get to clear per-request private data since prep
-isn't even called.
+This commit adds NVME_QUIRK_NO_DEEPEST_PS and NVME_QUIRK_BOGUS_NID for
+device [126f:2262], which appears to be a generic VID:PID pair used for
+many SSDs based on the Silicon Motion SM2262/SM2262EN controller.
 
-Reported-and-tested-by: syzbot+f8e9a371388aa62ecab4@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Two of my SSDs with this VID:PID pair exhibit the same behavior:
+
+  * They frequently have trouble exiting the deepest power state (5),
+    resulting in the entire disk unresponsive.
+    Verified by setting nvme_core.default_ps_max_latency_us=10000 and
+    observing them behaving normally.
+  * They produce all-zero nguid and eui64 with `nvme id-ns` command.
+
+The offending products are:
+
+  * HP SSD EX950 1TB
+  * HIKVISION C2000Pro 2TB
+
+Signed-off-by: Jiawei Fu <i@ibugone.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/nvme/host/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 35894955b4549..493b5708c662b 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1992,6 +1992,13 @@ static void io_init_req_drain(struct io_kiocb *req)
- 	}
- }
- 
-+static __cold int io_init_fail_req(struct io_kiocb *req, int err)
-+{
-+	/* ensure per-opcode data is cleared if we fail before prep */
-+	memset(&req->cmd.data, 0, sizeof(req->cmd.data));
-+	return err;
-+}
-+
- static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 		       const struct io_uring_sqe *sqe)
- 	__must_hold(&ctx->uring_lock)
-@@ -2012,29 +2019,29 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 
- 	if (unlikely(opcode >= IORING_OP_LAST)) {
- 		req->opcode = 0;
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 	}
- 	def = &io_op_defs[opcode];
- 	if (unlikely(sqe_flags & ~SQE_COMMON_FLAGS)) {
- 		/* enforce forwards compatibility on users */
- 		if (sqe_flags & ~SQE_VALID_FLAGS)
--			return -EINVAL;
-+			return io_init_fail_req(req, -EINVAL);
- 		if (sqe_flags & IOSQE_BUFFER_SELECT) {
- 			if (!def->buffer_select)
--				return -EOPNOTSUPP;
-+				return io_init_fail_req(req, -EOPNOTSUPP);
- 			req->buf_index = READ_ONCE(sqe->buf_group);
- 		}
- 		if (sqe_flags & IOSQE_CQE_SKIP_SUCCESS)
- 			ctx->drain_disabled = true;
- 		if (sqe_flags & IOSQE_IO_DRAIN) {
- 			if (ctx->drain_disabled)
--				return -EOPNOTSUPP;
-+				return io_init_fail_req(req, -EOPNOTSUPP);
- 			io_init_req_drain(req);
- 		}
- 	}
- 	if (unlikely(ctx->restricted || ctx->drain_active || ctx->drain_next)) {
- 		if (ctx->restricted && !io_check_restriction(ctx, req, sqe_flags))
--			return -EACCES;
-+			return io_init_fail_req(req, -EACCES);
- 		/* knock it to the slow queue path, will be drained there */
- 		if (ctx->drain_active)
- 			req->flags |= REQ_F_FORCE_ASYNC;
-@@ -2047,9 +2054,9 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 	}
- 
- 	if (!def->ioprio && sqe->ioprio)
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 	if (!def->iopoll && (ctx->flags & IORING_SETUP_IOPOLL))
--		return -EINVAL;
-+		return io_init_fail_req(req, -EINVAL);
- 
- 	if (def->needs_file) {
- 		struct io_submit_state *state = &ctx->submit_state;
-@@ -2073,12 +2080,12 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 
- 		req->creds = xa_load(&ctx->personalities, personality);
- 		if (!req->creds)
--			return -EINVAL;
-+			return io_init_fail_req(req, -EINVAL);
- 		get_cred(req->creds);
- 		ret = security_uring_override_creds(req->creds);
- 		if (ret) {
- 			put_cred(req->creds);
--			return ret;
-+			return io_init_fail_req(req, ret);
- 		}
- 		req->flags |= REQ_F_CREDS;
- 	}
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 3d01290994d89..5ff09f2cacab7 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3471,6 +3471,9 @@ static const struct pci_device_id nvme_id_table[] = {
+ 				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
++		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
++				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x126f, 0x2263),	/* Silicon Motion unidentified */
+ 		.driver_data = NVME_QUIRK_NO_NS_DESC_LIST |
+ 				NVME_QUIRK_BOGUS_NID, },
 -- 
 2.43.0
 
