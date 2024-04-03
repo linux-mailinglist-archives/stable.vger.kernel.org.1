@@ -1,149 +1,105 @@
-Return-Path: <stable+bounces-35836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29B0897789
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:57:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65186897793
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 107351C26CDC
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:57:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B1141F2B476
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94CB1552FF;
-	Wed,  3 Apr 2024 17:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E921534E6;
+	Wed,  3 Apr 2024 17:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQ+NT4TX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdGeyDNG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2741552E9;
-	Wed,  3 Apr 2024 17:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E327A433CB;
+	Wed,  3 Apr 2024 17:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712166955; cv=none; b=CinqlYr/gLMKGKhOSy8Euk8H8MS1yNKiHX1dsGsFadNgLyVqWIvje804g8LpxLRO6NJb6BTI3vlDy3PfiHkJh+ltroAEjPtgywtEjTJHSUnWZTgLADd7Pu1UgZcmvn/UP2ZCYzhCLsbkY8N1SINQozmaMZoIQR6Y+eJb/Q9+PIo=
+	t=1712166998; cv=none; b=GVwM5dmDiPTc14DnyjfFvFVw/0RFHHS1s7jRy1UYlOm2oqhiZsgxlGztoa37ecLH/Rs7iHBn84nLY29Q4nSUXdPuq5rS+FjBPuIAONWo7dW88B+4pyjisqYjwhllXKgfFU6FLZ//oj7casbIaLfXrLE8L6PTkLi4guTvmPEG0co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712166955; c=relaxed/simple;
-	bh=J5TfZyKONccTNWMd4sxbl/pluk/b9ke3PXnf0oemFG4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eDloQI1duwok8u7jesCTxc4Gl472jRMDZi7bJnkGXeeuCaFbUF6Dbt81qUWfupkCdlFxllXD34ie/SW5IgCIyxHfeaWjBiaD9pCp7+pwht8nPGHG82kvv4nE4TwqsaQ0nPWfCnz56GDCReSoF1x0WoXOh/d9V97/VOQAHQB4yXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQ+NT4TX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FBCC433C7;
-	Wed,  3 Apr 2024 17:55:54 +0000 (UTC)
+	s=arc-20240116; t=1712166998; c=relaxed/simple;
+	bh=sYYWcpBIrmCa1ZSmB4h4Gvf8c/ITLDUolncS5ib8q5E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NZfaqAemPt7LU+bQXqUIZ233/rhILJMnOSRWTtU0eYS9AvxbPg6TsWz0PPSSFl2coPmi7uOiZNtzNWRvd9ROTIIlLMI5ZvAzGTiv/YusJd3Mp4S1LoqKFkq41qvYI8lukw8OYsIyMldGW+z6pAfWRt6oUy8HszOvFYvNkdiIq9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdGeyDNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02746C433F1;
+	Wed,  3 Apr 2024 17:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712166955;
-	bh=J5TfZyKONccTNWMd4sxbl/pluk/b9ke3PXnf0oemFG4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eQ+NT4TXJbO2k9h6D/+MkUvv1+CLOXn8T0NxhUhriK2vA6oyNcNiXV6yGZW+JOXRf
-	 XFcbyBjPwjvI1mnqSyhPM7M5Q9iPsm+LKfBSIzdbcm4HakLG9c9w4zWmGyEJ6feB3P
-	 MbRb50TXJV+gJShZ+GjPQSIhFZP9aGh6wkZM5rIQ=
+	s=korg; t=1712166997;
+	bh=sYYWcpBIrmCa1ZSmB4h4Gvf8c/ITLDUolncS5ib8q5E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GdGeyDNGFsZ0J0HegeMe7iqbC+TuIggTjiLKpZieLa0IK2zmFQnbSMDn0CmY+3mYI
+	 tfAIysRnIgp8Y0aRTyUIStf6wxKosHlM+3iBvtl/0X+/c6U9GkNc9OMtewpWNhql9V
+	 dNywoLgwRrvRdN2Kn8ok+5E44s2qPGmrVeMFLELs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org
-Subject: [PATCH 6.8 00/11] 6.8.4-rc1 review
-Date: Wed,  3 Apr 2024 19:55:39 +0200
-Message-ID: <20240403175125.754099419@linuxfoundation.org>
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Tejun Heo <tj@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Audra Mitchell <audra@redhat.com>
+Subject: [PATCH 6.8 01/11] Revert "workqueue: Shorten events_freezable_power_efficient name"
+Date: Wed,  3 Apr 2024 19:55:40 +0200
+Message-ID: <20240403175125.807427157@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240403175125.754099419@linuxfoundation.org>
+References: <20240403175125.754099419@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.4-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.8.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.8.4-rc1
-X-KernelTest-Deadline: 2024-04-05T17:51+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.8.4 release.
-There are 11 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Fri, 05 Apr 2024 17:51:13 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.4-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
-and the diffstat can be found below.
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-thanks,
+This reverts commit fb89c8fa412f6caa34316c140e861bd3c4d7e83a which is
+commit 8318d6a6362f5903edb4c904a8dd447e59be4ad1 upstream
 
-greg k-h
+The workqueue patches backported to 6.8.y caused some reported
+regressions, so revert them for now.
 
--------------
-Pseudo-Shortlog of commits:
+Reported-by: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/ce4c2f67-c298-48a0-87a3-f933d646c73b@leemhuis.info/
+Cc: Audra Mitchell <audra@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ kernel/workqueue.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.8.4-rc1
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue.c: Increase workqueue name length"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Move pwq->max_active to wq->max_active"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Factor out pwq_is_empty()"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Replace pwq_activate_inactive_work() with [__]pwq_activate_work()"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Move nr_active handling into helpers"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Make wq_adjust_max_active() round-robin pwqs while activating"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: RCU protect wq->dfl_pwq and implement accessors for it"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Introduce struct wq_node_nr_active"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Implement system-wide nr_active enforcement for unbound workqueues"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Don't call cpumask_test_cpu() with -1 CPU in wq_update_node_max_active()"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "workqueue: Shorten events_freezable_power_efficient name"
-
-
--------------
-
-Diffstat:
-
- Makefile                  |   4 +-
- include/linux/workqueue.h |  35 +--
- kernel/workqueue.c        | 757 ++++++++--------------------------------------
- 3 files changed, 132 insertions(+), 664 deletions(-)
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -7186,7 +7186,7 @@ void __init workqueue_init_early(void)
+ 					      WQ_FREEZABLE, 0);
+ 	system_power_efficient_wq = alloc_workqueue("events_power_efficient",
+ 					      WQ_POWER_EFFICIENT, 0);
+-	system_freezable_power_efficient_wq = alloc_workqueue("events_freezable_pwr_efficient",
++	system_freezable_power_efficient_wq = alloc_workqueue("events_freezable_power_efficient",
+ 					      WQ_FREEZABLE | WQ_POWER_EFFICIENT,
+ 					      0);
+ 	BUG_ON(!system_wq || !system_highpri_wq || !system_long_wq ||
 
 
 
