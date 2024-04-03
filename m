@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-35803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3809F89783C
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:28:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E58989783B
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0785BB30303
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:36:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B938B33213
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919AB161910;
-	Wed,  3 Apr 2024 17:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEDB155734;
+	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BxJYywpm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVbIR+r8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6FA161908;
-	Wed,  3 Apr 2024 17:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB1C15445F;
+	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164774; cv=none; b=TU0FxUF3bW8cMI4Z09z815PUu0NkGyffZcRO2pKoG2+RZ4I1cIBeH+5CEsdD9UArJnq14TBIfdIY1xXxiSAq+/FmnW+3K4brsVpNx88yl5bgtjwsRI16SFOlqcQoM1v/TYjVps1CEos1jIAuFXnGIe7dfHAgNc3EMbcVW2Qz33E=
+	t=1712164786; cv=none; b=OTgJsmIdtS6sBveLy46Lu+O/PXSIRlO85PTtBPSpeAAcaTTiXtJvlcL5sySeBxWAw6qnnJKrSuH5Pv5PMzmJ7yEqTDVHBjRWNWrwSveVDZ4KoDA1dtiTWsFp+c9DPX7iOogv4NJ4dvz2dGDm3C1jOufuIgE90G3UkilZRA0PatQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164774; c=relaxed/simple;
-	bh=KGum2UiFM/XeeIttcKMIY9uAmatsd+1YLL7DOdMp7+8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hwf5B/GQHuga9A+bgz/pv44y83QJu6w3n3RCHpwOm5tGvNVo4TWLW6CcgzhcEfhBgFK7Zhgrg6KwnLmJQoflGBhBVl01xI7GXdEEjSss9dhgu/q5hofqYiE/mq44XxpZiWg6z27lH7kZhQ83GtNpNu/smX85tVDL3UOQRP3ZUa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BxJYywpm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46003C43330;
-	Wed,  3 Apr 2024 17:19:33 +0000 (UTC)
+	s=arc-20240116; t=1712164786; c=relaxed/simple;
+	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GGla2lTzWbzheD5M1UXmkqjkxtGmAth1pxbAJkkxS1VVFH9ywA8ys2IWOVKncC25rqdFG25webB+QYuhZaH9lIThV4mRpDtPutFsQvQaAVAj3sTWCBoU5PsnXjerVUjdFUV/X7lCg5pnMHFJN1m9zTIAvOhGsMAr3rZv+VIYCnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVbIR+r8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4202BC433C7;
+	Wed,  3 Apr 2024 17:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164774;
-	bh=KGum2UiFM/XeeIttcKMIY9uAmatsd+1YLL7DOdMp7+8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxJYywpmra78Gjn9DYEa57C4jiRZo5Fw9WEcSfmnjczIo32MIM+OXGHiTZmiX3dkS
-	 JID+bJjLG29Bukx6kheSDjeFa1uPFkjBFWkqvKkANLXdjg8IorgnFCNmr+TL9VJB0C
-	 wbIyHITEzW+zR2oFAyKPEOx4xLlokq5r+2Fb4ia/KXpo2mUcIN3cYEP7KqPhGVukz4
-	 OYb/XtVkat2kuwqVSkN+9FNuleLeAnEj3WcnEDKYb2rZzvGC1vj+1ZwX8iPCQgDQm6
-	 FKX0hT0IX0kmz7qVBaPOEimjB3fIsHxbznMkAeop5twpf6NQgTEaCCBvfLNbE6lPyI
-	 s6ZoRwsrQ5tMg==
+	s=k20201202; t=1712164786;
+	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EVbIR+r8J0z1LSA6g3ojvDMv4776mo+GBk3H2S+mLRvWJKq2CbNQPRuHuefdKa1qB
+	 L20jqlDry7Oa7bIiaXS0WE9UUrCC1v3IuC5Z47fbgBlIYf3c9i0cR5e5x12dNyOnH7
+	 aQS9kk0s1TOS74Ws6tOQ21EmPvvc9J8JOorK8uZfwTjJWD/IkdRF6zHBio1rnINw9p
+	 No4nsjVkgAeqgQ7DzswNCvxiyah+Hia1b2L5pc5w4EjvL4wHbyDvI9RR5D8xsGF68Z
+	 UPJll4oS7ch7RHHdCTqqeBfFRanlxc+zJs0e+YbkXXrZG1xBLIg8twFXqsdebrLZkQ
+	 pvo6FswTd/etQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Helge Deller <deller@gmx.de>,
+Cc: Petre Rodan <petre.rodan@subdimension.ro>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	FlorianSchandinat@gmx.de,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 12/15] fbdev: viafb: fix typo in hw_bitblt_1 and hw_bitblt_2
-Date: Wed,  3 Apr 2024 13:18:56 -0400
-Message-ID: <20240403171909.345570-12-sashal@kernel.org>
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 1/8] tools: iio: replace seekdir() in iio_generic_buffer
+Date: Wed,  3 Apr 2024 13:19:34 -0400
+Message-ID: <20240403171945.350716-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240403171909.345570-1-sashal@kernel.org>
-References: <20240403171909.345570-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,48 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.84
+X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
-From: Aleksandr Burakov <a.burakov@rosalinux.ru>
+From: Petre Rodan <petre.rodan@subdimension.ro>
 
-[ Upstream commit bc87bb342f106a0402186bcb588fcbe945dced4b ]
+[ Upstream commit 4e6500bfa053dc133021f9c144261b77b0ba7dc8 ]
 
-There are some actions with value 'tmp' but 'dst_addr' is checked instead.
-It is obvious that a copy-paste error was made here and the value
-of variable 'tmp' should be checked here.
+Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+One of the glibc patches that stable Gentoo is using causes an improper
+directory stream positioning bug on 32bit arm. That in turn ends up as a
+floating point exception in iio_generic_buffer.
 
-Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+The attached patch provides a fix by using an equivalent function which
+should not cause trouble for other distros and is easier to reason about
+in general as it obviously always goes back to to the start.
+
+https://sourceware.org/bugzilla/show_bug.cgi?id=31212
+
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Link: https://lore.kernel.org/r/20240108103224.3986-1-petre.rodan@subdimension.ro
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/via/accel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/iio/iio_utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/via/accel.c b/drivers/video/fbdev/via/accel.c
-index 0a1bc7a4d7853..1e04026f08091 100644
---- a/drivers/video/fbdev/via/accel.c
-+++ b/drivers/video/fbdev/via/accel.c
-@@ -115,7 +115,7 @@ static int hw_bitblt_1(void __iomem *engine, u8 op, u32 width, u32 height,
+diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
+index 6a00a6eecaef0..c5c5082cb24e5 100644
+--- a/tools/iio/iio_utils.c
++++ b/tools/iio/iio_utils.c
+@@ -376,7 +376,7 @@ int build_channel_array(const char *device_dir, int buffer_idx,
+ 		goto error_close_dir;
+ 	}
  
- 	if (op != VIA_BITBLT_FILL) {
- 		tmp = src_mem ? 0 : src_addr;
--		if (dst_addr & 0xE0000007) {
-+		if (tmp & 0xE0000007) {
- 			printk(KERN_WARNING "hw_bitblt_1: Unsupported source "
- 				"address %X\n", tmp);
- 			return -EINVAL;
-@@ -260,7 +260,7 @@ static int hw_bitblt_2(void __iomem *engine, u8 op, u32 width, u32 height,
- 		writel(tmp, engine + 0x18);
- 
- 		tmp = src_mem ? 0 : src_addr;
--		if (dst_addr & 0xE0000007) {
-+		if (tmp & 0xE0000007) {
- 			printk(KERN_WARNING "hw_bitblt_2: Unsupported source "
- 				"address %X\n", tmp);
- 			return -EINVAL;
+-	seekdir(dp, 0);
++	rewinddir(dp);
+ 	while (ent = readdir(dp), ent) {
+ 		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
+ 			   "_en") == 0) {
 -- 
 2.43.0
 
