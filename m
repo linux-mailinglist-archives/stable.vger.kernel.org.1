@@ -1,74 +1,57 @@
-Return-Path: <stable+bounces-35771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D0B897692
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:27:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416ED897696
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D344B1C28D5C
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:27:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704B71C2891B
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16C8158A16;
-	Wed,  3 Apr 2024 17:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9188A15530B;
+	Wed,  3 Apr 2024 17:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVyzG2/j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rCWitntS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E210158A11;
-	Wed,  3 Apr 2024 17:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B795158D93;
+	Wed,  3 Apr 2024 17:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164678; cv=none; b=i+o/UStcMmj7CZGN+pVqkpV5vpYOfKW8yBM3XDVfPe4mbhgh8VYkjMpkrztaggrbTj6nUIsczlTCnVcwd1ki7WZ6k9BdkVej+i+ahe6D7yZR525PPq7rxztPtkZLcNGSj8VLXuZbfQUF/xtR4HJvo1Oe+TtrZOv/bbUVmKOznR8=
+	t=1712164696; cv=none; b=iXzowNbEywYy46Ji3emyyZZ9opLre8li0+2NzN1MXsltyUeYWogoT9LqpYuO64YNiqPQM9lwRPIm88fYzhP7ZDk3glgwl8BDCw5ZCKJe9rdJbzfbui+04IMo5iCTe5MGcormrIQb3JziEWEbdwtKsD3BlSiBdTyiP1+yaBEw/xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164678; c=relaxed/simple;
-	bh=vNzntSBU+b6TfbGOfyJBQ1n0n6FBTCdqcV6dpTvL1f8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRdzFWlUUOvIcbZZYRl3lSTwhOzTaQ+5DJhyUc7dADUxfk+2A7Nq4uNemkI7O4VmY6gTJbJisIa1V5bf0RPvWvp0R+GjxAVSBHEzPHqGO5zP9hLSkeyW+qh3IMcf6MejIEWhxUm/QNOMweL+iqU+hNEMA5siNllnusN7D6l+ppM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVyzG2/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D505C433C7;
-	Wed,  3 Apr 2024 17:17:56 +0000 (UTC)
+	s=arc-20240116; t=1712164696; c=relaxed/simple;
+	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VDQFP/+RE448+8O7c9sq7axUsB96QSADh2+D5guwhpKAIzCMKxRUhEEyIUUsUIUegc+ttLov3A3cJ2a68KFMF1/c+eW3r/AqMdQeBpAdy88zcD58wH5Ph3c29viCwk6eb/EEV6fSF1shOSA7q+s8I5Y+SSUXrN0A2G+Txz+tDVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rCWitntS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E764C433F1;
+	Wed,  3 Apr 2024 17:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164678;
-	bh=vNzntSBU+b6TfbGOfyJBQ1n0n6FBTCdqcV6dpTvL1f8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVyzG2/jt/yjTVatHeGAd6vMH2yKsa3v7qx7Z/E3HvTlLEpGRDNgsPqSjBLn2WdJX
-	 afa0ZXTbQxTCrt5BWRJfiTbvLSRANCy3PbHbLtk77t//sps/BipNU08Q4jRhW39lYb
-	 9dRh8WE8x5HDrmbJexcCdFfgfaDSVFQXhhEJQPK8YzW8NnuSRQw1M5gLP5BiU555yC
-	 1KG2A8GouBX8nh+LVBaDv9uuud709dekT+M+ISP3mIWF6q+6O0Jyh3hwIQAYoIHZFa
-	 7Z+KbRP+yQvMJw5/i150fdM2v5MP+PdwvUlMXunBLLRul8pM3pYW6cqpWGXebXevjU
-	 N/Bts6Ns0i7GQ==
+	s=k20201202; t=1712164696;
+	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rCWitntS/Kmz738F/mtyUAY21cHEMGBwnAdp5x7Ub7Li+c4PcL7jMvmPm0cDcvwT7
+	 AjTbQQqPdkBr3SDGMpMs9/wz61F5Zwg//OaKYdYu89EaoYcHF3AIX8Azvwp/0CNO4R
+	 u94IRdb2suKXOSQyvcerO2qPNUFaplOYboua9dWeWyqqWdNZMCm0L5qFKjVjF/8zh+
+	 qeOlj4QWwq5LXXt8ECfI4rpK6p3SfJMQRk9puwNVVeJTJTjfMNQ6taLHc0tgSI17gr
+	 ITHpiCstm2XeYh7diN0i3OmJ8Y4ix3ZV6iguGyFbD6kpmMl5bOwbjyDBrsqALFzbpK
+	 7Ex6Trc9F1mAQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ahmad Rehman <Ahmad.Rehman@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Petre Rodan <petre.rodan@subdimension.ro>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	mario.limonciello@amd.com,
-	lijo.lazar@amd.com,
-	le.ma@amd.com,
-	srinivasan.shanmugam@amd.com,
-	andrealmeid@igalia.com,
-	Jun.Ma2@amd.com,
-	James.Zhu@amd.com,
-	hamza.mahfooz@amd.com,
-	aurabindo.pillai@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.8 28/28] drm/amdgpu: Init zone device and drm client after mode-1 reset on reload
-Date: Wed,  3 Apr 2024 13:16:30 -0400
-Message-ID: <20240403171656.335224-28-sashal@kernel.org>
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/20] tools: iio: replace seekdir() in iio_generic_buffer
+Date: Wed,  3 Apr 2024 13:17:42 -0400
+Message-ID: <20240403171815.342668-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240403171656.335224-1-sashal@kernel.org>
-References: <20240403171656.335224-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,65 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.8.3
+X-stable-base: Linux 6.6.24
 Content-Transfer-Encoding: 8bit
 
-From: Ahmad Rehman <Ahmad.Rehman@amd.com>
+From: Petre Rodan <petre.rodan@subdimension.ro>
 
-[ Upstream commit f679fd6057fbf5ab34aaee28d58b7f81af0cbf48 ]
+[ Upstream commit 4e6500bfa053dc133021f9c144261b77b0ba7dc8 ]
 
-In passthrough environment, when amdgpu is reloaded after unload, mode-1
-is triggered after initializing the necessary IPs, That init does not
-include KFD, and KFD init waits until the reset is completed. KFD init
-is called in the reset handler, but in this case, the zone device and
-drm client is not initialized, causing app to create kernel panic.
+Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
 
-v2: Removing the init KFD condition from amdgpu_amdkfd_drm_client_create.
-As the previous version has the potential of creating DRM client twice.
+One of the glibc patches that stable Gentoo is using causes an improper
+directory stream positioning bug on 32bit arm. That in turn ends up as a
+floating point exception in iio_generic_buffer.
 
-v3: v2 patch results in SDMA engine hung as DRM open causes VM clear to SDMA
-before SDMA init. Adding the condition to in drm client creation, on top of v1,
-to guard against drm client creation call multiple times.
+The attached patch provides a fix by using an equivalent function which
+should not cause trouble for other distros and is easier to reason about
+in general as it obviously always goes back to to the start.
 
-Signed-off-by: Ahmad Rehman <Ahmad.Rehman@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+https://sourceware.org/bugzilla/show_bug.cgi?id=31212
+
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Link: https://lore.kernel.org/r/20240108103224.3986-1-petre.rodan@subdimension.ro
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    | 5 ++++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ tools/iio/iio_utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-index 41db030ddc4ee..131983ed43465 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -146,7 +146,7 @@ int amdgpu_amdkfd_drm_client_create(struct amdgpu_device *adev)
- {
- 	int ret;
- 
--	if (!adev->kfd.init_complete)
-+	if (!adev->kfd.init_complete || adev->kfd.client.dev)
- 		return 0;
- 
- 	ret = drm_client_init(&adev->ddev, &adev->kfd.client, "kfd",
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 586f4d03039df..64b1bb2404242 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2451,8 +2451,11 @@ static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work)
+diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
+index 6a00a6eecaef0..c5c5082cb24e5 100644
+--- a/tools/iio/iio_utils.c
++++ b/tools/iio/iio_utils.c
+@@ -376,7 +376,7 @@ int build_channel_array(const char *device_dir, int buffer_idx,
+ 		goto error_close_dir;
  	}
- 	for (i = 0; i < mgpu_info.num_dgpu; i++) {
- 		adev = mgpu_info.gpu_ins[i].adev;
--		if (!adev->kfd.init_complete)
-+		if (!adev->kfd.init_complete) {
-+			kgd2kfd_init_zone_device(adev);
- 			amdgpu_amdkfd_device_init(adev);
-+			amdgpu_amdkfd_drm_client_create(adev);
-+		}
- 		amdgpu_ttm_set_buffer_funcs_status(adev, true);
- 	}
- }
+ 
+-	seekdir(dp, 0);
++	rewinddir(dp);
+ 	while (ent = readdir(dp), ent) {
+ 		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
+ 			   "_en") == 0) {
 -- 
 2.43.0
 
