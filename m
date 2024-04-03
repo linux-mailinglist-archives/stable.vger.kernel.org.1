@@ -1,167 +1,173 @@
-Return-Path: <stable+bounces-35654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5F9896092
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 02:17:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E8C896185
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 02:34:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3945B2883B2
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 00:17:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF2C2854A9
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 00:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD39645;
-	Wed,  3 Apr 2024 00:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD7ED527;
+	Wed,  3 Apr 2024 00:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGG9SKGd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vO1S4Lh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F2417E9;
-	Wed,  3 Apr 2024 00:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359081BF20;
+	Wed,  3 Apr 2024 00:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712103475; cv=none; b=tmh+n21Q8G+qlH/307t3aZ9zw1nefmdFA8F/e+/nJ4NCcqrC7GFXF/cox+3vll16Qt35VTw6smVlWXz6vfZdauYoSy+SibIdy6H0GbAaPUktR+TJmytRgYrPOHXMBWeBsLejw78kjbKUTGaeSYGNxXM4UuysDg5mPRiv1jVkdFc=
+	t=1712104436; cv=none; b=F0JKjC2SDNCT1ya+k1rd6witCei6I/v83TXfGNY1X6UL1i5sMRd3gUER/oDfWl7atSnCkUE6bI5YAQIq4H2A/FvLv2mqBD1n2fO6ImR+sV4Nbl4Nl8+FySPY2GPfjcJuo5FFNH7ozwMDbBvIvGP1eKq44x4wisv7PFyYohSAvTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712103475; c=relaxed/simple;
-	bh=sHgvd1fTo2VqtFJgQPfEcu4tn8JHo+ny6Y4xG9wOshA=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=GVmEhBv9nkru3WFIu46a+7ZT7sx52sbu/rZseEGgWT64fBDjxdwseV031CJJe3v1ji3AQovvIbCnB+N++q2S3Hc65+HiDldbRQlOYh621Q2F5WEhCWPljh5LLYckVSu7QHR3pG8l9Xpr+klQfyJfb0nQLjtXLjNhHxH2rpIUhh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGG9SKGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0FEC433F1;
-	Wed,  3 Apr 2024 00:17:51 +0000 (UTC)
+	s=arc-20240116; t=1712104436; c=relaxed/simple;
+	bh=klEagrQlHOJ1VL1CB6eLV3nxtQjaEnWxsl/7W0ysDw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kczTzB6meSU8R4BW+ltaUggQzI8M74mWnzotRYAOpvAxNXz4+9Kq7UXIOgDwwWfV5iY5rZvNygWaRt6YYcBlgSEGcUJ3bv7cZ1wAZ1ggdQEUc7f3JpMlnzP+s5RB2QDDv2mUofntIojPO00bcdBPViEwz5O3tDyUH+MLu/em/vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vO1S4Lh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79852C433F1;
+	Wed,  3 Apr 2024 00:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712103474;
-	bh=sHgvd1fTo2VqtFJgQPfEcu4tn8JHo+ny6Y4xG9wOshA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IGG9SKGdduYj61/8ncQMRZFotBcnc7tRhF98LvdNe1q5Trd/Q95VMynAj6IFwZV2d
-	 +Hr+r7WPeX78rfqwHUfmPmLNWecOltGKTP3n1KqgR+MdhdSLcoRyAeNd5VJ9ubsadR
-	 es3irfdWZVP1NY58WcfE4/Jg2eJ8Ig/r8i7NHxoycHzW65apX6ZX9gavvY5QrxdmI1
-	 Y3p7uw4bWxHWutbYzkkBHA9npG4sdmllsKB/+ZqRD1T/8IcNm9t5egnMeBEB8Rtyv4
-	 yMSKPA7AYz5891OEgJxTHXc7PlRiGNrp67guTGR900TpeoHZSPGYC7qIMIGn9RwEIV
-	 4QTtIM3llzOvg==
-Date: Wed, 3 Apr 2024 09:17:48 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Valentin Obst <kernel@valentinobst.de>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo
- Molnar <mingo@kernel.org>, Ingo Molnar <mingo@redhat.com>, Thomas Gleixner
- <tglx@linutronix.de>, Andreas Hindborg <a.hindborg@samsung.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, John Baublitz
- <john.m.baublitz@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, Miguel
- Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Sergio
- =?UTF-8?B?R29uesOhbGV6?= Collado <sergio.collado@gmail.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] x86/tools: fix line number reported for malformed
- lines
-Message-Id: <20240403091748.ee180a7a1d4bf92e0c46fb8a@kernel.org>
-In-Reply-To: <20240329-x86-insn-decoder-line-fix-v3-1-ec97e21d63bf@valentinobst.de>
-References: <20240329-x86-insn-decoder-line-fix-v3-1-ec97e21d63bf@valentinobst.de>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=k20201202; t=1712104435;
+	bh=klEagrQlHOJ1VL1CB6eLV3nxtQjaEnWxsl/7W0ysDw4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vO1S4Lh634Pax1oTwLdDx6S5jW3ZVFRdYxDuYmRJGt2ZKUhwopatIM4xd08+gM8v/
+	 UGYsV3kVODscJOa3s+1uNpg5IaDy2Z9ddRGk5eR8MHWDCUYGG80o4wYJ6MHX0Gz/+o
+	 f96ItQ2rhj3AGJqAC453khLk/OgbUX57RalalUMpdS7AQG6xrtFH+sMPmk4O3TuqsE
+	 CSJkNKi8RkehUxJlxemMhgutDKb2bm9ShZaJK/A/RO5wUFUe/0SYzLyPOqPNteQDEw
+	 9W2z9lCVOeNOyTd1N4gef/QTqm1lO11eZBmL8BwGlC1F+/jjdCOtP3PBGqdX1u/jMd
+	 apcI3Nq7JvI/A==
+Date: Tue, 2 Apr 2024 20:33:55 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: David Sterba <dsterba@suse.cz>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Filipe Manana <fdmanana@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	clm@fb.com, linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.8 59/68] btrfs: preallocate temporary extent
+ buffer for inode logging when needed
+Message-ID: <Zgyj800yVkeKmbmq@sashalap>
+References: <20240329122652.3082296-1-sashal@kernel.org>
+ <20240329122652.3082296-59-sashal@kernel.org>
+ <20240402133518.GD14596@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240402133518.GD14596@suse.cz>
 
-On Fri, 29 Mar 2024 12:31:58 +0100
-Valentin Obst <kernel@valentinobst.de> wrote:
+On Tue, Apr 02, 2024 at 03:35:18PM +0200, David Sterba wrote:
+>On Fri, Mar 29, 2024 at 08:25:55AM -0400, Sasha Levin wrote:
+>> From: Filipe Manana <fdmanana@suse.com>
+>>
+>> [ Upstream commit e383e158ed1b6abc2d2d3e6736d77a46393f80fa ]
+>>
+>> When logging an inode and we require to copy items from subvolume leaves
+>> to the log tree, we clone each subvolume leaf and than use that clone to
+>> copy items to the log tree. This is required to avoid possible deadlocks
+>> as stated in commit 796787c978ef ("btrfs: do not modify log tree while
+>> holding a leaf from fs tree locked").
+>>
+>> The cloning requires allocating an extent buffer (struct extent_buffer)
+>> and then allocating pages (folios) to attach to the extent buffer. This
+>> may be slow in case we are under memory pressure, and since we are doing
+>> the cloning while holding a read lock on a subvolume leaf, it means we
+>> can be blocking other operations on that leaf for significant periods of
+>> time, which can increase latency on operations like creating other files,
+>> renaming files, etc. Similarly because we're under a log transaction, we
+>> may also cause extra delay on other tasks doing an fsync, because syncing
+>> the log requires waiting for tasks that joined a log transaction to exit
+>> the transaction.
+>>
+>> So to improve this, for any inode logging operation that needs to copy
+>> items from a subvolume leaf ("full sync" or "copy everything" bit set
+>> in the inode), preallocate a dummy extent buffer before locking any
+>> extent buffer from the subvolume tree, and even before joining a log
+>> transaction, add it to the log context and then use it when we need to
+>> copy items from a subvolume leaf to the log tree. This avoids making
+>> other operations get extra latency when waiting to lock a subvolume
+>> leaf that is used during inode logging and we are under heavy memory
+>> pressure.
+>>
+>> The following test script with bonnie++ was used to test this:
+>>
+>>   $ cat test.sh
+>>   #!/bin/bash
+>>
+>>   DEV=/dev/sdh
+>>   MNT=/mnt/sdh
+>>   MOUNT_OPTIONS="-o ssd"
+>>
+>>   MEMTOTAL_BYTES=`free -b | grep Mem: | awk '{ print $2 }'`
+>>   NR_DIRECTORIES=20
+>>   NR_FILES=20480
+>>   DATASET_SIZE=$((MEMTOTAL_BYTES * 2 / 1048576))
+>>   DIRECTORY_SIZE=$((MEMTOTAL_BYTES * 2 / NR_FILES))
+>>   NR_FILES=$((NR_FILES / 1024))
+>>
+>>   echo "performance" | \
+>>       tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+>>
+>>   umount $DEV &> /dev/null
+>>   mkfs.btrfs -f $MKFS_OPTIONS $DEV
+>>   mount $MOUNT_OPTIONS $DEV $MNT
+>>
+>>   bonnie++ -u root -d $MNT \
+>>       -n $NR_FILES:$DIRECTORY_SIZE:$DIRECTORY_SIZE:$NR_DIRECTORIES \
+>>       -r 0 -s $DATASET_SIZE -b
+>>
+>>   umount $MNT
+>>
+>> The results of this test on a 8G VM running a non-debug kernel (Debian's
+>> default kernel config), were the following.
+>>
+>> Before this change:
+>>
+>>   Version 2.00a       ------Sequential Output------ --Sequential Input- --Random-
+>>                       -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
+>>   Name:Size etc        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
+>>   debian0       7501M  376k  99  1.4g  96  117m  14 1510k  99  2.5g  95 +++++ +++
+>>   Latency             35068us   24976us    2944ms   30725us   71770us   26152us
+>>   Version 2.00a       ------Sequential Create------ --------Random Create--------
+>>   debian0             -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
+>>   files:max:min        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
+>>   20:384100:384100/20 20480  32 20480  58 20480  48 20480  39 20480  56 20480  61
+>>   Latency               411ms   11914us     119ms     617ms   10296us     110ms
+>>
+>> After this change:
+>>
+>>   Version 2.00a       ------Sequential Output------ --Sequential Input- --Random-
+>>                       -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
+>>   Name:Size etc        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
+>>   debian0       7501M  375k  99  1.4g  97  117m  14 1546k  99  2.3g  98 +++++ +++
+>>   Latency             35975us  20945us    2144ms   10297us    2217us    6004us
+>>   Version 2.00a       ------Sequential Create------ --------Random Create--------
+>>   debian0             -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
+>>   files:max:min        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
+>>   20:384100:384100/20 20480  35 20480  58 20480  48 20480  40 20480  57 20480  59
+>>   Latency               320ms   11237us   77779us     518ms    6470us   86389us
+>>
+>> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+>> Signed-off-by: Filipe Manana <fdmanana@suse.com>
+>> Reviewed-by: David Sterba <dsterba@suse.com>
+>> Signed-off-by: David Sterba <dsterba@suse.com>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This is a performance improvement, how does this qualify for stable? I
+>read only about notable perfromance fixes but this is not one.
 
-> Commit 35039eb6b199 ("x86: Show symbol name if insn decoder test failed")
-> included symbol lines in the post-processed objdump output consumed by
-> the insn decoder test. This broke the `instuction lines == total lines`
-> property that `insn_decoder_test.c` relied upon to print the offending
-> line's number in error messages. This has the consequence that the line
-> number reported on a test failure is unreated to, and much smaller than,
-> the line that actually caused the problem.
-> 
-> Add a new variable that counts the combined (insn+symbol) line count and
-> report this in the error message.
-
-This looks good to me. Thanks!
-
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-> 
-> Fixes: 35039eb6b199 ("x86: Show symbol name if insn decoder test failed")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-> Tested-by: Miguel Ojeda <ojeda@kernel.org>
-> Reported-by: John Baublitz <john.m.baublitz@gmail.com>
-> Debugged-by: John Baublitz <john.m.baublitz@gmail.com>
-> Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-> ---
-> See v2's commit message and [1] for context why this bug made debugging a
-> test failure harder than necessary.
-> 
-> [1]: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/insn_decoder_test.20failure/near/421075039
-> 
-> Changes in v3:
-> - Add Cc stable tag in sign-off area.
-> - Make commit message less verbose.
-> - Link to v2: https://lore.kernel.org/r/20240223-x86-insn-decoder-line-fix-v2-1-cde49c69f402@valentinobst.de
-> 
-> Changes in v2:
-> - Added tags 'Reviewed-by', 'Tested-by', 'Reported-by', 'Debugged-by',
->   'Link', and 'Fixes'.
-> - Explain why this patch fixes the commit mentioned in the 'Fixes' tag.
-> - CCed the stable list and sent to all x86 maintainers.
-> - Link to v1: https://lore.kernel.org/r/20240221-x86-insn-decoder-line-fix-v1-1-47cd5a1718c6@valentinobst.de
-> ---
->  arch/x86/tools/insn_decoder_test.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-> index 472540aeabc2..727017a3c3c7 100644
-> --- a/arch/x86/tools/insn_decoder_test.c
-> +++ b/arch/x86/tools/insn_decoder_test.c
-> @@ -114,6 +114,7 @@ int main(int argc, char **argv)
->  	unsigned char insn_buff[16];
->  	struct insn insn;
->  	int insns = 0;
-> +	int lines = 0;
->  	int warnings = 0;
-> 
->  	parse_args(argc, argv);
-> @@ -123,6 +124,8 @@ int main(int argc, char **argv)
->  		int nb = 0, ret;
->  		unsigned int b;
-> 
-> +		lines++;
-> +
->  		if (line[0] == '<') {
->  			/* Symbol line */
->  			strcpy(sym, line);
-> @@ -134,12 +137,12 @@ int main(int argc, char **argv)
->  		strcpy(copy, line);
->  		tab1 = strchr(copy, '\t');
->  		if (!tab1)
-> -			malformed_line(line, insns);
-> +			malformed_line(line, lines);
->  		s = tab1 + 1;
->  		s += strspn(s, " ");
->  		tab2 = strchr(s, '\t');
->  		if (!tab2)
-> -			malformed_line(line, insns);
-> +			malformed_line(line, lines);
->  		*tab2 = '\0';	/* Characters beyond tab2 aren't examined */
->  		while (s < tab2) {
->  			if (sscanf(s, "%x", &b) == 1) {
-> 
-> ---
-> base-commit: 4cece764965020c22cff7665b18a012006359095
-> change-id: 20240221-x86-insn-decoder-line-fix-7b1f2e1732ff
-> 
-> Best regards,
-> --
-> Valentin Obst <kernel@valentinobst.de>
-> 
-
+No objection to dropping it. Description of the commit states that it
+fixes blocking for "significant amount of time".
 
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Thanks,
+Sasha
 
