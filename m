@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-35807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E58989783B
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:28:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CCD8977EB
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B938B33213
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:37:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40C65B33CBE
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEDB155734;
-	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D58516C69E;
+	Wed,  3 Apr 2024 17:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVbIR+r8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPH4JaEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB1C15445F;
-	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D06155751;
+	Wed,  3 Apr 2024 17:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164786; cv=none; b=OTgJsmIdtS6sBveLy46Lu+O/PXSIRlO85PTtBPSpeAAcaTTiXtJvlcL5sySeBxWAw6qnnJKrSuH5Pv5PMzmJ7yEqTDVHBjRWNWrwSveVDZ4KoDA1dtiTWsFp+c9DPX7iOogv4NJ4dvz2dGDm3C1jOufuIgE90G3UkilZRA0PatQ=
+	t=1712164795; cv=none; b=RNyyj9FLRbIwStn8Wj+/Ja21U7DQhV1lN3MNpki1E0oq7WLJz+iKfLv/nefiid0jhSK6lFg8BjQvm3zWMSd8XAvOI7n/NSc4HxR/gCK9xJYExmB5D1mBOhlc9mJcO0Xd2xJv+rS5fhMXiyYjIhwokIDhgy8yoF6M3JC0AKzytbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164786; c=relaxed/simple;
-	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GGla2lTzWbzheD5M1UXmkqjkxtGmAth1pxbAJkkxS1VVFH9ywA8ys2IWOVKncC25rqdFG25webB+QYuhZaH9lIThV4mRpDtPutFsQvQaAVAj3sTWCBoU5PsnXjerVUjdFUV/X7lCg5pnMHFJN1m9zTIAvOhGsMAr3rZv+VIYCnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVbIR+r8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4202BC433C7;
-	Wed,  3 Apr 2024 17:19:45 +0000 (UTC)
+	s=arc-20240116; t=1712164795; c=relaxed/simple;
+	bh=yEQHGfdTQfgueNzJukGN+SUJw0maNjlPoXSPO9Gk4Fw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ViQGa3pFzpp4f0BVzS279/mldcpx6Y4RVpSQBCJE4hMvJKHidg17TY0o6/drDKabkRD+5nHEP9wK0VBZF5WfFM19CuVjPKptjlrXHqLBAYSKuRA36be/5ac2sYOgx+ebnemf007BvUARlYLUnGYSb4AtBbo2H7VAqRQnQvAMn/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPH4JaEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B56C433B1;
+	Wed,  3 Apr 2024 17:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164786;
-	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=EVbIR+r8J0z1LSA6g3ojvDMv4776mo+GBk3H2S+mLRvWJKq2CbNQPRuHuefdKa1qB
-	 L20jqlDry7Oa7bIiaXS0WE9UUrCC1v3IuC5Z47fbgBlIYf3c9i0cR5e5x12dNyOnH7
-	 aQS9kk0s1TOS74Ws6tOQ21EmPvvc9J8JOorK8uZfwTjJWD/IkdRF6zHBio1rnINw9p
-	 No4nsjVkgAeqgQ7DzswNCvxiyah+Hia1b2L5pc5w4EjvL4wHbyDvI9RR5D8xsGF68Z
-	 UPJll4oS7ch7RHHdCTqqeBfFRanlxc+zJs0e+YbkXXrZG1xBLIg8twFXqsdebrLZkQ
-	 pvo6FswTd/etQ==
+	s=k20201202; t=1712164794;
+	bh=yEQHGfdTQfgueNzJukGN+SUJw0maNjlPoXSPO9Gk4Fw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BPH4JaExf5qRZT9G15NAfQHG6dR7kF78XSfVU7dr3zQEE7775KGfYlZb33WBCXCDh
+	 07sf4Koo9oyttl476zmU1oksbF5DVdY7nf51kHpQw8SZjeDdZwnIG6ILIHrsOdDdUw
+	 sgZNqQwBh4VfsPLJ1J/n/51R6EcTYqgQ1E75rHceMI6FBDtEbJXltQ0vLdnpyMQb0b
+	 yJOyQs2mJ3Is53sH5KOk2C0b1EGJkBmfmTY48mOBFsobGVjufDI3X8LOerBsilUdup
+	 eJcgTxL4IEaNTwuKfAZi5+jaHkBorvlVEO6lK9xJhP8LiyMvFpHHEem3tnD3QLANW6
+	 lW7nJACp2pRKw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Petre Rodan <petre.rodan@subdimension.ro>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Chancel Liu <chancel.liu@nxp.com>,
+	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 1/8] tools: iio: replace seekdir() in iio_generic_buffer
-Date: Wed,  3 Apr 2024 13:19:34 -0400
-Message-ID: <20240403171945.350716-1-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 5/8] ASoC: soc-core.c: Skip dummy codec when adding platforms
+Date: Wed,  3 Apr 2024 13:19:38 -0400
+Message-ID: <20240403171945.350716-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240403171945.350716-1-sashal@kernel.org>
+References: <20240403171945.350716-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,43 +69,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
-From: Petre Rodan <petre.rodan@subdimension.ro>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-[ Upstream commit 4e6500bfa053dc133021f9c144261b77b0ba7dc8 ]
+[ Upstream commit 23fb6bc2696119391ec3a92ccaffe50e567c515e ]
 
-Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
+When pcm_runtime is adding platform components it will scan all
+registered components. In case of DPCM FE/BE some DAI links will
+configure dummy platform. However both dummy codec and dummy platform
+are using "snd-soc-dummy" as component->name. Dummy codec should be
+skipped when adding platforms otherwise there'll be overflow and UBSAN
+complains.
 
-One of the glibc patches that stable Gentoo is using causes an improper
-directory stream positioning bug on 32bit arm. That in turn ends up as a
-floating point exception in iio_generic_buffer.
-
-The attached patch provides a fix by using an equivalent function which
-should not cause trouble for other distros and is easier to reason about
-in general as it obviously always goes back to to the start.
-
-https://sourceware.org/bugzilla/show_bug.cgi?id=31212
-
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-Link: https://lore.kernel.org/r/20240108103224.3986-1-petre.rodan@subdimension.ro
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Link: https://msgid.link/r/20240305065606.3778642-1-chancel.liu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-index 6a00a6eecaef0..c5c5082cb24e5 100644
---- a/tools/iio/iio_utils.c
-+++ b/tools/iio/iio_utils.c
-@@ -376,7 +376,7 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 		goto error_close_dir;
- 	}
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index a5b3ee69fb886..1c4d8b96f77b1 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1042,6 +1042,9 @@ int snd_soc_add_pcm_runtime(struct snd_soc_card *card,
+ 			if (!snd_soc_is_matching_component(platform, component))
+ 				continue;
  
--	seekdir(dp, 0);
-+	rewinddir(dp);
- 	while (ent = readdir(dp), ent) {
- 		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
- 			   "_en") == 0) {
++			if (snd_soc_component_is_dummy(component) && component->num_dai)
++				continue;
++
+ 			snd_soc_rtd_add_component(rtd, component);
+ 		}
+ 	}
 -- 
 2.43.0
 
