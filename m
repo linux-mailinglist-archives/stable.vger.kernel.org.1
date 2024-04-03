@@ -1,191 +1,147 @@
-Return-Path: <stable+bounces-35707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B1C896FC6
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 15:03:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D35E896FE7
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 15:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C56801C26BB8
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 13:03:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04752285D29
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 13:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA17D146D41;
-	Wed,  3 Apr 2024 13:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AFD147C65;
+	Wed,  3 Apr 2024 13:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="GUBiC7qS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rplqtbXe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CDD146D4A
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 13:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773626DD0D;
+	Wed,  3 Apr 2024 13:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712149384; cv=none; b=KP3seq6Gmo1Umj+uGVwuCkprsaC1yzQ6V+OWs4FqIWYJ4kNNuGVNPtihz6k624eBIAIbo2771xO52RhC6WbByGhmq+agu1MjumcW7IQtCj41puFTpQT/5ld9xlDFWdQNmTyUiRUHdEsKwSMm4KmussGlWeG2I4SSQKIW8uzQ4Z4=
+	t=1712149816; cv=none; b=fHTanKukK0DT4PL6duf/hLrn08F+fNYjyXWN6EZLZjoJaXUsXj3EduYmdNMWl58hatJfbObV+57w05JlatCKxHRDpI1rU7k+ptGI6GpxFr+EQIoXjubBICeRtW0W3xtXc5JiMZ0sXpG9cN8xUOr1eNrQdcPE8ytL2gjcS/Yzw8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712149384; c=relaxed/simple;
-	bh=RRQynQPR9Hz5Lw+vAgSrxqpZba3Zc5DiTXs5pXzDuQs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JO+KNVB2YMcDa2zbIY6AKusam7kTMu8mM1Z9d1bSbGPUngAlBSNc46ysmMQwczJWDV06kIAGkroaCjJ+8Hwk1sifm0M1HpOSNc4HZsLe2yN15OB7h3R+OIJfjh9Re6h1a4e+evmBBcps5vb0SL33Rc3stVQYUBYJabYWyUhDY5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=GUBiC7qS; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1712149383; x=1743685383;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=q6wCXu565ygYZcrVLCd/O7ZYIu/q748s1PQPPaZjtP0=;
-  b=GUBiC7qScJgcnndfNtiqxi+N5kJToSIXAP3TCyRyJ/nriXQcu3Ml8SIK
-   vOIZZz0KLbRjn32CxTQaF+Og79Q5o8KHe3QKT9I0ZQaKrQwVYdZ2gY+Ut
-   T89yF+9MELQi9YWcZ6kLD7Wqs33TNVd6Rp9J/HjJN5aOhcc9cFMkgmG1K
-   E=;
-X-IronPort-AV: E=Sophos;i="6.07,177,1708387200"; 
-   d="scan'208";a="624170881"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 13:03:00 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:55518]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.222:2525] with esmtp (Farcaster)
- id b514ebde-c946-4601-ad0f-34b2c8930b75; Wed, 3 Apr 2024 13:03:00 +0000 (UTC)
-X-Farcaster-Flow-ID: b514ebde-c946-4601-ad0f-34b2c8930b75
-Received: from EX19EXOUWA002.ant.amazon.com (10.250.64.216) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Wed, 3 Apr 2024 13:02:59 +0000
-Received: from EX19MTAUWC001.ant.amazon.com (10.250.64.145) by
- EX19EXOUWA002.ant.amazon.com (10.250.64.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Wed, 3 Apr 2024 13:02:59 +0000
-Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (10.15.1.225)
- by mail-relay.amazon.com (10.250.64.145) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Wed, 3 Apr 2024 13:02:59 +0000
-Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
-	id DE0FDBE6; Wed,  3 Apr 2024 15:02:58 +0200 (CEST)
-From: Mahmoud Adam <mngyadam@amazon.com>
-To: <gregkh@linuxfoundation.org>
-CC: <djwong@kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH 6.1 6/6] xfs: estimate post-merge refcounts correctly
-Date: Wed, 3 Apr 2024 14:59:57 +0200
-Message-ID: <20240403125949.33676-7-mngyadam@amazon.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240403125949.33676-1-mngyadam@amazon.com>
-References: <20240403125949.33676-1-mngyadam@amazon.com>
+	s=arc-20240116; t=1712149816; c=relaxed/simple;
+	bh=yvrsRkBk9aRhM8YpIPbxmremyPzTyz4GLvGwKFycmHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YKlB0fdL2+hdbbXNh3S/FY+eqa5YUcYqo3qxcKNpLC9rUcZAaJyXuYMSxHxFjuKvdsC/mUAsyR3GPOcBjlY6FQR07y70DPsT4hjkVopxq541RLzcm+ZGFZF2AwmvjryGRd7U7T7P2xDNU13daoDsZpJvxUl5uuHrnCmuJ5OgtOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rplqtbXe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51789C433F1;
+	Wed,  3 Apr 2024 13:10:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712149816;
+	bh=yvrsRkBk9aRhM8YpIPbxmremyPzTyz4GLvGwKFycmHI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rplqtbXe3rTpglp6yFhQT/hMhZ1Yajr2SwJJ2eIpPJeKPPlKH3g4j1N0ir40ET+Vk
+	 ZW/awo4L/yjIezZHOiQ9F2CdOkXtus3SIO4pKMkQSQcQjYySRXS/Lgm/7pQap5tFgw
+	 Ouzw2fgm7648Ffj9m34QylesK5euZr0M8l9499dY=
+Date: Wed, 3 Apr 2024 15:10:12 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.7 000/432] 6.7.12-rc1 review
+Message-ID: <2024040349-labrador-corporate-cb6c@gregkh>
+References: <20240401152553.125349965@linuxfoundation.org>
+ <CA+G9fYvc8axBi9Hm_WDac5v-4DiDmiFuKxk=Ghx80obEO9Uknw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+In-Reply-To: <CA+G9fYvc8axBi9Hm_WDac5v-4DiDmiFuKxk=Ghx80obEO9Uknw@mail.gmail.com>
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+On Tue, Apr 02, 2024 at 02:42:29PM +0530, Naresh Kamboju wrote:
+> On Mon, 1 Apr 2024 at 21:41, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > Note, this will be the LAST 6.7.y kernel release.  After this one it
+> > will be end-of-life.  Please move to 6.8.y now.
+> >
+> > ------------------------------------------
+> >
+> > This is the start of the stable review cycle for the 6.7.12 release.
+> > There are 432 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.12-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> 
+> Results from Linaro’s test farm.
+> Regressions on arm64, arm, x86_64, and i386 with libgpiod tests.
+> 
+> libgpiod test regressions noticed on Linux stable-rc 6.8, 6.7 and 6.6
+> and Linux next and mainline master.
+> 
+> Anders bisected and found this first bad commit,
+>   gpio: cdev: sanitize the label before requesting the interrupt
+>   commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> LKFT is running libgpiod test suite version
+>   v2.0.1-0-gae275c3 (and also tested v2.1)
+> 
+> libgpiod
+>   - _gpiod_edge-event_edge_event_wait_timeout
+>   - _gpiod_edge-event_event_copy
+>   - _gpiod_edge-event_null_buffer
+>   - _gpiod_edge-event_read_both_events
+>   - _gpiod_edge-event_read_both_events_blocking
+>   - _gpiod_edge-event_read_falling_edge_event
+>   - _gpiod_edge-event_read_rising_edge_event
+>   - _gpiod_edge-event_read_rising_edge_event_polled
+>   - _gpiod_edge-event_reading_more_events_than_the_queue_contains_doesnt_block
+>   - _gpiod_edge-event_seqno
+>   - _gpiod_line-info_edge_detection_settings
+> 
+> Test log:
+> -------
+> ok 16 /gpiod/edge-event/edge_event_buffer_max_capacity
+> **
+> gpiod-test:ERROR:tests-edge-event.c:52:_gpiod_test_func_edge_event_wait_timeout:
+> '_request' should not be NULL
+> # gpiod-test:ERROR:tests-edge-event.c:52:_gpiod_test_func_edge_event_wait_timeout:
+> '_request' should not be NULL
+> not ok 17 /gpiod/edge-event/edge_event_wait_timeout
+> ok 18 /gpiod/edge-event/cannot_request_lines_in_output_mode_with_edge_detection
+> **
+> gpiod-test:ERROR:tests-edge-event.c:125:_gpiod_test_func_read_both_events:
+> '_request' should not be NULL
+> # gpiod-test:ERROR:tests-edge-event.c:125:_gpiod_test_func_read_both_events:
+> '_request' should not be NULL
+> not ok 19 /gpiod/edge-event/read_both_events
+> 
+> Links:
+>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.7.y/build/v6.7.11-433-gb15156435f06/testrun/23252698/suite/libgpiod/tests/
 
-commit b25d1984aa884fc91a73a5a407b9ac976d441e9b upstream.
+I'm going to drop the gpio change and make it for the next round of
+stable kernels, so we don't get this regression.
 
-Upon enabling fsdax + reflink for XFS, xfs/179 began to report refcount
-metadata corruptions after being run.  Specifically, xfs_repair noticed
-single-block refcount records that could be combined but had not been.
+thanks,
 
-The root cause of this is improper MAXREFCOUNT edge case handling in
-xfs_refcount_merge_extents.  When we're trying to find candidates for a
-refcount btree record merge, we compute the refcount attribute of the
-merged record, but we fail to account for the fact that once a record
-hits rc_refcount == MAXREFCOUNT, it is pinned that way forever.  Hence
-the computed refcount is wrong, and we fail to merge the extents.
-
-Fix this by adjusting the merge predicates to compute the adjusted
-refcount correctly.
-
-Fixes: 3172725814f9 ("xfs: adjust refcount of an extent of blocks in refcount btree")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Xiao Yang <yangx.jy@fujitsu.com>
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
----
- fs/xfs/libxfs/xfs_refcount.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
-
-diff --git a/fs/xfs/libxfs/xfs_refcount.c b/fs/xfs/libxfs/xfs_refcount.c
-index 4408893333a6..6f7ed9288fe4 100644
---- a/fs/xfs/libxfs/xfs_refcount.c
-+++ b/fs/xfs/libxfs/xfs_refcount.c
-@@ -820,6 +820,17 @@ xfs_refc_valid(
- 	return rc->rc_startblock != NULLAGBLOCK;
- }
-
-+static inline xfs_nlink_t
-+xfs_refc_merge_refcount(
-+	const struct xfs_refcount_irec	*irec,
-+	enum xfs_refc_adjust_op		adjust)
-+{
-+	/* Once a record hits MAXREFCOUNT, it is pinned there forever */
-+	if (irec->rc_refcount == MAXREFCOUNT)
-+		return MAXREFCOUNT;
-+	return irec->rc_refcount + adjust;
-+}
-+
- static inline bool
- xfs_refc_want_merge_center(
- 	const struct xfs_refcount_irec	*left,
-@@ -831,6 +842,7 @@ xfs_refc_want_merge_center(
- 	unsigned long long		*ulenp)
- {
- 	unsigned long long		ulen = left->rc_blockcount;
-+	xfs_nlink_t			new_refcount;
-
- 	/*
- 	 * To merge with a center record, both shoulder records must be
-@@ -846,9 +858,10 @@ xfs_refc_want_merge_center(
- 		return false;
-
- 	/* The shoulder record refcounts must match the new refcount. */
--	if (left->rc_refcount != cleft->rc_refcount + adjust)
-+	new_refcount = xfs_refc_merge_refcount(cleft, adjust);
-+	if (left->rc_refcount != new_refcount)
- 		return false;
--	if (right->rc_refcount != cleft->rc_refcount + adjust)
-+	if (right->rc_refcount != new_refcount)
- 		return false;
-
- 	/*
-@@ -871,6 +884,7 @@ xfs_refc_want_merge_left(
- 	enum xfs_refc_adjust_op		adjust)
- {
- 	unsigned long long		ulen = left->rc_blockcount;
-+	xfs_nlink_t			new_refcount;
-
- 	/*
- 	 * For a left merge, the left shoulder record must be adjacent to the
-@@ -881,7 +895,8 @@ xfs_refc_want_merge_left(
- 		return false;
-
- 	/* Left shoulder record refcount must match the new refcount. */
--	if (left->rc_refcount != cleft->rc_refcount + adjust)
-+	new_refcount = xfs_refc_merge_refcount(cleft, adjust);
-+	if (left->rc_refcount != new_refcount)
- 		return false;
-
- 	/*
-@@ -903,6 +918,7 @@ xfs_refc_want_merge_right(
- 	enum xfs_refc_adjust_op		adjust)
- {
- 	unsigned long long		ulen = right->rc_blockcount;
-+	xfs_nlink_t			new_refcount;
-
- 	/*
- 	 * For a right merge, the right shoulder record must be adjacent to the
-@@ -913,7 +929,8 @@ xfs_refc_want_merge_right(
- 		return false;
-
- 	/* Right shoulder record refcount must match the new refcount. */
--	if (right->rc_refcount != cright->rc_refcount + adjust)
-+	new_refcount = xfs_refc_merge_refcount(cright, adjust);
-+	if (right->rc_refcount != new_refcount)
- 		return false;
-
- 	/*
---
-2.40.1
+greg k-h
 
