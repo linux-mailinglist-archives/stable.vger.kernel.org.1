@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-35809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0F58976FC
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:38:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E868976FE
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D00F1C28AF2
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5A942920AE
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF4C16C43B;
-	Wed,  3 Apr 2024 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9775816C685;
+	Wed,  3 Apr 2024 17:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrcoheaU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MPX2/GBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7700916C435;
-	Wed,  3 Apr 2024 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4940516C459;
+	Wed,  3 Apr 2024 17:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164790; cv=none; b=kKkC+AKwcBeeyCK9zU6P0XGzyvQATTxF9IG9Tg9m8bNiY+yhbFxb0Qh7PGkvs6gULBIOA3ahMCAx5JmmTuoQj/Y8MhYxl1WgDlyWXVLwRUxvN7Bk9MQkjvtsV0+cZq2L4WOeuuLXlV9YaCI7xV4JEmeloKZ+6URxSqAcMtSsRHg=
+	t=1712164793; cv=none; b=IB3n9z/sS6nAJGCCzpRcwq8vsJppRKQgxmliY6BsxpYeynZEBc8NSs1fkcQ7XU4ArMw+v2pBdKjIhshxJn2xr5TILfzvozFtKzO9hg6gw/vGiEFFXo/wCkSYBEb+Ftg+JqnVqN6SsRvbugF+8PHQ3n7L96i7aYqvXsVR2EUS/2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164790; c=relaxed/simple;
-	bh=m5CY6uzPdkdGZdndPJAd5V3PSA3YWVy2YMzLcV42FCE=;
+	s=arc-20240116; t=1712164793; c=relaxed/simple;
+	bh=cxFHtwCOC32ukJTfuk0w2xaUECzsrt/GTn2WtXZd2DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REIZS6diu+exOnXw9Kc4iDsE65yPfooYSqTfLnZs9DdxCpSaNzfOUtOKEh9BJbqwiutMh/RFN9mYvgpo9F+0lM3ietv2msQ4mUfpogfNwD/uk7JVpBGCAEOWu9W9p0bMATMcmOEiWb3xuQl4lYaES9teF5yfT5IlXlTQf3J4EpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrcoheaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AB7C433C7;
-	Wed,  3 Apr 2024 17:19:49 +0000 (UTC)
+	 MIME-Version; b=pCayemufMmVw9m6AiZ/SK7k4I+6bvPgCpsaXJxWR1aUyH4JUdPHUIioHN2f6e29kFikzGaqMyvMzAoXFVRm6VrjowZnDMxs+gWd6qi0/TgAVcjGm7Eoe7SeILvjhnRNUpqZsIpQkeewGWP1VD8wURGxRBNKzL5a665ts5f6kzzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MPX2/GBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DF8C433F1;
+	Wed,  3 Apr 2024 17:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164790;
-	bh=m5CY6uzPdkdGZdndPJAd5V3PSA3YWVy2YMzLcV42FCE=;
+	s=k20201202; t=1712164793;
+	bh=cxFHtwCOC32ukJTfuk0w2xaUECzsrt/GTn2WtXZd2DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrcoheaUeO04BQeNc/WlEeGCnaIlKCmd+7rD8oREVpM7xx+WIFx+sdNumFk7238dj
-	 9CeJig1glhgrG7mNJvlIbHblV/qMYn1qT597KLU+/IDLuGEJOI2WQBeBaAXnS35hoU
-	 Ofl2owiNfB2OCGj/O6aUprKstmvFxJVcAlyl2ntJKijvutujw9F/plu1EmGKNMWKts
-	 5svlB4y0axtsBmEbaHYMAelJfuwwkSWo7ihbApar1W3/pYMJRo+5bySmbDeXtVG1xK
-	 bO90T9Xg2w3GFpJ+PWY+xwoqfw8LGqmD9ZW2GyK0f/bC6bfZLzKi0IPQtJB9uCjwCN
-	 kshCBTfHuibDg==
+	b=MPX2/GBuNBZR30M8VFIk6e+fBb2865NA5uPLXgsLcOgKJSD2ALyQs2kg2uf4nDrCF
+	 /WU4we1IIK/djUcAtZx87dYjhxWGsxBpfjgZNHx+DPeEtizvdKXqOXtMyImWfIGI9x
+	 FCrYO9huEhmoabT2pXGo2J2fvlUNJXsjU4laqXF9uWufZRUPTN96OScO7XMlxdqmMf
+	 yFLqPMN5MV4E3cKcCMH+GdBz8b2Pt1VfQsGoPvYCoLb2dkpRcP3aIXl0tFVIaI8xJb
+	 aUt4A1tMDOKRp2Hf08bnhXARSWPoJeLW4ix6mTkx7DTynmY7tZ8FDuKNxKxLsq5u01
+	 ZE2r+145aRFQg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marco Felsch <m.felsch@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+Cc: Colin Ian King <colin.i.king@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rdbabiera@google.com,
-	festevam@denx.de,
+	nathan@kernel.org,
 	u.kleine-koenig@pengutronix.de,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 3/8] usb: typec: tcpci: add generic tcpci fallback compatible
-Date: Wed,  3 Apr 2024 13:19:36 -0400
-Message-ID: <20240403171945.350716-3-sashal@kernel.org>
+	linux-usb@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 4/8] usb: sl811-hcd: only defined function checkdone if QUIRK2 is defined
+Date: Wed,  3 Apr 2024 13:19:37 -0400
+Message-ID: <20240403171945.350716-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240403171945.350716-1-sashal@kernel.org>
 References: <20240403171945.350716-1-sashal@kernel.org>
@@ -69,34 +68,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
+[ Upstream commit 12f371e2b6cb4b79c788f1f073992e115f4ca918 ]
 
-The driver already support the tcpci binding for the i2c_device_id so
-add the support for the of_device_id too.
+Function checkdone is only required if QUIRK2 is defined, so add
+appropriate #if / #endif around the function.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
+Cleans up clang scan build warning:
+drivers/usb/host/sl811-hcd.c:588:18: warning: unused function
+'checkdone' [-Wunused-function]
+
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://lore.kernel.org/r/20240307111351.1982382-1-colin.i.king@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/sl811-hcd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index a7b0134d382b8..e047a15e67347 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -899,6 +899,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
- #ifdef CONFIG_OF
- static const struct of_device_id tcpci_of_match[] = {
- 	{ .compatible = "nxp,ptn5110", },
-+	{ .compatible = "tcpci", },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, tcpci_of_match);
+diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
+index 825ff67273102..d3de9f47552d0 100644
+--- a/drivers/usb/host/sl811-hcd.c
++++ b/drivers/usb/host/sl811-hcd.c
+@@ -585,6 +585,7 @@ done(struct sl811 *sl811, struct sl811h_ep *ep, u8 bank)
+ 		finish_request(sl811, ep, urb, urbstat);
+ }
+ 
++#ifdef QUIRK2
+ static inline u8 checkdone(struct sl811 *sl811)
+ {
+ 	u8	ctl;
+@@ -616,6 +617,7 @@ static inline u8 checkdone(struct sl811 *sl811)
+ #endif
+ 	return irqstat;
+ }
++#endif
+ 
+ static irqreturn_t sl811h_irq(struct usb_hcd *hcd)
+ {
 -- 
 2.43.0
 
