@@ -1,151 +1,119 @@
-Return-Path: <stable+bounces-35877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F424897A64
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 23:07:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB6A897BD7
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 01:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 190DD2877E3
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 21:07:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2EA41F237A6
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 23:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7D5156669;
-	Wed,  3 Apr 2024 21:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F242156965;
+	Wed,  3 Apr 2024 23:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="xErRji5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsgkU0oz"
 X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-ztdg06021701.me.com (mr85p00im-ztdg06021701.me.com [17.58.23.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C52156648
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 21:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B879E15531D
+	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 23:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712178436; cv=none; b=iTis3iiigjaFFzc5VPBjDTzOSYBIKCAfMO86vlq4FBBP2obBuFYMR7dD7LAhZDMorq52kRC9EQdOSteEahkbuYVaeERkN05BsCk2dPfO1ppZmD3X1Z7JrKOuW69wIsX5GTfflpG9+jGcapR3yzsG8eEBtJdUecIi3ZwOolrvnDk=
+	t=1712185210; cv=none; b=eAiP3uo8bZ/oqTkvXwpjWu3mcqmeeiQanETQ9Ma/gjUBet4OWxz5uO2lIQHValdH23LEZFwiy5Uuaz5HhayBQyINwkNlo7JkR8mjZ5SseKfsV9+JU7H30cq+9jbhMSXYTiD1o+xfxbl0nymrrcsVQyQ8pwHcfqSZbsJ+jzO4A88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712178436; c=relaxed/simple;
-	bh=0AiZM6PiLalckeV63JNhtHUusQZnUdQA6buUd7aeJDk=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=iirycdKErJiqE4iZ8sv7aUnQgEEIBNLDw/J8xlc3o7YrGvBEQld2OaAJuCWjeIXLRHcsSCLvoTII88V5sR73xneb8kN5KfCLDBE0LqzrtwsUgkE709WcLOJ+A6hEpxr+cen9Vd0zhdd+o0KGfB9kx0oVNsP2o9Pf0DufPr4ne7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=xErRji5z; arc=none smtp.client-ip=17.58.23.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-	t=1712178433; bh=AY0YVT2/pYp771gvWdGaXCfqZ7KgXeM1P5FSEBqw7YA=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To;
-	b=xErRji5zX/NvKMQXFwcPYZhTN9qkg6tJPFvY6PX5I/0F+sgx8NG0zyQFlJznXCvkQ
-	 WpCgF3C/PJOga/QRYZ4GJgLmZ94IcGMQOtVsJwVOUwGo1UFeYrVxr/cAhmQXfIMH6U
-	 bN3Qzbv+Do8UPEd6BiG3wAC4ccO/nADUAWNh+oxT7wF0b5Pz13dUvilASFejaCZv0E
-	 niketQZbu3RTE/WSO4xbpV3Q+CqO930sZrm/tsa/uLTVIpPkvW7Ef/X5nrZSlf5eJ/
-	 5sVZb0DBHac+AHoeU04c4xWtxOYhF2fKkIGogV0kAPiXRaO88d03NmTIHs7Q3W4DQR
-	 hKNW4lQhzgZRQ==
-Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06021701.me.com (Postfix) with ESMTPSA id 6E37E26335A3;
-	Wed,  3 Apr 2024 21:07:11 +0000 (UTC)
-From: Laine Taffin Altman <alexanderaltman@me.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1712185210; c=relaxed/simple;
+	bh=jmIV0GOw5opWjSRaLZcl7S1Iprv49UC3ViIj5KVGbdU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lbe/0GPaVwRMfrM+FooW9daNoBl/AzMiBbVQ2hceJZkKWU/EzkFDxXpvPoLrylmx9UWzrOONC8LGQ6zjI7dlMPHqpq73iX5t6xez9alNP4r5Pt0e+gvFymCWCHpFTlQ43Y65XBh/7BM29ciJwNqyE8AtDRdWvNbcm49pgJWLmwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsgkU0oz; arc=none smtp.client-ip=209.85.166.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7cc0e831e11so7748339f.1
+        for <stable@vger.kernel.org>; Wed, 03 Apr 2024 16:00:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1712185208; x=1712790008; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dDl1NAxggtWfWoUqJc0/YE9Vva3ljQrZuJwUEtA4epk=;
+        b=HsgkU0ozu3b+E06xP13pJU2Zpvz8vNLifMq/uy1O2Zq47R6+jmCod6NEgbgZuaYgow
+         92UPrlwi723lZK8yn6PedJTllGyl34dVAvCdTUYmA0lTvhvCyhOlP9wfeF5MfkwWIzNR
+         i4cxJFlHfesZz+JzanEh4+vu3eJMYOGp5teFE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712185208; x=1712790008;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dDl1NAxggtWfWoUqJc0/YE9Vva3ljQrZuJwUEtA4epk=;
+        b=FLJkQqobYLd92D241u51FyLFeQEwCREYI9wHK58pxoEng7M/zn12V7xyH4dKoJtDVB
+         wa/fvU78FjKF5NMQ7yG189dpzK5RMlW0/rDUkXRLQwgeO0fSR1D60cDmcsSTTYbTe9JH
+         9VPGrKVjBMZmtjF4MUI6m7PmHKzopJrmQ54n4Dp7eq82xl+LjItsCVyrtP1u6IRTTRI/
+         2kLK4jj8D9c1TBTj+M8R6ggTdQpFhOzYaZfOr7J2s/WSKuH4SYNcZlgTmtTHPGEGcVvu
+         xHHzfZPJNT55bnobndjq2TyYCq6QxjkyBzcwk5kNowCSaxz6uFXhMHMG3rm+x7e/liPE
+         buKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeQQ5ZHeYCv1vLqZdFw3SSS2DQiCosnTicfcRhmk5qge/n/mtlpNlWF3eOnJGslNiuwlQmcoDpKqN/RgetyptysbQ1zECr
+X-Gm-Message-State: AOJu0YwHRLZ3guydACueJV5fmMeZLy/o6btKYtNvw3/4pVRQOXXBltKh
+	5l9NlqkSFyj/nzQAZyRLTSUl9uEVECEYr+KU/KGrn0RriLxBNqYGygjmWtP7ksdCt4VVrN5HP9i
+	p
+X-Google-Smtp-Source: AGHT+IFl5XEZ2ibJnPA43ZuAvjF2L0kiBzzsvfNYmw9cYR0Av/jzR05d3ho2D1+yTpz0sqmI2dVeRg==
+X-Received: by 2002:a05:6602:3418:b0:7d0:bd2b:43ba with SMTP id n24-20020a056602341800b007d0bd2b43bamr1609782ioz.0.1712185207862;
+        Wed, 03 Apr 2024 16:00:07 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id t31-20020a056638349f00b0047be37bfbbdsm4057220jal.153.2024.04.03.16.00.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Apr 2024 16:00:07 -0700 (PDT)
+Message-ID: <a515127e-7609-4947-aec1-4a7cbdf72c40@linuxfoundation.org>
+Date: Wed, 3 Apr 2024 17:00:06 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: [PATCH v4] rust: init: remove impl Zeroable for Infallible
-Message-Id: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com>
-Date: Wed, 3 Apr 2024 14:06:59 -0700
-Cc: stable@vger.kernel.org
-To: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- rust-for-linux@vger.kernel.org,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- lkml <linux-kernel@vger.kernel.org>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
-X-Proofpoint-ORIG-GUID: 8aN3UzxcWvmPcgHFin2Utvi_e7K1jNVI
-X-Proofpoint-GUID: 8aN3UzxcWvmPcgHFin2Utvi_e7K1jNVI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-03_22,2024-04-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 spamscore=0
- mlxscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2404030144
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.8 00/11] 6.8.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240403175125.754099419@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240403175125.754099419@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-In Rust, producing an invalid value of any type is immediate undefined
-behavior (UB); this includes via zeroing memory.  Therefore, since an
-uninhabited type has no valid values, producing any values at all for it =
-is
-UB.
+On 4/3/24 11:55, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.8.4 release.
+> There are 11 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 05 Apr 2024 17:51:13 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.4-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-The Rust standard library type `core::convert::Infallible` is =
-uninhabited,
-by virtue of having been declared as an enum with no cases, which always
-produces uninhabited types in Rust.
+Compiled and booted on my test system. No dmesg regressions.
 
-The current kernel code allows this UB to be triggered, for example by =
-code
-like `Box::<core::convert::Infallible>::init(kernel::init::zeroed())`.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Thus, remove the implementation of `Zeroable` for `Infallible`, thereby
-avoiding the unsoundness (potential for future UB).
-
-Cc: stable@vger.kernel.org
-Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
-`init::zeroed` function")
-Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
-Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
----
-V3 -> V4: Address review nits; run checkpatch properly.
-V2 -> V3: Email formatting correction.
-V1 -> V2: Added more documentation to the comment, with links; also =
-added more details to the commit message.
-
- rust/kernel/init.rs | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 424257284d16..3859c7ff81b7 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -1292,8 +1292,15 @@ macro_rules! impl_zeroable {
-     i8, i16, i32, i64, i128, isize,
-     f32, f64,
-=20
--    // SAFETY: These are ZSTs, there is nothing to zero.
--    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, =
-Infallible, (),
-+    // Note: do not add uninhabited types (such as `!` or =
-`core::convert::Infallible`) to this list;
-+    // creating an instance of an uninhabited type is immediate =
-undefined behavior.  For more on
-+    // uninhabited/empty types, consult The Rustonomicon:
-+    // =
-https://doc.rust-lang.org/stable/nomicon/exotic-sizes.html#empty-types =
-The Rust Reference
-+    // also has information on undefined behavior:
-+    // =
-https://doc.rust-lang.org/stable/reference/behavior-considered-undefined.h=
-tml
-+    //
-+    // SAFETY: These are inhabited ZSTs; there is nothing to zero and a =
-valid value exists.
-+    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
-=20
-     // SAFETY: Type is allowed to take any value, including all zeros.
-     {<T>} MaybeUninit<T>,
-
-base-commit: c85af715cac0a951eea97393378e84bb49384734
---=20
-2.44.0
-
+thanks,
+-- Shuah
 
