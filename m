@@ -1,173 +1,130 @@
-Return-Path: <stable+bounces-35655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E8C896185
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 02:34:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E115389618D
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 02:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF2C2854A9
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 00:34:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9697C1F251F7
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 00:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD7ED527;
-	Wed,  3 Apr 2024 00:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28B54409;
+	Wed,  3 Apr 2024 00:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vO1S4Lh6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ld+e1Y/n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359081BF20;
-	Wed,  3 Apr 2024 00:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC79FC0C;
+	Wed,  3 Apr 2024 00:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712104436; cv=none; b=F0JKjC2SDNCT1ya+k1rd6witCei6I/v83TXfGNY1X6UL1i5sMRd3gUER/oDfWl7atSnCkUE6bI5YAQIq4H2A/FvLv2mqBD1n2fO6ImR+sV4Nbl4Nl8+FySPY2GPfjcJuo5FFNH7ozwMDbBvIvGP1eKq44x4wisv7PFyYohSAvTQ=
+	t=1712104717; cv=none; b=j5mOPWSDiFPhQ5K8NEqnycg9Y6cQwWLrqkD4w6ag56ogGwLhacGORQMHgnZoGxL+ByAZR7OUEo6L1057wt3T2hrk9sYnep/oNjQRZjXG+kBqmmg863IEaKsCtU5MLDk8m9gfw3uVYJcsZhRLWoYv/eP/F0edRpqdbECKaULoFMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712104436; c=relaxed/simple;
-	bh=klEagrQlHOJ1VL1CB6eLV3nxtQjaEnWxsl/7W0ysDw4=;
+	s=arc-20240116; t=1712104717; c=relaxed/simple;
+	bh=/pKOQn0YGMSiKq2vjXjO1upFSxAXfJ2XljqSMDWwXFg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kczTzB6meSU8R4BW+ltaUggQzI8M74mWnzotRYAOpvAxNXz4+9Kq7UXIOgDwwWfV5iY5rZvNygWaRt6YYcBlgSEGcUJ3bv7cZ1wAZ1ggdQEUc7f3JpMlnzP+s5RB2QDDv2mUofntIojPO00bcdBPViEwz5O3tDyUH+MLu/em/vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vO1S4Lh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79852C433F1;
-	Wed,  3 Apr 2024 00:33:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712104435;
-	bh=klEagrQlHOJ1VL1CB6eLV3nxtQjaEnWxsl/7W0ysDw4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vO1S4Lh634Pax1oTwLdDx6S5jW3ZVFRdYxDuYmRJGt2ZKUhwopatIM4xd08+gM8v/
-	 UGYsV3kVODscJOa3s+1uNpg5IaDy2Z9ddRGk5eR8MHWDCUYGG80o4wYJ6MHX0Gz/+o
-	 f96ItQ2rhj3AGJqAC453khLk/OgbUX57RalalUMpdS7AQG6xrtFH+sMPmk4O3TuqsE
-	 CSJkNKi8RkehUxJlxemMhgutDKb2bm9ShZaJK/A/RO5wUFUe/0SYzLyPOqPNteQDEw
-	 9W2z9lCVOeNOyTd1N4gef/QTqm1lO11eZBmL8BwGlC1F+/jjdCOtP3PBGqdX1u/jMd
-	 apcI3Nq7JvI/A==
-Date: Tue, 2 Apr 2024 20:33:55 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: David Sterba <dsterba@suse.cz>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Filipe Manana <fdmanana@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-	clm@fb.com, linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.8 59/68] btrfs: preallocate temporary extent
- buffer for inode logging when needed
-Message-ID: <Zgyj800yVkeKmbmq@sashalap>
-References: <20240329122652.3082296-1-sashal@kernel.org>
- <20240329122652.3082296-59-sashal@kernel.org>
- <20240402133518.GD14596@suse.cz>
+	 Content-Type:Content-Disposition:In-Reply-To; b=V//YZAV03Qmr5jLPsyS8arGWoYB85eEe2DRgzElTgABD27tA2rg4q0fgafIpa/a9n2Z8WFIL+Xw9lCEk4xRLLL3hcibbDMT3DpoSuytstQ7gY9g3CDZbZ1/tLcqm+kE72Y3ePEOjVzSh4CPxxrUMRP2BJmfMM5e/1wJlQyupLis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ld+e1Y/n; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6ea80de0e97so4141586b3a.2;
+        Tue, 02 Apr 2024 17:38:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712104715; x=1712709515; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lDuEkbhuZ4nhCQYseid5ymqn/qQ8r9+nK29T23SV1sY=;
+        b=Ld+e1Y/nG0OwlFfWnzB92al3CbTudCasDe9eanch1vWToiaV5nj2Y0WHsuoY55DHuz
+         Ki+tBKfkROPdYNQBGKfhmrOU5l8OOrWPR5g1u4PTSFPY4+M+o4UpD1UfqV7xKJFVhd1w
+         ccLQqsXyBRaDWBg20Kf1C1AuAOrYrCXmmu4J20mgWDIbLvJ/ZLMbpVmSJiCWWDnYL3Wi
+         54z+mAn77R24ORxcAv/Y6TMojJh5ZvUnj+i5c5utdE4iwn+YVMHT9UAGfAmGsxLElkTM
+         aID4dvexc/2acaAqbTNxri4WOSgv9AFsJxO5dOxbAtPHyMYkX+xkc3NADZwdTe9rhX4J
+         eunA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712104715; x=1712709515;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lDuEkbhuZ4nhCQYseid5ymqn/qQ8r9+nK29T23SV1sY=;
+        b=XTYKHoQRoyEMM+lDcwQchOjxEJTNngEtEeiHOeZxcWV4LWnty862Rzzpl9tSPpev+k
+         zxcyl4ntOvOluvzHr+fBLQ5436lTp08jtjmRAXpmYUHliOPVWdkHQZBhkrOq1LWY6Ga+
+         iGDy5heKMPOR0bzXxACelEv6RfZZQzT1PloVjS4SOR4y9T4AtHv0wZvWFjkIlUo+dgb7
+         /Gcniyfr7CybzSFbY4OOOD4RjXq3qpGk6O3bAxBv2LuxQLncSwNZgHF5OZ7sC2JzrrZ9
+         ez3hTtrug10y73wX1Ee7YvL5pHJ4VkNJZyX0h8H03hkDpgIs60G1uLh8/0nnXJ3XZ5gc
+         n+Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCXhU6Wa5BSuvUq7BuPUGoY72WnVYdVVF+VaN8B9CmHBPl+fMrRWXzKTgDCsho3UtK86BWHdKZDKVMVCVofEOlDoN4CnA8L2od280gdTZtffP8J02LiOdk2pe4Ab0hqHGr1MXv4n
+X-Gm-Message-State: AOJu0YxUkRsWiJHUaDRSqwj1+DcGMf4q760KKHuktKppSVEXOp+7+GAR
+	YuDwpI60G4FJ86Q3WjZQrjtZ5Cy5UY3jyU565al84KeBGuziWccG
+X-Google-Smtp-Source: AGHT+IHjjD8qHS6NjcI14QZRJH1hz7B35xujdQGn9UV521z1FTa9DUmnqoHtIBZ7Dm9Fy8byf/AduA==
+X-Received: by 2002:a05:6a21:999f:b0:1a7:1c5:4746 with SMTP id ve31-20020a056a21999f00b001a701c54746mr1875347pzb.1.1712104715190;
+        Tue, 02 Apr 2024 17:38:35 -0700 (PDT)
+Received: from localhost (dhcp-141-239-158-86.hawaiiantel.net. [141.239.158.86])
+        by smtp.gmail.com with ESMTPSA id j23-20020aa78d17000000b006e681769ee0sm10817731pfe.145.2024.04.02.17.38.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Apr 2024 17:38:34 -0700 (PDT)
+Sender: Tejun Heo <htejun@gmail.com>
+Date: Tue, 2 Apr 2024 14:38:33 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: Hibernate stuck after recent kernel/workqueue.c changes in
+ Stable 6.6.23
+Message-ID: <ZgylCe48FuOKNWtM@slm.duckdns.org>
+References: <ce4c2f67-c298-48a0-87a3-f933d646c73b@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240402133518.GD14596@suse.cz>
+In-Reply-To: <ce4c2f67-c298-48a0-87a3-f933d646c73b@leemhuis.info>
 
-On Tue, Apr 02, 2024 at 03:35:18PM +0200, David Sterba wrote:
->On Fri, Mar 29, 2024 at 08:25:55AM -0400, Sasha Levin wrote:
->> From: Filipe Manana <fdmanana@suse.com>
->>
->> [ Upstream commit e383e158ed1b6abc2d2d3e6736d77a46393f80fa ]
->>
->> When logging an inode and we require to copy items from subvolume leaves
->> to the log tree, we clone each subvolume leaf and than use that clone to
->> copy items to the log tree. This is required to avoid possible deadlocks
->> as stated in commit 796787c978ef ("btrfs: do not modify log tree while
->> holding a leaf from fs tree locked").
->>
->> The cloning requires allocating an extent buffer (struct extent_buffer)
->> and then allocating pages (folios) to attach to the extent buffer. This
->> may be slow in case we are under memory pressure, and since we are doing
->> the cloning while holding a read lock on a subvolume leaf, it means we
->> can be blocking other operations on that leaf for significant periods of
->> time, which can increase latency on operations like creating other files,
->> renaming files, etc. Similarly because we're under a log transaction, we
->> may also cause extra delay on other tasks doing an fsync, because syncing
->> the log requires waiting for tasks that joined a log transaction to exit
->> the transaction.
->>
->> So to improve this, for any inode logging operation that needs to copy
->> items from a subvolume leaf ("full sync" or "copy everything" bit set
->> in the inode), preallocate a dummy extent buffer before locking any
->> extent buffer from the subvolume tree, and even before joining a log
->> transaction, add it to the log context and then use it when we need to
->> copy items from a subvolume leaf to the log tree. This avoids making
->> other operations get extra latency when waiting to lock a subvolume
->> leaf that is used during inode logging and we are under heavy memory
->> pressure.
->>
->> The following test script with bonnie++ was used to test this:
->>
->>   $ cat test.sh
->>   #!/bin/bash
->>
->>   DEV=/dev/sdh
->>   MNT=/mnt/sdh
->>   MOUNT_OPTIONS="-o ssd"
->>
->>   MEMTOTAL_BYTES=`free -b | grep Mem: | awk '{ print $2 }'`
->>   NR_DIRECTORIES=20
->>   NR_FILES=20480
->>   DATASET_SIZE=$((MEMTOTAL_BYTES * 2 / 1048576))
->>   DIRECTORY_SIZE=$((MEMTOTAL_BYTES * 2 / NR_FILES))
->>   NR_FILES=$((NR_FILES / 1024))
->>
->>   echo "performance" | \
->>       tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
->>
->>   umount $DEV &> /dev/null
->>   mkfs.btrfs -f $MKFS_OPTIONS $DEV
->>   mount $MOUNT_OPTIONS $DEV $MNT
->>
->>   bonnie++ -u root -d $MNT \
->>       -n $NR_FILES:$DIRECTORY_SIZE:$DIRECTORY_SIZE:$NR_DIRECTORIES \
->>       -r 0 -s $DATASET_SIZE -b
->>
->>   umount $MNT
->>
->> The results of this test on a 8G VM running a non-debug kernel (Debian's
->> default kernel config), were the following.
->>
->> Before this change:
->>
->>   Version 2.00a       ------Sequential Output------ --Sequential Input- --Random-
->>                       -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
->>   Name:Size etc        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
->>   debian0       7501M  376k  99  1.4g  96  117m  14 1510k  99  2.5g  95 +++++ +++
->>   Latency             35068us   24976us    2944ms   30725us   71770us   26152us
->>   Version 2.00a       ------Sequential Create------ --------Random Create--------
->>   debian0             -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
->>   files:max:min        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
->>   20:384100:384100/20 20480  32 20480  58 20480  48 20480  39 20480  56 20480  61
->>   Latency               411ms   11914us     119ms     617ms   10296us     110ms
->>
->> After this change:
->>
->>   Version 2.00a       ------Sequential Output------ --Sequential Input- --Random-
->>                       -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
->>   Name:Size etc        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
->>   debian0       7501M  375k  99  1.4g  97  117m  14 1546k  99  2.3g  98 +++++ +++
->>   Latency             35975us  20945us    2144ms   10297us    2217us    6004us
->>   Version 2.00a       ------Sequential Create------ --------Random Create--------
->>   debian0             -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
->>   files:max:min        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
->>   20:384100:384100/20 20480  35 20480  58 20480  48 20480  40 20480  57 20480  59
->>   Latency               320ms   11237us   77779us     518ms    6470us   86389us
->>
->> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
->> Signed-off-by: Filipe Manana <fdmanana@suse.com>
->> Reviewed-by: David Sterba <dsterba@suse.com>
->> Signed-off-by: David Sterba <dsterba@suse.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->This is a performance improvement, how does this qualify for stable? I
->read only about notable perfromance fixes but this is not one.
+Hello,
 
-No objection to dropping it. Description of the commit states that it
-fixes blocking for "significant amount of time".
+On Tue, Apr 02, 2024 at 10:08:11AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+> Hi stable team, there is a report that the recent backport of
+> 5797b1c18919cd ("workqueue: Implement system-wide nr_active enforcement
+> for unbound workqueues") [from Tejun] to 6.6.y (as 5a70baec2294) broke
+> hibernate for a user. 6.6.24-rc1 did not fix this problem; reverting the
+> culprit does.
+> 
+> > With kernel 6.6.23 hibernating usually hangs here: the display stays
+> > on but the mouse pointer does not move and the keyboard does not work.
+> > But SysRq REISUB does reboot. Sometimes it seems to hibernate: the
+> > computer powers down and can be waked up and the previous display comes
+> > visible, but it is stuck there.
+> 
+> See https://bugzilla.kernel.org/show_bug.cgi?id=218658 for details.
+> Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
+> not CCed them in mails like this.
+> 
+> Side note: there is a mainline report about problems due to
+> 5797b1c18919cd ("workqueue: Implement system-wide nr_active enforcement
+> for unbound workqueues") as well, but it's about "nohz_full=0 prevents
+> kernel from booting":
+> https://bugzilla.kernel.org/show_bug.cgi?id=218665; will forward that
+> separately to Tejun.
+> 
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+Sorry about late reply but that commit is not for -stable. It does fix an
+undesirable behavior from an earlier commit, so it has the Fixes tag but it
+has a series of dependencies that need to be backported together which would
+be far too invasive for -stable, thus no Cc: stable. I didn't know a Fixes
+tag automatically triggers backport to -stable. I will keep that in mind for
+future.
+
+Thanks.
 
 -- 
-Thanks,
-Sasha
+tejun
 
