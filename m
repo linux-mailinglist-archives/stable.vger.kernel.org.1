@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-35780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B919F8976AC
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:30:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85128976AE
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:30:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E736E1C28A42
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:30:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C92E1F2DD97
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3443A15ADBC;
-	Wed,  3 Apr 2024 17:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E9E15B118;
+	Wed,  3 Apr 2024 17:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adjdS4lK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UrB/31Fe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05AC15ADB6;
-	Wed,  3 Apr 2024 17:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72381553B4;
+	Wed,  3 Apr 2024 17:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164715; cv=none; b=jSu5c37adygTGBIEQKDnfuIOdj1i8ok9wAgtlDOrPrQmNdelEQ44IchxWbDBWwGSSutHv8P9VMvXYjW1gayqmtZFtvcUuLgswJJQDbKogaQwxHGH78BC8KWZZbr98A6FJHMiVnkgaUf9rG8k5Yyxp+W/TkdclHOWYufi+KC+6GU=
+	t=1712164717; cv=none; b=qIP/p6O4GOuSfGadPZC94eBwLQxnyCdPknEKvFUx9qSHJbK6VAU7PF9vg4Am1aEnCZzJcIa6PwNp4uSCMYuAukYxKx8wRXctji49quAI1YowSe5fK9DFYLNsTMYiFhCYe3ywtpJfgFNKy9ltq3zFVN++vF53jlKYyWMBMrvdM1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164715; c=relaxed/simple;
-	bh=Ju0dCUBj7c1xHR7bdmc+deBQzJoteCBjACIm80EKbcM=;
+	s=arc-20240116; t=1712164717; c=relaxed/simple;
+	bh=coJFkm5Kd2MRvJi2hKagDToOoEIiF9f/Hj1LGH0wG88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=il9RJ44G1bbzdiEpbiTNMOwECHLRo1/CQsBxmRD+nL2BrXxA51ZLBeLfkKEFPmN4GPVs0gGgX29bPzvWQ5IwID7XgJKepa7LLq64cttW8lSCg+QMPdG+PlWypOnXLF2KMsWyAKHhtj/GMByQDL3jYHzJcQOgj/OHhsb7BO494OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adjdS4lK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3817C433F1;
-	Wed,  3 Apr 2024 17:18:33 +0000 (UTC)
+	 MIME-Version; b=BFqvzS9rv+LNht4CG7+6uPdfVnnUHwU0Ypdbn7L8g7YjTwu1nXPTqvsaCLwuB8Bga0wyHmC5LLWdcfB+A3zpauR5jouLl9MaTUyeaP0YSAems0yPCjuMBBJjWbGTI8Hktr6SNmV/8GWXpQQehU1vW2bI7gyEycq2ZCBpcE0PNn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UrB/31Fe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0525C433F1;
+	Wed,  3 Apr 2024 17:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164714;
-	bh=Ju0dCUBj7c1xHR7bdmc+deBQzJoteCBjACIm80EKbcM=;
+	s=k20201202; t=1712164717;
+	bh=coJFkm5Kd2MRvJi2hKagDToOoEIiF9f/Hj1LGH0wG88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adjdS4lK8irX4fJPuvUblJfLtk/GJbVIc/JntA8K5OGOB1Rc1ZIZuUtYVdmXlznlw
-	 T3IE/mFLdJ1zFtBLCYdNgaQaJ3ftyP1sdAhl7YN+ArxF8hkzioPeC5KRxTv12t787s
-	 /0asA0cejJgS2H9a6cSuJwiQu2pKcx8Og0s7dfgSlmJoVmSGCf3nRVl7fRihcOI1ye
-	 /rAmOYvm791J9WEK/+Fayoih9jA3aHcX8Rs8eivP86eNjwvb4Y/m1MgTL39fqb53xw
-	 Ec30JaFb+y0N4Mb1HocloaNTnXR7Vm03e4+Xu2AUROcySATnzp/g5Q95njNZfrLtu6
-	 ylfHx/o8V1SEg==
+	b=UrB/31FeCcDy8sZEBOEnankviclt6cNmJPoVbq6QBHaona5QxUkOde0AMbDwUBfH3
+	 cfQthThsII+UrCuy5sXPbBXcsYdLmNUSzw49YOLggy85QoUQpXhwXsHO284mXr9cli
+	 mVnJSXRYKHXd0E4iedLs7KkVwTOFg6AiPbtGGW8h6up62xSSYHWWcxzOM4WmCOg0cC
+	 B1tVKyMCvKmki4VJIwOUjaWWJZtxYUpGghrBjCmlAR8UZ2pxvyQsEkxtYaZaPzhcmr
+	 xywRiKtVSLF5Yrmzzc+7qRzUtvG3yBj9nmIj6GDwmOzZsJEFm+bdGEIiZpuIRhtAt8
+	 vSCd0kVFeKCeA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Colin Ian King <colin.i.king@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: M Cooley <m.cooley.198@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	nathan@kernel.org,
-	u.kleine-koenig@pengutronix.de,
-	linux-usb@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 09/20] usb: sl811-hcd: only defined function checkdone if QUIRK2 is defined
-Date: Wed,  3 Apr 2024 13:17:50 -0400
-Message-ID: <20240403171815.342668-9-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	mario.limonciello@amd.com,
+	me@jwang.link,
+	jeremy@system76.com,
+	git@augustwikerfors.se,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 10/20] ASoC: amd: yc: Fix non-functional mic on ASUS M7600RE
+Date: Wed,  3 Apr 2024 13:17:51 -0400
+Message-ID: <20240403171815.342668-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240403171815.342668-1-sashal@kernel.org>
 References: <20240403171815.342668-1-sashal@kernel.org>
@@ -68,45 +72,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.24
 Content-Transfer-Encoding: 8bit
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: M Cooley <m.cooley.198@gmail.com>
 
-[ Upstream commit 12f371e2b6cb4b79c788f1f073992e115f4ca918 ]
+[ Upstream commit db185362fca554b201e2c62beb15a02bb39a064b ]
 
-Function checkdone is only required if QUIRK2 is defined, so add
-appropriate #if / #endif around the function.
+The ASUS M7600RE (Vivobook Pro 16X OLED) needs a quirks-table entry for the
+internal microphone to function properly.
 
-Cleans up clang scan build warning:
-drivers/usb/host/sl811-hcd.c:588:18: warning: unused function
-'checkdone' [-Wunused-function]
+Signed-off-by: Mitch Cooley <m.cooley.198@gmail.com>
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20240307111351.1982382-1-colin.i.king@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://msgid.link/r/CALijGznExWW4fujNWwMzmn_K=wo96sGzV_2VkT7NjvEUdkg7Gw@mail.gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/sl811-hcd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/usb/host/sl811-hcd.c b/drivers/usb/host/sl811-hcd.c
-index 0956495bba575..2b871540bb500 100644
---- a/drivers/usb/host/sl811-hcd.c
-+++ b/drivers/usb/host/sl811-hcd.c
-@@ -585,6 +585,7 @@ done(struct sl811 *sl811, struct sl811h_ep *ep, u8 bank)
- 		finish_request(sl811, ep, urb, urbstat);
- }
- 
-+#ifdef QUIRK2
- static inline u8 checkdone(struct sl811 *sl811)
- {
- 	u8	ctl;
-@@ -616,6 +617,7 @@ static inline u8 checkdone(struct sl811 *sl811)
- #endif
- 	return irqstat;
- }
-+#endif
- 
- static irqreturn_t sl811h_irq(struct usb_hcd *hcd)
- {
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 80ad60d485ea0..c47362afc9432 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -297,6 +297,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "M7600RE"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
