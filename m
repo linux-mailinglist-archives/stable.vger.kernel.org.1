@@ -1,145 +1,151 @@
-Return-Path: <stable+bounces-35876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F956897A5E
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 23:06:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F424897A64
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 23:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6E0D1F2262D
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 21:06:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 190DD2877E3
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 21:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C9414C5B3;
-	Wed,  3 Apr 2024 21:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7D5156669;
+	Wed,  3 Apr 2024 21:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tQ+Dks18"
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="xErRji5z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mr85p00im-ztdg06021701.me.com (mr85p00im-ztdg06021701.me.com [17.58.23.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E676715099C
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 21:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C52156648
+	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 21:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712178356; cv=none; b=e+AvufqK6lfHya9MeDsCrNJIDo1V3amo+6r6dJZsamWvPGphdP/c07H664tD3mNEqJf8My+qhmOApIqCxfn+ycO60/1ICHraBQ+mD6G4+A9Llnd/uLh2GNGZ4hqyCzKxo2DBT1EkU0tyl9y4Ted+KsL4lhAKaXadaZ+xaXIeLb8=
+	t=1712178436; cv=none; b=iTis3iiigjaFFzc5VPBjDTzOSYBIKCAfMO86vlq4FBBP2obBuFYMR7dD7LAhZDMorq52kRC9EQdOSteEahkbuYVaeERkN05BsCk2dPfO1ppZmD3X1Z7JrKOuW69wIsX5GTfflpG9+jGcapR3yzsG8eEBtJdUecIi3ZwOolrvnDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712178356; c=relaxed/simple;
-	bh=WtGDdYc4HBCjOIrR5MMOAuCY7GEHvc1niaqFin6Qr2g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ts7+jVGcZjDFsw+Pb4PbErPAUgzw9NMNa+NDE/SDnlazeF4mGzwHWyADQe8sphZ4CUU9C6I6z5mCI4oCP432iHVrxmn4Kt1TuyGJU7ZZNBTxYBBQ627qOs9J/GhCm9z9WjYNQ1zyu6ZL0J17LM5AJCaccM0I72d4XwKRkMakRKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tQ+Dks18; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dde0b30ebe2so395568276.0
-        for <stable@vger.kernel.org>; Wed, 03 Apr 2024 14:05:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712178353; x=1712783153; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fZ2zC/UxSlUsZb+6YpO0+93Cw1cuUVB1VETkH9rRh5s=;
-        b=tQ+Dks18accv24w25//sRe2YNyz96fnO08aayAdd/UIWQNmtXoMMBpjrwa5qbHQS0X
-         2JZNt1JJ+t1MvRZK4r4VxnMtmesqaetsb4sC4zXD2pn5pkvmRUXHEwOXWrRO0P2E59hS
-         +d/1VbZ+HT83n8MQVCqi2tVxlSWvaPEz1ZHxcD8mkKf9I+W9LvErtuZqJ+T3ynssG23j
-         1M5Dso/eFWYayK4rc20GDGkQSuwlhomPiOiXzUL/Dsy5sDWy/UejRcC5isM2M4LoM9yN
-         bHHBdVF/nMzFsWhlKcwtSQV4TvviIR0OeM5v4hZ1eUMZzctDBOx/iLi7HzzpCLuinB4C
-         DNUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712178353; x=1712783153;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fZ2zC/UxSlUsZb+6YpO0+93Cw1cuUVB1VETkH9rRh5s=;
-        b=dRoG7pnmBVyMWtkgXX7prYkmN4GBq/0BK75yIOJ9ND0xBndxKAxAACFIJb69z2OwKm
-         LaKCnnJXC1ehV9ul85/980NyuOX7hAYus6J4ESPovlvWx/klikJNS0yxkpwTXmhTKcP2
-         t6v9YZJ/TRjHHWZt5TMXpov9WCbiUrFx/MhBD8njdTsHLLHpOpS+B1Gtkg97QpuJsiD/
-         2+ZvtURwXoqzjIvCfVrPonMNtXdITsWSlSoKcEqwcaR5GOLOWJhyZVeYcztHaEcWQuNw
-         CrVBt77ReN2xAMDLW/I+FU0+rkaNCqYjIkgC4ab12e6jo7kz69f/EnxLvlfal1v78cLc
-         md5A==
-X-Gm-Message-State: AOJu0Yzc4I24YEXBEGfivT8IBVcq3yFsWVAwG03XbypCt+SulIbzYhRf
-	hnbZPRwBLWLmLZc1QnH3yvZrBuu1qOgJD5wRc1HvAsQWdAshaGxcSf5nT0nP9JZYg3n/zXVZFg4
-	idJDzneaOsvd8CnmBlvW4uG2rk5pZyySUPubzZHpFhQqGSN483zI=
-X-Google-Smtp-Source: AGHT+IFK9GNVITVRZuMylfRh87WeLv0p0NJO84Xzd2htMsv+SRB7Zi4jZzeCUnlB2tgB/2+Y7RFOPAcd2KiDVGHjHmA=
-X-Received: by 2002:a25:874c:0:b0:dce:9c23:eafc with SMTP id
- e12-20020a25874c000000b00dce9c23eafcmr775722ybn.1.1712178353472; Wed, 03 Apr
- 2024 14:05:53 -0700 (PDT)
+	s=arc-20240116; t=1712178436; c=relaxed/simple;
+	bh=0AiZM6PiLalckeV63JNhtHUusQZnUdQA6buUd7aeJDk=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=iirycdKErJiqE4iZ8sv7aUnQgEEIBNLDw/J8xlc3o7YrGvBEQld2OaAJuCWjeIXLRHcsSCLvoTII88V5sR73xneb8kN5KfCLDBE0LqzrtwsUgkE709WcLOJ+A6hEpxr+cen9Vd0zhdd+o0KGfB9kx0oVNsP2o9Pf0DufPr4ne7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=xErRji5z; arc=none smtp.client-ip=17.58.23.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+	t=1712178433; bh=AY0YVT2/pYp771gvWdGaXCfqZ7KgXeM1P5FSEBqw7YA=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To;
+	b=xErRji5zX/NvKMQXFwcPYZhTN9qkg6tJPFvY6PX5I/0F+sgx8NG0zyQFlJznXCvkQ
+	 WpCgF3C/PJOga/QRYZ4GJgLmZ94IcGMQOtVsJwVOUwGo1UFeYrVxr/cAhmQXfIMH6U
+	 bN3Qzbv+Do8UPEd6BiG3wAC4ccO/nADUAWNh+oxT7wF0b5Pz13dUvilASFejaCZv0E
+	 niketQZbu3RTE/WSO4xbpV3Q+CqO930sZrm/tsa/uLTVIpPkvW7Ef/X5nrZSlf5eJ/
+	 5sVZb0DBHac+AHoeU04c4xWtxOYhF2fKkIGogV0kAPiXRaO88d03NmTIHs7Q3W4DQR
+	 hKNW4lQhzgZRQ==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-ztdg06021701.me.com (Postfix) with ESMTPSA id 6E37E26335A3;
+	Wed,  3 Apr 2024 21:07:11 +0000 (UTC)
+From: Laine Taffin Altman <alexanderaltman@me.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240403160213.267317-1-sashal@kernel.org>
-In-Reply-To: <20240403160213.267317-1-sashal@kernel.org>
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Wed, 3 Apr 2024 23:05:42 +0200
-Message-ID: <CACMJSesiDWonw83FfnneRLXu=ED27HHeqdsjUS0Xooba2fRZZA@mail.gmail.com>
-Subject: Re: Patch "gpio: protect the list of GPIO devices with SRCU" has been
- added to the 6.8-stable tree
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: [PATCH v4] rust: init: remove impl Zeroable for Infallible
+Message-Id: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com>
+Date: Wed, 3 Apr 2024 14:06:59 -0700
+Cc: stable@vger.kernel.org
+To: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ rust-for-linux@vger.kernel.org,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ lkml <linux-kernel@vger.kernel.org>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
+X-Proofpoint-ORIG-GUID: 8aN3UzxcWvmPcgHFin2Utvi_e7K1jNVI
+X-Proofpoint-GUID: 8aN3UzxcWvmPcgHFin2Utvi_e7K1jNVI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-03_22,2024-04-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 spamscore=0
+ mlxscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 bulkscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2404030144
 
-On Wed, 3 Apr 2024 at 18:02, Sasha Levin <sashal@kernel.org> wrote:
->
-> This is a note to let you know that I've just added the patch titled
->
->     gpio: protect the list of GPIO devices with SRCU
->
-> to the 6.8-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->      gpio-protect-the-list-of-gpio-devices-with-srcu.patch
-> and it can be found in the queue-6.8 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
->
->
->
-> commit 077106f97c7d113ebacb00725d83b817d0e89288
-> Author: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Date:   Fri Jan 19 16:43:13 2024 +0100
->
->     gpio: protect the list of GPIO devices with SRCU
->
->     [ Upstream commit e348544f7994d252427ed3ae637c7081cbb90f66 ]
->
->     We're working towards removing the "multi-function" GPIO spinlock that's
->     implemented terribly wrong. We tried using an RW-semaphore to protect
->     the list of GPIO devices but it turned out that we still have old code
->     using legacy GPIO calls that need to translate the global GPIO number to
->     the address of the associated descriptor and - to that end - traverse
->     the list while holding the lock. If we change the spinlock to a sleeping
->     lock then we'll end up with "scheduling while atomic" bugs.
->
->     Let's allow lockless traversal of the list using SRCU and only use the
->     mutex when modyfing the list.
->
->     While at it: let's protect the period between when we start the lookup
->     and when we finally request the descriptor (increasing the reference
->     count of the GPIO device) with the SRCU read lock.
->
->     Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->     Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->     Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->     Stable-dep-of: 5c887b65bbd1 ("gpiolib: Fix debug messaging in gpiod_find_and_request()")
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
->
+In Rust, producing an invalid value of any type is immediate undefined
+behavior (UB); this includes via zeroing memory.  Therefore, since an
+uninhabited type has no valid values, producing any values at all for it =
+is
+UB.
 
-I'm not sure what the reason for picking this up into stable was but I
-believe it's not a good idea. This is just the first patch in a big
-series[1] of 24 commits total on top of which we had several bug fixes
-during the stabilization phase in next. Without the rest of the
-rework, it doesn't really improve the situation a lot.
+The Rust standard library type `core::convert::Infallible` is =
+uninhabited,
+by virtue of having been declared as an enum with no cases, which always
+produces uninhabited types in Rust.
 
-I suggest dropping this and not trying to backport any of the GPIOLIB
-locking rework to stable branches.
+The current kernel code allows this UB to be triggered, for example by =
+code
+like `Box::<core::convert::Infallible>::init(kernel::init::zeroed())`.
 
-Best Regards,
-Bartosz
+Thus, remove the implementation of `Zeroable` for `Infallible`, thereby
+avoiding the unsoundness (potential for future UB).
 
-[1] https://lore.kernel.org/lkml/20240208095920.8035-22-brgl@bgdev.pl/T/
+Cc: stable@vger.kernel.org
+Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
+`init::zeroed` function")
+Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+---
+V3 -> V4: Address review nits; run checkpatch properly.
+V2 -> V3: Email formatting correction.
+V1 -> V2: Added more documentation to the comment, with links; also =
+added more details to the commit message.
+
+ rust/kernel/init.rs | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 424257284d16..3859c7ff81b7 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -1292,8 +1292,15 @@ macro_rules! impl_zeroable {
+     i8, i16, i32, i64, i128, isize,
+     f32, f64,
+=20
+-    // SAFETY: These are ZSTs, there is nothing to zero.
+-    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, =
+Infallible, (),
++    // Note: do not add uninhabited types (such as `!` or =
+`core::convert::Infallible`) to this list;
++    // creating an instance of an uninhabited type is immediate =
+undefined behavior.  For more on
++    // uninhabited/empty types, consult The Rustonomicon:
++    // =
+https://doc.rust-lang.org/stable/nomicon/exotic-sizes.html#empty-types =
+The Rust Reference
++    // also has information on undefined behavior:
++    // =
+https://doc.rust-lang.org/stable/reference/behavior-considered-undefined.h=
+tml
++    //
++    // SAFETY: These are inhabited ZSTs; there is nothing to zero and a =
+valid value exists.
++    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
+=20
+     // SAFETY: Type is allowed to take any value, including all zeros.
+     {<T>} MaybeUninit<T>,
+
+base-commit: c85af715cac0a951eea97393378e84bb49384734
+--=20
+2.44.0
+
 
