@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-35815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A7D897807
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:18:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C32897840
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D13EFB3290F
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:41:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6866B3568D
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC0016D33F;
-	Wed,  3 Apr 2024 17:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE7616D4FE;
+	Wed,  3 Apr 2024 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmmLGj9v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBiYdCbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B5416D339;
-	Wed,  3 Apr 2024 17:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7945E155A2F;
+	Wed,  3 Apr 2024 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164807; cv=none; b=P9N/vgmyIde9/EpPAvDYrH5qPJuUvqqgV36Auysi5sEMkbU/p4TRPNOLcFcgrJwGG8Eo9EqBvhhgnwCZobpZJLMkGdFFDDSH45XR1a1eXmQAX0BAO1VpsfzqmVDELkvkLISFOW+URk1g8fDSucA+5qrkIRB5z2rLnBbpKn5oEmI=
+	t=1712164811; cv=none; b=stPsiaGJGQRf6QRNmGX8+AraaIiXPAmEp5elNzfH+unR//g6cAaPVTxSelvpKFfk9cNoNUq8qab4RQWYtCZ1XQ0ORXhbl73opHiFsNnNty/iC8ckv6OO0f0TVnqAoJDz3Rl6VFXgXx5aPPAbzlNzgy44kiIfDN9v61yYCAuOXhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164807; c=relaxed/simple;
-	bh=n7saXgpZFFhdB2bpOB45XPxdJLSkbI0Y1Yd6vPZwHLY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TEMXpcaHjSrf8GPF9VC7wUad1rTPuIBetmS68XFw20BoHS/rXBra4J42J3a/5X0mcNG8tCrQXyN+/bWk9oXdd6oG3UC7zobwNQUHxvEyI8halO701qDWswnHOOnoLaYzU/I9Vfm1doykropzhq6ki73WbE6cralPBYtj6sFmO6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmmLGj9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518C3C433C7;
-	Wed,  3 Apr 2024 17:20:06 +0000 (UTC)
+	s=arc-20240116; t=1712164811; c=relaxed/simple;
+	bh=Q1bGa0DUfIsDSpZYcC/n2dxJH9DP2BQn9nJ5RASB7Zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S51+MFKOM0EnxnSN4KI0ugFNUnBSyycyD6ya2vSIIRzLeuV3E60myMhlRLu0DCqwfjwm99xv/CGgvjyEWikG5o+3TZrd4izRjEaCLVhWRL42XzX/nAOS/ZeNV2G2vYvQSQ1KlA+ydxP7uJ3rwmPxf+qpyRPm4KtRM5qubphWUso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBiYdCbI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F398FC43394;
+	Wed,  3 Apr 2024 17:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164807;
-	bh=n7saXgpZFFhdB2bpOB45XPxdJLSkbI0Y1Yd6vPZwHLY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=CmmLGj9vAfWM9iIltFC+Jp74PtPKNuWmp0JHxzncCxkno+ouYT9c2hMT5M5piHTHF
-	 0GkK2ib+O/qObYdLEHe/OaG+mCZy20IJDqOYbReb15AJOBPeMfFwOnpXaX4h0+N5d7
-	 CTLTk0L34wjYUzo9M0uaHculmES/YLH3VkwY6yZApJ7US6OtfChSbE3q6QWvdijFHe
-	 PEq9zbtToNuViQdFvM7faW7fTGJHv6FPq7lz9+pEiIHsFP4FbjOYEmh7vOqF655r9K
-	 jXumVwwWnyOShfosVdl4nfwNR+2bJYEwLOKQkXyQ7s3GgKS4rySqXKjuaDzbebNwF9
-	 UDp1V/ilBMY4A==
+	s=k20201202; t=1712164811;
+	bh=Q1bGa0DUfIsDSpZYcC/n2dxJH9DP2BQn9nJ5RASB7Zk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MBiYdCbIDLSgSu4WhWvolmCJimuUHW6i3g6ntda1quQsUs8IF5zEBEUCIsQW0yXhE
+	 wXMvBzErd7VufFzWRkXXXQEtw7WAq4YbQPPsBWhxGpEZYDc6ZxBr+WyQBgKfIbyd2u
+	 ead5lWpeyH70KfiQUJD3wRx50DnQ3uTkyqeDaJcggzrhiACZPXpP0xo0AFq+kjt7JQ
+	 ygI8P9zuYfsxCLIUtFJT/24P1mvqCQb/9wFDzrnaWVrKQxMHb3e7A3iBIpbU/PMdQz
+	 Fg3r3uvPnY86YPKQPzez9m3mNJOZ/CaAZk97IuFfiwmDA81at+FyQKpXCHw1d0n0zF
+	 cpGu2+mRXrxqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Petre Rodan <petre.rodan@subdimension.ro>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Marco Felsch <m.felsch@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 1/8] tools: iio: replace seekdir() in iio_generic_buffer
-Date: Wed,  3 Apr 2024 13:19:55 -0400
-Message-ID: <20240403172006.353022-1-sashal@kernel.org>
+	rdbabiera@google.com,
+	u.kleine-koenig@pengutronix.de,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 3/8] usb: typec: tcpci: add generic tcpci fallback compatible
+Date: Wed,  3 Apr 2024 13:19:57 -0400
+Message-ID: <20240403172006.353022-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240403172006.353022-1-sashal@kernel.org>
+References: <20240403172006.353022-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,43 +68,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.214
 Content-Transfer-Encoding: 8bit
 
-From: Petre Rodan <petre.rodan@subdimension.ro>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 4e6500bfa053dc133021f9c144261b77b0ba7dc8 ]
+[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
 
-Replace seekdir() with rewinddir() in order to fix a localized glibc bug.
+The driver already support the tcpci binding for the i2c_device_id so
+add the support for the of_device_id too.
 
-One of the glibc patches that stable Gentoo is using causes an improper
-directory stream positioning bug on 32bit arm. That in turn ends up as a
-floating point exception in iio_generic_buffer.
-
-The attached patch provides a fix by using an equivalent function which
-should not cause trouble for other distros and is easier to reason about
-in general as it obviously always goes back to to the start.
-
-https://sourceware.org/bugzilla/show_bug.cgi?id=31212
-
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-Link: https://lore.kernel.org/r/20240108103224.3986-1-petre.rodan@subdimension.ro
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-index 48360994c2a13..b8745873928c5 100644
---- a/tools/iio/iio_utils.c
-+++ b/tools/iio/iio_utils.c
-@@ -373,7 +373,7 @@ int build_channel_array(const char *device_dir,
- 		goto error_close_dir;
- 	}
- 
--	seekdir(dp, 0);
-+	rewinddir(dp);
- 	while (ent = readdir(dp), ent) {
- 		if (strcmp(ent->d_name + strlen(ent->d_name) - strlen("_en"),
- 			   "_en") == 0) {
+diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+index e34e46df80243..33c67adf7c67a 100644
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -732,6 +732,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
+ #ifdef CONFIG_OF
+ static const struct of_device_id tcpci_of_match[] = {
+ 	{ .compatible = "nxp,ptn5110", },
++	{ .compatible = "tcpci", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, tcpci_of_match);
 -- 
 2.43.0
 
