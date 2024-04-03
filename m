@@ -1,126 +1,134 @@
-Return-Path: <stable+bounces-35742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDD089756A
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 18:42:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D87A38975F0
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2E01F28674
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 16:42:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15D071C26A25
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9279715216F;
-	Wed,  3 Apr 2024 16:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C098152DF6;
+	Wed,  3 Apr 2024 17:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PIfAWDCk"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="icAdKWSy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f74.google.com (mail-io1-f74.google.com [209.85.166.74])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C510614C5B3
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 16:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CE2152506
+	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 17:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712162557; cv=none; b=RZo3p/9zQUklef+lox+Zy25MSVDDDRHHkt+KMY3GlvuYWIXZ4qYT6YBpYe/qUvyI6ISs+bOo3j1EE8QNL38rw+NRTkUQI9qO2+ouRk35RsisehiHSRiHcmA5z0dW/RkbU3pubd8zvLhi285p5m+IOLUhkuQaQCkJgTQ3NLa2ivI=
+	t=1712164052; cv=none; b=IOuw8o452rNgrlvsWj4Mlr4CfPUgwExElzVFP3oRl9qBdc1ng/HlvDapbRNDi07xzayL4NAF9B6d+5BHgMoMs0ueJ2lksWmsuF83iWzsO+PuRpA0ajArppdfTcRdao5UMwJXEApJycde+1noUGrTvfhluxfIJ05TMlJRkqjcUcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712162557; c=relaxed/simple;
-	bh=13pzuYSzeQAEjsqL42hszPIFIbvOLO7/tUFfzFZ7DN4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tiMi5eon7VV3KWyqggpdaWkf10qqwvIEBufudyhUzQtgKOKyJQTNZbOdk3FqECmBjF9goFDsjel3kUibOln70oTuRCo/doXqIbyPLqCeTMCii+NEHkkZDQOvPSyOn+iWXCEz3vtUTtpB8V/AF+lcv1p3LU9GigS2b2fJLUfPmlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PIfAWDCk; arc=none smtp.client-ip=209.85.166.74
+	s=arc-20240116; t=1712164052; c=relaxed/simple;
+	bh=gX73Fd71Hr9LdsAlOuJUtvzibpHcNhprefVg3paVgDQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eJ1iyiuqrwqLiy4mz0QsKD3U4nMhkR6r5guZnP/oOYs1qvFyt4womiQO8PVBkKm9QowW/nSgMZ2moIxeCU68DQYrOe2CBh1S4GEMeaa3K7FUDlVov7UjSbMODSelpMGnDyD5hqrfXOATxnxkyrNVp8MKo0X2oJLxLvCkUe5ZGcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=icAdKWSy; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com
-Received: by mail-io1-f74.google.com with SMTP id ca18e2360f4ac-7d04135eb47so6068039f.0
-        for <stable@vger.kernel.org>; Wed, 03 Apr 2024 09:42:35 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-61517841a2eso1014167b3.2
+        for <stable@vger.kernel.org>; Wed, 03 Apr 2024 10:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712162555; x=1712767355; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zL9VryjlYsGlQOxrrXBc4s+acw2W31pFo0ivkt7WDt4=;
-        b=PIfAWDCkfSG47Ye5IlLAlA7E4G3UIrfcHS+DCr5nxEsNYY3gIqXBRUpv7HXKwRe1wI
-         LkU+kUIzFc5ODGyU9dVvmdIPKtuRbBDJ0A79Es/2Eb4AdhaZS/hPiA7/7Dp+Z5VbXllh
-         GCI5CxHNZO9BXpWnjbLoAaWNVxg5XxGeSfiH1fKY8vinS5vkZhmAiI9EiIwqayS8/Ztj
-         0KkL/khK4IvvNeakhs/5wJjXXA17kqPzHjxVE+VODXDj60M2E4vxUiptH99PIYgCMZqy
-         nM5GqN5zlWl33Hh7mQWO/3N0Emdq3JkTzRmcShNMXtbkVBFjYlTLdOmcGchPbgFtKS+Q
-         7p/Q==
+        d=google.com; s=20230601; t=1712164048; x=1712768848; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XE+PG9zC5omixfQJghjjzCZLVaoeIvGmD0Or6PABHlQ=;
+        b=icAdKWSyvRSCf9tjeMZICzYfOPKdz7214hlszOGzL3yil1XhYOI6qzpm+L5C/GlbgU
+         HxmMQ5p2emVaMg8FcbzMm6pP7bW78qD+Fq2q7Hz8wV46dD82aR3fxYUMHwPdB8pndLtv
+         mC6NW/gk6qcTmiY42o303NuW8am9UoAB6C7b5PSMS/J/NqMXzC2gDiORn3YKbzpc0A1g
+         nMmj5abcLp0OPXyK/6TXRpk4juXZl8ITDpsqTdWMHxFiKqZ4A3jzPV8l4a/Y7L1t3vdh
+         Ev2jE1BXQzb9+0PXKyzuiMhzEoW6qj496yA8Va49UXaAq2MjZPFEgO2rrqfQbZpb1MjD
+         EMXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712162555; x=1712767355;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zL9VryjlYsGlQOxrrXBc4s+acw2W31pFo0ivkt7WDt4=;
-        b=ln7hSCuB9kclbkG+dU9N7PCQyqj/D6cHQGr6WAABRy+wng7DxYiSoPiZXdzGFI+0ze
-         sxF7VaGBxU0Qn/+5gVf5swtfSegwdAiwJtgxtrg7b1vJk8VL3H2MspQ9EOYXH8wxynRj
-         OTUmjxyvm6HrxaxthU+Wv1g//cVKgn5HEALx7MUA7Yl+ASGHTl3tW4Mtm+Iyk9GYHmxH
-         W33sy1Kg9TNgHW04GtnLhNkcZu5Y6mGxODoaJ4YBY6nMiGp7YbEyjRwB1zMz1VrMs8UU
-         lsX43Y2z3jf4taW5So+u1CbBYhK3HSpYuq3uvK/d+PIkJZzlJgGt9cnhTWztH0HzIScI
-         w7NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKqjgXyWV92Vgls2RJqkIVmjI2gs/tb1br8qoofQ9aky3PqUNs/C0ICKYnNWAoFFcNClo8KDi525DUB3YIAWZLQ3WAgZlJ
-X-Gm-Message-State: AOJu0Yx3Hu2J5MjMrgZXil720M7PXfMVeGl6lRgMHB7bAszwmkpTyTcH
-	clFIZfj9MWD/2Azt6RtoadxerL63s6IzGzQQMHNQrvYEz1RoEGvnEtIyWTfH+yuK2bwZpLAYNdp
-	TDHgdag==
-X-Google-Smtp-Source: AGHT+IF0rO1Bjeb7TUkL6kSTrX663vMZ3XBPI3uHeZiTz2sTccbaBGMG83mBaqMove3qM6FC98OsRNgJym+A
-X-Received: from rananta-linux.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:20a1])
- (user=rananta job=sendgmr) by 2002:a05:6638:8904:b0:47f:1496:13e5 with SMTP
- id jc4-20020a056638890400b0047f149613e5mr111392jab.4.1712162555133; Wed, 03
- Apr 2024 09:42:35 -0700 (PDT)
-Date: Wed,  3 Apr 2024 16:42:30 +0000
+        d=1e100.net; s=20230601; t=1712164048; x=1712768848;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XE+PG9zC5omixfQJghjjzCZLVaoeIvGmD0Or6PABHlQ=;
+        b=Ohc9Oqgtx9gwlOV/+CRYHf1wnpu5iqaF9HfK4PVy1YvKafvFEi6Nyo6X/jR6M8zZu+
+         WMEH+xvX/kcRwrHmyWgPubeUsPqq24PcAdhXO7XJjOrORgI31MRQVVIVh1vRv05q6Czx
+         YfX269BmUFsSx6CIq16R2NNtqTcX3aYZGg0XnHYhPAS1CBr/8EAQY/aFSTH7WLZ9hdBh
+         XEIRay8Ub3oDu899A79+Fd2zYUFvkO45EfNtO7sqwW0A2JZEnsfYrzY46YEl3Jg9JUEp
+         nmxhLXT4Xjqf0Si1UVIvo+LiUIdS8aoTikzdef1C7l56Abzk5zluJZc6oBWwV0r0E2xd
+         LNeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFLe7UvgtQXDmalfGq0y7MRbgJ9I52o2Hs9E4SZI+Ie4r43QraeG5g7OLlytsOMaUIRPfhzPfZiwizVoD2aeou/tOLlsIY
+X-Gm-Message-State: AOJu0YwLw8IjuEZiCXy/bp2qEPb6v+GbP/1OC9oF+Ocvk5QpPXO8lpNN
+	tq7A24qlk5qwxi3qFc025hSA4POXPnR9spwO57AKPixEeXbOeICIACEia6nFN21mIf+WfljV7BR
+	wUA==
+X-Google-Smtp-Source: AGHT+IGJ6fjY3qPzfcuQ+Uj01adGJDcVM5deoqEJfvQ1/h41CQ3qzBzMvVGNTIzpPWuDCJzxpn4gGWghwiI=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:1005:b0:dc7:48ce:d17f with SMTP id
+ w5-20020a056902100500b00dc748ced17fmr10456ybt.10.1712164048738; Wed, 03 Apr
+ 2024 10:07:28 -0700 (PDT)
+Date: Wed, 3 Apr 2024 10:07:27 -0700
+In-Reply-To: <20240403164230.1722018-1-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.478.gd926399ef9-goog
-Message-ID: <20240403164230.1722018-1-rananta@google.com>
-Subject: [PATCH v2] KVM: selftests: Fix build error due to assert in dirty_log_test
-From: Raghavendra Rao Ananta <rananta@google.com>
-To: Sean Christopherson <seanjc@google.com>, Sasha Levin <sashal@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Raghavendra Rao Ananta <rananta@google.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20240403164230.1722018-1-rananta@google.com>
+Message-ID: <Zg2Mz5ZcF6cO9Ipr@google.com>
+Subject: Re: [PATCH v2] KVM: selftests: Fix build error due to assert in dirty_log_test
+From: Sean Christopherson <seanjc@google.com>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Sasha Levin <sashal@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-The commit e5ed6c922537 ("KVM: selftests: Fix a semaphore imbalance in
-the dirty ring logging test") backported the fix from v6.8 to stable
-v6.1. However, since the patch uses 'TEST_ASSERT_EQ()', which doesn't
-exist on v6.1, the following build error is seen:
+On Wed, Apr 03, 2024, Raghavendra Rao Ananta wrote:
+> The commit e5ed6c922537 ("KVM: selftests: Fix a semaphore imbalance in
+> the dirty ring logging test") backported the fix from v6.8 to stable
+> v6.1. However, since the patch uses 'TEST_ASSERT_EQ()', which doesn't
+> exist on v6.1, the following build error is seen:
+> 
+> dirty_log_test.c:775:2: error: call to undeclared function
+> 'TEST_ASSERT_EQ'; ISO C99 and later do not support implicit function
+> declarations [-Wimplicit-function-declaration]
+>         TEST_ASSERT_EQ(sem_val, 0);
+>         ^
+> 1 error generated.
+> 
+> Replace the macro with its equivalent, 'ASSERT_EQ()' to fix the issue.
+> 
+> Fixes: e5ed6c922537 ("KVM: selftests: Fix a semaphore imbalance in the dirty ring logging test")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
 
-dirty_log_test.c:775:2: error: call to undeclared function
-'TEST_ASSERT_EQ'; ISO C99 and later do not support implicit function
-declarations [-Wimplicit-function-declaration]
-        TEST_ASSERT_EQ(sem_val, 0);
-        ^
-1 error generated.
+Just to be super explicit, this is specifically for 6.1.y.
 
-Replace the macro with its equivalent, 'ASSERT_EQ()' to fix the issue.
+Acked-by: Sean Christopherson <seanjc@google.com>
 
-Fixes: e5ed6c922537 ("KVM: selftests: Fix a semaphore imbalance in the dirty ring logging test")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
----
- tools/testing/selftests/kvm/dirty_log_test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
-index ec40a33c29fd..711b9e4d86aa 100644
---- a/tools/testing/selftests/kvm/dirty_log_test.c
-+++ b/tools/testing/selftests/kvm/dirty_log_test.c
-@@ -772,9 +772,9 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- 	 * verification of all iterations.
- 	 */
- 	sem_getvalue(&sem_vcpu_stop, &sem_val);
--	TEST_ASSERT_EQ(sem_val, 0);
-+	ASSERT_EQ(sem_val, 0);
- 	sem_getvalue(&sem_vcpu_cont, &sem_val);
--	TEST_ASSERT_EQ(sem_val, 0);
-+	ASSERT_EQ(sem_val, 0);
- 
- 	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);
- 
-
-base-commit: e5cd595e23c1a075359a337c0e5c3a4f2dc28dd1
--- 
-2.44.0.478.gd926399ef9-goog
-
+> ---
+>  tools/testing/selftests/kvm/dirty_log_test.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
+> index ec40a33c29fd..711b9e4d86aa 100644
+> --- a/tools/testing/selftests/kvm/dirty_log_test.c
+> +++ b/tools/testing/selftests/kvm/dirty_log_test.c
+> @@ -772,9 +772,9 @@ static void run_test(enum vm_guest_mode mode, void *arg)
+>  	 * verification of all iterations.
+>  	 */
+>  	sem_getvalue(&sem_vcpu_stop, &sem_val);
+> -	TEST_ASSERT_EQ(sem_val, 0);
+> +	ASSERT_EQ(sem_val, 0);
+>  	sem_getvalue(&sem_vcpu_cont, &sem_val);
+> -	TEST_ASSERT_EQ(sem_val, 0);
+> +	ASSERT_EQ(sem_val, 0);
+>  
+>  	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);
+>  
+> 
+> base-commit: e5cd595e23c1a075359a337c0e5c3a4f2dc28dd1
+> -- 
+> 2.44.0.478.gd926399ef9-goog
+> 
 
