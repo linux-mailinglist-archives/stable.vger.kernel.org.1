@@ -1,93 +1,118 @@
-Return-Path: <stable+bounces-35864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F89897808
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:18:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CC08978CF
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 21:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20391C2195A
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 18:18:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39F74B236BC
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 18:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8441534F2;
-	Wed,  3 Apr 2024 18:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9FD153831;
+	Wed,  3 Apr 2024 18:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSj7+4gu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHZAKSuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDE2152DF0
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 18:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBB63D60;
+	Wed,  3 Apr 2024 18:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712168315; cv=none; b=jnYXk6q9BoG7O2q6Roa7CU4gwnB84D5+dKROYhB8f57pyvwvOGZ2UVsu8bsl9vd2Xyh57fj/a6r3LaLSHaPzG9nPCa44pM4DlmzKSZmp1eaJJBYaU0RdW4XsILIddMJ4qE0jDRCR4dhkj5dLKIr+kTDReDAtumbDXc4qwyNrGmc=
+	t=1712169609; cv=none; b=X+5s3LUgijZ3+giboivTlkoJzVB4Axzv/wtAQHcRerD3lrUt7IPCDv/+4CaIvwBb2aV9wctigDpeNykQHlXkNEE+6DwtK7diYDwgFyD5SqRBvRL49CTnGI7IzPE7XVGK4yPKC9ExzpwEu3hC4i7sVcLjl1rtd9fQT2Z/KujfbXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712168315; c=relaxed/simple;
-	bh=P9yWqBtlsaeFnaAZmbCkgpReXKzLQLMYUfBreeUNjr4=;
+	s=arc-20240116; t=1712169609; c=relaxed/simple;
+	bh=mKkzeEBBqz/gTib0prGhwYPBjEjT54fc9L8qJ/6eNa4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KSjhYBM0RwwVwrBnjXm0siC0WwqbQ3LDV52KsncrH2xvABZOghF4gQIwmmhPhN/f1BJ+4p5Eiywf8eJ3IL/SQyTc87HGxZu9ZAOzL3zGARI9MgTWYF/S7iXHj+Zybq4mVkINb4aszbJQSUZet4qVXW1t+RCQWFqNWb/k3/BD2YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSj7+4gu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AC9C433F1;
-	Wed,  3 Apr 2024 18:18:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712168315;
-	bh=P9yWqBtlsaeFnaAZmbCkgpReXKzLQLMYUfBreeUNjr4=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=HnI9BfYzaeYnXjGeLMqgOwVtYKkyRymfFZUPA7Hl0pQ3goHEnRyIUdVGppK7UtHWFfBluCsC0aVWJjjrrcvH3SpDm2UbPtt1nNcdjg0YrtVrSCVIReMsU/34WjgQyVSN9+jqsuRpmqdKvhK2rvZVfuOvi5sbFDkNytST5z65K0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHZAKSuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9DBC43390;
+	Wed,  3 Apr 2024 18:40:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712169608;
+	bh=mKkzeEBBqz/gTib0prGhwYPBjEjT54fc9L8qJ/6eNa4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MSj7+4gu1ie54nAa9tpG/7XYqz6LKMWtzj7Zo9MOgrnnr8DptCtNNmJE+ejzrDqHH
-	 YoCFJyHRpdAAiDU+unF9K2GqrCZRGkGB3RmZaxsqJLcHUV7rhf8YaWcTxdZwHqX50r
-	 VouPXAkYnbwPm9RD4OewmUCjvBinGy1mOedPl//UrTjIynADlD/dTerXr/Ddtvqste
-	 N4LX736jN+RL9z6PoQgAp6PllalT6rAWdArWFLgPdh5ECJjOTfbAqdhVKQRDXVgnqL
-	 JPAKSjS4yjeZU3tZQL5mW+vyFboaE1oE3OfMLiuxyaWQPd4qjSRfRvh8ZoHtuvLjG6
-	 on6ttJ04ypFkQ==
-Date: Wed, 3 Apr 2024 11:18:34 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Mahmoud Adam <mngyadam@amazon.com>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org,
-	Amir Goldstein <amir73il@gmail.com>,
-	Leah Rumancik <lrumancik@google.com>, Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH 6.1 0/6] backport xfs fix patches reported by
- xfs/179/270/557/606
-Message-ID: <20240403181834.GA6414@frogsfrogsfrogs>
-References: <20240403125949.33676-1-mngyadam@amazon.com>
+	b=aHZAKSuQLrIMeawocgg7tTb81IdEGpoLVz2877APmYB6mWEaK/+7np/LYaTVDWZ0P
+	 5lJVwlG/isNM3Xpc2E/EngdydGC/JakmnkqCQZMptz/L9LctvaWGyFycnQdd2IwDh+
+	 MoDjVrNlb95usgW8HiCH/Uc8erJaxCiFzrcsyoGM=
+Date: Wed, 3 Apr 2024 20:40:00 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Joseph Salisbury <joseph.salisbury@canonical.com>
+Cc: hch@lst.de, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	axboe@kernel.dk, sashal@kernel.org, stable@vger.kernel.org,
+	Francis Ginther <francis.ginther@canonical.com>
+Subject: Re: [v5.15 Regression] block: rename GENHD_FL_NO_PART_SCAN to
+ GENHD_FL_NO_PART
+Message-ID: <2024040306-putdown-grain-daf7@gregkh>
+References: <924449dc-9b1f-4943-afe3-a68c03aedbb5@canonical.com>
+ <2024040329-unstopped-spelling-64c8@gregkh>
+ <a0819f54-7469-4c94-b567-71f634c84ac1@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240403125949.33676-1-mngyadam@amazon.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a0819f54-7469-4c94-b567-71f634c84ac1@canonical.com>
 
-On Wed, Apr 03, 2024 at 02:59:44PM +0200, Mahmoud Adam wrote:
-> Hi,
+On Wed, Apr 03, 2024 at 02:06:28PM -0400, Joseph Salisbury wrote:
 > 
->  These patches fix and reported by xfstests tests xfs/179 xfs/270
-> xfs/557 xfs/606, the patchset were tested to confirm they fix those
-> tests. all are clean picks.
+> 
+> On 4/3/24 13:54, Greg KH wrote:
+> > On Wed, Apr 03, 2024 at 01:50:09PM -0400, Joseph Salisbury wrote:
+> > > Hi Christoph,
+> > > 
+> > > A kernel bug report was opened against Ubuntu [0].  This bug is a regression
+> > > introduced in mainline version v5.17-rc1 and made it's way into v5.15 stable
+> > > updates.
+> > > 
+> > > The following commit was identified as the cause of the regression in 5.15:
+> > > 
+> > > c6ce1c5dd327 ("block: rename GENHD_FL_NO_PART_SCAN to GENHD_FL_NO_PART")
+> > How is renaming a define a "regression"?
+> The "regression" is experienced after upgrading to the kernel to the version
+> that introduced this commit.
+> The v5.15.131 kernel works as expected, upgrading the kernel to v5.15.132
+> breaks behavior that worked in a prior kernel version.
+> Reverting commit c6ce1c5dd327 in v5.15.132 allows the experience to be as
+> before in v5.15.131.
 
-Hi!  Thanks for the backports!
+What "experience" are you talking about here?  Please be specific.  What
+exactly "broke", what is the build error that happens?
 
-Normally I'd pass these on to the 6.1 XFS maintainer, but I'm not sure
-who's actually taking care of that at the moment.  To find out, I've
-cc'd all the people who have either sent 6.1 backports or made noises
-about doing so.
+> > > I was hoping to get your feedback, since you are the patch author. Is the
+> > > best approach to revert this commit, since many third parties rely on the
+> > > name being GENHD_FL_NO_PART_SCAN in kernel headers?
+> > External kernel modules are never an issue.  Is this a userspace thing?
+> > 
+> > >   Is there a specific need that you know of that requires this commit
+> > > in the 5.15 and earlier stable kernels?
+> > Yes.  And Christoph did not do the backport, so I doubt he cares :)
+> > 
+> > Again, what in-kernel issue is caused by this?
+> 
+> Third party code that relies on the kernel-headers will no longer compile
+> due to the name change.  Should we not care if we break things, even in
+> userspace?
 
-To the group: Who's the appropriate person to handle these?
+Is this userspace, or is it kernel drivers?
 
-Mahmoud: If the answer to the above is "???" or silence, would you be
-willing to take on stable testing and maintenance?
+If kernel drivers, you know that there  s no stable kernel api, we
+rename and change things all the time, even in stable kernel trees, for
+good reasons (see the set of patches that were applied that contained
+this change.)  Do you want to have unfixed security issues, or do you
+want a secure kernel that happens to rename variables at times?
 
-Also FYI the normal practice (I think) is to cc linux-xfs, pick up some
-acks, and then resend with the acks and cc'd to stable.
+If userspace, please point me at this and why hasn't it broken in newer
+kernel releases where this change came from?
 
-The six patches you sent along look ok to me, so
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+thanks,
 
---D
-
-> thanks,
-> MNAdam
+greg k-h
 
