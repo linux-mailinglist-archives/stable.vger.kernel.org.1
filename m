@@ -1,170 +1,213 @@
-Return-Path: <stable+bounces-35681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38658896895
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 10:28:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8298F8969A8
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 10:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A0F61C23742
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 08:28:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5EC01C20BC4
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 08:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128AD126F39;
-	Wed,  3 Apr 2024 08:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A096EB45;
+	Wed,  3 Apr 2024 08:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P3QccJmz";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1z2QVo3T"
+	dkim=pass (1024-bit key) header.d=wolfvision.net header.i=@wolfvision.net header.b="fktyLSc3"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2094.outbound.protection.outlook.com [40.107.105.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154485C909;
-	Wed,  3 Apr 2024 08:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712132535; cv=none; b=tAKrZ9j+l60W6Usk5uLSWmCohSCiYGpnk9h1aHwT4WGQVc7ZYlUbyTAg9lmNMi0YOSHafxkoX7Eqjj02fP/ZeXv6St93O5MS0Y7sOI5DgSFlYE2GEyvKRusMNMT4w8iWboxh1aAYCENQCGQBciISTzWD8Wj1LegOClNhkDlOAH8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712132535; c=relaxed/simple;
-	bh=5lp7AlGrGY72eH77g2/OpWl6OBQLgzTGI692i8nt878=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gh8t3Nbu8pEhzfJrEQrcm1GXkJ/Nbr+D0cJX8jKbISLrWNPB+xDrugAgownK5qXoDhsqgkuykqPbLADOsd/OW8qwvjJsO1mb5A3S2OJKPNGmOCH5Ag/iLtPOjhyfaYHH7sflORGeU+FGimcbDG8eKC39tE3vCFBCr3fCT+CgmnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P3QccJmz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1z2QVo3T; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 03 Apr 2024 08:22:11 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712132532;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FaFmSIb4p+Gtq3fkhBTi42NY/14O9dMwtxLw7aG5c5Q=;
-	b=P3QccJmzizra30UrznPr5/VfiP5CQkj0a8LjmbbXCIl2NtBruLQedMSDa6I7gbS2Xs2Yyw
-	ftlV3tSIxDEFcu3gNS6F6zSq5+67ZIGiVPgcXQdVkhp0UjjF05auqYV/czN7CuKQpW1Jvu
-	Jrpd/ZF4lilOgWfk7Q+mpdUl/bnM8EsiBed4gRGKXnT1zrOQ8vJlhWA5UG2O4gr6izuI2y
-	OrWivX2iMa2WAJXVVU0XYJQ2wsWNp7irDWyJ1S2iJ5++LD85nl0OBF9dHYCm+0m9bjWpI1
-	BgzB0igFDZBhmRN3/YXGBicK8YhOZmSE0DmrbFW8uqm1JDjeodMIdqJQKRVmGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712132532;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FaFmSIb4p+Gtq3fkhBTi42NY/14O9dMwtxLw7aG5c5Q=;
-	b=1z2QVo3T4c8jDKPMW56mJxeXcoZrUVuW7lmE+EJRqfFo6RHsALNLHR6w0mCZVRRg5YPAhy
-	JWf95OLv4NyU64Cw==
-From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel/ds: Don't clear ->pebs_data_cfg for
- the last PEBS event
-Cc: Stephane Eranian <eranian@google.com>,
- Kan Liang <kan.liang@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240401133320.703971-1-kan.liang@linux.intel.com>
-References: <20240401133320.703971-1-kan.liang@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74AE6DCE8;
+	Wed,  3 Apr 2024 08:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.94
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712134537; cv=fail; b=eSKvAd4spltzkD2LgjFowU8AfkULZsoNrE2X/rqNSk3nZRAuWXZ1uqGy86KlhyrEETBptz7upqYyikdn4gNJLYBohVt/cxXqU5UvO7AGLPr5LywNICwf2DW44gcTgvOgM686n4K97CrZUa5mRneXkX0lsrXoHpp8NyecQEtMqWM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712134537; c=relaxed/simple;
+	bh=4dR8e5FNu9tVrbPlVB+OVQ9ZUdPwQM8CZfPiTpRbPbE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=DczoI3msVoaXFSrvjAWqUUyLVUGtyv8cYuMEPsfyF01Gh8AQwlnNqdy+baqIxkFbv/0ShrR7yY7hzQ0W10KwDFxdwF4sSI4iQXXvRBJSXx3piKkMZwOt1RxUca7tIa0qWqhqLfWSlm33v+Qq8CX3VRKckvR4v+HTa1h+1kX25Hk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wolfvision.net; spf=pass smtp.mailfrom=wolfvision.net; dkim=pass (1024-bit key) header.d=wolfvision.net header.i=@wolfvision.net header.b=fktyLSc3; arc=fail smtp.client-ip=40.107.105.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wolfvision.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wolfvision.net
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ANy6LtlDnTP/qPZJ/LBTwcaNnV1sGJexxH+r5CoapNvNrfIV1ExV1T1z+chZRUjXdVam94WLSjCTqe/Ff3HA2sWUmqKAiOmU7v6ZRx3FCrHRk4csqeoMTo9WlPUkE4zUuAOAu7JVVBxa3bqmRPaz+ptSKVvWl+UNsnqWhjFNPEYt1PtdE48E2aoGp/PeXr6E4tIuA1JIP9OcbUCGAZi4Ec3idzAYq3DKAttB08V1QRIDoWZQpxc0JwF8rpWQ8xOcnTJJCZvlHDFiuCe4SFuUz7UApILkUI4b6Ru65XJxPTfXAOAnPbXc3TH0gfdPqzLiXmwApT0Wbnz5HRLa/rdt9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dcoVjw1IXLsFXyb8QE0BXJ0283R9eGHIhEizrFPqn2M=;
+ b=WKqlkH7B6Sgvfh9pMO6K0oNnoe7YruKBVcK32oMu8YoijJuTDqBfMq6gR6J6uPFS1+glLoCJbLzcfZNgWl7pzV8XJv9xjL5XCFIZEzTOsPBFzw3hs/WYgc1Hwhw0K1c1EcyEcdUeZdzaELu/XJCQgFfhFVyQyNB3V+SJCGUlnFnqKKV14bD0knHcouQi5O8qgloXcZQvzoxckg/BIzpzvEPRptb+dISoa0/pm0AdKnr8XE7Pli61q9SLJDDbmG1ZL3Oxv9ku0Cjj3ZLDr1K2uQL+XgsmaqogPnROHmygwguItf5Kc3ak9r05zWEkOcInTBV5XyVB6FeE30AakS+gGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wolfvision.net; dmarc=pass action=none
+ header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dcoVjw1IXLsFXyb8QE0BXJ0283R9eGHIhEizrFPqn2M=;
+ b=fktyLSc3fNhaU73O58GmWQuM7F02iOgBFGE4mRTv8y+Z1OabMRLtsLqKIg2vQf8Chv7jmfxF5qJm0GCwb8rS1Sfka2N7ex5os+CrwsDyiZ6xVzVWTaTiJgDKDNKIuxFy1IIgIdG/GCTVwH5Rj6AExMYvVlRPfamJe2YelVpITBo=
+Received: from VE1PR08MB4974.eurprd08.prod.outlook.com (2603:10a6:803:111::15)
+ by DB9PR08MB6539.eurprd08.prod.outlook.com (2603:10a6:10:23f::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Wed, 3 Apr
+ 2024 08:55:31 +0000
+Received: from VE1PR08MB4974.eurprd08.prod.outlook.com
+ ([fe80::9e35:6de9:e4fc:843f]) by VE1PR08MB4974.eurprd08.prod.outlook.com
+ ([fe80::9e35:6de9:e4fc:843f%7]) with mapi id 15.20.7409.042; Wed, 3 Apr 2024
+ 08:55:30 +0000
+Message-ID: <b6bf7f8e-7d46-4b70-930c-9483f13fd80a@wolfvision.net>
+Date: Wed, 3 Apr 2024 10:55:29 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND 2/2] usb: typec: tipd: fix event checking for
+ tps6598x
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Abdel Alkuor <abdelalkuor@geotab.com>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240328-tps6598x_fix_event_handling-v1-0-502721ff705b@wolfvision.net>
+ <20240328-tps6598x_fix_event_handling-v1-2-502721ff705b@wolfvision.net>
+ <ZgveG5Ly3mw0O0eo@kuha.fi.intel.com>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco@wolfvision.net>
+In-Reply-To: <ZgveG5Ly3mw0O0eo@kuha.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR03CA0061.eurprd03.prod.outlook.com
+ (2603:10a6:803:50::32) To VE1PR08MB4974.eurprd08.prod.outlook.com
+ (2603:10a6:803:111::15)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171213253103.10875.3060258964816599355.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR08MB4974:EE_|DB9PR08MB6539:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	PRqQrv1OHpPR2sRTamIahjQprW6AYCYBDaGH37YRavpSusYXR/CU32PTUl6hBpsZGgHUkPCnhC/7S2INLwkA3jlnGqDEI1z3bBxHr63BilAbmwbUe2gaf45WowKbiYLEVDQNvy236Xyt9vhqXxQgunaB8ojQtYFMUxZr44Sem/ihBv3WCB3O3lXusFU0ZLYynjPcOzH4iODcD/YEML+MuktrvdoAWxK9ves8uv1XIh5EJ6swp5w4OlVTb894tIVQ82Ug1dYyMDkhccxVcNWnynlVO2uAZeQkl4gFRGv34Lj07XB758DlQ2z3DlK7fgu0fuk73ihgehUsJxcp3u+Z5Jwi1NMcBOSBWOJNJHegzPUBb0poDw293VSfoZnkb6UL0VHe9jJAvP6coOOyh8BwgNVSgie3nl2fPrVD+tuXqe5lG8+c90z/mIPPHiWCjpQiSknuKzBQRG5QUpfO+JkDblV2i3LBhjeyWEewmjRkXrJw8MXtSIM9JPPkuOABYgWqrGMWscPYRoYIq8dlmoRgTn+i+y/IPeGjrZG/B7FP+P+Rp71jvx1/hy0iD7CajYs0vBv6TItHJ/traGSNssL/vZuz3O2wFSNJ5KHpLKiuF4MDqWgLS/uLsJkViEi2kNjohuUIAGCyUfoc5jo6ysacugC3jGdwJGnOAjkJ6uDiOaQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR08MB4974.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TEJCb2JnbzVqc2pjRDRVWlVFU24vME50QzMyalpNUzdnUEtCK1lEZitpRUZH?=
+ =?utf-8?B?cHhmV21Bd3cwclNSVUxQbytsWUJXOTRXTlg1NmhqYVlvZm9aaUhxRmFESmlK?=
+ =?utf-8?B?ZFFVK2lwTHZvMnY1djUzdmRrSHc5K0RQWWl6aXp3QTNwTnhBV2FrN1Ntclg4?=
+ =?utf-8?B?NDZKaEhraHZYR0UzajJOZlhOY0xjY0htWFNFRmVKb1BNMmJWSm41UWllSHV1?=
+ =?utf-8?B?N2xRTU9qT01TOGY1b1lLOWdUa090SFN0UlBQSzJNRURUT1BOeHZMMkVidDZs?=
+ =?utf-8?B?a1F4NDAyQTJQZWZ6UFE0anBHend6QXJCUGYyTEUrc2krWCtDU0pxOG4yMVN5?=
+ =?utf-8?B?TUgyYjY3Z1NsRExEZGxpcTFGY29XZG8wRG12aFh0UkFnNmhIOGFYeVRMdzNX?=
+ =?utf-8?B?NU9SMjhTaWRnd0YxbHBhYnB6UXpQVE1ZQVlEMDlkNU8zVEYxcTVHWjQ0N0RJ?=
+ =?utf-8?B?VGNhY09vdFNaMVpmcFNzT1YzUThUUlNNc2pkeUtJZzM0YnBoM1MxUTJTd0M4?=
+ =?utf-8?B?TnZZSTJ5YzBLVTRUb21XUFdvWVZwa2JkZkUzV0lTTE1DNkdhKzFqaWV4RWJE?=
+ =?utf-8?B?TU50NU9qWUY3dnZUc2NROFJmaEhLV3N3bFRLTTdodlhXRWpRVENVdW9qUjQ2?=
+ =?utf-8?B?RGl2d0VQUjk2a0QwMC9kclBhNGk3Q3oxenZLU2Uva1lLeEhuQldHT1dQOWdv?=
+ =?utf-8?B?K1RXZjFZUXY4MnJ2ZnV4NFFnZjJmVVJoSGpBQjd4MjlWTlY5WENCZGZpeFR0?=
+ =?utf-8?B?Q29zWVJrWENWdTRyMnl3OGlOR0NXL1RLN3JrbTZhdmNCbG8rUTFERWZsR283?=
+ =?utf-8?B?bFpZV0JSa0tWTGtMWloxU2xFTGFmMmtKak9xZzJlQ2FoakZ2TG8yRHBSZEhv?=
+ =?utf-8?B?dUhQdWt6RTRKNSswb0I3Y1pVRU1Dc1JRWmRLRFN6RjRhZExhZmhheDNFd3Nl?=
+ =?utf-8?B?Vzd2T1YydU1TeWVaczA4MjhwMWg0UUhwbGZDcE5aK0toQVBDZnlrdnpoUmcz?=
+ =?utf-8?B?cDlBalJJc05RUlFoZVA3UmtZcmhkSEdaejd6bHZLREdNWG1yNjZ2YWNFMCt1?=
+ =?utf-8?B?UjlZOTVIK09NT2x5OC8vODhwd0R1Zy9kMlQxMFkzYWNDdGR6T0N6VmJMME91?=
+ =?utf-8?B?ZEFuTllzdmxXZlpoZU9zSG9lZjQ2dS9PMEpiek9Oa2FiU1M4WWo3UGEyQVR3?=
+ =?utf-8?B?WDNtQytWOWs1c2JJcWxnZG5jeGx0Q2hoaStwcEdtWHRlSUNQZitncDRVUU0r?=
+ =?utf-8?B?MDBrd0JVcHBnbG9pMXQ3em5wKzEzWlNZMk1MVkl1T0Y0cnZNdW4wUHNZWENJ?=
+ =?utf-8?B?MWxCY3dBQ3EzR2NhSjhOanpFdUpxVjlnWTQ2TGtNVWU1ZW14NkVKZ3BtdVdK?=
+ =?utf-8?B?dm50cGVmMWtPQXd4QU15K1NiV1BqenhNVGg3UjN3WlM1Ump3cHgvWkt5OTF2?=
+ =?utf-8?B?YlVJUngvZVliaHVoYVBsNkI5b3grMytCbHpVS1h3c2ZVZUlOa0NHUzRqNkdR?=
+ =?utf-8?B?SUtaejcrTlE3RVdUbWtQeExOek1pbWZWbklkL1ZOR0F4cGJlK3Q2TWQ4Q05Y?=
+ =?utf-8?B?V3lvM2NxbEdacEpYckNuQnArR0hvMU9JbWtpaHFFTWV0UWlXdWRzSkR4dzBx?=
+ =?utf-8?B?QVJnTjhDVUNLMm1kaG5EdG1taHVxZkloMmJDOW9XQ3dHTW1WNElhMlRHeWVo?=
+ =?utf-8?B?R3RaQTNPalBqVS9lTmR2VDVpK3dvWENXemhxNitkNXVHMzRiQ2xNOHFYWm1h?=
+ =?utf-8?B?QXhPdkVUY1g2ZE9SVHNVWXRYY1A4UDJpN0xmcFJQYjhvNWh1dEdvczNONndY?=
+ =?utf-8?B?ODA3RGtxL0ZxZ3hyUm11cmpqZjV2MjNiVzRiVkt6K0ZrQ1pZQStsUmpXa3RQ?=
+ =?utf-8?B?aWpXeTRUdFdUU0JrM0VEeHJ4d1pRY1RIdEdlWUdnU3M5anBDaHp3c00xQVha?=
+ =?utf-8?B?dVFiZ2FocDhuTFdkcWQ3UDR6cEd1K3EzcXZzSEZ3djc1a0s5UTRGVmpKZGMr?=
+ =?utf-8?B?RnpuMnJRMVYrQXpUUENiUkVFTExVTkw0dmIzZjIwWDFNejJRL3dBSUNHdFBq?=
+ =?utf-8?B?SHZpNlBOc285RTBWUzhKNmg4TWNXdCtRR1RnOGMrNTYvN1E0OGUyOG1KUWhJ?=
+ =?utf-8?B?VmJiMEJzV0Q1TFV6Q2x6UlVBYmR2YndqbnlhNlJKR1Nyd2JlVE1rQ1M0TFU1?=
+ =?utf-8?B?TlE9PQ==?=
+X-OriginatorOrg: wolfvision.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: d20f59db-deb5-4fa5-4b69-08dc53bbd09f
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR08MB4974.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2024 08:55:30.5163
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UiYWwT2t+NdT/uLwETvZVDzFvi8Jr7CLoBiWbBYfUYVUK0nTVl3rQlmu6Tpd/zeZYdehtg0eQh8KG/K+19CebekUZ2YkC+rIAnkgL1lQXAQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB6539
 
-The following commit has been merged into the perf/urgent branch of tip:
+On 4/2/24 12:29, Heikki Krogerus wrote:
+> On Thu, Mar 28, 2024 at 05:55:52PM +0100, Javier Carrasco wrote:
+>> The current interrupt service routine of the tps6598x only reads the
+>> first 64 bits of the INT_EVENT1 and INT_EVENT2 registers, which means
+>> that any event above that range will be ignored, leaving interrupts
+>> unattended. Moreover, those events will not be cleared, and the device
+>> will keep the interrupt enabled.
+>>
+>> This issue has been observed while attempting to load patches, and the
+>> 'ReadyForPatch' field (bit 81) of INT_EVENT1 was set.
+>>
+>> Read the complete INT_EVENT registers to handle all interrupts generated
+>> by the device in a similar fashion to what is already done for the
+>> tps25750.
+>>
+>> Fixes: 0a4c005bd171 ("usb: typec: driver for TI TPS6598x USB Power Delivery controllers")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
+>> ---
+>>  drivers/usb/typec/tipd/core.c | 31 ++++++++++++++++++-------------
+>>  1 file changed, 18 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
+>> index 7c2f01344860..308748d6cae6 100644
+>> --- a/drivers/usb/typec/tipd/core.c
+>> +++ b/drivers/usb/typec/tipd/core.c
+>> @@ -637,48 +637,53 @@ static irqreturn_t tps25750_interrupt(int irq, void *data)
+>>  static irqreturn_t tps6598x_interrupt(int irq, void *data)
+>>  {
+>>  	struct tps6598x *tps = data;
+>> -	u64 event1 = 0;
+>> -	u64 event2 = 0;
+>> +	u64 event1[2] = { };
+>> +	u64 event2[2] = { };
+>>  	u32 status;
+>>  	int ret;
+>>  
+>>  	mutex_lock(&tps->lock);
+>>  
+>> -	ret = tps6598x_read64(tps, TPS_REG_INT_EVENT1, &event1);
+>> -	ret |= tps6598x_read64(tps, TPS_REG_INT_EVENT2, &event2);
+>> +	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT1, event1, 11);
+> 
+> This is not going to work with the older TI PD controllers.
+> 
+> The lenght of these registers is 8 bytes on the older TI PD
+> controllers (TPS65981, TPS65982, etc.). I think we need to split this
+> function.
+> 
 
-Commit-ID:     312be9fc2234c8acfb8148a9f4c358b70d358dee
-Gitweb:        https://git.kernel.org/tip/312be9fc2234c8acfb8148a9f4c358b70d358dee
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 01 Apr 2024 06:33:20 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 03 Apr 2024 10:19:20 +02:00
+That is a good point. I had a look at the older TI PD controllers and I
+agree with you that we should split the function to cover both register
+lengths separately.
 
-perf/x86/intel/ds: Don't clear ->pebs_data_cfg for the last PEBS event
+I was thinking about adding a new compatible for the newer PD
+controllers (tps65987 and tps65988), keeping the current tps6598x for
+the older ones as well as backwards compatibility. But backwards
+compatibility would also mean that flags beyond the first 8 bytes would
+be ignored.
 
-The MSR_PEBS_DATA_CFG MSR register is used to configure which data groups
-should be generated into a PEBS record, and it's shared among all counters.
+On the other hand, the upper flags are only relevant for firmware
+updates, so we could check those (i.e. read 11 bytes) if a firmware was
+provided via "firmware-name", and ignore them (i.e. read 8 bytes) otherwise.
 
-If there are different configurations among counters, perf combines all the
-configurations.
+Other ideas or improvements to mine are more than welcome.
 
-The first perf command as below requires a complete PEBS record
-(including memory info, GPRs, XMMs, and LBRs). The second perf command
-only requires a basic group. However, after the second perf command is
-running, the MSR_PEBS_DATA_CFG register is cleared. Only a basic group is
-generated in a PEBS record, which is wrong. The required information
-for the first perf command is missed.
+Best regards,
+Javier Carrasco
 
- $ perf record --intr-regs=AX,SP,XMM0 -a -C 8 -b -W -d -c 100000003 -o /dev/null -e cpu/event=0xd0,umask=0x81/upp &
- $ sleep 5
- $ perf record  --per-thread  -c 1  -e cycles:pp --no-timestamp --no-tid taskset -c 8 ./noploop 1000
-
-The first PEBS event is a system-wide PEBS event. The second PEBS event
-is a per-thread event. When the thread is scheduled out, the
-intel_pmu_pebs_del() function is invoked to update the PEBS state.
-Since the system-wide event is still available, the cpuc->n_pebs is 1.
-The cpuc->pebs_data_cfg is cleared. The data configuration for the
-system-wide PEBS event is lost.
-
-The (cpuc->n_pebs == 1) check was introduced in commit:
-
-  b6a32f023fcc ("perf/x86: Fix PEBS threshold initialization")
-
-At that time, it indeed didn't hurt whether the state was updated
-during the removal, because only the threshold is updated.
-
-The calculation of the threshold takes the last PEBS event into
-account.
-
-However, since commit:
-
-  b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
-
-we delay the threshold update, and clear the PEBS data config, which triggers
-the bug.
-
-The PEBS data config update scope should not be shrunk during removal.
-
-[ mingo: Improved the changelog & comments. ]
-
-Fixes: b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240401133320.703971-1-kan.liang@linux.intel.com
----
- arch/x86/events/intel/ds.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index 2641ba6..e010bfe 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1237,11 +1237,11 @@ pebs_update_state(bool needed_cb, struct cpu_hw_events *cpuc,
- 	struct pmu *pmu = event->pmu;
- 
- 	/*
--	 * Make sure we get updated with the first PEBS
--	 * event. It will trigger also during removal, but
--	 * that does not hurt:
-+	 * Make sure we get updated with the first PEBS event.
-+	 * During removal, ->pebs_data_cfg is still valid for
-+	 * the last PEBS event. Don't clear it.
- 	 */
--	if (cpuc->n_pebs == 1)
-+	if ((cpuc->n_pebs == 1) && add)
- 		cpuc->pebs_data_cfg = PEBS_UPDATE_DS_SW;
- 
- 	if (needed_cb != pebs_needs_sched_cb(cpuc)) {
 
