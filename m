@@ -1,127 +1,93 @@
-Return-Path: <stable+bounces-35862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDEA8977D5
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F89897808
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 20:18:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 803151C20CAE
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 18:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20391C2195A
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 18:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5AF153511;
-	Wed,  3 Apr 2024 18:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8441534F2;
+	Wed,  3 Apr 2024 18:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="P5lp7Zfm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSj7+4gu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF1817C98;
-	Wed,  3 Apr 2024 18:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDE2152DF0
+	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 18:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712167821; cv=none; b=JMAyEABFvEiLLubMo3OIpFSpfQUd4uzl9nL7F7H2VZHFCKg6fEI2aF+SAt39rXO1SU3NL+pto/wpTsj5/8ONz3+hn62fxYI+/1Ve7YhOLeWWQbn7WAgFnjQdbeaC2P3APTh05zBdW8io/XAh7YARyBcOv4y/pJ+Fr2KPlsT+oQY=
+	t=1712168315; cv=none; b=jnYXk6q9BoG7O2q6Roa7CU4gwnB84D5+dKROYhB8f57pyvwvOGZ2UVsu8bsl9vd2Xyh57fj/a6r3LaLSHaPzG9nPCa44pM4DlmzKSZmp1eaJJBYaU0RdW4XsILIddMJ4qE0jDRCR4dhkj5dLKIr+kTDReDAtumbDXc4qwyNrGmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712167821; c=relaxed/simple;
-	bh=uOWennQkUOPuwn8gwTvr4tVH8UUda4SVjW7W5jff4CM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TWmhsk5qh4Y24AYWdqgYXiIoDS7v0RQpc0zyjjpcU11ch/XLbNiNap6bSaYi1yRoDAV1AGqVlxrf+Lk7CaMXnMvYXXB8SBIer3HNM2DsPqy8UQYuhjSQgUH+E+J1IK90gOB4qjrDnqOONU8KO0U6iF/KztUz7LMAZWEmfdvBWbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=P5lp7Zfm; arc=none smtp.client-ip=185.125.188.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from [10.172.66.188] (1.general.jsalisbury.us.vpn [10.172.66.188])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 9FC983F2F9;
-	Wed,  3 Apr 2024 18:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1712167818;
-	bh=AVCRfVvSKO0IO7YLIfyO05ThGqrBf2jTRKl0XcMO2a8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type;
-	b=P5lp7ZfmUxIQ5syPtqfd2asTVdkr9EGyJinDFnluL63mE66jtwEfoLwaU2MI1LBiK
-	 vv1LkCPuNRzmk0ay5WGP97BqaI5MsnUVRy1wmByKq9aOdvYTiN5cFrve+vUjLhmzf+
-	 Aa07T59NPR7AcORoRg8gyCfUl8ydYWEU4GjzuICwZudzNFOlQrrBLWQFZRuoFFZu7S
-	 bQeocmIXLwYZr7sgTA5U7KR99jMqD8YQGo2IVpTAwohkH2tPVvJgxkuYQlcqdbfpb6
-	 QVlta3wjQ0sYL5LVW9RFP/rRpRc1BEPbkWtq4W86h2498WkH1rK4L6lJ0rg0xVFasQ
-	 sHR5K0t8Vj6lw==
-Message-ID: <3ecbdd00-151b-4cec-9a61-c6d340b2e147@canonical.com>
-Date: Wed, 3 Apr 2024 14:10:16 -0400
+	s=arc-20240116; t=1712168315; c=relaxed/simple;
+	bh=P9yWqBtlsaeFnaAZmbCkgpReXKzLQLMYUfBreeUNjr4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KSjhYBM0RwwVwrBnjXm0siC0WwqbQ3LDV52KsncrH2xvABZOghF4gQIwmmhPhN/f1BJ+4p5Eiywf8eJ3IL/SQyTc87HGxZu9ZAOzL3zGARI9MgTWYF/S7iXHj+Zybq4mVkINb4aszbJQSUZet4qVXW1t+RCQWFqNWb/k3/BD2YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSj7+4gu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AC9C433F1;
+	Wed,  3 Apr 2024 18:18:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712168315;
+	bh=P9yWqBtlsaeFnaAZmbCkgpReXKzLQLMYUfBreeUNjr4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MSj7+4gu1ie54nAa9tpG/7XYqz6LKMWtzj7Zo9MOgrnnr8DptCtNNmJE+ejzrDqHH
+	 YoCFJyHRpdAAiDU+unF9K2GqrCZRGkGB3RmZaxsqJLcHUV7rhf8YaWcTxdZwHqX50r
+	 VouPXAkYnbwPm9RD4OewmUCjvBinGy1mOedPl//UrTjIynADlD/dTerXr/Ddtvqste
+	 N4LX736jN+RL9z6PoQgAp6PllalT6rAWdArWFLgPdh5ECJjOTfbAqdhVKQRDXVgnqL
+	 JPAKSjS4yjeZU3tZQL5mW+vyFboaE1oE3OfMLiuxyaWQPd4qjSRfRvh8ZoHtuvLjG6
+	 on6ttJ04ypFkQ==
+Date: Wed, 3 Apr 2024 11:18:34 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Mahmoud Adam <mngyadam@amazon.com>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org,
+	Amir Goldstein <amir73il@gmail.com>,
+	Leah Rumancik <lrumancik@google.com>, Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH 6.1 0/6] backport xfs fix patches reported by
+ xfs/179/270/557/606
+Message-ID: <20240403181834.GA6414@frogsfrogsfrogs>
+References: <20240403125949.33676-1-mngyadam@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v5.15 Regression] block: rename GENHD_FL_NO_PART_SCAN to
- GENHD_FL_NO_PART
-To: Christoph Hellwig <hch@lst.de>
-Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- axboe@kernel.dk, gregkh@linuxfoundation.org, sashal@kernel.org,
- stable@vger.kernel.org, Francis Ginther <francis.ginther@canonical.com>
-References: <924449dc-9b1f-4943-afe3-a68c03aedbb5@canonical.com>
- <20240403180512.GA3411@lst.de>
-Content-Language: en-US
-From: Joseph Salisbury <joseph.salisbury@canonical.com>
-Autocrypt: addr=joseph.salisbury@canonical.com; keydata=
- xsFNBE8KtKMBEADJ3sa+47aMnk7RF/fn4a7IvRDV19Z1L2Qq1c6dxcvtXP9Mq0i95hBgPnNB
- 2FFJJ4QvJUJ6hYaniqgX3VkvKvjOcOwKz78NYF0HuIZqTTwd2qWpECXqtxPSOstvEGwY0nEC
- QE7e1kELFiQo/2GYwFn2sAGKKPEHCxO7lon1fLbP0Y262GxITgBL6/G6zLg+jxCRH/8INXYE
- lPOF9w+wY6rifwwtkax7NO/S56BNH/9ld7u4GT76g1csYlYP2G+mnkSmQODYojmz5CZ3c8J7
- E1qSGnOrdx3+gJRak1YByXVn/2IuK22yS5gbXGnEW4Zb7Atf9mnvn6QlCNCaSOtk8jeMe0V3
- Ma6CURGnjr+En8kVOXr/z/Jaj62kkmM+qj3Nwt7vqqH/2uLeOY2waFeIEjnV8pResPFFkpCY
- 7HU4eOLBKhkP6hP9SjGELOM4RO2PCP4hZCxmLq4VELrdJaWolv6FzFqgfkSHo/9xxeEwPNkS
- k90DNxVL49+Zwpbs/dVE24w7Nq8FQ3kDJoUNnm8sdTUFcH9Jp1gstGXutEga6VMsgiz1gaJ4
- BtaWoCfvvMUqDRZTnsHjWgfKr3TIhmSyzDZozAf2rOSJPTMjOYIFYhxnR7uPo7c95bsDB/TL
- Rm38dJ2h5c0jJZ5r4nEQMAOPYxa+xtNi64hQUQv+E3WhSS4oXwARAQABzTFKb3NlcGggU2Fs
- aXNidXJ5IDxqb3NlcGguc2FsaXNidXJ5QGNhbm9uaWNhbC5jb20+wsF7BBMBAgAlAhsDBgsJ
- CAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCWc1buAIZAQAKCRBs7z0nylsUHmq2EACuSuxq7/Mw
- skF27JihJ/up9Px8zgpTPUdv+2LHpr+VlL8C3sgiwbyDtq9MOGkKuFbEEhxBerLNnpOxDp3T
- fNWXeogQDJVM3bqpjxPoTSlcvLuGwtp6yO+klv81td1Yy/mrd9OvW3n2z6te+r1QBSbO/gHO
- rcORQjskxuE7Og0t6RKweVEH5VqNc/kWIYjaylBA9pycvQmhzy+MMxPwFrTOE/T/nY86rJbm
- Nf9DSGryMvjPiLCBCkberVl6RExmP4yogI6fljvzwUqVktuOfWmvAFacOkg2/Ov5SIGZMUCP
- J1rxqKDfPOS54rptZ/czF0L1W8D2FNta8+DOKMgZQKjSh/ZvJsJ5ShbzXfij3Covz8ILi9WH
- IjX+vT7mKKhgMoVkxLELEDfxRTlisZAjtu+IiEa6ZhL0W8AEItl7e8OTqNqxguzY4mVVESzJ
- hrDgtnHZf52dZDPxlXgM7jVpBA+b2OQaahmWnBFewc6+7wxHSmw3uctkJB6qmgh5+lxVK9Cl
- 5jVs97wup4b6TvRB0vxo6Jg+y9HYSltTeJAL5uQZthR884rxvKFsuDNwi7GO7X/X7+EiFUy+
- yrdFPuzcEKgOeaqpFLcwzoS1PP9Mp8rfdVs6mUsYrTdZEa/I/a7sTBYulV3fZocJdb0n7aW0
- OJxB5Ytm+qhWGoWj/kJq3Ikkts7BTQRPCrXUARAAzu5JEmGNouz/aQZZyt/lOGqhyKNskDO5
- VqfOpWCyAwQfCE44WZniobNyA6XJbcSMGXbsdSFJn2aJDl9STD1nY3XKi4bxiE0e6XzAA4XW
- 15DtrEi7pvkd7FMTppVHtpsmNrSMN/yWzsHNlnXfDP0S972SGyHGv+XNzCUqtiQngGTuY8NJ
- 3+BzQk4lgCIH3c/6nIiinqNUOGCwLgBwiE8IiHSm+RUj0foGAkdcuLjt9ufR8G5Hw7KWjI98
- lg0R/JXLQFWgufheYMSEMJeElY0XcZ1c/iwL4TBeU5wu/qbgxd5jYTAKB2vRWAhrx5pOAEHv
- nOSKk06phE72TT2cQB2IgjtZDC96IorI6VPJsuEuser+E8gfswY+9Zfi97ltkZ3xwmM6JF4y
- JUl5vK04xkxPXTdQsdnQlXWyTsJsZORT96msBm3GNwrqp/xhvoGetDlzH8SOKBMNiQbR73Ul
- 5RP1er9n2Qp7wpg+S8Zq8NcVVBvLi17J845szP6YmakwCyb6X8Z0BBOnF4+MTNhKqEf/b2Fg
- ycj4vTn866usCMm8Hp3/0W+MyjKF52hz8MIe87c+GQKKDbovRGCXNvJ4fowLxV9MKMtftdOk
- TzwsAuk0FjkzPjo+d1p5UPruq47kZF1PUEx0Hetyt5frAmZaq4QV6jvC2V67kf1oWtlmfXiC
- hN0AEQEAAcLBXwQYAQgACQUCTwq11AIbDAAKCRBs7z0nylsUHuinEACUdbNijh6kynNNR0d2
- onIcd5/XfkX0eCZhSDUJyawcB65iURjuLP6mvMVtjG0N7W5eKd4qqFBYWiN8fSwyOK4/FhZB
- 7FuBlaKxKLUlyR+U17LoHkT69JHVEuf17/zwbuiwjD1JF1RrK3PAdfj88jwrAavc6KNduPbB
- HJ6eXCq7wBr1Gh2dP4ALiVloAG0aCyZPrCklJ/+krs8O5gC3l/gzBgj8pj3eASARUpvi5rJp
- SBGaklNfCmlnTLTajTi5oWCf0mdHOuZXlmJZI7FMJ0RncBHlFCzDi5oOQ2k561SOgyYISq1G
- nfxdONJJqXy51bFdteX/Z2JtVzdi+eS7LhoGo0e7o7Ht2mXkcAOFqJ3QNMUdv8bujme+q8pY
- jL0bDYNanrccNNXCH7PrnQ26e1b41XdrzdOLFt07jbzNEfp5UPz5zz3F9/th4AElQjv4F9YJ
- kwXVQyINxu3f/F6dre8a1p4zGmqzgBSbLDDriFYjoXESWKdTXs79wmCuutBKnj2bAZ4+nSVt
- Xlz7bDhQT9knp59txei2Z9rWsLbLTpS2ZuRcy3KovqY93u3QHPSlRe7z8TdXzCwkqcGw0LEm
- Qu4cewutDo+3U3cY+lRPoPed+HevHlkmy1DAbYzFD3b7UUEZ5f4chuewWhpwQ2uC1fCfFMU0
- p24lPxLL08SuCEzuBw==
-In-Reply-To: <20240403180512.GA3411@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240403125949.33676-1-mngyadam@amazon.com>
 
+On Wed, Apr 03, 2024 at 02:59:44PM +0200, Mahmoud Adam wrote:
+> Hi,
+> 
+>  These patches fix and reported by xfstests tests xfs/179 xfs/270
+> xfs/557 xfs/606, the patchset were tested to confirm they fix those
+> tests. all are clean picks.
 
+Hi!  Thanks for the backports!
 
-On 4/3/24 14:05, Christoph Hellwig wrote:
-> Hi Joseph.
->
-> given that Canonical ignores our kernel licensing rules and tries to
-> get away with it I'm not going to offer any help to Canonical at all.
+Normally I'd pass these on to the 6.1 XFS maintainer, but I'm not sure
+who's actually taking care of that at the moment.  To find out, I've
+cc'd all the people who have either sent 6.1 backports or made noises
+about doing so.
 
-Sorry, I was trying to help the community since this is affecting 
-upstream stable kernels.
+To the group: Who's the appropriate person to handle these?
+
+Mahmoud: If the answer to the above is "???" or silence, would you be
+willing to take on stable testing and maintenance?
+
+Also FYI the normal practice (I think) is to cc linux-xfs, pick up some
+acks, and then resend with the acks and cc'd to stable.
+
+The six patches you sent along look ok to me, so
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+
+--D
+
+> thanks,
+> MNAdam
 
