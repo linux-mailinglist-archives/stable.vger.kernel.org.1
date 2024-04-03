@@ -1,113 +1,86 @@
-Return-Path: <stable+bounces-35700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0C2896F7F
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 14:54:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D259D896FB5
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 15:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B62531F29259
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 12:54:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F92228E4B5
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 13:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EB31494C2;
-	Wed,  3 Apr 2024 12:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F008E146D54;
+	Wed,  3 Apr 2024 13:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="g+YM99V5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A361494CE;
-	Wed,  3 Apr 2024 12:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCAF146A75
+	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 13:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712148806; cv=none; b=lCjyI3vkFG/oC2Ah1xgaEN5MI9d2r4UW+7Olg9Iu0UcmVi3R/bhbhbH30NX+VhEqEZIYMidYUHoJAy2uhbV8dPORho2Icllg7dXZ2RChvlYO5cRgwTC7z5rGJlJNym1yE2xBDPgu9y1MyqLS4Ea7IBcbNwfzGvorNBbOVW+5czw=
+	t=1712149225; cv=none; b=oCFpOaZdDTx3kKErNa4NUVon/MG170BAtHYfio1CheOvgKF+CNejdahratkIxdSecTZQYx2btE1SGxsbw4sH/uQ/CRy5V6iYUXDEdHbBQGwgLJGOa4TZaoQG+ylVuseEd3Us4woj5DwwmmHpKq6mRK5eifdP/nbFT47iN5GzqBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712148806; c=relaxed/simple;
-	bh=UntQTPh+2hrQn/xIlOWJaJgrauzrTj7yswbk+DwsRJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A95FNpqmcXNG1e+AhRokIkx0T79pmZtmoXRwAN/absOaGpZE9zGhmQ/mnVUR0bZIe63IdOZAT+fAy9Zdd8kVwyYSHV9Ct+WPaXCS5ak9kPN6t0oFCH78qEug/wNoq0EFJxGlqW8Pu3OyyM9Ppq0KFr8LDhXnuVzZ16Q6pf+GDpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a46a7208eedso824936566b.0;
-        Wed, 03 Apr 2024 05:53:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712148803; x=1712753603;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q4cj6vg+PLMD3bnAnC/7BKVkE+A86qwqaG5PcVTOt18=;
-        b=a9G1Uj1tXvk8mKna/klFrPZDWk3MTIXiHofAmeS/kXnCAHX1DJNsox94yzFekHD3hN
-         HKwBhkQj30AfKNMFcidPs2Mk/+bHx9UyJ2IZ9PVbJWjNjJJmrFmYxrIxK2P67UR0zKEy
-         PO7pW4SAELMqJu0HGjzfUOiBYya+EiGMZ5nMumXYvQyhdAEhd+ipbRB3P48Ygz6nBSCh
-         qSMbh6qFzcFP/g1fSR+8/PU1VnmmeBsvoidXPdCeKT64WXxvbnph2ln6QketlF77D+WA
-         oHqKhLRDxCcIBKZyy4YsqFAdjDue7Q59u2X6Q1Ekb2ZgRuJg3P4nEQ1bRynYG9dv6LzI
-         Sgiw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGLDhsG0YQlcAQXlahybcvDTcB+DqPmdbWXAzIzhT1Av8liaLceCjzug3cTSCDTsIN/J6bHtN6CrpzE0C5q/dkIxpSOunq/mWWOixJ6vNqwAicPXgIms8PYYHKX1L8H/YXeMXP+1+9wUaSAXPUqGKilJHOahCf7F9/S3RM
-X-Gm-Message-State: AOJu0YymaYaD9FcIJ+eGwabKMzk7lvQQzueGAe/tw3IwbyqO9kgxNmKS
-	m1KC+qNxPISMx16mz+eO5DYAeI+jOpK/6eguVJBnLn3FJAnaS/n3
-X-Google-Smtp-Source: AGHT+IG/LZvkvkvKke8uVXcXbrYjZ9FSvr+Pm5+/tdlPUCoe15E1D9VDt24wooC2fGJfQa9Hdwxe2A==
-X-Received: by 2002:a17:906:2284:b0:a4e:39f1:6374 with SMTP id p4-20020a170906228400b00a4e39f16374mr1812470eja.24.1712148803105;
-        Wed, 03 Apr 2024 05:53:23 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
-        by smtp.gmail.com with ESMTPSA id an3-20020a17090656c300b00a4e7c2b2070sm2694127ejc.8.2024.04.03.05.53.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Apr 2024 05:53:16 -0700 (PDT)
-Date: Wed, 3 Apr 2024 05:53:12 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: hengqi@linux.alibaba.com, xuanzhuo@linux.alibaba.com,
-	Jason Wang <jasowang@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Melnychenko <andrew@daynix.com>, rbc@meta.com,
-	riel@surriel.com, stable@vger.kernel.org, qemu-devel@nongnu.org,
-	"open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v3] virtio_net: Do not send RSS key if it is not
- supported
-Message-ID: <Zg1ROBmnY0jaKvsf@gmail.com>
-References: <20240329171641.366520-1-leitao@debian.org>
- <20240331160618-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1712149225; c=relaxed/simple;
+	bh=6fbV3mMwUNkPLFxWvxP9zO58uk9kX3FXIaBmHMzAB1s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RcMbRYSkkwVnxWXiOwShMGi0/Vxn7oRGI+s4A6RB3z76/hoODemArXhMSNTrr/hyGCpHHOOn6h/w2TaWFwyVmkCjcaj2eowPeLJMIlla1mciYFgv3JDsRlsWMA+E6LI32rayiU8G0idYK9dATNMxoBNtW3au7hdF8C5no8+gMvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=g+YM99V5; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1712149224; x=1743685224;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6fbV3mMwUNkPLFxWvxP9zO58uk9kX3FXIaBmHMzAB1s=;
+  b=g+YM99V5zE0C4RC8Gdl4mxIG8R6wjHZTnyuDDKzp2DghMVI3HRqju9r+
+   PAv/82pzzJGJdN7JGjP5yHt1giEKhtCjZhsbwgQJJvEnjZJZJbPj3sq0B
+   myJs0FlCZ8FXsbDFzIF5UbxB9TitRYQCBbbK9nzPc4x8KxxrnB8/Y6vft
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.07,177,1708387200"; 
+   d="scan'208";a="397893193"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 13:00:22 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:50619]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.15.213:2525] with esmtp (Farcaster)
+ id 632963c1-b31b-4100-9553-77451d6c3e83; Wed, 3 Apr 2024 13:00:20 +0000 (UTC)
+X-Farcaster-Flow-ID: 632963c1-b31b-4100-9553-77451d6c3e83
+Received: from EX19MTAUWC001.ant.amazon.com (10.250.64.145) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Wed, 3 Apr 2024 13:00:20 +0000
+Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (10.15.1.225)
+ by mail-relay.amazon.com (10.250.64.145) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Wed, 3 Apr 2024 13:00:20 +0000
+Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
+	id A4C02BE6; Wed,  3 Apr 2024 15:00:19 +0200 (CEST)
+From: Mahmoud Adam <mngyadam@amazon.com>
+To: <gregkh@linuxfoundation.org>
+CC: <djwong@kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH 6.1 0/6] backport xfs fix patches reported by xfs/179/270/557/606
+Date: Wed, 3 Apr 2024 14:59:44 +0200
+Message-ID: <20240403125949.33676-1-mngyadam@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240331160618-mutt-send-email-mst@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Sun, Mar 31, 2024 at 04:20:30PM -0400, Michael S. Tsirkin wrote:
-> On Fri, Mar 29, 2024 at 10:16:41AM -0700, Breno Leitao wrote:
-> > @@ -3814,13 +3815,24 @@ static int virtnet_set_rxfh(struct net_device *dev,
-> >  		return -EOPNOTSUPP;
-> >  
-> >  	if (rxfh->indir) {
-> > +		if (!vi->has_rss)
-> > +			return -EOPNOTSUPP;
-> > +
-> >  		for (i = 0; i < vi->rss_indir_table_size; ++i)
-> >  			vi->ctrl->rss.indirection_table[i] = rxfh->indir[i];
-> > +		update = true;
-> >  	}
-> > -	if (rxfh->key)
-> > +
-> > +	if (rxfh->key) {
-> > +		if (!vi->has_rss && !vi->has_rss_hash_report)
-> > +			return -EOPNOTSUPP;
-> 
-> 
-> What's the logic here? Is it || or &&? A comment can't hurt.
+Hi,
 
-If txfh carries a key, then the device needs to has either has_rss or
-has_rss_hash_report "features".
+ These patches fix and reported by xfstests tests xfs/179 xfs/270
+xfs/557 xfs/606, the patchset were tested to confirm they fix those
+tests. all are clean picks.
 
-These are basically virtio features VIRTIO_NET_F_HASH_REPORT and
-VIRTIO_NET_F_RSS that are set at virtio_probe.
+thanks,
+MNAdam
 
-I will add the comment and respin the series.
+
 
