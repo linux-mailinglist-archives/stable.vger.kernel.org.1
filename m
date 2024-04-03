@@ -1,92 +1,93 @@
-Return-Path: <stable+bounces-35715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13520897167
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 15:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2234389716B
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 15:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44DD01C26094
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 13:42:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53C7C1C2643F
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 13:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F621487C4;
-	Wed,  3 Apr 2024 13:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A66A1487DE;
+	Wed,  3 Apr 2024 13:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="meEpAEPF"
 X-Original-To: stable@vger.kernel.org
-Received: from mblankhorst.nl (lankhorst.se [141.105.120.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EE5147C6C
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 13:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E00142E78;
+	Wed,  3 Apr 2024 13:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712151762; cv=none; b=o4EBtIhBraTkorW26f02NsyPscXdehOmdvwYR+D4ZfPOTvIZG/7scou1sBFI7tC0a5Su1rCDx61LqpjHAwUKBA9rt7QwfwBEKeh7liDBfok7GKIp4hnmyjzIwS58VZe6yESs8RzUB1At59nKFo6na9qTL0DPRjExkgrX3uqSRSw=
+	t=1712151856; cv=none; b=pO1HnRYmoFUmkyWSbsCDYLcovusRbmxrSXBjnThO4DYXE7Oba/Bk5IGe+5leO8vSOI3mZG7mhp7GKoMDp1OZ61l9FFYXY4nVTEV3QaBZCDTT6MNFiQ4xWFwUkaeNX2WSpm5Lqn+vS63/bdWSwlM/o0ucTXs6V25Yt+xzmF7k70Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712151762; c=relaxed/simple;
-	bh=7XJi41d9Re5gVVrPke7IhsbhwtFi74bxFKgZive4JeM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r/MRf/Kcw4BIGYqc9/TkVy+A5r4KYSk5m8X4RHAMeItXHp65BgcItksYOo8cOBuYLcxEYV5yOf/E58N0ZI/cAW51VyXKzX2uEZMlibIx+tLCyRW3gOY3cT7WjJpWLFpUi/r0q8tfnSvbtj52Ug/VerhMJGtRishF02GlXrE3BNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=mblankhorst.nl; arc=none smtp.client-ip=141.105.120.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mblankhorst.nl
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [v2] drm/xe: Fix bo leak in intel_fb_bo_framebuffer_init
-Date: Wed,  3 Apr 2024 15:34:18 +0200
-Message-ID: <20240403133418.42870-1-maarten.lankhorst@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1712151856; c=relaxed/simple;
+	bh=1mvS+FUBmyvtS+2wLIyVNxxyjhs4XFIhe+lp7x8KcA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dUiR6jnrkkSD6mP1650GT2yasoIl4n80ew+mBzPdFVXKf66VjD1JcXrsWnc5+UNUhIZpFPvkv/YdMdgnlrj73b5yLs5dEF1l9qEqZ7TbTFt+NsCZH0AgNzJf3CZrqOQS90c1h4KQeHH6H+TX4lIqGsxrODyAwaBsVXQoiVrrXmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=meEpAEPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06FDC433C7;
+	Wed,  3 Apr 2024 13:44:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712151855;
+	bh=1mvS+FUBmyvtS+2wLIyVNxxyjhs4XFIhe+lp7x8KcA8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=meEpAEPFKNU4Dpjsyte4PeLIcSwKIMeTiIYTq0s+GkW7ul2JAtQLwcsIwS/A0wUm/
+	 wIsMoaLHtefy/uBxSLXnafwXh0sQp91tVT6uGeBbyy9NhbDMIEAIw2nSUir/uFiudi
+	 cIRYyHie8P3R7X2ilLxzHeH9h6HfVxlVfAZcaPEmNIscbNMNV33vQj0p5kBWUED4pv
+	 mZAxEq5QR4wRdi8ZDJf4U+fCDoVzQ3Is+S28IwQOx0c+dggd9PYTtNEGOFOdxUDUi9
+	 VC0rvqMI/KXBTLPD3MBb+P2rMp/IVa6hXseM314/k7ga91vRISWXqo/ykg039L1mui
+	 wMCILSBxRPZDQ==
+Date: Wed, 3 Apr 2024 14:44:09 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/272] 6.1.84-rc1 review
+Message-ID: <20240403-component-cuddly-ad80b8dd5db2@spud>
+References: <20240401152530.237785232@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="FIzDBGW8upI2VJvK"
+Content-Disposition: inline
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
 
-Add a unreference bo in the error path, to prevent leaking a bo ref.
 
-Return 0 on success to clarify the success path.
+--FIzDBGW8upI2VJvK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Cc: <stable@vger.kernel.org> # v6.8+
----
- drivers/gpu/drm/xe/display/intel_fb_bo.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+On Mon, Apr 01, 2024 at 05:43:10PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.84 release.
+> There are 272 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-diff --git a/drivers/gpu/drm/xe/display/intel_fb_bo.c b/drivers/gpu/drm/xe/display/intel_fb_bo.c
-index b21da7b745a5..a9c1f9885c6b 100644
---- a/drivers/gpu/drm/xe/display/intel_fb_bo.c
-+++ b/drivers/gpu/drm/xe/display/intel_fb_bo.c
-@@ -31,7 +31,7 @@ int intel_fb_bo_framebuffer_init(struct intel_framebuffer *intel_fb,
- 
- 	ret = ttm_bo_reserve(&bo->ttm, true, false, NULL);
- 	if (ret)
--		return ret;
-+		goto err;
- 
- 	if (!(bo->flags & XE_BO_SCANOUT_BIT)) {
- 		/*
-@@ -42,12 +42,16 @@ int intel_fb_bo_framebuffer_init(struct intel_framebuffer *intel_fb,
- 		 */
- 		if (XE_IOCTL_DBG(i915, !list_empty(&bo->ttm.base.gpuva.list))) {
- 			ttm_bo_unreserve(&bo->ttm);
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto err;
- 		}
- 		bo->flags |= XE_BO_SCANOUT_BIT;
- 	}
- 	ttm_bo_unreserve(&bo->ttm);
-+	return 0;
- 
-+err:
-+	xe_bo_put(bo);
- 	return ret;
- }
- 
--- 
-2.43.0
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
+--FIzDBGW8upI2VJvK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZg1dHwAKCRB4tDGHoIJi
+0rRwAQChthDnZxgjhRFMtKS9jMJ38clP3XUHJdQV3+hKDWG6WQEAuvx7Xz4To90c
+cGZWTzOhSi0MgB2mZby1k9TMXTNuXAQ=
+=2qMD
+-----END PGP SIGNATURE-----
+
+--FIzDBGW8upI2VJvK--
 
