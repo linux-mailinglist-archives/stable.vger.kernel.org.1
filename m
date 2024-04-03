@@ -1,162 +1,170 @@
-Return-Path: <stable+bounces-35680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BCD89677C
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 10:05:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38658896895
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 10:28:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87244B21CFF
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 08:05:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A0F61C23742
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 08:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73535FB85;
-	Wed,  3 Apr 2024 08:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128AD126F39;
+	Wed,  3 Apr 2024 08:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="J52q90kk";
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="H7VuWW3m"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P3QccJmz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1z2QVo3T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout37.security-mail.net (smtpout37.security-mail.net [85.31.212.37])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411D65674A
-	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 08:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=85.31.212.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712131506; cv=fail; b=GQx/pFBal1CSb2Ep3fsUQuCx+5DbqLz2AuVfSOXMDpZQzOBJo5BOFx8xBFH6/ZWJEPYgThQpKb8RhBWT8ysDw0EWJOClOoyg/95uSQZgi7ZxknxSELvz9R5zUWfkKYMUx+x8IuZ9stvdueJ5WhhCHppyyf/lfRkZ9dB0WfqhaQQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712131506; c=relaxed/simple;
-	bh=hAggP2dES65cZkvZMNTRKparKSy1QGctnNvQBsr0N5w=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YMTkPpF513lCElMTysWdDak1LgOmLsdGCFONMaDtsBL1qi5kQapOLJ34SqEjObtc4Qze/B9/JdDQ4DWmOzg9JiLjnX3Kb05JlJUEW67y/1VrkhxYZzFS/IeNNIiM2pT/RrDdDYjMmSlvR1F7mBOBBZ3bwBQPxHTRcwbRh7qkoZ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com; spf=pass smtp.mailfrom=kalrayinc.com; dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=J52q90kk; dkim=fail (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=H7VuWW3m reason="signature verification failed"; arc=fail smtp.client-ip=85.31.212.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kalrayinc.com
-Received: from localhost (localhost [127.0.0.1])
-	by fx301.security-mail.net (Postfix) with ESMTP id C27DF92E3F
-	for <stable@vger.kernel.org>; Wed, 03 Apr 2024 10:02:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
-	s=sec-sig-email; t=1712131328;
-	bh=hAggP2dES65cZkvZMNTRKparKSy1QGctnNvQBsr0N5w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=J52q90kkxtFoFRw/M/0CGU07H2Pc0a7Z2lV+8cegxK8/yOQxWU9PXUoeJrC2vS8vd
-	 q+UblkFiTboKGBhmEkVL81DcL0BynUxiWRC+WKBHhNP/Dojtflhy+Uu4cBwtoYllng
-	 lx4EJNIH9o8AQOIPKr43CXdar4UntREJE7ykezPQ=
-Received: from fx301 (localhost [127.0.0.1]) by fx301.security-mail.net
- (Postfix) with ESMTP id 791B192F58; Wed, 03 Apr 2024 10:02:08 +0200 (CEST)
-Received: from MRZP264CU002.outbound.protection.outlook.com
- (mail-francesouthazlp17010003.outbound.protection.outlook.com [40.93.69.3])
- by fx301.security-mail.net (Postfix) with ESMTPS id E01C193485; Wed, 03 Apr
- 2024 10:02:07 +0200 (CEST)
-Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:14b::6)
- by MRZP264MB2858.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:1f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Wed, 3 Apr
- 2024 08:02:06 +0000
-Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- ([fe80::d918:21af:904a:ce0a]) by PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- ([fe80::d918:21af:904a:ce0a%4]) with mapi id 15.20.7409.042; Wed, 3 Apr 2024
- 08:02:06 +0000
-X-Virus-Scanned: E-securemail
-Secumail-id: <10cdb.660d0cff.ded37.0>
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NhCaHE3bRjmfeZ4e+XcI9KCFmctXF/zNJ13OE6onIbyYtwI7OrFT/3NUn7iaLz/QR0b9j/v+K3zKZxO9a28616jjKgvht4zfXFfyjxj9m3uotayiJC/ypJQE2EH5l2IDMcTcBtvjJIofJGRUmSopZ8snL+6IivE+VWDHP+xMayZcGOBC9uY+dguCCUFiItqGZQpLd16kyBVdVZ2WFaUP4IapSy96FvbXN+E57iX32Tpu3RlUKiTbsi58pZ+QN6RuGoOAEx8SfrsoprUEALVOiewuWOINTz7hSNgVe+Kep9LsbfkcDNUht3obcyyAfh3ZQbGH5QJ961NxglnzMVUJjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microsoft.com; s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WgztjVHU7EJTnXUi1jKikwX0Nk24XfdvAfWfnAykViM=;
- b=b7+y5+pMqWpJT2Ea3mu1PNFXi1C27io0aub+k2M6Dakpy8hBa96aTuBuOd1R0kW9w3epXDTJ6oxxZlXE0KDZQCziVbO5Ju0mKkAkQQurDPs08ISkovDKheb0MgV6XCk/pP0VywbSPhAqHqZHuw7KnNmIbqqIEanyO7cGl6BFH2t/fLVUGI4pZJ5GD7UYUjb62uP91OqAplZ8WQwn3yCggjr3n4roZEiN4ALuFpJq1++u78QUCMRYzPnAGb9uVTx3Hi6zLfUrUYGf7tAep91zSiD45pQDA2gwAQrAyWyis2I+ykrInrIKsmPM/qbBLHyvna564DIRQnHd0Un4MITm1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
- header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WgztjVHU7EJTnXUi1jKikwX0Nk24XfdvAfWfnAykViM=;
- b=H7VuWW3mrRhnm0k1EmlJZ1WPpyN8rKx5vKOrngGBaP1MEMtCRbeMron6MO6Z45ur0QRDWoxn8ACR5dOP6++feSNKjQ2ijJXthdWVGXNuuW+JdHXUJWeg+djCUktEbhWm+ExMRr1kRcyw4JeydjjqMISuNQXqgPvsgOaYCsKgNi1WFUQ8osqUyCk52v54bwpjX6B8dgR+OrbHJ3uAVe0UCt+f2ES04eQ1W8fAY/2ZIfutVFkuSiMPk1k3TUwFSmsEVWs3wkm41tnMs0ykHGoxUtq3WPqhGxR12OWFqQLSFHYL0UquIXZ0cHbOCepHGIEsCgh3C/8Xst+PS4N1Ym4Rxg==
-Message-ID: <94f32c69-13b8-41cf-95e7-83a866e95c9d@kalrayinc.com>
-Date: Wed, 3 Apr 2024 10:02:03 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/272] 6.1.84-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240401152530.237785232@linuxfoundation.org>
-Content-Language: en-us, fr
-From: Yann Sionneau <ysionneau@kalrayinc.com>
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PA7P264CA0372.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:37c::29) To PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:14b::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154485C909;
+	Wed,  3 Apr 2024 08:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712132535; cv=none; b=tAKrZ9j+l60W6Usk5uLSWmCohSCiYGpnk9h1aHwT4WGQVc7ZYlUbyTAg9lmNMi0YOSHafxkoX7Eqjj02fP/ZeXv6St93O5MS0Y7sOI5DgSFlYE2GEyvKRusMNMT4w8iWboxh1aAYCENQCGQBciISTzWD8Wj1LegOClNhkDlOAH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712132535; c=relaxed/simple;
+	bh=5lp7AlGrGY72eH77g2/OpWl6OBQLgzTGI692i8nt878=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=gh8t3Nbu8pEhzfJrEQrcm1GXkJ/Nbr+D0cJX8jKbISLrWNPB+xDrugAgownK5qXoDhsqgkuykqPbLADOsd/OW8qwvjJsO1mb5A3S2OJKPNGmOCH5Ag/iLtPOjhyfaYHH7sflORGeU+FGimcbDG8eKC39tE3vCFBCr3fCT+CgmnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P3QccJmz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1z2QVo3T; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 03 Apr 2024 08:22:11 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712132532;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FaFmSIb4p+Gtq3fkhBTi42NY/14O9dMwtxLw7aG5c5Q=;
+	b=P3QccJmzizra30UrznPr5/VfiP5CQkj0a8LjmbbXCIl2NtBruLQedMSDa6I7gbS2Xs2Yyw
+	ftlV3tSIxDEFcu3gNS6F6zSq5+67ZIGiVPgcXQdVkhp0UjjF05auqYV/czN7CuKQpW1Jvu
+	Jrpd/ZF4lilOgWfk7Q+mpdUl/bnM8EsiBed4gRGKXnT1zrOQ8vJlhWA5UG2O4gr6izuI2y
+	OrWivX2iMa2WAJXVVU0XYJQ2wsWNp7irDWyJ1S2iJ5++LD85nl0OBF9dHYCm+0m9bjWpI1
+	BgzB0igFDZBhmRN3/YXGBicK8YhOZmSE0DmrbFW8uqm1JDjeodMIdqJQKRVmGA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712132532;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FaFmSIb4p+Gtq3fkhBTi42NY/14O9dMwtxLw7aG5c5Q=;
+	b=1z2QVo3T4c8jDKPMW56mJxeXcoZrUVuW7lmE+EJRqfFo6RHsALNLHR6w0mCZVRRg5YPAhy
+	JWf95OLv4NyU64Cw==
+From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/intel/ds: Don't clear ->pebs_data_cfg for
+ the last PEBS event
+Cc: Stephane Eranian <eranian@google.com>,
+ Kan Liang <kan.liang@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240401133320.703971-1-kan.liang@linux.intel.com>
+References: <20240401133320.703971-1-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PR0P264MB3481:EE_|MRZP264MB2858:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9XzuXlIP+Jij/HaDhIXV+gOW7OgsydN7coOhlSLBey6VNwjUhOaYC9ucX251rKBqHiyeWbCJXFpw4ysPoVw2XWS810DKo13N6LwwBd3WhnhriZM9Gtfje8FjttWsytnT5uNJWLB1pdqVwkgGH+8V2eDHtZd99C3HSOureyFXrATfF0U0fcw9KEyt7DD+YadpASz/UCO8/6W1hVvvD/ychkuhdaUT6WQxFiiJWagfInrFNsLhRjJu3n3fXs818N5HANM0VkODUhExmj0C2B3woUNCEWN3jlR0m69RzVEDx6sWqhxFNbr3pR1/FjX5gvnqIX5IxIYIly0pdIT7KCo5E0lKPd+gs2ChIwGDFMbAmK+qx8Qb7jHYXHmrf5S/Oyru46kKPY6rhQ0MHu3xBwdrp0ukhNxy+//c/JrPrq1gMHgUTZtrXjbwI4KDkPsVvsoO7nGrJL5C0X7H/g5XIVies++xYF+ih2kZN3bUxNSienJqLGdDW/uvZc+Dm7YpV9qU6A7F/EkHp+4MTNMwWtSRCkEzwSWvCAJQ+CXt3D3lb6COyJbaH6/bY+AreAONiKE2rWexBzec9pH6V8Obxt9ugzVXhfbk6GmzQQTjthlt7m7KDQVgKcSDjQXfUrjFAq096McSQ+ZzQpbRU9wOFfa6IlxO2UY/M6j1aLiKXgmglJA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(366007)(376005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: wSk/sVoeCf10vZE9K8ls1vKpo8oNgkBi+x1IdAwnJn/6KLTlk28Hb+9V7t2X7IunE3Jgrf95Ecya8MeUTlOc67NGo5Qx01Bz3zg7WQCFn6WriITUoIk9RvQMiFm5eyMVriL9jzh1afhUhKnfSTK+9P5EAhU6GmWRpWMkduxUpfuBIeoSsNvz+JeVMXf+GKL4TWV3rQ7a+2lcLRlmZvOhNrWQD0HCgzpwQ8D1dGagevrqCvXcpmWGIj8b/lKesX8wPQ9yU17aZtZK+Rf4fsoiEoT+kH2YdudRlwY5LBtUMOOsUIuM0OY8txjtvP7pbJrh/CLKls9lLuoan0pP7nv/RiqrZP99Ck5qlbxyYQcEpBJ10w6SBgMw72ie8M5sYBH4vTd7lXf7acrLv6Ubi8aVq5f/FRAEP+fo1tuH/nkzuXiti1KFoXKlbjsbrXxV8YNPKeqTy8a2fLcPLagB3p1hObqzNiEcQYVFudgQk0HhNvOJ/SjSrIHTHOYSdIBRfLIG+Q5K6QuHzObc5Z9/LP9vGYEjmV75PZPU5NQ8cUBPWZabHLT61EnVRlJnk/OLFuSO3Py+I9uim1Z43CJp6jxMscJttoLENxOGaHFdneOp/qrFCTlLONc4FmJOcl6xyhfwuNatWXipGxPYeD2uAz37RtG0w1mezeT6mgXSkLILQobV4aV1ZSstj87utYH4UeJrCULgx5ZjxbkFE98zNtUD3JnMbWxyXJyZObpfYH7ZFRO/XiRzbg+xhblP6bMTYhE0c0Ey0oMR+uXJZkwf2kTcAQaA6s5cl8YIVYJcAGssY/BMZTKR/FdN0Ga/k6VS31mHtinSUs0yzz1QrUKfn53+jRSGgi8yU7/G87cEMYxl15LLA1k6+P0IrOzSsCPrVe2i9gO4E4D1lKARuEFG0NSbCq3dgrDF5Ps6xRHB/5Ca00nvgdbZyEFocy/m5LyVKL9R
- D1tssLEBXbTu0OXvysrFJ1fjgPQ8NxKCkAg/2GOl1JVg2Ki1zIFhkkHFiQ1FmSIysCa2qIENMU+5ivt7sEcfEVFaNBujwhCOZWe4+A1ZLACdXCRrIWvVcu7XyWFvTAQiCgeDydI7fqKEvHQLk0mtTMiTOipWx0jDe11yPjT3Y/xUCgdCMgYgaTnNkL2fPiVMsUUKhwKOkM13AOTvcHRbk7MldDldbQpgWpGFDVyZPdReNBtu/dn7aIGCjqtWK3I4qwykKJi4HZpVjjE9URB+SX5+1/quh2cgqmPLSmMnmUiE5dY7xRRZtGzvPNu6Meyw9miAXZIqbTFVGmas+BjJoLZD9VoY7eH+BwTjB3RG8Obs9QIMU0wjaGIEt3bNGS5vhgd2VGNCRjYGjIXsxTOW7z9bjGDve+6nKenQdhCsq0nx106bXGb69ii3hkh8hZ/AQtZdvptw36zXpuFhkuZ09tPrOtMvddIjWxkv4fACpVLS0WFggZ45eiLO7aQ/OBNOZkyToc3j7jD/L0PZuoC5t0AEdCOJ2MNa7gPuJ5FMzm1KVWOxbiSi4Ctul+XOrJ8scjJBzJaHPNX/TKQVxvuI400Xku60j6QR8MTjipqBMCvPm5EE24ju37oPfhgazwXjgdupnWVUqm5Z1thAAw9CF/W71YwlyjEA4RHFDR7tjbq1MrlA6Ey9OeJg3xSAMtus+6nV7dcN+GZt+YjOql0D1g==
-X-OriginatorOrg: kalrayinc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ffe9958-5eb5-4d28-bf2d-08dc53b45a7b
-X-MS-Exchange-CrossTenant-AuthSource: PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2024 08:02:06.6128
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3S4co+y5RFy09fsQTAFyqu3Oxs0Vf1P0l7sReo0JtMwtBkVrmVLAvmMme4FTzSUSnGvztJSFUbO1h749sEyVnQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2858
-X-ALTERMIMEV2_out: done
+Message-ID: <171213253103.10875.3060258964816599355.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hi Greg,
+The following commit has been merged into the perf/urgent branch of tip:
 
-On 01/04/2024 17:43, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.84 release.
-> There are 272 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 03 Apr 2024 15:24:46 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.84-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
+Commit-ID:     312be9fc2234c8acfb8148a9f4c358b70d358dee
+Gitweb:        https://git.kernel.org/tip/312be9fc2234c8acfb8148a9f4c358b70d358dee
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Mon, 01 Apr 2024 06:33:20 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 03 Apr 2024 10:19:20 +02:00
 
-I tested 6.1.84-rc1 (aa2042702765) on Kalray kvx arch (not upstream yet) and everything looks good!
+perf/x86/intel/ds: Don't clear ->pebs_data_cfg for the last PEBS event
 
-It ran on real hw (k200, k200lp and k300 boards), on qemu as well as on our internal instruction set simulator (ISS).
+The MSR_PEBS_DATA_CFG MSR register is used to configure which data groups
+should be generated into a PEBS record, and it's shared among all counters.
 
-Tests were run on several interfaces/drivers (usb, qsfp ethernet, eMMC, PCIe endpoint+RC, SPI, remoteproc, uart, iommu). LTP and uClibc-ng testsuites are also run without any regression.
+If there are different configurations among counters, perf combines all the
+configurations.
 
-Everything looks fine to us.
+The first perf command as below requires a complete PEBS record
+(including memory info, GPRs, XMMs, and LBRs). The second perf command
+only requires a basic group. However, after the second perf command is
+running, the MSR_PEBS_DATA_CFG register is cleared. Only a basic group is
+generated in a PEBS record, which is wrong. The required information
+for the first perf command is missed.
 
-Tested-by: Yann Sionneau <ysionneau@kalrayinc.com>
+ $ perf record --intr-regs=AX,SP,XMM0 -a -C 8 -b -W -d -c 100000003 -o /dev/null -e cpu/event=0xd0,umask=0x81/upp &
+ $ sleep 5
+ $ perf record  --per-thread  -c 1  -e cycles:pp --no-timestamp --no-tid taskset -c 8 ./noploop 1000
 
--- 
-Yann
+The first PEBS event is a system-wide PEBS event. The second PEBS event
+is a per-thread event. When the thread is scheduled out, the
+intel_pmu_pebs_del() function is invoked to update the PEBS state.
+Since the system-wide event is still available, the cpuc->n_pebs is 1.
+The cpuc->pebs_data_cfg is cleared. The data configuration for the
+system-wide PEBS event is lost.
 
+The (cpuc->n_pebs == 1) check was introduced in commit:
 
+  b6a32f023fcc ("perf/x86: Fix PEBS threshold initialization")
 
+At that time, it indeed didn't hurt whether the state was updated
+during the removal, because only the threshold is updated.
 
+The calculation of the threshold takes the last PEBS event into
+account.
 
+However, since commit:
+
+  b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
+
+we delay the threshold update, and clear the PEBS data config, which triggers
+the bug.
+
+The PEBS data config update scope should not be shrunk during removal.
+
+[ mingo: Improved the changelog & comments. ]
+
+Fixes: b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
+Reported-by: Stephane Eranian <eranian@google.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240401133320.703971-1-kan.liang@linux.intel.com
+---
+ arch/x86/events/intel/ds.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index 2641ba6..e010bfe 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -1237,11 +1237,11 @@ pebs_update_state(bool needed_cb, struct cpu_hw_events *cpuc,
+ 	struct pmu *pmu = event->pmu;
+ 
+ 	/*
+-	 * Make sure we get updated with the first PEBS
+-	 * event. It will trigger also during removal, but
+-	 * that does not hurt:
++	 * Make sure we get updated with the first PEBS event.
++	 * During removal, ->pebs_data_cfg is still valid for
++	 * the last PEBS event. Don't clear it.
+ 	 */
+-	if (cpuc->n_pebs == 1)
++	if ((cpuc->n_pebs == 1) && add)
+ 		cpuc->pebs_data_cfg = PEBS_UPDATE_DS_SW;
+ 
+ 	if (needed_cb != pebs_needs_sched_cb(cpuc)) {
 
