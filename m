@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-35808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBD98976F9
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:38:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0F58976FC
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D1831C26C27
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:38:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D00F1C28AF2
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3726616ABF3;
-	Wed,  3 Apr 2024 17:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF4C16C43B;
+	Wed,  3 Apr 2024 17:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDAd3IQ/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrcoheaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E647216ABEB;
-	Wed,  3 Apr 2024 17:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7700916C435;
+	Wed,  3 Apr 2024 17:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164788; cv=none; b=O8Mc2YPRqLSwP5TEyEL8wFxQ1hgkCCwUE6A4AL18wMAm/++0oXkPm8JdRAbD4pTP9wbjh8/dKi/k+53KxFxjjT7bxDvtt6Aw4iIYuW2cylp1Vy5aHJIGIKIfRhnT0TJkNH/wHiXzVsir8Cm4dFI28Bf8UcvGI+8EyqtKQXk4q8Y=
+	t=1712164790; cv=none; b=kKkC+AKwcBeeyCK9zU6P0XGzyvQATTxF9IG9Tg9m8bNiY+yhbFxb0Qh7PGkvs6gULBIOA3ahMCAx5JmmTuoQj/Y8MhYxl1WgDlyWXVLwRUxvN7Bk9MQkjvtsV0+cZq2L4WOeuuLXlV9YaCI7xV4JEmeloKZ+6URxSqAcMtSsRHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164788; c=relaxed/simple;
-	bh=eH6n/XrrBzShozVSMmjhzduWadISNU3nrGIZ3CDYUjo=;
+	s=arc-20240116; t=1712164790; c=relaxed/simple;
+	bh=m5CY6uzPdkdGZdndPJAd5V3PSA3YWVy2YMzLcV42FCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=joo7WJvq+5jEHoLRHzGNGtN0eVJDjINlPBGQM7K+KNcV/NEtthhKecvkeBYQsHaZXAD25a6LbIltwIWPtyO5DG5MbkZNChCSzURsX/nMvwwiFvgMTABEkAtqavN3HhSEkrxrlfqIzQN4Lw2mVxObR7vU07G7i0Ri5QeaO51GMzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDAd3IQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5BAC43143;
-	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
+	 MIME-Version; b=REIZS6diu+exOnXw9Kc4iDsE65yPfooYSqTfLnZs9DdxCpSaNzfOUtOKEh9BJbqwiutMh/RFN9mYvgpo9F+0lM3ietv2msQ4mUfpogfNwD/uk7JVpBGCAEOWu9W9p0bMATMcmOEiWb3xuQl4lYaES9teF5yfT5IlXlTQf3J4EpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrcoheaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AB7C433C7;
+	Wed,  3 Apr 2024 17:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164787;
-	bh=eH6n/XrrBzShozVSMmjhzduWadISNU3nrGIZ3CDYUjo=;
+	s=k20201202; t=1712164790;
+	bh=m5CY6uzPdkdGZdndPJAd5V3PSA3YWVy2YMzLcV42FCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fDAd3IQ//xSnNqGA7gs27Rx05ExbnjpiPR9bUf/9hI0M8o872UPgccehK/V/rfmqx
-	 7a4ZmYN6lao9q/X05wi79o2Qv8pFD+F4cW0BHuEgNcqTWQu1HMSivTUvdQwwYkQgTe
-	 TBDadPCjdX+uXiQcPzwLrIVXx3UdJ5ASoCsbivWuWy8eMPvXsnlre6t/3iF3NUXJJe
-	 tPe2rx8bgRPD7e8vpwdZb0gMlS6QlUyjDC+PTAblOgTM0TsI1f5AngkbuCGScs4XFb
-	 ZLJ2ZkXkPy8+sigBqyCpkvBrUOqr0Piy8ZW8EvjGtUJYXNaVjJa/jyQyDjQrTLcuE8
-	 gLp/jlUSvgg0g==
+	b=KrcoheaUeO04BQeNc/WlEeGCnaIlKCmd+7rD8oREVpM7xx+WIFx+sdNumFk7238dj
+	 9CeJig1glhgrG7mNJvlIbHblV/qMYn1qT597KLU+/IDLuGEJOI2WQBeBaAXnS35hoU
+	 Ofl2owiNfB2OCGj/O6aUprKstmvFxJVcAlyl2ntJKijvutujw9F/plu1EmGKNMWKts
+	 5svlB4y0axtsBmEbaHYMAelJfuwwkSWo7ihbApar1W3/pYMJRo+5bySmbDeXtVG1xK
+	 bO90T9Xg2w3GFpJ+PWY+xwoqfw8LGqmD9ZW2GyK0f/bC6bfZLzKi0IPQtJB9uCjwCN
+	 kshCBTfHuibDg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Karina Yankevich <k.yankevich@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Alan Stern <stern@rowland.harvard.edu>,
+Cc: Marco Felsch <m.felsch@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net
-Subject: [PATCH AUTOSEL 5.15 2/8] usb: storage: sddr55: fix sloppy typing in sddr55_{read|write}_data()
-Date: Wed,  3 Apr 2024 13:19:35 -0400
-Message-ID: <20240403171945.350716-2-sashal@kernel.org>
+	rdbabiera@google.com,
+	festevam@denx.de,
+	u.kleine-koenig@pengutronix.de,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 3/8] usb: typec: tcpci: add generic tcpci fallback compatible
+Date: Wed,  3 Apr 2024 13:19:36 -0400
+Message-ID: <20240403171945.350716-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240403171945.350716-1-sashal@kernel.org>
 References: <20240403171945.350716-1-sashal@kernel.org>
@@ -68,54 +69,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
-From: Karina Yankevich <k.yankevich@omp.ru>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit d6429a3555fb29f380c5841a12f5ac3f7444af03 ]
+[ Upstream commit 8774ea7a553e2aec323170d49365b59af0a2b7e0 ]
 
-In sddr55_{read|write}_data(), the address variables are needlessly typed
-as *unsigned long* -- which is 32-bit type on the 32-bit arches and 64-bit
-type on the 64-bit arches; those variables' value should fit into just 3
-command bytes and consists of 10-bit block # (or at least the max block #
-seems to be 1023) and 4-/5-bit page # within a block, so 32-bit *unsigned*
-*int* type should be more than enough...
+The driver already support the tcpci binding for the i2c_device_id so
+add the support for the of_device_id too.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
-
-[Sergey: rewrote the patch subject/description]
-
-Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/4c9485f2-0bfc-591b-bfe7-2059289b554e@omp.ru
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222210903.208901-3-m.felsch@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/sddr55.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/storage/sddr55.c b/drivers/usb/storage/sddr55.c
-index 15dc25801cdcc..0aa079405d23c 100644
---- a/drivers/usb/storage/sddr55.c
-+++ b/drivers/usb/storage/sddr55.c
-@@ -196,7 +196,7 @@ static int sddr55_read_data(struct us_data *us,
- 	unsigned char *buffer;
- 
- 	unsigned int pba;
--	unsigned long address;
-+	unsigned int address;
- 
- 	unsigned short pages;
- 	unsigned int len, offset;
-@@ -316,7 +316,7 @@ static int sddr55_write_data(struct us_data *us,
- 
- 	unsigned int pba;
- 	unsigned int new_pba;
--	unsigned long address;
-+	unsigned int address;
- 
- 	unsigned short pages;
- 	int i;
+diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+index a7b0134d382b8..e047a15e67347 100644
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -899,6 +899,7 @@ MODULE_DEVICE_TABLE(i2c, tcpci_id);
+ #ifdef CONFIG_OF
+ static const struct of_device_id tcpci_of_match[] = {
+ 	{ .compatible = "nxp,ptn5110", },
++	{ .compatible = "tcpci", },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, tcpci_of_match);
 -- 
 2.43.0
 
