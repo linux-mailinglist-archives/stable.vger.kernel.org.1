@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-35805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3F38976F3
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A27918976F6
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 19:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99BD2296A82
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:36:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CD15296EFE
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 17:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E916F161B6A;
-	Wed,  3 Apr 2024 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C677B16ABCB;
+	Wed,  3 Apr 2024 17:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqJPqQfB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BlQixzev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0D161B52;
-	Wed,  3 Apr 2024 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E02316ABC3;
+	Wed,  3 Apr 2024 17:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164776; cv=none; b=lbXwMRRbPr6BoUBK0Zi/5aBk47+rgZMlBjp0DP5Mp//wz1tnkvhB1+qe6huOXHPkfraeigFKcsPsLS85oEZ/vRzKNQ4oyqEc0AOiOWVzTgLtFrMlp5pR2jmik0YEE7NWI0Tn7awhzshsuHmmfP9Yp4WmEKbApbDrTEUEl6lHRvw=
+	t=1712164779; cv=none; b=DKkkkGdLUqakfqrfyRVbv6lVUMdXU1GypoWfXL6gtjy67Fvhql3xT15oPvZpGcRwKVGpEfoStrCK3FGUmaRD/B7InNbxUb8PfWddDAJZxLyAG2RJ4CjznWhy5FvK32akyb5MTwhYAJqcpjcp1r/pHAFUFxlsEXg15LwfFTAR4Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164776; c=relaxed/simple;
-	bh=mz4McjuT2qlYoiEkicjh9v8R7sroxYM+U54rgIlhYMQ=;
+	s=arc-20240116; t=1712164779; c=relaxed/simple;
+	bh=3R/oYCngnfBm8uj5KvKZdVhP62XlJbJ3bOKSaBb7XQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tR3n6Ki6l1ahAujE3IwC18ZSAYTo7imwtU/cAVJntCz6Qy1Hr8yK8OfvRwtv8fudqeS9v9erWLqapx13ggnFeTm8bM0WMlQumzyULMu84sMWUDu7sAODJDT+n2ljXoa71trcr84wCzlREKvjuBB5IVVcrzcyzvNLicr/qD29G0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqJPqQfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A504BC433F1;
-	Wed,  3 Apr 2024 17:19:35 +0000 (UTC)
+	 MIME-Version; b=Kqx6f8EdLd0FOoSusxJSL2wfuEkEmZ4xT3TUYRN34hFX5Hfw+BxSTgE6L2kp8tlVeKWxhMo9b5YR9F0OHUCzCST4xIsbzH4ohrROAF2yI+kM/TrM0d9weJmM8Au1CH/NdkHwGb0UFPrYbcwCvkGV3eDHf63VRB5HyGzzNIZ75TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BlQixzev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C79C433F1;
+	Wed,  3 Apr 2024 17:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164776;
-	bh=mz4McjuT2qlYoiEkicjh9v8R7sroxYM+U54rgIlhYMQ=;
+	s=k20201202; t=1712164779;
+	bh=3R/oYCngnfBm8uj5KvKZdVhP62XlJbJ3bOKSaBb7XQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqJPqQfBS+X0lpIunFesSxKqiiuBt0JjrxyZNc9oU+QVNdY1ae1H0pixH69ANKJak
-	 cQj4g4Yvun4ikTGMpdsomuwan2LCm9k1CCHfDVNAY5J6NgsrsRZ1YMk4HhI6Uu3Yq2
-	 WM5bv5HJv/Y7jvJcflAIt2/i7THW08LpAEpf4rZ7c7qIdzgLPSN0rVQO5OVyYIZEPw
-	 /i58Zt+HIg5op4FRcJoetwpM5bNuJOiKG9xi0LroMHhiK4SGa44nzEaA1p7AYz75Fn
-	 z6rc+Facrbv3PihIQRT4PRGOA0az1qHqxzQG/fm9AkgvAM30rEQgGfbxR3Trb9dUGD
-	 9hXvNkuSgeDlg==
+	b=BlQixzevE7Ty6J8NjQKx1cMg5eZsKe7PJCJ8ULBosh/52mWwmZD2nfhMP/Nn2GQi3
+	 7WNxCi+guJwElUOcGXJx6UtXTfliUB1f1CKfLFiLKsJe05bU7+h/wXbd4Wm58MO86r
+	 L+TN3AuAJMSMHm5VMgV9fbRoy2fZq0bCGtntJD9Jnuv7GXbKKIS/XWW3av7Po0Wv/2
+	 vND7aktX3m++FeSdyIhLy9mawI4/mc0dQE4uMSslu8wZkrDhkhNbd8qIEcijGDoVLH
+	 mtnb6VUzA4pMh7iTCzDzRr7xHmrw/pZD2Dn+mRl8wLa3f1FahBY5FH9/GsER36lRfg
+	 f9H30JdybstQw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Jiawei Fu (iBug)" <i@ibugone.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 14/15] drivers/nvme: Add quirks for device 126f:2262
-Date: Wed,  3 Apr 2024 13:18:58 -0400
-Message-ID: <20240403171909.345570-14-sashal@kernel.org>
+	daniel@ffwll.ch,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 15/15] fbmon: prevent division by zero in fb_videomode_from_videomode()
+Date: Wed,  3 Apr 2024 13:18:59 -0400
+Message-ID: <20240403171909.345570-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240403171909.345570-1-sashal@kernel.org>
 References: <20240403171909.345570-1-sashal@kernel.org>
@@ -67,50 +68,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.84
 Content-Transfer-Encoding: 8bit
 
-From: "Jiawei Fu (iBug)" <i@ibugone.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit e89086c43f0500bc7c4ce225495b73b8ce234c1f ]
+[ Upstream commit c2d953276b8b27459baed1277a4fdd5dd9bd4126 ]
 
-This commit adds NVME_QUIRK_NO_DEEPEST_PS and NVME_QUIRK_BOGUS_NID for
-device [126f:2262], which appears to be a generic VID:PID pair used for
-many SSDs based on the Silicon Motion SM2262/SM2262EN controller.
+The expression htotal * vtotal can have a zero value on
+overflow. It is necessary to prevent division by zero like in
+fb_var_to_videomode().
 
-Two of my SSDs with this VID:PID pair exhibit the same behavior:
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-  * They frequently have trouble exiting the deepest power state (5),
-    resulting in the entire disk unresponsive.
-    Verified by setting nvme_core.default_ps_max_latency_us=10000 and
-    observing them behaving normally.
-  * They produce all-zero nguid and eui64 with `nvme id-ns` command.
-
-The offending products are:
-
-  * HP SSD EX950 1TB
-  * HIKVISION C2000Pro 2TB
-
-Signed-off-by: Jiawei Fu <i@ibugone.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/video/fbdev/core/fbmon.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 3d01290994d89..5ff09f2cacab7 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3471,6 +3471,9 @@ static const struct pci_device_id nvme_id_table[] = {
- 				NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
-+		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
-+				NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x126f, 0x2263),	/* Silicon Motion unidentified */
- 		.driver_data = NVME_QUIRK_NO_NS_DESC_LIST |
- 				NVME_QUIRK_BOGUS_NID, },
+diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
+index b0e690f41025a..9ca99da3a56a0 100644
+--- a/drivers/video/fbdev/core/fbmon.c
++++ b/drivers/video/fbdev/core/fbmon.c
+@@ -1311,7 +1311,7 @@ int fb_get_mode(int flags, u32 val, struct fb_var_screeninfo *var, struct fb_inf
+ int fb_videomode_from_videomode(const struct videomode *vm,
+ 				struct fb_videomode *fbmode)
+ {
+-	unsigned int htotal, vtotal;
++	unsigned int htotal, vtotal, total;
+ 
+ 	fbmode->xres = vm->hactive;
+ 	fbmode->left_margin = vm->hback_porch;
+@@ -1344,8 +1344,9 @@ int fb_videomode_from_videomode(const struct videomode *vm,
+ 	vtotal = vm->vactive + vm->vfront_porch + vm->vback_porch +
+ 		 vm->vsync_len;
+ 	/* prevent division by zero */
+-	if (htotal && vtotal) {
+-		fbmode->refresh = vm->pixelclock / (htotal * vtotal);
++	total = htotal * vtotal;
++	if (total) {
++		fbmode->refresh = vm->pixelclock / total;
+ 	/* a mode must have htotal and vtotal != 0 or it is invalid */
+ 	} else {
+ 		fbmode->refresh = 0;
 -- 
 2.43.0
 
