@@ -1,65 +1,76 @@
-Return-Path: <stable+bounces-35699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4A0896ED1
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 14:25:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0C2896F7F
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 14:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D94289A45
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 12:25:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B62531F29259
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 12:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD28145FFE;
-	Wed,  3 Apr 2024 12:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnvjN/BM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EB31494C2;
+	Wed,  3 Apr 2024 12:53:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C836D141991;
-	Wed,  3 Apr 2024 12:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A361494CE;
+	Wed,  3 Apr 2024 12:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712147097; cv=none; b=GJb4kOlT3h5xeP4y8OIJlcIxPzZeDQX88LUFOiYzvnmQVAXpBaJpp5/y2HooYcvXnr2Agq3IyIqRtgYtstDclESWE82D1BjAaVtqRO/Hq4o/poB2LbXAKXj6Zy4gjmUjCDNHs0GycSc2U0aavDebEfnkaIU5zQeXPOr4AW/PPtU=
+	t=1712148806; cv=none; b=lCjyI3vkFG/oC2Ah1xgaEN5MI9d2r4UW+7Olg9Iu0UcmVi3R/bhbhbH30NX+VhEqEZIYMidYUHoJAy2uhbV8dPORho2Icllg7dXZ2RChvlYO5cRgwTC7z5rGJlJNym1yE2xBDPgu9y1MyqLS4Ea7IBcbNwfzGvorNBbOVW+5czw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712147097; c=relaxed/simple;
-	bh=KcgYpc+9CjDQi/NJxVHV2bo7S5xb6FjkQ15XYp0RmCE=;
+	s=arc-20240116; t=1712148806; c=relaxed/simple;
+	bh=UntQTPh+2hrQn/xIlOWJaJgrauzrTj7yswbk+DwsRJs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+QK8eNE5TEMUqFwqq6rhxpXg0RTYbRlc8jWG3Tv3jj3HYfUEJboGqaT8r7lVc32JWaoLUwJwfsdeCMhqGoyy5nDmzqRWwY6g9w7xr0XzE0wE9HxYRVhbWDVxCN6f+pKdAwrZMik9JESX8/74cK7e1I1lzyMnCHKT1DfUpJ8mTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnvjN/BM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A46EC433C7;
-	Wed,  3 Apr 2024 12:24:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712147097;
-	bh=KcgYpc+9CjDQi/NJxVHV2bo7S5xb6FjkQ15XYp0RmCE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SnvjN/BMqtmaBYJ95X2POqxVnvib0Hcs46hn31TOd76XhAhYvKfJiKcNldggmuqqm
-	 517zdgNjgB7eLZt6b5C+o97voT2HYvaBV7oTaE3JdNkYkFkwljRGjPjQSH104EVB7y
-	 o2qOc7Xnaec9ss4pc4II/GVmqAtXQ+1/APosntGH0B4XnrTtD1au+44FHYx8wcNfmT
-	 w5waF8he/KUouIQKffezkpj/joMyaGMtHoSnMkmAdRFLtIWwa4ffRveU2LIGIR5e3T
-	 TC+f5EYpwGcl05mNsKAsLytFareyzB9UKE4TaOcsHhQs1/gKOHtBI0iyIG6azTYfut
-	 72lKie0cjUzqQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rrzfl-000000004bT-3UUs;
-	Wed, 03 Apr 2024 14:24:58 +0200
-Date: Wed, 3 Apr 2024 14:24:57 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>, luiz.dentz@gmail.com,
-	marcel@holtmann.org, linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	quic_mohamull@quicinc.com, quic_hbandi@quicinc.com
-Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
- exists in DT"
-Message-ID: <Zg1KmcFQ3bAJa8qJ@hovoldconsulting.com>
-References: <20240314084412.1127-1-johan+linaro@kernel.org>
- <171146704035.9961.13096206001570615153.git-patchwork-notify@kernel.org>
- <124a7d54-5a18-4be7-9a76-a12017f6cce5@quicinc.com>
- <ZgWLeo5KSLurLDhK@hovoldconsulting.com>
- <c03abbbd-faa5-4fdc-b7c3-5554a90c3419@quicinc.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=A95FNpqmcXNG1e+AhRokIkx0T79pmZtmoXRwAN/absOaGpZE9zGhmQ/mnVUR0bZIe63IdOZAT+fAy9Zdd8kVwyYSHV9Ct+WPaXCS5ak9kPN6t0oFCH78qEug/wNoq0EFJxGlqW8Pu3OyyM9Ppq0KFr8LDhXnuVzZ16Q6pf+GDpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a46a7208eedso824936566b.0;
+        Wed, 03 Apr 2024 05:53:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712148803; x=1712753603;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q4cj6vg+PLMD3bnAnC/7BKVkE+A86qwqaG5PcVTOt18=;
+        b=a9G1Uj1tXvk8mKna/klFrPZDWk3MTIXiHofAmeS/kXnCAHX1DJNsox94yzFekHD3hN
+         HKwBhkQj30AfKNMFcidPs2Mk/+bHx9UyJ2IZ9PVbJWjNjJJmrFmYxrIxK2P67UR0zKEy
+         PO7pW4SAELMqJu0HGjzfUOiBYya+EiGMZ5nMumXYvQyhdAEhd+ipbRB3P48Ygz6nBSCh
+         qSMbh6qFzcFP/g1fSR+8/PU1VnmmeBsvoidXPdCeKT64WXxvbnph2ln6QketlF77D+WA
+         oHqKhLRDxCcIBKZyy4YsqFAdjDue7Q59u2X6Q1Ekb2ZgRuJg3P4nEQ1bRynYG9dv6LzI
+         Sgiw==
+X-Forwarded-Encrypted: i=1; AJvYcCXGLDhsG0YQlcAQXlahybcvDTcB+DqPmdbWXAzIzhT1Av8liaLceCjzug3cTSCDTsIN/J6bHtN6CrpzE0C5q/dkIxpSOunq/mWWOixJ6vNqwAicPXgIms8PYYHKX1L8H/YXeMXP+1+9wUaSAXPUqGKilJHOahCf7F9/S3RM
+X-Gm-Message-State: AOJu0YymaYaD9FcIJ+eGwabKMzk7lvQQzueGAe/tw3IwbyqO9kgxNmKS
+	m1KC+qNxPISMx16mz+eO5DYAeI+jOpK/6eguVJBnLn3FJAnaS/n3
+X-Google-Smtp-Source: AGHT+IG/LZvkvkvKke8uVXcXbrYjZ9FSvr+Pm5+/tdlPUCoe15E1D9VDt24wooC2fGJfQa9Hdwxe2A==
+X-Received: by 2002:a17:906:2284:b0:a4e:39f1:6374 with SMTP id p4-20020a170906228400b00a4e39f16374mr1812470eja.24.1712148803105;
+        Wed, 03 Apr 2024 05:53:23 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
+        by smtp.gmail.com with ESMTPSA id an3-20020a17090656c300b00a4e7c2b2070sm2694127ejc.8.2024.04.03.05.53.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Apr 2024 05:53:16 -0700 (PDT)
+Date: Wed, 3 Apr 2024 05:53:12 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: hengqi@linux.alibaba.com, xuanzhuo@linux.alibaba.com,
+	Jason Wang <jasowang@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Melnychenko <andrew@daynix.com>, rbc@meta.com,
+	riel@surriel.com, stable@vger.kernel.org, qemu-devel@nongnu.org,
+	"open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v3] virtio_net: Do not send RSS key if it is not
+ supported
+Message-ID: <Zg1ROBmnY0jaKvsf@gmail.com>
+References: <20240329171641.366520-1-leitao@debian.org>
+ <20240331160618-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,149 +79,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c03abbbd-faa5-4fdc-b7c3-5554a90c3419@quicinc.com>
+In-Reply-To: <20240331160618-mutt-send-email-mst@kernel.org>
 
-On Fri, Mar 29, 2024 at 12:55:40PM +0530, Janaki Ramaiah Thota wrote:
-> On 3/28/2024 8:53 PM, Johan Hovold wrote:
-> > On Thu, Mar 28, 2024 at 08:25:16PM +0530, Janaki Ramaiah Thota wrote:
+On Sun, Mar 31, 2024 at 04:20:30PM -0400, Michael S. Tsirkin wrote:
+> On Fri, Mar 29, 2024 at 10:16:41AM -0700, Breno Leitao wrote:
+> > @@ -3814,13 +3815,24 @@ static int virtnet_set_rxfh(struct net_device *dev,
+> >  		return -EOPNOTSUPP;
+> >  
+> >  	if (rxfh->indir) {
+> > +		if (!vi->has_rss)
+> > +			return -EOPNOTSUPP;
+> > +
+> >  		for (i = 0; i < vi->rss_indir_table_size; ++i)
+> >  			vi->ctrl->rss.indirection_table[i] = rxfh->indir[i];
+> > +		update = true;
+> >  	}
+> > -	if (rxfh->key)
+> > +
+> > +	if (rxfh->key) {
+> > +		if (!vi->has_rss && !vi->has_rss_hash_report)
+> > +			return -EOPNOTSUPP;
+> 
+> 
+> What's the logic here? Is it || or &&? A comment can't hurt.
 
-> >> We made this change to configure the device which supports persistent
-> >> memory for the BD-Address
-> > 
-> > Can you say something more about which devices support persistent
-> > storage for the address? Is that all or just some of the chip variants?
+If txfh carries a key, then the device needs to has either has_rss or
+has_rss_hash_report "features".
 
-> Most of the devices support persistent storage, and bd-address storage
-> is chosen based on the OEM and Target.
+These are basically virtio features VIRTIO_NET_F_HASH_REPORT and
+VIRTIO_NET_F_RSS that are set at virtio_probe.
 
-Can you be more specific about which devices support it (or say which do
-not)?
-
-Is the address stored in some external eeprom or similar which the OEM
-can choose to populate?
-
-> >> So to make device functional in both scenarios we are adding a new
-> >> property in dts file to distinguish persistent and non-persistent
-> >> support of BD Address and set HCI_QUIRK_USE_BDADDR_PROPERTY bit
-> >> accordingly
-> > 
-> > Depending on the answer to my questions above, you may be able to infer
-> > this from the compatible string and/or you can read out the address from
-> > the device and only set the quirk if it's set to the default address.
-> > 
-> > You should not need to add a new property for this.
-
-> As per my understanding, altering the compatible string may cause duplicate
-> configuration, right ?
-
-If it's the same device and just a different configuration then we can't
-use the compatible string for this.
-
-It seems we need a patch like the below to address this. But please
-provide some more details (e.g. answers to the questions above) so I can
-determine what the end result should look like.
-
-Johan
-
-
-From 9719effe80fcc17518131816fdfeb1824cfa08b6 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan+linaro@kernel.org>
-Date: Thu, 20 Apr 2023 14:10:55 +0200
-Subject: [PATCH] Bluetooth: btqca: add invalid device address check
-
-Some Qualcomm Bluetooth controllers lack persistent storage for the
-device address and therefore end up using the default address
-00:00:00:00:5a:ad.
-
-Apparently this depends on how the controller has been integrated so we
-can not use the device type alone to determine when the address is
-valid.
-
-Instead read back the address during setup() and only set the
-HCI_QUIRK_USE_BDADDR_PROPERTY flag when needed.
-
-Fixes: de79a9df1692 ("Bluetooth: btqcomsmd: use HCI_QUIRK_USE_BDADDR_PROPERTY")
-Fixes: e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts")
-Fixes: 6945795bc81a ("Bluetooth: fix use-bdaddr-property quirk")
-Cc: stable@vger.kernel.org	# 6.5
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/bluetooth/btqca.c   | 33 +++++++++++++++++++++++++++++++++
- drivers/bluetooth/hci_qca.c |  2 --
- 2 files changed, 33 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 19cfc342fc7b..15124157372c 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -15,6 +15,8 @@
- 
- #define VERSION "0.1"
- 
-+#define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
-+
- int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
- 			 enum qca_btsoc_type soc_type)
- {
-@@ -612,6 +614,35 @@ int qca_set_bdaddr_rome(struct hci_dev *hdev, const bdaddr_t *bdaddr)
- }
- EXPORT_SYMBOL_GPL(qca_set_bdaddr_rome);
- 
-+static void qca_check_bdaddr(struct hci_dev *hdev)
-+{
-+	struct hci_rp_read_bd_addr *bda;
-+	struct sk_buff *skb;
-+	int err;
-+
-+	if (bacmp(&hdev->public_addr, BDADDR_ANY))
-+		return;
-+
-+	skb = __hci_cmd_sync(hdev, HCI_OP_READ_BD_ADDR, 0, NULL,
-+			     HCI_INIT_TIMEOUT);
-+	if (IS_ERR(skb)) {
-+		err = PTR_ERR(skb);
-+		bt_dev_err(hdev, "Failed to read device address (%d)", err);
-+		return;
-+	}
-+
-+	if (skb->len != sizeof(*bda)) {
-+		bt_dev_err(hdev, "Device address length mismatch");
-+		goto free_skb;
-+	}
-+
-+	bda = (struct hci_rp_read_bd_addr *)skb->data;
-+	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT))
-+		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+free_skb:
-+	kfree_skb(skb);
-+}
-+
- static void qca_generate_hsp_nvm_name(char *fwname, size_t max_size,
- 		struct qca_btsoc_version ver, u8 rom_ver, u16 bid)
- {
-@@ -818,6 +849,8 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		break;
- 	}
- 
-+	qca_check_bdaddr(hdev);
-+
- 	bt_dev_info(hdev, "QCA setup on UART is completed");
- 
- 	return 0;
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index b266db18c8cc..b621a0a40ea4 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1908,8 +1908,6 @@ static int qca_setup(struct hci_uart *hu)
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
- 	case QCA_WCN7850:
--		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
--
- 		qcadev = serdev_device_get_drvdata(hu->serdev);
- 		if (qcadev->bdaddr_property_broken)
- 			set_bit(HCI_QUIRK_BDADDR_PROPERTY_BROKEN, &hdev->quirks);
--- 
-2.43.2
-
+I will add the comment and respin the series.
 
