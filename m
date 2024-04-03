@@ -1,114 +1,117 @@
-Return-Path: <stable+bounces-35694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58283896DD3
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 13:14:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF743896E6D
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 13:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12D0228B66E
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 11:14:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CA6CB268D7
+	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 11:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97EE14198E;
-	Wed,  3 Apr 2024 11:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762401419A2;
+	Wed,  3 Apr 2024 11:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="uxvdKthd"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WyOvL+V0"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6D36D1AE;
-	Wed,  3 Apr 2024 11:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E74134CCA
+	for <stable@vger.kernel.org>; Wed,  3 Apr 2024 11:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712142859; cv=none; b=m2g7QSQWNbxLTldXRQEeieSR6Nqvkwt3XuPTIPeNJn263w/+9hrWkkZwV+1VXrzFIplEgJbJORNkTxq3GvoFqvO+cqLub5IjBcaMRvXiEx205TBC+n9SuNFiz5F3suu5kGlaPtSbJZtwAd3NKs/XxIYxQxwZD3QvtMaMvFm68co=
+	t=1712144708; cv=none; b=Ggt4I2vH5s4lv1tXBITkqxd3yqrZnfZ36ZXQ5P8cJ3FoFDkOgwoUPmgRgFv2E1NTnGaaisaKoBcpPkTKGs7fmHfA+y9cdxkuMKfEqBDTudjWQYZRN+fAq+p7/Jq3rBr0j0NxDshytAGbFy69M+R4dYKjfBrihCA6F9CNUtfTBg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712142859; c=relaxed/simple;
-	bh=dZ19RSEwhVWhjhnaqZ0vIwPLtYWaedZYkYvYqGJ1kwo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K3SB73JTTEkMCiPgT8bZ1gVaL+bY75rwJD1rgp3YpKkjbZR4Y/HaB1zSm7WR5kh/s4bWi7kigr7toUaon0UC4tq2tgtO8zwXRrxP0KznSskv3LvX6gSFGZ712CGsVku86E+I7/Tg61ZDxkha3cnLCnFJJPqdPUh6NkQkm6lj9x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=uxvdKthd; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=Cwvg1mTQQrARNTqbIviETmjFgblYY9ykcZc99ybA6qo=;
-	t=1712142857; x=1712574857; b=uxvdKthdQP0mhcG+yPoollm/13bCdv9jtHmG+Mh7gDmR+PE
-	EwQEyVmOFeia1fLKH5CvZ863l3CRu54KmImNuvpP8mOcq1rNDfEyj/tAhF/pZtm7q6ElEiUoR6qxv
-	VIWKB+myahmtn9r4OGISCtY9IYdl5zfu+XJV2X0jXaL/9MxZJ0Zlicxsq1Kx/jby5Flk51Lg0Jjel
-	Yby64/BjfjN+yp6QHO4f0rzNNvq9pIyEdCbP1gW9inHb91LM5vjTct/aUij98+x8qKgNZOkUfnR+8
-	pPrEr6415AIXBsTCpGOwp6w+4qc31XvAAFyQ9xY7CoW6WxPxBqHU2yFjV7ed9X0g==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rryZD-00023p-QR; Wed, 03 Apr 2024 13:14:07 +0200
-Message-ID: <21a230d8-92cf-4ae9-ae4c-34b3a2fe2670@leemhuis.info>
-Date: Wed, 3 Apr 2024 13:14:07 +0200
+	s=arc-20240116; t=1712144708; c=relaxed/simple;
+	bh=Gc1iKz6G5cX2cf009vdjyCAbLt3LCgshtTEEHhXkJXo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o9vefRGwmBHwvX0RCYzCPSRU6/lZ2rs18ibMY/8I+aFESP8KAwGgOr7D2+SATXfqvsXWl6mt/II9FNSNdolEmVHl8YZpJv26V8bB4D8JnjrbdMXS8ovuEzRxsnYcPOH9e6O38VD8Ol4Y8u1OTqEXaW9z+QRfHtSL0Chl5MqZ5oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WyOvL+V0; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6154a1812ffso10796607b3.1
+        for <stable@vger.kernel.org>; Wed, 03 Apr 2024 04:45:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1712144705; x=1712749505; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H6ji7ukJRPmQhB2qcavC1ueRDs+bCKiR3kOICzSoFek=;
+        b=WyOvL+V05YZng3aj8dUUYr205hxCyMXSL9WChycPaW/OezyVCQPqta2PTK64AqYm/F
+         +Mza8cEFFQw2xc72cvnV1GvDfhu1dQQa53+5m2g9RxUeQGzTVpnDJ3MhbfF9nydD0iTp
+         FvNAytibh6DFl0xXBznttEAPiYNUAZEELTroY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712144705; x=1712749505;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H6ji7ukJRPmQhB2qcavC1ueRDs+bCKiR3kOICzSoFek=;
+        b=hsrY4X/xYLlGgudcAdHf/LrjShAdCG9i/+s4GkRmB58VAWMuHeHaRPrK9VaHOnApKB
+         0HTh6fOxy3bUMnq2PGT/TgbgLRyavwmABEvznCzqjTfXD7K4IafGxLoYWZwYcKh6AAHB
+         PkjrZevpA2+jAtkbwD4TnrHahyPmPDHMzdnv07XVjggRK88LDLcrRjH1WpS+h/pfsGWM
+         lv2gqJoVDyPVIBd5gCdGTW5EuXQBcVq2fHTUCQjprfw2zmTLOYAOvjcils68EYZQbc74
+         F4FMzjo97dho34ZJSzATTzJXuEo0syqoTOT+yCEU0EAlB5WtEo/xkTPAOIisl11J6LdY
+         20Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCXx4Qr3BD7+xOvqp2vO6w7HPjLO6i4D8OvjLLvSN7kLGLWgrhJ5zsrig61JCzNsflV00H7iiKeY7aDnaqjTtxSllVW6l6GB
+X-Gm-Message-State: AOJu0Yzl2BJS+55CDzbGJPePaC1u/KkcvNH5wCe+5gSpb3U9L6p751BP
+	23s1XWWy1LzEFjx6OR5BsA4Lh7dm3A47xJ0AoPyGwdlogWyr9WegxQIiowY7aonJu/jbgI8HWyU
+	1Poe3fCp9+xtS+ArhSyQEVevEdIXeSNAoxh4+AQkvZxbtMYFe/w==
+X-Google-Smtp-Source: AGHT+IFKuYjWza+zXPjWPA5Q0rMCrbgx3HRhz5yHT+6Ft++wJj/e+mXelEtAPaLvU/P/29AJlfH7r0I4bvMQuFJPxtI=
+X-Received: by 2002:a25:b84a:0:b0:dcd:65fa:ea06 with SMTP id
+ b10-20020a25b84a000000b00dcd65faea06mr14285654ybm.24.1712144705293; Wed, 03
+ Apr 2024 04:45:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH 6.8 000/715] 6.8.2-rc1 review
-To: Jon Hunter <jonathanh@nvidia.com>, Sasha Levin <sashal@kernel.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-References: <20240324223455.1342824-1-sashal@kernel.org>
- <0cdbf4d6-3dce-42ee-8029-c486ec999fb5@nvidia.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <0cdbf4d6-3dce-42ee-8029-c486ec999fb5@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1712142857;846c7af8;
-X-HE-SMSGID: 1rryZD-00023p-QR
+References: <20240402232813.2670131-1-zack.rusin@broadcom.com>
+ <20240402232813.2670131-6-zack.rusin@broadcom.com> <20240403104246.6c94eea0.pekka.paalanen@collabora.com>
+In-Reply-To: <20240403104246.6c94eea0.pekka.paalanen@collabora.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
+Date: Wed, 3 Apr 2024 07:44:54 -0400
+Message-ID: <CABQX2QPW83H5T9Gc5yT8a277tNgjEvC-xK6wDGewq+vQEYZ=2A@mail.gmail.com>
+Subject: Re: [PATCH 5/5] drm/vmwgfx: Sort primary plane formats by order of preference
+To: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
+	martin.krastev@broadcom.com, maaz.mombasawala@broadcom.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 03.04.24 12:02, Jon Hunter wrote:
-> On 24/03/2024 22:22, Sasha Levin wrote:
->> Tejun Heo (9):
->>    workqueue: Move pwq->max_active to wq->max_active
->>    workqueue: Factor out pwq_is_empty()
->>    workqueue: Replace pwq_activate_inactive_work() with
->>      [__]pwq_activate_work()
->>    workqueue: Move nr_active handling into helpers
->>    workqueue: Make wq_adjust_max_active() round-robin pwqs while
->>      activating
->>    workqueue: RCU protect wq->dfl_pwq and implement accessors for it
->>    workqueue: Introduce struct wq_node_nr_active
->>    workqueue: Implement system-wide nr_active enforcement for unbound
->>      workqueues
->>    workqueue: Don't call cpumask_test_cpu() with -1 CPU in
->>      wq_update_node_max_active()
-> 
-> 
-> Sorry I am late on this, but I was not copied and so did not see this. I
-> noticed a suspend regression on Tegra186 with v6.8.y and bisect is point
-> to commit "workqueue: Implement system-wide nr_active enforcement for
-> unbound workqueues".
-> 
-> Reverting commits "workqueue: Don't call cpumask_test_cpu() with -1 CPU
-> in wq_update_node_max_active()" and "workqueue: Implement system-wide
-> nr_active enforcement for unbound workqueues" does fix the problem.
-> 
-> Note that I am not seeing this regression on the mainline with v6.9-rc2
-> and so I am not sure if there is something else missing? I am also still
-> seeing the problem with v6.8.3-rc1.
+On Wed, Apr 3, 2024 at 3:43=E2=80=AFAM Pekka Paalanen
+<pekka.paalanen@collabora.com> wrote:
+>
+> On Tue,  2 Apr 2024 19:28:13 -0400
+> Zack Rusin <zack.rusin@broadcom.com> wrote:
+>
+> > The table of primary plane formats wasn't sorted at all, leading to
+> > applications picking our least desirable formats by defaults.
+> >
+> > Sort the primary plane formats according to our order of preference.
+>
+> This is good.
+>
+> > Fixes IGT's kms_atomic plane-invalid-params which assumes that the
+> > preferred format is a 32bpp format.
+>
+> That sounds strange, why would IGT depend on preferred format being
+> 32bpp?
+>
+> That must be an oversight. IGT cannot dictate the format that hardware
+> must prefer. XRGB8888 is strongly suggested to be supported in general,
+> but why also preferred?
 
-FWIW, there is a ongoing discussion about the workqueue backports (and
-if those should be removed) due to a earlier regression report (about
-hibernate, not suspend) here:
+I think it's just a side-effect of the pixman's assert that's failing:
+https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/lib/igt_fb.c#n4190
+i.e. pixman assumes everything is 4 byte aligned.
+I should have rephrased the message as "IGT assumes that the preferred
+fb format is 4 byte aligned because our 16bpp formats are packed and
+pixman can't convert them".
 
-https://lore.kernel.org/all/ce4c2f67-c298-48a0-87a3-f933d646c73b@leemhuis.info/
-
-Ciao, Thorsten
+z
 
