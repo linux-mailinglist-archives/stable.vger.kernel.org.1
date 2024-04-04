@@ -1,330 +1,109 @@
-Return-Path: <stable+bounces-35940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E321B898AF8
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:22:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFE7898B0C
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:25:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 987FF282B16
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:22:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 060EC1C21A10
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFD112A170;
-	Thu,  4 Apr 2024 15:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1047884FDF;
+	Thu,  4 Apr 2024 15:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dvfmhKQj";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="2Yuh7HdI";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dvfmhKQj";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="2Yuh7HdI"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3KbwrrJQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B27F224DE
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 15:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C182C189
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 15:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712243997; cv=none; b=r+DNQXr+jeCvh99ZAdNTZdv00dCob96LWd+hAgJuL6Ou9aLwfB+nilqk0ZdAfkjdywmDavzJ7d0jZa8yhzK/YFLmrMG2RLJCYWMLoXm2gUab9iH4khWeEkwGggCWUcH81oesfBaaWQWx3vyAk7E1duyp2kcVgQ0k6jk8KKj/7TQ=
+	t=1712244327; cv=none; b=LnE3/q1+whx7fncnRPmVKnrP4poE51eYAX8Pb9J4kFzwTmsgASI3YAQ+GU/5BffCOZvj3FSt1X4bYoOuTQMRc+iWJ4wuGNVIhBf0Z84uDLDCY6axuqQouuEmt/pBMnCA0urzOIRjT0EqQAzf0kz1yoXdiBiZYXX9Blwx3y/GSIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712243997; c=relaxed/simple;
-	bh=y3dxx/fqPbBnirrAQdveU9wi2P1Yv5TsxaNC3zP2Fxw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6sdeci4IN2mE5ZNnRZlFcEsZH04GhX0B6KRD67IZV7/3nLfs3UIGgb0oDuRYjF2jzUrSE43I7x9iTZEOduSRWU2dRUGOieM3qB89tC+vHXE9KxKPs7lWlj7Bx8MmPkOdHFy2ner/Rxc2+eUKYeDggHTJTGsNEfWXWl+4fxDz+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dvfmhKQj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=2Yuh7HdI; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dvfmhKQj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=2Yuh7HdI; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 304635F856;
-	Thu,  4 Apr 2024 15:19:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712243993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sx7uIszZVXeqWU9tKULJQWfGNgki2Vq0qhXGsqRXdHY=;
-	b=dvfmhKQjXKTpmzuwVPgZvXuJNdcwSU4sG3fGJX/P/IjjlKC1z3uyQ1lc9Bs2cYRfJbVocs
-	tLRPy0S53d9+o6wda4jhG4UPfBxLOHWNNVo8ROwOpr5dBE2zbJkzx/IbSAPBphgBhG6dYH
-	6TQWenz9CbCKlkfCCPIs1mZht12jDgk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712243993;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sx7uIszZVXeqWU9tKULJQWfGNgki2Vq0qhXGsqRXdHY=;
-	b=2Yuh7HdIUiIXOgwCONUq00QYU0Jx6K71kGs+H60/TXDn6b9d4u/55D9IXXcpPgmBBadwoH
-	1fLmsDqJeCjpXJBA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712243993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sx7uIszZVXeqWU9tKULJQWfGNgki2Vq0qhXGsqRXdHY=;
-	b=dvfmhKQjXKTpmzuwVPgZvXuJNdcwSU4sG3fGJX/P/IjjlKC1z3uyQ1lc9Bs2cYRfJbVocs
-	tLRPy0S53d9+o6wda4jhG4UPfBxLOHWNNVo8ROwOpr5dBE2zbJkzx/IbSAPBphgBhG6dYH
-	6TQWenz9CbCKlkfCCPIs1mZht12jDgk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712243993;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sx7uIszZVXeqWU9tKULJQWfGNgki2Vq0qhXGsqRXdHY=;
-	b=2Yuh7HdIUiIXOgwCONUq00QYU0Jx6K71kGs+H60/TXDn6b9d4u/55D9IXXcpPgmBBadwoH
-	1fLmsDqJeCjpXJBA==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 183D3139E8;
-	Thu,  4 Apr 2024 15:19:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id VdOFBRnFDmYmGgAAn2gu4w
-	(envelope-from <vbabka@suse.cz>); Thu, 04 Apr 2024 15:19:53 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-To: stable@vger.kernel.org
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Sven van Ashbrook <svenva@chromium.org>,
-	Karthikeyan Ramasubramanian <kramasub@chromium.org>,
-	Brian Geffon <bgeffon@google.com>,
-	Curtis Malainey <cujomalainey@chromium.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Michal Hocko <mhocko@kernel.org>,
-	Takashi Iwai <tiwai@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15.y] mm, vmscan: prevent infinite loop for costly GFP_NOIO | __GFP_RETRY_MAYFAIL allocations
-Date: Thu,  4 Apr 2024 17:19:51 +0200
-Message-ID: <20240404151950.13679-2-vbabka@suse.cz>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <2024032725-amigo-dental-d3bd@gregkh>
-References: <2024032725-amigo-dental-d3bd@gregkh>
+	s=arc-20240116; t=1712244327; c=relaxed/simple;
+	bh=ByPtciC+URhiVQn652U1XVXGfMYChxV1rxw8MNlXaIw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m9DiMtAecdy4fIuLCMKJW3jx4oggCu+3VQ/DCx3WfcGdKxodXguGfztjSfkXiukPSf8dtcy164V5cEfwK1Ghoyl59rgPw2tYppfj/cjU5OEMlF0V81B1v28T9/teujkWBqGefK35JaMV++2AZASmuWvQA4AEDC8Ayv8frKGPxDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3KbwrrJQ; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-56e0430f714so12806a12.1
+        for <stable@vger.kernel.org>; Thu, 04 Apr 2024 08:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1712244324; x=1712849124; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ByPtciC+URhiVQn652U1XVXGfMYChxV1rxw8MNlXaIw=;
+        b=3KbwrrJQZzfIrIw9kmj5cAwEQcQe+0cQnLbAtma5TERwj6wcfCE6ZBwEZrc8GBQgfd
+         nlisOW0fe6K0IcWmdHupK7T0l94BQkYP6YJORP6rpGJPLZMGZeUmNPZZOudKY+QoUkHZ
+         nlFVDvvnypBAHuFzeY2WIkVAmNjHFn/eOCIcO95ndgR6Wy5nIcOIlyoSkSUjbwuXnpsi
+         plka2E9MmNY6aqwGdt7w9bX/tLEDhm8hDMkK2YSZpfFMOHRWrRsAOocQvAKIDZ/BIWrH
+         t0tIxSik+9PS4aLEsc0d6c5feBKF5WWeo1u9J67F0dVw3/o0cMwQRTYPJjA/amRbZ3o2
+         cXpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712244324; x=1712849124;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ByPtciC+URhiVQn652U1XVXGfMYChxV1rxw8MNlXaIw=;
+        b=MN8hnsbBjUrZ8G1M0UTHe04waoMvbudRj08ANLZGbyxWdaXNB2bx9Kw4KMKJuJxXtP
+         BfsrnWhgTUkAMTqOP6rlSaCChmSCEKfvqILrt7BIFYWJn9bRbV/lQ5PunqfhKBwuqjFK
+         OeiAaWneetw2mZ9LA19XN2T5vAealCQsWsWiV4qwlRaOdFYUOwVbD9GEG6c6ZilEvin/
+         REBP2qZzLj2E1ORtWqRaclpRce3uYIt6zVKrf6UWMd7uPBkfoOinYM2mkyXoPhvf2RFm
+         Hy9Hrce/LCBxPRkXRxlFwLgZ725ZFZaxUTn8yu2TCkU7qAA3Zm7GdGZdD62OzOuBgXHL
+         x7uA==
+X-Forwarded-Encrypted: i=1; AJvYcCUtm4RLeYs9dLaiFqrtYBy8UM3xY1JtBW4RCVBkL64w5aiAHoXXEwZtXqAgqUUvG8xKsCZ8iF3izXSnojDVveIqZXyVAbyT
+X-Gm-Message-State: AOJu0YyO7O8qZQprFb0uB5HRLiq++Inun7OSIjIO+Tdif8kYcemTYONc
+	hXTQ4zwgH6SQLjslLbr8jvL0PDeN6sea2bHebxpC0tFuY6iJo29+fTgCMG4xYAXF3QKwVraKLa4
+	uyY+ZVPsNbm/43Bn2jfq5kW+AfQ6E6p1edT6W
+X-Google-Smtp-Source: AGHT+IGu/Cr/TzqDAagcQzAh2crALYKXnU9saXFMj2Uan9qVNOsYqiQC9yQvytlJZqCQ8hhUrVOQhul4utm/mgjk4xU=
+X-Received: by 2002:aa7:c38a:0:b0:56e:234f:b44 with SMTP id
+ k10-20020aa7c38a000000b0056e234f0b44mr71333edq.5.1712244324404; Thu, 04 Apr
+ 2024 08:25:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,suse.cz:email]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+References: <20240404-providing-emporium-e652e359c711@spud> <CANiq72m9YAu=dr1=WMSHOqfpszj4S6OkMEQ05vqbv_zKO5pOsg@mail.gmail.com>
+In-Reply-To: <CANiq72m9YAu=dr1=WMSHOqfpszj4S6OkMEQ05vqbv_zKO5pOsg@mail.gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Thu, 4 Apr 2024 08:25:11 -0700
+Message-ID: <CAGSQo024u1gHJgzsO38Xg3c4or+JupoPABQx_+0BLEpPg0cOEA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
+	Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
+	Kees Cook <keescook@chromium.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, 
+	Ramon de C Valle <rcvalle@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Sven reports an infinite loop in __alloc_pages_slowpath() for costly order
-__GFP_RETRY_MAYFAIL allocations that are also GFP_NOIO.  Such combination
-can happen in a suspend/resume context where a GFP_KERNEL allocation can
-have __GFP_IO masked out via gfp_allowed_mask.
+>
+> Cc'ing Matthew & Ramon as well so that they are aware and in case they
+> want to comment.
+>
+> Cheers,
+> Miguel
 
-Quoting Sven:
+This patch is fine by me - the last patch needed for KCFI to be
+functional in Rust just landed upstream last night, so we should
+revisit this (in the form of enabling it) once we move to
+`rustc-1.79.0` or later. In case anyone wants it for local
+experimentation, I have a backport branch [1] which applies these to
+the 1.73.0 compiler and enables it in the kernel [2] (not upstreamed
+because the feature isn't yet in kernel's `rustc`), which Android will
+be using for the Rust binder driver. This patch will require a recent
+(last year or so) clang, as it relies on
+`-fsanitize-cfi-icall-experimental-normalize-integers`.
 
-1. try to do a "costly" allocation (order > PAGE_ALLOC_COSTLY_ORDER)
-   with __GFP_RETRY_MAYFAIL set.
-
-2. page alloc's __alloc_pages_slowpath tries to get a page from the
-   freelist. This fails because there is nothing free of that costly
-   order.
-
-3. page alloc tries to reclaim by calling __alloc_pages_direct_reclaim,
-   which bails out because a zone is ready to be compacted; it pretends
-   to have made a single page of progress.
-
-4. page alloc tries to compact, but this always bails out early because
-   __GFP_IO is not set (it's not passed by the snd allocator, and even
-   if it were, we are suspending so the __GFP_IO flag would be cleared
-   anyway).
-
-5. page alloc believes reclaim progress was made (because of the
-   pretense in item 3) and so it checks whether it should retry
-   compaction. The compaction retry logic thinks it should try again,
-   because:
-    a) reclaim is needed because of the early bail-out in item 4
-    b) a zonelist is suitable for compaction
-
-6. goto 2. indefinite stall.
-
-(end quote)
-
-The immediate root cause is confusing the COMPACT_SKIPPED returned from
-__alloc_pages_direct_compact() (step 4) due to lack of __GFP_IO to be
-indicating a lack of order-0 pages, and in step 5 evaluating that in
-should_compact_retry() as a reason to retry, before incrementing and
-limiting the number of retries.  There are however other places that
-wrongly assume that compaction can happen while we lack __GFP_IO.
-
-To fix this, introduce gfp_compaction_allowed() to abstract the __GFP_IO
-evaluation and switch the open-coded test in try_to_compact_pages() to use
-it.
-
-Also use the new helper in:
-- compaction_ready(), which will make reclaim not bail out in step 3, so
-  there's at least one attempt to actually reclaim, even if chances are
-  small for a costly order
-- in_reclaim_compaction() which will make should_continue_reclaim()
-  return false and we don't over-reclaim unnecessarily
-- in __alloc_pages_slowpath() to set a local variable can_compact,
-  which is then used to avoid retrying reclaim/compaction for costly
-  allocations (step 5) if we can't compact and also to skip the early
-  compaction attempt that we do in some cases
-
-Link: https://lkml.kernel.org/r/20240221114357.13655-2-vbabka@suse.cz
-Fixes: 3250845d0526 ("Revert "mm, oom: prevent premature OOM killer invocation for high order request"")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Reported-by: Sven van Ashbrook <svenva@chromium.org>
-Closes: https://lore.kernel.org/all/CAG-rBihs_xMKb3wrMO1%2B-%2Bp4fowP9oy1pa_OTkfxBzPUVOZF%2Bg@mail.gmail.com/
-Tested-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Curtis Malainey <cujomalainey@chromium.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 803de9000f334b771afacb6ff3e78622916668b0)
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- include/linux/gfp.h |  9 +++++++++
- mm/compaction.c     |  7 +------
- mm/page_alloc.c     | 10 ++++++----
- mm/vmscan.c         |  5 ++++-
- 4 files changed, 20 insertions(+), 11 deletions(-)
-
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 55b2ec1f965a..d1ca5eb56ff0 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -660,6 +660,15 @@ bool gfp_pfmemalloc_allowed(gfp_t gfp_mask);
- extern void pm_restrict_gfp_mask(void);
- extern void pm_restore_gfp_mask(void);
- 
-+/*
-+ * Check if the gfp flags allow compaction - GFP_NOIO is a really
-+ * tricky context because the migration might require IO.
-+ */
-+static inline bool gfp_compaction_allowed(gfp_t gfp_mask)
-+{
-+	return IS_ENABLED(CONFIG_COMPACTION) && (gfp_mask & __GFP_IO);
-+}
-+
- extern gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma);
- 
- #ifdef CONFIG_PM_SLEEP
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 89517ad5d6a0..3ec4a2e399cd 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2582,16 +2582,11 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
- 		unsigned int alloc_flags, const struct alloc_context *ac,
- 		enum compact_priority prio, struct page **capture)
- {
--	int may_perform_io = gfp_mask & __GFP_IO;
- 	struct zoneref *z;
- 	struct zone *zone;
- 	enum compact_result rc = COMPACT_SKIPPED;
- 
--	/*
--	 * Check if the GFP flags allow compaction - GFP_NOIO is really
--	 * tricky context because the migration might require IO
--	 */
--	if (!may_perform_io)
-+	if (!gfp_compaction_allowed(gfp_mask))
- 		return COMPACT_SKIPPED;
- 
- 	trace_mm_compaction_try_to_compact_pages(order, gfp_mask, prio);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ec3333a1f7fe..264efa022fa9 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4903,6 +4903,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 						struct alloc_context *ac)
- {
- 	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-+	bool can_compact = gfp_compaction_allowed(gfp_mask);
- 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
- 	struct page *page = NULL;
- 	unsigned int alloc_flags;
-@@ -4968,7 +4969,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	 * Don't try this for allocations that are allowed to ignore
- 	 * watermarks, as the ALLOC_NO_WATERMARKS attempt didn't yet happen.
- 	 */
--	if (can_direct_reclaim &&
-+	if (can_direct_reclaim && can_compact &&
- 			(costly_order ||
- 			   (order > 0 && ac->migratetype != MIGRATE_MOVABLE))
- 			&& !gfp_pfmemalloc_allowed(gfp_mask)) {
-@@ -5065,9 +5066,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 
- 	/*
- 	 * Do not retry costly high order allocations unless they are
--	 * __GFP_RETRY_MAYFAIL
-+	 * __GFP_RETRY_MAYFAIL and we can compact
- 	 */
--	if (costly_order && !(gfp_mask & __GFP_RETRY_MAYFAIL))
-+	if (costly_order && (!can_compact ||
-+			     !(gfp_mask & __GFP_RETRY_MAYFAIL)))
- 		goto nopage;
- 
- 	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-@@ -5080,7 +5082,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	 * implementation of the compaction depends on the sufficient amount
- 	 * of free memory (see __compaction_suitable)
- 	 */
--	if (did_some_progress > 0 &&
-+	if (did_some_progress > 0 && can_compact &&
- 			should_compact_retry(ac, order, alloc_flags,
- 				compact_result, &compact_priority,
- 				&compaction_retries))
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 201acea81804..342a78a8658f 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2834,7 +2834,7 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- /* Use reclaim/compaction for costly allocs or under memory pressure */
- static bool in_reclaim_compaction(struct scan_control *sc)
- {
--	if (IS_ENABLED(CONFIG_COMPACTION) && sc->order &&
-+	if (gfp_compaction_allowed(sc->gfp_mask) && sc->order &&
- 			(sc->order > PAGE_ALLOC_COSTLY_ORDER ||
- 			 sc->priority < DEF_PRIORITY - 2))
- 		return true;
-@@ -3167,6 +3167,9 @@ static inline bool compaction_ready(struct zone *zone, struct scan_control *sc)
- 	unsigned long watermark;
- 	enum compact_result suitable;
- 
-+	if (!gfp_compaction_allowed(sc->gfp_mask))
-+		return false;
-+
- 	suitable = compaction_suitable(zone, sc->order, 0, sc->reclaim_idx);
- 	if (suitable == COMPACT_SUCCESS)
- 		/* Allocation should succeed already. Don't reclaim. */
--- 
-2.44.0
-
+[1]: https://github.com/maurer/rust/tree/1.73.0%2Bcfi
+[2]: https://android-review.git.corp.google.com/c/kernel/common/+/2930616
 
