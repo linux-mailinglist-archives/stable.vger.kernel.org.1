@@ -1,68 +1,111 @@
-Return-Path: <stable+bounces-35884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBF8897DB2
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 04:25:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299D3897DC7
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 04:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 040721C23617
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 02:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F8761C21969
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 02:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD5F1B59A;
-	Thu,  4 Apr 2024 02:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169101CD16;
+	Thu,  4 Apr 2024 02:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZ43a+NK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXVwxse+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90BC1BDE6;
-	Thu,  4 Apr 2024 02:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82E8EEB2;
+	Thu,  4 Apr 2024 02:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712197542; cv=none; b=Hgf7BcUXFRvlXQgQ99zm5t3U+r2pm42OIq67mtTfe6jODADcx4e1xLV/vss8rFXUaz3OaGMpfVtqb5Sm4W/Y7i2OCOnXGQmjMW04TyrvcmZZh0eIHHDtOPGLkxrSohH4uNRv84KujMXSDC8u5m/MkIi3NJuPMJQriRqAv/aTMHc=
+	t=1712198427; cv=none; b=CSDRzRPRKgOQTS7eLJw+0snzj+ytt6IQhDKX0jWCFbSqvKSlSKQQPTgp4r0p+Nasc4dIYBlXW8uGz/XQDr4g0ZqevzljSXqhb2erA4m0+0uBFJnDNX0KtsAP9R9HibaGJf9aWa0yKf8omr/0R6tr3ACQvMdop37OS4zIVVtEVgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712197542; c=relaxed/simple;
-	bh=3sZs4YtAawNjE2sX7XEh+m/dxbkSncLnlA85dWepu/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PAaYR6SaVE4ItlOK7oHsu2rJwtqqHUYlpxXYu1NoTtCUblfXCRVlbnaZpaM3Uyg4NVQNaRJMGcsNnEipSym/tP5C8poflYx440Bhsc+/4IiO4W8MNwQJ5U47qZ12BjMRlyc9Qd1CtawDoS/YvcVrnlYdx92Y48nNRnVRIJyARJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZ43a+NK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26268C433C7;
-	Thu,  4 Apr 2024 02:25:42 +0000 (UTC)
+	s=arc-20240116; t=1712198427; c=relaxed/simple;
+	bh=z1iXLvkFfv7cvcYmpQ/4o3DzldKRSGogDcrjWfkz/no=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hAgq1+PHMe/XQmz54vkJM+94bagcQMIic9rdEqKL2pJVUOFuUOhvdgSekXYIpu4x+u9OphCvrBqHWTsU4NdiP95NYKt/otBZhA/Ev1kzefzCMTJ2vGSR3UeXQhLa0Aap6JJ/eZMIjh7p9ZOtL0+dtLNI6e7zojOWLDrBjqmSADE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXVwxse+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 41F9DC433F1;
+	Thu,  4 Apr 2024 02:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712197542;
-	bh=3sZs4YtAawNjE2sX7XEh+m/dxbkSncLnlA85dWepu/o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iZ43a+NKtkAJtpdTqj0Tl0s+ZIRU3HBOqrMAbWcuj4oQ6EZ3l+QlUpS3z9YLxtMbS
-	 vYoqCiiAtAs5u5XE6TFBqq/jXJrhbnxjRIGgiKIXNJrKnh3OBhFxheI+EeHHpTEyZD
-	 xyJjNeaR2Kf3y299BZ+X4v2OKadJRcFkLo62XPn5g+wfD8e7KBcsT6+VYbIGk31Haz
-	 CgKn5vcCcsZHxit79ZcgPjEN2OGLxilsBCMZytSED4ltUgfXEw25qFCYs/X2YJMp8k
-	 7LyUGkvpcH9BJOJXdL7nzJ+FSE8jWhLVPu3Apie4N/jYmTGujDw3dD/qV6CfUKtsjQ
-	 +eaMkfM7FJdKw==
-Date: Wed, 3 Apr 2024 19:25:41 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Coia Prant <coiaprant@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] net: usb: qmi_wwan: add Lonsung U8300/U9300 product
- Update the net usb qmi_wwan driver to support Longsung U8300/U9300.
-Message-ID: <20240403192541.1bbd7faa@kernel.org>
-In-Reply-To: <20240402073627.1753526-1-coiaprant@gmail.com>
-References: <20240402073627.1753526-1-coiaprant@gmail.com>
+	s=k20201202; t=1712198427;
+	bh=z1iXLvkFfv7cvcYmpQ/4o3DzldKRSGogDcrjWfkz/no=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=pXVwxse+4leHQBCAqngVCssZ1Db/s7EX/otUfWPT8kcdnZlyzTP7XAki1eODxVXlv
+	 sRUnbNgRIKG+k4AI1koZH1px3gFXjfiMditk/+ecmOikQq68Z77/yf6EKmdnoZe08u
+	 fafw/k4+9FxQwdM1Vzu/TyMtWC1VS9Bxy1V0qyzx+9MbYr5T6Ui5fjy6CUkTqggFCV
+	 qRLXXKYmVd7xrvpw+ZcIRBdlawvjotu7VcwLsV5zRfE5Z0cwqD6aUp31mDic+QpHKz
+	 BlCO4q0ESelNHxfmzCRtp+zgs1i+0HlAGdAZ000PPj1OxmF0OK7v1CEoRCH3gnwFhV
+	 Eltyt/Bk0Jfmg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 31064C43168;
+	Thu,  4 Apr 2024 02:40:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net,v2] net: mana: Fix Rx DMA datasize and skb_over_panic
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171219842719.31127.17495935498454370650.git-patchwork-notify@kernel.org>
+Date: Thu, 04 Apr 2024 02:40:27 +0000
+References: <1712087316-20886-1-git-send-email-haiyangz@microsoft.com>
+In-Reply-To: <1712087316-20886-1-git-send-email-haiyangz@microsoft.com>
+To: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, decui@microsoft.com,
+ stephen@networkplumber.org, kys@microsoft.com, paulros@microsoft.com,
+ olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net, wei.liu@kernel.org,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
+ longli@microsoft.com, ssengar@linux.microsoft.com,
+ linux-rdma@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+ bpf@vger.kernel.org, ast@kernel.org, sharmaajay@microsoft.com,
+ hawk@kernel.org, tglx@linutronix.de, shradhagupta@linux.microsoft.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-On Tue,  2 Apr 2024 00:36:27 -0700 Coia Prant wrote:
-> Subject: [PATCH 2/2] 
+Hello:
 
-We only received patch 2 is there patch 1? If not please resend with
-the subject fixed. Please use ./scripts/get_maintainer.pl to find the
-right people to CC.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue,  2 Apr 2024 12:48:36 -0700 you wrote:
+> mana_get_rxbuf_cfg() aligns the RX buffer's DMA datasize to be
+> multiple of 64. So a packet slightly bigger than mtu+14, say 1536,
+> can be received and cause skb_over_panic.
+> 
+> Sample dmesg:
+> [ 5325.237162] skbuff: skb_over_panic: text:ffffffffc043277a len:1536 put:1536 head:ff1100018b517000 data:ff1100018b517100 tail:0x700 end:0x6ea dev:<NULL>
+> [ 5325.243689] ------------[ cut here ]------------
+> [ 5325.245748] kernel BUG at net/core/skbuff.c:192!
+> [ 5325.247838] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+> [ 5325.258374] RIP: 0010:skb_panic+0x4f/0x60
+> [ 5325.302941] Call Trace:
+> [ 5325.304389]  <IRQ>
+> [ 5325.315794]  ? skb_panic+0x4f/0x60
+> [ 5325.317457]  ? asm_exc_invalid_op+0x1f/0x30
+> [ 5325.319490]  ? skb_panic+0x4f/0x60
+> [ 5325.321161]  skb_put+0x4e/0x50
+> [ 5325.322670]  mana_poll+0x6fa/0xb50 [mana]
+> [ 5325.324578]  __napi_poll+0x33/0x1e0
+> [ 5325.326328]  net_rx_action+0x12e/0x280
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] net: mana: Fix Rx DMA datasize and skb_over_panic
+    https://git.kernel.org/netdev/net/c/c0de6ab920aa
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
