@@ -1,98 +1,115 @@
-Return-Path: <stable+bounces-35932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED815898972
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 16:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644FD8989BF
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 16:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A3A5B29754
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 14:01:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E78E7B21EE2
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 14:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE2B12883A;
-	Thu,  4 Apr 2024 14:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4F4129A73;
+	Thu,  4 Apr 2024 14:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6FG659e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tctwqk93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A741272BB;
-	Thu,  4 Apr 2024 14:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D6E823D0;
+	Thu,  4 Apr 2024 14:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712239310; cv=none; b=TKgFa3ygp3lSQyQW3IT5h2JCc0/GkXFj9qyBsezpiQ9MFf6ozQ/D/nXo7ANRWc6C1YQ0tmNnJ9AzJNjmtiZcPYxQLa95Eahs005ZxhpaTEUv6GpfjW6XZVwZdUCOKxdpogAJxYH6t2SN6qn2w+0zJjK9FHd4Cmct7qCTSeAjz4w=
+	t=1712240238; cv=none; b=Mfv/k9LBl55fzvzUVE8+hXvUbTGiCxovYINQfEqKDliPFMq+WXMA/eYJlYPMFiOGy+jbIkvuZLa5HH/OHh6OHC4r/hy2odnMeY22C9tH52nDC6K9WL7yk2l1d/Ukp9aGGeJT+n3fNHKaoJ5zoAo1eVI0wuQXnXmNMYx8eL+dNeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712239310; c=relaxed/simple;
-	bh=EDLFFNlDIwfirM9Ysf0HpN0b6M3HqKIXDP1hJ7mbtIA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qm7m3jnNsfaYicIMYMwywvpDIAMXhVqFOHX4rvBdlO5n6Th4cNtRQO/r+G9HhUDpUXn9MJhf6GBLh4wEUFMSPxTYqDeFvWiPsJzR8gztURj+EnSdF05ZAJPBzRcSlBg/tQ/znoNyJqyNUcZcCAH5C3fzIiQDe3gK+wxCFsS/MNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6FG659e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C4EC43390;
-	Thu,  4 Apr 2024 14:01:46 +0000 (UTC)
+	s=arc-20240116; t=1712240238; c=relaxed/simple;
+	bh=fCiV5G+P7hLxL4/i+fatn5exEfxvCbsdD/tZJnnspDM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rha/GG3c5Da7TgCqIw+gTdfDskCI+RR59mm+oqKHqS+ULP3YN7AdV7Ra+XgzqE0NbTsVhqa7j+ib7uTN8w+jB8ZZCxjVdgVhVPSAFZBUB2qToK7mGDIF6FHKj5GGNGq18dBaQgREvLm4e1jzPb+vaum+1M+XVqwqDTA3CTx8IbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tctwqk93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1B4C43390;
+	Thu,  4 Apr 2024 14:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712239309;
-	bh=EDLFFNlDIwfirM9Ysf0HpN0b6M3HqKIXDP1hJ7mbtIA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H6FG659eiwMvgb9rE74Q2t2+mb0R87kC+Wkt4eYFKoJF6QFseyX2nBlvxuyKNiL8L
-	 WwlK22ez++JGaNqgKFsLCgPK95RaPxQdrjaBXWhcG9OL3BsOuJvMh8/kvKj/AfHAhl
-	 X9qq8/66PtJ0uWKqrJfbBeCe07prAGa47FNrYsELtmzhVa1Y8b8sBwWCfWuEtwTQOy
-	 xDqk98Xn7jFaztO8C/MvUcMHU/g4SaKo2JtZ0vx3GyGgbqBBDK66M1OmpbYh8/QTFs
-	 YJVFpHZxr61wqnYR2hk21arnzKOmqHvGgWq+dS4yMXWKjahjwbvSpjHKtyntIYciYX
-	 XSGUuvkGrwsLA==
-Date: Thu, 4 Apr 2024 15:01:43 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 00/11] 6.6.25-rc1 review
-Message-ID: <f6122d69-ffe8-42cd-8881-8b6ff0d672da@sirena.org.uk>
-References: <20240403175126.839589571@linuxfoundation.org>
+	s=k20201202; t=1712240237;
+	bh=fCiV5G+P7hLxL4/i+fatn5exEfxvCbsdD/tZJnnspDM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Tctwqk93E2w4iLsFrEADOfQFuky5b4wNMuH6FA88PWnTMge2gd9Hb9e396USZ965X
+	 X/JhrcRRgI/hyNaxrYA09P4GxYq9t47w868GKYGKvaniHLwu1zKEAxTpKaDGH7nxSf
+	 4W8KuZfZkJkqDOJFMU1VdzBKY4pn4H7sVRNSvr12C+/Fa0YIIikqPxf1h2qBXYD4Y5
+	 WdLs9hr5Oq3lVO8TRXPTLgSXdunvgNpBkHQ3I7iL4lmRbVcSNcSkonFwkNyhmYFnGT
+	 YV8WYH87o7DqMAdJVbzimEHAEU/Ma+NaEH5xRmk8N7gl5Sa4vjwGmdii7BFYbAjZt0
+	 7yFjs9n5jPC4g==
+From: Conor Dooley <conor@kernel.org>
+To: linux-riscv@lists.infradead.org
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	llvm@lists.linux.dev
+Subject: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
+Date: Thu,  4 Apr 2024 15:17:02 +0100
+Message-ID: <20240404-providing-emporium-e652e359c711@spud>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sBD/GiIq04YLFs8U"
-Content-Disposition: inline
-In-Reply-To: <20240403175126.839589571@linuxfoundation.org>
-X-Cookie: Buckle up!
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1428; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=3u+yX39PQ8dR4zv/dMqW8YPDJelB+vvZV3YqW2204hQ=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDGl822LTjwUwHJoqN+fKFFm3BycEP1hoNrKwX41vS5S+1 bXxXr5bRykLgxgHg6yYIkvi7b4WqfV/XHY497yFmcPKBDKEgYtTACZiwMHwP7PP/eEiv1sfLKq0 V2q68F9UjXt3suRX0LdHRVEsSySmaDAynC5ZcfReOgfPsxPyDuYKEUVMiYz8wtM8kp7O8fjXWGT FBAA=
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
 
+From: Conor Dooley <conor.dooley@microchip.com>
 
---sBD/GiIq04YLFs8U
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
+loading a rust module will trigger a kernel panic. Support for
+sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
+they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
+to prevent configuring a kernel without symmetrical support for kfi.
 
-On Wed, Apr 03, 2024 at 07:55:49PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.25 release.
-> There are 11 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+cc: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+Sending this one on its own, there's no explicit dep on this for the
+riscv enabling patch, v3 to continue the numbering from there. Nothing
+has changed since v2.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+CC: Miguel Ojeda <ojeda@kernel.org>
+CC: Alex Gaynor <alex.gaynor@gmail.com>
+CC: Wedson Almeida Filho <wedsonaf@gmail.com>
+CC: linux-kernel@vger.kernel.org (open list)
+CC: rust-for-linux@vger.kernel.org
+CC: Sami Tolvanen <samitolvanen@google.com>
+CC: Kees Cook <keescook@chromium.org>
+CC: Nathan Chancellor <nathan@kernel.org>
+CC: llvm@lists.linux.dev
+---
+ init/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---sBD/GiIq04YLFs8U
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/init/Kconfig b/init/Kconfig
+index aa02aec6aa7d..ad9a2da27dc9 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1899,6 +1899,7 @@ config RUST
+ 	bool "Rust support"
+ 	depends on HAVE_RUST
+ 	depends on RUST_IS_AVAILABLE
++	depends on !CFI_CLANG
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+-- 
+2.43.0
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYOssYACgkQJNaLcl1U
-h9DJ1wgAgG/dtvIuol28XtdE7UShOmDjvKHM+UZUhDyVdv9zwl61nWf0yNR9vSzH
-+eMCpLvTnQpwzi4prjvQqKphxP7Nyre3A1h6Rt5NAxEtHAaeoHMfV09ewANZJYOF
-Vx5z9p3lcpVTd8lvM6ebcaDvQiwIecIjvkA4rdrf/0AnUW1oOdNzx2SB3Um6g7sK
-d7vDUhqfsUL7Vb+CrB/y0iY3EzzZrcIlCvrxkQw0PJWdW2F4wuKLxoy2JdfSySOU
-V/0uA1BRj8bgtTbI0KahxwtRbbDRU8mM5fRC/zG4PMP1AIPYVuL3j0/MWnGvv+sd
-o5UkkJii0Un9atowWsCp/E0/qrZibA==
-=u3Ko
------END PGP SIGNATURE-----
-
---sBD/GiIq04YLFs8U--
 
