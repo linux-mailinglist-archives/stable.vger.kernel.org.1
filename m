@@ -1,148 +1,140 @@
-Return-Path: <stable+bounces-35900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3A989832D
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 10:32:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F378983AC
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 11:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE3A11C27066
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 08:32:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808711F212B1
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 09:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B997175E;
-	Thu,  4 Apr 2024 08:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AE37352F;
+	Thu,  4 Apr 2024 09:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SBsjuUzk"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="n3IppDF2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478CE7173C;
-	Thu,  4 Apr 2024 08:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4301E86F
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 09:01:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712219531; cv=none; b=uGbvTwEATzpzcdOe6+nei6Od8YboAH8pVr/njd3Wv0d6AnbAxH7E8FIOAu0EULme1CKto4Oyqm30bubgjPfrykIgVlzwxJqFHyY94XnZJ0Y6zBc9KaYXtGTgQmeCNVb9gugVOmfs/8T1XbMpvCed6cyC7sQptF0fdfqXorH/+qY=
+	t=1712221299; cv=none; b=ZXiCx0LSI85F72NdusZlC+UzRYBLerzKQBG2uJcEvgiUhpSdPZ+tpVK8pz10cpMSKm2SGF2og8pURLDG1/AU6+6RxSrbEcfMgjj1Z5sijts3yGGH/KDqwDK/lJYoyA6m/YCGzGjaYIJ53zHUOVLcUS64q2/pxK4gMtGM0yFtdcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712219531; c=relaxed/simple;
-	bh=CohMLq3cFButffA+6piuYF94WaoM5Mh+aDxSwhAKkFU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T246bctvYyKrcA7l+y+sSA1fl9neZmN41Y0qmjE2CmxACNbO2PqAv1CW43HtJN4ZbSqbVoLRnLtGmkd3UW/CmqilhBuMtFNcYjhhhtCYhLSCGmRumV+vrokatR8VJZx8WiQX/j3/NAscQH1fd/uHd6hW43Sb9haS+W+9QiDfHis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SBsjuUzk; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-343cd236779so42883f8f.3;
-        Thu, 04 Apr 2024 01:32:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712219527; x=1712824327; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ooJENRerkoGv8RC2dqQyR7rICIVbxFIMSkiHPTOG8iI=;
-        b=SBsjuUzkruYTyTjy65947WdCEdB3nr6YwCZmLSxtxCfUZW2B/Wri1Vo5OOV/PQBJV/
-         9sYzzvmBm3JpyqrU+pJzsdVYL0Urx1lTZ2peofrk+fvNGntWasVFEoXRa2sDQYs2Heo6
-         4yTmMfJH8ZmE089LhCycTzFm82HTNAJ+YzMFuUxf9cGEcfhZF60Th7/9/13KDvf3OrJn
-         5UJhVI1smFo0U7h9Js82BaJPT2kyu9MgEv1oVHk09Jjzp6mgXzCVuMVallIs0vYDwwFL
-         EZ6BRNi2gj9W+ps7b3Cr57cK6lLarrFpZljrQyH7z0db2EhuZThVud7jsQFA4NM7PTVU
-         lX0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712219527; x=1712824327;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ooJENRerkoGv8RC2dqQyR7rICIVbxFIMSkiHPTOG8iI=;
-        b=waQXN/j//vkni4AXcvR10DRoTH+VLMRmf9F7JvC9vY4MCkaH5FTqI2++TOYPVajBfH
-         m/YhYhv8mPjcks0a3LH0XOh6f/o4UKgp8ZTSmfhjIw1wHpVkWgyn65ITHUzTArkZClwh
-         uW8EjzH522kPkyHgW6Olaj2NfRaHqF+lV/f6R53kugmIgQob+lK8rQCF2hlXbKD2EBQc
-         fqcX8+6ejhwViAVfSspNExCV5b7LjvxmdXhdMHbNxc7TkYYjNq2rLhVnlwBmuQ+zYbCU
-         91zOXtYqfyR82gcBiayGLpdFr4vs9vFqjiW5R1Na5mscLxjDcBWslBR+GPbEd/d0WX3a
-         6DCg==
-X-Forwarded-Encrypted: i=1; AJvYcCWU/wZah4e1z2lUDIbOI6KRBsxtyl4teZmLLW7i3mRv41JCZIlCiWG8MANwgXJV4r8TZrCvYGZXq8z7lg4Pf61vTQDK/bCi8zCJd4cUEbuVAPz0qyUUdiG6jkgmFYDt96GWxAPeOvzwcKTWPMBcmjkPHJP+bgbA/Z3TVE/MGlc6+e5oAA==
-X-Gm-Message-State: AOJu0Yy8mIRXPbJ5ikS2La3B1Zghl3p4daL0Nm9Rv6SmcxHCg3K09kDD
-	qNAOf6pr3ZpJ/dzHqHJl7X1EsJpULz8bd6mE5Zw3V+PpBdYgTrC9
-X-Google-Smtp-Source: AGHT+IHMYG3JmAlvLO/BWsvlKYgpaEbWbKyheePdqiabhMh4InIyJ6wQlfooDCFT3M3D6bhH2Wi1RA==
-X-Received: by 2002:a5d:568a:0:b0:33e:cf4d:c583 with SMTP id f10-20020a5d568a000000b0033ecf4dc583mr1575171wrv.16.1712219527113;
-        Thu, 04 Apr 2024 01:32:07 -0700 (PDT)
-Received: from localhost.localdomain (host-79-35-252-101.retail.telecomitalia.it. [79.35.252.101])
-        by smtp.googlemail.com with ESMTPSA id dj13-20020a0560000b0d00b0033e9fca1e49sm19279707wrb.60.2024.04.04.01.32.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Apr 2024 01:32:06 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-	linux-mtd@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] mtd: rawnand: qcom: Fix broken OP_RESET_DEVICE command in qcom_misc_cmd_type_exec()
-Date: Thu,  4 Apr 2024 10:31:55 +0200
-Message-ID: <20240404083157.940-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1712221299; c=relaxed/simple;
+	bh=Z/+X+5Tr3shbeJv5Dt06oyq1ofubRAN9gc2I5U/VGZU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jxngPP2taxHYMKoJJSKKFVLMRzOtn5CK+/H2y6OasLNnzzcj53pUzR4gNIlv6/xvwajyOkynVwO7LlPzCJyfTF3M5wPB88on4rrgdFU0Ap4bIERBT/6SAXJ+THwZ6uI1anLc1bItIk/KKkPWur8KSZSbpKckMattc6O5K1EKEsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=n3IppDF2; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1712221296; x=1712480496;
+	bh=IsWHRkAXzz0UFSHl8jcWKwFQLylEunjH34ao/KOO2o4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=n3IppDF26eBYlHo3/SjMpauyZtRy38wc3c/ljWVqqL5zgkDHpFYElSp7LPeB3T0K7
+	 Awby4gLHSFodM8e3Z6XP7WHuMtVuW6XZNM1KLaVkfESbvu1JKK8YN4WPhcEaaJbv63
+	 Avf6LdO4GGGX/wZVBV+aKslc1YrRJkrOj/+ulqpYl8dAkMCqO2wbTUKx3xZqQzClFB
+	 49e0DuVVcrDmxVVLTwixKU9Ete9f9l68ooAvLD7G5yq7Ddx/e9ucpybIBG56qSkaUi
+	 vToTqyhD/N+CLkJJRsOGwkT9tTcpMRn4KdW9dZfqnUDj69favdBsn9bPITmcOOZ1eX
+	 BT7QflqDLPBhA==
+Date: Thu, 04 Apr 2024 09:01:26 +0000
+To: Laine Taffin Altman <alexanderaltman@me.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, lkml <linux-kernel@vger.kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH v4] rust: init: remove impl Zeroable for Infallible
+Message-ID: <d3423fb5-c117-4bd1-9f86-db35590a0562@proton.me>
+In-Reply-To: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com>
+References: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-While migrating to exec_ops in commit a82990c8a409 ("mtd: rawnand: qcom:
-Add read/read_start ops in exec_op path"), OP_RESET_DEVICE command handling
-got broken unintentionally. Right now for the OP_RESET_DEVICE command,
-qcom_misc_cmd_type_exec() will simply return 0 without handling it. Even,
-if that gets fixed, an unnecessary FLASH_STATUS read descriptor command is
-being added in the middle and that seems to be causing the command to fail
-on IPQ806x devices.
+On 03.04.24 23:06, Laine Taffin Altman wrote:
+> In Rust, producing an invalid value of any type is immediate undefined
+> behavior (UB); this includes via zeroing memory.  Therefore, since an
+> uninhabited type has no valid values, producing any values at all for it =
+is
+> UB.
+>=20
+> The Rust standard library type `core::convert::Infallible` is uninhabited=
+,
+> by virtue of having been declared as an enum with no cases, which always
+> produces uninhabited types in Rust.
+>=20
+> The current kernel code allows this UB to be triggered, for example by co=
+de
+> like `Box::<core::convert::Infallible>::init(kernel::init::zeroed())`.
+>=20
+> Thus, remove the implementation of `Zeroable` for `Infallible`, thereby
+> avoiding the unsoundness (potential for future UB).
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed`=
+ function")
+> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-So let's fix the above two issues to make OP_RESET_DEVICE command working
-again.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
-Cc: stable@vger.kernel.org
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
-Changes v4:
-- Rework commit title and description as suggested.
-- Add Reviewed-by tag
-Changes v3:
-- Merge patches
-- Rework commit description
-Changes v2:
-- Split patches
+> ---
+> V3 -> V4: Address review nits; run checkpatch properly.
+> V2 -> V3: Email formatting correction.
+> V1 -> V2: Added more documentation to the comment, with links; also added=
+ more details to the commit message.
+>=20
+>  rust/kernel/init.rs | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+> index 424257284d16..3859c7ff81b7 100644
+> --- a/rust/kernel/init.rs
+> +++ b/rust/kernel/init.rs
+> @@ -1292,8 +1292,15 @@ macro_rules! impl_zeroable {
+>      i8, i16, i32, i64, i128, isize,
+>      f32, f64,
+>=20
+> -    // SAFETY: These are ZSTs, there is nothing to zero.
+> -    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, Infallibl=
+e, (),
+> +    // Note: do not add uninhabited types (such as `!` or `core::convert=
+::Infallible`) to this list;
+> +    // creating an instance of an uninhabited type is immediate undefine=
+d behavior.  For more on
+> +    // uninhabited/empty types, consult The Rustonomicon:
+> +    // https://doc.rust-lang.org/stable/nomicon/exotic-sizes.html#empty-=
+types The Rust Reference
+> +    // also has information on undefined behavior:
+> +    // https://doc.rust-lang.org/stable/reference/behavior-considered-un=
+defined.html
+> +    //
+> +    // SAFETY: These are inhabited ZSTs; there is nothing to zero and a =
+valid value exists.
+> +    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
+>=20
+>      // SAFETY: Type is allowed to take any value, including all zeros.
+>      {<T>} MaybeUninit<T>,
+>=20
+> base-commit: c85af715cac0a951eea97393378e84bb49384734
 
- drivers/mtd/nand/raw/qcom_nandc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+I don't see this commit in the kernel tree, what did you specify as
+`--base` when running `git format`?
 
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index b079605c84d3..b8cff9240b28 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2815,7 +2815,7 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
- 			      host->cfg0_raw & ~(7 << CW_PER_PAGE));
- 		nandc_set_reg(chip, NAND_DEV0_CFG1, host->cfg1_raw);
- 		instrs = 3;
--	} else {
-+	} else if (q_op.cmd_reg != OP_RESET_DEVICE) {
- 		return 0;
- 	}
- 
-@@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
- 	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
- 
- 	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
--	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
--	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
--	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
-+	if (q_op.cmd_reg == OP_BLOCK_ERASE)
-+		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
- 
- 	write_reg_dma(nandc, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
- 	read_reg_dma(nandc, NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
--- 
-2.43.0
+--=20
+Cheers,
+Benno
 
 
