@@ -1,111 +1,128 @@
-Return-Path: <stable+bounces-35885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299D3897DC7
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 04:40:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 609BD897DFA
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 05:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F8761C21969
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 02:40:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57B151C260FF
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 03:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169101CD16;
-	Thu,  4 Apr 2024 02:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858421CFA0;
+	Thu,  4 Apr 2024 03:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXVwxse+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/Eq3uNw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82E8EEB2;
-	Thu,  4 Apr 2024 02:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35DA1CAA8;
+	Thu,  4 Apr 2024 03:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712198427; cv=none; b=CSDRzRPRKgOQTS7eLJw+0snzj+ytt6IQhDKX0jWCFbSqvKSlSKQQPTgp4r0p+Nasc4dIYBlXW8uGz/XQDr4g0ZqevzljSXqhb2erA4m0+0uBFJnDNX0KtsAP9R9HibaGJf9aWa0yKf8omr/0R6tr3ACQvMdop37OS4zIVVtEVgA=
+	t=1712200921; cv=none; b=oI/5YZGWQfFLwU5VUeChOqg5pnaGYddpGLPyqhciJJfPpndBmjcEjWXeJpo0LI84TdtHej4uACLTJKKikfgIX7p+I8RBJjhTbJ7sZHN4z3u31028+W7KPMoDr2aYSG+hI0u4OwmnGXh7YatObRMN9yR7bWgi+wMk4FmDli+4j5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712198427; c=relaxed/simple;
-	bh=z1iXLvkFfv7cvcYmpQ/4o3DzldKRSGogDcrjWfkz/no=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hAgq1+PHMe/XQmz54vkJM+94bagcQMIic9rdEqKL2pJVUOFuUOhvdgSekXYIpu4x+u9OphCvrBqHWTsU4NdiP95NYKt/otBZhA/Ev1kzefzCMTJ2vGSR3UeXQhLa0Aap6JJ/eZMIjh7p9ZOtL0+dtLNI6e7zojOWLDrBjqmSADE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXVwxse+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 41F9DC433F1;
-	Thu,  4 Apr 2024 02:40:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712198427;
-	bh=z1iXLvkFfv7cvcYmpQ/4o3DzldKRSGogDcrjWfkz/no=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=pXVwxse+4leHQBCAqngVCssZ1Db/s7EX/otUfWPT8kcdnZlyzTP7XAki1eODxVXlv
-	 sRUnbNgRIKG+k4AI1koZH1px3gFXjfiMditk/+ecmOikQq68Z77/yf6EKmdnoZe08u
-	 fafw/k4+9FxQwdM1Vzu/TyMtWC1VS9Bxy1V0qyzx+9MbYr5T6Ui5fjy6CUkTqggFCV
-	 qRLXXKYmVd7xrvpw+ZcIRBdlawvjotu7VcwLsV5zRfE5Z0cwqD6aUp31mDic+QpHKz
-	 BlCO4q0ESelNHxfmzCRtp+zgs1i+0HlAGdAZ000PPj1OxmF0OK7v1CEoRCH3gnwFhV
-	 Eltyt/Bk0Jfmg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 31064C43168;
-	Thu,  4 Apr 2024 02:40:27 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1712200921; c=relaxed/simple;
+	bh=5pihKYJV5l+zZgyKQNY7hM82SMB3ycBncFBLNsf40Uk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ss23NjgWqApXEElf/aQAtbJigEIZyeguRaNtG/6pc4wd+1Uzn7gl41qa0eqv9QGsQPQnKJ8eyzS1Jpy+xSDWHzX6ZZ1s5z12pANoIeyw+vpcGziGph2k1pahRBR+YprFjbHnqPK8V38sB3DSlEnLbPFP+qAZ3rDNZzVkusuuhGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/Eq3uNw; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1e0b889901bso4555735ad.1;
+        Wed, 03 Apr 2024 20:21:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712200919; x=1712805719; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GU3Aux58UPVrbH3W6Uj3wE48hUzrsKIMa5z5pxoNqog=;
+        b=O/Eq3uNw4YytuFwgb/NGDuAvcmAjBofXZjIMYaGOQO3z9cKQ+bi8ARN0I3qC1UBoex
+         WUD3eB+Sn0CbqHabmIB0QVxnCAzorzXSxES2U7pz7pj8XLqeo3ZljA5fUHjaQ6xkhWu2
+         XAoPNqimzYfOs5PQMqjLKfFJjwAqueuaIyadRHTt8dSIM0n2DNgPnqxKa/YfSgA4EyDG
+         1PyGbuIyo7N13iu7VQGaVPgA973Gp9hffg2pATE+vAoOx6WMIy3yb8QwErHUCguU2a/n
+         QVCwVc/SvYShzNzGwnv6fscGP1mw8tp83hRbLgoVA//yDBPUgDmMDq0DWM8eVb8MOoo8
+         hO7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712200919; x=1712805719;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GU3Aux58UPVrbH3W6Uj3wE48hUzrsKIMa5z5pxoNqog=;
+        b=hpWprD99AEUGyWFDC8ztV1PkkLhvw4ufHENIa44b0JdsRpR5T50atUcwhrvnewe3uE
+         S6ZHFeJX96TTYt3ArVdNWTFEZ0A5zq+ik+FUnJrca/uzUi5kH6f1482hZ84iW6LWFZeF
+         ehbwBzkBZ1HEVvnGHnQukZ/4QgLRKp2V5jLB4v0OezMmW1H+Kaf/crcvdu9CJAmOUGL5
+         av0TE9+wLSPtU+cjRNW73DeFZKoczaWc22ePRjksxjWjg4mPWqBhJQRSL8nHYOsDZxzH
+         fMpVi+ApSqDW69tbW0dfOhkOw36KFkdtMQvtUXKU49Z3etDvi96BK9DPMHC4bfnEneEC
+         jCPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWfRP9ogHAOLC8+s1764RLRRxsOfKYZp8bCoKFj+lN7W1UrLGwP6i03O1vvmz7MD2/TP9f5ToIonqSABbvI9tmn1ZS+CbNQkrn9XJPFGR124rnMtsCMnThTD9+ZoKKBCqHOIzcl
+X-Gm-Message-State: AOJu0YyeeND4NoHQOtaP466Td7JcCHw9TC6Ien6qCFPprNKpgx9yBffF
+	eQ13hrh9IZwiyrfssdx/UOKu966UHTLWmznlWxXTG7jLfbMFrOxa
+X-Google-Smtp-Source: AGHT+IHwC+n5eClvoTsJmGHVuTvo8bbZ7J+K9bWAMhxszyqx5x+n3iKFqDNDtOQz6nwl8Gm6+A2ZNg==
+X-Received: by 2002:a17:903:494:b0:1e2:8a9f:1032 with SMTP id jj20-20020a170903049400b001e28a9f1032mr1010680plb.34.1712200919036;
+        Wed, 03 Apr 2024 20:21:59 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id l18-20020a170902d35200b001e23fcdebe9sm1833939plk.98.2024.04.03.20.21.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Apr 2024 20:21:58 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 2CF7F1846B4A5; Thu,  4 Apr 2024 10:21:53 +0700 (WIB)
+Date: Thu, 4 Apr 2024 10:21:53 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.8 00/11] 6.8.4-rc1 review
+Message-ID: <Zg4c0QG67_ehquKA@archie.me>
+References: <20240403175125.754099419@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net,v2] net: mana: Fix Rx DMA datasize and skb_over_panic
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171219842719.31127.17495935498454370650.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Apr 2024 02:40:27 +0000
-References: <1712087316-20886-1-git-send-email-haiyangz@microsoft.com>
-In-Reply-To: <1712087316-20886-1-git-send-email-haiyangz@microsoft.com>
-To: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, decui@microsoft.com,
- stephen@networkplumber.org, kys@microsoft.com, paulros@microsoft.com,
- olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net, wei.liu@kernel.org,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
- longli@microsoft.com, ssengar@linux.microsoft.com,
- linux-rdma@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
- bpf@vger.kernel.org, ast@kernel.org, sharmaajay@microsoft.com,
- hawk@kernel.org, tglx@linutronix.de, shradhagupta@linux.microsoft.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue,  2 Apr 2024 12:48:36 -0700 you wrote:
-> mana_get_rxbuf_cfg() aligns the RX buffer's DMA datasize to be
-> multiple of 64. So a packet slightly bigger than mtu+14, say 1536,
-> can be received and cause skb_over_panic.
-> 
-> Sample dmesg:
-> [ 5325.237162] skbuff: skb_over_panic: text:ffffffffc043277a len:1536 put:1536 head:ff1100018b517000 data:ff1100018b517100 tail:0x700 end:0x6ea dev:<NULL>
-> [ 5325.243689] ------------[ cut here ]------------
-> [ 5325.245748] kernel BUG at net/core/skbuff.c:192!
-> [ 5325.247838] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-> [ 5325.258374] RIP: 0010:skb_panic+0x4f/0x60
-> [ 5325.302941] Call Trace:
-> [ 5325.304389]  <IRQ>
-> [ 5325.315794]  ? skb_panic+0x4f/0x60
-> [ 5325.317457]  ? asm_exc_invalid_op+0x1f/0x30
-> [ 5325.319490]  ? skb_panic+0x4f/0x60
-> [ 5325.321161]  skb_put+0x4e/0x50
-> [ 5325.322670]  mana_poll+0x6fa/0xb50 [mana]
-> [ 5325.324578]  __napi_poll+0x33/0x1e0
-> [ 5325.326328]  net_rx_action+0x12e/0x280
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2] net: mana: Fix Rx DMA datasize and skb_over_panic
-    https://git.kernel.org/netdev/net/c/c0de6ab920aa
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CStTHQ9ph6xUQEGW"
+Content-Disposition: inline
+In-Reply-To: <20240403175125.754099419@linuxfoundation.org>
 
 
+--CStTHQ9ph6xUQEGW
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Apr 03, 2024 at 07:55:39PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.8.4 release.
+> There are 11 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--CStTHQ9ph6xUQEGW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZg4czgAKCRD2uYlJVVFO
+ozMZAQCt9++fZDsa9UJocLdzy7X85idIwQtjiEp6d2lF7WB2/AEAnVWRn9Q78QY6
+Zxebg39d42Idwf+MS4GvJQrre6edTAo=
+=i3zm
+-----END PGP SIGNATURE-----
+
+--CStTHQ9ph6xUQEGW--
 
