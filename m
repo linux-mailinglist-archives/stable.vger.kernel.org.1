@@ -1,134 +1,137 @@
-Return-Path: <stable+bounces-35888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD3A898104
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 07:34:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF75898113
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 07:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D345CB27DFA
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 05:34:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A921C23A7F
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 05:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219751B810;
-	Thu,  4 Apr 2024 05:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A391208AF;
+	Thu,  4 Apr 2024 05:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OTlW4a1e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i25CJeRQ"
 X-Original-To: stable@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB043DBBC
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 05:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC153FC2
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 05:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712208886; cv=none; b=K2e6HmLyBDhzcJocPcTAWUumKyh0r++gpz9UzOwCAxuXN8EYyxHDzCUhebkGDbDLdt0HYB+ptvJVhBIFn+oWxvxw5kxPZR8wQupHCy6Y5dUPgMJZHyxmIwy8HblfpikTJx99hB/dS0dcRQopgHtnzVQIrhGdgiHwSE4SFwtp5P8=
+	t=1712209541; cv=none; b=Qc1ORxB/aHNKvw9jEx3dVgPaPy0MBhE6YkiCboit+Im2O+HkFSTOrcBl7jYAAwg3CNkjf4SvvGGAZmGtDwpgX59/tcIZF5HeL7JtWPcvrRsvv0BCfHL6H5vOulIoLilPh8PVFjuSs6pJdQW46NfurkPhzIG4s8/F2Zxod5Pb6Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712208886; c=relaxed/simple;
-	bh=WWX8HIycwcDoz5v1T7/AnGfwGw0kxkJW3X3Dh3o+8pE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ndp49s3SGSNjs0lXrcaRb7dSA3LsdcFQov9mZ/iSIoam74NGhYGCrMPK1OnlQJVZZxsWUBFUafcpNY42AHS5f38DFu121b2RjTCl2vqA0Bryx9VtvxLaJBTexFmVImr3+2AI+xA/WTUfUELs/qIzzcFs6HWNYonYBzHa5Qyw5eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OTlW4a1e; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4345YTl5077873;
-	Thu, 4 Apr 2024 00:34:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1712208869;
-	bh=r5Nz0eCaAzh1clXCADE3VvKOgag315tg+ksjJBlLL18=;
-	h=From:To:CC:Subject:Date;
-	b=OTlW4a1ekL9qrmU7Aiqoxpn+rokvbzaOAx7nM2PQ2EJ33HQAVZoQtwugkIhUVCrdK
-	 L75Vw/S6KOq1McNs4quTRZnS4GFRF5iqYW8j5hr+6qx6xwu78xKYBbqAVK2a5QqgUq
-	 XVkz3YU8F6gr151+oclMD8tb2mSXw1g4V0S5svIc=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4345YTlQ021978
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 4 Apr 2024 00:34:29 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 4
- Apr 2024 00:34:28 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 4 Apr 2024 00:34:28 -0500
-Received: from udit-HP-Z2-Tower-G9-Workstation-Desktop-PC.dhcp.ti.com (udit-hp-z2-tower-g9-workstation-desktop-pc.dhcp.ti.com [172.24.227.18])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4345YQZh004553;
-	Thu, 4 Apr 2024 00:34:27 -0500
-From: Udit Kumar <u-kumar1@ti.com>
-To: <stable@vger.kernel.org>, <francesco@dolcini.it>
-CC: <vigneshr@ti.com>, <nm@ti.com>, Udit Kumar <u-kumar1@ti.com>,
-        Stephen Boyd
-	<sboyd@kernel.org>
-Subject: [PATCH] clk: keystone: sci-clk: Adding support for non contiguous clocks
-Date: Thu, 4 Apr 2024 11:04:00 +0530
-Message-ID: <20240404053400.486272-1-u-kumar1@ti.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1712209541; c=relaxed/simple;
+	bh=v5h8hqZxiwjVqASRqbRuqc+3bJR43y3g+w1/FQfELEE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OaKJhEhhM2NrEjGhaYqu8zrt3qcUHOhNb1ivMl5VTtHmP9kmrRo8lKrp7WqgNepn6DqPI6Gxo/QCL+1PaxVBKBx9jkc7zIdSVQOBtEEzAW2WwpSqkxuduz3C99X2d4r5EusNveoqMaX2iUMGDW6x81C7qw0pGmXzb13QxDqI35k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i25CJeRQ; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-789e209544eso35958585a.0
+        for <stable@vger.kernel.org>; Wed, 03 Apr 2024 22:45:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712209539; x=1712814339; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=03s9bMBcNjM3dBImbo4P+8VnomglBAt3SfFNVoQlq4E=;
+        b=i25CJeRQp1R+0hmEp5bTrhe7+SZ0F2e8LiJOsr9nH6FGbE/ydolBkxAri1MILy2MGm
+         Gclt+mpMxrJXWPCnRDieTKZ+TeBFvFE6nRqQRbFuXrpRGi+WCNo2CSzDd5JkPwqHRld6
+         05OIcC1XoxxUfxUzaQP60jRwxc8UgFPK8l2bTLO3xEX7xwYn1aUCn6a7DmnXVWpyJLQL
+         z7UycbzTfMEERmbOuHaKen81wL58n9pGRitJOhlXNKK9TtOQDYA9MnGla6m5Fw2vo9Vr
+         WRuS8ClaZvbZ8jnxhsfrt55Ebx+dGevgfn9SBC6w8cNPPwQ5CdtBvU10IRglcGMAW05z
+         3MPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712209539; x=1712814339;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=03s9bMBcNjM3dBImbo4P+8VnomglBAt3SfFNVoQlq4E=;
+        b=YtPTk9igyC0Wxyqf5gGGAfubwnfhgBzc3qYRHCp/++rOJADEATQkb1cuPRfAJnJ0Vk
+         1T7JqzNTxdrmxsUawIcdVNdNPWhucq0i+89nxiCcVp8s/ZOgpTSaolvwxrqKOxqo5RC6
+         JzbQ2Zo1YbAyv/2vTwHgDOruMuRmbi/Arrgbll7liulHDsPMYiVXzzX3MHJmxPsTBan9
+         UNAVVR6vZe0dWMZflmrWEfN/si4JCa10ercwUM/uVWFn6JiKXrfLDKohOoy5ruRk6GDd
+         WorwVU+g4kX69gP66yqY4AyosgmwfKWOc3qSdRTCf5Wp8PcCCV2qGv01URUr4535t2uu
+         LdZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUu7yM7V2oq7hORC/JMfSmHFnWkDMEyuazU6x84G+8X05sYHnYBMOgJe+YJ0wN73KHOflzlcGHYnffBkK1TZMrgtHe5WGJl
+X-Gm-Message-State: AOJu0YzV+Wh5FsW8Uw/u6gL59oJ5O9iFdqA4nB2tQRXP14dq7/xvIbzV
+	cm0Ugj+l9ZcVG4k0988q+EwhoNj/WgyjR5elgi/MJfn6m6yA+Um+/EZA2y0oCy1ii1B1ddXz56A
+	DWxr1n21BmHZtV5+cvorEkZbr6GEkdGSAw3Q=
+X-Google-Smtp-Source: AGHT+IEUEd4pLLFFJudZZYxr6Ph461ZaP3eIH1EDA2fbQDIDund0Fta/JOcGvvTVbNON0j5HsCdxYo4pjaVjL9hSmm8=
+X-Received: by 2002:ad4:5aaa:0:b0:696:42f7:142e with SMTP id
+ u10-20020ad45aaa000000b0069642f7142emr1966445qvg.47.1712209538934; Wed, 03
+ Apr 2024 22:45:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20240403125949.33676-1-mngyadam@amazon.com> <20240403181834.GA6414@frogsfrogsfrogs>
+In-Reply-To: <20240403181834.GA6414@frogsfrogsfrogs>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 4 Apr 2024 08:45:27 +0300
+Message-ID: <CAOQ4uxjFxVXga5tmJ0YvQ-rQdRhoG89r5yzwh7NAjLQTNKDQFw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 0/6] backport xfs fix patches reported by xfs/179/270/557/606
+To: Mahmoud Adam <mngyadam@amazon.com>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, 
+	"Theodore Ts'o" <tytso@mit.edu>, "Darrick J. Wong" <djwong@kernel.org>, Leah Rumancik <lrumancik@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-commit ad3ac13c6ec318b43e769cc9ffde67528e58e555 upstream.
+On Wed, Apr 3, 2024 at 9:18=E2=80=AFPM Darrick J. Wong <djwong@kernel.org> =
+wrote:
+>
+> On Wed, Apr 03, 2024 at 02:59:44PM +0200, Mahmoud Adam wrote:
+> > Hi,
+> >
+> >  These patches fix and reported by xfstests tests xfs/179 xfs/270
+> > xfs/557 xfs/606, the patchset were tested to confirm they fix those
+> > tests. all are clean picks.
+>
+> Hi!  Thanks for the backports!
+>
+> Normally I'd pass these on to the 6.1 XFS maintainer, but I'm not sure
+> who's actually taking care of that at the moment.  To find out, I've
+> cc'd all the people who have either sent 6.1 backports or made noises
+> about doing so.
 
-Most of clocks and their parents are defined in contiguous range,
-But in few cases, there is gap in clock numbers[0].
-Driver assumes clocks to be in contiguous range, and add their clock
-ids incrementally.
+Leah has claimed that she will take over 6.1.y ;)
+Leah, do you have any staged backports for 6.1.y already?
+Can easily fire up a test run of these backports?
 
-New firmware started returning error while calling get_freq and is_on
-API for non-available clock ids.
+https://lore.kernel.org/stable/20240403125949.33676-1-mngyadam@amazon.com/
 
-In this fix, driver checks and adds only valid clock ids.
+It looks like most of the backports are from 2023 (v6.1..v6.6)
+except for patch 4/6 which has been backported to 6.6.y already.
 
-[0] https://software-dl.ti.com/tisci/esd/latest/5_soc_doc/j7200/clocks.html
-Section Clocks for NAVSS0_CPTS_0 Device, clock id 12-15 not present.
+>
+> To the group: Who's the appropriate person to handle these?
+>
+> Mahmoud: If the answer to the above is "???" or silence, would you be
+> willing to take on stable testing and maintenance?
+>
+> Also FYI the normal practice (I think) is to cc linux-xfs, pick up some
+> acks, and then resend with the acks and cc'd to stable.
+>
 
-Fixes: 3c13933c6033 ("clk: keystone: sci-clk: add support for dynamically probing clocks")
-Signed-off-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20240213082640.457316-1-u-kumar1@ti.com
-Reviewed-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
----
-Patch needs manual backporting only for LTS kernel version 4.19
+Mahmoud,
 
- drivers/clk/keystone/sci-clk.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+I assume that you are running xfstests on LTS kernels regularly?
+In that case, you should have an established baseline for failing/passing
+tests on 6.1.y.
+Did you run these backports against all tests to verify no regressions?
+If you did - then please include this information (also which xfs configura=
+tions
+were tested) in the posting of backport candidates to xfs list.
 
-diff --git a/drivers/clk/keystone/sci-clk.c b/drivers/clk/keystone/sci-clk.c
-index 35fe197dd303..eb2ef44869b2 100644
---- a/drivers/clk/keystone/sci-clk.c
-+++ b/drivers/clk/keystone/sci-clk.c
-@@ -516,6 +516,7 @@ static int ti_sci_scan_clocks_from_dt(struct sci_clk_provider *provider)
- 	struct sci_clk *sci_clk, *prev;
- 	int num_clks = 0;
- 	int num_parents;
-+	bool state;
- 	int clk_id;
- 	const char * const clk_names[] = {
- 		"clocks", "assigned-clocks", "assigned-clock-parents", NULL
-@@ -586,6 +587,15 @@ static int ti_sci_scan_clocks_from_dt(struct sci_clk_provider *provider)
- 				clk_id = args.args[1] + 1;
- 
- 				while (num_parents--) {
-+					/* Check if this clock id is valid */
-+					ret = provider->ops->is_auto(provider->sci,
-+						sci_clk->dev_id, clk_id, &state);
-+
-+					if (ret) {
-+						clk_id++;
-+						continue;
-+					}
-+
- 					sci_clk = devm_kzalloc(dev,
- 							       sizeof(*sci_clk),
- 							       GFP_KERNEL);
--- 
-2.34.1
+That is effectively the only thing that is required for doing reliable LTS
+backport work.
 
+Thanks,
+Amir.
 
