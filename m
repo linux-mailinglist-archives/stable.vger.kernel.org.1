@@ -1,186 +1,126 @@
-Return-Path: <stable+bounces-35975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3309898FB5
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 22:34:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198AB898F9B
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 22:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A26CB23008
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 20:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C830A28C9C5
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 20:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1897313792B;
-	Thu,  4 Apr 2024 20:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA0A133426;
+	Thu,  4 Apr 2024 20:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="adaBaPGt";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lt1z5CtE";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="adaBaPGt";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lt1z5CtE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XH1dVEZ+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A8B6FE26;
-	Thu,  4 Apr 2024 20:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FCE210E4
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 20:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712262858; cv=none; b=UKS5kZUx44ErP0qIvo3iKqtXF/7Zfv4FXk6irW1/nwKgKgWtS5+cwSenOR7/P4pNA/Lv6Pnmc1UfiFVMlK0s5bcQ6+yvdT3YW9V58Ec7Z8fbd9IUj8LP1aYyt1HwGEsJkubi3bRkhcL+TS9QFI6SWe1HqYwOMXUCQnPsNtMIs5c=
+	t=1712262825; cv=none; b=GRHUfz4mgZjuAblcjw7CRNTz7PKQBfqvf4HeUNUsYjoxq83V7GhX5GNfIziNUrxgHq1g1a6BseFsgFs5Z2cI1ehKHnTmqNsWiUocxiUwvyg21t4qy88D25i3WFuIg+l6OEZmzZb8i6MvWgSEH1EyxuUJn60SCM5SU90A9SiNHNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712262858; c=relaxed/simple;
-	bh=q6em1spNjxJpPQRYktP0FiN58iENw53pzN56vBpUAB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YiF1GuAwe3jVw07MPdbsCmjEkeqinqkF8TrkQtg5Kqa0n5PaVyL1ok4JqJeLSQ2u1qkcQ1Mt1uU2jK5h5p9tp3o20DUGc9WPrgiNGHYPvoyCOhqOQrir3w4D3l98xIClbnATXlgCAri0pWKrWLaLOGF569v4NBJaZoDfy1wDtcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=adaBaPGt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lt1z5CtE; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=adaBaPGt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lt1z5CtE; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 637C01F44B;
-	Thu,  4 Apr 2024 20:34:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712262855;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZUK+NOXkYpb3P/0N0Mw2ewEpgRitgCtwAYay9/jlRbE=;
-	b=adaBaPGtYHlkgCvQZ0usrsEcJZRuMWtrzmguJvU4waE6FTWZ9rLBRQ8jfaJqDTSSz2LKZ2
-	E+vtufteH5W3ilm+voKdwG8RJemHr33Ykulb9JhiOqsPzJh60QRwwRqtCiqR7Of8e7WUr5
-	1YHnBDrzqtwOAhFzJDsxu9n2zOlllP8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712262855;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZUK+NOXkYpb3P/0N0Mw2ewEpgRitgCtwAYay9/jlRbE=;
-	b=lt1z5CtE1jJJX5sMv+XpkdD/idKvlPCgiwuCKpq7r0Qs4yFxgB4xUCEspKSu7+OGbRiTSC
-	/gHBNAE+HjmzYvDg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712262855;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZUK+NOXkYpb3P/0N0Mw2ewEpgRitgCtwAYay9/jlRbE=;
-	b=adaBaPGtYHlkgCvQZ0usrsEcJZRuMWtrzmguJvU4waE6FTWZ9rLBRQ8jfaJqDTSSz2LKZ2
-	E+vtufteH5W3ilm+voKdwG8RJemHr33Ykulb9JhiOqsPzJh60QRwwRqtCiqR7Of8e7WUr5
-	1YHnBDrzqtwOAhFzJDsxu9n2zOlllP8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712262855;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZUK+NOXkYpb3P/0N0Mw2ewEpgRitgCtwAYay9/jlRbE=;
-	b=lt1z5CtE1jJJX5sMv+XpkdD/idKvlPCgiwuCKpq7r0Qs4yFxgB4xUCEspKSu7+OGbRiTSC
-	/gHBNAE+HjmzYvDg==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 4024213298;
-	Thu,  4 Apr 2024 20:34:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id 8kk6D8cOD2azdwAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Thu, 04 Apr 2024 20:34:15 +0000
-Date: Thu, 4 Apr 2024 22:26:45 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org,
-	Filipe Manana <fdmanana@suse.com>
-Subject: Re: [PATCH v2 2/7] btrfs: reduce the log level for
- btrfs_dev_stat_inc_and_print()
-Message-ID: <20240404202644.GN14596@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <cover.1710906371.git.wqu@suse.com>
- <8f3e7a57b40973e62c0d758922971566ca96fb2e.1710906371.git.wqu@suse.com>
+	s=arc-20240116; t=1712262825; c=relaxed/simple;
+	bh=zilOGH9d9aSJ4609zaqdQzRgfqugSYDSLLlLCXBZbuM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a201Ik5niytQj4cgOaxSigboQ9+rhMCdktqDJv4NMHlYyIhXfB+Xt6qiw4XLnGHuY779+dHxNIeW9Hr55AIL8mQ/KFvbo8BfxjdfgWFzwajriyfbriqor4hCtjGtoDjekcdoel2M5JYlSu3L7xdMQpAzVyeZ0kugqdVih0kfU4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XH1dVEZ+; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712262823; x=1743798823;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=zilOGH9d9aSJ4609zaqdQzRgfqugSYDSLLlLCXBZbuM=;
+  b=XH1dVEZ+Zb+yq8W4qnaImTg0+yFX3TBCtU+D2yVyQz85saD4/+QCs4a4
+   KbAR3BW5FDTHw5gw7MCkgZFTx9oOIiuFOFEi/PsT5hhYiUu6sXHCGDKOZ
+   RR0GsMHF1Kw1hkZm6P1N6tJxOrGoLxqkJMcpPwoeh+YfzM1mSAoPzBNII
+   PROk88RcDaDg2Lkx0bKska2yVfDJMQ8QFZ57DrRoGGym06ASFT/Iv9S8H
+   uC8HMCvwNmvJcmj1aE502iUoLxjMld4Ia/yN2QJPdBu3q4+w39hkB9q3O
+   05iax5GU6ioprybCeVjL0wCjeSHDWWdXqWxl5xqUitciRVvTeBnh2GC+1
+   A==;
+X-CSE-ConnectionGUID: DzfEPtCBT3+gYkjGUNbZ+w==
+X-CSE-MsgGUID: ai3AiOEXQT6q8A8E8tVn2A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="25019719"
+X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
+   d="scan'208";a="25019719"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 13:33:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="827790578"
+X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
+   d="scan'208";a="827790578"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orsmga001.jf.intel.com with SMTP; 04 Apr 2024 13:33:40 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Thu, 04 Apr 2024 23:33:39 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: dri-devel@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH 01/12] drm/client: Fully protect modes[] with dev->mode_config.mutex
+Date: Thu,  4 Apr 2024 23:33:25 +0300
+Message-ID: <20240404203336.10454-2-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240404203336.10454-1-ville.syrjala@linux.intel.com>
+References: <20240404203336.10454-1-ville.syrjala@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8f3e7a57b40973e62c0d758922971566ca96fb2e.1710906371.git.wqu@suse.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:replyto];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCPT_COUNT_THREE(0.00)[4]
-X-Spam-Score: -4.00
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 20, 2024 at 02:24:52PM +1030, Qu Wenruo wrote:
-> Currently when we increase the device statistics, it would always lead
-> to an error message in the kernel log.
-> 
-> However this output is mostly duplicated with the existing ones:
-> 
-> - For scrub operations
->   We always have the following messages:
->   * "fixed up error at logical %llu"
->   * "unable to fixup (regular) error at logical %llu"
-> 
->   So no matter if the corruption is repaired or not, it scrub would
->   output an error message to indicate the problem.
-> 
-> - For non-scrub read operations
->   We also have the following messages:
->   * "csum failed root %lld inode %llu off %llu" for data csum mismatch
->   * "bad (tree block start|fsid|tree block level)" for metadata
->   * "read error corrected: ino %llu off %llu" for repaired data/metadata
-> 
-> So the error message from btrfs_dev_stat_inc_and_print() is duplicated.
-> 
-> The real usage for the btrfs device statistics is for some user space
-> daemon to check if there is any new errors, acting like some checks on
-> SMART, thus we don't really need/want those messages in dmesg.
-> 
-> This patch would reduce the log level to debug (disabled by default) for
-> btrfs_dev_stat_inc_and_print().
-> For users really want to utilize btrfs devices statistics, they should
-> go check "btrfs device stats" periodically, and we should focus the
-> kernel error messages to more important things.
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-I kind if disagree with each point.
+The modes[] array contains pointers to modes on the connectors'
+mode lists, which are protected by dev->mode_config.mutex.
+Thus we need to extend modes[] the same protection or by the
+time we use it the elements may already be pointing to
+freed/reused memory.
 
-The message is meant to be logged as it will happen in production and
-outside of development, so the debug level does not make sense.
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10583
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ drivers/gpu/drm/drm_client_modeset.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The stats message is not duplicated for the individual causes, it
-additionally tracks the whole state.
+diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
+index 871e4e2129d6..0683a129b362 100644
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -777,6 +777,7 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
+ 	unsigned int total_modes_count = 0;
+ 	struct drm_client_offset *offsets;
+ 	unsigned int connector_count = 0;
++	/* points to modes protected by mode_config.mutex */
+ 	struct drm_display_mode **modes;
+ 	struct drm_crtc **crtcs;
+ 	int i, ret = 0;
+@@ -845,7 +846,6 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
+ 		drm_client_pick_crtcs(client, connectors, connector_count,
+ 				      crtcs, modes, 0, width, height);
+ 	}
+-	mutex_unlock(&dev->mode_config.mutex);
+ 
+ 	drm_client_modeset_release(client);
+ 
+@@ -875,6 +875,7 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
+ 			modeset->y = offset->y;
+ 		}
+ 	}
++	mutex_unlock(&dev->mode_config.mutex);
+ 
+ 	mutex_unlock(&client->modeset_mutex);
+ out:
+-- 
+2.43.2
 
-Logging important messages to system log is a common thing and we do that
-a lot, this makes debugging and anlyzing things easier. We can't
-expect that there would always be a daemon collecting the stats, there's
-not standardized or recommended tool for that. A quick look to dmesg can
-show that something is wrong.
-
-What we can do: reduce the number messages so the whole stats are
-printed once per transaction if there is a change.
-
-We can also tune which events also print the stats, for example flush
-errors are more interesting than read/write, comparing the number of
-events that can happen in a batch.
 
