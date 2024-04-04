@@ -1,152 +1,109 @@
-Return-Path: <stable+bounces-35924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D67789870F
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 14:19:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87BC898731
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 14:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173962960BC
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 12:19:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6BAC1C2237D
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 12:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5169812839F;
-	Thu,  4 Apr 2024 12:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFDA128379;
+	Thu,  4 Apr 2024 12:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="cqkae22n"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="CEQ+1Vah"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7126612838A;
-	Thu,  4 Apr 2024 12:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.89.224.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3860786634
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 12:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712232953; cv=none; b=a6oc2aLl4zeC2UC+ukqvCHzzNlBfmtTDswpIOMvxX8Y9PTD7tR9plUb+PRllCEpQuiv9j9PPt7U+NqvoE2sZZ98dWFTPELclTgsGF9tkeMHRl0uuvpnYAm0rFE1AVnQs8g7U7ORutmYyjNlPv+W3qJGv+dqJ72hjOKY6K9VQz8M=
+	t=1712233235; cv=none; b=Jz0lvO41bAgHk0rdQNC94C7rpVIp3p/gZ1sjHgfXAoTJzibi8l+m0UerqRQOqEuyqf58hFN111RPNUWZNOOR8iymCDEKY3yCY+TRr4RQGZTAlFRiVGixSSBjNFZpucokHUJMOx/vYhu+0vxe1NcpmNQD6k8Dv50Hd0v3nYPhVLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712232953; c=relaxed/simple;
-	bh=jaWNUV/0rYLFNLGYU8fO5mErt568OH4eL7UBJG8E3lY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lPbMJIcazE9CAdFcRlptRtPquwcRZePGXe8CU08qRiofqqx198G1nCbYix+dSuLsAoq6MOCAA6LBxYXC9YI4zguDVjgBQ7cCPnwkC7eNCDrC5XV9qSZB0z3D6JzbbRNGN+hWsIUQBqxTkRwkcGrHGkCsk+eoDbtLXWkMMn52pkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=cqkae22n; arc=none smtp.client-ip=45.89.224.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
-Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id E7E0512000D;
-	Thu,  4 Apr 2024 15:15:39 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru E7E0512000D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1712232939;
-	bh=ETwhhACPGuY4BnkEtYjTCpxmGzMAX5wMpPGvtWzJOJ0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=cqkae22nnOJqKTjS9Lp6VhJEf2QNNRAq4f7aVqH2buIB76IitunvIJ44Iwb6PtLsL
-	 I2cUykRoAANFgj1t4Rh2xZWfpdnTMB8oLdn2vqW9krJmEmZkVEQ94zwyKMjGUvMM2T
-	 lnfLlKg/rHTSY/uVsad5RK4aaS6KJevVoiOVJLKq/LOTtxXykCymr+uKd4Qwo1Rj7M
-	 jtwGTstLm5e4zXJ10VZcrafOxnvOAr9xb9AMWz45xIZrSqCkKLRG6tP61svUBo0qtm
-	 5j2mjXphjhEqE8bTCwzHo6BtKTTbZWmiPA754x60e7TY+uY2CuXTGXXSX68Xno0ca8
-	 F2E0WCNNAez6A==
-Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Thu,  4 Apr 2024 15:15:39 +0300 (MSK)
-Received: from CAB-WSD-L081021.sberdevices.ru (100.64.160.123) by
- p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 4 Apr 2024 15:15:39 +0300
-From: Dmitry Rokosov <ddrokosov@salutedevices.com>
-To: <quic_sridsn@quicinc.com>, <quic_mdalam@quicinc.com>, <ezra@easyb.ch>,
-	<gch981213@gmail.com>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
-	<sashal@kernel.org>, <gregkh@linuxfoundation.org>, <vigneshr@ti.com>
-CC: <kernel@salutedevices.com>, <rockosov@gmail.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>, Ezra Buehler
-	<ezra.buehler@husqvarnagroup.com>, <stable@vger.kernel.org>, Martin Kurbanov
-	<mmkurbanov@salutedevices.com>, Dmitry Rokosov <ddrokosov@salutedevices.com>
-Subject: [PATCH v1] mtd: spinand: Add support for 5-byte IDs
-Date: Thu, 4 Apr 2024 15:15:21 +0300
-Message-ID: <20240404121532.14755-1-ddrokosov@salutedevices.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1712233235; c=relaxed/simple;
+	bh=H3f5IYJ1QWgMCxp8QqRnm74odB6YZNBaYMyZ5mE9B8E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=vADGXZAe8hrdA/odoBvNrLBCcEfCQarFzaMiua9/v6eISl+b/bdxd87JGHFyXP5hyzDrRYhBmZ1328RjS/wcLUXUrSFR6Jxz2SkHiu1IBpqIpxaKeUmh2XtfDke36wGkjWnDMXUFDwTu/I7XV33sXzRcbBwtTKgIBe3p/Sw4/BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=CEQ+1Vah; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-516cbf3fd3dso754710e87.2
+        for <stable@vger.kernel.org>; Thu, 04 Apr 2024 05:20:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1712233231; x=1712838031; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DUbfvRaTdYI6FJXs+PUDsLKnWz2I5THsnSsWjhmBFSg=;
+        b=CEQ+1VahHY1lnHONUcj2WZxOs6Qkp/iF0KkGR/SZ1mL2VsVRudtZAR8laVgyetoym0
+         uD4x4KSK59RSy8umCfC5v4WN4lqKep7557O3xU7+jsDSCMlgCNvAqjIGOsgEGh5o1jgT
+         7Hx1eBySF4pWlM/uClIfHE/7pz2sGTgc5cQoh1y7adb9/tg6e5vh8fgc3fgpLNpPLR3H
+         YAR9V8qqF/33Kcs/P63IWE7bFNjbH+EV9PQw6NnJdLuv1s82+rDJhhJNfPP92enfetXa
+         mSfcaw6Ar4jcFjcBfnt+JEijmLotomS2JCLUDF8KYwkyKhdrGp/jKan2j9lhOUd2La0v
+         vXCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712233231; x=1712838031;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DUbfvRaTdYI6FJXs+PUDsLKnWz2I5THsnSsWjhmBFSg=;
+        b=e1X8lPzvfCZmnhiKfmdPIMeljMIRF3JiebbOsDb7ECBhuKnLgkXbfPVRPZAT//DYsV
+         dwqU9wYhVen4oH+lJvucOsDeemVSxu7OVSxu9VQmYhT6HQEoexuVNw+4+0IYJk1pt6B6
+         Lrv80Vc4vwHCoetdKneTBLPl+7GDDjTrEv++eIM9UuhjvLnAwPjEBv1NRs3wTbcHfjN4
+         P0yRJvdpmHLPTs1suA3J7w4kt6MSf9lAR/BvoVNleoaeKoLXgTr3RkBMmRASmqBRv719
+         jGWBlmCpxUtILwAFMZXLSt/a0K4uSO3rBvna0+aYtRSuKYVvNKrjdGTnZxeeaeHnuNkI
+         x96g==
+X-Forwarded-Encrypted: i=1; AJvYcCX10sG8KBibjEcNu6r91zwCrcM90r/bdVtmuJvz4ALGxRwxmHYNZxTT5IsaOlAH+C0lyEUZ3MARZZjrF94Jr7V7cwt3zRgc
+X-Gm-Message-State: AOJu0Ywh+vxrQY/SG+0DfbNiUYIM0PQ2Thm7wqWpJb7ZtiXJUnSf5/RH
+	+ZNbSVYv8lEo0q8eSU1jMuxSzdITRg3jBpWqyG2In1H7Zr2BdWKb5lpWLh1hjqIZ1guZzeHBsRv
+	S/6NQZL9cesIxxcGcGI/ecoUIJnv0fulAC10M7A==
+X-Google-Smtp-Source: AGHT+IFXuY19yD67Vs0YeBOAYv5IS0ycYwSWTF9HWesGz64hK8qtn9PkV2yqkWQlXtSA4rvLO2hBr6dSTjjx6khY+oo=
+X-Received: by 2002:a05:6512:60b:b0:515:d038:5548 with SMTP id
+ b11-20020a056512060b00b00515d0385548mr1623137lfe.31.1712233231216; Thu, 04
+ Apr 2024 05:20:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m02.sberdevices.ru (172.16.192.103)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 184579 [Apr 04 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: ddrokosov@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 14 0.3.14 5a0c43d8a1c3c0e5b0916cc02a90d4b950c01f96, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 100.64.160.123:7.1.2;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/04/04 11:24:00
-X-KSMG-LinksScanning: Clean, bases: 2024/04/04 11:24:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/04/04 07:34:00 #24651931
-X-KSMG-AntiVirus-Status: Clean, skipped
+References: <20240403131518.61392-1-warthog618@gmail.com> <20240403131518.61392-2-warthog618@gmail.com>
+ <CAMRc=Mf0DPN1-npNPQA=3ivQd-PMhf_ZAa6eSFjmQ26Y8_Gv=g@mail.gmail.com> <20240404105912.GA94230@rigel>
+In-Reply-To: <20240404105912.GA94230@rigel>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 4 Apr 2024 14:20:20 +0200
+Message-ID: <CAMRc=MeOW6mcYFR6GL5c0hyfH_ZvqmLqKFSk50jKa-d+4aa4iQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] gpio: cdev: fix missed label sanitizing in debounce_setup()
+To: Kent Gibson <warthog618@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linus.walleij@linaro.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+On Thu, Apr 4, 2024 at 12:59=E2=80=AFPM Kent Gibson <warthog618@gmail.com> =
+wrote:
+>
+> On Thu, Apr 04, 2024 at 10:20:29AM +0200, Bartosz Golaszewski wrote:
+> >
+> > Now that I look at the actual patch, I don't really like it. We
+> > introduce a bug just to fix it a commit later. Such things have been
+> > frowned upon in the past.
+> >
+> > Let me shuffle the code a bit, I'll try to make it a bit more correct.
+> >
+>
+> The debounce_setup() oversight bug is the more severe, so it makes more
+> sense to me to fix it first.  But then I my preferred solution would be
+> to pull the original patch and submit a corrected patch that merges all
+> three, so no bugs, but I assume that isn't an option.
+>
 
-[ Upstream commit 34a956739d295de6010cdaafeed698ccbba87ea4 ]
+Nah, let's not needlessly rebase it. Most I can do is merge the two
+but they are really functionally separate so I'd keep it as is in v2.
 
-E.g. ESMT chips will return an identification code with a length of 5
-bytes. In order to prevent ambiguity, flash chips would actually need to
-return IDs that are up to 17 or more bytes long due to JEDEC's
-continuation scheme. I understand that if a manufacturer ID is located
-in bank N of JEDEC's database (there are currently 16 banks), N - 1
-continuation codes (7Fh) need to be added to the identification code
-(comprising of manufacturer ID and device ID). However, most flash chip
-manufacturers don't seem to implement this (correctly).
-
-Cc: <stable@vger.kernel.org> # 6.6.23
-Cc: <stable@vger.kernel.org> # 6.7.11
-Cc: <stable@vger.kernel.org> # 6.8.2
-Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-Reviewed-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-Tested-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240125200108.24374-2-ezra@easyb.ch
-Signed-off-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
----
-
-In the patch series [1] only one patch was marked with Fixes tag, that's
-why the secon patch was not applied to 6.6.y, 6.7.y and 6.8y. It breaks
-ESMT detection flow with logs:
-
-[    0.770730] spi-nand spi0.0: unknown raw ID c8017f7f
-[    0.772688] spi-nand: probe of spi0.0 failed with error -524
-
-Please cherry-pick the second patch from the series to 6.6.y, 6.7.y and
-6.8.y.
-
-Links:
-    [1] https://lore.kernel.org/linux-mtd/20240125200108.24374-1-ezra@easyb.ch/
-
----
- include/linux/mtd/spinand.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index badb4c1ac079..5c19ead60499 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -169,7 +169,7 @@
- struct spinand_op;
- struct spinand_device;
- 
--#define SPINAND_MAX_ID_LEN	4
-+#define SPINAND_MAX_ID_LEN	5
- /*
-  * For erase, write and read operation, we got the following timings :
-  * tBERS (erase) 1ms to 4ms
--- 
-2.43.0
-
+Bart
 
