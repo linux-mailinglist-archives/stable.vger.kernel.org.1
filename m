@@ -1,137 +1,211 @@
-Return-Path: <stable+bounces-35889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF75898113
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 07:45:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0FA898193
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 08:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A921C23A7F
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 05:45:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81A61F22AC7
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 06:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A391208AF;
-	Thu,  4 Apr 2024 05:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B684031A8F;
+	Thu,  4 Apr 2024 06:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i25CJeRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNJL3Xxg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC153FC2
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 05:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661A02C870
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 06:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712209541; cv=none; b=Qc1ORxB/aHNKvw9jEx3dVgPaPy0MBhE6YkiCboit+Im2O+HkFSTOrcBl7jYAAwg3CNkjf4SvvGGAZmGtDwpgX59/tcIZF5HeL7JtWPcvrRsvv0BCfHL6H5vOulIoLilPh8PVFjuSs6pJdQW46NfurkPhzIG4s8/F2Zxod5Pb6Kg=
+	t=1712212942; cv=none; b=BhioHXGvhbHUNTAfj7R/l3TLW8nWbVrLXwcGNA2cQjjMXV6sDnlN+GzmUbBWOKt169b2467JEkQzBvBJ6jyG8wwxs5S7dCTLDoxpJzT6CVDFUsDIDmaa148mBttsFlPF0GdrNsoWvJXqVKmMlgvmW9K3Bmqn+K/vF8tlH1aSQuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712209541; c=relaxed/simple;
-	bh=v5h8hqZxiwjVqASRqbRuqc+3bJR43y3g+w1/FQfELEE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OaKJhEhhM2NrEjGhaYqu8zrt3qcUHOhNb1ivMl5VTtHmP9kmrRo8lKrp7WqgNepn6DqPI6Gxo/QCL+1PaxVBKBx9jkc7zIdSVQOBtEEzAW2WwpSqkxuduz3C99X2d4r5EusNveoqMaX2iUMGDW6x81C7qw0pGmXzb13QxDqI35k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i25CJeRQ; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-789e209544eso35958585a.0
-        for <stable@vger.kernel.org>; Wed, 03 Apr 2024 22:45:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712209539; x=1712814339; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=03s9bMBcNjM3dBImbo4P+8VnomglBAt3SfFNVoQlq4E=;
-        b=i25CJeRQp1R+0hmEp5bTrhe7+SZ0F2e8LiJOsr9nH6FGbE/ydolBkxAri1MILy2MGm
-         Gclt+mpMxrJXWPCnRDieTKZ+TeBFvFE6nRqQRbFuXrpRGi+WCNo2CSzDd5JkPwqHRld6
-         05OIcC1XoxxUfxUzaQP60jRwxc8UgFPK8l2bTLO3xEX7xwYn1aUCn6a7DmnXVWpyJLQL
-         z7UycbzTfMEERmbOuHaKen81wL58n9pGRitJOhlXNKK9TtOQDYA9MnGla6m5Fw2vo9Vr
-         WRuS8ClaZvbZ8jnxhsfrt55Ebx+dGevgfn9SBC6w8cNPPwQ5CdtBvU10IRglcGMAW05z
-         3MPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712209539; x=1712814339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=03s9bMBcNjM3dBImbo4P+8VnomglBAt3SfFNVoQlq4E=;
-        b=YtPTk9igyC0Wxyqf5gGGAfubwnfhgBzc3qYRHCp/++rOJADEATQkb1cuPRfAJnJ0Vk
-         1T7JqzNTxdrmxsUawIcdVNdNPWhucq0i+89nxiCcVp8s/ZOgpTSaolvwxrqKOxqo5RC6
-         JzbQ2Zo1YbAyv/2vTwHgDOruMuRmbi/Arrgbll7liulHDsPMYiVXzzX3MHJmxPsTBan9
-         UNAVVR6vZe0dWMZflmrWEfN/si4JCa10ercwUM/uVWFn6JiKXrfLDKohOoy5ruRk6GDd
-         WorwVU+g4kX69gP66yqY4AyosgmwfKWOc3qSdRTCf5Wp8PcCCV2qGv01URUr4535t2uu
-         LdZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUu7yM7V2oq7hORC/JMfSmHFnWkDMEyuazU6x84G+8X05sYHnYBMOgJe+YJ0wN73KHOflzlcGHYnffBkK1TZMrgtHe5WGJl
-X-Gm-Message-State: AOJu0YzV+Wh5FsW8Uw/u6gL59oJ5O9iFdqA4nB2tQRXP14dq7/xvIbzV
-	cm0Ugj+l9ZcVG4k0988q+EwhoNj/WgyjR5elgi/MJfn6m6yA+Um+/EZA2y0oCy1ii1B1ddXz56A
-	DWxr1n21BmHZtV5+cvorEkZbr6GEkdGSAw3Q=
-X-Google-Smtp-Source: AGHT+IEUEd4pLLFFJudZZYxr6Ph461ZaP3eIH1EDA2fbQDIDund0Fta/JOcGvvTVbNON0j5HsCdxYo4pjaVjL9hSmm8=
-X-Received: by 2002:ad4:5aaa:0:b0:696:42f7:142e with SMTP id
- u10-20020ad45aaa000000b0069642f7142emr1966445qvg.47.1712209538934; Wed, 03
- Apr 2024 22:45:38 -0700 (PDT)
+	s=arc-20240116; t=1712212942; c=relaxed/simple;
+	bh=a05YuGmpT2XURBFgMwx38Fklc10D5KQucvxp3nph/NA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fJwmIzO2XEPnPWi59igAKMRO7ygcsTBDpm5Pc42hg56hzQiIQFgTJAGv3QRJLAqLs6AyjgYjb5oOXgSPeU1etW5OuirjhL+74CPGy3hFgOQ35b1B4RQbGa7gY7FG4dRtaXYeCBUYfpNw7hPhBhub6QsM8baSN5xsmQ9ej48FrGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNJL3Xxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23390C433F1;
+	Thu,  4 Apr 2024 06:42:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712212941;
+	bh=a05YuGmpT2XURBFgMwx38Fklc10D5KQucvxp3nph/NA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SNJL3XxgMtYXlQUXmTgUCwsQqpy9Xa2oN5QnmcS4odKIh+cuUa5DCwrTNVVb5wu2t
+	 SsNnDRGfZi8iUqbNuW/i/TGDU1fw+R2EjjotfoKrYRCzMLcBI6FI3jFgb88QSGz9PJ
+	 L3GZihkW2Uh8fV88j49K9aRS7J/8M+ZSx13GIb0A=
+Date: Thu, 4 Apr 2024 08:42:18 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pascal Ernster <git@hardfalcon.net>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: Patch "gpio: cdev: sanitize the label before requesting the
+ interrupt" has been added to the 6.1-sta
+Message-ID: <2024040401-resale-disregard-c9c5@gregkh>
+References: <2024040339-anatomy-multitude-01a8gregkh>
+ <af4781a8-b55b-4699-aa49-6245eb5accbc@hardfalcon.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240403125949.33676-1-mngyadam@amazon.com> <20240403181834.GA6414@frogsfrogsfrogs>
-In-Reply-To: <20240403181834.GA6414@frogsfrogsfrogs>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 4 Apr 2024 08:45:27 +0300
-Message-ID: <CAOQ4uxjFxVXga5tmJ0YvQ-rQdRhoG89r5yzwh7NAjLQTNKDQFw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 0/6] backport xfs fix patches reported by xfs/179/270/557/606
-To: Mahmoud Adam <mngyadam@amazon.com>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, 
-	"Theodore Ts'o" <tytso@mit.edu>, "Darrick J. Wong" <djwong@kernel.org>, Leah Rumancik <lrumancik@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af4781a8-b55b-4699-aa49-6245eb5accbc@hardfalcon.net>
 
-On Wed, Apr 3, 2024 at 9:18=E2=80=AFPM Darrick J. Wong <djwong@kernel.org> =
-wrote:
->
-> On Wed, Apr 03, 2024 at 02:59:44PM +0200, Mahmoud Adam wrote:
-> > Hi,
-> >
-> >  These patches fix and reported by xfstests tests xfs/179 xfs/270
-> > xfs/557 xfs/606, the patchset were tested to confirm they fix those
-> > tests. all are clean picks.
->
-> Hi!  Thanks for the backports!
->
-> Normally I'd pass these on to the 6.1 XFS maintainer, but I'm not sure
-> who's actually taking care of that at the moment.  To find out, I've
-> cc'd all the people who have either sent 6.1 backports or made noises
-> about doing so.
+On Thu, Apr 04, 2024 at 03:20:05AM +0200, Pascal Ernster wrote:
+> [2024-04-03 19:58] gregkh linuxfoundation ! org:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >      gpio: cdev: sanitize the label before requesting the interrupt
+> > 
+> > to the 6.1-stable tree which can be found at:
+> >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >       gpio-cdev-sanitize-the-label-before-requesting-the-interrupt.patch
+> > and it can be found in the queue-6.1 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> > 
+> > 
+> >  From b34490879baa847d16fc529c8ea6e6d34f004b38 Mon Sep 17 00:00:00 2001
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > Date: Mon, 25 Mar 2024 10:02:42 +0100
+> > Subject: gpio: cdev: sanitize the label before requesting the interrupt
+> > 
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > 
+> > commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
+> > 
+> > When an interrupt is requested, a procfs directory is created under
+> > "/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
+> > the request_irq() variants.
+> > 
+> > What follows is that the string must not contain the "/" character or
+> > the procfs mkdir operation will fail. We don't have such constraints for
+> > GPIO consumer labels which are used verbatim as interrupt labels for
+> > GPIO irqs. We must therefore sanitize the consumer string before
+> > requesting the interrupt.
+> > 
+> > Let's replace all "/" with ":".
+> > 
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Stefan Wahren <wahrenst@gmx.net>
+> > Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > Reviewed-by: Kent Gibson <warthog618@gmail.com>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >   drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
+> >   1 file changed, 32 insertions(+), 6 deletions(-)
+> > 
+> > --- a/drivers/gpio/gpiolib-cdev.c
+> > +++ b/drivers/gpio/gpiolib-cdev.c
+> > @@ -999,10 +999,20 @@ static u32 gpio_v2_line_config_debounce_
+> >   	return 0;
+> >   }
+> > +static inline char *make_irq_label(const char *orig)
+> > +{
+> > +	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
+> > +}
+> > +
+> > +static inline void free_irq_label(const char *label)
+> > +{
+> > +	kfree(label);
+> > +}
+> > +
+> >   static void edge_detector_stop(struct line *line)
+> >   {
+> >   	if (line->irq) {
+> > -		free_irq(line->irq, line);
+> > +		free_irq_label(free_irq(line->irq, line));
+> >   		line->irq = 0;
+> >   	}
+> > @@ -1027,6 +1037,7 @@ static int edge_detector_setup(struct li
+> >   	unsigned long irqflags = 0;
+> >   	u64 eflags;
+> >   	int irq, ret;
+> > +	char *label;
+> >   	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
+> >   	if (eflags && !kfifo_initialized(&line->req->events)) {
+> > @@ -1063,11 +1074,17 @@ static int edge_detector_setup(struct li
+> >   			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
+> >   	irqflags |= IRQF_ONESHOT;
+> > +	label = make_irq_label(line->req->label);
+> > +	if (!label)
+> > +		return -ENOMEM;
+> > +
+> >   	/* Request a thread to read the events */
+> >   	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+> > -				   irqflags, line->req->label, line);
+> > -	if (ret)
+> > +				   irqflags, label, line);
+> > +	if (ret) {
+> > +		free_irq_label(label);
+> >   		return ret;
+> > +	}
+> >   	line->irq = irq;
+> >   	return 0;
+> > @@ -1910,7 +1927,7 @@ static ssize_t lineevent_read(struct fil
+> >   static void lineevent_free(struct lineevent_state *le)
+> >   {
+> >   	if (le->irq)
+> > -		free_irq(le->irq, le);
+> > +		free_irq_label(free_irq(le->irq, le));
+> >   	if (le->desc)
+> >   		gpiod_free(le->desc);
+> >   	kfree(le->label);
+> > @@ -2058,6 +2075,7 @@ static int lineevent_create(struct gpio_
+> >   	int fd;
+> >   	int ret;
+> >   	int irq, irqflags = 0;
+> > +	char *label;
+> >   	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
+> >   		return -EFAULT;
+> > @@ -2138,15 +2156,23 @@ static int lineevent_create(struct gpio_
+> >   	INIT_KFIFO(le->events);
+> >   	init_waitqueue_head(&le->wait);
+> > +	label = make_irq_label(le->label);
+> > +	if (!label) {
+> > +		ret = -ENOMEM;
+> > +		goto out_free_le;
+> > +	}
+> > +
+> >   	/* Request a thread to read the events */
+> >   	ret = request_threaded_irq(irq,
+> >   				   lineevent_irq_handler,
+> >   				   lineevent_irq_thread,
+> >   				   irqflags,
+> > -				   le->label,
+> > +				   label,
+> >   				   le);
+> > -	if (ret)
+> > +	if (ret) {
+> > +		free_irq_label(label);
+> >   		goto out_free_le;
+> > +	}
+> >   	le->irq = irq;
+> > 
+> > 
+> > Patches currently in stable-queue which might be from bartosz.golaszewski@linaro.org are
+> > 
+> > queue-6.1/gpio-cdev-sanitize-the-label-before-requesting-the-interrupt.patch
+> 
+> 
+> Hi,
+> 
+> 
+> this breaks the build because kstrdup_and_replace() does not exist in
+> version branch 6.1.
 
-Leah has claimed that she will take over 6.1.y ;)
-Leah, do you have any staged backports for 6.1.y already?
-Can easily fire up a test run of these backports?
+Yes, my fault, I committed it and then walked away from the computer as
+it was a long day.  I'll go fix it up now, thanks
 
-https://lore.kernel.org/stable/20240403125949.33676-1-mngyadam@amazon.com/
-
-It looks like most of the backports are from 2023 (v6.1..v6.6)
-except for patch 4/6 which has been backported to 6.6.y already.
-
->
-> To the group: Who's the appropriate person to handle these?
->
-> Mahmoud: If the answer to the above is "???" or silence, would you be
-> willing to take on stable testing and maintenance?
->
-> Also FYI the normal practice (I think) is to cc linux-xfs, pick up some
-> acks, and then resend with the acks and cc'd to stable.
->
-
-Mahmoud,
-
-I assume that you are running xfstests on LTS kernels regularly?
-In that case, you should have an established baseline for failing/passing
-tests on 6.1.y.
-Did you run these backports against all tests to verify no regressions?
-If you did - then please include this information (also which xfs configura=
-tions
-were tested) in the posting of backport candidates to xfs list.
-
-That is effectively the only thing that is required for doing reliable LTS
-backport work.
-
-Thanks,
-Amir.
+greg k-h
 
