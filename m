@@ -1,186 +1,193 @@
-Return-Path: <stable+bounces-35977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F720899058
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 23:29:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88AF8990EF
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 00:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1987D1F2555C
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 21:29:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CF1528988A
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 22:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F45813C663;
-	Thu,  4 Apr 2024 21:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FE313C3D6;
+	Thu,  4 Apr 2024 22:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZUvN00u5"
+	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="dsCO0m2/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2810213C3F9
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 21:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712265940; cv=fail; b=icaYYm1gJP4ywMmdRUG9y4f7A5T9w7MpdC5TfdYSuytqC+iNosXbrfCXaxC7ENbZO3tPc54MaBwseRot4o1x+U4W7uYaCenxcxdqS77BhwPlw9c0qH71nsztQJuUpIfg5Szu5PoCVMT3ObDVUgHmtm64hnWR9EweTwcLrr+3mGE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712265940; c=relaxed/simple;
-	bh=MtRreMeLa92Yii8rq/pRiXkFO9LvR/bvPeN6d+lbNHQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jV6xeWxE8AlWuAjJidk94OtP7RoEGZPezKkevT83LyAfz6Jo1hEXlrbCMrRrBYRTh2ATYq0bV2/h2bTBi1/mGgVc73oBEIaS5S//9wzelAxRMyHv+wDvGeqtxoXH07rCz/QIrOKx0XaazbCn/JC46s/C01Lvjzynf+J8pIdHtGo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZUvN00u5; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712265938; x=1743801938;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=MtRreMeLa92Yii8rq/pRiXkFO9LvR/bvPeN6d+lbNHQ=;
-  b=ZUvN00u5uNtijApOiiuBpj1aZ/NuePLRIinsQyaU1d52ZIXkwVQFPiGJ
-   bMnoEFYt+KT7Hl0IMAJPsLJplp9dPRms0w55fEET+dhXAyZFzua/DpDzy
-   3iIcvIMFlFOz09c85W+hhF7NnzFupxl+PMCcyVeH6VQeGTMvSYWOxEhkS
-   YicaOcixQvmhBabjQJ7H/UhjgSlGJhSb9PfAW0vC4THib1NJ130jSOR9f
-   zObJmKL9dBSUgt+UcZA3UrLmPC0RNt8nhFH4r6cgcSY6LboqVjRbia/d6
-   SipKUAUy2ImEVReIpXT3ZjC+gLIDZjihmXoVZRzOD493SJoy2BqKuhXhs
-   A==;
-X-CSE-ConnectionGUID: 0+TcMSesRC66aBPy+Qi8ew==
-X-CSE-MsgGUID: s0/eRxWDQOuREbWmkjwE6Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="25087321"
-X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
-   d="scan'208";a="25087321"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 14:25:37 -0700
-X-CSE-ConnectionGUID: RTWiEfvoQKuyv48Hbpp5og==
-X-CSE-MsgGUID: qoG72SKOST6bEzftbef6aQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
-   d="scan'208";a="23623593"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Apr 2024 14:25:35 -0700
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 4 Apr 2024 14:25:35 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 4 Apr 2024 14:25:35 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 4 Apr 2024 14:25:35 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YRrZLzZkhlxwTT1higNVJoJZxpvslZVG2kb04mmS9niu9tlOEyGnmIh9mWx8UE6YmLr3I3vEYFttVKwpQzJgNW9yk/lrdgeDggTdRojQwnMLyitiibarI/xGOLJMU+N8LsMEcllHmjXYLvvfAD26alqF3d07Ipu5Ua8WM4q1eWLNfWDmXbCMJO87yriluJS8re1fRf5JBmDkSr1nfn0CvC1qNQN7YoKuR6FcwaDOJMbdt8pGl67KISOgx2CwxyUyMB1Z8aZhgRUoh6S31rZJHY4QwfXTCTL4HsCsF5PJm9AiPAYtLRyXWZ1JOsmeZJvRck98IYC7ves4TYk2eltq6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+K6Tcmm3lcoYuFWnEWWvQ5DLQcCaIwEhn/uAuTfTUTg=;
- b=LpH0NKSzDrGR5E7Q8TbaexOABUIUfzaTbyHKNzZE6T8dMXSbf9Favfq3g8vu3ZAdiJ2pZiu50rX0G5/qgh+YWs9h2dkSgr8z7FFN8q88Y+9r1YVgqCXQtaVTBj/illLOsH1APwlm1dTfvOb7rscmnvBWhtn8lDmQ26iZSa6JcNVcb6uYQo0n0NugZYLfyABFNLK8HRGKLrhsbTMFpeCNy5F3ueuO6hE53qIv5mxNEPSU8okzCWWudS0pnA6y037eRYEkePItEk3Rewzs5WvoUT9wAM6H4pyH7Nyx15TrMyY2S2OG5F7/lgyBlI5CvQnYV42lWhW5bs/QpcOuzUOz7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB6059.namprd11.prod.outlook.com (2603:10b6:208:377::9)
- by DM4PR11MB6550.namprd11.prod.outlook.com (2603:10b6:8:b4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.26; Thu, 4 Apr
- 2024 21:25:33 +0000
-Received: from MN0PR11MB6059.namprd11.prod.outlook.com
- ([fe80::7607:bd60:9638:7189]) by MN0PR11MB6059.namprd11.prod.outlook.com
- ([fe80::7607:bd60:9638:7189%4]) with mapi id 15.20.7452.019; Thu, 4 Apr 2024
- 21:25:33 +0000
-Date: Thu, 4 Apr 2024 17:25:29 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Imre Deak <imre.deak@intel.com>
-CC: <stable@vger.kernel.org>, <intel-gfx@lists.freedesktop.org>, Jani Nikula
-	<jani.nikula@intel.com>
-Subject: Re: v6.8 stable backport request for drm/i915
-Message-ID: <Zg8aye1ee7T4dNJD@intel.com>
-References: <Zg6rIG0idN3NSTbP@ideak-desk.fi.intel.com>
- <Zg6ww+JomUKR//nh@ideak-desk.fi.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <Zg6ww+JomUKR//nh@ideak-desk.fi.intel.com>
-X-ClientProxiedBy: MW4P222CA0018.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:303:114::23) To MN0PR11MB6059.namprd11.prod.outlook.com
- (2603:10b6:208:377::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65FC13C3C7;
+	Thu,  4 Apr 2024 22:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712268141; cv=none; b=ekzhzS13h/gcJ+4sH7VpQSpOF37MH1pcZwxBpSgABoHxWV9AefpdOyd2HwftNIVKw8I/Cp4J/lQ/EGnLFFt8AALNAkgwKuI83HHPN6lr0l//86sqUo4nU2VTaWEairZQs3H/rN9iyvvETmMmNHsdZKlsxdZQaqnypRfdQdcOBXg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712268141; c=relaxed/simple;
+	bh=4OQKT5bLncOufta+fmUh7ry0byprSvQIr1WUD3MNDRU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CmfV71YfLCezUP+vtW4RoWbPIyAup7A1jILKX7Vdd+TwYd/bMhDtYwtfoxn7KxCFTFIyA5djHvxuK7Mbwn8GtCU+WdPtuDxK0OwhFR7WDlk8lhGlVMYix00GF4OwGYhSN6j3/pWGOpoCj2I0XlX4t2gz5ldtcM3/f09EUQYnq2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=dsCO0m2/; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
+	s=s31663417; t=1712268135; x=1712872935; i=quwenruo.btrfs@gmx.com;
+	bh=vRdH59DgBS8BAe2/3WUKH9sKyGYNWR3kIvL5/gwgd6g=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=dsCO0m2/XY0tdcYeKDIgNhEkl3Yj3wUz++C1C9A+h1vm6vH6saJv6YvRNmr0Hoov
+	 p6SU9mQWmM8pLag/Js5WXLoUVpQvbe25ah6xv9nBWXGDnFBNo88+fYJYU+yGGKS2M
+	 /Xn49PMZ46O/W1z6K4adrbWRd9HJMrf6SA2Vf3serYckYkqun3QOSp66r//mpdT5I
+	 bW0aDCV5fCP/zRaCekMOuj+YlNEXjAqJgMHblj++KY4mNGAmSeeDTqI+PjNblBoPB
+	 HmXv5Xj08J7OKCS1z5XX++S4Z79gUVYzf5srG7hCIqZy8mFlBjDG8t7TllSM3oqy6
+	 KUcD15NwRSog4y4Wfg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.0.219] ([159.196.52.54]) by mail.gmx.net (mrgmx105
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1M5fMY-1ruAvN0W6c-007FD5; Fri, 05
+ Apr 2024 00:02:15 +0200
+Message-ID: <d51b8a18-0b61-4f8b-ac41-01f5f7ddfa1f@gmx.com>
+Date: Fri, 5 Apr 2024 08:32:11 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR11MB6059:EE_|DM4PR11MB6550:EE_
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SZRy2JAg8aG593Iv10HKbLUq6aIlajvFBI3MdD3sudAazEr/6h+guHHdh81VW5DxlL5coM02IZIuYbxOgZxSBwzAsZB1T/oZiwqGMApCBUe4oks4ev0ujx1/1zl4xthbTj9/28MJXuj0e5ueXw1H/twoQyILVmeb6knRb7rG+GuOPMaGTSXBV+q7Dwq6nWLQnZ02ECX3bNYEc1gOSiEz/VzTxQhWF8sRqXEmqpJOR+TyCCmIJ/wKIso9+AsT+ypnhkeMd3WvIpPpC+LndEVaA4aT9p0Bav0qp5zdffLxKOGTzkA8NAfMFEM/MCgcevFCBkmSFiLTEkU9beZdR0bTrizj6v5YhRywTDWCexV0AmiBLpIsreOL78OW/sZPYVHffNZMe4sRbyaiajsyGIc+z8E6MNhQ62zh+2zRJQyzLCE3Clx1E5WxaNVOGi5nIXoRyhprLrVQwbk7+H9aY6tia1yYY5kU2abBqSgql3//Wjc+wvJa2TVWhluC3OIvXBapmCNQya8HGL3tbIO40xHDThIanTkXs7eSA7LEdkyqzcyIFqz97OBNTCxg33e1I2EeTLdpibS3nxSIa3rSE7dqyjj6yL2FHuZFaYhLy+yc/P4/lE17h6aL9C4HY1jrp4d3wY0v++OLxm1bp/1g2I5LvnmvxEoDovR9vTEue0uYF44=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB6059.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FywY/VqnsPUGgYtY9RmdQcMsgofpQqamG65SeWLFjT+8PjF+htgPa9gB8WZE?=
- =?us-ascii?Q?BsKVWZ+t9L9NYW8jxdXSM0GsYQcsPjPyfPOvgJm8D19CpO0C9wOFNK+Xl2fR?=
- =?us-ascii?Q?D7jU9QlWU0D3ptaj7V71K6wPYqbzbutwH+SoXr313AZEHzmC8Vs17gSr9g/X?=
- =?us-ascii?Q?YnVrRZlpfWhHyNz40o2iTUP5rxt/hR5LlvPdISgxzCGzOE9kWOypgLz4bun+?=
- =?us-ascii?Q?GD/AEzfUN0zliHxdwnUooJCNYtx5yEJ8agrDxWCYlsXl8W4ZCaiT2bwUmU6f?=
- =?us-ascii?Q?UT879c99vDUWFmf5OWemilGDctWcY1KAZHOyUBDHRn7IFn2KmA4hntsEdVWC?=
- =?us-ascii?Q?1LeZny8ct1Ie6at0qkojGqa8MEkRAuQi7DTxLwuZjikcqyC4KKYtH+PDkCj0?=
- =?us-ascii?Q?v3TVg/ISxN+pQPjOS12779W3XJ2uP6pvKjAOVPgOrYT0EQXBJlx+E7IHfsMr?=
- =?us-ascii?Q?bOLWXo722WwPL88dtzHRW5KlrG6pWBDz8WAof3QGQ/FzWzGCKYL3asmq6Kx/?=
- =?us-ascii?Q?GAdnT4nHgVufi4Ux4eT+NAkYSo4JGHjt236b8DBpLcdW/6UoP77WHNjYaVz4?=
- =?us-ascii?Q?dBj/J9DCl8FDRHr5VTY8qo4A4/WfGKdqtisBsI67rUOQXgi5SbavsuMYmJy9?=
- =?us-ascii?Q?3IAodQ42MVmokkjiv2CvEB6uZegErP1pfBx68i4CPaEXGxR+Ii8C8vsqVqA5?=
- =?us-ascii?Q?/NIjd6Fg7Pm+pvKLuSFpr1r4wYzsjiQE+Sgncp75UBnotMGS1QYQKxPsiYWv?=
- =?us-ascii?Q?s469GZ0rljjp4TeByeUJS5fqFqtgcqunWgiTaWHA37GPMt+IYLP9NJHHH2Lo?=
- =?us-ascii?Q?zbQnMz0SC/CiZwL85LouACcCYgBGrf8T3wD8ICnhKLyn8beZj3OjS27k28KO?=
- =?us-ascii?Q?rkovG08+f2Nm4z0I49s2EH/W53b/TJL0OzkVg1OmmAWk0dLxmkRyLRF7seUX?=
- =?us-ascii?Q?y5JdoN+oP1txuK+9J5YJh1c4Cd/fzPMVVP5j9/4RjTjD8Y+vwsSrgdSgj+If?=
- =?us-ascii?Q?bzaeBPQ2nSwtoy5SO4owP3LeM6EO9DAd4YAypUWhyoGNEdvMuqbjA+Aqg0zY?=
- =?us-ascii?Q?ey/rKMAgsnmn1HcEwonjwoZKo7qGAmyuTnHZMPMNBpHj5D0XnNt5l5DipZGJ?=
- =?us-ascii?Q?rQwr/y3nGcwP8cXeiNywTdD+fYWMiqPpNSZsbZkA4aKYS9CItDlqHqqhe+pa?=
- =?us-ascii?Q?ouHDzpD/GgQr8cb+rBmmoYVZIkFxZif4yOZ7h849eWLi66DwIDg/UR3+EkPu?=
- =?us-ascii?Q?+34eQKIDVNacaEOxS4ak5r0ltmzwg1Au9KABHBzNdAWNeBi9KSkSCHyFw1ed?=
- =?us-ascii?Q?Bf6TK9FHUgiQz+MfUd8mgaZ/kA2KX2hBJRXdoi8+TN0xgb6IjBJmT24bGdy9?=
- =?us-ascii?Q?KqzFoCZe9abT08u1ShyuyO7OJ+DA/Wy17PwyD/7KLYlgQaVpr5Wyb9M7EGsO?=
- =?us-ascii?Q?PrX3sgcN9Ag6Ov2DK3u8UbKly9lpHyikeNfr1jAm5q9IEwMmql46BtJw2Kv1?=
- =?us-ascii?Q?GTi8NX7+6GlEjPt5QBTUhTZEarWQS/WlEvCEPonvbLVHQnd6saF1Tyzi8NKO?=
- =?us-ascii?Q?RSknobf5T4i5258JODdtFEGskqs5RPtK5aQ/Gf82PytokcORkk65zyP48UXs?=
- =?us-ascii?Q?+Q=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e953500-ee23-41c9-8a1d-08dc54edc2a3
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6059.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2024 21:25:33.0906
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T+3EpJ14A3cfInpwdzRo1RRtNiuut9KfRqHZcCEl9shBYHJ58+eyGGNw2gowU703EI/FNvC1FqBnmvA0QBbVaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6550
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] btrfs: reduce the log level for
+ btrfs_dev_stat_inc_and_print()
+To: dsterba@suse.cz, Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org,
+ Filipe Manana <fdmanana@suse.com>
+References: <cover.1710906371.git.wqu@suse.com>
+ <8f3e7a57b40973e62c0d758922971566ca96fb2e.1710906371.git.wqu@suse.com>
+ <20240404202644.GN14596@twin.jikos.cz>
+Content-Language: en-US
+From: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
+ BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00iVQUJDToH
+ pgAKCRDCPZHzoSX+qNKACACkjDLzCvcFuDlgqCiS4ajHAo6twGra3uGgY2klo3S4JespWifr
+ BLPPak74oOShqNZ8yWzB1Bkz1u93Ifx3c3H0r2vLWrImoP5eQdymVqMWmDAq+sV1Koyt8gXQ
+ XPD2jQCrfR9nUuV1F3Z4Lgo+6I5LjuXBVEayFdz/VYK63+YLEAlSowCF72Lkz06TmaI0XMyj
+ jgRNGM2MRgfxbprCcsgUypaDfmhY2nrhIzPUICURfp9t/65+/PLlV4nYs+DtSwPyNjkPX72+
+ LdyIdY+BqS8cZbPG5spCyJIlZonADojLDYQq4QnufARU51zyVjzTXMg5gAttDZwTH+8LbNI4
+ mm2YzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
+ CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
+ /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
+ GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
+ q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
+ ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00ibgUJDToHvwAK
+ CRDCPZHzoSX+qK6vB/9yyZlsS+ijtsvwYDjGA2WhVhN07Xa5SBBvGCAycyGGzSMkOJcOtUUf
+ tD+ADyrLbLuVSfRN1ke738UojphwkSFj4t9scG5A+U8GgOZtrlYOsY2+cG3R5vjoXUgXMP37
+ INfWh0KbJodf0G48xouesn08cbfUdlphSMXujCA8y5TcNyRuNv2q5Nizl8sKhUZzh4BascoK
+ DChBuznBsucCTAGrwPgG4/ul6HnWE8DipMKvkV9ob1xJS2W4WJRPp6QdVrBWJ9cCdtpR6GbL
+ iQi22uZXoSPv/0oUrGU+U5X4IvdnvT+8viPzszL5wXswJZfqfy8tmHM85yjObVdIG6AlnrrD
+In-Reply-To: <20240404202644.GN14596@twin.jikos.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:1TWV5WHAgslgOh5BI3MF7vSrEcJ9EpGX+3h+05We0LxURvguzU8
+ Qq3yKBIKKvtIbp8OJlMt9FmfbtFD10Efp46zvTGjcogCeyJ/WyBwudZXXBMxtZ07lu0YDpc
+ JmZcXRweN3GcAy6Cl9cEhDoSdeHx/5nO2nvraF1vJcm6yYjYKIC+wr+OWhndGEpiJjyaQT9
+ UD7OD+V+DXxXi3LRIXFRw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:zuhvLjdg8v8=;ql4od9hr7Ruyfms+fHRtzAp23Tj
+ 4KxUfHrUXNbeNpF0xbmM9/ty4luj2mNUzMRe+LbC6tPgLj3Hmgn9jYZ1Rjpr6kRKPalZ1yhtx
+ 4qFYET9WOFHjpkMuaJMEr3tjqnUiEX1Ywp0yM3Ps4nXEx2Kj/EqwINcTv+oPzdwIkbCx5/eEI
+ bNkzVFMSj1Jjg95p1Til8TvW5Rlnxdrp4zIaKhc7KsMrGrcDBoh1pCKvIHfRKm2+vLFFct4+m
+ uuUZsQkyod1GY1GgRlVx8DXU5qSzMhoAwEYewI5bVL1wrqxZKq8zM6MeSR4OG4G5OECUGI9by
+ o0xpYUWXX/3eJ7dewuOMjDMuTe8ZHvhF5Vm3oSwV0vu+KHsadymBMuvGKEOQEfTpCi7Cx5kcJ
+ MI7Uaj/8LNr4F4oaJKtWaAb9wTRhFaalNkjun+Q+OC+c5p6+GaRhCqHPzZzd+rZvbagLxsF9w
+ H6zLtg8BrG6NeuPHVHoWaRuYIV93QWf7Y8D9O7LBZDheISiDeDQC3rR0K7lRyiICHA8fSVWsR
+ i2q7HQXHRUd7ZP8j02d+8uUMRb4hKu+3tk2Ky7N+pIQ7HOd6yRw/OcBrN6Ebvl0Ph2iIYDJzL
+ 2RbFF8XCNy+Yy7Sk2TYTIzvgJY3Ke9kScoXNC7n8jG54phhYM9aUiUjBySXKJfV2ovrC5tMtA
+ rCQ0DUb9PxifMOTIRTO997rxLmrOiUEYzg9RcxLeN8gGvFpDUDqsnW9kZkoh1iZk+Ql+dnec4
+ OKaokXHtf1D0maqLK55D9MT+LiDKaQqrA20ARIQnhubP4X2t8CXNCm8phzp1PZJkmYKsB3nFU
+ 8zLXlWMnyfFznhTXLLedGimxKHn4gq66d+FUfQdhwSaLw=
 
-On Thu, Apr 04, 2024 at 04:53:07PM +0300, Imre Deak wrote:
-> On Thu, Apr 04, 2024 at 04:29:04PM +0300, Imre Deak wrote:
-> > Stable team, please backport the following upstream commit to 6.8:
-> > 
-> > commit 7a51a2aa2384 ("drm/i915/dp: Fix DSC state HW readout for SST connectors")
-> 
-> Just noticed that the above commit is not yet upstream, still only
-> queued in drm-intel-next. I presumed patches will be cherry-picked from
-> drm-intel-next to drm-intel-fixes based on the Fixes: tag, so I only
-> pushed the above patch to drm-intel-next; maybe the cherry picking
-> doesn't (always) happen automatically.
 
-This patch was cherry-picked this week and sent with the drm-intel-fixes
-pull request targeting v6.9-rc3
 
-Since it has the proper 'Fixes:' tag, it will likely get propagated to
-the stable branches 'automagically' in some near future.
+=E5=9C=A8 2024/4/5 06:56, David Sterba =E5=86=99=E9=81=93:
+> On Wed, Mar 20, 2024 at 02:24:52PM +1030, Qu Wenruo wrote:
+>> Currently when we increase the device statistics, it would always lead
+>> to an error message in the kernel log.
+>>
+>> However this output is mostly duplicated with the existing ones:
+>>
+>> - For scrub operations
+>>    We always have the following messages:
+>>    * "fixed up error at logical %llu"
+>>    * "unable to fixup (regular) error at logical %llu"
+>>
+>>    So no matter if the corruption is repaired or not, it scrub would
+>>    output an error message to indicate the problem.
+>>
+>> - For non-scrub read operations
+>>    We also have the following messages:
+>>    * "csum failed root %lld inode %llu off %llu" for data csum mismatch
+>>    * "bad (tree block start|fsid|tree block level)" for metadata
+>>    * "read error corrected: ino %llu off %llu" for repaired data/metada=
+ta
+>>
+>> So the error message from btrfs_dev_stat_inc_and_print() is duplicated.
+>>
+>> The real usage for the btrfs device statistics is for some user space
+>> daemon to check if there is any new errors, acting like some checks on
+>> SMART, thus we don't really need/want those messages in dmesg.
+>>
+>> This patch would reduce the log level to debug (disabled by default) fo=
+r
+>> btrfs_dev_stat_inc_and_print().
+>> For users really want to utilize btrfs devices statistics, they should
+>> go check "btrfs device stats" periodically, and we should focus the
+>> kernel error messages to more important things.
+>
+> I kind if disagree with each point.
+>
+> The message is meant to be logged as it will happen in production and
+> outside of development, so the debug level does not make sense.
+>
+> The stats message is not duplicated for the individual causes, it
+> additionally tracks the whole state.
 
-Later if it doesn't, then we can send the backported patch to the
-stable mailing list for inclusion.
+I'd disagree with this.
 
-> 
-> > Thanks,
-> > Imre
+We already have mount time output, and detailed causes are way more
+useful and just a duplicated message repeating itself.
+
+>
+> Logging important messages to system log is a common thing and we do tha=
+t
+> a lot, this makes debugging and anlyzing things easier. We can't
+> expect that there would always be a daemon collecting the stats, there's
+> not standardized or recommended tool for that. A quick look to dmesg can
+> show that something is wrong.
+
+Then try supporting cases with all these duplicated and useless
+messages, you'll hardly agree that they provide any usefulness.
+
+>
+> What we can do: reduce the number messages so the whole stats are
+> printed once per transaction if there is a change.
+>
+> We can also tune which events also print the stats, for example flush
+> errors are more interesting than read/write, comparing the number of
+> events that can happen in a batch.
+
+My another point is, if it's an important error, we should output it
+with detailed reason/cause/extra info immediately.
+
+And that's already the case for regular/scrub read errors.
+
+For critical operations like flush, we should output extra error
+messages, other than relying on that generic and vague error.
+
+Thanks,
+Qu
 
