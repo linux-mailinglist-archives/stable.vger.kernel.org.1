@@ -1,96 +1,164 @@
-Return-Path: <stable+bounces-35956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87AD6898C5C
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 18:40:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C20EB898CC5
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 18:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F1E28A49F
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 16:40:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53561C22315
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 16:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A231C6BF;
-	Thu,  4 Apr 2024 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390C5129E8A;
+	Thu,  4 Apr 2024 16:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WKLxKWaX"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="gCFUcowO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FDE1862F;
-	Thu,  4 Apr 2024 16:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFF0127B70
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 16:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712248831; cv=none; b=romiO2weP2/j95tXaNA69XYswfJi50pogK6crRKceovu1lAzE4k8zHV4lJJgTtY0e9J8uuZfQQzXm/0vWJCjSVBmgNuuJJ7G3ZQeEcPKbTSZzuogXSmIo2r7zGEC4AxMt1qfd3WbhzZ3NKkeQGLJ4I8gtRQjIla6TXG9El/qVP8=
+	t=1712249874; cv=none; b=Qxr6pztn7MOX2ZDdnmz2d0iwQabdbLNaLqyeM+hvYDCOhb6crUMLqYwQGnVHQcc0bHfG2B7Lv2otD6qWsQ85/nUk2Z6ZTR9fqFav7KMeX6riBJnOrfSk7gJDb0Xph2OX2qarMpNFmzYemlMYnNLguxqbY07QrJVTgXf60OtZuvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712248831; c=relaxed/simple;
-	bh=NDcTO6ryp12wsBd5oIpZdw/H8fCBPwWYXGzE2tqxxKY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=oMuReSzieOzlB0et3VqGeSPJjV7uFjrjX8eWeNa693pf4azAdtn6E4460uisfO1OCGQjbzp7KLrEQZZsJQS6hRTjhd0F34QSkaeNPqVUrP/VNi6Gmw+l/18b4tvw6KAgb2nenMbxTbAK0c0tFK9g9Cg/FBIfLKz7Z9ztvLtVnVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WKLxKWaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A58D9C43394;
-	Thu,  4 Apr 2024 16:40:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712248830;
-	bh=NDcTO6ryp12wsBd5oIpZdw/H8fCBPwWYXGzE2tqxxKY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=WKLxKWaXvC/da1X4T1YzNj/Sf8tuEo4IosuZssveerUwuwdlgIfynCX0A+8gX/koC
-	 ChnaFk9SYl667aFTjq0JtoLQV02haVv6wLXKpKlso+p8sVRT068j/24GU/qojbZQPw
-	 pFyuBeuB+fh23sZjYyxAtrTYLWt0gHMMn33v0T4A4bQ9HpzT74oFRbjPmdQANviBLq
-	 n4Dx0xc08IXabJXvUiEPn439wfPpWHRpyi8n/ZsRJETdKtfHwYweIw4GCNed6I81LQ
-	 qiORyGPHUK7nK/aQaSa+s3Bp3NjA+NlJ42uXCPvIgrNaRA1z70m0o9ddPb/0dsaUCP
-	 U/k1E8hVVE6oQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 94697D9A155;
-	Thu,  4 Apr 2024 16:40:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1712249874; c=relaxed/simple;
+	bh=2KPWHevbjorOUSsHZapNRmUD0fpaRYqhSR1Dgg8DGcU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rGttsp9qtm3/741CvqO90UALIfD6RW5zCRwKM4T6+Za68Q2tM1czrYeEXVb9gq6kXU4plfChddHUWpM8oUlo1MPFqN+SJrPjpr6iuXjg+kgqlZcHbFREFj/Pp+fQTZvpsNKJKo+1rk8Jkqf2qcEiswmyV01qKsUoocvnv/43mUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=gCFUcowO; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-516bf5a145aso1570505e87.1
+        for <stable@vger.kernel.org>; Thu, 04 Apr 2024 09:57:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1712249870; x=1712854670; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lTE8+oh/R1tis1FpRuf547JjNaef5iXS7/FKBvUGN+U=;
+        b=gCFUcowOCbOm/9NdxQBKmh/ioVV9o3cAMbVHhnnxyBAZiCnHznWLLeIq9ZvAc1c9As
+         WcFSS4q1X8W9z3ldcUtQcvqAzI+mto4jbEW1DDJNx7J0ZvYeH2kgYZdIH/A+rsQGLPmq
+         41WUPlP3FYK2zWstV7se0zLYc1yRoFZUxFb53ASJKlRN9OHhFi8Df0J2VnUr3AJhYa2i
+         P5AZaYe6h99h759hQsvHWuf8FU22kKP3yaFsCWJgLOhrcdXybC5v8erR5gBvVK7fKSUS
+         irrKf9cqwmPm4r4iBKmM1K1oNecfUZhSw8GjNjRVs05Exiw21iy7xLsvNMo71BTa6BPu
+         bgOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712249870; x=1712854670;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lTE8+oh/R1tis1FpRuf547JjNaef5iXS7/FKBvUGN+U=;
+        b=EG/ay4w0NsdqFZ1v7jfoZCsTaCTOK4VW0DlnuzZBaGqbUlBdErAvkBFiOZ42QibywK
+         0nHQPuonCiM75NgsRurL4YuI1NORdH1OYxLHxI8UFr5innxCXM9WzU/15Um5irhDDkCB
+         gjj+w5sxckcpnGbBnK6Q2sAVjUcN3d/+pn0ERhjdwiuueLreqw/CMxrvmPbHW+eM/xkI
+         BxY/YUGtSp/qgUvqjyB3J2IOTPhx6T9Abg3jtaUzdVZTI70RcEc5sSk1JgH/1Yv/N0wb
+         DRrar251olZJWaYPO2FbhLUUMfTxvBCmei8ZkcqjIuxBVwlRYGu580lzHbLVQnGWM1+9
+         zoZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXHSbPLlQFY8MmXc/h3DOHbsqCkFssWu8djISABNDZMuUMNWZBNQbbv0kNl8nsWatXucxSKZ9b4aWwBT6qiH9phMMndUcSv
+X-Gm-Message-State: AOJu0Yy16LVF+Tmn2tZOXRoCrxPrXRc683mZLG09+SYQDN84e0zB1q6n
+	NlHPPIUDOYOzZPL6lJkJYD3fIxD+8GZlLhdzijkCHVzm06VOpjYdFd+vjIzzTvplsB4jb9+Ov06
+	PXWHSa2kHRm8mSq3vvI58djNAT6+ukktUWn+lCg==
+X-Google-Smtp-Source: AGHT+IFE0+ahlc5nRL1hgLfZODKxbfrTp1Qc4vXsx4HOv/uC4g10dvAfQIHFs1k8Dy9M4egSuyjIIZGniBCN0XY0PDc=
+X-Received: by 2002:ac2:4826:0:b0:516:d1af:e4e9 with SMTP id
+ 6-20020ac24826000000b00516d1afe4e9mr17779lft.25.1712249870133; Thu, 04 Apr
+ 2024 09:57:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] net: usb: ax88179_178a: avoid the interface always
- configured as random address
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171224883060.6883.2513876662318355261.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Apr 2024 16:40:30 +0000
-References: <20240403132158.344838-1-jtornosm@redhat.com>
-In-Reply-To: <20240403132158.344838-1-jtornosm@redhat.com>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: kuba@kernel.org, dave.stevenson@raspberrypi.com, davem@davemloft.net,
- edumazet@google.com, horms@kernel.org, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- stable@vger.kernel.org
+References: <20240404093328.21604-1-brgl@bgdev.pl> <20240404093328.21604-3-brgl@bgdev.pl>
+ <Zg7I7nYkZLcIgETq@smile.fi.intel.com>
+In-Reply-To: <Zg7I7nYkZLcIgETq@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 4 Apr 2024 18:57:39 +0200
+Message-ID: <CAMRc=Me=nH0bWzd3WstJnkQYmLHN7c+c4_wq41JXzcfp5pODRg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] gpio: cdev: fix missed label sanitizing in debounce_setup()
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Kent Gibson <warthog618@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alexey Dobriyan <adobriyan@gmail.com>, stable@vger.kernel.org, 
+	Stefan Wahren <wahrenst@gmx.net>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Thu, Apr 4, 2024 at 5:36=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@intel.com> wrote:
+>
+> On Thu, Apr 04, 2024 at 11:33:28AM +0200, Bartosz Golaszewski wrote:
+> > From: Kent Gibson <warthog618@gmail.com>
+> >
+> > When adding sanitization of the label, the path through
+> > edge_detector_setup() that leads to debounce_setup() was overlooked.
+> > A request taking this path does not allocate a new label and the
+> > request label is freed twice when the request is released, resulting
+> > in memory corruption.
+> >
+> > Add label sanitization to debounce_setup().
+>
+> ...
+>
+> > +static inline char *make_irq_label(const char *orig)
+> > +{
+> > +     char *new;
+> > +
+> > +     if (!orig)
+> > +             return NULL;
+> > +
+> > +     new =3D kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
+> > +     if (!new)
+> > +             return ERR_PTR(-ENOMEM);
+> > +
+> > +     return new;
+> > +}
+> > +
+> > +static inline void free_irq_label(const char *label)
+> > +{
+> > +     kfree(label);
+> > +}
+>
+> First of all this could have been done in the previous patch already, but=
+ okay.
+>
+> ...
+>
+> > +                     label =3D make_irq_label(line->req->label);
+> > +                     if (IS_ERR(label))
+> > +                             return -ENOMEM;
+> > +
+> >                       irqflags =3D IRQF_TRIGGER_FALLING | IRQF_TRIGGER_=
+RISING;
+> >                       ret =3D request_irq(irq, debounce_irq_handler, ir=
+qflags,
+> >                                         line->req->label, line);
+>
+> But the main point how does this change fix anything?
+>
+> Shouldn't be
+>
+> -                                         line->req->label, line);
+> +                                         label, line);
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+It should, I badly copy-pasted Kent's correct code. Thanks, I fixed it in t=
+ree.
 
-On Wed,  3 Apr 2024 15:21:58 +0200 you wrote:
-> After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
-> consecutive device resets"), reset is not executed from bind operation and
-> mac address is not read from the device registers or the devicetree at that
-> moment. Since the check to configure if the assigned mac address is random
-> or not for the interface, happens after the bind operation from
-> usbnet_probe, the interface keeps configured as random address, although the
-> address is correctly read and set during open operation (the only reset
-> now).
-> 
-> [...]
+Bart
 
-Here is the summary with links:
-  - [net,v4] net: usb: ax88179_178a: avoid the interface always configured as random address
-    https://git.kernel.org/netdev/net/c/2e91bb99b9d4
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+>
+> ?
+>
+> > +                     if (ret) {
+> > +                             free_irq_label(label);
+> >                               return ret;
+> > +                     }
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 
