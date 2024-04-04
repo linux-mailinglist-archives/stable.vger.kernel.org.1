@@ -1,99 +1,205 @@
-Return-Path: <stable+bounces-35880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735D2897BFD
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 01:24:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A96897D17
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 02:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13F161F27EE4
-	for <lists+stable@lfdr.de>; Wed,  3 Apr 2024 23:24:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0231F1F23848
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 00:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8641E156C50;
-	Wed,  3 Apr 2024 23:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484DF23CE;
+	Thu,  4 Apr 2024 00:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="xQ0RU73w"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="f7wE4mZK"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF3115699F;
-	Wed,  3 Apr 2024 23:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3357492;
+	Thu,  4 Apr 2024 00:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712186685; cv=none; b=Sv4YekEj1lJsptjPmebZ0WZR8UqjAhoorxoohxuhtqDBqRAMU0tQzdZKOEEsnWqnAk6Hw/IMN2ryJLTnQQGR1Vcup21mXq0VIEsN0Qh3qJ9l9TCiEjaCIF6GeMOzAPRg9G6yCtAFWLC9oDsb+2mLnwU8VpGIyzQ5FkgukQfbWgA=
+	t=1712190672; cv=none; b=nSl7bt2ukT72iYg/3PtkEGQmXOv82Ez2/NXDNuxPAb+4ooyGskNtit7ECc8UR3Z9+rsFssXz8/OBr0czQ6ZG1zeoJcVBlqRsc+cbnYY5ickPCLjaH3fRSTcI/amiatXMioqmvDPR4PFf9YXUjnaNOEVi9ns4U1hEW1Zzg/Cp+po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712186685; c=relaxed/simple;
-	bh=pM9/ZTgzDuoqN/5Yhyq+wRZbOGlNKVeDvrBFQoAeICU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a6vxe1MRS4PAUcgky/ZVePxNV/DkLsIgGgeCR9FSMK+NV1R2SMGJ5OXhEZlN7wabFBy7ve4a9I36BXNOU1L2rQLUlIAVtOYFXgceFJ0gFzw4YwgCY/s+SkOPdxQRI7Yy7p7hFU+eiMbdSgbrXZdSbUiIad000KJ2+gqFOahPlTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=xQ0RU73w; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4V916s06JBz6Cnk90;
-	Wed,  3 Apr 2024 23:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1712186674; x=1714778675; bh=GaQ3wPBf1YSzPwOXZZP9FBPm
-	vGGpXPI+orClqrHPrcc=; b=xQ0RU73w4BqPafKh/fPsEu8hQffToqmiLfI21YNR
-	+Lsa0TPbjLGMNhhWLaGRtEsILMNnlBeS/jpfJT9USwAiD8sTllzpxCM7pPhEi8Us
-	meXxi3CXg5IvPAb1bVh2jqy+aeJhNmdYTcRhQ7g8JsnXmpvuMrKfKaGgl33e6bp6
-	32MPgxBqYz4GNrLrIW2f1nNxrtQAk/AlMvqf1blRY0Ls4uWBePPzt8MYFCWcu23e
-	rjD4ZtMiH+Ex6Bbl4B2BQtOhZjNbmZaaMlShoDwQYBqw3RC7Hpi72/9d3QpXrO5n
-	hTtFsytDveFU7cxZXQgPk2L1RLMg2YlmhCj0FZOkvzxZMA==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id KA4xZDbc_6iY; Wed,  3 Apr 2024 23:24:34 +0000 (UTC)
-Received: from [192.168.3.219] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4V916m20SRz6Cnk8y;
-	Wed,  3 Apr 2024 23:24:31 +0000 (UTC)
-Message-ID: <bc800bdd-6563-40ba-bc8d-e98b87748c15@acm.org>
-Date: Wed, 3 Apr 2024 16:24:30 -0700
+	s=arc-20240116; t=1712190672; c=relaxed/simple;
+	bh=AZBccU90Y33RDjvsClTnnyoP7eIFc3Od90wpBG4Bv+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OEzB2Zm+8ydcgOhHeKG6LUgO16+F3VPgmm17ZwmY2bUndOJagN/UuLqb5+y4AGvo6M0assRH5/R1FuO8EPjU6ve3NQVcSQTXfAhM/4U1p/BzTf8HqYpTVHf7+n8I/03scjMpFNQCKKmywoP1ZJhv9tvedtjJRr6Ii5SlbjUwLMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=f7wE4mZK; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 384413A3;
+	Thu,  4 Apr 2024 02:30:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1712190629;
+	bh=AZBccU90Y33RDjvsClTnnyoP7eIFc3Od90wpBG4Bv+E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f7wE4mZKlqguDlnDg7J2uj/iDMoKo8Bz3L4JezNgiM3Og0SM64hPVjMHhdTG/1mY1
+	 vN6ITSvQFL7+mM3kX7Kljj3Lem5C2sdQB1GtXpT1DHfLIgR8AQGFTPQF7LLT0VGIlj
+	 tG6IlkBmORmRX5YixCc89w/6GZr/+B8KcBwBVau0=
+Date: Thu, 4 Apr 2024 03:30:55 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, stable@vger.kernel.org,
+	Oliver Neukum <oneukum@suse.com>,
+	Devinder Khroad <dkhroad@logitech.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH v5] media: ucvideo: Add quirk for Logitech Rally Bar
+Message-ID: <20240404003055.GD23803@pendragon.ideasonboard.com>
+References: <20240402-rallybar-v5-1-7bdd0fbc51f7@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] scsi: sg: Avoid race in error handling & drop bogus
- warn
-To: Alexander Wetzel <Alexander@wetzel-home.de>, dgilbert@interlog.com
-Cc: gregkh@linuxfoundation.org, sachinp@linux.ibm.com,
- linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- martin.petersen@oracle.com, stable@vger.kernel.org
-References: <81266270-42F4-48F9-9139-8F0C3F0A6553@linux.ibm.com>
- <20240401191038.18359-1-Alexander@wetzel-home.de>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240401191038.18359-1-Alexander@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240402-rallybar-v5-1-7bdd0fbc51f7@chromium.org>
 
-On 4/1/24 12:10 PM, Alexander Wetzel wrote:
-> @@ -301,11 +302,12 @@ sg_open(struct inode *inode, struct file *filp)
->   
->   	/* This driver's module count bumped by fops_get in <linux/fs.h> */
->   	/* Prevent the device driver from vanishing while we sleep */
-> -	retval = scsi_device_get(sdp->device);
-> +	device = sdp->device;
-> +	retval = scsi_device_get(device);
->   	if (retval)
->   		goto sg_put;
+Hi Ricardo,
 
-Are all the sdp->device -> device changes essential? Isn't there a
-preference to minimize patches that will end up in the stable trees?
+Thank you for the patch.
 
-Thanks,
+On Tue, Apr 02, 2024 at 12:09:29PM +0000, Ricardo Ribalda wrote:
+> Logitech Rally Bar devices, despite behaving as UVC cameras, have a
+> different power management system that the other cameras from Logitech.
+> 
+> USB_QUIRK_RESET_RESUME is applied to all the UVC cameras from Logitech
+> at the usb core. Unfortunately, USB_QUIRK_RESET_RESUME causes undesired
+> USB disconnects in the Rally Bar that make them completely unusable.
+> 
+> There is an open discussion about if we should fix this in the core or
+> add a quirk in the UVC driver. In order to enable this hardware, let's
+> land this patch first, and we can revert it later if there is a
+> different conclusion.
+> 
+> Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
+> Cc:  <stable@vger.kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Cc: Oliver Neukum <oneukum@suse.com>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Devinder Khroad <dkhroad@logitech.com>
+> Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+> Tested with a Rallybar Mini with an Acer Chromebook Spin 513
+> ---
+> Changes in v5:
+> - Update commit message to describe that this is a temp solution.
+> - Link to v4: https://lore.kernel.org/r/20240108-rallybar-v4-1-a7450641e41b@chromium.org
+> 
+> Changes in v4:
+> - Include Logi Rally Bar Huddle (Thanks Kyle!)
+> - Link to v3: https://lore.kernel.org/r/20240102-rallybar-v3-1-0ab197ce4aa2@chromium.org
+> 
+> Changes in v3:
+> - Move quirk to uvc driver
+> - Link to v2: https://lore.kernel.org/r/20231222-rallybar-v2-1-5849d62a9514@chromium.org
+> 
+> Changes in v2:
+> - Add Fixes tag
+> - Add UVC maintainer as Cc
+> - Link to v1: https://lore.kernel.org/r/20231222-rallybar-v1-1-82b2a4d3106f@chromium.org
+> ---
+>  drivers/media/usb/uvc/uvc_driver.c | 30 ++++++++++++++++++++++++++++++
+>  drivers/media/usb/uvc/uvcvideo.h   |  1 +
+>  2 files changed, 31 insertions(+)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+> index 08fcd2ffa727b..9663bcac68438 100644
+> --- a/drivers/media/usb/uvc/uvc_driver.c
+> +++ b/drivers/media/usb/uvc/uvc_driver.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/usb.h>
+> +#include <linux/usb/quirks.h>
+>  #include <linux/usb/uvc.h>
+>  #include <linux/videodev2.h>
+>  #include <linux/vmalloc.h>
+> @@ -2233,6 +2234,8 @@ static int uvc_probe(struct usb_interface *intf,
+>  	}
+>  
+>  	uvc_dbg(dev, PROBE, "UVC device initialized\n");
+> +	if (dev->quirks & UVC_QUIRK_FORCE_RESUME)
 
-Bart.
+The quirk isn't really about forcing resume, but about not resetting on
+resume. Can we name it UVC_QUIRK_NO_RESET_RESUME ?
+
+> +		udev->quirks &= ~USB_QUIRK_RESET_RESUME;
+
+Let's move this before the uvc_dbg().
+
+With that, the patch looks good to me. I can apply those changes
+locally if you don't want to submit a v6.
+
+>  	usb_enable_autosuspend(udev);
+>  	return 0;
+>  
+> @@ -2574,6 +2577,33 @@ static const struct usb_device_id uvc_ids[] = {
+>  	  .bInterfaceSubClass	= 1,
+>  	  .bInterfaceProtocol	= 0,
+>  	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
+> +	/* Logitech Rally Bar Huddle */
+> +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+> +				| USB_DEVICE_ID_MATCH_INT_INFO,
+> +	  .idVendor		= 0x046d,
+> +	  .idProduct		= 0x087c,
+> +	  .bInterfaceClass	= USB_CLASS_VIDEO,
+> +	  .bInterfaceSubClass	= 1,
+> +	  .bInterfaceProtocol	= 0,
+> +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
+> +	/* Logitech Rally Bar */
+> +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+> +				| USB_DEVICE_ID_MATCH_INT_INFO,
+> +	  .idVendor		= 0x046d,
+> +	  .idProduct		= 0x089b,
+> +	  .bInterfaceClass	= USB_CLASS_VIDEO,
+> +	  .bInterfaceSubClass	= 1,
+> +	  .bInterfaceProtocol	= 0,
+> +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
+> +	/* Logitech Rally Bar Mini */
+> +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+> +				| USB_DEVICE_ID_MATCH_INT_INFO,
+> +	  .idVendor		= 0x046d,
+> +	  .idProduct		= 0x08d3,
+> +	  .bInterfaceClass	= USB_CLASS_VIDEO,
+> +	  .bInterfaceSubClass	= 1,
+> +	  .bInterfaceProtocol	= 0,
+> +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
+>  	/* Chicony CNF7129 (Asus EEE 100HE) */
+>  	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+>  				| USB_DEVICE_ID_MATCH_INT_INFO,
+> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> index 6fb0a78b1b009..fa59a21d2a289 100644
+> --- a/drivers/media/usb/uvc/uvcvideo.h
+> +++ b/drivers/media/usb/uvc/uvcvideo.h
+> @@ -73,6 +73,7 @@
+>  #define UVC_QUIRK_FORCE_Y8		0x00000800
+>  #define UVC_QUIRK_FORCE_BPP		0x00001000
+>  #define UVC_QUIRK_WAKE_AUTOSUSPEND	0x00002000
+> +#define UVC_QUIRK_FORCE_RESUME		0x00004000
+>  
+>  /* Format flags */
+>  #define UVC_FMT_FLAG_COMPRESSED		0x00000001
+> 
+> ---
+> base-commit: c0f65a7c112b3cfa691cead54bcf24d6cc2182b5
+> change-id: 20231222-rallybar-19ce0c64d5e6
+
+-- 
+Regards,
+
+Laurent Pinchart
 
