@@ -1,120 +1,186 @@
-Return-Path: <stable+bounces-35973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579EA898F85
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 22:19:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3309898FB5
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 22:34:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD03CB26A4C
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 20:19:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A26CB23008
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 20:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042ED1350C9;
-	Thu,  4 Apr 2024 20:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1897313792B;
+	Thu,  4 Apr 2024 20:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DlLJLCs9"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="adaBaPGt";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lt1z5CtE";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="adaBaPGt";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lt1z5CtE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5803613540B;
-	Thu,  4 Apr 2024 20:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A8B6FE26;
+	Thu,  4 Apr 2024 20:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712261962; cv=none; b=hw8GAMOQfuyjcPwfSuV9Wdtjk9r6ZSDlRnEpSTiZL4tAIJdovu5t+dXrOVcv28bzkDP+NWXc8+LOFKAhguAAkk0dQegN7aDHAJ7HdObWoZq7JkXG/gN/FSUvIYZ2JsMcYTjNIc3+eJzfZY0L1/LIEt1YNXoG/7ZrNq2dHAxcf8g=
+	t=1712262858; cv=none; b=UKS5kZUx44ErP0qIvo3iKqtXF/7Zfv4FXk6irW1/nwKgKgWtS5+cwSenOR7/P4pNA/Lv6Pnmc1UfiFVMlK0s5bcQ6+yvdT3YW9V58Ec7Z8fbd9IUj8LP1aYyt1HwGEsJkubi3bRkhcL+TS9QFI6SWe1HqYwOMXUCQnPsNtMIs5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712261962; c=relaxed/simple;
-	bh=w0J4zbPe6JElF9mSTVzlFkygGNgh6g/7Byt7NDMak0E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=neHVnU+I5ybzuxG+9ATW4z99/rXlRebJ3gwZ5FGzngDduVWmOe3SdiSXDT5Yf02BgM02CEAJ4O34mftzp7Sjb7M4ZYABit7j+PQgdawO+U5tZ6IISo5HQAMdVpYQM0u7yd/ohOrgXB3IAAhKomemEw/5kZbYbhC+6c/9dYstokc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DlLJLCs9; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-78a26803f1aso85510085a.3;
-        Thu, 04 Apr 2024 13:19:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712261959; x=1712866759; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zt4DKHBY+VHDIhqqlQCWnE/AGPM6SuI6iCdlV3YdRD0=;
-        b=DlLJLCs9jvWn7qaOZkmyUmPsnb6JBNHx21WtmF2ec8f3yL7SzoNBW2xgWTVCr3j0sQ
-         KYxDyPQNBiPkNxHeatukMgoYUdwy06Wsl2AY5Yh2c8uOxLjlhw2QJWtzw3pfMf381ZUI
-         uRV6BEuy+aAEYKyifsEN3kNSnoNsfOJbUKhbCWmMW5yyB16rdv4CsrbO+uOrIO63oiKw
-         roOYYoWgQx8IxyHE+9z6z2KVrstRfAG4JLLofY8IzgaDx5n7iFnOgaKr0847GuDqueLA
-         I7ZGxZpq5SI8v4DTPcqN4CwYD0HUtsrRtxg/wAnwmMt0j/vkvbTNmIUmXLVQu54cGx09
-         1aMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712261959; x=1712866759;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zt4DKHBY+VHDIhqqlQCWnE/AGPM6SuI6iCdlV3YdRD0=;
-        b=dFmIS/E5Wncc+lM84BwfEgJmGQinLMP0IyDnZng9ik/WkcRxgG3fP0wm/8g9vPPQTE
-         Rl1WsB3eorc96hOkeGs07c4WZilWCMaiql0EO0QvPAMxXD1FppD5SXypsgTMdeddW+s1
-         AQHfFFeKbveL4ACO8aI42uhU8zWwSMPVhmd5aF7K2ZxDxhRuJVeByDTWh+7X+r3vUBW+
-         XiDZGUL9HCJ3cMjsRG5hRyzPcFt4tjS+hkoc0EOT0U4QgRUalm35ffJN24OTKXj8gtHS
-         fXbnJsmgBeVG0ju+pSfBof4SMLAh2d33PUL5DHLodXbN/GCyRo/4oFLUi08P2MKasvHD
-         BgOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU24Le0mmMwuks1hxLg0n1rFrrhFiJDqBCPQRzmg6UdedEC2l44wf/cdTjUxkriWP2E2b5jraWwSLpSl9Ls2a2zFmKzdHfDhzeLkVCymUHvy2Fek4DBFGUGoE04ZbwZEAXQJzyy
-X-Gm-Message-State: AOJu0YyPok79Xfp1+xc/Bq6X8k7ct2eOdYIuQxYxoTjaSrRMJGQw2NOl
-	G9+vMLb0up5yT1rNTk+m/YHmrEE0D2YqhwHTDq8+yIRaO2ANvclj
-X-Google-Smtp-Source: AGHT+IHBHhv+pwO97xTouPmxltde0KQLvJ12DR+Cx/wmhXsuBOJCWB0WUtvNrCMHWomdYZQTKO8j4g==
-X-Received: by 2002:a05:620a:5685:b0:78a:462d:1bda with SMTP id wg5-20020a05620a568500b0078a462d1bdamr3904328qkn.66.1712261959179;
-        Thu, 04 Apr 2024 13:19:19 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id s9-20020a05620a030900b00789fb5397d4sm51934qkm.100.2024.04.04.13.19.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Apr 2024 13:19:18 -0700 (PDT)
-Message-ID: <003e00da-ac9c-4c98-800d-fcb5383a9e7d@gmail.com>
-Date: Thu, 4 Apr 2024 13:19:12 -0700
+	s=arc-20240116; t=1712262858; c=relaxed/simple;
+	bh=q6em1spNjxJpPQRYktP0FiN58iENw53pzN56vBpUAB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YiF1GuAwe3jVw07MPdbsCmjEkeqinqkF8TrkQtg5Kqa0n5PaVyL1ok4JqJeLSQ2u1qkcQ1Mt1uU2jK5h5p9tp3o20DUGc9WPrgiNGHYPvoyCOhqOQrir3w4D3l98xIClbnATXlgCAri0pWKrWLaLOGF569v4NBJaZoDfy1wDtcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=adaBaPGt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lt1z5CtE; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=adaBaPGt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lt1z5CtE; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 637C01F44B;
+	Thu,  4 Apr 2024 20:34:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1712262855;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZUK+NOXkYpb3P/0N0Mw2ewEpgRitgCtwAYay9/jlRbE=;
+	b=adaBaPGtYHlkgCvQZ0usrsEcJZRuMWtrzmguJvU4waE6FTWZ9rLBRQ8jfaJqDTSSz2LKZ2
+	E+vtufteH5W3ilm+voKdwG8RJemHr33Ykulb9JhiOqsPzJh60QRwwRqtCiqR7Of8e7WUr5
+	1YHnBDrzqtwOAhFzJDsxu9n2zOlllP8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1712262855;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZUK+NOXkYpb3P/0N0Mw2ewEpgRitgCtwAYay9/jlRbE=;
+	b=lt1z5CtE1jJJX5sMv+XpkdD/idKvlPCgiwuCKpq7r0Qs4yFxgB4xUCEspKSu7+OGbRiTSC
+	/gHBNAE+HjmzYvDg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1712262855;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZUK+NOXkYpb3P/0N0Mw2ewEpgRitgCtwAYay9/jlRbE=;
+	b=adaBaPGtYHlkgCvQZ0usrsEcJZRuMWtrzmguJvU4waE6FTWZ9rLBRQ8jfaJqDTSSz2LKZ2
+	E+vtufteH5W3ilm+voKdwG8RJemHr33Ykulb9JhiOqsPzJh60QRwwRqtCiqR7Of8e7WUr5
+	1YHnBDrzqtwOAhFzJDsxu9n2zOlllP8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1712262855;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZUK+NOXkYpb3P/0N0Mw2ewEpgRitgCtwAYay9/jlRbE=;
+	b=lt1z5CtE1jJJX5sMv+XpkdD/idKvlPCgiwuCKpq7r0Qs4yFxgB4xUCEspKSu7+OGbRiTSC
+	/gHBNAE+HjmzYvDg==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 4024213298;
+	Thu,  4 Apr 2024 20:34:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 8kk6D8cOD2azdwAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Thu, 04 Apr 2024 20:34:15 +0000
+Date: Thu, 4 Apr 2024 22:26:45 +0200
+From: David Sterba <dsterba@suse.cz>
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org,
+	Filipe Manana <fdmanana@suse.com>
+Subject: Re: [PATCH v2 2/7] btrfs: reduce the log level for
+ btrfs_dev_stat_inc_and_print()
+Message-ID: <20240404202644.GN14596@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <cover.1710906371.git.wqu@suse.com>
+ <8f3e7a57b40973e62c0d758922971566ca96fb2e.1710906371.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.8 00/11] 6.8.4-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240403175125.754099419@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240403175125.754099419@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8f3e7a57b40973e62c0d758922971566ca96fb2e.1710906371.git.wqu@suse.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:replyto];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_THREE(0.00)[4]
+X-Spam-Score: -4.00
+X-Spam-Flag: NO
 
-On 4/3/24 10:55, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.8.4 release.
-> There are 11 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Mar 20, 2024 at 02:24:52PM +1030, Qu Wenruo wrote:
+> Currently when we increase the device statistics, it would always lead
+> to an error message in the kernel log.
 > 
-> Responses should be made by Fri, 05 Apr 2024 17:51:13 +0000.
-> Anything received after that time might be too late.
+> However this output is mostly duplicated with the existing ones:
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.4-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
-> and the diffstat can be found below.
+> - For scrub operations
+>   We always have the following messages:
+>   * "fixed up error at logical %llu"
+>   * "unable to fixup (regular) error at logical %llu"
 > 
-> thanks,
+>   So no matter if the corruption is repaired or not, it scrub would
+>   output an error message to indicate the problem.
 > 
-> greg k-h
+> - For non-scrub read operations
+>   We also have the following messages:
+>   * "csum failed root %lld inode %llu off %llu" for data csum mismatch
+>   * "bad (tree block start|fsid|tree block level)" for metadata
+>   * "read error corrected: ino %llu off %llu" for repaired data/metadata
+> 
+> So the error message from btrfs_dev_stat_inc_and_print() is duplicated.
+> 
+> The real usage for the btrfs device statistics is for some user space
+> daemon to check if there is any new errors, acting like some checks on
+> SMART, thus we don't really need/want those messages in dmesg.
+> 
+> This patch would reduce the log level to debug (disabled by default) for
+> btrfs_dev_stat_inc_and_print().
+> For users really want to utilize btrfs devices statistics, they should
+> go check "btrfs device stats" periodically, and we should focus the
+> kernel error messages to more important things.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+I kind if disagree with each point.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+The message is meant to be logged as it will happen in production and
+outside of development, so the debug level does not make sense.
 
+The stats message is not duplicated for the individual causes, it
+additionally tracks the whole state.
+
+Logging important messages to system log is a common thing and we do that
+a lot, this makes debugging and anlyzing things easier. We can't
+expect that there would always be a daemon collecting the stats, there's
+not standardized or recommended tool for that. A quick look to dmesg can
+show that something is wrong.
+
+What we can do: reduce the number messages so the whole stats are
+printed once per transaction if there is a change.
+
+We can also tune which events also print the stats, for example flush
+errors are more interesting than read/write, comparing the number of
+events that can happen in a batch.
 
