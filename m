@@ -1,118 +1,98 @@
-Return-Path: <stable+bounces-35923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 231738986DB
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 14:13:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7506B8986D6
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 14:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AE6AB24A4B
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 12:13:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37FC128E61E
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 12:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0973584FCC;
-	Thu,  4 Apr 2024 12:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C3385634;
+	Thu,  4 Apr 2024 12:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=stwm.de header.i=@stwm.de header.b="Gp63qabd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SB/qjHQC"
 X-Original-To: stable@vger.kernel.org
-Received: from email.studentenwerk.mhn.de (mailin.studentenwerk.mhn.de [141.84.225.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2E88286B
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 12:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.84.225.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE41484D37;
+	Thu,  4 Apr 2024 12:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712232778; cv=none; b=Kada+RrmsSoi5PBiyCFpqbG4aC4BAqDThr7+S9DEwa6FfnLYQFDmaf3flYlTTlwheP9eY6fyAVXdxuXsmfUU8SOrrSa5CjLV3X2Uohb0l/PLPUz2CmZ0loKd9wiUvTfdX45qW41frb/OQLK0ZCi8vZ6YHQyutcI1ehUrjr1v4Bo=
+	t=1712232611; cv=none; b=J7pE2ApkXBtn9zZnNJYpJP/f2pUhPlWlOzCRScV8a5ys/By9Xn3OYzBOXX2rT1ia/OJGpDMn2EyKpL4FStgaV72RlW1ROa/qQOtydj4692lQVMbXtUBojaCA/84dA77SWnmN8VjGILGgSl05GZqUaYWVnTQ15tWjCc5sAAaYYog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712232778; c=relaxed/simple;
-	bh=9NnwbsnlCM4IfYShXmOjD+z7xiAxvwDp1zNM1VQv/HY=;
-	h=MIME-Version:Date:From:To:Cc:Subject:Message-ID:Content-Type; b=u4fpa8Y94FQuJuHJaFZDJpFfFqMAPamvHB9i0GtOpuZf4JlW8UHQLOO2SAoQz8ZIXyewSTTE1s0S01bT5N/Rx6TGnttdMFxZvlMmwYr7bSoVylwP0DO5sKXtFyR9olwz7+38ocuQNy5pHKZQKuCPhpwgynpGttMrHSbce2j4fOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stwm.de; spf=none smtp.mailfrom=stwm.de; dkim=pass (2048-bit key) header.d=stwm.de header.i=@stwm.de header.b=Gp63qabd; arc=none smtp.client-ip=141.84.225.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stwm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=stwm.de
-Received: from mailhub.studentenwerk.mhn.de (mailhub.studentenwerk.mhn.de [127.0.0.1])
-	by email.studentenwerk.mhn.de (Postfix) with ESMTPS id 4V9L2l5GZDzRhSv;
-	Thu,  4 Apr 2024 14:07:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwm.de; s=stwm-20170627;
-	t=1712232431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=svG5PJjDjErJ1+S+a4xtTFYadJzURGKkERsa37xbkuA=;
-	b=Gp63qabdzcnCgUsHdLZUyh1LU3iGHw9PKxI8Mzt9jxlpe9uEH3WmS0hDbW7rMgNyvpRXQx
-	8AXExo1vuXyEm6fFihsPqFzElrYQMtG5AsknQG1xIJvj/5oVVJOaXj3NrBGr2jagQXbSgJ
-	yBue4nebqFY4cjSlMLdDEGGVM25nuAkk2EsfvdpXy1I6G7Nt1SzM2cOfpd5r9zhpsANZxI
-	OrMRoX4lstMq8lUTe+AghwUYbg3ZseWIDdVRaGlfMyqktTN4uiJdHabgFRToCfG4loFVyv
-	6YS6nJVUryUqg6kFyGEa5y/CITNa2f7ExbWkvPMKh34481Zwuc5ABVeQB6zHFQ==
-Received: from roundcube.studentenwerk.mhn.de (roundcube.studentenwerk.mhn.de [10.148.7.38])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mailhub.studentenwerk.mhn.de (Postfix) with ESMTPS id 4V9L2l59FbzHnGf;
-	Thu,  4 Apr 2024 14:07:11 +0200 (CEST)
+	s=arc-20240116; t=1712232611; c=relaxed/simple;
+	bh=o15dZi6UCpDmIye31DR7EHenj10EP41qtu/qjRdTnHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UMunef45ajcvHQNwdNiEWl6QmGMbH3O9nVnCKOcDeCfZctYxjCQnh/kfRcfDDgzudD+QArPVhr8yQPR0aeco6ugGLfEuUMMsFTbCq5U1PU1s3iNnqcOCTASG+XTGqcUzstr5ec3W7arP5EUh/v9DhhM/wWv0CwRwJP3ymstpQrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SB/qjHQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185F8C433C7;
+	Thu,  4 Apr 2024 12:10:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712232611;
+	bh=o15dZi6UCpDmIye31DR7EHenj10EP41qtu/qjRdTnHI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SB/qjHQCsjn3qjTaAjh9jix45QHy4mEjDKmhG/M++hF1H+e1/6+4scHalPb8D7qkg
+	 pL+u/1T88qs7oSi0fLlGAzM93rhDagFrwPUVzVzDD6H84IbLGADqp5ApofIxxWS3LK
+	 mBjNb16s9/7RVzQM4FxLlUdraYTQRJPCizxyA7Hku72kmx5BLwp4TGvSRlw9DC9PVq
+	 PY8uQPYIlZYkqiaJphjpMvRJ/ZMSIJNyHtOyekDnsI3OsfjcXlWJ+BrED/jdumRo1N
+	 VerSAehkLRdqDQx1Q2Tew0u1IaJ6lWFo/XfRP0HUNv5lOC8889I0usyIng/ZXEjrfS
+	 hI3Zc8Vd8ZRiw==
+Date: Thu, 4 Apr 2024 13:10:05 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.8 00/11] 6.8.4-rc1 review
+Message-ID: <81eeb067-5bfd-48c9-9ed3-ff60fcdd2fc0@sirena.org.uk>
+References: <20240403175125.754099419@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 04 Apr 2024 14:07:11 +0200
-From: Wolfgang Walter <linux@stwm.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org
-Subject: stable v6.6.24 regression: boot fails: bisected to "x86/mpparse:
- Register APIC address only once"
-Message-ID: <23da7f59519df267035b204622d32770@stwm.de>
-X-Sender: linux@stwm.de
-Organization: =?UTF-8?Q?Studierendenwerk_M=C3=BCnchen_Oberbayern?=
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-
-Hello,
-
-after upgrading to v6.6.24 from v6.6.23 some old boxes (i686; Intel 
-Celeron M) stop to boot:
-
-They hang after:
-
-Decompressing Linux... Parsing ELF... No relocation needed... done.
-Booting the kernel (entry_offset: 0x00000000).
-
-After some minutes they reboot.
-
-I bisected this down to
-
-commit bebb5af001dc6cb4f505bb21c4d5e2efbdc112e2
-Author: Thomas Gleixner <tglx@linutronix.de>
-Date:   Fri Mar 22 19:56:39 2024 +0100
-
-     x86/mpparse: Register APIC address only once
-
-     [ Upstream commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 ]
-
-     The APIC address is registered twice. First during the early 
-detection and
-     afterwards when actually scanning the table for APIC IDs. The APIC 
-and
-     topology core warn about the second attempt.
-
-     Restrict it to the early detection call.
-
-     Fixes: 81287ad65da5 ("x86/apic: Sanitize APIC address setup")
-     Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-     Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-     Tested-by: Guenter Roeck <linux@roeck-us.net>
-     Link: 
-https://lore.kernel.org/r/20240322185305.297774848@linutronix.de
-     Signed-off-by: Sasha Levin <sashal@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pNtLI10WrIpMEkHV"
+Content-Disposition: inline
+In-Reply-To: <20240403175125.754099419@linuxfoundation.org>
+X-Cookie: Buckle up!
 
 
-Reverting this commit in v6.6.24 solves the problem.
+--pNtLI10WrIpMEkHV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Regards,
--- 
-Wolfgang Walter
-Studierendenwerk München Oberbayern
-Anstalt des öffentlichen Rechts
+On Wed, Apr 03, 2024 at 07:55:39PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.8.4 release.
+> There are 11 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--pNtLI10WrIpMEkHV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYOmJwACgkQJNaLcl1U
+h9CS9wf+LPCt+CFvdeJURvMXUGVxidgAh/UWN9rI4fqNgeDGAS+VtkUCrm02QZBp
+s5Nlk/lwLcTessAd3hG9r8DPpjC/Ljub8R680RdwCmXJS/ugqM6BX6ZrWfXbnyjl
+P3c7rc52qUfCvcAqvnX1VYD+RftkiDL405vhGB8Z7PPLFLJeBfgc5CHtkGA3LbJU
+mvCIcnlA7VllLKxsl5x9G/9QlbMgkD1EyxWT79091pi4ydjP9a1mbpue5bff9hWL
+JDaIUsA5HYgzKspgWauSO9/TfM2XGyFtUMsqAs9AvZuKoIF2PaWzlZJcEaXiFqFM
+D7x8MeeGozEuKfLP4+ND0apckv02Cg==
+=O8WI
+-----END PGP SIGNATURE-----
+
+--pNtLI10WrIpMEkHV--
 
