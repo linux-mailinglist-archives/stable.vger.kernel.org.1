@@ -1,214 +1,220 @@
-Return-Path: <stable+bounces-35882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583F0897D1B
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 02:33:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE4B897D64
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 03:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B03881F25086
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 00:32:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D9631C21BB9
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 01:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2783442C;
-	Thu,  4 Apr 2024 00:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9358F48;
+	Thu,  4 Apr 2024 01:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="lKtE8no3"
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="H/kDrtog"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F409423CE;
-	Thu,  4 Apr 2024 00:32:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767F48C06
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 01:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712190771; cv=none; b=iltiJ2cETMJ6NrOfVA7TRWm8PxuCV/cs0m9qubT25EmLVlPSlFpsW6ZtSSbxgw+bewKKsgrunoSbfIXP/6jbpGMtYirqs4GQs1sDYR9nq24Lwkhkp68VtFDz2WaA9FV9WgUTYrDN+bCzgBApH4Rjz9vrE9Sg1Gov0XcgNTyp8Po=
+	t=1712194137; cv=none; b=ELNOTWK8/N3clMywgMAwdCsGw3ForNrGZNKC3uFVCOnVkyC3EKn+I50cJyKcbBQUxT2wEvOnqt9OiU23EQeLQEjcm24au+73jvU/vVk0MyOoXViGHMjB4xJCFcqJ0sb2EmWb08Q8tGsuIrJJTTx2tMYUCNdXA+7EH+782jYfR9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712190771; c=relaxed/simple;
-	bh=v6ELGC0wWuhzAcp7TF7tSfRbebnHs2P8lRKexVxuir4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nZjLr3Q68DVqlkv9G+uBargNpmM0tyJCzj+G1t8Qw8FlTWGyqsaX+TdQTtt8BedDE9gOtVvM/78y3+bklqi8AvVXMXw002hksupYejFkPntxwEhUB48OdCHsLF9Wwi3sDwYmOHWTPdMQyRwM/nKn9CnWYmVmpDevwBDnBH5+bFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=lKtE8no3; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 83ED5CCC;
-	Thu,  4 Apr 2024 02:32:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1712190730;
-	bh=v6ELGC0wWuhzAcp7TF7tSfRbebnHs2P8lRKexVxuir4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lKtE8no3H6w862RIl8SSijlaCBm4Rhdr+FVHmYpPNYT9yV4AXVedYzvjniRQsujMP
-	 0eg+kpZavOg5jYrBp7mOBkXG23aXFyDkg1jY3jReEQtPPqoonFtPCHP2t0CMZkOjXO
-	 mCFby0GhUHfZO0x8va4VjW3PpdZPnj/3i7wbCoDw=
-Date: Thu, 4 Apr 2024 03:32:37 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, stable@vger.kernel.org,
-	Oliver Neukum <oneukum@suse.com>,
-	Devinder Khroad <dkhroad@logitech.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [PATCH v5] media: ucvideo: Add quirk for Logitech Rally Bar
-Message-ID: <20240404003237.GE23803@pendragon.ideasonboard.com>
-References: <20240402-rallybar-v5-1-7bdd0fbc51f7@chromium.org>
- <20240404003055.GD23803@pendragon.ideasonboard.com>
+	s=arc-20240116; t=1712194137; c=relaxed/simple;
+	bh=WxWNh+sc4v9QZUU1EDHH1IL8hDn08GVaO5J5rAmEk/I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=Q9v72chLiEeJE+CDeRW7YxDzM2bR4c0Aolj8E6fuXDAkG3YTV4iR55R/7aJJu0ChuXiDLKopfeXRVQZRDIzyI/fxiwecaDSt3Xm3s4POIEc/j69qhTQAU5YXRmPV0Y7rAhC5dOrKEDiJcwpYlzuT6urWMm0rXYvNZKWXyjJh8aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=H/kDrtog; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
+	s=dkim_2024-02-03; t=1712193607;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OaIurQnn68e9LF+oXUqMpsCRQHBW2H0fFRuDzAYJGsA=;
+	b=H/kDrtogdWyz9aMMUWY5mLVvHg8Qc/3nkrVg+phFXQFVHAFkMPe3jD6nljIYJZY+imrbr8
+	YK3ByT9plAQwBWBA==
+Message-ID: <af4781a8-b55b-4699-aa49-6245eb5accbc@hardfalcon.net>
+Date: Thu, 4 Apr 2024 03:20:05 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240404003055.GD23803@pendragon.ideasonboard.com>
+Subject: Re: Patch "gpio: cdev: sanitize the label before requesting the
+ interrupt" has been added to the 6.1-sta
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <2024040339-anatomy-multitude-01a8 () gregkh>
+Content-Language: en-US
+Cc: Sasha Levin <sashal@kernel.org>
+From: Pascal Ernster <git@hardfalcon.net>
+In-Reply-To: <2024040339-anatomy-multitude-01a8 () gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-One more thing, s/ucvideo/uvcvideo/ in the subject line.
+[2024-04-03 19:58] gregkh linuxfoundation ! org:
+> This is a note to let you know that I've just added the patch titled
+> 
+>      gpio: cdev: sanitize the label before requesting the interrupt
+> 
+> to the 6.1-stable tree which can be found at:
+>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>       gpio-cdev-sanitize-the-label-before-requesting-the-interrupt.patch
+> and it can be found in the queue-6.1 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+>  From b34490879baa847d16fc529c8ea6e6d34f004b38 Mon Sep 17 00:00:00 2001
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Date: Mon, 25 Mar 2024 10:02:42 +0100
+> Subject: gpio: cdev: sanitize the label before requesting the interrupt
+> 
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> 
+> commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
+> 
+> When an interrupt is requested, a procfs directory is created under
+> "/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
+> the request_irq() variants.
+> 
+> What follows is that the string must not contain the "/" character or
+> the procfs mkdir operation will fail. We don't have such constraints for
+> GPIO consumer labels which are used verbatim as interrupt labels for
+> GPIO irqs. We must therefore sanitize the consumer string before
+> requesting the interrupt.
+> 
+> Let's replace all "/" with ":".
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Stefan Wahren <wahrenst@gmx.net>
+> Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Reviewed-by: Kent Gibson <warthog618@gmail.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>   drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
+>   1 file changed, 32 insertions(+), 6 deletions(-)
+> 
+> --- a/drivers/gpio/gpiolib-cdev.c
+> +++ b/drivers/gpio/gpiolib-cdev.c
+> @@ -999,10 +999,20 @@ static u32 gpio_v2_line_config_debounce_
+>   	return 0;
+>   }
+>   
+> +static inline char *make_irq_label(const char *orig)
+> +{
+> +	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
+> +}
+> +
+> +static inline void free_irq_label(const char *label)
+> +{
+> +	kfree(label);
+> +}
+> +
+>   static void edge_detector_stop(struct line *line)
+>   {
+>   	if (line->irq) {
+> -		free_irq(line->irq, line);
+> +		free_irq_label(free_irq(line->irq, line));
+>   		line->irq = 0;
+>   	}
+>   
+> @@ -1027,6 +1037,7 @@ static int edge_detector_setup(struct li
+>   	unsigned long irqflags = 0;
+>   	u64 eflags;
+>   	int irq, ret;
+> +	char *label;
+>   
+>   	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
+>   	if (eflags && !kfifo_initialized(&line->req->events)) {
+> @@ -1063,11 +1074,17 @@ static int edge_detector_setup(struct li
+>   			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
+>   	irqflags |= IRQF_ONESHOT;
+>   
+> +	label = make_irq_label(line->req->label);
+> +	if (!label)
+> +		return -ENOMEM;
+> +
+>   	/* Request a thread to read the events */
+>   	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+> -				   irqflags, line->req->label, line);
+> -	if (ret)
+> +				   irqflags, label, line);
+> +	if (ret) {
+> +		free_irq_label(label);
+>   		return ret;
+> +	}
+>   
+>   	line->irq = irq;
+>   	return 0;
+> @@ -1910,7 +1927,7 @@ static ssize_t lineevent_read(struct fil
+>   static void lineevent_free(struct lineevent_state *le)
+>   {
+>   	if (le->irq)
+> -		free_irq(le->irq, le);
+> +		free_irq_label(free_irq(le->irq, le));
+>   	if (le->desc)
+>   		gpiod_free(le->desc);
+>   	kfree(le->label);
+> @@ -2058,6 +2075,7 @@ static int lineevent_create(struct gpio_
+>   	int fd;
+>   	int ret;
+>   	int irq, irqflags = 0;
+> +	char *label;
+>   
+>   	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
+>   		return -EFAULT;
+> @@ -2138,15 +2156,23 @@ static int lineevent_create(struct gpio_
+>   	INIT_KFIFO(le->events);
+>   	init_waitqueue_head(&le->wait);
+>   
+> +	label = make_irq_label(le->label);
+> +	if (!label) {
+> +		ret = -ENOMEM;
+> +		goto out_free_le;
+> +	}
+> +
+>   	/* Request a thread to read the events */
+>   	ret = request_threaded_irq(irq,
+>   				   lineevent_irq_handler,
+>   				   lineevent_irq_thread,
+>   				   irqflags,
+> -				   le->label,
+> +				   label,
+>   				   le);
+> -	if (ret)
+> +	if (ret) {
+> +		free_irq_label(label);
+>   		goto out_free_le;
+> +	}
+>   
+>   	le->irq = irq;
+>   
+> 
+> 
+> Patches currently in stable-queue which might be from bartosz.golaszewski@linaro.org are
+> 
+> queue-6.1/gpio-cdev-sanitize-the-label-before-requesting-the-interrupt.patch
 
-On Thu, Apr 04, 2024 at 03:30:57AM +0300, Laurent Pinchart wrote:
-> Hi Ricardo,
-> 
-> Thank you for the patch.
-> 
-> On Tue, Apr 02, 2024 at 12:09:29PM +0000, Ricardo Ribalda wrote:
-> > Logitech Rally Bar devices, despite behaving as UVC cameras, have a
-> > different power management system that the other cameras from Logitech.
-> > 
-> > USB_QUIRK_RESET_RESUME is applied to all the UVC cameras from Logitech
-> > at the usb core. Unfortunately, USB_QUIRK_RESET_RESUME causes undesired
-> > USB disconnects in the Rally Bar that make them completely unusable.
-> > 
-> > There is an open discussion about if we should fix this in the core or
-> > add a quirk in the UVC driver. In order to enable this hardware, let's
-> > land this patch first, and we can revert it later if there is a
-> > different conclusion.
-> > 
-> > Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
-> > Cc:  <stable@vger.kernel.org>
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: Alan Stern <stern@rowland.harvard.edu>
-> > Cc: Oliver Neukum <oneukum@suse.com>
-> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Devinder Khroad <dkhroad@logitech.com>
-> > Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
-> > Tested with a Rallybar Mini with an Acer Chromebook Spin 513
-> > ---
-> > Changes in v5:
-> > - Update commit message to describe that this is a temp solution.
-> > - Link to v4: https://lore.kernel.org/r/20240108-rallybar-v4-1-a7450641e41b@chromium.org
-> > 
-> > Changes in v4:
-> > - Include Logi Rally Bar Huddle (Thanks Kyle!)
-> > - Link to v3: https://lore.kernel.org/r/20240102-rallybar-v3-1-0ab197ce4aa2@chromium.org
-> > 
-> > Changes in v3:
-> > - Move quirk to uvc driver
-> > - Link to v2: https://lore.kernel.org/r/20231222-rallybar-v2-1-5849d62a9514@chromium.org
-> > 
-> > Changes in v2:
-> > - Add Fixes tag
-> > - Add UVC maintainer as Cc
-> > - Link to v1: https://lore.kernel.org/r/20231222-rallybar-v1-1-82b2a4d3106f@chromium.org
-> > ---
-> >  drivers/media/usb/uvc/uvc_driver.c | 30 ++++++++++++++++++++++++++++++
-> >  drivers/media/usb/uvc/uvcvideo.h   |  1 +
-> >  2 files changed, 31 insertions(+)
-> > 
-> > diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-> > index 08fcd2ffa727b..9663bcac68438 100644
-> > --- a/drivers/media/usb/uvc/uvc_driver.c
-> > +++ b/drivers/media/usb/uvc/uvc_driver.c
-> > @@ -14,6 +14,7 @@
-> >  #include <linux/module.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/usb.h>
-> > +#include <linux/usb/quirks.h>
-> >  #include <linux/usb/uvc.h>
-> >  #include <linux/videodev2.h>
-> >  #include <linux/vmalloc.h>
-> > @@ -2233,6 +2234,8 @@ static int uvc_probe(struct usb_interface *intf,
-> >  	}
-> >  
-> >  	uvc_dbg(dev, PROBE, "UVC device initialized\n");
-> > +	if (dev->quirks & UVC_QUIRK_FORCE_RESUME)
-> 
-> The quirk isn't really about forcing resume, but about not resetting on
-> resume. Can we name it UVC_QUIRK_NO_RESET_RESUME ?
-> 
-> > +		udev->quirks &= ~USB_QUIRK_RESET_RESUME;
-> 
-> Let's move this before the uvc_dbg().
-> 
-> With that, the patch looks good to me. I can apply those changes
-> locally if you don't want to submit a v6.
-> 
-> >  	usb_enable_autosuspend(udev);
-> >  	return 0;
-> >  
-> > @@ -2574,6 +2577,33 @@ static const struct usb_device_id uvc_ids[] = {
-> >  	  .bInterfaceSubClass	= 1,
-> >  	  .bInterfaceProtocol	= 0,
-> >  	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
-> > +	/* Logitech Rally Bar Huddle */
-> > +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-> > +				| USB_DEVICE_ID_MATCH_INT_INFO,
-> > +	  .idVendor		= 0x046d,
-> > +	  .idProduct		= 0x087c,
-> > +	  .bInterfaceClass	= USB_CLASS_VIDEO,
-> > +	  .bInterfaceSubClass	= 1,
-> > +	  .bInterfaceProtocol	= 0,
-> > +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
-> > +	/* Logitech Rally Bar */
-> > +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-> > +				| USB_DEVICE_ID_MATCH_INT_INFO,
-> > +	  .idVendor		= 0x046d,
-> > +	  .idProduct		= 0x089b,
-> > +	  .bInterfaceClass	= USB_CLASS_VIDEO,
-> > +	  .bInterfaceSubClass	= 1,
-> > +	  .bInterfaceProtocol	= 0,
-> > +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
-> > +	/* Logitech Rally Bar Mini */
-> > +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-> > +				| USB_DEVICE_ID_MATCH_INT_INFO,
-> > +	  .idVendor		= 0x046d,
-> > +	  .idProduct		= 0x08d3,
-> > +	  .bInterfaceClass	= USB_CLASS_VIDEO,
-> > +	  .bInterfaceSubClass	= 1,
-> > +	  .bInterfaceProtocol	= 0,
-> > +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
-> >  	/* Chicony CNF7129 (Asus EEE 100HE) */
-> >  	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-> >  				| USB_DEVICE_ID_MATCH_INT_INFO,
-> > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-> > index 6fb0a78b1b009..fa59a21d2a289 100644
-> > --- a/drivers/media/usb/uvc/uvcvideo.h
-> > +++ b/drivers/media/usb/uvc/uvcvideo.h
-> > @@ -73,6 +73,7 @@
-> >  #define UVC_QUIRK_FORCE_Y8		0x00000800
-> >  #define UVC_QUIRK_FORCE_BPP		0x00001000
-> >  #define UVC_QUIRK_WAKE_AUTOSUSPEND	0x00002000
-> > +#define UVC_QUIRK_FORCE_RESUME		0x00004000
-> >  
-> >  /* Format flags */
-> >  #define UVC_FMT_FLAG_COMPRESSED		0x00000001
-> > 
-> > ---
-> > base-commit: c0f65a7c112b3cfa691cead54bcf24d6cc2182b5
-> > change-id: 20231222-rallybar-19ce0c64d5e6
-> 
-> -- 
-> Regards,
-> 
-> Laurent Pinchart
 
--- 
-Regards,
+Hi,
 
-Laurent Pinchart
+
+this breaks the build because kstrdup_and_replace() does not exist in 
+version branch 6.1.
+
+
+Regards
+Pascal
 
