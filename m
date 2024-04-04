@@ -1,146 +1,104 @@
-Return-Path: <stable+bounces-35950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED680898BA9
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:57:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D75898BAB
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15FF21C208B7
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:57:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B4B5B22740
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C0912AAC5;
-	Thu,  4 Apr 2024 15:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95991129A7E;
+	Thu,  4 Apr 2024 15:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="CcWtbQUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPuMzCjp"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A6B12B95;
-	Thu,  4 Apr 2024 15:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547AE1D531
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 15:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712246223; cv=none; b=LlxuTrt0aCNQEzsRTtWLcRUq2O7xawfMLj82+HKEx4XwXKahy0TNrbUJ3WNuEzbwgiCBBBZn10ORBqy+DbEXqJOesej97FfL0DEKuu1uWvO9ILPBkrlO3kYfCgyE1FnLDlI0Fjv+c9CAMNtAUJMK2DQ3QVBZ15Rxs689Myh9voU=
+	t=1712246240; cv=none; b=qD+vjomuaWhLD+GIVgXgTfVbko30vZZArya4lWQtSyvZWXco5GujvaIA1+aHlyhNCigueTRsf5Q3U+s+4UCqqFrEQME2M6qyA50ovfF88DKqeCfEYZkHQ0+7AsegM69OntBdXUQmf1PpeZLPKr19Z7YPTZ53EbKqjFgffoJ2qMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712246223; c=relaxed/simple;
-	bh=vvvHPDpFZbDyDQk3Ld550STpcnhIi6ap4/awPQYL3+k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CvT1rsZn2fOPbtpIuNlTvc9+0aXcOjShWTSeWB89ZbcgeaQEUdgzhPZkrb0lqbril1+bpLe4TDpI0ug3HPsHKapA09H24qZeiJVqsv+kHhdbPMx+FRfylrZcq9WY9J2jyPOQDhehwM5pFgvhUENm48xfNKRf23O/h7mFfBo3wk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=CcWtbQUt; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=1f4OlMHCTglftLsccsnxMI7CfS7xy5tbZ+cp8vg03tM=;
-	t=1712246221; x=1712678221; b=CcWtbQUtdmYDqxwF7MzHN6XSRHWhZC1yDdfndx6RjjGU80P
-	SxUvK99wzBCejJXnfJufoIrlH2ZqrCdtov7f2Sz1/VCSL3ToqtFdixndFALygDfIBWEOZKTbWZqUp
-	5y/vqUwzAH0k3rYNEn+t6StfaApMdflXrejGsOL1ZnH05notgI0g9naVUW/CJngla0RF5XjSge787
-	+QW6Y+dRjMwleGoCktAJ0Eg/IHzQKhIn/oAgVbjwoGLQM4I3s3ieQpJpSI8doZ3fg4fMXT+OPinge
-	6t2UmfoFXLW++y+YH2+OBXJ5DxqdwXskPkXpTAXLNSAGMT4W46cg+bYOXeocodXA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rsPSV-0007nG-9G; Thu, 04 Apr 2024 17:56:59 +0200
-Message-ID: <8488e647-d2f4-484f-939f-eb827802d5c6@leemhuis.info>
-Date: Thu, 4 Apr 2024 17:56:58 +0200
+	s=arc-20240116; t=1712246240; c=relaxed/simple;
+	bh=2ttHn8xude/WPreacceneDXtCs17/hvNpTuijvZT1Ds=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lxj353cLuWFP1b0BfL0MbdtHCof4jTLuOgFMxNY6IfZ8eTCHUMVHiBU6XhQXJZlPHUmHHVxqukfeEgA2Z51tCRA8/B9H3CAzVgqvD669Tl1H1g0UnskCMOlJoobXTKg8InVIIFxYpt1pI3TpbocWTVcUjJu5akp3EIpQCh11wKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPuMzCjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507AFC433C7;
+	Thu,  4 Apr 2024 15:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712246239;
+	bh=2ttHn8xude/WPreacceneDXtCs17/hvNpTuijvZT1Ds=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bPuMzCjpUAYjAerFx7CkzAZ8kETr3nSN9VTWTapH+T7wkIx6DINr7GSbZWFHo2bvC
+	 NgwyM09xVhFGl6RYGcUxM/+L0npkonUM/4GBcXN6jDXCa7DOTbhCkWPel6Nj7AwPB3
+	 YFEspmRyMA1jzI3ApuszxfC9Nnvo4KHMSREYrB68=
+Date: Thu, 4 Apr 2024 17:57:16 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Wolfgang Walter <linux@stwm.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org
+Subject: Re: stable v6.6.24 regression: boot fails: bisected to "x86/mpparse:
+ Register APIC address only once"
+Message-ID: <2024040445-promotion-lumpiness-c6c8@gregkh>
+References: <23da7f59519df267035b204622d32770@stwm.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Do we need a "DoNotBackPort" tag?
-To: Greg KH <gregkh@linuxfoundation.org>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-References: <ce4c2f67-c298-48a0-87a3-f933d646c73b@leemhuis.info>
- <ZgylCe48FuOKNWtM@slm.duckdns.org>
- <b6cdb17f-206c-4dff-bb45-a60317e0a55e@leemhuis.info>
- <2024040328-surfacing-breezy-34c6@gregkh> <Zg10Keik4KORjXMh@slm.duckdns.org>
- <2024040319-doorbell-ecosystem-7d31@gregkh>
- <dfd87673-c581-4b4b-b37a-1cf5c817240d@leemhuis.info>
- <2024040454-playful-tainted-7446@gregkh>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2024040454-playful-tainted-7446@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1712246221;6c48b54e;
-X-HE-SMSGID: 1rsPSV-0007nG-9G
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <23da7f59519df267035b204622d32770@stwm.de>
 
-On 04.04.24 17:44, Greg KH wrote:
-> On Thu, Apr 04, 2024 at 05:36:42PM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
->> On 03.04.24 18:10, Greg KH wrote:
->>> On Wed, Apr 03, 2024 at 05:22:17AM -1000, Tejun Heo wrote:
->>>> On Wed, Apr 03, 2024 at 07:11:04AM +0200, Greg KH wrote:
->>>>>> Side note: I have no idea why the stable team backported those patches
->>>>>> and no option on whether that was wise, just trying to help finding the best
->>>>>> solution forward from the current state of things.
->>>>>
->>>>> The Fixes: tag triggered it, that's why they were backported.
->>
->> Yeah, this is what I assumed.
->>
->>>>>>> which would
->>>>>>> be far too invasive for -stable, thus no Cc: stable.
->>>>>>>
->>>>>>> I didn't know a Fixes
->>>>>>> tag automatically triggers backport to -stable. I will keep that in mind for
->>>>>>> future.
->>>>>>
->>>>>> /me fears that more and more developers due to situations like this will
->>>>>> avoid Fixes: tags and wonders what consequences that might have for the
->>>>>> kernel as a whole
->>>>>
->>>>> The problem is that we have subsystems that only use Fixes: and not cc:
->>>>> stable which is why we need to pick these up as well.  Fixes: is great,
->>>>> but if everyone were to do this "properly" then we wouldn't need to pick
->>>>> these other ones up, but instead, it's about 1/3 of our volume :(
->>
->> I'm also well aware of that and do not want to complain about it, as I
->> think I grasped why the stable team works like that -- and even think
->> given the circumstances it is round about the right approach. I also
->> understand that mistakes will always happen.
->>
->> Nevertheless this thread and the Bluetooth thing we had earlier this
->> week[1] makes me fear that this approach could lead to developer
->> avoiding Fixes: tags. And funny thing, that's something that is already
->> happening, as I noticed by chance today: "'"A "Fixes" tag has been
->> deliberately omitted to avoid potential test failures and subsequent
->> regression issues that could arise from backporting."'"[2].
->>
->> I wonder if that in the long term might be bad. But well, maybe it won't
->> matter much. Still made me wonder if we should have a different solution
->> for this kind of problem. Something like this?
->>
->>   Cc: <stable@vger.kernel.org> # DoNotBackport
->>
->> Or something like this?
->>
->>   Cc: <stable@vger.kernel.org> # DoNotBackport - or only after 16 weeks
->> in mainline [but I don't care]
+On Thu, Apr 04, 2024 at 02:07:11PM +0200, Wolfgang Walter wrote:
+> Hello,
 > 
-> We do this today, with stuff like:
-> 	Cc: stable <stable@kernel.org>	# wait for -rc3 to be out
+> after upgrading to v6.6.24 from v6.6.23 some old boxes (i686; Intel Celeron
+> M) stop to boot:
 > 
-> So if people want to do that, they can, the documentation says that you
-> can give us hints and the like in the # area, and usually we notice them :)
+> They hang after:
+> 
+> Decompressing Linux... Parsing ELF... No relocation needed... done.
+> Booting the kernel (entry_offset: 0x00000000).
+> 
+> After some minutes they reboot.
+> 
+> I bisected this down to
+> 
+> commit bebb5af001dc6cb4f505bb21c4d5e2efbdc112e2
+> Author: Thomas Gleixner <tglx@linutronix.de>
+> Date:   Fri Mar 22 19:56:39 2024 +0100
+> 
+>     x86/mpparse: Register APIC address only once
+> 
+>     [ Upstream commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 ]
+> 
+>     The APIC address is registered twice. First during the early detection
+> and
+>     afterwards when actually scanning the table for APIC IDs. The APIC and
+>     topology core warn about the second attempt.
+> 
+>     Restrict it to the early detection call.
+> 
+>     Fixes: 81287ad65da5 ("x86/apic: Sanitize APIC address setup")
+>     Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+>     Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+>     Tested-by: Guenter Roeck <linux@roeck-us.net>
+>     Link: https://lore.kernel.org/r/20240322185305.297774848@linutronix.de
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> 
+> Reverting this commit in v6.6.24 solves the problem.
 
-I know, as I wrote that (as you likely remember). ;-) But it seems it's
-not well known; and maybe making it explicit that this can be used to
-convey a "DoNotBackport" message is supported as well.
+Is this also an issue in 6.9-rc1 or newer or 6.8.3 or newer?
 
-Guess I'll prepare a patch to do that then and we'll see how it goes
-from there.
+thanks,
 
-Ciao, Thorsten
+greg k-h
 
