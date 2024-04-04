@@ -1,72 +1,58 @@
-Return-Path: <stable+bounces-35930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BCA898940
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:52:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2006389894E
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:54:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFA272838D9
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 13:52:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A2B11C20DBF
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 13:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216A6128385;
-	Thu,  4 Apr 2024 13:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D35112880A;
+	Thu,  4 Apr 2024 13:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NKF/TXCr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZMjKtPig"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CDD18AF6
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 13:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32CF127B7E;
+	Thu,  4 Apr 2024 13:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712238759; cv=none; b=Hs7lfZJScVdaJEXM76uiH1qi6ifKE0DWcjbD5Vf3rvQisOEQWyYMPmlrVofi7C725OUJRhkbH5Hysd4IFKP9IjhwnGfMaUnxCH97yyoNz1CFX/lsE7X9pwxqVhUGTFv7zrl6JiofDe0wsZK3aewE3YnPOHJWtgn2EjNGHrCsD3Q=
+	t=1712238877; cv=none; b=NAQQLx0BYAE2osyzzHkdIk2npa1M0KI8JCv7ZTRQJjCShJnVkTXKwU63NBmElmVuf9A5kOvFInWPhmt+LW/FvvV+2T222Ctbrotzeoo8mWhDio3XjhydtgYjY2AQMApYQcI0EAP4j7qhU283sanDKwUUTgN0ZiHfbDNki8U8kkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712238759; c=relaxed/simple;
-	bh=ir2RpPBcr5kNfpYbEVWyFv+HfUO7vw2TRu07cRbMxak=;
+	s=arc-20240116; t=1712238877; c=relaxed/simple;
+	bh=rgcpub8PrWzAxQAh6zx9KkF/3iwVXcYaz/F02yMjsW8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IJc84czqRknGMA5bYF/yHCtm0th57JS1jy7B+bCrYG9V/qxsDt+OwzNQySfoSTNVwzJIODo/TOcRPNLSI0ItaXUoMjgL8eIV6U8CzfoNex1wrXdz4W4Fee4VoMjf7Bu/uRNtzjmj7r0WejJYqwR6iY72VlTl6/VZGo5JT/JIjyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NKF/TXCr; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712238758; x=1743774758;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   mime-version:in-reply-to;
-  bh=ir2RpPBcr5kNfpYbEVWyFv+HfUO7vw2TRu07cRbMxak=;
-  b=NKF/TXCrO0Wcbttd+doWWoR8INljEW+pERWZvIIMd+UX14dS7Wv0F9Fg
-   iqSSfveU7l9/7Ge9l/acJm5Qo6C3uKMuxO3/aMgieVQkxb82yJPy0K2OS
-   WdbBmGUqbt9G2DbphwI4KUFDM2Md4+Jbhlr0wT+92ShDGzCILcP+3C+Qw
-   NDGXwiSNz9urLNOO5s7KjESF37rsxMNNZWSCH4hL/GEaQJvZYEDiRgZaC
-   L4aaa9jXqpf2S8OOBPI0TeYVTugfyQszVlCbiCee5HUaGsN3FRX9oi02t
-   v+SO3LOJMofyyS8HYWsr7m2F1R2TVCfoH1HXLNDcY7UUyuIGUSs/InLyN
-   Q==;
-X-CSE-ConnectionGUID: 3WLQC3cDRhqTYgEbtUurGw==
-X-CSE-MsgGUID: 9Qh9/0eKS3y4Zv4cVKAHNg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="24972855"
-X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
-   d="scan'208";a="24972855"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 06:52:37 -0700
-X-CSE-ConnectionGUID: VdvDI+otRGe3/tsUEqBWuA==
-X-CSE-MsgGUID: IymS3cigSMyma9UbsaUwng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
-   d="scan'208";a="23286501"
-Received: from ideak-desk.fi.intel.com ([10.237.72.78])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 06:52:36 -0700
-Date: Thu, 4 Apr 2024 16:53:07 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: stable@vger.kernel.org, intel-gfx@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: v6.8 stable backport request for drm/i915
-Message-ID: <Zg6ww+JomUKR//nh@ideak-desk.fi.intel.com>
-Reply-To: imre.deak@intel.com
-References: <Zg6rIG0idN3NSTbP@ideak-desk.fi.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0Jz6IZXLkWROXiyadZxxO/ZvkIOuqSwMxAAVwpO7gmrSQuKA7owt6Q4KiEMcLtaRVsKIy4QzI6jXhNAKCGCnVDWTmNo1r3SaXWYQ3D7TCyqBsALEDIsIp1bI1qT49rXb9GPViU+Q4UvmyTFiAykGkhBTP8y8HvlT1hnAOiHhQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZMjKtPig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B531C433C7;
+	Thu,  4 Apr 2024 13:54:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712238876;
+	bh=rgcpub8PrWzAxQAh6zx9KkF/3iwVXcYaz/F02yMjsW8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZMjKtPigKuG4hf+rhQ4oXyN9pnE0r+2jKtlodRHqYpONHEZ+uLzOYutmvm7p2nRXF
+	 71wmJMMjzNOV9lk7KppXm5F+oh4kzMH+6Pb1Sq/trgjknR2SFbUYhUJb82GunPwIfA
+	 hooQwIBOsxlNKvbg57lUdW0CNjTzDwG7TUW0BZkG/3Mi9XbTh3mQsZjfBbFoBwQZWe
+	 U2glc2kIM0B0uJe/k1RMKVITrOQRPUbCUc0JKS/34MRyLTap6MdO8I3epTANccciyu
+	 vV3FOKK5S6oYe3b3ZQcR1eyh+lWxOTWQvGc843R5M6pM1VSuaPHqYnNQsXU2+kks86
+	 ffrgDNYZaDYfw==
+Date: Thu, 4 Apr 2024 14:54:32 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: kuba@kernel.org, dave.stevenson@raspberrypi.com, davem@davemloft.net,
+	edumazet@google.com, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH net v4] net: usb: ax88179_178a: avoid the interface
+ always configured as random address
+Message-ID: <20240404135432.GR26556@kernel.org>
+References: <20240402183012.119f1511@kernel.org>
+ <20240403132158.344838-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,19 +61,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zg6rIG0idN3NSTbP@ideak-desk.fi.intel.com>
+In-Reply-To: <20240403132158.344838-1-jtornosm@redhat.com>
 
-On Thu, Apr 04, 2024 at 04:29:04PM +0300, Imre Deak wrote:
-> Stable team, please backport the following upstream commit to 6.8:
+On Wed, Apr 03, 2024 at 03:21:58PM +0200, Jose Ignacio Tornos Martinez wrote:
+> After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
+> consecutive device resets"), reset is not executed from bind operation and
+> mac address is not read from the device registers or the devicetree at that
+> moment. Since the check to configure if the assigned mac address is random
+> or not for the interface, happens after the bind operation from
+> usbnet_probe, the interface keeps configured as random address, although the
+> address is correctly read and set during open operation (the only reset
+> now).
 > 
-> commit 7a51a2aa2384 ("drm/i915/dp: Fix DSC state HW readout for SST connectors")
+> In order to keep only one reset for the device and to avoid the interface
+> always configured as random address, after reset, configure correctly the
+> suitable field from the driver, if the mac address is read successfully from
+> the device registers or the devicetree. Take into account if a locally
+> administered address (random) was previously stored.
+> 
+> cc: stable@vger.kernel.org # 6.6+
+> Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
+> Reported-by: Dave Stevenson  <dave.stevenson@raspberrypi.com>
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+> ---
+> v4:
+>   - Add locally administerd address check as Jakub Kicinski suggests
 
-Just noticed that the above commit is not yet upstream, still only
-queued in drm-intel-next. I presumed patches will be cherry-picked from
-drm-intel-next to drm-intel-fixes based on the Fixes: tag, so I only
-pushed the above patch to drm-intel-next; maybe the cherry picking
-doesn't (always) happen automatically.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-> Thanks,
-> Imre
 
