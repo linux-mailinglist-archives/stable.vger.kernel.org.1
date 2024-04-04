@@ -1,101 +1,103 @@
-Return-Path: <stable+bounces-35911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C404898470
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 11:56:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DDA89846F
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 11:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48C11F2872F
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 09:56:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ABF91C222ED
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 09:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A04474C0C;
-	Thu,  4 Apr 2024 09:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4D21B7F4;
+	Thu,  4 Apr 2024 09:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="cOU24V9/"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fCIEXTKC"
 X-Original-To: stable@vger.kernel.org
-Received: from forward203b.mail.yandex.net (forward203b.mail.yandex.net [178.154.239.154])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9E01803D;
-	Thu,  4 Apr 2024 09:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996DC745C0
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 09:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712224572; cv=none; b=AbXGHfFsXz8HcLMGUqU7lv/U2qB7Ok63M08hXNcfwlwP1jNUj33GBic/a/LT0ss4UGCgCuy5jTDeBlSiRFKe8AFXLeKv3k98pTkf04LqmG1Zs7ED5LwM6AD2qlX/vHJTy7dHzhCh2ceIst4XPyjRYV4lJUBXcTs/TgMQ3ghtoiY=
+	t=1712224572; cv=none; b=vErvpdZR1L1UgLTT+mjCPLTDQEjnmwY/f3teksk1BGNRSNrwPEBNLWMST9VV1qXgJqtRMGLtA/9doMR8Fgvg7Y4RET9wh7gWVecQoVmGUxHUKz9Tv3+WzG/xCjMmIfCIkL9nV9Qln8+etS/8qbelndJoinxNYL7SOCGc7oiWBwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712224572; c=relaxed/simple;
-	bh=pJMDg1eg6ejbUQsB/VhRS6kuW8PWYItofZ8I/HU16ok=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t9Mj/o0DFRKCDn2KTL1RPebGC1oHcMu8akYBZVjWRxtopS4J2iIGX29vHPfKpVAl5dbLQOtdO5SxdN0n4csv/k68Fj+lLy33A2MHpAabnA1Olum9NOn8tAeB8+PJl65mfhxSnd88vlyPt4q9Uw/p3FoVTwoGFyHE0an8DytaH9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=cOU24V9/; arc=none smtp.client-ip=178.154.239.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d103])
-	by forward203b.mail.yandex.net (Yandex) with ESMTPS id 6A73E64DBD;
-	Thu,  4 Apr 2024 12:50:24 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-36.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-36.sas.yp-c.yandex.net [IPv6:2a02:6b8:c37:629:0:640:2d57:0])
-	by forward103c.mail.yandex.net (Yandex) with ESMTPS id D805E60900;
-	Thu,  4 Apr 2024 12:50:15 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-36.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4oQ8Ed9k3Gk0-wDcBHWCM;
-	Thu, 04 Apr 2024 12:50:15 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1712224215; bh=agUHuLc6sWYp/vb7zT9L+aoPJ6k5EpklUa4uldWqnX4=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=cOU24V9/52/2sBbYoPY9HHCSSLmC9Q5l+oux3S+YL7k1HU2kGwudWbgTYjMCCzzEU
-	 E4Rgr/Roz5HUFpl8Zd9dx4/6Gd1UHdO+ShAW6f797XO8XYdrGtTGQ0r++ojSUwEA9N
-	 vv30KOk92C2EUSqNRMSQSEBfcdkAxsKeHXgF4ybM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-36.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-To: "Theodore Ts'o" <tytso@mit.edu>
-Cc: Mikhail Ukhin <mish.uxin2012@yandex.ru>,
-	stable@vger.kernel.org,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michail Ivanov <iwanov-23@bk.ru>,
-	Pavel Koshutin <koshutin.pavel@yandex.ru>,
-	Artem Sadovnikov <ancowi69@gmail.com>
-Subject: [PATCH] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
-Date: Thu,  4 Apr 2024 12:50:00 +0300
-Message-Id: <20240404095000.5872-1-mish.uxin2012@yandex.ru>
-X-Mailer: git-send-email 2.25.1
+	bh=rFOMEeE9wjKXL12KHdSVVyEFH3wl2lY0KudiodUN+AA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aBnjwr+ulpHVNsapUHZlP9ufPy3fn5+Tn4EIGnZXFzJOerWG8Byf1U6I3D80TcNXHux4EzxpVb8ml3M2/UhENm3orbEQH8d8yVmPixPvRGGsUND2y3L/RdvsrvUz5jj1MjcYg/Ojeix24z6GeFa3RrC85EggikY7KdypW1OcnR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=fCIEXTKC; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E4CC740E0192;
+	Thu,  4 Apr 2024 09:56:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 88DGYgZI1WEY; Thu,  4 Apr 2024 09:56:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1712224559; bh=VeSMHN7V6xVF3g/+m3obfaXDgxbH2JgeuMTx+4wfz2A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fCIEXTKCVZK6f3pIrR0bTlknkyQUQgRJDvpHllMBqhJRzctUsC97Pl6Rc3T1tja2/
+	 UG/vSQY3xVb6dupyfEVmhHqEa6qcAj6z46C8/DooWu+HMDa0dMJ6xw2Si9NRl2V6RR
+	 YA87Hqgsro4Si46ndoXNF3nXlsDqVTu16nzvLuBv0qebKQRKe5dtNk0o59Acytkvxc
+	 m0sNETncGJSsxQzLOjcw4SSzm0ScCFP3h2NANUGv3PpQ0TnEjpS1nRS5EvOwy+IV6E
+	 lPQvVQOerl2zRw8TUzKW+rt44WM5414O1p+a5WZAsAMR+16oK//61MLmr8g1fl1xnI
+	 8s4qv90XXuD8fyUFqTrfVsiXeqnXZRrGLacOrBNzcLRSa/PDtFPCRQ8V6kd5p2shTt
+	 TDnoeLT1ijF46q2T9Nm6yC6x/2mxxvAxHMV6ImlVAZBKnsc7JGq6WesrWj/Tt+2/ey
+	 vq1Z/rGZ6kcfuWxLvhJ1WFXsXXgqVkslsn+FxrC294jzK43SxwgbWPKQNZKwlLc4Pe
+	 IvVwJxTnwcEW9sviNW1uWSz2B3SOxOl19xCuG6ScmHE5XO+KKPFTA8O2MqpPcGCiYG
+	 YqFA51o/vLa1WMXFR8RneLoCq7kRf3Q/qS+xmtQLNASTRB8/wwWu/tTva0tC/X6mKf
+	 5Fb1RpKLNmDK5UdX7xk61lqA=
+Received: from zn.tnic (p5de8ecf7.dip0.t-ipconnect.de [93.232.236.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A412840E00F4;
+	Thu,  4 Apr 2024 09:55:52 +0000 (UTC)
+Date: Thu, 4 Apr 2024 11:55:47 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Sven Joachim <svenjoac@gmx.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 6.8 387/399] x86/bugs: Fix the SRSO mitigation on Zen3/4
+Message-ID: <20240404095547.GBZg55I3pwv8pttxHX@fat_crate.local>
+References: <20240401152549.131030308@linuxfoundation.org>
+ <20240401152600.724360931@linuxfoundation.org>
+ <87v84xjw5c.fsf@turtle.gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87v84xjw5c.fsf@turtle.gmx.de>
 
-Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
+On Thu, Apr 04, 2024 at 11:48:47AM +0200, Sven Joachim wrote:
+> On 2024-04-01 17:45 +0200, Greg Kroah-Hartman wrote:
+> 
+> > 6.8-stable review patch.  If anyone has any objections, please let me know.
+> 
+> Did not test the release candidate, but noticed that the build failed in
+> both 6.8.3 and 6.7.12.  I have not tested other kernels yet.
 
-The problem occurs in ext4_ind_migrate due to an incorrect order of
-unlocking of the journal and write semaphores - the order of unlocking
-must be the reverse of the order of locking.
+https://lore.kernel.org/r/20240403170534.GHZg2MXmwFRv-x8usY@fat_crate.local
 
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+Once Linus commits it, I'll backport it.
 
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
----
- fs/ext4/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thx.
 
-diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
-index d98ac2af8199..a5e1492bbaaa 100644
---- a/fs/ext4/migrate.c
-+++ b/fs/ext4/migrate.c
-@@ -663,8 +663,8 @@ int ext4_ind_migrate(struct inode *inode)
- 	if (unlikely(ret2 && !ret))
- 		ret = ret2;
- errout:
--	ext4_journal_stop(handle);
- 	up_write(&EXT4_I(inode)->i_data_sem);
-+	ext4_journal_stop(handle);
- out_unlock:
- 	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 	return ret;
 -- 
-2.25.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
