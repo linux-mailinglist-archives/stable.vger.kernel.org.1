@@ -1,159 +1,101 @@
-Return-Path: <stable+bounces-35917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B570898591
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 12:59:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C95589859E
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 13:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA5401C20DCA
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 10:59:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EE7BB21660
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 11:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3258480C09;
-	Thu,  4 Apr 2024 10:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B3680C09;
+	Thu,  4 Apr 2024 11:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T8EU9aDi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UamSE0Qg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DEC7FBD1;
-	Thu,  4 Apr 2024 10:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DB259157;
+	Thu,  4 Apr 2024 11:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712228359; cv=none; b=ieg6hkNxZWpe9cFe1Vod9W1pSupIcbNxORP/TPFpBSwsQxk1CiZdnMAYTX1NsO/EseQp1mFQ1dZ2rRaGTDnz6khfn9oRj4VwQqJS+w27o+xU2AT82/5Wu1XYudjSxUI5NaT49zRjLCXv+2Kuk9RToCSSDoFK95QHCuxIFhGIrxU=
+	t=1712228598; cv=none; b=WuuCBkZEak3O6G2V9Jt2sEb6qrC7c6bt85XSpipt+CDzhQht1/Pw9RXWx/kA58P7+YCDQJFCKvj4LVDXQGkbOxGZTYvvo2lxQ0MLAaAGqFP/HTwO+T50lr/Jwlmn8P5rfUwg41E0HtMFO3IeYoQEh7C1Ezcs81dDlnkBwY3jM2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712228359; c=relaxed/simple;
-	bh=C/95RBc7hJ318ahH11gn81a5f+QxJ7u/QFH9rXe+Q5g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pgYgzk9A7w6TfWX6epsl+mSxNaJZPlfGbGe1SEUBnYUek4WWCmFT/IZisvT0zXDbVSoTGa+MCJci+fzX+8G+t2kb3halEoloSlAkw612vl368OppgDgV/ijleUBMOfE2vg+2u38DeXkyvFDP+xPHqL5Vo2f92P4a+joJIMi2Cco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T8EU9aDi; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1712228598; c=relaxed/simple;
+	bh=fdu26r6ihIaZX1cgogSD3D0GMtEvmDKWge8KTEoRyp8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MpQdnBiM40SGBXUuLFhXzgoKzf4VnaGit1dglTLBdZZVGgHXjtorjCxcX6mJeBlXNc8j3mZj5lv7oqxqMUkBRXSBqOa+tgQiFfG2vdseq2XHgUrkh2eAlFeZ94Vgtrlo1OGdZ3mMuA1O1YLK0agkhN1pAqcXkTt6A+PVcUSJ4XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UamSE0Qg; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6ea8a0d1a05so1328744b3a.1;
-        Thu, 04 Apr 2024 03:59:18 -0700 (PDT)
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5dbf7b74402so591275a12.0;
+        Thu, 04 Apr 2024 04:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712228358; x=1712833158; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1Ghu5jAvxJOZKEhQM6ZvukRe4OySknJN8UXfj0OErgk=;
-        b=T8EU9aDiON4jC/ip+dX+lE4bZek/LUn/8qu7UqjreZ8t7MM5ADietLqA5YERw4SXdT
-         0LozjKvvz9U5chY4LDs10IdTz20JO7BhdTeLknYb0W/6C62PZw6zlJGGSGWJZ6TnodYt
-         k86DpLBjglUkpl0JpLwsHgNca2Ml/gmq5PBlhyzrW9oa2TFh351SSu+UlJ2xESqKHTJ1
-         EB9uP/8bgZDGeu/yULQrJIKdGgVaf1atx2GL5Oj74MI5c+LZ70yvs6onFkKQOElViEgb
-         LFfZPdOH1lTzu3NG41Ig+Yme0MuGNd4K9P9Iam8u8FD+dYjnwHb09TQNVBZMqVKZWPOb
-         YARw==
+        d=gmail.com; s=20230601; t=1712228596; x=1712833396; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fdu26r6ihIaZX1cgogSD3D0GMtEvmDKWge8KTEoRyp8=;
+        b=UamSE0QgDUXMQ3n7OR4g+C++oeQ7Yl0eQHXJD1unzuvoXxrF/zj/zgcHLyMN3wbDkG
+         P2Mk8yU+RgLQnclvzTxo57flirdr9w3uULurQmT7PgsHQlKbZLOtLbcawxJfdVvTJAIb
+         KIx9u2FCAVmHkFaQoli9kYNeZUa6KwkAC62FukJiA66vj30cJHDCZs1TzrNfkAYEhlvI
+         Ia+3SG94Vry9EpnZVt2x96R31XzuQlio377dMZI09Vcpfgwomnc7oi4qcZDRO1EowmdL
+         VjceIocXABSIvfco9StjkFlrO/RWBv3Q6ROxn4li6Ps+MFHBZXbikmGrInJOXV/7/XCL
+         t6lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712228358; x=1712833158;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Ghu5jAvxJOZKEhQM6ZvukRe4OySknJN8UXfj0OErgk=;
-        b=ebvZ/DCllIX7+2NagED0C0FIbx/x5f9p15B/XTVirwPVAx4NeJOKHNtAzNxuOcYX4G
-         dXVa7+j/DO7BaapZ0/STe/PV3YBN0BbxIak4GtQulrx2lp+eL45gSodPOY3OTUhR2k5O
-         lORjEkqEYe03ulF3CQdRWm7zv0Q3dzRj+6Isoog2TxNQn8GN2ML7D0U3e+4jrUWFIki/
-         p051t/T80VLPkF2YPs9Z8wOIHscKbDiCElArm7T2U3iIjhFr7oktbNDFGUyUD+7goJls
-         e4FzTznvKEx3dDHfLFIo/y9v2iNqHq1jiWQvnjrP9/alx+U4rnMJJgrjrv5RyUhWI9lk
-         /kdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWwb6N5reCjF60iQkLDVv/8AcVFv/MNLKQCTxMC0+jPtqbHhd0KqWQrVsJBL9LExKNQQoWSAZ2JhMzYnKSsFpSwEjLIXZaRTDNehYWbeVUtFMRrCzD4VphZK3vAzS3Jc0K0fA==
-X-Gm-Message-State: AOJu0YyaJd/1dn2Gp4e+xfiFnhSmybGpOMVEhlv4unU4woz5mxqkWwxq
-	927r2cmdxzx71ArACRDt2Ud+mD5J+o+yquTh3Lui7Pz/N8rXwaxs
-X-Google-Smtp-Source: AGHT+IHhPjZqxSM8T8GrwEDTzPV8yooF7Ihnxgc4OJrqo4y5CVKVUXIyq3C1ohgDCItd4N4zL57u5Q==
-X-Received: by 2002:a05:6a20:7f83:b0:1a3:ae53:fa6b with SMTP id d3-20020a056a207f8300b001a3ae53fa6bmr3288443pzj.6.1712228357504;
-        Thu, 04 Apr 2024 03:59:17 -0700 (PDT)
-Received: from rigel (194-223-186-215.tpgi.com.au. [194.223.186.215])
-        by smtp.gmail.com with ESMTPSA id r5-20020a056a00216500b006e4432027d1sm13767786pff.142.2024.04.04.03.59.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Apr 2024 03:59:17 -0700 (PDT)
-Date: Thu, 4 Apr 2024 18:59:12 +0800
-From: Kent Gibson <warthog618@gmail.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linus.walleij@linaro.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] gpio: cdev: fix missed label sanitizing in
- debounce_setup()
-Message-ID: <20240404105912.GA94230@rigel>
-References: <20240403131518.61392-1-warthog618@gmail.com>
- <20240403131518.61392-2-warthog618@gmail.com>
- <CAMRc=Mf0DPN1-npNPQA=3ivQd-PMhf_ZAa6eSFjmQ26Y8_Gv=g@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1712228596; x=1712833396;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fdu26r6ihIaZX1cgogSD3D0GMtEvmDKWge8KTEoRyp8=;
+        b=t+Hqr3EBz2Bou2xuBqgPUQYyNhScRYlLlKbLI23frsnB9cX1Ti9m9nM5f8rA/xsMHQ
+         biuwjq4BXalG3YDJZ9PXQgc3qlivv0hTSdE/ffTTj4vxhD8Vd6hQygv1s3haHVEgf5nU
+         LToogp4p1YaH9qLwKdXvvDNktXMFaJd6xV5CsiSLlvL0+HIu1Ko0tVU3vACuFWo8aWsb
+         ud9PLZafZEG3N2lKCOcXzxmyIHS+CQ9IklyfK8XJo7wy/fUtMhZkRGO305dj2JaA2msi
+         BQNQpUjkpbMRzm8HN7ehs9M6KEkY4iWwUv4XojkhQj4Ki9CXoxOSWWcQ7Liz2zlBgfSh
+         Qx0A==
+X-Forwarded-Encrypted: i=1; AJvYcCW9ly8icUZrpCXFiLADyJrjQ4dF29ZlI43xLwDXSfOShgcxPYT1FQVK7yeUzyDwNq+Cg23FlWeZWp2UWNEUAbH8BkIZIyJzd1A6xi9+I0gYQFpWiHKrs/LEpKJn8Jkzfbbd2R9RtpH1AxX4TS33/9QRxrBamfgalhX0AaoNogGR8xwJRVQ=
+X-Gm-Message-State: AOJu0YytjWCc6BBvmKZGBos6e42cWv1tTVlR7K7toL3EYB+IBlDxrjs4
+	l4J9LcUck/BL3YHzNy7EuexkPkdbAxRdUZ2+fivL8QwYv47hvP8170JUVTA1REL1VLlHgozDwG6
+	lIjFmu9Ah5+oFlLIQPFIAeJi+gp+Pg2nEZkw=
+X-Google-Smtp-Source: AGHT+IGa+EvFZksW3o4vdfyb9WBWkSxxOHrpZnu+E4Hbla3uW8VhIWpksDBi5VCY27MzkuQ5BUX+rCFVxMGUxP3J+wk=
+X-Received: by 2002:a05:6a20:4729:b0:1a3:6c63:8f9e with SMTP id
+ ek41-20020a056a20472900b001a36c638f9emr1844042pzb.27.1712228596312; Thu, 04
+ Apr 2024 04:03:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Mf0DPN1-npNPQA=3ivQd-PMhf_ZAa6eSFjmQ26Y8_Gv=g@mail.gmail.com>
+References: <CA160A4E-561E-4918-837E-3DCEBA74F808@me.com> <d3423fb5-c117-4bd1-9f86-db35590a0562@proton.me>
+In-Reply-To: <d3423fb5-c117-4bd1-9f86-db35590a0562@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 4 Apr 2024 13:02:40 +0200
+Message-ID: <CANiq72nyqxH2C1gr=UUCOftaKe0zSuuB++mMUD9zXo-pPBVMVg@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: init: remove impl Zeroable for Infallible
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Laine Taffin Altman <alexanderaltman@me.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, lkml <linux-kernel@vger.kernel.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 04, 2024 at 10:20:29AM +0200, Bartosz Golaszewski wrote:
-> On Wed, Apr 3, 2024 at 3:15 PM Kent Gibson <warthog618@gmail.com> wrote:
-> >
-> > When adding sanitization of the label, the path through
-> > edge_detector_setup() that leads to debounce_setup() was overlooked.
-> > A request taking this path does not allocate a new label and the
-> > request label is freed twice when the request is released, resulting
-> > in memory corruption.
-> >
-> > Add label sanitization to debounce_setup().
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: b34490879baa ("gpio: cdev: sanitize the label before requesting the interrupt")
-> > Signed-off-by: Kent Gibson <warthog618@gmail.com>
-> > ---
-> >  drivers/gpio/gpiolib-cdev.c | 31 +++++++++++++++++++------------
-> >  1 file changed, 19 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-> > index fa9635610251..f4c2da2041e5 100644
-> > --- a/drivers/gpio/gpiolib-cdev.c
-> > +++ b/drivers/gpio/gpiolib-cdev.c
-> > @@ -728,6 +728,16 @@ static u32 line_event_id(int level)
-> >                        GPIO_V2_LINE_EVENT_FALLING_EDGE;
-> >  }
-> >
-> > +static inline char *make_irq_label(const char *orig)
-> > +{
-> > +       return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
-> > +}
-> > +
-> > +static inline void free_irq_label(const char *label)
-> > +{
-> > +       kfree(label);
-> > +}
-> > +
-> >  #ifdef CONFIG_HTE
-> >
-> >  static enum hte_return process_hw_ts_thread(void *p)
-> > @@ -1015,6 +1025,7 @@ static int debounce_setup(struct line *line, unsigned int debounce_period_us)
-> >  {
-> >         unsigned long irqflags;
-> >         int ret, level, irq;
-> > +       char *label;
-> >
-> >         /* try hardware */
-> >         ret = gpiod_set_debounce(line->desc, debounce_period_us);
-> > @@ -1037,11 +1048,17 @@ static int debounce_setup(struct line *line, unsigned int debounce_period_us)
-> >                         if (irq < 0)
-> >                                 return -ENXIO;
-> >
-> > +                       label = make_irq_label(line->req->label);
+On Thu, Apr 4, 2024 at 11:01=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> Now that I look at the actual patch, I don't really like it. We
-> introduce a bug just to fix it a commit later. Such things have been
-> frowned upon in the past.
->
-> Let me shuffle the code a bit, I'll try to make it a bit more correct.
->
+> I don't see this commit in the kernel tree, what did you specify as
+> `--base` when running `git format`?
 
-The debounce_setup() oversight bug is the more severe, so it makes more
-sense to me to fix it first.  But then I my preferred solution would be
-to pull the original patch and submit a corrected patch that merges all
-three, so no bugs, but I assume that isn't an option.
+Yeah, I don't have it either, but it seems to apply cleanly.
 
 Cheers,
-Kent.
+Miguel
 
