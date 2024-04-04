@@ -1,104 +1,228 @@
-Return-Path: <stable+bounces-35951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D75898BAB
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:57:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8D8898BB5
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 18:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B4B5B22740
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:57:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5892FB22DB2
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 16:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95991129A7E;
-	Thu,  4 Apr 2024 15:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1A212AADB;
+	Thu,  4 Apr 2024 16:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPuMzCjp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AcMDG/XI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547AE1D531
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 15:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481F3839FC
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 16:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712246240; cv=none; b=qD+vjomuaWhLD+GIVgXgTfVbko30vZZArya4lWQtSyvZWXco5GujvaIA1+aHlyhNCigueTRsf5Q3U+s+4UCqqFrEQME2M6qyA50ovfF88DKqeCfEYZkHQ0+7AsegM69OntBdXUQmf1PpeZLPKr19Z7YPTZ53EbKqjFgffoJ2qMg=
+	t=1712246547; cv=none; b=nKAHOa/bKQL6dTm5fJo1LG/BWbxgxY8gMkK/T8KzgkoP59EHRLA3naJCcBgTJk0W/hmNWBuvLSSi442KjKEnKJ4VXUekXhcg03jyURDElJvrVrvl5gZ79gMfecWw3QkOegi56GlHsjUf4vQjULjb9kanbmd9qhC4+0uHICdNS+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712246240; c=relaxed/simple;
-	bh=2ttHn8xude/WPreacceneDXtCs17/hvNpTuijvZT1Ds=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lxj353cLuWFP1b0BfL0MbdtHCof4jTLuOgFMxNY6IfZ8eTCHUMVHiBU6XhQXJZlPHUmHHVxqukfeEgA2Z51tCRA8/B9H3CAzVgqvD669Tl1H1g0UnskCMOlJoobXTKg8InVIIFxYpt1pI3TpbocWTVcUjJu5akp3EIpQCh11wKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPuMzCjp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507AFC433C7;
-	Thu,  4 Apr 2024 15:57:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712246239;
-	bh=2ttHn8xude/WPreacceneDXtCs17/hvNpTuijvZT1Ds=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bPuMzCjpUAYjAerFx7CkzAZ8kETr3nSN9VTWTapH+T7wkIx6DINr7GSbZWFHo2bvC
-	 NgwyM09xVhFGl6RYGcUxM/+L0npkonUM/4GBcXN6jDXCa7DOTbhCkWPel6Nj7AwPB3
-	 YFEspmRyMA1jzI3ApuszxfC9Nnvo4KHMSREYrB68=
-Date: Thu, 4 Apr 2024 17:57:16 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Wolfgang Walter <linux@stwm.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org
-Subject: Re: stable v6.6.24 regression: boot fails: bisected to "x86/mpparse:
- Register APIC address only once"
-Message-ID: <2024040445-promotion-lumpiness-c6c8@gregkh>
-References: <23da7f59519df267035b204622d32770@stwm.de>
+	s=arc-20240116; t=1712246547; c=relaxed/simple;
+	bh=IDmK4uUx+wlhYuF9PhOMx4SNKC94RvhgZPZnyTimVd4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nt2A1NykDJPsAjFO6T3nPepaZ4aKCHXZc95yFh089th185bXQpsDYrsZzScHT4SeUhhwtVh2Gnn1w9pIaDvPxOegIkb4s6D//gLZ/ENoC/pM3Zpjl06FSUbgIBFd7gGJliN+Rg0FdSl3+8b1neFAbATi0tTmMYv/Nnzo7TzFtcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AcMDG/XI; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3c4e99e7f78so191488b6e.2
+        for <stable@vger.kernel.org>; Thu, 04 Apr 2024 09:02:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712246545; x=1712851345; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jyg0hXO6E2q0WJvGCJ4GruXSk8RIFkv8agNThby4pB8=;
+        b=AcMDG/XISKFoF1V2Ctwf7jxVoaY3qHUhLjEtGMGEjnw2LexCnSQGUiPa5W/gqmgx2+
+         zPyBkFGUMgVDTP8ie6TSpnwfg0DFr1uEcV1aMD6IaP+LHt+vRfGsYjFe88DkU63vCnCF
+         FJ8YVjgu1fWYauJSQYnMa+hTW3NLQTxi0FBUXhjVG3xjDFtj0qajB26C9/dNMGCZkhO1
+         DkNoHH+nxjBTPkk91xDGq3IJCDvaAlO13uS9bvHoL7zWUk9dEkJA8JMyckl4w3764l2K
+         t7HLlW+JDm9OBhpm6+72OLMJwPMSIlrOGJ1Woih2Si+pLbWKiAKKlBtdxrgL2zPt/vlw
+         rxhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712246545; x=1712851345;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jyg0hXO6E2q0WJvGCJ4GruXSk8RIFkv8agNThby4pB8=;
+        b=YtqGCZVdjELa7hMQIuUkb8Ou10HdU6lwKa3c2UKuUEf/QQljzljy6qNYRl29z+S4hY
+         RB6hECjOq2/DZyNr56bfZFw0nFQhW+CILHX2eWRo30YdKNfIFH7GI9qNwELIxzpiziiJ
+         jqvg71yhMu+N5YXUYRFU2yY2pYb3geR69KSmtRnexZVsdf9lCQicT++avBPVv54OSQKr
+         GiUlELCYNGDlfUKtkihtILgi+k9ZItJbIkEGzM4GIl/qKprUIt9AveDfzIsCavDpgk9d
+         IPRspBIy/L2rO4kmZjYUyhVAd/5CJMfiq/8Vx0zFO3uncgw4bQinLGLzBAgZNpT/MYNY
+         F+cA==
+X-Gm-Message-State: AOJu0YxtuHSlwdL4J3RMR766EdQOI2EE2Sf+/FcgHitmKVBnq7v12Db5
+	ZyT7jCkakbvukm5ctA2x4Tp7FpvjO4Zm7HL0dbdokWJm1S1PEcs6FHirxv9v2A4+3f9GpwBzivf
+	Ev1TmH7bWi6Q2piYUUuX/CiCB0yOQx8GUaH3jNw==
+X-Google-Smtp-Source: AGHT+IETeM01LKgtRA5QxmngBY+AiGddknDgFaH6sHiUkiZ3j6NX5/O4k6goqx+540Q0XQLpdJ4lUYtOQQqMdbI+NaI=
+X-Received: by 2002:a05:6808:14ce:b0:3c5:b4a9:41d2 with SMTP id
+ f14-20020a05680814ce00b003c5b4a941d2mr3398838oiw.3.1712246545200; Thu, 04 Apr
+ 2024 09:02:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <23da7f59519df267035b204622d32770@stwm.de>
+References: <20240403175125.754099419@linuxfoundation.org>
+In-Reply-To: <20240403175125.754099419@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 4 Apr 2024 21:32:13 +0530
+Message-ID: <CA+G9fYvRA8N00SPa4nNMJybv7Z6WCVgS24AwKW7+2kOmqcm5Fg@mail.gmail.com>
+Subject: Re: [PATCH 6.8 00/11] 6.8.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 04, 2024 at 02:07:11PM +0200, Wolfgang Walter wrote:
-> Hello,
-> 
-> after upgrading to v6.6.24 from v6.6.23 some old boxes (i686; Intel Celeron
-> M) stop to boot:
-> 
-> They hang after:
-> 
-> Decompressing Linux... Parsing ELF... No relocation needed... done.
-> Booting the kernel (entry_offset: 0x00000000).
-> 
-> After some minutes they reboot.
-> 
-> I bisected this down to
-> 
-> commit bebb5af001dc6cb4f505bb21c4d5e2efbdc112e2
-> Author: Thomas Gleixner <tglx@linutronix.de>
-> Date:   Fri Mar 22 19:56:39 2024 +0100
-> 
->     x86/mpparse: Register APIC address only once
-> 
->     [ Upstream commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 ]
-> 
->     The APIC address is registered twice. First during the early detection
-> and
->     afterwards when actually scanning the table for APIC IDs. The APIC and
->     topology core warn about the second attempt.
-> 
->     Restrict it to the early detection call.
-> 
->     Fixes: 81287ad65da5 ("x86/apic: Sanitize APIC address setup")
->     Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
->     Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
->     Tested-by: Guenter Roeck <linux@roeck-us.net>
->     Link: https://lore.kernel.org/r/20240322185305.297774848@linutronix.de
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> 
-> Reverting this commit in v6.6.24 solves the problem.
+On Wed, 3 Apr 2024 at 23:25, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.8.4 release.
+> There are 11 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Apr 2024 17:51:13 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.8.4-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Is this also an issue in 6.9-rc1 or newer or 6.8.3 or newer?
 
-thanks,
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-greg k-h
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.8.4-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.8.y
+* git commit: c4c57420c666b4ef4b77e6600f062bd5e631403d
+* git describe: v6.8.3-12-gc4c57420c666
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.8.y/build/v6.8.3=
+-12-gc4c57420c666
+
+## Test Regressions (compared to v6.8.2)
+
+## Metric Regressions (compared to v6.8.2)
+
+## Test Fixes (compared to v6.8.2)
+
+## Metric Fixes (compared to v6.8.2)
+
+## Test result summary
+total: 148875, pass: 130376, fail: 1350, skip: 17015, xfail: 134
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 129 total, 129 passed, 0 failed
+* arm64: 38 total, 38 passed, 0 failed
+* i386: 29 total, 29 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 16 total, 16 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 33 total, 33 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
