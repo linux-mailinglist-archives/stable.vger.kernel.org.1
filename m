@@ -1,93 +1,94 @@
-Return-Path: <stable+bounces-35942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F74898B15
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:27:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE34898B1F
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 389682838D2
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E642D2820B9
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812402C189;
-	Thu,  4 Apr 2024 15:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CB8823D0;
+	Thu,  4 Apr 2024 15:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="VLUHsA7g";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vCM1LUn6";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="VLUHsA7g";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vCM1LUn6"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="iAAxK5ZE";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vnEzIv4f";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="m3GzjUM8";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UQfK3Iad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA9E1BC57
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 15:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5351BDC4
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 15:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712244414; cv=none; b=BT26pCQVwqCdp2bs9UJOmLrCVa2tOfI4QdyRIzZuu7vfS8TJekORabzAedGseSA7K1ZE5QSJsC0HwxFLqJOLsg6S63MMlBbEjBeFc8j+6eBXFN1ivUslxFdIt8SXUyaSsdmYUtR2JRTYZcEaUDqZSsy2ijXuQFbmmrpbLIxPJpQ=
+	t=1712244531; cv=none; b=uMH7gUIFOZSQwnyw0xqHi61jFmMU+mZVN9CDOXdgN0+OpbxG/TMfi+VjpIJgLzMuwiOOemGzmzjfRsvFPkK5yUeDIdbWDT+F6IbIc/TJktIUvW4QE15ImVTwpFk7t8dKVCLXJ/5olmFJRLjyuCrAbRD+7w2G3uz6js2d25N0KHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712244414; c=relaxed/simple;
-	bh=E8n0TmVStuqECoNOK5XLM3PbGBqMSP24qBd+v2CVc9E=;
+	s=arc-20240116; t=1712244531; c=relaxed/simple;
+	bh=Ur0XNbg5OzPSR49NBcLOKIk/coJNZKxyfWEZFQBLmDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6w97auWV8sKuDu6bf9E1jbKaSUbysolsHn0CgD5fSZfwaF3gzoPUh6/uYTYjj6CJXY0h2WU2tf++dMTrTMmwPoiVl+Hk/faZMhSzsB+oVDbIJkG6EvrophwoNUS2KYVPDV/uO7v689M+u1zlk4iUfs6Zeq4R3GNm54JGdy+Zo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=VLUHsA7g; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vCM1LUn6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=VLUHsA7g; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vCM1LUn6; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=rpzJyGVK4ixYyMI2trzCgRZlAk6ABWCe2OLe7BDW/bo8JS+Z/7965bD2VIcha/9rGETxXJciULNI3KUpcJE38AEQAYImGpHuMCiPOeWyOcfBv/ffPQljkSshY9XKBN3CER2ofpIxdIhZHeRh1NT5/fzWk3wWdFPuH52huT5bhfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=iAAxK5ZE; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vnEzIv4f; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=m3GzjUM8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UQfK3Iad; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 47DBD37CE0;
-	Thu,  4 Apr 2024 15:26:50 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CDD8137CE8;
+	Thu,  4 Apr 2024 15:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712244410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1712244527; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vbjbj4gB3+xqiUdgKiBq08Z4dKf07Pqc57dWU/Xv4co=;
-	b=VLUHsA7gdPiWhFzL2jQaY2bjC40zzThYjy6Pyx+YLy1Sba7r6CzREcXehDopQYjUF72sGv
-	F6/KP+qAhc0IaBL9R5uZXLIBbCTC6LhRtawebGOwNpSt1dLFbz5TrGmw2svxylXDNStyo+
-	cXA9m5KgJqep51gN1s6FmTATUynYtdI=
+	bh=TLg3oI+nyedwotwsu4q//kXEFRE65MlLwr3LRgpLU+E=;
+	b=iAAxK5ZEfM+Z2D5d6BFB9d6Oj7nMMQSgWCfrt7sUC+yePu8KLFHYIh1nI0HfMpp4e0/Z/B
+	VQHVCCJfWmg3lH9fQH2FdHwM6h8do2+rxqCZ/39mfM+teXtPFUEbbFaRYT8Y/s7tp+mpRr
+	ZAgCQt0TRRLu0HbJwcZI6UEy7zVDuiE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712244410;
+	s=susede2_ed25519; t=1712244527;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vbjbj4gB3+xqiUdgKiBq08Z4dKf07Pqc57dWU/Xv4co=;
-	b=vCM1LUn6ggihY0+WGbeUBTyT4phkcB7KvmJw46lt3T5l+LCfvF6O7Ptf4fYWz+GlUiFgV5
-	9m/5rrtEiIlqL4Cg==
+	bh=TLg3oI+nyedwotwsu4q//kXEFRE65MlLwr3LRgpLU+E=;
+	b=vnEzIv4fJFZHThMIULIEFuVJlSShztFRfT12dy79zA49nNBpKV12Owr8PplUs4ynZgHWnd
+	zY79w3yMshxgAwAQ==
 Authentication-Results: smtp-out1.suse.de;
-	none
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=m3GzjUM8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UQfK3Iad
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712244410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1712244526; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vbjbj4gB3+xqiUdgKiBq08Z4dKf07Pqc57dWU/Xv4co=;
-	b=VLUHsA7gdPiWhFzL2jQaY2bjC40zzThYjy6Pyx+YLy1Sba7r6CzREcXehDopQYjUF72sGv
-	F6/KP+qAhc0IaBL9R5uZXLIBbCTC6LhRtawebGOwNpSt1dLFbz5TrGmw2svxylXDNStyo+
-	cXA9m5KgJqep51gN1s6FmTATUynYtdI=
+	bh=TLg3oI+nyedwotwsu4q//kXEFRE65MlLwr3LRgpLU+E=;
+	b=m3GzjUM8bt6zsf2RwhY/m+6JpI/iAfCGagNcKY9yunF9K7NfGelqCgFq+vNzTvw1UD3zd1
+	IXShfoy2jz8mu+1HlTEmrTzJlvyEnI531jPbHT9eWpY1LajpaiaCRpBgSbeeS2BwrPP+/X
+	QdyOcCI6bPh58beq9705qAvPhun8juM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712244410;
+	s=susede2_ed25519; t=1712244526;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vbjbj4gB3+xqiUdgKiBq08Z4dKf07Pqc57dWU/Xv4co=;
-	b=vCM1LUn6ggihY0+WGbeUBTyT4phkcB7KvmJw46lt3T5l+LCfvF6O7Ptf4fYWz+GlUiFgV5
-	9m/5rrtEiIlqL4Cg==
+	bh=TLg3oI+nyedwotwsu4q//kXEFRE65MlLwr3LRgpLU+E=;
+	b=UQfK3IadMOVp06fDar3mQ6NWLnxBx6qitPWPicdNGw6B/JN6iEm0uLAgKSnkDUkwDncCvq
+	9pAYnCVsWBNI87BQ==
 Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 30636139E8;
-	Thu,  4 Apr 2024 15:26:50 +0000 (UTC)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id AC1D1139E8;
+	Thu,  4 Apr 2024 15:28:46 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id E22CC7rGDmZVHAAAn2gu4w
-	(envelope-from <vbabka@suse.cz>); Thu, 04 Apr 2024 15:26:50 +0000
+	id BiO6KS7HDmbkHAAAn2gu4w
+	(envelope-from <vbabka@suse.cz>); Thu, 04 Apr 2024 15:28:46 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
 To: stable@vger.kernel.org
 Cc: Vlastimil Babka <vbabka@suse.cz>,
@@ -100,12 +101,12 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Michal Hocko <mhocko@kernel.org>,
 	Takashi Iwai <tiwai@suse.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10.y] mm, vmscan: prevent infinite loop for costly GFP_NOIO | __GFP_RETRY_MAYFAIL allocations
-Date: Thu,  4 Apr 2024 17:26:49 +0200
-Message-ID: <20240404152648.21827-2-vbabka@suse.cz>
+Subject: [PATCH 5.4.y] mm, vmscan: prevent infinite loop for costly GFP_NOIO | __GFP_RETRY_MAYFAIL allocations
+Date: Thu,  4 Apr 2024 17:28:42 +0200
+Message-ID: <20240404152841.27886-2-vbabka@suse.cz>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <2024032727-pastel-sincerity-a986@gregkh>
-References: <2024032727-pastel-sincerity-a986@gregkh>
+In-Reply-To: <2024032730-triceps-mustang-3ced@gregkh>
+References: <2024032730-triceps-mustang-3ced@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -113,29 +114,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: CDD8137CE8
 X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MX_GOOD(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,suse.cz:dkim,suse.cz:email,suse.com:email];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	FROM_EQ_ENVFROM(0.00)[];
 	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+]
 
 Sven reports an infinite loop in __alloc_pages_slowpath() for costly order
 __GFP_RETRY_MAYFAIL allocations that are also GFP_NOIO.  Such combination
@@ -217,10 +226,10 @@ Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
  4 files changed, 20 insertions(+), 11 deletions(-)
 
 diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index c603237e006c..973f4143f9f6 100644
+index c89f8456f18d..e499bca54044 100644
 --- a/include/linux/gfp.h
 +++ b/include/linux/gfp.h
-@@ -623,6 +623,15 @@ static inline bool pm_suspended_storage(void)
+@@ -608,6 +608,15 @@ static inline bool pm_suspended_storage(void)
  }
  #endif /* CONFIG_PM_SLEEP */
  
@@ -237,10 +246,10 @@ index c603237e006c..973f4143f9f6 100644
  /* The below functions must be run on a range from a single zone. */
  extern int alloc_contig_range(unsigned long start, unsigned long end,
 diff --git a/mm/compaction.c b/mm/compaction.c
-index b58021666e1a..77ca5e6f4980 100644
+index 7a2675dbf3cc..138edfa834b9 100644
 --- a/mm/compaction.c
 +++ b/mm/compaction.c
-@@ -2466,16 +2466,11 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
+@@ -2343,16 +2343,11 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
  		unsigned int alloc_flags, const struct alloc_context *ac,
  		enum compact_priority prio, struct page **capture)
  {
@@ -259,10 +268,10 @@ index b58021666e1a..77ca5e6f4980 100644
  
  	trace_mm_compaction_try_to_compact_pages(order, gfp_mask, prio);
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 124ab9324610..ed66601044be 100644
+index a3fca320e35a..0ad582945f54 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -4644,6 +4644,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+@@ -4445,6 +4445,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
  						struct alloc_context *ac)
  {
  	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
@@ -270,7 +279,7 @@ index 124ab9324610..ed66601044be 100644
  	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
  	struct page *page = NULL;
  	unsigned int alloc_flags;
-@@ -4709,7 +4710,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+@@ -4510,7 +4511,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
  	 * Don't try this for allocations that are allowed to ignore
  	 * watermarks, as the ALLOC_NO_WATERMARKS attempt didn't yet happen.
  	 */
@@ -279,7 +288,7 @@ index 124ab9324610..ed66601044be 100644
  			(costly_order ||
  			   (order > 0 && ac->migratetype != MIGRATE_MOVABLE))
  			&& !gfp_pfmemalloc_allowed(gfp_mask)) {
-@@ -4806,9 +4807,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+@@ -4621,9 +4622,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
  
  	/*
  	 * Do not retry costly high order allocations unless they are
@@ -292,7 +301,7 @@ index 124ab9324610..ed66601044be 100644
  		goto nopage;
  
  	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-@@ -4821,7 +4823,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+@@ -4636,7 +4638,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
  	 * implementation of the compaction depends on the sufficient amount
  	 * of free memory (see __compaction_suitable)
  	 */
@@ -302,10 +311,10 @@ index 124ab9324610..ed66601044be 100644
  				compact_result, &compact_priority,
  				&compaction_retries))
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 51ccd80e70b6..e2b8cee1dbc3 100644
+index de94881eaa92..cefd9cd27405 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -2546,7 +2546,7 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+@@ -2691,7 +2691,7 @@ static void shrink_node_memcg(struct pglist_data *pgdat, struct mem_cgroup *memc
  /* Use reclaim/compaction for costly allocs or under memory pressure */
  static bool in_reclaim_compaction(struct scan_control *sc)
  {
@@ -314,7 +323,7 @@ index 51ccd80e70b6..e2b8cee1dbc3 100644
  			(sc->order > PAGE_ALLOC_COSTLY_ORDER ||
  			 sc->priority < DEF_PRIORITY - 2))
  		return true;
-@@ -2873,6 +2873,9 @@ static inline bool compaction_ready(struct zone *zone, struct scan_control *sc)
+@@ -2940,6 +2940,9 @@ static inline bool compaction_ready(struct zone *zone, struct scan_control *sc)
  	unsigned long watermark;
  	enum compact_result suitable;
  
