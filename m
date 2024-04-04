@@ -1,140 +1,106 @@
-Return-Path: <stable+bounces-35959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDE5898D41
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 19:33:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8408C898D68
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 19:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FB891C23902
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:33:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F45E290A04
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 17:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB83A12D765;
-	Thu,  4 Apr 2024 17:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483D612B163;
+	Thu,  4 Apr 2024 17:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="v9psreqD"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ExTC2ZvU"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF2B1F61C;
-	Thu,  4 Apr 2024 17:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E03A12CD9C
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 17:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712252027; cv=none; b=JXljr+u9Q1OLw15eco+AcWYEQTHIxdrZ3fCUUAgc8G33wsITwTwaK1oY6Q3WjQ9VBjy4viu7P9Zgp8ei0t4HLc/BKacKcejX4I071INd5TkJpbCm51EFIyTW1LLfhJItddoTOgkOWyPzr1V0eXFxzF/Id6P60d0bd7JAlVolkRg=
+	t=1712252512; cv=none; b=Tpm9FZAYupRmOWj10fiWgjlmVmMFvYUmIS9KeBc0EUecD3XSE6he1h0Ll8y9lzUW87RhdWnoD3d+MEIx3qpOwmjvcAyNi2Z1gtrdJ8SAcy0/cIZ4+CD8QYnuRCSBCOUAeuld5iyxg5Q1VaRprTUZ/0ZFkg8G1fvJlhNKFr21BYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712252027; c=relaxed/simple;
-	bh=doQitWhcREUucrKSoXjTMVT5G7H4c7wT88p3P9zRIBY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=RdTyd8go8lSP46rsMRug6v5fF7YSB8vZcHu8qRMcauSvyXBKDJTs6kvDTN8tIF7kP4XMm8ToEWT76UevhNzkahg3cr9B+GuFbjD1QITbwrSzMaE2f3UkCrPMQTpyanCTykc7AquNRsDFqEi1O8byusIfmMVtM+ngEwpMYvfcJds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=v9psreqD; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:Cc:References:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ND8ykMVV3E5+HLxjXKeng5Frf4NNoBw+6beGYw/Y9Wg=; b=v9psreqD1j9YeRI4P8sv+9kFGr
-	yVOBZUxh9jqTkqllUpojAoM17YI2XSMahcLp7Vpjpah3wcQCi3Lu62RIR2uu+2ZR+6+XeQxUmomRc
-	aGuojZnu/Ovy3q8zk85QTPQ6EJ1oAeKGr0FsrtyTftMQ5+iC3zv4cr4djbX4OESJDe4h66upvTrPU
-	88g9k4TIlRRfNM7GP2Gu1+sUFDJc8GYDcSIa1SeUtbCOs0TO1pY5EofEHfe5QgvA1OxjiPVnH+mgd
-	gLeE1Qg4QsT7QQSGlJbWfUZfg4vGUsOioK9RFS9S3wJvVUc9hJ0QzJzDcSRBb5T6HnXBvw0DSxWeD
-	KA03qBfA==;
-Received: from [50.53.2.121] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsQy9-00000003f2Z-0s4d;
-	Thu, 04 Apr 2024 17:33:45 +0000
-Message-ID: <b5e73e45-4951-4eb0-91fd-2cb5998c8061@infradead.org>
-Date: Thu, 4 Apr 2024 10:33:43 -0700
+	s=arc-20240116; t=1712252512; c=relaxed/simple;
+	bh=QJcrvaUqNeLSD3sP8oKrhHn1V+DtHQD2tokKy7lm46k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A5fX0KSac4prIaO6FgNjnVGPE3PYa+JfmoWkclkfNa/+qGbPA8JzLhJL5lXnHMkCvO186mld0MGd54Ur/3LUPmojJ+hi6Vv84gLJfVFmxvmLKwCfmiARbtEdzidHrlc7plg5H4KERHZlxDSScml4ays9PpG4c8pS+5x7oW3dlk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ExTC2ZvU; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a44665605f3so150702866b.2
+        for <stable@vger.kernel.org>; Thu, 04 Apr 2024 10:41:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1712252508; x=1712857308; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=VN0b2tawtHaPUNX4wk3tslHJG7emspSlRs8ITmny6iU=;
+        b=ExTC2ZvUoju5s28WtB8h+fG6wSFVsIy4Z0yd6i/oBtpdkboj/YeD49FEGYZ6oDz98M
+         3FmkSerCbtpmZmFXaIG7R7FTQbAAUBQHGp3IpEQMW2MQnd/Q934HpNyFvK+mM0E70bZM
+         BY4TObbR1KMalcKKu5TJtBMMYtjl++A+1Wgqc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712252508; x=1712857308;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VN0b2tawtHaPUNX4wk3tslHJG7emspSlRs8ITmny6iU=;
+        b=JMBtZ8jfIok9acCPNqWwZmTcL28mYIszOw4WBWZy9JgVriX2bNwsJmCbwsSXp3ZNrh
+         PzWxauvF5xfiwtVsU/l1nBlTlMT9UpLEotqkJ4irp0X9Y0c3m/tlcepBYnZwOHvtpO66
+         5sDNnNqxD9gpaOBAfdyxitVYXpBnoATF3lGzZdWlPHVOOhLviHzZQ11YwLfmxPV6CA0H
+         KZVXCJBsYu/wM5GArRm+IM9v9z8cXasGLlLYyCljVQ4DceLOIvPoRGqKBL+unHoRp7TT
+         H0r1zGX5FQy23hVxHriPlJ5jrABDq/nKRUcQvVzuEpFm/8GJYqbMN3pRqMOwoRBEKuiI
+         cYHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUaIXg+r1pGns7yVyMViunjavjVAMF+w7MJdLQNsQdA7JtIh08/Mn1Q9rL01qWzoeKffqjfL6epFPmnEn2FcbWDcll2iOHE
+X-Gm-Message-State: AOJu0YyskfuPmw0zreU9vlqcAugWleLKMfpJo4NdTsVq8on1BGlBZ1TE
+	RJmJ3cjXAUSaeh/ePA/N550dzmO4UhFL3BgmqnQeMkah/B14yoK5pueITkRb9FVCMwWrsG0Wtpx
+	gc6k=
+X-Google-Smtp-Source: AGHT+IECHeaO/t0CoyHxZ0KXRlE6L7Hb9GucNDkkVCMJcjIPqt1aBzI6yhjYCLQZPDdRKAEqyyaetw==
+X-Received: by 2002:a17:907:36a:b0:a51:9197:a2cf with SMTP id rs10-20020a170907036a00b00a519197a2cfmr1077709ejb.44.1712252508505;
+        Thu, 04 Apr 2024 10:41:48 -0700 (PDT)
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
+        by smtp.gmail.com with ESMTPSA id xd2-20020a170907078200b00a4e2e16805bsm8578800ejb.11.2024.04.04.10.41.47
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Apr 2024 10:41:47 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a472f8c6a55so178998166b.0
+        for <stable@vger.kernel.org>; Thu, 04 Apr 2024 10:41:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVRY3X3GUfR290NmZlv4mC5oqsDT9NXCmgZEhJDygjv1GLOGFdhf0/R9cmo5JGz8P8UhITy9QcPHQu2JVhFErlbXlRyzyyc
+X-Received: by 2002:a17:906:710e:b0:a4d:f5e6:2e34 with SMTP id
+ x14-20020a170906710e00b00a4df5e62e34mr1762782ejj.19.1712252507413; Thu, 04
+ Apr 2024 10:41:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Kernel Trace in recent 6.1.8n kernels
-To: Tim Tassonis <stuff@decentral.ch>, LKML <linux-kernel@vger.kernel.org>
-References: <b8dbce0c-31b4-4762-9779-6e973806433a@decentral.ch>
-Content-Language: en-US
-Cc: stable <stable@vger.kernel.org>, linux-scsi@vger.kernel.org
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <b8dbce0c-31b4-4762-9779-6e973806433a@decentral.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240401152549.131030308@linuxfoundation.org> <20240401152600.724360931@linuxfoundation.org>
+ <87v84xjw5c.fsf@turtle.gmx.de> <20240404095547.GBZg55I3pwv8pttxHX@fat_crate.local>
+In-Reply-To: <20240404095547.GBZg55I3pwv8pttxHX@fat_crate.local>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 4 Apr 2024 10:41:31 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiiK8qEZ+PkOzeEpguxB18XrfcHGcSMyHzFtA30PvZP2A@mail.gmail.com>
+Message-ID: <CAHk-=wiiK8qEZ+PkOzeEpguxB18XrfcHGcSMyHzFtA30PvZP2A@mail.gmail.com>
+Subject: Re: [PATCH 6.8 387/399] x86/bugs: Fix the SRSO mitigation on Zen3/4
+To: Borislav Petkov <bp@alien8.de>
+Cc: Sven Joachim <svenjoac@gmx.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, Ingo Molnar <mingo@kernel.org>, stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[+ stable & scsi]
+On Thu, 4 Apr 2024 at 02:56, Borislav Petkov <bp@alien8.de> wrote:
+>
+> https://lore.kernel.org/r/20240403170534.GHZg2MXmwFRv-x8usY@fat_crate.local
+>
+> Once Linus commits it, I'll backport it.
 
-On 4/3/24 3:49 PM, Tim Tassonis wrote:
-> Hi all
-> 
-> Maybe this is the wrong list, as it probably only affects the 6.1.8n LTS kernel releases.
-> 
-> 
-> I noticed that since 6.1.80 or so, all my boxes print a trace when rebooting or halting, right at the end. It starts with drivers/scsi/scsi_lib.c
-> 
-> As everything seems already done by then, there is no "real" problem occuring, but maybe someone knows why this suddenly started to happen.
-> 
-> 
-> With qemu and the serial options, I managed to get the actual trace in text:
-> 
->      Unmounting all other currently mounted file systems...[ 58.632670] EXT4-fs (sda1): re-mounted. Quota mode: none.
->   * [  OK  ]
-> [   58.684029] EXT4-fs (sda1): re-mounted. Quota mode: none.
->   *   Bringing down the loopback interface... [  OK  ]
-> [   58.809326] ------------[ cut here ]------------
-> [   58.813524] WARNING: CPU: 0 PID: 2755 at drivers/scsi/scsi_lib.c:214 scsi_execute_cmd+0x3b/0x2b0
-> [   58.828052] Modules linked in: cfg80211 8021q garp mrp stp ipv6 crc_ccitt joydev hid_generic usbhid snd_seq_midi snd_seq_midi_event psmouse ppdev serio_raw atkbd libps2 vivaldi_fmap uhci_hcd ehci_pci ehci_hcd snd_ens1370 bochs drm_vram_helper snd_rawmidi usbcore drm_ttm_helper sr_mod usb_common snd_pcm cdrom e1000 i2c_piix4 ttm pcspkr gameport pata_acpi parport_pc parport i8042 qemu_fw_cfg serio rtc_cmos floppy snd_seq snd_seq_device snd_timer snd soundcore fuse
-> [   58.873677] CPU: 0 PID: 2755 Comm: halt Not tainted 6.1.84 #1
-> [   58.876424] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> [   58.884106] RIP: 0010:scsi_execute_cmd+0x3b/0x2b0
-> [   58.885558] Code: 89 cc 55 44 89 c5 53 48 83 ec 10 4c 8b 74 24 50 48 89 0c 24 4d 85 f6 0f 84 44 02 00 00 49 83 3e 00 74 21 41 83 7e 08 60 74 1a <0f> 0b b8 ea ff ff ff 48 83 c4 10 5b 5d 41 5c 41 5d 41 5e 41 5f c3
-> [   58.891998] RSP: 0018:ffffc90000153d98 EFLAGS: 00010287
-> [   58.893500] RAX: ffffc90000153df8 RBX: ffff888003d22000 RCX: 0000000000000000
-> [   58.895480] RDX: 0000000000000022 RSI: 0000000000000022 RDI: ffff888003d22000
-> [   58.897583] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000002710
-> [   58.900276] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000002710
-> [   58.902209] R13: ffff888003d22000 R14: ffffc90000153df8 R15: ffffc90000153e28
-> [   58.904084] FS:  00007f097a95b680(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
-> [   58.906285] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   58.907451] CR2: 00007f097a8f5431 CR3: 000000000406e000 CR4: 00000000000006f0
-> [   58.908928] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> [   58.910326] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> [   58.911770] Call Trace:
-> [   58.912438]  <TASK>
-> [   58.912977]  ? __warn+0x78/0xd0
-> [   58.913751]  ? scsi_execute_cmd+0x3b/0x2b0
-> [   58.914757]  ? report_bug+0xe6/0x170
-> [   58.916267]  ? handle_bug+0x3c/0x70
-> [   58.917020]  ? exc_invalid_op+0x13/0x60
-> [   58.917807]  ? asm_exc_invalid_op+0x16/0x20
-> [   58.918675]  ? scsi_execute_cmd+0x3b/0x2b0
-> [   58.919524]  ata_cmd_ioctl+0x112/0x2b0
-> [   58.920435]  blkdev_ioctl+0x12e/0x260
-> [   58.921322]  __x64_sys_ioctl+0x8b/0xc0
-> [   58.922115]  do_syscall_64+0x42/0x90
-> [   58.922953]  entry_SYSCALL_64_after_hwframe+0x64/0xce
-> [   58.924002] RIP: 0033:0x7f097a87616b
-> [   58.924748] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
-> [   58.928687] RSP: 002b:00007fff1e70b5b0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> [   58.930465] RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007f097a87616b
-> [   58.932545] RDX: 00007fff1e70b614 RSI: 000000000000031f RDI: 0000000000000004
-> [   58.933964] RBP: 0000000000000000 R08: 0000000000000073 R09: 0000558c7857a343
-> [   58.935349] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000020
-> [   58.936727] R13: 0000558c77faf088 R14: 0000000000000001 R15: 0000000000000000
-> [   58.938165]  </TASK>
-> [   58.938617] ---[ end trace 0000000000000000 ]---
-> [   58.940450] sd 0:0:0:0: [sda] Synchronizing SCSI cache
-> [   58.941662] sd 0:0:0:0: [sda] Stopping disk
-> [   58.971754] ACPI: PM: Preparing to enter system sleep state S5
-> [   58.973005] reboot: Power down
-> 
-> 
-> Bye
-> Tim
-> 
+This?
 
--- 
-#Randy
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0e110732473e14d6520e49d75d2c88ef7d46fe67
+
+already committed.
+
+           Linus
 
