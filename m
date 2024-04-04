@@ -1,133 +1,120 @@
-Return-Path: <stable+bounces-35971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AEB898F6D
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 22:09:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39162898F6F
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 22:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 376D7B2A769
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 20:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E782E2840FA
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 20:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF978134721;
-	Thu,  4 Apr 2024 20:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8FD134CC7;
+	Thu,  4 Apr 2024 20:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sBGZTAnN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UpPo/ywa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9D61332A5;
-	Thu,  4 Apr 2024 20:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673881C6A0;
+	Thu,  4 Apr 2024 20:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712261374; cv=none; b=bpckzGi8xROrZ4O1iOTTHwyn0kxjwrWJhi94ZCDLzkfb0wveoJ3MMgdML6OGiBSBbSMZCSFkvT79St3Lg9B9sApm8ghayNT+Asu8vGKRxRvbHag0uRT1/pWz76jt4T5nzg4S/kFM5aLEmgqRCqzUDXIZy2DvpN+XkE77xoQKEIA=
+	t=1712261480; cv=none; b=aZ2yoWLcwP4WpIlPBnEp3hCG8NAC1xoQuLvFwAEGB/ohSxIR4Ubawmu1tIpBZ6SyLOmukxJcuwGfb+c0QFg7qlWmvd9WNdq4midN3tDa/EQDsoDiKLQ6P73EQbqoktQ9mS6XvM2qReWWdHTRA3dUPRodm4NJxK9689teRM25DF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712261374; c=relaxed/simple;
-	bh=X/H1CHc0D+2EdqhFjLOoFlM2XCxEK1MPMzhCrV0Kj2k=;
-	h=Date:To:From:Subject:Message-Id; b=UtB5uCeh74flSdTfi0zwCZx8vdFOAWD0BPR49gJvQ2CgL6u7RgOOARx/1nkjLmzL6NJ5PYE1DVJY3byIS/X/TPp+oytnRRKaWQjgNBrmtreblR6UsxRZ2dANilm2sVH9d9Z6rF/TVkVBSN/L2f9Imp9+ChIvFgY9EbrghBOJZ/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sBGZTAnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B92C43390;
-	Thu,  4 Apr 2024 20:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1712261373;
-	bh=X/H1CHc0D+2EdqhFjLOoFlM2XCxEK1MPMzhCrV0Kj2k=;
-	h=Date:To:From:Subject:From;
-	b=sBGZTAnNhaXaLYgeWrHrsSauvVJs7LFM3v84GUh2ieYhDCUauZBJSbw0jQlZv6z1Y
-	 cxBC3NLU79poFSAvwOZDWjNhbGzzaRxoV4FlkuqNfYfEf5aq81TqcEYl0nBIb2Ebs4
-	 fOCc7b12FohBOzWHToUqJUIuDkVgl/CgjjF9orkE=
-Date: Thu, 04 Apr 2024 13:09:32 -0700
-To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,willy@infradead.org,stable@vger.kernel.org,peterx@redhat.com,ngeoffray@google.com,kaleshsingh@google.com,david@redhat.com,aarcange@redhat.com,lokeshgidra@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + userfaultfd-change-src_folio-after-ensuring-its-unpinned-in-uffdio_move.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240404200933.D0B92C43390@smtp.kernel.org>
+	s=arc-20240116; t=1712261480; c=relaxed/simple;
+	bh=M8iIHi2wG31CMAypyB9Hf3PCit7uyA2n3iFds5lnbAw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fPkFV5BsxIhXRA4vBgCIj2kGKI3zKc2Qfk6YzeIWtm95YF/Z5kIrLY22SdGERmtSnzfweN+POecdN+zUaEYb0HjENd5HfYLfCsmllqDIE5rE+WPSE5ItEZLVsNMYc/V6K5QgGnHEW5LoJlvSPG8YNqWoEx2AEg9IUa2B0pEd1r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UpPo/ywa; arc=none smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-7e3a6fe180bso644454241.2;
+        Thu, 04 Apr 2024 13:11:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712261478; x=1712866278; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RjPJff2sg2YzMJe7DKQkjhJDQMLyOxul5rZyxHlPbrE=;
+        b=UpPo/ywa8RYUorUlEHsIzYg1c8YxxpKIk3BW4o9/QHhEWWVR/EX/OBiCIssT84rME4
+         Na1eLCWAR96o6hWcOY2dw4Lx3Bn0QrHJI/nK/yCXj8bCEM1BxBVkBZd3uCcUpHDBXSAa
+         MXyhggDZlgHyJCPGKpEtuROanTc5ku14ClZr3FmZFfR1Le5LF4Qa9oUo/APjpuGF61M8
+         j13oKHojUsWVLV++Pv2bbJM4zKV/mM15+dtby/KsOETIsKQcVAW6GPDaq1gV1wf4OPEf
+         z2lIbHhqA5Xc+w1EZegtNS+d8dG+9rABNUCuhWAbKcOz67VFf0CN3OLMyrZnTn2vEPEI
+         Pe0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712261478; x=1712866278;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RjPJff2sg2YzMJe7DKQkjhJDQMLyOxul5rZyxHlPbrE=;
+        b=UM/7rKdddnV8UFElpfApxAXcUwRAyRF2YJDZSeSGMYkUAvx4uKUSyXU6TFKSOmabPC
+         9XOHB3JY+UjiZMQ+zhfzFZzlzNcDj0E9Rx003Jg6bP2myVl17JYWDCZpxJRGM4dlP+Al
+         ZOWmXkoZFzOLqLyvu10gAVmLcIESyTO38rcmqEUXoUy5GMmZD+bSDvIqhP3nrb9skPJq
+         OGbLQ2n4RlpGSFoxLndH+6jSeXsY35Bn5KFLlo71OoFQ4fZAfRpPkmR2o55FYtwC08ks
+         sADegmlnZa9UWxRy7sYsQEcCkC2KgD7VJ1ddrxynWzBoA7LSqndnJEtxyyoegmK8jrhX
+         1ASA==
+X-Forwarded-Encrypted: i=1; AJvYcCVfS6edXRI5je0cN+S6rPLyVnxZS77PMAL9I2JlQlttaRxbJux4KHfEQMNeyl4TIELQ+EWkX23jbo0gkOXcYtBtRAH6xMfbZD95WGjbOotUEQ8Zt7UDiivbC1hy5uvzo7eDobra
+X-Gm-Message-State: AOJu0Yzm6yULJsr1dRjJhCqUl875YuAlCZrZUWnEPFywiV4gTsO7m/gU
+	7cH+c/b5FFkid1hzVMAxbRVaIycAMdshZ8LJ2IMRdH8DfsQjfTTH
+X-Google-Smtp-Source: AGHT+IERUiPcO7YKkrekeSdBQhRTR0raqdh0bkL/Rd5vl2K9OCFPKO5bBhKykLnsoGvvKIbbYvcNuw==
+X-Received: by 2002:a05:6122:4591:b0:4da:9d3e:a7df with SMTP id de17-20020a056122459100b004da9d3ea7dfmr928443vkb.5.1712261476812;
+        Thu, 04 Apr 2024 13:11:16 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id fe4-20020a0562140b8400b00698facb19d5sm25978qvb.106.2024.04.04.13.11.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Apr 2024 13:11:15 -0700 (PDT)
+Message-ID: <2e5e148b-1d5b-405f-bfdf-b55cf6ee5489@gmail.com>
+Date: Thu, 4 Apr 2024 13:11:08 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 00/11] 6.6.25-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240403175126.839589571@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240403175126.839589571@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 4/3/24 10:55, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.25 release.
+> There are 11 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 05 Apr 2024 17:51:13 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.25-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The patch titled
-     Subject: userfaultfd: change src_folio after ensuring it's unpinned in UFFDIO_MOVE
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     userfaultfd-change-src_folio-after-ensuring-its-unpinned-in-uffdio_move.patch
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/userfaultfd-change-src_folio-after-ensuring-its-unpinned-in-uffdio_move.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Lokesh Gidra <lokeshgidra@google.com>
-Subject: userfaultfd: change src_folio after ensuring it's unpinned in UFFDIO_MOVE
-Date: Thu, 4 Apr 2024 10:17:26 -0700
-
-Commit d7a08838ab74 ("mm: userfaultfd: fix unexpected change to src_folio
-when UFFDIO_MOVE fails") moved the src_folio->{mapping, index} changing to
-after clearing the page-table and ensuring that it's not pinned.  This
-avoids failure of swapout+migration and possibly memory corruption.
-
-However, the commit missed fixing it in the huge-page case.
-
-Link: https://lkml.kernel.org/r/20240404171726.2302435-1-lokeshgidra@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/huge_memory.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
---- a/mm/huge_memory.c~userfaultfd-change-src_folio-after-ensuring-its-unpinned-in-uffdio_move
-+++ a/mm/huge_memory.c
-@@ -2259,9 +2259,6 @@ int move_pages_huge_pmd(struct mm_struct
- 			goto unlock_ptls;
- 		}
- 
--		folio_move_anon_rmap(src_folio, dst_vma);
--		WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
--
- 		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
- 		/* Folio got pinned from under us. Put it back and fail the move. */
- 		if (folio_maybe_dma_pinned(src_folio)) {
-@@ -2270,6 +2267,9 @@ int move_pages_huge_pmd(struct mm_struct
- 			goto unlock_ptls;
- 		}
- 
-+		folio_move_anon_rmap(src_folio, dst_vma);
-+		WRITE_ONCE(src_folio->index, linear_page_index(dst_vma, dst_addr));
-+
- 		_dst_pmd = mk_huge_pmd(&src_folio->page, dst_vma->vm_page_prot);
- 		/* Follow mremap() behavior and treat the entry dirty after the move */
- 		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
-_
-
-Patches currently in -mm which might be from lokeshgidra@google.com are
-
-userfaultfd-change-src_folio-after-ensuring-its-unpinned-in-uffdio_move.patch
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
