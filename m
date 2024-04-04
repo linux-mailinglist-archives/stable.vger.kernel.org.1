@@ -1,137 +1,115 @@
-Return-Path: <stable+bounces-35904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55E58983DA
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 11:15:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AD4898434
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 11:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ABA828A31C
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 09:15:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 042101C26D54
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 09:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7F97353B;
-	Thu,  4 Apr 2024 09:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A7C8289B;
+	Thu,  4 Apr 2024 09:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="bZX/+rKE"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="lOXzeHgv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D17A71B27
-	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 09:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C51276025
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 09:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712222143; cv=none; b=tDXORkz4Q7bviMI9Fax/b4wS8bBCs94YKkDFGDSCBAym2h5XbR2oeYj9pv41vPkWzt+dtnUQTm8ebHC6yMM9J7/J2AWneQKpWDPseWheJnsaiTxYi6CoY734ptZo7kPtwbR+er0cD34q3ceCDwr+8Q+T0BdOfhTtWZvc7wuCQNQ=
+	t=1712223219; cv=none; b=A4iEzYDtOhqKZ9hr7DCxP6jHuzyoYX5SausdvnZwh6T5ZlZ/JRePmsWRLN46ErPyM2dtjtru7utU/cmgmQWakk0k9yP6UHhrhbA+msjrVzhOmQfXxtAdhBwG8v/IRKdKxg+GUmOMCc1u6uK71FZiCbbXH1buZmWgib8sPqMOUuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712222143; c=relaxed/simple;
-	bh=CFOhO9rMjBqt26zwN13mQsw0ALrTDb4wCGJysZZmmfc=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=vF92rPhj2zNcIGL8n6MmepZBu6dHIjUIbyUwKyQ1OXzApo2PW7IQU5toSPRHDfIVNJp/bn5gKcvZ/zJDZkDhYCuf7anVtvhcTM2M6DIOSs95CInvashOHRF5fOPVqqD4IJSg/R313XziZ5d+MK4Veu/u1Xp9MCvVUByPEzIY4KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=bZX/+rKE; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1712223219; c=relaxed/simple;
+	bh=XT8qfTbBDxmpkv3wi9MqFr3mAml1cvbPorzvDz9txyY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mZm7KAAsmIHqkSuqqrw+c5+RcPRqOJXAIj0Q3mhiq4AGapvsUkUyacGasgurUFoBw0/jNfwWAn1Gv4MFS4cFDNUvGXYvwo4GXrQp2H3lO35svuW5Dz805STwYgs8sZ451hR/Ys5HZ3dGgLP2+tNe4Psu/x3eoeDFL4QWAXSNkVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=lOXzeHgv; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3416a975840so575535f8f.0
+        for <stable@vger.kernel.org>; Thu, 04 Apr 2024 02:33:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1712222143; x=1743758143;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=q17zD8zeQWBUAQMkLzyyB+SxQTcEnm8AgXUOq/YxrT8=;
-  b=bZX/+rKENBXCZ8DPr5ONTrns2U8plvyYwGYqjfjYJd+3BSW3/FIgR0i9
-   seNcyxPGTA+FVmtuK0oFvKFFssRWEuOe0+b9LqdG8kpd7OVffk3MG1POj
-   xf0wnzVZJLtZcdg0q/JvCh7IhhSNo9iqP5EyQaiffxtkjraEKrb6bPMWq
-   Y=;
-X-IronPort-AV: E=Sophos;i="6.07,179,1708387200"; 
-   d="scan'208";a="398109458"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 09:15:29 +0000
-Received: from EX19MTAUEC002.ant.amazon.com [10.0.0.204:6130]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.45.125:2525] with esmtp (Farcaster)
- id d627aa2e-7cde-48b2-80ad-88227e5c090e; Thu, 4 Apr 2024 09:15:26 +0000 (UTC)
-X-Farcaster-Flow-ID: d627aa2e-7cde-48b2-80ad-88227e5c090e
-Received: from EX19EXOUEC002.ant.amazon.com (10.252.135.179) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Thu, 4 Apr 2024 09:15:26 +0000
-Received: from EX19MTAUEC001.ant.amazon.com (10.252.135.222) by
- EX19EXOUEC002.ant.amazon.com (10.252.135.179) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Thu, 4 Apr 2024 09:15:25 +0000
-Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (10.15.1.225)
- by mail-relay.amazon.com (10.252.135.200) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Thu, 4 Apr 2024 09:15:25 +0000
-Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
-	id 85F998FF; Thu,  4 Apr 2024 11:15:25 +0200 (CEST)
-From: Mahmoud Adam <mngyadam@amazon.com>
-To: Amir Goldstein <amir73il@gmail.com>
-CC: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, Theodore Ts'o
-	<tytso@mit.edu>, "Darrick J. Wong" <djwong@kernel.org>, Leah Rumancik
-	<lrumancik@google.com>
-Subject: Re: [PATCH 6.1 0/6] backport xfs fix patches reported by
- xfs/179/270/557/606
-In-Reply-To: <CAOQ4uxjFxVXga5tmJ0YvQ-rQdRhoG89r5yzwh7NAjLQTNKDQFw@mail.gmail.com>
-	(Amir Goldstein's message of "Thu, 4 Apr 2024 08:45:27 +0300")
-References: <20240403125949.33676-1-mngyadam@amazon.com>
-	<20240403181834.GA6414@frogsfrogsfrogs>
-	<CAOQ4uxjFxVXga5tmJ0YvQ-rQdRhoG89r5yzwh7NAjLQTNKDQFw@mail.gmail.com>
-Date: Thu, 4 Apr 2024 11:15:25 +0200
-Message-ID: <lrkyqh6ghcwuq.fsf@dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1712223214; x=1712828014; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iwi6HXvg3yM5JJ1Mku4nVoIzxX/h/Bvxo2KK8Xe1bO0=;
+        b=lOXzeHgvSp0xNv9xJZ4UNaeDzDNxD8VrAHs4t5WGS8A75vIw33GCvM6nNKJyEgLv4D
+         X9OrvdPh9rVmUoz8IclzPE3qi41EYXSGdCEC52rrrbIhVo7jD6J9FNe+bgD1yZhSdoe4
+         66maM6YAqIhRpIi0bUfVOFoMmMdGV4PqOwkuh5GID8pr+GcRTT+fqMlTlmgUoL9dawWa
+         YDs5tVfRIZWaKbtwheOD8Ip70srh5Mp+Mmh749nY5RcTBpbptYsa+Huei47lL568c3Ub
+         gjmbTgf9bpOXBBsnE4o5rU/pVrcFd0lGpkfmAK5QKEG7qFZ77Hx9jypyqiRADi42d9bs
+         eM0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712223214; x=1712828014;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Iwi6HXvg3yM5JJ1Mku4nVoIzxX/h/Bvxo2KK8Xe1bO0=;
+        b=W/4Pnzlk2Qk0HKahc8abCefomG36olVsqLrpbb++FUlVPbYa7FUXgsfijDKWLUlE6k
+         MWjbre0vIZ6PG+ylwQwBJxRZ25kuNh1tMs0q/UAoRaAnRwjfkjkUKau9CCjSUeOFWOtJ
+         Cyoh0gyOf1taUPIwCH/cshbQQDaS2TF1LYuSlqERNsoHfFVpi5OFPJnAMad/5qFtFFDM
+         mMPriNuBu9GhsuAGR4VnZhFwDwetAyB6xrWyhWjgmgle7U6bX/BoypqSAMcFCD83Q1KY
+         TRzVFzs6iuw4g6wwzqsw6czihZsEqxnaaaIbyXhNpX0A/+QkEWRR0/fmG19NvyKujxda
+         Q85Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV0jQ8h/kQYHDnR4ltoZSttEmd53wmUjepbSVJbYrVRTFDYPCaNfle91CiT5v9ZoG/MAvB+OGPky+Xewnqndnbz5D+qdd9q
+X-Gm-Message-State: AOJu0Yy+xafg1Ja9CwmbPhGjNimHoJQV8pb39s/7Xe9sxe+SZ+qVHHtm
+	K6t5XJ5t83zbSR9S5Ovl69LamjoZ9SZQY9+fFQxi5NOaN9powjc+jVXCtQuCoCY=
+X-Google-Smtp-Source: AGHT+IGL0b96w+Q2HwiPsxRXzggO4UGgmu7GjYYzWIr5gtnrvMiTJc1Hq3g5cGUH81UdEC31zK1uDA==
+X-Received: by 2002:adf:e48d:0:b0:343:a30e:bd9d with SMTP id i13-20020adfe48d000000b00343a30ebd9dmr1697909wrm.3.1712223214274;
+        Thu, 04 Apr 2024 02:33:34 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:75a:e000:220a:565e:2927:8cf0])
+        by smtp.gmail.com with ESMTPSA id dj13-20020a0560000b0d00b0033e9fca1e49sm19436385wrb.60.2024.04.04.02.33.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Apr 2024 02:33:34 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Kent Gibson <warthog618@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	stable@vger.kernel.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH v2 0/2] gpio: cdev: label sanitization fixes
+Date: Thu,  4 Apr 2024 11:33:26 +0200
+Message-Id: <20240404093328.21604-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Amir Goldstein <amir73il@gmail.com> writes:
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-> On Wed, Apr 3, 2024 at 9:18=E2=80=AFPM Darrick J. Wong <djwong@kernel.org=
-> wrote:
->> To the group: Who's the appropriate person to handle these?
->>
->> Mahmoud: If the answer to the above is "???" or silence, would you be
->> willing to take on stable testing and maintenance?
+This series fixes a couple of bugs in the sanitization of labels
+being passed to irq.
 
-Probably there is an answer now :). But Yes, I'm okay with doing that,
-Xfstests is already part for our nightly 6.1 testing.
+Patch 1 fixes the case where userspace provides empty labels.
 
->
-> Mahmoud,
->
-> I assume that you are running xfstests on LTS kernels regularly?
-> In that case, you should have an established baseline for failing/passing
-> tests on 6.1.y.
-> Did you run these backports against all tests to verify no regressions?
-> If you did - then please include this information (also which xfs configu=
-rations
-> were tested) in the posting of backport candidates to xfs list.
+Patch 2 fixes a missed path in the sanitization changes that can result
+in memory corruption.
 
-Yes, I did run the full xfstests to confirm no regression. we do
-regularly run the latest stable xfstests version with loopback
-setup. and we run 'xfs/quick' group over x86_64 & arm64 to catch any
-regression. I'll make sure to post to xfs list first next time :)
+v1 -> v2:
+- switched the order of the patches in order to avoid introducing buggy
+  code in one just to fix it in the second
 
-our setup looks similar to this:
+Bartosz Golaszewski (1):
+  gpio: cdev: check for NULL labels when sanitizing them for irqs
 
-sudo fallocate -l 5G $MOUNT_POINT/block-xfs.img
-sudo mkfs.xfs -f -m reflink=3D1 $MOUNT_POINT/block-xfs.img
-sudo losetup -f $MOUNT_POINT/block-xfs.img
-sudo mkdir -p $MOUNT_POINT/test
-sudo mount /dev/loop0 $MOUNT_POINT/test
+Kent Gibson (1):
+  gpio: cdev: fix missed label sanitizing in debounce_setup()
 
-sudo fallocate -l 5G $MOUNT_POINT/block-xfs-scratch.img
-sudo losetup -f $MOUNT_POINT/block-xfs-scratch.img
+ drivers/gpio/gpiolib-cdev.c | 46 +++++++++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 15 deletions(-)
 
-local.config:
-    export DISABLE_UDF_TEST=3D1
-    export TEST_DEV=3D/dev/loop0
-    export TEST_DIR=3D$MOUNT_POINT/test
-    export SCRATCH_MNT=3D$MOUNT_POINT/scratch
-    export SCRATCH_DEV=3D/dev/loop1
+-- 
+2.40.1
 
-Thanks,
-MNAdam
 
