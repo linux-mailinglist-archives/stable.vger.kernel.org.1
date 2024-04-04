@@ -1,76 +1,70 @@
-Return-Path: <stable+bounces-35921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9B58986CF
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 14:09:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D67789870F
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 14:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24639B2326B
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 12:09:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173962960BC
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 12:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8548185644;
-	Thu,  4 Apr 2024 12:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5169812839F;
+	Thu,  4 Apr 2024 12:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z+PcCasG"
+	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="cqkae22n"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA04185279;
-	Thu,  4 Apr 2024 12:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7126612838A;
+	Thu,  4 Apr 2024 12:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.89.224.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712232565; cv=none; b=SK4JGtJ2zwJBwM1UYRNbv4xoqoACvcSHG997ykRLQTLHMyyXCWqzYwe1d+/IJHN18nuxNyr/rvaApes2RUFqIhZxCn/2/e5Ihz/ydtoAzQXge4q34RViNcYjVw4LiHqWwO+w8ARR7DmqjaRMK6BQtNbvMKUOTZM+OnteBXdo5OM=
+	t=1712232953; cv=none; b=a6oc2aLl4zeC2UC+ukqvCHzzNlBfmtTDswpIOMvxX8Y9PTD7tR9plUb+PRllCEpQuiv9j9PPt7U+NqvoE2sZZ98dWFTPELclTgsGF9tkeMHRl0uuvpnYAm0rFE1AVnQs8g7U7ORutmYyjNlPv+W3qJGv+dqJ72hjOKY6K9VQz8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712232565; c=relaxed/simple;
-	bh=S2N3uB7P/OzEiBwNbUDT5i7k1PICI8SjBF1ZYyxVtaM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IQ3PjaEgbTwQtPYeebHtDTmF3lNqpwi/ghwYs5vN7YZIJF72DEoRDaSgqdUGY/PxCxhRE++S7muMNgU8sV8CqmfTZSDyhOZYJr9GBwnlphEKdCBGPIyljQPFtrPk4C4H62gZCmWrdYoPTO8Jcvbmgam5ksBJfqplhX8qCorNOVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z+PcCasG; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712232564; x=1743768564;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=S2N3uB7P/OzEiBwNbUDT5i7k1PICI8SjBF1ZYyxVtaM=;
-  b=Z+PcCasGeRSFrVad4VcoftFMg0eqIBAMNRgQjQVwk9eQUvkBFXiBTq09
-   kasBnjHb3DbFwrCS/w3rPyODXmJI298Ui1Q4Y0mSp7KzygzKbdf/8tsr/
-   UevpztE3XADUGUIx6+74jPu/iks5+I+1huV4S9Lbv1B13c2lqlyBu22E3
-   8YxlgOYM1QNG8fcEbmFX1V4wZ7xeyIX/v8gFX+LX6/mZtGczjglHUkXbU
-   wy0tphH3v6Td1dtug+ebB5lOmDj1CI7mJEyFkrqdEUsLvijuycbjKraAI
-   rWRd4u95NEmLsT9S4J0hJBVmhKRyzbmZPZbZC14SeU6vtE037BXRGhb92
-   w==;
-X-CSE-ConnectionGUID: 1KjmZ3VuTLaR5elcyvojnw==
-X-CSE-MsgGUID: gCEHk9u3QwyG6SQXv2/2mg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="18240638"
-X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
-   d="scan'208";a="18240638"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 05:09:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="937086424"
-X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
-   d="scan'208";a="937086424"
-Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 04 Apr 2024 05:09:21 -0700
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: <linux-usb@vger.kernel.org>,
-	niklas.neronin@intel.com,
-	Thinh.Nguyen@synopsys.com,
-	Oliver Neukum <oneukum@suse.com>,
-	stable@vger.kernel.org,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 1/2] usb: xhci: correct return value in case of STS_HCE
-Date: Thu,  4 Apr 2024 15:11:05 +0300
-Message-Id: <20240404121106.2842417-2-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240404121106.2842417-1-mathias.nyman@linux.intel.com>
-References: <20240404121106.2842417-1-mathias.nyman@linux.intel.com>
+	s=arc-20240116; t=1712232953; c=relaxed/simple;
+	bh=jaWNUV/0rYLFNLGYU8fO5mErt568OH4eL7UBJG8E3lY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lPbMJIcazE9CAdFcRlptRtPquwcRZePGXe8CU08qRiofqqx198G1nCbYix+dSuLsAoq6MOCAA6LBxYXC9YI4zguDVjgBQ7cCPnwkC7eNCDrC5XV9qSZB0z3D6JzbbRNGN+hWsIUQBqxTkRwkcGrHGkCsk+eoDbtLXWkMMn52pkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=cqkae22n; arc=none smtp.client-ip=45.89.224.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id E7E0512000D;
+	Thu,  4 Apr 2024 15:15:39 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru E7E0512000D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=mail; t=1712232939;
+	bh=ETwhhACPGuY4BnkEtYjTCpxmGzMAX5wMpPGvtWzJOJ0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=cqkae22nnOJqKTjS9Lp6VhJEf2QNNRAq4f7aVqH2buIB76IitunvIJ44Iwb6PtLsL
+	 I2cUykRoAANFgj1t4Rh2xZWfpdnTMB8oLdn2vqW9krJmEmZkVEQ94zwyKMjGUvMM2T
+	 lnfLlKg/rHTSY/uVsad5RK4aaS6KJevVoiOVJLKq/LOTtxXykCymr+uKd4Qwo1Rj7M
+	 jtwGTstLm5e4zXJ10VZcrafOxnvOAr9xb9AMWz45xIZrSqCkKLRG6tP61svUBo0qtm
+	 5j2mjXphjhEqE8bTCwzHo6BtKTTbZWmiPA754x60e7TY+uY2CuXTGXXSX68Xno0ca8
+	 F2E0WCNNAez6A==
+Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.sberdevices.ru (Postfix) with ESMTPS;
+	Thu,  4 Apr 2024 15:15:39 +0300 (MSK)
+Received: from CAB-WSD-L081021.sberdevices.ru (100.64.160.123) by
+ p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 4 Apr 2024 15:15:39 +0300
+From: Dmitry Rokosov <ddrokosov@salutedevices.com>
+To: <quic_sridsn@quicinc.com>, <quic_mdalam@quicinc.com>, <ezra@easyb.ch>,
+	<gch981213@gmail.com>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
+	<sashal@kernel.org>, <gregkh@linuxfoundation.org>, <vigneshr@ti.com>
+CC: <kernel@salutedevices.com>, <rockosov@gmail.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>, Ezra Buehler
+	<ezra.buehler@husqvarnagroup.com>, <stable@vger.kernel.org>, Martin Kurbanov
+	<mmkurbanov@salutedevices.com>, Dmitry Rokosov <ddrokosov@salutedevices.com>
+Subject: [PATCH v1] mtd: spinand: Add support for 5-byte IDs
+Date: Thu, 4 Apr 2024 15:15:21 +0300
+Message-ID: <20240404121532.14755-1-ddrokosov@salutedevices.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,67 +72,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
+ p-i-exch-sc-m02.sberdevices.ru (172.16.192.103)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 184579 [Apr 04 2024]
+X-KSMG-AntiSpam-Version: 6.1.0.4
+X-KSMG-AntiSpam-Envelope-From: ddrokosov@salutedevices.com
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 14 0.3.14 5a0c43d8a1c3c0e5b0916cc02a90d4b950c01f96, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 100.64.160.123:7.1.2;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean, bases: 2024/04/04 11:24:00
+X-KSMG-LinksScanning: Clean, bases: 2024/04/04 11:24:00
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/04/04 07:34:00 #24651931
+X-KSMG-AntiVirus-Status: Clean, skipped
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
 
-If we get STS_HCE we give up on the interrupt, but for the purpose
-of IRQ handling that still counts as ours. We may return IRQ_NONE
-only if we are positive that it wasn't ours. Hence correct the default.
+[ Upstream commit 34a956739d295de6010cdaafeed698ccbba87ea4 ]
 
-Fixes: 2a25e66d676d ("xhci: print warning when HCE was set")
-Cc: stable@vger.kernel.org # v6.2+
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+E.g. ESMT chips will return an identification code with a length of 5
+bytes. In order to prevent ambiguity, flash chips would actually need to
+return IDs that are up to 17 or more bytes long due to JEDEC's
+continuation scheme. I understand that if a manufacturer ID is located
+in bank N of JEDEC's database (there are currently 16 banks), N - 1
+continuation codes (7Fh) need to be added to the identification code
+(comprising of manufacturer ID and device ID). However, most flash chip
+manufacturers don't seem to implement this (correctly).
+
+Cc: <stable@vger.kernel.org> # 6.6.23
+Cc: <stable@vger.kernel.org> # 6.7.11
+Cc: <stable@vger.kernel.org> # 6.8.2
+Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+Reviewed-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
+Tested-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240125200108.24374-2-ezra@easyb.ch
+Signed-off-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
 ---
- drivers/usb/host/xhci-ring.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 52278afea94b..575f0fd9c9f1 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -3133,7 +3133,7 @@ static int xhci_handle_events(struct xhci_hcd *xhci, struct xhci_interrupter *ir
- irqreturn_t xhci_irq(struct usb_hcd *hcd)
- {
- 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
--	irqreturn_t ret = IRQ_NONE;
-+	irqreturn_t ret = IRQ_HANDLED;
- 	u32 status;
+In the patch series [1] only one patch was marked with Fixes tag, that's
+why the secon patch was not applied to 6.6.y, 6.7.y and 6.8y. It breaks
+ESMT detection flow with logs:
+
+[    0.770730] spi-nand spi0.0: unknown raw ID c8017f7f
+[    0.772688] spi-nand: probe of spi0.0 failed with error -524
+
+Please cherry-pick the second patch from the series to 6.6.y, 6.7.y and
+6.8.y.
+
+Links:
+    [1] https://lore.kernel.org/linux-mtd/20240125200108.24374-1-ezra@easyb.ch/
+
+---
+ include/linux/mtd/spinand.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index badb4c1ac079..5c19ead60499 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -169,7 +169,7 @@
+ struct spinand_op;
+ struct spinand_device;
  
- 	spin_lock(&xhci->lock);
-@@ -3141,12 +3141,13 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 	status = readl(&xhci->op_regs->status);
- 	if (status == ~(u32)0) {
- 		xhci_hc_died(xhci);
--		ret = IRQ_HANDLED;
- 		goto out;
- 	}
- 
--	if (!(status & STS_EINT))
-+	if (!(status & STS_EINT)) {
-+		ret = IRQ_NONE;
- 		goto out;
-+	}
- 
- 	if (status & STS_HCE) {
- 		xhci_warn(xhci, "WARNING: Host Controller Error\n");
-@@ -3156,7 +3157,6 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 	if (status & STS_FATAL) {
- 		xhci_warn(xhci, "WARNING: Host System Error\n");
- 		xhci_halt(xhci);
--		ret = IRQ_HANDLED;
- 		goto out;
- 	}
- 
-@@ -3167,7 +3167,6 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 	 */
- 	status |= STS_EINT;
- 	writel(status, &xhci->op_regs->status);
--	ret = IRQ_HANDLED;
- 
- 	/* This is the handler of the primary interrupter */
- 	xhci_handle_events(xhci, xhci->interrupters[0]);
+-#define SPINAND_MAX_ID_LEN	4
++#define SPINAND_MAX_ID_LEN	5
+ /*
+  * For erase, write and read operation, we got the following timings :
+  * tBERS (erase) 1ms to 4ms
 -- 
-2.25.1
+2.43.0
 
 
