@@ -1,52 +1,69 @@
-Return-Path: <stable+bounces-35926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BB58988B4
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:23:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FB88988C9
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 15:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D12351C25C13
-	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 13:23:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C87781F2B19B
+	for <lists+stable@lfdr.de>; Thu,  4 Apr 2024 13:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8D1127B46;
-	Thu,  4 Apr 2024 13:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F191272D3;
+	Thu,  4 Apr 2024 13:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr3RWkXO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Th7SXE+V"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B6418AF6;
-	Thu,  4 Apr 2024 13:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A98F86AEE
+	for <stable@vger.kernel.org>; Thu,  4 Apr 2024 13:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712236959; cv=none; b=b7Fzu6k6Iy9B2DW24HVpCIUU6zW+9u+iDhQMPNq3CFkdsurj50Nef/mYM6aUOR4blwkQRmop+YnKONCyEpHYSXgOvlYUwkYhb9kRm0azm6TpDMZSKuyDLjbqYjm0LPWJRMkzO3X+Zl1iGlrL0iKY3ksmAmB014LoH8Idk4/hJ/Q=
+	t=1712237317; cv=none; b=UlN+eE/hrhLx5oNa2bwAFJhG90MKxIf6dQNqak2RoUEh8ZCMJmI/LokekmUhHRfoIiCbY8oCFI9cbseGKCxf9nhZ2bwoe6qNxmlIaoJZ+CY7g0FgX9K0he6UJTsTxbeaJtzD2fd4hWpdC9gGYY6YhmQmYcNmemRccDIozhD4jbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712236959; c=relaxed/simple;
-	bh=vJFS1OOOBDTIVLiOBBvr9XoF4wFwhB9JAXs15apE4q8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=usxOW9ZfBriQzAP5ZSCI38fyBuFlHd5ndyxMSqVAIlGzhoQZI3UuZ7bYJWRmnwU4ZMwiLbna2KApIaRRlCAPDtTgCvffHjkDnjqsLV24fn6oWHTypYxu6BWzYzytTfwjwX8j3Ok/6pLG5Q+YpIh5x5mJu2BZEvJ1u/KGj+eHlHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr3RWkXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC8DC433F1;
-	Thu,  4 Apr 2024 13:22:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712236958;
-	bh=vJFS1OOOBDTIVLiOBBvr9XoF4wFwhB9JAXs15apE4q8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sr3RWkXOhMotYSn9pOpI0QyDa5A606/aUsbPgOWx94TF7ptXcgT4nJidzNL7L0cmb
-	 8FjS3+ALowu1kwAdrfTRhtD2LVv7ZZgj5Uf+5zseDG5q+ZoIcAJUojUyicohBWCqL7
-	 U18QeojUpw5pwqUW6AjVEUuVSZ94Q70d9XTgK4CM=
-Date: Thu, 4 Apr 2024 15:22:35 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kyle Tso <kyletso@google.com>
-Cc: linux@roeck-us.net, heikki.krogerus@linux.intel.com, badhri@google.com,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: tcpm: Correct the PDO counting in pd_set
-Message-ID: <2024040417-ice-decal-b37e@gregkh>
-References: <20240326151909.440275-1-kyletso@google.com>
+	s=arc-20240116; t=1712237317; c=relaxed/simple;
+	bh=zL/o2dyB0jowlGfVpgC3DOHrmnHMiWgMY0nIbEHPgnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=BSdGwQAaGnbn9i9uzP51r4kNqWvFkLyyKf3lsXdqjKmDDNU/notPSU7++rIWlsmPhLTkHuGRDrc3VPwznR1WhYGInv9VHIDTIWsBkRAeK7073t04xs7a4c1QaYVFTRY4DMDPNMBXZApXrJmNU/QpQkLvRM4BY6TpUIC5RkzXPgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Th7SXE+V; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712237315; x=1743773315;
+  h=date:from:to:cc:subject:message-id:reply-to:mime-version;
+  bh=zL/o2dyB0jowlGfVpgC3DOHrmnHMiWgMY0nIbEHPgnc=;
+  b=Th7SXE+VF6FHhk/mA3CzT7SWRIFyCCyBu03Qj0E/yNYENqQUhWv4aQ+K
+   yKO+ezhYbn7bPJ/hPPzh4CpScuju/4WjaQOgLhA48Mxc6bVxdqnoztPGE
+   LB0Ru/c7kxfJ226BZmGyJzKV7K0U6NeLo/YLD7S0xZ4yMhZDiCXB9F2So
+   M5KaoeTiZbTqS49arbVxDgNFCjXkuW+kgb9sHTI0iGnefp7X/TKWPJpHj
+   jRafwBwAg2XfAXxHK4xF+iwR6O3x/ONSEl6AZl3nSqMhONnJVT/x6GucL
+   rbx6jrX50jizsKXmcCQN59duy8za7nTEwA193xrhHdW22GeiozxJvvqQ3
+   w==;
+X-CSE-ConnectionGUID: gbDYw3qJQWalFyWMT31nmg==
+X-CSE-MsgGUID: +V8mtAnJScSZFSsilzu1rQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="11291425"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="11291425"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 06:28:34 -0700
+X-CSE-ConnectionGUID: 19c3ccOMR5K2dwTjcWQy9g==
+X-CSE-MsgGUID: SZDJqoRQQ9mofuSroIgfjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="23541894"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 06:28:34 -0700
+Date: Thu, 4 Apr 2024 16:29:04 +0300
+From: Imre Deak <imre.deak@intel.com>
+To: stable@vger.kernel.org
+Cc: intel-gfx@lists.freedesktop.org
+Subject: v6.8 stable backport request for drm/i915
+Message-ID: <Zg6rIG0idN3NSTbP@ideak-desk.fi.intel.com>
+Reply-To: imre.deak@intel.com
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,42 +72,11 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240326151909.440275-1-kyletso@google.com>
 
-On Tue, Mar 26, 2024 at 11:19:09PM +0800, Kyle Tso wrote:
-> Off-by-one errors happen because nr_snk_pdo and nr_src_pdo are
-> incorrectly added one. The index of the loop is equal to the number of
-> PDOs to be updated when leaving the loop and it doesn't need to be added
-> one.
-> 
-> When doing the power negotiation, TCPM relies on the "nr_snk_pdo" as
-> the size of the local sink PDO array to match the Source capabilities
-> of the partner port. If the off-by-one overflow occurs, a wrong RDO
-> might be sent and unexpected power transfer might happen such as over
-> voltage or over current (than expected).
-> 
-> "nr_src_pdo" is used to set the Rp level when the port is in Source
-> role. It is also the array size of the local Source capabilities when
-> filling up the buffer which will be sent as the Source PDOs (such as
-> in Power Negotiation). If the off-by-one overflow occurs, a wrong Rp
-> level might be set and wrong Source PDOs will be sent to the partner
-> port. This could potentially cause over current or port resets.
-> 
-> Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kyle Tso <kyletso@google.com>
-> ---
-> v1 -> v2:
-> - update the commit message (adding the problems this patch solves)
-> 
->  drivers/usb/typec/tcpm/tcpm.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Stable team, please backport the following upstream commit to 6.8:
 
-This fails to apply to my usb-linus branch :(
+commit 7a51a2aa2384 ("drm/i915/dp: Fix DSC state HW readout for SST connectors")
 
-Can you rebase and resend?
-
-thanks,
-
-greg k-h
+Thanks,
+Imre
 
