@@ -1,69 +1,72 @@
-Return-Path: <stable+bounces-36109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEAF899E6F
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 15:36:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30801899EF0
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4331F225EB
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 13:36:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A54BF283EDE
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37AF16D4E1;
-	Fri,  5 Apr 2024 13:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E2C16DEAC;
+	Fri,  5 Apr 2024 14:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuCUokmc"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="A52J5aeL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CBB16D4C5;
-	Fri,  5 Apr 2024 13:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CF73EA90
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 14:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712324158; cv=none; b=cQEgmuEw1+ihHou2h1NC00r/WqFFm8fFFlzxo6HHH5r9TtCOUkH/gHQVjGOxbjAXmx/4TQaOUEeyP+q++jvuRQU9xwhAjARLtULjAvq03zGXNWBWNOmB8styPGvP+KXEjja4AlGNewPnpxXk2SuJXzR3VJyAWE70TSGo+BpDZqE=
+	t=1712325888; cv=none; b=nqduEEQRaH8qlpMH0hek8dt1VpeR+9FlQPL7/rqEiVcA8B6pxFbN18UPKzTuU8tPQuIS2dbwqVRiOo0/H2xiysFEuWzw0xUBsWH7+o9EKx0kS8hZrMm+aBcMEhjC/92mLqAftyJcSiF0isyVjm/DywaiN7Ll1kXKgeQXBaUUXpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712324158; c=relaxed/simple;
-	bh=EhVVh5GZIIEIV/3Uxi1NPA4AOB1c9kMHyH66uTSLA4g=;
+	s=arc-20240116; t=1712325888; c=relaxed/simple;
+	bh=OXX41wSwYE2b/lwwE57x3gKNo138SmdBbhDnx+ha1cU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s02d1IT32ExxdtIsWFjofb0kEvus8KW1HHzzCXOXpO0rVfRr5c7ewEgigrBdcLojYoOLWtgnV/4OrhsHJUktkg3utxUEph/s8xSk7hQwQJGaCX2mwCL+Ukx/LRjJADWKunSglDBLjpsYmUpLKrnXn7+OOEJK6WleslvYukLnfSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuCUokmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A2FC433C7;
-	Fri,  5 Apr 2024 13:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712324158;
-	bh=EhVVh5GZIIEIV/3Uxi1NPA4AOB1c9kMHyH66uTSLA4g=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=inmzc0YwKIHP41urKg5huGvKmMkeoLqdEqDxzLUbG2kMdj8pb5DVe5IS3FTTxJOkyifLrfsrKw5sZ3PtJjMuHCfJaaGzlYn9q+Go0GLzxhHcmSnRkn4CwXkSJ6UXmx5bIzjTeFmyn873MB64TkKv2CVObDAWp0JCQm9D2TD6/Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=A52J5aeL; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 336F040E0202;
+	Fri,  5 Apr 2024 14:04:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id zot1K3Rq854B; Fri,  5 Apr 2024 14:04:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1712325877; bh=8v6hp7GeZ6nWysdj4uCojOU6+IbLArVAaqpSuC4j7wQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HuCUokmcH7wC/XtzVv3fJkeuNaCI5eFiD7z/fMW14hC5wcC16v6T6GAQ3mtVqYRoc
-	 SewQ312Ll13CAnOJJZnOPpTvfwmsxuHJatMtVi+K3HejTptx8FS1JrfgtWn1fa5/C2
-	 O6B5v0TL5IPa2WUCNjBeKEOCMdhc3dKD/qemq6Vc=
-Date: Fri, 5 Apr 2024 15:35:55 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Eric Hagberg <ehagberg@gmail.com>
-Cc: Ingo Molnar <mingo@kernel.org>, Russ Anderson <rja@hpe.com>,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org,
-	Linux regressions mailing list <regressions@lists.linux.dev>,
-	Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
-	Simon Horman <horms@verge.net.au>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
-	Dimitri Sivanich <sivanich@hpe.com>
-Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
- except on UV platform.
-Message-ID: <2024040543-enticing-ferris-2fb5@gregkh>
-References: <20240322162135.3984233-1-steve.wahl@hpe.com>
- <ZgABC1oQ9YJW6Bw3@gmail.com>
- <20240325020334.GA10309@hpe.com>
- <ZgFY24QT7470ZGnV@gmail.com>
- <CAJbxNHeqY3QevjH3=BuD=DhB0YK6ZvPDbOn_m-LOYAfY81MqhA@mail.gmail.com>
+	b=A52J5aeL4AVksLupaAc/SjWCzuBNbAkZkm5YVaEjEWFyn7EJIlNQs5rnWR0IL+z1v
+	 bYWhA5NiukFXbLgMV+znJlWCqN6V916togPUyPlMzcW+Oa41gEnbom50syFw8VavIA
+	 yfI3y/Kp9ukssP+EfjdU5AewevKgHYoM7U2GQ/DDKiI+M/0R7n9e2rqs+BfcdATj0P
+	 ltFLWx0Q+k7X7kX4XXhN2aLt4Uk0PPSq8GLTxVRDrrJwb8slzxNNRNh05+0/T1Bip9
+	 hCxx1CCaU4e/KU3xySd70l1LWysLJvZXpt3PYvhA5OkSKsCJtsakCa3AMr/5on8Bod
+	 /P3ti3+g1wWjt76EUNF71NTajmXiVX2DS8JzLtuuplKisJxER/pZov1GHxQiwjxzdK
+	 FbHGNX/WBqB8lg3ru3U5Ej1PRpzRw3rvtFjzDTIns4ra157d4QY4cewQjfcZrU/+Za
+	 h6zg2QHfozP0DYcv4HfxEfjSeZEuDmHE70B22fW456UJNC4IZeHTstJMd5LaeKbdCZ
+	 zotpWmvWIy2GS0AduHgM1rjcwXjH6hG5KHrM/3tiZcSjfgFUvNs7payWwFKlEgEBg6
+	 Kzh4JFv2d+FtlHYSencJ8aMUPR2mk79aQIiBBCZFLySjZM5Q0a1SUg2pw87h8NoR7I
+	 a6tB652aRT7KgG+SKLj8ynFE=
+Received: from zn.tnic (p5de8ecf7.dip0.t-ipconnect.de [93.232.236.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C450B40E0177;
+	Fri,  5 Apr 2024 14:04:33 +0000 (UTC)
+Date: Fri, 5 Apr 2024 16:04:32 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: gregkh@linuxfoundation.org
+Cc: mingo@kernel.org, torvalds@linux-foundation.org, stable@vger.kernel.org
+Subject: [PATCH 1/2] x86/bugs: Fix the SRSO mitigation on Zen3/4
+Message-ID: <20240405140432.GAZhAE8CuUO6vwOyKK@fat_crate.local>
+References: <2024033031-efficient-gallows-6872@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,24 +75,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJbxNHeqY3QevjH3=BuD=DhB0YK6ZvPDbOn_m-LOYAfY81MqhA@mail.gmail.com>
+In-Reply-To: <2024033031-efficient-gallows-6872@gregkh>
 
-On Fri, Apr 05, 2024 at 09:13:36AM -0400, Eric Hagberg wrote:
-> On Mon, Mar 25, 2024 at 6:58 AM Ingo Molnar <mingo@kernel.org> wrote:
-> > Anyway, I've reverted this in tip:x86/urgent:
-> >
-> >   c567f2948f57 Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
-> 
-> I see that this hasn't been reverted in the longterm branches it made
-> it into already (6.1.x and 6.6.x, for example) - is it expected to be
-> reverted there as well? I'd think it should be, until this is all
-> sorted out.
-> 
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
+Date: Thu, 28 Mar 2024 13:59:05 +0100
 
-The revert is queued up for the next round of stable updates.
+Commit 4535e1a4174c4111d92c5a9a21e542d232e0fcaa upstream.
 
-thanks,
+The original version of the mitigation would patch in the calls to the
+untraining routines directly.  That is, the alternative() in UNTRAIN_RET
+will patch in the CALL to srso_alias_untrain_ret() directly.
 
-greg k-h
+However, even if commit e7c25c441e9e ("x86/cpu: Cleanup the untrain
+mess") meant well in trying to clean up the situation, due to micro-
+architectural reasons, the untraining routine srso_alias_untrain_ret()
+must be the target of a CALL instruction and not of a JMP instruction as
+it is done now.
+
+Reshuffle the alternative macros to accomplish that.
+
+Fixes: e7c25c441e9e ("x86/cpu: Cleanup the untrain mess")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+---
+ arch/x86/include/asm/asm-prototypes.h |  1 +
+ arch/x86/include/asm/nospec-branch.h  | 20 ++++++++++++++------
+ arch/x86/lib/retpoline.S              |  4 +---
+ 3 files changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
+index 8f80de627c60..5cdccea45554 100644
+--- a/arch/x86/include/asm/asm-prototypes.h
++++ b/arch/x86/include/asm/asm-prototypes.h
+@@ -12,6 +12,7 @@
+ #include <asm/special_insns.h>
+ #include <asm/preempt.h>
+ #include <asm/asm.h>
++#include <asm/nospec-branch.h>
+ 
+ #ifndef CONFIG_X86_CMPXCHG64
+ extern void cmpxchg8b_emu(void);
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index f3f6c28e5818..5414e6764e5a 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -155,11 +155,20 @@
+ .Lskip_rsb_\@:
+ .endm
+ 
++/*
++ * The CALL to srso_alias_untrain_ret() must be patched in directly at
++ * the spot where untraining must be done, ie., srso_alias_untrain_ret()
++ * must be the target of a CALL instruction instead of indirectly
++ * jumping to a wrapper which then calls it. Therefore, this macro is
++ * called outside of __UNTRAIN_RET below, for the time being, before the
++ * kernel can support nested alternatives with arbitrary nesting.
++ */
++.macro CALL_UNTRAIN_RET
+ #ifdef CONFIG_CPU_UNRET_ENTRY
+-#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
+-#else
+-#define CALL_UNTRAIN_RET	""
++	ALTERNATIVE_2 "", "call entry_untrain_ret", X86_FEATURE_UNRET, \
++		          "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+ #endif
++.endm
+ 
+ /*
+  * Mitigate RETBleed for AMD/Hygon Zen uarch. Requires KERNEL CR3 because the
+@@ -176,9 +185,8 @@
+ #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
+ 	defined(CONFIG_CPU_SRSO)
+ 	ANNOTATE_UNRET_END
+-	ALTERNATIVE_2 "",						\
+-		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+-		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB
++	CALL_UNTRAIN_RET
++	ALTERNATIVE "", "call entry_ibpb", X86_FEATURE_ENTRY_IBPB
+ #endif
+ .endm
+ 
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 6f5321b36dbb..8acafe60220a 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -249,9 +249,7 @@ SYM_CODE_START(srso_return_thunk)
+ SYM_CODE_END(srso_return_thunk)
+ 
+ SYM_FUNC_START(entry_untrain_ret)
+-	ALTERNATIVE_2 "jmp retbleed_untrain_ret", \
+-		      "jmp srso_untrain_ret", X86_FEATURE_SRSO, \
+-		      "jmp srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
++	ALTERNATIVE "jmp retbleed_untrain_ret", "jmp srso_untrain_ret", X86_FEATURE_SRSO
+ SYM_FUNC_END(entry_untrain_ret)
+ __EXPORT_THUNK(entry_untrain_ret)
+ 
+-- 
+2.43.0
+
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
