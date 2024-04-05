@@ -1,134 +1,96 @@
-Return-Path: <stable+bounces-36116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E77C899FCE
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFD189A02E
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 346081F22703
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6FD51F21AC0
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F2516F824;
-	Fri,  5 Apr 2024 14:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF69B16F27F;
+	Fri,  5 Apr 2024 14:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jd4JG8EP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaJXYfPS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B2A16F28F;
-	Fri,  5 Apr 2024 14:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA0916D9B3;
+	Fri,  5 Apr 2024 14:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712327496; cv=none; b=N86aw0/juGhyg26ouclOvLjH3MnRNg4APYoGApwcGzgDFWtqkOanH7zj+OBG2NBmWg+IrJ9sm9+XFD4wukX6BaahCzrBEDISBbHaJT142jsVP8XPMGcOBrogSVKcSGTkRCGVz0vxBse+6FFM6BwY1C8nwa4DKGWZuuzfTpHjvzY=
+	t=1712328695; cv=none; b=TonOBERQeATF8N0LtzLQJ7Jv7uwny2+11gvt82wsQBSQUIdTYnrDIudsdTViCLKsCvPnxsGqJcF30WSery3961svAgOKoMgNooobNS26jpfUEThYsb0DFNLr83HysYjGay1BHZOVKcR9ciI65Fjkp5WE8XX2DiGd0drUX4lkDzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712327496; c=relaxed/simple;
-	bh=REmT479AFnCCcCTlpWSmaYrzgIUHjpteGLS0bjBDaMI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ZCMgA97hPphSTyKl1o13HGtbRYZJbWACpr+zo2XblBoc82H5/AEPeve1dyOuNCckWXW5pD5b+BVll3xeXiFseYSMqrSZyh4nHkjJOydZvPgqSBhCuqAu7LuptoOmp0qJj9FNAUdii6Msh2yypn9Aurl26Im1wfdBmCkMGuarbpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jd4JG8EP; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712327495; x=1743863495;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=REmT479AFnCCcCTlpWSmaYrzgIUHjpteGLS0bjBDaMI=;
-  b=Jd4JG8EP7YHUnLe55tF3hAayLQoqofxADkK7DXC0/9T5TVO2gUtn0iuR
-   1q9hAwqY8IXxJwVYewf1fmrNsOnvtlHYqHp4rtJr1zJoTGERjAV23hcHk
-   /Ry/R6cfUY/jf762CEoXxM7K47LoPS1gC0NJgMLRA0uH9mF9g2jU3neii
-   KO8FuNEF+1Xxdv4d7yuBLFO6nc+EZGTWFQicRZD3MOj4GP/f5s0kSVhdl
-   x+6asxAuaNMtDMp+dB6caBut/ASwfjCn+NFjO6UWCK38LsSquJNOM2Y1A
-   vOdvV7qRin92XsOpFpAhZSp6cj2RiH/DghAph3J+AydA7pbGTSQOcJywo
-   w==;
-X-CSE-ConnectionGUID: xZLblvNlRxGeB8zdggtnjA==
-X-CSE-MsgGUID: RSnP59z6RhC4szRvjBiuKQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="11476450"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="11476450"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 07:31:34 -0700
-X-CSE-ConnectionGUID: hG8APWZARMy+KffIgepD6w==
-X-CSE-MsgGUID: 7Z8NtXy/R1S6q3/uPejMug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="23817555"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Apr 2024 07:31:33 -0700
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	alexander.shishkin@linux.intel.com,
-	linux-kernel@vger.kernel.org
-Cc: Kan Liang <kan.liang@linux.intel.com>,
-	"Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/x86/intel/ds: Fix non 0 retire latency on Raptorlake
-Date: Fri,  5 Apr 2024 07:30:32 -0700
-Message-Id: <20240405143032.1243201-1-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+	s=arc-20240116; t=1712328695; c=relaxed/simple;
+	bh=cxjyClOaBa2+241XYJeZc2XNLxkjlM5DuQuJWkSvQIs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XGKyyWBgOZWumJFuDwH45sIYxW6rwljdbcT6LQ4yTBN457ZQVUZ8eCsdebEcs5JMqtO55IpHozQpPZY1JlnmqbdUdLNLpZjU+TXRlZpsaNkBX43S1niRBeRsL8S9w7rd00cuQoKQ/zqXeocNGgeLrTFyknHJ1snMkaN9lpmkfeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaJXYfPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EA6C433C7;
+	Fri,  5 Apr 2024 14:51:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712328695;
+	bh=cxjyClOaBa2+241XYJeZc2XNLxkjlM5DuQuJWkSvQIs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CaJXYfPSKi18JjMj5AlBOZYWu8VwZ6jcrnIvhcSsmpVOEVX85goDYCk4GBcy5k3eR
+	 o09j2Bbu8aDq1drWjqyAs9cP+GFg1QlV4FwX3+9njrtOA3LWlPYbh1gjj2A2x1T5Ry
+	 3YYSVjUAF7YeVyMEXYjra1x+frMTll64XzkZKloZJ7GJeRSmjraa9JuMHW/H6nca3B
+	 FYRBJDwxbOxqmabF6So/Azse1o+AT1PLhebBIfSorEif24dJQSeHBOFyzBkN9ziq+6
+	 TqSBwytAB713PYtvVcgf+AHkvuqncIRNRa5yAPMhHFIhJ/WJ++i8CsKOHG37/beZ8n
+	 NKzUHtCKlvpBA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.8.y 0/3] Backport "mptcp: don't account accept() of non-MPC client as fallback to TCP"
+Date: Fri,  5 Apr 2024 16:51:18 +0200
+Message-ID: <20240405145117.854766-5-matttbe@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024040519-palpable-barrel-9103@gregkh>
+References: <2024040519-palpable-barrel-9103@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1163; i=matttbe@kernel.org; h=from:subject; bh=cxjyClOaBa2+241XYJeZc2XNLxkjlM5DuQuJWkSvQIs=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmEA/l3O3EAtD2zNONO0EPXNtS4a+5oonLde9zw O2Bmx8c0g6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZhAP5QAKCRD2t4JPQmmg c6swEADm1+YlT4ZlGdg2BCZeW3cqxYLB2HPDms9P+/lYCmTwc+k0QucmLBk0LsHyxDWJunvJQE8 wcPTbu6q9XxwqL/KEYoeudpnVFmbJ9Zi7XKh4ShmnIXXchIGIGpGYMWMSb7xijv2/sFoN73z84J QyFtzlzNC7llpzMjkToZ5r5CstZxGxyO9ZMnRyHqx5yUR4YXwSiOoOtkMmuVpd+x1WsKiugxXrZ jIKKqH+lb8gfLkZWmIMZBSfWZx+iA6mwOUtzJ8ZG8aQ2FHrronCYWxTiLeIe+zmcuw19rIGM3EM 3VEIXNyO0iff0+wUiX03GSCKPSw1rT2soUtHWWAFxXZkLPCNxC6lFRn/4akaiUZ5UnOHQuT0g0F hFvzEGg7E2ygr1z2vCW8fi6MQ8DZfvjMPECPmaV6aKTgD5Kx9n1M23GUSOLNafTe61ahmyRqAyH USEIauDl+F+pyW7XSa1ePsWcWEANv6SDwUiPU+rQGs1LK5zyKZv/GrblVnHM9T0BDoRPBvxDSQk 0633MrZ4FvElttrleduR/HHYNY2FiOBSdFJ1bVetzYLIBtexNCvP2fqxbXX4xRF5mdh8M0ZCRIg NG/56l706dflFUiynQ5+y7hF5RnBhT4NZ8HJoe5tRLQjSFcinRgpmP0o4cWadxKKp+IYUMsngwg oJg9qMRCbY1JxBQ==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-From: Kan Liang <kan.liang@linux.intel.com>
+Commit 7a1b3490f47e ("mptcp: don't account accept() of non-MPC client as 
+fallback to TCP") does not apply to the 6.8-stable tree. That's because 
+there are some conflicts with recent refactoring done in the selftests:
 
-A non-0 retire latency can be observed on a Raptorlake which doesn't
-support the retire latency feature.
-By design, the retire latency shares the PERF_SAMPLE_WEIGHT_STRUCT
-sample type with other types of latency. That could avoid adding too
-many different sample types to support all kinds of latency. For the
-machine which doesn't support some kind of latency, 0 should be
-returned.
+- commit e3aae1098f10 ("selftests: mptcp: connect: fix shellcheck warnings")
+- commit e7c42bf4d320 ("selftests: mptcp: use += operator to append strings")
 
-Perf doesn’t clear/init all the fields of a sample data for the sake
-of performance. It expects the later perf_{prepare,output}_sample() to
-update the uninitialized field. However, the current implementation
-doesn't touch the field of the retire latency if the feature is not
-supported. The memory garbage is dumped into the perf data.
+These two patches look harmless, probably safer and easier to backport
+them, than diverging even more from the development branch.
 
-Clear the retire latency if the feature is not supported.
+Note that all these three commits have been backported without 
+conflicts.
 
-Fixes: c87a31093c70 ("perf/x86: Support Retire Latency")
-Reported-by: "Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>
-Tested-by: "Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/events/intel/ds.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Davide Caratti (1):
+  mptcp: don't account accept() of non-MPC client as fallback to TCP
 
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index f95cca6b632a..838f3e23bce9 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1989,8 +1989,12 @@ static void setup_pebs_adaptive_sample_data(struct perf_event *event,
- 	set_linear_ip(regs, basic->ip);
- 	regs->flags = PERF_EFLAGS_EXACT;
- 
--	if ((sample_type & PERF_SAMPLE_WEIGHT_STRUCT) && (x86_pmu.flags & PMU_FL_RETIRE_LATENCY))
--		data->weight.var3_w = format_size >> PEBS_RETIRE_LATENCY_OFFSET & PEBS_LATENCY_MASK;
-+	if (sample_type & PERF_SAMPLE_WEIGHT_STRUCT) {
-+		if (x86_pmu.flags & PMU_FL_RETIRE_LATENCY)
-+			data->weight.var3_w = format_size >> PEBS_RETIRE_LATENCY_OFFSET & PEBS_LATENCY_MASK;
-+		else
-+			data->weight.var3_w = 0;
-+	}
- 
- 	/*
- 	 * The record for MEMINFO is in front of GP
+Geliang Tang (1):
+  selftests: mptcp: use += operator to append strings
+
+Matthieu Baerts (NGI0) (1):
+  selftests: mptcp: connect: fix shellcheck warnings
+
+ net/mptcp/protocol.c                          |   2 -
+ net/mptcp/subflow.c                           |   2 +
+ .../selftests/net/mptcp/mptcp_connect.sh      | 134 +++++++++++-------
+ .../testing/selftests/net/mptcp/mptcp_join.sh |  30 ++--
+ 4 files changed, 99 insertions(+), 69 deletions(-)
+
 -- 
-2.35.1
+2.43.0
 
 
