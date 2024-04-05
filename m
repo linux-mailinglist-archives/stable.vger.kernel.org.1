@@ -1,132 +1,197 @@
-Return-Path: <stable+bounces-36080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB1F899AFB
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 12:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E146899B08
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 12:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 816B1B21B78
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 10:35:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C11D3B22792
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 10:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCE9537E9;
-	Fri,  5 Apr 2024 10:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A43E161326;
+	Fri,  5 Apr 2024 10:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=stwm.de header.i=@stwm.de header.b="MCpDgc7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNGG/7It"
 X-Original-To: stable@vger.kernel.org
-Received: from email.studentenwerk.mhn.de (dresden.studentenwerk.mhn.de [141.84.225.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6A9535B6
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 10:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.84.225.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A787E1552F9
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 10:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712313320; cv=none; b=lsHKsFzMjSQ7cHeTjLrCNLOhTHqDdUzPBBHuD1L+HI9DKVf6IR3kzAPFAjH0meyPbPy0V91y+aoRq5L33r1UztzhRih0iEA0Dd9tqnchB/5cVW6WtestGBItc2j+V0kv/bnC1Q+wA4IJHws3MP/uR2dBSq5o0a7nENyAEG1NdfA=
+	t=1712313650; cv=none; b=MaJ2/7TNL4G4O5lqL4jGSQNlFX0qszU3SIL1FBLTbEGEEbrQZuQ1g5baBvTce5CiZCDa6CSf9IZofST7tbdx8g3tWw+ddbHPM/7DENikD458CwD/ne2GOhIJf7tmTk2YiAwXsiMjOF4xkKZdal7g4dBadOT9yeQIC3PX7OVnmK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712313320; c=relaxed/simple;
-	bh=aFdXO2Aju7ThYT9XIc/lLpF+FHXofJPmOCibYp9gj2c=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=b94CfK0oUBeU43WgXwqZ6eDtfxqwB/UJePzwqaabON9iWP/P/1WR9khHD84fBgKHwZvUam+f4FjCOSV5Exo8jfBsVy8qb1tUGd7dEM7Zbh+RF3D08uBY78azVDNxhm/qnDz/F+BKwbmH/GvGrO54siuBP+MtmCC8IgIRBfTnPcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stwm.de; spf=none smtp.mailfrom=stwm.de; dkim=pass (2048-bit key) header.d=stwm.de header.i=@stwm.de header.b=MCpDgc7N; arc=none smtp.client-ip=141.84.225.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stwm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=stwm.de
-Received: from mailhub.studentenwerk.mhn.de (mailhub.studentenwerk.mhn.de [127.0.0.1])
-	by email.studentenwerk.mhn.de (Postfix) with ESMTPS id 4V9vy81pFtzRhTB;
-	Fri,  5 Apr 2024 12:35:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stwm.de; s=stwm-20170627;
-	t=1712313312;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tLLO4pfXaKxhlN0Tw9DlvCKFMgjPfZ7S6MHkO3fx93w=;
-	b=MCpDgc7NuIutG1yJE3XsUO387NuH6fGiWDPR+CWP2BhuR4qGVjb84mBtIqzCc2yfjcB3eP
-	cMn5cDPEvfONEFyk0VsAx6EVNuF0/ZqLETJNznxXxyxoBhCd0P8iut/iWKH/d8bovVVZ9H
-	SJ7kzMNfMxFknSAQ4hISrcdwkjLge94G981egPUF8k2AQfgfgPi/5Jw367xJfoZgvkbME9
-	VtJYuOvXK4u2VnddnH9ILeMf8U7Z81x/CRK15JAj2XI6MAJG+XM0HZGmdd1IE52rTsGsmL
-	X75dYWK8D9MsgSrs2MJIM9DpCzYHZKM2/rVDl8quJcifu9qoY88oFXc6RUjfug==
-Received: from roundcube.studentenwerk.mhn.de (roundcube.studentenwerk.mhn.de [10.148.7.38])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mailhub.studentenwerk.mhn.de (Postfix) with ESMTPS id 4V9vy81fhlzHnGf;
-	Fri,  5 Apr 2024 12:35:12 +0200 (CEST)
+	s=arc-20240116; t=1712313650; c=relaxed/simple;
+	bh=it4Tcdwx7swbICHOrWHVRSERZkwS39cgAP8f7+EkvfM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DHvw7wNYgQ0beOwyPKXeArh3tVxeYKU3JweYhLk05Sm+Rg/9JOjAnnqWKLe+gfzyPNTGbJw+PJZEee0NtHZUeN9DYHIXBuR6UNVmMYF6vH+siT6dP+z1wPvIpCCotUGNWQVkJhFEzGLeuDgB1FoRzG45AscvGw7voHz9hVlUeJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNGG/7It; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9EAC433C7;
+	Fri,  5 Apr 2024 10:40:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712313650;
+	bh=it4Tcdwx7swbICHOrWHVRSERZkwS39cgAP8f7+EkvfM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=pNGG/7ItCkBUEJhKxK97psJuT4ZYiplAYuQBDIWzvn/LX13rdJidPD57HsfaI6aMv
+	 gYN7omBqCLTlkbMuurzcw7aSgJfVU/JUU2Fi29TuCH1p3Bs5d+x2K7yZAU/ssq0p6J
+	 U+U3f8WJFztOMK6ChsBZ6dJtrsSwUGINuQU2V5Sk=
+Subject: FAILED: patch "[PATCH] erspan: make sure erspan_base_hdr is present in skb->head" failed to apply to 5.4-stable tree
+To: edumazet@google.com,kuba@kernel.org,lorenzo@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 05 Apr 2024 12:40:46 +0200
+Message-ID: <2024040546-snooze-purplish-b2df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 05 Apr 2024 12:35:12 +0200
-From: Wolfgang Walter <linux@stwm.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org
-Subject: Re: stable v6.6.24 regression: boot fails: bisected to "x86/mpparse:
- Register APIC address only once"
-In-Reply-To: <2024040445-promotion-lumpiness-c6c8@gregkh>
-References: <23da7f59519df267035b204622d32770@stwm.de>
- <2024040445-promotion-lumpiness-c6c8@gregkh>
-Message-ID: <899b7c1419a064a2b721b78eade06659@stwm.de>
-X-Sender: linux@stwm.de
-Organization: =?UTF-8?Q?Studierendenwerk_M=C3=BCnchen_Oberbayern?=
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-Am 2024-04-04 17:57, schrieb Greg Kroah-Hartman:
-> On Thu, Apr 04, 2024 at 02:07:11PM +0200, Wolfgang Walter wrote:
->> Hello,
->> 
->> after upgrading to v6.6.24 from v6.6.23 some old boxes (i686; Intel 
->> Celeron
->> M) stop to boot:
->> 
->> They hang after:
->> 
->> Decompressing Linux... Parsing ELF... No relocation needed... done.
->> Booting the kernel (entry_offset: 0x00000000).
->> 
->> After some minutes they reboot.
->> 
->> I bisected this down to
->> 
->> commit bebb5af001dc6cb4f505bb21c4d5e2efbdc112e2
->> Author: Thomas Gleixner <tglx@linutronix.de>
->> Date:   Fri Mar 22 19:56:39 2024 +0100
->> 
->>     x86/mpparse: Register APIC address only once
->> 
->>     [ Upstream commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 ]
->> 
->>     The APIC address is registered twice. First during the early 
->> detection
->> and
->>     afterwards when actually scanning the table for APIC IDs. The APIC 
->> and
->>     topology core warn about the second attempt.
->> 
->>     Restrict it to the early detection call.
->> 
->>     Fixes: 81287ad65da5 ("x86/apic: Sanitize APIC address setup")
->>     Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
->>     Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
->>     Tested-by: Guenter Roeck <linux@roeck-us.net>
->>     Link: 
->> https://lore.kernel.org/r/20240322185305.297774848@linutronix.de
->>     Signed-off-by: Sasha Levin <sashal@kernel.org>
->> 
->> 
->> Reverting this commit in v6.6.24 solves the problem.
-> 
-> Is this also an issue in 6.9-rc1 or newer or 6.8.3 or newer?
-> 
 
-It is not an issue with 6.9-rc1. 6.9-rc1 just boots fine.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Regards,
--- 
-Wolfgang Walter
-Studierendenwerk München Oberbayern
-Anstalt des öffentlichen Rechts
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 17af420545a750f763025149fa7b833a4fc8b8f0
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040546-snooze-purplish-b2df@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 17af420545a750f763025149fa7b833a4fc8b8f0 Mon Sep 17 00:00:00 2001
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 28 Mar 2024 11:22:48 +0000
+Subject: [PATCH] erspan: make sure erspan_base_hdr is present in skb->head
+
+syzbot reported a problem in ip6erspan_rcv() [1]
+
+Issue is that ip6erspan_rcv() (and erspan_rcv()) no longer make
+sure erspan_base_hdr is present in skb linear part (skb->head)
+before getting @ver field from it.
+
+Add the missing pskb_may_pull() calls.
+
+v2: Reload iph pointer in erspan_rcv() after pskb_may_pull()
+    because skb->head might have changed.
+
+[1]
+
+ BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2742 [inline]
+ BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2756 [inline]
+ BUG: KMSAN: uninit-value in ip6erspan_rcv net/ipv6/ip6_gre.c:541 [inline]
+ BUG: KMSAN: uninit-value in gre_rcv+0x11f8/0x1930 net/ipv6/ip6_gre.c:610
+  pskb_may_pull_reason include/linux/skbuff.h:2742 [inline]
+  pskb_may_pull include/linux/skbuff.h:2756 [inline]
+  ip6erspan_rcv net/ipv6/ip6_gre.c:541 [inline]
+  gre_rcv+0x11f8/0x1930 net/ipv6/ip6_gre.c:610
+  ip6_protocol_deliver_rcu+0x1d4c/0x2ca0 net/ipv6/ip6_input.c:438
+  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
+  ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
+  dst_input include/net/dst.h:460 [inline]
+  ip6_rcv_finish+0x955/0x970 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ipv6_rcv+0xde/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5538 [inline]
+  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5652
+  netif_receive_skb_internal net/core/dev.c:5738 [inline]
+  netif_receive_skb+0x58/0x660 net/core/dev.c:5798
+  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1549
+  tun_get_user+0x5566/0x69e0 drivers/net/tun.c:2002
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2108 [inline]
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0xb63/0x1520 fs/read_write.c:590
+  ksys_write+0x20f/0x4c0 fs/read_write.c:643
+  __do_sys_write fs/read_write.c:655 [inline]
+  __se_sys_write fs/read_write.c:652 [inline]
+  __x64_sys_write+0x93/0xe0 fs/read_write.c:652
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:3804 [inline]
+  slab_alloc_node mm/slub.c:3845 [inline]
+  kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
+  __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
+  alloc_skb include/linux/skbuff.h:1318 [inline]
+  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
+  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
+  tun_alloc_skb drivers/net/tun.c:1525 [inline]
+  tun_get_user+0x209a/0x69e0 drivers/net/tun.c:1846
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2108 [inline]
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0xb63/0x1520 fs/read_write.c:590
+  ksys_write+0x20f/0x4c0 fs/read_write.c:643
+  __do_sys_write fs/read_write.c:655 [inline]
+  __se_sys_write fs/read_write.c:652 [inline]
+  __x64_sys_write+0x93/0xe0 fs/read_write.c:652
+ do_syscall_64+0xd5/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+CPU: 1 PID: 5045 Comm: syz-executor114 Not tainted 6.9.0-rc1-syzkaller-00021-g962490525cff #0
+
+Fixes: cb73ee40b1b3 ("net: ip_gre: use erspan key field for tunnel lookup")
+Reported-by: syzbot+1c1cf138518bf0c53d68@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/000000000000772f2c0614b66ef7@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20240328112248.1101491-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 7b16c211b904..57ddcd8c62f6 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -280,8 +280,13 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 					  tpi->flags | TUNNEL_NO_KEY,
+ 					  iph->saddr, iph->daddr, 0);
+ 	} else {
++		if (unlikely(!pskb_may_pull(skb,
++					    gre_hdr_len + sizeof(*ershdr))))
++			return PACKET_REJECT;
++
+ 		ershdr = (struct erspan_base_hdr *)(skb->data + gre_hdr_len);
+ 		ver = ershdr->ver;
++		iph = ip_hdr(skb);
+ 		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex,
+ 					  tpi->flags | TUNNEL_KEY,
+ 					  iph->saddr, iph->daddr, tpi->key);
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index ca7e77e84283..c89aef524df9 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -528,6 +528,9 @@ static int ip6erspan_rcv(struct sk_buff *skb,
+ 	struct ip6_tnl *tunnel;
+ 	u8 ver;
+ 
++	if (unlikely(!pskb_may_pull(skb, sizeof(*ershdr))))
++		return PACKET_REJECT;
++
+ 	ipv6h = ipv6_hdr(skb);
+ 	ershdr = (struct erspan_base_hdr *)skb->data;
+ 	ver = ershdr->ver;
+
 
