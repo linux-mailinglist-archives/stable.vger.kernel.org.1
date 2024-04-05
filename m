@@ -1,118 +1,107 @@
-Return-Path: <stable+bounces-36122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666AC89A09F
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 17:05:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D494589A0D1
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 17:17:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96C7D1C237B3
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 15:05:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 790F91F224AE
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 15:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0722016F8E3;
-	Fri,  5 Apr 2024 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A3B16F82E;
+	Fri,  5 Apr 2024 15:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JwDdb8Me"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="N9uJc2+f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DA116F27B
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 15:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3EA16F28B
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 15:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712329398; cv=none; b=hJop80bT8tgVPjTjtZtpyoeBmrAKAkWS/UAVx5nJqGcS1htw51EuH7TczjJ17K4RCsJ6E1F9j3IGWPiQEBtu6k9B3RHy27Fr0Wrewh35+skuod+p5pqrq17Tt11JUj2kKhIs4PZWkc+PdQ9s5NQWyTw3M8V5v3vxwnVn9mtHdlk=
+	t=1712330229; cv=none; b=q6X0zuDMQ21xOblDhBOhIB6Zx8dGLezRJOGQXVJHbYJ2wjTvTL983iDx5/hNCQxACPfcNbV5pT3taHLaKu6OeSrXG3QeHFUmFesKjW8Y0jSWACmo1KsJYA5ij475CNidfZxLf0j2F8OuRYrItZD41wJ1NJFNfp3IgrCErGKRDgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712329398; c=relaxed/simple;
-	bh=elpgrkgYkYB2F+aWdNFZOfsIVYqRpMqvDKWw6OHEzEc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L1XaBbOTBKGVH/T8nnR/pWPRR8cFPRsrVvdtCNuxhTEPu7vwxzlfZkIA7HfKOoIYEkhW7odvPemPU78lMCX+rbkDI6EctoCLOu1cnJ7N0jGdpWMF9wi7N73SQy40NhhPLUOazObtVL0OOmDDp3BvKb9EUbE2Opgh4hcCmgN/5kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JwDdb8Me; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1e2bfac15c2so13523845ad.0
-        for <stable@vger.kernel.org>; Fri, 05 Apr 2024 08:03:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1712329396; x=1712934196; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DS0VVZvbIZOzvgJdpngFNsbKnS413GQYGLPC1MauL3k=;
-        b=JwDdb8Me7pm2ijCSZN4wWvLB5ve5xV8pYINi5HidJ9nRKHmrdMaWVlgh9XjtPsmXkF
-         Wlejz3GZYsaV3JJXxIHGi0zHQdSjgwyLyXyDGFfnNQWoc4FrtsvFwk4AOwRiAkC546NM
-         Zu2N0pzLJzWewDnuz0Te40vxQ67+TJxuKQEaE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712329396; x=1712934196;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DS0VVZvbIZOzvgJdpngFNsbKnS413GQYGLPC1MauL3k=;
-        b=sepM1FnAt6S3nXwbsxczBfu/KYLViTNPSGsHRdKr2a5dsDiw2LW0nWFGMZkxa4L2AI
-         ag+2MVzh/B440iOeRxmAA8PVqRCvJSoNyxF986+Lgen7dUa31NP11Qlz62U3bZBpX00Q
-         Nq5Qcgv03R9YTMClGxrapS15V6f1/tCFg/CbavJ7TOOKp8gSjyZYju8jt8F59uAoCrkq
-         HcP96B8+ZCPap+/BVI804CmTgkoZqQzlFz6O3z9MfWxioobpYS5Zm+HqQcyKx11OgjWH
-         RjCAM2FOifVHvzoiFVaD+j4lOqG7fdVh1BAlyMP5REnlWjgGlWq0VueJGvTlqv/oZThF
-         JU8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVQCa8mM7KPsN4y8ZiaDGMG2oodtxiVW5UWKJP4Pj5UIkQcFDbLjzE47mlzC/tikZvd+7W691Y7CPQqniaSCzd+0yM23TIy
-X-Gm-Message-State: AOJu0YyXEtDBwWA7fJ/kk1Xna8njaeUbb1MalBP6k0ASYcI4CR9CnwjU
-	g4LEb/1X5UyHjeR266EWJdKmaDImXgZGxyTYLhz51fgxsHSl0N23cdsmOtdeVA==
-X-Google-Smtp-Source: AGHT+IEm1RWL5J3li8ZFIxACZ9U9J1josIzuaLBcG7JV6BAY3xX+NEe5ik8qvLJPXlpPs+7xjqv2Gg==
-X-Received: by 2002:a17:902:f706:b0:1e3:c32c:a0fe with SMTP id h6-20020a170902f70600b001e3c32ca0femr2137102plo.36.1712329396490;
-        Fri, 05 Apr 2024 08:03:16 -0700 (PDT)
-Received: from localhost (99-151-34-247.lightspeed.austtx.sbcglobal.net. [99.151.34.247])
-        by smtp.gmail.com with ESMTPSA id f17-20020a170902ce9100b001e219142f18sm1189888plg.114.2024.04.05.08.03.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Apr 2024 08:03:16 -0700 (PDT)
-From: Ian Forbes <ian.forbes@broadcom.com>
-To: dri-devel@lists.freedesktop.org
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	zack.rusin@broadcom.com,
-	martin.krastev@broadcom.com,
-	maaz.mombasawala@broadcom.com,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] drm/vmwgfx: Don't memcmp equivalent pointers
-Date: Fri,  5 Apr 2024 10:02:45 -0500
-Message-Id: <20240405150245.1797-1-ian.forbes@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240328190716.27367-1-ian.forbes@broadcom.com>
-References: <20240328190716.27367-1-ian.forbes@broadcom.com>
+	s=arc-20240116; t=1712330229; c=relaxed/simple;
+	bh=4EVL2JNp8e2pMNjgTNNvU6O+PmK8pTlJUlQZD3nEFe4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jtF31WJ2CaHBWol+GLKRuCVkNx+5G7dXhQf85iytTiOrbqwEKBAG4yJj38Ml4zZdiz86g4+5HItmBpqAx1HeuX27ae9X3DmqDjC4A6hWhNAkzxJjbjj1C4c5byJ9MAlN8VjEeIl1PHJ4oiNTOzNEuUjB0adHCjYg5q/hhhcPhi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=N9uJc2+f; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 435ETQpG015686;
+	Fri, 5 Apr 2024 15:17:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=257TzLra1WorO4agCjkMrLPpVxuRWnoz7SjEi14wZyM=; b=N9
+	uJc2+fsJVUS06KLeD8zhEf6BjcRI3fC4zq4KoRcZGFJ1afthiEPpDV1AI2mMmLyl
+	ezlI6Jy2G9aepDJBW9YIa3oGXhDR9XaoHynDes7CbcT3j8B66U3tEKIe0RyfV883
+	KLoEtWT1Zqf2gT0MnxrYORoGtK8vycD/dNEbSZ8IXpBIUF+Na84Ju58iBGDrmds9
+	RBiik8njbRCuR/D5uCaVncgAnNFvcYaP/f3nL7h8XrPpUa1CGzlnnM6y0BaZj2Y2
+	9XgqHi5kHJWLYNN1JK3cmYSr0QsjJ88ADU1nIgoZO3motqbVnEos/6hAEaboDMny
+	AQ2c3dD/xcrIc7MLqB9A==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xafpkrkqx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 15:17:03 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 435FH2kD003087
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 5 Apr 2024 15:17:02 GMT
+Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 5 Apr 2024
+ 08:17:02 -0700
+Message-ID: <4bfe603e-c0a9-8bfa-eda3-026613d974de@quicinc.com>
+Date: Fri, 5 Apr 2024 09:16:41 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH 1/8] accel/ivpu: Check return code of ipc->lock init
+Content-Language: en-US
+To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+        <dri-devel@lists.freedesktop.org>
+CC: <oded.gabbay@gmail.com>, "Wachowski, Karol" <karol.wachowski@intel.com>,
+        <stable@vger.kernel.org>
+References: <20240402104929.941186-1-jacek.lawrynowicz@linux.intel.com>
+ <20240402104929.941186-2-jacek.lawrynowicz@linux.intel.com>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+In-Reply-To: <20240402104929.941186-2-jacek.lawrynowicz@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: r1LODWVDRryLxl3R0HXnurSBJd4yl6B9
+X-Proofpoint-ORIG-GUID: r1LODWVDRryLxl3R0HXnurSBJd4yl6B9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-05_16,2024-04-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ mlxlogscore=953 malwarescore=0 suspectscore=0 impostorscore=0 spamscore=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1011 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404050110
 
-These pointers are frequently the same and memcmp does not compare the
-pointers before comparing their contents so this was wasting cycles
-comparing 16 KiB of memory which will always be equal.
+On 4/2/2024 4:49 AM, Jacek Lawrynowicz wrote:
+> From: "Wachowski, Karol" <karol.wachowski@intel.com>
+> 
+> Return value of drmm_mutex_init(ipc->lock) was unchecked.
+> 
+> Fixes: 5d7422cfb498 ("accel/ivpu: Add IPC driver and JSM messages")
+> Cc: <stable@vger.kernel.org> # v6.3+
+> Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-Fixes: bb6780aa5a1d ("drm/vmwgfx: Diff cursors when using cmds")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Cc: <stable@vger.kernel.org> # v6.2+
----
-v2: Fix code and commit message formatting.
---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index cd4925346ed4..ef0af10c4968 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -216,7 +216,7 @@ static bool vmw_du_cursor_plane_has_changed(struct vmw_plane_state *old_vps,
- 	new_image = vmw_du_cursor_plane_acquire_image(new_vps);
- 
- 	changed = false;
--	if (old_image && new_image)
-+	if (old_image && new_image && old_image != new_image)
- 		changed = memcmp(old_image, new_image, size) != 0;
- 
- 	return changed;
--- 
-2.34.1
-
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
