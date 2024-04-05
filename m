@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-36021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305EE899553
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:29:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AD2899555
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 545FA1C21585
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:29:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A339B22F1E
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C501722EF8;
-	Fri,  5 Apr 2024 06:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4902E22626;
+	Fri,  5 Apr 2024 06:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXt3lHtR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5sN+aAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857741803D
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 06:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A379219EA
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 06:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712298567; cv=none; b=tpf6yb/7PEwvlZZYq01xkbBc2Q627wwWCs7shtS2kuWITh6QjCGPdYXi7pV6c+oCjeu/f2iqos1XPJtZlot9GGg7hc0MPjqiLO8Fh9Wi4NBm/6defO2xoRsgMjFtNWFXu+M22zLbmvVAU+KWeludtA22IBVvmL8FifsGLroHRPw=
+	t=1712298576; cv=none; b=IROR3Mz0iSG+xCjmVxctk6fslx5OJ9y6TSgaF2YIF/ldfqNI87rrTnr6r0xQ4AAQSUCAXYJGy5MtTC1bLBoVaAEd6mvizggpEi9Cd6dq8U8YweWAMtkhQLCCeQFRUckf+XoT3jjuc1oRuZEJtcpvaHH+540rrTxtx02DNVMBhww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712298567; c=relaxed/simple;
-	bh=weSDv2d+Tt8EmqQMVZZT4+hLl9DgNuD7yYhPPeUpdeY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BD0aUsMouO5cwjed8jT4vmAFiz2jTugJF1uZnTEfExBl7T22LIRkoogntAiBvUycErLc+YTi8rJkb2OLylcsjZ8JwkOn6KAMZavi97iacSTGoYcWTkKB6DmY5AsxPTfofqPsBY+ZqdJVL9WowN0VOf1VkCdoEUIYHF9xgjWHv/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXt3lHtR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05B5C433F1;
-	Fri,  5 Apr 2024 06:29:26 +0000 (UTC)
+	s=arc-20240116; t=1712298576; c=relaxed/simple;
+	bh=plXmm8BIAORYg9MsIn52uI2kV3+qGnt52Isqp+PZxGw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pOhoWetUmtLARbG0LSDufz4QR2qkjAhWWAlOvYLOar+fu8shTtOkb9ozIQN3BYhFgAxwWq9WotxGriXkH2rOQMYSo9kE460+BmYanDjWW5Jx584VTeSWEjCsrOtK+nVtReA1UFRrskBxGgRU9tXpGXLJjBadJW05KoGCtdNoGjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5sN+aAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324AEC433F1;
+	Fri,  5 Apr 2024 06:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712298567;
-	bh=weSDv2d+Tt8EmqQMVZZT4+hLl9DgNuD7yYhPPeUpdeY=;
+	s=korg; t=1712298575;
+	bh=plXmm8BIAORYg9MsIn52uI2kV3+qGnt52Isqp+PZxGw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HXt3lHtRmbKSWbplLZnfpLFcEnXG9+j7mKG0L4vRTuf0/xZVqeVtXZdtr59ZqVcOQ
-	 vedWnMJ1JijJWDVYMJHyaf9a7Eodi42rWf7b1yEXDHkDofGo114p4dlPdeMHQJXgF6
-	 34zZUY1jvJJZAdgbgJfzb1MXNpmhZLHzi2gamRu4=
-Subject: FAILED: patch "[PATCH] mptcp: don't account accept() of non-MPC client as fallback" failed to apply to 6.6-stable tree
+	b=w5sN+aADw+k59sMA7XZ9+VDVmos7VYQdQzz6D/Jim2jVefmpht3zCRuN8ysYlVo9b
+	 Zysw/hza5Mz6rGOwyOgPAmCj5zrnj7EgzcEW67I4P3Z4V6HPXAJzzMVWdRBRfJSm5r
+	 UyNRKqhjgHrALMl18LRuMcBQd/EXosXsV764Flgs=
+Subject: FAILED: patch "[PATCH] mptcp: don't account accept() of non-MPC client as fallback" failed to apply to 6.1-stable tree
 To: dcaratti@redhat.com,cpaasch@apple.com,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 05 Apr 2024 08:29:21 +0200
-Message-ID: <2024040520-unselect-antitrust-a41b@gregkh>
+Date: Fri, 05 Apr 2024 08:29:22 +0200
+Message-ID: <2024040522-tremor-freehand-618e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7a1b3490f47e88ec4cbde65f1a77a0f4bc972282
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040520-unselect-antitrust-a41b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040522-tremor-freehand-618e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
