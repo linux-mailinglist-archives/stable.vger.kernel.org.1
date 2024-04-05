@@ -1,117 +1,117 @@
-Return-Path: <stable+bounces-36152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E2A89A4C2
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 21:17:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CDD89A533
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 21:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CB31285E2E
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 19:17:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A35631C219EA
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 19:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058DF172BAB;
-	Fri,  5 Apr 2024 19:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC35E173347;
+	Fri,  5 Apr 2024 19:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J2f6PwsZ"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="JY2cIlX+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB9D172793
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 19:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE8A17167F;
+	Fri,  5 Apr 2024 19:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712344629; cv=none; b=oYFx+EsB5ZickST4cfChs7/kJ1M6TTEwtA2JHTywkAXIylpMHFgdUUsleCQyDTYDuryKeln1snspL7oNYt4FC4Ghf2oqS4iGWY1CW61BOGXNl1u4Z0ypZlIG904ytgInVH0bLx47/IvgnS1DWckVBR6q+0yl5S48sIUHHml0Rvs=
+	t=1712346594; cv=none; b=e4o2DsYAXczXHnLqFkVpgVUwnOdWi/CY4IIVD+W8x4pgKGuCSxXnNFOmD66gPGgChA7/eY5eiK13RYdQq+ZmPvhask/Zfv0Vh/VlCEwM0U8zVWPHdBqLr1zYWmduVVUrcmaW3iWD3v4ctXRATJWgzlNCXpLpTY79gYVsiz21Zkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712344629; c=relaxed/simple;
-	bh=4+Bux30dqLXg6KuK0fUec4K9aBNqA4+JiCmn0NOpEU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ojoQVzGtdCJP8333d7Q56oQ1Jjx+w9CFswjgER6esuabifQ6Vg38W5vZ+2C4i44tXt1QJA0PvlkULlwdctQXc0M2ASjJHexl5sAKazXHFcefVfyljhf9BfFvatQj5ZSaZPsLe6bgngOrBVAzyNJ3Ybt0IgxLgIuKEYgTTY+I1j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J2f6PwsZ; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712344628; x=1743880628;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=4+Bux30dqLXg6KuK0fUec4K9aBNqA4+JiCmn0NOpEU4=;
-  b=J2f6PwsZn7QS2zRIKXslZlqcwihRMB+CZYvpZKSe2O4/cJE+5wR+1vi6
-   xpo/GzAvBSA9oWlms+lrWIx5vNxs+Ggufe8oSppcVKF+iyoxyyZriTURt
-   oeyXzwjwsUsY25qXfdS+Ah8M8uuI3y1wfDHspBmfDLJgI5NLWb/ReM/wD
-   qOR3qtX12C6NR+9hjMpB/I/jiyxRTjgzas0/5McNiWhLpYW1fwiRP6O2s
-   ZMmbKeqZXU2QTe0mlyUJ1oLdv+Amh3J5eCfaGe55HNgK/v8rfvsWDtF6Q
-   TP+3N8YEb0ona5gleHIH5WQmMN74N3us+TtUmI9+pgIDJDcb/O386n5qj
-   g==;
-X-CSE-ConnectionGUID: vE4uBZ0qQJ+ABY/ChMIKYA==
-X-CSE-MsgGUID: vlGN3JYDSCG2E98VZqIluQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="7549313"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="7549313"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 12:17:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="827790993"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="827790993"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga001.jf.intel.com with SMTP; 05 Apr 2024 12:17:03 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Fri, 05 Apr 2024 22:17:02 +0300
-Date: Fri, 5 Apr 2024 22:17:02 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 01/12] drm/client: Fully protect modes[] with
- dev->mode_config.mutex
-Message-ID: <ZhBOLh8jk8uN-g1v@intel.com>
-References: <20240404203336.10454-1-ville.syrjala@linux.intel.com>
- <20240404203336.10454-2-ville.syrjala@linux.intel.com>
- <jeg4se3nkphfpgovaidzu5bspjhyasafplmyktjo6pwzlvpj5s@cmjtomlj4had>
+	s=arc-20240116; t=1712346594; c=relaxed/simple;
+	bh=U3QSasR0yisltW8MBdiQoRYfyS9iD5b2kWG5VrvCcEk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hOlQcKSomcIaenZ6UcJldBJ7NzCve8n9qvVtLtMBGftenvH2FjvWtZ+sww9DdwJbFwfiNwAHUjO7zWhzpD8QxOX1942DN31cYj1vOx1KnJK9/nAzXhu0NoWAYfp4zV2Jw9dJCecbJq9xBOr4GWXsLNd1EAiUVi3dAW8SH0Ak6y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=JY2cIlX+; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4VB8G83wc6zll9bP;
+	Fri,  5 Apr 2024 19:49:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:references:content-language:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1712346590; x=1714938591; bh=HT9xP0CtOVxrpJticXq4asho
+	6u7ldedY7tTiPEr3xEk=; b=JY2cIlX+Mo/QEehA3plIMOHeGpJVBv1OcFpmMpgW
+	vkTn7ey4aVfI+w0/J/4LOohw4eGr34rG3vfpJ+9T23cPby+bNZR2UNj7z/Wqmfae
+	TeX4IGx3LSW9wtpDEHhqm1MSoZCMgarl/zQcnwv41/KsQsu7YpjreZH6FRK/64OA
+	caRhYX0omQcNwAeqqgR5mPOztcpCbAvQyFRbnXFD/KMGGahaxXmzE6wLoBipV7ZK
+	9QMVqX+LaB19GSYzD+yIK+BpvGXOp0oFN5timrJ6FAjZcQe5TdzhoEQ3EhuH3HK4
+	Foytsy9IJ5OBNPEjO6AlGpJLhbJ9apLPOL9CobERFUpgfA==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 1s3Lnt49qP5x; Fri,  5 Apr 2024 19:49:50 +0000 (UTC)
+Received: from [100.96.154.173] (unknown [104.132.1.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4VB8G635tgzll9bN;
+	Fri,  5 Apr 2024 19:49:50 +0000 (UTC)
+Message-ID: <5b36f7c4-faab-4cdc-ba80-e7135ba50242@acm.org>
+Date: Fri, 5 Apr 2024 12:49:49 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <jeg4se3nkphfpgovaidzu5bspjhyasafplmyktjo6pwzlvpj5s@cmjtomlj4had>
-X-Patchwork-Hint: comment
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: core: Fix handling of SCMD_FAIL_IF_RECOVERING
+Content-Language: en-US
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Mike Christie <michael.christie@oracle.com>
+References: <20240325224417.1477135-1-bvanassche@acm.org>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240325224417.1477135-1-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 05, 2024 at 06:24:01AM +0300, Dmitry Baryshkov wrote:
-> On Thu, Apr 04, 2024 at 11:33:25PM +0300, Ville Syrjala wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > 
-> > The modes[] array contains pointers to modes on the connectors'
-> > mode lists, which are protected by dev->mode_config.mutex.
-> > Thus we need to extend modes[] the same protection or by the
-> > time we use it the elements may already be pointing to
-> > freed/reused memory.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10583
-> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On 3/25/24 15:44, Bart Van Assche wrote:
+> There is code in the SCSI core that sets the SCMD_FAIL_IF_RECOVERING
+> flag but there is no code that clears this flag. Instead of only clearing
+> SCMD_INITIALIZED in scsi_end_request(), clear all flags. It is never
+> necessary to preserve any command flags inside scsi_end_request().
 > 
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: stable@vger.kernel.org
+> Fixes: 310bcaef6d7e ("scsi: core: Support failing requests while recovering")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>   drivers/scsi/scsi_lib.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
 > 
-> I tried looking for the proper Fixes tag, but it looks like it might be
-> something like 386516744ba4 ("drm/fb: fix fbdev object model + cleanup properly.")
+> diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+> index ca48ba9a229a..2fc2b97777ca 100644
+> --- a/drivers/scsi/scsi_lib.c
+> +++ b/drivers/scsi/scsi_lib.c
+> @@ -633,10 +633,9 @@ static bool scsi_end_request(struct request *req, blk_status_t error,
+>   	if (blk_queue_add_random(q))
+>   		add_disk_randomness(req->q->disk);
+>   
+> -	if (!blk_rq_is_passthrough(req)) {
+> -		WARN_ON_ONCE(!(cmd->flags & SCMD_INITIALIZED));
+> -		cmd->flags &= ~SCMD_INITIALIZED;
+> -	}
+> +	WARN_ON_ONCE(!blk_rq_is_passthrough(req) &&
+> +		     !(cmd->flags & SCMD_INITIALIZED));
+> +	cmd->flags = 0;
+>   
+>   	/*
+>   	 * Calling rcu_barrier() is not necessary here because the
 
-The history is rather messy. I think it was originally completely
-lockless and broken, and got fixed piecemeal later in these:
-commit 7394371d8569 ("drm: Take lock around probes for drm_fb_helper_hotplug_event")
-commit 966a6a13c666 ("drm: Hold mode_config.lock to prevent hotplug whilst setting up crtcs")
+Also for this patch, please help with reviewing this patch.
 
-commit e13a05831050 ("drm/fb-helper: Stop using mode_config.mutex for internals")
-looks to me like where the race might have been re-introduced.
-But didn't do a thorough analysis so not 100% sure. It's all
-rather ancient history by now so a Fixes tag doesn't seem all
-that useful anyway.
+Thanks,
 
--- 
-Ville Syrjälä
-Intel
+Bart.
 
