@@ -1,171 +1,473 @@
-Return-Path: <stable+bounces-36083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25537899B12
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 12:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BD5899B16
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 12:44:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75277B22747
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 10:43:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83736B22907
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 10:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D2B161326;
-	Fri,  5 Apr 2024 10:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422AF16087B;
+	Fri,  5 Apr 2024 10:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DH6QKe6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNi2qZcW"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2078.outbound.protection.outlook.com [40.107.102.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8200515FA6F;
-	Fri,  5 Apr 2024 10:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712313807; cv=fail; b=uuVDyuN5qafm4rASgfwARhyHIyXm2697fBhxHtAV4TCtiFZML0gzjh4LJpDMnLw8N23FWm6pWhFqbUF9nRmsADGswwey3TO7i9gQY10y56qmS2fHyZU7sIN2EnRAuew+thMBbj2l1MwU7j1VQG4rYIK2BJ61EIxrdb2KTNl6Hu4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712313807; c=relaxed/simple;
-	bh=1Bk7C76y/IMNMtP+wiu8AtrbSmwK+52e56gN9xmzSc4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KaNLvyooXqI+wGmEcOjKMk1Nt3DUbuhblKBvHRAZuMxlV5ADQd7qsFAFErJANe08PJbw6+8bZGUnQe/qn9ukMfKr9h3GqT91rVdVw0JLrCuag7s51555NPlIeRqwH2JAVkHmAWjnhowKvrjROAHTrcWSn6GYI32f9A5Oz6b8Yig=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DH6QKe6r; arc=fail smtp.client-ip=40.107.102.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SD55jBPF0NSbQlGbQxd1ZexsY9pif18zbX2v5ynYcEdCUnhRESzoDJdinn6KWqOZzqldRzQQATn0aXIJxiJgjBN02CQuyM8Zc+/cJ0rJ2d5OjT1Yr1j3pEbv6K0WyqpZLnH2bDqwd34ii2Syizx8CzDCMOlFTJec7VYEqDAy8F91Yd8barvP7w2eOF7P9NCrICxuZex6n8WWOFu/7aE5oWkKQP1AeB9vQTOSxYx7M7XgTEor53fWDvw7QzrsUMYAUhYVN0rpngiVPNwXlQu1ei7E5taxApjgBgwCshLHaZlSiIPss5LGzf7YQ4EUZolkOxHgp8FKb48EevtW9bEMFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e8/hV0CjDxFc6wzjF4+MNtX/I/fU+FjyLUL0JhUakV8=;
- b=IQoz5Hl3P6AaeprCyFQnliBhKdlBL0tMGy/PX/M9SJO+yoRkjZPDZTSZCnRO229OAytZibKGMDtpdKjLac/kK8nBI55tJCZB0I49OI0qn7tF49/jYtn+Qk5pGH9/PJWI4049UvFqOZ0F64fBTktYPa5ItH1u9s3MxG/1636SLA2u+Lo5/zVOL5SXjgY6jaOBjnbg6NxhqD22XzlpfjN+9py4yAbvfd2xSKdyCaxqmGtj5QMQl12h3oFxJFJf69OX/56mRKwFBJuD+il9Q7t3I/pgjCA/3VtXvir9+8rh04e0p6EKBVWBgJRwCs8WAF+2LCYxOyILMeF7CuoOaIlesQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e8/hV0CjDxFc6wzjF4+MNtX/I/fU+FjyLUL0JhUakV8=;
- b=DH6QKe6rONcufA+uFx/OmAm0WfR+/j/OwgOkzyl2+XzaRZ6BRttj6iJ0VF0TpQ2lG/mDgdYrh+SJp3x3ThUkVAgCsG7tnv5ziDCa6+6bWPr/T0/zvTz8xvKQSRknPFNeleEfR9gSdOWUGbiqQvxHcCdmBYOkwCm8JPMLPhyVHREw49Md3pqdzplEXJ2BaOfh3FJG7gY6Omk+foHA4FqASPreq6MjngXkLHe7/o661sWVWUoVnrx21fLz0IKJ+h4n5NhfdtRnlTvd46bmb84ZUjz2MIf4APwpTHD2f/uZpxxmwUHH9EFXsF6vAS1f3r/L3GnKPVfU/kU+TXTSYw48SA==
-Received: from BN9PR03CA0052.namprd03.prod.outlook.com (2603:10b6:408:fb::27)
- by DS0PR12MB8198.namprd12.prod.outlook.com (2603:10b6:8:f2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Fri, 5 Apr
- 2024 10:43:20 +0000
-Received: from BN3PEPF0000B370.namprd21.prod.outlook.com
- (2603:10b6:408:fb:cafe::3e) by BN9PR03CA0052.outlook.office365.com
- (2603:10b6:408:fb::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.26 via Frontend
- Transport; Fri, 5 Apr 2024 10:43:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN3PEPF0000B370.mail.protection.outlook.com (10.167.243.167) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7472.0 via Frontend Transport; Fri, 5 Apr 2024 10:43:19 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 5 Apr 2024
- 03:43:12 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Fri, 5 Apr
- 2024 03:43:11 -0700
-Received: from build-spujar-20230918T214410352.internal (10.127.8.9) by
- mail.nvidia.com (10.129.68.8) with Microsoft SMTP Server id 15.2.1258.12 via
- Frontend Transport; Fri, 5 Apr 2024 03:43:11 -0700
-From: Sameer Pujar <spujar@nvidia.com>
-To: <broonie@kernel.org>, <linux-sound@vger.kernel.org>,
-	<alsa-devel@alsa-project.org>
-CC: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lgirdwood@gmail.com>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-	<mkumard@nvidia.com>, Sameer Pujar <spujar@nvidia.com>,
-	<stable@vger.kernel.org>
-Subject: [RESEND PATCH v2] ASoC: tegra: Fix DSPK 16-bit playback
-Date: Fri, 5 Apr 2024 10:43:06 +0000
-Message-ID: <20240405104306.551036-1-spujar@nvidia.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A6C18E02
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 10:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712313841; cv=none; b=W71lhMCi6KTnkL1QUtmLr90/I6Hix0K4iHo3EX0m1QtPRfFaqcUAHIqTAX48dNgMAkjTdp9NMNttjG3+WgNRlhNO0k4BTBrzXeZOjDkLFk8dBInDz28zCkdZnouXgPtjzyvI1hMXc8YRqZ/GIaXJVlcVS+hVuliUTbwujKz0Y3U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712313841; c=relaxed/simple;
+	bh=Zw1CdCrDpqyMYOpd+nJ4mda3DYspJXUZ8u6akL0rmvo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SGLOYX12ewq9Wsl2mNY30BtrMapVMRJdaI9KDXNhlNRAfatAuMyFt1Z/l6rYutazZNWmbBiWPbYajhVNNWQ5H2Wy61vFeaygkxGdyimEufLE5CRNy2WCyfJhtoHC04lTvReTX5NX0yMfWoxOOgPTOFoV8P5Q61HZlzItRt4Tfj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNi2qZcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14CEC433C7;
+	Fri,  5 Apr 2024 10:43:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712313840;
+	bh=Zw1CdCrDpqyMYOpd+nJ4mda3DYspJXUZ8u6akL0rmvo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=MNi2qZcWhwZViNzBvOwm9ugnbAMc4vx6Ui/DCWPKBaf8m67FzBq835M/yyCKF2XdZ
+	 zXHX1mfMJWGyYzydetWXddsh0KjXJAXIuKG1whzOv2mw8YBwqoxiGV54pkLTFFF/sN
+	 2uz92Zuh2p0iY+vAxW/NBFRgOy2y04/gux2uvr6o=
+Subject: FAILED: patch "[PATCH] e1000e: Workaround for sporadic MDI error on Meteor Lake" failed to apply to 6.6-stable tree
+To: vitaly.lifshits@intel.com,anthony.l.nguyen@intel.com,naamax.meir@linux.intel.com,nikolay.mushayev@intel.com,nir.efrati@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 05 Apr 2024 12:43:57 +0200
+Message-ID: <2024040556-bonus-corporal-beee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B370:EE_|DS0PR12MB8198:EE_
-X-MS-Office365-Filtering-Correlation-Id: feccb9b3-a9e6-499c-424f-08dc555d35a8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	L8AhV+yoiS6+Z+/+Zm65eJLdN+aM7+Hxc++f90ga3Mx9VqgfOakxSM7vTqJj2k2u/nl/n5ZHW+/Hd8SkChn6oNAfdMKiNeSUgEu12vWTTBD7zqCx+eT4GWtY37wF+LMLBvsLt75qQ5wjkbzsNpZRZYOdn/qLtD80JOVAydzKhWQBd/3QNM76WeCdnVjwPE/lmtmvOBYoivrwWfyK8L1Dz3O8FeJXrmOMVszoVzKi3rousJVmLEA9R09nda6ZA0RWjTGgQj86npfKFdDKWCF/mGPF40Yw+g3gi3P1ZyIOIlAwJHv+j5G24uHoD3hsM0k/6jtJGe4xlEPIEcaaOVrDcHnZUj93Kws2VK/NKeBVlHCvAjgWMKHLk8WdTQihiFMviVgylv/ZM8zDv5KiRqrBK411sulmkugTV64V6dfJFQjESk8fJEoFRpbAHvDb7Ex5rev1yS5P6+p6omVlfeW3ZjLuSsO7RjHXBGZPd5Aw1Nx9sfdBI4oiZn9tqp8mMWs4fyqm5xc4vZonyC1SmD79KEcCgiP8i80igi0KmRAEQ8OclXopy1GEJUqF4VTTJ+5c4i3fjrB8nmDY0Dol3T316R48bO6FhNXX6zatj3aYC+eQgVH/qBHu5nyHJW5yYBBNXsOyZp/SdulUWvmps8+LAFsKMCwSGVZ2RGTUzNXf4hJPObxO0d0T/8450eB6BPNZ1qjqBizfNTSmBK2565xv9XreDNfp+XW0rPv09Y/GSJSftbQuxGg/wabjE/VMFmPz
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(376005)(82310400014)(36860700004)(1800799015);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 10:43:19.8275
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: feccb9b3-a9e6-499c-424f-08dc555d35a8
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B370.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8198
 
-DSPK configuration is wrong for 16-bit playback and this happens because
-the client config is always fixed at 24-bit in hw_params(). Fix this by
-updating the client config to 16-bit for the respective playback.
 
-Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sameer Pujar <spujar@nvidia.com>
----
- changes in v2:
-  * moved common setting to S32_LE switch case.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
- sound/soc/tegra/tegra186_dspk.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-diff --git a/sound/soc/tegra/tegra186_dspk.c b/sound/soc/tegra/tegra186_dspk.c
-index aa37c4ab0adb..21cd41fec7a9 100644
---- a/sound/soc/tegra/tegra186_dspk.c
-+++ b/sound/soc/tegra/tegra186_dspk.c
-@@ -1,8 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: Copyright (c) 2020-2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
- //
- // tegra186_dspk.c - Tegra186 DSPK driver
--//
--// Copyright (c) 2020 NVIDIA CORPORATION. All rights reserved.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6dbdd4de0362c37e54e8b049781402e5a409e7d0
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040556-bonus-corporal-beee@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6dbdd4de0362c37e54e8b049781402e5a409e7d0 Mon Sep 17 00:00:00 2001
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Date: Thu, 4 Jan 2024 16:16:52 +0200
+Subject: [PATCH] e1000e: Workaround for sporadic MDI error on Meteor Lake
+ systems
+
+On some Meteor Lake systems accessing the PHY via the MDIO interface may
+result in an MDI error. This issue happens sporadically and in most cases
+a second access to the PHY via the MDIO interface results in success.
+
+As a workaround, introduce a retry counter which is set to 3 on Meteor
+Lake systems. The driver will only return an error if 3 consecutive PHY
+access attempts fail. The retry mechanism is disabled in specific flows,
+where MDI errors are expected.
+
+Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
+Suggested-by: Nikolay Mushayev <nikolay.mushayev@intel.com>
+Co-developed-by: Nir Efrati <nir.efrati@intel.com>
+Signed-off-by: Nir Efrati <nir.efrati@intel.com>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+
+diff --git a/drivers/net/ethernet/intel/e1000e/hw.h b/drivers/net/ethernet/intel/e1000e/hw.h
+index 1fef6bb5a5fb..4b6e7536170a 100644
+--- a/drivers/net/ethernet/intel/e1000e/hw.h
++++ b/drivers/net/ethernet/intel/e1000e/hw.h
+@@ -628,6 +628,7 @@ struct e1000_phy_info {
+ 	u32 id;
+ 	u32 reset_delay_us;	/* in usec */
+ 	u32 revision;
++	u32 retry_count;
  
- #include <linux/clk.h>
- #include <linux/device.h>
-@@ -241,14 +240,14 @@ static int tegra186_dspk_hw_params(struct snd_pcm_substream *substream,
- 		return -EINVAL;
+ 	enum e1000_media_type media_type;
+ 
+@@ -644,6 +645,7 @@ struct e1000_phy_info {
+ 	bool polarity_correction;
+ 	bool speed_downgraded;
+ 	bool autoneg_wait_to_complete;
++	bool retry_enabled;
+ };
+ 
+ struct e1000_nvm_info {
+diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+index 19e450a5bd31..d8e97669f31b 100644
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -222,11 +222,18 @@ static bool e1000_phy_is_accessible_pchlan(struct e1000_hw *hw)
+ 	if (hw->mac.type >= e1000_pch_lpt) {
+ 		/* Only unforce SMBus if ME is not active */
+ 		if (!(er32(FWSM) & E1000_ICH_FWSM_FW_VALID)) {
++			/* Switching PHY interface always returns MDI error
++			 * so disable retry mechanism to avoid wasting time
++			 */
++			e1000e_disable_phy_retry(hw);
++
+ 			/* Unforce SMBus mode in PHY */
+ 			e1e_rphy_locked(hw, CV_SMB_CTRL, &phy_reg);
+ 			phy_reg &= ~CV_SMB_CTRL_FORCE_SMBUS;
+ 			e1e_wphy_locked(hw, CV_SMB_CTRL, phy_reg);
+ 
++			e1000e_enable_phy_retry(hw);
++
+ 			/* Unforce SMBus mode in MAC */
+ 			mac_reg = er32(CTRL_EXT);
+ 			mac_reg &= ~E1000_CTRL_EXT_FORCE_SMBUS;
+@@ -310,6 +317,11 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
+ 		goto out;
  	}
  
--	cif_conf.client_bits = TEGRA_ACIF_BITS_24;
++	/* There is no guarantee that the PHY is accessible at this time
++	 * so disable retry mechanism to avoid wasting time
++	 */
++	e1000e_disable_phy_retry(hw);
++
+ 	/* The MAC-PHY interconnect may be in SMBus mode.  If the PHY is
+ 	 * inaccessible and resetting the PHY is not blocked, toggle the
+ 	 * LANPHYPC Value bit to force the interconnect to PCIe mode.
+@@ -380,6 +392,8 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
+ 		break;
+ 	}
+ 
++	e1000e_enable_phy_retry(hw);
++
+ 	hw->phy.ops.release(hw);
+ 	if (!ret_val) {
+ 
+@@ -449,6 +463,11 @@ static s32 e1000_init_phy_params_pchlan(struct e1000_hw *hw)
+ 
+ 	phy->id = e1000_phy_unknown;
+ 
++	if (hw->mac.type == e1000_pch_mtp) {
++		phy->retry_count = 2;
++		e1000e_enable_phy_retry(hw);
++	}
++
+ 	ret_val = e1000_init_phy_workarounds_pchlan(hw);
+ 	if (ret_val)
+ 		return ret_val;
+@@ -1146,6 +1165,11 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
+ 	if (ret_val)
+ 		goto out;
+ 
++	/* Switching PHY interface always returns MDI error
++	 * so disable retry mechanism to avoid wasting time
++	 */
++	e1000e_disable_phy_retry(hw);
++
+ 	/* Force SMBus mode in PHY */
+ 	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
+ 	if (ret_val)
+@@ -1153,6 +1177,8 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
+ 	phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
+ 	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
+ 
++	e1000e_enable_phy_retry(hw);
++
+ 	/* Force SMBus mode in MAC */
+ 	mac_reg = er32(CTRL_EXT);
+ 	mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
+@@ -1313,6 +1339,11 @@ static s32 e1000_disable_ulp_lpt_lp(struct e1000_hw *hw, bool force)
+ 		/* Toggle LANPHYPC Value bit */
+ 		e1000_toggle_lanphypc_pch_lpt(hw);
+ 
++	/* Switching PHY interface always returns MDI error
++	 * so disable retry mechanism to avoid wasting time
++	 */
++	e1000e_disable_phy_retry(hw);
++
+ 	/* Unforce SMBus mode in PHY */
+ 	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
+ 	if (ret_val) {
+@@ -1333,6 +1364,8 @@ static s32 e1000_disable_ulp_lpt_lp(struct e1000_hw *hw, bool force)
+ 	phy_reg &= ~CV_SMB_CTRL_FORCE_SMBUS;
+ 	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
+ 
++	e1000e_enable_phy_retry(hw);
++
+ 	/* Unforce SMBus mode in MAC */
+ 	mac_reg = er32(CTRL_EXT);
+ 	mac_reg &= ~E1000_CTRL_EXT_FORCE_SMBUS;
+diff --git a/drivers/net/ethernet/intel/e1000e/phy.c b/drivers/net/ethernet/intel/e1000e/phy.c
+index 5e329156d1ba..93544f1cc2a5 100644
+--- a/drivers/net/ethernet/intel/e1000e/phy.c
++++ b/drivers/net/ethernet/intel/e1000e/phy.c
+@@ -107,6 +107,16 @@ s32 e1000e_phy_reset_dsp(struct e1000_hw *hw)
+ 	return e1e_wphy(hw, M88E1000_PHY_GEN_CONTROL, 0);
+ }
+ 
++void e1000e_disable_phy_retry(struct e1000_hw *hw)
++{
++	hw->phy.retry_enabled = false;
++}
++
++void e1000e_enable_phy_retry(struct e1000_hw *hw)
++{
++	hw->phy.retry_enabled = true;
++}
++
+ /**
+  *  e1000e_read_phy_reg_mdic - Read MDI control register
+  *  @hw: pointer to the HW structure
+@@ -118,55 +128,73 @@ s32 e1000e_phy_reset_dsp(struct e1000_hw *hw)
+  **/
+ s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data)
+ {
++	u32 i, mdic = 0, retry_counter, retry_max;
+ 	struct e1000_phy_info *phy = &hw->phy;
+-	u32 i, mdic = 0;
++	bool success;
+ 
+ 	if (offset > MAX_PHY_REG_ADDRESS) {
+ 		e_dbg("PHY Address %d is out of range\n", offset);
+ 		return -E1000_ERR_PARAM;
+ 	}
+ 
++	retry_max = phy->retry_enabled ? phy->retry_count : 0;
++
+ 	/* Set up Op-code, Phy Address, and register offset in the MDI
+ 	 * Control register.  The MAC will take care of interfacing with the
+ 	 * PHY to retrieve the desired data.
+ 	 */
+-	mdic = ((offset << E1000_MDIC_REG_SHIFT) |
+-		(phy->addr << E1000_MDIC_PHY_SHIFT) |
+-		(E1000_MDIC_OP_READ));
++	for (retry_counter = 0; retry_counter <= retry_max; retry_counter++) {
++		success = true;
+ 
+-	ew32(MDIC, mdic);
++		mdic = ((offset << E1000_MDIC_REG_SHIFT) |
++			(phy->addr << E1000_MDIC_PHY_SHIFT) |
++			(E1000_MDIC_OP_READ));
+ 
+-	/* Poll the ready bit to see if the MDI read completed
+-	 * Increasing the time out as testing showed failures with
+-	 * the lower time out
+-	 */
+-	for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
+-		udelay(50);
+-		mdic = er32(MDIC);
+-		if (mdic & E1000_MDIC_READY)
+-			break;
+-	}
+-	if (!(mdic & E1000_MDIC_READY)) {
+-		e_dbg("MDI Read PHY Reg Address %d did not complete\n", offset);
+-		return -E1000_ERR_PHY;
+-	}
+-	if (mdic & E1000_MDIC_ERROR) {
+-		e_dbg("MDI Read PHY Reg Address %d Error\n", offset);
+-		return -E1000_ERR_PHY;
+-	}
+-	if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
+-		e_dbg("MDI Read offset error - requested %d, returned %d\n",
+-		      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
+-		return -E1000_ERR_PHY;
+-	}
+-	*data = (u16)mdic;
++		ew32(MDIC, mdic);
+ 
+-	/* Allow some time after each MDIC transaction to avoid
+-	 * reading duplicate data in the next MDIC transaction.
+-	 */
+-	if (hw->mac.type == e1000_pch2lan)
+-		udelay(100);
+-	return 0;
++		/* Poll the ready bit to see if the MDI read completed
++		 * Increasing the time out as testing showed failures with
++		 * the lower time out
++		 */
++		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
++			usleep_range(50, 60);
++			mdic = er32(MDIC);
++			if (mdic & E1000_MDIC_READY)
++				break;
++		}
++		if (!(mdic & E1000_MDIC_READY)) {
++			e_dbg("MDI Read PHY Reg Address %d did not complete\n",
++			      offset);
++			success = false;
++		}
++		if (mdic & E1000_MDIC_ERROR) {
++			e_dbg("MDI Read PHY Reg Address %d Error\n", offset);
++			success = false;
++		}
++		if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
++			e_dbg("MDI Read offset error - requested %d, returned %d\n",
++			      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
++			success = false;
++		}
++
++		/* Allow some time after each MDIC transaction to avoid
++		 * reading duplicate data in the next MDIC transaction.
++		 */
++		if (hw->mac.type == e1000_pch2lan)
++			usleep_range(100, 150);
++
++		if (success) {
++			*data = (u16)mdic;
++			return 0;
++		}
++
++		if (retry_counter != retry_max) {
++			e_dbg("Perform retry on PHY transaction...\n");
++			mdelay(10);
++		}
++	}
++
++	return -E1000_ERR_PHY;
+ }
+ 
+ /**
+@@ -179,56 +207,72 @@ s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data)
+  **/
+ s32 e1000e_write_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 data)
+ {
++	u32 i, mdic = 0, retry_counter, retry_max;
+ 	struct e1000_phy_info *phy = &hw->phy;
+-	u32 i, mdic = 0;
++	bool success;
+ 
+ 	if (offset > MAX_PHY_REG_ADDRESS) {
+ 		e_dbg("PHY Address %d is out of range\n", offset);
+ 		return -E1000_ERR_PARAM;
+ 	}
+ 
++	retry_max = phy->retry_enabled ? phy->retry_count : 0;
++
+ 	/* Set up Op-code, Phy Address, and register offset in the MDI
+ 	 * Control register.  The MAC will take care of interfacing with the
+ 	 * PHY to retrieve the desired data.
+ 	 */
+-	mdic = (((u32)data) |
+-		(offset << E1000_MDIC_REG_SHIFT) |
+-		(phy->addr << E1000_MDIC_PHY_SHIFT) |
+-		(E1000_MDIC_OP_WRITE));
++	for (retry_counter = 0; retry_counter <= retry_max; retry_counter++) {
++		success = true;
+ 
+-	ew32(MDIC, mdic);
++		mdic = (((u32)data) |
++			(offset << E1000_MDIC_REG_SHIFT) |
++			(phy->addr << E1000_MDIC_PHY_SHIFT) |
++			(E1000_MDIC_OP_WRITE));
+ 
+-	/* Poll the ready bit to see if the MDI read completed
+-	 * Increasing the time out as testing showed failures with
+-	 * the lower time out
+-	 */
+-	for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
+-		udelay(50);
+-		mdic = er32(MDIC);
+-		if (mdic & E1000_MDIC_READY)
+-			break;
+-	}
+-	if (!(mdic & E1000_MDIC_READY)) {
+-		e_dbg("MDI Write PHY Reg Address %d did not complete\n", offset);
+-		return -E1000_ERR_PHY;
+-	}
+-	if (mdic & E1000_MDIC_ERROR) {
+-		e_dbg("MDI Write PHY Red Address %d Error\n", offset);
+-		return -E1000_ERR_PHY;
+-	}
+-	if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
+-		e_dbg("MDI Write offset error - requested %d, returned %d\n",
+-		      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
+-		return -E1000_ERR_PHY;
++		ew32(MDIC, mdic);
++
++		/* Poll the ready bit to see if the MDI read completed
++		 * Increasing the time out as testing showed failures with
++		 * the lower time out
++		 */
++		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
++			usleep_range(50, 60);
++			mdic = er32(MDIC);
++			if (mdic & E1000_MDIC_READY)
++				break;
++		}
++		if (!(mdic & E1000_MDIC_READY)) {
++			e_dbg("MDI Write PHY Reg Address %d did not complete\n",
++			      offset);
++			success = false;
++		}
++		if (mdic & E1000_MDIC_ERROR) {
++			e_dbg("MDI Write PHY Reg Address %d Error\n", offset);
++			success = false;
++		}
++		if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
++			e_dbg("MDI Write offset error - requested %d, returned %d\n",
++			      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
++			success = false;
++		}
++
++		/* Allow some time after each MDIC transaction to avoid
++		 * reading duplicate data in the next MDIC transaction.
++		 */
++		if (hw->mac.type == e1000_pch2lan)
++			usleep_range(100, 150);
++
++		if (success)
++			return 0;
++
++		if (retry_counter != retry_max) {
++			e_dbg("Perform retry on PHY transaction...\n");
++			mdelay(10);
++		}
+ 	}
+ 
+-	/* Allow some time after each MDIC transaction to avoid
+-	 * reading duplicate data in the next MDIC transaction.
+-	 */
+-	if (hw->mac.type == e1000_pch2lan)
+-		udelay(100);
 -
- 	switch (params_format(params)) {
- 	case SNDRV_PCM_FORMAT_S16_LE:
- 		cif_conf.audio_bits = TEGRA_ACIF_BITS_16;
-+		cif_conf.client_bits = TEGRA_ACIF_BITS_16;
- 		break;
- 	case SNDRV_PCM_FORMAT_S32_LE:
- 		cif_conf.audio_bits = TEGRA_ACIF_BITS_32;
-+		cif_conf.client_bits = TEGRA_ACIF_BITS_24;
- 		break;
- 	default:
- 		dev_err(dev, "unsupported format!\n");
--- 
-2.25.1
+-	return 0;
++	return -E1000_ERR_PHY;
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/e1000e/phy.h b/drivers/net/ethernet/intel/e1000e/phy.h
+index c48777d09523..049bb325b4b1 100644
+--- a/drivers/net/ethernet/intel/e1000e/phy.h
++++ b/drivers/net/ethernet/intel/e1000e/phy.h
+@@ -51,6 +51,8 @@ s32 e1000e_read_phy_reg_bm2(struct e1000_hw *hw, u32 offset, u16 *data);
+ s32 e1000e_write_phy_reg_bm2(struct e1000_hw *hw, u32 offset, u16 data);
+ void e1000_power_up_phy_copper(struct e1000_hw *hw);
+ void e1000_power_down_phy_copper(struct e1000_hw *hw);
++void e1000e_disable_phy_retry(struct e1000_hw *hw);
++void e1000e_enable_phy_retry(struct e1000_hw *hw);
+ s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data);
+ s32 e1000e_write_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 data);
+ s32 e1000_read_phy_reg_hv(struct e1000_hw *hw, u32 offset, u16 *data);
 
 
