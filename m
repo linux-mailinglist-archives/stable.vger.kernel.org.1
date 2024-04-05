@@ -1,80 +1,110 @@
-Return-Path: <stable+bounces-36143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9702C89A2FD
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 18:59:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B2689A352
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 19:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C85761C22CE1
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:59:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 239E5B2759C
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 17:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF2A171666;
-	Fri,  5 Apr 2024 16:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E1E171E6F;
+	Fri,  5 Apr 2024 17:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lP+u2JXZ"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="eVDQ7fDg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A464171654;
-	Fri,  5 Apr 2024 16:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612CB16F8E7;
+	Fri,  5 Apr 2024 17:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712336354; cv=none; b=WsgGmPNuI0gLeOup8bH4VVxiyrVToUSlRAl0a5je3jMscdoRZtRinIkkcePhdsGaugaBLit9ygXKAbaHuCdaSVVeAxDEx0fhxj3Iy0NLDDe04A1Lq+IXTV3WB6B9VbRjOj75Z8xAeY9xiE0H0Bh9BzVEZMD6OSgOS9K7x8m3aUU=
+	t=1712337125; cv=none; b=ZHhqr1cXgPR0DqTcXMXpa5p/+CJAzfAZmaVg2eVYocExSBY5P4fnSFE6wB90+u/8e3Mxx6fqpRiYwb8jvwXZNnzkUs450MBa7ZrJeeOC9+n+51/fzhs98GKqFUCUsJXL50qzSwn9+jxX1S6Kew+YFGL8Av5BkuebMwy/NZxmtLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712336354; c=relaxed/simple;
-	bh=d/B9BUVScbOGJpc3/gnx1X+oCXRIadBU2xdDvQPlLYA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eVjVXsS4FRwGFQksLL3cTFHV2dVTTI5+BkpV3XbcqvwiK+1xXZomgNYtAtmVFqXCoOQ8ldsiW8T26g7orQkIdDL/HA0stwLq0loSN0v5hk/ZIuOWljM8r6FzKAKXb/+FtmTlNJfihKRbI6ot6Mxr7xItuZwic96+ZcloPz+3hU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lP+u2JXZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF4EC433F1;
-	Fri,  5 Apr 2024 16:59:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712336354;
-	bh=d/B9BUVScbOGJpc3/gnx1X+oCXRIadBU2xdDvQPlLYA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lP+u2JXZ9n8HUkFq4xNM0Ac+TW30ZZYeMNJSfpYqo4IUEy4JAzMYGqerY5AW/9VWP
-	 Kcd1UD3ByKFFaHpA0x1F+um1ud6Z78Q15h6CH3TXq52yZaYBYRD0x/EsypM0TflpqT
-	 cDPU8kFs7QA0/ChNKfaZcMBWgYywX0zAsDzwTxnnra1rHnj9cY5PwWmTbRWWh8k7r3
-	 8jTZRdMdCPVF1XicJyCuO4ET5XK8kdGhCpbgE3eiVXf0Dfx5I85nryWJSNyBY4E2f0
-	 m6hnSRRZwRN1BM9/muMUrH0XdGn+Fv+nzr6aBbHDY8nvDfAaxIMocW4oTVB+LrQ1CR
-	 YDXWG6in03LRA==
-Date: Fri, 5 Apr 2024 22:29:10 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Wayne Chang <waynec@nvidia.com>
-Cc: jonathanh@nvidia.com, thierry.reding@gmail.com, jckuo@nvidia.com,
-	kishon@kernel.org, gregkh@linuxfoundation.org,
-	linux-phy@lists.infradead.org, linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	s=arc-20240116; t=1712337125; c=relaxed/simple;
+	bh=jp/ItmKjNW3lwD3HqdoO06DYpz1adMSLKDyVPElM/+g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fW2nq8efJPwoo6g4OzPKX1kqlvEH8v5KQK8j1jgJuTBF2anRIj3IS5Pv04QdNlE43DjROhvHKkih6YxFfjBMTKdENu5XN8fgwWpGbuZCcBbgB+TaOuM3cBGQp1mmUClFfvDfAazMdwCgXj/muZcYbK4erzcY0H70ZRE74pFgkUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=eVDQ7fDg; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from tundra.lovozera (unknown [178.176.73.54])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 33E7440737DC;
+	Fri,  5 Apr 2024 17:11:57 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 33E7440737DC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1712337118;
+	bh=zxli1M6t4+mmVUuqsEAwsb92XAAipwuHZ0h0RJ1Q04E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eVDQ7fDg7MTjYAXLcnt/MpMf1pjj9763Prk9QR8SbfcHQDleljuaSVRU5eRdI3Ldu
+	 AHjNVIpvKJBaE2WOH9fFa900b5O5CoF32/I3cC7gHHTpsiUqS3zdGC95FFvSDvg48M
+	 MdE2Sds5BvS+ruCEmn7RDKwFLXyUbUYCKXi3FGrc=
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>,
+	Venkata Prasad Potturu <quic_potturu@quicinc.com>,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] phy: tegra: xusb: Add API to retrieve the port
- number of phy
-Message-ID: <ZhAt3kPzn212vAH4@matsya>
-References: <20240307030328.1487748-1-waynec@nvidia.com>
- <20240307030328.1487748-2-waynec@nvidia.com>
+Subject: [PATCH] ASoC: qcom: Fix out of bounds access
+Date: Fri,  5 Apr 2024 20:11:47 +0300
+Message-ID: <20240405171148.12665-1-m.kobuk@ispras.ru>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240307030328.1487748-2-waynec@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On 07-03-24, 11:03, Wayne Chang wrote:
-> This patch introduces a new API, tegra_xusb_padctl_get_port_number,
-> to the Tegra XUSB Pad Controller driver. This API is used to identify
-> the USB port that is associated with a given PHY.
-> 
-> The function takes a PHY pointer for either a USB2 PHY or USB3 PHY as input
-> and returns the corresponding port number. If the PHY pointer is invalid,
-> it returns -ENODEV.
+Case values introduced in commit
+5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution")
+cause out of bounds access in arrays of sc7280 driver data (e.g. in case
+of RX_CODEC_DMA_RX_0 in sc7280_snd_hw_params()).
 
-Acked-by: Vinod Koul <vkoul@kernel.org>
+Redefine LPASS_MAX_PORTS to consider the maximum possible port id for
+q6dsp as sc7280 driver utilizes some of those values.
 
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 77d0ffef793d ("ASoC: qcom: Add macro for lpass DAI id's max limit")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+---
+ sound/soc/qcom/lpass.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/sound/soc/qcom/lpass.h b/sound/soc/qcom/lpass.h
+index 27a2bf9a6613..10a507c95312 100644
+--- a/sound/soc/qcom/lpass.h
++++ b/sound/soc/qcom/lpass.h
+@@ -13,10 +13,11 @@
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <dt-bindings/sound/qcom,lpass.h>
++#include <dt-bindings/sound/qcom,q6dsp-lpass-ports.h>
+ #include "lpass-hdmi.h"
+ 
+ #define LPASS_AHBIX_CLOCK_FREQUENCY		131072000
+-#define LPASS_MAX_PORTS			(LPASS_CDC_DMA_VA_TX8 + 1)
++#define LPASS_MAX_PORTS			(QUINARY_MI2S_TX + 1)
+ #define LPASS_MAX_MI2S_PORTS			(8)
+ #define LPASS_MAX_DMA_CHANNELS			(8)
+ #define LPASS_MAX_HDMI_DMA_CHANNELS		(4)
 -- 
-~Vinod
+2.44.0
+
 
