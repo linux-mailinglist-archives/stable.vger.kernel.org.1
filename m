@@ -1,134 +1,115 @@
-Return-Path: <stable+bounces-36114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65ED899F9D
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72844899FB3
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:30:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CFB728411D
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:28:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D00128567E
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE7416EBF8;
-	Fri,  5 Apr 2024 14:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926CA16F280;
+	Fri,  5 Apr 2024 14:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RIpag5M7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j09wuuDE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C84E16D32D;
-	Fri,  5 Apr 2024 14:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472EC16F26F;
+	Fri,  5 Apr 2024 14:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712327283; cv=none; b=s2oC6FEtk/kkzfHwhcTxcXnfRBUFq6v2hAfCFfxl9ihEzOeNqzBWBHD6n5UunBsiGRANJJy76vEwEHzuEnsnEF+ZBT2bh+dUq/9H85gbtkgpWomfie8f89431kiGRTRr4J0XeRUZLxSpWaXgenRUFjY9B3tnR/BJXvFcRAPF8xc=
+	t=1712327421; cv=none; b=sPE04pMSfmKFmHv3PUgAdPOwOXVndnzW1G+deCsx6EqJlOL5OuxsL4ceQE9lcdyesOM9EmBrk+1yZHMqvYT1isQUWwZoLlGy+zwm6GM5zVIijAjHFQnLPAxWgbf/UpigBPI6tks9hzFj5pEqGbNpBpDJ11FlHtKq7fgJzarUcAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712327283; c=relaxed/simple;
-	bh=edtWDz0F9ERyIwkradda1dEIoOdPdwzXb2qVkEfqBV0=;
-	h=Content-Type:Mime-Version:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=lGaVtozIKtUSKp0J0xMug7Htbtd4OI5mF1kIX8tcpwlbNKz8eTaz966PrPM+ZI/jM6MjSoIu/GExIRa9Tt8TeesbUUFYVzCxbjyGVa53udrcgV8CFLf9+d7jGMKz8s3ENPEB7dz0r2E7i7MQ1Heud5JlNSnNE/Tql61dcUhno/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RIpag5M7; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4162ec14805so7510085e9.1;
-        Fri, 05 Apr 2024 07:28:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712327280; x=1712932080; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O7LERPVCSW+Wfgv7Cf7Coboc+jfMXyoBnYaZV6ymz4A=;
-        b=RIpag5M78SHwP4RvqAZaWdnkoNPkr2eZb/5eFr103wlw3dNgXWAzesltU1F4er5EEl
-         0nswVIqpEcwDniyI9Xzii3tXzADjaYJaEE2Zfh9fbBSGXwuVsJLBondgZqBFbOG7pWbW
-         pLjAjiA+l6ErcJFXIpFIbmj2DaUpQvrYhs1sHodFarUndI3N8i3JxJXtFE0cczBl2hoU
-         qCBJN6lyIAyw1RrtDq2wgDgQqd4aWxEkE5lELHP82x9/64NT2BxoBlbv0WdvVSlzCE2+
-         lLlSDKoiLM4z3rfINIwJt42+ecK1l4H9FPkD/0mFRneo8LFG7XEJtachzsuUeD1FHGWp
-         +frg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712327280; x=1712932080;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O7LERPVCSW+Wfgv7Cf7Coboc+jfMXyoBnYaZV6ymz4A=;
-        b=QDPcJDN+Pp0oT//u4sF8zjQzRu9Joh8sweB8L5DXoCY8OWtM2LM0tA6NtjsGn23jsA
-         FsBY7D/OKfcFamCdAJ4+WlNYz4k5xzOhWCSj9g6Lu06ff3igoMs21FKXc/oj4+WAXuv7
-         mgswZn2LI4GmdoyEmrU1QcqzSw4nyCLnbL9bZgeCfZfxsAcE/hygeHoNZZs5+s+dR1/T
-         pqsUzILOv3UIjwf5WDGJpExE9aAxoKcGkGEZIOynraxoS5zu1unyk09c8uaor0NDARh1
-         bCeCBuJhxCd5MHWy3pk4UGJk6KZBZxXOQOzc8iWGUoimAScbIx05wTbml/7h+g5mDzNZ
-         IgMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXpJi7gIpM8kan83r/qAPg2QRPWlrWpjoXpG487mQ9Qk08S/COYrtn7yvXSg97At30O3s7GAh/AFoA+vhkhuacjwzQlGhIGY9yJNLXF8lPxOg48e9MLnLzbRuylpkJk7g2i/jd06vjgOjAPM1ncnB4CnxKi6rnm+sa0IbzL3nddrz4=
-X-Gm-Message-State: AOJu0YzGVDts9PinOnfJYGRQyjgMb6f0RIwbDj9vaSS1t/6TPD7zUy3U
-	LgNRlAa0kdIWb+I6ktJZvAGhRqCu6BamYSxg1RHRgGfcOP2Znm+59mVZbJus
-X-Google-Smtp-Source: AGHT+IGmhovB4WvvEoGfhcQ7/7+9sQMUwNRkZ/ya0lVDZIypZ5bRpVOnEtbrPOgNbrIt2UzRbbBa6g==
-X-Received: by 2002:a05:6000:188a:b0:343:39f4:3f2e with SMTP id a10-20020a056000188a00b0034339f43f2emr2164436wri.5.1712327279625;
-        Fri, 05 Apr 2024 07:27:59 -0700 (PDT)
-Received: from localhost (p200300e41f162000f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f16:2000:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id i6-20020a05600c354600b0041488691eb1sm6662907wmq.17.2024.04.05.07.27.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Apr 2024 07:27:59 -0700 (PDT)
-Content-Type: multipart/signed;
- boundary=2bced5962d6df3645374ca32f7e19dc7b5f911531a5e3e0d1afd7115069e;
- micalg=pgp-sha256; protocol="application/pgp-signature"
+	s=arc-20240116; t=1712327421; c=relaxed/simple;
+	bh=+hmouGUWtNRPVBEAQ5zRor/cUdIz1q9ZT+Aeo5mwccg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p3BkPm4ZgArPInycI79fab3jDSc66O5YfpotASXQlyMdSMworU+CEZKeAY/R4C6EeUKNGH1uym2hhu9wdDilGuduccJt2015OPWgno8Eqkf6Vf503ehI/35T6AHG7pTgdvMRUNpi2yTqWfmF+BtKebYcUQ+HT20MD5nQXqMir6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j09wuuDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9D1C433C7;
+	Fri,  5 Apr 2024 14:30:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712327420;
+	bh=+hmouGUWtNRPVBEAQ5zRor/cUdIz1q9ZT+Aeo5mwccg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=j09wuuDE9l5oYSv9w8XepGpi8h2sXOQdieK6zR23WRChleFDSnvbOVd+ExJnd/PXy
+	 qdABiXoKu+9hxF4ZT9rFLZklYVCZIhjtZwfl+LMS9CuaD80N9b4J+ctJqvj8JZGfbS
+	 k/EdxwZ7oJlIureGUJxau4aNZ17V7TZ+xviTLUS6nlAWdjuj1X9wzh2aEh6VIXaL5S
+	 nrm8VdBr0/6Z0G4X4SwC9Hxc4dXRoAZ+f3bmpnHH7AlIujr+eM9sjFM+SjKkkGMzM+
+	 KTn3DQsXZKnPBd4f1FNevs0uzygBXAJ2Oj0VwD1yRVm9XwiDHmHUf07eaB5vdvnX9i
+	 2U2SM9ymcGdgQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	stable@vger.kernel.org,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mtd: diskonchip: work around ubsan link failure
+Date: Fri,  5 Apr 2024 16:30:04 +0200
+Message-Id: <20240405143015.717429-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Date: Fri, 05 Apr 2024 16:27:58 +0200
-Message-Id: <D0C9D05HXLMP.PNF08QRPH8O2@gmail.com>
-To: "Sameer Pujar" <spujar@nvidia.com>, <broonie@kernel.org>,
- <linux-sound@vger.kernel.org>, <alsa-devel@alsa-project.org>
-Cc: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <lgirdwood@gmail.com>, <jonathanh@nvidia.com>, <mkumard@nvidia.com>,
- <stable@vger.kernel.org>
-Subject: Re: [RESEND PATCH v2] ASoC: tegra: Fix DSPK 16-bit playback
-From: "Thierry Reding" <thierry.reding@gmail.com>
-X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
-References: <20240405104306.551036-1-spujar@nvidia.com>
-In-Reply-To: <20240405104306.551036-1-spujar@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
---2bced5962d6df3645374ca32f7e19dc7b5f911531a5e3e0d1afd7115069e
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+From: Arnd Bergmann <arnd@arndb.de>
 
-On Fri Apr 5, 2024 at 12:43 PM CEST, Sameer Pujar wrote:
-> DSPK configuration is wrong for 16-bit playback and this happens because
-> the client config is always fixed at 24-bit in hw_params(). Fix this by
-> updating the client config to 16-bit for the respective playback.
->
-> Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sameer Pujar <spujar@nvidia.com>
-> ---
->  changes in v2:
->   * moved common setting to S32_LE switch case.
->
->  sound/soc/tegra/tegra186_dspk.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+I ran into a randconfig build failure with UBSAN using gcc-13.2:
 
-Acked-by: Thierry Reding <treding@nvidia.com>
+arm-linux-gnueabi-ld: error: unplaced orphan section `.bss..Lubsan_data31' from `drivers/mtd/nand/raw/diskonchip.o'
 
---2bced5962d6df3645374ca32f7e19dc7b5f911531a5e3e0d1afd7115069e
-Content-Type: application/pgp-signature; name="signature.asc"
+I'm not entirely sure what is going on here, but I suspect this has something
+to do with the check for the end of the doc_locations[] array that contains
+an (unsigned long)0xffffffff element, which is compared against the signed
+(int)0xffffffff. If this is the case, we should get a runtime check for
+undefined behavior, but we instead get an unexpected build-time error.
 
------BEGIN PGP SIGNATURE-----
+I would have expected this to work fine on 32-bit architectures despite the
+signed integer overflow, though on 64-bit architectures this likely won't
+ever work.
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmYQCm8ACgkQ3SOs138+
-s6HsnRAAnbvXUuFwGeAoUlndo/z+e8xofUaZP2R83hBnA3JyUK5SdmWuf44y6VoJ
-x0/RyQOZ20Wm0MGqRnalCMND9z5yNtfH0prJMBJlvhjKJFtMUI1+zpcfvqzMCxLJ
-4qtwzO324JwLnPMMV64aWfiHY5unR6wvwf2Angf60yWrD61RjJ0LPUfY/9a/zAGO
-ZKuGqslx+x7Xx3OZayaf/9sg+a1DcQEbCRsAzsWp22PGi52wp4PPgfDNUcTHGkhK
-bWFTkm46ZWV7DdUTCnJ50xc2lcz/9hDRou6sEbaZZYtWHjZTj5V4omVyteP0xIsL
-7dVC8lCT2Mf99iBcKlLRPy58NdWPnun5PCKMJ8s1GmFA+BYuGsUVxYko8Lnq5LDh
-GV9uzOIYwzs6LWJ2cMEKnR6uNXJEtLoq8YFoBvSHxaBnvAi0jO20Ak5UlO4YTwEo
-aUx8dpyjjCv6N+4U+9Y+rj0D7MsIvVbeBx8T8Ln6/0sw4mQ8qJe094/AzdU/UJEc
-8jnJFmkf1ae6CkTBpOrOR/KUQO6jcdENhqzUV4NAQPKJOm5mQ/0Zxd7hK8fYHWOB
-6ptE6q+mrMQJfsMdjl4X+MExHSX2LC8rCxawk0E4zoBQ7LBGDVLt5DtngAAVFBVP
-DpZMRBOvlDBSWQtdg3Gwlgq9Tw8VfyBihA0izA/HBugbXG9VrYg=
-=+hkQ
------END PGP SIGNATURE-----
+Changing the contition to instead check for the size of the array makes the
+code safe everywhere and avoids the ubsan check that leads to the link
+error. The loop code goes back to before 2.6.12.
 
---2bced5962d6df3645374ca32f7e19dc7b5f911531a5e3e0d1afd7115069e--
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/mtd/nand/raw/diskonchip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mtd/nand/raw/diskonchip.c b/drivers/mtd/nand/raw/diskonchip.c
+index 5243fab9face..8db7fc424571 100644
+--- a/drivers/mtd/nand/raw/diskonchip.c
++++ b/drivers/mtd/nand/raw/diskonchip.c
+@@ -53,7 +53,7 @@ static unsigned long doc_locations[] __initdata = {
+ 	0xe8000, 0xea000, 0xec000, 0xee000,
+ #endif
+ #endif
+-	0xffffffff };
++};
+ 
+ static struct mtd_info *doclist = NULL;
+ 
+@@ -1554,7 +1554,7 @@ static int __init init_nanddoc(void)
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		for (i = 0; (doc_locations[i] != 0xffffffff); i++) {
++		for (i = 0; i < ARRAY_SIZE(doc_locations); i++) {
+ 			doc_probe(doc_locations[i]);
+ 		}
+ 	}
+-- 
+2.39.2
+
 
