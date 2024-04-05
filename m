@@ -1,117 +1,74 @@
-Return-Path: <stable+bounces-36048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8A7899967
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 11:27:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D200899971
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 11:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D5491C212A4
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 09:27:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED3D6B2153D
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 09:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E11B15FCF1;
-	Fri,  5 Apr 2024 09:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E9D15FD0D;
+	Fri,  5 Apr 2024 09:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qs1iWhXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1eGaDI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160F615FCEA
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 09:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BCB15FD03
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 09:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712309257; cv=none; b=M9of6RfjWjbYtYbYj6msjsLoZx4LCB6DwY+BDCdhpALFHgGZAzy5GMvmmuLj1H+Rj0dYtVYH/o2tlpsfSV1bjbGUYtP7DF85QCs66cMkg25EaylJdCnx0iDIwUKs+0XcZoGwInMrdJc+pi6elkVqbKqLOQSmybnQZ9aNE2cTSZY=
+	t=1712309368; cv=none; b=iBWdKcXs4/0Pt4B/wS6KNRj5OTnfYwM2fPMVLyvVN71F3vJvvRGcAAAGYOqZhej6E6v4UIDUHs8KaVQ0lWs8tNMC2wsboC/pvwCWQUh8qGaBkcbucvr/GQ+RiQTG3VTQealCd04cx178proj66FFs7qndo6xpjM0UpwRVa+3F+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712309257; c=relaxed/simple;
-	bh=bLvtVQ4vKUOiitFFYHiS8AClUAzmTFTBemqFFiQTmEA=;
+	s=arc-20240116; t=1712309368; c=relaxed/simple;
+	bh=F76mPf7Ro+XFIB7wgNfHyCReSxuegjJV/Vg8KTSc+qE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FuJifdksnW71hmekBehDSBwUm3VZlTuWEj8HcxTA5e6B+hDSbe11llIrtxz6bu7yL+Hisfsl3uG7HLCO5OZjslJcUoB6lnal6PAOQsjt14k4ymVW/WdPN2GT+QM0qJ4M+UPFj1axehR1QOs0ZOgrpcYWjRCz4bvZ3EPiKgGP+dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qs1iWhXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37282C433C7;
-	Fri,  5 Apr 2024 09:27:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=am5XeQwLYA0LtDZQxk9LQIo3bJHPxLhkcU+IOrSn+u2ako4okAA17fEus97GOfOSImROfYEWjhSEIivdqONUmiv6JTLWMpHVcLL2dZCTLF23m1yGHgxd50KYt04rWCq9NlY3/yPH52g7fD3bZdXHg49w23LUKu7DLET4UZvqm1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1eGaDI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51DCC433C7;
+	Fri,  5 Apr 2024 09:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712309256;
-	bh=bLvtVQ4vKUOiitFFYHiS8AClUAzmTFTBemqFFiQTmEA=;
+	s=korg; t=1712309368;
+	bh=F76mPf7Ro+XFIB7wgNfHyCReSxuegjJV/Vg8KTSc+qE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qs1iWhXXtsbJACsfRPSo6csVSCuAYP5EpyWF3jzbaK28tTH9Xm/iG5Doy4LpOj4Bg
-	 x/JMOxs8MbrWmPdlZV5JRrw3xMjXrIIeM7kEEkgFkOjPwtbLDtSAcj7lQ7Sox70I5f
-	 CnXhikPCQ+VyOtUqxnda5/UhpstQ/FN9ndFUIdDg=
-Date: Fri, 5 Apr 2024 11:27:33 +0200
+	b=n1eGaDI1C8kMgiT6CIYQAikFuPPqerhVLveZi+3GJ+Z8FYjjsE+Y+8cq3k+dtO1dV
+	 5NCrdHvCq7fcEPC7QTlXGa7sy9NgOblooxD0R6TDvKi3An1Sx5GKkYC94wsv/xYRUR
+	 2MJgQxaNfOMs8Tou2YENZcgcxpGufgW5Ivb4erqg=
+Date: Fri, 5 Apr 2024 11:29:25 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Mahmoud Adam <mngyadam@amazon.com>
-Cc: Amir Goldstein <amir73il@gmail.com>, stable@vger.kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <lrumancik@google.com>
-Subject: Re: [PATCH 6.1 0/6] backport xfs fix patches reported by
- xfs/179/270/557/606
-Message-ID: <2024040512-selected-prognosis-88a0@gregkh>
-References: <20240403125949.33676-1-mngyadam@amazon.com>
- <20240403181834.GA6414@frogsfrogsfrogs>
- <CAOQ4uxjFxVXga5tmJ0YvQ-rQdRhoG89r5yzwh7NAjLQTNKDQFw@mail.gmail.com>
- <lrkyqh6ghcwuq.fsf@dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: mingo@kernel.org, torvalds@linux-foundation.org, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] x86/bugs: Fix the SRSO mitigation on
+ Zen3/4" failed to apply to 6.6-stable tree
+Message-ID: <2024040512-tag-retying-3afa@gregkh>
+References: <2024033029-roast-pajamas-3c55@gregkh>
+ <20240403105631.GBZg0130wgJdljfjzE@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <lrkyqh6ghcwuq.fsf@dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com>
+In-Reply-To: <20240403105631.GBZg0130wgJdljfjzE@fat_crate.local>
 
-On Thu, Apr 04, 2024 at 11:15:25AM +0200, Mahmoud Adam wrote:
-> Amir Goldstein <amir73il@gmail.com> writes:
+On Wed, Apr 03, 2024 at 12:56:31PM +0200, Borislav Petkov wrote:
+> On Sat, Mar 30, 2024 at 10:46:29AM +0100, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.6-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
 > 
-> > On Wed, Apr 3, 2024 at 9:18 PM Darrick J. Wong <djwong@kernel.org> wrote:
-> >> To the group: Who's the appropriate person to handle these?
-> >>
-> >> Mahmoud: If the answer to the above is "???" or silence, would you be
-> >> willing to take on stable testing and maintenance?
-> 
-> Probably there is an answer now :). But Yes, I'm okay with doing that,
-> Xfstests is already part for our nightly 6.1 testing.
-> 
-> >
-> > Mahmoud,
-> >
-> > I assume that you are running xfstests on LTS kernels regularly?
-> > In that case, you should have an established baseline for failing/passing
-> > tests on 6.1.y.
-> > Did you run these backports against all tests to verify no regressions?
-> > If you did - then please include this information (also which xfs configurations
-> > were tested) in the posting of backport candidates to xfs list.
-> 
-> Yes, I did run the full xfstests to confirm no regression. we do
-> regularly run the latest stable xfstests version with loopback
-> setup. and we run 'xfs/quick' group over x86_64 & arm64 to catch any
-> regression. I'll make sure to post to xfs list first next time :)
-> 
-> our setup looks similar to this:
-> 
-> sudo fallocate -l 5G $MOUNT_POINT/block-xfs.img
-> sudo mkfs.xfs -f -m reflink=1 $MOUNT_POINT/block-xfs.img
-> sudo losetup -f $MOUNT_POINT/block-xfs.img
-> sudo mkdir -p $MOUNT_POINT/test
-> sudo mount /dev/loop0 $MOUNT_POINT/test
-> 
-> sudo fallocate -l 5G $MOUNT_POINT/block-xfs-scratch.img
-> sudo losetup -f $MOUNT_POINT/block-xfs-scratch.img
-> 
-> local.config:
->     export DISABLE_UDF_TEST=1
->     export TEST_DEV=/dev/loop0
->     export TEST_DIR=$MOUNT_POINT/test
->     export SCRATCH_MNT=$MOUNT_POINT/scratch
->     export SCRATCH_DEV=/dev/loop1
+> A bit more involved, took a couple of Josh's cleanup patches too. See
+> attached.
 
-So does this mean we should take these for stable inclusion, or are they
-going to need some other tests/acks for us to be able to do this?
-
-thanks,
+All now queued up, thanks!
 
 greg k-h
 
