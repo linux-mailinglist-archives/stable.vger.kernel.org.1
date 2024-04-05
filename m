@@ -1,123 +1,121 @@
-Return-Path: <stable+bounces-36034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FA48995AC
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:42:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEF8995D8
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D271C21156
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:42:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEA7F286867
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5F8219FC;
-	Fri,  5 Apr 2024 06:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D2228DBC;
+	Fri,  5 Apr 2024 06:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYr+vmzN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GcN9OhNq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A2A18659;
-	Fri,  5 Apr 2024 06:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10BC2557A;
+	Fri,  5 Apr 2024 06:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712299373; cv=none; b=uqWMeJJ0v8qOsbpK90OJc3h+2FeT29V8qonabf6Mne5t/Xj0f0TqBEEcgv882KF0uGm7CQ5QWwjwE25HOGWfb8reqQQD8yg3Q2ACbO2NZwF1Wbys3JUA+EcBPF5JzMm3BwqMz68J00MyW2wWQrJU0Z9ZYpyI4ETZd5HuPejyBss=
+	t=1712299797; cv=none; b=fVX5ugiaR7j81W/eO0ovqlNiAqP3z+3KjohzhysxRQEk00XT5A41RuBLAZWOdciEsIRO1CFXkoGQuQBEOJg3PDByhEmsWZ5xOX2EYK5jUfGeiSYxC1No31ueRP/aKuEfq5WCm1NDyM27WRi3YfIgGROvIRxn59XqXu1iB4/ctYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712299373; c=relaxed/simple;
-	bh=yqvRzGgJBEoPw84m3wibIRMoO901bjxYZLE2U2L0kkY=;
+	s=arc-20240116; t=1712299797; c=relaxed/simple;
+	bh=pM5eyZ6ngQNS72PsWbWA/pEt9fJ2yCxrs53GYxHbrvI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nky6ik9+R85PGy/umNSUHHCJJ6fXr/MiJzFpVeue9aLWuDgGXDfFQiIJ3zVhvLL56KqM3CCG4EByjFRzEQU0ZXe038w3lNi02xbP2gOcQzyJSLCO1I1j1r5iYL36ef7UevQpIR3XrBiQevJ8wEDlJq7VchC2Fw3l1rK0sUEWrIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYr+vmzN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A43C433C7;
-	Fri,  5 Apr 2024 06:42:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712299372;
-	bh=yqvRzGgJBEoPw84m3wibIRMoO901bjxYZLE2U2L0kkY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OYr+vmzNVqXaqcPNVGMFNFrMEJt80lkvX2Ld8wWVM3prY52XF4Z/NgsiEfE0gClDO
-	 wsuXF2qbGz4QhwiAJ0K4NqiNrSlsFa7V4s67572GL5WWxmtuV9TvnSnjLz3Oveop09
-	 zqtZmD4BaDeRTZdvaxkuy3SeaH2eWwrWNs4QA+HM=
-Date: Fri, 5 Apr 2024 08:42:49 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Peter Collingbourne <pcc@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jiri Slaby <jirislaby@kernel.org>, linux-serial@vger.kernel.org,
-	stable@vger.kernel.org, VAMSHI GAJJELA <vamshigajjela@google.com>
-Subject: Re: [PATCH] serial: 8250_dw: Revert: Do not reclock if already at
- correct rate
-Message-ID: <2024040500-snowbound-cadet-bba2@gregkh>
-References: <20240317214123.34482-1-hdegoede@redhat.com>
- <ZfgZEcg2RXSz08Gd@smile.fi.intel.com>
- <CAMn1gO4zPpwVDcv5FFiimG0MkGdni_0QRMoJH9SSA3LJAk7JqQ@mail.gmail.com>
- <35cdaf7e-ef32-470f-ab61-e5f4a3b35238@redhat.com>
- <33110d20-45d6-45b9-8af0-d3eac8c348b8@redhat.com>
- <CAMn1gO5-WD5wyPt+ZKDL-sRKhZvz1sUSPP-Mq59Do5kySpm=Sg@mail.gmail.com>
- <8cbe0f5f-0672-4bca-b539-8bff254c7c97@redhat.com>
- <2024032922-stipulate-skeleton-6f9c@gregkh>
- <1d7c3e03-fb25-4891-87bb-f4e7b8b4ee30@leemhuis.info>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cQj7HaPvW5sGllPkXQ51inXjCb+vxVaE9o/H4FNtgb2GJeo434oSTywjbd9wN4bcICvbunW9nyZyw6wrFa3hfdK/q6YqP/sFAQlslVfVN2ZUzBNhP13o1JyPP9OaOcnQ41yUVeQB6rRrMRGOKDbeLuoOXcy29BMC127+GWCS5ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GcN9OhNq; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712299796; x=1743835796;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pM5eyZ6ngQNS72PsWbWA/pEt9fJ2yCxrs53GYxHbrvI=;
+  b=GcN9OhNq/TZ5ZMoxa4x86i7JO6ewKpJpQEHWdxuQ29tmxyp5qDDbWgYj
+   NAvg/+JVd/9gUq4EAPGcZMVk3sxd3KNfnSQaM9psI9SuM0FBq33oXIYOv
+   QaXiXqIsptyDKTLgQentGNM539HaWHUuhdhU1v6I62FBzo0wVL6HYc4kG
+   NcUqMpd959JVbQMjFty8er9xfimn3kVgMshAd/Iu+ZFq5QB19JVfH1naZ
+   GcqFpBaPWXpv6A+AyB/LtcX5DomE3HDQr0Beew2+5BHJECEZoeGwGzJaa
+   7ZyfDss7H4vy9zfAAaCBVOKQY8anZ2D2JLg5qLiShSSXQzkSiiF3iSBOE
+   w==;
+X-CSE-ConnectionGUID: kYLUhW6QTPimlfPCOXGN5Q==
+X-CSE-MsgGUID: M+i4ae5VQ+Ssl51iDt6ObQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="30090098"
+X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
+   d="scan'208";a="30090098"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 23:49:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="937087429"
+X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
+   d="scan'208";a="937087429"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 04 Apr 2024 23:49:52 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 05 Apr 2024 09:49:51 +0300
+Date: Fri, 5 Apr 2024 09:49:51 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Javier Carrasco <javier.carrasco@wolfvision.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Abdel Alkuor <abdelalkuor@geotab.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND 2/2] usb: typec: tipd: fix event checking for
+ tps6598x
+Message-ID: <Zg+fD6w1MykCsEe6@kuha.fi.intel.com>
+References: <20240328-tps6598x_fix_event_handling-v1-0-502721ff705b@wolfvision.net>
+ <20240328-tps6598x_fix_event_handling-v1-2-502721ff705b@wolfvision.net>
+ <ZgveG5Ly3mw0O0eo@kuha.fi.intel.com>
+ <b6bf7f8e-7d46-4b70-930c-9483f13fd80a@wolfvision.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d7c3e03-fb25-4891-87bb-f4e7b8b4ee30@leemhuis.info>
+In-Reply-To: <b6bf7f8e-7d46-4b70-930c-9483f13fd80a@wolfvision.net>
 
-On Fri, Apr 05, 2024 at 08:14:03AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 29.03.24 13:12, Greg Kroah-Hartman wrote:
-> > On Fri, Mar 29, 2024 at 12:42:14PM +0100, Hans de Goede wrote:
-> >> On 3/29/24 3:35 AM, Peter Collingbourne wrote:
-> >>> On Thu, Mar 28, 2024 at 5:35 AM Hans de Goede <hdegoede@redhat.com> wrote:
-> >>>> On 3/28/24 8:10 AM, Hans de Goede wrote:
-> >>>>> On 3/18/24 7:52 PM, Peter Collingbourne wrote:
-> >>>>>> On Mon, Mar 18, 2024 at 3:36 AM Andy Shevchenko
-> >>>>>> <andriy.shevchenko@linux.intel.com> wrote:
-> >>>>>>>
-> >>>>>>> On Sun, Mar 17, 2024 at 10:41:23PM +0100, Hans de Goede wrote:
-> >>>>>>>> Commit e5d6bd25f93d ("serial: 8250_dw: Do not reclock if already at
-> >>>>>>>> correct rate") breaks the dw UARTs on Intel Bay Trail (BYT) and
-> >>>>>>>> Cherry Trail (CHT) SoCs.
-> >>>>>>>>
-> >>>>>>>> Before this change the RTL8732BS Bluetooth HCI which is found
-> >>>>>>>> connected over the dw UART on both BYT and CHT boards works properly:
-> >>>>>>>>
-> >>>>>>>> Bluetooth: hci0: RTL: examining hci_ver=06 hci_rev=000b lmp_ver=06 lmp_subver=8723
-> >>>>>>>> Bluetooth: hci0: RTL: rom_version status=0 version=1
-> >>>>>>>> Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_fw.bin
-> >>>>>>>> Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_config-OBDA8723.bin
-> >>>>>>>> Bluetooth: hci0: RTL: cfg_sz 64, total sz 24508
-> >>>>>>>> Bluetooth: hci0: RTL: fw version 0x365d462e
-> >>>>>>>>
-> >>>>>>>> where as after this change probing it fails:
-> > [...]
-> >>> Acked-by: Peter Collingbourne <pcc@google.com>
-> >>
-> >> Thanks. Greg can we get this merged please
-> >> (it is a regression fix for a 6.8 regression) ?
+On Wed, Apr 03, 2024 at 10:55:29AM +0200, Javier Carrasco wrote:
+> >> -	ret = tps6598x_read64(tps, TPS_REG_INT_EVENT1, &event1);
+> >> -	ret |= tps6598x_read64(tps, TPS_REG_INT_EVENT2, &event2);
+> >> +	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT1, event1, 11);
 > > 
-> > Will queue it up soon, thanks.
+> > This is not going to work with the older TI PD controllers.
+> > 
+> > The lenght of these registers is 8 bytes on the older TI PD
+> > controllers (TPS65981, TPS65982, etc.). I think we need to split this
+> > function.
+> > 
 > 
-> You are obviously busy (we really need to enhance Git so it can clone
-> humans, too!), nevertheless: friendly reminder that that fix afaics
-> still is not queued.
+> That is a good point. I had a look at the older TI PD controllers and I
+> agree with you that we should split the function to cover both register
+> lengths separately.
+> 
+> I was thinking about adding a new compatible for the newer PD
+> controllers (tps65987 and tps65988), keeping the current tps6598x for
+> the older ones as well as backwards compatibility. But backwards
+> compatibility would also mean that flags beyond the first 8 bytes would
+> be ignored.
+> 
+> On the other hand, the upper flags are only relevant for firmware
+> updates, so we could check those (i.e. read 11 bytes) if a firmware was
+> provided via "firmware-name", and ignore them (i.e. read 8 bytes) otherwise.
+> 
+> Other ideas or improvements to mine are more than welcome.
 
-"soon" is relative :)
-
-> Side note: there is another fix for a serial 6.8 regression I track
-> waiting for review here:
-> https://lore.kernel.org/linux-serial/20240325071649.27040-1-tony@atomide.com/
-
-It's in my queue, I'll try to get to serial stuff later today, but not
-promising anything...
+I don't have any good ideas. On ACPI platforms the same device ID may
+be used with all of these, so we should actually try to figure out the
+version from registers like VID, DID and Version (if they are
+available).
 
 thanks,
 
-greg k-h
+-- 
+heikki
 
