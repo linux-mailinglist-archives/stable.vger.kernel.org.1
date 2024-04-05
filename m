@@ -1,147 +1,117 @@
-Return-Path: <stable+bounces-36151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6B489A486
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 21:02:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E2A89A4C2
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 21:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF5F0B23965
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 19:02:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CB31285E2E
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 19:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1504C1607AF;
-	Fri,  5 Apr 2024 19:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058DF172BAB;
+	Fri,  5 Apr 2024 19:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bxBJJN1O"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J2f6PwsZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0585F172794
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 19:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB9D172793
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 19:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712343756; cv=none; b=I88NMvOyFrR+tITeAk8aA3krGiUF4fdcfrRXhVVpoUIJ1r6IIWq0M4QgjQLHXaxLmh8BaWIfyrjtqv/7g88lVeaw75CRpqznkGzOehaTxQFWcz3YB6acfdo84/gJ6tSaV4GaTsC9TW2r5z5MrtpUCC1Cu+AvhuF4r7H5pdbxfVI=
+	t=1712344629; cv=none; b=oYFx+EsB5ZickST4cfChs7/kJ1M6TTEwtA2JHTywkAXIylpMHFgdUUsleCQyDTYDuryKeln1snspL7oNYt4FC4Ghf2oqS4iGWY1CW61BOGXNl1u4Z0ypZlIG904ytgInVH0bLx47/IvgnS1DWckVBR6q+0yl5S48sIUHHml0Rvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712343756; c=relaxed/simple;
-	bh=mDcjI/D7KGhfWVDc8ESGO7+wqabJ1W1wj+ZXAv8ENtQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sTzp1BZfjDOkMK9nqSj5muIuHZC27SXbaEhZokhTTF7/tdpfi6W+pVHX5mibUk0bHNGQuIBVN9p8cvZefQR6Ao3H9+DxRBnc8cy4RIIDqeYW84rYwWHbC1FuQV1gxHO5XT7JjmfMdJycPQg3lSfmXNFmYech1mFM6hWvEgWGizI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bxBJJN1O; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6156483284fso27632887b3.0
-        for <stable@vger.kernel.org>; Fri, 05 Apr 2024 12:02:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1712343754; x=1712948554; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q+9F5O8eIKV+7UGcG+VUym1A0vGBsTshQ13opkTXvdA=;
-        b=bxBJJN1OjWvX6vawNsIVkyQgLrokI2vAIMpCzs8hwsolzTlUi3UQx7D6pcNu0yYP9D
-         RTVjduziMf4bI0umPD7UC9M2ETVGtYgdwBws2/+to7R9ZrnjG9OXByg3rWIK/2XJpipN
-         UsQ3JLA2qLkFEbxClpvhNkcyVvTyL6aWEw7yg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712343754; x=1712948554;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q+9F5O8eIKV+7UGcG+VUym1A0vGBsTshQ13opkTXvdA=;
-        b=hjuRZp0z4J8z8+HxX0WFu/60JN3XDGWKDnqWwDLG+MqYOS0Mwoy056K4SjthQsnctQ
-         P16zi/e3hQ82dIZ0IxHDB9xxYWf7zUvcLvAVHGnFl8WielzHgeFExLzr/RGK5G1UvMZI
-         4g3NJYYA5axkYK9AmRKHFB6J2faFVj7seJNJI13VsmAeaxauXj3YmaHYz9cpKOuSyKTI
-         MBDh6llUEkqYXHQwdhWqkxeuVGsRhI2TWrfPxjVqI44myU9T5h37mU3Vczs73WGhV9hF
-         DRUJth5ac6lJI5gC9k9oKPvMI+pVc+GpOfUDslNVdYodnoDEfHB3lMe66s9wCmpD6GtO
-         n/ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUH2fVrhXPhPRHDJBwBcj37GHH5QfIGtZv07aoWVCSJJ/aIx7HrPhCXLye4QqlgE3nTlkziUU7zniwPl4jjxf1IKwmnKAdT
-X-Gm-Message-State: AOJu0YymBm4M39VntxVbrXIswX3VfZNePi21dbddj48QDyS1CgWyI8Y6
-	3j4YXUkgLmjpJjUGi/v/9sEEqNLG0CLnp5ZT3BauiM7RlYVHPE/2jxSdyYF585hbsXs3JYb6aY0
-	kfn82lMhQslfQ2mrlbA3aexLiKkv4IyQSHsHx
-X-Google-Smtp-Source: AGHT+IGD1q3YYuPont2fXr2FhDUReli6hVBqnrTA5X+DWnj57jYGh6Kk36EUxXxCC2IMV/sycWLTuEazqirLbZUNX3c=
-X-Received: by 2002:a81:5c87:0:b0:615:184d:275 with SMTP id
- q129-20020a815c87000000b00615184d0275mr1889977ywb.47.1712343754017; Fri, 05
- Apr 2024 12:02:34 -0700 (PDT)
+	s=arc-20240116; t=1712344629; c=relaxed/simple;
+	bh=4+Bux30dqLXg6KuK0fUec4K9aBNqA4+JiCmn0NOpEU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ojoQVzGtdCJP8333d7Q56oQ1Jjx+w9CFswjgER6esuabifQ6Vg38W5vZ+2C4i44tXt1QJA0PvlkULlwdctQXc0M2ASjJHexl5sAKazXHFcefVfyljhf9BfFvatQj5ZSaZPsLe6bgngOrBVAzyNJ3Ybt0IgxLgIuKEYgTTY+I1j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J2f6PwsZ; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712344628; x=1743880628;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=4+Bux30dqLXg6KuK0fUec4K9aBNqA4+JiCmn0NOpEU4=;
+  b=J2f6PwsZn7QS2zRIKXslZlqcwihRMB+CZYvpZKSe2O4/cJE+5wR+1vi6
+   xpo/GzAvBSA9oWlms+lrWIx5vNxs+Ggufe8oSppcVKF+iyoxyyZriTURt
+   oeyXzwjwsUsY25qXfdS+Ah8M8uuI3y1wfDHspBmfDLJgI5NLWb/ReM/wD
+   qOR3qtX12C6NR+9hjMpB/I/jiyxRTjgzas0/5McNiWhLpYW1fwiRP6O2s
+   ZMmbKeqZXU2QTe0mlyUJ1oLdv+Amh3J5eCfaGe55HNgK/v8rfvsWDtF6Q
+   TP+3N8YEb0ona5gleHIH5WQmMN74N3us+TtUmI9+pgIDJDcb/O386n5qj
+   g==;
+X-CSE-ConnectionGUID: vE4uBZ0qQJ+ABY/ChMIKYA==
+X-CSE-MsgGUID: vlGN3JYDSCG2E98VZqIluQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="7549313"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="7549313"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 12:17:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="827790993"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="827790993"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orsmga001.jf.intel.com with SMTP; 05 Apr 2024 12:17:03 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 05 Apr 2024 22:17:02 +0300
+Date: Fri, 5 Apr 2024 22:17:02 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 01/12] drm/client: Fully protect modes[] with
+ dev->mode_config.mutex
+Message-ID: <ZhBOLh8jk8uN-g1v@intel.com>
+References: <20240404203336.10454-1-ville.syrjala@linux.intel.com>
+ <20240404203336.10454-2-ville.syrjala@linux.intel.com>
+ <jeg4se3nkphfpgovaidzu5bspjhyasafplmyktjo6pwzlvpj5s@cmjtomlj4had>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240402232813.2670131-1-zack.rusin@broadcom.com> <20240402232813.2670131-5-zack.rusin@broadcom.com>
-In-Reply-To: <20240402232813.2670131-5-zack.rusin@broadcom.com>
-From: Ian Forbes <ian.forbes@broadcom.com>
-Date: Fri, 5 Apr 2024 14:02:25 -0500
-Message-ID: <CAO6MGti8duxr3AqWnRCuv2igR=PN4NxoaGnErPxr5hpZzLctEw@mail.gmail.com>
-Subject: Re: [PATCH 4/5] drm/vmwgfx: Fix crtc's atomic check conditional
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, martin.krastev@broadcom.com, 
-	maaz.mombasawala@broadcom.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <jeg4se3nkphfpgovaidzu5bspjhyasafplmyktjo6pwzlvpj5s@cmjtomlj4had>
+X-Patchwork-Hint: comment
 
-Makes sense.
+On Fri, Apr 05, 2024 at 06:24:01AM +0300, Dmitry Baryshkov wrote:
+> On Thu, Apr 04, 2024 at 11:33:25PM +0300, Ville Syrjala wrote:
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > The modes[] array contains pointers to modes on the connectors'
+> > mode lists, which are protected by dev->mode_config.mutex.
+> > Thus we need to extend modes[] the same protection or by the
+> > time we use it the elements may already be pointing to
+> > freed/reused memory.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10583
+> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> 
+> I tried looking for the proper Fixes tag, but it looks like it might be
+> something like 386516744ba4 ("drm/fb: fix fbdev object model + cleanup properly.")
 
-Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
+The history is rather messy. I think it was originally completely
+lockless and broken, and got fixed piecemeal later in these:
+commit 7394371d8569 ("drm: Take lock around probes for drm_fb_helper_hotplug_event")
+commit 966a6a13c666 ("drm: Hold mode_config.lock to prevent hotplug whilst setting up crtcs")
 
-On Tue, Apr 2, 2024 at 6:28=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.com>=
- wrote:
->
-> The conditional was supposed to prevent enabling of a crtc state
-> without a set primary plane. Accidently it also prevented disabling
-> crtc state with a set primary plane. Neither is correct.
->
-> Fix the conditional and just driver-warn when a crtc state has been
-> enabled without a primary plane which will help debug broken userspace.
->
-> Fixes IGT's kms_atomic_interruptible and kms_atomic_transition tests.
->
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Fixes: 06ec41909e31 ("drm/vmwgfx: Add and connect CRTC helper functions")
-> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
-om.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v4.12+
-> ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx=
-/vmwgfx_kms.c
-> index e33e5993d8fc..13b2820cae51 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> @@ -931,6 +931,7 @@ int vmw_du_cursor_plane_atomic_check(struct drm_plane=
- *plane,
->  int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
->                              struct drm_atomic_state *state)
->  {
-> +       struct vmw_private *vmw =3D vmw_priv(crtc->dev);
->         struct drm_crtc_state *new_state =3D drm_atomic_get_new_crtc_stat=
-e(state,
->                                                                          =
-crtc);
->         struct vmw_display_unit *du =3D vmw_crtc_to_du(new_state->crtc);
-> @@ -938,9 +939,13 @@ int vmw_du_crtc_atomic_check(struct drm_crtc *crtc,
->         bool has_primary =3D new_state->plane_mask &
->                            drm_plane_mask(crtc->primary);
->
-> -       /* We always want to have an active plane with an active CRTC */
-> -       if (has_primary !=3D new_state->enable)
-> -               return -EINVAL;
-> +       /*
-> +        * This is fine in general, but broken userspace might expect
-> +        * some actual rendering so give a clue as why it's blank.
-> +        */
-> +       if (new_state->enable && !has_primary)
-> +               drm_dbg_driver(&vmw->drm,
-> +                              "CRTC without a primary plane will be blan=
-k.\n");
->
->
->         if (new_state->connector_mask !=3D connector_mask &&
-> --
-> 2.40.1
->
+commit e13a05831050 ("drm/fb-helper: Stop using mode_config.mutex for internals")
+looks to me like where the race might have been re-introduced.
+But didn't do a thorough analysis so not 100% sure. It's all
+rather ancient history by now so a Fixes tag doesn't seem all
+that useful anyway.
+
+-- 
+Ville Syrjälä
+Intel
 
