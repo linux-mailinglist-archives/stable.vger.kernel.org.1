@@ -1,63 +1,54 @@
-Return-Path: <stable+bounces-36153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CDD89A533
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 21:49:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DE689A5A7
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 22:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A35631C219EA
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 19:49:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 465401F23422
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 20:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC35E173347;
-	Fri,  5 Apr 2024 19:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D1E174ED5;
+	Fri,  5 Apr 2024 20:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="JY2cIlX+"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="lRYHItRp"
 X-Original-To: stable@vger.kernel.org
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+Received: from forward206b.mail.yandex.net (forward206b.mail.yandex.net [178.154.239.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE8A17167F;
-	Fri,  5 Apr 2024 19:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C1617278B;
+	Fri,  5 Apr 2024 20:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712346594; cv=none; b=e4o2DsYAXczXHnLqFkVpgVUwnOdWi/CY4IIVD+W8x4pgKGuCSxXnNFOmD66gPGgChA7/eY5eiK13RYdQq+ZmPvhask/Zfv0Vh/VlCEwM0U8zVWPHdBqLr1zYWmduVVUrcmaW3iWD3v4ctXRATJWgzlNCXpLpTY79gYVsiz21Zkw=
+	t=1712348989; cv=none; b=Psx3Fkqqh0q0kRrWYuFTrsKJHHr0oe9ByYEfDs/yL3+0tenq3U0apMDUx9coJqVO8qDCr2bocl2UPhmrifOZ4UurTqTk7G3gU8KpYQeDlzFZI+jVWHEIZHcz3YuciU+M9HpYPznBm9I/rX1z5nlccTn7HV29qXzKMEcPKTQSuzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712346594; c=relaxed/simple;
-	bh=U3QSasR0yisltW8MBdiQoRYfyS9iD5b2kWG5VrvCcEk=;
+	s=arc-20240116; t=1712348989; c=relaxed/simple;
+	bh=FrkwMKdTLjy553kBEEHGyp8iLLC2aDtK4qcMOzTAKfI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hOlQcKSomcIaenZ6UcJldBJ7NzCve8n9qvVtLtMBGftenvH2FjvWtZ+sww9DdwJbFwfiNwAHUjO7zWhzpD8QxOX1942DN31cYj1vOx1KnJK9/nAzXhu0NoWAYfp4zV2Jw9dJCecbJq9xBOr4GWXsLNd1EAiUVi3dAW8SH0Ak6y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=JY2cIlX+; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4VB8G83wc6zll9bP;
-	Fri,  5 Apr 2024 19:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:references:content-language:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1712346590; x=1714938591; bh=HT9xP0CtOVxrpJticXq4asho
-	6u7ldedY7tTiPEr3xEk=; b=JY2cIlX+Mo/QEehA3plIMOHeGpJVBv1OcFpmMpgW
-	vkTn7ey4aVfI+w0/J/4LOohw4eGr34rG3vfpJ+9T23cPby+bNZR2UNj7z/Wqmfae
-	TeX4IGx3LSW9wtpDEHhqm1MSoZCMgarl/zQcnwv41/KsQsu7YpjreZH6FRK/64OA
-	caRhYX0omQcNwAeqqgR5mPOztcpCbAvQyFRbnXFD/KMGGahaxXmzE6wLoBipV7ZK
-	9QMVqX+LaB19GSYzD+yIK+BpvGXOp0oFN5timrJ6FAjZcQe5TdzhoEQ3EhuH3HK4
-	Foytsy9IJ5OBNPEjO6AlGpJLhbJ9apLPOL9CobERFUpgfA==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 1s3Lnt49qP5x; Fri,  5 Apr 2024 19:49:50 +0000 (UTC)
-Received: from [100.96.154.173] (unknown [104.132.1.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4VB8G635tgzll9bN;
-	Fri,  5 Apr 2024 19:49:50 +0000 (UTC)
-Message-ID: <5b36f7c4-faab-4cdc-ba80-e7135ba50242@acm.org>
-Date: Fri, 5 Apr 2024 12:49:49 -0700
+	 In-Reply-To:Content-Type; b=fC2nmlMhmwHaEU4mI247WQMFgNoc2PnoQMUq5ZA8h3GoaAWWM05yQZtJK5auZRkf1Os6tYP4BYcCpEejsiNTVoxpT882IborrOqQ+nLtymvVfkXk8rsLrB6lYO45ixf2k57WzDaSr12iS97+HrK6nDwvDXIlmW5YTvwrlvpdpBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=lRYHItRp; arc=none smtp.client-ip=178.154.239.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d100])
+	by forward206b.mail.yandex.net (Yandex) with ESMTPS id 16E59661A6;
+	Fri,  5 Apr 2024 23:23:05 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:a33:0:640:d837:0])
+	by forward100c.mail.yandex.net (Yandex) with ESMTPS id CC649608F1;
+	Fri,  5 Apr 2024 23:22:56 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id sMcFhw0lE4Y0-rVL2Tocs;
+	Fri, 05 Apr 2024 23:22:56 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1712348576; bh=Fiv4kNSSUynv2Vg99FokftEQCvQjNaiHjCpd1Qa91RQ=;
+	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+	b=lRYHItRpRgjibTTIpGiW07FoFtQPJ+hltg2Y+u5Rprzm1P6qFMm2ILbXdMV+iv07q
+	 IXZMJb0bErZALr+bIgE0x6HhAHwHh0qgyD0a6zMvc+3Y1rr13tdAW6r59sPHx1ne4w
+	 4wcN39RwVS9KaWC9pEtJaepbOAtxSHQn9L1noth4=
+Authentication-Results: mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <d2283045-7a51-4fe0-b302-37fdaed12758@yandex.ru>
+Date: Fri, 5 Apr 2024 23:22:54 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,53 +56,31 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scsi: core: Fix handling of SCMD_FAIL_IF_RECOVERING
+Subject: Re: [PATCH] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Theodore Ts'o <tytso@mit.edu>
+Cc: Andreas Dilger <adilger.kernel@dilger.ca>, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Michail Ivanov <iwanov-23@bk.ru>,
+ Pavel Koshutin <koshutin.pavel@yandex.ru>,
+ Artem Sadovnikov <ancowi69@gmail.com>, stable@vger.kernel.org,
+ lvc-project@linuxtesting.org
+References: <87frw1azf4.fsf@gmail.com>
 Content-Language: en-US
-To: "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Mike Christie <michael.christie@oracle.com>
-References: <20240325224417.1477135-1-bvanassche@acm.org>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240325224417.1477135-1-bvanassche@acm.org>
+From: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+In-Reply-To: <87frw1azf4.fsf@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 3/25/24 15:44, Bart Van Assche wrote:
-> There is code in the SCSI core that sets the SCMD_FAIL_IF_RECOVERING
-> flag but there is no code that clears this flag. Instead of only clearing
-> SCMD_INITIALIZED in scsi_end_request(), clear all flags. It is never
-> necessary to preserve any command flags inside scsi_end_request().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 310bcaef6d7e ("scsi: core: Support failing requests while recovering")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
->   drivers/scsi/scsi_lib.c | 7 +++----
->   1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-> index ca48ba9a229a..2fc2b97777ca 100644
-> --- a/drivers/scsi/scsi_lib.c
-> +++ b/drivers/scsi/scsi_lib.c
-> @@ -633,10 +633,9 @@ static bool scsi_end_request(struct request *req, blk_status_t error,
->   	if (blk_queue_add_random(q))
->   		add_disk_randomness(req->q->disk);
->   
-> -	if (!blk_rq_is_passthrough(req)) {
-> -		WARN_ON_ONCE(!(cmd->flags & SCMD_INITIALIZED));
-> -		cmd->flags &= ~SCMD_INITIALIZED;
-> -	}
-> +	WARN_ON_ONCE(!blk_rq_is_passthrough(req) &&
-> +		     !(cmd->flags & SCMD_INITIALIZED));
-> +	cmd->flags = 0;
->   
->   	/*
->   	 * Calling rcu_barrier() is not necessary here because the
+On 04.04.2024 19:02, Ritesh Harjani (IBM) wrote:
+> It will be good to know what was the test which identified this though?
+>
+> -ritesh
 
-Also for this patch, please help with reviewing this patch.
 
-Thanks,
+Unfortunately syzkaller was not able to generate a reproducer for this 
+issue.
 
-Bart.
+
+- Ukhin Mikhail.
+
 
