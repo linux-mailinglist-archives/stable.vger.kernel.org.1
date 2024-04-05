@@ -1,94 +1,84 @@
-Return-Path: <stable+bounces-36053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73197899983
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 11:33:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE1A899985
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 11:33:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 015A8B21504
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 09:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9117C282663
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 09:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF6C15FD0D;
-	Fri,  5 Apr 2024 09:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB661160783;
+	Fri,  5 Apr 2024 09:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3KxCRgU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="y36QyFf2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QFxGQjER"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C54F142E73;
-	Fri,  5 Apr 2024 09:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235F3142E73
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 09:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712309603; cv=none; b=e4LEbAAGjfRCjkYZE66EhCuqfoPS+IKmjJhZjBgsuMslqYIqHZwgh7Up6/Q47xXsMInnWME4KWKx5KSW/Z0UAWAO/vXvdGkSFTyOBdab+/q0NmHEA25fcdYLaLg2nVVAbVYYt3UdyJ68wROzSgJy4jwS7ISLREV6lwhp79qw+gY=
+	t=1712309608; cv=none; b=lmhSyERN8P+qo/D+qFWBGm2WdAx2fC6oUG0IF6DjMvbh54LRxsXsntI4HO8DCLG3td0xeGi8gPL2YfT/CHrsqd1gDr4lrxCMrJjLYLEr+snsL24uSEbTbo67tdw3Qzaow3mYDX8sJrwHDUl0EK+ZzTt83GysO5iGXGoRZJ4pvK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712309603; c=relaxed/simple;
-	bh=WTZoAjTOwh9BcVL0bHX8/oS3W4NlAY1M3zbmL2DAUDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E0lhmq/EB4kbf3v2xDZ0JzS7M6Lv/Y4nRz4JZk0KdsFqChicJxacZIjjlvG1n8KWZ2WSfo18hRvqJ00EEZL7MSAu7kGoEU0mL7a5D7Q/8X2vKrAvy+531Oq0nsVOncY/5vqT/y3CoFEDeINQSQujBgI2v072aUsOUB/4apVfuwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3KxCRgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99742C433F1;
-	Fri,  5 Apr 2024 09:33:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712309603;
-	bh=WTZoAjTOwh9BcVL0bHX8/oS3W4NlAY1M3zbmL2DAUDg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f3KxCRgUhWMWNdsWwsFPC+QAepS8hH1PU3YsLykzXkwKxNTdqG/pL64Oz8aTAb9/n
-	 ByaPe+LWd64msgPjQu3Dt/GWeGLOrmQM0z8mzTMc8p0vLN8TOs8zCSzPwp4ZNo59Dd
-	 R/0haKU/emEUIawYN/RFmQfeE/zFaIdorr28MR9A=
-Date: Fri, 5 Apr 2024 11:33:20 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lukasz Luba <lukasz.luba@arm.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	ye.zhang@rock-chips.com, d-gole@ti.com, rafael@kernel.org,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [STABLE 5.15][PATCH] thermal: devfreq_cooling: Fix perf state
- when calculate dfc res_util
-Message-ID: <2024040558-defection-shadily-1879@gregkh>
-References: <20240404101329.1956664-1-lukasz.luba@arm.com>
+	s=arc-20240116; t=1712309608; c=relaxed/simple;
+	bh=oM8HwKRBrN39Jx6IotPplPlHD3ecXRuQaUSLQUaoDlk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=H3AH68Umg4A57grfvSWGmeUWbAJnVJSQjgDh3Eg33PoIsLjLhF1xNNdl9XySyrcUoW3cBKQw62S09ikM1maZO6mGjB2P7+Mhid7S2/BUlLHLbXwPnpJcb4vnMMby1TqUYzmtiNysL9A8DIst+Edx/gb0ApCWlmrUmaf4KjUHhig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=y36QyFf2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QFxGQjER; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712309605;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rZU9JHChJnO7h91FJFHEKy9VEjq6gMwpAV9HaxePya0=;
+	b=y36QyFf2esqn/jAXKpeEUhZ+ywdtDj53njXliQaTQegGmN2nwe9/dZvQumXH9mTkMKrgWL
+	tCImXsvIGlhDmLl9XMeJ47OLU5WGUqBJZidY+GvT8ZhTjHe2DiUJXzzWG7/UPnlIswIRts
+	hB1CEWx+xRCl+/YCGTZ3TRxhXZDcPNH+wmHgdU+1hV8rEZUqHMNmRjZYR+oB/dp+hu/OBz
+	vgytkgJBI9B3jbLsFd/toXq3TQDDPZcPpr7664exZTy2gmjiAFbpuxHUyWj5FyvKI0fzE4
+	USZggXpHSMgv6gA+QgnYxJC5WnmSU1yCt8ySYD/6Jnescggh0Cv59Y8Vg9YWuA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712309605;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rZU9JHChJnO7h91FJFHEKy9VEjq6gMwpAV9HaxePya0=;
+	b=QFxGQjERVvBCkHrnJOJHu+gkphKpq1RG/2bEAj5LkgyY79fjTWaOQ2Xnzn5LMvPzwc19vX
+	502Ti+IQnL3m16Cw==
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Wolfgang Walter
+ <linux@stwm.de>
+Cc: stable@vger.kernel.org
+Subject: Re: stable v6.6.24 regression: boot fails: bisected to
+ "x86/mpparse: Register APIC address only once"
+In-Reply-To: <2024040445-promotion-lumpiness-c6c8@gregkh>
+References: <23da7f59519df267035b204622d32770@stwm.de>
+ <2024040445-promotion-lumpiness-c6c8@gregkh>
+Date: Fri, 05 Apr 2024 11:33:25 +0200
+Message-ID: <874jcg9msa.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240404101329.1956664-1-lukasz.luba@arm.com>
+Content-Type: text/plain
 
-On Thu, Apr 04, 2024 at 11:13:29AM +0100, Lukasz Luba wrote:
-> From: Ye Zhang <ye.zhang@rock-chips.com>
-> 
-> The issue occurs when the devfreq cooling device uses the EM power model
-> and the get_real_power() callback is provided by the driver.
-> 
-> The EM power table is sorted ascending，can't index the table by cooling
-> device state，so convert cooling state to performance state by
-> dfc->max_state - dfc->capped_state.
-> 
-> Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
-> Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
-> Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
-> Reviewed-by: Dhruva Gole <d-gole@ti.com>
-> Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
-> ---
-> 
-> Hi Greg,
-> 
-> I have solved small backporting conflict to that v5.15.
-> The patch is based on tag v5.15.99 and it's for this
-> failing backport:
-> https://lore.kernel.org/stable/2024033050-imitation-unmixed-ef53@gregkh/
+On Thu, Apr 04 2024 at 17:57, Greg Kroah-Hartman wrote:
+> On Thu, Apr 04, 2024 at 02:07:11PM +0200, Wolfgang Walter wrote:
+>> Reverting this commit in v6.6.24 solves the problem.
+>
+> Is this also an issue in 6.9-rc1 or newer or 6.8.3 or newer?
 
-Thanks, next time all that I need is the git id of this in Linus's tree,
-no need to point to a previous FAILED email.
+Also can you please provide the boot dmesg from a working kernel?
 
-now queued up.
+Thanks,
 
-greg k-h
+        tglx
 
