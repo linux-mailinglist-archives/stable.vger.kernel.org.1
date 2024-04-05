@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-36147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038CA89A423
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 20:22:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0C489A424
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 20:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358391C20978
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 18:22:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC53728C39F
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 18:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9D5172761;
-	Fri,  5 Apr 2024 18:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF003172767;
+	Fri,  5 Apr 2024 18:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mPm33djd"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ghlJ65Lr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB88D171E5B;
-	Fri,  5 Apr 2024 18:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935D0171E7B;
+	Fri,  5 Apr 2024 18:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712341328; cv=none; b=GF3nUswNMKJqAQ84+JY/AEm2rXYkkEWnW22VteqUBcXgqvFclwg6XLtnasbR6kxJU70QT25rbwQj3ikV2bzz1yUy59TWyAQ9JfsTzV/XhYsNe7XXIy6F5y5LT0Voz9dC6aESfg4IaeoWlm9RlTqpfrFwheV8jGz8rZec3XS4ZCA=
+	t=1712341333; cv=none; b=bUF7jYG3l5v01keNXOuX1Np2d/a/wOBqGeSpK2hOKHPl5ffd/Vh2ZtQe1ouaiJ/Cpyu4bYhhJcchjFmRNEsA2IDpWO5CzWSzQlOiDzM/uy12m9WXZCsR1r1i61MP2DF1xS3owV3ugtbnfUC0b0lzbbJeEtLH2vouWOJEvEZHx1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712341328; c=relaxed/simple;
-	bh=MAA2j2LUcLvyJ76WZX8GyIt+FJpLYz8om1awMYUzrKQ=;
-	h=Date:To:From:Subject:Message-Id; b=HSBrk2iMfyKr0oSpCcZb+buQ49AaivLMb/+CS2GpYsoBbkz/+jaU6r8rNedBxaeF5j7QkRzHg4d3RKBG0YGc8LlGypl6bVW6/WQo6e+yYTDHE0i4x3ef6B62/978N39ztOXOzD98h1Yzr1SqDNTdJz5Hqbc3kKWHgndGUB75QC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mPm33djd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53365C433F1;
-	Fri,  5 Apr 2024 18:22:07 +0000 (UTC)
+	s=arc-20240116; t=1712341333; c=relaxed/simple;
+	bh=h6Ev3p+d5gbVveyZ0AKmJBw3rwYBnKaBxaQIejBb1iY=;
+	h=Date:To:From:Subject:Message-Id; b=QbXAE2Wx/yV9i0eFoab5nTMqgpMqgwMRvqnKvM41VYAV/lrPuO/f8E5enrBGLu+C+OjLaJhOdO/Wb0wj7yIHDrCm5ZfsKMxK+Nt/ReYRnqK2HSjyYUcuJvKDp9oq9B1PZOTq94xfF2pjQjR4BjOumVAyXrwoG3+CjdlDLEDK44g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ghlJ65Lr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CD3C433F1;
+	Fri,  5 Apr 2024 18:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1712341327;
-	bh=MAA2j2LUcLvyJ76WZX8GyIt+FJpLYz8om1awMYUzrKQ=;
+	s=korg; t=1712341333;
+	bh=h6Ev3p+d5gbVveyZ0AKmJBw3rwYBnKaBxaQIejBb1iY=;
 	h=Date:To:From:Subject:From;
-	b=mPm33djdo/9rLb4gJEnHg2YQaGwlNgJogit2aCTEBzXvELrVIeqb7wYX7Pur1GhR9
-	 5zCdr+qBzFUFQc6UwrB0wIEcBleUWvEzvg8G18LvaqnZFFDQ6tSKxIZoAkpXU/zY7f
-	 PaoJ4XtujWp+PcV0+XoWA2gvP7kplmeKphFPLZPU=
-Date: Fri, 05 Apr 2024 11:22:06 -0700
-To: mm-commits@vger.kernel.org,xrivendell7@gmail.com,stable@vger.kernel.org,samsun1006219@gmail.com,rppt@kernel.org,mszeredi@redhat.com,miklos@szeredi.hu,lstoakes@gmail.com,david@redhat.com,akpm@linux-foundation.org
+	b=ghlJ65LrdGHWiQQ0kFfdC4iZBrQyULgwjst523bRt7OSk2qT1dEKsZYR6J8X0cTm2
+	 drDUwGlr+pKbYAIHW6hFcfCkdG36ndZuWBwSOrH3qD1bZdlrQkCb28jKXB4mRNpTSv
+	 CTE6+mgtI4EuIzcZfJE4TLglmA092qgBnOkp0rZA=
+Date: Fri, 05 Apr 2024 11:22:12 -0700
+To: mm-commits@vger.kernel.org,usama.anjum@collabora.com,stable@vger.kernel.org,shuah@kernel.org,rppt@kernel.org,peterx@redhat.com,david@redhat.com,axelrasmussen@google.com,edliaw@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-secretmem-fix-gup-fast-succeeding-on-secretmem-folios.patch removed from -mm tree
-Message-Id: <20240405182207.53365C433F1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-mm-include-stringsh-for-ffsl.patch removed from -mm tree
+Message-Id: <20240405182213.17CD3C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,85 +50,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/secretmem: fix GUP-fast succeeding on secretmem folios
+     Subject: selftests/mm: include strings.h for ffsl
 has been removed from the -mm tree.  Its filename was
-     mm-secretmem-fix-gup-fast-succeeding-on-secretmem-folios.patch
+     selftests-mm-include-stringsh-for-ffsl.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: mm/secretmem: fix GUP-fast succeeding on secretmem folios
-Date: Tue, 26 Mar 2024 15:32:08 +0100
+From: Edward Liaw <edliaw@google.com>
+Subject: selftests/mm: include strings.h for ffsl
+Date: Fri, 29 Mar 2024 18:58:10 +0000
 
-folio_is_secretmem() currently relies on secretmem folios being LRU
-folios, to save some cycles.
+Got a compilation error on Android for ffsl after 91b80cc5b39f
+("selftests: mm: fix map_hugetlb failure on 64K page size systems")
+included vm_util.h.
 
-However, folios might reside in a folio batch without the LRU flag set, or
-temporarily have their LRU flag cleared.  Consequently, the LRU flag is
-unreliable for this purpose.
-
-In particular, this is the case when secretmem_fault() allocates a fresh
-page and calls filemap_add_folio()->folio_add_lru().  The folio might be
-added to the per-cpu folio batch and won't get the LRU flag set until the
-batch was drained using e.g., lru_add_drain().
-
-Consequently, folio_is_secretmem() might not detect secretmem folios and
-GUP-fast can succeed in grabbing a secretmem folio, crashing the kernel
-when we would later try reading/writing to the folio, because the folio
-has been unmapped from the directmap.
-
-Fix it by removing that unreliable check.
-
-Link: https://lkml.kernel.org/r/20240326143210.291116-2-david@redhat.com
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
-Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
-Tested-by: Miklos Szeredi <mszeredi@redhat.com>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Link: https://lkml.kernel.org/r/20240329185814.16304-1-edliaw@google.com
+Fixes: af605d26a8f2 ("selftests/mm: merge util.h into vm_util.h")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/secretmem.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/vm_util.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/secretmem.h~mm-secretmem-fix-gup-fast-succeeding-on-secretmem-folios
-+++ a/include/linux/secretmem.h
-@@ -13,10 +13,10 @@ static inline bool folio_is_secretmem(st
- 	/*
- 	 * Using folio_mapping() is quite slow because of the actual call
- 	 * instruction.
--	 * We know that secretmem pages are not compound and LRU so we can
-+	 * We know that secretmem pages are not compound, so we can
- 	 * save a couple of cycles here.
- 	 */
--	if (folio_test_large(folio) || !folio_test_lru(folio))
-+	if (folio_test_large(folio))
- 		return false;
+--- a/tools/testing/selftests/mm/vm_util.h~selftests-mm-include-stringsh-for-ffsl
++++ a/tools/testing/selftests/mm/vm_util.h
+@@ -3,7 +3,7 @@
+ #include <stdbool.h>
+ #include <sys/mman.h>
+ #include <err.h>
+-#include <string.h> /* ffsl() */
++#include <strings.h> /* ffsl() */
+ #include <unistd.h> /* _SC_PAGESIZE */
  
- 	mapping = (struct address_space *)
+ #define BIT_ULL(nr)                   (1ULL << (nr))
 _
 
-Patches currently in -mm which might be from david@redhat.com are
+Patches currently in -mm which might be from edliaw@google.com are
 
-mm-madvise-make-madv_populate_readwrite-handle-vm_fault_retry-properly.patch
-mm-madvise-dont-perform-madvise-vma-walk-for-madv_populate_readwrite.patch
-mm-userfaultfd-dont-place-zeropages-when-zeropages-are-disallowed.patch
-s390-mm-re-enable-the-shared-zeropage-for-pv-and-skeys-kvm-guests.patch
-mm-convert-folio_estimated_sharers-to-folio_likely_mapped_shared.patch
-mm-convert-folio_estimated_sharers-to-folio_likely_mapped_shared-fix.patch
-selftests-memfd_secret-add-vmsplice-test.patch
-mm-merge-folio_is_secretmem-and-folio_fast_pin_allowed-into-gup_fast_folio_allowed.patch
-mm-optimize-config_per_vma_lock-member-placement-in-vm_area_struct.patch
-mm-remove-prot-parameter-from-move_pte.patch
-mm-gup-consistently-name-gup-fast-functions.patch
-mm-treewide-rename-config_have_fast_gup-to-config_have_gup_fast.patch
-mm-use-gup-fast-instead-fast-gup-in-remaining-comments.patch
 
 
