@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-36128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592F689A167
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 17:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 805E489A168
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 17:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC6871F24CC4
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 15:37:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20D251F24DA3
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 15:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF2216FF5F;
-	Fri,  5 Apr 2024 15:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5975116FF22;
+	Fri,  5 Apr 2024 15:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="toIBjJ3f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gbGlZXqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD53216F912;
-	Fri,  5 Apr 2024 15:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CBA16F909;
+	Fri,  5 Apr 2024 15:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712331433; cv=none; b=ufIp/yFK13yTOcVefB03fSDoicpYvvk/CMHNCwfSQjV1Mt/Q9AVH37tl4PEWjcbXB6FkErHT9WFt2c4CY77KJRKvmfs7AJ18uRRXA88P6JeBIw9Bz3w0i2/XuZjVXiFctPXfRTMJbE2TNrUJu5dNuYebiZf1CYthgOzswlz1KmM=
+	t=1712331435; cv=none; b=UqL8oO8+u/F7nTppzm0v6ZWmCrIeycxDBNzmDHfOHXc8+ZuQU3s7XO0V9Wfo07nPDVSsvZbyUU6qQOxvCyXAK6DEZxryOexQKlYK0Zlry1Y8nPZb2aPxuel1N+SRj86jJ37t/dtArl4jHNm4VCWKD0By2M1xXIH7XSDSgaEHf9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712331433; c=relaxed/simple;
-	bh=s1Oex0kNrTIW9Nx4rNY0mSFcq4dA/TCBfQzkfTD2rKs=;
+	s=arc-20240116; t=1712331435; c=relaxed/simple;
+	bh=KA/knw99kKvufZ3stg1yuksDQP+HkqNDjsO5wV3dBc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sg3aCW52WdWLC22nUOWoeC40yo8/p8j1RLy7rige4ObRGQQahPkPSodCWbqMEXyNZp4X04UyKTtuweXoXA2bh2kLtb/VDhckhTFzflJox976RIGtVgLAwcmNIfvjWDuprl9yEcwDxA7c3WuiMflc9d6hIixHOcbucqOm5YTb7gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=toIBjJ3f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66196C433C7;
-	Fri,  5 Apr 2024 15:37:11 +0000 (UTC)
+	 MIME-Version; b=H9rOr170FDQxpSJMbEke6Gq5/koAqW68uP4frR1kuQeFp7NUDycDOJpDQ5rR3ihz4g6g2AUYhLumBZUfwqNVYAFpbRq8eZKVpmQ+2r1w0xhwE5TCKN9dC35NOGy+n3CXWfFQvoNB7ZtUU5BE5NJD2cOqvkT1ZEy4q02YyZgJ8UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gbGlZXqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4F5C433F1;
+	Fri,  5 Apr 2024 15:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712331432;
-	bh=s1Oex0kNrTIW9Nx4rNY0mSFcq4dA/TCBfQzkfTD2rKs=;
+	s=k20201202; t=1712331434;
+	bh=KA/knw99kKvufZ3stg1yuksDQP+HkqNDjsO5wV3dBc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toIBjJ3fWyYn3HXGzTWLBBs5WWvOkWxfdwUvtwZWT3ARM15K8Pskwhj7W/CJlzIBl
-	 r/R30bKErl5TSzAcQGkO31PBpSsRnZrStBhie+bigPLM69eW2am+NiZPcJENS3x3hf
-	 y3KcYNL5hSmnfIBMKtMRitP7aGRHSva+JPFliNJca1KFAInAxRCFy7yvMfr5SBiDCs
-	 pzViSbW4d2O7svEpwmXRzmYuN3dJ7M6h0SYzyoXOD5sF2dmlRA1KoTMzRqNhdL8gnr
-	 h48I3LhEvSzEc+toIcV8VBMr7EGVC1Ikm9deuqclh6ZBTZeU3soUC4Dn60ZZe29tML
-	 LsjtY0O1tFa8g==
+	b=gbGlZXqKcmaFbYqhtyw8r0stuRV2Oa0EhJUdH6EmJVWRvDyTWfXiQ7j7hIt2zZLo0
+	 giFVFgxErq2EwqFCvympDEmOjqWJhz+7xeV8Kgn0iIifpu55/8q3MEBAfNxBxj/ngk
+	 ZuU9rLMt2IHROEcNAMksZ3bctB3Eoc0NWBg6QSvZONlmM5UuI12wHrDchoT0g0QEv1
+	 +mAYcnKJk8/CtFmimDrx/g2GIsPacAR3zCwaJF8HldLXL+THspbcwBiZj2VR6bSWc3
+	 pp3W0j4cOkN9KpXG0zmV0ayLfSHf6PrivHQ+MqB7F9bbB9/8g+1UVN7xL5I1Vpyj4O
+	 baIi7K/m5WgRQ==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.6.y 0/5] Backport "mptcp: don't account accept() of non-MPC client as fallback to TCP"
-Date: Fri,  5 Apr 2024 17:36:37 +0200
-Message-ID: <20240405153636.958019-7-matttbe@kernel.org>
+Cc: Geliang Tang <geliang.tang@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6.y 1/5] selftests: mptcp: display simult in extra_msg
+Date: Fri,  5 Apr 2024 17:36:38 +0200
+Message-ID: <20240405153636.958019-8-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <2024040520-unselect-antitrust-a41b@gregkh>
 References: <2024040520-unselect-antitrust-a41b@gregkh>
@@ -58,43 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1500; i=matttbe@kernel.org; h=from:subject; bh=s1Oex0kNrTIW9Nx4rNY0mSFcq4dA/TCBfQzkfTD2rKs=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmEBqE6V5Tt3ZG5vd6nb44ZxvbPkvVPZ0sX3ANk glysbScIqGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZhAahAAKCRD2t4JPQmmg c0iKEAC6g+XCg5y7NxDrwMQPf0SCfY4KZL06KfremSyDYz7bAH8x+7aPm3A5YSHFM0PurY8vRKA /ybvhxxXxx8x6aNpFUT+jTTMa2BcAz78gayKa7WssGBd44C6RAQ9WGHmYd/fA9ybFNs+5woBRGI qo78mNNTKARbksGG+FjnJRKrM7QoqR6S2H9ttec2t4fK4GVJK40T83uiw3977gOqVvRc6YjuR9g OOlzAMQxw6awUWNkWSE1pDZedO7VMCwurMYc33nCI6MmInKz0fyIfcm0EY2ZDs9BggCC2MLF1Hy 0WlzzAzmTN7crdx9vudYEOubHQM3BE/Z72c7YQpBYX7ss7zHVd0OYN782WQ7Gca5kxmNrUFjarS ASy5LcpqKjby/IBQNkLt5Jj0LzE/Eoh5mcRctcbR7oVy01eougVHaKTjI3LoXsJ64Brk0398NEN U/iOUdpUZEw0Um1nNfOKX0dduZjbz64Yu5zq4IIBjKBF7dTuQ7xJqtDah68NxOrQ7EfNgWDacm2 hNqd6HNl/huLhxuE4Wl2JoKYpoQr9vLgsH4nsIgnuxtJupl3EddSKWGMLHYbGpIORbdwcqCGiNo jxbZS9TZUImxRBCwVG3+psqpxR6lXvxyTMMrwIMT/7cx9vF9hT29iChQ/lll85EC5Oq7Bx4XP1J K9MFPdTOhzEwGmA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2258; i=matttbe@kernel.org; h=from:subject; bh=+3su2L5R0LAF+maxD80zLdm0OGtC8WNVW8mp3Y/kFX0=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmEBqFho4X/BqfSKjXJityTB1uGIEFqrLKlo36b fugGIv3ohCJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZhAahQAKCRD2t4JPQmmg c1BzEADJrjdt1M7JWrHrgBIlbmdts044EAWCS3+LqLy+LM0AQQOf/e53DFvkoPPnpml9+5bjKz7 GIQSGrdCeWWLgJKR5yKe9SBSEf7tFjhvQz/58OcDy1gVeU5phzDCTG5eeNBeQJ5Vsalq7mr/ZT2 mzYOIob8Beq5ywSBAFuuH+pe5Y4qIG9fBkqbBTq2DD8IAvq+uvFnKE+kLSCCaqyPNMY3kBF0OXl kXy+lGSrueTMkE8x4tSiRav2smqs/563xUD0KxwfpyBSlCi6dr0xJ07E157aS/AtvhqS8SdKQnk OVV7JNKZJ6UcgORX5bFiEBs6Qc4SQasFcLhnNmVuW0hjXwkvvhUoi9LgM+gZa3XrL6lZHbh7cYg CsLdzin6NCFW5wsNieBaiRgUFQQZBhAB6/Y+QRpKb3XLcjTdwebRhlA1CELBn2KRyJZ8WIC1iNw oOwrwHlh3xEYrKgX9du9fhy3cZGXTaLMx4I6Jl84NPBNUKaBgDDM0Fx3GbLAUsCH8tNSIxVssnt UGbpVC9fMgbg6SHSA8Y+boU8aHiwLxn8Xt9CSjL9bVZx4KwiI2X3DnOANxYYo9kiF5SQAlzfxJL MBppERd4UOTHxfH/bRj1rXa9Ub0o7+8Dq/P98OlFvbm6hRrHnkvnJ363C6xhErIBLYOd4FbzfjS 4p5UKXehuelU1wA==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-Commit 7a1b3490f47e ("mptcp: don't account accept() of non-MPC client as
-fallback to TCP") does not apply to the 6.8-stable tree. That's because
-there are some conflicts with recent refactoring done in the selftests
-and around the 'accept()' code:
+From: Geliang Tang <geliang.tang@suse.com>
 
-- commit 629b35a225b0 ("selftests: mptcp: display simult in extra_msg")
-- commit e3aae1098f10 ("selftests: mptcp: connect: fix shellcheck warnings")
-- commit e7c42bf4d320 ("selftests: mptcp: use += operator to append strings"
-- commit 8e2b8a9fa512 ("mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()")
+Just like displaying "invert" after "Info: ", "simult" should be
+displayed too when rm_subflow_nr doesn't match the expect value in
+chk_rm_nr():
 
-These 4 patches look harmless, probably safer and easier to backport
-them, than diverging even more from the development branch.
+      syn                                 [ ok ]
+      synack                              [ ok ]
+      ack                                 [ ok ]
+      add                                 [ ok ]
+      echo                                [ ok ]
+      rm                                  [ ok ]
+      rmsf                                [ ok ] 3 in [2:4]
+      Info: invert simult
 
-Note that applied in this order, all these 5 patches have been
-backported without conflicts. Tests are still OK.
+      syn                                 [ ok ]
+      synack                              [ ok ]
+      ack                                 [ ok ]
+      add                                 [ ok ]
+      echo                                [ ok ]
+      rm                                  [ ok ]
+      rmsf                                [ ok ]
+      Info: invert
 
-Davide Caratti (2):
-  mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()
-  mptcp: don't account accept() of non-MPC client as fallback to TCP
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231025-send-net-next-20231025-v1-10-db8f25f798eb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 629b35a225b0d49fbcff3b5c22e3b983c7c7b36f)
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Geliang Tang (2):
-  selftests: mptcp: display simult in extra_msg
-  selftests: mptcp: use += operator to append strings
-
-Matthieu Baerts (NGI0) (1):
-  selftests: mptcp: connect: fix shellcheck warnings
-
- net/mptcp/protocol.c                          | 106 ++++++--------
- net/mptcp/subflow.c                           |   2 +
- .../selftests/net/mptcp/mptcp_connect.sh      | 134 +++++++++++-------
- .../testing/selftests/net/mptcp/mptcp_join.sh |  33 +++--
- 4 files changed, 144 insertions(+), 131 deletions(-)
-
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 34c342346967..e6b778a9a937 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -1740,7 +1740,10 @@ chk_rm_nr()
+ 		# in case of simult flush, the subflow removal count on each side is
+ 		# unreliable
+ 		count=$((count + cnt))
+-		[ "$count" != "$rm_subflow_nr" ] && suffix="$count in [$rm_subflow_nr:$((rm_subflow_nr*2))]"
++		if [ "$count" != "$rm_subflow_nr" ]; then
++			suffix="$count in [$rm_subflow_nr:$((rm_subflow_nr*2))]"
++			extra_msg="$extra_msg simult"
++		fi
+ 		if [ $count -ge "$rm_subflow_nr" ] && \
+ 		   [ "$count" -le "$((rm_subflow_nr *2 ))" ]; then
+ 			print_ok "$suffix"
 -- 
 2.43.0
 
