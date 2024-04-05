@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-36008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE097899542
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:26:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7A3899544
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C091F239D4
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:26:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29A0528575B
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C81B22EF2;
-	Fri,  5 Apr 2024 06:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1145225D6;
+	Fri,  5 Apr 2024 06:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiyyBN8W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2Z2L5Dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085D51803D
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 06:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1651803D
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 06:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712298389; cv=none; b=WZa2wfRgmWbpO6DJ5fP2Ler6avm5HtgnIVZMhRxwCHazYvQUvQDFlfPHJtU+r5Czlt3gjMWOWaDQnjJ946X8Ih60F6SFspxjBDuFdIgCYTNeCvawzEVk//C/bBxe9DQ+SW9oBiU3RGn/iA8TZ66FAtaJxLM874VpdsA477Q+A80=
+	t=1712298421; cv=none; b=RbGYQGnkww5v2KttqiBAnxc0k4IPSNjDjhVebaGnIGKXLyhB29k/bNq4u1JpsM1bUo1ocfd9NIV4LdENqjlO/W2CGm3Mvl1EtmxDLMQ1cqKgEk1Ir8ckIvsu0ace7IPnO36KqD84b4XSy0zAbMzWJQWaR+Bx/vka058zWkbj6bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712298389; c=relaxed/simple;
-	bh=IrZA9YTfqvPNhBeBQ0krCedb3iIHweu3ZP7Uo1TjWKY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ssxq7g9CSLPXcCKZ6PTJGVmWih2n5vOSO1Iv5dT66MIA/up7OpRw+ZAaTds3aIcppBZlq+lu2Bm9NwI+WTWDPAOkB5IvHV2IagSbNuGa6egCvcm4CVyMhB7r0ev7njn3cYgEECORndQRsHs/p7DMaa/LSzavn9nBM337jR3/l9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiyyBN8W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768BCC433F1;
-	Fri,  5 Apr 2024 06:26:28 +0000 (UTC)
+	s=arc-20240116; t=1712298421; c=relaxed/simple;
+	bh=IS9M1VUEcV7QWCrdLdAtdeCVtm+2WRIko/xEAB2WXcY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bakRAku9vRwX2SHa7n7NYnxnBvRMBdTMvoYV+f4/xUt7XxOS/QiDvIgDGnFAJXSxYC8IAyF4H6IUJFfAYNpOE6qrTdwCEG+IISDO6+NBkMXLXQD35eqdGl9iFLwWL97VTt31bkv0+ok7yJDczYWeJ4m1Mv12pabuMgivAhMf/tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2Z2L5Dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3289C433C7;
+	Fri,  5 Apr 2024 06:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712298388;
-	bh=IrZA9YTfqvPNhBeBQ0krCedb3iIHweu3ZP7Uo1TjWKY=;
+	s=korg; t=1712298421;
+	bh=IS9M1VUEcV7QWCrdLdAtdeCVtm+2WRIko/xEAB2WXcY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DiyyBN8WIckBuhkhIrgRU4HZjAhEzMhDEzCRWpNzFFJio94X8q7Bbg8cHeZx05g50
-	 gwK9lUVUEzJuP4iDbAVLub7eArIQOcmQf14rVtPoNB4yciYliES0aKh1vO+QvbOzTl
-	 /9Pmr+03EUp/wNXNnpKaSIXTzOF+ndPdpW/6dncA=
-Subject: FAILED: patch "[PATCH] Bluetooth: hci_sync: Fix not checking error on" failed to apply to 6.1-stable tree
-To: luiz.von.dentz@intel.com,linux@leemhuis.info
+	b=X2Z2L5DkPu4461fOg0D03dt6zBW8yC8Shcpg8Op9iF6OSsLn8huFGzud4SQkLBS7q
+	 VKVYoG1IhcuUfv57+bEh9FqeRVB+vDuNbyEQis8YfzBnnHMwKHLpVZJaHKFVx7fbbS
+	 UT6mRp9fOa2jU9p7dnV1Ypz5HDK4GNrjzUtYBtA8=
+Subject: FAILED: patch "[PATCH] netfilter: nf_tables: release batch on table validation from" failed to apply to 6.1-stable tree
+To: pablo@netfilter.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 05 Apr 2024 08:26:18 +0200
-Message-ID: <2024040518-subpanel-jockey-8b89@gregkh>
+Date: Fri, 05 Apr 2024 08:26:58 +0200
+Message-ID: <2024040558-uprising-obedience-4f19@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6946b9c99bde45f3ba74e00a7af9a3458cc24bea
+git cherry-pick -x a45e6889575c2067d3c0212b6bc1022891e65b91
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040518-subpanel-jockey-8b89@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040558-uprising-obedience-4f19@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,69 +77,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6946b9c99bde45f3ba74e00a7af9a3458cc24bea Mon Sep 17 00:00:00 2001
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Date: Tue, 26 Mar 2024 12:43:17 -0400
-Subject: [PATCH] Bluetooth: hci_sync: Fix not checking error on
- hci_cmd_sync_cancel_sync
+From a45e6889575c2067d3c0212b6bc1022891e65b91 Mon Sep 17 00:00:00 2001
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+Date: Thu, 28 Mar 2024 13:27:36 +0100
+Subject: [PATCH] netfilter: nf_tables: release batch on table validation from
+ abort path
 
-hci_cmd_sync_cancel_sync shall check the error passed to it since it
-will be propagated using req_result which is __u32 it needs to be
-properly set to a positive value if it was passed as negative othertise
-IS_ERR will not trigger as -(errno) would be converted to a positive
-value.
+Unlike early commit path stage which triggers a call to abort, an
+explicit release of the batch is required on abort, otherwise mutex is
+released and commit_list remains in place.
 
-Fixes: 63298d6e752f ("Bluetooth: hci_core: Cancel request on command timeout")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Reported-and-tested-by: Thorsten Leemhuis <linux@leemhuis.info>
-Closes: https://lore.kernel.org/all/08275279-7462-4f4a-a0ee-8aa015f829bc@leemhuis.info/
+Add WARN_ON_ONCE to ensure commit_list is empty from the abort path
+before releasing the mutex.
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 1690ae57a09d..a7028d38c1f5 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2874,7 +2874,7 @@ static void hci_cancel_cmd_sync(struct hci_dev *hdev, int err)
- 	cancel_delayed_work_sync(&hdev->ncmd_timer);
- 	atomic_set(&hdev->cmd_cnt, 1);
+After this patch, commit_list is always assumed to be empty before
+grabbing the mutex, therefore
+
+  03c1f1ef1584 ("netfilter: Cleanup nft_net->module_list from nf_tables_exit_net()")
+
+only needs to release the pending modules for registration.
+
+Cc: stable@vger.kernel.org
+Fixes: c0391b6ab810 ("netfilter: nf_tables: missing validation from the abort path")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index fd86f2720c9e..ffcd3213c335 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10455,10 +10455,11 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 	struct nft_trans *trans, *next;
+ 	LIST_HEAD(set_update_list);
+ 	struct nft_trans_elem *te;
++	int err = 0;
  
--	hci_cmd_sync_cancel_sync(hdev, -err);
-+	hci_cmd_sync_cancel_sync(hdev, err);
+ 	if (action == NFNL_ABORT_VALIDATE &&
+ 	    nf_tables_validate(net) < 0)
+-		return -EAGAIN;
++		err = -EAGAIN;
+ 
+ 	list_for_each_entry_safe_reverse(trans, next, &nft_net->commit_list,
+ 					 list) {
+@@ -10655,7 +10656,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 	else
+ 		nf_tables_module_autoload_cleanup(net);
+ 
+-	return 0;
++	return err;
  }
  
- /* Suspend HCI device */
-@@ -2894,7 +2894,7 @@ int hci_suspend_dev(struct hci_dev *hdev)
- 		return 0;
+ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+@@ -10668,6 +10669,9 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+ 	gc_seq = nft_gc_seq_begin(nft_net);
+ 	ret = __nf_tables_abort(net, action);
+ 	nft_gc_seq_end(nft_net, gc_seq);
++
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
+ 	mutex_unlock(&nft_net->commit_mutex);
  
- 	/* Cancel potentially blocking sync operation before suspend */
--	hci_cancel_cmd_sync(hdev, -EHOSTDOWN);
-+	hci_cancel_cmd_sync(hdev, EHOSTDOWN);
+ 	return ret;
+@@ -11473,9 +11477,10 @@ static void __net_exit nf_tables_exit_net(struct net *net)
  
- 	hci_req_sync_lock(hdev);
- 	ret = hci_suspend_sync(hdev);
-@@ -4210,7 +4210,7 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+ 	gc_seq = nft_gc_seq_begin(nft_net);
  
- 	err = hci_send_frame(hdev, skb);
- 	if (err < 0) {
--		hci_cmd_sync_cancel_sync(hdev, err);
-+		hci_cmd_sync_cancel_sync(hdev, -err);
- 		return;
- 	}
+-	if (!list_empty(&nft_net->commit_list) ||
+-	    !list_empty(&nft_net->module_list))
+-		__nf_tables_abort(net, NFNL_ABORT_NONE);
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
++	if (!list_empty(&nft_net->module_list))
++		nf_tables_module_autoload_cleanup(net);
  
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 639090b9f4b8..8fe02921adf1 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -617,7 +617,10 @@ void hci_cmd_sync_cancel_sync(struct hci_dev *hdev, int err)
- 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
+ 	__nft_release_tables(net);
  
- 	if (hdev->req_status == HCI_REQ_PEND) {
--		hdev->req_result = err;
-+		/* req_result is __u32 so error must be positive to be properly
-+		 * propagated.
-+		 */
-+		hdev->req_result = err < 0 ? -err : err;
- 		hdev->req_status = HCI_REQ_CANCELED;
- 
- 		wake_up_interruptible(&hdev->req_wait_q);
 
 
