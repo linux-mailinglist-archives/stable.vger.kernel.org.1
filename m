@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F0689A02F
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:51:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B836289A030
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8AF282838
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:51:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3B781C21486
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E767B16F299;
-	Fri,  5 Apr 2024 14:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDED16F29D;
+	Fri,  5 Apr 2024 14:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="irOFr250"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kA5esWvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A551616D9B3;
-	Fri,  5 Apr 2024 14:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE2116D9B3;
+	Fri,  5 Apr 2024 14:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712328697; cv=none; b=JbAWnBL4MBR0DXn9khEDAu6CBSDgmdS5tAGchddk/4oFAxYuyh8hsse9ghWoq6zbRq9+EfnxHQJ887B6miUHi/FBDqvZ9gZVh55w/e1h/A6RIxqER8E6u7axVo7Qb6lQ2c07T4B7hLY6/y9brBRoP6Wu2Aw5hI1G0hSdGCnVFSc=
+	t=1712328699; cv=none; b=eooRyl9Ume5MQpVnyS003V90lb0UbfY/RWsQVzD8RKuhzPt3F0oX842XwPQiGNfM17sMBO+/W/CGuLnXSn8sEJqGTGMtlqm0vVGhmJHkjsst30Es6UVYwkhXe9PydV6iBE8QID2xtQ0dnIgDt8koJexDORbQwmqdB37vvyBt9NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712328697; c=relaxed/simple;
-	bh=pVCa0jbz8DEWwrQCnSAzD5JrtHSnPyTQx1O0UYWEuak=;
+	s=arc-20240116; t=1712328699; c=relaxed/simple;
+	bh=1xA36JhL2+IDYs/yVQw5bVmFfa/NP0uELx+AwgAMuHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJZCirYx2octS797k44hAmEs5lQ08UQOnEXqgLiMm6RwORsu4qv8W8YQrHj1D7S+cWIryCIprEumxE2vAQdbypl5azPnrM87zA0USvlN1+wrjuui9xbNEG1RfY1IJqpiP4s5FDcJKrd4I3R5VFsczY2h57NkLuB8tt9gzK7gkIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irOFr250; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13A6C43394;
-	Fri,  5 Apr 2024 14:51:35 +0000 (UTC)
+	 MIME-Version; b=AAb/5Mk/7G5DpsXADW9fmB1HDlqhA+n+dDyy/b/5X+GcOedTUL9PDMTQ3yJOIldH2x4ilxFLGuQYT6J0jSGSqWZ+G3z5MLWC5Klo9cO3Gvb9GxNpc/SIRbfIUnT31hwtBwQdfJq/Fkt1cuXS1rhzM2QfoWwNHbjDo4vtEyzUfNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kA5esWvU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF975C433C7;
+	Fri,  5 Apr 2024 14:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712328697;
-	bh=pVCa0jbz8DEWwrQCnSAzD5JrtHSnPyTQx1O0UYWEuak=;
+	s=k20201202; t=1712328699;
+	bh=1xA36JhL2+IDYs/yVQw5bVmFfa/NP0uELx+AwgAMuHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irOFr250CLc+EqO2arf8UXj/paEM/MBsWboryUZVfTfKHLB2d2CcfuHifqP5jagHJ
-	 4ocfOXfsvoKbXnM0tSi3STWJQPVrzkN9uKHMoE0Lf1/pIOzzevaFVYBvZ45ynaeXQh
-	 AiVOhMzNBxkZCx/Cla8I+/WjiHQgZ06eQyoUNCiRKTYlY2TIW4QCYlA0oWQMSc3O9P
-	 fqipUan/RSk6/vEB6w/UqM8vCQIxoKtbB24C87cR2vVqOfsAs6z1C2mEagbe+P9K36
-	 II3i9wKbJqRXkGbHTZNVWXHO8aP3zsp4fs/oBKnaEdLkDUVQaBgjL2V+ufCWHtirpZ
-	 JrnGnPgrDyskg==
+	b=kA5esWvUaS3J+nQNpzBkl0vhclpnx6RSvtTZ+MNnP4fK6aHoC5ub/t9F8OWNUPLLf
+	 u40SNJbT5uhXzHHhBwA4cvb0e0sb4Q5i8XAeJ7LKUsoMX0SvHUda8IvOGmJvlBMReG
+	 qZwJBhLx6FccO8Qq/InuyeOrKPYl6BOKvEvHe6BoZZaRJfTgAZVa/iFve2qzegR42S
+	 6nCojjKaV1edPN6pbif3stQ3s+Iay0CLD55kDC8ihytcmT/HjjI4bEpPTMFlR0AyZ5
+	 SH/PHPAECMwC2xU4/Xst6ibL9QtexsyjsG0uafq8+sT3bctPCNbK6iEX/2QURnGfMW
+	 CaaebaHNc7+Ug==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
+Cc: Geliang Tang <tanggeliang@kylinos.cn>,
+	Matthieu Baerts <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8.y 1/3] selftests: mptcp: connect: fix shellcheck warnings
-Date: Fri,  5 Apr 2024 16:51:19 +0200
-Message-ID: <20240405145117.854766-6-matttbe@kernel.org>
+Subject: [PATCH 6.8.y 2/3] selftests: mptcp: use += operator to append strings
+Date: Fri,  5 Apr 2024 16:51:20 +0200
+Message-ID: <20240405145117.854766-7-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <2024040519-palpable-barrel-9103@gregkh>
 References: <2024040519-palpable-barrel-9103@gregkh>
@@ -60,240 +60,259 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9205; i=matttbe@kernel.org; h=from:subject; bh=pVCa0jbz8DEWwrQCnSAzD5JrtHSnPyTQx1O0UYWEuak=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmEA/lVLoWAJ11cBX6vUWNIS+Jvc/vbQsUe1bRa W3Ps0xFGFuJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZhAP5QAKCRD2t4JPQmmg c/t8EACJeokiubp5Ez1VdVHW1FbO9rSuFqwwTIWIpRZqnjIvuB1Y1RIj9q+fMMz1KlrzRvwhHAt 6eIbEKZtAidB7JjYFYor0f6R2atoc/FOW72THtbCEmii2u3W6i26ZhzW59XwQLdcr6XSVj7he9K e/lX5IgGq6hZi3ijHBmTcJix1I5nXWFTNpWktPjnAR85JtulHi14XMGfj6YMhsj0tuSCKwz6QyH w7IFHb6SjseKS63mM2aR38+gcEtPKDxpmwEG+46I1fFl8Y2Fb5DZxoYoMB4my9N2nC9a4aptNVT QrgqLxTD2Zl5+YH2mBB210BBwPvs/SbcV+0n6IFOMactrPX05KisSn7kAEcfkcu1LAiaN3LeBnz 9Gh//mDpfnQtH/WfkDSfWpZybFSynWGXwE2zdNHBk91ZMT66p71M7aqbM5ACat4fcKeFs5Cmkxj /z6D+8uElN06iaKu7Z2D3mpJ3JVB3QVlmzkK/Q05maQA+q/1kStHf+MhsIrmmlb/8F/N2wVwyjg UuwuiHsoLDlIWx/fYwFRYnPHZfqz6XX23IrSV8y2Bp2HxMrQjB8503PdoM6/X9e3gzO3V8qmnNR tQdgWUOhkNkFotuNE+4vz7zDymjXvmFF6WVx7ChrnMSK4aGE2VgJiE8i0n7+NVgGNAcsNxPcRtc 13UzLIBjT20hX/Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8868; i=matttbe@kernel.org; h=from:subject; bh=7KaHpl9pSdN5SiiX0MJ9bIOclaO2t4B8+rVqfkkvdJc=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmEA/msuzoYabH3zbhFkocO+QPYYyy2+WGma9dL FpcuWTmXnuJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZhAP5gAKCRD2t4JPQmmg c/ZgD/491hNo6kp+fVXj2xfaxGdihugocaIohlO411h1H2q9KG6iNCFBXzGlFr3wCjRT3++SKVs xY2kRr6qb9M9lMOz2791rhG3xBZHlOvWZsJrnh+mczOWF1xR4LMseKgt5VlF7ayEk+jcuufdB81 UFJCIrS1e0XutEJUaoLP2FgJ+Zq9k4/wiczrbypFH4Psf1FwhCor3Uvfa3rM9ZnLnfWy7vus5+j 6r9z603BdlcfFsCEkdUsxsMnFGNE1Ect2+rjSbfgd4k19h7NW8+htLIXpo6w2ql2IFCyuAECbO7 NW+lnGIpNxtRZ2+kN8NQs2xRBDmb1H9ZtvQkxKJ2pcW80UJnDGyFvQLSzG/3nl0W+92Phog2sil g4FHcboiInJ630LmjCqfunae/UfU6chB34Jd73C8eJ2cBpJpzlPz8+HGmF17+s3fPdJctrWfo7g HRysOGY/KTMU5n4TBzApB8IJGUrumgS1Jh8O5SD88vN6+yLqy58hHHJcFyZqtwgZiTQjZHCQ4as 2yTZJSs4qOh0u1pra5ei05op7wIb1JWha1liQMkTyzbAddjUd+hJdSRaH4G/dv/jHlwXOkSX3Io 4EcxgnOUBiHM1tX6bxrlHBvHJTM9DFA6HUKb8zELyArkWQbxOcm5StJRVihntAJnSCtwrZGU79L NxS28GsRWHCHxWg==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-shellcheck recently helped to prevent issues. It is then good to fix the
-other harmless issues in order to spot "real" ones later.
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-Here, two categories of warnings are now ignored:
+This patch uses addition assignment operator (+=) to append strings
+instead of duplicating the variable name in mptcp_connect.sh and
+mptcp_join.sh.
 
-- SC2317: Command appears to be unreachable. The cleanup() function is
-  invoked indirectly via the EXIT trap.
+This can make the statements shorter.
 
-- SC2086: Double quote to prevent globbing and word splitting. This is
-  recommended, but the current usage is correct and there is no need to
-  do all these modifications to be compliant with this rule.
+Note: in mptcp_connect.sh, add a local variable extra in do_transfer to
+save the various extra warning logs, using += to append it. And add a
+new variable tc_info to save various tc info, also using += to append it.
+This can make the code more readable and prepare for the next commit.
 
-For the modifications:
-
-  - SC2034: ksft_skip appears unused.
-  - SC2181: Check exit code directly with e.g. 'if mycmd;', not
-            indirectly with $?.
-  - SC2004: $/${} is unnecessary on arithmetic variables.
-  - SC2155: Declare and assign separately to avoid masking return
-            values.
-  - SC2166: Prefer [ p ] && [ q ] as [ p -a q ] is not well defined.
-  - SC2059: Don't use variables in the printf format string. Use printf
-            '..%s..' "$foo".
-
-Now this script is shellcheck (0.9.0) compliant. We can easily spot new
-issues.
-
-Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240306-upstream-net-next-20240304-selftests-mptcp-shared-code-shellcheck-v2-8-bc79e6e5e6a0@kernel.org
+Link: https://lore.kernel.org/r/20240308-upstream-net-next-20240308-selftests-mptcp-unification-v1-8-4f42c347b653@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit e3aae1098f109f0bd33c971deff1926f4e4441d0)
+(cherry picked from commit e7c42bf4d320affe37337aa83ae0347832b3f568)
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- .../selftests/net/mptcp/mptcp_connect.sh      | 76 ++++++++++++-------
- 1 file changed, 47 insertions(+), 29 deletions(-)
+ .../selftests/net/mptcp/mptcp_connect.sh      | 53 ++++++++++---------
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 30 +++++------
+ 2 files changed, 43 insertions(+), 40 deletions(-)
 
 diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-index 7898d62fce0b..cce0e553976f 100755
+index cce0e553976f..f8e1b3daa748 100755
 --- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
 +++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -1,6 +1,11 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- 
-+# Double quotes to prevent globbing and word splitting is recommended in new
-+# code but we accept it, especially because there were too many before having
-+# address all other issues detected by shellcheck.
-+#shellcheck disable=SC2086
-+
- . "$(dirname "${0}")/mptcp_lib.sh"
- 
- time_start=$(date +%s)
-@@ -13,7 +18,6 @@ sout=""
- cin_disconnect=""
- cin=""
- cout=""
--ksft_skip=4
- capture=false
- timeout_poll=30
- timeout_test=$((timeout_poll * 2 + 1))
-@@ -131,6 +135,8 @@ ns4="ns4-$rndh"
- TEST_COUNT=0
- TEST_GROUP=""
- 
-+# This function is used in the cleanup trap
-+#shellcheck disable=SC2317
- cleanup()
- {
- 	rm -f "$cin_disconnect" "$cout_disconnect"
-@@ -225,8 +231,9 @@ set_ethtool_flags() {
- 	local dev="$2"
- 	local flags="$3"
- 
--	ip netns exec $ns ethtool -K $dev $flags 2>/dev/null
--	[ $? -eq 0 ] && echo "INFO: set $ns dev $dev: ethtool -K $flags"
-+	if ip netns exec $ns ethtool -K $dev $flags 2>/dev/null; then
-+		echo "INFO: set $ns dev $dev: ethtool -K $flags"
-+	fi
- }
- 
- set_random_ethtool_flags() {
-@@ -321,7 +328,7 @@ do_transfer()
- 	local extra_args="$7"
- 
- 	local port
--	port=$((10000+$TEST_COUNT))
-+	port=$((10000+TEST_COUNT))
+@@ -332,15 +332,15 @@ do_transfer()
  	TEST_COUNT=$((TEST_COUNT+1))
  
  	if [ "$rcvbuf" -gt 0 ]; then
-@@ -378,12 +385,18 @@ do_transfer()
- 			nstat -n
+-		extra_args="$extra_args -R $rcvbuf"
++		extra_args+=" -R $rcvbuf"
  	fi
  
--	local stat_synrx_last_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableSYNRX")
--	local stat_ackrx_last_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableACKRX")
--	local stat_cookietx_last=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesSent")
--	local stat_cookierx_last=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesRecv")
--	local stat_csum_err_s=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtDataCsumErr")
--	local stat_csum_err_c=$(mptcp_lib_get_counter "${connector_ns}" "MPTcpExtDataCsumErr")
-+	local stat_synrx_last_l
-+	local stat_ackrx_last_l
-+	local stat_cookietx_last
-+	local stat_cookierx_last
-+	local stat_csum_err_s
-+	local stat_csum_err_c
-+	stat_synrx_last_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableSYNRX")
-+	stat_ackrx_last_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableACKRX")
-+	stat_cookietx_last=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesSent")
-+	stat_cookierx_last=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesRecv")
-+	stat_csum_err_s=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtDataCsumErr")
-+	stat_csum_err_c=$(mptcp_lib_get_counter "${connector_ns}" "MPTcpExtDataCsumErr")
+ 	if [ "$sndbuf" -gt 0 ]; then
+-		extra_args="$extra_args -S $sndbuf"
++		extra_args+=" -S $sndbuf"
+ 	fi
  
- 	timeout ${timeout_test} \
- 		ip netns exec ${listener_ns} \
-@@ -446,11 +459,16 @@ do_transfer()
+ 	if [ -n "$testmode" ]; then
+-		extra_args="$extra_args -m $testmode"
++		extra_args+=" -m $testmode"
+ 	fi
+ 
+ 	if [ -n "$extra_args" ] && $options_log; then
+@@ -459,6 +459,7 @@ do_transfer()
  	mptcp_lib_check_transfer $cin $sout "file received by server"
  	rets=$?
  
--	local stat_synrx_now_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableSYNRX")
--	local stat_ackrx_now_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableACKRX")
--	local stat_cookietx_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesSent")
--	local stat_cookierx_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesRecv")
--	local stat_ooo_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtTCPOFOQueue")
-+	local stat_synrx_now_l
-+	local stat_ackrx_now_l
-+	local stat_cookietx_now
-+	local stat_cookierx_now
-+	local stat_ooo_now
-+	stat_synrx_now_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableSYNRX")
-+	stat_ackrx_now_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableACKRX")
-+	stat_cookietx_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesSent")
-+	stat_cookierx_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesRecv")
-+	stat_ooo_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtTCPOFOQueue")
- 
- 	expect_synrx=$((stat_synrx_last_l))
- 	expect_ackrx=$((stat_ackrx_last_l))
-@@ -459,8 +477,8 @@ do_transfer()
- 	cookies=${cookies##*=}
- 
- 	if [ ${cl_proto} = "MPTCP" ] && [ ${srv_proto} = "MPTCP" ]; then
--		expect_synrx=$((stat_synrx_last_l+$connect_per_transfer))
--		expect_ackrx=$((stat_ackrx_last_l+$connect_per_transfer))
-+		expect_synrx=$((stat_synrx_last_l+connect_per_transfer))
-+		expect_ackrx=$((stat_ackrx_last_l+connect_per_transfer))
- 	fi
- 
- 	if [ ${stat_synrx_now_l} -lt ${expect_synrx} ]; then
-@@ -468,7 +486,7 @@ do_transfer()
- 			"${stat_synrx_now_l}" "${expect_synrx}" 1>&2
- 		retc=1
- 	fi
--	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} -a ${stat_ooo_now} -eq 0 ]; then
-+	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} ] && [ ${stat_ooo_now} -eq 0 ]; then
- 		if [ ${stat_ooo_now} -eq 0 ]; then
- 			printf "[ FAIL ] lower MPC ACK rx (%d) than expected (%d)\n" \
++	local extra=""
+ 	local stat_synrx_now_l
+ 	local stat_ackrx_now_l
+ 	local stat_cookietx_now
+@@ -492,7 +493,7 @@ do_transfer()
  				"${stat_ackrx_now_l}" "${expect_ackrx}" 1>&2
-@@ -479,18 +497,20 @@ do_transfer()
- 	fi
- 
- 	if $checksum; then
--		local csum_err_s=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtDataCsumErr")
--		local csum_err_c=$(mptcp_lib_get_counter "${connector_ns}" "MPTcpExtDataCsumErr")
-+		local csum_err_s
-+		local csum_err_c
-+		csum_err_s=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtDataCsumErr")
-+		csum_err_c=$(mptcp_lib_get_counter "${connector_ns}" "MPTcpExtDataCsumErr")
- 
- 		local csum_err_s_nr=$((csum_err_s - stat_csum_err_s))
- 		if [ $csum_err_s_nr -gt 0 ]; then
--			printf "[ FAIL ]\nserver got $csum_err_s_nr data checksum error[s]"
-+			printf "[ FAIL ]\nserver got %d data checksum error[s]" ${csum_err_s_nr}
  			rets=1
- 		fi
- 
- 		local csum_err_c_nr=$((csum_err_c - stat_csum_err_c))
- 		if [ $csum_err_c_nr -gt 0 ]; then
--			printf "[ FAIL ]\nclient got $csum_err_c_nr data checksum error[s]"
-+			printf "[ FAIL ]\nclient got %d data checksum error[s]" ${csum_err_c_nr}
- 			retc=1
+ 		else
+-			printf "[ Note ] fallback due to TCP OoO"
++			extra+=" [ Note ] fallback due to TCP OoO"
  		fi
  	fi
-@@ -658,7 +678,7 @@ run_test_transparent()
- 		return
+ 
+@@ -515,39 +516,41 @@ do_transfer()
+ 		fi
  	fi
  
--ip netns exec "$listener_ns" nft -f /dev/stdin <<"EOF"
-+	if ! ip netns exec "$listener_ns" nft -f /dev/stdin <<"EOF"
- flush ruleset
- table inet mangle {
- 	chain divert {
-@@ -669,7 +689,7 @@ table inet mangle {
- 	}
+-	if [ $retc -eq 0 ] && [ $rets -eq 0 ]; then
+-		printf "[ OK ]"
+-		mptcp_lib_result_pass "${TEST_GROUP}: ${result_msg}"
+-	else
+-		mptcp_lib_result_fail "${TEST_GROUP}: ${result_msg}"
+-	fi
+-
+ 	if [ $cookies -eq 2 ];then
+ 		if [ $stat_cookietx_last -ge $stat_cookietx_now ] ;then
+-			printf " WARN: CookieSent: did not advance"
++			extra+=" WARN: CookieSent: did not advance"
+ 		fi
+ 		if [ $stat_cookierx_last -ge $stat_cookierx_now ] ;then
+-			printf " WARN: CookieRecv: did not advance"
++			extra+=" WARN: CookieRecv: did not advance"
+ 		fi
+ 	else
+ 		if [ $stat_cookietx_last -ne $stat_cookietx_now ] ;then
+-			printf " WARN: CookieSent: changed"
++			extra+=" WARN: CookieSent: changed"
+ 		fi
+ 		if [ $stat_cookierx_last -ne $stat_cookierx_now ] ;then
+-			printf " WARN: CookieRecv: changed"
++			extra+=" WARN: CookieRecv: changed"
+ 		fi
+ 	fi
+ 
+ 	if [ ${stat_synrx_now_l} -gt ${expect_synrx} ]; then
+-		printf " WARN: SYNRX: expect %d, got %d (probably retransmissions)" \
+-			"${expect_synrx}" "${stat_synrx_now_l}"
++		extra+=" WARN: SYNRX: expect ${expect_synrx},"
++		extra+=" got ${stat_synrx_now_l} (probably retransmissions)"
+ 	fi
+ 	if [ ${stat_ackrx_now_l} -gt ${expect_ackrx} ]; then
+-		printf " WARN: ACKRX: expect %d, got %d (probably retransmissions)" \
+-			"${expect_ackrx}" "${stat_ackrx_now_l}"
++		extra+=" WARN: ACKRX: expect ${expect_ackrx},"
++		extra+=" got ${stat_ackrx_now_l} (probably retransmissions)"
++	fi
++
++	if [ $retc -eq 0 ] && [ $rets -eq 0 ]; then
++		printf "[ OK ]%s\n" "${extra:1}"
++		mptcp_lib_result_pass "${TEST_GROUP}: ${result_msg}"
++	else
++		if [ -n "${extra}" ]; then
++			printf "%s\n" "${extra:1}"
++		fi
++		mptcp_lib_result_fail "${TEST_GROUP}: ${result_msg}"
+ 	fi
+ 
+-	echo
+ 	cat "$capout"
+ 	[ $retc -eq 0 ] && [ $rets -eq 0 ]
  }
- EOF
--	if [ $? -ne 0 ]; then
-+	then
- 		echo "SKIP: $msg, could not load nft ruleset"
- 		mptcp_lib_fail_if_expected_feature "nft rules"
- 		mptcp_lib_result_skip "${TEST_GROUP}"
-@@ -684,8 +704,7 @@ EOF
- 		local_addr="0.0.0.0"
+@@ -872,8 +875,8 @@ mptcp_lib_result_code "${ret}" "ping tests"
+ stop_if_error "Could not even run ping tests"
+ 
+ [ -n "$tc_loss" ] && tc -net "$ns2" qdisc add dev ns2eth3 root netem loss random $tc_loss delay ${tc_delay}ms
+-echo -n "INFO: Using loss of $tc_loss "
+-test "$tc_delay" -gt 0 && echo -n "delay $tc_delay ms "
++tc_info="loss of $tc_loss "
++test "$tc_delay" -gt 0 && tc_info+="delay $tc_delay ms "
+ 
+ reorder_delay=$((tc_delay / 4))
+ 
+@@ -884,17 +887,17 @@ if [ -z "${tc_reorder}" ]; then
+ 
+ 	if [ $reorder_delay -gt 0 ] && [ $reorder1 -lt 100 ] && [ $reorder2 -gt 0 ]; then
+ 		tc_reorder="reorder ${reorder1}% ${reorder2}%"
+-		echo -n "$tc_reorder with delay ${reorder_delay}ms "
++		tc_info+="$tc_reorder with delay ${reorder_delay}ms "
  	fi
+ elif [ "$tc_reorder" = "0" ];then
+ 	tc_reorder=""
+ elif [ "$reorder_delay" -gt 0 ];then
+ 	# reordering requires some delay
+ 	tc_reorder="reorder $tc_reorder"
+-	echo -n "$tc_reorder with delay ${reorder_delay}ms "
++	tc_info+="$tc_reorder with delay ${reorder_delay}ms "
+ fi
  
--	ip -net "$listener_ns" $r6flag rule add fwmark 1 lookup 100
--	if [ $? -ne 0 ]; then
-+	if ! ip -net "$listener_ns" $r6flag rule add fwmark 1 lookup 100; then
- 		ip netns exec "$listener_ns" nft flush ruleset
- 		echo "SKIP: $msg, ip $r6flag rule failed"
- 		mptcp_lib_fail_if_expected_feature "ip rule"
-@@ -693,8 +712,7 @@ EOF
- 		return
+-echo "on ns3eth4"
++echo "INFO: Using ${tc_info}on ns3eth4"
+ 
+ tc -net "$ns3" qdisc add dev ns3eth4 root netem delay ${reorder_delay}ms $tc_reorder
+ 
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index e4581b0dfb96..df7521aa274b 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -799,18 +799,18 @@ pm_nl_check_endpoint()
+ 		line="${line% }"
+ 		# the dump order is: address id flags port dev
+ 		[ -n "$addr" ] && expected_line="$addr"
+-		expected_line="$expected_line $id"
+-		[ -n "$_flags" ] && expected_line="$expected_line ${_flags//","/" "}"
+-		[ -n "$dev" ] && expected_line="$expected_line $dev"
+-		[ -n "$port" ] && expected_line="$expected_line $port"
++		expected_line+=" $id"
++		[ -n "$_flags" ] && expected_line+=" ${_flags//","/" "}"
++		[ -n "$dev" ] && expected_line+=" $dev"
++		[ -n "$port" ] && expected_line+=" $port"
+ 	else
+ 		line=$(ip netns exec $ns ./pm_nl_ctl get $_id)
+ 		# the dump order is: id flags dev address port
+ 		expected_line="$id"
+-		[ -n "$flags" ] && expected_line="$expected_line $flags"
+-		[ -n "$dev" ] && expected_line="$expected_line $dev"
+-		[ -n "$addr" ] && expected_line="$expected_line $addr"
+-		[ -n "$_port" ] && expected_line="$expected_line $_port"
++		[ -n "$flags" ] && expected_line+=" $flags"
++		[ -n "$dev" ] && expected_line+=" $dev"
++		[ -n "$addr" ] && expected_line+=" $addr"
++		[ -n "$_port" ] && expected_line+=" $_port"
  	fi
- 
--	ip -net "$listener_ns" route add local $local_addr/0 dev lo table 100
--	if [ $? -ne 0 ]; then
-+	if ! ip -net "$listener_ns" route add local $local_addr/0 dev lo table 100; then
- 		ip netns exec "$listener_ns" nft flush ruleset
- 		ip -net "$listener_ns" $r6flag rule del fwmark 1 lookup 100
- 		echo "SKIP: $msg, ip route add local $local_addr failed"
-@@ -857,7 +875,7 @@ stop_if_error "Could not even run ping tests"
- echo -n "INFO: Using loss of $tc_loss "
- test "$tc_delay" -gt 0 && echo -n "delay $tc_delay ms "
- 
--reorder_delay=$(($tc_delay / 4))
-+reorder_delay=$((tc_delay / 4))
- 
- if [ -z "${tc_reorder}" ]; then
- 	reorder1=$((RANDOM%10))
+ 	if [ "$line" = "$expected_line" ]; then
+ 		print_ok
+@@ -1261,7 +1261,7 @@ chk_csum_nr()
+ 	print_check "sum"
+ 	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtDataCsumErr")
+ 	if [ "$count" != "$csum_ns1" ]; then
+-		extra_msg="$extra_msg ns1=$count"
++		extra_msg+=" ns1=$count"
+ 	fi
+ 	if [ -z "$count" ]; then
+ 		print_skip
+@@ -1274,7 +1274,7 @@ chk_csum_nr()
+ 	print_check "csum"
+ 	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtDataCsumErr")
+ 	if [ "$count" != "$csum_ns2" ]; then
+-		extra_msg="$extra_msg ns2=$count"
++		extra_msg+=" ns2=$count"
+ 	fi
+ 	if [ -z "$count" ]; then
+ 		print_skip
+@@ -1318,7 +1318,7 @@ chk_fail_nr()
+ 	print_check "ftx"
+ 	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPFailTx")
+ 	if [ "$count" != "$fail_tx" ]; then
+-		extra_msg="$extra_msg,tx=$count"
++		extra_msg+=",tx=$count"
+ 	fi
+ 	if [ -z "$count" ]; then
+ 		print_skip
+@@ -1332,7 +1332,7 @@ chk_fail_nr()
+ 	print_check "failrx"
+ 	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPFailRx")
+ 	if [ "$count" != "$fail_rx" ]; then
+-		extra_msg="$extra_msg,rx=$count"
++		extra_msg+=",rx=$count"
+ 	fi
+ 	if [ -z "$count" ]; then
+ 		print_skip
+@@ -1367,7 +1367,7 @@ chk_fclose_nr()
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$fclose_tx" ]; then
+-		extra_msg="$extra_msg,tx=$count"
++		extra_msg+=",tx=$count"
+ 		fail_test "got $count MP_FASTCLOSE[s] TX expected $fclose_tx"
+ 	else
+ 		print_ok
+@@ -1378,7 +1378,7 @@ chk_fclose_nr()
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$fclose_rx" ]; then
+-		extra_msg="$extra_msg,rx=$count"
++		extra_msg+=",rx=$count"
+ 		fail_test "got $count MP_FASTCLOSE[s] RX expected $fclose_rx"
+ 	else
+ 		print_ok
+@@ -1747,7 +1747,7 @@ chk_rm_nr()
+ 		count=$((count + cnt))
+ 		if [ "$count" != "$rm_subflow_nr" ]; then
+ 			suffix="$count in [$rm_subflow_nr:$((rm_subflow_nr*2))]"
+-			extra_msg="$extra_msg simult"
++			extra_msg+=" simult"
+ 		fi
+ 		if [ $count -ge "$rm_subflow_nr" ] && \
+ 		   [ "$count" -le "$((rm_subflow_nr *2 ))" ]; then
 -- 
 2.43.0
 
