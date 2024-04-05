@@ -1,73 +1,107 @@
-Return-Path: <stable+bounces-36078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D057899AA6
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 12:23:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4631899AE1
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 12:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C14CBB21CF0
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 10:23:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6478AB215D2
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 10:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78E3161B6E;
-	Fri,  5 Apr 2024 10:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA936CDB7;
+	Fri,  5 Apr 2024 10:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoJna78u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iwfZuYcT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78835161902
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 10:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83948537E9;
+	Fri,  5 Apr 2024 10:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712312584; cv=none; b=OwgZm0pbbgehBSPYDO4MKqzUBzVS5bqWL5GkVDi4WfzjzEO3F4j+w4c1ngXklhEsHUoNa1BZu/NzLnpV3/zs27UTNa5D5uu7tzmFTgmpHBOgMkSIWdvq18a1Ao/XwgDdTof70/X7YO5wL/WRJLzE9+6YD36YzLKEBfyrNBBXg1A=
+	t=1712313045; cv=none; b=CqysPI5fmZ6IP9MvhkLfESAdmZtsZdN4pMv6HgWxikGSRjEEKngOA7egYkOpNfzzTiowVmyteI6PMdPb9Aek4M41OEVdQ8UF2GfxvaLPp19OGX4N2T3QLy5IKhCmgo5s8xN6fXYgHGajphiosuYtOzUokKkFlKTSyeGsvIbjjRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712312584; c=relaxed/simple;
-	bh=TKSOaRaOOfFgRNHx+D8IhH1KhDx0s5EaZZMEi0lOKgU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=muVK+j8Hrghnn8xjeKELOZvTsiE7GzjR78OUdG+dmPL8eojw1V7xPoSgjeQzop6q71jWg7TUTzYbNBgG0g7J6UklPdsTn1aRwq8vvqqGZ9Bi1CbrtLmdLYMUQBrX5iMfO9LG1r4pS9uijJeOQIap4jVnaOFukamYm+unHhvw0TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoJna78u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA8BC433F1;
-	Fri,  5 Apr 2024 10:23:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712312584;
-	bh=TKSOaRaOOfFgRNHx+D8IhH1KhDx0s5EaZZMEi0lOKgU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PoJna78uVV+HG4UZWMPb160irz0FkdzSbTO/N7h+Rgqs5t/ZQ7GgGEaP/anCq808U
-	 Ga9ZQKgzKsP0/BQmeYRHIPD5yCn0i3SUrgPQIPbNmNzWFonwyxl4KGgzPj9R3LJtoK
-	 Gog4e93utr21RwtiUtqD6VAVYDhBZF9R6fUBmbYg=
-Date: Fri, 5 Apr 2024 12:23:01 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: mingo@kernel.org, torvalds@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] x86/bugs: Fix the SRSO mitigation on
- Zen3/4" failed to apply to 6.1-stable tree
-Message-ID: <2024040554-commotion-playing-62c3@gregkh>
-References: <2024033030-steam-implosion-5c12@gregkh>
- <20240405100930.GAZg_N2ti--cDJCCKk@fat_crate.local>
+	s=arc-20240116; t=1712313045; c=relaxed/simple;
+	bh=MjyZT3uHQHE76lUIF8K+O+k+aMaljvlerxoCcM2gaOQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gPEaDH/fmjycF+1dJ3tUSf6VVkI0uov1iqMusAADx16ubkwvU3pJFSsiBFjPytOWM9DO0wUAfa/TYy2dw2duzA9DvEl1gfcHYdFHXyXF++yaLaXtuQcK659MshrxjfLn5jDIe9fElDUzzggc4cOKcGKmCYZ4a55tQku+27vnYic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iwfZuYcT; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2a485169476so58347a91.1;
+        Fri, 05 Apr 2024 03:30:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712313044; x=1712917844; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MjyZT3uHQHE76lUIF8K+O+k+aMaljvlerxoCcM2gaOQ=;
+        b=iwfZuYcTvL7+r6WMnGMkOcA+oJ/5waMYqEjdoifJUP6SGpEJV/yqfYGan6Ei/P+Te6
+         X7bM3O02IP9O4X+V684NPS1IgaaOjL9oVRNMRFbFoPwyWq1VDIhZIU0S7XL7e7Fdyg5M
+         Q+SFGjfLu5DqiZR/wvgyrEYs33hDfsNcAi+0NVLPF/qpGinnvl47BmyMwxGjF1Qws16Q
+         axWxhxImoGY0Kcg51IvjI8zyVmewXI7W9YaBw/d0rlmQVG4NTwQvtDl2kIYQcpGBeuYk
+         fgbO9W0/FczU57bpYAKx6+lLQeUs+B3ZZJ2Y+DVhnK6Rt1j0pcFXJcPhrU/gfptJB9//
+         vlhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712313044; x=1712917844;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MjyZT3uHQHE76lUIF8K+O+k+aMaljvlerxoCcM2gaOQ=;
+        b=QKBvX/eUN5/sxEJutzxauuwBR7RMfdRWNsd+XnOZvhJSYPM14FmBf8Cf3vE6h9G8K6
+         JPVKazvqMjikF/ZhVqtsk/ZJhusb61JSL1plUlSKz4OMk6Cr2EoUYDTeNK3JWPQH7fCV
+         B+zhr7lJ4nylOB6UVHC1cxQaeqzFSlh/yLtGW7a3RGXYg5dGY/TwiaxpGBQQEAXxH+ag
+         /i5muD9pUWy1rRVVt28TskcUToLSHYlb4HZ/tlI/6VLVm9Lt219/p+T4fUjfWFhef5L3
+         XmCpRm4RUsfZBfwEyAbEOeQZFcf5c/svVmlkbGau/XBdWEuwHB+hnypCbjKR+D1rsj+5
+         0jtA==
+X-Forwarded-Encrypted: i=1; AJvYcCXKl45RGg6Xon9054EtRIVOEx8DZyl3ARgkeiYFn+rXYeDV805274Wcz60G1VUdk3tKNpkvZT0gzGa9HehlGTtVVr4YVUg+1xxAmvQxd19xf1x+pgEm7DjwzqOjaCS1fKhp7wRno/BTdwpY9afqyrpdjjnYoIRaUWWCXmLCIHtWTOuUyGg=
+X-Gm-Message-State: AOJu0YxSxBqGLhQo4UgGpJAE6pq5jMyAP3+ivwpoRy9IlZJeAJ9kECwW
+	Im8oLcBQkr7KsFXoFhdEGjTbidhumi1x36wMsiHXytUkVmV7G5POPI4LPSsNY4IDkPpeOxtVscj
+	Y+cphRHN0cpk3b16kz9vIhk2J/Mc=
+X-Google-Smtp-Source: AGHT+IFYJriAFttp3bClZnkaGaA416ql9G0BWF43cyDOJfJ+9QjQwmRH9HhSoypwCYo/lJU4PVsdV36O4Srk2/lVIwc=
+X-Received: by 2002:a17:90a:9ab:b0:2a2:38ee:66f with SMTP id
+ 40-20020a17090a09ab00b002a238ee066fmr762112pjo.46.1712313043351; Fri, 05 Apr
+ 2024 03:30:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240405100930.GAZg_N2ti--cDJCCKk@fat_crate.local>
+References: <20240404-providing-emporium-e652e359c711@spud>
+ <20240404153258.GA852748@dev-arch.thelio-3990X> <CANiq72kSfC2j07mAaV591i4kDwejWRYcFTvASgQmNnHVe5ZwCw@mail.gmail.com>
+ <CAOcBZOTuqzwQncS8rMUMoOj3zE+FnLxPY6O=4EEaOP2xuFG9Vg@mail.gmail.com>
+In-Reply-To: <CAOcBZOTuqzwQncS8rMUMoOj3zE+FnLxPY6O=4EEaOP2xuFG9Vg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 5 Apr 2024 12:30:01 +0200
+Message-ID: <CANiq72ko18KobmSp4x=twYRBT5NZmg80rBUC2_rXkDg=67aMOw@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
+To: Ramon de C Valle <rcvalle@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
+	Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
+	Kees Cook <keescook@chromium.org>, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 05, 2024 at 12:09:30PM +0200, Borislav Petkov wrote:
-> On Sat, Mar 30, 2024 at 10:46:30AM +0100, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.1-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> 
-> 6.1 is easier, actually. 2 patches as a reply to this message.
+On Fri, Apr 5, 2024 at 12:34=E2=80=AFAM Ramon de C Valle <rcvalle@google.co=
+m> wrote:
+>
+> Sorry about that, I should've done this already. In addition to the link =
+you added above, here's a tracking issue for KCFI support for Rust:
+> https://github.com/rust-lang/rust/issues/123479
 
-Both now queued up, thanks.
+No worries! Thanks for taking the time creating the new tracking issue
+-- linked now from our issue #2.
 
-greg k-h
+I also linked your update here and noted the benchmarking needs /
+regressions report request too.
+
+Cheers,
+Miguel
 
