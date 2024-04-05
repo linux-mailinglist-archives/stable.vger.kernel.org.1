@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-36030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F1689956D
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:35:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F24689958F
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AD0A1C21661
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:35:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F4FA1F229F0
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFCB1AACB;
-	Fri,  5 Apr 2024 06:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2EB1CA9E;
+	Fri,  5 Apr 2024 06:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATJJbeL2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGZ39aBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA9417BB7
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 06:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8DD1BF27;
+	Fri,  5 Apr 2024 06:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712298900; cv=none; b=QWcUrAkAv3wfbk9IwgQ8BxTwPFGMxJnZOpmDNL08sP8Lv3HwAA7v1xKc1hikW3Bt9gUgDvx+sDM0STrB7EPmW0HDxTL7jcJkU6WheAzfnRfBxMzbrzxGPl+j3AU3HNvqH1/y60lOIEBBoXOiPmJW3WquPdJxtDWJKpoOFWDRxc8=
+	t=1712298967; cv=none; b=uVpdI5G2UhRD1lDqr+O3SPY/sF6UthhPk8Whmk5fs0PY0SIwDFRkk3cwH0ojYsMqlNz1JQL8an3sLvwVRyC8IYKHpy58LFrII5ACZ7vC7wDkprOSf6nF+srtcyR3AEaC5MvX1QCCvtPPdwlZvxCWFg7u1HuV3172iBf9q6GhBDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712298900; c=relaxed/simple;
-	bh=hX0JvNgE07XTsIxRLqCdToLc7GpoeQcKXrRZ2D4tm/E=;
+	s=arc-20240116; t=1712298967; c=relaxed/simple;
+	bh=rCXu4epE+VTWM+HBe7qOASe0JtrD/GpcjyADbon9iVs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sAjr3s+iR+cVnC2onvyWbK+Y0db7U1flU0glautHPkQjdcCUMG0Y0AyHFhrMVphxnRXTNzVINvhDixi231DuUUZlwJ+1X2LV+HZNbXoXfSM5W4l8ez2AEgRt12EcQBMhWNcRWQPmBGBvqHRcWYV6qV/VbMFJ3M1NAF7eiqqxqS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATJJbeL2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4F6C433F1;
-	Fri,  5 Apr 2024 06:34:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=o0VW+TLvSl3K2aWKUk3yQG+y5Ms9r7MXGwOtkCQnXwiefKfvUGiWgXV3Tz5klq38YOSPSBVYbkMGdg7ZNcXJ1ON/E+qGGOAusupjvROoCnogGweGtM9zK+qQe8r8QKHO/Wd3rMzXMJ3utpkXlfOYkh3sOIvLIjBgFyGGqlfmoq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGZ39aBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CC8C433F1;
+	Fri,  5 Apr 2024 06:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712298900;
-	bh=hX0JvNgE07XTsIxRLqCdToLc7GpoeQcKXrRZ2D4tm/E=;
+	s=korg; t=1712298966;
+	bh=rCXu4epE+VTWM+HBe7qOASe0JtrD/GpcjyADbon9iVs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ATJJbeL20+ATAjNvpiGNet3CeScVyXtC715hdjQT3o9zrzxbo3zAcoT5e4Qzi+jVy
-	 7tyrjYtrj8/gyCeNu2xEsJy5cp9OV9tNt2OnP1n3pNURVfb7m+umsY56ZxXBs8ebh4
-	 OAWlGZ6/FCCI7QoDuUjNhBPBuQX8nweTwwSjn8cs=
-Date: Fri, 5 Apr 2024 08:34:52 +0200
+	b=DGZ39aBWy9/eqltVfphM20ylODyQHL41s0ElfcCxmn4adpCjvZ8Ao3elLDEF1XZ33
+	 knS88Iz28eXrQVzqaBl2Y7wZ9ONDhQQu94OtFzIz+57OEfLAVrXTMBQWe7agDYzwRy
+	 Niw4LIgk39SLdroDUEAdr3Ctyif8EynxXv3DimyU=
+Date: Fri, 5 Apr 2024 08:36:03 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Meetakshi Setiya <meetakshisetiyaoss@gmail.com>
-Cc: stable@vger.kernel.org, Steve French <smfrench@gmail.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>, bharathsm@microsoft.com,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Meetakshi Setiya <msetiya@microsoft.com>
-Subject: Re: Requesting backport for fc20c523211 (cifs: fixes for
- get_inode_info)
-Message-ID: <2024040512-koala-landside-7486@gregkh>
-References: <CAFTVevX=yujOXoDJYRJWuPgvWfVYUL5ZmoKfy_3u5qHi741Sag@mail.gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Rik van Riel <riel@surriel.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: FAILED: Patch "bounds: support non-power-of-two CONFIG_NR_CPUS"
+ failed to apply to 5.4-stable tree
+Message-ID: <2024040545-diligence-suffrage-d430@gregkh>
+References: <20240327122125.2836828-1-sashal@kernel.org>
+ <ZgQowqqGf-E7Cpcz@casper.infradead.org>
+ <2024032935-antsy-imitation-1453@gregkh>
+ <2024032959-ladies-circling-3a5e@gregkh>
+ <ZguYw9Dke_uq5UZU@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,38 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAFTVevX=yujOXoDJYRJWuPgvWfVYUL5ZmoKfy_3u5qHi741Sag@mail.gmail.com>
+In-Reply-To: <ZguYw9Dke_uq5UZU@casper.infradead.org>
 
-On Wed, Apr 03, 2024 at 12:34:43PM +0530, Meetakshi Setiya wrote:
-> commit fc20c523211a38b87fc850a959cb2149e4fd64b0 upstream
-> cifs: fixes for get_inode_info
-> requesting backport to 6.8.x, 6.6.x, 6.5.x and 6.1.x
+On Tue, Apr 02, 2024 at 06:33:55AM +0100, Matthew Wilcox wrote:
+> On Fri, Mar 29, 2024 at 06:05:20PM +0100, Greg KH wrote:
+> > On Fri, Mar 29, 2024 at 02:34:43PM +0100, Greg KH wrote:
+> > > On Wed, Mar 27, 2024 at 02:10:10PM +0000, Matthew Wilcox wrote:
+> > > > On Wed, Mar 27, 2024 at 08:21:25AM -0400, Sasha Levin wrote:
+> > > > > The patch below does not apply to the 5.4-stable tree.
+> > > > > If someone wants it applied there, or to any other stable or longterm
+> > > > > tree, then please email the backport, including the original git commit
+> > > > > id to <stable@vger.kernel.org>.
+> > > > 
+> > > > Looks like you just need a little more fuzz on the patch.
+> > > > 
+> > > > diff --git a/kernel/bounds.c b/kernel/bounds.c
+> > > > index 9795d75b09b2..a94e3769347e 100644
+> > > > --- a/kernel/bounds.c
+> > > > +++ b/kernel/bounds.c
+> > > > @@ -19,7 +19,7 @@ int main(void)
+> > > >  	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
+> > > >  	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
+> > > >  #ifdef CONFIG_SMP
+> > > > -	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
+> > > > +	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
+> > > >  #endif
+> > > >  	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
+> > > >  	/* End of constants */
+> > > 
+> > > Now fuzzed, thanks.
+> > 
+> > But it breaks the build on 4.19.y, so I'll go drop it from there.  If
+> > you want it added there, please provide a working fix.
 > 
-> This patch fixes memory leaks, adds error checking, and performs some important
-> code modifications to the changes introduced by patch 2 of this patch series:
-> https://lore.kernel.org/stable/CAFTVevX6=4qFo6nwV14sCnfPRO9yb9q+YsP3XPaHMsP08E05iQ@mail.gmail.com/
-> commit ffceb7640cbfe6ea60e7769e107451d63a2fe3d3
-> (smb: client: do not defer close open handles to deleted files)
+> Looks like bits_per() didn't exist in 4.19.  It was added as part of commit 69842cba9ace84849bb9b8edcdf2cefccd97901c
+> Author: Patrick Bellasi <patrick.bellasi@arm.com>
+> Date:   Fri Jun 21 09:42:02 2019 +0100
 > 
-> This patch and the three patches in the mails that precede this are related and
-> fix an important customer reported bug on the linux smb client (explained in the
-> mail for patch 1). Patches 2, 3 and 4 are meant to fix whatever regressions were
-> introduced/exposed by patch 1.
-> The patches have to be applied in the mentioned order and should be backported
-> together.
+>     sched/uclamp: Add CPU's clamp buckets refcounting
+> 
+> Up to you; I can provide bits_per() to 4.19 which will aid backporting
+> other fixes (we currently have 17 uses of bits_per() in 6.9), or we can
+> just drop this whole thing for 4.19.
+> 
 
-Then PLEASE send this as a patch series, as picking patches out of
-emails that arrive in random order in a "correct" way is tough, if not
-impossible for us to do.
-
-Please send these as a backported set of patches, OR as a list of
-"cherry-pick these git ids in this order" type of thing.  But spreading
-it out over 4 emails just does not work, and is very very confusing.
-
-Think about it, would you want to recieve these 4 emails and have to try
-to guess which one is applied before which?
-
-Please fix this up and resend it in an easier way.
+At this point in time for 4.19, unless it's really criticial, I would
+just say drop it.
 
 thanks,
 
