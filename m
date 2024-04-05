@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-35995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A49D89952C
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:19:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 328E989952E
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:19:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BCD61C218DB
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:19:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C3CD1F24DA3
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E1B225DD;
-	Fri,  5 Apr 2024 06:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4120225AE;
+	Fri,  5 Apr 2024 06:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHVmBvFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrGnz0aq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F90D2232B
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 06:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819112232B
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 06:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712297970; cv=none; b=hf9nRZdin0qtsLVXb17WeO8joxwR45smXUQ9czP0qrsWXkrNNvLZA0cYm94VZ56qMKmsRLV+ZDh8r4m8V6wqLR+esDkd2tHDILlvt/MJLwnGAEEiow2DhRoXiBHyIyAADTe9P45vGPrrcm+gYRalRLob6vHhcpLz1rD9xbyhnTw=
+	t=1712297978; cv=none; b=mrpGXu4vWRX80Ia5hEobACVAqBLpQtePziM0f/ALHODn9+R/2diz4MbN8VYGrRX+mGUj2CaNp5EEIPbx83OR9zI5o8N3/udQ/pvPJdpO9JCzpaIOUj2Z8z2xfsxq9nkxm4mVKNSbewpo51gaMA3GmliBognndvK2dZzzrv9ykNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712297970; c=relaxed/simple;
-	bh=oT4lfsdENBMOjR+eVfP2vpO+CEf9IRgIzpazHMY/0Sc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ng8ch9oZ9ZKTUKWfa4oUWvfXaMIZ8iVKHPyOwT+UziYVbvirGwvZRxQXfz1VbiOrmACOmQsu7XLZs30IUKyQ/aNWoBtQq9FncKwsA/gOkLGD/ec2ewSlHki0ariPJPzMmpC00VX30/iJHXi0lhwWCR/AJZCvnwSD8Dm5y8FCT5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHVmBvFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A0FC433F1;
-	Fri,  5 Apr 2024 06:19:28 +0000 (UTC)
+	s=arc-20240116; t=1712297978; c=relaxed/simple;
+	bh=psVU958eixNYgM6dedXWnDnvSmldqLHxAkqhqsGH/Ek=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ojKvoJQlcG0QVaIEBT8FEaCkPKHN9HzqmtTe2I+IeYkMFuLJh2M0KK7b/b3ikQgODep2WEmUhIx5r5zPh/X5IGYqDGa0DATMHA1H9zQh9uLSeKGJplIAgP+TCEjrR1vTaN5qM1DYt0EgJLFjI8C0mQSWg6T6MxGIkCZwrdQ/5bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrGnz0aq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79240C433F1;
+	Fri,  5 Apr 2024 06:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712297969;
-	bh=oT4lfsdENBMOjR+eVfP2vpO+CEf9IRgIzpazHMY/0Sc=;
+	s=korg; t=1712297978;
+	bh=psVU958eixNYgM6dedXWnDnvSmldqLHxAkqhqsGH/Ek=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SHVmBvFdLifyO8ZWIA/AnPwl7n8X1pKWjtnE8XNtnbUz/p4eQb4s3X1Zz4MNrbJ7J
-	 elgiH7jUpqRXhkhZFDVbGUyk+b/NxrZn1g/QkHw5SGiZxYdlbhFsCfdrG8BrMyr0KK
-	 SF+Raa61CBgOU0andYxa+HmlE7kRqUZvGCEXFeOs=
-Subject: FAILED: patch "[PATCH] KVM: SVM: Add support for allowing zero SEV ASIDs" failed to apply to 6.1-stable tree
+	b=qrGnz0aqB7Zel7DWMKPDEjlaqG1xruCLH13boTFiW0HRR99c/ehQbKowvUd95FuDV
+	 pTvXBtpvY0DnXFUpKBlnk5OKs86mXjQ9tN34k3xW6NeYOduwTkX1AwgRjI6AvLLaiB
+	 5eFiGEvDku+OMNGyL8MeLofYAli6O8yxT8FjFItk=
+Subject: FAILED: patch "[PATCH] KVM: SVM: Add support for allowing zero SEV ASIDs" failed to apply to 5.15-stable tree
 To: ashish.kalra@amd.com,seanjc@google.com,thomas.lendacky@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 05 Apr 2024 08:19:16 +0200
-Message-ID: <2024040516-helmet-aware-9f06@gregkh>
+Date: Fri, 05 Apr 2024 08:19:17 +0200
+Message-ID: <2024040517-motivator-seismic-4389@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0aa6b90ef9d75b4bd7b6d106d85f2a3437697f91
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040516-helmet-aware-9f06@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040517-motivator-seismic-4389@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,11 @@ Possible dependencies:
 466eec4a22a7 ("KVM: SVM: Use unsigned integers when dealing with ASIDs")
 106ed2cad9f7 ("KVM: SVM: WARN, but continue, if misc_cg_set_capacity() fails")
 6d1bc9754b04 ("KVM: SVM: enhance info printk's in SEV init")
+73412dfeea72 ("KVM: SVM: do not allocate struct svm_cpu_data dynamically")
+181d0fb0bb02 ("KVM: SVM: remove dead field from struct svm_cpu_data")
+4bbef7e8eb8c ("KVM: SVM: Simplify and harden helper to flush SEV guest page(s)")
+58356767107a ("KVM: SVM: Allocate sd->save_area with __GFP_ZERO")
+91b692a03c99 ("KVM: SEV: provide helpers to charge/uncharge misc_cg")
 
 thanks,
 
