@@ -1,138 +1,134 @@
-Return-Path: <stable+bounces-36113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B11F899F70
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:21:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E65ED899F9D
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 16:28:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8561EB2382E
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CFB728411D
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 14:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D98E6CDB7;
-	Fri,  5 Apr 2024 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE7416EBF8;
+	Fri,  5 Apr 2024 14:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ipFy4wX8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RIpag5M7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559B21BDDB
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 14:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C84E16D32D;
+	Fri,  5 Apr 2024 14:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712326851; cv=none; b=X660g9lOyoBF4NfnCAnh8VEH1I5TSY6gyM7rLlEaHQrGxSznOYrmJPpmWJBNKUemlU4CThVi9eno8D56XaY8hTa/JWvpK3GFAUTdKzcPtzTZ7b4NGiw7BaMRpPoo3Abz6R+7pF4I7xZ0JLCBuV5ncht7UnB3uEtWMgJxnSd9ryI=
+	t=1712327283; cv=none; b=s2oC6FEtk/kkzfHwhcTxcXnfRBUFq6v2hAfCFfxl9ihEzOeNqzBWBHD6n5UunBsiGRANJJy76vEwEHzuEnsnEF+ZBT2bh+dUq/9H85gbtkgpWomfie8f89431kiGRTRr4J0XeRUZLxSpWaXgenRUFjY9B3tnR/BJXvFcRAPF8xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712326851; c=relaxed/simple;
-	bh=SzssGsNqFVHsUNi9eFWkdxTeVVCSYUS5LUqlRWsaxRs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gQ/dhx+wETvY3QpzP35z+X1GgnCwQXd/S3VjXzhXtU8l5WgPptvWJ/5x9HVPSC969M4ZTkdQliBcF8Y6u4v+LE/noGe0fyO7VoOmXXdjtxoG//i16K07tM4uwOIM4BwI8q3WmMuWok1MOisqKPpx4Ontkk9xXjCC1ZBi88qNjVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ipFy4wX8; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5178940E019C;
-	Fri,  5 Apr 2024 14:20:47 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id kdte1afM0shl; Fri,  5 Apr 2024 14:20:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1712326840; bh=rcFTE27tUXQdQF4rCGE2HGBNsiKwYhLN2Xk/HZGeyLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ipFy4wX8I21pIfK9ICrCPZVKd1qoJyz7Gt2Y+ZXNQfPlX/D3kEpbDLi2H0lUihNA/
-	 Eq3/siCegQw9nC1WuWW1r90xL0jsCReuv//VTCKerQdFgHfTsbgE/E6v4jsLJKL7FQ
-	 OigfdHd9e5NdG5bII2VAM20LZsjM207GkuJUbEC2j55kLjVuEe6MqbEXY2XR7f69Nn
-	 nlVaRn2HDgqA6evsSQce+mCGXaWjXcmmLcN2Ytv5tANzWblxHTfQFwUdCUgMXsQKSN
-	 dDrIVYCrEAef9fTKqzSA9M08cFkDlq48rnVeT+gxL0M9727AFjHB7o42BJF39cg8w5
-	 2c48xVSSan/xhB1gQL0EGUMt4y3ynmEnbz1W86x76Yo670tc1G4QguqfGSZo2KIPyE
-	 bfV8lvVnWxcpYqezl9b44Pz/ZO5rHHM6XSZoijdFxGj5C/8z4+PtN9NrpuppjeQ1p8
-	 4D7FxrRDq3gNEIkNFWTHK7ApXyM5z8eAW5DnzpnwtQzoSQalW6lxY4WRoYKBrF200D
-	 LEJj+qxyToKKsnai54Zn7uX8+lkRPTZMEDlvA4tjKzCyWnc8HyM1NBYArlMk2KvZJ4
-	 YEXpVzX81AEbZdoqCY8wfXfwm2xJ/GvdoxTVengY3bih8T5TUmPtJDLLkMmG35+5w9
-	 MVl1QPVXXfYKT8qctOXJpMUY=
-Received: from zn.tnic (p5de8ecf7.dip0.t-ipconnect.de [93.232.236.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AE00C40E022F;
-	Fri,  5 Apr 2024 14:20:36 +0000 (UTC)
-Date: Fri, 5 Apr 2024 16:20:35 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: gregkh@linuxfoundation.org
-Cc: mingo@kernel.org, torvalds@linux-foundation.org, stable@vger.kernel.org
-Subject: [PATCH 2/2] x86/retpoline: Do the necessary fixup to the Zen3/4 srso
- return thunk for !SRSO
-Message-ID: <20240405142035.GDZhAIs8LmOTRIpM3U@fat_crate.local>
-References: <2024033032-confess-monument-a6db@gregkh>
+	s=arc-20240116; t=1712327283; c=relaxed/simple;
+	bh=edtWDz0F9ERyIwkradda1dEIoOdPdwzXb2qVkEfqBV0=;
+	h=Content-Type:Mime-Version:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=lGaVtozIKtUSKp0J0xMug7Htbtd4OI5mF1kIX8tcpwlbNKz8eTaz966PrPM+ZI/jM6MjSoIu/GExIRa9Tt8TeesbUUFYVzCxbjyGVa53udrcgV8CFLf9+d7jGMKz8s3ENPEB7dz0r2E7i7MQ1Heud5JlNSnNE/Tql61dcUhno/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RIpag5M7; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4162ec14805so7510085e9.1;
+        Fri, 05 Apr 2024 07:28:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712327280; x=1712932080; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=O7LERPVCSW+Wfgv7Cf7Coboc+jfMXyoBnYaZV6ymz4A=;
+        b=RIpag5M78SHwP4RvqAZaWdnkoNPkr2eZb/5eFr103wlw3dNgXWAzesltU1F4er5EEl
+         0nswVIqpEcwDniyI9Xzii3tXzADjaYJaEE2Zfh9fbBSGXwuVsJLBondgZqBFbOG7pWbW
+         pLjAjiA+l6ErcJFXIpFIbmj2DaUpQvrYhs1sHodFarUndI3N8i3JxJXtFE0cczBl2hoU
+         qCBJN6lyIAyw1RrtDq2wgDgQqd4aWxEkE5lELHP82x9/64NT2BxoBlbv0WdvVSlzCE2+
+         lLlSDKoiLM4z3rfINIwJt42+ecK1l4H9FPkD/0mFRneo8LFG7XEJtachzsuUeD1FHGWp
+         +frg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712327280; x=1712932080;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O7LERPVCSW+Wfgv7Cf7Coboc+jfMXyoBnYaZV6ymz4A=;
+        b=QDPcJDN+Pp0oT//u4sF8zjQzRu9Joh8sweB8L5DXoCY8OWtM2LM0tA6NtjsGn23jsA
+         FsBY7D/OKfcFamCdAJ4+WlNYz4k5xzOhWCSj9g6Lu06ff3igoMs21FKXc/oj4+WAXuv7
+         mgswZn2LI4GmdoyEmrU1QcqzSw4nyCLnbL9bZgeCfZfxsAcE/hygeHoNZZs5+s+dR1/T
+         pqsUzILOv3UIjwf5WDGJpExE9aAxoKcGkGEZIOynraxoS5zu1unyk09c8uaor0NDARh1
+         bCeCBuJhxCd5MHWy3pk4UGJk6KZBZxXOQOzc8iWGUoimAScbIx05wTbml/7h+g5mDzNZ
+         IgMw==
+X-Forwarded-Encrypted: i=1; AJvYcCXpJi7gIpM8kan83r/qAPg2QRPWlrWpjoXpG487mQ9Qk08S/COYrtn7yvXSg97At30O3s7GAh/AFoA+vhkhuacjwzQlGhIGY9yJNLXF8lPxOg48e9MLnLzbRuylpkJk7g2i/jd06vjgOjAPM1ncnB4CnxKi6rnm+sa0IbzL3nddrz4=
+X-Gm-Message-State: AOJu0YzGVDts9PinOnfJYGRQyjgMb6f0RIwbDj9vaSS1t/6TPD7zUy3U
+	LgNRlAa0kdIWb+I6ktJZvAGhRqCu6BamYSxg1RHRgGfcOP2Znm+59mVZbJus
+X-Google-Smtp-Source: AGHT+IGmhovB4WvvEoGfhcQ7/7+9sQMUwNRkZ/ya0lVDZIypZ5bRpVOnEtbrPOgNbrIt2UzRbbBa6g==
+X-Received: by 2002:a05:6000:188a:b0:343:39f4:3f2e with SMTP id a10-20020a056000188a00b0034339f43f2emr2164436wri.5.1712327279625;
+        Fri, 05 Apr 2024 07:27:59 -0700 (PDT)
+Received: from localhost (p200300e41f162000f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f16:2000:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id i6-20020a05600c354600b0041488691eb1sm6662907wmq.17.2024.04.05.07.27.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Apr 2024 07:27:59 -0700 (PDT)
+Content-Type: multipart/signed;
+ boundary=2bced5962d6df3645374ca32f7e19dc7b5f911531a5e3e0d1afd7115069e;
+ micalg=pgp-sha256; protocol="application/pgp-signature"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2024033032-confess-monument-a6db@gregkh>
+Mime-Version: 1.0
+Date: Fri, 05 Apr 2024 16:27:58 +0200
+Message-Id: <D0C9D05HXLMP.PNF08QRPH8O2@gmail.com>
+To: "Sameer Pujar" <spujar@nvidia.com>, <broonie@kernel.org>,
+ <linux-sound@vger.kernel.org>, <alsa-devel@alsa-project.org>
+Cc: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <lgirdwood@gmail.com>, <jonathanh@nvidia.com>, <mkumard@nvidia.com>,
+ <stable@vger.kernel.org>
+Subject: Re: [RESEND PATCH v2] ASoC: tegra: Fix DSPK 16-bit playback
+From: "Thierry Reding" <thierry.reding@gmail.com>
+X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
+References: <20240405104306.551036-1-spujar@nvidia.com>
+In-Reply-To: <20240405104306.551036-1-spujar@nvidia.com>
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
-Date: Tue, 2 Apr 2024 16:05:49 +0200
+--2bced5962d6df3645374ca32f7e19dc7b5f911531a5e3e0d1afd7115069e
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Commit 0e110732473e14d6520e49d75d2c88ef7d46fe67 upstream.
+On Fri Apr 5, 2024 at 12:43 PM CEST, Sameer Pujar wrote:
+> DSPK configuration is wrong for 16-bit playback and this happens because
+> the client config is always fixed at 24-bit in hw_params(). Fix this by
+> updating the client config to 16-bit for the respective playback.
+>
+> Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+> ---
+>  changes in v2:
+>   * moved common setting to S32_LE switch case.
+>
+>  sound/soc/tegra/tegra186_dspk.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
-The srso_alias_untrain_ret() dummy thunk in the !CONFIG_MITIGATION_SRSO
-case is there only for the altenative in CALL_UNTRAIN_RET to have
-a symbol to resolve.
+Acked-by: Thierry Reding <treding@nvidia.com>
 
-However, testing with kernels which don't have CONFIG_MITIGATION_SRSO
-enabled, leads to the warning in patch_return() to fire:
+--2bced5962d6df3645374ca32f7e19dc7b5f911531a5e3e0d1afd7115069e
+Content-Type: application/pgp-signature; name="signature.asc"
 
-  missing return thunk: srso_alias_untrain_ret+0x0/0x10-0x0: eb 0e 66 66 2e
-  WARNING: CPU: 0 PID: 0 at arch/x86/kernel/alternative.c:826 apply_returns (arch/x86/kernel/alternative.c:826
+-----BEGIN PGP SIGNATURE-----
 
-Put in a plain "ret" there so that gcc doesn't put a return thunk in
-in its place which special and gets checked.
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmYQCm8ACgkQ3SOs138+
+s6HsnRAAnbvXUuFwGeAoUlndo/z+e8xofUaZP2R83hBnA3JyUK5SdmWuf44y6VoJ
+x0/RyQOZ20Wm0MGqRnalCMND9z5yNtfH0prJMBJlvhjKJFtMUI1+zpcfvqzMCxLJ
+4qtwzO324JwLnPMMV64aWfiHY5unR6wvwf2Angf60yWrD61RjJ0LPUfY/9a/zAGO
+ZKuGqslx+x7Xx3OZayaf/9sg+a1DcQEbCRsAzsWp22PGi52wp4PPgfDNUcTHGkhK
+bWFTkm46ZWV7DdUTCnJ50xc2lcz/9hDRou6sEbaZZYtWHjZTj5V4omVyteP0xIsL
+7dVC8lCT2Mf99iBcKlLRPy58NdWPnun5PCKMJ8s1GmFA+BYuGsUVxYko8Lnq5LDh
+GV9uzOIYwzs6LWJ2cMEKnR6uNXJEtLoq8YFoBvSHxaBnvAi0jO20Ak5UlO4YTwEo
+aUx8dpyjjCv6N+4U+9Y+rj0D7MsIvVbeBx8T8Ln6/0sw4mQ8qJe094/AzdU/UJEc
+8jnJFmkf1ae6CkTBpOrOR/KUQO6jcdENhqzUV4NAQPKJOm5mQ/0Zxd7hK8fYHWOB
+6ptE6q+mrMQJfsMdjl4X+MExHSX2LC8rCxawk0E4zoBQ7LBGDVLt5DtngAAVFBVP
+DpZMRBOvlDBSWQtdg3Gwlgq9Tw8VfyBihA0izA/HBugbXG9VrYg=
+=+hkQ
+-----END PGP SIGNATURE-----
 
-In addition:
-
-  ERROR: modpost: "srso_alias_untrain_ret" [arch/x86/kvm/kvm-amd.ko] undefined!
-  make[2]: *** [scripts/Makefile.modpost:145: Module.symvers] Chyba 1
-  make[1]: *** [/usr/src/linux-6.8.3/Makefile:1873: modpost] Chyba 2
-  make: *** [Makefile:240: __sub-make] Chyba 2
-
-since !SRSO builds would use the dummy return thunk as reported by
-petr.pisar@atlas.cz, https://bugzilla.kernel.org/show_bug.cgi?id=218679.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202404020901.da75a60f-oliver.sang@intel.com
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/all/202404020901.da75a60f-oliver.sang@intel.com/
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
----
- arch/x86/lib/retpoline.S | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 8acafe60220a..019096b66eff 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -108,6 +108,7 @@ SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	ret
- 	int3
- SYM_FUNC_END(srso_alias_untrain_ret)
-+__EXPORT_THUNK(srso_alias_untrain_ret)
- #endif
- 
- SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
--- 
-2.43.0
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+--2bced5962d6df3645374ca32f7e19dc7b5f911531a5e3e0d1afd7115069e--
 
