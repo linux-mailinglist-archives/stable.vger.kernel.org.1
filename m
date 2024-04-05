@@ -1,108 +1,121 @@
-Return-Path: <stable+bounces-36033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE46899597
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:38:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FA48995AC
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 08:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABCBA1C208AF
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:38:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D271C21156
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 06:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB871C696;
-	Fri,  5 Apr 2024 06:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5F8219FC;
+	Fri,  5 Apr 2024 06:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noxxfr5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYr+vmzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C1714288;
-	Fri,  5 Apr 2024 06:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A2A18659;
+	Fri,  5 Apr 2024 06:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712299072; cv=none; b=WuT87U2IKCo++f/P2f5PCvtIT11EY25iOqcnyHbpqfWhQAe/Yor4Juj4xwshJ7XCvEWLPCxdyKt3knsEM6tbNdR+edQ7p78k0Ae3UP63Ly87eZtR/9A3+1BqAPXxrMAi2U3cOclUufQ0p/Ol+xBhJQqDtKsE8spTL/BDAF2IIOs=
+	t=1712299373; cv=none; b=uqWMeJJ0v8qOsbpK90OJc3h+2FeT29V8qonabf6Mne5t/Xj0f0TqBEEcgv882KF0uGm7CQ5QWwjwE25HOGWfb8reqQQD8yg3Q2ACbO2NZwF1Wbys3JUA+EcBPF5JzMm3BwqMz68J00MyW2wWQrJU0Z9ZYpyI4ETZd5HuPejyBss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712299072; c=relaxed/simple;
-	bh=x+/Mq/rmeQx2+kJB0UUehFljzLSHxpKorqQ3wE9zZvQ=;
+	s=arc-20240116; t=1712299373; c=relaxed/simple;
+	bh=yqvRzGgJBEoPw84m3wibIRMoO901bjxYZLE2U2L0kkY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qrVK/acO0kCrqYifc10rDg/w9lowxO7Vzho0kpZlPLJQEhgsUzh7mX9vggkuCkaC34vqPv/BNplnwA9RYUrAxeYC6wHt0KviRtJV0g+YgkO6uybuV+mZCBJ3LOhIpQjdHY5UXBq2tJrX+12r6kle4+1qjsM1BYcoeZmiXS140eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noxxfr5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A48C433F1;
-	Fri,  5 Apr 2024 06:37:51 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nky6ik9+R85PGy/umNSUHHCJJ6fXr/MiJzFpVeue9aLWuDgGXDfFQiIJ3zVhvLL56KqM3CCG4EByjFRzEQU0ZXe038w3lNi02xbP2gOcQzyJSLCO1I1j1r5iYL36ef7UevQpIR3XrBiQevJ8wEDlJq7VchC2Fw3l1rK0sUEWrIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYr+vmzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A43C433C7;
+	Fri,  5 Apr 2024 06:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712299071;
-	bh=x+/Mq/rmeQx2+kJB0UUehFljzLSHxpKorqQ3wE9zZvQ=;
+	s=korg; t=1712299372;
+	bh=yqvRzGgJBEoPw84m3wibIRMoO901bjxYZLE2U2L0kkY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=noxxfr5Od8JqZzA0S0c0eMEryFu92K1ivZ/Xu6hDxj5sgEOn55Ibt2/H9bEWMSsNl
-	 0v3w7GVCpas6gpDmPjN2LTMa2G/NtwdXIB7mHbuhRSyZoPxXQarH6f3s6c8RbLtHyR
-	 ZlQRSF+nth98pN3+OGq3rrmFlKlWmVQIgC67MuuA=
-Date: Fri, 5 Apr 2024 08:37:48 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dmitry Rokosov <ddrokosov@salutedevices.com>
-Cc: quic_sridsn@quicinc.com, quic_mdalam@quicinc.com, ezra@easyb.ch,
-	gch981213@gmail.com, miquel.raynal@bootlin.com, richard@nod.at,
-	sashal@kernel.org, vigneshr@ti.com, kernel@salutedevices.com,
-	rockosov@gmail.com, linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	Ezra Buehler <ezra.buehler@husqvarnagroup.com>,
-	stable@vger.kernel.org,
-	Martin Kurbanov <mmkurbanov@salutedevices.com>
-Subject: Re: [PATCH v1] mtd: spinand: Add support for 5-byte IDs
-Message-ID: <2024040509-faceless-passerby-10ad@gregkh>
-References: <20240404121532.14755-1-ddrokosov@salutedevices.com>
+	b=OYr+vmzNVqXaqcPNVGMFNFrMEJt80lkvX2Ld8wWVM3prY52XF4Z/NgsiEfE0gClDO
+	 wsuXF2qbGz4QhwiAJ0K4NqiNrSlsFa7V4s67572GL5WWxmtuV9TvnSnjLz3Oveop09
+	 zqtZmD4BaDeRTZdvaxkuy3SeaH2eWwrWNs4QA+HM=
+Date: Fri, 5 Apr 2024 08:42:49 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Peter Collingbourne <pcc@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jiri Slaby <jirislaby@kernel.org>, linux-serial@vger.kernel.org,
+	stable@vger.kernel.org, VAMSHI GAJJELA <vamshigajjela@google.com>
+Subject: Re: [PATCH] serial: 8250_dw: Revert: Do not reclock if already at
+ correct rate
+Message-ID: <2024040500-snowbound-cadet-bba2@gregkh>
+References: <20240317214123.34482-1-hdegoede@redhat.com>
+ <ZfgZEcg2RXSz08Gd@smile.fi.intel.com>
+ <CAMn1gO4zPpwVDcv5FFiimG0MkGdni_0QRMoJH9SSA3LJAk7JqQ@mail.gmail.com>
+ <35cdaf7e-ef32-470f-ab61-e5f4a3b35238@redhat.com>
+ <33110d20-45d6-45b9-8af0-d3eac8c348b8@redhat.com>
+ <CAMn1gO5-WD5wyPt+ZKDL-sRKhZvz1sUSPP-Mq59Do5kySpm=Sg@mail.gmail.com>
+ <8cbe0f5f-0672-4bca-b539-8bff254c7c97@redhat.com>
+ <2024032922-stipulate-skeleton-6f9c@gregkh>
+ <1d7c3e03-fb25-4891-87bb-f4e7b8b4ee30@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240404121532.14755-1-ddrokosov@salutedevices.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1d7c3e03-fb25-4891-87bb-f4e7b8b4ee30@leemhuis.info>
 
-On Thu, Apr 04, 2024 at 03:15:21PM +0300, Dmitry Rokosov wrote:
-> From: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+On Fri, Apr 05, 2024 at 08:14:03AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 29.03.24 13:12, Greg Kroah-Hartman wrote:
+> > On Fri, Mar 29, 2024 at 12:42:14PM +0100, Hans de Goede wrote:
+> >> On 3/29/24 3:35 AM, Peter Collingbourne wrote:
+> >>> On Thu, Mar 28, 2024 at 5:35 AM Hans de Goede <hdegoede@redhat.com> wrote:
+> >>>> On 3/28/24 8:10 AM, Hans de Goede wrote:
+> >>>>> On 3/18/24 7:52 PM, Peter Collingbourne wrote:
+> >>>>>> On Mon, Mar 18, 2024 at 3:36 AM Andy Shevchenko
+> >>>>>> <andriy.shevchenko@linux.intel.com> wrote:
+> >>>>>>>
+> >>>>>>> On Sun, Mar 17, 2024 at 10:41:23PM +0100, Hans de Goede wrote:
+> >>>>>>>> Commit e5d6bd25f93d ("serial: 8250_dw: Do not reclock if already at
+> >>>>>>>> correct rate") breaks the dw UARTs on Intel Bay Trail (BYT) and
+> >>>>>>>> Cherry Trail (CHT) SoCs.
+> >>>>>>>>
+> >>>>>>>> Before this change the RTL8732BS Bluetooth HCI which is found
+> >>>>>>>> connected over the dw UART on both BYT and CHT boards works properly:
+> >>>>>>>>
+> >>>>>>>> Bluetooth: hci0: RTL: examining hci_ver=06 hci_rev=000b lmp_ver=06 lmp_subver=8723
+> >>>>>>>> Bluetooth: hci0: RTL: rom_version status=0 version=1
+> >>>>>>>> Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_fw.bin
+> >>>>>>>> Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_config-OBDA8723.bin
+> >>>>>>>> Bluetooth: hci0: RTL: cfg_sz 64, total sz 24508
+> >>>>>>>> Bluetooth: hci0: RTL: fw version 0x365d462e
+> >>>>>>>>
+> >>>>>>>> where as after this change probing it fails:
+> > [...]
+> >>> Acked-by: Peter Collingbourne <pcc@google.com>
+> >>
+> >> Thanks. Greg can we get this merged please
+> >> (it is a regression fix for a 6.8 regression) ?
+> > 
+> > Will queue it up soon, thanks.
 > 
-> [ Upstream commit 34a956739d295de6010cdaafeed698ccbba87ea4 ]
+> You are obviously busy (we really need to enhance Git so it can clone
+> humans, too!), nevertheless: friendly reminder that that fix afaics
+> still is not queued.
 
-This commit is already in the following releases:
-	6.6.24 6.7.12 6.8.3 6.9-rc1
+"soon" is relative :)
 
-> E.g. ESMT chips will return an identification code with a length of 5
-> bytes. In order to prevent ambiguity, flash chips would actually need to
-> return IDs that are up to 17 or more bytes long due to JEDEC's
-> continuation scheme. I understand that if a manufacturer ID is located
-> in bank N of JEDEC's database (there are currently 16 banks), N - 1
-> continuation codes (7Fh) need to be added to the identification code
-> (comprising of manufacturer ID and device ID). However, most flash chip
-> manufacturers don't seem to implement this (correctly).
-> 
-> Cc: <stable@vger.kernel.org> # 6.6.23
-> Cc: <stable@vger.kernel.org> # 6.7.11
-> Cc: <stable@vger.kernel.org> # 6.8.2
-> Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-> Reviewed-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-> Tested-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> Link: https://lore.kernel.org/linux-mtd/20240125200108.24374-2-ezra@easyb.ch
-> Signed-off-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
-> ---
-> 
-> In the patch series [1] only one patch was marked with Fixes tag, that's
-> why the secon patch was not applied to 6.6.y, 6.7.y and 6.8y. It breaks
-> ESMT detection flow with logs:
-> 
-> [    0.770730] spi-nand spi0.0: unknown raw ID c8017f7f
-> [    0.772688] spi-nand: probe of spi0.0 failed with error -524
-> 
-> Please cherry-pick the second patch from the series to 6.6.y, 6.7.y and
-> 6.8.y.
+> Side note: there is another fix for a serial 6.8 regression I track
+> waiting for review here:
+> https://lore.kernel.org/linux-serial/20240325071649.27040-1-tony@atomide.com/
 
-What commit id is "the second patch" here?  The one referenced above?
-If so, again, this is already in a released kernel, so I'm confused as
-to what to do here.
+It's in my queue, I'll try to get to serial stuff later today, but not
+promising anything...
 
 thanks,
 
