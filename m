@@ -1,105 +1,95 @@
-Return-Path: <stable+bounces-36108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F810899E1A
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 15:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FEAF899E6F
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 15:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4AA11F221E8
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 13:13:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4331F225EB
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 13:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276BE16D313;
-	Fri,  5 Apr 2024 13:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37AF16D4E1;
+	Fri,  5 Apr 2024 13:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EVlSCTSQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuCUokmc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5BE1649DF;
-	Fri,  5 Apr 2024 13:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CBB16D4C5;
+	Fri,  5 Apr 2024 13:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712322829; cv=none; b=VVHp2Uph3PIooyAbVMBSOnsHFZBAbrMg9UAcv830sx2Gy4IcStA4rbmQIUCSkgM/Wenh8E48vbDxHZTyHyDoRzdy+2Y+p3joM6sp8QaPmHqZRDFkU/F1L4EsSEuoRLa/YtRdhdwdCWieyBfPn8H6kkGzg93C2+UB5XghnS1+adE=
+	t=1712324158; cv=none; b=cQEgmuEw1+ihHou2h1NC00r/WqFFm8fFFlzxo6HHH5r9TtCOUkH/gHQVjGOxbjAXmx/4TQaOUEeyP+q++jvuRQU9xwhAjARLtULjAvq03zGXNWBWNOmB8styPGvP+KXEjja4AlGNewPnpxXk2SuJXzR3VJyAWE70TSGo+BpDZqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712322829; c=relaxed/simple;
-	bh=kuMV/3T6ZFOYdnbds+4lzaSfsPnTVAQKG+lKGoR4FbU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T49Ho9CyCxb47jkypRRkwMdyZNuLFPvQ6gS7TfOQpmAueVwQjC5srAW9ZeXz07lAB4QVIhIQ4/cQxrNagCsuPtakMY0VbSRwqxIXMQaWrPBBX33TGSUrdut8gIMEQ8FrIEO8c3ANleCy45dr0Zcs4oMtChXGb2nItGsrU4cCUAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EVlSCTSQ; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7cc5fdb0148so91027839f.3;
-        Fri, 05 Apr 2024 06:13:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712322828; x=1712927628; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x+eOwWNjATfYk+c/TB3aDWZzFnSusbmwrVL3HM1jFH4=;
-        b=EVlSCTSQKG9QmTsjxYJDcjVkkBLATS1toUs2ASfMe10LaBo+hM7C4jiymxzYbfAbmn
-         mF9X0PtV3CZ3B3Gv1YzN+QzOD/iumiyuiZ5e6y13Xb4WxdHcBlZ/Q2d97+56NLr9l/M+
-         VdFBdlfR78+Ft70sBWPPsk0tIJUXsVM9TZHl3bfgWklmRokLYq90Ei8HnDAgsVOF5A1e
-         qssrck6KDSDOoKoekVmVotWkUge6C/oFQfqzEdrdJyX/ft7Ue04ZYWLSdh/+PHfnDEpK
-         0XDvtdwMdi18d0cX+r19Sc4/V2+PjJe7Vd1xeSe79LsUVzbqulROa7wv483Cd2JRh65b
-         I4wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712322828; x=1712927628;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x+eOwWNjATfYk+c/TB3aDWZzFnSusbmwrVL3HM1jFH4=;
-        b=DjBXXhxzvSMclkCzvocsN9j2nVIPmFE2eJ64Z7TfNaQrq05IEqaFEdtC/VkNcRft3r
-         MKA6XZjNaomPXdJAgMe7ByX4cQ//Ye1APQYzgmPCgtSFy1jNCjFQyZIHXN3wuSv5uPFZ
-         SSOkVXPUQoJw3FeP5Us0SwMOMH6kX0Crqmys4xY49820QbER2ylyGZxPvLJlAQJ6KCzB
-         fNAm5gbr1PrGhjyrhKH3jC7rxorFsxtlq5BNWQ0eoe3mE3o9lwac6RhhlTQKOmUd2ion
-         Sph1CBYLJW4TOEMc0F9RE4aptYvDv8qEuhIHz7M8IFLHOW/Pv8pmoeaH9U0x/1bPTOxP
-         U5SA==
-X-Forwarded-Encrypted: i=1; AJvYcCWoeGbX9LtGm5G0YuPuISbQQNiZZOCPVOSHOkL4AGwkZ5JKi4vLduKbRMPBWuEkvcChPDTt/FA3F5m8ZFFLFUl75HNXT0znK2Brn46DzCMYIsG1IAUGaPJ91TjwiQfHX9r65HE3
-X-Gm-Message-State: AOJu0YwtMcYv8nrPMjN/H+NVk6UKh2+QQZ1uVM7fJMZV1DbCH9Zybfyo
-	O8Z1xmbvHt99yhOBU4QKyWDy3XG1yNWiFIE91bx3YaT+ay/pU3uPtE9JPhiqWs6r8m/K6rYkMrJ
-	EXZq/AhJMzUKKNLWHucRWcyHtdcGQBl+ugM8=
-X-Google-Smtp-Source: AGHT+IHaX2dQh+kALgdWIspduT6ugovJPa5Sn4HGaoAs9RZ6fW+NT+v+SSYkpoJ5EWsoUTSjQy/1Vw5BjcFJ1irMF5s=
-X-Received: by 2002:a05:6602:2486:b0:7d5:bfc5:2a4f with SMTP id
- g6-20020a056602248600b007d5bfc52a4fmr1235931ioe.3.1712322827628; Fri, 05 Apr
- 2024 06:13:47 -0700 (PDT)
+	s=arc-20240116; t=1712324158; c=relaxed/simple;
+	bh=EhVVh5GZIIEIV/3Uxi1NPA4AOB1c9kMHyH66uTSLA4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s02d1IT32ExxdtIsWFjofb0kEvus8KW1HHzzCXOXpO0rVfRr5c7ewEgigrBdcLojYoOLWtgnV/4OrhsHJUktkg3utxUEph/s8xSk7hQwQJGaCX2mwCL+Ukx/LRjJADWKunSglDBLjpsYmUpLKrnXn7+OOEJK6WleslvYukLnfSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuCUokmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A2FC433C7;
+	Fri,  5 Apr 2024 13:35:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712324158;
+	bh=EhVVh5GZIIEIV/3Uxi1NPA4AOB1c9kMHyH66uTSLA4g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HuCUokmcH7wC/XtzVv3fJkeuNaCI5eFiD7z/fMW14hC5wcC16v6T6GAQ3mtVqYRoc
+	 SewQ312Ll13CAnOJJZnOPpTvfwmsxuHJatMtVi+K3HejTptx8FS1JrfgtWn1fa5/C2
+	 O6B5v0TL5IPa2WUCNjBeKEOCMdhc3dKD/qemq6Vc=
+Date: Fri, 5 Apr 2024 15:35:55 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Eric Hagberg <ehagberg@gmail.com>
+Cc: Ingo Molnar <mingo@kernel.org>, Russ Anderson <rja@hpe.com>,
+	Steve Wahl <steve.wahl@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org,
+	Linux regressions mailing list <regressions@lists.linux.dev>,
+	Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
+	Simon Horman <horms@verge.net.au>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
+	Dimitri Sivanich <sivanich@hpe.com>
+Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
+ except on UV platform.
+Message-ID: <2024040543-enticing-ferris-2fb5@gregkh>
+References: <20240322162135.3984233-1-steve.wahl@hpe.com>
+ <ZgABC1oQ9YJW6Bw3@gmail.com>
+ <20240325020334.GA10309@hpe.com>
+ <ZgFY24QT7470ZGnV@gmail.com>
+ <CAJbxNHeqY3QevjH3=BuD=DhB0YK6ZvPDbOn_m-LOYAfY81MqhA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240322162135.3984233-1-steve.wahl@hpe.com> <ZgABC1oQ9YJW6Bw3@gmail.com>
- <20240325020334.GA10309@hpe.com> <ZgFY24QT7470ZGnV@gmail.com>
-In-Reply-To: <ZgFY24QT7470ZGnV@gmail.com>
-From: Eric Hagberg <ehagberg@gmail.com>
-Date: Fri, 5 Apr 2024 09:13:36 -0400
-Message-ID: <CAJbxNHeqY3QevjH3=BuD=DhB0YK6ZvPDbOn_m-LOYAfY81MqhA@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
- except on UV platform.
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Russ Anderson <rja@hpe.com>, Steve Wahl <steve.wahl@hpe.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, 
-	Linux regressions mailing list <regressions@lists.linux.dev>, Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org, 
-	Simon Horman <horms@verge.net.au>, Eric Biederman <ebiederm@xmission.com>, 
-	Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>, Dimitri Sivanich <sivanich@hpe.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJbxNHeqY3QevjH3=BuD=DhB0YK6ZvPDbOn_m-LOYAfY81MqhA@mail.gmail.com>
 
-On Mon, Mar 25, 2024 at 6:58=E2=80=AFAM Ingo Molnar <mingo@kernel.org> wrot=
-e:
-> Anyway, I've reverted this in tip:x86/urgent:
->
->   c567f2948f57 Revert "x86/mm/ident_map: Use gbpages only where full GB p=
-age should be mapped."
+On Fri, Apr 05, 2024 at 09:13:36AM -0400, Eric Hagberg wrote:
+> On Mon, Mar 25, 2024 at 6:58 AM Ingo Molnar <mingo@kernel.org> wrote:
+> > Anyway, I've reverted this in tip:x86/urgent:
+> >
+> >   c567f2948f57 Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
+> 
+> I see that this hasn't been reverted in the longterm branches it made
+> it into already (6.1.x and 6.6.x, for example) - is it expected to be
+> reverted there as well? I'd think it should be, until this is all
+> sorted out.
+> 
 
-I see that this hasn't been reverted in the longterm branches it made
-it into already (6.1.x and 6.6.x, for example) - is it expected to be
-reverted there as well? I'd think it should be, until this is all
-sorted out.
+The revert is queued up for the next round of stable updates.
+
+thanks,
+
+greg k-h
 
