@@ -1,92 +1,94 @@
-Return-Path: <stable+bounces-36052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9AD89997A
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 11:31:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73197899983
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 11:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15461C21654
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 09:31:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 015A8B21504
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 09:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F203C15FD1C;
-	Fri,  5 Apr 2024 09:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF6C15FD0D;
+	Fri,  5 Apr 2024 09:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJsmsQWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3KxCRgU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D0D15FCF6;
-	Fri,  5 Apr 2024 09:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C54F142E73;
+	Fri,  5 Apr 2024 09:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712309509; cv=none; b=nx9T5Ziodrp8xV/06XcdncLOlbPIsxpHTtI4DpkG8wgDQcxzcwmsEZPV3e0sXlVljMWTn+SLP5nDn7tc1xOMTXBk46O1Hx6xGgznW4w2d/M5tP/F8xQUxt1XILdUpS1Earu10SkqOENfyPYM1AXJeBvXq8qhPiD2sB7ffeh+GdA=
+	t=1712309603; cv=none; b=e4LEbAAGjfRCjkYZE66EhCuqfoPS+IKmjJhZjBgsuMslqYIqHZwgh7Up6/Q47xXsMInnWME4KWKx5KSW/Z0UAWAO/vXvdGkSFTyOBdab+/q0NmHEA25fcdYLaLg2nVVAbVYYt3UdyJ68wROzSgJy4jwS7ISLREV6lwhp79qw+gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712309509; c=relaxed/simple;
-	bh=W+tQ7nF7wftBybZcYIpKWYyTxWY+uQlnce2bX+/IYAk=;
+	s=arc-20240116; t=1712309603; c=relaxed/simple;
+	bh=WTZoAjTOwh9BcVL0bHX8/oS3W4NlAY1M3zbmL2DAUDg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jyfC2evcB3h59fRWh71dgs42QpauIMsZlEd/kuSuwCJzQSCaMGhMoNGkijZ9IU5Psn5ElTT5Cf3KOP8U3Xs9IAHcGRqsk+XGZvPzqg6Wl1Ume5hcAh2uy7gQZp0UjuYVpEPVGDQftpv92+4K4YLLBJpaNIgeRpKDUI7SVWhMXls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJsmsQWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BCEC433F1;
-	Fri,  5 Apr 2024 09:31:48 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=E0lhmq/EB4kbf3v2xDZ0JzS7M6Lv/Y4nRz4JZk0KdsFqChicJxacZIjjlvG1n8KWZ2WSfo18hRvqJ00EEZL7MSAu7kGoEU0mL7a5D7Q/8X2vKrAvy+531Oq0nsVOncY/5vqT/y3CoFEDeINQSQujBgI2v072aUsOUB/4apVfuwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3KxCRgU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99742C433F1;
+	Fri,  5 Apr 2024 09:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712309509;
-	bh=W+tQ7nF7wftBybZcYIpKWYyTxWY+uQlnce2bX+/IYAk=;
+	s=korg; t=1712309603;
+	bh=WTZoAjTOwh9BcVL0bHX8/oS3W4NlAY1M3zbmL2DAUDg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aJsmsQWZ64dFfZ6IzczgRYD4xAAciCrYVQNsMWIOktuGtASFhPoqkbIFjinL8ea2Q
-	 4k7owPpTB7y1b0mY2m8nZJHxv7QMa1grmR01ZbZh9cqUzKYkc0QW5j3Bb9ixnPMBcm
-	 uWUkNoMGVycPWjErfmMCdCygxFdQD/gVEkqvHuOI=
-Date: Fri, 5 Apr 2024 11:31:45 +0200
+	b=f3KxCRgUhWMWNdsWwsFPC+QAepS8hH1PU3YsLykzXkwKxNTdqG/pL64Oz8aTAb9/n
+	 ByaPe+LWd64msgPjQu3Dt/GWeGLOrmQM0z8mzTMc8p0vLN8TOs8zCSzPwp4ZNo59Dd
+	 R/0haKU/emEUIawYN/RFmQfeE/zFaIdorr28MR9A=
+Date: Fri, 5 Apr 2024 11:33:20 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Cc: stable@vger.kernel.org, axboe@kernel.dk, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com,
-	Min Li <min15.li@samsung.com>, Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v5.10] block: add check that partition length needs to be
- aligned with block size
-Message-ID: <2024040539-bonsai-nugget-9e60@gregkh>
-References: <20240402084955.82273-1-ashwin.kamat@broadcom.com>
+To: Lukasz Luba <lukasz.luba@arm.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	ye.zhang@rock-chips.com, d-gole@ti.com, rafael@kernel.org,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [STABLE 5.15][PATCH] thermal: devfreq_cooling: Fix perf state
+ when calculate dfc res_util
+Message-ID: <2024040558-defection-shadily-1879@gregkh>
+References: <20240404101329.1956664-1-lukasz.luba@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240402084955.82273-1-ashwin.kamat@broadcom.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240404101329.1956664-1-lukasz.luba@arm.com>
 
-On Tue, Apr 02, 2024 at 02:19:55PM +0530, Ashwin Dayanand Kamat wrote:
-> From: Min Li <min15.li@samsung.com>
+On Thu, Apr 04, 2024 at 11:13:29AM +0100, Lukasz Luba wrote:
+> From: Ye Zhang <ye.zhang@rock-chips.com>
 > 
-> [ Upstream commit 6f64f866aa1ae6975c95d805ed51d7e9433a0016]
+> The issue occurs when the devfreq cooling device uses the EM power model
+> and the get_real_power() callback is provided by the driver.
 > 
-> Before calling add partition or resize partition, there is no check
-> on whether the length is aligned with the logical block size.
-> If the logical block size of the disk is larger than 512 bytes,
-> then the partition size maybe not the multiple of the logical block size,
-> and when the last sector is read, bio_truncate() will adjust the bio size,
-> resulting in an IO error if the size of the read command is smaller than
-> the logical block size.If integrity data is supported, this will also
-> result in a null pointer dereference when calling bio_integrity_free.
+> The EM power table is sorted ascending，can't index the table by cooling
+> device state，so convert cooling state to performance state by
+> dfc->max_state - dfc->capped_state.
 > 
-> Cc:  <stable@vger.kernel.org>
-> Signed-off-by: Min Li <min15.li@samsung.com>
-> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-> Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Link: https://lore.kernel.org/r/20230629142517.121241-1-min15.li@samsung.com
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
+> Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+> Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+> Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
+> Reviewed-by: Dhruva Gole <d-gole@ti.com>
+> Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
 > ---
->  block/ioctl.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> Hi Greg,
+> 
+> I have solved small backporting conflict to that v5.15.
+> The patch is based on tag v5.15.99 and it's for this
+> failing backport:
+> https://lore.kernel.org/stable/2024033050-imitation-unmixed-ef53@gregkh/
 
-Now queued up,t hanks.,
+Thanks, next time all that I need is the git id of this in Linus's tree,
+no need to point to a previous FAILED email.
+
+now queued up.
 
 greg k-h
 
