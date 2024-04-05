@@ -1,73 +1,64 @@
-Return-Path: <stable+bounces-35986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBB08992DF
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 03:45:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7627899324
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 04:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E4351F24A09
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 01:45:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CA70B23E71
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 02:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB010B67E;
-	Fri,  5 Apr 2024 01:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C367D15E9B;
+	Fri,  5 Apr 2024 02:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FZJxpTA8"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="PjC2XAxj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70139B64B
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 01:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D389814AA0
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 02:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712281523; cv=none; b=atb0lwfIOWdzW79fhWIpipIOMtysl2dF9QsN/Gwou7kT0+DWgwFzLRjzHR/V9ZiayOdJCl1xjE1Gq8D54VYiP1Nhc8m5qS4YfRc+2+BwKaxbpS94msnP5ubSgnpKdKUOXeC+fp8JkCHBfErSziS+DoVfJMFyYN37F3+UOLI0C68=
+	t=1712284037; cv=none; b=aQ6vl8MBUn1Cql+novMhDEZWOsuGiJS5c0pWxP3i2KIFUzAmUru2QLXoatAIOkpGg/nEZyuGKLbg4VwLQP5r4enwOX1aZzJ2grVmb5U3b289A+/2aTmRBZidF2yoLNLCnuSx1K2335thJuyjXmFagFypEA8qMFLUZyjGmCHNypI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712281523; c=relaxed/simple;
-	bh=lGpzE+7NWORN/z9r8pI2einjC4VMXzHEX3KwJEgISVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=nDLKKfBekGdAo7BFll0NEE+FqwaEW4sgG2B/d3vNtACZ8ptCRiSXdA2omVUU9OnWZSTBAZY1EDS3IlG4Qaj+Uow9JtI+XlNfTZAr/IrPC8SvTRsNUxmihXWJvLcDGL2u0WGvZiQdB7Zf+d1qxrEFi1/E98vias2arCDH4wkJ4xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FZJxpTA8; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712281521; x=1743817521;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=lGpzE+7NWORN/z9r8pI2einjC4VMXzHEX3KwJEgISVo=;
-  b=FZJxpTA8vWdhivXAOZ79Zk6LyPUEwJu6CnyALBUjcYwGqVFmZ//YM3N/
-   OR3CpywUSo7RFE8NU6VLYUu3qp6FXirM4R79d6BPG+8qPrQ9EZSArdOCO
-   reBJxIWso5kldr0/vv9oMaxCo1MU8XTYgJ/tHNZ0BNTuQGkPPL/QBrJPW
-   zSMOfH6iSw++yHl7gGakIB8DnRcyMlTclnLazSTPqV43j4Q5aeJAIsVh6
-   B02nYU47d0vvgkxT/HQwtm9KZEGXa5dx8fTw/wmE1XDu+vGUdDkGLFtMM
-   5woes5claGXhrlPJU/HDan6pesjI+JfafS3TScALSyPxy5vy57F/x7KIY
-   A==;
-X-CSE-ConnectionGUID: mTL/LNisSXywHT+lKUz1hA==
-X-CSE-MsgGUID: qf+VlIJPTBuDou913nQY5w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="7483248"
-X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
-   d="scan'208";a="7483248"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 18:45:21 -0700
-X-CSE-ConnectionGUID: TuJU2itWTE+EXQHNC3dOCw==
-X-CSE-MsgGUID: tOq+nJWxQyicKOHyw3iHew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
-   d="scan'208";a="23678532"
-Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 04 Apr 2024 18:45:20 -0700
-Received: from kbuild by e61807b1d151 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rsYdp-0001k2-1m;
-	Fri, 05 Apr 2024 01:45:17 +0000
-Date: Fri, 5 Apr 2024 09:44:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Saranya Muruganandam <saranyamohan@google.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] block: Fix BLKRRPART regression
-Message-ID: <Zg9Xf8r8gpEuyoBs@92629a18465e>
+	s=arc-20240116; t=1712284037; c=relaxed/simple;
+	bh=NiS5deyMvevKlNkCo0sSnhd4ZIm3jHMnIcGkBixMHOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GGBclBqUPt41H14JoftEej/1YvrgnI2r9B33Qz2f0d3dUeQsGhm6ySpNCGhsg5FcuOy6BLPexBLAT7CHAds9Z8Nsrj0Wv0qQXtXUpr6jReRnVYZ4bVW0lxjxIxSal0Mqa3r9WjTylNpGZ43AzRxNL+JGgdN//l4ZI5tjFzpoxnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=PjC2XAxj; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-113-2.bstnma.fios.verizon.net [173.48.113.2])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 4352Qphf021537
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 4 Apr 2024 22:26:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1712284015; bh=recwD/IQWzE/0BMPOsDL3jZNvegzzgNj1gF0H+r6mNs=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=PjC2XAxj+KeDdXAOrm1O+Gtd9HoTbW7SWKp+Fzb1zGt15Byhbn0CEhyhnbChayawz
+	 SPtJyycGkfuCqyugqw+QorL0w9qDItKOS1fZePAd0UBturG+UnPXqJvwsvC/NQKp9X
+	 GtQ98StBPqed1u6nEzzuiJbigHchuH/OpmzGcWv4AsrgKjIWEjuy3PwaNrpbrWB/4S
+	 0wMNSw8ZCbBWVgSrMeOWP/AisdkoaNYTb+4xig8qwHwLa8yRkwVWtGpr7aVAwIWomK
+	 SOGms6fiUARYoaOi17duory7yeX3PmC5lNiKkSps/dNvXApcD650DnEOt4clurPcHc
+	 cnBRFxihiUBAg==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id CB38C15C00DE; Thu,  4 Apr 2024 22:26:51 -0400 (EDT)
+Date: Thu, 4 Apr 2024 22:26:51 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Cc: stable@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Michail Ivanov <iwanov-23@bk.ru>,
+        Pavel Koshutin <koshutin.pavel@yandex.ru>,
+        Artem Sadovnikov <ancowi69@gmail.com>
+Subject: Re: [PATCH] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
+Message-ID: <20240405022651.GB13376@mit.edu>
+References: <20240404095000.5872-1-mish.uxin2012@yandex.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,24 +67,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240405014253.748627-1-saranyamohan@google.com>
+In-Reply-To: <20240404095000.5872-1-mish.uxin2012@yandex.ru>
 
-Hi,
+On Thu, Apr 04, 2024 at 12:50:00PM +0300, Mikhail Ukhin wrote:
+> Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
+> 
+> The problem occurs in ext4_ind_migrate due to an incorrect order of
+> unlocking of the journal and write semaphores - the order of unlocking
+> must be the reverse of the order of locking.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with syzkaller.
 
-Thanks for your patch.
+This doesn't make any sense.  Lock order matters; the order in which
+you unlock shouldn't (and doesn't) make a difference.  This is also
+something which lockdep doesn't complain about --- because it's not a
+problem.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+So how was this "found by syzkaller"?
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] block: Fix BLKRRPART regression
-Link: https://lore.kernel.org/stable/20240405014253.748627-1-saranyamohan%40google.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+					- Ted
 
