@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-36087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B810899B1A
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 12:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5263C899B1D
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 12:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEAD51C21144
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 10:44:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 849071C219B9
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 10:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10D161902;
-	Fri,  5 Apr 2024 10:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1268160798;
+	Fri,  5 Apr 2024 10:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJmCRJKZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LO+C6T8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F6518E02
-	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 10:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E1215FA6F
+	for <stable@vger.kernel.org>; Fri,  5 Apr 2024 10:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712313861; cv=none; b=kzjT4dIp9Lqs6e++b7fTuq4FsA9dfS/9TkrMcAP/FtEjJacHqNXXKV4hQCZ8b7SKkXUYBvf2TbYBi86FpClCUBRYS4SXSuZX27vWHQVmkK4KiK+eXPyWvztJ/VCCoDksxUH794/eAi9dY3T+leWSKyKhggU0j6cr+pBArgBzmDA=
+	t=1712313865; cv=none; b=VcnyA7PFKHF0i111EmFTyZk9rrZpIIJeO3VWQ0Eh8ABaJdyT1vFQgBOAPbEkbph/G60nL3/10jj6t1T3K9tdtEWOS1t1O7PICTHZxtOLWU5RW4RGEm+myN3t/U1Xul8wcQkKyVujidKNATbYDS2o9oTiP7ImTksaOm8y6Q9Gt9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712313861; c=relaxed/simple;
-	bh=Cd/bQxElFKnL4kV4VEWBdeNq1szDfKtSJONXw6Gi7Tw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Yg1Nh64WLwSlOJMc72B4/Y1kMdIlormcyGRovWRW3yE4Yu1LUJG0Jkst7v8UABm43d6ZK3P2hD/DTPgj4X8HVnqiKQVTanBS724I6jvjAj/WImWE1+TEBTWzu85w5zLyBbgHvsij/kPMD4GfoTr0dgLyzPpyq7NfosCWnnytEUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJmCRJKZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809DDC433C7;
-	Fri,  5 Apr 2024 10:44:20 +0000 (UTC)
+	s=arc-20240116; t=1712313865; c=relaxed/simple;
+	bh=kGHKQyFbgkPTx5UtvGxIXz8wdZLXxvCQQitl/zqj1as=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PCOcuEfE5tnlFzhCPkwO1kMjlf+WaFbCJEn02a6Zw1v4BK/t6kV7qfcYqYqrVOlvgE8KMRyopH9pPTCHQqrKIV3G1KO88wCZK9uifMMGHU64LG94Hyn66xZVqO5XA+qWKK+u/OHBSsLEpfbnu4IkjCwfwP/3TLvjiBQTkb+zsds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LO+C6T8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C602BC43390;
+	Fri,  5 Apr 2024 10:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712313860;
-	bh=Cd/bQxElFKnL4kV4VEWBdeNq1szDfKtSJONXw6Gi7Tw=;
+	s=korg; t=1712313865;
+	bh=kGHKQyFbgkPTx5UtvGxIXz8wdZLXxvCQQitl/zqj1as=;
 	h=Subject:To:Cc:From:Date:From;
-	b=YJmCRJKZInMbW8tkbnGSQmtPqE8GocWVArwbE5octAvExzety9MoOJUDV0Fl8iTjP
-	 kmLgZ9UiaPJMHBrQdJ0e3g8i8H7AK2JXhFz3Ji3cQ11QuRcXywuwZksDLhv855Voim
-	 75UgTndf6yEkJgulRceml36Fmz+NoDlDh9dRNH48=
-Subject: FAILED: patch "[PATCH] e1000e: Workaround for sporadic MDI error on Meteor Lake" failed to apply to 5.10-stable tree
-To: vitaly.lifshits@intel.com,anthony.l.nguyen@intel.com,naamax.meir@linux.intel.com,nikolay.mushayev@intel.com,nir.efrati@intel.com
+	b=LO+C6T8jXspaeCEynZ+KLe1TMdWM7whv16YMRSq+NOZHPyz8CSAIzwjnQT45b8csc
+	 6HLc8sibWJQc0x4S6/qZWuScgc9RFfq90ShOPH0+1H9P9g/nVdkNw+FSgPof+vztAH
+	 1PyGSYPSxcw5vWGgBFrskZGWyZxEutpNYPFnUXRo=
+Subject: FAILED: patch "[PATCH] e1000e: move force SMBUS from enable ulp function to avoid" failed to apply to 6.6-stable tree
+To: vitaly.lifshits@intel.com,anthony.l.nguyen@intel.com,dima.ruinskiy@intel.com,naamax.meir@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 05 Apr 2024 12:44:09 +0200
-Message-ID: <2024040508-thesaurus-stingray-e04e@gregkh>
+Date: Fri, 05 Apr 2024 12:44:22 +0200
+Message-ID: <2024040521-deduce-blast-00e2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6dbdd4de0362c37e54e8b049781402e5a409e7d0
+git cherry-pick -x 861e8086029e003305750b4126ecd6617465f5c7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040508-thesaurus-stingray-e04e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040521-deduce-blast-00e2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,397 +77,92 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6dbdd4de0362c37e54e8b049781402e5a409e7d0 Mon Sep 17 00:00:00 2001
+From 861e8086029e003305750b4126ecd6617465f5c7 Mon Sep 17 00:00:00 2001
 From: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Date: Thu, 4 Jan 2024 16:16:52 +0200
-Subject: [PATCH] e1000e: Workaround for sporadic MDI error on Meteor Lake
- systems
+Date: Sun, 3 Mar 2024 12:51:32 +0200
+Subject: [PATCH] e1000e: move force SMBUS from enable ulp function to avoid
+ PHY loss issue
 
-On some Meteor Lake systems accessing the PHY via the MDIO interface may
-result in an MDI error. This issue happens sporadically and in most cases
-a second access to the PHY via the MDIO interface results in success.
+Forcing SMBUS inside the ULP enabling flow leads to sporadic PHY loss on
+some systems. It is suspected to be caused by initiating PHY transactions
+before the interface settles.
 
-As a workaround, introduce a retry counter which is set to 3 on Meteor
-Lake systems. The driver will only return an error if 3 consecutive PHY
-access attempts fail. The retry mechanism is disabled in specific flows,
-where MDI errors are expected.
+Separating this configuration from the ULP enabling flow and moving it to
+the shutdown function allows enough time for the interface to settle and
+avoids adding a delay.
 
-Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
-Suggested-by: Nikolay Mushayev <nikolay.mushayev@intel.com>
-Co-developed-by: Nir Efrati <nir.efrati@intel.com>
-Signed-off-by: Nir Efrati <nir.efrati@intel.com>
+Fixes: 6607c99e7034 ("e1000e: i219 - fix to enable both ULP and EEE in Sx state")
+Co-developed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
 Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
 Tested-by: Naama Meir <naamax.meir@linux.intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 
-diff --git a/drivers/net/ethernet/intel/e1000e/hw.h b/drivers/net/ethernet/intel/e1000e/hw.h
-index 1fef6bb5a5fb..4b6e7536170a 100644
---- a/drivers/net/ethernet/intel/e1000e/hw.h
-+++ b/drivers/net/ethernet/intel/e1000e/hw.h
-@@ -628,6 +628,7 @@ struct e1000_phy_info {
- 	u32 id;
- 	u32 reset_delay_us;	/* in usec */
- 	u32 revision;
-+	u32 retry_count;
- 
- 	enum e1000_media_type media_type;
- 
-@@ -644,6 +645,7 @@ struct e1000_phy_info {
- 	bool polarity_correction;
- 	bool speed_downgraded;
- 	bool autoneg_wait_to_complete;
-+	bool retry_enabled;
- };
- 
- struct e1000_nvm_info {
 diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index 19e450a5bd31..d8e97669f31b 100644
+index d8e97669f31b..f9e94be36e97 100644
 --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
 +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -222,11 +222,18 @@ static bool e1000_phy_is_accessible_pchlan(struct e1000_hw *hw)
- 	if (hw->mac.type >= e1000_pch_lpt) {
- 		/* Only unforce SMBus if ME is not active */
- 		if (!(er32(FWSM) & E1000_ICH_FWSM_FW_VALID)) {
-+			/* Switching PHY interface always returns MDI error
-+			 * so disable retry mechanism to avoid wasting time
-+			 */
-+			e1000e_disable_phy_retry(hw);
-+
- 			/* Unforce SMBus mode in PHY */
- 			e1e_rphy_locked(hw, CV_SMB_CTRL, &phy_reg);
- 			phy_reg &= ~CV_SMB_CTRL_FORCE_SMBUS;
- 			e1e_wphy_locked(hw, CV_SMB_CTRL, phy_reg);
- 
-+			e1000e_enable_phy_retry(hw);
-+
- 			/* Unforce SMBus mode in MAC */
- 			mac_reg = er32(CTRL_EXT);
- 			mac_reg &= ~E1000_CTRL_EXT_FORCE_SMBUS;
-@@ -310,6 +317,11 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 		goto out;
- 	}
- 
-+	/* There is no guarantee that the PHY is accessible at this time
-+	 * so disable retry mechanism to avoid wasting time
-+	 */
-+	e1000e_disable_phy_retry(hw);
-+
- 	/* The MAC-PHY interconnect may be in SMBus mode.  If the PHY is
- 	 * inaccessible and resetting the PHY is not blocked, toggle the
- 	 * LANPHYPC Value bit to force the interconnect to PCIe mode.
-@@ -380,6 +392,8 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 		break;
- 	}
- 
-+	e1000e_enable_phy_retry(hw);
-+
- 	hw->phy.ops.release(hw);
- 	if (!ret_val) {
- 
-@@ -449,6 +463,11 @@ static s32 e1000_init_phy_params_pchlan(struct e1000_hw *hw)
- 
- 	phy->id = e1000_phy_unknown;
- 
-+	if (hw->mac.type == e1000_pch_mtp) {
-+		phy->retry_count = 2;
-+		e1000e_enable_phy_retry(hw);
-+	}
-+
- 	ret_val = e1000_init_phy_workarounds_pchlan(hw);
- 	if (ret_val)
- 		return ret_val;
-@@ -1146,6 +1165,11 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
+@@ -1165,25 +1165,6 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
  	if (ret_val)
  		goto out;
  
-+	/* Switching PHY interface always returns MDI error
-+	 * so disable retry mechanism to avoid wasting time
-+	 */
-+	e1000e_disable_phy_retry(hw);
-+
- 	/* Force SMBus mode in PHY */
- 	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
- 	if (ret_val)
-@@ -1153,6 +1177,8 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
- 	phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
- 	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
- 
-+	e1000e_enable_phy_retry(hw);
-+
- 	/* Force SMBus mode in MAC */
- 	mac_reg = er32(CTRL_EXT);
- 	mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
-@@ -1313,6 +1339,11 @@ static s32 e1000_disable_ulp_lpt_lp(struct e1000_hw *hw, bool force)
- 		/* Toggle LANPHYPC Value bit */
- 		e1000_toggle_lanphypc_pch_lpt(hw);
- 
-+	/* Switching PHY interface always returns MDI error
-+	 * so disable retry mechanism to avoid wasting time
-+	 */
-+	e1000e_disable_phy_retry(hw);
-+
- 	/* Unforce SMBus mode in PHY */
- 	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
- 	if (ret_val) {
-@@ -1333,6 +1364,8 @@ static s32 e1000_disable_ulp_lpt_lp(struct e1000_hw *hw, bool force)
- 	phy_reg &= ~CV_SMB_CTRL_FORCE_SMBUS;
- 	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
- 
-+	e1000e_enable_phy_retry(hw);
-+
- 	/* Unforce SMBus mode in MAC */
- 	mac_reg = er32(CTRL_EXT);
- 	mac_reg &= ~E1000_CTRL_EXT_FORCE_SMBUS;
-diff --git a/drivers/net/ethernet/intel/e1000e/phy.c b/drivers/net/ethernet/intel/e1000e/phy.c
-index 5e329156d1ba..93544f1cc2a5 100644
---- a/drivers/net/ethernet/intel/e1000e/phy.c
-+++ b/drivers/net/ethernet/intel/e1000e/phy.c
-@@ -107,6 +107,16 @@ s32 e1000e_phy_reset_dsp(struct e1000_hw *hw)
- 	return e1e_wphy(hw, M88E1000_PHY_GEN_CONTROL, 0);
- }
- 
-+void e1000e_disable_phy_retry(struct e1000_hw *hw)
-+{
-+	hw->phy.retry_enabled = false;
-+}
-+
-+void e1000e_enable_phy_retry(struct e1000_hw *hw)
-+{
-+	hw->phy.retry_enabled = true;
-+}
-+
- /**
-  *  e1000e_read_phy_reg_mdic - Read MDI control register
-  *  @hw: pointer to the HW structure
-@@ -118,55 +128,73 @@ s32 e1000e_phy_reset_dsp(struct e1000_hw *hw)
-  **/
- s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data)
- {
-+	u32 i, mdic = 0, retry_counter, retry_max;
- 	struct e1000_phy_info *phy = &hw->phy;
--	u32 i, mdic = 0;
-+	bool success;
- 
- 	if (offset > MAX_PHY_REG_ADDRESS) {
- 		e_dbg("PHY Address %d is out of range\n", offset);
- 		return -E1000_ERR_PARAM;
- 	}
- 
-+	retry_max = phy->retry_enabled ? phy->retry_count : 0;
-+
- 	/* Set up Op-code, Phy Address, and register offset in the MDI
- 	 * Control register.  The MAC will take care of interfacing with the
- 	 * PHY to retrieve the desired data.
- 	 */
--	mdic = ((offset << E1000_MDIC_REG_SHIFT) |
--		(phy->addr << E1000_MDIC_PHY_SHIFT) |
--		(E1000_MDIC_OP_READ));
-+	for (retry_counter = 0; retry_counter <= retry_max; retry_counter++) {
-+		success = true;
- 
--	ew32(MDIC, mdic);
-+		mdic = ((offset << E1000_MDIC_REG_SHIFT) |
-+			(phy->addr << E1000_MDIC_PHY_SHIFT) |
-+			(E1000_MDIC_OP_READ));
- 
--	/* Poll the ready bit to see if the MDI read completed
--	 * Increasing the time out as testing showed failures with
--	 * the lower time out
+-	/* Switching PHY interface always returns MDI error
+-	 * so disable retry mechanism to avoid wasting time
 -	 */
--	for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--		udelay(50);
--		mdic = er32(MDIC);
--		if (mdic & E1000_MDIC_READY)
--			break;
--	}
--	if (!(mdic & E1000_MDIC_READY)) {
--		e_dbg("MDI Read PHY Reg Address %d did not complete\n", offset);
--		return -E1000_ERR_PHY;
--	}
--	if (mdic & E1000_MDIC_ERROR) {
--		e_dbg("MDI Read PHY Reg Address %d Error\n", offset);
--		return -E1000_ERR_PHY;
--	}
--	if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
--		e_dbg("MDI Read offset error - requested %d, returned %d\n",
--		      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
--		return -E1000_ERR_PHY;
--	}
--	*data = (u16)mdic;
-+		ew32(MDIC, mdic);
- 
--	/* Allow some time after each MDIC transaction to avoid
--	 * reading duplicate data in the next MDIC transaction.
--	 */
--	if (hw->mac.type == e1000_pch2lan)
--		udelay(100);
--	return 0;
-+		/* Poll the ready bit to see if the MDI read completed
-+		 * Increasing the time out as testing showed failures with
-+		 * the lower time out
-+		 */
-+		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
-+			usleep_range(50, 60);
-+			mdic = er32(MDIC);
-+			if (mdic & E1000_MDIC_READY)
-+				break;
-+		}
-+		if (!(mdic & E1000_MDIC_READY)) {
-+			e_dbg("MDI Read PHY Reg Address %d did not complete\n",
-+			      offset);
-+			success = false;
-+		}
-+		if (mdic & E1000_MDIC_ERROR) {
-+			e_dbg("MDI Read PHY Reg Address %d Error\n", offset);
-+			success = false;
-+		}
-+		if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
-+			e_dbg("MDI Read offset error - requested %d, returned %d\n",
-+			      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
-+			success = false;
-+		}
-+
-+		/* Allow some time after each MDIC transaction to avoid
-+		 * reading duplicate data in the next MDIC transaction.
-+		 */
-+		if (hw->mac.type == e1000_pch2lan)
-+			usleep_range(100, 150);
-+
-+		if (success) {
-+			*data = (u16)mdic;
-+			return 0;
-+		}
-+
-+		if (retry_counter != retry_max) {
-+			e_dbg("Perform retry on PHY transaction...\n");
-+			mdelay(10);
-+		}
-+	}
-+
-+	return -E1000_ERR_PHY;
- }
- 
- /**
-@@ -179,56 +207,72 @@ s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data)
-  **/
- s32 e1000e_write_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 data)
- {
-+	u32 i, mdic = 0, retry_counter, retry_max;
- 	struct e1000_phy_info *phy = &hw->phy;
--	u32 i, mdic = 0;
-+	bool success;
- 
- 	if (offset > MAX_PHY_REG_ADDRESS) {
- 		e_dbg("PHY Address %d is out of range\n", offset);
- 		return -E1000_ERR_PARAM;
- 	}
- 
-+	retry_max = phy->retry_enabled ? phy->retry_count : 0;
-+
- 	/* Set up Op-code, Phy Address, and register offset in the MDI
- 	 * Control register.  The MAC will take care of interfacing with the
- 	 * PHY to retrieve the desired data.
- 	 */
--	mdic = (((u32)data) |
--		(offset << E1000_MDIC_REG_SHIFT) |
--		(phy->addr << E1000_MDIC_PHY_SHIFT) |
--		(E1000_MDIC_OP_WRITE));
-+	for (retry_counter = 0; retry_counter <= retry_max; retry_counter++) {
-+		success = true;
- 
--	ew32(MDIC, mdic);
-+		mdic = (((u32)data) |
-+			(offset << E1000_MDIC_REG_SHIFT) |
-+			(phy->addr << E1000_MDIC_PHY_SHIFT) |
-+			(E1000_MDIC_OP_WRITE));
- 
--	/* Poll the ready bit to see if the MDI read completed
--	 * Increasing the time out as testing showed failures with
--	 * the lower time out
--	 */
--	for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--		udelay(50);
--		mdic = er32(MDIC);
--		if (mdic & E1000_MDIC_READY)
--			break;
--	}
--	if (!(mdic & E1000_MDIC_READY)) {
--		e_dbg("MDI Write PHY Reg Address %d did not complete\n", offset);
--		return -E1000_ERR_PHY;
--	}
--	if (mdic & E1000_MDIC_ERROR) {
--		e_dbg("MDI Write PHY Red Address %d Error\n", offset);
--		return -E1000_ERR_PHY;
--	}
--	if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
--		e_dbg("MDI Write offset error - requested %d, returned %d\n",
--		      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
--		return -E1000_ERR_PHY;
-+		ew32(MDIC, mdic);
-+
-+		/* Poll the ready bit to see if the MDI read completed
-+		 * Increasing the time out as testing showed failures with
-+		 * the lower time out
-+		 */
-+		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
-+			usleep_range(50, 60);
-+			mdic = er32(MDIC);
-+			if (mdic & E1000_MDIC_READY)
-+				break;
-+		}
-+		if (!(mdic & E1000_MDIC_READY)) {
-+			e_dbg("MDI Write PHY Reg Address %d did not complete\n",
-+			      offset);
-+			success = false;
-+		}
-+		if (mdic & E1000_MDIC_ERROR) {
-+			e_dbg("MDI Write PHY Reg Address %d Error\n", offset);
-+			success = false;
-+		}
-+		if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
-+			e_dbg("MDI Write offset error - requested %d, returned %d\n",
-+			      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
-+			success = false;
-+		}
-+
-+		/* Allow some time after each MDIC transaction to avoid
-+		 * reading duplicate data in the next MDIC transaction.
-+		 */
-+		if (hw->mac.type == e1000_pch2lan)
-+			usleep_range(100, 150);
-+
-+		if (success)
-+			return 0;
-+
-+		if (retry_counter != retry_max) {
-+			e_dbg("Perform retry on PHY transaction...\n");
-+			mdelay(10);
-+		}
- 	}
- 
--	/* Allow some time after each MDIC transaction to avoid
--	 * reading duplicate data in the next MDIC transaction.
--	 */
--	if (hw->mac.type == e1000_pch2lan)
--		udelay(100);
+-	e1000e_disable_phy_retry(hw);
 -
--	return 0;
-+	return -E1000_ERR_PHY;
- }
+-	/* Force SMBus mode in PHY */
+-	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
+-	if (ret_val)
+-		goto release;
+-	phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
+-	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
+-
+-	e1000e_enable_phy_retry(hw);
+-
+-	/* Force SMBus mode in MAC */
+-	mac_reg = er32(CTRL_EXT);
+-	mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
+-	ew32(CTRL_EXT, mac_reg);
+-
+ 	/* Si workaround for ULP entry flow on i127/rev6 h/w.  Enable
+ 	 * LPLU and disable Gig speed when entering ULP
+ 	 */
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index cc8c531ec3df..3692fce20195 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -6623,6 +6623,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 	struct e1000_hw *hw = &adapter->hw;
+ 	u32 ctrl, ctrl_ext, rctl, status, wufc;
+ 	int retval = 0;
++	u16 smb_ctrl;
  
- /**
-diff --git a/drivers/net/ethernet/intel/e1000e/phy.h b/drivers/net/ethernet/intel/e1000e/phy.h
-index c48777d09523..049bb325b4b1 100644
---- a/drivers/net/ethernet/intel/e1000e/phy.h
-+++ b/drivers/net/ethernet/intel/e1000e/phy.h
-@@ -51,6 +51,8 @@ s32 e1000e_read_phy_reg_bm2(struct e1000_hw *hw, u32 offset, u16 *data);
- s32 e1000e_write_phy_reg_bm2(struct e1000_hw *hw, u32 offset, u16 data);
- void e1000_power_up_phy_copper(struct e1000_hw *hw);
- void e1000_power_down_phy_copper(struct e1000_hw *hw);
-+void e1000e_disable_phy_retry(struct e1000_hw *hw);
-+void e1000e_enable_phy_retry(struct e1000_hw *hw);
- s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data);
- s32 e1000e_write_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 data);
- s32 e1000_read_phy_reg_hv(struct e1000_hw *hw, u32 offset, u16 *data);
+ 	/* Runtime suspend should only enable wakeup for link changes */
+ 	if (runtime)
+@@ -6696,6 +6697,23 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 			if (retval)
+ 				return retval;
+ 		}
++
++		/* Force SMBUS to allow WOL */
++		/* Switching PHY interface always returns MDI error
++		 * so disable retry mechanism to avoid wasting time
++		 */
++		e1000e_disable_phy_retry(hw);
++
++		e1e_rphy(hw, CV_SMB_CTRL, &smb_ctrl);
++		smb_ctrl |= CV_SMB_CTRL_FORCE_SMBUS;
++		e1e_wphy(hw, CV_SMB_CTRL, smb_ctrl);
++
++		e1000e_enable_phy_retry(hw);
++
++		/* Force SMBus mode in MAC */
++		ctrl_ext = er32(CTRL_EXT);
++		ctrl_ext |= E1000_CTRL_EXT_FORCE_SMBUS;
++		ew32(CTRL_EXT, ctrl_ext);
+ 	}
+ 
+ 	/* Ensure that the appropriate bits are set in LPI_CTRL
 
 
