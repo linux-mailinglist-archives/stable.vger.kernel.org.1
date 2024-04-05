@@ -1,304 +1,247 @@
-Return-Path: <stable+bounces-36149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F24489A425
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 20:22:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E731F89A453
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 20:41:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFD331F21830
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 18:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1B671C225A1
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 18:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C3717277C;
-	Fri,  5 Apr 2024 18:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC3F172795;
+	Fri,  5 Apr 2024 18:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RuDe1ac4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UgcQ26Xe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120AC171072;
-	Fri,  5 Apr 2024 18:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112C517278E;
+	Fri,  5 Apr 2024 18:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712341336; cv=none; b=B/ajJnzSJtKdJR6OYVZWLRmuAwZvVBtWkMYRxs5JI8PrRb5A5I8F3+J5QV+cxpAokNXzPVwwsazFYJ56+rG68mAqLk8FnZFvNcQte67HbUvqXhV/fHtwOE4J4YkduRHZIA21JUTkjgUPBlDXP8ToqKIRG56tMl+lSztorbByjdM=
+	t=1712342469; cv=none; b=D45fagc6O+iRTcgEY1xczqb4kRCWXE3U6bogsPNBWZiqhv+Rdnmh+qalgbD8wi0dobf7PDYI87TJjUVoB9Rwz8MRHC3txgfCQ+SRoVajMclxQUN1n/FaCc+cXW1D65QnHzciDatfBmlL9CvBky9Rv2YiuibMAoaMHpZXcSpYR8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712341336; c=relaxed/simple;
-	bh=WHO5ndxFwtCwO+LzFeh/rHPuwcGLAhbUwKh4wgFFzYQ=;
-	h=Date:To:From:Subject:Message-Id; b=SfhQ08HbUYFlvC0ouz+3lIL4cqfmdCcnhDxKlBAx6ohjZfl29ELqMYH9yRDCnGhIX0S6UkTyuJbwItNP3EnHxqFDy/EHNaphEvy5MDfFAwnNcUUBeB2+nH7W8wn6n/4ujtBP36ghfNNM8MMZzBp5MR/F73/CKq69vGyuj3qOiWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RuDe1ac4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B11C433F1;
-	Fri,  5 Apr 2024 18:22:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1712341335;
-	bh=WHO5ndxFwtCwO+LzFeh/rHPuwcGLAhbUwKh4wgFFzYQ=;
-	h=Date:To:From:Subject:From;
-	b=RuDe1ac4I4JnL46+MuzShANxNcuQk35CQFlqESLiexFQ5BF0fZKiH10zwiu1hTaRQ
-	 Y08dmeL0s8G4bqy2FKE8Ptwc5+xGZqCMivUFhEI68rL7MycIlrXLjNhf5gSRSfB3IQ
-	 +Gv+3dgwr5OWJzJ75e/lXkVb+usY3+U6exuBfPyc=
-Date: Fri, 05 Apr 2024 11:22:15 -0700
-To: mm-commits@vger.kernel.org,tglx@linutronix.de,stable@vger.kernel.org,peterz@infradead.org,mingo@kernel.org,mawupeng1@huawei.com,luto@kernel.org,hpa@zytor.com,dave.hansen@linux.intel.com,bp@alien8.de,david@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] x86-mm-pat-fix-vm_pat-handling-in-cow-mappings.patch removed from -mm tree
-Message-Id: <20240405182215.D8B11C433F1@smtp.kernel.org>
+	s=arc-20240116; t=1712342469; c=relaxed/simple;
+	bh=gInCOA+sfPewoaseFEvU8tzLuv1U9E3UhaEqPuZNAw0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cpyJrN5S8dWy/MXIP8Pm6NpK0QPYAgLWfonP9+Il8Oww3whd3feExCE8fUSfnb/4KNnQ0e6LfeEvhWaoz4YqfkZZFc6aD1XkYQG4yf59o37JiZ/YdBI/jKl4rTHc2w/A5XscM5myumpEYWBlsy8WT1v3XbRtJy1RhltL36jhW8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UgcQ26Xe; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d8129797fcso32652371fa.1;
+        Fri, 05 Apr 2024 11:41:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712342466; x=1712947266; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eVlxOZUtKUrfgHZukB+ngKkuy1iBG6tY8rl6phcN1Bo=;
+        b=UgcQ26XeP3BsHY3BHV7bXxCGW+e4FV2KC3+fHgSFbXyelB7ha99dgP8HhlHrsni3Oi
+         Dz1lP5HX1tfB6HuHKV7tIBEn7TZHgCcOHpScsgvVo8C3kJiOUDqMAs4xX42w/h2KkVAR
+         Kq6Iy612NWyS0Wq0SxwPSvQhTFPls6ATZRlTcYmayi+utl8knLeU2FcdL70PDIznpvoj
+         1e3giabiUotdP8VnOhjxHQ8sI8wFpziqpLwn3mI90ZPCFfIiOMKHOfz+cRPTyMMmXh8m
+         3nT2KL/KD6HAuQOOsL+QsxFPsUm2zOv0x4dFVmLvkrlKAsgkzXiz57+j4WMrJVkDydbc
+         ervA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712342466; x=1712947266;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eVlxOZUtKUrfgHZukB+ngKkuy1iBG6tY8rl6phcN1Bo=;
+        b=fmQMxyGvP+llQVowXdY61J3SSrWModa46D1aj4J8GRD1McVbeuh0yAlNVSx+t0s7rw
+         /V4Liv/cHnJSG+X0x/Ej48gsev5teA7jdVVkLqf8yzEfEmKRmaSrvwQm3tl9tqpbXXyO
+         0EIXMPNexLIW7MBMRXMM/1cF5evLCDlnKid4tl+n9dg13fLosj0Vzt432Y6yf19MrVit
+         PhYYoUmNA93w33VnWtABkiYqc+Csivu7Ia/N2iv+2sbaPcVYTJexb3MLyQ1A3jeGaWp0
+         8DO5x+iu1QDX0iN88kgHT1rAMxvmOPjjpiXyLG2Lct6eX+AQCyb7cDRVkWj43kmlfbaN
+         RU6A==
+X-Forwarded-Encrypted: i=1; AJvYcCWtkAnYwWu86baireE0AWEMjJuQg2RRt3Okl7Ap+9HlFU+w62ZMXt9biHBsk8YbOp5K+mwAueRWc0z5SMxfthxyfiLW8+kdpnNKCWPMStT4mJIUkcwd+mdRpqLi6EZN17mL3pfwxBsX8g==
+X-Gm-Message-State: AOJu0YzMuV2PB1IQ0GboMBllEveatW78BioM7mDS0JdgV+Aed/queUUw
+	lMEPC54KDZWSZDaATeUf40rUFeEIx0yjQpc1hUHIwHqd4UepEmEn
+X-Google-Smtp-Source: AGHT+IGBcuQYWYXn+Fnf2i2A3BrvKvhz1jRcgJNoH2q9Bcwfs3czJqByLoIPjxPS3JpVqjT9jyUr7A==
+X-Received: by 2002:a2e:3210:0:b0:2d7:aaf:54ab with SMTP id y16-20020a2e3210000000b002d70aaf54abmr1809661ljy.38.1712342465860;
+        Fri, 05 Apr 2024 11:41:05 -0700 (PDT)
+Received: from cherry.localnet ([178.69.224.101])
+        by smtp.gmail.com with ESMTPSA id c12-20020a05651c014c00b002d80a2da6d2sm236545ljd.129.2024.04.05.11.41.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Apr 2024 11:41:05 -0700 (PDT)
+From: Artem Sadovnikov <ancowi69@gmail.com>
+To: Mikhail Ukhin <mish.uxin2012@yandex.ru>, Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>,
+ linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Michail Ivanov <iwanov-23@bk.ru>, Pavel Koshutin <koshutin.pavel@yandex.ru>,
+ lvc-project@linuxtesting.org
+Subject: Re: [PATCH] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
+Date: Fri, 05 Apr 2024 21:40:14 +0300
+Message-ID: <1845977.e0hk0VWMCB@cherry>
+In-Reply-To: <20240405022651.GB13376@mit.edu>
+References:
+ <20240404095000.5872-1-mish.uxin2012@yandex.ru>
+ <20240405022651.GB13376@mit.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+
+On Friday, April 5, 2024 5:26:51=E2=80=AFAM MSK Theodore Ts'o wrote:
+>=20
+> This doesn't make any sense.  Lock order matters; the order in which
+> you unlock shouldn't (and doesn't) make a difference.  This is also
+> something which lockdep doesn't complain about --- because it's not a
+> problem.
+>=20
+> So how was this "found by syzkaller"?
+>=20
+> 					- Ted
+
+This issue only occurs when CONFIG_PROVE_LOCKING is set, in which case=20
+jbd2_might_wait_for_commit macro will lock jbd2_handle in jbd2_journal_stop=
+=20
+function, which, while i_data_sem is locked, will trigger lockdep, because=
+=20
+jbd2_journal_start function might also lock on same jbd2_handle at the same=
+=20
+time
+
+Without CONFIG_PROVE_LOCKING this issue is not possible because=20
+jbd2_journal_stop never calls jbd2_might_wait_for_commit
+
+Since syzkaller report was local and wasn't inserted in initial patch messa=
+ge,=20
+I will put it in this message
+It wasn't been able to create a reproducer for that problem, so there's onl=
+y a=20
+crash report
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+WARNING: possible circular locking dependency detected
+5.10.208-syzkaller #0 Not tainted
+=2D-----------------------------------------------------
+syz-fuzzer/1080 is trying to acquire lock:
+ffff88810b09e8e0 (jbd2_handle){++++}-{0:0}, at: jbd2_log_wait_commit+0x142/=
+0x430=20
+fs/jbd2/journal.c:693
+
+but task is already holding lock:
+ffff88805eec5c78 (&ei->i_data_sem){++++}-{3:3}, at: ext4_ind_migrate+0x2fe/=
+0x840=20
+fs/ext4/migrate.c:633
+
+which lock already depends on the new lock.
 
 
-The quilt patch titled
-     Subject: x86/mm/pat: fix VM_PAT handling in COW mappings
-has been removed from the -mm tree.  Its filename was
-     x86-mm-pat-fix-vm_pat-handling-in-cow-mappings.patch
+the existing dependency chain (in reverse order) is:
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+=2D> #1 (&ei->i_data_sem){++++}-{3:3}:
+       down_read+0x96/0x420 kernel/locking/rwsem.c:1504
+       ext4_da_map_blocks fs/ext4/inode.c:1776 [inline]
+       ext4_da_get_block_prep+0x5b4/0x11a0 fs/ext4/inode.c:1857
+       ext4_block_write_begin+0x479/0x1230 fs/ext4/inode.c:1076
+       ext4_da_write_begin+0x3ca/0x1060 fs/ext4/inode.c:3063
+       generic_perform_write+0x210/0x500 mm/filemap.c:3336
+       ext4_buffered_write_iter+0x232/0x4a0 fs/ext4/file.c:269
+       ext4_file_write_iter+0x429/0x1420 fs/ext4/file.c:683
+       call_write_iter include/linux/fs.h:1962 [inline]
+       new_sync_write+0x427/0x660 fs/read_write.c:518
+       vfs_write+0x774/0xab0 fs/read_write.c:605
+       ksys_write+0x12d/0x260 fs/read_write.c:658
+       do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+       entry_SYSCALL_64_after_hwframe+0x62/0xc7
 
-------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: x86/mm/pat: fix VM_PAT handling in COW mappings
-Date: Wed, 3 Apr 2024 23:21:30 +0200
+=2D> #0 (jbd2_handle){++++}-{0:0}:
+       check_prev_add kernel/locking/lockdep.c:2988 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3113 [inline]
+       validate_chain kernel/locking/lockdep.c:3729 [inline]
+       __lock_acquire+0x29c4/0x53c0 kernel/locking/lockdep.c:4955
+       lock_acquire kernel/locking/lockdep.c:5566 [inline]
+       lock_acquire+0x19f/0x4a0 kernel/locking/lockdep.c:5531
+       jbd2_log_wait_commit+0x177/0x430 fs/jbd2/journal.c:696
+       jbd2_journal_stop+0x5b0/0xde0 fs/jbd2/transaction.c:1933
+       __ext4_journal_stop+0xde/0x1f0 fs/ext4/ext4_jbd2.c:127
+       ext4_ind_migrate+0x402/0x840 fs/ext4/migrate.c:666
+       ext4_ioctl_setflags+0xaef/0xc70 fs/ext4/ioctl.c:459
+       __ext4_ioctl+0x3742/0x4e20 fs/ext4/ioctl.c:870
+       vfs_ioctl fs/ioctl.c:48 [inline]
+       __do_sys_ioctl fs/ioctl.c:753 [inline]
+       __se_sys_ioctl fs/ioctl.c:739 [inline]
+       __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
+       do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+       entry_SYSCALL_64_after_hwframe+0x62/0xc7
 
-PAT handling won't do the right thing in COW mappings: the first PTE (or,
-in fact, all PTEs) can be replaced during write faults to point at anon
-folios.  Reliably recovering the correct PFN and cachemode using
-follow_phys() from PTEs will not work in COW mappings.
+other info that might help us debug this:
 
-Using follow_phys(), we might just get the address+protection of the anon
-folio (which is very wrong), or fail on swap/nonswap entries, failing
-follow_phys() and triggering a WARN_ON_ONCE() in untrack_pfn() and
-track_pfn_copy(), not properly calling free_pfn_range().
+ Possible unsafe locking scenario:
 
-In free_pfn_range(), we either wouldn't call memtype_free() or would call
-it with the wrong range, possibly leaking memory.
+       CPU0                    CPU1
+       ----                    ----
+  lock(&ei->i_data_sem);
+                               lock(jbd2_handle);
+                               lock(&ei->i_data_sem);
+  lock(jbd2_handle);
 
-To fix that, let's update follow_phys() to refuse returning anon folios,
-and fallback to using the stored PFN inside vma->vm_pgoff for COW mappings
-if we run into that.
+ *** DEADLOCK ***
 
-We will now properly handle untrack_pfn() with COW mappings, where we
-don't need the cachemode.  We'll have to fail fork()->track_pfn_copy() if
-the first page was replaced by an anon folio, though: we'd have to store
-the cachemode in the VMA to make this work, likely growing the VMA size.
+4 locks held by syz-fuzzer/1080:
+ #0: ffff88810bc42460 (sb_writers#4){.+.+}-{0:0}, at: __ext4_ioctl+0x76a/0x=
+4e20=20
+fs/ext4/ioctl.c:861
+ #1: ffff88805eec5e88 (&type->i_mutex_dir_key#3){++++}-{3:3}, at: inode_loc=
+k=20
+include/linux/fs.h:774 [inline]
+ #1: ffff88805eec5e88 (&type->i_mutex_dir_key#3){++++}-{3:3}, at:=20
+__ext4_ioctl+0x799/0x4e20 fs/ext4/ioctl.c:865
+ #2: ffff88810bc44ac0 (&sbi->s_writepages_rwsem){++++}-{0:0}, at:=20
+ext4_ind_migrate+0x237/0x840 fs/ext4/migrate.c:625
+ #3: ffff88805eec5c78 (&ei->i_data_sem){++++}-{3:3}, at: ext4_ind_migrate+0=
+x2fe/
+0x840 fs/ext4/migrate.c:633
 
-For now, lets keep it simple and let track_pfn_copy() just fail in that
-case: it would have failed in the past with swap/nonswap entries already,
-and it would have done the wrong thing with anon folios.
+stack backtrace:
+CPU: 0 PID: 1080 Comm: syz-fuzzer Not tainted 5.10.208-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1=20
+04/01/2014
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x167 lib/dump_stack.c:118
+ check_noncircular+0x26c/0x320 kernel/locking/lockdep.c:2123
+ check_prev_add kernel/locking/lockdep.c:2988 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3113 [inline]
+ validate_chain kernel/locking/lockdep.c:3729 [inline]
+ __lock_acquire+0x29c4/0x53c0 kernel/locking/lockdep.c:4955
+ lock_acquire kernel/locking/lockdep.c:5566 [inline]
+ lock_acquire+0x19f/0x4a0 kernel/locking/lockdep.c:5531
+ jbd2_log_wait_commit+0x177/0x430 fs/jbd2/journal.c:696
+ jbd2_journal_stop+0x5b0/0xde0 fs/jbd2/transaction.c:1933
+ __ext4_journal_stop+0xde/0x1f0 fs/ext4/ext4_jbd2.c:127
+ ext4_ind_migrate+0x402/0x840 fs/ext4/migrate.c:666
+ ext4_ioctl_setflags+0xaef/0xc70 fs/ext4/ioctl.c:459
+ __ext4_ioctl+0x3742/0x4e20 fs/ext4/ioctl.c:870
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
+ do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x62/0xc7
+RIP: 0033:0x49e0bb
+Code: e8 0a 4b fc ff eb 88 cc cc cc cc cc cc cc cc e8 1b 8f fc ff 48 8b 7c =
+24 10=20
+48 8b 74 24 18 48 8b 54 24 20 48 8b 44 24 08 0f 05 <48> 3d 01 f0 ff ff 76 2=
+0 48=20
+c7 44 24 28 ff ff ff ff 48 c7 44 24 30
+RSP: 002b:000000c002b65ae8 EFLAGS: 00000212 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 000000c000025000 RCX: 000000000049e0bb
+RDX: 000000c002b65b64 RSI: 0000000040086602 RDI: 000000000000001b
+RBP: 000000c002b65b28 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000212 R12: 000000c02b38c840
+R13: 0000000000000001 R14: 000000c018a321a0 R15: ffffffffffffffff
 
-Simple reproducer to trigger the WARN_ON_ONCE() in untrack_pfn():
-
-<--- C reproducer --->
- #include <stdio.h>
- #include <sys/mman.h>
- #include <unistd.h>
- #include <liburing.h>
-
- int main(void)
- {
-         struct io_uring_params p = {};
-         int ring_fd;
-         size_t size;
-         char *map;
-
-         ring_fd = io_uring_setup(1, &p);
-         if (ring_fd < 0) {
-                 perror("io_uring_setup");
-                 return 1;
-         }
-         size = p.sq_off.array + p.sq_entries * sizeof(unsigned);
-
-         /* Map the submission queue ring MAP_PRIVATE */
-         map = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE,
-                    ring_fd, IORING_OFF_SQ_RING);
-         if (map == MAP_FAILED) {
-                 perror("mmap");
-                 return 1;
-         }
-
-         /* We have at least one page. Let's COW it. */
-         *map = 0;
-         pause();
-         return 0;
- }
-<--- C reproducer --->
-
-On a system with 16 GiB RAM and swap configured:
- # ./iouring &
- # memhog 16G
- # killall iouring
-[  301.552930] ------------[ cut here ]------------
-[  301.553285] WARNING: CPU: 7 PID: 1402 at arch/x86/mm/pat/memtype.c:1060 untrack_pfn+0xf4/0x100
-[  301.553989] Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_g
-[  301.558232] CPU: 7 PID: 1402 Comm: iouring Not tainted 6.7.5-100.fc38.x86_64 #1
-[  301.558772] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebu4
-[  301.559569] RIP: 0010:untrack_pfn+0xf4/0x100
-[  301.559893] Code: 75 c4 eb cf 48 8b 43 10 8b a8 e8 00 00 00 3b 6b 28 74 b8 48 8b 7b 30 e8 ea 1a f7 000
-[  301.561189] RSP: 0018:ffffba2c0377fab8 EFLAGS: 00010282
-[  301.561590] RAX: 00000000ffffffea RBX: ffff9208c8ce9cc0 RCX: 000000010455e047
-[  301.562105] RDX: 07fffffff0eb1e0a RSI: 0000000000000000 RDI: ffff9208c391d200
-[  301.562628] RBP: 0000000000000000 R08: ffffba2c0377fab8 R09: 0000000000000000
-[  301.563145] R10: ffff9208d2292d50 R11: 0000000000000002 R12: 00007fea890e0000
-[  301.563669] R13: 0000000000000000 R14: ffffba2c0377fc08 R15: 0000000000000000
-[  301.564186] FS:  0000000000000000(0000) GS:ffff920c2fbc0000(0000) knlGS:0000000000000000
-[  301.564773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  301.565197] CR2: 00007fea88ee8a20 CR3: 00000001033a8000 CR4: 0000000000750ef0
-[  301.565725] PKRU: 55555554
-[  301.565944] Call Trace:
-[  301.566148]  <TASK>
-[  301.566325]  ? untrack_pfn+0xf4/0x100
-[  301.566618]  ? __warn+0x81/0x130
-[  301.566876]  ? untrack_pfn+0xf4/0x100
-[  301.567163]  ? report_bug+0x171/0x1a0
-[  301.567466]  ? handle_bug+0x3c/0x80
-[  301.567743]  ? exc_invalid_op+0x17/0x70
-[  301.568038]  ? asm_exc_invalid_op+0x1a/0x20
-[  301.568363]  ? untrack_pfn+0xf4/0x100
-[  301.568660]  ? untrack_pfn+0x65/0x100
-[  301.568947]  unmap_single_vma+0xa6/0xe0
-[  301.569247]  unmap_vmas+0xb5/0x190
-[  301.569532]  exit_mmap+0xec/0x340
-[  301.569801]  __mmput+0x3e/0x130
-[  301.570051]  do_exit+0x305/0xaf0
-...
-
-Link: https://lkml.kernel.org/r/20240403212131.929421-3-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Wupeng Ma <mawupeng1@huawei.com>
-Closes: https://lkml.kernel.org/r/20240227122814.3781907-1-mawupeng1@huawei.com
-Fixes: b1a86e15dc03 ("x86, pat: remove the dependency on 'vm_pgoff' in track/untrack pfn vma routines")
-Fixes: 5899329b1910 ("x86: PAT: implement track/untrack of pfnmap regions for x86 - v3")
-Acked-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/x86/mm/pat/memtype.c |   49 +++++++++++++++++++++++++-----------
- mm/memory.c               |    4 ++
- 2 files changed, 39 insertions(+), 14 deletions(-)
-
---- a/arch/x86/mm/pat/memtype.c~x86-mm-pat-fix-vm_pat-handling-in-cow-mappings
-+++ a/arch/x86/mm/pat/memtype.c
-@@ -947,6 +947,38 @@ static void free_pfn_range(u64 paddr, un
- 		memtype_free(paddr, paddr + size);
- }
- 
-+static int get_pat_info(struct vm_area_struct *vma, resource_size_t *paddr,
-+		pgprot_t *pgprot)
-+{
-+	unsigned long prot;
-+
-+	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_PAT));
-+
-+	/*
-+	 * We need the starting PFN and cachemode used for track_pfn_remap()
-+	 * that covered the whole VMA. For most mappings, we can obtain that
-+	 * information from the page tables. For COW mappings, we might now
-+	 * suddenly have anon folios mapped and follow_phys() will fail.
-+	 *
-+	 * Fallback to using vma->vm_pgoff, see remap_pfn_range_notrack(), to
-+	 * detect the PFN. If we need the cachemode as well, we're out of luck
-+	 * for now and have to fail fork().
-+	 */
-+	if (!follow_phys(vma, vma->vm_start, 0, &prot, paddr)) {
-+		if (pgprot)
-+			*pgprot = __pgprot(prot);
-+		return 0;
-+	}
-+	if (is_cow_mapping(vma->vm_flags)) {
-+		if (pgprot)
-+			return -EINVAL;
-+		*paddr = (resource_size_t)vma->vm_pgoff << PAGE_SHIFT;
-+		return 0;
-+	}
-+	WARN_ON_ONCE(1);
-+	return -EINVAL;
-+}
-+
- /*
-  * track_pfn_copy is called when vma that is covering the pfnmap gets
-  * copied through copy_page_range().
-@@ -957,20 +989,13 @@ static void free_pfn_range(u64 paddr, un
- int track_pfn_copy(struct vm_area_struct *vma)
- {
- 	resource_size_t paddr;
--	unsigned long prot;
- 	unsigned long vma_size = vma->vm_end - vma->vm_start;
- 	pgprot_t pgprot;
- 
- 	if (vma->vm_flags & VM_PAT) {
--		/*
--		 * reserve the whole chunk covered by vma. We need the
--		 * starting address and protection from pte.
--		 */
--		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
--			WARN_ON_ONCE(1);
-+		if (get_pat_info(vma, &paddr, &pgprot))
- 			return -EINVAL;
--		}
--		pgprot = __pgprot(prot);
-+		/* reserve the whole chunk covered by vma. */
- 		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
- 	}
- 
-@@ -1045,7 +1070,6 @@ void untrack_pfn(struct vm_area_struct *
- 		 unsigned long size, bool mm_wr_locked)
- {
- 	resource_size_t paddr;
--	unsigned long prot;
- 
- 	if (vma && !(vma->vm_flags & VM_PAT))
- 		return;
-@@ -1053,11 +1077,8 @@ void untrack_pfn(struct vm_area_struct *
- 	/* free the chunk starting from pfn or the whole chunk */
- 	paddr = (resource_size_t)pfn << PAGE_SHIFT;
- 	if (!paddr && !size) {
--		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
--			WARN_ON_ONCE(1);
-+		if (get_pat_info(vma, &paddr, NULL))
- 			return;
--		}
--
- 		size = vma->vm_end - vma->vm_start;
- 	}
- 	free_pfn_range(paddr, size);
---- a/mm/memory.c~x86-mm-pat-fix-vm_pat-handling-in-cow-mappings
-+++ a/mm/memory.c
-@@ -5973,6 +5973,10 @@ int follow_phys(struct vm_area_struct *v
- 		goto out;
- 	pte = ptep_get(ptep);
- 
-+	/* Never return PFNs of anon folios in COW mappings. */
-+	if (vm_normal_folio(vma, address, pte))
-+		goto unlock;
-+
- 	if ((flags & FOLL_WRITE) && !pte_write(pte))
- 		goto unlock;
- 
-_
-
-Patches currently in -mm which might be from david@redhat.com are
-
-mm-madvise-make-madv_populate_readwrite-handle-vm_fault_retry-properly.patch
-mm-madvise-dont-perform-madvise-vma-walk-for-madv_populate_readwrite.patch
-mm-userfaultfd-dont-place-zeropages-when-zeropages-are-disallowed.patch
-s390-mm-re-enable-the-shared-zeropage-for-pv-and-skeys-kvm-guests.patch
-mm-convert-folio_estimated_sharers-to-folio_likely_mapped_shared.patch
-mm-convert-folio_estimated_sharers-to-folio_likely_mapped_shared-fix.patch
-selftests-memfd_secret-add-vmsplice-test.patch
-mm-merge-folio_is_secretmem-and-folio_fast_pin_allowed-into-gup_fast_folio_allowed.patch
-mm-optimize-config_per_vma_lock-member-placement-in-vm_area_struct.patch
-mm-remove-prot-parameter-from-move_pte.patch
-mm-gup-consistently-name-gup-fast-functions.patch
-mm-treewide-rename-config_have_fast_gup-to-config_have_gup_fast.patch
-mm-use-gup-fast-instead-fast-gup-in-remaining-comments.patch
 
 
