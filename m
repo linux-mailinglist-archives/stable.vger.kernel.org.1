@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-36145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B1689A360
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 19:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C022589A37E
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 19:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0466C1C230F3
-	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 17:14:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E295E1C216E4
+	for <lists+stable@lfdr.de>; Fri,  5 Apr 2024 17:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B759171645;
-	Fri,  5 Apr 2024 17:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11039171664;
+	Fri,  5 Apr 2024 17:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="It/OiOX1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSSKk9vj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B88B16C858;
-	Fri,  5 Apr 2024 17:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA42916132B;
+	Fri,  5 Apr 2024 17:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712337277; cv=none; b=KmsJWVo9c/gmNVno7F0U66JgSqk590/EkM1ONoEA4iSRCvdIKHE4E7ganrSHz1ABUBttAIk7mJn0A5P093nI7D02aamGrQczQrrbO7oycLPa6Daec4j+5iI3idydOXRrjC5UjPvne7b9gfeX6DEDvkSzL4LIhGHPim9CgNOr2O4=
+	t=1712338242; cv=none; b=HYjUqNUdqBR1q8tn4iB3TAddpTRpDBMtNjSjGq/dQ614eLa6T/pm51kwy75nAKPna3n5JFks2hnQneCavu9LlXPJj/MXNoPcRm/8tZm7QTSwO4zAOn4rgah/PRm7dyXnG4SbSOrIvlclF60NIoB0T389jwTETqe1wHYZw0p9pSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712337277; c=relaxed/simple;
-	bh=7KS+8uQDn3+UWDLsdqWI+ka4b54MG5rnGe8OuN9/We0=;
+	s=arc-20240116; t=1712338242; c=relaxed/simple;
+	bh=JmJWRFqaN4fpcnp3j8sehmjBiBJSiY9vT0z0AqxntVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qz4rTrJzdd9FLWK3OiGlZ6/pna4ugylF1UUs//rSz75dpDBUkBwHCiHlzQ+B04AlZfpOYfkSaY3Mv9J9pIEDbINOJcm91GhCO4SZ3SjQG23qljJvH5g/+nItDtUhuUxdDmcPTvWIa8JXRRBCJCrKmljNiUjxV8AY6ePHpIW4zSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=It/OiOX1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7EAC433F1;
-	Fri,  5 Apr 2024 17:14:34 +0000 (UTC)
+	 MIME-Version; b=hognvxs5U7CL5AuH+q1vwXoDUcir8zq8+dZIurVnu1qOdKcNoTuKP8eH49Tcw7q9cwWSgFYJAPWbN58bK8/NnZlpynhbApjkz++/aDfC4Uc1iCbYbcC6SKcUPLGKJRu8O5x9spMVhJ7PBMfeoBxYTmSX8hKfaWauD9kfGTUIf2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSSKk9vj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1912EC433F1;
+	Fri,  5 Apr 2024 17:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712337276;
-	bh=7KS+8uQDn3+UWDLsdqWI+ka4b54MG5rnGe8OuN9/We0=;
+	s=k20201202; t=1712338242;
+	bh=JmJWRFqaN4fpcnp3j8sehmjBiBJSiY9vT0z0AqxntVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=It/OiOX1FqkuRW802LWR0AmqT9af15526bL1EOsOk9GBljQmCsLMX8ndcNsIO2e1F
-	 z15mvdv3oGwmHTNFv8RCS50RbXXPOdzCpg2v/T88AZ+T7jG3RNMBGoheZY8SFgIR7O
-	 KAv2BlFxIy1n3fu7ji0duPHtzNUko5hszwZSPJaTv5OT93PTBjlX40ufJMpUpKEOzk
-	 IVS1QixgZmWUwjol50uKve/M69Z05GFA1usrPQf81klQOurW06RKtOQ25+Kky/5YHd
-	 AfYgL4ZdYGnSc4tuwePvXm+MAPx+FsOqelC43jX6d4K6riD5PVPMyRsspHgWpAEZEy
-	 NYeaNuP6SzpHA==
+	b=qSSKk9vj9S489bIvwJWVrC5QUPk3OrL2f4BNJS4Pr/oHW9Ub2Wmc8GfSb7hvjVRs8
+	 ff38kSTrb83LGipCm+Bot8rfwnFpg0RBPglbwotEJlK6OqBgL8UYgYJ5hRnrJqvY+V
+	 D8Gv2pmTBoUDWOeOjK19DGZmS49GqNya4h01nNo8jqSqzeigV46+UqYd2fLTwAXYcZ
+	 6kLBZlIpkOHj6VZ3MUDTRioZc/5h8DFDdqBdGxZteKzT4RuPCdn7c2LIe8uHNVykr8
+	 eyvsbFs9gAdVU+hH0/pMSM1y4YptLzLngCINyx5jr1lnmV0idX/qkMBVkoyLRgtJCJ
+	 pBEOQ/3c9DvLg==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -50,19 +50,19 @@ Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
 	Mat Martineau <martineau@kernel.org>,
 	Matthieu Baerts <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: don't account accept() of non-MPC client as fallback to TCP
-Date: Fri,  5 Apr 2024 19:14:15 +0200
-Message-ID: <20240405171415.1389330-2-matttbe@kernel.org>
+Subject: [PATCH 5.10.y] mptcp: don't account accept() of non-MPC client as fallback to TCP
+Date: Fri,  5 Apr 2024 19:30:35 +0200
+Message-ID: <20240405173034.1471178-2-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024040523-handling-conceded-2895@gregkh>
-References: <2024040523-handling-conceded-2895@gregkh>
+In-Reply-To: <2024040524-stitch-resolute-ead5@gregkh>
+References: <2024040524-stitch-resolute-ead5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5185; i=matttbe@kernel.org; h=from:subject; bh=WybP+5ScK2x6ufSrrqQgVxdnkoh2etpaZNO5gcKMwU4=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmEDFnjK39FsmoMdCJv0xpqjbWPTX2UfpEtMXzF e8JxQlZ7F6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZhAxZwAKCRD2t4JPQmmg czX3D/9jmdVSWh9mZIyfRfKKo96wyZGAQuTq/8LnSoCmkT9RZipPXj4Io2V7HYdsNO7UrrI/lRx iLpbKuiJSJ9yd1GzclkWBxWZLO4etd5b8PmkSNfjEnQttznXixA7G7h8WrmpsDxLVe3PInTpdwS xd55f3KgquDUEWaRXopz/cxPftpT/kLm9V30esn3KiVRuhFX/jB5HA92JbusTFNx4QESUXxva6g ntB3MkB2bFqprt/dqY9PqJN38RaiWpuU55oC9rNqPPZvaTFE8Ymq9W28aVRQY5k/tLbj8J+bX3K 5lrFJpgk9+98xW8oHCl/7YGXDHvBGvFfKL/oY7f/fMOGbSsBAtCFtYjD4tKbv47wjfWyEkrPNwr +WYnKTVHPEZe3nyQi0l/x98aVDApRKppm/sLJpOSk26wLf4N9jk96KfaMCIRpfFscp9vHPmvGnl mwJZBytRFzyXuKJuOn5/l9khzR6wZtXTjWb1vyl7MQmLihXPy+W3cBC0dF8lqTyJyb9NMIGigEN uThU55DAD3e0wNMX25Jd8dIHgqq7btTl/orHB1lleUzg7i8IxIAt0S6dXSzdZVYuag4akofUlRi irCOHnB1NbpF6vPq1RZD+WOEOAjuPulX2EaqD3lmmpxwkPnCqvbIvsocmXjwevXq6RaYc0VzAzJ M4Bf7WiUxAgA0RQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3508; i=matttbe@kernel.org; h=from:subject; bh=YmdsKse0Kap7VhQqGo7ToCdwNcOQp486numoobr1WO0=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmEDU6rr7eFvYGqTgb4Nt9IftHrSgAt1u+nPTe0 7lC1zxufTqJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZhA1OgAKCRD2t4JPQmmg c1qiEADdqObqTb/2jK6/ezQFoi7HSFB65HiVP1NvbfQrJbr4C4bzf+0yOTa/keIe54wLUiQJG9N KJ3QCU8ZH4HwGzPTVIa13K67SeZlwcMJw6QWlMlVO+k/lljiHia6KF0KfPuEPEVkef5rRY6OP0A FgNwyDnyPZ9oAuBn4RQva0rPC4ZzJlvYA+wyf5zcUtpzUKogtjJW33oxD5n294pQs6rm5mpm/48 rOPR+gdnt7T6vgC5cGqcwiacUpglRzXgBkUfO6TjAr2b0WYuHNLHjsF7gnknZkf9eHiMvHvgS4G c/oX/AAH8NcXuI76lYw2E0DpdcMxOSBcFtPksJFZ6FWZ9LnCRyIMZ+jzjhhzmlC6LGULOBvAC6s zBJ4670kSYNC5zjRu4RiVAJkCxQ79Gttkwc7Zdzc/9uQoNksyAiQa4834/doA2BYAt9mZMROpRn vzVTSLMek7D9gyoamEl0wcYj4wSZ5GFzEeDq4b8EcE6y2Rj3HmAFtvk6jRBQsu68I4mUQUyCvAo MUQt9IqUltIUriQlKch8LjzTmuYWz9WZv2rHWTfUPVFFHTqxxIS7j0+IOCxEfd1kCyW4/dftp7m +WMZ7Vyre6GsDdbqLW25Xbsv1veDAB4Q0lxgPL2QJzgJLyq30e1aMGIVR/16RFOW5S8nsTZOnGD Yzbn4yR11JhFcqQ==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
@@ -107,26 +107,23 @@ Notes:
   - Conflicts in mptcp_connect.sh: because commit e3aae1098f10
     ("selftests: mptcp: connect: fix shellcheck warnings") and commit
     e7c42bf4d320 ("selftests: mptcp: use += operator to append strings")
-    are not in this version. The dependency chain looks too long, while
-    resolving the conflicts was not difficult:
-      - using get_mib_counter() instead of the new
-        mptcp_lib_get_counter()
-      - writing the error message with 'printf' instead of the new
-        mptcp_lib_pr_fail().
+    are not in this version. The dependency chain looks too long, and
+    probably not worth it trying to resolve the conflicts here when many
+    CIs use the selftests from the last stable version, not this old
+    stable one.
 ---
- net/mptcp/protocol.c                               | 3 ---
- net/mptcp/subflow.c                                | 3 +++
- tools/testing/selftests/net/mptcp/mptcp_connect.sh | 7 +++++++
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c | 3 ---
+ net/mptcp/subflow.c  | 3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 5db1c0142abb..cde62dafda49 100644
+index adbe6350f980..6be7e7592291 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -3018,9 +3018,6 @@ static struct sock *mptcp_accept(struct sock *sk, int flags, int *err,
- 		sock_hold(new_mptcp_sock);
- 		newsk = new_mptcp_sock;
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEPASSIVEACK);
+@@ -2218,9 +2218,6 @@ static struct sock *mptcp_accept(struct sock *sk, int flags, int *err,
+ 
+ 		__MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEPASSIVEACK);
+ 		local_bh_enable();
 -	} else {
 -		MPTCP_INC_STATS(sock_net(sk),
 -				MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK);
@@ -134,12 +131,12 @@ index 5db1c0142abb..cde62dafda49 100644
  
  out:
 diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 80230787554e..ff7239fe3d2c 100644
+index 607519246bf2..276fe9f44df7 100644
 --- a/net/mptcp/subflow.c
 +++ b/net/mptcp/subflow.c
-@@ -725,6 +725,9 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+@@ -595,6 +595,9 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 			if (fallback_is_fatal)
  				goto dispose_child;
- 			}
  
 +			if (fallback)
 +				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK);
@@ -147,38 +144,6 @@ index 80230787554e..ff7239fe3d2c 100644
  			subflow_drop_ctx(child);
  			goto out;
  		}
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-index 8efff3f9c52a..5a1277d17286 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -451,6 +451,7 @@ do_transfer()
- 	local stat_cookierx_last=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesRecv")
- 	local stat_csum_err_s=$(get_mib_counter "${listener_ns}" "MPTcpExtDataCsumErr")
- 	local stat_csum_err_c=$(get_mib_counter "${connector_ns}" "MPTcpExtDataCsumErr")
-+	local stat_tcpfb_last_l=$(get_mib_counter "${listener_ns}" "MPTcpExtMPCapableFallbackACK")
- 
- 	timeout ${timeout_test} \
- 		ip netns exec ${listener_ns} \
-@@ -516,6 +517,7 @@ do_transfer()
- 	local stat_cookietx_now=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesSent")
- 	local stat_cookierx_now=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesRecv")
- 	local stat_ooo_now=$(get_mib_counter "${listener_ns}" "TcpExtTCPOFOQueue")
-+	local stat_tcpfb_now_l=$(get_mib_counter "${listener_ns}" "MPTcpExtMPCapableFallbackACK")
- 
- 	expect_synrx=$((stat_synrx_last_l))
- 	expect_ackrx=$((stat_ackrx_last_l))
-@@ -560,6 +562,11 @@ do_transfer()
- 		fi
- 	fi
- 
-+	if [ ${stat_ooo_now} -eq 0 ] && [ ${stat_tcpfb_last_l} -ne ${stat_tcpfb_now_l} ]; then
-+		printf "[ FAIL ]\nunexpected fallback to TCP"
-+		rets=1
-+	fi
-+
- 	if [ $retc -eq 0 ] && [ $rets -eq 0 ]; then
- 		printf "[ OK ]"
- 	fi
 -- 
 2.43.0
 
