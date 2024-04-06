@@ -1,136 +1,189 @@
-Return-Path: <stable+bounces-36161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C96389A861
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 04:10:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6693589A8E4
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 06:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0C441F214E9
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 02:10:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB682835D6
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 04:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5593BFBEE;
-	Sat,  6 Apr 2024 02:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162CC18EA5;
+	Sat,  6 Apr 2024 04:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="OJ/f+Zky"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mnf0g/2R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83B2FC11
-	for <stable@vger.kernel.org>; Sat,  6 Apr 2024 02:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2EB12E55
+	for <stable@vger.kernel.org>; Sat,  6 Apr 2024 04:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712369412; cv=none; b=Im98cmC3MLgTaNrGINSKYnJkOxpMyu1lWO15IWT7uIks5BdLfix9ZIEi5nos1Dc2ICv2tT6E/H+PXlf9q6PyVP4ilHHeWyldUWbG4CSqlAuhh1IWWW2ruT06eZrehYlD2t+prcM9gFsMIWRuLO0S9vuaZG9k7aQqlceoyTtJ1to=
+	t=1712378808; cv=none; b=sBHX4pEyv98QNY2KvUs34z9aeptfBS8og1wEeZ1pmNBZlIfEH+nCBGARuE1pUgufm2MUZsCbaKP2WLGFdfM61I7ovbzAKEpHM2ZA+EGigIjgIg1ORm5wm+8lSNeK0HWlFDR/LMKPT2wX2YfAppj1f6G9cAR/toKKv0Y92Ur2rYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712369412; c=relaxed/simple;
-	bh=iPU1wDle54Dhh2Jag3TFgfIYW2xBm/4/mcjxBC9aWWc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Du63Dech9eHTGqjtOFmVvX+VSoDRUtEPUmBeZJD4OysZwuSFGVlbUTr8HVyhE5m0uKsTHZHW3xDSAt1AnP47jCBysKju6mYHdyilAYuIs5p8c8XbArC3wvSq7wHNkp0MbT0epwslhQlsehcIHyW+TVT0nyPQG5hNeSX2KlWh62E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=OJ/f+Zky; arc=none smtp.client-ip=209.85.166.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-36990f24098so87365ab.0
-        for <stable@vger.kernel.org>; Fri, 05 Apr 2024 19:10:10 -0700 (PDT)
+	s=arc-20240116; t=1712378808; c=relaxed/simple;
+	bh=Pa+glBIAYGUeYvj4bbkUW/0xQGcg4XhjmjmYm9pBmZA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=D8Ak5U7yLA5PJ3VEeWMKLshaYkBDVFxW2P2LcAngnU/rmIuO7ZortBUb7UcYmyR2gTAYb1wT9e8MoDQobBP77NSrETWjZWWviS+VX3E81Ap5EKxl8TZfoNG4kGIC7ZD1nE5RSY+Av1imSYoy+EBEq/Ov4x4NB+zZO7NR4uLuBA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saranyamohan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mnf0g/2R; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saranyamohan.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-61517841a2eso48619817b3.2
+        for <stable@vger.kernel.org>; Fri, 05 Apr 2024 21:46:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1712369410; x=1712974210; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1cCv5VcWhStgJ4vCE9L+2KiQe3Q2pQoluor1fRLFK9E=;
-        b=OJ/f+ZkyG3cZl6xcriW+jcc5SzhHLzcRQhi4fk7Wo9GO3OqPAWei4wZJcBu+EYhHgG
-         MFU8hxTWQNk/NWoWVCqwhKqsZPEjT2XPZD9cPzWzWBmTdTlxze0gMBuh01qdzXosDhEL
-         f8z51TZAf1NUyWvujlh9X+B3rq3zj0DJOW5Wi8TyjmmFEJRZ4YJm5LhU3PraFSd/ryPR
-         NIT3sAEFz3Q1LVFDYlYMJqgRqpUxivQaNzHft/4cgtoOMpDhjCcjVSIq08I20raUkyZz
-         JyF2SwSTlylM/0jByHXdj3wCSJ2DE7XHXFwyt9DbZmF/gBO/qqINzFBDNB216HhkTDjh
-         R+dw==
+        d=google.com; s=20230601; t=1712378806; x=1712983606; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tIhiZai/XuhGKAO7L+OPGtFolltjq5ipvv/SRv/Vr7Q=;
+        b=Mnf0g/2RLooUEyF/mevFn7IKuVAP23dGQzKJDC+4txu8zhFS7YOjqak1eA+Gm1kTj5
+         Mh4u1Y+HRYVdKiCCrfmLcverMZ6khm19uYL5z5isa9j6ytEAdCAsu7wgEVcTPmSBXbjP
+         ChAjNELIEC5vN0QiQ8ctePkPe1AxtL4LeSVQEnuT3Ps7noUYLeRZHB8F3jKQxGLTkNGB
+         iX82Zdn1AH+8gThTIZZNKI9JpsgM7RAkwaBMJAUZiA0TRyUOVwBNYt4qWT6q8Q6G5I87
+         tfry+R/4lC3MizL5DP+DkCBf/MSCF5dLD1S/g3vwhmdFHyaESA4opAbhoNGi1HARgNc2
+         SfWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712369410; x=1712974210;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1cCv5VcWhStgJ4vCE9L+2KiQe3Q2pQoluor1fRLFK9E=;
-        b=ldVmev5YwdsaGWMc2SPhV4rwjBsGUXSDO8j4ce+GlthKUSFJC8VXSWGAJ0k1kLwpX4
-         URV3e5ORaLZmmS2EzjP4SCAfGOO277Smsqni5E9mP3/Z19K3k81KAZUIHnlNmcY15t4g
-         GuhfHkoaUXQc3v6jeGeHm07/gcQm1B33mELaNYHE3/GJb6aEo6JKEzLUhGAKsCcwT0Jn
-         wcDIfJTUem7pu71HC2rz64iE8C9hK+UvvUqlexAHj0z77cPRL/Ogea9VQrNAI9YO7Mmd
-         Fbv3Hv7m3jSnXJDngRZLxSbpP2hzAbdcH2d+a7kcKXe1RsEjfRcxFFKXh+olU+v3jo/L
-         IbYg==
-X-Forwarded-Encrypted: i=1; AJvYcCWeKofc6Ct9YTFh5kjV9kb9owCj+y/5uCiZJnGfwxf0i6sEagLw6h9eNYhQAS98K6R9yrnkKpQshLHWGnl+uwxEahEbE8q8
-X-Gm-Message-State: AOJu0YzZnQJdZtgA9ENkcKmsXjtcBfc/LBlAhRV84rVo8TxYZji+RWJn
-	UZKIjczBw/qM8SrS3zUbi37QdpsHRCqUhcR+ftLRPBU+yJkydRbYaZn6XKtGZj0=
-X-Google-Smtp-Source: AGHT+IGN8BSnqjv3LU00TTGUDfx8VQfSQp0U3i+zESsBq9d8LHP4DpckfjoiRKtuga7gxqJKeYYQEg==
-X-Received: by 2002:a05:6e02:19cd:b0:368:9b64:fa7a with SMTP id r13-20020a056e0219cd00b003689b64fa7amr3938452ill.0.1712369409735;
-        Fri, 05 Apr 2024 19:10:09 -0700 (PDT)
-Received: from [172.19.0.169] ([99.196.135.167])
-        by smtp.gmail.com with ESMTPSA id s5-20020a92cb05000000b0036a0e23db86sm612548ilo.33.2024.04.05.19.10.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Apr 2024 19:10:09 -0700 (PDT)
-Message-ID: <ef230b61-cee8-4486-831e-ac4993b65a78@kernel.dk>
-Date: Fri, 5 Apr 2024 20:10:02 -0600
+        d=1e100.net; s=20230601; t=1712378806; x=1712983606;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tIhiZai/XuhGKAO7L+OPGtFolltjq5ipvv/SRv/Vr7Q=;
+        b=vHGg+9iVJfISrqbpbxSzfZT6Jo5RH3LDY/m7fFm3HFeLCWRVWQh/isJgIYbNTA0p0g
+         0s0GLH4lIulgielmjLtocll960c8Zm42OChQDffkoAqySTc72qesja7GOUN94Xlnxwda
+         V+LrfpjBs18Dhw4HpvowvA0QSkd1/KqIuEX378H0sT8l4/MQtSm+97uRhD2rH6QFxx1+
+         bB4zEDCEMXv3zSS54N9EustiZ8TpfwzKgLDqaKKeyn58y8TTFEcjgqnK9rdOnhM4QaV8
+         F0W0uMgH93p/ahF6wmMrj+ArnmbbJI/o5BbglyMo2O6RZv9KSL33pT+oqAMEs/L47/b0
+         QFCw==
+X-Forwarded-Encrypted: i=1; AJvYcCV0n9nJ/GhzJlN0vd2SSSDVyz1PRdLDyDbQvUiTo4he3PESIwkw+bIaWnpIgEc04MLHy1pT+PDLHscrws5SkcRnN9VTOmZR
+X-Gm-Message-State: AOJu0YwzwGzNKKhT5yDM7jYb2HUtJITYQk4vKxJIZiV14NRzcZtqvnqG
+	hOrtB4Kb6EylOXvmCcs9VvkW72Mbtl3LrtaCqi2L1wTDTq5bEBzZPimqEOOckQd0Ad1eUW/BBd2
+	yzsBWcD+Ij1PljfYixFF6rFEQbw==
+X-Google-Smtp-Source: AGHT+IH8o09JKg5ZtCJKPS59RQeXuArqA/XwGlDrtkB/c4fbBs7RTuImDTcRIF6jeh9pgqyE8L2cGcClE7x9pZPYXz8=
+X-Received: from srnym.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:2728])
+ (user=saranyamohan job=sendgmr) by 2002:a0d:e251:0:b0:615:134c:7ef3 with SMTP
+ id l78-20020a0de251000000b00615134c7ef3mr805341ywe.9.1712378806373; Fri, 05
+ Apr 2024 21:46:46 -0700 (PDT)
+Date: Sat,  6 Apr 2024 04:46:43 +0000
+In-Reply-To: <20240405065333.GB4023@lst.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.8 015/715] io_uring: remove unconditional looping in
- local task_work handling
-Content-Language: en-US
-To: Jiri Slaby <jirislaby@kernel.org>, Sasha Levin <sashal@kernel.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240324223455.1342824-1-sashal@kernel.org>
- <20240324223455.1342824-16-sashal@kernel.org>
- <bcf80774-98c2-4c14-a1e7-6efcb79a7fee@kernel.org>
- <2ff5d891-2120-475d-be8e-82bf20a8b7b7@kernel.dk>
- <29df48ef-aafe-4918-b903-0aabda94fd0b@kernel.org>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <29df48ef-aafe-4918-b903-0aabda94fd0b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20240405065333.GB4023@lst.de>
+X-Mailer: git-send-email 2.44.0.478.gd926399ef9-goog
+Message-ID: <20240406044643.2475360-1-saranyamohan@google.com>
+Subject: [PATCH] block: Fix BLKRRPART regression
+From: Saranya Muruganandam <saranyamohan@google.com>
+To: hch@lst.de
+Cc: axboe@kernel.dk, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	saranyamohan@google.com, stable@vger.kernel.org, tj@kernel.org, 
+	yukuai1@huaweicloud.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 4/4/24 1:06 AM, Jiri Slaby wrote:
-> On 02. 04. 24, 15:41, Jens Axboe wrote:
->> On 4/2/24 2:12 AM, Jiri Slaby wrote:
->>> On 24. 03. 24, 23:23, Sasha Levin wrote:
->>>> From: Jens Axboe <axboe@kernel.dk>
->>>>
->>>> [ Upstream commit 9fe3eaea4a3530ca34a8d8ff00b1848c528789ca ]
->>>>
->>>> If we have a ton of notifications coming in, we can be looping in here
->>>> for a long time. This can be problematic for various reasons, mostly
->>>> because we can starve userspace. If the application is waiting on N
->>>> events, then only re-run if we need more events.
->>>
->>> This commit breaks test/recv-multishot.c from liburing:
->>> early error: res 4
->>> test stream=1 wait_each=0 recvmsg=0 early_error=0  defer=1 failed
->>>
->>> The behaviour is the same in 6.9-rc2 (which contains the commit too).
->>>
->>> Reverting the commit on the top of 6.8.2 makes it pass again.
->>>
->>> Should the test be updated or is the commit wrong?
->>
->> The commit is fine, it's the test that is buggy. Sometimes test cases
->> make odd assumptions that are just wrong but happen to work, for some
->> definition of work. Eg it would work fine on an idle system, but not
->> necessarily if not. For this one, the fix is in liburing:
->>
->> https://git.kernel.dk/cgit/liburing/commit/test/recv-multishot.c?id=a1d5e4b863a60af93d0cab9d4bbf578733337a90
-> 
-> Thanks, that worked.
-> 
-> Any plans to release 2.6 with the above?
-> 
-> Note that for 2.4->2.5 update I also needed to take 9dc95a03e4a76 from
-> post-2.5.
+The BLKRRPART ioctl used to report errors such as EIO before we changed
+the blkdev_reread_part() logic.
 
-Yep, 2.6 should be released very soon.
+Lets add a flag and capture the errors returned by bdev_disk_changed()
+when the flag is set. Setting this flag for the BLKRRPART path when we
+want the errors to be reported when rereading partitions on the disk.
 
+Link: https://lore.kernel.org/all/20240320015134.GA14267@lst.de/
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Tested: Tested by simulating failure to the block device and will
+propose a new test to blktests.
+Fixes: 4601b4b130de ("block: reopen the device in blkdev_reread_part")
+Reported-by: Saranya Muruganandam <saranyamohan@google.com>
+Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
+
+Change-Id: Idf3d97390ed78061556f8468d10d6cab24ae20b1
+---
+ block/bdev.c           | 29 +++++++++++++++++++----------
+ block/ioctl.c          |  3 ++-
+ include/linux/blkdev.h |  2 ++
+ 3 files changed, 23 insertions(+), 11 deletions(-)
+
+diff --git a/block/bdev.c b/block/bdev.c
+index 7a5f611c3d2e3..42940bced33bb 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -652,6 +652,14 @@ static void blkdev_flush_mapping(struct block_device *bdev)
+ 	bdev_write_inode(bdev);
+ }
+ 
++static void blkdev_put_whole(struct block_device *bdev)
++{
++	if (atomic_dec_and_test(&bdev->bd_openers))
++		blkdev_flush_mapping(bdev);
++	if (bdev->bd_disk->fops->release)
++		bdev->bd_disk->fops->release(bdev->bd_disk);
++}
++
+ static int blkdev_get_whole(struct block_device *bdev, blk_mode_t mode)
+ {
+ 	struct gendisk *disk = bdev->bd_disk;
+@@ -670,20 +678,21 @@ static int blkdev_get_whole(struct block_device *bdev, blk_mode_t mode)
+ 
+ 	if (!atomic_read(&bdev->bd_openers))
+ 		set_init_blocksize(bdev);
+-	if (test_bit(GD_NEED_PART_SCAN, &disk->state))
+-		bdev_disk_changed(disk, false);
+ 	atomic_inc(&bdev->bd_openers);
++	if (test_bit(GD_NEED_PART_SCAN, &disk->state)) {
++		/*
++		 * Only return scanning errors if we are called from conexts
++		 * that explicitly want them, e.g. the BLKRRPART ioctl.
++		 */
++		ret = bdev_disk_changed(disk, false);
++		if (ret && (mode & BLK_OPEN_STRICT_SCAN)) {
++			blkdev_put_whole(bdev);
++			return ret;
++		}
++	}
+ 	return 0;
+ }
+ 
+-static void blkdev_put_whole(struct block_device *bdev)
+-{
+-	if (atomic_dec_and_test(&bdev->bd_openers))
+-		blkdev_flush_mapping(bdev);
+-	if (bdev->bd_disk->fops->release)
+-		bdev->bd_disk->fops->release(bdev->bd_disk);
+-}
+-
+ static int blkdev_get_part(struct block_device *part, blk_mode_t mode)
+ {
+ 	struct gendisk *disk = part->bd_disk;
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 0c76137adcaaa..128f503828cee 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -562,7 +562,8 @@ static int blkdev_common_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 			return -EACCES;
+ 		if (bdev_is_partition(bdev))
+ 			return -EINVAL;
+-		return disk_scan_partitions(bdev->bd_disk, mode);
++		return disk_scan_partitions(bdev->bd_disk,
++				mode | BLK_OPEN_STRICT_SCAN);
+ 	case BLKTRACESTART:
+ 	case BLKTRACESTOP:
+ 	case BLKTRACETEARDOWN:
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index c3e8f7cf96be9..3ed5e03109c29 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -128,6 +128,8 @@ typedef unsigned int __bitwise blk_mode_t;
+ #define BLK_OPEN_WRITE_IOCTL	((__force blk_mode_t)(1 << 4))
+ /* open is exclusive wrt all other BLK_OPEN_WRITE opens to the device */
+ #define BLK_OPEN_RESTRICT_WRITES	((__force blk_mode_t)(1 << 5))
++/* return partition scanning errors */
++#define BLK_OPEN_STRICT_SCAN	((__force blk_mode_t)(1 << 5))
+ 
+ struct gendisk {
+ 	/*
 -- 
-Jens Axboe
+2.44.0.478.gd926399ef9-goog
 
 
