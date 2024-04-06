@@ -1,113 +1,120 @@
-Return-Path: <stable+bounces-36172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CAB89AB95
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 17:16:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7FD89ABF0
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 18:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34DC28244F
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 15:16:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 854FC1F217A5
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 16:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5F539AC9;
-	Sat,  6 Apr 2024 15:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rosalinux.ru header.i=@rosalinux.ru header.b="WDRTBFYx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F56C3BBF5;
+	Sat,  6 Apr 2024 16:11:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.rosalinux.ru (mail.rosalinux.ru [195.19.76.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941FC376E0;
-	Sat,  6 Apr 2024 15:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.19.76.54
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82513BBDE
+	for <stable@vger.kernel.org>; Sat,  6 Apr 2024 16:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712416574; cv=none; b=tvK0PashjhNBBHi1QkXLVj3ByQsJg3zjTn7nRhpxwGWQl/P+/gG1PhNvzrgGRvzMfCC1zIvJTEBhr3BaBvRZv/R5f02GOiEvxE7QWn7vEZhzBx8au+5cPJJ5Xi75xnZ6I4GsCrLQAFC+zZnCPhlhqBhFHrGxli+fBSp8xKzWb+o=
+	t=1712419902; cv=none; b=qOm7RmkUQTfv5UF0ci4tqc8yydhsUUCts6+aPIfkYiACiFJHSsAo6RlwsvFmRII5bWWrw9FnfIBAHkxJxwEoq+5h7loWJa2/sbz2Nyi3HZsp69uaqM5QfDSrlsMd3IfJ6jZne9t2tHxwdLIa7/qMq/zhxjI8+ahLDNehbkgGrpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712416574; c=relaxed/simple;
-	bh=AjC9VPGBDKa+qIIk5rpRw8XzGhdO0n+wLvwpBvsUocg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m9bjfzETLr6Ok37kcW6ZSD7K9fWN27zOz6w/eT4DZWAeKlnRYGGtcpc7xfJ3v+Z9lYJ34WQUHsOkc8geWcEFKYMjAwAg1kOPZWuARu3EqboAQ8N//1SC2185h/J5AeDY7pcnmotLlJr8TeeChnq1tCIAaAGsEvpAxQBWy4FoEqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosalinux.ru; spf=pass smtp.mailfrom=rosalinux.ru; dkim=pass (2048-bit key) header.d=rosalinux.ru header.i=@rosalinux.ru header.b=WDRTBFYx; arc=none smtp.client-ip=195.19.76.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosalinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosalinux.ru
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rosalinux.ru (Postfix) with ESMTP id 93FBAEF2DB4FB;
-	Sat,  6 Apr 2024 18:15:59 +0300 (MSK)
-Received: from mail.rosalinux.ru ([127.0.0.1])
-	by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id SecWJ8moq5Pd; Sat,  6 Apr 2024 18:15:59 +0300 (MSK)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rosalinux.ru (Postfix) with ESMTP id 5EF1FEF2DB4FE;
-	Sat,  6 Apr 2024 18:15:59 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rosalinux.ru 5EF1FEF2DB4FE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosalinux.ru;
-	s=1D4BB666-A0F1-11EB-A1A2-F53579C7F503; t=1712416559;
-	bh=t7XFvKjb/fmLNl9bggienWjZmjBucE0mCAmH+77OYak=;
-	h=From:To:Date:Message-ID:MIME-Version;
-	b=WDRTBFYx3OPElQXj++OVzjp2iKo+06Th6kiMz1ASk7wYQ5XmEBVFGLBFZf7JBmMau
-	 VeVUUKlvJihsM+usuDUGFren83CF44GINJPM9kGJDHH/DhcrAP0oSmmI+KwQ4jCQ4b
-	 MO80/MHOMSSAHYTrNTm5zx54TVK5PcwS30WNxg3zqGtuvD2CjdbW0s08Id74Nd8wU+
-	 DTx7LLrvDNUVc2RJkMqvL0JvthZ2nX2zYzsiRQQ3kIswOkYz91j573fhsn8aRLC1ti
-	 4BnJL+HSEiYLXwWsP84dds+3JsIPmc5mRBChOiNSIMz6MEzeINwbVqgyeRdXLTnIJJ
-	 AG2ScTJaIVagQ==
-X-Virus-Scanned: amavisd-new at rosalinux.ru
-Received: from mail.rosalinux.ru ([127.0.0.1])
-	by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id zsqipvTHXt3j; Sat,  6 Apr 2024 18:15:59 +0300 (MSK)
-Received: from localhost.localdomain (unknown [213.87.161.43])
-	by mail.rosalinux.ru (Postfix) with ESMTPSA id 8B6F9EF2DB4FB;
-	Sat,  6 Apr 2024 18:15:58 +0300 (MSK)
-From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Mikhail Lobanov <m.lobanov@rosalinux.ru>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1712419902; c=relaxed/simple;
+	bh=7fWCjJs+M18WZPEDYoK7CCbbJjL/r+zVE9P3pIAZCyM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JfvdEBb3nTd0Ka/DK7Rxf8WnjU4/xAHmfhRJvenOsSY91Wm2upKHol9VduSPSMlu2i54TgM+r5/jD9K1q/NP0G0W8wUiUen2q1XiVXUsBKO8yV5VeNfGWuE3A69yhizz4IqdNam1s/brWum4/UqzeixmKgsOOlT87cBr2RH+E9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id E4DF972C90B;
+	Sat,  6 Apr 2024 19:11:30 +0300 (MSK)
+Received: from beacon.altlinux.org (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id D562336D0160;
+	Sat,  6 Apr 2024 19:11:30 +0300 (MSK)
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH] bpf: dereference of null in __cgroup_bpf_query() function
-Date: Sat,  6 Apr 2024 11:14:55 -0400
-Message-ID: <20240406151457.4774-1-m.lobanov@rosalinux.ru>
-X-Mailer: git-send-email 2.43.0
+Cc: Vitaly Chikunov <vt@altlinux.org>
+Subject: [PATCH v2 0/1] cifs: Convert struct fealist away from 1-element array
+Date: Sat,  6 Apr 2024 19:11:06 +0300
+Message-ID: <20240406161107.1613361-1-vt@altlinux.org>
+X-Mailer: git-send-email 2.42.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-In the __cgroup_bpf_query() function, it is possible to dereference
-the null pointer in the line id =3D prog->aux->id; since there is no
-check for a non-zero value of the variable prog.
+Backport of the mainline fix to the kernel panic when Wine is run over
+CIFS share. This is intended for linux-6.1.y tree. Please apply.
+Bug and testing details:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: detected buffer overflow in strncpy
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: ------------[ cut here ]------------
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: kernel BUG at lib/string_helpers.c:1027!
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: invalid opcode: 0000 [#1] PREEMPT SMP PTI
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: CPU: 1 PID: 4532 Comm: vr402352.res Tainted: G           OE      6.1.73-un-def-alt1 #1
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: Hardware name: Gigabyte Technology Co., Ltd. B360M-D3H/B360M D3H-CF, BIOS F12 03/14/2019
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: RIP: 0010:fortify_panic+0xf/0x11
+  ...
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: Call Trace:
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  <TASK>
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? __die_body.cold+0x1a/0x1f
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? die+0x2b/0x50
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? do_trap+0xcf/0x120
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? fortify_panic+0xf/0x11
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? do_error_trap+0x83/0xb0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? fortify_panic+0xf/0x11
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? exc_invalid_op+0x4e/0x70
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? fortify_panic+0xf/0x11
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? asm_exc_invalid_op+0x16/0x20
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? fortify_panic+0xf/0x11
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  CIFSSMBSetEA.cold+0xc/0x18 [cifs]
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  cifs_xattr_set+0x596/0x690 [cifs]
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? evm_protected_xattr_common+0x41/0xb0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  __vfs_removexattr+0x52/0x70
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  __vfs_removexattr_locked+0xbc/0x150
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  vfs_removexattr+0x56/0x100
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  removexattr+0x58/0x90
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? get_vtime_delta+0xf/0xb0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? ct_kernel_exit.constprop.0+0x6b/0x80
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? __ct_user_enter+0x5a/0xd0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? syscall_exit_to_user_mode+0x31/0x50
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? int80_emulation+0xb9/0x110
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? get_vtime_delta+0xf/0xb0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? ct_kernel_exit.constprop.0+0x6b/0x80
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? __ct_user_enter+0x5a/0xd0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? __fget_light.part.0+0x83/0xd0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  __ia32_sys_fremovexattr+0x80/0xa0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  int80_emulation+0xa9/0x110
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? get_vtime_delta+0xf/0xb0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? vtime_user_exit+0x1c/0x70
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? __ct_user_exit+0x6c/0xc0
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  ? int80_emulation+0x1b/0x110
+  Jan 24 15:15:20 kalt2test.dpt.local kernel:  asm_int80_emulation+0x16/0x20
+  Jan 24 15:15:20 kalt2test.dpt.local kernel: RIP: 0023:0xf7e3b9b1
 
-Fixes: af6eea57437a ("bpf: Implement bpf_link-based cgroup BPF program at=
-tachment")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
----
- kernel/bpf/cgroup.c | 2 ++
- 1 file changed, 2 insertions(+)
+This backport is a simple cherry-pick of mainline commit 398d5843c032
+("cifs: Convert struct fealist away from 1-element array").
 
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index 491d20038cbe..7f2db96f0c6a 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -1092,6 +1092,8 @@ static int __cgroup_bpf_query(struct cgroup *cgrp, =
-const union bpf_attr *attr,
- 			i =3D 0;
- 			hlist_for_each_entry(pl, progs, node) {
- 				prog =3D prog_list_prog(pl);
-+               	       	if (!prog_list_prog(pl))
-+				continue;
- 				id =3D prog->aux->id;
- 				if (copy_to_user(prog_ids + i, &id, sizeof(id)))
- 					return -EFAULT;
---=20
-2.43.0
+Build and runtime tested to fix the problem.
+Downstream bug report and test report: https://bugzilla.altlinux.org/49177
+
+Difference from v0:
+- No changes, only a cover letter is added with bug details.
+
+Kees Cook (1):
+  cifs: Convert struct fealist away from 1-element array
+
+ fs/smb/client/cifspdu.h |  4 ++--
+ fs/smb/client/cifssmb.c | 16 ++++++++--------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+-- 
+2.42.1
 
 
