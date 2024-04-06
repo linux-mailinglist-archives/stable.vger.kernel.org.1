@@ -1,80 +1,76 @@
-Return-Path: <stable+bounces-36164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B181B89A98A
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 09:18:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B3689AA12
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 11:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB6E4283E4F
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 07:18:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC62BB226FA
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 09:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3F1225D0;
-	Sat,  6 Apr 2024 07:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534EF24A06;
+	Sat,  6 Apr 2024 09:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ea6S6N6K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPLRPBoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3656C2110F;
-	Sat,  6 Apr 2024 07:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E858B2C6AE;
+	Sat,  6 Apr 2024 09:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712387894; cv=none; b=PmaWRBAm5Rzcq1LIphWjxnpv4O6awHoHJAt1fItSqZ/xzkXytAB52FxJY3RHuCu7WLTKGk5tR4TW/fu6/qV5drvhJp24VE867kQjar9JNL4pCwlmyUHKUi1adqQGhtptJOXhgOA4KLHvT57Quw/Qc03NPxtdfwmcZ0ly08BNpPo=
+	t=1712395131; cv=none; b=ZUEcMwVsTqBR8Ku+XoE02/RLxyYVQLpwubpgVODuPgOd5nPRtLNlnYr1CQgdTAOzgZi00hsaCZl5iIEMMPiVbmT2Q893L823cnTRCWAu8PSQxq45ilMAYvShVnN9UM2wCwWqCxvX79XQrZP3IYcvGskouZOvDfEtsp2sMzF3Z2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712387894; c=relaxed/simple;
-	bh=dS8bADZziQoLtHlnkHj0dQ2paJIGjWmIuNewalgbWUA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SxKlxYxHIrwIVL+Nwp4mC8soeo9AtoOcL/bi0MfnIJI5EVzSsQd9u8daatZw+xdzdYDiP7Ny7VnHDZoPsQN/Y9knOBLDGAfSBnp8N7Pp+TCPvJrSfGmQuZVLycZgsGKBV6/IB2EfCzF/qEAzGfyQyOH1dPK+lZfeP5V6QLgR2L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ea6S6N6K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DA8C433C7;
-	Sat,  6 Apr 2024 07:18:12 +0000 (UTC)
+	s=arc-20240116; t=1712395131; c=relaxed/simple;
+	bh=OUXrlxpdyrcqJqLEifsJYtil4okGD8qGZToyOExWkJo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=EuP0Hp4Dg1xln8OjiTv80xOI/HqUsYhyHvNyQ3r2WuhDM2u44rVtMxyPCKRiEn2TNPgZjW960Dni5KYOFYvknGLNgzrvGD+umpXCKVSA4Nk+uGqLZ/rtpnxWbKPQ6mfhcFkMRAvP3URmkUJ5hkkhrXv+Rhy6lVpi7cDA23G4c3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPLRPBoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2D1C433C7;
+	Sat,  6 Apr 2024 09:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712387893;
-	bh=dS8bADZziQoLtHlnkHj0dQ2paJIGjWmIuNewalgbWUA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ea6S6N6KseF8FYU91uMYJN7GD6yzmV7gab0MK5qCOM9EoxQmArIK+Qf4SmrVk7wWd
-	 w4XXWVDPPOYHHZv3evO6BMbfX4VxnqR46iifX3EPm2YW1Dotyn0Z+UrRWpPLayVoIj
-	 WKMckBsbZZVR2Azg9mLn9kc6wee9HAP7/p7lvdSggO5kzf8s8yplkVQXxU6qyMQclo
-	 hSdF9W6liKlu+0CsLtUDcVuJqsrZxKyA6LHu7IsCpPTRaYEe8NzCHJhG7GB+S3w8Ye
-	 ptA0UggHfPqrixdz4A5ghcTFtERIWFgc6L2T1QHsXRcikxX+L11f46KBcCk7g+So27
-	 mCktSUaE1/xGQ==
-Date: Sat, 6 Apr 2024 12:48:09 +0530
+	s=k20201202; t=1712395130;
+	bh=OUXrlxpdyrcqJqLEifsJYtil4okGD8qGZToyOExWkJo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=IPLRPBoUJTIz64lSs0ulj5jKGWUCP3opeZWNl1GU18wdX6jdXieYh4EYwUZhqDr+4
+	 xEiGH4QXOS5BqiNuo0eQK76RJbaGs2l+X3jIESEOUvA94MhhygBaZ4cy2UV3bqMVHs
+	 65VtuyFD2txH7ZDT5rPRACeIraIQmEn8XFTyxKXlDvA3Nu7d/EFn793Nr5RK60AjIw
+	 BCUqzKJOJBmRV+IyK39P0JPbw92FVfa5QlKj9YkJH38Z+M3HZynMP9SL1+BQxEPNCY
+	 dTwv2hGhmmDC1d5/ULOVqE0nmaFbsq9WrHZhdzmuvFZS1kMtXzyqJ43qNpoLr3Qr85
+	 y7eoSicBuEBTA==
 From: Vinod Koul <vkoul@kernel.org>
-To: Marcel Ziswiler <marcel@ziswiler.com>
-Cc: linux-phy@lists.infradead.org, linux-imx@nxp.com,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>, Tim Harvey <tharvey@gateworks.com>,
-	Yang Li <yang.lee@linux.alibaba.com>, imx@lists.linux.dev
+To: linux-phy@lists.infradead.org, Marcel Ziswiler <marcel@ziswiler.com>
+Cc: linux-imx@nxp.com, linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
+ Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+ Marcel Ziswiler <marcel.ziswiler@toradex.com>, 
+ Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Tim Harvey <tharvey@gateworks.com>, 
+ Yang Li <yang.lee@linux.alibaba.com>, imx@lists.linux.dev
+In-Reply-To: <20240327071946.8869-1-marcel@ziswiler.com>
+References: <20240327071946.8869-1-marcel@ziswiler.com>
 Subject: Re: [PATCH v2] phy: freescale: imx8m-pcie: fix pcie link-up
  instability
-Message-ID: <ZhD3MfXe8rhkQ_3l@matsya>
-References: <20240327071946.8869-1-marcel@ziswiler.com>
+Message-Id: <171239512402.352254.17030670986383011631.b4-ty@kernel.org>
+Date: Sat, 06 Apr 2024 14:48:44 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327071946.8869-1-marcel@ziswiler.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 
-On 27-03-24, 08:19, Marcel Ziswiler wrote:
-> From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-> 
+
+On Wed, 27 Mar 2024 08:19:37 +0100, Marcel Ziswiler wrote:
 > On the i.MX 8M Mini, the AUX_PLL_REFCLK_SEL has to be left at its reset
 > default of AUX_IN (PLL clock).
 > 
@@ -95,9 +91,17 @@ On 27-03-24, 08:19, Marcel Ziswiler wrote:
 > configure cmn_reg063 (offset: 0x18C).
 > BTW: On the i.MX 8M Plus we have not seen any issues with PCIe with the
 > exact same setup which is why I left it unchanged.
+> 
+> [...]
 
-This does not apply on phy/fixes, pls rebase
+Applied, thanks!
 
+[1/1] phy: freescale: imx8m-pcie: fix pcie link-up instability
+      commit: 3a161017f1de55cc48be81f6156004c151f32677
+
+Best regards,
 -- 
 ~Vinod
+
+
 
