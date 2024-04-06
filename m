@@ -1,112 +1,136 @@
-Return-Path: <stable+bounces-36160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D06989A851
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 04:00:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C96389A861
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 04:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AAC9B2295F
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 01:59:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0C441F214E9
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 02:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2EFFC11;
-	Sat,  6 Apr 2024 01:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5593BFBEE;
+	Sat,  6 Apr 2024 02:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="b63C3zjQ"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="OJ/f+Zky"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E771A716;
-	Sat,  6 Apr 2024 01:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83B2FC11
+	for <stable@vger.kernel.org>; Sat,  6 Apr 2024 02:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712368780; cv=none; b=mVjKt+D8/P4Cs2JEl4fNQ5GacFKrJvXFcZSAxQLjYZTGMIt84rnvwfdW1Y/VeFXnreOsuLxX/lu7yM+jjHHujVjCXvblTrQ+pT/00gkLiMggr5WuFB6+AAmpUGJ5wTzQ4QuC34KIdZuhNw8re/qL7Ix5xr5BrvxCuzuFgIouquA=
+	t=1712369412; cv=none; b=Im98cmC3MLgTaNrGINSKYnJkOxpMyu1lWO15IWT7uIks5BdLfix9ZIEi5nos1Dc2ICv2tT6E/H+PXlf9q6PyVP4ilHHeWyldUWbG4CSqlAuhh1IWWW2ruT06eZrehYlD2t+prcM9gFsMIWRuLO0S9vuaZG9k7aQqlceoyTtJ1to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712368780; c=relaxed/simple;
-	bh=FyL8tu93bQa+tUnv5VehlK5yQiuu6PMdhbT+kkBL+rY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OcLt4t6A/a9NrjeiUf8/8XF3zd2MfiGG5xDQ7NTrqD9ibLLTDPnYjfMqbJ8v98dNf6KmocItaGI2cljRDmef2C+8gjuxgoF5e0hBQAdXuaCVlB1Y2XTzc35idvmEHrBNuKJ04Jb3HNi3AC+5SLpcV+pltza2oTAKjaBcIfPZivc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=b63C3zjQ; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4361PGr9029826;
-	Sat, 6 Apr 2024 01:59:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=Ymt66t5+YIavFVv0FGiiBYsKSl9/10gOmRtAWtzKMyE=;
- b=b63C3zjQrQRovzPL7PwlvrUh1+OjEgWop3dtkvor+1TRNM+FnUhgTs9zHUcSJjG/Dj6d
- CQIKra1dAW3SbaHriBFuWMjc0/v2kGjlRwQgszcl8fvZtyn79PBo6I4Xrw4tAVNuayqZ
- 49VLEQlqKsZ139V6Nx0/XfnSn/N8WM8zT3FWbmbEDhAp+1psj5H3oQLDaqmwt7295+J7
- nqXay+1Zg9meQHmvytz5lnw+VFs5sAVLGyFri8BalR1pBaKrAbZ1bPxHmmsWlv9+MDd1
- nyFySHEFVhJq49vUaVRnpnZHpNJ5o8ISEapNfNld9JcYOXvN6GnUalN3lB+3oVSUBDDN MA== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3x9f8pcjgw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 06 Apr 2024 01:59:03 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4361XVc7032539;
-	Sat, 6 Apr 2024 01:58:53 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3xavu3req8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 06 Apr 2024 01:58:52 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4361wqvX000912;
-	Sat, 6 Apr 2024 01:58:52 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3xavu3repx-1;
-	Sat, 06 Apr 2024 01:58:52 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: dgilbert@interlog.com, Alexander Wetzel <Alexander@wetzel-home.de>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        gregkh@linuxfoundation.org, sachinp@linux.ibm.com, bvanassche@acm.org,
-        linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3] scsi: sg: Avoid race in error handling & drop bogus warn
-Date: Fri,  5 Apr 2024 21:58:31 -0400
-Message-ID: <171236847468.2627662.5342437444989311589.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401191038.18359-1-Alexander@wetzel-home.de>
-References: <81266270-42F4-48F9-9139-8F0C3F0A6553@linux.ibm.com> <20240401191038.18359-1-Alexander@wetzel-home.de>
+	s=arc-20240116; t=1712369412; c=relaxed/simple;
+	bh=iPU1wDle54Dhh2Jag3TFgfIYW2xBm/4/mcjxBC9aWWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Du63Dech9eHTGqjtOFmVvX+VSoDRUtEPUmBeZJD4OysZwuSFGVlbUTr8HVyhE5m0uKsTHZHW3xDSAt1AnP47jCBysKju6mYHdyilAYuIs5p8c8XbArC3wvSq7wHNkp0MbT0epwslhQlsehcIHyW+TVT0nyPQG5hNeSX2KlWh62E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=OJ/f+Zky; arc=none smtp.client-ip=209.85.166.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-36990f24098so87365ab.0
+        for <stable@vger.kernel.org>; Fri, 05 Apr 2024 19:10:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1712369410; x=1712974210; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1cCv5VcWhStgJ4vCE9L+2KiQe3Q2pQoluor1fRLFK9E=;
+        b=OJ/f+ZkyG3cZl6xcriW+jcc5SzhHLzcRQhi4fk7Wo9GO3OqPAWei4wZJcBu+EYhHgG
+         MFU8hxTWQNk/NWoWVCqwhKqsZPEjT2XPZD9cPzWzWBmTdTlxze0gMBuh01qdzXosDhEL
+         f8z51TZAf1NUyWvujlh9X+B3rq3zj0DJOW5Wi8TyjmmFEJRZ4YJm5LhU3PraFSd/ryPR
+         NIT3sAEFz3Q1LVFDYlYMJqgRqpUxivQaNzHft/4cgtoOMpDhjCcjVSIq08I20raUkyZz
+         JyF2SwSTlylM/0jByHXdj3wCSJ2DE7XHXFwyt9DbZmF/gBO/qqINzFBDNB216HhkTDjh
+         R+dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712369410; x=1712974210;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1cCv5VcWhStgJ4vCE9L+2KiQe3Q2pQoluor1fRLFK9E=;
+        b=ldVmev5YwdsaGWMc2SPhV4rwjBsGUXSDO8j4ce+GlthKUSFJC8VXSWGAJ0k1kLwpX4
+         URV3e5ORaLZmmS2EzjP4SCAfGOO277Smsqni5E9mP3/Z19K3k81KAZUIHnlNmcY15t4g
+         GuhfHkoaUXQc3v6jeGeHm07/gcQm1B33mELaNYHE3/GJb6aEo6JKEzLUhGAKsCcwT0Jn
+         wcDIfJTUem7pu71HC2rz64iE8C9hK+UvvUqlexAHj0z77cPRL/Ogea9VQrNAI9YO7Mmd
+         Fbv3Hv7m3jSnXJDngRZLxSbpP2hzAbdcH2d+a7kcKXe1RsEjfRcxFFKXh+olU+v3jo/L
+         IbYg==
+X-Forwarded-Encrypted: i=1; AJvYcCWeKofc6Ct9YTFh5kjV9kb9owCj+y/5uCiZJnGfwxf0i6sEagLw6h9eNYhQAS98K6R9yrnkKpQshLHWGnl+uwxEahEbE8q8
+X-Gm-Message-State: AOJu0YzZnQJdZtgA9ENkcKmsXjtcBfc/LBlAhRV84rVo8TxYZji+RWJn
+	UZKIjczBw/qM8SrS3zUbi37QdpsHRCqUhcR+ftLRPBU+yJkydRbYaZn6XKtGZj0=
+X-Google-Smtp-Source: AGHT+IGN8BSnqjv3LU00TTGUDfx8VQfSQp0U3i+zESsBq9d8LHP4DpckfjoiRKtuga7gxqJKeYYQEg==
+X-Received: by 2002:a05:6e02:19cd:b0:368:9b64:fa7a with SMTP id r13-20020a056e0219cd00b003689b64fa7amr3938452ill.0.1712369409735;
+        Fri, 05 Apr 2024 19:10:09 -0700 (PDT)
+Received: from [172.19.0.169] ([99.196.135.167])
+        by smtp.gmail.com with ESMTPSA id s5-20020a92cb05000000b0036a0e23db86sm612548ilo.33.2024.04.05.19.10.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Apr 2024 19:10:09 -0700 (PDT)
+Message-ID: <ef230b61-cee8-4486-831e-ac4993b65a78@kernel.dk>
+Date: Fri, 5 Apr 2024 20:10:02 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-06_01,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- bulkscore=0 mlxlogscore=910 mlxscore=0 adultscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404060013
-X-Proofpoint-GUID: WOkGEMOPl6xZ0LzTGvGh84Dz-bTeT92j
-X-Proofpoint-ORIG-GUID: WOkGEMOPl6xZ0LzTGvGh84Dz-bTeT92j
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.8 015/715] io_uring: remove unconditional looping in
+ local task_work handling
+Content-Language: en-US
+To: Jiri Slaby <jirislaby@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240324223455.1342824-1-sashal@kernel.org>
+ <20240324223455.1342824-16-sashal@kernel.org>
+ <bcf80774-98c2-4c14-a1e7-6efcb79a7fee@kernel.org>
+ <2ff5d891-2120-475d-be8e-82bf20a8b7b7@kernel.dk>
+ <29df48ef-aafe-4918-b903-0aabda94fd0b@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <29df48ef-aafe-4918-b903-0aabda94fd0b@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, 01 Apr 2024 21:10:38 +0200, Alexander Wetzel wrote:
-
-> commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
-> introduced an incorrect WARN_ON_ONCE() and missed a sequence where
-> sg_device_destroy() was used after scsi_device_put().
+On 4/4/24 1:06 AM, Jiri Slaby wrote:
+> On 02. 04. 24, 15:41, Jens Axboe wrote:
+>> On 4/2/24 2:12 AM, Jiri Slaby wrote:
+>>> On 24. 03. 24, 23:23, Sasha Levin wrote:
+>>>> From: Jens Axboe <axboe@kernel.dk>
+>>>>
+>>>> [ Upstream commit 9fe3eaea4a3530ca34a8d8ff00b1848c528789ca ]
+>>>>
+>>>> If we have a ton of notifications coming in, we can be looping in here
+>>>> for a long time. This can be problematic for various reasons, mostly
+>>>> because we can starve userspace. If the application is waiting on N
+>>>> events, then only re-run if we need more events.
+>>>
+>>> This commit breaks test/recv-multishot.c from liburing:
+>>> early error: res 4
+>>> test stream=1 wait_each=0 recvmsg=0 early_error=0  defer=1 failed
+>>>
+>>> The behaviour is the same in 6.9-rc2 (which contains the commit too).
+>>>
+>>> Reverting the commit on the top of 6.8.2 makes it pass again.
+>>>
+>>> Should the test be updated or is the commit wrong?
+>>
+>> The commit is fine, it's the test that is buggy. Sometimes test cases
+>> make odd assumptions that are just wrong but happen to work, for some
+>> definition of work. Eg it would work fine on an idle system, but not
+>> necessarily if not. For this one, the fix is in liburing:
+>>
+>> https://git.kernel.dk/cgit/liburing/commit/test/recv-multishot.c?id=a1d5e4b863a60af93d0cab9d4bbf578733337a90
 > 
-> sg_device_destroy() is accessing the parent scsi_device request_queue which
-> will already be set to NULL when the preceding call to scsi_device_put()
-> removed the last reference to the parent scsi_device.
+> Thanks, that worked.
 > 
-> [...]
+> Any plans to release 2.6 with the above?
+> 
+> Note that for 2.4->2.5 update I also needed to take 9dc95a03e4a76 from
+> post-2.5.
 
-Applied to 6.9/scsi-fixes, thanks!
-
-[1/1] scsi: sg: Avoid race in error handling & drop bogus warn
-      https://git.kernel.org/mkp/scsi/c/d4e655c49f47
+Yep, 2.6 should be released very soon.
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+Jens Axboe
+
 
