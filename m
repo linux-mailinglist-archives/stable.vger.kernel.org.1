@@ -1,150 +1,305 @@
-Return-Path: <stable+bounces-36176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196DB89ACB2
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 20:51:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C12A89AD88
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 00:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52EEE2827F9
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 18:51:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F67BB20F50
+	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 22:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6034AECA;
-	Sat,  6 Apr 2024 18:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBC2535C8;
+	Sat,  6 Apr 2024 22:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="lMGhj55c";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ExR4CLOq"
+	dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b="ffyo1h+a"
 X-Original-To: stable@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E284C446A9;
-	Sat,  6 Apr 2024 18:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288934174C;
+	Sat,  6 Apr 2024 22:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.247.17.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712429501; cv=none; b=H+TiczL7ofHdGc+JakjrQO8aWh5muyxn3BD+8IFeaDorQEXh4xgFk16ilwaXHj9z/HFPIO04FnMjzqR9b7i/TFjt5fdANnu5SmTf9FZXPQUlo8meKTop1s8F4bUeErKd+EqqmT5EdlNoYQVES4K62uKVIHWMm4AMFkJHMx/3/f8=
+	t=1712441111; cv=none; b=Fi9bEfLG/CbwbIzLDuzbAAsmiJj3cZXzteEw8c/64nEH0NFw6m2eRSY+r2BvGDXlYtmpfT30vIeahxpFKnAuuEzLHQV4Q4klgaDDlvm/b2ZnVN5o7ElxL1kyDxyJ3QP3mY1QOcCqmhESial8mAF2UiCsx10h0CyLVQW749iXeNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712429501; c=relaxed/simple;
-	bh=y4QekPwzHbQpnZEcbP06XBRzhYtTIB9g+/cptMSH16k=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G0cgVIaw3ovrkF/kd8tl081NQctUi0r/fYf/6QfIQtgi4h9ijCvmb0JKTwR8mvL/JKrou2xgHDhc4kWFy/6doSaDqUEa2G7Y+FkFvQLMjbKFmUPNPPJYjmJc5Y6hW+QiiK2dVrRox7ZXMc+WYHa3XYZoXg8tAbBFDc0m9xwIpl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=lMGhj55c; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ExR4CLOq; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1712429499;
-	bh=y4QekPwzHbQpnZEcbP06XBRzhYtTIB9g+/cptMSH16k=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=lMGhj55c+G6sXTkhJFAVQuv7sQgrn64xO9T8QV1zay2jI3gkHchB8cspR2vs6Z5js
-	 kS+/R+kf9+x9oLq6OPtZipGZXew6oxL7qSLlOxN29HBK/nigHRdui0a7LZVgI3vXVb
-	 YMfGZZE3jJ0/nQ/X+9GvQhQxM9uz8t4XFq3FMirY=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 31A431285D61;
-	Sat,  6 Apr 2024 14:51:39 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id Fl91ak5xgcZr; Sat,  6 Apr 2024 14:51:39 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1712429498;
-	bh=y4QekPwzHbQpnZEcbP06XBRzhYtTIB9g+/cptMSH16k=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=ExR4CLOqnoGJuGyNH0ABNUh0B3R4vvlLJF/7jcn4HJ/uxqzz3MOQC3G/dPUIK9aKv
-	 zokToKefAahXarpGEu37X7WL6Hik2kOB0rXXM62wBR4UVn2F6AeSquavijHF3ARy1q
-	 J25cdbwaU8Bqw741votLhBpVZferJBNuELyhuTcc=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	s=arc-20240116; t=1712441111; c=relaxed/simple;
+	bh=ONbXjkoFqicaanE6f8HDOh1Z+20IsDsnrpY1ClfmE2o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZPxhXEFVAyzlhEFehkU/9xFQTCxyMSqqhEmtAkPbhnvYkNCogyH/NaMMUpOhCprAyyY+q5PTuVq2Sgi+4JhmPPIKFaeL/38adkwoh77JgfU5n4veNwEVpyb1Zpi70cFTlZMfBKNpeBZ0jCH09DJONCaVulzuxy2e/SpEzkv5828=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=natalenko.name; spf=pass smtp.mailfrom=natalenko.name; dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b=ffyo1h+a; arc=none smtp.client-ip=199.247.17.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=natalenko.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=natalenko.name
+Received: from spock.localnet (unknown [94.142.239.106])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 6DBFF1285D53;
-	Sat,  6 Apr 2024 14:51:38 -0400 (EDT)
-Message-ID: <189127aefff8abdabd41312663ee58c06de9de87.camel@HansenPartnership.com>
-Subject: Re: Broken Domain Validation in 6.1.84+
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: John David Anglin <dave.anglin@bell.net>, Bart Van Assche
-	 <bvanassche@acm.org>, linux-parisc <linux-parisc@vger.kernel.org>
-Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org
-Date: Sat, 06 Apr 2024 14:51:36 -0400
-In-Reply-To: <03ef7afd-98f5-4f1b-8330-329f47139ddf@bell.net>
-References: <b0670b6f-b7f7-4212-9802-7773dcd7206e@bell.net>
-	 <d1fc0b8d-4858-4234-8b66-c8980f612ea2@acm.org>
-	 <db784080-2268-4e6d-84bd-b33055a3331b@bell.net>
-	 <028352c6-7e34-4267-bbff-10c93d3596d3@acm.org>
-	 <cf78b204-9149-4462-8e82-b8f98859004b@bell.net>
-	 <6cb06622e6add6309e8dbb9a8944d53d1b9c4aaa.camel@HansenPartnership.com>
-	 <03ef7afd-98f5-4f1b-8330-329f47139ddf@bell.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by prime.voidband.net (Postfix) with ESMTPSA id 42893635B065;
+	Sun,  7 Apr 2024 00:04:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+	s=dkim-20170712; t=1712441097;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ONbXjkoFqicaanE6f8HDOh1Z+20IsDsnrpY1ClfmE2o=;
+	b=ffyo1h+a9KzyOvLgwZW1TPL7jymuICJCwCFGJtgr/VMcq5x0qLE6L3P5Y3QPp6Ebyl2I2/
+	JXiZDjGpSoWlicoYn8XKrFzYxbTM+EjDKcLjP2SNYMoo/WHaLymHkVciaoye79GoyyAZhq
+	M0z1O+SnpMxvwtFZU6NSkmL4Y0yZDDI=
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: Pasi =?ISO-8859-1?Q?K=E4rkk=E4inen?= <pasik@iki.fi>
+Cc: linux-kernel@vger.kernel.org, Norbert Preining <norbert@preining.info>,
+ stable@vger.kernel.org, regressions@leemhuis.info
+Subject: Re: Regression in kernel 6.8.2 fails in various ways (USB, BT, ...)
+Date: Sun, 07 Apr 2024 00:04:46 +0200
+Message-ID: <2724514.mvXUDI8C0e@natalenko.name>
+In-Reply-To: <20240406182943.GG1099@reaktio.net>
+References:
+ <ZgvkIZFN23rkYhtS@burischnitzel> <6139700.lOV4Wx5bFT@natalenko.name>
+ <20240406182943.GG1099@reaktio.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart12411026.O9o76ZdvQC";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
 
-[cc stable to see if they have any ideas about fixing this]
-On Sat, 2024-04-06 at 12:16 -0400, John David Anglin wrote:
-> On 2024-04-06 11:06 a.m., James Bottomley wrote:
-> > On Sat, 2024-04-06 at 10:30 -0400, John David Anglin wrote:
-> > > On 2024-04-05 3:36 p.m., Bart Van Assche wrote:
-> > > > On 4/4/24 13:07, John David Anglin wrote:
-> > > > > On 2024-04-04 12:32 p.m., Bart Van Assche wrote:
-> > > > > > Can you please help with verifying whether this kernel warn
-> > > > > > ing is only triggered by the 6.1 stable kernel series or
-> > > > > > whether it is also
-> > > > > > triggered by a vanilla kernel, e.g. kernel v6.8? That will 
-> > > > > > tell us whether we 
-> > > > > > need to review the upstream changes or the backp
-> > > > > > orts on the v6.1 branch.
-> > > > > Stable kernel v6.8.3 is okay.
-> > > > Would it be possible to bisect this issue on the linux-6.1.y
-> > > > branch? That probably will be faster than reviewing all
-> > > > backports
-> > > > of SCSI patches on that branch.
-> > > The warning triggers with v6.1.81.  It doesn't trigger with
-> > > v6.1.80.
-> > It's this patch:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.1.y&id=cf33e6ca12d814e1be2263cb76960d0019d7fb94
-> > 
-> > The specific problem being that the update to scsi_execute doesn't
-> > set the sense_len that the WARN_ON is checking.
-> > 
-> > This isn't a problem in mainline because we've converted all uses
-> > of scsi_execute.  Stable needs to either complete the conversion or
-> > back out the inital patch. This change depends on the above change:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.1.y&id=b73dd5f9997279715cd450ee8ca599aaff2eabb9
-> 
-> Thus, more than just the initial patch needs to be backed out.
+--nextPart12411026.O9o76ZdvQC
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: Pasi =?ISO-8859-1?Q?K=E4rkk=E4inen?= <pasik@iki.fi>
+Date: Sun, 07 Apr 2024 00:04:46 +0200
+Message-ID: <2724514.mvXUDI8C0e@natalenko.name>
+In-Reply-To: <20240406182943.GG1099@reaktio.net>
+MIME-Version: 1.0
 
-OK, so the reason the bad patch got pulled in is because it's a
-precursor of this fixes tagged backport:
+SGVsbG8uCgpPbiBzb2JvdGEgNi4gZHVibmEgMjAyNCAyMDoyOTo0MywgQ0VTVCBQYXNpIEvDpHJr
+a8OkaW5lbiB3cm90ZToKPiBPbiBXZWQsIEFwciAwMywgMjAyNCBhdCAwOTowMjoyMVBNICswMjAw
+LCBPbGVrc2FuZHIgTmF0YWxlbmtvIHdyb3RlOgo+ID4gSGVsbG8uCj4gPiAKPiA+IE9uIMO6dGVy
+w70gMi4gZHVibmEgMjAyNCAxMjo1NToyOSwgQ0VTVCBOb3JiZXJ0IFByZWluaW5nIHdyb3RlOgo+
+ID4gPiBIaSBhbGwKPiA+ID4gCj4gPiA+IChwbGVhc2UgY2MpCj4gPiA+IAo+ID4gPiBJIGFtIHJ1
+bm5pbmcgQXJjaCBMaW51eCBvbiBhIExlbm92byBYMSBDYXJib24gR2VuIDEwLgo+ID4gPiBUZXN0
+cyBhcmUgbWFkZSB3aXRoIHVwdG9kYXRlIHN5c3RlbSwgYW5kIGJlc2lkZXMgdGhlIGtlcm5lbCBu
+bwo+ID4gPiBkaWZmZXJlbmNlLgo+ID4gPiBUaGUga2VybmVscyBhcmUgYXMgZGlzdHJpYnV0ZWQg
+YnkgQXJjaCwgYnV0IGlmIG5lY2Vzc2FyeSBJIGNhbiBjb21waWxlCj4gPiA+IGxvY2FsbHkuCj4g
+PiA+IAo+ID4gPiAKPiA+ID4gQXJjaCBMaW51eCBrZXJuZWwgNi44LjEgd29ya3Mgd2l0aG91dCBh
+bnkgcHJvYmxlbXMuCj4gPiA+IFVwZ3JhZGluZyB0byA2LjguMiBicmVha3MgYSBsb3Qgb2YgdGhp
+bmdzOgo+ID4gPiAKPiA+ID4gKiBQbHVnZ2luZyBpbiBteSBZdWJpa2V5IEMgZG9lcyBub3QgdHJp
+Z2dlciBhbnkgcmVhY3Rpb24KPiA+ID4gICAoYXMgYSBjb25zZXF1ZW5jZSBzY2RhZW1vbiBoYW5n
+cykKPiA+ID4gKiBzZW5kaW5nIG9mIGJsdWV0b290aCBmaXJtd2FyZSBkYXRhIGZhaWxzIHdpdGgg
+T29wcyAoc2VlIGJlbG93KQo+ID4gPiAqIHNodXRkb3duIGhhbmdzIGFuZCBkb2VzIG5vdCB0dXJu
+IG9mZiB0aGUgY29tcHV0ZXIKPiA+ID4gCj4gPiA+IAo+ID4gPiBJIGNhbiByZXBlYXQgdGhpcyBi
+ZWhhdmlvdXIgb24gZXZlcnkgcmVib290IGludG8gNi44LjIuCj4gPiA+IAo+ID4gPiBJIGhhdmUg
+ZG1lc2cvam91cm5hbGN0bCAtYiBmb3IgYm90aCBrZXJuZWxzIGNvbGxlY3RlZCwgaWYgcmVxdWly
+ZWQsIEkKPiA+ID4gY2FuIHNlbmQgdGhlbS4gSSBjaGVja2VkIHRoZSBkaWZmcyBidXQgbm90aGlu
+ZyByZWFsbHkgZGlkIHN0YW5kIG91dC4KPiA+ID4gCj4gPiA+IFl1YmlrZXkgcGx1Z2luOgo+ID4g
+PiBPbiA2LjguMSB3aGVuIEkgcGx1ZyBpbiB0aGUgeXViaWtleSBpdCBsaWdodHMgdXAsIGFuZCBp
+biB0aGUgbG9ncyBJIHNlZToKPiA+ID4gWyAgMzcwLjc2NzczOV0gdXNiIDMtMTogbmV3IGZ1bGwt
+c3BlZWQgVVNCIGRldmljZSBudW1iZXIgNSB1c2luZyB4aGNpX2hjZAo+ID4gPiBbICAzNzAuOTEw
+MzkyXSB1c2IgMy0xOiBOZXcgVVNCIGRldmljZSBmb3VuZCwgaWRWZW5kb3I9MTA1MCwgaWRQcm9k
+dWN0PTA0MDcsIGJjZERldmljZT0gNS40Mwo+ID4gPiBbICAzNzAuOTEwNDAzXSB1c2IgMy0xOiBO
+ZXcgVVNCIGRldmljZSBzdHJpbmdzOiBNZnI9MSwgUHJvZHVjdD0yLCBTZXJpYWxOdW1iZXI9MAo+
+ID4gPiBbICAzNzAuOTEwNDA3XSB1c2IgMy0xOiBQcm9kdWN0OiBZdWJpS2V5IE9UUCtGSURPK0ND
+SUQKPiA+ID4gWyAgMzcwLjkxMDQwOV0gdXNiIDMtMTogTWFudWZhY3R1cmVyOiBZdWJpY28KPiA+
+ID4gWyAgMzcxLjQ5NzQ5Nl0gaW5wdXQ6IFl1YmljbyBZdWJpS2V5IE9UUCtGSURPK0NDSUQgYXMg
+L2RldmljZXMvcGNpMDAwMDowMC8wMDAwOjAwOjE0LjAvdXNiMy8zLTEvMy0xOjEuMC8wMDAzOjEw
+NTA6MDQwNy4wMDA1L2lucHV0L2lucHV0MjEKPiA+ID4gWyAgMzcxLjU1NTM0Ml0gaGlkLWdlbmVy
+aWMgMDAwMzoxMDUwOjA0MDcuMDAwNTogaW5wdXQsaGlkcmF3NDogVVNCIEhJRCB2MS4xMCBLZXli
+b2FyZCBbWXViaWNvIFl1YmlLZXkgT1RQK0ZJRE8rQ0NJRF0gb24gdXNiLTAwMDA6MDA6MTQuMC0x
+L2lucHV0MAo+ID4gPiBbICAzNzEuNTU3MDIxXSBoaWQtZ2VuZXJpYyAwMDAzOjEwNTA6MDQwNy4w
+MDA2OiBoaWRkZXY5NixoaWRyYXc1OiBVU0IgSElEIHYxLjEwIERldmljZSBbWXViaWNvIFl1YmlL
+ZXkgT1RQK0ZJRE8rQ0NJRF0gb24gdXNiLTAwMDA6MDA6MTQuMC0xL2lucHV0MQo+ID4gPiBbICAz
+NzEuNTU3MTQ1XSB1c2Jjb3JlOiByZWdpc3RlcmVkIG5ldyBpbnRlcmZhY2UgZHJpdmVyIHVzYmhp
+ZAo+ID4gPiBbICAzNzEuNTU3MTUxXSB1c2JoaWQ6IFVTQiBISUQgY29yZSBkcml2ZXIKPiA+ID4g
+Cj4gPiA+IE9uIDYuOC4yIG5vdCBzaG9ydCBibGlua2luZywgYW5kIG5vdGhpbmcgaW4gdGhlIGxv
+Z3MuCj4gPiA+IAo+ID4gPiAKPiA+ID4gCj4gPiA+IEJsdWV0b290aCBPb29wczoKPiA+ID4gICAg
+MTQuMjcxNzEzXSB1c2IgdXNiMy1wb3J0MTA6IGRpc2FibGVkIGJ5IGh1YiAoRU1JPyksIHJlLWVu
+YWJsaW5nLi4uCj4gPiA+IFsgICAxNC4yNzE3MjVdIHVzYiAzLTEwOiBVU0IgZGlzY29ubmVjdCwg
+ZGV2aWNlIG51bWJlciA0Cj4gPiA+IFsgICAxNC4yNzE4OTNdIEJsdWV0b290aDogaGNpMDogRmFp
+bGVkIHRvIHNlbmQgZmlybXdhcmUgZGF0YSAoLTE5KQo+ID4gPiBbICAgMTQuMjcxOTUzXSBCbHVl
+dG9vdGg6IGhjaTA6IHNlbmRpbmcgZnJhbWUgZmFpbGVkICgtMTkpCj4gPiA+IFsgICAxNC4yNzE5
+NzZdIEJsdWV0b290aDogaGNpMDogSW50ZWwgcmVzZXQgc2VudCB0byByZXRyeSBGVyBkb3dubG9h
+ZAo+ID4gPiBbICAgMTQuNDI3NzY1XSBCbHVldG9vdGg6IGhjaTA6IHNlbmRpbmcgZnJhbWUgZmFp
+bGVkICgtMTkpCj4gPiA+IFsgICAxNC40Mjc4MTFdIEJVRzoga2VybmVsIE5VTEwgcG9pbnRlciBk
+ZXJlZmVyZW5jZSwgYWRkcmVzczogMDAwMDAwMDAwMDAwMDA3MAo+ID4gPiBbICAgMTQuNDI3ODE0
+XSAjUEY6IHN1cGVydmlzb3IgcmVhZCBhY2Nlc3MgaW4ga2VybmVsIG1vZGUKPiA+ID4gWyAgIDE0
+LjQyNzgxNV0gI1BGOiBlcnJvcl9jb2RlKDB4MDAwMCkgLSBub3QtcHJlc2VudCBwYWdlCj4gPiA+
+IFsgICAxNC40Mjc4MTZdIFBHRCAwIFA0RCAwCj4gPiA+IFsgICAxNC40Mjc4MTldIE9vcHM6IDAw
+MDAgWyMxXSBQUkVFTVBUIFNNUCBOT1BUSQo+ID4gPiBbICAgMTQuNDI3ODIwXSBDUFU6IDAgUElE
+OiAxOTggQ29tbToga3dvcmtlci91NDE6MCBUYWludGVkOiBHICAgICAgICAgICBPRSAgICAgIDYu
+OC4yLWFyY2gyLTEgIzEgYTQzMGZiOTJmN2JhNDMwOTJiNjJiYmU2YmFjOTk1NDU4ZDNkNDQyZAo+
+ID4gPiBbICAgMTQuNDI3ODIzXSBIYXJkd2FyZSBuYW1lOiBMRU5PVk8gMjFDQkNUTzFXVy8yMUNC
+Q1RPMVdXLCBCSU9TIE4zQUVUODBXICgxLjQ1ICkgMDIvMjAvMjAyNAo+ID4gPiBbICAgMTQuNDI3
+ODI0XSBXb3JrcXVldWU6IGhjaTAgaGNpX3Bvd2VyX29uIFtibHVldG9vdGhdCj4gPiA+IFsgICAx
+NC40Mjc4NzRdIFJJUDogMDAxMDpidGludGVsX3JlYWRfZGVidWdfZmVhdHVyZXMrMHg0ZC8weGYw
+IFtidGludGVsXQo+ID4gPiBbICAgMTQuNDI3ODgwXSBDb2RlOiA2NSA0OCA4YiAwNCAyNSAyOCAw
+MCAwMCAwMCA0OCA4OSA0NCAyNCAwOCAzMSBjMCA0OCA4ZCA0YyAyNCAwNyBjNiA0NCAyNCAwNyAw
+MSBlOCBkZSBhOSBlZiBmZiA0OCA4OSBjMyA0OCAzZCAwMCBmMCBmZiBmZiA3NyA0OSA8ODM+IDc4
+IDcwIDEzIDc1IDY3IDQ4IDhiIDgwIGQwIDAwIDAwIDAwIGJlIDAyIDAwIDAwIDAwIDQ4IDg5IGRm
+IDQ4Cj4gPiA+IFsgICAxNC40Mjc4ODFdIFJTUDogMDAxODpmZmZmYjdiYTgwYWEzY2MwIEVGTEFH
+UzogMDAwMTAyMDcKPiA+ID4gWyAgIDE0LjQyNzg4Ml0gUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJC
+WDogMDAwMDAwMDAwMDAwMDAwMCBSQ1g6IGZmZmY5NjVhYzBkZGFhYjAKPiA+ID4gWyAgIDE0LjQy
+Nzg4NF0gUkRYOiAwMDAwMDAwMDAwMDAwMDAwIFJTSTogMDAwMDAwMDAwMDAwMDIwMiBSREk6IGZm
+ZmY5NjVhYzBkZGFhYTgKPiA+ID4gWyAgIDE0LjQyNzg4NF0gUkJQOiBmZmZmYjdiYTgwYWEzY2Yw
+IFIwODogZmZmZjk2NWFjMGRkYWFiMCBSMDk6IDAwMDAwMDAwMDAwMDAwMDAKPiA+ID4gWyAgIDE0
+LjQyNzg4NV0gUjEwOiAwMDAwMDAwMDAwMDAwMDAxIFIxMTogMDAwMDAwMDAwMDAwMDEwMCBSMTI6
+IGZmZmY5NjVhYzBkZGEwMDAKPiA+ID4gWyAgIDE0LjQyNzg4Nl0gUjEzOiBmZmZmOTY1YTg0NzQ2
+OTAwIFIxNDogZmZmZjk2NWE4MjA4Y2EwNSBSMTU6IGZmZmY5NjVhYzBkZGE2ZDAKPiA+ID4gWyAg
+IDE0LjQyNzg4N10gRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY5NjYxYmY0MDAw
+MDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMAo+ID4gPiBbICAgMTQuNDI3ODg4XSBDUzog
+IDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzCj4gPiA+IFsgICAx
+NC40Mjc4ODldIENSMjogMDAwMDAwMDAwMDAwMDA3MCBDUjM6IDAwMDAwMDAyYmI2MjAwMDAgQ1I0
+OiAwMDAwMDAwMDAwZjUwZWYwCj4gPiA+IFsgICAxNC40Mjc4ODldIFBLUlU6IDU1NTU1NTU0Cj4g
+PiA+IFsgICAxNC40Mjc4OTBdIENhbGwgVHJhY2U6Cj4gPiA+IFsgICAxNC40Mjc4OTFdICA8VEFT
+Sz4KPiA+ID4gWyAgIDE0LjQyNzg5M10gID8gX19kaWUrMHgyMy8weDcwCj4gPiA+IFsgICAxNC40
+Mjc4OThdICA/IHBhZ2VfZmF1bHRfb29wcysweDE3MS8weDRlMAo+ID4gPiBbICAgMTQuNDI3OTAx
+XSAgPyBfX3RpbWVyX2RlbGV0ZV9zeW5jKzB4N2QvMHhlMAo+ID4gPiBbICAgMTQuNDI3OTA1XSAg
+PyBleGNfcGFnZV9mYXVsdCsweDdmLzB4MTgwCj4gPiA+IFsgICAxNC40Mjc5MDhdICA/IGFzbV9l
+eGNfcGFnZV9mYXVsdCsweDI2LzB4MzAKPiA+ID4gWyAgIDE0LjQyNzkxMl0gID8gYnRpbnRlbF9y
+ZWFkX2RlYnVnX2ZlYXR1cmVzKzB4NGQvMHhmMCBbYnRpbnRlbCA2NzM1ZTc4N2M5ZWQ5ODJjZWFh
+NDcxYzdhYjM2NGEzOTBhMWFjYjM3XQo+ID4gPiBbICAgMTQuNDI3OTE2XSAgYnRpbnRlbF9yZWdp
+c3Rlcl9kZXZjb3JlZHVtcF9zdXBwb3J0LmlzcmEuMCsweDNlLzB4MTEwIFtidGludGVsIDY3MzVl
+Nzg3YzllZDk4MmNlYWE0NzFjN2FiMzY0YTM5MGExYWNiMzddCj4gPiA+IFsgICAxNC40Mjc5MjFd
+ICBidGludGVsX3NldHVwX2NvbWJpbmVkKzB4NTAzLzB4NzkwIFtidGludGVsIDY3MzVlNzg3Yzll
+ZDk4MmNlYWE0NzFjN2FiMzY0YTM5MGExYWNiMzddCj4gPiA+IFsgICAxNC40Mjc5MjVdICBoY2lf
+ZGV2X29wZW5fc3luYysweDEwMi8weGMyMCBbYmx1ZXRvb3RoIDgxYTJlNWY2YzNhODVmMzhkYWRl
+NjcwYmZlOTFkODYxYTkxMTk2MTNdCj4gPiA+IFsgICAxNC40Mjc5NTNdICA/IF9fc2NoZWR1bGUr
+MHgzZWUvMHgxNTIwCj4gPiA+IFsgICAxNC40Mjc5NTZdICBoY2lfZGV2X2RvX29wZW4rMHgyMy8w
+eDYwIFtibHVldG9vdGggODFhMmU1ZjZjM2E4NWYzOGRhZGU2NzBiZmU5MWQ4NjFhOTExOTYxM10K
+PiA+ID4gWyAgIDE0LjQyNzk3NV0gIGhjaV9wb3dlcl9vbisweDUxLzB4MjYwIFtibHVldG9vdGgg
+ODFhMmU1ZjZjM2E4NWYzOGRhZGU2NzBiZmU5MWQ4NjFhOTExOTYxM10KPiA+ID4gWyAgIDE0LjQy
+Nzk5NF0gIHByb2Nlc3Nfb25lX3dvcmsrMHgxODMvMHgzNzAKPiA+ID4gWyAgIDE0LjQyNzk5OF0g
+IHdvcmtlcl90aHJlYWQrMHgzYWIvMHg0ZjAKPiA+ID4gWyAgIDE0LjQyODAwMF0gID8gX19wZnhf
+d29ya2VyX3RocmVhZCsweDEwLzB4MTAKPiA+ID4gWyAgIDE0LjQyODAwMV0gIGt0aHJlYWQrMHhl
+NS8weDEyMAo+ID4gPiBbICAgMTQuNDI4MDA1XSAgPyBfX3BmeF9rdGhyZWFkKzB4MTAvMHgxMAo+
+ID4gPiBbICAgMTQuNDI4MDA2XSAgcmV0X2Zyb21fZm9yaysweDMxLzB4NTAKPiA+ID4gWyAgIDE0
+LjQyODAwOV0gID8gX19wZnhfa3RocmVhZCsweDEwLzB4MTAKPiA+ID4gWyAgIDE0LjQyODAxMV0g
+IHJldF9mcm9tX2ZvcmtfYXNtKzB4MWIvMHgzMAo+ID4gPiBbICAgMTQuNDI4MDE0XSAgPC9UQVNL
+Pgo+ID4gPiBbICAgMTQuNDI4MDE1XSBNb2R1bGVzIGxpbmtlZCBpbjogbmZfdGFibGVzIGJuZXAg
+dHVuIGJ0dXNiIGJ0cnRsIGJ0aW50ZWwgYnRiY20gYnRtdGsgYmx1ZXRvb3RoIGdwaW9fbGpjYSBp
+MmNfbGpjYSBlY2RoX2dlbmVyaWMgaGlkX3NlbnNvcl9jdXN0b21faW50ZWxfaGluZ2UgaGlkX3Nl
+bnNvcl90cmlnZ2VyIGluZHVzdHJpYWxpb190cmlnZ2VyZWRfYnVmZmVyIGtmaWZvX2J1ZiBoaWRf
+c2Vuc29yX2lpb19jb21tb24gaW5kdXN0cmlhbGlvIGhpZF9zZW5zb3JfY3VzdG9tIGhpZF9zZW5z
+b3JfaHViIGludGVsX2lzaHRwX2hpZCBqb3lkZXYgdmZhdCBmYXQgZXh0NCBjcmMxNiBtYmNhY2hl
+IGpiZDIgc25kX2N0bF9sZWQgc25kX3NvY19za2xfaGRhX2RzcCBzbmRfc29jX2hkYWNfaGRtaSBz
+bmRfc29jX2ludGVsX2hkYV9kc3BfY29tbW9uIHNuZF9zb2ZfcHJvYmVzIGhpZF9tdWx0aXRvdWNo
+IGhpZF9nZW5lcmljIG1vdXNlZGV2IHNuZF9oZGFfY29kZWNfaGRtaSBzbmRfaGRhX2NvZGVjX3Jl
+YWx0ZWsgc25kX2hkYV9jb2RlY19nZW5lcmljIHNuZF9zb2NfZG1pYyBzbmRfc29mX3BjaV9pbnRl
+bF90Z2wgc25kX3NvZl9pbnRlbF9oZGFfY29tbW9uIHNvdW5kd2lyZV9pbnRlbCBzbmRfc29mX2lu
+dGVsX2hkYV9tbGluayBzb3VuZHdpcmVfY2FkZW5jZSBzbmRfc29mX2ludGVsX2hkYSBzbmRfc29m
+X3BjaSBzbmRfc29mX3h0ZW5zYV9kc3Agc25kX3NvZiBzbmRfc29mX3V0aWxzIHNuZF9zb2NfaGRh
+Y19oZGEgc25kX2hkYV9leHRfY29yZSBzbmRfc29jX2FjcGlfaW50ZWxfbWF0Y2ggaW50ZWxfdW5j
+b3JlX2ZyZXF1ZW5jeSBpbnRlbF91bmNvcmVfZnJlcXVlbmN5X2NvbW1vbiBzbmRfc29jX2FjcGkg
+aW50ZWxfdGNjX2Nvb2xpbmcgaXdsbXZtIHNvdW5kd2lyZV9nZW5lcmljX2FsbG9jYXRpb24gc291
+bmR3aXJlX2J1cyB4ODZfcGtnX3RlbXBfdGhlcm1hbCBpbnRlbF9wb3dlcmNsYW1wIHNuZF9zb2Nf
+Y29yZSBtYWM4MDIxMSBjb3JldGVtcCBzbmRfY29tcHJlc3MgYWM5N19idXMgc25kX3BjbV9kbWFl
+bmdpbmUga3ZtX2ludGVsCj4gPiA+IFsgICAxNC40MjgwNDhdICBzbmRfaGRhX2ludGVsIGxpYmFy
+YzQgcHRwIHNuZF9pbnRlbF9kc3BjZmcgcHBzX2NvcmUgc25kX2ludGVsX3Nkd19hY3BpIHNuZF9o
+ZGFfY29kZWMgcHJvY2Vzc29yX3RoZXJtYWxfZGV2aWNlX3BjaSBrdm0gcHJvY2Vzc29yX3RoZXJt
+YWxfZGV2aWNlIHByb2Nlc3Nvcl90aGVybWFsX3d0X2hpbnQgc25kX2hkYV9jb3JlIHByb2Nlc3Nv
+cl90aGVybWFsX3JmaW0gaXdsd2lmaSBpVENPX3dkdCBpcnFieXBhc3MgaW50ZWxfcmFwbF9tc3Ig
+cHJvY2Vzc29yX3RoZXJtYWxfcmFwbCBtZWlfcHhwIHNuZF9od2RlcCB1Y3NpX2FjcGkgbWVpX2hk
+Y3AgbWVpX3dkdCByYXBsIGludGVsX3JhcGxfY29tbW9uIGludGVsX3BtY19ieHQgdHlwZWNfdWNz
+aSBpVENPX3ZlbmRvcl9zdXBwb3J0IGludGVsX2xwc3NfcGNpIGludGVsX2NzdGF0ZSB0aGlua3Bh
+ZF9hY3BpIG1laV9tZSB0aGlua19sbWkgc25kX3BjbSBzcGlfbm9yIHByb2Nlc3Nvcl90aGVybWFs
+X3d0X3JlcSBpbnRlbF9pc2hfaXBjIHR5cGVjIG50ZnMzIGkyY19pODAxIGludGVsX2xwc3Mgbnhw
+X25jaV9pMmMgbGVkdHJpZ19hdWRpbyBwcm9jZXNzb3JfdGhlcm1hbF9wb3dlcl9mbG9vciBjZmc4
+MDIxMSB3bWlfYm1vZiBpbnRlbF91bmNvcmUgcHNtb3VzZSBwY3Nwa3IgZmlybXdhcmVfYXR0cmli
+dXRlc19jbGFzcyBtdGQgdGh1bmRlcmJvbHQgbWVpIHNuZF90aW1lciBpZG1hNjQgaW50ZWxfaXNo
+dHAgaTJjX3NtYnVzIG92Mjc0MCByb2xlcyBwbGF0Zm9ybV9wcm9maWxlIGlnZW42X2VkYWMgcHJv
+Y2Vzc29yX3RoZXJtYWxfbWJveCBueHBfbmNpIHY0bDJfZndub2RlIG5jaSBzbmQgaW50ZWxfc2ts
+X2ludDM0NzJfdHBzNjg0NzAgaW50MzQwM190aGVybWFsIHY0bDJfYXN5bmMgaW50ZWxfcG1jX2Nv
+cmUgc29jX2J1dHRvbl9hcnJheSB0cHM2ODQ3MF9yZWd1bGF0b3IgbmZjIHNvdW5kY29yZSBpbnQz
+NDB4X3RoZXJtYWxfem9uZSBjbGtfdHBzNjg0NzAgbWVpX3ZzY19odyByZmtpbGwgdmlkZW9kZXYg
+aW50ZWxfdnNlYyBpMmNfaGlkX2FjcGkKPiA+ID4gWyAgIDE0LjQyODA4NV0gIGludGVsX2hpZCBp
+bnQzNDAwX3RoZXJtYWwgaTJjX2hpZCBwbXRfdGVsZW1ldHJ5IG1jIHBpbmN0cmxfdGlnZXJsYWtl
+IHNwYXJzZV9rZXltYXAgYWNwaV9wYWQgYWNwaV90aGVybWFsX3JlbCBpbnRlbF9za2xfaW50MzQ3
+Ml9kaXNjcmV0ZSBhY3BpX3RhZCBwbXRfY2xhc3MgbWFjX2hpZCBpMmNfZGV2IGNvcmVmcmVxayhP
+RSkgc2cgY3J5cHRvX3VzZXIgZnVzZSBsb29wIG5mbmV0bGluayBpcF90YWJsZXMgeF90YWJsZXMg
+YnRyZnMgYmxha2UyYl9nZW5lcmljIGxpYmNyYzMyYyBjcmMzMmNfZ2VuZXJpYyB4b3IgcmFpZDZf
+cHEgZG1fY3J5cHQgY2JjIGVuY3J5cHRlZF9rZXlzIHRydXN0ZWQgYXNuMV9lbmNvZGVyIHRlZSBk
+bV9tb2QgeGUgZHJtX3R0bV9oZWxwZXIgZ3B1X3NjaGVkIGRybV9zdWJhbGxvY19oZWxwZXIgZHJt
+X2dwdXZtIGRybV9leGVjIHNwaV9samNhIHVzYl9samNhIGk5MTUgY3JjdDEwZGlmX3BjbG11bCBj
+cmMzMl9wY2xtdWwgY3JjMzJjX2ludGVsIHBvbHl2YWxfY2xtdWxuaSBwb2x5dmFsX2dlbmVyaWMg
+Z2YxMjhtdWwgZ2hhc2hfY2xtdWxuaV9pbnRlbCBzaGE1MTJfc3NzZTMgc2VyaW9fcmF3IHNoYTI1
+Nl9zc3NlMyBhdGtiZCBpMmNfYWxnb19iaXQgc2hhMV9zc3NlMyBkcm1fYnVkZHkgbGlicHMyIHZp
+dmFsZGlfZm1hcCBhZXNuaV9pbnRlbCB0dG0gbnZtZSBpbnRlbF9ndHQgY3J5cHRvX3NpbWQgbnZt
+ZV9jb3JlIGNyeXB0ZCBkcm1fZGlzcGxheV9oZWxwZXIgdmlkZW8geGhjaV9wY2kgc3BpX2ludGVs
+X3BjaSBpODA0MiBudm1lX2F1dGggeGhjaV9wY2lfcmVuZXNhcyBzcGlfaW50ZWwgY2VjIHNlcmlv
+IHdtaQo+ID4gPiBbICAgMTQuNDI4MTIxXSBDUjI6IDAwMDAwMDAwMDAwMDAwNzAKPiA+ID4gWyAg
+IDE0LjQyODEyM10gLS0tWyBlbmQgdHJhY2UgMDAwMDAwMDAwMDAwMDAwMCBdLS0tCj4gPiA+IFsg
+ICAxNC40MjgxMjRdIFJJUDogMDAxMDpidGludGVsX3JlYWRfZGVidWdfZmVhdHVyZXMrMHg0ZC8w
+eGYwIFtidGludGVsXQo+ID4gPiBbICAgMTQuNDI4MTI4XSBDb2RlOiA2NSA0OCA4YiAwNCAyNSAy
+OCAwMCAwMCAwMCA0OCA4OSA0NCAyNCAwOCAzMSBjMCA0OCA4ZCA0YyAyNCAwNyBjNiA0NCAyNCAw
+NyAwMSBlOCBkZSBhOSBlZiBmZiA0OCA4OSBjMyA0OCAzZCAwMCBmMCBmZiBmZiA3NyA0OSA8ODM+
+IDc4IDcwIDEzIDc1IDY3IDQ4IDhiIDgwIGQwIDAwIDAwIDAwIGJlIDAyIDAwIDAwIDAwIDQ4IDg5
+IGRmIDQ4Cj4gPiA+IFsgICAxNC40MjgxMzBdIFJTUDogMDAxODpmZmZmYjdiYTgwYWEzY2MwIEVG
+TEFHUzogMDAwMTAyMDcKPiA+ID4gWyAgIDE0LjQyODEzMV0gUkFYOiAwMDAwMDAwMDAwMDAwMDAw
+IFJCWDogMDAwMDAwMDAwMDAwMDAwMCBSQ1g6IGZmZmY5NjVhYzBkZGFhYjAKPiA+ID4gWyAgIDE0
+LjQyODEzMV0gUkRYOiAwMDAwMDAwMDAwMDAwMDAwIFJTSTogMDAwMDAwMDAwMDAwMDIwMiBSREk6
+IGZmZmY5NjVhYzBkZGFhYTgKPiA+ID4gWyAgIDE0LjQyODEzMl0gUkJQOiBmZmZmYjdiYTgwYWEz
+Y2YwIFIwODogZmZmZjk2NWFjMGRkYWFiMCBSMDk6IDAwMDAwMDAwMDAwMDAwMDAKPiA+ID4gWyAg
+IDE0LjQyODEzM10gUjEwOiAwMDAwMDAwMDAwMDAwMDAxIFIxMTogMDAwMDAwMDAwMDAwMDEwMCBS
+MTI6IGZmZmY5NjVhYzBkZGEwMDAKPiA+ID4gWyAgIDE0LjQyODEzM10gUjEzOiBmZmZmOTY1YTg0
+NzQ2OTAwIFIxNDogZmZmZjk2NWE4MjA4Y2EwNSBSMTU6IGZmZmY5NjVhYzBkZGE2ZDAKPiA+ID4g
+WyAgIDE0LjQyODEzNF0gRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY5NjYxYmY0
+MDAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMAo+ID4gPiBbICAgMTQuNDI4MTM1XSBD
+UzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzCj4gPiA+IFsg
+ICAxNC40MjgxMzZdIENSMjogMDAwMDAwMDAwMDAwMDA3MCBDUjM6IDAwMDAwMDAyYmI2MjAwMDAg
+Q1I0OiAwMDAwMDAwMDAwZjUwZWYwCj4gPiA+IFsgICAxNC40MjgxMzddIFBLUlU6IDU1NTU1NTU0
+Cj4gPiA+IFsgICAxNC40MjgxMzddIG5vdGU6IGt3b3JrZXIvdTQxOjBbMTk4XSBleGl0ZWQgd2l0
+aCBpcnFzIGRpc2FibGVkCj4gPiA+IFsgICAxNi40MzQ3OTRdIEJsdWV0b290aDogaGNpMDogY29t
+bWFuZCAweGZjMDkgdHggdGltZW91dAo+ID4gPiAKPiA+ID4gCj4gPiA+IFRoYW5rcyBmb3IgYW55
+IHN1Z2dlc3Rpb25zIGFuZCBiZXN0IHJlZ2FyZHMKPiA+ID4gKGFuZCBwbGVhc2UgQ2MpCj4gPiA+
+IAo+ID4gPiBOb3JiZXJ0Cj4gPiA+IAo+ID4gPiAtLQo+ID4gPiBQUkVJTklORyBOb3JiZXJ0ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgaHR0cHM6Ly93d3cucHJlaW5pbmcuaW5mbwo+ID4g
+PiBhclhpdiAvIENvcm5lbGwgVW5pdmVyc2l0eSAgICsgICBJRk1HQSBHdWlkZSAgICsgICBUVSBX
+aWVuICArICBUZVggTGl2ZQo+ID4gPiBHUEc6IDB4ODYwQ0RDMTMgICBmcDogRjdEOCBBOTI4IDI2
+RTMgMTZBMSA5RkEwIEFDRjAgNkNBQyBBNDQ4IDg2MEMgREMxMwo+ID4gPiAKPiA+ID4gCj4gPiAK
+PiA+IFRoZSBCVCB3b2Ugc2hvdWxkIGJlIGZpeGVkIFsxXSBpbiB2Ni44LjMuCj4gPiAKPiA+IEZv
+ciBvdGhlciB0d28gdGhpbmdzLCB3b3VsZCB5b3UgYmUgYWJsZSB0byBiaXNlY3Q/Cj4gPiAKPiAK
+PiBJIG5vdGljZWQgcG9zc2libGUgcmVsYXRlZCBVU0IgcHJvYmxlbS9yZWdyZXNzaW9uIGFsc28g
+d2l0aCBMaW51eCA2LjcuMTEsIGVnLiBteSBVU0IgaGVhZHNldCBpcyBub3QgZGV0ZWN0ZWQgYXQg
+YWxsIGFueW1vcmUgd2hlbiBydW5uaW5nIExpbnV4IDYuNy4xMS4gVVNCIGhlYWRzZXQgd29ya3Mg
+T0sgd2l0aCBMaW51eCA2LjcuOSwgc28gdGhlIHJlZ3Jlc3Npb24gaXMgaW5jbHVkZWQvYmFja3Bv
+cnRlZCB0byBhbHNvIGVpdGhlciBpbiA2LjcuMTAgb3IgaW4gNi43LjExLgoKSXQgd291bmQgYmUg
+bmljZSB0byBuYXJyb3cgdGhpcyByYW5nZSBkb3duIGV2ZW4gZnVydGhlciB3aXRoIGJpc2VjdGlv
+biBiZWNhdXNlIHRoZXJlIGFyZSB0b28gbWFueSBjaGFuZ2VzIGJldHdlZW4gdjYuNy45IGFuZCB2
+Ni43LjExIHRoYXQgY291bGQgY2F1c2UgdGhpcy4KCj4gCj4gCj4gPiBBZGRpbmcgc3RhYmxlQCBh
+bmQgcmVncmVzc2lvbnNAIGZvciB2aXNpYmlsaXR5Lgo+ID4gCj4gPiBbMV0gaHR0cHM6Ly9naXQu
+a2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvc3RhYmxlL2xpbnV4LmdpdC9jb21t
+aXQvP2lkPWIwYTM3MzhjMGIzYmNiNTc2MGZmNGRiMWYyMmI5YjBlMTcyNWQxZDIKPiA+IAo+IAo+
+IAo+IFRoYW5rcywKPiAKPiAtLSBQYXNpCj4gCj4gCgoKLS0gCk9sZWtzYW5kciBOYXRhbGVua28g
+KHBvc3QtZmFjdHVtKQ==
 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.1.y&id=b73dd5f9997279715cd450ee8ca599aaff2eabb9
 
-Which is presumably the other patch you had to back out to fix the
-issue.
+--nextPart12411026.O9o76ZdvQC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-The problem is that Mike's series updating and then removing
-scsi_execute() went into the tree as one series, so no-one notice the
-first patch had this bug because the buggy routine got removed at the
-end of the series.  This also means there's nothing to fix and backport
-in upstream.
+-----BEGIN PGP SIGNATURE-----
 
-The bug is also more widely spread than simply domain validation,
-because every use of scsi_execute in the current stable tree will trip
-this.
+iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmYRxv4ACgkQil/iNcg8
+M0sgIw/9FN+kLIeRZM/gFcrfkjSaXEmvD1yfb7+eXz7xSkTSyosWWMQTogoKKrxP
+pR1d7wsmwqx80MEkWFlUdThfce6zDNL/L+rHy6XpeGPO+058kjcD1ox5zR02S5oe
+/flkfZLnunBEmtrH1P6VxX4q7erW4GV9G2Vb/AL9U9Grow7KawD27Y1OQDRMtqFU
+5rYOppZhAZP755ZvHF8Ws/zrzQV8wZCT/ltDh3DuOE/EwVTWja+GEb+sv/YylenR
+/V3biYf/z4q3bGFo+30E+50sPIan7uSIbQduvoBs1PxYIwq3+1x3CoOnmr3v7UKl
+uooi8gF88KnRbz4WTwostMmiL/+7jIWt7/BKFlXowFONUu5nqUihJR1cxKMPQpC5
+2BVLutM7psGn68qH/eWwVdokCoxbv0ZpouGcgi42sKXdJoxcV296Hz3t5jmt6kGU
+x6HP+GwWM4wpF1OyzWGD9PpgMpXHHZy9U/LOcDEUAMviCALH69VIxsh5ycfkZTd6
+HJ8RjdKjM32SdTEojcZhQx9477Ub6Z5HPqp0sekEf/GKQ+Ut3i8rUKKKD+ylmUat
+XqaOBQc9pu+9nvV4zdAoj3a9ZNd+Pe4QjKHwHut4AL85dN65cKy5t9b2jGzwWcww
+Hf/rtL3uXslIggxfjI1heFkFsif2OXlIYez0euO49M8ZEboGuC8=
+=yQEf
+-----END PGP SIGNATURE-----
 
-I'm not sure what the best fix is.  I can certainly come up with a one
-line fix for stable adding the missing length in the #define, but it
-can't come from upstream as stated above.  We could back the two
-patches out then do a stable specific fix for the UAS problem (I don't
-think we can leave the UAS patch backed out because the problem was
-pretty serious).
+--nextPart12411026.O9o76ZdvQC--
 
-What does stable want to do?
 
-James
 
 
