@@ -1,193 +1,183 @@
-Return-Path: <stable+bounces-36181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDB289AE0F
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 04:29:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421B589AED3
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 08:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 515F11F21A85
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 02:29:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B893A2820B2
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 06:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B8915B3;
-	Sun,  7 Apr 2024 02:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345375CA1;
+	Sun,  7 Apr 2024 06:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zuh9q9XH"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="IxYx4FUL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e7W4fPwS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5893D7460
-	for <stable@vger.kernel.org>; Sun,  7 Apr 2024 02:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEA1184D;
+	Sun,  7 Apr 2024 06:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712456942; cv=none; b=rm2KqHWOLNgS84xiArc+eqkA1NDvZeEEqG8m1tQjYiSI245AIpU5wX5qHU2Ngm3lwb8LBda9xFHyX3JiWN4A0T9QULF11KKtRCvysuUpg7TITm37QAd+3Pe7BY0k0fUg+fM7/YTvsFYE5WrEC95uIgG6ZlhlSuM9w++PM61VvKI=
+	t=1712470573; cv=none; b=uz/dxrax4mr1AfOPEy7+iSfk5iNEKlKphIciX8NK5wdjLXxRht3HC0ODSGJniYKs+wWWN0ssIWeAvNE+fqj+Wd+cFUNkczEdUVWelWyU1CoTp2JKpxStG45FPkSt4Q0XIQZpaNgpSHX+KqOMst0iZZeZoV8P+w/nI+5wHtC7iXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712456942; c=relaxed/simple;
-	bh=fX5zR/9FCOW7HTL8GdlTrij07h06gho1hH2QuqZ3NLY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fZsghjykZn6yIUxCzfBIGTWt2hd4KBGduLazo7pHtE2YN54bOYvSnZd33AJaE71+zPBg/DJChtw0Ab+or/nnC4qYHRNQX1KxBjfx35o9d0Zc7Vn7i51DgGLzOkXeZs69//3mmaThKjxsCJU+DLhXTz0zz1GDNrEFGq6QM6cVti8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zuh9q9XH; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1e24c889618so28546075ad.2
-        for <stable@vger.kernel.org>; Sat, 06 Apr 2024 19:29:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712456940; x=1713061740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=04EWYPQ3tqA1KddlrE0T62PVcteMsovJRtjGtyQ4xS8=;
-        b=Zuh9q9XHh0lvg9zox++CPrkw0dURLIsDVwWfAaN/KH3oOXfEAdYTApvZagg80+mXb+
-         sT5a/lxc0bJsjpWfeeVVMScGcBjkue/vyZKQ22L8TYe7IPN108EG3UYC2hKX88bPynrv
-         c5NFfNzYGp+GcIaVq8Gs/QBK4/cz5tc0gU1BPH5S8jtSBBHkuz8OC5AY0Y1a0fzUK+uX
-         0YEzIH3WMVDEIq/tLQLq+hPFvr0XlRWVEQNXZtjp3DyAgaLkqUKrOBRDXVS+/qMJe3Ea
-         Vn9NRKM99j4qorn7JXXtr5WESFF99ZF2Pz8BbMr2iDp9s9/dJjKb16y+el5Fr3m90Z/9
-         xweQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712456940; x=1713061740;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=04EWYPQ3tqA1KddlrE0T62PVcteMsovJRtjGtyQ4xS8=;
-        b=qJtB/cmFDfgio3if0CNX8zLgsXncoBWyt/ITkxDXBTeQfbr541J2D5uc9d9hfrDu79
-         1wgbfI1XmEz5IvP6R+n1hCtlEYlarCSpkGKd+tuzisDoi3/ZStOVrULDuZRjGmBT0EYs
-         5xud3+y4vaWs9p+fErx+t0Fjk5vI77QTpA2rvtwxqLSP3UH9U5tekrAufu6GOSNGxUJR
-         dpjT+LPvFzBaGZPa378zkB2uxK0Xwh/+b61FkXXaJi1Y6nR4hoGHi+Knl/l3Nx3LLG1F
-         QDKtEeEmAd5P5tBU7+NLuiv0IA8d0iu5MVPgJclUG9pJlhopLfiaJMQb1l7ltAhVAWwX
-         TbVw==
-X-Forwarded-Encrypted: i=1; AJvYcCWERVxIr5mYUSlohPc22vEhXQX2AiRb9or79zf+nwetG5dfNnbtLaXURsFD2WsCiOsDJyy345bXBd2BFNEG+xRy3k4hIoA3
-X-Gm-Message-State: AOJu0Yzi2RZhcWKYdwLYPS5k5SDZmTkWUt8H7eMrvTHr7s3h2akSSReY
-	deGZxRK1PcICsb+QeHoSSJB1+X6waVrM2uKkwkoZntLsnbaa5x9H
-X-Google-Smtp-Source: AGHT+IE37hWMmWkGJVGt79PlmEPyrgaqf8R77pgZrS+jFSfFKBChcG6cWpzfyia+njZbES3gFaYjxw==
-X-Received: by 2002:a17:903:44d:b0:1e2:82fc:bf71 with SMTP id iw13-20020a170903044d00b001e282fcbf71mr4616512plb.22.1712456940493;
-        Sat, 06 Apr 2024 19:29:00 -0700 (PDT)
-Received: from tokunori-desktop.flets-east.jp ([240b:10:2720:5500:f052:3362:3c6a:3999])
-        by smtp.gmail.com with ESMTPSA id kp11-20020a170903280b00b001d8aa88f59esm4044516plb.110.2024.04.06.19.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Apr 2024 19:29:00 -0700 (PDT)
-From: Tokunori Ikegami <ikegami.t@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-nvme@lists.infradead.org,
-	stable@vger.kernel.org,
-	"min15.li" <min15.li@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Tokunori Ikegami <ikegami.t@gmail.com>
-Subject: [PATCH for 6.1.y] nvme: fix miss command type check
-Date: Sun,  7 Apr 2024 11:28:36 +0900
-Message-Id: <20240407022836.6148-1-ikegami.t@gmail.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1712470573; c=relaxed/simple;
+	bh=4JR4gU9/R1FHNfnsbBkUcbItC6g0bxKrpbGJYEYfhWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyGofyGJMmYTNABZF6DJIFphFGzcmMO9qQibDAarURb6jm5YEetKg890QeDukYlsS1A5u112bGTAU5CvKaUa69750cnV4sMSwzTDhHcheIJOZL1FPwuvoQi0cZwdXV/6ZUFhlEqFIwMzk2OIqHCHEl7zGYxNOnwnHs+GSsxHSCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=IxYx4FUL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=e7W4fPwS; arc=none smtp.client-ip=66.111.4.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailout.nyi.internal (Postfix) with ESMTP id 3AC945C005A;
+	Sun,  7 Apr 2024 02:16:10 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute7.internal (MEProxy); Sun, 07 Apr 2024 02:16:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1712470570;
+	 x=1712556970; bh=JEk39uRPAoWfc5DoeHTKEuGid0eaG1D4d9g3dwMxXEw=; b=
+	IxYx4FULUMKZC+WWzz95i/9VjNphS0lp/Kflj9S0fkP0QDA3WQI0kgIyKhpB1N/2
+	ioffGvTktMAFtqeyArzyDvKjxDoHyUOD9Qdsa8Z9+DfBvZpf0hTswXyVd/qbcQN7
+	/s9eRldrPV2E12BhYHmkLPHtb0RQqcOQc5r9Nf/eKQwKYi8qtwuxR1/x/wFf7evu
+	4IN6mdZYf8A8pN8NDcS2BdK1FSBk8mQyMrqJCVD0uBYc/VTRBgjHP+0blT7YGy2C
+	gJvOalyBMzgM28VYroMkQ+Scsh3DgvtP+V/UwK0oEKI64bOtuSWjZa6b4BVHSXzn
+	CeeIWf1iGylU8TyF4r9q0g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712470570; x=
+	1712556970; bh=JEk39uRPAoWfc5DoeHTKEuGid0eaG1D4d9g3dwMxXEw=; b=e
+	7W4fPwSqbm1XUfGU3DqKQiD8ULVEkl9PP91bvgtkvC2YxBgd46xVKOL5rASAJpxx
+	gmL42bivepJOKZ24BCc844550j1a4IDQfwy6ie2/zGN/J3R8benG0e/qu6qK+SSG
+	oI9sSbJNBOETdGDYA4KWmjWGGdrXkVlynT5c5mbaFJaNmcviU61Lr2+IoiDfEdtJ
+	Yf4vcDj3hCYmWAq3ZkaCRXAEinKrop6u1r6gHD1DqiMbw5GWNyngCggYoWBm5u1X
+	aDuzf6RI5jA5VAC7RDf1XkHFTn+kO8daJpTDDwF2CRgdzJ5LgdDghVBYjwd/mcCW
+	9yWuabSE9hPieBbpYcA7w==
+X-ME-Sender: <xms:KToSZvrS85a42OxsHK5Gy4qLhCdoBAwqPGGLMcs7iENIZCieDVq5sw>
+    <xme:KToSZpqMy-ek5vsAymnj2GIXGedNHK0u3G4kSmN6tPaUHq_xw0HpXMVgARWWfIHec
+    bUrlWEbOCz_Hw>
+X-ME-Received: <xmr:KToSZsORVbNYTiSBxXGLiSd0NjOYBT3RxM7ZONWARifL0tPjrkV7fhArQBw-ZBIzQZfZNu6BxT7XIITPi02OEikATvYJ0r0VLFPFCw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudegfedguddthecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepifhr
+    vghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnheple
+    etveehgfelleejleeikeeljeeuieekffegteejveejueelgfevhfeiieejieetnecuffho
+    mhgrihhnpeekuddrihhtpdektddrihhtpdhkvghrnhgvlhdrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdr
+    tghomh
+X-ME-Proxy: <xmx:KjoSZi6uC_sTPGSEDqr5Q8exUfXVIkvf5Bdu4rH7AEw6KgUgUvqO5w>
+    <xmx:KjoSZu5BIhVJPR6Y6A7PGPXRV9TmiC0b87KXUP1QnR2llE3aG4X9xQ>
+    <xmx:KjoSZqiCIHOzjohjaFyUlTQ-7HJjxLcpLgHSrHi93N0H2YzLUfOxYA>
+    <xmx:KjoSZg4juM_gA_hTojAbO_x2dyCb8wQGO5Uwgn43FhigU5tm4cVKVQ>
+    <xmx:KjoSZhLCQdjC4F6JNwkhSVA9h6bWtRR45FzKEGJz5moaEATbOZRI04yOuhqS>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 7 Apr 2024 02:16:09 -0400 (EDT)
+Date: Sun, 7 Apr 2024 08:16:06 +0200
+From: Greg KH <greg@kroah.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: John David Anglin <dave.anglin@bell.net>,
+	Bart Van Assche <bvanassche@acm.org>,
+	linux-parisc <linux-parisc@vger.kernel.org>,
+	linux-scsi@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: Broken Domain Validation in 6.1.84+
+Message-ID: <2024040722-seminar-policy-72d8@gregkh>
+References: <b0670b6f-b7f7-4212-9802-7773dcd7206e@bell.net>
+ <d1fc0b8d-4858-4234-8b66-c8980f612ea2@acm.org>
+ <db784080-2268-4e6d-84bd-b33055a3331b@bell.net>
+ <028352c6-7e34-4267-bbff-10c93d3596d3@acm.org>
+ <cf78b204-9149-4462-8e82-b8f98859004b@bell.net>
+ <6cb06622e6add6309e8dbb9a8944d53d1b9c4aaa.camel@HansenPartnership.com>
+ <03ef7afd-98f5-4f1b-8330-329f47139ddf@bell.net>
+ <189127aefff8abdabd41312663ee58c06de9de87.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <189127aefff8abdabd41312663ee58c06de9de87.camel@HansenPartnership.com>
 
-From: "min15.li" <min15.li@samsung.com>
+On Sat, Apr 06, 2024 at 02:51:36PM -0400, James Bottomley wrote:
+> [cc stable to see if they have any ideas about fixing this]
+> On Sat, 2024-04-06 at 12:16 -0400, John David Anglin wrote:
+> > On 2024-04-06 11:06 a.m., James Bottomley wrote:
+> > > On Sat, 2024-04-06 at 10:30 -0400, John David Anglin wrote:
+> > > > On 2024-04-05 3:36 p.m., Bart Van Assche wrote:
+> > > > > On 4/4/24 13:07, John David Anglin wrote:
+> > > > > > On 2024-04-04 12:32 p.m., Bart Van Assche wrote:
+> > > > > > > Can you please help with verifying whether this kernel warn
+> > > > > > > ing is only triggered by the 6.1 stable kernel series or
+> > > > > > > whether it is also
+> > > > > > > triggered by a vanilla kernel, e.g. kernel v6.8? That will 
+> > > > > > > tell us whether we 
+> > > > > > > need to review the upstream changes or the backp
+> > > > > > > orts on the v6.1 branch.
+> > > > > > Stable kernel v6.8.3 is okay.
+> > > > > Would it be possible to bisect this issue on the linux-6.1.y
+> > > > > branch? That probably will be faster than reviewing all
+> > > > > backports
+> > > > > of SCSI patches on that branch.
+> > > > The warning triggers with v6.1.81.  It doesn't trigger with
+> > > > v6.1.80.
+> > > It's this patch:
+> > > 
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.1.y&id=cf33e6ca12d814e1be2263cb76960d0019d7fb94
+> > > 
+> > > The specific problem being that the update to scsi_execute doesn't
+> > > set the sense_len that the WARN_ON is checking.
+> > > 
+> > > This isn't a problem in mainline because we've converted all uses
+> > > of scsi_execute.  Stable needs to either complete the conversion or
+> > > back out the inital patch. This change depends on the above change:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.1.y&id=b73dd5f9997279715cd450ee8ca599aaff2eabb9
+> > 
+> > Thus, more than just the initial patch needs to be backed out.
+> 
+> OK, so the reason the bad patch got pulled in is because it's a
+> precursor of this fixes tagged backport:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.1.y&id=b73dd5f9997279715cd450ee8ca599aaff2eabb9
+> 
+> Which is presumably the other patch you had to back out to fix the
+> issue.
+> 
+> The problem is that Mike's series updating and then removing
+> scsi_execute() went into the tree as one series, so no-one notice the
+> first patch had this bug because the buggy routine got removed at the
+> end of the series.  This also means there's nothing to fix and backport
+> in upstream.
+> 
+> The bug is also more widely spread than simply domain validation,
+> because every use of scsi_execute in the current stable tree will trip
+> this.
+> 
+> I'm not sure what the best fix is.  I can certainly come up with a one
+> line fix for stable adding the missing length in the #define, but it
+> can't come from upstream as stated above.  We could back the two
+> patches out then do a stable specific fix for the UAS problem (I don't
+> think we can leave the UAS patch backed out because the problem was
+> pretty serious).
+> 
+> What does stable want to do?
 
-commit 31a5978243d24d77be4bacca56c78a0fbc43b00d upstream.
+We want to do whatever is in Linus's tree if at all possible.  Or revert
+anything we applied that we shouldn't have.  Either one is fine with us,
+just let us know what to do here.
 
-In the function nvme_passthru_end(), only the value of the command
-opcode is checked, without checking the command type (IO command or
-Admin command). When we send a Dataset Management command (The opcode
-of the Dataset Management command is the same as the Set Feature
-command), kernel thinks it is a set feature command, then sets the
-controller's keep alive interval, and calls nvme_keep_alive_work().
+thanks,
 
-Signed-off-by: min15.li <min15.li@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Fixes: b58da2d270db ("nvme: update keep alive interval when kato is modified")
-Signed-off-by: Tokunori Ikegami <ikegami.t@gmail.com>
----
- drivers/nvme/host/core.c       | 4 +++-
- drivers/nvme/host/ioctl.c      | 3 ++-
- drivers/nvme/host/nvme.h       | 2 +-
- drivers/nvme/target/passthru.c | 3 ++-
- 4 files changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index d7516e99275b..20160683e868 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1151,7 +1151,7 @@ static u32 nvme_passthru_start(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
- 	return effects;
- }
- 
--void nvme_passthru_end(struct nvme_ctrl *ctrl, u32 effects,
-+void nvme_passthru_end(struct nvme_ctrl *ctrl, struct nvme_ns *ns, u32 effects,
- 		       struct nvme_command *cmd, int status)
- {
- 	if (effects & NVME_CMD_EFFECTS_CSE_MASK) {
-@@ -1167,6 +1167,8 @@ void nvme_passthru_end(struct nvme_ctrl *ctrl, u32 effects,
- 		nvme_queue_scan(ctrl);
- 		flush_work(&ctrl->scan_work);
- 	}
-+	if (ns)
-+		return;
- 
- 	switch (cmd->common.opcode) {
- 	case nvme_admin_set_features:
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 91e6d0347579..b3e322e4ade3 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -147,6 +147,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
- 		unsigned bufflen, void __user *meta_buffer, unsigned meta_len,
- 		u32 meta_seed, u64 *result, unsigned timeout, bool vec)
- {
-+	struct nvme_ns *ns = q->queuedata;
- 	struct nvme_ctrl *ctrl;
- 	struct request *req;
- 	void *meta = NULL;
-@@ -181,7 +182,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
- 	blk_mq_free_request(req);
- 
- 	if (effects)
--		nvme_passthru_end(ctrl, effects, cmd, ret);
-+		nvme_passthru_end(ctrl, ns, effects, cmd, ret);
- 
- 	return ret;
- }
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index a892d679e338..8e28d2de45c0 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -1063,7 +1063,7 @@ static inline void nvme_auth_free(struct nvme_ctrl *ctrl) {};
- u32 nvme_command_effects(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
- 			 u8 opcode);
- int nvme_execute_passthru_rq(struct request *rq, u32 *effects);
--void nvme_passthru_end(struct nvme_ctrl *ctrl, u32 effects,
-+void nvme_passthru_end(struct nvme_ctrl *ctrl, struct nvme_ns *ns, u32 effects,
- 		       struct nvme_command *cmd, int status);
- struct nvme_ctrl *nvme_ctrl_from_file(struct file *file);
- struct nvme_ns *nvme_find_get_ns(struct nvme_ctrl *ctrl, unsigned nsid);
-diff --git a/drivers/nvme/target/passthru.c b/drivers/nvme/target/passthru.c
-index adc0958755d6..a0a292d49588 100644
---- a/drivers/nvme/target/passthru.c
-+++ b/drivers/nvme/target/passthru.c
-@@ -216,6 +216,7 @@ static void nvmet_passthru_execute_cmd_work(struct work_struct *w)
- 	struct nvmet_req *req = container_of(w, struct nvmet_req, p.work);
- 	struct request *rq = req->p.rq;
- 	struct nvme_ctrl *ctrl = nvme_req(rq)->ctrl;
-+	struct nvme_ns *ns = rq->q->queuedata;
- 	u32 effects;
- 	int status;
- 
-@@ -242,7 +243,7 @@ static void nvmet_passthru_execute_cmd_work(struct work_struct *w)
- 	blk_mq_free_request(rq);
- 
- 	if (effects)
--		nvme_passthru_end(ctrl, effects, req->cmd, status);
-+		nvme_passthru_end(ctrl, ns, effects, req->cmd, status);
- }
- 
- static enum rq_end_io_ret nvmet_passthru_req_done(struct request *rq,
--- 
-2.40.1
-
+greg k-h
 
