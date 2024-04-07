@@ -1,84 +1,187 @@
-Return-Path: <stable+bounces-36294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2298589B3FE
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 22:31:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4BA89B403
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 22:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87CB5281A40
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 20:31:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 917351C20CBC
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 20:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFFC1E893;
-	Sun,  7 Apr 2024 20:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0EB2E416;
+	Sun,  7 Apr 2024 20:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="crU14iFP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bwZuR8US";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="crU14iFP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bwZuR8US"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F062582;
-	Sun,  7 Apr 2024 20:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DD6848E;
+	Sun,  7 Apr 2024 20:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712521892; cv=none; b=ljtfZ786JgVy3FG/Eq112Eo0PhMTTri8FQWvEGi4FOL8dpi9DD78+LIAD7xnE5LTo+IabdJp8+hs2prrDJW+aP/9XSnikusCuVifZd97+gHc8iCVW8Ds0bGhoKMSxMBdsyE+9qYqeG230jVOxcULd1Z3dSThd+IV0/7Z73bZvb4=
+	t=1712521929; cv=none; b=o2CLEBrUqL080ob/q0rJMf2STezb842eAAWJxLvHZVu1NtF+vtVrbKe+sgt05MZjBmjtJpkMAMQ+KrPh3hdEMK689h79cKHCyLh6SHN67skSoFs5q3bI5rnz9WHvqZpaHmXOl7SYX8tM8rIO4No9gM4Hiqt/WEvX/dzDQY3iA1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712521892; c=relaxed/simple;
-	bh=icmfxrHIFihnVSMTiFYEzBjqDIJxGgEgxKi0q9Y/mm8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=t4/a++bmBd9Q+UbKsEjNwo7BvnvhEAydeuxQa/QlGuDHeAZQsZbzipHpWfwxhPJCQMiUBPa+jjyHWmFAcfQT6mUze8bJ/ueJtfuR6oEdVX7OFpVAxHgCu0L3jmCGKLtWsfnDa9ojKNKu0mTSRPmJIJVn+xOKkrCI2Bv3Hkq9RT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from [192.168.2.4] (51b69f53.dsl.pool.telekom.hu [::ffff:81.182.159.83])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 000000000006FBD1.000000006613029A.00261F18; Sun, 07 Apr 2024 22:31:21 +0200
-Message-ID: <890d28a0578a42333c2f63b5feb086bd8d1c98e9.camel@irl.hu>
-Subject: Re: Patch "ASoC: tas2781: mark dvc_tlv with __maybe_unused" has
- been added to the 6.8-stable tree
-From: Gergo Koteles <soyer@irl.hu>
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>
-Date: Sun, 07 Apr 2024 22:31:21 +0200
-In-Reply-To: <20240407201311.1155107-1-sashal@kernel.org>
-References: <20240407201311.1155107-1-sashal@kernel.org>
-Autocrypt: addr=soyer@irl.hu; prefer-encrypt=mutual;
- keydata=mDMEZgeDQBYJKwYBBAHaRw8BAQdAD5oxV6MHkjzSfQL2O8VsPW3rSUeCHfbx/a6Yfj3NUnS0HEdlcmdvIEtvdGVsZXMgPHNveWVyQGlybC5odT6ImQQTFgoAQRYhBLSYvEYEgjzzEMQCqgtEJzXf/1IRBQJmB4NAAhsDBQkFo5qABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEAtEJzXf/1IRmdYA/0bE1BX7zOGKBgCa1DwzH2UHXawSKLpptADvI/ao6OOtAP4+wYgpR0kWR28lhmkRTpzG/+8GiMWsT60SV2bz9B7sCbg4BGYHg0ASCisGAQQBl1UBBQEBB0CPo8ow/E97WYtaek9EsLXvsvwpBsjWLq5mMOgJL/ukCwMBCAeIfgQYFgoAJhYhBLSYvEYEgjzzEMQCqgtEJzXf/1IRBQJmB4NAAhsMBQkFo5qAAAoJEAtEJzXf/1IRklEA/ipTfAI/onzNwZIp9sCdnt0bLhR5Oz8RD/FpbrJV1v7eAP0c/C6NQPDPWbQpobBR0pf1eTjWXjjr1fj2jxSvWbMRCw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1712521929; c=relaxed/simple;
+	bh=Qjs1ELNGM7Bwo6LVpJstIXlB/+8JnBcs6oL5LtpbRqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gZkqh/IrWWfgMAHKCZVoepeFqUAilwkLuM0Ua9VsA1PBysNaIOpeZomwXO3h+qeyH4XuqruR9USATAxz3MCuTi7SnPCTMO4jms6M/5AzCVgbsv0LSIP5Iyc9AOg35drCNon+9fLDSu5ntYkBjcciJdgcehzD3c98J99JXuZNO24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=crU14iFP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bwZuR8US; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=crU14iFP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bwZuR8US; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B16CD220CC;
+	Sun,  7 Apr 2024 20:32:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1712521925; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j7+MqK9GjxoPTsi874+SCYm6UKdPkhYnyEBVah2Xjt4=;
+	b=crU14iFPQb6X0GNwS+THE+r7Db90av3f5JRE913jASbKBQ9X+ljvAv+ramOTdYn/NYB93N
+	RiiJguUc3SM6j5+gW8BdUoydUOdFrqXyrwB/fo6dznEZok3k2JBd7qUEv0NQwUivUHb++g
+	AXlJ9PX4c9Xu/c6trsF4/G1areoK5Pw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1712521925;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j7+MqK9GjxoPTsi874+SCYm6UKdPkhYnyEBVah2Xjt4=;
+	b=bwZuR8US+aOkQh4AP6jE0jnMyQH5O+IlT+QlCBXjLTuKUVnZ6/hqGMnhGnycp37pKPYknq
+	ZW1X5H1qW88JblDA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=crU14iFP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bwZuR8US
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1712521925; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j7+MqK9GjxoPTsi874+SCYm6UKdPkhYnyEBVah2Xjt4=;
+	b=crU14iFPQb6X0GNwS+THE+r7Db90av3f5JRE913jASbKBQ9X+ljvAv+ramOTdYn/NYB93N
+	RiiJguUc3SM6j5+gW8BdUoydUOdFrqXyrwB/fo6dznEZok3k2JBd7qUEv0NQwUivUHb++g
+	AXlJ9PX4c9Xu/c6trsF4/G1areoK5Pw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1712521925;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j7+MqK9GjxoPTsi874+SCYm6UKdPkhYnyEBVah2Xjt4=;
+	b=bwZuR8US+aOkQh4AP6jE0jnMyQH5O+IlT+QlCBXjLTuKUVnZ6/hqGMnhGnycp37pKPYknq
+	ZW1X5H1qW88JblDA==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 2589713586;
+	Sun,  7 Apr 2024 20:32:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id +qNqBsUCE2YmCQAAn2gu4w
+	(envelope-from <osalvador@suse.de>); Sun, 07 Apr 2024 20:32:05 +0000
+Date: Sun, 7 Apr 2024 22:31:59 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>, stable@vger.kernel.org,
+	Tony Luck <tony.luck@intel.com>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>
+Subject: Re: [PATCH] mm,swapops: Update check in is_pfn_swap_entry for
+ hwpoison entries
+Message-ID: <ZhMCvynFUDr-8DpX@localhost.localdomain>
+References: <20240407130537.16977-1-osalvador@suse.de>
+ <ZhKmAecilbb2oSD9@localhost.localdomain>
+ <ZhLx3fwzQNPDbBei@x1n>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZhLx3fwzQNPDbBei@x1n>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-5.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,suse.de:dkim];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: B16CD220CC
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Score: -5.51
 
-Hi,
+> Totally unexpected, as this commit even removed hwpoison_entry_to_pfn().
+> Obviously even until now I assumed hwpoison is accounted as pfn swap entry
+> but it's just missing..
+> 
+> Since this commit didn't really change is_pfn_swap_entry() itself, I was
+> thinking maybe an older fix tag would apply, but then I noticed the old
+> code indeed should work well even if hwpoison entry is missing.  For
+> example, it's a grey area on whether a hwpoisoned page should be accounted
+> in smaps.  So I think the Fixes tag is correct, and thanks for fixing this.
+> 
+> Reviewed-by: Peter Xu <peterx@redhat.com>
 
-On Sun, 2024-04-07 at 16:13 -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
->=20
->     ASoC: tas2781: mark dvc_tlv with __maybe_unused
->=20
-> to the 6.8-stable tree which can be found at:
->     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
-it;a=3Dsummary
->=20
-> The filename of the patch is:
->      asoc-tas2781-mark-dvc_tlv-with-__maybe_unused.patch
-> and it can be found in the queue-6.8 subdirectory.
->=20
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
->=20
->=20
+Thanks Peter
 
-Is this necessary for stable? It only fixes a W=3D1 build warning.
+> Fedora stopped having DEBUG_VM for some time, but not sure about when it's
+> still in the 6.1 trees.  It looks like cc stable is still reasonable from
+> that regard.
 
-Regards,
-Gergo
+Good to know, thanks for the info.
 
+> A side note is that when I'm looking at this, I went back and see why in
+> some cases we need the pfn maintained for the poisoned, then I saw the only
+> user is check_hwpoisoned_entry() who wants to do fast kills in some
+> contexts and that includes a double check on the pfns in a poisoned entry.
+> Then afaict this path is just too rarely used and buggy.
+
+Yes, unfortunately memory-failure code does not get exercised that much,
+and so there might be subtly bugs lurking in there for quite some time.
+
+> A few things we may need fixing, maybe someone in the loop would have time
+> to have a look:
+> 
+> - check_hwpoisoned_entry()
+>   - pte_none check is missing
+>   - all the rest swap types are missing (e.g., we want to kill the proc too
+>     if the page is during migration)
+> - check_hwpoisoned_pmd_entry()
+>   - need similar care like above (pmd_none is covered not others)
+
+I will have a look and see what needs fixing, thanks for bringing it up.
+
+
+-- 
+Oscar Salvador
+SUSE Labs
 
