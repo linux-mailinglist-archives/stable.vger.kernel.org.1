@@ -1,151 +1,120 @@
-Return-Path: <stable+bounces-36289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40FC89B372
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 19:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F8B89B373
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 19:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05F51F211B6
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 17:56:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10E991F2134A
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 17:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130363BBE6;
-	Sun,  7 Apr 2024 17:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1C93BBEC;
+	Sun,  7 Apr 2024 17:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="1hcwIUJ0"
 X-Original-To: stable@vger.kernel.org
-Received: from cae.in-ulm.de (cae.in-ulm.de [217.10.14.231])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7883BB24;
-	Sun,  7 Apr 2024 17:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.14.231
+Received: from ms11p00im-qufo17282001.me.com (ms11p00im-qufo17282001.me.com [17.58.38.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8137C3BBD6
+	for <stable@vger.kernel.org>; Sun,  7 Apr 2024 17:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712512554; cv=none; b=KWtcWqcriUx8ir4PKRwZfAw2HxK2CC3ncvx1Oe9RVcWWG4hH0FuJUZvkYEzAal8P8NcC7gRHnez/Ar30LMcy/a7vSOhgR4f0AFEA/75zkriFOiIqEUsTqM3RrRznlBdoTzEMqk/HcPuFts/VKDe3CR6VhHdXahczIy9Rz3vyMj8=
+	t=1712512565; cv=none; b=nEaSx647fZW3n9m2zj2ZASUOR+wFbxydvE9se+frIgcJvL2kgv/cRnuoOkP2K+0sRaGseFCbskd6wMFoQ8ssei63YmxDOG6OQc3Bng0iOGRaHkahhhiasMqS0qB7tfvP7PRZit2bxzdC4dTZZrEItfl9TpRtCNxZ7ppLP5DHR5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712512554; c=relaxed/simple;
-	bh=JTesdcXINXdFVkFqDbF4+Y2kCRj7DafKp2yGFq1fM38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aE0S1Ox90hm0hK7lnXRu35u9joyYDE+LYDhKngGJjOHf+fEMzt+Vi5okUhetClvJDSNBQ0nZvsGBsJH3O8llPWptios+afxs9+3gNjpIXYCB6SbCfuC0VbnEe7wydsmt3HhFPliwiiSt9LNKbgSh+TfksZjJYe+q1lrvoti+46U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de; spf=pass smtp.mailfrom=c--e.de; arc=none smtp.client-ip=217.10.14.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c--e.de
-Received: by cae.in-ulm.de (Postfix, from userid 1000)
-	id CF52F140186; Sun,  7 Apr 2024 19:55:41 +0200 (CEST)
-Date: Sun, 7 Apr 2024 19:55:41 +0200
-From: Christian Ehrhardt <lk@c--e.de>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Patch "usb: typec: ucsi: Check for notifications after init" has
- been added to the 6.8-stable tree
-Message-ID: <ZhLeHTUM31ZOy9Mr@cae.in-ulm.de>
-References: <20240407125341.1022877-1-sashal@kernel.org>
+	s=arc-20240116; t=1712512565; c=relaxed/simple;
+	bh=UQxU8jMJyYiRRgiZP1/TGp9KcB4J3dMChQI1iPB7laM=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=bno3jiUFAfJfKEF54nDLbux5o4rE0zkeXYiY8yXLR6uQXNb/KtERiA41x5DGWHe00YQ0P1HqbI7n7yfYaVBeoxDPjd8fvUb1mlJZG0hNgKikYGEL2dGpKB/2wN3Weeyt6BsVfpUY2VzgFj2lfXi7sp0AYKSMoF0hCKrd+iz0We4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=1hcwIUJ0; arc=none smtp.client-ip=17.58.38.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+	t=1712512561; bh=1L55z9HgcsBeCtGk8EKGjwew88mtrI15AkRnFNg6k6k=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:To;
+	b=1hcwIUJ0Ru5XygPZsAYM7oeJlg35Jghl99W8h6j/2q3fuhXklLry9m0n1G4b0D/TA
+	 pMGCOjk/5x8yz41Brzvo48/+ShiUuNkyoq/276HvwmzVBZ+bFAXMKDK/m4YOUF0ROd
+	 V3UUUY+mTv2HSzX6zwnOhHQ/2xO4zzQyXEBJFOJoWxIUepG4bW2xXPP4vP17FtbvUj
+	 GAiUY3nOB36u3hmZFsmuGH+wIvH2m93ADS1R2ZdiQY5k9GErMG6hmysXAOjPn7sd//
+	 uKsZa5nfjj0LU9b0fhzmKtQex95Xp1eEKlHDyVTL0n4Y7i3z0dBFT0EPhPz7jxBns9
+	 LIy3YAAUeRyzQ==
+Received: from smtpclient.apple (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
+	by ms11p00im-qufo17282001.me.com (Postfix) with ESMTPSA id 203561E0230;
+	Sun,  7 Apr 2024 17:56:01 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Laine Taffin Altman <alexanderaltman@me.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240407125341.1022877-1-sashal@kernel.org>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v4] rust: init: remove impl Zeroable for Infallible
+Date: Sun, 7 Apr 2024 10:55:49 -0700
+Message-Id: <37A7EC35-7889-4378-A30C-126B1AD668C8@me.com>
+References: <3ecba34f-95a2-4f18-9729-f9cb3a4366c0@proton.me>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+In-Reply-To: <3ecba34f-95a2-4f18-9729-f9cb3a4366c0@proton.me>
+To: Benno Lossin <benno.lossin@proton.me>
+X-Mailer: iPhone Mail (21F5048f)
+X-Proofpoint-ORIG-GUID: Iezh0l9YPBfilfTXNVUoheAnYZ2BgIsK
+X-Proofpoint-GUID: Iezh0l9YPBfilfTXNVUoheAnYZ2BgIsK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-07_11,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 clxscore=1015
+ mlxlogscore=821 bulkscore=0 adultscore=0 mlxscore=0 spamscore=0
+ phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2308100000 definitions=main-2404070145
 
+On Apr 7, 2024, at 1:56=E2=80=AFAM, Benno Lossin <benno.lossin@proton.me> wr=
+ote:
+> =EF=BB=BFOn 04.04.24 19:28, Laine Taffin Altman wrote:
+>>> On Apr 4, 2024, at 4:03=E2=80=AFAM, Miguel Ojeda <miguel.ojeda.sandonis@=
+gmail.com> wrote:
+>>>=20
+>>> =EF=BB=BFOn Thu, Apr 4, 2024 at 11:01=E2=80=AFAM Benno Lossin <benno.los=
+sin@proton.me> wrote:
+>>>>=20
+>>>> I don't see this commit in the kernel tree, what did you specify as
+>>>> `--base` when running `git format`?
+>>>=20
+>>> Yeah, I don't have it either, but it seems to apply cleanly.
+>>>=20
+>>> Cheers,
+>>> Miguel
+>>=20
+>> I ran `git format-patch origin/master --base=3Dorigin/master`.  I
+>> can=E2=80=99t imagine how that could have resulted in a nonexistent commi=
+t
+>> hash?
+>=20
+> That heavily depends on what `origin/master` is. Is `origin` pointing to
+> Torvald's git? In that case it would explain why we don't have that
+> commit hash yet.
+> Normally you should base your work on the tree listed in the `T:` entry
+> of the subsystem in the MAINTAINERS file. In our case it is `rust-next`.
+> But no worries, since it applies cleanly it should be fine for this
+> patch. Just something to keep in mind if you submit any future patches.
+>=20
+> --
+> Cheers,
+> Benno
 
-Hi Sasha,
+Ah, that makes sense!  Indeed it was pointing there.  I=E2=80=99ll remember f=
+or next time!
 
-On Sun, Apr 07, 2024 at 08:53:40AM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     usb: typec: ucsi: Check for notifications after init
-> 
-> to the 6.8-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-
-This patch contains an out of bounds memory access and should not
-be included in the stable backports until a fix is available.
-
-A fix is already queued in Greg's usb-linus branch.
-
-Please drop the above patch from all stable trees for now.
-
-Sorry for the inconvenience.
-
-> The filename of the patch is:
->      usb-typec-ucsi-check-for-notifications-after-init.patch
-> and it can be found in the queue-6.8 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit 903bfed719f3e87b607956bbe4d855c71831a43a
-> Author: Christian A. Ehrhardt <lk@c--e.de>
-> Date:   Wed Mar 20 08:39:23 2024 +0100
-> 
->     usb: typec: ucsi: Check for notifications after init
->     
->     [ Upstream commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 ]
->     
->     The completion notification for the final SET_NOTIFICATION_ENABLE
->     command during initialization can include a connector change
->     notification.  However, at the time this completion notification is
->     processed, the ucsi struct is not ready to handle this notification.
->     As a result the notification is ignored and the controller
->     never sends an interrupt again.
->     
->     Re-check CCI for a pending connector state change after
->     initialization is complete. Adjust the corresponding debug
->     message accordingly.
->     
->     Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
->     Cc: stable@vger.kernel.org
->     Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
->     Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
->     Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
->     Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
->     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-> index 0bfe5e906e543..96da828f556a9 100644
-> --- a/drivers/usb/typec/ucsi/ucsi.c
-> +++ b/drivers/usb/typec/ucsi/ucsi.c
-> @@ -962,7 +962,7 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
->  	struct ucsi_connector *con = &ucsi->connector[num - 1];
->  
->  	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
-> -		dev_dbg(ucsi->dev, "Bogus connector change event\n");
-> +		dev_dbg(ucsi->dev, "Early connector change event\n");
->  		return;
->  	}
->  
-> @@ -1393,6 +1393,7 @@ static int ucsi_init(struct ucsi *ucsi)
->  {
->  	struct ucsi_connector *con, *connector;
->  	u64 command, ntfy;
-> +	u32 cci;
->  	int ret;
->  	int i;
->  
-> @@ -1445,6 +1446,13 @@ static int ucsi_init(struct ucsi *ucsi)
->  
->  	ucsi->connector = connector;
->  	ucsi->ntfy = ntfy;
-> +
-> +	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-> +	if (ret)
-> +		return ret;
-> +	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
-> +		ucsi_connector_change(ucsi, cci);
-> +
->  	return 0;
->  
->  err_unregister:
-> 
-
-
-Best regards
-Christian
-
+Thanks,
+Laine=
 
