@@ -1,121 +1,84 @@
-Return-Path: <stable+bounces-36293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A91989B3E4
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 22:04:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2298589B3FE
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 22:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDE311F21498
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 20:04:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87CB5281A40
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 20:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80113E47C;
-	Sun,  7 Apr 2024 20:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rz+iIqt7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFFC1E893;
+	Sun,  7 Apr 2024 20:31:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from irl.hu (irl.hu [95.85.9.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DA23D988;
-	Sun,  7 Apr 2024 20:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F062582;
+	Sun,  7 Apr 2024 20:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712520212; cv=none; b=BUlT1+muV1y1u0oL74gZgHVb2kOyAMnn5Yeu90xHN4nzwc8NMMa1154Eulg/r1MkBFN4QUzUsLE16NVeIz7gV7zFLdJ9EZMm3YEQ8vsi5M9d+Jw9nZNteo4zkqp0+r7QfRL3kdGPcHT21ZwYbPmckQt4d5l3orfIeE/OHqI5Wp8=
+	t=1712521892; cv=none; b=ljtfZ786JgVy3FG/Eq112Eo0PhMTTri8FQWvEGi4FOL8dpi9DD78+LIAD7xnE5LTo+IabdJp8+hs2prrDJW+aP/9XSnikusCuVifZd97+gHc8iCVW8Ds0bGhoKMSxMBdsyE+9qYqeG230jVOxcULd1Z3dSThd+IV0/7Z73bZvb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712520212; c=relaxed/simple;
-	bh=zzYff9yQtgJXPQgk/ATjyS1y8lhCcN/zh2bqNrpQlq0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bTnQoS/Mqx6OzCNkQB+NDIIWkFF4KB3IJinCLaGC07nCfjlw/23VXaqaJ4HQoC1mm7GMvelq7UmrRSxXZFfte9Kip4tIRtaVpaM89r4DwMACjiaauv+AwqLY3d4J1f4Ct0dcFlsv43HKYKj9xadzXDkFzZ6HFyAcFT5wjUIq3R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rz+iIqt7; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2a4bdef3d8eso511209a91.1;
-        Sun, 07 Apr 2024 13:03:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712520210; x=1713125010; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yfMh48UYa1lhTnaBkcMEl7zleuPMjILYPz6KbF68Au8=;
-        b=Rz+iIqt77VMsFA2kA24zP2sI+lF2ahNvmzO2Y73uclmnTzfVvs/TheyeWfSFyzncGd
-         sidu3lYxMk0n4rQfOXpQ4yr3J6Xt6OlFQKq0BGWO76lkp4wqRC3xIvVIfnXADosyq9Xx
-         H1nu3iJR14XxVh1mFiNbzAAZq0/c0PQ3AnyMvbSfZI/cyfjOwg5L7e6Zrl3rZBRjvjw0
-         HvuHZSLbBiGDvfegcxPUQicWgAq9VspLZU7SN3K17urkMORclNip9axr6arCulQa/Zff
-         1/SVu5hO05cRUdxnXTYRQ+TSetEcUlrOT6btJh13/apj9Tghfrse5X5pzgpr2P9J82Qa
-         ebaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712520210; x=1713125010;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yfMh48UYa1lhTnaBkcMEl7zleuPMjILYPz6KbF68Au8=;
-        b=Tcurf4/yuc0fAEnTOQ63MQ2e6QMUiOmgL34EmybXq97hIMYPL4/1w9+Suh6hNBeW+r
-         FbghTqpj0QaJtkwcKoZcS9kgBg9v47JnbxcEru8uCN54QtzrvOnaGFTXYjFRIKtsDkbH
-         aBRYusSMBcIqJN+Kc/kO+OSfyjFJPJjwLh+l/xd4MlktrOfeXdPkTZor5g7tbGHE1SLz
-         o7BtsaBqYBrvVlpugzAt5lCUIvtR6a0Acql42ndDHxkUAX40ozrMyay0CTYtz39OyQmx
-         ZYtlCenEttdtd4+qcNWjN2gqZ/kmg9SwTRpB4HPHdGy6R0cR9uEkgJ5PzW3sF1lNkD4L
-         z8GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEAVGKNBvKFt5FgpVEKGh96BOuwrTpSpU81pB8GtkwaDzp52ji4BUhnJUviy5teyXRHbPpfqy1Y44gMFQ7YpJ6WSUCz6bxTNad6wPiWoee2xvPpKK2+NlR3U2GjkfIiPBUgYTwa0Qg6ZQM9LNEVXjNl6JF9NrxpOSZpZXfpq1AfB5OFFM=
-X-Gm-Message-State: AOJu0YwxWE64tqqnUckTbvxqfj+A+hxImuPlEMzaEO+PHpm6FVYQWj1e
-	WMHMs//PhK+HnrCDCWBchHO7jgwr1sjhDhFKg13jTaRSX5ETybpIf9Fj+eJ+L1UVsOgwp3VOnMd
-	dpxKtHA7ZV5KRg/Wt4zUVJtn/sRM=
-X-Google-Smtp-Source: AGHT+IEIt1Lru4k/Tnepu4IBYtQBsXst4gyHMFJlhgjYVHRQdcRfEYeE8aY/BvrRmgDuYCRzjKItROgB6OPb0gkL7mQ=
-X-Received: by 2002:a17:90a:4dc6:b0:2a4:f53d:e732 with SMTP id
- r6-20020a17090a4dc600b002a4f53de732mr810440pjl.13.1712520210362; Sun, 07 Apr
- 2024 13:03:30 -0700 (PDT)
+	s=arc-20240116; t=1712521892; c=relaxed/simple;
+	bh=icmfxrHIFihnVSMTiFYEzBjqDIJxGgEgxKi0q9Y/mm8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=t4/a++bmBd9Q+UbKsEjNwo7BvnvhEAydeuxQa/QlGuDHeAZQsZbzipHpWfwxhPJCQMiUBPa+jjyHWmFAcfQT6mUze8bJ/ueJtfuR6oEdVX7OFpVAxHgCu0L3jmCGKLtWsfnDa9ojKNKu0mTSRPmJIJVn+xOKkrCI2Bv3Hkq9RT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from [192.168.2.4] (51b69f53.dsl.pool.telekom.hu [::ffff:81.182.159.83])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 000000000006FBD1.000000006613029A.00261F18; Sun, 07 Apr 2024 22:31:21 +0200
+Message-ID: <890d28a0578a42333c2f63b5feb086bd8d1c98e9.camel@irl.hu>
+Subject: Re: Patch "ASoC: tas2781: mark dvc_tlv with __maybe_unused" has
+ been added to the 6.8-stable tree
+From: Gergo Koteles <soyer@irl.hu>
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
+  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
+  Takashi Iwai <tiwai@suse.com>
+Date: Sun, 07 Apr 2024 22:31:21 +0200
+In-Reply-To: <20240407201311.1155107-1-sashal@kernel.org>
+References: <20240407201311.1155107-1-sashal@kernel.org>
+Autocrypt: addr=soyer@irl.hu; prefer-encrypt=mutual;
+ keydata=mDMEZgeDQBYJKwYBBAHaRw8BAQdAD5oxV6MHkjzSfQL2O8VsPW3rSUeCHfbx/a6Yfj3NUnS0HEdlcmdvIEtvdGVsZXMgPHNveWVyQGlybC5odT6ImQQTFgoAQRYhBLSYvEYEgjzzEMQCqgtEJzXf/1IRBQJmB4NAAhsDBQkFo5qABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEAtEJzXf/1IRmdYA/0bE1BX7zOGKBgCa1DwzH2UHXawSKLpptADvI/ao6OOtAP4+wYgpR0kWR28lhmkRTpzG/+8GiMWsT60SV2bz9B7sCbg4BGYHg0ASCisGAQQBl1UBBQEBB0CPo8ow/E97WYtaek9EsLXvsvwpBsjWLq5mMOgJL/ukCwMBCAeIfgQYFgoAJhYhBLSYvEYEgjzzEMQCqgtEJzXf/1IRBQJmB4NAAhsMBQkFo5qAAAoJEAtEJzXf/1IRklEA/ipTfAI/onzNwZIp9sCdnt0bLhR5Oz8RD/FpbrJV1v7eAP0c/C6NQPDPWbQpobBR0pf1eTjWXjjr1fj2jxSvWbMRCw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240404-providing-emporium-e652e359c711@spud>
-In-Reply-To: <20240404-providing-emporium-e652e359c711@spud>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 7 Apr 2024 22:02:46 +0200
-Message-ID: <CANiq72mUGAXj+ajfojfMgOD7S22Q0Y0Y4QCTxNLoNxwCSpksdg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: make mutually exclusive with CFI_CLANG
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-riscv@lists.infradead.org, Conor Dooley <conor.dooley@microchip.com>, 
-	stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
-	Kees Cook <keescook@chromium.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 4, 2024 at 4:17=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
->
-> From: Conor Dooley <conor.dooley@microchip.com>
->
-> On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
-> loading a rust module will trigger a kernel panic. Support for
-> sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
-> they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
-> to prevent configuring a kernel without symmetrical support for kfi.
->
-> Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Hi,
 
-[ Matthew Maurer writes [1]:
+On Sun, 2024-04-07 at 16:13 -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+>=20
+>     ASoC: tas2781: mark dvc_tlv with __maybe_unused
+>=20
+> to the 6.8-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>=20
+> The filename of the patch is:
+>      asoc-tas2781-mark-dvc_tlv-with-__maybe_unused.patch
+> and it can be found in the queue-6.8 subdirectory.
+>=20
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>=20
+>=20
 
-    This patch is fine by me - the last patch needed for KCFI to be
-    functional in Rust just landed upstream last night, so we should
-    revisit this (in the form of enabling it) once we move to
-    `rustc-1.79.0` or later.
+Is this necessary for stable? It only fixes a W=3D1 build warning.
 
-  Ramon de C Valle also gave feedback [2] on the status of KCFI for
-  Rust and created a tracking issue [3] in upstream Rust.   - Miguel ]
+Regards,
+Gergo
 
-[ Added feedback from the list, links, and used Cc for the tag. ]
-
-Applied to `rust-fixes` -- thanks everyone! Please feel free to send
-more tags for this one.
-
-Cheers,
-Miguel
 
