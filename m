@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-36300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E1489B4AE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 01:48:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9F789B4B5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 01:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDFAFB20EC7
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 23:48:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED8E2830DD
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 23:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11326446D3;
-	Sun,  7 Apr 2024 23:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81515446D3;
+	Sun,  7 Apr 2024 23:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhKXL9sF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIReazuM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2C53BBFE;
-	Sun,  7 Apr 2024 23:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FC547F48;
+	Sun,  7 Apr 2024 23:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712533726; cv=none; b=LnHIrWg1C0Dr+h/KNVX/DMgBVExzNJtprtZU9ddJufoiY1KwnB/GPtIn2ysWk4CImW4+W4potDrDzYPiXi7cZ5NTlocYlDlltQHDUMV2lTXJVKKZp46B2SeW+vwCtdo5GBjCdCgmQKZ8hgqa5gV3YLglKdcMXbIESU6aW4PLPMg=
+	t=1712533908; cv=none; b=IkiHc6xR3kHhwzB+fKtVPSSmLzUb3xJuxVEglYbTyNmOAZy1zJAnFdTq3ohJNlbOrmLL2Iqthk60sSOggyw7WHAFfUDItHyRZBkMZESMJnMqioH71QVBL3ORmO4jHxa56FaLIObYunccdCZffaW7wkgJib8P11SnR4LVhQVBDdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712533726; c=relaxed/simple;
-	bh=JIrH3QsMT/5WGDUR8zfqWVuCSjEhK7gh8q5viWx6UEQ=;
+	s=arc-20240116; t=1712533908; c=relaxed/simple;
+	bh=c9AV06zEDRUY+STVK91qqsfok0ys+fFnMj1b/OQ26rM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jAKg7AK8v6p/EnZcSygP/hEmdgG4vBA0UC4MFvj0YJ3HT3+Hk+6mM+/R+shSRpeIphPdiDlYHeyw7XZQXgfFYXSp4Ob784SJg3VkRhGlhMgqmdiSZuJiqCgZd6s0MfqbcwvUxsdbwk5eaLIywMJk5y/jwK9V6awlCL3MxX9227M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhKXL9sF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251CDC433F1;
-	Sun,  7 Apr 2024 23:48:46 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=AQHWIfoTbt2Jt3XH2BqLy7SRv4SaxB3y7PhohP0L6laUGZGJlqyQAs+Reriawzg6Ux9MuX99Z4zhz2DtFOfLCdoIBQ8V6Mw4MjrtkbuP+PBRrSkZZSk7iLmWNc2UAnKuO4FuiTYDW7XYSMr2GycGLDJAuossvFT44a5hirrcOlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIReazuM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8822EC433C7;
+	Sun,  7 Apr 2024 23:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712533726;
-	bh=JIrH3QsMT/5WGDUR8zfqWVuCSjEhK7gh8q5viWx6UEQ=;
+	s=k20201202; t=1712533907;
+	bh=c9AV06zEDRUY+STVK91qqsfok0ys+fFnMj1b/OQ26rM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FhKXL9sFQo+5bfApgbfZdE7MSjQTZHQjlN1uNH0tDYsGQ+NyFjdgRWjgtmvXQZyPr
-	 mUe7CesVOmRJh2fgA2+MXXM3cr1k2xez/LJXjGJDUwJei85jxyGD3fm2JXlhHy7t6J
-	 LQeiXbmOt6s1WRl6ToLDQmY5QOf4E3bIGrQdf9YLXY9ynApXQGdUu4fcTODt9G3IvQ
-	 4YkcNk8ep8uGd6XfRc033x568sdK+Pb4TmZMdgHvY7RBHCkbNshIpobPRQ62tKfdjz
-	 hEZb7FEBZrJuFa/yJsJriUMXp/W7Q2VruxXs/Wvfi9Si9DTHW8DiFL9RA8S4g/8TVt
-	 dHcWiMFhhh2uQ==
-Date: Sun, 7 Apr 2024 19:48:45 -0400
+	b=EIReazuMf6MdO3iR1+tKwywe+60c9OzkvrxOUMH6dPKrnbHe5g1lCdir4dO9DRjAE
+	 nK3LX6TE1p5p9tUSPZ8Yb0BmO3q/fkmYw0B9N23mplDdLU8qYq/GTR/ncrNG2pM64e
+	 pZWVH9DNCxJ0Sgz80B79fChTNAHE8PwtYNqzgBwWJzGmHJv8OMJ2QmHyJp/29IM8I6
+	 rkiWfKFVjwMbtef5Is1CyBpyH+Uq8F+mkN+maRHScF8hPH9wD+b9FEyGwwHc+KWvHB
+	 nPS+0EfWSGzhyBVD+ygmfO23/Zlfs4x1uVUf40iX0N8o4Y4smc0NuhMrwYw8QNvoHC
+	 jmm/NXqGyrCxA==
+Date: Sun, 7 Apr 2024 19:51:47 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Karel Balej <balejk@matfyz.cz>
-Cc: Markuss Broks <markuss.broks@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	linux-input@vger.kernel.org, duje.mihanovic@skole.hr,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.8 78/98] input/touchscreen: imagis: add support
- for IST3032C
-Message-ID: <ZhMw3fwiSrbw9r6P@sashalap>
-References: <20240329123919.3087149-1-sashal@kernel.org>
- <20240329123919.3087149-78-sashal@kernel.org>
- <D06ZCKKYTQM5.3OJ6HCLHW3DZ9@matfyz.cz>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Edmund Raile <edmund.raile@proton.me>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.6 52/75] PCI: Mark LSI FW643 to avoid bus reset
+Message-ID: <ZhMxk4Sn4N0AAFSu@sashalap>
+References: <20240329124330.3089520-52-sashal@kernel.org>
+ <20240329151702.GA1643117@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,76 +59,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <D06ZCKKYTQM5.3OJ6HCLHW3DZ9@matfyz.cz>
+In-Reply-To: <20240329151702.GA1643117@bhelgaas>
 
-On Sat, Mar 30, 2024 at 10:33:53AM +0100, Karel Balej wrote:
->Sasha,
->
->Sasha Levin, 2024-03-29T08:37:49-04:00:
->> From: Karel Balej <balejk@matfyz.cz>
+On Fri, Mar 29, 2024 at 10:17:02AM -0500, Bjorn Helgaas wrote:
+>On Fri, Mar 29, 2024 at 08:42:33AM -0400, Sasha Levin wrote:
+>> From: Edmund Raile <edmund.raile@proton.me>
 >>
->> [ Upstream commit 90cb57a6c5717b83a110c0da720a03ee32ed255e ]
+>> [ Upstream commit 29a43dc130ce65d365a8ea9e1cc4bc51005a353e ]
 >>
->> IST3032C is a touchscreen chip used for instance in the
->> samsung,coreprimevelte smartphone, with which this was tested. Add the
->> chip specific information to the driver.
+>> Apparently the LSI / Agere FW643 can't recover after a Secondary Bus Reset
+>> and requires a power-off or suspend/resume and rescan.
 >>
->> Reviewed-by: Markuss Broks <markuss.broks@gmail.com>
->> Signed-off-by: Karel Balej <balejk@matfyz.cz>
->> Link: https://lore.kernel.org/r/20240301164659.13240-6-karelb@gimli.ms.mff.cuni.cz
->> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+>> VFIO resets a device before assigning it to a VM, and the FW643 doesn't
+>> support any other reset methods, so this problem prevented assignment of
+>> FW643 to VMs.
+>>
+>> Prevent use of Secondary Bus Reset for this device.
+>>
+>> With this change, the FW643 can be assigned to VMs with VFIO.  Note that it
+>> will not be reset, resulting in leaking state between VMs and host.
+>>
+>> Link: https://lore.kernel.org/r/20240227131401.17913-1-edmund.raile@proton.me
+>> Signed-off-by: Edmund Raile <edmund.raile@proton.me>
+>> [bhelgaas: commit log, comment]
+>> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 >> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  drivers/input/touchscreen/imagis.c | 10 ++++++++++
->>  1 file changed, 10 insertions(+)
->>
->> diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
->> index 9af8a6332ae67..e1fafa561ee38 100644
->> --- a/drivers/input/touchscreen/imagis.c
->> +++ b/drivers/input/touchscreen/imagis.c
->> @@ -11,6 +11,8 @@
->>  #include <linux/property.h>
->>  #include <linux/regulator/consumer.h>
->>
->> +#define IST3032C_WHOAMI			0x32c
->> +
->>  #define IST3038B_REG_STATUS		0x20
->>  #define IST3038B_REG_CHIPID		0x30
->>  #define IST3038B_WHOAMI			0x30380b
->> @@ -363,6 +365,13 @@ static int imagis_resume(struct device *dev)
->>
->>  static DEFINE_SIMPLE_DEV_PM_OPS(imagis_pm_ops, imagis_suspend, imagis_resume);
->>
->> +static const struct imagis_properties imagis_3032c_data = {
->> +	.interrupt_msg_cmd = IST3038C_REG_INTR_MESSAGE,
->> +	.touch_coord_cmd = IST3038C_REG_TOUCH_COORD,
->> +	.whoami_cmd = IST3038C_REG_CHIPID,
->> +	.whoami_val = IST3032C_WHOAMI,
->> +};
->> +
->>  static const struct imagis_properties imagis_3038b_data = {
->>  	.interrupt_msg_cmd = IST3038B_REG_STATUS,
->>  	.touch_coord_cmd = IST3038B_REG_STATUS,
->> @@ -380,6 +389,7 @@ static const struct imagis_properties imagis_3038c_data = {
->>
->>  #ifdef CONFIG_OF
->>  static const struct of_device_id imagis_of_match[] = {
->> +	{ .compatible = "imagis,ist3032c", .data = &imagis_3032c_data },
->>  	{ .compatible = "imagis,ist3038b", .data = &imagis_3038b_data },
->>  	{ .compatible = "imagis,ist3038c", .data = &imagis_3038c_data },
->>  	{ },
->> --
->> 2.43.0
 >
->sorry if I'm missing something, but I don't see why this should be
->backported: it doesn't fix anything, it's just adding support for new
->hardware.
+>We're about to revert this upstream, so I wouldn't backport this to
+>any stable trees:
 >
->I can see that adding a device ID is permitted for -stable [1], but I
->thought it still has to bear some signs of a fix, such as maybe here
->[2].
+>https://lore.kernel.org/r/20240328212302.1582483-1-helgaas@kernel.org
 
-It does not need to be a fix, it could just be plain device enablement.
+I'll drop it, thanks!
 
 -- 
 Thanks,
