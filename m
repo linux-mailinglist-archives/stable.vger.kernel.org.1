@@ -1,262 +1,112 @@
-Return-Path: <stable+bounces-36197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8039C89B0F6
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 15:06:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B6D89B126
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 15:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E0091C20F38
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 13:06:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E054AB20F0B
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 13:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CB0381BB;
-	Sun,  7 Apr 2024 13:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604AB482C7;
+	Sun,  7 Apr 2024 13:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="2KO/DJmV";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ftE4mxiq";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="11kQdusK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="b1GRYztO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7qkFHHV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6F825745;
-	Sun,  7 Apr 2024 13:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1656D481B1;
+	Sun,  7 Apr 2024 13:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712495158; cv=none; b=rBT0t3pLrhKM+0r/RfYwXVogu4HmCacCWKGOfm1OEqz0g3bZv3I6uM7YTzbHy2vfA9Qhi6Z2snDbGykdiUrGMSq4uut7dsMMiXm8REX4OCXF8pU6q310fQ8j7nbkZRP237TIUsG+sWbhPl8nI9VKfIPM6YByCKlLXUNNDJOs6Bs=
+	t=1712495493; cv=none; b=uWKRnZ22CaZ9NAxhrFyqeMt+9Ba04VgnI+xSXMi/nSUAw+XUl1FjW/kN4HZhIT9wd5zJRKmKLdWhqSm1Vy0jz8lyxXRFEh0wzAomNUgfK//rsgPEe2KhnyumiyBmEoF+e6YzRrhbpA006BKlDyrcLo3RdHyRQxkvJBjeyArWB7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712495158; c=relaxed/simple;
-	bh=K6HcT4y4Ugz2ZCMyMPN622D3EmrRbqTPBq2b8S/ir2s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fErrrSeMHyxPBmEQgcoIcvu/j6taCYh1iC85rvuSYmSy9p69DFmQKvDO6DRina9rPtdT4d+ezCQA9ZejSxIO9+v2b7/12ZgSLcIpqtt9YzoM9eYJsDS+T90fpI1NCUMfHIKqxaYcrJhjc9vBSzb3Q+TQ1AG9hGGYX3IBd26RFeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=2KO/DJmV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ftE4mxiq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=11kQdusK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=b1GRYztO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0948321C63;
-	Sun,  7 Apr 2024 13:05:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1712495154; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=+qGlEDHzb7FpeLjonTz5IywzApZvF8isqA+3qX4uTqc=;
-	b=2KO/DJmVlWLwlOtRKvqvGbMboDYBH7XvgAY96MSIU+p2/mcEMgqYm0zCoY0UiiYkLlmfNd
-	SZYwUP2Ce7mjRwxKXi35f7R8bkOCqBn3AVRPRGLkHaeeLSbH8FGkjvzYIgb7EAZQQ2buNH
-	JogiPUvA2wsBBjex3mqUshQq22DMy+g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1712495154;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=+qGlEDHzb7FpeLjonTz5IywzApZvF8isqA+3qX4uTqc=;
-	b=ftE4mxiqJ9fwKCk+l8nytwyWct/mrgohQy55PbmD8Bl6Uc+14ZP1O6reM7vsTGOuxl1ThE
-	wM58OqDCrh8uMIBQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=11kQdusK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=b1GRYztO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1712495153; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=+qGlEDHzb7FpeLjonTz5IywzApZvF8isqA+3qX4uTqc=;
-	b=11kQdusKXO52CX7ndjEh1QLOe//sOt2mH0JDv8ya7h+XOA9ACbTv8Sy0YFJTwqJzPCr43M
-	Zwx/WrDA1Dh/znkMy6OPMVy4ExcYT9dXpDG5ThInHXLSi67uF0XJVZUcKLs0GG9bM9NqxT
-	5lD5rxn2hRPcoktrrf8gVfPvwYgvjmw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1712495153;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=+qGlEDHzb7FpeLjonTz5IywzApZvF8isqA+3qX4uTqc=;
-	b=b1GRYztO14KMD0OEKnjw5YGVMFvVdei3gUIl2Jut8bSAwUuQ6zxhjpMRzOwM2DOjpv0fdQ
-	Sc9lmXdNuoil3oBQ==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 716C7132FF;
-	Sun,  7 Apr 2024 13:05:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id K/XtGDCaEmYGDQAAn2gu4w
-	(envelope-from <osalvador@suse.de>); Sun, 07 Apr 2024 13:05:52 +0000
-From: Oscar Salvador <osalvador@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	stable@vger.kernel.org,
-	Oscar Salvador <osalvador@suse.de>,
-	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH] mm,swapops: Update check in is_pfn_swap_entry for hwpoison entries
-Date: Sun,  7 Apr 2024 15:05:37 +0200
-Message-ID: <20240407130537.16977-1-osalvador@suse.de>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1712495493; c=relaxed/simple;
+	bh=P+UxFT2T+w1OLW0wC5WPBqcbH06FUbYSjIraon1J7KI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VCTVKxymc8xaN/COBk/agdFabN4ZEf6UFs3oU8zBzocW9HwsYDKiUXsFgtWB9uK2zp9AGslfboACtW1h4LTz69wobZ9gdTfa53AXARo3ypkJd0uMTlQevvznZ0Tt19u41oNQJwro/MzO4Jowie5uIVISIGpHodl17PDCX8JO8eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7qkFHHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE7AC43394;
+	Sun,  7 Apr 2024 13:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712495492;
+	bh=P+UxFT2T+w1OLW0wC5WPBqcbH06FUbYSjIraon1J7KI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=W7qkFHHVCfVNU5GQS1Cyl2lYtfz0NFAbiPvTW4HhNo5LkUmj3ycQwqaoWDVTLOKpF
+	 0DWoZFJSgI5IM3TESMQuPWwbAVi4R3X9CCRaQnD5/N/O0TntFl5cA85V7iMLdpYKXC
+	 Z4nSwetza6/O/5F6edQs1rkTS5dgbgapJCvP11oOrsQtlYs0l/+lCfKHFSooK52wXk
+	 OaNDllYUSs2hxIYPqmIY8J5KPzVCOOj9XhgpEtcco93pcoTR9M9PzIZQwL/aGCMKYx
+	 qz66bSBhhD+WMdUfR8wTU8sikbODA6GGxW5JcmF+JVPBaIGLmSoN9K055ABWcBSd1c
+	 i5jZu/HimXa5Q==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Rohit Ner <rohitner@google.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Can Guo <quic_cang@quicinc.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jejb@linux.ibm.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	bvanassche@acm.org,
+	stanley.chu@mediatek.com,
+	quic_nguyenb@quicinc.com,
+	powen.kao@mediatek.com,
+	alice.chao@mediatek.com,
+	yang.lee@linux.alibaba.com,
+	linux-scsi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.8 01/25] scsi: ufs: core: Fix MCQ MAC configuration
+Date: Sun,  7 Apr 2024 09:10:49 -0400
+Message-ID: <20240407131130.1050321-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.8.4
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 0948321C63
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,intel.com:email,suse.de:dkim,suse.de:email]
 
-Tony reported that the Machine check recovery was broken in v6.9-rc1,
-as he was hitting a VM_BUG_ON when injecting uncorrectable memory errors
-to DRAM.
-After some more digging and debugging on his side, he realized that this
-went back to v6.1, with the introduction of 'commit 0d206b5d2e0d ("mm/swap: add
-swp_offset_pfn() to fetch PFN from swap entry")'.
-That commit, among other things, introduced swp_offset_pfn(), replacing
-hwpoison_entry_to_pfn() in its favour.
+From: Rohit Ner <rohitner@google.com>
 
-The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(),
-but is_pfn_swap_entry() never got updated to cover hwpoison entries, which
-means that we would hit the VM_BUG_ON whenever we would call
-swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM set.
-Fix this by updating the check to cover hwpoison entries as well, and update
-the comment while we are it.
+[ Upstream commit 767712f91de76abd22a45184e6e3440120b8bfce ]
 
-Reported-by: Tony Luck <tony.luck@intel.com>
-Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
-Tested-by: Tony Luck <tony.luck@intel.com>
-Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
+As per JEDEC Standard No. 223E Section 5.9.2, the max # active commands
+value programmed by the host sw in MCQConfig.MAC should be one less than
+the actual value.
+
+Signed-off-by: Rohit Ner <rohitner@google.com>
+Link: https://lore.kernel.org/r/20240220095637.2900067-1-rohitner@google.com
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/swapops.h | 65 +++++++++++++++++++++--------------------
- 1 file changed, 33 insertions(+), 32 deletions(-)
+ drivers/ufs/core/ufs-mcq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 48b700ba1d18..a5c560a2f8c2 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -390,6 +390,35 @@ static inline bool is_migration_entry_dirty(swp_entry_t entry)
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 0787456c2b892..c873fd8239427 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -94,7 +94,7 @@ void ufshcd_mcq_config_mac(struct ufs_hba *hba, u32 max_active_cmds)
+ 
+ 	val = ufshcd_readl(hba, REG_UFS_MCQ_CFG);
+ 	val &= ~MCQ_CFG_MAC_MASK;
+-	val |= FIELD_PREP(MCQ_CFG_MAC_MASK, max_active_cmds);
++	val |= FIELD_PREP(MCQ_CFG_MAC_MASK, max_active_cmds - 1);
+ 	ufshcd_writel(hba, val, REG_UFS_MCQ_CFG);
  }
- #endif	/* CONFIG_MIGRATION */
- 
-+#ifdef CONFIG_MEMORY_FAILURE
-+
-+/*
-+ * Support for hardware poisoned pages
-+ */
-+static inline swp_entry_t make_hwpoison_entry(struct page *page)
-+{
-+	BUG_ON(!PageLocked(page));
-+	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
-+}
-+
-+static inline int is_hwpoison_entry(swp_entry_t entry)
-+{
-+	return swp_type(entry) == SWP_HWPOISON;
-+}
-+
-+#else
-+
-+static inline swp_entry_t make_hwpoison_entry(struct page *page)
-+{
-+	return swp_entry(0, 0);
-+}
-+
-+static inline int is_hwpoison_entry(swp_entry_t swp)
-+{
-+	return 0;
-+}
-+#endif
-+
- typedef unsigned long pte_marker;
- 
- #define  PTE_MARKER_UFFD_WP			BIT(0)
-@@ -483,8 +512,9 @@ static inline struct folio *pfn_swap_entry_folio(swp_entry_t entry)
- 
- /*
-  * A pfn swap entry is a special type of swap entry that always has a pfn stored
-- * in the swap offset. They are used to represent unaddressable device memory
-- * and to restrict access to a page undergoing migration.
-+ * in the swap offset. They can either be used to represent unaddressable device
-+ * memory, to restrict access to a page undergoing migration or to represent a
-+ * pfn which has been hwpoisoned and unmapped.
-  */
- static inline bool is_pfn_swap_entry(swp_entry_t entry)
- {
-@@ -492,7 +522,7 @@ static inline bool is_pfn_swap_entry(swp_entry_t entry)
- 	BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
- 
- 	return is_migration_entry(entry) || is_device_private_entry(entry) ||
--	       is_device_exclusive_entry(entry);
-+	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry);
- }
- 
- struct page_vma_mapped_walk;
-@@ -561,35 +591,6 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
- }
- #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
- 
--#ifdef CONFIG_MEMORY_FAILURE
--
--/*
-- * Support for hardware poisoned pages
-- */
--static inline swp_entry_t make_hwpoison_entry(struct page *page)
--{
--	BUG_ON(!PageLocked(page));
--	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
--}
--
--static inline int is_hwpoison_entry(swp_entry_t entry)
--{
--	return swp_type(entry) == SWP_HWPOISON;
--}
--
--#else
--
--static inline swp_entry_t make_hwpoison_entry(struct page *page)
--{
--	return swp_entry(0, 0);
--}
--
--static inline int is_hwpoison_entry(swp_entry_t swp)
--{
--	return 0;
--}
--#endif
--
- static inline int non_swap_entry(swp_entry_t entry)
- {
- 	return swp_type(entry) >= MAX_SWAPFILES;
+ EXPORT_SYMBOL_GPL(ufshcd_mcq_config_mac);
 -- 
-2.44.0
+2.43.0
 
 
