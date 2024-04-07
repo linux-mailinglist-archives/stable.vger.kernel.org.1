@@ -1,120 +1,169 @@
-Return-Path: <stable+bounces-36290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F8B89B373
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 19:56:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4EA89B3CA
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 21:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10E991F2134A
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 17:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00FB31F21A86
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 19:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1C93BBEC;
-	Sun,  7 Apr 2024 17:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E96B3D3A2;
+	Sun,  7 Apr 2024 19:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="1hcwIUJ0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="itvcH/o/"
 X-Original-To: stable@vger.kernel.org
-Received: from ms11p00im-qufo17282001.me.com (ms11p00im-qufo17282001.me.com [17.58.38.57])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8137C3BBD6
-	for <stable@vger.kernel.org>; Sun,  7 Apr 2024 17:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F41C39FF3
+	for <stable@vger.kernel.org>; Sun,  7 Apr 2024 19:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712512565; cv=none; b=nEaSx647fZW3n9m2zj2ZASUOR+wFbxydvE9se+frIgcJvL2kgv/cRnuoOkP2K+0sRaGseFCbskd6wMFoQ8ssei63YmxDOG6OQc3Bng0iOGRaHkahhhiasMqS0qB7tfvP7PRZit2bxzdC4dTZZrEItfl9TpRtCNxZ7ppLP5DHR5A=
+	t=1712517607; cv=none; b=TfzWmwkCRHaRBpNWyGO+6o5GA6Qz9b9BbIJX9JNGF4o/yQ1mRhrs3vsvgVuFw1D+eY1mcszpayHTBe8cBYpqlpUO9HKrl37TcXOvccvCY8VK2dpd0X8ph0KHAno4OeBuMmYsWeIacFSw15ZhlZ0Q29Q4iIykLcStV11P70uqSeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712512565; c=relaxed/simple;
-	bh=UQxU8jMJyYiRRgiZP1/TGp9KcB4J3dMChQI1iPB7laM=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=bno3jiUFAfJfKEF54nDLbux5o4rE0zkeXYiY8yXLR6uQXNb/KtERiA41x5DGWHe00YQ0P1HqbI7n7yfYaVBeoxDPjd8fvUb1mlJZG0hNgKikYGEL2dGpKB/2wN3Weeyt6BsVfpUY2VzgFj2lfXi7sp0AYKSMoF0hCKrd+iz0We4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=1hcwIUJ0; arc=none smtp.client-ip=17.58.38.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-	t=1712512561; bh=1L55z9HgcsBeCtGk8EKGjwew88mtrI15AkRnFNg6k6k=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:To;
-	b=1hcwIUJ0Ru5XygPZsAYM7oeJlg35Jghl99W8h6j/2q3fuhXklLry9m0n1G4b0D/TA
-	 pMGCOjk/5x8yz41Brzvo48/+ShiUuNkyoq/276HvwmzVBZ+bFAXMKDK/m4YOUF0ROd
-	 V3UUUY+mTv2HSzX6zwnOhHQ/2xO4zzQyXEBJFOJoWxIUepG4bW2xXPP4vP17FtbvUj
-	 GAiUY3nOB36u3hmZFsmuGH+wIvH2m93ADS1R2ZdiQY5k9GErMG6hmysXAOjPn7sd//
-	 uKsZa5nfjj0LU9b0fhzmKtQex95Xp1eEKlHDyVTL0n4Y7i3z0dBFT0EPhPz7jxBns9
-	 LIy3YAAUeRyzQ==
-Received: from smtpclient.apple (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
-	by ms11p00im-qufo17282001.me.com (Postfix) with ESMTPSA id 203561E0230;
-	Sun,  7 Apr 2024 17:56:01 +0000 (UTC)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Laine Taffin Altman <alexanderaltman@me.com>
+	s=arc-20240116; t=1712517607; c=relaxed/simple;
+	bh=yKUf9+eI9dHg7NMd2gkSCi29eY0g+VVpaWcKMEypZ50=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vA0I3yoPJ2kjwMB4X7l0nf8DLMYOGXR7fqsaCReWXxRdmS5a3cIODL/lvb19arRQaeN5aakJaMzvGzDRUdtg/hOIOI0SF57gbg/BrdA78B10qNr9DP+zdsAcjNTv+zXN+OLwgviRyej2rT+Qo+GzJ1+AT6YaJEAVCWuBmnlHboY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=itvcH/o/; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712517604;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=epmQzRcGvXH7QxC5v7WEbN06GWyO/3oH4p1c8L2F2xA=;
+	b=itvcH/o/mX1rb0jBNgEpD3Jrw24ZOZ1CBw52kpj9PAv3fs1suCKcvlgT2LIBN0AY4ZOnTW
+	+EulL+6vdvtxGocQH1ktCC0nF3nsTY+sWHuUV5xstdxEC7oQgjbdmPRSun9Msh93o0k3+2
+	220765E5RWv481TqBHI33tZCU3/UyZs=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-XbvQ2nB2OpyrvjoT4j40Ow-1; Sun, 07 Apr 2024 15:20:00 -0400
+X-MC-Unique: XbvQ2nB2OpyrvjoT4j40Ow-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-699133268a7so2275406d6.1
+        for <stable@vger.kernel.org>; Sun, 07 Apr 2024 12:20:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712517599; x=1713122399;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=epmQzRcGvXH7QxC5v7WEbN06GWyO/3oH4p1c8L2F2xA=;
+        b=QhPhFR1yuCLaQHvnQ9u9IMnDln5dXyHXe2gzAyrVgnMDcRgrG5w+eo9zGnx+M9/tq5
+         OHaLWOz8w22r1/UObmZ930UxaGtc8xb7vnVFzK6e51yMObHFY/Sv8bkbp8aqtj6XR1gZ
+         vrDXj7bZ70qq7Lnj6HeQlqgv//sPG8pZgGxtghmX5eVv19ktQFj/cew+br5v/n2kbsiE
+         ZWnN1S9onnvA9HaiMSuxRFukRA1WeZwvJFpHFJQAuFbcztzyQasC/+lBEYqdckn7/teb
+         iE7Rgw1SyfV4nb14xzcrDBldeXL5CMgMGjt5MWyARCMW6E93b2xjQYJlx+DA0BQCn0hE
+         GEnA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrqhDFyx92Hllpo7g2U4uxHgZTkm08YR2IHeJFwlAF4e0YAVFHYwWJYGLgX0V3KtMvN1Spy8GEiuIaVX9dLFje5HaRpIKR
+X-Gm-Message-State: AOJu0YyepwL+0ZxqBn6waoLmvUabDfZHqq1tZalMiKPC1i5BcwPw/9GY
+	4rNY+5HViJUmKnJ2VTvqtD73I/Z3ydpoMVaKWnKLINypKlJJpVopiyGi+40j0fY5+RFbZajdZi4
+	hxAplmS6NmAUobaIocL4uw7ZS6WzNiO8hxJBozZAnjDX6BEOnTjc9xg==
+X-Received: by 2002:a05:6214:2408:b0:699:2d88:744f with SMTP id fv8-20020a056214240800b006992d88744fmr7791719qvb.4.1712517599496;
+        Sun, 07 Apr 2024 12:19:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFdyfcCTiDHVrnBYdH/QV6bU53cJSUCzy2yWOpLwTRXIDtNac8PNjf55b5kNOa6A1BTkng8Qg==
+X-Received: by 2002:a05:6214:2408:b0:699:2d88:744f with SMTP id fv8-20020a056214240800b006992d88744fmr7791699qvb.4.1712517598978;
+        Sun, 07 Apr 2024 12:19:58 -0700 (PDT)
+Received: from x1n ([99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id do18-20020a056214097200b0069942d4cc06sm2111164qvb.115.2024.04.07.12.19.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Apr 2024 12:19:58 -0700 (PDT)
+Date: Sun, 7 Apr 2024 15:19:57 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Oscar Salvador <osalvador@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>, stable@vger.kernel.org,
+	Tony Luck <tony.luck@intel.com>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>
+Subject: Re: [PATCH] mm,swapops: Update check in is_pfn_swap_entry for
+ hwpoison entries
+Message-ID: <ZhLx3fwzQNPDbBei@x1n>
+References: <20240407130537.16977-1-osalvador@suse.de>
+ <ZhKmAecilbb2oSD9@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v4] rust: init: remove impl Zeroable for Infallible
-Date: Sun, 7 Apr 2024 10:55:49 -0700
-Message-Id: <37A7EC35-7889-4378-A30C-126B1AD668C8@me.com>
-References: <3ecba34f-95a2-4f18-9729-f9cb3a4366c0@proton.me>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- lkml <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-In-Reply-To: <3ecba34f-95a2-4f18-9729-f9cb3a4366c0@proton.me>
-To: Benno Lossin <benno.lossin@proton.me>
-X-Mailer: iPhone Mail (21F5048f)
-X-Proofpoint-ORIG-GUID: Iezh0l9YPBfilfTXNVUoheAnYZ2BgIsK
-X-Proofpoint-GUID: Iezh0l9YPBfilfTXNVUoheAnYZ2BgIsK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-07_11,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 clxscore=1015
- mlxlogscore=821 bulkscore=0 adultscore=0 mlxscore=0 spamscore=0
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2308100000 definitions=main-2404070145
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZhKmAecilbb2oSD9@localhost.localdomain>
 
-On Apr 7, 2024, at 1:56=E2=80=AFAM, Benno Lossin <benno.lossin@proton.me> wr=
-ote:
-> =EF=BB=BFOn 04.04.24 19:28, Laine Taffin Altman wrote:
->>> On Apr 4, 2024, at 4:03=E2=80=AFAM, Miguel Ojeda <miguel.ojeda.sandonis@=
-gmail.com> wrote:
->>>=20
->>> =EF=BB=BFOn Thu, Apr 4, 2024 at 11:01=E2=80=AFAM Benno Lossin <benno.los=
-sin@proton.me> wrote:
->>>>=20
->>>> I don't see this commit in the kernel tree, what did you specify as
->>>> `--base` when running `git format`?
->>>=20
->>> Yeah, I don't have it either, but it seems to apply cleanly.
->>>=20
->>> Cheers,
->>> Miguel
->>=20
->> I ran `git format-patch origin/master --base=3Dorigin/master`.  I
->> can=E2=80=99t imagine how that could have resulted in a nonexistent commi=
-t
->> hash?
->=20
-> That heavily depends on what `origin/master` is. Is `origin` pointing to
-> Torvald's git? In that case it would explain why we don't have that
-> commit hash yet.
-> Normally you should base your work on the tree listed in the `T:` entry
-> of the subsystem in the MAINTAINERS file. In our case it is `rust-next`.
-> But no worries, since it applies cleanly it should be fine for this
-> patch. Just something to keep in mind if you submit any future patches.
->=20
-> --
-> Cheers,
-> Benno
+On Sun, Apr 07, 2024 at 03:56:17PM +0200, Oscar Salvador wrote:
+> On Sun, Apr 07, 2024 at 03:05:37PM +0200, Oscar Salvador wrote:
+> > Tony reported that the Machine check recovery was broken in v6.9-rc1,
+> > as he was hitting a VM_BUG_ON when injecting uncorrectable memory errors
+> > to DRAM.
+> > After some more digging and debugging on his side, he realized that this
+> > went back to v6.1, with the introduction of 'commit 0d206b5d2e0d ("mm/swap: add
+> > swp_offset_pfn() to fetch PFN from swap entry")'.
+> > That commit, among other things, introduced swp_offset_pfn(), replacing
+> > hwpoison_entry_to_pfn() in its favour.
+> > 
+> > The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(),
+> > but is_pfn_swap_entry() never got updated to cover hwpoison entries, which
+> > means that we would hit the VM_BUG_ON whenever we would call
+> > swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM set.
+> > Fix this by updating the check to cover hwpoison entries as well, and update
+> > the comment while we are it.
+> > 
+> > Reported-by: Tony Luck <tony.luck@intel.com>
+> > Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
+> > Tested-by: Tony Luck <tony.luck@intel.com>
+> > Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
 
-Ah, that makes sense!  Indeed it was pointing there.  I=E2=80=99ll remember f=
-or next time!
+Totally unexpected, as this commit even removed hwpoison_entry_to_pfn().
+Obviously even until now I assumed hwpoison is accounted as pfn swap entry
+but it's just missing..
+
+Since this commit didn't really change is_pfn_swap_entry() itself, I was
+thinking maybe an older fix tag would apply, but then I noticed the old
+code indeed should work well even if hwpoison entry is missing.  For
+example, it's a grey area on whether a hwpoisoned page should be accounted
+in smaps.  So I think the Fixes tag is correct, and thanks for fixing this.
+
+Reviewed-by: Peter Xu <peterx@redhat.com>
+
+> > Cc: <stable@vger.kernel.org> # 6.1.x
+> 
+> I think I need to clarify why the stable.
+> 
+> It is my understanding that some distros ship their kernel with
+> CONFIG_DEBUG_VM set by default (I think Fedora comes to my mind?).
+> I am fine with backing down if people think that this is an
+> overreaction.
+
+Fedora stopped having DEBUG_VM for some time, but not sure about when it's
+still in the 6.1 trees.  It looks like cc stable is still reasonable from
+that regard.
+
+A side note is that when I'm looking at this, I went back and see why in
+some cases we need the pfn maintained for the poisoned, then I saw the only
+user is check_hwpoisoned_entry() who wants to do fast kills in some
+contexts and that includes a double check on the pfns in a poisoned entry.
+Then afaict this path is just too rarely used and buggy.
+
+A few things we may need fixing, maybe someone in the loop would have time
+to have a look:
+
+- check_hwpoisoned_entry()
+  - pte_none check is missing
+  - all the rest swap types are missing (e.g., we want to kill the proc too
+    if the page is during migration)
+- check_hwpoisoned_pmd_entry()
+  - need similar care like above (pmd_none is covered not others)
+
+I copied Naoya too.
 
 Thanks,
-Laine=
+
+-- 
+Peter Xu
+
 
