@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-36297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A560089B49F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 01:37:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B5689B4A5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 01:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 353881F213D1
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 23:37:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDD071F2137C
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 23:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD90433C4;
-	Sun,  7 Apr 2024 23:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4659644C66;
+	Sun,  7 Apr 2024 23:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVxV9vva"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMWsOY75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C303BBD4;
-	Sun,  7 Apr 2024 23:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01E643172;
+	Sun,  7 Apr 2024 23:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712533033; cv=none; b=CbgUtk2GNif3E5oQUMWLW2T/YQDYUZpT5tS/qWtyTOhPdj8OWWIigouSeD1rDoDBfR21/9ZyfuO6FwXqTY1KM9fiCMqVQxr8oD2UGn04n5gjX0aPBQqgmaYdnU91vSYB79aAUaI3db3VtOIqwHiiVJpPLCp04eCPvoBd+gdjBv4=
+	t=1712533584; cv=none; b=YH0fDuUijcrRXoT2Ww7dyT5DBFVdWDbJQRTPQGzG+h4m0N3vkqi1P/7fNIlpiVgcMTBr+dsJZYY5tk1n5m9FJNkoeRQxPIP9VerJVzwNqpkiVri8zXHEXBPvJXvyHozg8iOViK0wokKwljIOsCs4oMIFG1kTEcS1Qd+8oyKGN9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712533033; c=relaxed/simple;
-	bh=50CUNTe1kjs1rAWmd6fasZtqFBjC0nWodYXdh3hAMVM=;
+	s=arc-20240116; t=1712533584; c=relaxed/simple;
+	bh=u61bII2xsJDl/KUl3dW2WgCWq2w/r3VSINpti3J9G18=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZNyTFTeIqEz5T2UcssrDZ7P85DBC01YYjAFObI9vWdl757D++2w5ExwaclKyFR7b/cA/nNfGLsLTtmUgMOJ4+UuVrPMLERiQtV7za01qQsV+ySwy53hgS/ObN9EBvTDiQwK4+EtgkEROYFoG3Eo90z+TKynHQcpe2NfYBTxfGQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVxV9vva; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BBDC433F1;
-	Sun,  7 Apr 2024 23:37:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=KiEPpKyuQwylrUEKuhd9ubXjHjnNtaD8foDsiJ891Ju02C9K+RxXxO48NHklisa8zI14Vh4V4whMh6vQL9FJNPsuARHm/bpZJTs/s6o5pU3Pr0WAvHCsLtdhLxlBJSMx/jk+z/Px1e+FB6Ct2zmSKXYf5I6T0HzAcmCETS8qXQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMWsOY75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2442FC433C7;
+	Sun,  7 Apr 2024 23:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712533032;
-	bh=50CUNTe1kjs1rAWmd6fasZtqFBjC0nWodYXdh3hAMVM=;
+	s=k20201202; t=1712533583;
+	bh=u61bII2xsJDl/KUl3dW2WgCWq2w/r3VSINpti3J9G18=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HVxV9vvadjUq4BWg+JF4IMDstY3ssCcogUZspNddMzCTsR5zBzBj5i8+jPSDpm/ew
-	 JkpIgb6tqs/qeRaPvIRFjeYRuj/vc7PmrL5rwo+45D4AVHIgoIBnc3cn8U1srFUiJX
-	 BBOZcWDcmJmcTatMbPWOEemxzcDNRZtWt4QecR2omdF68Y8n8RfIULlozupzb80x4S
-	 mDT5mEuyhXjDVvOhhVoQOBa91UagVJiQ5C4lG8rYuc1R9KBD32JXY9dnFmj9kIE5tu
-	 WKQsSCv4ZTsaNCtn5wuSTd2R3LllXPjEJNlDA6Cb4I+dnULlJWHgI1S34a5OUfc0Wm
-	 3BBnJpvHZGzBA==
-Date: Sun, 7 Apr 2024 19:37:12 -0400
+	b=HMWsOY75peMAQFLsYAe+74hHH6bVgcTJhvvuM42VKGrVfXlJP15lWPdcOZmmzgcFo
+	 3mqd0H3kvSASJBOtGlqR3eVU+Ms2x2vUH10EQ1C7w6LM4R2Xj5ayQfyUf4XygQOs6i
+	 UcEsCPMs7an/KkjXOzivt+TZV/0UkinC3z0AWBvv4EjDjetwsHRA16W0WmkP/EdQ5F
+	 zVHTjWSUzIZcq52YGR+GfHsUeTyoY76zpqJ4OjdeOWO38DPxSnNAFvPMpUSrZXbmW4
+	 gmKergSSgFYNqR575KYllhRNpV33pWepC/n4spMLnRsrarKakK0O9Z9VPu9BtbljWU
+	 P7bbIcGUsg0rg==
+Date: Sun, 7 Apr 2024 19:46:22 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S . Miller" <davem@davemloft.net>, opendmb@gmail.com,
-	andrew@lunn.ch, hkallweit1@gmail.com, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.8 39/68] net: mdio: mdio-bcm-unimac: Manage
- clock around I/O accesses
-Message-ID: <ZhMuKCJ7w-0PtJhV@sashalap>
-References: <20240329122652.3082296-1-sashal@kernel.org>
- <20240329122652.3082296-39-sashal@kernel.org>
- <888b10eb-cdd5-43bb-a501-471aa28b1153@broadcom.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Johan Hovold <johan@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+	konrad.dybcio@linaro.org, robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.8 36/98] arm64: dts: sc8280xp: correct DMIC2
+ and DMIC3 pin config node names
+Message-ID: <ZhMwTpveIYSDWsIS@sashalap>
+References: <20240329123919.3087149-1-sashal@kernel.org>
+ <20240329123919.3087149-36-sashal@kernel.org>
+ <Zguyil0WVwEudPga@hovoldconsulting.com>
+ <730ac728-a333-46cc-aa0c-5e922b3c871e@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,56 +64,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <888b10eb-cdd5-43bb-a501-471aa28b1153@broadcom.com>
+In-Reply-To: <730ac728-a333-46cc-aa0c-5e922b3c871e@linaro.org>
 
-On Tue, Apr 02, 2024 at 05:41:44AM -0700, Florian Fainelli wrote:
+On Tue, Apr 02, 2024 at 12:17:08PM +0200, Krzysztof Kozlowski wrote:
+>On 02/04/2024 09:23, Johan Hovold wrote:
+>> On Fri, Mar 29, 2024 at 08:37:07AM -0400, Sasha Levin wrote:
+>>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>
+>>> [ Upstream commit 61474b18e762671a69b2df9665f3cec5c87a38af ]
+>>>
+>>> Correct the TLMM pin configuration and muxing node names used for DMIC2
+>>> and DMIC3 (dmic01 -> dmic23).  This has no functional impact, but
+>>> improves code readability and avoids any confusion when reading the DTS.
+>>>
+>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>> Link: https://lore.kernel.org/r/20240212172335.124845-1-krzysztof.kozlowski@linaro.org
+>>> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>
+>> This is not a bug fix. Please drop from all stable queues (e.g. 6.8 and
+>> 6.6).
 >
->
->On 3/29/2024 5:25 AM, Sasha Levin wrote:
->>From: Florian Fainelli <florian.fainelli@broadcom.com>
->>
->>[ Upstream commit ee975351cf0c2a11cdf97eae58265c126cb32850 ]
->>
->>Up until now we have managed not to have the mdio-bcm-unimac manage its
->>clock except during probe and suspend/resume. This works most of the
->>time, except where it does not.
->>
->>With a fully modular build, we can get into a situation whereby the
->>GENET driver is fully registered, and so is the mdio-bcm-unimac driver,
->>however the Ethernet PHY driver is not yet, because it depends on a
->>resource that is not yet available (e.g.: GPIO provider). In that state,
->>the network device is not usable yet, and so to conserve power, the
->>GENET driver will have turned off its "main" clock which feeds its MDIO
->>controller.
->>
->>When the PHY driver finally probes however, we make an access to the PHY
->>registers to e.g.: disable interrupts, and this causes a bus error
->>within the MDIO controller space because the MDIO controller clock(s)
->>are turned off.
->>
->>To remedy that, we manage the clock around all of the I/O accesses to
->>the hardware which are done exclusively during read, write and clock
->>divider configuration.
->>
->>This ensures that the register space is accessible, and this also
->>ensures that there are not unnecessarily elevated reference counts
->>keeping the clocks active when the network device is administratively
->>turned off. It would be the case with the previous way of managing the
->>clock.
->>
->>Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
->>Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
->>Signed-off-by: David S. Miller <davem@davemloft.net>
->>Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->Please drop this patch, it is usable in isolation and needs 2 
->additional patches to be meaningful:
->
->https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ee2b4cf8b281606bbf332cbd73ce2a73eac417f0
->https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
->/commit/?id=ba0b78371c46b2104197ff2c244f13f011ddfa80
+>I should just avoid names "fix" and "correct" :)
 
-Ack, thanks!
+I'll drop it, thanks!
 
 -- 
 Thanks,
