@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-36298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B5689B4A5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 01:46:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F9D89B4A9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 01:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDD071F2137C
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 23:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50D971C20944
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 23:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4659644C66;
-	Sun,  7 Apr 2024 23:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4155644C81;
+	Sun,  7 Apr 2024 23:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMWsOY75"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X5mtmvi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01E643172;
-	Sun,  7 Apr 2024 23:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADDD446D3;
+	Sun,  7 Apr 2024 23:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712533584; cv=none; b=YH0fDuUijcrRXoT2Ww7dyT5DBFVdWDbJQRTPQGzG+h4m0N3vkqi1P/7fNIlpiVgcMTBr+dsJZYY5tk1n5m9FJNkoeRQxPIP9VerJVzwNqpkiVri8zXHEXBPvJXvyHozg8iOViK0wokKwljIOsCs4oMIFG1kTEcS1Qd+8oyKGN9o=
+	t=1712533611; cv=none; b=ZLGNq33/4BZeWeBHldwi1G+C1x32yaqSsRiTD02VDqJUxTggazGYU4dGL7mIwk83RU2i7O8cb/tJBz7aRKoQnyErk3P1yHz20jn/K6XqAgGBavUdKpjwReMoWPQKlZKv3kE0vxjyF3msnpR8nbAbOfPhUZnk/LFYdv5xvsIemEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712533584; c=relaxed/simple;
-	bh=u61bII2xsJDl/KUl3dW2WgCWq2w/r3VSINpti3J9G18=;
+	s=arc-20240116; t=1712533611; c=relaxed/simple;
+	bh=P+OunsRxmPow7mnjnbhNCSULHtX+QKprpv8k/fKlJkc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KiEPpKyuQwylrUEKuhd9ubXjHjnNtaD8foDsiJ891Ju02C9K+RxXxO48NHklisa8zI14Vh4V4whMh6vQL9FJNPsuARHm/bpZJTs/s6o5pU3Pr0WAvHCsLtdhLxlBJSMx/jk+z/Px1e+FB6Ct2zmSKXYf5I6T0HzAcmCETS8qXQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMWsOY75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2442FC433C7;
-	Sun,  7 Apr 2024 23:46:23 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=mrMFUPh3wJztM42WZxq8eweB3qJeZoOzENAirzCqTpKRGW8PBqKTrpQ7O0LnNW5MASV3CMGCwiRPXpNvILrgkyO9E4lcjkuNlZQ5msHHzQr/PFD64QhrIczWzOggwaJeJeUlF4AovfWaKDXr3HHsR7U2ageQZ7cHpTlXxWPea9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X5mtmvi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEDCC433F1;
+	Sun,  7 Apr 2024 23:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712533583;
-	bh=u61bII2xsJDl/KUl3dW2WgCWq2w/r3VSINpti3J9G18=;
+	s=k20201202; t=1712533610;
+	bh=P+OunsRxmPow7mnjnbhNCSULHtX+QKprpv8k/fKlJkc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HMWsOY75peMAQFLsYAe+74hHH6bVgcTJhvvuM42VKGrVfXlJP15lWPdcOZmmzgcFo
-	 3mqd0H3kvSASJBOtGlqR3eVU+Ms2x2vUH10EQ1C7w6LM4R2Xj5ayQfyUf4XygQOs6i
-	 UcEsCPMs7an/KkjXOzivt+TZV/0UkinC3z0AWBvv4EjDjetwsHRA16W0WmkP/EdQ5F
-	 zVHTjWSUzIZcq52YGR+GfHsUeTyoY76zpqJ4OjdeOWO38DPxSnNAFvPMpUSrZXbmW4
-	 gmKergSSgFYNqR575KYllhRNpV33pWepC/n4spMLnRsrarKakK0O9Z9VPu9BtbljWU
-	 P7bbIcGUsg0rg==
-Date: Sun, 7 Apr 2024 19:46:22 -0400
+	b=X5mtmvi8tSG2KQEhFYa0jlYBE8HknG/5hgWPYQWYaPPkcXzwCnpAVuSUH2ZQOTqKA
+	 fT7fy/cCBaVuucVOTXNIHDytoNtfVUDlTPko5AK3hinSxomPzxr6L23V3Uj9/eLPFF
+	 OKSqPK8ptsShZden9yMexeHBaDUlqih0pwTtFgMLmGFXpbbhfyK7YwHQEiWazITIAU
+	 mOn1UfMgeIaX/a+lzT/6Al3J6Wkz+N/8xDL/HjJq1JD+U/5LeZ+TaXQLqt7GyGAcfJ
+	 wUp6OqYAZYfVuxZ05M6CtWQj1cS/vWYTpKzKWMScxZt9cpRXoAjm4l+P4J4fdV6pf6
+	 kCk7omAoS/Wrw==
+Date: Sun, 7 Apr 2024 19:46:50 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Johan Hovold <johan@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
-	konrad.dybcio@linaro.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.8 36/98] arm64: dts: sc8280xp: correct DMIC2
- and DMIC3 pin config node names
-Message-ID: <ZhMwTpveIYSDWsIS@sashalap>
+To: Kees Cook <keescook@chromium.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Sam Ravnborg <sam@ravnborg.org>, davem@davemloft.net,
+	andreas@gaisler.com, masahiroy@kernel.org, nicolas@fjasle.eu,
+	guoren@kernel.org, rmk+kernel@armlinux.org.uk,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.8 69/98] sparc: vdso: Disable UBSAN
+ instrumentation
+Message-ID: <ZhMwahvAWzOeq40a@sashalap>
 References: <20240329123919.3087149-1-sashal@kernel.org>
- <20240329123919.3087149-36-sashal@kernel.org>
- <Zguyil0WVwEudPga@hovoldconsulting.com>
- <730ac728-a333-46cc-aa0c-5e922b3c871e@linaro.org>
+ <20240329123919.3087149-69-sashal@kernel.org>
+ <202403291904.05D45FDD2@keescook>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,30 +63,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <730ac728-a333-46cc-aa0c-5e922b3c871e@linaro.org>
+In-Reply-To: <202403291904.05D45FDD2@keescook>
 
-On Tue, Apr 02, 2024 at 12:17:08PM +0200, Krzysztof Kozlowski wrote:
->On 02/04/2024 09:23, Johan Hovold wrote:
->> On Fri, Mar 29, 2024 at 08:37:07AM -0400, Sasha Levin wrote:
->>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>>
->>> [ Upstream commit 61474b18e762671a69b2df9665f3cec5c87a38af ]
->>>
->>> Correct the TLMM pin configuration and muxing node names used for DMIC2
->>> and DMIC3 (dmic01 -> dmic23).  This has no functional impact, but
->>> improves code readability and avoids any confusion when reading the DTS.
->>>
->>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>> Link: https://lore.kernel.org/r/20240212172335.124845-1-krzysztof.kozlowski@linaro.org
->>> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
->>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Fri, Mar 29, 2024 at 07:05:37PM -0700, Kees Cook wrote:
+>On Fri, Mar 29, 2024 at 08:37:40AM -0400, Sasha Levin wrote:
+>> From: Kees Cook <keescook@chromium.org>
 >>
->> This is not a bug fix. Please drop from all stable queues (e.g. 6.8 and
->> 6.6).
+>> [ Upstream commit d4be85d068b4418c341f79b654399f7f0891069a ]
+>>
+>> The UBSAN instrumentation cannot work in the vDSO since it is executing
+>> in userspace, so disable it in the Makefile. Fixes the build failures
+>> such as:
+>>
+>> arch/sparc/vdso/vclock_gettime.c:217: undefined reference to `__ubsan_handle_shift_out_of_bounds'
+>>
+>> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+>> Link: https://lore.kernel.org/all/20240224073617.GA2959352@ravnborg.org
+>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
->I should just avoid names "fix" and "correct" :)
+>This is harmless to backport, but doesn't do anything. (The UBSAN
+>changes needing this are only in Linus's tree.)
 
-I'll drop it, thanks!
+I'll drop this and the rest of the ubsan commits you've pointed out,
+thanks!
 
 -- 
 Thanks,
