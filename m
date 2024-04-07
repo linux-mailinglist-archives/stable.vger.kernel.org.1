@@ -1,169 +1,122 @@
-Return-Path: <stable+bounces-36291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4EA89B3CA
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 21:20:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6CE289B3E2
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 22:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00FB31F21A86
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 19:20:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02D72B21525
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 20:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E96B3D3A2;
-	Sun,  7 Apr 2024 19:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2B43D55B;
+	Sun,  7 Apr 2024 20:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="itvcH/o/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VKnuCAY2"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F41C39FF3
-	for <stable@vger.kernel.org>; Sun,  7 Apr 2024 19:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29F53FBA6;
+	Sun,  7 Apr 2024 20:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712517607; cv=none; b=TfzWmwkCRHaRBpNWyGO+6o5GA6Qz9b9BbIJX9JNGF4o/yQ1mRhrs3vsvgVuFw1D+eY1mcszpayHTBe8cBYpqlpUO9HKrl37TcXOvccvCY8VK2dpd0X8ph0KHAno4OeBuMmYsWeIacFSw15ZhlZ0Q29Q4iIykLcStV11P70uqSeM=
+	t=1712520201; cv=none; b=cuFDWZmLvXzfdQIvopMnc/boMoQcbRSVerfUF9xWmn7RRIduwd2OELtSZuSxZG1G0CMEuM126r2jFPlhNTqO8gSpgeMj4HvQwpmQ4cW+Ehcpau7T62rTnT1yN4zu/8k8zv6mPBj/XklzsA6GX7C3arzoDUKV3BkoudI46Tf9Gpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712517607; c=relaxed/simple;
-	bh=yKUf9+eI9dHg7NMd2gkSCi29eY0g+VVpaWcKMEypZ50=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vA0I3yoPJ2kjwMB4X7l0nf8DLMYOGXR7fqsaCReWXxRdmS5a3cIODL/lvb19arRQaeN5aakJaMzvGzDRUdtg/hOIOI0SF57gbg/BrdA78B10qNr9DP+zdsAcjNTv+zXN+OLwgviRyej2rT+Qo+GzJ1+AT6YaJEAVCWuBmnlHboY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=itvcH/o/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712517604;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=epmQzRcGvXH7QxC5v7WEbN06GWyO/3oH4p1c8L2F2xA=;
-	b=itvcH/o/mX1rb0jBNgEpD3Jrw24ZOZ1CBw52kpj9PAv3fs1suCKcvlgT2LIBN0AY4ZOnTW
-	+EulL+6vdvtxGocQH1ktCC0nF3nsTY+sWHuUV5xstdxEC7oQgjbdmPRSun9Msh93o0k3+2
-	220765E5RWv481TqBHI33tZCU3/UyZs=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-XbvQ2nB2OpyrvjoT4j40Ow-1; Sun, 07 Apr 2024 15:20:00 -0400
-X-MC-Unique: XbvQ2nB2OpyrvjoT4j40Ow-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-699133268a7so2275406d6.1
-        for <stable@vger.kernel.org>; Sun, 07 Apr 2024 12:20:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712517599; x=1713122399;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1712520201; c=relaxed/simple;
+	bh=nkz3V1KnJRU4OVxZTLpNwOjleUUcWRpMJl+ozZfP2W8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ShuCEoXGh/Srln99OkztnSD4c8FTX4qIVvd7SSA7UoM/cc4WAZYwvwfA49GrcQoSsOmTgwTryT6TRPnwedTy34nBfIdRbr0g93zff3Ny4b6ROczwWbmTvyTK6rBICSqjqv0+sw3ufSWxzAaEN/Axf+slsxHtOA/1k2I+mRenVrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VKnuCAY2; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5ce07cf1e5dso2691050a12.2;
+        Sun, 07 Apr 2024 13:03:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712520199; x=1713124999; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=epmQzRcGvXH7QxC5v7WEbN06GWyO/3oH4p1c8L2F2xA=;
-        b=QhPhFR1yuCLaQHvnQ9u9IMnDln5dXyHXe2gzAyrVgnMDcRgrG5w+eo9zGnx+M9/tq5
-         OHaLWOz8w22r1/UObmZ930UxaGtc8xb7vnVFzK6e51yMObHFY/Sv8bkbp8aqtj6XR1gZ
-         vrDXj7bZ70qq7Lnj6HeQlqgv//sPG8pZgGxtghmX5eVv19ktQFj/cew+br5v/n2kbsiE
-         ZWnN1S9onnvA9HaiMSuxRFukRA1WeZwvJFpHFJQAuFbcztzyQasC/+lBEYqdckn7/teb
-         iE7Rgw1SyfV4nb14xzcrDBldeXL5CMgMGjt5MWyARCMW6E93b2xjQYJlx+DA0BQCn0hE
-         GEnA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrqhDFyx92Hllpo7g2U4uxHgZTkm08YR2IHeJFwlAF4e0YAVFHYwWJYGLgX0V3KtMvN1Spy8GEiuIaVX9dLFje5HaRpIKR
-X-Gm-Message-State: AOJu0YyepwL+0ZxqBn6waoLmvUabDfZHqq1tZalMiKPC1i5BcwPw/9GY
-	4rNY+5HViJUmKnJ2VTvqtD73I/Z3ydpoMVaKWnKLINypKlJJpVopiyGi+40j0fY5+RFbZajdZi4
-	hxAplmS6NmAUobaIocL4uw7ZS6WzNiO8hxJBozZAnjDX6BEOnTjc9xg==
-X-Received: by 2002:a05:6214:2408:b0:699:2d88:744f with SMTP id fv8-20020a056214240800b006992d88744fmr7791719qvb.4.1712517599496;
-        Sun, 07 Apr 2024 12:19:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFdyfcCTiDHVrnBYdH/QV6bU53cJSUCzy2yWOpLwTRXIDtNac8PNjf55b5kNOa6A1BTkng8Qg==
-X-Received: by 2002:a05:6214:2408:b0:699:2d88:744f with SMTP id fv8-20020a056214240800b006992d88744fmr7791699qvb.4.1712517598978;
-        Sun, 07 Apr 2024 12:19:58 -0700 (PDT)
-Received: from x1n ([99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id do18-20020a056214097200b0069942d4cc06sm2111164qvb.115.2024.04.07.12.19.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Apr 2024 12:19:58 -0700 (PDT)
-Date: Sun, 7 Apr 2024 15:19:57 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Oscar Salvador <osalvador@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>, stable@vger.kernel.org,
-	Tony Luck <tony.luck@intel.com>,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>
-Subject: Re: [PATCH] mm,swapops: Update check in is_pfn_swap_entry for
- hwpoison entries
-Message-ID: <ZhLx3fwzQNPDbBei@x1n>
-References: <20240407130537.16977-1-osalvador@suse.de>
- <ZhKmAecilbb2oSD9@localhost.localdomain>
+        bh=VB+pCgMJeT4HJ3tkJqRN6FhCakVW1xLtQCZILiBA4o0=;
+        b=VKnuCAY265HIr1RkUS0OPWh77AE3bZXqKsOOu10bg4khDnF22cvuHOEJcH0qxHNZYA
+         GzufhCCPy0WpOXWMpFVoV8/x6RMjVeQrC8rhgTWaWFaz5GxPE0/KJPt/nAjhgzPrQlfo
+         L1yfyH6j4EeqC5gTqNOobjZHGlC4o7+HS2Q7YrojoPIF2ht2X0UOKzxCNXbW4M6qLWIp
+         HHIhmSEUTAvjDd9JN6ZGxXyCJp/L82BfXsBybijpiSPXtuMHE4sxAsLxoBysyPAXK8UW
+         /gJSltCIpTLFlvxRgZP8SUq/79ZhhgOimV3HKoVfSRDoUeWUaZIvlJOXY5402zdCx307
+         KZzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712520199; x=1713124999;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VB+pCgMJeT4HJ3tkJqRN6FhCakVW1xLtQCZILiBA4o0=;
+        b=CRsJLzFKD0eeFpGhDuYik6uAlwAM0BVoScdjcNbBheT7OlRF8Zu9XRrcZsvL97NB4t
+         3GRDWfgecNKvgzYU2GaJYv4z0NsRBZt+LqcJKX6jyvoAWsSxLzWvAtIqm6mJ3QZ+pTjY
+         kzG80OXy5HaJSz2PhgJb/vZqdY+p+kc6bDGVpPz/gXgQOzUQ8N+s/Gl8RDZBuHzu8qZi
+         OGIKPTKOpXKZipAn+JPhsgB8kEWLchZNMU7GPNBMRRpIqqck8ZgbVX9V7XuE/NS7Mj9T
+         nwbu/LFO2gxZ00T4qepf8Iay0HlgYXntz8q5zAHCBfy7M7mimZZgTAp5nhbsDRNx8gXA
+         selg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtA64UgK9vxJ/54/aI5XYHvDv1r+pVuQvfu5cCqNJ8L65n4Amk1gVdEIJlZDpQ9TF4qUmpzAhGCw38AN11rBD3SFAqbSOtOQNr2dNFXrrvcmrRwtzGXqd35w9rh3CWqWMHHLEij08lNtyoUDf5HDQ9Nzt4GX/eyz4G2DEwRiNBZSrT5iE=
+X-Gm-Message-State: AOJu0Yyvo6eDVcavE++qpajp4Tv29q4L5BTWmvAXKyX28+J7cv4HdzpR
+	kwmGlLQ5QakPqM9X3HbmQNMTzOUTKsT0hXDFuUb5OezBbEoSA2b5JNZK5LQWsiLC9oLKpqAh1qT
+	yOy3j/tUuLpkl7jcmlAgEwiZeO+w=
+X-Google-Smtp-Source: AGHT+IF7TZyQOhtPwpbAJHeWULkLO56UWnBYQO7dp+kN2Xtnf2cGiSkKTtgaF3dO0S0E9x8sBshO5W1GD0QnNBZ5j1w=
+X-Received: by 2002:a17:90a:fb4c:b0:2a4:8706:ed44 with SMTP id
+ iq12-20020a17090afb4c00b002a48706ed44mr4614220pjb.19.1712520199108; Sun, 07
+ Apr 2024 13:03:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZhKmAecilbb2oSD9@localhost.localdomain>
+References: <20240401185222.12015-1-benno.lossin@proton.me>
+In-Reply-To: <20240401185222.12015-1-benno.lossin@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 7 Apr 2024 22:02:35 +0200
+Message-ID: <CANiq72=M0L+RG6v701ThedXgYj4SUgotx-BcVoWbMxOcKY5--w@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: macros: fix soundness issue in `module!` macro
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
+	Sumera Priyadarsini <sylphrenadin@gmail.com>, Neal Gompa <neal@gompa.dev>, 
+	Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, 
+	Matthew Bakhtiari <dev@mtbk.me>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, 
+	Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@google.com>, Finn Behrens <me@kloenk.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 07, 2024 at 03:56:17PM +0200, Oscar Salvador wrote:
-> On Sun, Apr 07, 2024 at 03:05:37PM +0200, Oscar Salvador wrote:
-> > Tony reported that the Machine check recovery was broken in v6.9-rc1,
-> > as he was hitting a VM_BUG_ON when injecting uncorrectable memory errors
-> > to DRAM.
-> > After some more digging and debugging on his side, he realized that this
-> > went back to v6.1, with the introduction of 'commit 0d206b5d2e0d ("mm/swap: add
-> > swp_offset_pfn() to fetch PFN from swap entry")'.
-> > That commit, among other things, introduced swp_offset_pfn(), replacing
-> > hwpoison_entry_to_pfn() in its favour.
-> > 
-> > The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(),
-> > but is_pfn_swap_entry() never got updated to cover hwpoison entries, which
-> > means that we would hit the VM_BUG_ON whenever we would call
-> > swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM set.
-> > Fix this by updating the check to cover hwpoison entries as well, and update
-> > the comment while we are it.
-> > 
-> > Reported-by: Tony Luck <tony.luck@intel.com>
-> > Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
-> > Tested-by: Tony Luck <tony.luck@intel.com>
-> > Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
+On Mon, Apr 1, 2024 at 8:53=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
+>
+> The `module!` macro creates glue code that are called by C to initialize
+> the Rust modules using the `Module::init` function. Part of this glue
+> code are the local functions `__init` and `__exit` that are used to
+> initialize/destroy the Rust module.
+> These functions are safe and also visible to the Rust mod in which the
+> `module!` macro is invoked. This means that they can be called by other
+> safe Rust code. But since they contain `unsafe` blocks that rely on only
+> being called at the right time, this is a soundness issue.
+>
+> Wrap these generated functions inside of two private modules, this
+> guarantees that the public functions cannot be called from the outside.
+> Make the safe functions `unsafe` and add SAFETY comments.
+>
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/Rust-for-Linux/linux/issues/629
+> Fixes: 1fbde52bde73 ("rust: add `macros` crate")
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Totally unexpected, as this commit even removed hwpoison_entry_to_pfn().
-Obviously even until now I assumed hwpoison is accounted as pfn swap entry
-but it's just missing..
+[ Capitalized comments, avoided newline in non-list SAFETY comments
+  and reworded to add Reported-by and newline. ]
 
-Since this commit didn't really change is_pfn_swap_entry() itself, I was
-thinking maybe an older fix tag would apply, but then I noticed the old
-code indeed should work well even if hwpoison entry is missing.  For
-example, it's a grey area on whether a hwpoisoned page should be accounted
-in smaps.  So I think the Fixes tag is correct, and thanks for fixing this.
+Applied to `rust-fixes` -- thanks everyone!
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-
-> > Cc: <stable@vger.kernel.org> # 6.1.x
-> 
-> I think I need to clarify why the stable.
-> 
-> It is my understanding that some distros ship their kernel with
-> CONFIG_DEBUG_VM set by default (I think Fedora comes to my mind?).
-> I am fine with backing down if people think that this is an
-> overreaction.
-
-Fedora stopped having DEBUG_VM for some time, but not sure about when it's
-still in the 6.1 trees.  It looks like cc stable is still reasonable from
-that regard.
-
-A side note is that when I'm looking at this, I went back and see why in
-some cases we need the pfn maintained for the poisoned, then I saw the only
-user is check_hwpoisoned_entry() who wants to do fast kills in some
-contexts and that includes a double check on the pfns in a poisoned entry.
-Then afaict this path is just too rarely used and buggy.
-
-A few things we may need fixing, maybe someone in the loop would have time
-to have a look:
-
-- check_hwpoisoned_entry()
-  - pte_none check is missing
-  - all the rest swap types are missing (e.g., we want to kill the proc too
-    if the page is during migration)
-- check_hwpoisoned_pmd_entry()
-  - need similar care like above (pmd_none is covered not others)
-
-I copied Naoya too.
-
-Thanks,
-
--- 
-Peter Xu
-
+Cheers,
+Miguel
 
