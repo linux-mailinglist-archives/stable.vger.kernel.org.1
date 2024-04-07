@@ -1,183 +1,164 @@
-Return-Path: <stable+bounces-36285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E3A89B239
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 15:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E14389B263
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 15:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6626C28725D
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 13:41:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0412281753
+	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 13:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33D413B2AB;
-	Sun,  7 Apr 2024 13:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23EC13771E;
+	Sun,  7 Apr 2024 13:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naCTr6V9"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dwqVRZOq";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="BEieT5/h";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qNuet+ns";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KYwzq6fD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE8713B29D;
-	Sun,  7 Apr 2024 13:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7012C19E;
+	Sun,  7 Apr 2024 13:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712495675; cv=none; b=RCRr0rfOxGH23O8L6xtGRMPEG9RZRZBU0Cx7fhwVnbszOz/Qw2NOBci1HQ+1nrgSrvMOL0g3gIMoF3EpND0lajZk9/wjvjBrjMhVqVP/pUqukoQpwJylJkVcDCP54gyjD+b895A5Xxp5GkiTT0qvq7UUXl63jw5bfO4xODBRpeI=
+	t=1712498188; cv=none; b=C8v9JxLda5M5JDZaL7LtyHbi3VMJE8d8I4kLfFgxhpF970hFL0G+6A0p+XKvnB/AvgWsHa0R7ScwOQpDr+QqpY0B6RHeiVGyuvMIXX2hacE10svhcqVy/eojYDklfKnDT42bHWqeT6CiyahMOAm8PNqti2e6MXBcUH53hATXPSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712495675; c=relaxed/simple;
-	bh=qn1vLds62PDgaGFwp8BUiBVbDYEwhVc3XEFa4QUsOFg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IE/e+gZ5irqaVMYesXAsr6eFhObx8ClX3/c+HN5EORGaylUh+SA7S8UDnzd0XADAXpdn4I9iGadSUE1covcM2r02lPyAd6MLylhiu4xNm09jVmnk6kvYcyvKLGvyc3nYgkdjajaNUf7ocX+ubS5aa++A5VCHzJsT9zg8fHZb6HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=naCTr6V9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0535C43394;
-	Sun,  7 Apr 2024 13:14:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712495675;
-	bh=qn1vLds62PDgaGFwp8BUiBVbDYEwhVc3XEFa4QUsOFg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=naCTr6V9+7SZ9sbBnjmV9Q6Pz18VO5GviZ9jn+O1NW1oCOXSxCBiWMqx54NGnIVFV
-	 oDjAV4QsYqR0+MsB6SyuRqqZSK/5f25lZLdeVHPpVKXfA/q6OcE6ixID+oiy4UoQ2C
-	 uZCMRf8uzXjcAj9uACgdgFq+JITTxBxa35MCHbbVU2rWakpoZ5wUNba+vWZoNiZevj
-	 /sp+qjlJGmnynvoUgdo5E4jKWUBClCMpxAV39i9jKFWMVLT9IjhMDdZTiKU9kJpbIs
-	 rJKh12HcXVLsntmeOX/UcqtOrPlhP3sCDJrDQXVuQhPGWeFkueOWK3A9PLK26ScDBF
-	 mNh2GYzM66wew==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Saurav Kashyap <skashyap@marvell.com>,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jhasan@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	jejb@linux.ibm.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 5/5] scsi: bnx2fc: Remove spin_lock_bh while releasing resources after upload
-Date: Sun,  7 Apr 2024 09:14:25 -0400
-Message-ID: <20240407131426.1053736-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240407131426.1053736-1-sashal@kernel.org>
-References: <20240407131426.1053736-1-sashal@kernel.org>
+	s=arc-20240116; t=1712498188; c=relaxed/simple;
+	bh=SRDjBcQtGOHYJK4giJ7GIegGAOsI+2ghKkIazXAH/uc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U/qz5XpS75uuXXhXN9nGPo/KkVMVswsh3pnzeKboncErHsCc+OtyR2QtkYLW3pL6a+pQZiCjEgUu6gJleodIl6SJsfI8clB0qLQ7X+bfNMR/arzbA/qL1aRx8+Rato/kD0EalKwQRm2nPDTot0Zrkk9Zpti4HNFhl+8/d3nUqyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dwqVRZOq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=BEieT5/h; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qNuet+ns; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KYwzq6fD; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3084421CC7;
+	Sun,  7 Apr 2024 13:56:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1712498185; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Krg2wT5gUgUkRcgawSN6OzhRk8HtEQl5pgW8AbL+7wo=;
+	b=dwqVRZOqpit7EvdXhsMlIu7O0fuLgYhojP3lgw8yFw3AqxAUmODQ9BhIOBt116BSzzXJQI
+	xk5byZ9luukmauDyfNbEDc0ZmjrZQzLXEA0ucC/Dgrb+GnuiP8K0w11IiAR2/kaExzoJ2Z
+	cBam4drDGIVQcvT6LVqXHq/uLbeDUAU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1712498185;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Krg2wT5gUgUkRcgawSN6OzhRk8HtEQl5pgW8AbL+7wo=;
+	b=BEieT5/hM33f2S7KJkhzEKTHzCRyN91vtiCwr4pPj809//oT/olGQ/tbFRdiaoV8b5MG+h
+	pIjRDBrXCcnDHLDw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1712498184; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Krg2wT5gUgUkRcgawSN6OzhRk8HtEQl5pgW8AbL+7wo=;
+	b=qNuet+ns2hzQMppDZu1YGlhfZ9RYly/gssvUrPb10WEFb0tDA622QA/wqfwBnCRJp46K1O
+	XandudbWXB1r+/RAOc1hoY907ZH49yoQd8BqkFappe01vP7g2bp4ikFEdYrqfUYZttjxdb
+	iNJoolaL5j/DnJ/pSZ8XVaC9FE5hvuY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1712498184;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Krg2wT5gUgUkRcgawSN6OzhRk8HtEQl5pgW8AbL+7wo=;
+	b=KYwzq6fDoYnRWOwicr8tsMFtbW4SBPG1IiBrRdw8cIqCwXrLRUsf/Vk9ClMc+x86HkjndM
+	TRfrvkFfBdIIyaCA==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id A5EEC13586;
+	Sun,  7 Apr 2024 13:56:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 4Kg+JQemEmbyGgAAn2gu4w
+	(envelope-from <osalvador@suse.de>); Sun, 07 Apr 2024 13:56:23 +0000
+Date: Sun, 7 Apr 2024 15:56:17 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+	stable@vger.kernel.org, Tony Luck <tony.luck@intel.com>
+Subject: Re: [PATCH] mm,swapops: Update check in is_pfn_swap_entry for
+ hwpoison entries
+Message-ID: <ZhKmAecilbb2oSD9@localhost.localdomain>
+References: <20240407130537.16977-1-osalvador@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.311
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240407130537.16977-1-osalvador@suse.de>
+X-Spam-Flag: NO
+X-Spam-Score: -4.18
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.18 / 50.00];
+	BAYES_HAM(-2.88)[99.50%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,intel.com:email]
 
-From: Saurav Kashyap <skashyap@marvell.com>
+On Sun, Apr 07, 2024 at 03:05:37PM +0200, Oscar Salvador wrote:
+> Tony reported that the Machine check recovery was broken in v6.9-rc1,
+> as he was hitting a VM_BUG_ON when injecting uncorrectable memory errors
+> to DRAM.
+> After some more digging and debugging on his side, he realized that this
+> went back to v6.1, with the introduction of 'commit 0d206b5d2e0d ("mm/swap: add
+> swp_offset_pfn() to fetch PFN from swap entry")'.
+> That commit, among other things, introduced swp_offset_pfn(), replacing
+> hwpoison_entry_to_pfn() in its favour.
+> 
+> The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(),
+> but is_pfn_swap_entry() never got updated to cover hwpoison entries, which
+> means that we would hit the VM_BUG_ON whenever we would call
+> swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM set.
+> Fix this by updating the check to cover hwpoison entries as well, and update
+> the comment while we are it.
+> 
+> Reported-by: Tony Luck <tony.luck@intel.com>
+> Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
+> Tested-by: Tony Luck <tony.luck@intel.com>
+> Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
+> Cc: <stable@vger.kernel.org> # 6.1.x
 
-[ Upstream commit c214ed2a4dda35b308b0b28eed804d7ae66401f9 ]
+I think I need to clarify why the stable.
 
-The session resources are used by FW and driver when session is offloaded,
-once session is uploaded these resources are not used. The lock is not
-required as these fields won't be used any longer. The offload and upload
-calls are sequential, hence lock is not required.
+It is my understanding that some distros ship their kernel with
+CONFIG_DEBUG_VM set by default (I think Fedora comes to my mind?).
+I am fine with backing down if people think that this is an
+overreaction.
 
-This will suppress following BUG_ON():
 
-[  449.843143] ------------[ cut here ]------------
-[  449.848302] kernel BUG at mm/vmalloc.c:2727!
-[  449.853072] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-[  449.858712] CPU: 5 PID: 1996 Comm: kworker/u24:2 Not tainted 5.14.0-118.=
-el9.x86_64 #1
-Rebooting.
-[  449.867454] Hardware name: Dell Inc. PowerEdge R730/0WCJNT, BIOS 2.3.4 1=
-1/08/2016
-[  449.876966] Workqueue: fc_rport_eq fc_rport_work [libfc]
-[  449.882910] RIP: 0010:vunmap+0x2e/0x30
-[  449.887098] Code: 00 65 8b 05 14 a2 f0 4a a9 00 ff ff 00 75 1b 55 48 89 =
-fd e8 34 36 79 00 48 85 ed 74 0b 48 89 ef 31 f6 5d e9 14 fc ff ff 5d c3 <0f=
-> 0b 0f 1f 44 00 00 41 57 41 56 49 89 ce 41 55 49 89 fd 41 54 41
-[  449.908054] RSP: 0018:ffffb83d878b3d68 EFLAGS: 00010206
-[  449.913887] RAX: 0000000080000201 RBX: ffff8f4355133550 RCX: 000000000d4=
-00005
-[  449.921843] RDX: 0000000000000001 RSI: 0000000000001000 RDI: ffffb83da53=
-f5000
-[  449.929808] RBP: ffff8f4ac6675800 R08: ffffb83d878b3d30 R09: 00000000000=
-efbdf
-[  449.937774] R10: 0000000000000003 R11: ffff8f434573e000 R12: 00000000000=
-01000
-[  449.945736] R13: 0000000000001000 R14: ffffb83da53f5000 R15: ffff8f43d4e=
-a3ae0
-[  449.953701] FS:  0000000000000000(0000) GS:ffff8f529fc80000(0000) knlGS:=
-0000000000000000
-[  449.962732] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  449.969138] CR2: 00007f8cf993e150 CR3: 0000000efbe10003 CR4: 00000000003=
-706e0
-[  449.977102] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
-00000
-[  449.985065] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
-00400
-[  449.993028] Call Trace:
-[  449.995756]  __iommu_dma_free+0x96/0x100
-[  450.000139]  bnx2fc_free_session_resc+0x67/0x240 [bnx2fc]
-[  450.006171]  bnx2fc_upload_session+0xce/0x100 [bnx2fc]
-[  450.011910]  bnx2fc_rport_event_handler+0x9f/0x240 [bnx2fc]
-[  450.018136]  fc_rport_work+0x103/0x5b0 [libfc]
-[  450.023103]  process_one_work+0x1e8/0x3c0
-[  450.027581]  worker_thread+0x50/0x3b0
-[  450.031669]  ? rescuer_thread+0x370/0x370
-[  450.036143]  kthread+0x149/0x170
-[  450.039744]  ? set_kthread_struct+0x40/0x40
-[  450.044411]  ret_from_fork+0x22/0x30
-[  450.048404] Modules linked in: vfat msdos fat xfs nfs_layout_nfsv41_file=
-s rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver dm_service_time qedf qed c=
-rc8 bnx2fc libfcoe libfc scsi_transport_fc intel_rapl_msr intel_rapl_common=
- x86_pkg_temp_thermal intel_powerclamp dcdbas rapl intel_cstate intel_uncor=
-e mei_me pcspkr mei ipmi_ssif lpc_ich ipmi_si fuse zram ext4 mbcache jbd2 l=
-oop nfsv3 nfs_acl nfs lockd grace fscache netfs irdma ice sd_mod t10_pi sg =
-ib_uverbs ib_core 8021q garp mrp stp llc mgag200 i2c_algo_bit drm_kms_helpe=
-r syscopyarea sysfillrect sysimgblt mxm_wmi fb_sys_fops cec crct10dif_pclmu=
-l ahci crc32_pclmul bnx2x drm ghash_clmulni_intel libahci rfkill i40e libat=
-a megaraid_sas mdio wmi sunrpc lrw dm_crypt dm_round_robin dm_multipath dm_=
-snapshot dm_bufio dm_mirror dm_region_hash dm_log dm_zero dm_mod linear rai=
-d10 raid456 async_raid6_recov async_memcpy async_pq async_xor async_tx raid=
-6_pq libcrc32c crc32c_intel raid1 raid0 iscsi_ibft squashfs be2iscsi bnx2i =
-cnic uio cxgb4i cxgb4 tls
-[  450.048497]  libcxgbi libcxgb qla4xxx iscsi_boot_sysfs iscsi_tcp libiscs=
-i_tcp libiscsi scsi_transport_iscsi edd ipmi_devintf ipmi_msghandler
-[  450.159753] ---[ end trace 712de2c57c64abc8 ]---
-
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240315071427.31842-1-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/scsi/bnx2fc/bnx2fc_tgt.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/scsi/bnx2fc/bnx2fc_tgt.c b/drivers/scsi/bnx2fc/bnx2fc_=
-tgt.c
-index e3d1c7c440c8c..c7d6842b293da 100644
---- a/drivers/scsi/bnx2fc/bnx2fc_tgt.c
-+++ b/drivers/scsi/bnx2fc/bnx2fc_tgt.c
-@@ -834,7 +834,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
-*hba,
-=20
- 	BNX2FC_TGT_DBG(tgt, "Freeing up session resources\n");
-=20
--	spin_lock_bh(&tgt->cq_lock);
- 	ctx_base_ptr =3D tgt->ctx_base;
- 	tgt->ctx_base =3D NULL;
-=20
-@@ -890,7 +889,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
-*hba,
- 				    tgt->sq, tgt->sq_dma);
- 		tgt->sq =3D NULL;
- 	}
--	spin_unlock_bh(&tgt->cq_lock);
-=20
- 	if (ctx_base_ptr)
- 		iounmap(ctx_base_ptr);
---=20
-2.43.0
-
+-- 
+Oscar Salvador
+SUSE Labs
 
