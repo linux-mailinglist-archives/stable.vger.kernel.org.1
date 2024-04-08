@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-37173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A55D89C39F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8B589C60B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BE2F1C231CE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8041C23869
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D7312B17C;
-	Mon,  8 Apr 2024 13:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D3480043;
+	Mon,  8 Apr 2024 14:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feJDF0wn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spETi9q9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C497E118;
-	Mon,  8 Apr 2024 13:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4897F7E0F6;
+	Mon,  8 Apr 2024 14:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583461; cv=none; b=Wwnmy9nRuOIvlPcblqOLNb6o6KlaBdrXr2IqI+YUpKIuYpeul3hCz4XzyRfgr0M8U57U9e4jNZMPgMtZH2L0I9hhx+y4yKOX2XTc6abSOUMyuDkZEHu9EJWvX9WdNg5b3YejtCrcBqfTgPNyCCAg0okb2QTdejNgYwM4F6amyGw=
+	t=1712585005; cv=none; b=R4KTsA+ZNv79MsDUuewzASwkY5ESGpb1EqaY5t51NEVQxpg2UApxrcw6F8iQg54VI2z0oyh84g4oak8Cjoq3wplIVCr/mG3selOeeClXy5go7dPs/qcYjbgXafBzNotDNv8GnLaxh4x0cSt98xH9v66B4PmvMqXkxNNpciwT6DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583461; c=relaxed/simple;
-	bh=yAImMykiGDTPsiGej3zl6X0KPFLI7JyDw14SRu6jPLs=;
+	s=arc-20240116; t=1712585005; c=relaxed/simple;
+	bh=sLY47PvBSCCWR6SgqNcnlMrbcJcdnZn8Yt+Aa0n+s/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fugBs6niguMuDLlW6tXrMm1zbcua/CTacnPuyy8tObMjjKr2FD90oBpjrkmOEKTJREUAi+R0ilP9OBBHgBzkokq2k54Eer4x6DJZ4lVsWE7KAiVc2ZUooR5rSb8e7VLp6bjFNvlPCxfH4HoovPvDMPngYfrY7/7LF4lsnzb4sh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feJDF0wn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D7FC433C7;
-	Mon,  8 Apr 2024 13:37:40 +0000 (UTC)
+	 MIME-Version; b=ELkf8KUSzkCsaNQ/PGaHR/5QW7ttT4z4+m63W5L8QdzVt0mByCnZXMZb+tnEe56rAAIpKqncolYXAqhmZbRhG8ahrhjlAL+aqPlB40aRWGRpLGFYl7V2eDPY3no6TOR1LWGXbGwXkloXbJnR+wzqapvK6403SIpAjmGpSQ60mY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spETi9q9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D0CC433F1;
+	Mon,  8 Apr 2024 14:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583460;
-	bh=yAImMykiGDTPsiGej3zl6X0KPFLI7JyDw14SRu6jPLs=;
+	s=korg; t=1712585005;
+	bh=sLY47PvBSCCWR6SgqNcnlMrbcJcdnZn8Yt+Aa0n+s/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=feJDF0wnBg04i4CYo/9/o5BMQJW9NkVxIKU9pTRtQia4lVzkYCrusL+IpF8fF+PAq
-	 CjvkInh5dtV+Al4Pu6pn8AalBEByw5ysG9lplpHvFKM77EjVDevcp0LroG+CnUhW3J
-	 I6g5dG7Jwc7/eG0s0TlPLd+AS91p3g7Aej2qDrkE=
+	b=spETi9q9pCI0lzoUWCitooImWQBO0YvDh70odMJf6+kCsP1g2Q8SfhEu/khTiszSH
+	 1ZqCZr/4wGhU41OJCh25XacPAZyJZFJILACwQryN3SoDgu+IcuOZYQ8UjUiuYGBijk
+	 bQ+5N188kaVQursvgPTiaZO2i+N7S4HW0CNkDjhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Parri <andrea@rivosinc.com>,
-	Andy Chiu <andy.chiu@sifive.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Puranjay Mohan <puranjay12@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/252] riscv: Disable preemption when using patch_map()
+	Ingo Molnar <mingo@kernel.org>,
+	Russ Anderson <rja@hpe.com>,
+	Steve Wahl <steve.wahl@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 5.15 631/690] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
 Date: Mon,  8 Apr 2024 14:58:17 +0200
-Message-ID: <20240408125312.797908310@linuxfoundation.org>
+Message-ID: <20240408125422.519317590@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Ingo Molnar <mingo@kernel.org>
 
-[ Upstream commit a370c2419e4680a27382d9231edcf739d5d74efc ]
+commit c567f2948f57bdc03ed03403ae0234085f376b7d upstream.
 
-patch_map() uses fixmap mappings to circumvent the non-writability of
-the kernel text mapping.
+This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
 
-The __set_fixmap() function only flushes the current cpu tlb, it does
-not emit an IPI so we must make sure that while we use a fixmap mapping,
-the current task is not migrated on another cpu which could miss the
-newly introduced fixmap mapping.
+While the original change tries to fix a bug, it also unintentionally broke
+existing systems, see the regressions reported at:
 
-So in order to avoid any task migration, disable the preemption.
+  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
 
-Reported-by: Andrea Parri <andrea@rivosinc.com>
-Closes: https://lore.kernel.org/all/ZcS+GAaM25LXsBOl@andrea/
-Reported-by: Andy Chiu <andy.chiu@sifive.com>
-Closes: https://lore.kernel.org/linux-riscv/CABgGipUMz3Sffu-CkmeUB1dKVwVQ73+7=sgC45-m0AE9RCjOZg@mail.gmail.com/
-Fixes: cad539baa48f ("riscv: implement a memset like function for text")
-Fixes: 0ff7c3b33127 ("riscv: Use text_mutex instead of patch_lock")
-Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
-Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Acked-by: Puranjay Mohan <puranjay12@gmail.com>
-Link: https://lore.kernel.org/r/20240326203017.310422-3-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since d794734c9bbf was also marked for -stable, let's back it out before
+causing more damage.
+
+Note that due to another upstream change the revert was not 100% automatic:
+
+  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
+
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: <stable@vger.kernel.org>
+Cc: Russ Anderson <rja@hpe.com>
+Cc: Steve Wahl <steve.wahl@hpe.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/patch.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/mm/ident_map.c |   23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
-diff --git a/arch/riscv/kernel/patch.c b/arch/riscv/kernel/patch.c
-index 37e87fdcf6a00..30e12b310cab7 100644
---- a/arch/riscv/kernel/patch.c
-+++ b/arch/riscv/kernel/patch.c
-@@ -80,6 +80,8 @@ static int __patch_insn_set(void *addr, u8 c, size_t len)
- 	 */
- 	lockdep_assert_held(&text_mutex);
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_map
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
+-		bool use_gbpage;
  
-+	preempt_disable();
+ 		next = (addr & PUD_MASK) + PUD_SIZE;
+ 		if (next > end)
+ 			next = end;
+ 
+-		/* if this is already a gbpage, this portion is already mapped */
+-		if (pud_large(*pud))
+-			continue;
+-
+-		/* Is using a gbpage allowed? */
+-		use_gbpage = info->direct_gbpages;
+-
+-		/* Don't use gbpage if it maps more than the requested region. */
+-		/* at the begining: */
+-		use_gbpage &= ((addr & ~PUD_MASK) == 0);
+-		/* ... or at the end: */
+-		use_gbpage &= ((next & ~PUD_MASK) == 0);
+-
+-		/* Never overwrite existing mappings */
+-		use_gbpage &= !pud_present(*pud);
+-
+-		if (use_gbpage) {
++		if (info->direct_gbpages) {
+ 			pud_t pudval;
+ 
++			if (pud_present(*pud))
++				continue;
 +
- 	if (across_pages)
- 		patch_map(addr + PAGE_SIZE, FIX_TEXT_POKE1);
- 
-@@ -92,6 +94,8 @@ static int __patch_insn_set(void *addr, u8 c, size_t len)
- 	if (across_pages)
- 		patch_unmap(FIX_TEXT_POKE1);
- 
-+	preempt_enable();
-+
- 	return 0;
- }
- NOKPROBE_SYMBOL(__patch_insn_set);
-@@ -122,6 +126,8 @@ static int __patch_insn_write(void *addr, const void *insn, size_t len)
- 	if (!riscv_patch_in_stop_machine)
- 		lockdep_assert_held(&text_mutex);
- 
-+	preempt_disable();
-+
- 	if (across_pages)
- 		patch_map(addr + PAGE_SIZE, FIX_TEXT_POKE1);
- 
-@@ -134,6 +140,8 @@ static int __patch_insn_write(void *addr, const void *insn, size_t len)
- 	if (across_pages)
- 		patch_unmap(FIX_TEXT_POKE1);
- 
-+	preempt_enable();
-+
- 	return ret;
- }
- NOKPROBE_SYMBOL(__patch_insn_write);
--- 
-2.43.0
-
++			addr &= PUD_MASK;
+ 			pudval = __pud((addr - info->offset) | info->page_flag);
+ 			set_pud(pud, pudval);
+ 			continue;
 
 
 
