@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBE889C3EC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0387589C10B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBE561C2220F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB74283B04
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D67F80BE7;
-	Mon,  8 Apr 2024 13:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7973D7E0FF;
+	Mon,  8 Apr 2024 13:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0UXiRMr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Te94Yxxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BA680639;
-	Mon,  8 Apr 2024 13:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3719C7E0F3;
+	Mon,  8 Apr 2024 13:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583614; cv=none; b=YydVvT81jd/LnPiQW+u4FIgc+r0NW5J3TCo7+7TCFKQ1kB1bPXzH9J1g0UjaxKQ51igZEnMzt898sJGz5io6fFegD5G7OyLJAkpEBoLpcGbdN8Tk0dqC4BvSBavDwUQeCCdMNfd5dd4hLBRZb9Kdte0q1739i9raZ0wVBOIIyfk=
+	t=1712581920; cv=none; b=BHUmOSMFj+4zbfGAx3cUVGeHxYxSUUkIhW5GnHOSG6SPEEmLJ7ekbas5THXzpZIzGayKoQVj5XlTEot3jf1sO5YfSbtBOutzBu+g6C6mqXM8Z6N/HOGo0cU44gVJkW+7MkAmK7W9IosoUMq6ZAQLoBm5Ph0mV5WvNV9uAQwJtqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583614; c=relaxed/simple;
-	bh=6m1TG3Wx+brqWHzfbn4WMNZtXJaI4DkkW+S0bFl9zhY=;
+	s=arc-20240116; t=1712581920; c=relaxed/simple;
+	bh=bHMRwI+SUIEJ77ao9xljTpXk3t7dFS6suIjDTUMbe5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X64HVS85aAhs0Cte7oxXcTcfAOuTCdmCqAYVohZBO7XQI7ndHxPYPZqqwYBhU2UmIYhnz8jjpsuNP1MK8nRbw+6W5D2wlu3foiFAnEmk9AnlSrfUq0G+r92zbJt/sJ4AWduLLupSjAv85Y7EPLu3wB5hmKGQi1+Gizejcz+5rUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0UXiRMr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E02C433C7;
-	Mon,  8 Apr 2024 13:40:13 +0000 (UTC)
+	 MIME-Version; b=XkW2l4bWqB5rWaMBoKc+fcJAVxWa4vFPL0mxSwH8ttTAgrmMmAjFBxW4HqANjHNPE6lFHtFBs6Mbs4xvJL55pvw7co9WWBPffIn9zYJPZRPnZSUzNCnbnRr7c6oLSawnD+JBFcYX9U4NNVX/auAkK9VHOrISnND/pj218Fh5IaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Te94Yxxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0D8C433F1;
+	Mon,  8 Apr 2024 13:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583614;
-	bh=6m1TG3Wx+brqWHzfbn4WMNZtXJaI4DkkW+S0bFl9zhY=;
+	s=korg; t=1712581919;
+	bh=bHMRwI+SUIEJ77ao9xljTpXk3t7dFS6suIjDTUMbe5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0UXiRMrSP4c5yXnH06ic1GJI1hWro8IW1FFh1eqvQrbEkibsiujcxNEV+VIcrfsb
-	 KPZsv+YPYsjdRBfu4ln4iglrM07mr7HDRhotCnWBlbgPlwCwLDlLSZthREKaZPk4Ik
-	 8jUON27/CYlTLUWcz0IRKdwWF8sX5s+Zo6rM3AGE=
+	b=Te94YxxqS6p7IFBcwmiicsBk3PmoptIahqNB2SCdHD2OWbnL1i9wzln18wSMYrYVO
+	 yrQEUXHjfKoo8z9HduAvlOd1UG3RkdJKXRmbBqznIgDYZ0GwYzPjfZB0Wa8B2OuLq0
+	 565A80Vyh7R6/lmHQpsJXmSM8FGdgsuzrLgeuqmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.8 201/273] ALSA: hda: Add pplcllpl/u members to hdac_ext_stream
+	Antoine Tenart <atenart@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 062/138] udp: do not transition UDP GRO fraglist partial checksums to unnecessary
 Date: Mon,  8 Apr 2024 14:57:56 +0200
-Message-ID: <20240408125315.566234771@linuxfoundation.org>
+Message-ID: <20240408125258.150854521@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-commit f9eeb6bb13fb5d7af1ea5b74a10b1f8ead962540 upstream.
+commit f0b8c30345565344df2e33a8417a27503589247d upstream.
 
-The pplcllpl/u can be used to save the Link Connection Linear Link
-Position register value to be used for compensation of the LLP register
-value in case the counter is not reset (after pause/resume or
-stop/start without closing the stream).
+UDP GRO validates checksums and in udp4/6_gro_complete fraglist packets
+are converted to CHECKSUM_UNNECESSARY to avoid later checks. However
+this is an issue for CHECKSUM_PARTIAL packets as they can be looped in
+an egress path and then their partial checksums are not fixed.
 
-The LLP can be used along with PPHCLDP to calculate delay caused by the DSP
-processing for HDA links.
+Different issues can be observed, from invalid checksum on packets to
+traces like:
 
-Cc: stable@vger.kernel.org # 6.8
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240321130814.4412-17-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  gen01: hw csum failure
+  skb len=3008 headroom=160 headlen=1376 tailroom=0
+  mac=(106,14) net=(120,40) trans=160
+  shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
+  csum(0xffff232e ip_summed=2 complete_sw=0 valid=0 level=0)
+  hash(0x77e3d716 sw=1 l4=1) proto=0x86dd pkttype=0 iif=12
+  ...
+
+Fix this by only converting CHECKSUM_NONE packets to
+CHECKSUM_UNNECESSARY by reusing __skb_incr_checksum_unnecessary. All
+other checksum types are kept as-is, including CHECKSUM_COMPLETE as
+fraglist packets being segmented back would have their skb->csum valid.
+
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/hdaudio_ext.h | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/udp_offload.c |    8 +-------
+ net/ipv6/udp_offload.c |    8 +-------
+ 2 files changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/include/sound/hdaudio_ext.h b/include/sound/hdaudio_ext.h
-index a8bebac1e4b2..957295364a5e 100644
---- a/include/sound/hdaudio_ext.h
-+++ b/include/sound/hdaudio_ext.h
-@@ -56,6 +56,9 @@ struct hdac_ext_stream {
- 	u32 pphcldpl;
- 	u32 pphcldpu;
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -710,13 +710,7 @@ INDIRECT_CALLABLE_SCOPE int udp4_gro_com
+ 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
+ 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
  
-+	u32 pplcllpl;
-+	u32 pplcllpu;
-+
- 	bool decoupled:1;
- 	bool link_locked:1;
- 	bool link_prepared;
--- 
-2.44.0
-
+-		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
+-			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
+-				skb->csum_level++;
+-		} else {
+-			skb->ip_summed = CHECKSUM_UNNECESSARY;
+-			skb->csum_level = 0;
+-		}
++		__skb_incr_checksum_unnecessary(skb);
+ 
+ 		return 0;
+ 	}
+--- a/net/ipv6/udp_offload.c
++++ b/net/ipv6/udp_offload.c
+@@ -169,13 +169,7 @@ INDIRECT_CALLABLE_SCOPE int udp6_gro_com
+ 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
+ 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
+ 
+-		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
+-			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
+-				skb->csum_level++;
+-		} else {
+-			skb->ip_summed = CHECKSUM_UNNECESSARY;
+-			skb->csum_level = 0;
+-		}
++		__skb_incr_checksum_unnecessary(skb);
+ 
+ 		return 0;
+ 	}
 
 
 
