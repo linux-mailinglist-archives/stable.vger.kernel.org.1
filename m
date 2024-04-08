@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E8589C566
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:57:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E9389C097
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA9A0B28864
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A517F1F214A6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CB274BE8;
-	Mon,  8 Apr 2024 13:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8566FE1A;
+	Mon,  8 Apr 2024 13:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wb1ElPzu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbSpNHrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2593A6EB72;
-	Mon,  8 Apr 2024 13:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216A92E62C;
+	Mon,  8 Apr 2024 13:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584416; cv=none; b=Ln3E3En4hhraipKcAhFzuVfZbBnKJxecmDN6sBFyasFXCmDNX8i1+glt8YEvLwCi9zBhhB9YmYjZBeP83S8FKmyL8JpPRSn/dp/2YD/e7zHdUgLFj7c3o6V0hFu+OWSmk6lTZd5u/U8LDrErGDMF/ocbp3NJPkGqC0m1IC/xHps=
+	t=1712581812; cv=none; b=jIrJIKoHswwxczOQMXbjxd7n3xl4g8Y+O3Y/PPDguEAPKDElFVZ/8D1w8q2oTiJmCURblb2eaCnB54KJO4UEdB6zPtIBpil1zQ68eSbKZVi1uTLf7NzZ/o8BNi2Plz/w/tOr88fdgRS7zaPyoEWzmAMNUACdfScXzjkPMBPAeDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584416; c=relaxed/simple;
-	bh=dUNpndwjDwfxrI9eWpakEHH7zjmKm4dwFVgwAZU0YPs=;
+	s=arc-20240116; t=1712581812; c=relaxed/simple;
+	bh=c92MWDbZbtzJv8pdC4nfnPBCw//hGba42gzenEtehSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtEG899aRvWGRXXUGYx23t0tAr6XDQSHzb85+cte89A/8V7pPUM+T2CLXj16VSfTY46MnqQfXuaVsSN2ngGOcjBjLmQxx53KEJLiuF1RYOvPL+khq3oO7/X6rwUUjH/kZ0u5wpnJbQPtyCcUb6QnN2Sc+HWCujTmYpwJNHh938I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wb1ElPzu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E5EC433F1;
-	Mon,  8 Apr 2024 13:53:35 +0000 (UTC)
+	 MIME-Version; b=Xw1B9pMT7PrSHYvM5GRAVaQ1XmoAMvTCLCEhIZrp0zfDwyNQy0aqehFL+G1/m/Wk173N99GOxB4zRdXJrzQ39QZ7PQkvitojpkKrrv+eJQiZynTPudPCqs+nJ8ytsEHpta4EK/P9QFVlg/5OHnYMrZ2ynRRXkghBkWX7FdQwWQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbSpNHrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F562C433F1;
+	Mon,  8 Apr 2024 13:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584416;
-	bh=dUNpndwjDwfxrI9eWpakEHH7zjmKm4dwFVgwAZU0YPs=;
+	s=korg; t=1712581812;
+	bh=c92MWDbZbtzJv8pdC4nfnPBCw//hGba42gzenEtehSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wb1ElPzuT9Smc2sawzHmAVYG2yPuFyFfiDDZtAN3AjRZ1vkmNBgj2DvxXU9Fz7Nhw
-	 ziEQTaKEykj1muJtXRRgH+Pob05D8JiFstWysMKaK3u9KdIvKju9h67XyuRhDPylE7
-	 RnGi6h6muNQyRcqbC4xWf2EiGRFs873E6JSm4S1s=
+	b=XbSpNHrRGvK5IxYp4qoyXwl7rcAqcc7lBtg0VY1Nyw/Zx4ioIrod2Q6bqGsoUG8Xf
+	 XDuRqWnibjKQhhiu6SopDomWP5J7CBy/tPuVo5IboGXG15NAWmIvYgldv3ay2lVHKJ
+	 BA+IwCsNG+htxseCGU05ta6fKPOVddmYAsj4ynCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Mammedov <imammedo@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 431/690] NFSD: Make nfsd4_setattr() wait before returning NFS4ERR_DELAY
+	Matthew Auld <matthew.auld@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 022/273] drm/xe/queue: fix engine_class bounds check
 Date: Mon,  8 Apr 2024 14:54:57 +0200
-Message-ID: <20240408125415.218787502@linuxfoundation.org>
+Message-ID: <20240408125309.982402668@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 34b91dda7124fc3259e4b2ae53e0c933dedfec01 ]
+[ Upstream commit b7dce525c4fcc92b373136288309f8c9ca6c375f ]
 
-nfsd_setattr() can kick off a CB_RECALL (via
-notify_change() -> break_lease()) if a delegation is present. Before
-returning NFS4ERR_DELAY, give the client holding that delegation a
-chance to return it and then retry the nfsd_setattr() again, once.
+The engine_class is the index into the user_to_xe_engine_class,
+therefore it needs to be less than.
 
-Link: https://bugzilla.linux-nfs.org/show_bug.cgi?id=354
-Tested-by: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318180532.57522-4-matthew.auld@intel.com
+(cherry picked from commit fe87b7dfcb204a161d1e38b0e787b2f5ab520f32)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 392df2353556e..e8329051dde01 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -414,6 +414,7 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	int		host_err;
- 	bool		get_write_count;
- 	bool		size_change = (iap->ia_valid & ATTR_SIZE);
-+	int		retries;
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index a176d9ad6d1b8..5093c56d60ab6 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -405,7 +405,7 @@ find_hw_engine(struct xe_device *xe,
+ {
+ 	u32 idx;
  
- 	if (iap->ia_valid & ATTR_SIZE) {
- 		accmode |= NFSD_MAY_WRITE|NFSD_MAY_OWNER_OVERRIDE;
-@@ -468,7 +469,13 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	}
+-	if (eci.engine_class > ARRAY_SIZE(user_to_xe_engine_class))
++	if (eci.engine_class >= ARRAY_SIZE(user_to_xe_engine_class))
+ 		return NULL;
  
- 	inode_lock(inode);
--	host_err = __nfsd_setattr(dentry, iap);
-+	for (retries = 1;;) {
-+		host_err = __nfsd_setattr(dentry, iap);
-+		if (host_err != -EAGAIN || !retries--)
-+			break;
-+		if (!nfsd_wait_for_delegreturn(rqstp, inode))
-+			break;
-+	}
- 	if (attr->na_seclabel && attr->na_seclabel->len)
- 		attr->na_labelerr = security_inode_setsecctx(dentry,
- 			attr->na_seclabel->data, attr->na_seclabel->len);
+ 	if (eci.gt_id >= xe->info.gt_count)
 -- 
 2.43.0
 
