@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-37038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9D489C32C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C28089C04E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0732B2683F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A237C1F22D27
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15C47F467;
-	Mon,  8 Apr 2024 13:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1486CDA8;
+	Mon,  8 Apr 2024 13:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtbZ534X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUGPcCJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790E47EF1B;
-	Mon,  8 Apr 2024 13:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB3B2DF73;
+	Mon,  8 Apr 2024 13:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583074; cv=none; b=UEn9OwlVxNeBWIIsBsmXWHVCqJ/vkmlZfPTze4Ng+IGLFkj/Ko3nTsbeywDertkE5og0Sv+LVov9IEl7FknRpV29Ubib9wQ+uM11OF0vJvG43OPMvDNYBvvI0tDgN3XuAgwyqL8z3FVAP3CUjiTV8GiATqSBJVTJg8XP8KimMvc=
+	t=1712581639; cv=none; b=qIyvXqdsx8hsnK8KvGavn/XApH7FFTuYh1G4RKgoZH1V6Pf8ZQYTieTJaO9zxR5HXFLvebpd80XUv+GruSjHyXaaPXSJlDyZkDRNnqpoA42kajkmzrEcQFFJhk37gLHeghQQtrcDp56+LBgnAaKmwtxTRl9Eem7zmWiNIXuKF94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583074; c=relaxed/simple;
-	bh=8kHpTRoViLbK8EtwmSnXxjn0vbB5iG0Uk1GMJtkyD3k=;
+	s=arc-20240116; t=1712581639; c=relaxed/simple;
+	bh=HL3+KMgnQe4yTAEF+dC8FK0em8/J/kltI+ZKp6Rt2aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSRvRENFM2YaeWbFRTeqsf2XMmI+6tXjv2GIkL//zOG+u7T7P4r+7kB4S5caaVUW4ius9XNvOkYpmpSD0JQPdyfHwcWU0M6s1i1c9r4G+UQNUGE8V3EGzzOKY0ewamsnMolr0PvW0WvnnUUeiTZXCf2oZd9WUG6qpfw55wpTY/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtbZ534X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB55C433F1;
-	Mon,  8 Apr 2024 13:31:13 +0000 (UTC)
+	 MIME-Version; b=vFg6hfzN90Y/1bNOjRUoI+W81FIr4Ui6mK5pbFY76oMbteAZlF0VLQw63pJUnRvU0CqpIabZPPYFTR+M6qUBp36q6wI+5/t9t54xFsHud9USlj0pwVBck1rxkDddCM5S/6clm08CdQD0wFmYJIeSbXbpNLSqzL1Lr7fqdWplw2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUGPcCJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C81C433C7;
+	Mon,  8 Apr 2024 13:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583074;
-	bh=8kHpTRoViLbK8EtwmSnXxjn0vbB5iG0Uk1GMJtkyD3k=;
+	s=korg; t=1712581638;
+	bh=HL3+KMgnQe4yTAEF+dC8FK0em8/J/kltI+ZKp6Rt2aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtbZ534X799ABEV+frJsr1uxo0HWbjBOQU6UxSLlBOYVv3USfc0sDGAmkYRD1fpA8
-	 LmmisJdf6lClr0f+xEeCadu0O9FHmDeQ/u662Q+ZmViHvE3ifCNI1EWN4o/g21Hc43
-	 SaEf48OG52z7rTKWdQSmpRofIUnQ1N6GCaFlCiT4=
+	b=dUGPcCJMW5/tX5eeosC7+CmE/TLe5qM226XUCcrpwYUOGvMrcRkKH+ndgzIWMUM0H
+	 zD+KfdA/0ywQWeVg+gPPVOSkqM8aoLHta23vGi0gWJCMPOEJZKCcVKvm3pWGt9xQWt
+	 hyVSq8Sy4k5Tez6TYTqAl6g0uoN87ULeRKKWqMTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/252] net: ravb: Always process TX descriptor ring
-Date: Mon,  8 Apr 2024 14:57:33 +0200
-Message-ID: <20240408125311.439287743@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 040/138] netfilter: nf_tables: reject new basechain after table flag update
+Date: Mon,  8 Apr 2024 14:57:34 +0200
+Message-ID: <20240408125257.475467198@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 596a4254915f94c927217fe09c33a6828f33fb25 ]
+commit 994209ddf4f430946f6247616b2e33d179243769 upstream.
 
-The TX queue should be serviced each time the poll function is called,
-even if the full RX work budget has been consumed. This prevents
-starvation of the TX queue when RX bandwidth usage is high.
+When dormant flag is toggled, hooks are disabled in the commit phase by
+iterating over current chains in table (existing and new).
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240402145305.82148-1-paul.barker.ct@bp.renesas.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The following configuration allows for an inconsistent state:
+
+  add table x
+  add chain x y { type filter hook input priority 0; }
+  add table x { flags dormant; }
+  add chain x w { type filter hook input priority 1; }
+
+which triggers the following warning when trying to unregister chain w
+which is already unregistered.
+
+[  127.322252] WARNING: CPU: 7 PID: 1211 at net/netfilter/core.c:50                                                                     1 __nf_unregister_net_hook+0x21a/0x260
+[...]
+[  127.322519] Call Trace:
+[  127.322521]  <TASK>
+[  127.322524]  ? __warn+0x9f/0x1a0
+[  127.322531]  ? __nf_unregister_net_hook+0x21a/0x260
+[  127.322537]  ? report_bug+0x1b1/0x1e0
+[  127.322545]  ? handle_bug+0x3c/0x70
+[  127.322552]  ? exc_invalid_op+0x17/0x40
+[  127.322556]  ? asm_exc_invalid_op+0x1a/0x20
+[  127.322563]  ? kasan_save_free_info+0x3b/0x60
+[  127.322570]  ? __nf_unregister_net_hook+0x6a/0x260
+[  127.322577]  ? __nf_unregister_net_hook+0x21a/0x260
+[  127.322583]  ? __nf_unregister_net_hook+0x6a/0x260
+[  127.322590]  ? __nf_tables_unregister_hook+0x8a/0xe0 [nf_tables]
+[  127.322655]  nft_table_disable+0x75/0xf0 [nf_tables]
+[  127.322717]  nf_tables_commit+0x2571/0x2620 [nf_tables]
+
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index b87e9252ea176..14595d23b1903 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1292,12 +1292,12 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	int q = napi - priv->napi;
- 	int mask = BIT(q);
- 	int quota = budget;
-+	bool unmask;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2372,6 +2372,9 @@ static int nf_tables_addchain(struct nft
+ 		struct nft_stats __percpu *stats = NULL;
+ 		struct nft_chain_hook hook;
  
- 	/* Processing RX Descriptor Ring */
- 	/* Clear RX interrupt */
- 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
--	if (ravb_rx(ndev, &quota, q))
--		goto out;
-+	unmask = !ravb_rx(ndev, &quota, q);
- 
- 	/* Processing TX Descriptor Ring */
- 	spin_lock_irqsave(&priv->lock, flags);
-@@ -1307,6 +1307,9 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	netif_wake_subqueue(ndev, q);
- 	spin_unlock_irqrestore(&priv->lock, flags);
- 
-+	if (!unmask)
-+		goto out;
++		if (table->flags & __NFT_TABLE_F_UPDATE)
++			return -EINVAL;
 +
- 	napi_complete(napi);
+ 		if (flags & NFT_CHAIN_BINDING)
+ 			return -EOPNOTSUPP;
  
- 	/* Re-enable RX/TX interrupts */
--- 
-2.43.0
-
 
 
 
