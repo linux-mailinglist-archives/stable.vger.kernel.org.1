@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 271EE89C022
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A9C589C5F3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77D8286253
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09400B2C200
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DBD7BAE7;
-	Mon,  8 Apr 2024 13:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6977E0F2;
+	Mon,  8 Apr 2024 14:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQyPpaCt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mfr7qAUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086F36CDA8;
-	Mon,  8 Apr 2024 13:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7387D3FE;
+	Mon,  8 Apr 2024 14:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581507; cv=none; b=PRk2puzUhlwHzrXDBk4vDE2rrGIl3V/EYC+HXqCSyiUMw6gi68ITDAWe+GqSYXscTdAll/8tH2H98NSErUyhT9T0VzCeDbfRN79PaYJpI/8bQV6QxF7qqBh8pkW/2TAjfltPJ+kzAUgKW8hkiLdOlFnmaC/vRizZY+VpNBrKMos=
+	t=1712584847; cv=none; b=IB3R6TZ3BoYZwv0xxZDt+1QSgLW7+yoMlWerk243j4Ps7CyY0VzTBR8HEJUZQ0nkLVqCcOHNh8TEwAV1cmabFhGh/enIPT4J5+vrfiel+7D6+MAB0GbzoNcv+9xm7fsSiJM71LNfqs2TYqYowBw+RwigOvFeDWaYB/3P6fwFR9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581507; c=relaxed/simple;
-	bh=WyQJSy9ELpF3w/b/U60AMBrNb5iUCaVMwQPWZLMHEo0=;
+	s=arc-20240116; t=1712584847; c=relaxed/simple;
+	bh=bpC27zbjXz53r2neStML1+D5+FsKmhZEhRj1RqSvglA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ubM9lIDEqrgzgXSvJqD7caGb+euWLBgI8mFebO6OtUXfrbfkoG4v8H1lw8yIXkyHm6zxj+Gfn9CM3EWzh/XvTe8nmwaTcXatNFIDuEWGPpstc0NrDIld0kN4W2t1CQvKJpo6DhciAoWRSyfmUF9wbrH4/B8C4cZfBHyk+npAA8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQyPpaCt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A695C433F1;
-	Mon,  8 Apr 2024 13:05:06 +0000 (UTC)
+	 MIME-Version; b=QT2Q0RWPjQMl89+AzCfM/fBDzVIyIYw3ubykSvVOrIH4qETheD9aoW+3FwwU7lpDlBkjJ+6y8guTIxa/NMq0oEevuzKpOdwO7R7zDArHQWj4ZbJPUZrqwTegqYJ5eLjRF+Sr8mCj6CnhKze849y+d4eMWUuDDyaoqLK72otfUC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mfr7qAUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31094C433C7;
+	Mon,  8 Apr 2024 14:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581506;
-	bh=WyQJSy9ELpF3w/b/U60AMBrNb5iUCaVMwQPWZLMHEo0=;
+	s=korg; t=1712584847;
+	bh=bpC27zbjXz53r2neStML1+D5+FsKmhZEhRj1RqSvglA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQyPpaCtcVxASL2LrlQUuHjPnZpp993ETz0bNiz7hmkK3pFNeKbHlxWWqoxm0s3Z9
-	 aDqzbB40janOCvdFLLlYsm9uPTGkYtyJhsGWAJKO+Zbuf3Ko/HZJj1yljGQzQu/zs0
-	 WWrOXouWiHTOe99dljOaJn8siIl//bMPP8YQizGk=
+	b=Mfr7qAUbyH25V9Iri8chv81DKnWpjmbCiuXnQmB4T+P54iJhTCLWu0a7OWpZPq6YB
+	 lilTeXGda+AcdL6ZOTuG+Ehyg+GabUKX2+8s+8pgYCyzLXAZgWqei2lCPfuHNEYxPi
+	 41uZfdcCzZNKKu994gvv0rAsWf612j4VLkmYIYx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 028/138] x86/cpufeatures: Add CPUID_LNX_5 to track recently added Linux-defined word
+	Claus Hansen Ries <chr@terma.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 576/690] net: ll_temac: platform_get_resource replaced by wrong function
 Date: Mon,  8 Apr 2024 14:57:22 +0200
-Message-ID: <20240408125257.101330576@linuxfoundation.org>
+Message-ID: <20240408125420.471799851@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Claus Hansen Ries <chr@terma.com>
 
-commit 8cb4a9a82b21623dbb4b3051dd30d98356cf95bc upstream.
+commit 3a38a829c8bc27d78552c28e582eb1d885d07d11 upstream.
 
-Add CPUID_LNX_5 to track cpufeatures' word 21, and add the appropriate
-compile-time assert in KVM to prevent direct lookups on the features in
-CPUID_LNX_5.  KVM uses X86_FEATURE_* flags to manage guest CPUID, and so
-must translate features that are scattered by Linux from the Linux-defined
-bit to the hardware-defined bit, i.e. should never try to directly access
-scattered features in guest CPUID.
+The function platform_get_resource was replaced with
+devm_platform_ioremap_resource_byname and is called using 0 as name.
 
-Opportunistically add NR_CPUID_WORDS to enum cpuid_leafs, along with a
-compile-time assert in KVM's CPUID infrastructure to ensure that future
-additions update cpuid_leafs along with NCAPINTS.
+This eventually ends up in platform_get_resource_byname in the call
+stack, where it causes a null pointer in strcmp.
 
-No functional change intended.
+	if (type == resource_type(r) && !strcmp(r->name, name))
 
-Fixes: 7f274e609f3d ("x86/cpufeatures: Add new word for scattered features")
-Cc: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+It should have been replaced with devm_platform_ioremap_resource.
+
+Fixes: bd69058f50d5 ("net: ll_temac: Use devm_platform_ioremap_resource_byname()")
+Signed-off-by: Claus Hansen Ries <chr@terma.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/cca18f9c630a41c18487729770b492bb@terma.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeature.h |    2 ++
- arch/x86/kvm/reverse_cpuid.h      |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/net/ethernet/xilinx/ll_temac_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/cpufeature.h
-+++ b/arch/x86/include/asm/cpufeature.h
-@@ -33,6 +33,8 @@ enum cpuid_leafs
- 	CPUID_7_EDX,
- 	CPUID_8000_001F_EAX,
- 	CPUID_8000_0021_EAX,
-+	CPUID_LNX_5,
-+	NR_CPUID_WORDS,
- };
+--- a/drivers/net/ethernet/xilinx/ll_temac_main.c
++++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
+@@ -1433,7 +1433,7 @@ static int temac_probe(struct platform_d
+ 	}
  
- #define X86_CAP_FMT_NUM "%d:%d"
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -83,10 +83,12 @@ static const struct cpuid_reg reverse_cp
-  */
- static __always_inline void reverse_cpuid_check(unsigned int x86_leaf)
- {
-+	BUILD_BUG_ON(NR_CPUID_WORDS != NCAPINTS);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_1);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_2);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_3);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_4);
-+	BUILD_BUG_ON(x86_leaf == CPUID_LNX_5);
- 	BUILD_BUG_ON(x86_leaf >= ARRAY_SIZE(reverse_cpuid));
- 	BUILD_BUG_ON(reverse_cpuid[x86_leaf].function == 0);
- }
+ 	/* map device registers */
+-	lp->regs = devm_platform_ioremap_resource_byname(pdev, 0);
++	lp->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(lp->regs)) {
+ 		dev_err(&pdev->dev, "could not map TEMAC registers\n");
+ 		return -ENOMEM;
 
 
 
