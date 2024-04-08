@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89F089C1C8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B108C89C54E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B868B25D73
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505521F235D7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABAA78285;
-	Mon,  8 Apr 2024 13:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22527BAE4;
+	Mon,  8 Apr 2024 13:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mV1YiHfb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzXyM9tu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F557F7F1;
-	Mon,  8 Apr 2024 13:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E7C6EB72;
+	Mon,  8 Apr 2024 13:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582346; cv=none; b=Lo3XB2yunZVPJ+u0y5fsHzDShMM/Q7NgaSOq+MPXiC18c18FLLvhTu4sxPrccYYpCzJzAf0zsbpK80E09OuUWwlZdSAVyyIU+L0YaFOxoWB5FMPXjF6jbeYd0XXNbhTpOwLWyebvfIyLL9IcjWt1v3zq40jYlI9pcFCkPnULY5E=
+	t=1712584550; cv=none; b=IQaPoz6R+O0VaFBi8tH3GNJ2mWcUpz/OCQjcde0yBBl6bSvHIRw7/V5BrkaerMYkWqy62xYrQPF8GQZkQSKupAZqLneiwy5Qe2suKPAmISZ0jgf1HyF0hbW4aIdT2Dsciq1x01ybkPkmyZegOHwZMmPvxWDbI19y70xilUYFseM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582346; c=relaxed/simple;
-	bh=v3iIek2qoWk4yzbzKWlqByHGxWuemazey+7DfrP00MA=;
+	s=arc-20240116; t=1712584550; c=relaxed/simple;
+	bh=ReskZaQSD8d+PxKVBCMsnvmwAYa+Kg1Vdt/26vw47cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERX63iIX7XsdhH/U3os/2bNJl77z5q2CrcXptyTt05O31Ojk0g7ZKEOa4SErbBLr1nX7yMBybUh8I3ILsNklDy0tgXyG8thaAfO4FUnr7OwJD56ejVNosBxeWc3q/IkTPBn6RTHQWKJDHl5Fa/CDJvqcRpnqQk/nxdhAtpi1NGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mV1YiHfb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C791FC433F1;
-	Mon,  8 Apr 2024 13:19:05 +0000 (UTC)
+	 MIME-Version; b=tAmlYKu4IqeljwI6uKvoQqCW4P9aTFfGjt108Sk0u98bTe0guYVzFq783P2SHeZB8iQVimXK1o1CT8nU6zSjN4AxV0i9DR2FN7unedrjIpTp58633U8JihCsTuxfzameoUejbSsnXyvA9YtQOqxSO3ne/VtDAehl+5troMaW19s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzXyM9tu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE77C433F1;
+	Mon,  8 Apr 2024 13:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582346;
-	bh=v3iIek2qoWk4yzbzKWlqByHGxWuemazey+7DfrP00MA=;
+	s=korg; t=1712584550;
+	bh=ReskZaQSD8d+PxKVBCMsnvmwAYa+Kg1Vdt/26vw47cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mV1YiHfb3aPYa/z23R8iF+42XClM04PxhBojwvg9nj/lLbFRjq5IfkDVGCzc7wuE9
-	 0MrvvkTW/KvnSduMlNywRehHeMc676AFvXBBjcM9rVvm0MAVUjbe1q/kZa3wPLsiNN
-	 7mz/gpNWNnqY31OaDg1JuwkEUEYdiaOpBv0ZnMMo=
+	b=YzXyM9tukPg/pDgVVe68DV9GkFwYZ4nlQ+KXdMOXYKlNTL7NJEav2lTJDb/t4e5E/
+	 MDH67DPO7E2/gerVTEQiG1BjGSw09p3X8ckS8mj5azl4+JvaxybXUbWO3lZ4oyki9R
+	 wOqu8jYSqwBEcnCjwdOlSqrDFTIV2lfNc/HyaNrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Wujie Duan <wjduan@linx-info.com>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.8 067/273] KVM: arm64: Fix out-of-IPA space translation fault handling
+	David Disseldorp <ddiss@suse.de>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 476/690] exportfs: use pr_debug for unreachable debug statements
 Date: Mon,  8 Apr 2024 14:55:42 +0200
-Message-ID: <20240408125311.384418407@linuxfoundation.org>
+Message-ID: <20240408125416.857079085@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wujie Duan <wjduan@linx-info.com>
+From: David Disseldorp <ddiss@suse.de>
 
-commit f5fe0adeed6019df495497a64cb57d563ead2296 upstream.
+[ Upstream commit 427505ffeaa464f683faba945a88d3e3248f6979 ]
 
-Commit 11e5ea5242e3 ("KVM: arm64: Use helpers to classify exception
-types reported via ESR") tried to abstract the translation fault
-check when handling an out-of IPA space condition, but incorrectly
-replaced it with a permission fault check.
+expfs.c has a bunch of dprintk statements which are unusable due to:
+ #define dprintk(fmt, args...) do{}while(0)
+Use pr_debug so that they can be enabled dynamically.
+Also make some minor changes to the debug statements to fix some
+incorrect types, and remove __func__ which can be handled by dynamic
+debug separately.
 
-Restore the previous translation fault check.
-
-Fixes: 11e5ea5242e3 ("KVM: arm64: Use helpers to classify exception types reported via ESR")
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Wujie Duan <wjduan@linx-info.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/kvmarm/864jd3269g.wl-maz@kernel.org/
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Disseldorp <ddiss@suse.de>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/arm64/kvm/mmu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exportfs/expfs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1631,7 +1631,7 @@ int kvm_handle_guest_abort(struct kvm_vc
- 	fault_ipa = kvm_vcpu_get_fault_ipa(vcpu);
- 	is_iabt = kvm_vcpu_trap_is_iabt(vcpu);
+diff --git a/fs/exportfs/expfs.c b/fs/exportfs/expfs.c
+index 3ef80d000e13d..584bdd912cdd4 100644
+--- a/fs/exportfs/expfs.c
++++ b/fs/exportfs/expfs.c
+@@ -18,7 +18,7 @@
+ #include <linux/sched.h>
+ #include <linux/cred.h>
  
--	if (esr_fsc_is_permission_fault(esr)) {
-+	if (esr_fsc_is_translation_fault(esr)) {
- 		/* Beyond sanitised PARange (which is the IPA limit) */
- 		if (fault_ipa >= BIT_ULL(get_kvm_ipa_limit())) {
- 			kvm_inject_size_fault(vcpu);
+-#define dprintk(fmt, args...) do{}while(0)
++#define dprintk(fmt, args...) pr_debug(fmt, ##args)
+ 
+ 
+ static int get_name(const struct path *path, char *name, struct dentry *child);
+@@ -132,8 +132,8 @@ static struct dentry *reconnect_one(struct vfsmount *mnt,
+ 	inode_unlock(dentry->d_inode);
+ 
+ 	if (IS_ERR(parent)) {
+-		dprintk("%s: get_parent of %ld failed, err %d\n",
+-			__func__, dentry->d_inode->i_ino, PTR_ERR(parent));
++		dprintk("get_parent of %lu failed, err %ld\n",
++			dentry->d_inode->i_ino, PTR_ERR(parent));
+ 		return parent;
+ 	}
+ 
+@@ -147,7 +147,7 @@ static struct dentry *reconnect_one(struct vfsmount *mnt,
+ 	dprintk("%s: found name: %s\n", __func__, nbuf);
+ 	tmp = lookup_one_unlocked(mnt_user_ns(mnt), nbuf, parent, strlen(nbuf));
+ 	if (IS_ERR(tmp)) {
+-		dprintk("%s: lookup failed: %d\n", __func__, PTR_ERR(tmp));
++		dprintk("lookup failed: %ld\n", PTR_ERR(tmp));
+ 		err = PTR_ERR(tmp);
+ 		goto out_err;
+ 	}
+-- 
+2.43.0
+
 
 
 
