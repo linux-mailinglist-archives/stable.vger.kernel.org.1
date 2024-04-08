@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-36900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE7389C246
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A71689C2F7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA974283803
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CBB41C2153A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58562839E3;
-	Mon,  8 Apr 2024 13:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE6713793C;
+	Mon,  8 Apr 2024 13:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWefkkl1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb+XuRBH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158928121A;
-	Mon,  8 Apr 2024 13:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6ED137918;
+	Mon,  8 Apr 2024 13:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582670; cv=none; b=Sp1ZiuuFrktWhhX7G0yoJvxg0JTYdn82+eIJeG708ldpvHhCekRcct+7lBqJAcF9aYfoSTIWCfgjHtGZ0sEyvT0TkFTiJERKi8l6nLOZpB4C0cKIYdGSjwi7atP9Y/vO2Od7U1miELLy7Xul8et+CzuOObRcVp/HnHPGEQwsIeg=
+	t=1712583056; cv=none; b=RzLUfM5yzCF2+11cMiL5SIKM7F6cxVaD4PX9jpZcwBrJpTVRrD5TK4aXsoVwYGK26Ro4FnGQH/r2I/38JfhHFxpW37grt9d58g9V12wpvLMqRKOUJqYhY89MMYDPy5D66YknTY4JLcT+bFmlTZBW17No1QNrIdBZvFg8Z2wRiEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582670; c=relaxed/simple;
-	bh=TYQB+ZEH1XAbHseQ+ZEvrkPRZGNw+xliOPd5gxaciDQ=;
+	s=arc-20240116; t=1712583056; c=relaxed/simple;
+	bh=U9McpEbZuIUywBWh+wRWg+1Rl6KFi8PqokMu40kaCbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYDxtl/fDEQ6oNytek3yjYzJC3h2lOnV69fE3uVG2MgPOmjIULsEf+rAVQKEwbx3DxB12CaMVbzEhR5w6XzzYiPSW7N2OqsQeShWx7tKgTPKtwwpzUZOA5do+ivaq18P+86WRGaoi8/5hmp8d1BZ3FrmMZySoo9MJtHmwKL/Lb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWefkkl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94424C43390;
-	Mon,  8 Apr 2024 13:24:29 +0000 (UTC)
+	 MIME-Version; b=iwlZK0V7/WJ3vBxkKbm2Hp6ceNsDdTJRym1Mtviow5hUaGgTHHXWgDNCLoPJEzgEA4qgeY7EdR06BM5IKdbXx2FXunr0WvtquyPYbbDFQKlo+Y84VaUZYn0rzpjG1hmW6/x1/A8/8lNsfuiSaoBKuF3o+p2i/djTDdvC7V+Xq8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb+XuRBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95E7C43390;
+	Mon,  8 Apr 2024 13:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582670;
-	bh=TYQB+ZEH1XAbHseQ+ZEvrkPRZGNw+xliOPd5gxaciDQ=;
+	s=korg; t=1712583056;
+	bh=U9McpEbZuIUywBWh+wRWg+1Rl6KFi8PqokMu40kaCbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WWefkkl1NZp+D6z8XkXWg9KtO86uERtN+Vemc8JKibG44mGFnevDOzZBViDhiiUBT
-	 aMhtBaYSOzpviigB0d633WAa60Z+Q1M1FjfHZQZUcVWw+gMVIoyqQ0aez1ecldOSQ5
-	 1EoysbGG2F75oYjpmQFzjKCyIorM89so1nyt64ZA=
+	b=Cb+XuRBHQz9RyAke7ISEvv1PTgmdxg4h+VtyfFLh5wIdB64iJcV6G06J4VFKIw5QK
+	 X3iQvTysSFLldOqBuWM0trSeydPvUmmxccwlAt1mqoagDYFHU+8imQu7hqf9Iasgo9
+	 C5xTvsOZyV3Nqc+5VDvoloio8WrBOYDrn88tJ3PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Krummsdorf <michael.krummsdorf@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 111/252] net: dsa: mv88e6xxx: fix usable ports on 88e6020
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 135/273] mean_and_variance: Drop always failing tests
 Date: Mon,  8 Apr 2024 14:56:50 +0200
-Message-ID: <20240408125310.083797513@linuxfoundation.org>
+Message-ID: <20240408125313.485220939@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 625aefac340f45a4fc60908da763f437599a0d6f upstream.
+[ Upstream commit 97ca7c1f93bbac6982717a7055cd727813c45e61 ]
 
-The switch has 4 ports with 2 internal PHYs, but ports are numbered up
-to 6, with ports 0, 1, 5 and 6 being usable.
+mean_and_variance_test_2 and mean_and_variance_test_4 always fail.
+The input parameters to those tests are identical to the input parameters
+to tests 1 and 3, yet the expected result for tests 2 and 4 is different
+for the mean and stddev tests. That will always fail.
 
-Fixes: 71d94a432a15 ("net: dsa: mv88e6xxx: add support for MV88E6020 switch")
-Signed-off-by: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326123655.40666-1-matthias.schiffer@ew.tq-group.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+     Expected mean_and_variance_get_mean(mv) == mean[i], but
+        mean_and_variance_get_mean(mv) == 22 (0x16)
+        mean[i] == 10 (0xa)
+
+Drop the bad tests.
+
+Fixes: 65bc41090720 ("mean and variance: More tests")
+Closes: https://lore.kernel.org/lkml/065b94eb-6a24-4248-b7d7-d3212efb4787@roeck-us.net/
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/bcachefs/mean_and_variance_test.c | 28 +---------------------------
+ 1 file changed, 1 insertion(+), 27 deletions(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5386,8 +5386,12 @@ static const struct mv88e6xxx_info mv88e
- 		.family = MV88E6XXX_FAMILY_6250,
- 		.name = "Marvell 88E6020",
- 		.num_databases = 64,
--		.num_ports = 4,
-+		/* Ports 2-4 are not routed to pins
-+		 * => usable ports 0, 1, 5, 6
-+		 */
-+		.num_ports = 7,
- 		.num_internal_phys = 2,
-+		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
- 		.max_vid = 4095,
- 		.port_base_addr = 0x8,
- 		.phy_base_addr = 0x0,
+diff --git a/fs/bcachefs/mean_and_variance_test.c b/fs/bcachefs/mean_and_variance_test.c
+index 019583c3ca0ea..51093fa848202 100644
+--- a/fs/bcachefs/mean_and_variance_test.c
++++ b/fs/bcachefs/mean_and_variance_test.c
+@@ -130,20 +130,8 @@ static void mean_and_variance_test_1(struct kunit *test)
+ 			d, mean, stddev, weighted_mean, weighted_stddev);
+ }
+ 
+-static void mean_and_variance_test_2(struct kunit *test)
+-{
+-	s64 d[]			= { 100, 10, 10, 10, 10, 10, 10 };
+-	s64 mean[]		= {  10, 10, 10, 10, 10, 10, 10 };
+-	s64 stddev[]		= {   9,  9,  9,  9,  9,  9,  9 };
+-	s64 weighted_mean[]	= {  32, 27, 22, 19, 17, 15, 14 };
+-	s64 weighted_stddev[]	= {  38, 35, 31, 27, 24, 21, 18 };
+-
+-	do_mean_and_variance_test(test, 10, 6, ARRAY_SIZE(d), 2,
+-			d, mean, stddev, weighted_mean, weighted_stddev);
+-}
+-
+ /* Test behaviour where we switch from one steady state to another: */
+-static void mean_and_variance_test_3(struct kunit *test)
++static void mean_and_variance_test_2(struct kunit *test)
+ {
+ 	s64 d[]			= { 100, 100, 100, 100, 100 };
+ 	s64 mean[]		= {  22,  32,  40,  46,  50 };
+@@ -155,18 +143,6 @@ static void mean_and_variance_test_3(struct kunit *test)
+ 			d, mean, stddev, weighted_mean, weighted_stddev);
+ }
+ 
+-static void mean_and_variance_test_4(struct kunit *test)
+-{
+-	s64 d[]			= { 100, 100, 100, 100, 100 };
+-	s64 mean[]		= {  10,  11,  12,  13,  14 };
+-	s64 stddev[]		= {   9,  13,  15,  17,  19 };
+-	s64 weighted_mean[]	= {  32,  49,  61,  71,  78 };
+-	s64 weighted_stddev[]	= {  38,  44,  44,  41,  38 };
+-
+-	do_mean_and_variance_test(test, 10, 6, ARRAY_SIZE(d), 2,
+-			d, mean, stddev, weighted_mean, weighted_stddev);
+-}
+-
+ static void mean_and_variance_fast_divpow2(struct kunit *test)
+ {
+ 	s64 i;
+@@ -224,8 +200,6 @@ static struct kunit_case mean_and_variance_test_cases[] = {
+ 	KUNIT_CASE(mean_and_variance_weighted_advanced_test),
+ 	KUNIT_CASE(mean_and_variance_test_1),
+ 	KUNIT_CASE(mean_and_variance_test_2),
+-	KUNIT_CASE(mean_and_variance_test_3),
+-	KUNIT_CASE(mean_and_variance_test_4),
+ 	{}
+ };
+ 
+-- 
+2.43.0
+
 
 
 
