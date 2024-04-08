@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-37552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA8189C658
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:07:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F4489C035
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4E6DB2727D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD23A1F22365
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734FD7BB0C;
-	Mon,  8 Apr 2024 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C6B762F7;
+	Mon,  8 Apr 2024 13:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUVoTRCL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4ZY2sAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291857BAF5;
-	Mon,  8 Apr 2024 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235672E405;
+	Mon,  8 Apr 2024 13:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584568; cv=none; b=VgP+bqN5bfYuiSylnMakFYj+k7CWM9K9AgMWkH4maXuFAHAYph00LuwUii/jo0Xg0MXjwxnQWB75nB79RrGUnk24nhlFpb7IGM/vEO797k6n/4cJXfw36N5qxmvQZTZjOqsdLmgpLt4bV++26JGE8lpf05+tF1teeImkHRAEqBo=
+	t=1712581568; cv=none; b=pA2mJeptEUk5Wxy+ggKILFlajkCQvRKJYlOUGvPIQZoolXdOBPe9PyzZ4heWP00utFTKoVVKJbyWCNDsPSEOolqpQGNuadGCMc+IhPtf2wcp6F93gjT5wVn40EwUzJF+b3ocpWZnVF2Xa2TyN63x+y0CcqF8XaXiOqx1al9dv2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584568; c=relaxed/simple;
-	bh=JhfUDxrqIph1nAsCAR6jbXS5BwRpS6x8uhEBOQew+yM=;
+	s=arc-20240116; t=1712581568; c=relaxed/simple;
+	bh=rGZG94WZEBcKoNdROQxUvuEGYKRKWx0ajBFyo7BRgYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b+xfNOkS0kJLLvGxMheSDfYle3URWa3x75zzvkJ02t9RpE/82ThOkHW7FIHOlM64LjeNwq1sP1RAHWV5tpUxgwCf2iNaAXg7R+tYHW6e0gGR+6i1EFoAIVuey2AHeNjHcAF+9dqq3cCSurLEIrqTrrHf/BXz9vPyCSsgH3GNLs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUVoTRCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B93C433F1;
-	Mon,  8 Apr 2024 13:56:07 +0000 (UTC)
+	 MIME-Version; b=DKtVn0dB1TaGfTZcLE3DSo940kn7S9IdA7m60dkpHdOhD6mC8/zU7u0+IitmVacIEQEjvFIX1myKkOnGWPtl5WO4lIQs8oS3ji9gzD1WCz3CDtQLaMz1aYfiN/ILxaL3x1hexL/on2Jaew4Gx0GJk5ZPbyMw0cHVol5JacqdQmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4ZY2sAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF82C433C7;
+	Mon,  8 Apr 2024 13:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584568;
-	bh=JhfUDxrqIph1nAsCAR6jbXS5BwRpS6x8uhEBOQew+yM=;
+	s=korg; t=1712581568;
+	bh=rGZG94WZEBcKoNdROQxUvuEGYKRKWx0ajBFyo7BRgYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUVoTRCLtuiysz9ipJ676U/ohv/bP7xjQE+tRtxhv0MPxZevXGbQN9J4Y/wSiHV77
-	 GIwEci6ix74/IzfZJClXuKA0tXjfQ44fM+HRDGI+eIzAGcMGbSWpRWAwXGfnNfbkvI
-	 M0xcXCqI8ggNgbQK8y5xRVUX1AlcQBxmaNlWz8MU=
+	b=o4ZY2sAf+QLrASQCUqMO3uEh44XaBTM+e9p1bV+tObvpbyUK84kX3SJ0m2qH7HXMi
+	 pq0N0W+fMzFOIGr05gOpmQKTRp5eZ62oWz5qhW1GQsPZO4Xzr2wjSrDxBGM/eUwkdj
+	 ex98y19QTOD0QLStzm+XtLnQJ04B80gIjVM/7gDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 452/690] nfsd: only fill out return pointer on success in nfsd4_lookup_stateid
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Naama Meir <naamax.meir@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 019/252] igc: Remove stale comment about Tx timestamping
 Date: Mon,  8 Apr 2024 14:55:18 +0200
-Message-ID: <20240408125416.024462260@linuxfoundation.org>
+Message-ID: <20240408125307.248150648@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-[ Upstream commit 4d01416ab41540bb13ec4a39ac4e6c4aa5934bc9 ]
+[ Upstream commit 47ce2956c7a61ff354723e28235205fa2012265b ]
 
-In the case of a revoked delegation, we still fill out the pointer even
-when returning an error, which is bad form. Only overwrite the pointer
-on success.
+The initial igc Tx timestamping implementation used only one register for
+retrieving Tx timestamps. Commit 3ed247e78911 ("igc: Add support for
+multiple in-flight TX timestamps") added support for utilizing all four of
+them e.g., for multiple domain support. Remove the stale comment/FIXME.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 3ed247e78911 ("igc: Add support for multiple in-flight TX timestamps")
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index f427f95ab934e..1e9245303c0f2 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6279,6 +6279,7 @@ nfsd4_lookup_stateid(struct nfsd4_compound_state *cstate,
- 		     struct nfs4_stid **s, struct nfsd_net *nn)
- {
- 	__be32 status;
-+	struct nfs4_stid *stid;
- 	bool return_revoked = false;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index fc1de116d5548..e83700ad7e622 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1640,10 +1640,6 @@ static netdev_tx_t igc_xmit_frame_ring(struct sk_buff *skb,
  
- 	/*
-@@ -6301,15 +6302,16 @@ nfsd4_lookup_stateid(struct nfsd4_compound_state *cstate,
- 	}
- 	if (status)
- 		return status;
--	*s = find_stateid_by_type(cstate->clp, stateid, typemask);
--	if (!*s)
-+	stid = find_stateid_by_type(cstate->clp, stateid, typemask);
-+	if (!stid)
- 		return nfserr_bad_stateid;
--	if (((*s)->sc_type == NFS4_REVOKED_DELEG_STID) && !return_revoked) {
--		nfs4_put_stid(*s);
-+	if ((stid->sc_type == NFS4_REVOKED_DELEG_STID) && !return_revoked) {
-+		nfs4_put_stid(stid);
- 		if (cstate->minorversion)
- 			return nfserr_deleg_revoked;
- 		return nfserr_bad_stateid;
- 	}
-+	*s = stid;
- 	return nfs_ok;
- }
+ 	if (unlikely(test_bit(IGC_RING_FLAG_TX_HWTSTAMP, &tx_ring->flags) &&
+ 		     skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)) {
+-		/* FIXME: add support for retrieving timestamps from
+-		 * the other timer registers before skipping the
+-		 * timestamping request.
+-		 */
+ 		unsigned long flags;
+ 		u32 tstamp_flags;
  
 -- 
 2.43.0
