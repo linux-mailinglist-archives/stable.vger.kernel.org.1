@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D3C89C207
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C3789C13C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4C491C21BB2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA6A61F218FE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D717D416;
-	Mon,  8 Apr 2024 13:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA3B8121B;
+	Mon,  8 Apr 2024 13:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4Ik5OXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7426h8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62317D3E5;
-	Mon,  8 Apr 2024 13:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3636FE35;
+	Mon,  8 Apr 2024 13:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582535; cv=none; b=sji7VJgfHpCHQ6/+XGyGAUDxHTwlGXGH1N3iyZs/GYoaPDxADGS23QAvTuHw+KYksxXEAm0Wrl0JFzDQgOpm6Ct7azVsGXapHh58lvbCb8eNv1Ap6k367ftQ0jztnFbw2wDb8n2j0xbSXe4UQlxXSU9TwPS6xm/GrTxQcqLM0pU=
+	t=1712582054; cv=none; b=OHXQxeE073hljaX5B6RGW7I/xQ/RrU0UB6cVdLIQvZwjp6ja0Giz5R2TIXDazAtE24qtEs+5J5LDGmaxhhvoOk+XdOGsjPitPOxWm3Fwb24JqUitPCW3AF/ohh1Z8pMYV77af3IcMNrBImTMwVRoOf6smFzw+E80+InObbKccXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582535; c=relaxed/simple;
-	bh=4y1F6vR+bMp4qayeMuBXMyDF9E+v6tBmqLCGAV2T0RY=;
+	s=arc-20240116; t=1712582054; c=relaxed/simple;
+	bh=UtAsA4TKW+/icmU659cg0QFdcy3hdYhcZ07NY/k0f1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYEis10+XLzh1R6m3gdRJ/DbNkLtxodNILRLvIyvkL5cdsPKZV891vmiV54sTcLDAJqUH8RAheb1llNXRAFR6d8equOv0kb39O/EJ/+mHwoyZdujFSzuyCRMfUfQnYFxG6rOIEieI/t1YmvKt9njgGKk0XId6Rz0bdL+z7JmPLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4Ik5OXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6EBC433C7;
-	Mon,  8 Apr 2024 13:22:15 +0000 (UTC)
+	 MIME-Version; b=CrVFI+aHVn6uws4izOpIa3CIlqFyFp4PCeEhU9TrBi67yKE8051c6P+DW2eSLIXyABkBc3fCHOuy/RUvSCx89sc4be0PVTPsNwQNfHzr9Jg0Wh/kWIIMMUd3+UXxB/VFn+xyWHIkZp2u6NiDd970kIrEJautUb//eQIA/VKugTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7426h8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23955C43390;
+	Mon,  8 Apr 2024 13:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582535;
-	bh=4y1F6vR+bMp4qayeMuBXMyDF9E+v6tBmqLCGAV2T0RY=;
+	s=korg; t=1712582054;
+	bh=UtAsA4TKW+/icmU659cg0QFdcy3hdYhcZ07NY/k0f1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4Ik5OXDMDi/+aXnZ9nd/n7zNI1nyBT7pZ864tPsAkbCjKW05R2AAb7sSut4iEP+f
-	 omctMLNmoiAHSO3kbnV3t7dxjeYnMfn36jvzjNWXE2pwNwOM/xTAp7qQH/n/h80ffh
-	 UisOZBYOqXtRf/nGeahDbuF+2ChKeofd+43dVW3w=
+	b=b7426h8QJMhFDJwHf4luiCQL1FwEvmZ0kw6PBWkBTGrc67tM8Lgu1BK1kKE0/dfsk
+	 cty2TZcW2+1B+GLZ22y9VQIRjq60Ft0DPC3akPHJgPJ/A+rtGa04ayUt6Cntd6GIjC
+	 PaJIgcOng9LhldM07qZNCvKZFmhY6R0ai9FsVoN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 084/273] net: usb: ax88179_178a: avoid the interface always configured as random address
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 060/252] x86/CPU/AMD: Move the DIV0 bug detection to the Zen1 init function
 Date: Mon,  8 Apr 2024 14:55:59 +0200
-Message-ID: <20240408125311.908763957@linuxfoundation.org>
+Message-ID: <20240408125308.501026151@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 2e91bb99b9d4f756e92e83c4453f894dda220f09 upstream.
+[ Upstream commit bfff3c6692ce64fa9d86eb829d18229c307a0855 ]
 
-After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
-consecutive device resets"), reset is not executed from bind operation and
-mac address is not read from the device registers or the devicetree at that
-moment. Since the check to configure if the assigned mac address is random
-or not for the interface, happens after the bind operation from
-usbnet_probe, the interface keeps configured as random address, although the
-address is correctly read and set during open operation (the only reset
-now).
+No functional changes.
 
-In order to keep only one reset for the device and to avoid the interface
-always configured as random address, after reset, configure correctly the
-suitable field from the driver, if the mac address is read successfully from
-the device registers or the devicetree. Take into account if a locally
-administered address (random) was previously stored.
-
-cc: stable@vger.kernel.org # 6.6+
-Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
-Reported-by: Dave Stevenson  <dave.stevenson@raspberrypi.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240403132158.344838-1-jtornosm@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: http://lore.kernel.org/r/20231120104152.13740-9-bp@alien8.de
+Stable-dep-of: c7b2edd8377b ("perf/x86/amd/core: Update and fix stalled-cycles-* events for Zen 2 and later")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/amd.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1273,6 +1273,8 @@ static void ax88179_get_mac_addr(struct
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index d8a0dc01a7db2..f4373530c7de0 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -70,10 +70,6 @@ static const int amd_erratum_383[] =
+ static const int amd_erratum_1054[] =
+ 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0, 0, 0x2f, 0xf));
  
- 	if (is_valid_ether_addr(mac)) {
- 		eth_hw_addr_set(dev->net, mac);
-+		if (!is_local_ether_addr(mac))
-+			dev->net->addr_assign_type = NET_ADDR_PERM;
- 	} else {
- 		netdev_info(dev->net, "invalid MAC address, using random\n");
- 		eth_hw_addr_random(dev->net);
+-static const int amd_div0[] =
+-	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x00, 0x0, 0x2f, 0xf),
+-			   AMD_MODEL_RANGE(0x17, 0x50, 0x0, 0x5f, 0xf));
+-
+ static const int amd_erratum_1485[] =
+ 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x19, 0x10, 0x0, 0x1f, 0xf),
+ 			   AMD_MODEL_RANGE(0x19, 0x60, 0x0, 0xaf, 0xf));
+@@ -1043,6 +1039,9 @@ static void init_amd_zen(struct cpuinfo_x86 *c)
+ 		if (c->x86 == 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
+ 			set_cpu_cap(c, X86_FEATURE_BTC_NO);
+ 	}
++
++	pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protection.\n");
++	setup_force_cpu_bug(X86_BUG_DIV0);
+ }
+ 
+ static bool cpu_has_zenbleed_microcode(void)
+@@ -1211,11 +1210,6 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	    cpu_has(c, X86_FEATURE_AUTOIBRS))
+ 		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS));
+ 
+-	if (cpu_has_amd_erratum(c, amd_div0)) {
+-		pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protection.\n");
+-		setup_force_cpu_bug(X86_BUG_DIV0);
+-	}
+-
+ 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
+ 	     cpu_has_amd_erratum(c, amd_erratum_1485))
+ 		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
+-- 
+2.43.0
+
 
 
 
