@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8427E89C353
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF1F89C661
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69339B2668E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D57AEB2B6D7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BEC7F7C7;
-	Mon,  8 Apr 2024 13:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D707E115;
+	Mon,  8 Apr 2024 14:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOCalfeQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgWvmD3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E877F49B;
-	Mon,  8 Apr 2024 13:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9787D3FE;
+	Mon,  8 Apr 2024 14:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582863; cv=none; b=gB6zyHjZCdxx1/hCstsNNLZiVdYEja9K6vu/fq5yJ8CI6CPg547CXuevIsPBcJYFrVhGSWOCy8ncv7/tv8rd2xvoWGGqIFS/kGw3TRgpcjVgsYZQy1CQhkStgr8nNPYHxga2kiNXIujdPBZUeuccZB3XeMi3qDLVEbIxlTn5jzI=
+	t=1712584844; cv=none; b=XQfyVowq/q1QocBWdparxWoKrcBXXUattZMPvjV3XHHCXMsXmO9moAA62+B0zTWxJt7lXH9Sz/TcdFBCmzu8yMwdAkC0ahXjxk2BroNT16S26w4M/FgFNXDYPkSf+V0e5jPlPXIdMsIaW90PiqFsEhj4x8YSag5E+NviQt6Bd58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582863; c=relaxed/simple;
-	bh=AlQ9wX9Lsgqt/bgdyZUfyATy47SByO4UgOrWD8HGAnY=;
+	s=arc-20240116; t=1712584844; c=relaxed/simple;
+	bh=ea8aiDlL4oIE2vsqvWd1mxRa6jomX9pvUdgOEUiFRWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlIdqd0eFixb+dcl5ZrCdRXxGDju3Gl4VwsSsJbaQvtLs1s3cUAj7mF0LQ9gTPMM29xVlGFLQSbXWLtecvsd2DcnedmHPqbOxa2v1LOq0elCS6bmmAjfsirEBqQoYfIuVVZsVQh3nxwpLhW/OoEZIkT/laClUcjIhRsOLNOCQ14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOCalfeQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C4EC433C7;
-	Mon,  8 Apr 2024 13:27:42 +0000 (UTC)
+	 MIME-Version; b=rWidVUwLKpJTyI4K7aN8jnb/bVnpibs70O6Y6Szn14W5mwZfLDDyfgSmWOHJSCDwIRrm1G/8pOdgouuqz56SZJ3mpIF/WEp2ejo2wRjYasdRyj9k3IRoDZQ/Sz/XhXF/a5KDqyrxrr+qCIesTmpZSYVDt/alKghhm0NnUzTWsCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgWvmD3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45039C433F1;
+	Mon,  8 Apr 2024 14:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582863;
-	bh=AlQ9wX9Lsgqt/bgdyZUfyATy47SByO4UgOrWD8HGAnY=;
+	s=korg; t=1712584844;
+	bh=ea8aiDlL4oIE2vsqvWd1mxRa6jomX9pvUdgOEUiFRWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOCalfeQDUPrxWYYMrHJ+hGkk23PTa9nX49I2aeLq6GbQS9+DZqgJ+NrC6G6kxieB
-	 RChStVcNRYLRavM2wsKvL0tjFaqbpQocTPgJJ3wRTim8rSZqqF7eFffEzdtBLBcPuU
-	 EM4i//dZHTEvcSoY9BjQB06aW6eGWg/mEMKyyEgM=
+	b=vgWvmD3QHqV84/KypMUCeZMCUpTi4Rs4sa9Xrcs3nZeQQYjOWvqOChjVtfK8uTzxG
+	 x7z4hDkXrsUfsOGGpsZrh9LYgVneAAfa4GpXomywjYaFeAja2wlMT0qlwYzaPUwXfh
+	 ReDKAimif5T8hC15vUtUMCyDwqNLjJgIY8DDGrgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1c1cf138518bf0c53d68@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 116/252] erspan: make sure erspan_base_hdr is present in skb->head
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 549/690] NFSD: fix possible oops when nfsd/pool_stats is closed.
 Date: Mon,  8 Apr 2024 14:56:55 +0200
-Message-ID: <20240408125310.233175554@linuxfoundation.org>
+Message-ID: <20240408125419.518748990@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: NeilBrown <neilb@suse.de>
 
-commit 17af420545a750f763025149fa7b833a4fc8b8f0 upstream.
+[ Upstream commit 88956eabfdea7d01d550535af120d4ef265b1d02 ]
 
-syzbot reported a problem in ip6erspan_rcv() [1]
+If /proc/fs/nfsd/pool_stats is open when the last nfsd thread exits, then
+when the file is closed a NULL pointer is dereferenced.
+This is because nfsd_pool_stats_release() assumes that the
+pointer to the svc_serv cannot become NULL while a reference is held.
 
-Issue is that ip6erspan_rcv() (and erspan_rcv()) no longer make
-sure erspan_base_hdr is present in skb linear part (skb->head)
-before getting @ver field from it.
+This used to be the case but a recent patch split nfsd_last_thread() out
+from nfsd_put(), and clearing the pointer is done in nfsd_last_thread().
 
-Add the missing pskb_may_pull() calls.
+This is easily reproduced by running
+   rpc.nfsd 8 ; ( rpc.nfsd 0;true) < /proc/fs/nfsd/pool_stats
 
-v2: Reload iph pointer in erspan_rcv() after pskb_may_pull()
-    because skb->head might have changed.
+Fortunately nfsd_pool_stats_release() has easy access to the svc_serv
+pointer, and so can call svc_put() on it directly.
 
-[1]
-
- BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2742 [inline]
- BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2756 [inline]
- BUG: KMSAN: uninit-value in ip6erspan_rcv net/ipv6/ip6_gre.c:541 [inline]
- BUG: KMSAN: uninit-value in gre_rcv+0x11f8/0x1930 net/ipv6/ip6_gre.c:610
-  pskb_may_pull_reason include/linux/skbuff.h:2742 [inline]
-  pskb_may_pull include/linux/skbuff.h:2756 [inline]
-  ip6erspan_rcv net/ipv6/ip6_gre.c:541 [inline]
-  gre_rcv+0x11f8/0x1930 net/ipv6/ip6_gre.c:610
-  ip6_protocol_deliver_rcu+0x1d4c/0x2ca0 net/ipv6/ip6_input.c:438
-  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-  ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-  dst_input include/net/dst.h:460 [inline]
-  ip6_rcv_finish+0x955/0x970 net/ipv6/ip6_input.c:79
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ipv6_rcv+0xde/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5538 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5652
-  netif_receive_skb_internal net/core/dev.c:5738 [inline]
-  netif_receive_skb+0x58/0x660 net/core/dev.c:5798
-  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1549
-  tun_get_user+0x5566/0x69e0 drivers/net/tun.c:2002
-  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-  call_write_iter include/linux/fs.h:2108 [inline]
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0xb63/0x1520 fs/read_write.c:590
-  ksys_write+0x20f/0x4c0 fs/read_write.c:643
-  __do_sys_write fs/read_write.c:655 [inline]
-  __se_sys_write fs/read_write.c:652 [inline]
-  __x64_sys_write+0x93/0xe0 fs/read_write.c:652
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:3804 [inline]
-  slab_alloc_node mm/slub.c:3845 [inline]
-  kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
-  __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
-  alloc_skb include/linux/skbuff.h:1318 [inline]
-  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
-  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
-  tun_alloc_skb drivers/net/tun.c:1525 [inline]
-  tun_get_user+0x209a/0x69e0 drivers/net/tun.c:1846
-  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-  call_write_iter include/linux/fs.h:2108 [inline]
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0xb63/0x1520 fs/read_write.c:590
-  ksys_write+0x20f/0x4c0 fs/read_write.c:643
-  __do_sys_write fs/read_write.c:655 [inline]
-  __se_sys_write fs/read_write.c:652 [inline]
-  __x64_sys_write+0x93/0xe0 fs/read_write.c:652
- do_syscall_64+0xd5/0x1f0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-CPU: 1 PID: 5045 Comm: syz-executor114 Not tainted 6.9.0-rc1-syzkaller-00021-g962490525cff #0
-
-Fixes: cb73ee40b1b3 ("net: ip_gre: use erspan key field for tunnel lookup")
-Reported-by: syzbot+1c1cf138518bf0c53d68@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/000000000000772f2c0614b66ef7@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/20240328112248.1101491-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f28a971ee9f ("nfsd: separate nfsd_last_thread() from nfsd_put()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/ipv4/ip_gre.c  |    5 +++++
- net/ipv6/ip6_gre.c |    3 +++
- 2 files changed, 8 insertions(+)
+ fs/nfsd/nfssvc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -280,8 +280,13 @@ static int erspan_rcv(struct sk_buff *sk
- 					  tpi->flags | TUNNEL_NO_KEY,
- 					  iph->saddr, iph->daddr, 0);
- 	} else {
-+		if (unlikely(!pskb_may_pull(skb,
-+					    gre_hdr_len + sizeof(*ershdr))))
-+			return PACKET_REJECT;
-+
- 		ershdr = (struct erspan_base_hdr *)(skb->data + gre_hdr_len);
- 		ver = ershdr->ver;
-+		iph = ip_hdr(skb);
- 		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex,
- 					  tpi->flags | TUNNEL_KEY,
- 					  iph->saddr, iph->daddr, tpi->key);
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -528,6 +528,9 @@ static int ip6erspan_rcv(struct sk_buff
- 	struct ip6_tnl *tunnel;
- 	u8 ver;
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index ee5713fca1870..2a1dd580dfb94 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -1084,11 +1084,12 @@ int nfsd_pool_stats_open(struct inode *inode, struct file *file)
  
-+	if (unlikely(!pskb_may_pull(skb, sizeof(*ershdr))))
-+		return PACKET_REJECT;
-+
- 	ipv6h = ipv6_hdr(skb);
- 	ershdr = (struct erspan_base_hdr *)skb->data;
- 	ver = ershdr->ver;
+ int nfsd_pool_stats_release(struct inode *inode, struct file *file)
+ {
++	struct seq_file *seq = file->private_data;
++	struct svc_serv *serv = seq->private;
+ 	int ret = seq_release(inode, file);
+-	struct net *net = inode->i_sb->s_fs_info;
+ 
+ 	mutex_lock(&nfsd_mutex);
+-	nfsd_put(net);
++	svc_put(serv);
+ 	mutex_unlock(&nfsd_mutex);
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
