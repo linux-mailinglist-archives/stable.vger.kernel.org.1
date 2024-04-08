@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CED389C59E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5540B89C549
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D8CC1F21243
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 112D6B2F38B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C247C08C;
-	Mon,  8 Apr 2024 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467797FBC1;
+	Mon,  8 Apr 2024 13:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYAhjJdz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLgAc/wx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44E979F0;
-	Mon,  8 Apr 2024 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CCC78285;
+	Mon,  8 Apr 2024 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584706; cv=none; b=XySQwViA1yPPLXz5P/iS0GuxFra5bkX+twpWsTtLu+SDBQ2YYSG8XccGeNMPc80k8Pg2rMcy7Zv0dUbTFjxpJEfcQG2q5TmjK2vxjqoorE4MXNVg25mqU+GB0aljmXlq88or0dmNEED2gIJbHcXCEHkv0pccj1CO3ZchiPMcXSI=
+	t=1712583148; cv=none; b=I6A36cex5QiVIR4K3jDLLhSzhxMv3zU9lulXz3tXrJ059jXzrkVLVdzTesMlq7hAWpeK9tmhJjWoSIAKmdVS3IUgyOezhnY0aLww/+wHTpmly0e6SWngnrWQDyNozr1P/jRIKg2oXX0+YESCIIbejNuTb5XYJ1UFyUtgTKOV8j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584706; c=relaxed/simple;
-	bh=kjXT+9MQngyZsx2xAXD2LP4hj06lL8qq55KKvB+0w9g=;
+	s=arc-20240116; t=1712583148; c=relaxed/simple;
+	bh=jyKOit/RFiH/1leLbgvy0YECfZwvjZ1gRfaT9y/Zumk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utde1YC56TwXZq5YOiDfABkxhZbt5na9bb2qnhNlfnmowmApSPVUII38cQdU0ua+1X1ckjraIQvWmMkwrb96HXcUmEzO4diG2juJGvaYdu4iqUSPcdx3bUHycA6l9W/sz1GTjhLyzhnbda8Ypu3/ZqGjsGibp7EcJ9/DMXw1Cws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYAhjJdz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A365C433C7;
-	Mon,  8 Apr 2024 13:58:25 +0000 (UTC)
+	 MIME-Version; b=CtG/Y/s3mQYrNMX+w6HEohrHtdSE3BNUvoz3zD5J8ihCYNUo/AwHD89ux0UzLo6+Ffw7u7wLeAZ64QBmAJQUGyblTHYjQ0sZdVwC6tZTl3kxZ7M+U+0ceB7B+VsgAqVhIdQsgLtrTnCfho64qK286YHNjJhj6ID95qgN2602H1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLgAc/wx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDBBC433F1;
+	Mon,  8 Apr 2024 13:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584706;
-	bh=kjXT+9MQngyZsx2xAXD2LP4hj06lL8qq55KKvB+0w9g=;
+	s=korg; t=1712583147;
+	bh=jyKOit/RFiH/1leLbgvy0YECfZwvjZ1gRfaT9y/Zumk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYAhjJdzzi2JAngp+fSo2lxjzKuCH2RSrLUSjZV46QUOu25GWdmOQEaAqPqdhDASh
-	 A0Fj0KTf6VHDi5aJTWX1LgThdo8Q4r74dWU3CbUMhOThvEzXHJSetACUEt43rg35lM
-	 P9GLSLmqNaPAc+q1yck19X4AHgWyzJZVdw04W68U=
+	b=WLgAc/wxLD1PPcRjO4cVwZPxLz+5IFtgYPJr3BLM2Y6RQw4MUYuasH4B7XV/37ci6
+	 cRlkRjpyHsnPWd06Rm5BmZAEj3nm3yvaOTmuJ6rPk5SjT7VCPpt1UYt+PefzoaKQUv
+	 MtuvEoL0riJxjNiaRoaXthj5XS/Oj0TIg3gnZfdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 530/690] nfsd: NFSD_FILE_KEY_INODE only needs to find GCed entries
-Date: Mon,  8 Apr 2024 14:56:36 +0200
-Message-ID: <20240408125418.850054341@linuxfoundation.org>
+	Antoine Tenart <atenart@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.8 122/273] udp: do not transition UDP GRO fraglist partial checksums to unnecessary
+Date: Mon,  8 Apr 2024 14:56:37 +0200
+Message-ID: <20240408125313.084913791@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 6c31e4c98853a4ba47355ea151b36a77c42b7734 ]
+commit f0b8c30345565344df2e33a8417a27503589247d upstream.
 
-Since v4 files are expected to be long-lived, there's little value in
-closing them out of the cache when there is conflicting access.
+UDP GRO validates checksums and in udp4/6_gro_complete fraglist packets
+are converted to CHECKSUM_UNNECESSARY to avoid later checks. However
+this is an issue for CHECKSUM_PARTIAL packets as they can be looped in
+an egress path and then their partial checksums are not fixed.
 
-Change the comparator to also match the gc value in the key. Change both
-of the current users of that key to set the gc value in the key to
-"true".
+Different issues can be observed, from invalid checksum on packets to
+traces like:
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+  gen01: hw csum failure
+  skb len=3008 headroom=160 headlen=1376 tailroom=0
+  mac=(106,14) net=(120,40) trans=160
+  shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
+  csum(0xffff232e ip_summed=2 complete_sw=0 valid=0 level=0)
+  hash(0x77e3d716 sw=1 l4=1) proto=0x86dd pkttype=0 iif=12
+  ...
+
+Fix this by only converting CHECKSUM_NONE packets to
+CHECKSUM_UNNECESSARY by reusing __skb_incr_checksum_unnecessary. All
+other checksum types are kept as-is, including CHECKSUM_COMPLETE as
+fraglist packets being segmented back would have their skb->csum valid.
+
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv4/udp_offload.c |    8 +-------
+ net/ipv6/udp_offload.c |    8 +-------
+ 2 files changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 677a8d935ccc2..4ddc82b84f7c4 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -174,6 +174,8 @@ static int nfsd_file_obj_cmpfn(struct rhashtable_compare_arg *arg,
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -722,13 +722,7 @@ INDIRECT_CALLABLE_SCOPE int udp4_gro_com
+ 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
+ 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
  
- 	switch (key->type) {
- 	case NFSD_FILE_KEY_INODE:
-+		if (test_bit(NFSD_FILE_GC, &nf->nf_flags) != key->gc)
-+			return 1;
- 		if (nf->nf_inode != key->inode)
- 			return 1;
- 		break;
-@@ -694,6 +696,7 @@ nfsd_file_queue_for_close(struct inode *inode, struct list_head *dispose)
- 	struct nfsd_file_lookup_key key = {
- 		.type	= NFSD_FILE_KEY_INODE,
- 		.inode	= inode,
-+		.gc	= true,
- 	};
- 	struct nfsd_file *nf;
+-		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
+-			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
+-				skb->csum_level++;
+-		} else {
+-			skb->ip_summed = CHECKSUM_UNNECESSARY;
+-			skb->csum_level = 0;
+-		}
++		__skb_incr_checksum_unnecessary(skb);
  
-@@ -1048,6 +1051,7 @@ nfsd_file_is_cached(struct inode *inode)
- 	struct nfsd_file_lookup_key key = {
- 		.type	= NFSD_FILE_KEY_INODE,
- 		.inode	= inode,
-+		.gc	= true,
- 	};
- 	bool ret = false;
+ 		return 0;
+ 	}
+--- a/net/ipv6/udp_offload.c
++++ b/net/ipv6/udp_offload.c
+@@ -174,13 +174,7 @@ INDIRECT_CALLABLE_SCOPE int udp6_gro_com
+ 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
+ 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
  
--- 
-2.43.0
-
+-		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
+-			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
+-				skb->csum_level++;
+-		} else {
+-			skb->ip_summed = CHECKSUM_UNNECESSARY;
+-			skb->csum_level = 0;
+-		}
++		__skb_incr_checksum_unnecessary(skb);
+ 
+ 		return 0;
+ 	}
 
 
 
