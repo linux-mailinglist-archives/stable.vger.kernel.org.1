@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-36777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D478A89C19D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3C889C29F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126551C21622
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E089DB2C6F6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594EB7FBAB;
-	Mon,  8 Apr 2024 13:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2437CF17;
+	Mon,  8 Apr 2024 13:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utsdRSL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfX9aNkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184EC7D07E;
-	Mon,  8 Apr 2024 13:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7964D2E405;
+	Mon,  8 Apr 2024 13:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582314; cv=none; b=ejSSkraqf95s9EesYDpB9TPxMl0/HZna8Fj+FCrYIkGlLO6fxXSN5MiJ0aE8q2ygIuwaX6CvUDx0HpyRS1vnQfh77OqtNky4dvpJ4lp/hGDDO+2uwUl6ReSIdUO8UNlqT9gQlMrl+1CkcHUy0/E9OQEvkTdarjfc4fd96KuyzJ4=
+	t=1712582813; cv=none; b=FmJJp8MvY+yJRJslOY/IAxMUZ/gmGPHlURY6FqWX6lNdZ3Ug7BdT1NezSxywYFH85e7s/BWChLY97EWbVLHMXbMP4iu8qhjQS8Tm1iafjs1z119L9O/ffhUyZcnq01D1VOVdETDZg5sVcY9j2LF0vrUm5MmWOtzsQtAgUsOCptI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582314; c=relaxed/simple;
-	bh=qQDZyz6jshTP1QXK56FgQFLsZVCg12xLuUz4jiRKRCA=;
+	s=arc-20240116; t=1712582813; c=relaxed/simple;
+	bh=Clgkv931SKIAnvc/0aDywO/CBBZbuK5gxpZUUTjL1CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UacvXXmzTPabHl2YYMtZvmy8iB/BW2WkfeCcb9dE7321oQHDGz23W38wMiF1+s2ZadQalPoCT/kkwYjRwRq5JTDC3olTiH7FAU3pz074EMYJAolG7y3HbGma373rgc8F57JXKWaj78Q8GOoM22svI9UwDiqtHQwxKyWMBEUP5uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utsdRSL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B2DC433F1;
-	Mon,  8 Apr 2024 13:18:33 +0000 (UTC)
+	 MIME-Version; b=LQ9kyTg7pgODM29ds+2zud60JetDfq7ZgUJVqavZThUE8NuCrlB5UNy73uxwlFDXiyIysOfU9IHbxHO8XyKRGAVycD53A16QY0+Lti3TMLxLcrUssEMNoNv0Gd2PZbBBnADMzrFJ3HDxYy6Q/6mnJrF6P7dUqwETu/dETggTx/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfX9aNkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002ADC433C7;
+	Mon,  8 Apr 2024 13:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582314;
-	bh=qQDZyz6jshTP1QXK56FgQFLsZVCg12xLuUz4jiRKRCA=;
+	s=korg; t=1712582813;
+	bh=Clgkv931SKIAnvc/0aDywO/CBBZbuK5gxpZUUTjL1CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utsdRSL64u07yyJTlXxTxGNXR8ybvHL2UXB3dgPXlMkcQ2YZHA0f2WRPt3lVchKGu
-	 Dx4cqw3KCjDGtBhcA+BnopBRY3Yc1WKtlQFam8TQf9sWvn0uIu4pmf23+8iRZeQTmP
-	 C06LSVeNIb0BjMYcqyy5WQZjZv1sGiJFDPkTVyrU=
+	b=YfX9aNklcrD/nqVfHVPrs1L9jXscJqH2oqX1g6eQXwMC8Ji/S8FddpZ19oVznXRTo
+	 7pGXDlKmzx6J6+Wl6iS5/GSMMiVV+1tojPkzwVPEFD0Rda7xDRnRdCWE/mIy37eqMP
+	 qKB/afcwgt3ml3vGVjl/BQ2tXMr3LJd5g5LwYmHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Ting Chen <hexrabbit@devco.re>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.6 083/252] netfilter: nf_tables: release mutex after nft_gc_seq_end from abort path
+	Antoine Tenart <atenart@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.8 107/273] selftests: net: gro fwd: update vxlan GRO test expectations
 Date: Mon,  8 Apr 2024 14:56:22 +0200
-Message-ID: <20240408125309.214140983@linuxfoundation.org>
+Message-ID: <20240408125312.628465219@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Antoine Tenart <atenart@kernel.org>
 
-commit 0d459e2ffb541841714839e8228b845458ed3b27 upstream.
+commit 0fb101be97ca27850c5ecdbd1269423ce4d1f607 upstream.
 
-The commit mutex should not be released during the critical section
-between nft_gc_seq_begin() and nft_gc_seq_end(), otherwise, async GC
-worker could collect expired objects and get the released commit lock
-within the same GC sequence.
+UDP tunnel packets can't be GRO in-between their endpoints as this
+causes different issues. The UDP GRO fwd vxlan tests were relying on
+this and their expectations have to be fixed.
 
-nf_tables_module_autoload() temporarily releases the mutex to load
-module dependencies, then it goes back to replay the transaction again.
-Move it at the end of the abort phase after nft_gc_seq_end() is called.
+We keep both vxlan tests and expected no GRO from happening. The vxlan
+UDP GRO bench test was removed as it's not providing any valuable
+information now.
 
-Cc: stable@vger.kernel.org
-Fixes: 720344340fb9 ("netfilter: nf_tables: GC transaction race with abort path")
-Reported-by: Kuan-Ting Chen <hexrabbit@devco.re>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/udpgro_fwd.sh |   10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10518,11 +10518,6 @@ static int __nf_tables_abort(struct net
- 		nf_tables_abort_release(trans);
- 	}
+--- a/tools/testing/selftests/net/udpgro_fwd.sh
++++ b/tools/testing/selftests/net/udpgro_fwd.sh
+@@ -241,7 +241,7 @@ for family in 4 6; do
  
--	if (action == NFNL_ABORT_AUTOLOAD)
--		nf_tables_module_autoload(net);
--	else
--		nf_tables_module_autoload_cleanup(net);
+ 	create_vxlan_pair
+ 	ip netns exec $NS_DST ethtool -K veth$DST rx-gro-list on
+-	run_test "GRO frag list over UDP tunnel" $OL_NET$DST 1 1
++	run_test "GRO frag list over UDP tunnel" $OL_NET$DST 10 10
+ 	cleanup
+ 
+ 	# use NAT to circumvent GRO FWD check
+@@ -254,13 +254,7 @@ for family in 4 6; do
+ 	# load arp cache before running the test to reduce the amount of
+ 	# stray traffic on top of the UDP tunnel
+ 	ip netns exec $NS_SRC $PING -q -c 1 $OL_NET$DST_NAT >/dev/null
+-	run_test "GRO fwd over UDP tunnel" $OL_NET$DST_NAT 1 1 $OL_NET$DST
+-	cleanup
 -
- 	return err;
- }
+-	create_vxlan_pair
+-	run_bench "UDP tunnel fwd perf" $OL_NET$DST
+-	ip netns exec $NS_DST ethtool -K veth$DST rx-udp-gro-forwarding on
+-	run_bench "UDP tunnel GRO fwd perf" $OL_NET$DST
++	run_test "GRO fwd over UDP tunnel" $OL_NET$DST_NAT 10 10 $OL_NET$DST
+ 	cleanup
+ done
  
-@@ -10539,6 +10534,14 @@ static int nf_tables_abort(struct net *n
- 
- 	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
- 
-+	/* module autoload needs to happen after GC sequence update because it
-+	 * temporarily releases and grabs mutex again.
-+	 */
-+	if (action == NFNL_ABORT_AUTOLOAD)
-+		nf_tables_module_autoload(net);
-+	else
-+		nf_tables_module_autoload_cleanup(net);
-+
- 	mutex_unlock(&nft_net->commit_mutex);
- 
- 	return ret;
 
 
 
