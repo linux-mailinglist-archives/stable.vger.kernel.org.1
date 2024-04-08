@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-36980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A09689C293
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286B489C5CB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF26A1F23AB6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7BA6282F5D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE617FBDF;
-	Mon,  8 Apr 2024 13:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1C87EF06;
+	Mon,  8 Apr 2024 14:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ijqLBID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQSykcIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE05076413;
-	Mon,  8 Apr 2024 13:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381B57BAF5;
+	Mon,  8 Apr 2024 14:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582904; cv=none; b=XAvG7RDNCy0u3OO2S2DdUptndlU+TjBM3yo79fhf6crg27Y0Wjulq+bjAHPOJ3LimvEdvpI/XceBr6rtWDG0qWiHeYjA60kueQr1zF85BcYK4ACuajUq9jTpjobkUeBOCFrgcqBgaKuhzSJ/zd+4fbEJgvGH2nCle5sIra1lK3o=
+	t=1712584821; cv=none; b=YHKQbtd2p6ELpKisv9H4liQv+hiWGQL2drE3qGT5JBTNxM3qpUJ5i3+wKvuDeUSiqLIcwcVLn4ImEvr7gfMhif20691SFUL2RpAmd71VfH5YJUZ1RahdprOT8Lt+5PjBrmJElDRrG71mzreGv3ypB16o885nk88EgYE+ii1oCaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582904; c=relaxed/simple;
-	bh=g68e4f0gTDvrUCTPfLJrcSzedP3a9lJTAi41QmDfFR8=;
+	s=arc-20240116; t=1712584821; c=relaxed/simple;
+	bh=+CdtoDJd+zmV9Ed4q/zUXoIRe4gPNv0WKB1Gh54LFq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IkMAD4nmDymQYJXhLTXC/ViJjOKpABxFmqlE7nE14GTwQ1bNVSOGU5YCwiIKSR6d5SBms7wY1yz2RcQNIX8lto/uDVCTzYeva6hIdx9YImRaYUuvfbVI8n9ZLXlQMC/51AXm5DZsuKHgUh55MmLeJ4nsKNmJA1uCmssUHK2SFJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ijqLBID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B49DC433C7;
-	Mon,  8 Apr 2024 13:28:23 +0000 (UTC)
+	 MIME-Version; b=ZNn8+Rc3NOOgV0mqd/V8D0Xrvd0Sw0FPC+NXsRgqqPVpKXWuTQmQRaWsPwTZOnGnWg971uCbD8tpbPhJ+H5XXhhHg6qs+mXiDm2YmseYamTHo+e3hH22Z/pP5fAlAK3wS5FAvHn/Vd8xMS0g6g2Ws2YdDcEfMP5O3cNrVLWF8+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQSykcIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42CDC433C7;
+	Mon,  8 Apr 2024 14:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582903;
-	bh=g68e4f0gTDvrUCTPfLJrcSzedP3a9lJTAi41QmDfFR8=;
+	s=korg; t=1712584821;
+	bh=+CdtoDJd+zmV9Ed4q/zUXoIRe4gPNv0WKB1Gh54LFq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ijqLBID1EFAjqOVX8AHRP+VUc31O0/8k3hyGv5hi+DEsw7xsuXf3CpuZzfK8hxc0
-	 YgW0KWAdZ0Kjm8EpkqwUWRP/no8sUrH/KCqAY7oqyckNWbhCWIPHphv9X0RczF8gnF
-	 if1MmzdOZwM0Upo8mxld6qmitNSrgXadBeHkF1x0=
+	b=QQSykcILLbexo97stReAbE85OKozO65CoGM1hxZGAd1gQRoq/IBljVyZvWFKljYtd
+	 S8dwXKimUPzcNi31V+L1eQQeX2bvUuyzMUVCWQY+j2WPxE6+cNmhbFDafPe8TIxA+y
+	 n2qZr7mX6XN9iwglpxR9Pw6QQ05J9P+V1NXwvHDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Miess <daniel.miess@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/252] drm/amd/display: Fix DPSTREAM CLK on and off sequence
-Date: Mon,  8 Apr 2024 14:57:13 +0200
-Message-ID: <20240408125310.797267043@linuxfoundation.org>
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 5.15 568/690] mm/migrate: set swap entry values of THP tail pages properly.
+Date: Mon,  8 Apr 2024 14:57:14 +0200
+Message-ID: <20240408125420.194988854@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+From: Zi Yan <ziy@nvidia.com>
 
-[ Upstream commit e8d131285c98927554cd007f47cedc4694bfedde ]
+The tail pages in a THP can have swap entry information stored in their
+private field. When migrating to a new page, all tail pages of the new
+page need to update ->private to avoid future data corruption.
 
-[Why]
-Secondary DP2 display fails to light up in some instances
+This fix is stable-only, since after commit 07e09c483cbe ("mm/huge_memory:
+work on folio->swap instead of page->private when splitting folio"),
+subpages of a swapcached THP no longer requires the maintenance.
 
-[How]
-Clock needs to be on when DPSTREAMCLK*_EN =1. This change
-moves dtbclk_p enable/disable point to make sure this is
-the case
+Adding THPs to the swapcache was introduced in commit
+38d8b4e6bdc87 ("mm, THP, swap: delay splitting THP during swap out"),
+where each subpage of a THP added to the swapcache had its own swapcache
+entry and required the ->private field to point to the correct swapcache
+entry. Later, when THP migration functionality was implemented in commit
+616b8371539a6 ("mm: thp: enable thp migration in generic path"),
+it initially did not handle the subpages of swapcached THPs, failing to
+update their ->private fields or replace the subpage pointers in the
+swapcache. Subsequently, commit e71769ae5260 ("mm: enable thp migration
+for shmem thp") addressed the swapcache update aspect. This patch fixes
+the update of subpage ->private fields.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Reviewed-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Daniel Miess <daniel.miess@amd.com>
-Signed-off-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 72d72e8fddbc ("drm/amd/display: Prevent crash when disable stream")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic_charante@quicinc.com/
+Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drm/amd/display/dc/dce110/dce110_hw_sequencer.c   |  2 +-
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c    | 11 +++++------
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ mm/migrate.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-index 251dd800a2a66..2ac41c2a7238c 100644
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-@@ -1179,9 +1179,9 @@ void dce110_disable_stream(struct pipe_ctx *pipe_ctx)
- 		dto_params.timing = &pipe_ctx->stream->timing;
- 		dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
- 		if (dccg) {
--			dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
- 			dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
- 			dccg->funcs->set_dpstreamclk(dccg, REFCLK, tg->inst, dp_hpo_inst);
-+			dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
- 		}
- 	} else if (dccg && dccg->funcs->disable_symclk_se) {
- 		dccg->funcs->disable_symclk_se(dccg, stream_enc->stream_enc_inst,
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index 1e3803739ae61..12af2859002f7 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -2728,18 +2728,17 @@ void dcn20_enable_stream(struct pipe_ctx *pipe_ctx)
- 	}
- 
- 	if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx)) {
--		dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
--		dccg->funcs->set_dpstreamclk(dccg, DTBCLK0, tg->inst, dp_hpo_inst);
--
--		phyd32clk = get_phyd32clk_src(link);
--		dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
--
- 		dto_params.otg_inst = tg->inst;
- 		dto_params.pixclk_khz = pipe_ctx->stream->timing.pix_clk_100hz / 10;
- 		dto_params.num_odm_segments = get_odm_segment_count(pipe_ctx);
- 		dto_params.timing = &pipe_ctx->stream->timing;
- 		dto_params.ref_dtbclk_khz = dc->clk_mgr->funcs->get_dtb_ref_clk_frequency(dc->clk_mgr);
- 		dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
-+		dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
-+		dccg->funcs->set_dpstreamclk(dccg, DTBCLK0, tg->inst, dp_hpo_inst);
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -424,8 +424,12 @@ int migrate_page_move_mapping(struct add
+ 	if (PageSwapBacked(page)) {
+ 		__SetPageSwapBacked(newpage);
+ 		if (PageSwapCache(page)) {
++			int i;
 +
-+		phyd32clk = get_phyd32clk_src(link);
-+		dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
- 	} else {
+ 			SetPageSwapCache(newpage);
+-			set_page_private(newpage, page_private(page));
++			for (i = 0; i < (1 << compound_order(page)); i++)
++				set_page_private(newpage + i,
++						 page_private(page + i));
  		}
- 	if (hws->funcs.calculate_dccg_k1_k2_values && dc->res_pool->dccg->funcs->set_pixel_rate_div) {
--- 
-2.43.0
-
+ 	} else {
+ 		VM_BUG_ON_PAGE(PageSwapCache(page), page);
 
 
 
