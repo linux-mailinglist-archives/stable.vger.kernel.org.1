@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-37412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7919289C4BD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF84B89C460
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9DC1C22498
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6813D1F21564
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A327CF1A;
-	Mon,  8 Apr 2024 13:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E955A7E59F;
+	Mon,  8 Apr 2024 13:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZ+JwSrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4Y8+LW1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C8A7C6C8;
-	Mon,  8 Apr 2024 13:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75FA7E0E4;
+	Mon,  8 Apr 2024 13:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584156; cv=none; b=r3fOr9eTFi+m31wQbzivIHmSIqJB06GIIWONPOrDa+NrOphSI4kc3TRW2+uXOoCO5njiOWus5z2WWhqq/Je5Rp/HTCwzTtkfTO/yze7YG6GoBMUEO05qLvz8vrUeuCFvHr5PN3GYlw4eO8GBpodazEtcn7Ue5czye+wYM2Y+XAs=
+	t=1712583899; cv=none; b=MYBpNiY71KxaiK85RWST6JrwiClIqiBc7UCzFuISVH28wkg5MX+zpVhAbntpGtaYlEU4wZk1n+GzAQvHaxC5FUEuWfIIiOJW8c3Yqn9d5H9b7hZTifqotxUwayioRJOhlQ+g06xZD+Pqncolc0RM3/qQ9ZrXCITC51+udcjZ2Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584156; c=relaxed/simple;
-	bh=5+hH6tKnkCvPz4pZhqnYCW3bGWVWvwFb3nv4wis0s68=;
+	s=arc-20240116; t=1712583899; c=relaxed/simple;
+	bh=MDBRB25FrOp4pNwrf47XxmRvdtUbke3CqVH2B6NyTvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YeqbKPIx3URTWD29ctRhPPA3QslmtxXotofU+DyefC5uAXIkqMaHiIORAjmLGQY6GVj5O2kOPw9IDNo5iQJ2CtdWaCGOxNQojVLTV0NkZ2jUdma5MPZBqtE2vLkjMUFmSovmlYDUEgcHdnxWlkpFNaxAx44qbiHTm/fVZgAoKCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZ+JwSrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB36C433C7;
-	Mon,  8 Apr 2024 13:49:16 +0000 (UTC)
+	 MIME-Version; b=BUUQTkxPM+QEJDPqEhlpB7RwqnOUw5WmkzvMnr96YIylsE2i6J5MxgKBdUL/W6yd/rLtvSzOq6YAl9gUkp5n6Pw0YlKviGZXhR+v0ax3dGrMIDctWiQEEUg4UjCHGCOvv8HAEP7LgsBbkJ1/0y0aO14MG/5TDjclubzHKciRiS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4Y8+LW1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3177CC433C7;
+	Mon,  8 Apr 2024 13:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584156;
-	bh=5+hH6tKnkCvPz4pZhqnYCW3bGWVWvwFb3nv4wis0s68=;
+	s=korg; t=1712583899;
+	bh=MDBRB25FrOp4pNwrf47XxmRvdtUbke3CqVH2B6NyTvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZ+JwSrmQKvRIGAoay5sPHodt6SKYhorpfj3Cq0sE1dbjj07LENkwyykQAhWiM7aQ
-	 WJnYEs2YLfZa3d2DP8ClcGk0Bb6hDxwmAdMNgvRonw4b2vnlIZiOKGUmRp9baQgSGq
-	 KZEnW8uHmaf2s8FAtOonDLD0bN5c63woDtMoWZOQ=
+	b=m4Y8+LW1oQP63yaXT1+LDM0885Czgmyes+zJM5syJRcILc1DEbOX0Q5YOMfRYM5Qs
+	 RYd5iAJ4+Bs0jMW6LEnfsdxVMGi8PMCMkGJAAk4J1WIoWDDsjvaw99riZHNk3u9HSg
+	 spnRO9/VssZmPOelUvOZrphMbFcQSypR0OPrGuaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 6.8 270/273] x86/boot: Move mem_encrypt= parsing to the decompressor
-Date: Mon,  8 Apr 2024 14:59:05 +0200
-Message-ID: <20240408125317.887274393@linuxfoundation.org>
+	syzbot+981935d9485a560bfbcb@syzkaller.appspotmail.com,
+	syzbot+2cb5a6c573e98db598cc@syzkaller.appspotmail.com,
+	syzbot+62d8b26793e8a2bd0516@syzkaller.appspotmail.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 247/252] bpf: support deferring bpf_link dealloc to after RCU grace period
+Date: Mon,  8 Apr 2024 14:59:06 +0200
+Message-ID: <20240408125314.324391140@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,200 +65,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit cd0d9d92c8bb46e77de62efd7df13069ddd61e7d upstream.
+commit 1a80dbcb2dbaf6e4c216e62e30fa7d3daa8001ce upstream.
 
-The early SME/SEV code parses the command line very early, in order to
-decide whether or not memory encryption should be enabled, which needs
-to occur even before the initial page tables are created.
+BPF link for some program types is passed as a "context" which can be
+used by those BPF programs to look up additional information. E.g., for
+multi-kprobes and multi-uprobes, link is used to fetch BPF cookie values.
 
-This is problematic for a number of reasons:
-- this early code runs from the 1:1 mapping provided by the decompressor
-  or firmware, which uses a different translation than the one assumed by
-  the linker, and so the code needs to be built in a special way;
-- parsing external input while the entire kernel image is still mapped
-  writable is a bad idea in general, and really does not belong in
-  security minded code;
-- the current code ignores the built-in command line entirely (although
-  this appears to be the case for the entire decompressor)
+Because of this runtime dependency, when bpf_link refcnt drops to zero
+there could still be active BPF programs running accessing link data.
 
-Given that the decompressor/EFI stub is an intrinsic part of the x86
-bootable kernel image, move the command line parsing there and out of
-the core kernel. This removes the need to build lib/cmdline.o in a
-special way, or to use RIP-relative LEA instructions in inline asm
-blocks.
+This patch adds generic support to defer bpf_link dealloc callback to
+after RCU GP, if requested. This is done by exposing two different
+deallocation callbacks, one synchronous and one deferred. If deferred
+one is provided, bpf_link_free() will schedule dealloc_deferred()
+callback to happen after RCU GP.
 
-This involves a new xloadflag in the setup header to indicate
-that mem_encrypt=on appeared on the kernel command line.
+BPF is using two flavors of RCU: "classic" non-sleepable one and RCU
+tasks trace one. The latter is used when sleepable BPF programs are
+used. bpf_link_free() accommodates that by checking underlying BPF
+program's sleepable flag, and goes either through normal RCU GP only for
+non-sleepable, or through RCU tasks trace GP *and* then normal RCU GP
+(taking into account rcu_trace_implies_rcu_gp() optimization), if BPF
+program is sleepable.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20240227151907.387873-17-ardb+git@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+We use this for multi-kprobe and multi-uprobe links, which dereference
+link during program run. We also preventively switch raw_tp link to use
+deferred dealloc callback, as upcoming changes in bpf-next tree expose
+raw_tp link data (specifically, cookie value) to BPF program at runtime
+as well.
+
+Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Reported-by: syzbot+981935d9485a560bfbcb@syzkaller.appspotmail.com
+Reported-by: syzbot+2cb5a6c573e98db598cc@syzkaller.appspotmail.com
+Reported-by: syzbot+62d8b26793e8a2bd0516@syzkaller.appspotmail.com
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20240328052426.3042617-2-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/misc.c         |   15 +++++++++++++++
- arch/x86/include/uapi/asm/bootparam.h   |    1 +
- arch/x86/lib/Makefile                   |   13 -------------
- arch/x86/mm/mem_encrypt_identity.c      |   32 +++-----------------------------
- drivers/firmware/efi/libstub/x86-stub.c |    3 +++
- 5 files changed, 22 insertions(+), 42 deletions(-)
+ include/linux/bpf.h      |   16 +++++++++++++++-
+ kernel/bpf/syscall.c     |   35 ++++++++++++++++++++++++++++++++---
+ kernel/trace/bpf_trace.c |    4 ++--
+ 3 files changed, 49 insertions(+), 6 deletions(-)
 
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -358,6 +358,19 @@ unsigned long decompress_kernel(unsigned
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1524,12 +1524,26 @@ struct bpf_link {
+ 	enum bpf_link_type type;
+ 	const struct bpf_link_ops *ops;
+ 	struct bpf_prog *prog;
+-	struct work_struct work;
++	/* rcu is used before freeing, work can be used to schedule that
++	 * RCU-based freeing before that, so they never overlap
++	 */
++	union {
++		struct rcu_head rcu;
++		struct work_struct work;
++	};
+ };
+ 
+ struct bpf_link_ops {
+ 	void (*release)(struct bpf_link *link);
++	/* deallocate link resources callback, called without RCU grace period
++	 * waiting
++	 */
+ 	void (*dealloc)(struct bpf_link *link);
++	/* deallocate link resources callback, called after RCU grace period;
++	 * if underlying BPF program is sleepable we go through tasks trace
++	 * RCU GP and then "classic" RCU GP
++	 */
++	void (*dealloc_deferred)(struct bpf_link *link);
+ 	int (*detach)(struct bpf_link *link);
+ 	int (*update_prog)(struct bpf_link *link, struct bpf_prog *new_prog,
+ 			   struct bpf_prog *old_prog);
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2866,17 +2866,46 @@ void bpf_link_inc(struct bpf_link *link)
+ 	atomic64_inc(&link->refcnt);
  }
  
- /*
-+ * Set the memory encryption xloadflag based on the mem_encrypt= command line
-+ * parameter, if provided.
-+ */
-+static void parse_mem_encrypt(struct setup_header *hdr)
++static void bpf_link_defer_dealloc_rcu_gp(struct rcu_head *rcu)
 +{
-+	int on = cmdline_find_option_bool("mem_encrypt=on");
-+	int off = cmdline_find_option_bool("mem_encrypt=off");
++	struct bpf_link *link = container_of(rcu, struct bpf_link, rcu);
 +
-+	if (on > off)
-+		hdr->xloadflags |= XLF_MEM_ENCRYPTION;
++	/* free bpf_link and its containing memory */
++	link->ops->dealloc_deferred(link);
 +}
 +
-+/*
-  * The compressed kernel image (ZO), has been moved so that its position
-  * is against the end of the buffer used to hold the uncompressed kernel
-  * image (VO) and the execution environment (.bss, .brk), which makes sure
-@@ -387,6 +400,8 @@ asmlinkage __visible void *extract_kerne
- 	/* Clear flags intended for solely in-kernel use. */
- 	boot_params_ptr->hdr.loadflags &= ~KASLR_FLAG;
- 
-+	parse_mem_encrypt(&boot_params_ptr->hdr);
++static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
++{
++	if (rcu_trace_implies_rcu_gp())
++		bpf_link_defer_dealloc_rcu_gp(rcu);
++	else
++		call_rcu(rcu, bpf_link_defer_dealloc_rcu_gp);
++}
 +
- 	sanitize_boot_params(boot_params_ptr);
- 
- 	if (boot_params_ptr->screen_info.orig_video_mode == 7) {
---- a/arch/x86/include/uapi/asm/bootparam.h
-+++ b/arch/x86/include/uapi/asm/bootparam.h
-@@ -38,6 +38,7 @@
- #define XLF_EFI_KEXEC			(1<<4)
- #define XLF_5LEVEL			(1<<5)
- #define XLF_5LEVEL_ENABLED		(1<<6)
-+#define XLF_MEM_ENCRYPTION		(1<<7)
- 
- #ifndef __ASSEMBLY__
- 
---- a/arch/x86/lib/Makefile
-+++ b/arch/x86/lib/Makefile
-@@ -14,19 +14,6 @@ ifdef CONFIG_KCSAN
- CFLAGS_REMOVE_delay.o = $(CC_FLAGS_FTRACE)
- endif
- 
--# Early boot use of cmdline; don't instrument it
--ifdef CONFIG_AMD_MEM_ENCRYPT
--KCOV_INSTRUMENT_cmdline.o := n
--KASAN_SANITIZE_cmdline.o  := n
--KCSAN_SANITIZE_cmdline.o  := n
--
--ifdef CONFIG_FUNCTION_TRACER
--CFLAGS_REMOVE_cmdline.o = -pg
--endif
--
--CFLAGS_cmdline.o := -fno-stack-protector -fno-jump-tables
--endif
--
- inat_tables_script = $(srctree)/arch/x86/tools/gen-insn-attr-x86.awk
- inat_tables_maps = $(srctree)/arch/x86/lib/x86-opcode-map.txt
- quiet_cmd_inat_tables = GEN     $@
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -43,7 +43,6 @@
- 
- #include <asm/setup.h>
- #include <asm/sections.h>
--#include <asm/cmdline.h>
- #include <asm/coco.h>
- #include <asm/sev.h>
- 
-@@ -95,9 +94,6 @@ struct sme_populate_pgd_data {
-  */
- static char sme_workarea[2 * PMD_SIZE] __section(".init.scratch");
- 
--static char sme_cmdline_arg[] __initdata = "mem_encrypt";
--static char sme_cmdline_on[]  __initdata = "on";
--
- static void __init sme_clear_pgd(struct sme_populate_pgd_data *ppd)
+ /* bpf_link_free is guaranteed to be called from process context */
+ static void bpf_link_free(struct bpf_link *link)
  {
- 	unsigned long pgd_start, pgd_end, pgd_size;
-@@ -504,11 +500,9 @@ void __init sme_encrypt_kernel(struct bo
- 
- void __init sme_enable(struct boot_params *bp)
- {
--	const char *cmdline_ptr, *cmdline_arg, *cmdline_on;
- 	unsigned int eax, ebx, ecx, edx;
- 	unsigned long feature_mask;
- 	unsigned long me_mask;
--	char buffer[16];
- 	bool snp;
- 	u64 msr;
- 
-@@ -551,6 +545,9 @@ void __init sme_enable(struct boot_param
- 
- 	/* Check if memory encryption is enabled */
- 	if (feature_mask == AMD_SME_BIT) {
-+		if (!(bp->hdr.xloadflags & XLF_MEM_ENCRYPTION))
-+			return;
++	bool sleepable = false;
 +
- 		/*
- 		 * No SME if Hypervisor bit is set. This check is here to
- 		 * prevent a guest from trying to enable SME. For running as a
-@@ -570,31 +567,8 @@ void __init sme_enable(struct boot_param
- 		msr = __rdmsr(MSR_AMD64_SYSCFG);
- 		if (!(msr & MSR_AMD64_SYSCFG_MEM_ENCRYPT))
- 			return;
--	} else {
--		/* SEV state cannot be controlled by a command line option */
--		goto out;
+ 	bpf_link_free_id(link->id);
+ 	if (link->prog) {
++		sleepable = link->prog->aux->sleepable;
+ 		/* detach BPF program, clean up used resources */
+ 		link->ops->release(link);
+ 		bpf_prog_put(link->prog);
  	}
+-	/* free bpf_link and its containing memory */
+-	link->ops->dealloc(link);
++	if (link->ops->dealloc_deferred) {
++		/* schedule BPF link deallocation; if underlying BPF program
++		 * is sleepable, we need to first wait for RCU tasks trace
++		 * sync, then go through "classic" RCU grace period
++		 */
++		if (sleepable)
++			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
++		else
++			call_rcu(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
++	}
++	if (link->ops->dealloc)
++		link->ops->dealloc(link);
+ }
  
--	/*
--	 * Fixups have not been applied to phys_base yet and we're running
--	 * identity mapped, so we must obtain the address to the SME command
--	 * line argument data using rip-relative addressing.
--	 */
--	asm ("lea sme_cmdline_arg(%%rip), %0"
--	     : "=r" (cmdline_arg)
--	     : "p" (sme_cmdline_arg));
--	asm ("lea sme_cmdline_on(%%rip), %0"
--	     : "=r" (cmdline_on)
--	     : "p" (sme_cmdline_on));
--
--	cmdline_ptr = (const char *)((u64)bp->hdr.cmd_line_ptr |
--				     ((u64)bp->ext_cmd_line_ptr << 32));
--
--	if (cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer)) < 0 ||
--	    strncmp(buffer, cmdline_on, sizeof(buffer)))
--		return;
--
--out:
- 	RIP_REL_REF(sme_me_mask) = me_mask;
- 	physical_mask &= ~me_mask;
- 	cc_vendor = CC_VENDOR_AMD;
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -890,6 +890,9 @@ void __noreturn efi_stub_entry(efi_handl
- 		}
- 	}
+ static void bpf_link_put_deferred(struct work_struct *work)
+@@ -3381,7 +3410,7 @@ static int bpf_raw_tp_link_fill_link_inf
  
-+	if (efi_mem_encrypt > 0)
-+		hdr->xloadflags |= XLF_MEM_ENCRYPTION;
-+
- 	status = efi_decompress_kernel(&kernel_entry);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Failed to decompress kernel\n");
+ static const struct bpf_link_ops bpf_raw_tp_link_lops = {
+ 	.release = bpf_raw_tp_link_release,
+-	.dealloc = bpf_raw_tp_link_dealloc,
++	.dealloc_deferred = bpf_raw_tp_link_dealloc,
+ 	.show_fdinfo = bpf_raw_tp_link_show_fdinfo,
+ 	.fill_link_info = bpf_raw_tp_link_fill_link_info,
+ };
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2639,7 +2639,7 @@ static int bpf_kprobe_multi_link_fill_li
+ 
+ static const struct bpf_link_ops bpf_kprobe_multi_link_lops = {
+ 	.release = bpf_kprobe_multi_link_release,
+-	.dealloc = bpf_kprobe_multi_link_dealloc,
++	.dealloc_deferred = bpf_kprobe_multi_link_dealloc,
+ 	.fill_link_info = bpf_kprobe_multi_link_fill_link_info,
+ };
+ 
+@@ -3081,7 +3081,7 @@ static void bpf_uprobe_multi_link_deallo
+ 
+ static const struct bpf_link_ops bpf_uprobe_multi_link_lops = {
+ 	.release = bpf_uprobe_multi_link_release,
+-	.dealloc = bpf_uprobe_multi_link_dealloc,
++	.dealloc_deferred = bpf_uprobe_multi_link_dealloc,
+ };
+ 
+ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
 
 
 
