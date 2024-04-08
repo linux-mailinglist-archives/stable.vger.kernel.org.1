@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-36311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C586D89B7F0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 08:49:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C9389B7F1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 08:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F6D1F2158F
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A93F1C21451
 	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 06:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063AA1CAAC;
-	Mon,  8 Apr 2024 06:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148142030B;
+	Mon,  8 Apr 2024 06:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YE47mZNP"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xGjRkHh0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F7D2B9B5
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 06:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32E5200BA
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 06:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712558982; cv=none; b=uPfE06gSud8HFvl9uw/7E8Pf4JWCmVT0gR6ofzf0h0IZLTihM+vjb7cnvBGN/KyOXEcfOx8QjVX0HFeoNs7po5LDWvn/PEkHBSkfwvo/RBUIsIwU9/lIlzGNbYHIyMJBvVKqk+zcNKquEYuVW9tOyLYu+OAbn+SFy2JxaECMIwc=
+	t=1712558985; cv=none; b=ii1FDMMqCeP+jKFatPim3mRnskmkG6oWxRPpSEIIAIDZ9m9ZHAHsTqGalaWjMOGrO2NtZjWUSuz2fOsFF1T4ndeMiVNym+SJ038BSwqUYJiAusqnwpG03RQwbswTv3+s6iNsDB43DZxaJ+Lhlgcq2uM1flaSRIQUaPR28TYeDgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712558982; c=relaxed/simple;
-	bh=N9zOpsDhDEgmDxpOstBSRvmZar4BE2sviG3VGBgCyGE=;
+	s=arc-20240116; t=1712558985; c=relaxed/simple;
+	bh=Cahw7zJUYcz0blWvfgW2gwdvY79C17c8ixaPdeOMxpw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=E22Fh4w9CZ/aMjoxRYWw5V31Vt2IQzGjihI1UId7RwiUVg1KttN5yFq8ozQ2/SI6hYxYNj7RRrHjAe1Uj8gy/Gzc5IXADPHmpLVgZUFJck1Q27ouzHY/vlvEX1s/5kSjKOKlUz8QufS7XNnEKTHEOI+K9Pl548dfn18yy4DaypQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YE47mZNP; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=oZP4xxPL9fEMXVBQ/q2MH5ZruFKX37YA1ucYzzYBLW1NFylWPbpq4rDtaJ7/TtBSl0T0FwdIV0JFRBkhGvFrLM2HI2sjgeb8GhMPUF+naQ/saZYN9BT9XqMAmKgh03k9cvdfGahWjXA06Eubwcmiy8Im8Tbf4i5opZQzdIw4FHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xGjRkHh0; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-609fe93b5cfso57982787b3.0
-        for <stable@vger.kernel.org>; Sun, 07 Apr 2024 23:49:40 -0700 (PDT)
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbe9e13775aso6700360276.1
+        for <stable@vger.kernel.org>; Sun, 07 Apr 2024 23:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712558980; x=1713163780; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1712558982; x=1713163782; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vjXyM/G2BghfvB/kc5GwU2FA84e+m23V1fXtDkm9J5Y=;
-        b=YE47mZNPWB/mT1OArd+KXz9aBCRj9YgWUNNYjZFGpxwHBbe7KG1TIByDYup+9ZDrlb
-         HfL3hAvO/dAaCHvrU7sRlVdndPOlNZpWh6tgBkeiZ6uzjo0J6AxesXYpjzl+8YOqJpwp
-         yb5eF4KmQ6VFrpVaP6k84ibgitV3gMGcW68RoOXQlh+EJopqqFgeMWWePLF+koxZ1V3H
-         y0wxrwsNXyQ8VFF9feMT9UjoP28SX4FaD+CM1n3nsFfnmEVdOK/CCKCFNAA85wCc8+hu
-         US7MgRgC+gFC+whsQsW7MqtVs9Ctv+vIQlEYFGAGfOH5+r/NzNE3Aacokkrdw/6nYQpk
-         zB0A==
+        bh=NbCpWjppG+HMF8MQ0j24SA361UINTcJTjEqJlX7yob0=;
+        b=xGjRkHh0zCDa7gwmfaHc400QeMiadCN2/kfh6N2JWmeX/x6UFdEdteUmKVIs/gHtja
+         2up7rFw7vvYIU7m4pwZDlRs0/2yVKVUHLpcFl2qcL6GewzXyzvggG7wfzcaL+hFMriuS
+         YfpPDBd3V+5pTnNup6U4m59xmS9x8ixW3b98hnbeBFAuXLvJoxdeZKbPP4KTtywBvjyA
+         g4nKz4LRvugxwoqIYnYRH8xtS9L4f28lHucfxbuSu7cKyy6RGa0vkBrm6LHjKpMRYfMJ
+         EP0eRVzzXThJXgPiN3gaEgRjCuUS6R4iK07XZt9AJJdtKQ8rFimqdLL1Kkl7QFl92AbY
+         ygNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712558980; x=1713163780;
+        d=1e100.net; s=20230601; t=1712558982; x=1713163782;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vjXyM/G2BghfvB/kc5GwU2FA84e+m23V1fXtDkm9J5Y=;
-        b=uQ+fYc5YO2fk1Wi1KQ7gQz5YEGE8qTLTQNP8+OeLAVc+XmJwYqWx9zLbrNAvCe3M1c
-         T3So8llZ7uEfIakebtIHbd6ZTuXuVxtS6FFB8sLsujKXKCYyhYzoLU6XQwx0HPi2EWkW
-         Euq87UAXcDDjWYIHGsCAjkbVNR/uj0ROwL1Qx7kna1y4mBdlPcvTtQUlccDfFoSw9mCm
-         5xsFr0IYIKbtl6yTvwVpjLy6T9gd0ijOPrx1UQi1Kh1rdaafQDGFHyrYBcv+ubERRMio
-         7zg1sMSV2O7TJkaDcWtlyskQaex3jlNkrtS5y6b+RwpBVFeTnoIn761ovutr/uo5BJ6Q
-         N7vg==
-X-Gm-Message-State: AOJu0YwDa52VPP+UnPNtEhc9ufflzoIhN2znb0tjZvlO4PYQ7sFoYrgY
-	RkvI3KM6DfiwrlisNn0PjAL4iEVuszAKkHGt90kNh7OaKEPShdDAHQT8qwgPsXa1On5Uj5RGU4O
-	nyxXKMvdP7C3Epj5xXR9QW08syWU6nwFLeyf9APeX674LuZjqSwGePUC/UvyDmK+J4KDl3a2J7k
-	WxV5ieSieffkWnysZ4scPekg==
-X-Google-Smtp-Source: AGHT+IHsgidS+5vEejvZjMrDSX4Qh24P499OT6ExLocITHbcoTfU06dXeeugTp6fSwjUea4Ma4s5JgYP
+        bh=NbCpWjppG+HMF8MQ0j24SA361UINTcJTjEqJlX7yob0=;
+        b=OJUfMpv1z1+ZxDkAZ5K0jKMhKSaWGYA+L3TV5jvlVHFYQ/kaQu60ccZ2YTrdjN0Prf
+         wiR4Gq5pA/61afG0+SH3VNxi0dWzj3Y9rov9bkLfg4t6lCwJTDXpWYLo6RkpJvsPvTIz
+         qSjMQAahAfXs2NK4Wwyjm2A5PrGKCgmmAHmRU0gE/YQ+TQZ1evVOR0l2d/RzWhRwY9PM
+         0aDWlLQ8hwlGuUHf7Ar+NtGJ0/v7yuY0TTbgznahoUnlpnewLhCwyfImOa+Idmu123WC
+         t2cKmb8NEDARNQuXlRzmu1kHZ0djZnzmLb6slDDEpominHVmMPVnc64W9J9JQ+0acw6S
+         GREw==
+X-Gm-Message-State: AOJu0YyX3HDjfpDzjjb/eNVJ7SL6oYjplIlTOUi495/YI94jwZLEpRR6
+	MR/P2+tq0RBi/0Tfr1rtNxykJkxlQfr+IZQs9jnPQx8frqxivgd6bwa2txWHjFnUV9paeWqj0tm
+	MCtcnED8i/MKyozg2J5tnBkIXfnQ6AQSoqpYXKFYKWUBngWofZX4GSAPWTA3Blb/WGi6lbWnapF
+	iZ0jcULzXzmzLMFD2/eQ0xgg==
+X-Google-Smtp-Source: AGHT+IF/puYfwzSoY5PzDBlbXfylX8/NfybvFg6OA8XWIMJ4L2fcbwpuOA4ZGBQJWwrDMwKJocxB3JJ1
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a0d:db43:0:b0:615:3262:ffa0 with SMTP id
- d64-20020a0ddb43000000b006153262ffa0mr2296526ywe.9.1712558980091; Sun, 07 Apr
- 2024 23:49:40 -0700 (PDT)
-Date: Mon,  8 Apr 2024 08:49:19 +0200
+ (user=ardb job=sendgmr) by 2002:a05:6902:2b84:b0:dd1:390a:51e8 with SMTP id
+ fj4-20020a0569022b8400b00dd1390a51e8mr2723113ybb.10.1712558982537; Sun, 07
+ Apr 2024 23:49:42 -0700 (PDT)
+Date: Mon,  8 Apr 2024 08:49:20 +0200
 In-Reply-To: <20240408064917.3391405-8-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,71 +74,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240408064917.3391405-8-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1693; i=ardb@kernel.org;
- h=from:subject; bh=bRQL7OyCelBVuVgo8KRc5aNl1kPex/CC3r6VixvptmI=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIU14cp73SZdUESX1zVJh4aZv7Se8UEtIficesXFbUs0K6
- ftra/90lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgImElDP8z2LnWti6dsakmmKW
- OD3lBRefmFfxtjfoXDFnEuFZHHJgPsP/3NVmltMmX98n+zXCtb+MJ26jTNrrZZtLmL5N3SeRZtH LAAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2474; i=ardb@kernel.org;
+ h=from:subject; bh=U1UH1I2rm/uc9+6WIBeeY3Q8l9XQgxm49wdlKyVYBgE=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIU14csGyixKRCdduHeFdXc75d/0nwfxmhUcqsda60SdWF
+ l34k8DQUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACbC5svIsG+HjcjRau8l84s/
+ rDSyrj6pu3fpUlWuZyK/lwsWfv8X8JDhf9ADJusNzs+f7+SNcxBeGClXYxIqVDpvZspuh/bHAgJ N3AA=
 X-Mailer: git-send-email 2.44.0.478.gd926399ef9-goog
-Message-ID: <20240408064917.3391405-9-ardb+git@google.com>
-Subject: [PATCH -for-stable-v6.6+ 1/6] x86/head/64: Move the __head definition
- to <asm/init.h>
+Message-ID: <20240408064917.3391405-10-ardb+git@google.com>
+Subject: [PATCH -for-stable-v6.6+ 2/6] efi/libstub: Add generic support for
+ parsing mem_encrypt=
 From: Ard Biesheuvel <ardb+git@google.com>
 To: stable@vger.kernel.org
-Cc: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Commit d2a285d65bfde3218fd0c3b88794d0135ced680b upstream ]
+[ Commit 7205f06e847422b66c1506eee01b9998ffc75d76 upstream ]
 
-Move the __head section definition to a header to widen its use.
+Parse the mem_encrypt= command line parameter from the EFI stub if
+CONFIG_ARCH_HAS_MEM_ENCRYPT=y, so that it can be passed to the early
+boot code by the arch code in the stub.
 
-An upcoming patch will mark the code as __head in mem_encrypt_identity.c too.
+This avoids the need for the core kernel to do any string parsing very
+early in the boot.
 
-Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/0583f57977be184689c373fe540cbd7d85ca2047.1697525407.git.houwenlong.hwl@antgroup.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240227151907.387873-16-ardb+git@google.com
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/include/asm/init.h | 2 ++
- arch/x86/kernel/head64.c    | 3 +--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 8 ++++++++
+ drivers/firmware/efi/libstub/efistub.h         | 2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
-index 5f1d3c421f68..cc9ccf61b6bd 100644
---- a/arch/x86/include/asm/init.h
-+++ b/arch/x86/include/asm/init.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_X86_INIT_H
- #define _ASM_X86_INIT_H
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index bfa30625f5d0..3dc2f9aaf08d 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -24,6 +24,8 @@ static bool efi_noinitrd;
+ static bool efi_nosoftreserve;
+ static bool efi_disable_pci_dma = IS_ENABLED(CONFIG_EFI_DISABLE_PCI_DMA);
  
-+#define __head	__section(".head.text")
++int efi_mem_encrypt;
 +
- struct x86_mapping_info {
- 	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
- 	void *context;			 /* context for alloc_pgt_page */
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index bbc21798df10..c58213bce294 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -41,6 +41,7 @@
- #include <asm/trapnr.h>
- #include <asm/sev.h>
- #include <asm/tdx.h>
-+#include <asm/init.h>
- 
- /*
-  * Manage page tables very early on.
-@@ -84,8 +85,6 @@ static struct desc_ptr startup_gdt_descr = {
- 	.address = 0,
- };
- 
--#define __head	__section(".head.text")
--
- static void __head *fixup_pointer(void *ptr, unsigned long physaddr)
+ bool __pure __efi_soft_reserve_enabled(void)
  {
- 	return ptr - (void *)_text + (void *)physaddr;
+ 	return !efi_nosoftreserve;
+@@ -75,6 +77,12 @@ efi_status_t efi_parse_options(char const *cmdline)
+ 			efi_noinitrd = true;
+ 		} else if (IS_ENABLED(CONFIG_X86_64) && !strcmp(param, "no5lvl")) {
+ 			efi_no5lvl = true;
++		} else if (IS_ENABLED(CONFIG_ARCH_HAS_MEM_ENCRYPT) &&
++			   !strcmp(param, "mem_encrypt") && val) {
++			if (parse_option_str(val, "on"))
++				efi_mem_encrypt = 1;
++			else if (parse_option_str(val, "off"))
++				efi_mem_encrypt = -1;
+ 		} else if (!strcmp(param, "efi") && val) {
+ 			efi_nochunk = parse_option_str(val, "nochunk");
+ 			efi_novamap |= parse_option_str(val, "novamap");
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index c04b82ea40f2..fc18fd649ed7 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -37,8 +37,8 @@ extern bool efi_no5lvl;
+ extern bool efi_nochunk;
+ extern bool efi_nokaslr;
+ extern int efi_loglevel;
++extern int efi_mem_encrypt;
+ extern bool efi_novamap;
+-
+ extern const efi_system_table_t *efi_system_table;
+ 
+ typedef union efi_dxe_services_table efi_dxe_services_table_t;
 -- 
 2.44.0.478.gd926399ef9-goog
 
