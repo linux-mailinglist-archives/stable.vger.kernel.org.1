@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-36411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302CC89BFC1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:01:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD6789C038
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A594B294AB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4689A2858D6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C629B7C097;
-	Mon,  8 Apr 2024 13:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487767175B;
+	Mon,  8 Apr 2024 13:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvjBLVkj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCNhsNbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDAC7C08D;
-	Mon,  8 Apr 2024 13:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080822DF73;
+	Mon,  8 Apr 2024 13:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581205; cv=none; b=evnCtnuPzGO/ubbfH4WuDAWvncPH6LCzznOeyqdVW2AHSt1ro7dlTSjhNaLa7wbfZhAsN7AwpQVgJJiNzIZNBoLR31Hu2Vce7ov9JP9GcbyId3xMk6xqcw84eYBtBVoxbUbQlBt7Gse1XIMmYH6TADjq2DWEfkfG4mzkCRxNR38=
+	t=1712581580; cv=none; b=WUmyUSjAgtyM2PLxKsQfvjU/Jp1kQEtvqM5hRz0A70FCFVnTLisyeNMhg8jO1hJ7Z88mdNthDXRqVt5vJ4EwBMk4dR5TWBkyEUcoReZfkD6+xa82SXCxkMPVt8Ci07kykuj4YuwEC1o85VyC6KKt0unmR85U0hTvn0YeaDFjuHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581205; c=relaxed/simple;
-	bh=BFOR5gPK3wqCkVlH7h/XnLoxwzBmTybqnJTf2l0yQZc=;
+	s=arc-20240116; t=1712581580; c=relaxed/simple;
+	bh=C5jzM+G0U6DMZguxCPOMjdh2OrK+zl1TaMKsWGiN7/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oc6qhdxOzfmhlGxZq4MzvKw5JQ8XvQuDKwuEtB3+fjPWA1lVJhciXlu68XcEsdhtJ/8LVWOxyOBjQXN1SDKRxN0B1MUKygot/DjnzbP68LqALPe//Ba2kGJiEkJiS8+qUtnCOxn/awDw21FpfXQTDWawJ0fFxnhOiz7vYCWaC5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvjBLVkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6E1C433C7;
-	Mon,  8 Apr 2024 13:00:04 +0000 (UTC)
+	 MIME-Version; b=XIyJmZNC8EGB5WnlbmIZM9rGiIB5CF0g0wYR6kH4s+OcBzgMcwtAaalUmHh9r6+bSnHo3ifgkToGYHUeTzkfFdlpyYzx/v9fKNknwnSxjd1Ja+mUAk9kv3lZoAu7h+rOIlvbe07BWIXethA3QmBju4HqJ9UIE8ngEFPvZWM3E40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCNhsNbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5FFC433C7;
+	Mon,  8 Apr 2024 13:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581205;
-	bh=BFOR5gPK3wqCkVlH7h/XnLoxwzBmTybqnJTf2l0yQZc=;
+	s=korg; t=1712581579;
+	bh=C5jzM+G0U6DMZguxCPOMjdh2OrK+zl1TaMKsWGiN7/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvjBLVkjONn6S/7KV2f/xfy0h+ldrFFFtPOCNvMmhE0Bs3OyWTIQTs8wb2w0XDPTV
-	 OsgiF7rLq/6ft/NNOSG64Wkl48Rc04VT+Ni+FkAoeoGkV0w6JRgaquBO/afjB0jpjk
-	 PeGlDXWkdh1fk25wtgBXzs6wZm6TFobZ+u/hQiqw=
+	b=hCNhsNbeA9QPLSu8gQq1mrSLqjXNMOCsrwbm1HUG6bEL/W0bgwFQTFGjcoU7HOAw8
+	 eYHSFkpQpiDC0fydkJmkujY9vBZU0DzmIZBRDEOwqyfh6LOIYCR/W9H+BEeQUGB0sx
+	 DYotL/4njG9B0Znt6D3M2vvpnCgAZ3/V62RUuVig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Hofmann <mhofmann@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Daniele Salvatore Albano <d.albano@gmail.com>,
+	Stanislav Fomichev <sdf@google.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alejandro Colomar <alx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 001/273] scripts/bpf_doc: Use silent mode when exec make cmd
-Date: Mon,  8 Apr 2024 14:54:36 +0200
-Message-ID: <20240408125309.328782158@linuxfoundation.org>
+Subject: [PATCH 6.8 002/273] xsk: Dont assume metadata is always requested in TX completion
+Date: Mon,  8 Apr 2024 14:54:37 +0200
+Message-ID: <20240408125309.358859480@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -69,58 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit 5384cc0d1a88c27448a6a4e65b8abe6486de8012 ]
+[ Upstream commit f6e922365faf4cd576bd1cf3e64b58c8a32e1856 ]
 
-When getting kernel version via make, the result may be polluted by other
-output, like directory change info. e.g.
+`compl->tx_timestam != NULL` means that the user has explicitly
+requested the metadata via XDP_TX_METADATA+XDP_TX_METADATA_TIMESTAMP.
 
-  $ export MAKEFLAGS="-w"
-  $ make kernelversion
-  make: Entering directory '/home/net'
-  6.8.0
-  make: Leaving directory '/home/net'
-
-This will distort the reStructuredText output and make latter rst2man
-failed like:
-
-  [...]
-  bpf-helpers.rst:20: (WARNING/2) Field list ends without a blank line; unexpected unindent.
-  [...]
-
-Using silent mode would help. e.g.
-
-  $ make -s --no-print-directory kernelversion
-  6.8.0
-
-Fixes: fd0a38f9c37d ("scripts/bpf: Set version attribute for bpf-helpers(7) man page")
-Signed-off-by: Michael Hofmann <mhofmann@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Fixes: 48eb03dd2630 ("xsk: Add TX timestamp and TX checksum offload support")
+Reported-by: Daniele Salvatore Albano <d.albano@gmail.com>
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Acked-by: Alejandro Colomar <alx@kernel.org>
-Link: https://lore.kernel.org/bpf/20240315023443.2364442-1-liuhangbin@gmail.com
+Tested-by: Daniele Salvatore Albano <d.albano@gmail.com>
+Link: https://lore.kernel.org/bpf/20240318165427.1403313-1-sdf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/bpf_doc.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/xdp_sock.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/scripts/bpf_doc.py b/scripts/bpf_doc.py
-index 0669bac5e900e..3f899cc7e99a9 100755
---- a/scripts/bpf_doc.py
-+++ b/scripts/bpf_doc.py
-@@ -414,8 +414,8 @@ class PrinterRST(Printer):
-             version = version.stdout.decode().rstrip()
-         except:
-             try:
--                version = subprocess.run(['make', 'kernelversion'], cwd=linuxRoot,
--                                         capture_output=True, check=True)
-+                version = subprocess.run(['make', '-s', '--no-print-directory', 'kernelversion'],
-+                                         cwd=linuxRoot, capture_output=True, check=True)
-                 version = version.stdout.decode().rstrip()
-             except:
-                 return 'Linux'
+diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
+index 3cb4dc9bd70e4..3d54de168a6d9 100644
+--- a/include/net/xdp_sock.h
++++ b/include/net/xdp_sock.h
+@@ -188,6 +188,8 @@ static inline void xsk_tx_metadata_complete(struct xsk_tx_metadata_compl *compl,
+ {
+ 	if (!compl)
+ 		return;
++	if (!compl->tx_timestamp)
++		return;
+ 
+ 	*compl->tx_timestamp = ops->tmo_fill_timestamp(priv);
+ }
 -- 
 2.43.0
 
