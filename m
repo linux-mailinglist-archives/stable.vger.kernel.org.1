@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-36800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A69B89C1B7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0F189C1BD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE01E1C2180C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 580D51F220B6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA2280624;
-	Mon,  8 Apr 2024 13:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126F27FBB3;
+	Mon,  8 Apr 2024 13:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOy4yYsM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlIMk8IH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2408061B;
-	Mon,  8 Apr 2024 13:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C464E62148;
+	Mon,  8 Apr 2024 13:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582381; cv=none; b=PPeegMkPcn6Bak9+zhW++ddWV0Lvw/7g1G7WVwr7fSr7pAFRTPPl/8GzmXG5IcU75yeq5tCVlkxCmtHWO4euyz/4kj5EjuBaGNoe+kX25KxLlNvx/QoJLwfwHakQ9W1zdxykfUIQkjQAqsOwAHu1WO0yBEA3grtuoNDDWN3dkJ0=
+	t=1712582395; cv=none; b=AdCxb0CRG0SVDPoiPkEXF+EgUBMCK/rTYS/jDX4tiQGHw1cDrvIbg9rE2s6j+4E6HBzEKmfa3GILI//sHj5ge1TPTgxLUhYhhQ6msXe55pcOPGS7AxTo94g4tEJs1VQggnGqti5EUj7GV8WWUZ3ZwI4DkKcN/BE5mrvHQTSvV/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582381; c=relaxed/simple;
-	bh=AGQcqvbGA/K0k7UPH7OWTJVx4k6pSq8Reqrvvvvcimk=;
+	s=arc-20240116; t=1712582395; c=relaxed/simple;
+	bh=ilk4JOlWWQNCF+nzMo6Ld2yfReCxmRfEaWPuL6eHgAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4oBZqQANKk61B6qX8wOsrOTXAP9pVN3wdK/oYaCKvnEd6yZu9m1i9FNPFQ2GEMixVWe36yJpNnto7LNuPr+nlv9on/HfrA6ZDECnfZryqN66nVuj37t2LqFW7nxDQg+abnv6/R/b+aAHSlqhxULnsOJwsc5Ci639ihKF8fF7BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOy4yYsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1D5C433C7;
-	Mon,  8 Apr 2024 13:19:40 +0000 (UTC)
+	 MIME-Version; b=uz34Cxw7g+JgJKaY/HnEGnTG8JDfuRTtcWLtZYP9souHIdI/DdGIDycl3XAcfMWRWIp/8YtDSjll1uwJHi7bwXB013rGXhWl4lGPUIowVJ65WZPJzJwKAdiL3rrzSxDlu0HyJqzmQvfsqXioRClmrOCR3Fb7Ckc3pXRODTIpaZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlIMk8IH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C93BC433C7;
+	Mon,  8 Apr 2024 13:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582381;
-	bh=AGQcqvbGA/K0k7UPH7OWTJVx4k6pSq8Reqrvvvvcimk=;
+	s=korg; t=1712582395;
+	bh=ilk4JOlWWQNCF+nzMo6Ld2yfReCxmRfEaWPuL6eHgAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOy4yYsM/FKpaYaMYmneeggug6ZVsGoCeChEWjalSJj81r4bzc/5FSnM/NQcb+XEK
-	 o3dZ9lvwUgPygSoYz5AOjz5WrJoM4kWj17hjMiNX+MPF5vJZpFI7ypZHywZzSyMapr
-	 nfd06NSDGoHRrntAdw+rCmYj4Bcs30su06qtFwmE=
+	b=LlIMk8IHyQ7ztluygDwcBzkk+yG41BrQghadQwwwdinZeNGdDn914IT2etHLhLifU
+	 eGe64i+zyZRRdoi9/Q/BaXrvbCV8oKh+Uu4MW0JQV9xCBlqD/RpNThxcVm5jRW5NCU
+	 nhr4VlbJI95UhgHV06oFWnzVCeephTP0r9fhb0a0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Juergen Gross <jgross@suse.com>,
-	Andrew Paniakin <apanyaki@amazon.com>
-Subject: [PATCH 5.15 137/690] xen/events: close evtchn after mapping cleanup
-Date: Mon,  8 Apr 2024 14:50:03 +0200
-Message-ID: <20240408125404.482298105@linuxfoundation.org>
+	Jarred White <jarredwhite@linux.microsoft.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 138/690] ACPI: CPPC: Use access_width over bit_width for system memory accesses
+Date: Mon,  8 Apr 2024 14:50:04 +0200
+Message-ID: <20240408125404.516383908@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,159 +66,164 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maximilian Heyne <mheyne@amazon.de>
+From: Jarred White <jarredwhite@linux.microsoft.com>
 
-commit fa765c4b4aed2d64266b694520ecb025c862c5a9 upstream.
+commit 2f4a4d63a193be6fd530d180bb13c3592052904c upstream.
 
-shutdown_pirq and startup_pirq are not taking the
-irq_mapping_update_lock because they can't due to lock inversion. Both
-are called with the irq_desc->lock being taking. The lock order,
-however, is first irq_mapping_update_lock and then irq_desc->lock.
+To align with ACPI 6.3+, since bit_width can be any 8-bit value, it
+cannot be depended on to be always on a clean 8b boundary. This was
+uncovered on the Cobalt 100 platform.
 
-This opens multiple races:
-- shutdown_pirq can be interrupted by a function that allocates an event
-  channel:
+SError Interrupt on CPU26, code 0xbe000011 -- SError
+ CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted 5.15.2.1-13 #1
+ Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
+ pstate: 62400009 (nZCv daif +PAN -UAO +TCO -DIT -SSBS BTYPE=--)
+ pc : cppc_get_perf_caps+0xec/0x410
+ lr : cppc_get_perf_caps+0xe8/0x410
+ sp : ffff8000155ab730
+ x29: ffff8000155ab730 x28: ffff0080139d0038 x27: ffff0080139d0078
+ x26: 0000000000000000 x25: ffff0080139d0058 x24: 00000000ffffffff
+ x23: ffff0080139d0298 x22: ffff0080139d0278 x21: 0000000000000000
+ x20: ffff00802b251910 x19: ffff0080139d0000 x18: ffffffffffffffff
+ x17: 0000000000000000 x16: ffffdc7e111bad04 x15: ffff00802b251008
+ x14: ffffffffffffffff x13: ffff013f1fd63300 x12: 0000000000000006
+ x11: ffffdc7e128f4420 x10: 0000000000000000 x9 : ffffdc7e111badec
+ x8 : ffff00802b251980 x7 : 0000000000000000 x6 : ffff0080139d0028
+ x5 : 0000000000000000 x4 : ffff0080139d0018 x3 : 00000000ffffffff
+ x2 : 0000000000000008 x1 : ffff8000155ab7a0 x0 : 0000000000000000
+ Kernel panic - not syncing: Asynchronous SError Interrupt
+ CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted
+5.15.2.1-13 #1
+ Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
+ Call trace:
+  dump_backtrace+0x0/0x1e0
+  show_stack+0x24/0x30
+  dump_stack_lvl+0x8c/0xb8
+  dump_stack+0x18/0x34
+  panic+0x16c/0x384
+  add_taint+0x0/0xc0
+  arm64_serror_panic+0x7c/0x90
+  arm64_is_fatal_ras_serror+0x34/0xa4
+  do_serror+0x50/0x6c
+  el1h_64_error_handler+0x40/0x74
+  el1h_64_error+0x7c/0x80
+  cppc_get_perf_caps+0xec/0x410
+  cppc_cpufreq_cpu_init+0x74/0x400 [cppc_cpufreq]
+  cpufreq_online+0x2dc/0xa30
+  cpufreq_add_dev+0xc0/0xd4
+  subsys_interface_register+0x134/0x14c
+  cpufreq_register_driver+0x1b0/0x354
+  cppc_cpufreq_init+0x1a8/0x1000 [cppc_cpufreq]
+  do_one_initcall+0x50/0x250
+  do_init_module+0x60/0x27c
+  load_module+0x2300/0x2570
+  __do_sys_finit_module+0xa8/0x114
+  __arm64_sys_finit_module+0x2c/0x3c
+  invoke_syscall+0x78/0x100
+  el0_svc_common.constprop.0+0x180/0x1a0
+  do_el0_svc+0x84/0xa0
+  el0_svc+0x2c/0xc0
+  el0t_64_sync_handler+0xa4/0x12c
+  el0t_64_sync+0x1a4/0x1a8
 
-  CPU0                        CPU1
-  shutdown_pirq {
-    xen_evtchn_close(e)
-                              __startup_pirq {
-                                EVTCHNOP_bind_pirq
-                                  -> returns just freed evtchn e
-                                set_evtchn_to_irq(e, irq)
-                              }
-    xen_irq_info_cleanup() {
-      set_evtchn_to_irq(e, -1)
-    }
-  }
+Instead, use access_width to determine the size and use the offset and
+width to shift and mask the bits to read/write out. Make sure to add a
+check for system memory since pcc redefines the access_width to
+subspace id.
 
-  Assume here event channel e refers here to the same event channel
-  number.
-  After this race the evtchn_to_irq mapping for e is invalid (-1).
+If access_width is not set, then fall back to using bit_width.
 
-- __startup_pirq races with __unbind_from_irq in a similar way. Because
-  __startup_pirq doesn't take irq_mapping_update_lock it can grab the
-  evtchn that __unbind_from_irq is currently freeing and cleaning up. In
-  this case even though the event channel is allocated, its mapping can
-  be unset in evtchn_to_irq.
-
-The fix is to first cleanup the mappings and then close the event
-channel. In this way, when an event channel gets allocated it's
-potential previous evtchn_to_irq mappings are guaranteed to be unset already.
-This is also the reverse order of the allocation where first the event
-channel is allocated and then the mappings are setup.
-
-On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
-[un]bind interfaces"), we hit a BUG like the following during probing of NVMe
-devices. The issue is that during nvme_setup_io_queues, pci_free_irq
-is called for every device which results in a call to shutdown_pirq.
-With many nvme devices it's therefore likely to hit this race during
-boot because there will be multiple calls to shutdown_pirq and
-startup_pirq are running potentially in parallel.
-
-  ------------[ cut here ]------------
-  blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
-  kernel BUG at drivers/xen/events/events_base.c:499!
-  invalid opcode: 0000 [#1] SMP PTI
-  CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
-  Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
-  Workqueue: nvme-reset-wq nvme_reset_work
-  RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
-  Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
-  RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
-  RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
-  RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
-  R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
-  R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
-  FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? set_affinity_irq+0xdc/0x1c0
-   ? __die_body.cold+0x8/0xd
-   ? die+0x2b/0x50
-   ? do_trap+0x90/0x110
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? do_error_trap+0x65/0x80
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? exc_invalid_op+0x4e/0x70
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? bind_evtchn_to_cpu+0xc5/0xf0
-   set_affinity_irq+0xdc/0x1c0
-   irq_do_set_affinity+0x1d7/0x1f0
-   irq_setup_affinity+0xd6/0x1a0
-   irq_startup+0x8a/0xf0
-   __setup_irq+0x639/0x6d0
-   ? nvme_suspend+0x150/0x150
-   request_threaded_irq+0x10c/0x180
-   ? nvme_suspend+0x150/0x150
-   pci_request_irq+0xa8/0xf0
-   ? __blk_mq_free_request+0x74/0xa0
-   queue_request_irq+0x6f/0x80
-   nvme_create_queue+0x1af/0x200
-   nvme_create_io_queues+0xbd/0xf0
-   nvme_setup_io_queues+0x246/0x320
-   ? nvme_irq_check+0x30/0x30
-   nvme_reset_work+0x1c8/0x400
-   process_one_work+0x1b0/0x350
-   worker_thread+0x49/0x310
-   ? process_one_work+0x350/0x350
-   kthread+0x11b/0x140
-   ? __kthread_bind_mask+0x60/0x60
-   ret_from_fork+0x22/0x30
-  Modules linked in:
-  ---[ end trace a11715de1eee1873 ]---
-
-Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
-Cc: stable@vger.kernel.org
-Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20240124163130.31324-1-mheyne@amazon.de
-Signed-off-by: Juergen Gross <jgross@suse.com>
-[apanyaki: backport to v5.15-stable]
-Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
+Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
+Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+[ rjw: Subject and changelog edits, comment adjustments ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ eahariha: Backport to v5.15 by dropping SystemIO bits as
+  commit a2c8f92bea5f is not present ]
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/events/events_base.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/acpi/cppc_acpi.c |   27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -936,8 +936,8 @@ static void shutdown_pirq(struct irq_dat
- 		return;
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -161,6 +161,13 @@ show_cppc_data(cppc_get_perf_caps, cppc_
+ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
+ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
  
- 	do_mask(info, EVT_MASK_REASON_EXPLICIT);
--	xen_evtchn_close(evtchn);
- 	xen_irq_info_cleanup(info);
-+	xen_evtchn_close(evtchn);
- }
++/* Check for valid access_width, otherwise, fallback to using bit_width */
++#define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
++
++/* Shift and apply the mask for CPC reads/writes */
++#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
++					GENMASK(((reg)->bit_width), 0)))
++
+ static ssize_t show_feedback_ctrs(struct kobject *kobj,
+ 		struct kobj_attribute *attr, char *buf)
+ {
+@@ -762,8 +769,10 @@ int acpi_cppc_processor_probe(struct acp
+ 			} else if (gas_t->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+ 				if (gas_t->address) {
+ 					void __iomem *addr;
++					size_t access_width;
  
- static void enable_pirq(struct irq_data *data)
-@@ -981,8 +981,6 @@ static void __unbind_from_irq(unsigned i
- 		unsigned int cpu = cpu_from_irq(irq);
- 		struct xenbus_device *dev;
+-					addr = ioremap(gas_t->address, gas_t->bit_width/8);
++					access_width = GET_BIT_WIDTH(gas_t) / 8;
++					addr = ioremap(gas_t->address, access_width);
+ 					if (!addr)
+ 						goto out_free;
+ 					cpc_ptr->cpc_regs[i-2].sys_mem_vaddr = addr;
+@@ -936,6 +945,7 @@ static int cpc_read(int cpu, struct cpc_
+ {
+ 	int ret_val = 0;
+ 	void __iomem *vaddr = NULL;
++	int size;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
  
--		xen_evtchn_close(evtchn);
--
- 		switch (type_from_irq(irq)) {
- 		case IRQT_VIRQ:
- 			per_cpu(virq_to_irq, cpu)[virq_from_irq(irq)] = -1;
-@@ -1000,6 +998,7 @@ static void __unbind_from_irq(unsigned i
- 		}
+@@ -955,7 +965,9 @@ static int cpc_read(int cpu, struct cpc_
+ 		return acpi_os_read_memory((acpi_physical_address)reg->address,
+ 				val, reg->bit_width);
  
- 		xen_irq_info_cleanup(info);
-+		xen_evtchn_close(evtchn);
+-	switch (reg->bit_width) {
++	size = GET_BIT_WIDTH(reg);
++
++	switch (size) {
+ 	case 8:
+ 		*val = readb_relaxed(vaddr);
+ 		break;
+@@ -974,12 +986,16 @@ static int cpc_read(int cpu, struct cpc_
+ 		ret_val = -EFAULT;
  	}
  
- 	xen_free_irq(irq);
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
++		*val = MASK_VAL(reg, *val);
++
+ 	return ret_val;
+ }
+ 
+ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ {
+ 	int ret_val = 0;
++	int size;
+ 	void __iomem *vaddr = NULL;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+@@ -994,7 +1010,12 @@ static int cpc_write(int cpu, struct cpc
+ 		return acpi_os_write_memory((acpi_physical_address)reg->address,
+ 				val, reg->bit_width);
+ 
+-	switch (reg->bit_width) {
++	size = GET_BIT_WIDTH(reg);
++
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
++		val = MASK_VAL(reg, val);
++
++	switch (size) {
+ 	case 8:
+ 		writeb_relaxed(val, vaddr);
+ 		break;
 
 
 
