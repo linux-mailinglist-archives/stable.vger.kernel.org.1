@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A6089C3B4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:43:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1154189C044
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AC3CB26D2C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41BFC1C214C9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9F813A242;
-	Mon,  8 Apr 2024 13:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AC76CDA8;
+	Mon,  8 Apr 2024 13:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdbHRrwx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lZLQc9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C417E105;
-	Mon,  8 Apr 2024 13:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3411C2DF73;
+	Mon,  8 Apr 2024 13:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583062; cv=none; b=sgsAiCquE1GVty/LTwdNGGdcfKiWX2KOLwVRIzqmIcrGybIqj7C74yX/sRxfFqbxv//k28K/2zRhli82qepfNQMIb91Bk2pTB5tIN2ECojVVfI/CCFDk7lfSN1e+upYhWnNM+UIGYFLyDhuf9uaojZuqW4VJ2oVDU54UwJ+WMpk=
+	t=1712581612; cv=none; b=UovHGo15RVLYNZNaZVs8VAxCkZ5H7u0nPVsv26JdHBZApLC2o/eY2NrIgvCQZgIBu4rUO5xvEE1eVSzeIueEgQ4RzlQnNsQxBGpyzde3bkHbzFmj9EKBHPbdXSqWQMyNXgnJq84gQ35lj599ZvBFiQt4ObInwy8ZfLLWXE98H7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583062; c=relaxed/simple;
-	bh=eDcJp8VzDlNHdEH02hVEiNfa0iGN1rVYKyoXlQt/DWQ=;
+	s=arc-20240116; t=1712581612; c=relaxed/simple;
+	bh=OMsI9VmcL61/g484M5VbN/JvX9cT48N7k0wdn9x+lyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvFhM6qbntne/Lw41vGRq1cnzXJuYKR4F9WEMioyNEo7CC9UiElULOjLZxdqifmdh1UfDm/+EST2Gl6Wo8FiI8Y+Fqfj30+3FlbHosfEPEp5J6LpJbqNSboMvSeCOvSMmZs76xPwgy8gMAWYADCqdgQkFbVR7LauCBX8tCoAulU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdbHRrwx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDACFC43394;
-	Mon,  8 Apr 2024 13:31:01 +0000 (UTC)
+	 MIME-Version; b=dV3epkeN0J6cjQzUiHY5nqlpPLy3XUN0qoiRIy8mKeLgdKq7eP2yruK/s2lb8ZltodG4Z6HCOMcN3fIQYmiFyivJ2vh/TPj1tcUflz0e01hlYjuyzGK8WPzPBYOGBiag6isDyTgI1o+5dSkASRMUbY3Lk+D5qZ8dJfFznu2U1FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lZLQc9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFEAC433F1;
+	Mon,  8 Apr 2024 13:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583062;
-	bh=eDcJp8VzDlNHdEH02hVEiNfa0iGN1rVYKyoXlQt/DWQ=;
+	s=korg; t=1712581612;
+	bh=OMsI9VmcL61/g484M5VbN/JvX9cT48N7k0wdn9x+lyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GdbHRrwx50X2hUsIpGO8S1illtNWpxLIJMxfASntdk6j39Y6E2Z1DKi7aZvegjU2P
-	 fuDOgpKD6tBizuNwt8QV5pw/YeiVasxBgOBegAGGMExMrZiB6uo011SsZe+qtQoYgP
-	 r36lWu09EXFvF53+nLdeBvpuiYChbCjM3nYO1HHg=
+	b=0lZLQc9eX3OqE0SqSagfXChPa/VnCLkD8Vh0c1YWGGK6x1rNcNCpz+xFUtdA9sAvM
+	 idDNk4PnFQLxN8cBkunguHb7yvlYrTUrlSw0AwVjXZbQhJTlUt6xPL4E8WfuImRLVE
+	 aMsebB/xANJi6G1KW/8VP7AQcKoBeChZaOHyt7IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/252] net: ravb: Let IP-specific receive function to interrogate descriptors
+	stable@vge.kernel.org,
+	Marco Pinna <marco.pinn95@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 038/138] vsock/virtio: fix packet delivery to tap device
 Date: Mon,  8 Apr 2024 14:57:32 +0200
-Message-ID: <20240408125311.409565127@linuxfoundation.org>
+Message-ID: <20240408125257.409354257@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Marco Pinna <marco.pinn95@gmail.com>
 
-[ Upstream commit 2b993bfdb47b3aaafd8fe9cd5038b5e297b18ee1 ]
+commit b32a09ea7c38849ff925489a6bf5bd8914bc45df upstream.
 
-ravb_poll() initial code used to interrogate the first descriptor of the
-RX queue in case gPTP is false to determine if ravb_rx() should be called.
-This is done for non-gPTP IPs. For gPTP IPs the driver PTP-specific
-information was used to determine if receive function should be called. As
-every IP has its own receive function that interrogates the RX descriptors
-list in the same way the ravb_poll() was doing there is no need to double
-check this in ravb_poll(). Removing the code from ravb_poll() leads to a
-cleaner code.
+Commit 82dfb540aeb2 ("VSOCK: Add virtio vsock vsockmon hooks") added
+virtio_transport_deliver_tap_pkt() for handing packets to the
+vsockmon device. However, in virtio_transport_send_pkt_work(),
+the function is called before actually sending the packet (i.e.
+before placing it in the virtqueue with virtqueue_add_sgs() and checking
+whether it returned successfully).
+Queuing the packet in the virtqueue can fail even multiple times.
+However, in virtio_transport_deliver_tap_pkt() we deliver the packet
+to the monitoring tap interface only the first time we call it.
+This certainly avoids seeing the same packet replicated multiple times
+in the monitoring interface, but it can show the packet sent with the
+wrong timestamp or even before we succeed to queue it in the virtqueue.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 596a4254915f ("net: ravb: Always process TX descriptor ring")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move virtio_transport_deliver_tap_pkt() after calling virtqueue_add_sgs()
+and making sure it returned successfully.
+
+Fixes: 82dfb540aeb2 ("VSOCK: Add virtio vsock vsockmon hooks")
+Cc: stable@vge.kernel.org
+Signed-off-by: Marco Pinna <marco.pinn95@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20240329161259.411751-1-marco.pinn95@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ net/vmw_vsock/virtio_transport.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 8fec0dbbbe7bb..b87e9252ea176 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1288,25 +1288,16 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	struct net_device *ndev = napi->dev;
- 	struct ravb_private *priv = netdev_priv(ndev);
- 	const struct ravb_hw_info *info = priv->info;
--	bool gptp = info->gptp || info->ccc_gac;
--	struct ravb_rx_desc *desc;
- 	unsigned long flags;
- 	int q = napi - priv->napi;
- 	int mask = BIT(q);
- 	int quota = budget;
--	unsigned int entry;
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -109,7 +109,6 @@ virtio_transport_send_pkt_work(struct wo
+ 		if (!skb)
+ 			break;
  
--	if (!gptp) {
--		entry = priv->cur_rx[q] % priv->num_rx_ring[q];
--		desc = &priv->gbeth_rx_ring[entry];
--	}
- 	/* Processing RX Descriptor Ring */
- 	/* Clear RX interrupt */
- 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
--	if (gptp || desc->die_dt != DT_FEMPTY) {
--		if (ravb_rx(ndev, &quota, q))
--			goto out;
--	}
-+	if (ravb_rx(ndev, &quota, q))
-+		goto out;
+-		virtio_transport_deliver_tap_pkt(skb);
+ 		reply = virtio_vsock_skb_reply(skb);
  
- 	/* Processing TX Descriptor Ring */
- 	spin_lock_irqsave(&priv->lock, flags);
--- 
-2.43.0
-
+ 		sg_init_one(&hdr, virtio_vsock_hdr(skb), sizeof(*virtio_vsock_hdr(skb)));
+@@ -128,6 +127,8 @@ virtio_transport_send_pkt_work(struct wo
+ 			break;
+ 		}
+ 
++		virtio_transport_deliver_tap_pkt(skb);
++
+ 		if (reply) {
+ 			struct virtqueue *rx_vq = vsock->vqs[VSOCK_VQ_RX];
+ 			int val;
 
 
 
