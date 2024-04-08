@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-36699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E5389C149
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1297289C38C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B6D81C215EA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C33F6283968
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D6481AB4;
-	Mon,  8 Apr 2024 13:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F061292D5;
+	Mon,  8 Apr 2024 13:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUU7T1H+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGEqzJDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77127B3F3;
-	Mon,  8 Apr 2024 13:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F02512838E;
+	Mon,  8 Apr 2024 13:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582086; cv=none; b=cVLZ67Cjsv+/osUDz3ld1t2aaPItDE1ZnIn84KlP84mH3EU19nr1dGGK7XxZdhmCzkspEcFIr3oH3woG2ZvaedioKW7rUwTrfc+xAgPQw2QBN5v2l9B6K9vfbG9mcG6K1XXfGQ063MseANF5DWxWhwhRqj4xGrJY4InD6sTel6E=
+	t=1712583401; cv=none; b=DVMayu08nYLbKIcrR2QsXHc7msVGP7QJTXgUYH1Ox0kvwByZWPMElf95vkdFFTNKNVSPwu+ZBygs0usCw6/Y3/wMHN6Tbp0BTY9q2AJF+lVi6Cm/rQSQ7QG0lx+yeiPr+yhAwogCVnVP3lEcjmxy+MreHQnDyGVkqEZ80C4ynqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582086; c=relaxed/simple;
-	bh=rj8J9uxGZI9KTqarcIxv6K+TFNg9QicHSGqTdLSQgMo=;
+	s=arc-20240116; t=1712583401; c=relaxed/simple;
+	bh=64zU8QVoUJESKRbPvAA++R1pkGaAP3Q2sxfbADK1NjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tdjLjIgrOtBYmFrKggnfmBOPDvPok62ONqFnvQmlVNwO7SBUcNL9CalrwEVFjzWI5rS8d7HPKlJW6qi7l6BwwBhY7rMMnro6t5hTjyYlGvLnfte8dqSL8XH0jW6E8krGqjbzVAVvW4iniabMb9QytLGwwolPiRLufSxTv/WNb4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUU7T1H+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFCAC433C7;
-	Mon,  8 Apr 2024 13:14:46 +0000 (UTC)
+	 MIME-Version; b=GOVTv0uHwSt5VpyEB6BgmxEHeLz8euGPgMLl1u2Aiy0nWmtb/EnyGQuPBIJlcbwEc7wxm77LQRnGYE8EuDW3qAqAEXGhxHjRn4t+jNS2ssMGuXdWBQOyDlw72gqD23g+VCcpKsFkkYMKCQdK2qCK5apM4fqWa8BFuN0myBRNSBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGEqzJDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16489C433F1;
+	Mon,  8 Apr 2024 13:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582086;
-	bh=rj8J9uxGZI9KTqarcIxv6K+TFNg9QicHSGqTdLSQgMo=;
+	s=korg; t=1712583401;
+	bh=64zU8QVoUJESKRbPvAA++R1pkGaAP3Q2sxfbADK1NjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUU7T1H+TQtB+P8Rdco68G5ysrYMDEDsrAERYenrMR3si7vH6XlEnBFve/j2uH4Fu
-	 RTWrwGuzb56m9222ns/IyOyGkKl1WK/uAIWiMCDJ2TT+vv3487ohg1gdl8T87bOpmg
-	 ENtrbk55ZUOeyu7GnwIPADKY1cLfxbAzleklhpzA=
+	b=oGEqzJDZ3ww2Xn5plIUZBTlB2Ffo3RE787AKcCYCO/YbfEpqpksyEXeIbU0dhgKJG
+	 T7nfHQw2QCidYXlG8vqy9AuL32mDmnvWSGufaQ9vWa9psY5T1Db2wXvD/tXMK2KsEq
+	 ZKa4GU1GS9Kb1CTaJje/QNAkNGg3MHLuGcVtRcpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <simon.horman@corigine.com>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/138] r8169: use spinlock to protect access to registers Config2 and Config5
+Subject: [PATCH 6.6 192/252] s390/pai: cleanup event initialization
 Date: Mon,  8 Apr 2024 14:58:11 +0200
-Message-ID: <20240408125258.621812011@linuxfoundation.org>
+Message-ID: <20240408125312.616073754@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,166 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 6bc6c4e6893ee79a9862c61d1635e7da6d5a3333 ]
+[ Upstream commit 4711b7b8f99583f6105a33e91f106125134beacb ]
 
-For disabling ASPM during NAPI poll we'll have to access both registers
-in atomic context. Use a spinlock to protect access.
+Setting event::hw.last_tag to zero is not necessary. The memory
+for each event is dynamically allocated by the kernel common code and
+initialized to zero already.  Remove this unnecessary assignment.
+Move the comment to function paicrypt_start() for clarification.
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 5e864d90b208 ("r8169: skip DASH fw status checks when DASH is disabled")
+Suggested-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 47 ++++++++++++++++++-----
- 1 file changed, 37 insertions(+), 10 deletions(-)
+ arch/s390/kernel/perf_pai_crypto.c | 11 +++++------
+ arch/s390/kernel/perf_pai_ext.c    |  1 -
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index c7dd0eb94817f..4a1710b2726ce 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -615,6 +615,7 @@ struct rtl8169_private {
- 		struct work_struct work;
- 	} wk;
+diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+index 1ac74333a78dc..270255acacb02 100644
+--- a/arch/s390/kernel/perf_pai_crypto.c
++++ b/arch/s390/kernel/perf_pai_crypto.c
+@@ -210,12 +210,6 @@ static int paicrypt_event_init(struct perf_event *event)
+ 	if (rc)
+ 		return rc;
  
-+	spinlock_t config25_lock;
- 	spinlock_t mac_ocp_lock;
+-	/* Event initialization sets last_tag to 0. When later on the events
+-	 * are deleted and re-added, do not reset the event count value to zero.
+-	 * Events are added, deleted and re-added when 2 or more events
+-	 * are active at the same time.
+-	 */
+-	event->hw.last_tag = 0;
+ 	event->destroy = paicrypt_event_destroy;
  
- 	unsigned supports_gmii:1;
-@@ -680,6 +681,28 @@ static void rtl_pci_commit(struct rtl8169_private *tp)
- 	RTL_R8(tp, ChipCmd);
- }
- 
-+static void rtl_mod_config2(struct rtl8169_private *tp, u8 clear, u8 set)
-+{
-+	unsigned long flags;
-+	u8 val;
-+
-+	spin_lock_irqsave(&tp->config25_lock, flags);
-+	val = RTL_R8(tp, Config2);
-+	RTL_W8(tp, Config2, (val & ~clear) | set);
-+	spin_unlock_irqrestore(&tp->config25_lock, flags);
-+}
-+
-+static void rtl_mod_config5(struct rtl8169_private *tp, u8 clear, u8 set)
-+{
-+	unsigned long flags;
-+	u8 val;
-+
-+	spin_lock_irqsave(&tp->config25_lock, flags);
-+	val = RTL_R8(tp, Config5);
-+	RTL_W8(tp, Config5, (val & ~clear) | set);
-+	spin_unlock_irqrestore(&tp->config25_lock, flags);
-+}
-+
- static bool rtl_is_8125(struct rtl8169_private *tp)
+ 	if (a->sample_period) {
+@@ -249,6 +243,11 @@ static void paicrypt_start(struct perf_event *event, int flags)
  {
- 	return tp->mac_version >= RTL_GIGA_MAC_VER_61;
-@@ -1401,6 +1424,7 @@ static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
- 		{ WAKE_MAGIC, Config3, MagicPacket }
- 	};
- 	unsigned int i, tmp = ARRAY_SIZE(cfg);
-+	unsigned long flags;
- 	u8 options;
+ 	u64 sum;
  
- 	rtl_unlock_config_regs(tp);
-@@ -1419,12 +1443,14 @@ static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
- 			r8168_mac_ocp_modify(tp, 0xc0b6, BIT(0), 0);
- 	}
++	/* Event initialization sets last_tag to 0. When later on the events
++	 * are deleted and re-added, do not reset the event count value to zero.
++	 * Events are added, deleted and re-added when 2 or more events
++	 * are active at the same time.
++	 */
+ 	if (!event->hw.last_tag) {
+ 		event->hw.last_tag = 1;
+ 		sum = paicrypt_getall(event);		/* Get current value */
+diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+index ac32107167eac..8fddde11cfb1f 100644
+--- a/arch/s390/kernel/perf_pai_ext.c
++++ b/arch/s390/kernel/perf_pai_ext.c
+@@ -261,7 +261,6 @@ static int paiext_event_init(struct perf_event *event)
+ 	rc = paiext_alloc(a, event);
+ 	if (rc)
+ 		return rc;
+-	event->hw.last_tag = 0;
+ 	event->destroy = paiext_event_destroy;
  
-+	spin_lock_irqsave(&tp->config25_lock, flags);
- 	for (i = 0; i < tmp; i++) {
- 		options = RTL_R8(tp, cfg[i].reg) & ~cfg[i].mask;
- 		if (wolopts & cfg[i].opt)
- 			options |= cfg[i].mask;
- 		RTL_W8(tp, cfg[i].reg, options);
- 	}
-+	spin_unlock_irqrestore(&tp->config25_lock, flags);
- 
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_02 ... RTL_GIGA_MAC_VER_06:
-@@ -1436,10 +1462,10 @@ static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
- 	case RTL_GIGA_MAC_VER_34:
- 	case RTL_GIGA_MAC_VER_37:
- 	case RTL_GIGA_MAC_VER_39 ... RTL_GIGA_MAC_VER_63:
--		options = RTL_R8(tp, Config2) & ~PME_SIGNAL;
- 		if (wolopts)
--			options |= PME_SIGNAL;
--		RTL_W8(tp, Config2, options);
-+			rtl_mod_config2(tp, 0, PME_SIGNAL);
-+		else
-+			rtl_mod_config2(tp, PME_SIGNAL, 0);
- 		break;
- 	default:
- 		break;
-@@ -2748,8 +2774,8 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
- {
- 	/* Don't enable ASPM in the chip if OS can't control ASPM */
- 	if (enable && tp->aspm_manageable) {
--		RTL_W8(tp, Config5, RTL_R8(tp, Config5) | ASPM_en);
--		RTL_W8(tp, Config2, RTL_R8(tp, Config2) | ClkReqEn);
-+		rtl_mod_config5(tp, 0, ASPM_en);
-+		rtl_mod_config2(tp, 0, ClkReqEn);
- 
- 		switch (tp->mac_version) {
- 		case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
-@@ -2772,8 +2798,8 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
- 			break;
- 		}
- 
--		RTL_W8(tp, Config2, RTL_R8(tp, Config2) & ~ClkReqEn);
--		RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~ASPM_en);
-+		rtl_mod_config2(tp, ClkReqEn, 0);
-+		rtl_mod_config5(tp, ASPM_en, 0);
- 	}
- 
- 	udelay(10);
-@@ -2934,7 +2960,7 @@ static void rtl_hw_start_8168e_1(struct rtl8169_private *tp)
- 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | TXPLA_RST);
- 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) & ~TXPLA_RST);
- 
--	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
-+	rtl_mod_config5(tp, Spi_en, 0);
- }
- 
- static void rtl_hw_start_8168e_2(struct rtl8169_private *tp)
-@@ -2967,7 +2993,7 @@ static void rtl_hw_start_8168e_2(struct rtl8169_private *tp)
- 
- 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) | PFM_EN);
- 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | PWM_EN);
--	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
-+	rtl_mod_config5(tp, Spi_en, 0);
- 
- 	rtl_hw_aspm_clkreq_enable(tp, true);
- }
-@@ -2990,7 +3016,7 @@ static void rtl_hw_start_8168f(struct rtl8169_private *tp)
- 	RTL_W8(tp, MCU, RTL_R8(tp, MCU) & ~NOW_IS_OOB);
- 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) | PFM_EN);
- 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | PWM_EN);
--	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
-+	rtl_mod_config5(tp, Spi_en, 0);
- 
- 	rtl8168_config_eee_mac(tp);
- }
-@@ -5259,6 +5285,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	tp->eee_adv = -1;
- 	tp->ocp_base = OCP_STD_PHY_BASE;
- 
-+	spin_lock_init(&tp->config25_lock);
- 	spin_lock_init(&tp->mac_ocp_lock);
- 
- 	dev->tstats = devm_netdev_alloc_pcpu_stats(&pdev->dev,
+ 	if (a->sample_period) {
 -- 
 2.43.0
 
