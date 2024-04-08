@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62BC89C468
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F5E89C275
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23FE91C237BD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0D1E28381D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D94D7BAF5;
-	Mon,  8 Apr 2024 13:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB147CF26;
+	Mon,  8 Apr 2024 13:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arcg+E1K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scrEmhAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1711745D6;
-	Mon,  8 Apr 2024 13:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BCB7CF17;
+	Mon,  8 Apr 2024 13:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583920; cv=none; b=f8/ZPUbwcWxPJGkg6f9CX4xTqGnPCmWH7q4AjWvyKR4u8DnRMIte4jxvElqCh78i9ocgAnyGO3wYQ0IhFb4Erk0iMSlplN/hRASlD/bi+gaZCfYNCdXYP2tItxbtpO/IHLoESCOru/6kSzbO00lQJ/nIsuRVDCUykvZ3pVCBqi0=
+	t=1712582810; cv=none; b=ADSfaNcxlK27ET5vDPF1mQYiCe+y0kxk1l5inoY4HlrzphNG9VN7J3rQ0c31YMuUysExHVg0G4/BarbD92vh4RtzRbt3LyhgNsqYjtcRk9PnquIVc0qgo7sVC4x7Yogby0+DHGBTgaworVPhvjoTc/cU47PT9b4YyzqdmENrwnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583920; c=relaxed/simple;
-	bh=eMs8QAUHdZoo3JHSiCgbYpdOj4YlIqcpQjsX/DBJaYg=;
+	s=arc-20240116; t=1712582810; c=relaxed/simple;
+	bh=sIROaMLBXl9ovwjgcoYStBNcELbursA65VbT2Il6PJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLAy+HN1rakhDbxE4Q3TbPExhjt4f3tw4lLz9idDXcxGntx8qdrzchcNiw2szl0eEZkGshisWFj1Ln+KXfFQI/JoJwlH0CR3VbjWIOS+sVmut0Lz2Tvt7pY1vj4RUV+/qShzXzEa0WgqW9HUHZnlPyU78oSImSLGMdLS3ingFSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arcg+E1K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771D9C433C7;
-	Mon,  8 Apr 2024 13:45:19 +0000 (UTC)
+	 MIME-Version; b=Opa2I2iaHowlt7ACvHhtnp9vnPPFuUicU1g9OIZ05w4hRvh+Ar3Oil+B8Le9PyHU1HI5j5kndaOZ+yN1XTXkRUBAspLv5OPdiP2oa/li+4LCyvtfMzaHNqVNAbXDK/VCdSzPAySFGtvOv/+epLxtIkbXogzJmMo467GVzMbn7fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scrEmhAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D923C43390;
+	Mon,  8 Apr 2024 13:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583919;
-	bh=eMs8QAUHdZoo3JHSiCgbYpdOj4YlIqcpQjsX/DBJaYg=;
+	s=korg; t=1712582810;
+	bh=sIROaMLBXl9ovwjgcoYStBNcELbursA65VbT2Il6PJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arcg+E1KZrN33prt2sFHBh0XEEOTfqkCzjmPLyAyjIm8IyUrKMJ5QdOO+RQrCB/ZE
-	 jn7dYO8+eTn+l83CbHswPO0ZASIFvZy/eLc1EQwIPLDIzD0GNwdUO5qdQh4ZKXSK2V
-	 5XU8x83zyLTJM6dGmnRPpo6B8pvOKglDB1zP/8L0=
+	b=scrEmhAEWHOHonFRUZrJ538mAs8A9CIVTXITX5r1F7l8ZWKEh16jDUVotzF9q++9b
+	 H0ak+r50OqOan6whziXYpBeNoD/SDtoXwCT/L05dEzvWFHYvfvIsAh4JU7oT5/Xi3j
+	 wHukkQRs3iqR4aP5tNOCPAl4TbKDzrUyAf4q+YVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 6.6 249/252] efi/libstub: Add generic support for parsing mem_encrypt=
-Date: Mon,  8 Apr 2024 14:59:08 +0200
-Message-ID: <20240408125314.384775944@linuxfoundation.org>
+	Christoph Paasch <cpaasch@apple.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 135/138] mptcp: dont account accept() of non-MPC client as fallback to TCP
+Date: Mon,  8 Apr 2024 14:59:09 +0200
+Message-ID: <20240408125300.428044615@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit 7205f06e847422b66c1506eee01b9998ffc75d76 upstream.
+commit 7a1b3490f47e88ec4cbde65f1a77a0f4bc972282 upstream.
 
-Parse the mem_encrypt= command line parameter from the EFI stub if
-CONFIG_ARCH_HAS_MEM_ENCRYPT=y, so that it can be passed to the early
-boot code by the arch code in the stub.
+Current MPTCP servers increment MPTcpExtMPCapableFallbackACK when they
+accept non-MPC connections. As reported by Christoph, this is "surprising"
+because the counter might become greater than MPTcpExtMPCapableSYNRX.
 
-This avoids the need for the core kernel to do any string parsing very
-early in the boot.
+MPTcpExtMPCapableFallbackACK counter's name suggests it should only be
+incremented when a connection was seen using MPTCP options, then a
+fallback to TCP has been done. Let's do that by incrementing it when
+the subflow context of an inbound MPC connection attempt is dropped.
+Also, update mptcp_connect.sh kselftest, to ensure that the
+above MIB does not increment in case a pure TCP client connects to a
+MPTCP server.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20240227151907.387873-16-ardb+git@google.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: fc518953bc9c ("mptcp: add and use MIB counter infrastructure")
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/449
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240329-upstream-net-20240329-fallback-mib-v1-1-324a8981da48@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/efi-stub-helper.c |    8 ++++++++
- drivers/firmware/efi/libstub/efistub.h         |    2 +-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c                               |    3 ---
+ net/mptcp/subflow.c                                |    2 ++
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |    7 +++++++
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -24,6 +24,8 @@ static bool efi_noinitrd;
- static bool efi_nosoftreserve;
- static bool efi_disable_pci_dma = IS_ENABLED(CONFIG_EFI_DISABLE_PCI_DMA);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3349,9 +3349,6 @@ static struct sock *mptcp_accept(struct
  
-+int efi_mem_encrypt;
+ 		newsk = new_mptcp_sock;
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEPASSIVEACK);
+-	} else {
+-		MPTCP_INC_STATS(sock_net(sk),
+-				MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK);
+ 	}
+ 
+ out:
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -816,6 +816,8 @@ dispose_child:
+ 	return child;
+ 
+ fallback:
++	if (fallback)
++		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK);
+ 	mptcp_subflow_drop_ctx(child);
+ 	return child;
+ }
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -439,6 +439,7 @@ do_transfer()
+ 	local stat_cookierx_last=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesRecv")
+ 	local stat_csum_err_s=$(get_mib_counter "${listener_ns}" "MPTcpExtDataCsumErr")
+ 	local stat_csum_err_c=$(get_mib_counter "${connector_ns}" "MPTcpExtDataCsumErr")
++	local stat_tcpfb_last_l=$(get_mib_counter "${listener_ns}" "MPTcpExtMPCapableFallbackACK")
+ 
+ 	timeout ${timeout_test} \
+ 		ip netns exec ${listener_ns} \
+@@ -504,6 +505,7 @@ do_transfer()
+ 	local stat_cookietx_now=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesSent")
+ 	local stat_cookierx_now=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesRecv")
+ 	local stat_ooo_now=$(get_mib_counter "${listener_ns}" "TcpExtTCPOFOQueue")
++	local stat_tcpfb_now_l=$(get_mib_counter "${listener_ns}" "MPTcpExtMPCapableFallbackACK")
+ 
+ 	expect_synrx=$((stat_synrx_last_l))
+ 	expect_ackrx=$((stat_ackrx_last_l))
+@@ -548,6 +550,11 @@ do_transfer()
+ 		fi
+ 	fi
+ 
++	if [ ${stat_ooo_now} -eq 0 ] && [ ${stat_tcpfb_last_l} -ne ${stat_tcpfb_now_l} ]; then
++		printf "[ FAIL ]\nunexpected fallback to TCP"
++		rets=1
++	fi
 +
- bool __pure __efi_soft_reserve_enabled(void)
- {
- 	return !efi_nosoftreserve;
-@@ -75,6 +77,12 @@ efi_status_t efi_parse_options(char cons
- 			efi_noinitrd = true;
- 		} else if (IS_ENABLED(CONFIG_X86_64) && !strcmp(param, "no5lvl")) {
- 			efi_no5lvl = true;
-+		} else if (IS_ENABLED(CONFIG_ARCH_HAS_MEM_ENCRYPT) &&
-+			   !strcmp(param, "mem_encrypt") && val) {
-+			if (parse_option_str(val, "on"))
-+				efi_mem_encrypt = 1;
-+			else if (parse_option_str(val, "off"))
-+				efi_mem_encrypt = -1;
- 		} else if (!strcmp(param, "efi") && val) {
- 			efi_nochunk = parse_option_str(val, "nochunk");
- 			efi_novamap |= parse_option_str(val, "novamap");
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -37,8 +37,8 @@ extern bool efi_no5lvl;
- extern bool efi_nochunk;
- extern bool efi_nokaslr;
- extern int efi_loglevel;
-+extern int efi_mem_encrypt;
- extern bool efi_novamap;
--
- extern const efi_system_table_t *efi_system_table;
- 
- typedef union efi_dxe_services_table efi_dxe_services_table_t;
+ 	if [ $retc -eq 0 ] && [ $rets -eq 0 ]; then
+ 		printf "[ OK ]"
+ 	fi
 
 
 
