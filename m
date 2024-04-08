@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-36497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B00089C01F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D7489C378
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCD061C2164A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3DC31C22153
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8735C79955;
-	Mon,  8 Apr 2024 13:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEBC86240;
+	Mon,  8 Apr 2024 13:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwovCF+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2wckF2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459552DF73;
-	Mon,  8 Apr 2024 13:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF1C7D417;
+	Mon,  8 Apr 2024 13:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581498; cv=none; b=OEaOxMLJQEJ6uJJExOrVdw4UdU5yWchLbq70LQOuI8EWdKVqn6i6KhqPscyoIYIouPEMwnrQuQnEkRk0L0Ku3dNGyH+VkShJwzOpWrMbTvv/mK8Sesq0NGuyBhbMTXWNkozsoDTfdb5rOUHQD7vnvjx5AHmuvXVvpztALqGvF6U=
+	t=1712583344; cv=none; b=Z+LbYwohIf/COpCjMGHN9ojCqOFGUKuLmQSLNGNxCnrUIVcsUH6It74Rj70S0tCND4NqrO7LAklJGyWFd/BhDdAmcPh1ntFZVB/Wg3Egh0NDOilYCSeQCBsmMBDtQY5mAQrfdlhMi/mb5C6gnjlEMv3AZWbUsr6pUAquqztvjtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581498; c=relaxed/simple;
-	bh=Ps/gmsruFVGcpRGneaod62Q2RA9L1HI+lQzDcAds2SE=;
+	s=arc-20240116; t=1712583344; c=relaxed/simple;
+	bh=hkyzYiT/J1uzTOr7t8tefRAB6Ide0NZ3Q0huVqOR5SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lw4kJukw+wPb6J3on4MWKEMnonJHY0IV2K2ioUxo1G09H6QtZJJ1K+2oV4RnfIYfcZyUzvftfZlB/YJGYkgaOJmgNDOhWlVFvVhIZ9g8vhAqoiwWrijeyqJWZClftj8ribyAznlQi5aEMPwbkClFj4Gtg8XJowHbm2hzZ8mGae4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwovCF+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89C9C433F1;
-	Mon,  8 Apr 2024 13:04:57 +0000 (UTC)
+	 MIME-Version; b=WSHLZaqIq7ywe2PLEXMsnq5kQmPyIkKxRWMXkq7PANns0p+yHBHyIVW/64QomBIvSWDRXahb4gl2FtG2WsVnRDCvLVaR/DCS6p4YZnXWWWs9BjSwcziF3bd+ugmAh8wwfyguS8lNgU+7113uKRJ23iGZ11Anb8aGLFTCOlpo2y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2wckF2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1623DC433F1;
+	Mon,  8 Apr 2024 13:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581498;
-	bh=Ps/gmsruFVGcpRGneaod62Q2RA9L1HI+lQzDcAds2SE=;
+	s=korg; t=1712583343;
+	bh=hkyzYiT/J1uzTOr7t8tefRAB6Ide0NZ3Q0huVqOR5SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwovCF+WtIneJJeXHE14mpG5XKMUInc+3pTvaxdFSutpdXpsoKQN/5bsQMecyiyu2
-	 qYEp2DLvUpwgH3ZbG1dCi6Sp18l6kPHANLOQaAofLtfSTZd5e0uGH4DptD0F+jqsic
-	 yyIfMh6+MEZkv3K1m02M+IobghdH1+MMr+pA918E=
+	b=w2wckF2FOnYfGrPxrETczw4sD2ebbzfdBQA5wVu9W1vO/AEzfyVJyt8ZyhAG+fUX8
+	 BpMqGw6mBx659jnJeFi39rnOg4eJ+TwmihfgvLsINugH/Nuz2upS8+PkjwlBVRyJoC
+	 x7RTURGd1BG8u/LdxEEIQyzSWZwjvahkkOWcq7Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 027/138] r8169: fix issue caused by buggy BIOS on certain boards with RTL8168d
+	Peter Griffin <peter.griffin@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 166/273] spi: s3c64xx: explicitly include <linux/bits.h>
 Date: Mon,  8 Apr 2024 14:57:21 +0200
-Message-ID: <20240408125257.071479892@linuxfoundation.org>
+Message-ID: <20240408125314.421965144@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit 5d872c9f46bd2ea3524af3c2420a364a13667135 upstream.
+[ Upstream commit 4568fa574fcef3811a8140702979f076ef0f5bc0 ]
 
-On some boards with this chip version the BIOS is buggy and misses
-to reset the PHY page selector. This results in the PHY ID read
-accessing registers on a different page, returning a more or
-less random value. Fix this by resetting the page selector first.
+The driver uses GENMASK() but does not include <linux/bits.h>.
 
-Fixes: f1e911d5d0df ("r8169: add basic phylib support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/64f2055e-98b8-45ec-8568-665e3d54d4e6@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It is good practice to directly include all headers used, it avoids
+implicit dependencies and spurious breakage if someone rearranges
+headers and causes the implicit include to vanish.
+
+Include the missing header.
+
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20240207120431.2766269-4-tudor.ambarus@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/spi-s3c64xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -5032,6 +5032,15 @@ static int r8169_mdio_register(struct rt
- 	struct mii_bus *new_bus;
- 	int ret;
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 26d389d95af92..1e519b1537e71 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -3,6 +3,7 @@
+ // Copyright (c) 2009 Samsung Electronics Co., Ltd.
+ //      Jaswinder Singh <jassi.brar@samsung.com>
  
-+	/* On some boards with this chip version the BIOS is buggy and misses
-+	 * to reset the PHY page selector. This results in the PHY ID read
-+	 * accessing registers on a different page, returning a more or
-+	 * less random value. Fix this by resetting the page selector first.
-+	 */
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_25 ||
-+	    tp->mac_version == RTL_GIGA_MAC_VER_26)
-+		r8169_mdio_write(tp, 0x1f, 0);
-+
- 	new_bus = devm_mdiobus_alloc(&pdev->dev);
- 	if (!new_bus)
- 		return -ENOMEM;
++#include <linux/bits.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/dma-mapping.h>
+-- 
+2.43.0
+
 
 
 
