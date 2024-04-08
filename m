@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-37061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F0E89C314
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA18D89C381
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7306328318C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74BDD283C19
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AD07F7EE;
-	Mon,  8 Apr 2024 13:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47391272AB;
+	Mon,  8 Apr 2024 13:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfrWOICc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvOd543d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C516CDA9;
-	Mon,  8 Apr 2024 13:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920227D09F;
+	Mon,  8 Apr 2024 13:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583139; cv=none; b=VTJWkuaemBtjVK/n/iKaqV9xETmGsnEm1d1EHN09+Bfw+qAYu9tJFnp4jJUdnb7KK6G6II2KMLsVltAH7HsGfvpe+xeTgSE3gnQseyIMV1gBdY5e7kG9nMvGL8DiJjHd0rOhsdXCPZ0fRDEiJ7B/NcMmiKb49ZzcG/LQu/vSXmM=
+	t=1712583369; cv=none; b=O1h/2zi8bcp1m3L3Qvt9hBXLyM/t919qEJ1ej2uUUk6q1yB2ySqFFpVLMdKB4HLqDVRBl14Q2I5CXqx5zkjJl4E4bbru+CgUgXHgnPgPBnUNqGO6DVxQ/MQ2oEtXa42fip6S0NzMXxPuQSyzGq54xpFWki03+tDkG94yiLTBtuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583139; c=relaxed/simple;
-	bh=GoQS4DrOYXVKJ5/VpivvpQZAgcO+3qSfur1J+Xb+vuA=;
+	s=arc-20240116; t=1712583369; c=relaxed/simple;
+	bh=Lt9tOrs5dX+S22wmpgYMl5ojbCp0wVJjR2TRHr575f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjfEnVQFRqIm5NLwxwLX5gsgGKDpQygt/C0Iiu6wZV3snVIvyiX34HwyhhuW6cKmwjdFLMwZoa4Te+76C78hrych07oU/B53FtmwzQdaeQXOIttH3xsd3uQzUOdOYUUaFPPpjjUC2/XlNCdlxnNLcLJVZNx+dOTj9MlAstBrBqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfrWOICc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32FFC433F1;
-	Mon,  8 Apr 2024 13:32:18 +0000 (UTC)
+	 MIME-Version; b=BfI6lN81Ou75y0/vWOouv0Hj0vua96A6e+w3CuyNrf2qwbXo8dGkNj9m1Zhdo4WqgdWR0ql6ocVRfxMgEVweb+00XerYQQX23wfblHM5XgKr04n+9d7L/3vrGIBgfoqJENrGr6dfKxPAYyeJKG1YSOU5N5E7HOr/DnsZviGHyPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvOd543d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B89C433C7;
+	Mon,  8 Apr 2024 13:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583139;
-	bh=GoQS4DrOYXVKJ5/VpivvpQZAgcO+3qSfur1J+Xb+vuA=;
+	s=korg; t=1712583369;
+	bh=Lt9tOrs5dX+S22wmpgYMl5ojbCp0wVJjR2TRHr575f4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfrWOICcOJkbCeOP12EMfVDQZidZRkk4fJ/1T62B9U78IM9CyaUxb6meMQqWFdW9Q
-	 JG5hKpkxjR4DZ9LLbD6KyFtB2VZ6C9U6PxAGaE/C/XjaoheMoCTl/ycL3XwGGbB16y
-	 k/I7/f2HEUCHUKn3B5wI6PBbv2Dludl1gWJ5/EGQ=
+	b=JvOd543dAEQUc4dTBMZXXDtQXRupTmxDs3oDqeqzOzh/ypprKNRfjJz5fzGrQHurU
+	 AP6iJb04Yy67vjUdRrnB6vLDBDOc4ABS1rQH4aa0ezD3y+n0ljuDYunUjlZ3bAbrWk
+	 L0sBEbflUoZVA0PM8k5FzwuaZfFLq6ToJUyeUySg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff layton <jlayton@kernel.org>,
-	"J. Bruce Fields" <bfields@redhat.com>,
+	Gabriel Krisman Bertazi <krisman@collabora.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 211/690] nfsd4: remove obselete comment
-Date: Mon,  8 Apr 2024 14:51:17 +0200
-Message-ID: <20240408125407.174794094@linuxfoundation.org>
+Subject: [PATCH 5.15 212/690] ext4: fix error code saved on super block during file system abort
+Date: Mon,  8 Apr 2024 14:51:18 +0200
+Message-ID: <20240408125407.217006926@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,34 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: J. Bruce Fields <bfields@redhat.com>
+From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-[ Upstream commit 80479eb862102f9513e93fcf726c78cc0be2e3b2 ]
+[ Upstream commit 124e7c61deb27d758df5ec0521c36cf08d417f7a ]
 
-Mandatory locking has been removed.  And the rest of this comment is
-redundant with the code.
+ext4_abort will eventually call ext4_errno_to_code, which translates the
+errno to an EXT4_ERR specific error.  This means that ext4_abort expects
+an errno.  By using EXT4_ERR_ here, it gets misinterpreted (as an errno),
+and ends up saving EXT4_ERR_EBUSY on the superblock during an abort,
+which makes no sense.
 
-Reported-by: Jeff layton <jlayton@kernel.org>
-Signed-off-by: J. Bruce Fields <bfields@redhat.com>
+ESHUTDOWN will get properly translated to EXT4_ERR_SHUTDOWN, so use that
+instead.
+
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
+Link: https://lore.kernel.org/r/20211026173302.84000-1-krisman@collabora.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/vfs.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/ext4/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 59e30cff920ca..925aa08ca1075 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -744,9 +744,6 @@ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
- 	path.dentry = fhp->fh_dentry;
- 	inode = d_inode(path.dentry);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index f69e7bf52c578..8b276b95a7904 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5851,7 +5851,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
+ 	}
  
--	/* Disallow write access to files with the append-only bit set
--	 * or any access when mandatory locking enabled
--	 */
- 	err = nfserr_perm;
- 	if (IS_APPEND(inode) && (may_flags & NFSD_MAY_WRITE))
- 		goto out;
+ 	if (ext4_test_mount_flag(sb, EXT4_MF_FS_ABORTED))
+-		ext4_abort(sb, EXT4_ERR_ESHUTDOWN, "Abort forced by user");
++		ext4_abort(sb, ESHUTDOWN, "Abort forced by user");
+ 
+ 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
+ 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
 -- 
 2.43.0
 
