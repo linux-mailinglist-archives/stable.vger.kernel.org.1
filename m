@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-37004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3285689C2B0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E3189C2B7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6490E1C21DB7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 374BD1F24E09
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88F57BAF0;
-	Mon,  8 Apr 2024 13:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D24757FF;
+	Mon,  8 Apr 2024 13:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/G0KW46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cbfv0+7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66FF745D6;
-	Mon,  8 Apr 2024 13:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5753881ABE;
+	Mon,  8 Apr 2024 13:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582973; cv=none; b=ly3ojgCDBRFjwTh5qBUAThyNBN8vvj17H5qbUkZoe4gTLApwly5cFiokQb/tU/ncJut032smO97IUQnL2InKQleEc6F/yWhMvg+zsD7P6Py+mUJVLYosXU/Ff7Q5jcgS30lEUDhs82Dt+bkOduSAEIX7fwDeKYWFzfvLGNufK8Q=
+	t=1712582982; cv=none; b=U9489q68x7gjifYyPWkHntw69lZW5Gr0TPCO0biA5pFeHiJZp7y2mQpDYBdyOgR1CZ11YMvUN+V4n5bRgR9DQ1qsfg42hw3vlDLvY/edO80OaBJb4hu0cjU2yGW+OJGo7icUfyDCan6lm362Y7oxP/Vd9ziu2vdHadL6XeW1R3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582973; c=relaxed/simple;
-	bh=deOfXn6mHyTddqIZuewYVsPmbtbCBimmwTtsZEcpbLs=;
+	s=arc-20240116; t=1712582982; c=relaxed/simple;
+	bh=6P0sDAWc9fnBXTghOHbRcMT2BWvrkt3RkGwVmmk605Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYbQubkLBcXmaaX7cfKnrHn+4wuvxoG528WNt9XDmhSr94J281sALrET4mQSjg1TC0zvb3CPkS6oKFTcSI/wz97f1XkYpHd+X3eyL6OuMwZ41AibZ6wD9Cc+kPD8kbTnKFqpitY5CRoTqSZZCPHkRnwIlVjDTt3CljZeCmB3XBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/G0KW46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCEEC433C7;
-	Mon,  8 Apr 2024 13:29:33 +0000 (UTC)
+	 MIME-Version; b=KrJ5Ig5EgQTYCgeyfV916+9U2kpJvEBtv4xT51TR/9QbJ+gpFaSddTo+rbxJujapQp3jbOTiiQgFRXZXIlHQZetH7xR7JI+weSFx6zKaa8RNEJpLYlzcJ3Gqdzz6BY8+mLIdHoZa+zBKT1R6vkmO0wDDQvzKmrATOORSj4bi+34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cbfv0+7Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41B8C43390;
+	Mon,  8 Apr 2024 13:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582973;
-	bh=deOfXn6mHyTddqIZuewYVsPmbtbCBimmwTtsZEcpbLs=;
+	s=korg; t=1712582982;
+	bh=6P0sDAWc9fnBXTghOHbRcMT2BWvrkt3RkGwVmmk605Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/G0KW46wRr0yY0t6Dwds7yk9H2BH94rwybMIJREnBr2drrNkruZ72weFkHsK8o8S
-	 ueeOyD7vBz25sCLM4cvl9yHsz5yuWN6x/RXt+h0WtMylE2ay0m8QOqyx2FLbNsQ7+t
-	 WGddjHbU/8St/GOxo7IhC8tDwsm2iUYa9QzvxwbE=
+	b=Cbfv0+7QvyZzit5kq2DA/iNiq74yk9tOJqP1FnSXoeq7WxOPJeXtPZsxSnStR0/yx
+	 nuUPvkMtkozsUKRVYgALlFiHuRSAie0r4XnX/zeihjEgpBcNQoOml3YQuuh8l7ZnnH
+	 0jOQWDIz2ikTzakS/P/5QmIbFYb/wC6n8+YD3x9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 194/690] docs: Document the FAN_FS_ERROR event
-Date: Mon,  8 Apr 2024 14:51:00 +0200
-Message-ID: <20240408125406.582050576@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.15 195/690] NFS: Remove unnecessary TRACE_DEFINE_ENUM()s
+Date: Mon,  8 Apr 2024 14:51:01 +0200
+Message-ID: <20240408125406.621546589@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,117 +65,127 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@collabora.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit c0baf9ac0b05d53dfe0436661dbdc5e43c01c5e0 ]
+[ Upstream commit 8e09650f5ec68858f4b8b67cdef9e2ece9b208f3 ]
 
-Document the FAN_FS_ERROR event for user administrators and user space
-developers.
+Clean up: TRACE_DEFINE_ENUM is unnecessary because the target
+symbols are all C macros, not enums.
 
-Link: https://lore.kernel.org/r/20211025192746.66445-32-krisman@collabora.com
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- .../admin-guide/filesystem-monitoring.rst     | 74 +++++++++++++++++++
- Documentation/admin-guide/index.rst           |  1 +
- 2 files changed, 75 insertions(+)
- create mode 100644 Documentation/admin-guide/filesystem-monitoring.rst
+ fs/nfs/nfstrace.h | 68 -----------------------------------------------
+ 1 file changed, 68 deletions(-)
 
-diff --git a/Documentation/admin-guide/filesystem-monitoring.rst b/Documentation/admin-guide/filesystem-monitoring.rst
-new file mode 100644
-index 0000000000000..5a3c84e60095f
---- /dev/null
-+++ b/Documentation/admin-guide/filesystem-monitoring.rst
-@@ -0,0 +1,74 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+====================================
-+File system Monitoring with fanotify
-+====================================
-+
-+File system Error Reporting
-+===========================
-+
-+Fanotify supports the FAN_FS_ERROR event type for file system-wide error
-+reporting.  It is meant to be used by file system health monitoring
-+daemons, which listen for these events and take actions (notify
-+sysadmin, start recovery) when a file system problem is detected.
-+
-+By design, a FAN_FS_ERROR notification exposes sufficient information
-+for a monitoring tool to know a problem in the file system has happened.
-+It doesn't necessarily provide a user space application with semantics
-+to verify an IO operation was successfully executed.  That is out of
-+scope for this feature.  Instead, it is only meant as a framework for
-+early file system problem detection and reporting recovery tools.
-+
-+When a file system operation fails, it is common for dozens of kernel
-+errors to cascade after the initial failure, hiding the original failure
-+log, which is usually the most useful debug data to troubleshoot the
-+problem.  For this reason, FAN_FS_ERROR tries to report only the first
-+error that occurred for a file system since the last notification, and
-+it simply counts additional errors.  This ensures that the most
-+important pieces of information are never lost.
-+
-+FAN_FS_ERROR requires the fanotify group to be setup with the
-+FAN_REPORT_FID flag.
-+
-+At the time of this writing, the only file system that emits FAN_FS_ERROR
-+notifications is Ext4.
-+
-+A FAN_FS_ERROR Notification has the following format::
-+
-+  [ Notification Metadata (Mandatory) ]
-+  [ Generic Error Record  (Mandatory) ]
-+  [ FID record            (Mandatory) ]
-+
-+The order of records is not guaranteed, and new records might be added
-+in the future.  Therefore, applications must not rely on the order and
-+must be prepared to skip over unknown records. Please refer to
-+``samples/fanotify/fs-monitor.c`` for an example parser.
-+
-+Generic error record
-+--------------------
-+
-+The generic error record provides enough information for a file system
-+agnostic tool to learn about a problem in the file system, without
-+providing any additional details about the problem.  This record is
-+identified by ``struct fanotify_event_info_header.info_type`` being set
-+to FAN_EVENT_INFO_TYPE_ERROR.
-+
-+  struct fanotify_event_info_error {
-+	struct fanotify_event_info_header hdr;
-+	__s32 error;
-+	__u32 error_count;
-+  };
-+
-+The `error` field identifies the type of error using errno values.
-+`error_count` tracks the number of errors that occurred and were
-+suppressed to preserve the original error information, since the last
-+notification.
-+
-+FID record
-+----------
-+
-+The FID record can be used to uniquely identify the inode that triggered
-+the error through the combination of fsid and file handle.  A file system
-+specific application can use that information to attempt a recovery
-+procedure.  Errors that are not related to an inode are reported with an
-+empty file handle of type FILEID_INVALID.
-diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
-index dc00afcabb95f..1bedab498104a 100644
---- a/Documentation/admin-guide/index.rst
-+++ b/Documentation/admin-guide/index.rst
-@@ -82,6 +82,7 @@ configure specific aspects of kernel behavior to your liking.
-    edid
-    efi-stub
-    ext4
-+   filesystem-monitoring
-    nfs/index
-    gpio/index
-    highuid
+diff --git a/fs/nfs/nfstrace.h b/fs/nfs/nfstrace.h
+index 8a224871be74c..589f32fdbe637 100644
+--- a/fs/nfs/nfstrace.h
++++ b/fs/nfs/nfstrace.h
+@@ -11,16 +11,6 @@
+ #include <linux/tracepoint.h>
+ #include <linux/iversion.h>
+ 
+-TRACE_DEFINE_ENUM(DT_UNKNOWN);
+-TRACE_DEFINE_ENUM(DT_FIFO);
+-TRACE_DEFINE_ENUM(DT_CHR);
+-TRACE_DEFINE_ENUM(DT_DIR);
+-TRACE_DEFINE_ENUM(DT_BLK);
+-TRACE_DEFINE_ENUM(DT_REG);
+-TRACE_DEFINE_ENUM(DT_LNK);
+-TRACE_DEFINE_ENUM(DT_SOCK);
+-TRACE_DEFINE_ENUM(DT_WHT);
+-
+ #define nfs_show_file_type(ftype) \
+ 	__print_symbolic(ftype, \
+ 			{ DT_UNKNOWN, "UNKNOWN" }, \
+@@ -33,24 +23,6 @@ TRACE_DEFINE_ENUM(DT_WHT);
+ 			{ DT_SOCK, "SOCK" }, \
+ 			{ DT_WHT, "WHT" })
+ 
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_DATA);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_ATIME);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_ACCESS);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_ACL);
+-TRACE_DEFINE_ENUM(NFS_INO_REVAL_PAGECACHE);
+-TRACE_DEFINE_ENUM(NFS_INO_REVAL_FORCED);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_LABEL);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_CHANGE);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_CTIME);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_MTIME);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_SIZE);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_OTHER);
+-TRACE_DEFINE_ENUM(NFS_INO_DATA_INVAL_DEFER);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_BLOCKS);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_XATTR);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_NLINK);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALID_MODE);
+-
+ #define nfs_show_cache_validity(v) \
+ 	__print_flags(v, "|", \
+ 			{ NFS_INO_INVALID_DATA, "INVALID_DATA" }, \
+@@ -71,17 +43,6 @@ TRACE_DEFINE_ENUM(NFS_INO_INVALID_MODE);
+ 			{ NFS_INO_INVALID_NLINK, "INVALID_NLINK" }, \
+ 			{ NFS_INO_INVALID_MODE, "INVALID_MODE" })
+ 
+-TRACE_DEFINE_ENUM(NFS_INO_ADVISE_RDPLUS);
+-TRACE_DEFINE_ENUM(NFS_INO_STALE);
+-TRACE_DEFINE_ENUM(NFS_INO_ACL_LRU_SET);
+-TRACE_DEFINE_ENUM(NFS_INO_INVALIDATING);
+-TRACE_DEFINE_ENUM(NFS_INO_FSCACHE);
+-TRACE_DEFINE_ENUM(NFS_INO_FSCACHE_LOCK);
+-TRACE_DEFINE_ENUM(NFS_INO_LAYOUTCOMMIT);
+-TRACE_DEFINE_ENUM(NFS_INO_LAYOUTCOMMITTING);
+-TRACE_DEFINE_ENUM(NFS_INO_LAYOUTSTATS);
+-TRACE_DEFINE_ENUM(NFS_INO_ODIRECT);
+-
+ #define nfs_show_nfsi_flags(v) \
+ 	__print_flags(v, "|", \
+ 			{ BIT(NFS_INO_ADVISE_RDPLUS), "ADVISE_RDPLUS" }, \
+@@ -270,19 +231,6 @@ TRACE_EVENT(nfs_access_exit,
+ 		)
+ );
+ 
+-TRACE_DEFINE_ENUM(LOOKUP_FOLLOW);
+-TRACE_DEFINE_ENUM(LOOKUP_DIRECTORY);
+-TRACE_DEFINE_ENUM(LOOKUP_AUTOMOUNT);
+-TRACE_DEFINE_ENUM(LOOKUP_PARENT);
+-TRACE_DEFINE_ENUM(LOOKUP_REVAL);
+-TRACE_DEFINE_ENUM(LOOKUP_RCU);
+-TRACE_DEFINE_ENUM(LOOKUP_OPEN);
+-TRACE_DEFINE_ENUM(LOOKUP_CREATE);
+-TRACE_DEFINE_ENUM(LOOKUP_EXCL);
+-TRACE_DEFINE_ENUM(LOOKUP_RENAME_TARGET);
+-TRACE_DEFINE_ENUM(LOOKUP_EMPTY);
+-TRACE_DEFINE_ENUM(LOOKUP_DOWN);
+-
+ #define show_lookup_flags(flags) \
+ 	__print_flags(flags, "|", \
+ 			{ LOOKUP_FOLLOW, "FOLLOW" }, \
+@@ -392,22 +340,6 @@ DEFINE_NFS_LOOKUP_EVENT_DONE(nfs_lookup_exit);
+ DEFINE_NFS_LOOKUP_EVENT(nfs_lookup_revalidate_enter);
+ DEFINE_NFS_LOOKUP_EVENT_DONE(nfs_lookup_revalidate_exit);
+ 
+-TRACE_DEFINE_ENUM(O_WRONLY);
+-TRACE_DEFINE_ENUM(O_RDWR);
+-TRACE_DEFINE_ENUM(O_CREAT);
+-TRACE_DEFINE_ENUM(O_EXCL);
+-TRACE_DEFINE_ENUM(O_NOCTTY);
+-TRACE_DEFINE_ENUM(O_TRUNC);
+-TRACE_DEFINE_ENUM(O_APPEND);
+-TRACE_DEFINE_ENUM(O_NONBLOCK);
+-TRACE_DEFINE_ENUM(O_DSYNC);
+-TRACE_DEFINE_ENUM(O_DIRECT);
+-TRACE_DEFINE_ENUM(O_LARGEFILE);
+-TRACE_DEFINE_ENUM(O_DIRECTORY);
+-TRACE_DEFINE_ENUM(O_NOFOLLOW);
+-TRACE_DEFINE_ENUM(O_NOATIME);
+-TRACE_DEFINE_ENUM(O_CLOEXEC);
+-
+ #define show_open_flags(flags) \
+ 	__print_flags(flags, "|", \
+ 		{ O_WRONLY, "O_WRONLY" }, \
 -- 
 2.43.0
 
