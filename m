@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824B289C415
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B06C89C438
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22A4E1F21814
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51992825DD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E30B823DE;
-	Mon,  8 Apr 2024 13:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58ADF85C74;
+	Mon,  8 Apr 2024 13:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CiqmYxSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuwiScNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B23381ABE;
-	Mon,  8 Apr 2024 13:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F647FBDF;
+	Mon,  8 Apr 2024 13:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583722; cv=none; b=DAqIIaOrbhsPhKyygb59+nLO4xYCqJYF7XULYdogkJr31puCWO8xYYiQB2iXUB+cS+CWBvFXXYENAGQyoq7StgCg/0Vzrh+YLR65rwG0/nSPECy7DP2wwUyFwIJVme6M3ZgX+tQ5p36BX5fDK8hE/OfY9sRrgK7ET9rKq0rILAs=
+	t=1712583801; cv=none; b=F6rl2SnesLvWwUakYwUlClhZtADNII+PPdVpYmgHV3f5lz4kkRDGWvakV+PEIE/F/RcQV5SCIrjE2JJO8Za0Vt/xsthiFjyGpOuE8x4K6sTpZkzb1HjT2qAF8Ki+xcVGlseFSFCT1VHuMVxtMF9x4g3gQPa2Zm8zi2TB0HDcMbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583722; c=relaxed/simple;
-	bh=ouNWdAC0CXhUS4fgOlR1PGuWapCuOESKbO6rB4nMDnw=;
+	s=arc-20240116; t=1712583801; c=relaxed/simple;
+	bh=XExZ+qsjS9PVpjHUH07OPP5llz40wBhNfQBf0kEghMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkYDWD8FBNG/ISc2oYTWTbARSmEsZ+1fOrBQRPWiz4Xt+E54U8XD5XWsLqmOlxgxJvGw1mrOGLADcpdQF9ROWSM7w9WMjbzy+lR/mSi886p4RLK266B3a/0tu4IxA8J8V5Sccz91R0RXSyuhfvtEcT1gCqcz4mhc/hHleOC0DYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CiqmYxSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916F9C433C7;
-	Mon,  8 Apr 2024 13:42:01 +0000 (UTC)
+	 MIME-Version; b=mFD/uqiLGvJs06uaUeP7fkXup/G4n5SgfmyC0Of9Jzz6VAbCOHKsj7jDIBRTalUjRcW9nOK6rlOTLa041P5btgxVKXZJ1CBfOVGK+Dd0DNQ/KUTPvGyCkX7t1ca6KL2yeC5VgQotWTt/lj98YSCW68g6Al90ptlfbwvH7T8Z5Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuwiScNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B90C43390;
+	Mon,  8 Apr 2024 13:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583722;
-	bh=ouNWdAC0CXhUS4fgOlR1PGuWapCuOESKbO6rB4nMDnw=;
+	s=korg; t=1712583801;
+	bh=XExZ+qsjS9PVpjHUH07OPP5llz40wBhNfQBf0kEghMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CiqmYxSMVHKkgLBvGSF9xvm4kOu9IlP06Rp5xDp5a/VvkCmvc2nSwdlslXYpqOxCR
-	 UjlZn5hzkQ+K0ekA5e3oTADPahPXArHtxKyiUPeT9mFUM5PnsnovfvA68+eOHaVaPx
-	 agIHtJ6c7jamGqEdpmlcV89N0eC8nZMdFhbMcXKM=
+	b=JuwiScNuNtCdkaFpsWjWzmJLMyZdQta8hR2HAd09+rXael/9Uerq15LwxYansKPtK
+	 lAX3YgmAFua5a1jdNdeffAmzcs4J+2j8vTFXj73Psk0ITUD3PbeISg/i2D6l6NWvVX
+	 Z/Bf/qCdfeJOu60vJR0gzjgP0mc8oIyz/v2+i5cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 263/690] NFSD: Trace boot verifier resets
-Date: Mon,  8 Apr 2024 14:52:09 +0200
-Message-ID: <20240408125409.150354462@linuxfoundation.org>
+Subject: [PATCH 5.15 264/690] NFSD: Move fill_pre_wcc() and fill_post_wcc()
+Date: Mon,  8 Apr 2024 14:52:10 +0200
+Message-ID: <20240408125409.183054156@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,114 +66,285 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 75acacb6583df0b9328dc701d8eeea05af49b8b5 ]
+[ Upstream commit fcb5e3fa012351f3b96024c07bc44834c2478213 ]
 
-According to commit bbf2f098838a ("nfsd: Reset the boot verifier on
-all write I/O errors"), the Linux NFS server forces all clients to
-resend pending unstable writes if any server-side write or commit
-operation encounters an error (say, ENOSPC). This is a rare and
-quite exceptional event that could require administrative recovery
-action, so it should be made trace-able. Example trace event:
-
-nfsd-938   [002]  7174.945558: nfsd_writeverf_reset: boot_time=        61cc920d xid=0xdcd62036 error=-28 new verifier=0x08aecc6142515904
+These functions are related to file handle processing and have
+nothing to do with XDR encoding or decoding. Also they are no longer
+NFSv3-specific. As a clean-up, move their definitions to a more
+appropriate location. WCC is also an NFSv3-specific term, so rename
+them as general-purpose helpers.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/trace.h | 28 ++++++++++++++++++++++++++++
- fs/nfsd/vfs.c   | 13 ++++++++++---
- 2 files changed, 38 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs3xdr.c  | 55 --------------------------------------
+ fs/nfsd/nfs4proc.c |  2 +-
+ fs/nfsd/nfsfh.c    | 66 +++++++++++++++++++++++++++++++++++++++++++++-
+ fs/nfsd/nfsfh.h    | 40 ++++++++++++++++++----------
+ fs/nfsd/vfs.c      |  8 +++---
+ 5 files changed, 96 insertions(+), 75 deletions(-)
 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 52c4a4e001729..c55fd77d43605 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -574,6 +574,34 @@ DEFINE_EVENT(nfsd_net_class, nfsd_##name, \
- DEFINE_NET_EVENT(grace_start);
- DEFINE_NET_EVENT(grace_complete);
+diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
+index 48e8a02ebc83b..2e47a07029f1d 100644
+--- a/fs/nfsd/nfs3xdr.c
++++ b/fs/nfsd/nfs3xdr.c
+@@ -487,61 +487,6 @@ svcxdr_encode_wcc_data(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 	return true;
+ }
  
-+TRACE_EVENT(nfsd_writeverf_reset,
-+	TP_PROTO(
-+		const struct nfsd_net *nn,
-+		const struct svc_rqst *rqstp,
-+		int error
-+	),
-+	TP_ARGS(nn, rqstp, error),
-+	TP_STRUCT__entry(
-+		__field(unsigned long long, boot_time)
-+		__field(u32, xid)
-+		__field(int, error)
-+		__array(unsigned char, verifier, NFS4_VERIFIER_SIZE)
-+	),
-+	TP_fast_assign(
-+		__entry->boot_time = nn->boot_time;
-+		__entry->xid = be32_to_cpu(rqstp->rq_xid);
-+		__entry->error = error;
+-/*
+- * Fill in the pre_op attr for the wcc data
+- */
+-void fill_pre_wcc(struct svc_fh *fhp)
+-{
+-	struct inode    *inode;
+-	struct kstat	stat;
+-	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
+-	__be32 err;
+-
+-	if (fhp->fh_no_wcc || fhp->fh_pre_saved)
+-		return;
+-	inode = d_inode(fhp->fh_dentry);
+-	err = fh_getattr(fhp, &stat);
+-	if (err) {
+-		/* Grab the times from inode anyway */
+-		stat.mtime = inode->i_mtime;
+-		stat.ctime = inode->i_ctime;
+-		stat.size  = inode->i_size;
+-	}
+-	if (v4)
+-		fhp->fh_pre_change = nfsd4_change_attribute(&stat, inode);
+-
+-	fhp->fh_pre_mtime = stat.mtime;
+-	fhp->fh_pre_ctime = stat.ctime;
+-	fhp->fh_pre_size  = stat.size;
+-	fhp->fh_pre_saved = true;
+-}
+-
+-/*
+- * Fill in the post_op attr for the wcc data
+- */
+-void fill_post_wcc(struct svc_fh *fhp)
+-{
+-	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
+-	struct inode *inode = d_inode(fhp->fh_dentry);
+-	__be32 err;
+-
+-	if (fhp->fh_no_wcc)
+-		return;
+-
+-	if (fhp->fh_post_saved)
+-		printk("nfsd: inode locked twice during operation.\n");
+-
+-	err = fh_getattr(fhp, &fhp->fh_post_attr);
+-	if (err) {
+-		fhp->fh_post_saved = false;
+-		fhp->fh_post_attr.ctime = inode->i_ctime;
+-	} else
+-		fhp->fh_post_saved = true;
+-	if (v4)
+-		fhp->fh_post_change =
+-			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
+-}
+-
+ /*
+  * XDR decode functions
+  */
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index a8ad7e6ace927..73c62561580a1 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2536,7 +2536,7 @@ nfsd4_proc_compound(struct svc_rqst *rqstp)
+ 			goto encode_op;
+ 		}
+ 
+-		fh_clear_wcc(current_fh);
++		fh_clear_pre_post_attrs(current_fh);
+ 
+ 		/* If op is non-idempotent */
+ 		if (op->opdesc->op_flags & OP_MODIFIES_SOMETHING) {
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index f3779fa72c896..145208bcb9bd4 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -611,6 +611,70 @@ fh_update(struct svc_fh *fhp)
+ 	return nfserr_serverfault;
+ }
+ 
++#ifdef CONFIG_NFSD_V3
 +
-+		/* avoid seqlock inside TP_fast_assign */
-+		memcpy(__entry->verifier, nn->writeverf,
-+		       NFS4_VERIFIER_SIZE);
-+	),
-+	TP_printk("boot_time=%16llx xid=0x%08x error=%d new verifier=0x%s",
-+		__entry->boot_time, __entry->xid, __entry->error,
-+		__print_hex_str(__entry->verifier, NFS4_VERIFIER_SIZE)
-+	)
-+);
++/**
++ * fh_fill_pre_attrs - Fill in pre-op attributes
++ * @fhp: file handle to be updated
++ *
++ */
++void fh_fill_pre_attrs(struct svc_fh *fhp)
++{
++	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
++	struct inode *inode;
++	struct kstat stat;
++	__be32 err;
 +
- TRACE_EVENT(nfsd_clid_cred_mismatch,
- 	TP_PROTO(
- 		const struct nfs4_client *clp,
++	if (fhp->fh_no_wcc || fhp->fh_pre_saved)
++		return;
++
++	inode = d_inode(fhp->fh_dentry);
++	err = fh_getattr(fhp, &stat);
++	if (err) {
++		/* Grab the times from inode anyway */
++		stat.mtime = inode->i_mtime;
++		stat.ctime = inode->i_ctime;
++		stat.size  = inode->i_size;
++	}
++	if (v4)
++		fhp->fh_pre_change = nfsd4_change_attribute(&stat, inode);
++
++	fhp->fh_pre_mtime = stat.mtime;
++	fhp->fh_pre_ctime = stat.ctime;
++	fhp->fh_pre_size  = stat.size;
++	fhp->fh_pre_saved = true;
++}
++
++/**
++ * fh_fill_post_attrs - Fill in post-op attributes
++ * @fhp: file handle to be updated
++ *
++ */
++void fh_fill_post_attrs(struct svc_fh *fhp)
++{
++	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
++	struct inode *inode = d_inode(fhp->fh_dentry);
++	__be32 err;
++
++	if (fhp->fh_no_wcc)
++		return;
++
++	if (fhp->fh_post_saved)
++		printk("nfsd: inode locked twice during operation.\n");
++
++	err = fh_getattr(fhp, &fhp->fh_post_attr);
++	if (err) {
++		fhp->fh_post_saved = false;
++		fhp->fh_post_attr.ctime = inode->i_ctime;
++	} else
++		fhp->fh_post_saved = true;
++	if (v4)
++		fhp->fh_post_change =
++			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
++}
++
++#endif /* CONFIG_NFSD_V3 */
++
+ /*
+  * Release a file handle.
+  */
+@@ -623,7 +687,7 @@ fh_put(struct svc_fh *fhp)
+ 		fh_unlock(fhp);
+ 		fhp->fh_dentry = NULL;
+ 		dput(dentry);
+-		fh_clear_wcc(fhp);
++		fh_clear_pre_post_attrs(fhp);
+ 	}
+ 	fh_drop_write(fhp);
+ 	if (exp) {
+diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
+index d11e4b6870d68..434930d8a946e 100644
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -284,12 +284,13 @@ static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
+ #endif
+ 
+ #ifdef CONFIG_NFSD_V3
+-/*
+- * The wcc data stored in current_fh should be cleared
+- * between compound ops.
++
++/**
++ * fh_clear_pre_post_attrs - Reset pre/post attributes
++ * @fhp: file handle to be updated
++ *
+  */
+-static inline void
+-fh_clear_wcc(struct svc_fh *fhp)
++static inline void fh_clear_pre_post_attrs(struct svc_fh *fhp)
+ {
+ 	fhp->fh_post_saved = false;
+ 	fhp->fh_pre_saved = false;
+@@ -323,13 +324,24 @@ static inline u64 nfsd4_change_attribute(struct kstat *stat,
+ 		return time_to_chattr(&stat->ctime);
+ }
+ 
+-extern void fill_pre_wcc(struct svc_fh *fhp);
+-extern void fill_post_wcc(struct svc_fh *fhp);
+-#else
+-#define fh_clear_wcc(ignored)
+-#define fill_pre_wcc(ignored)
+-#define fill_post_wcc(notused)
+-#endif /* CONFIG_NFSD_V3 */
++extern void fh_fill_pre_attrs(struct svc_fh *fhp);
++extern void fh_fill_post_attrs(struct svc_fh *fhp);
++
++#else /* !CONFIG_NFSD_V3 */
++
++static inline void fh_clear_pre_post_attrs(struct svc_fh *fhp)
++{
++}
++
++static inline void fh_fill_pre_attrs(struct svc_fh *fhp)
++{
++}
++
++static inline void fh_fill_post_attrs(struct svc_fh *fhp)
++{
++}
++
++#endif /* !CONFIG_NFSD_V3 */
+ 
+ 
+ /*
+@@ -355,7 +367,7 @@ fh_lock_nested(struct svc_fh *fhp, unsigned int subclass)
+ 
+ 	inode = d_inode(dentry);
+ 	inode_lock_nested(inode, subclass);
+-	fill_pre_wcc(fhp);
++	fh_fill_pre_attrs(fhp);
+ 	fhp->fh_locked = true;
+ }
+ 
+@@ -372,7 +384,7 @@ static inline void
+ fh_unlock(struct svc_fh *fhp)
+ {
+ 	if (fhp->fh_locked) {
+-		fill_post_wcc(fhp);
++		fh_fill_post_attrs(fhp);
+ 		inode_unlock(d_inode(fhp->fh_dentry));
+ 		fhp->fh_locked = false;
+ 	}
 diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index d7035e3d1a229..284dc900d10ba 100644
+index 284dc900d10ba..4d07a506164b0 100644
 --- a/fs/nfsd/vfs.c
 +++ b/fs/nfsd/vfs.c
-@@ -559,14 +559,17 @@ __be32 nfsd4_clone_file_range(struct svc_rqst *rqstp,
- 		if (!status)
- 			status = commit_inode_metadata(file_inode(src));
- 		if (status < 0) {
-+			struct nfsd_net *nn = net_generic(nf_dst->nf_net,
-+							  nfsd_net_id);
-+
- 			trace_nfsd_clone_file_range_err(rqstp,
- 					&nfsd4_get_cstate(rqstp)->save_fh,
- 					src_pos,
- 					&nfsd4_get_cstate(rqstp)->current_fh,
- 					dst_pos,
- 					count, status);
--			nfsd_reset_write_verifier(net_generic(nf_dst->nf_net,
--						  nfsd_net_id));
-+			nfsd_reset_write_verifier(nn);
-+			trace_nfsd_writeverf_reset(nn, rqstp, status);
- 			ret = nfserrno(status);
- 		}
- 	}
-@@ -1029,6 +1032,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 	host_err = vfs_iter_write(file, &iter, &pos, flags);
- 	if (host_err < 0) {
- 		nfsd_reset_write_verifier(nn);
-+		trace_nfsd_writeverf_reset(nn, rqstp, host_err);
- 		goto out_nfserr;
- 	}
- 	*cnt = host_err;
-@@ -1040,8 +1044,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+@@ -1793,8 +1793,8 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
+ 	 * so do it by hand */
+ 	trap = lock_rename(tdentry, fdentry);
+ 	ffhp->fh_locked = tfhp->fh_locked = true;
+-	fill_pre_wcc(ffhp);
+-	fill_pre_wcc(tfhp);
++	fh_fill_pre_attrs(ffhp);
++	fh_fill_pre_attrs(tfhp);
  
- 	if (stable && use_wgather) {
- 		host_err = wait_for_concurrent_writes(file);
--		if (host_err < 0)
-+		if (host_err < 0) {
- 			nfsd_reset_write_verifier(nn);
-+			trace_nfsd_writeverf_reset(nn, rqstp, host_err);
-+		}
+ 	odentry = lookup_one_len(fname, fdentry, flen);
+ 	host_err = PTR_ERR(odentry);
+@@ -1848,8 +1848,8 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
+ 	 * were the same, so again we do it by hand.
+ 	 */
+ 	if (!close_cached) {
+-		fill_post_wcc(ffhp);
+-		fill_post_wcc(tfhp);
++		fh_fill_post_attrs(ffhp);
++		fh_fill_post_attrs(tfhp);
  	}
- 
- out_nfserr:
-@@ -1183,6 +1189,7 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, u64 offset,
- 			break;
- 		default:
- 			nfsd_reset_write_verifier(nn);
-+			trace_nfsd_writeverf_reset(nn, rqstp, err2);
- 			err = nfserrno(err2);
- 		}
- 	} else
+ 	unlock_rename(tdentry, fdentry);
+ 	ffhp->fh_locked = tfhp->fh_locked = false;
 -- 
 2.43.0
 
