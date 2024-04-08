@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-36499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5143089C021
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A3F89C024
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6F4A1F24B6F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 514752836CA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFBA6F08B;
-	Mon,  8 Apr 2024 13:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1F57173E;
+	Mon,  8 Apr 2024 13:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgcU349P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iL877n5Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4966CDA8;
-	Mon,  8 Apr 2024 13:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94AA6CDA8;
+	Mon,  8 Apr 2024 13:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581504; cv=none; b=FkSrpyCiv9d/5JwTSZVkqvuZSyxchvWjJpQsHIVxsXl9mC6wmCFaAcV7zARgp7TpHa7gUGfKzPw5n5A3hT5l9r+tfd0eUGiZ0GlLhgjKz2HflLjAfSdHIuuoO6FAoWtBXV1t329YGvNyoTHd94icMbiA4vS6bsd7hbnZ28Agzxg=
+	t=1712581512; cv=none; b=WfJo2x2CTz8S2oPd53W6uR+a4THoRXa4CbqvDJ6XM+/5JsvbQ+d3Wvlg2hLHvAIzE9oP+gsiq+hkB1sEfeCMFv24+GTQoRi5aQkjVEO7SKzuVDlpT6TEJWBHbdWhRrsXUD7FdZOYRc2GSH4cR2xUeQ9Pj54iGo3KKLuLJuQwd8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581504; c=relaxed/simple;
-	bh=UgIbFtA6XRmY5DObalqbB8UnGYfbTvufJ+2jmUY/Yvc=;
+	s=arc-20240116; t=1712581512; c=relaxed/simple;
+	bh=0tcS3ycpQ7OfadUPctj0K6OT5LJVmlcV8605yAsh0+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSxMvONvLgtQlOdS8ORA7dSGaLEM5xWGr6gie3XLrlyWHEqj3/ps3f/FhNmhmgYCRXDnMzZPuCaIIWnHhMdeHSzsPDtbTFAftDfteI0p/ZRyVasyCofB+Q3m/tQnQM0hZFmCX7PnnpA1x2wbNCNXte/HS9DgBbv0vBF2MC/X1QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgcU349P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971CBC433C7;
-	Mon,  8 Apr 2024 13:05:03 +0000 (UTC)
+	 MIME-Version; b=lLgcVVpmxdAMV7d0YHQLWriKccXEgDJsIladxyOGO0298JAnjRDjCJodQe57i4dy+FzwSONQbgumtX6Xd0lmld/4eVD6JdfZfqGwpow7OGY2xm7mA/21YkunJ+ZTIMTFRUUBh4Z2jXLQeZxDwpSYu3fzrToyEe3pgXO8dTWOyMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iL877n5Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484D3C433F1;
+	Mon,  8 Apr 2024 13:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581504;
-	bh=UgIbFtA6XRmY5DObalqbB8UnGYfbTvufJ+2jmUY/Yvc=;
+	s=korg; t=1712581512;
+	bh=0tcS3ycpQ7OfadUPctj0K6OT5LJVmlcV8605yAsh0+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgcU349P3TGmK3oPEGpvYw4gQtcMs6C0sZys0IL1Yc721tuYx9NxwWa5+PfH6olZo
-	 0XgR6jdmcNJondq4uHV0dtVGhbGXmj19akTHSg59+nzIwCu//A4fKu6TsUZVJNSeQy
-	 Y6ClC6ewE2II0I4MmaEM2iAQggAFO0mWqItPJBds=
+	b=iL877n5ZYBjJEHbcSX7dlH/kNQIUV77C2R5N01bIhZwaua8Nb6dmU4m9eFQvRn8hR
+	 3+1Cb+C0yxWcflwLmrjEcPfETswQJqRe4g/7mSnEViI9MWz8Y2bUWcBo4lHzZRZycY
+	 Fxi9iXyO4h3UwT+q8iOWkS3xA599wq4NGPmvh1WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Mladek <pmladek@suse.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Peter Collingbourne <pcc@google.com>,
+	John Ogness <john.ogness@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 057/690] printk/console: Split out code that enables default console
-Date: Mon,  8 Apr 2024 14:48:43 +0200
-Message-ID: <20240408125401.585119811@linuxfoundation.org>
+Subject: [PATCH 5.15 058/690] serial: Lock console when calling into driver before registration
+Date: Mon,  8 Apr 2024 14:48:44 +0200
+Message-ID: <20240408125401.623395023@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,95 +66,185 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Petr Mladek <pmladek@suse.com>
+From: Peter Collingbourne <pcc@google.com>
 
-[ Upstream commit ed758b30d541e9bf713cd58612a4414e57dc6d73 ]
+[ Upstream commit 801410b26a0e8b8a16f7915b2b55c9528b69ca87 ]
 
-Put the code enabling a console by default into a separate function
-called try_enable_default_console().
+During the handoff from earlycon to the real console driver, we have
+two separate drivers operating on the same device concurrently. In the
+case of the 8250 driver these concurrent accesses cause problems due
+to the driver's use of banked registers, controlled by LCR.DLAB. It is
+possible for the setup(), config_port(), pm() and set_mctrl() callbacks
+to set DLAB, which can cause the earlycon code that intends to access
+TX to instead access DLL, leading to missed output and corruption on
+the serial line due to unintended modifications to the baud rate.
 
-Rename try_enable_new_console() to try_enable_preferred_console() to
-make the purpose of the different variants more clear.
+In particular, for setup() we have:
 
-It is a code refactoring without any functional change.
+univ8250_console_setup()
+-> serial8250_console_setup()
+-> uart_set_options()
+-> serial8250_set_termios()
+-> serial8250_do_set_termios()
+-> serial8250_do_set_divisor()
 
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://lore.kernel.org/r/20211122132649.12737-2-pmladek@suse.com
-Stable-dep-of: 801410b26a0e ("serial: Lock console when calling into driver before registration")
+For config_port() we have:
+
+serial8250_config_port()
+-> autoconfig()
+
+For pm() we have:
+
+serial8250_pm()
+-> serial8250_do_pm()
+-> serial8250_set_sleep()
+
+For set_mctrl() we have (for some devices):
+
+serial8250_set_mctrl()
+-> omap8250_set_mctrl()
+-> __omap8250_set_mctrl()
+
+To avoid such problems, let's make it so that the console is locked
+during pre-registration calls to these callbacks, which will prevent
+the earlycon driver from running concurrently.
+
+Remove the partial solution to this problem in the 8250 driver
+that locked the console only during autoconfig_irq(), as this would
+result in a deadlock with the new approach. The console continues
+to be locked during autoconfig_irq() because it can only be called
+through uart_configure_port().
+
+Although this patch introduces more locking than strictly necessary
+(and in particular it also locks during the call to rs485_config()
+which is not affected by this issue as far as I can tell), it follows
+the principle that it is the responsibility of the generic console
+code to manage the earlycon handoff by ensuring that earlycon and real
+console driver code cannot run concurrently, and not the individual
+drivers.
+
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240304214350.501253-1-pcc@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 38 +++++++++++++++++++++++---------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |  6 ------
+ drivers/tty/serial/serial_core.c    | 12 ++++++++++++
+ kernel/printk/printk.c              | 21 ++++++++++++++++++---
+ 3 files changed, 30 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 8b110b245d92c..4bef2963284af 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2888,7 +2888,8 @@ early_param("keep_bootcon", keep_bootcon_setup);
-  * Care need to be taken with consoles that are statically
-  * enabled such as netconsole
-  */
--static int try_enable_new_console(struct console *newcon, bool user_specified)
-+static int try_enable_preferred_console(struct console *newcon,
-+					bool user_specified)
- {
- 	struct console_cmdline *c;
- 	int i, err;
-@@ -2936,6 +2937,23 @@ static int try_enable_new_console(struct console *newcon, bool user_specified)
- 	return -ENOENT;
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index 4fce318bc83ca..2d595a646bb89 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1366,9 +1366,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
+ 		inb_p(ICP);
+ 	}
+ 
+-	if (uart_console(port))
+-		console_lock();
+-
+ 	/* forget possible initially masked and pending IRQ */
+ 	probe_irq_off(probe_irq_on());
+ 	save_mcr = serial8250_in_MCR(up);
+@@ -1399,9 +1396,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
+ 	if (port->flags & UPF_FOURPORT)
+ 		outb_p(save_ICP, ICP);
+ 
+-	if (uart_console(port))
+-		console_unlock();
+-
+ 	port->irq = (irq > 0) ? irq : 0;
  }
  
-+/* Try to enable the console unconditionally */
-+static void try_enable_default_console(struct console *newcon)
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 45b721abaa2f5..b638b2fd2d3d2 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -2410,7 +2410,12 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 			port->type = PORT_UNKNOWN;
+ 			flags |= UART_CONFIG_TYPE;
+ 		}
++		/* Synchronize with possible boot console. */
++		if (uart_console(port))
++			console_lock();
+ 		port->ops->config_port(port, flags);
++		if (uart_console(port))
++			console_unlock();
+ 	}
+ 
+ 	if (port->type != PORT_UNKNOWN) {
+@@ -2418,6 +2423,10 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 
+ 		uart_report_port(drv, port);
+ 
++		/* Synchronize with possible boot console. */
++		if (uart_console(port))
++			console_lock();
++
+ 		/* Power up port for set_mctrl() */
+ 		uart_change_pm(state, UART_PM_STATE_ON);
+ 
+@@ -2434,6 +2443,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 			port->rs485_config(port, &port->rs485);
+ 		spin_unlock_irqrestore(&port->lock, flags);
+ 
++		if (uart_console(port))
++			console_unlock();
++
+ 		/*
+ 		 * If this driver supports console, and it hasn't been
+ 		 * successfully registered yet, try to re-register it.
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 4bef2963284af..df4d07af6d1e2 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2879,6 +2879,21 @@ static int __init keep_bootcon_setup(char *str)
+ 
+ early_param("keep_bootcon", keep_bootcon_setup);
+ 
++static int console_call_setup(struct console *newcon, char *options)
 +{
-+	if (newcon->index < 0)
-+		newcon->index = 0;
++	int err;
 +
-+	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
-+		return;
++	if (!newcon->setup)
++		return 0;
 +
-+	newcon->flags |= CON_ENABLED;
++	/* Synchronize with possible boot console. */
++	console_lock();
++	err = newcon->setup(newcon, options);
++	console_unlock();
 +
-+	if (newcon->device) {
-+		newcon->flags |= CON_CONSDEV;
-+		has_preferred_console = true;
-+	}
++	return err;
 +}
 +
  /*
-  * The console driver calls this routine during kernel initialization
-  * to register the console printing procedure with printk() and to
-@@ -2991,25 +3009,15 @@ void register_console(struct console *newcon)
- 	 *	didn't select a console we take the first one
- 	 *	that registers here.
- 	 */
--	if (!has_preferred_console) {
--		if (newcon->index < 0)
--			newcon->index = 0;
--		if (newcon->setup == NULL ||
--		    newcon->setup(newcon, NULL) == 0) {
--			newcon->flags |= CON_ENABLED;
--			if (newcon->device) {
--				newcon->flags |= CON_CONSDEV;
--				has_preferred_console = true;
--			}
--		}
--	}
-+	if (!has_preferred_console)
-+		try_enable_default_console(newcon);
+  * This is called by register_console() to try to match
+  * the newly registered console with any of the ones selected
+@@ -2914,8 +2929,8 @@ static int try_enable_preferred_console(struct console *newcon,
+ 			if (_braille_register_console(newcon, c))
+ 				return 0;
  
- 	/* See if this console matches one we selected on the command line */
--	err = try_enable_new_console(newcon, true);
-+	err = try_enable_preferred_console(newcon, true);
+-			if (newcon->setup &&
+-			    (err = newcon->setup(newcon, c->options)) != 0)
++			err = console_call_setup(newcon, c->options);
++			if (err)
+ 				return err;
+ 		}
+ 		newcon->flags |= CON_ENABLED;
+@@ -2943,7 +2958,7 @@ static void try_enable_default_console(struct console *newcon)
+ 	if (newcon->index < 0)
+ 		newcon->index = 0;
  
- 	/* If not, try to match against the platform default(s) */
- 	if (err == -ENOENT)
--		err = try_enable_new_console(newcon, false);
-+		err = try_enable_preferred_console(newcon, false);
+-	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
++	if (console_call_setup(newcon, NULL) != 0)
+ 		return;
  
- 	/* printk() messages are not printed to the Braille console. */
- 	if (err || newcon->flags & CON_BRL)
+ 	newcon->flags |= CON_ENABLED;
 -- 
 2.43.0
 
