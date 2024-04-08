@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-37151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D486489C38A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAD189C38D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10B6E1C22500
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F205C1C21E75
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B76A128829;
-	Mon,  8 Apr 2024 13:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D788A128826;
+	Mon,  8 Apr 2024 13:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn9jo7VY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAcYCFfZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC998128372;
-	Mon,  8 Apr 2024 13:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93838129A7B;
+	Mon,  8 Apr 2024 13:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583395; cv=none; b=WqOd2zfJTlTNazE7L1hLRKhicE5PRS7O21gbexc7LtxQZ2gt2fDVbDNV45SBKH+L7cQz/n3XlmcFj/4W4gP+T1Ocipgmy7DZ0XRwD0/LIhm4u1h8Zlnl9R3mt4v9rjFqZ4mh4h5P+qqD5c60eUnwKs5yf8/yb7dZjSrqzMyj8ik=
+	t=1712583407; cv=none; b=oqYunw/5vrCSWgDFNNmD/+RGvH4jBq+WEuip50O3IvigjzhOZdnmG9rtPymH0+5DH7kLL3GT8B3RNFLVfBrYTQkRg5mhHaxo3Bc01OUG64JRP8Oa4JUEr8J2QZKMGSBYTXwk0fFr4hYez9k+A4LByPPxGefyiSiyV3xtINX+rF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583395; c=relaxed/simple;
-	bh=igVkDiJg82gO6PSDzff0AeQpaauFcduGPKbVrEymsH4=;
+	s=arc-20240116; t=1712583407; c=relaxed/simple;
+	bh=DBLPFkemKsEGDQ76use2fRGddWIBbL/aywCvLh06c+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hi+vLLO7CE9w/X9SpCGiyAv9JIiooW7FOSW1QCUbvwlyJ75J+RUHHYIZg0C/1iecjyvMM7jAsIlfOUd/SYCatzq7rFI/T8x4lqKagIpL/LYrx7OLMup2X4UuT3qzwt1Ky8Ajp3lYAExd/xieC59iuzg9s2mQPqSKKK11r0Bt0uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn9jo7VY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3C6C433F1;
-	Mon,  8 Apr 2024 13:36:35 +0000 (UTC)
+	 MIME-Version; b=WK+j06h2xFKktGj+tXXalrLTUMOe/GJ2dM8eC29q3vzOKlOjfkoOcidznaP8C5nbWZiLvanu7ck8+NJ5Uc5RgmUOe/KPh5mnvHRG2EUFxychLojAdZ+qkKCvtqtefATXddrprfE16X7c/B6Lh1vPuVZwDUNX6E6JKfnLZMU2d3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAcYCFfZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEDFC433F1;
+	Mon,  8 Apr 2024 13:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583395;
-	bh=igVkDiJg82gO6PSDzff0AeQpaauFcduGPKbVrEymsH4=;
+	s=korg; t=1712583407;
+	bh=DBLPFkemKsEGDQ76use2fRGddWIBbL/aywCvLh06c+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn9jo7VY6rFRwUgO8Q4hJ10Q7P12+dN9Qk6C3PVq/+7nYhbslZ94WXGhK37RJ2XuX
-	 oyNh+LekTE62idPnd+fJVQFohivYScnGVzuwAX47VY9N5JQK2ikAMrqar1ePd2ni49
-	 V2C/136iwNBH9nkqF4dnNbCR09U7QzBjoeGFTt7k=
+	b=CAcYCFfZHdSj9fKRmmK7Og5Xa0jWruNB75A9ydXXgCGuZN8Y97ZDBy85YwjRMAw3e
+	 61P/5y0asJY4deiQUz97scf4Qfk+mkDxPeN9hUMFyCD/2rPB5Ym49VNdZbzKiDUHcA
+	 hL5tayEx/pKWApQtGKerTBpzqnF3WENIYnBY/Wkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	NeilBrown <neilb@suse.de>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 243/690] SUNRPC: always treat sv_nrpools==1 as "not pooled"
-Date: Mon,  8 Apr 2024 14:51:49 +0200
-Message-ID: <20240408125408.447704931@linuxfoundation.org>
+Subject: [PATCH 5.15 244/690] lockd: use svc_set_num_threads() for thread start and stop
+Date: Mon,  8 Apr 2024 14:51:50 +0200
+Message-ID: <20240408125408.481541466@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,159 +67,184 @@ Content-Transfer-Encoding: 8bit
 
 From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 93aa619eb0b42eec2f3a9b4d9db41f5095390aec ]
+[ Upstream commit 6b044fbaab02292fedb17565dbb3f2528083b169 ]
 
-Currently 'pooled' services hold a reference on the pool_map, and
-'unpooled' services do not.
-svc_destroy() uses the presence of ->svo_function (via
-svc_serv_is_pooled()) to determine if the reference should be dropped.
-There is no direct correlation between being pooled and the use of
-svo_function, though in practice, lockd is the only non-pooled service,
-and the only one not to use svo_function.
+svc_set_num_threads() does everything that lockd_start_svc() does, except
+set sv_maxconn.  It also (when passed 0) finds the threads and
+stops them with kthread_stop().
 
-This is untidy and would cause problems if we changed lockd to use
-svc_set_num_threads(), which requires the use of ->svo_function.
+So move the setting for sv_maxconn, and use svc_set_num_thread()
 
-So change the test for "is the service pooled" to "is sv_nrpools > 1".
+We now don't need nlmsvc_task.
 
-This means that when svc_pool_map_get() returns 1, it must NOT take a
-reference to the pool.
+Now that we use svc_set_num_threads() it makes sense to set svo_module.
+This request that the thread exists with module_put_and_exit().
+Also fix the documentation for svo_module to make this explicit.
 
-We discard svc_serv_is_pooled(), and test sv_nrpools directly.
+svc_prepare_thread is now only used where it is defined, so it can be
+made static.
 
 Signed-off-by: NeilBrown <neilb@suse.de>
+[ cel: upstream, module_put_and_exit was replaced via a merge commit ]
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/sunrpc/svc.c | 54 ++++++++++++++++++++++++++----------------------
- 1 file changed, 29 insertions(+), 25 deletions(-)
+ fs/lockd/svc.c             | 58 ++++++--------------------------------
+ include/linux/sunrpc/svc.h |  6 ++--
+ net/sunrpc/svc.c           |  3 +-
+ 3 files changed, 12 insertions(+), 55 deletions(-)
 
+diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
+index 1a7c11118b320..0475c5a5d061e 100644
+--- a/fs/lockd/svc.c
++++ b/fs/lockd/svc.c
+@@ -55,7 +55,6 @@ EXPORT_SYMBOL_GPL(nlmsvc_ops);
+ static DEFINE_MUTEX(nlmsvc_mutex);
+ static unsigned int		nlmsvc_users;
+ static struct svc_serv		*nlmsvc_serv;
+-static struct task_struct	*nlmsvc_task;
+ unsigned long			nlmsvc_timeout;
+ 
+ unsigned int lockd_net_id;
+@@ -186,7 +185,7 @@ lockd(void *vrqstp)
+ 
+ 	svc_exit_thread(rqstp);
+ 
+-	return 0;
++	module_put_and_kthread_exit(0);
+ }
+ 
+ static int create_lockd_listener(struct svc_serv *serv, const char *name,
+@@ -292,8 +291,8 @@ static void lockd_down_net(struct svc_serv *serv, struct net *net)
+ 				__func__, net->ns.inum);
+ 		}
+ 	} else {
+-		pr_err("%s: no users! task=%p, net=%x\n",
+-			__func__, nlmsvc_task, net->ns.inum);
++		pr_err("%s: no users! net=%x\n",
++			__func__, net->ns.inum);
+ 		BUG();
+ 	}
+ }
+@@ -351,49 +350,11 @@ static struct notifier_block lockd_inet6addr_notifier = {
+ };
+ #endif
+ 
+-static int lockd_start_svc(struct svc_serv *serv)
+-{
+-	int error;
+-	struct svc_rqst *rqst;
+-
+-	/*
+-	 * Create the kernel thread and wait for it to start.
+-	 */
+-	rqst = svc_prepare_thread(serv, &serv->sv_pools[0], NUMA_NO_NODE);
+-	if (IS_ERR(rqst)) {
+-		error = PTR_ERR(rqst);
+-		printk(KERN_WARNING
+-			"lockd_up: svc_rqst allocation failed, error=%d\n",
+-			error);
+-		goto out_rqst;
+-	}
+-
+-	svc_sock_update_bufs(serv);
+-	serv->sv_maxconn = nlm_max_connections;
+-
+-	nlmsvc_task = kthread_create(lockd, rqst, "%s", serv->sv_name);
+-	if (IS_ERR(nlmsvc_task)) {
+-		error = PTR_ERR(nlmsvc_task);
+-		printk(KERN_WARNING
+-			"lockd_up: kthread_run failed, error=%d\n", error);
+-		goto out_task;
+-	}
+-	rqst->rq_task = nlmsvc_task;
+-	wake_up_process(nlmsvc_task);
+-
+-	dprintk("lockd_up: service started\n");
+-	return 0;
+-
+-out_task:
+-	svc_exit_thread(rqst);
+-	nlmsvc_task = NULL;
+-out_rqst:
+-	return error;
+-}
+-
+ static const struct svc_serv_ops lockd_sv_ops = {
+ 	.svo_shutdown		= svc_rpcb_cleanup,
++	.svo_function		= lockd,
+ 	.svo_enqueue_xprt	= svc_xprt_do_enqueue,
++	.svo_module		= THIS_MODULE,
+ };
+ 
+ static int lockd_get(void)
+@@ -425,7 +386,8 @@ static int lockd_get(void)
+ 		return -ENOMEM;
+ 	}
+ 
+-	error = lockd_start_svc(serv);
++	serv->sv_maxconn = nlm_max_connections;
++	error = svc_set_num_threads(serv, NULL, 1);
+ 	/* The thread now holds the only reference */
+ 	svc_put(serv);
+ 	if (error < 0)
+@@ -453,11 +415,7 @@ static void lockd_put(void)
+ 	unregister_inet6addr_notifier(&lockd_inet6addr_notifier);
+ #endif
+ 
+-	if (nlmsvc_task) {
+-		kthread_stop(nlmsvc_task);
+-		dprintk("lockd_down: service stopped\n");
+-		nlmsvc_task = NULL;
+-	}
++	svc_set_num_threads(nlmsvc_serv, NULL, 0);
+ 	nlmsvc_serv = NULL;
+ 	dprintk("lockd_down: service destroyed\n");
+ }
+diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
+index 35bb1c4393400..be535cc4fea07 100644
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -64,7 +64,9 @@ struct svc_serv_ops {
+ 	/* queue up a transport for servicing */
+ 	void		(*svo_enqueue_xprt)(struct svc_xprt *);
+ 
+-	/* optional module to count when adding threads (pooled svcs only) */
++	/* optional module to count when adding threads.
++	 * Thread function must call module_put_and_kthread_exit() to exit.
++	 */
+ 	struct module	*svo_module;
+ };
+ 
+@@ -506,8 +508,6 @@ struct svc_serv *svc_create(struct svc_program *, unsigned int,
+ 			    const struct svc_serv_ops *);
+ struct svc_rqst *svc_rqst_alloc(struct svc_serv *serv,
+ 					struct svc_pool *pool, int node);
+-struct svc_rqst *svc_prepare_thread(struct svc_serv *serv,
+-					struct svc_pool *pool, int node);
+ void		   svc_rqst_replace_page(struct svc_rqst *rqstp,
+ 					 struct page *page);
+ void		   svc_rqst_free(struct svc_rqst *);
 diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 8fbfea9f2a04c..fee7a22578b64 100644
+index fee7a22578b64..f53ff8f2602f2 100644
 --- a/net/sunrpc/svc.c
 +++ b/net/sunrpc/svc.c
-@@ -37,8 +37,6 @@
- 
- static void svc_unregister(const struct svc_serv *serv, struct net *net);
- 
--#define svc_serv_is_pooled(serv)    ((serv)->sv_ops->svo_function)
--
- #define SVC_POOL_DEFAULT	SVC_POOL_GLOBAL
- 
- /*
-@@ -240,8 +238,10 @@ svc_pool_map_init_pernode(struct svc_pool_map *m)
- 
- /*
-  * Add a reference to the global map of cpus to pools (and
-- * vice versa).  Initialise the map if we're the first user.
-- * Returns the number of pools.
-+ * vice versa) if pools are in use.
-+ * Initialise the map if we're the first user.
-+ * Returns the number of pools. If this is '1', no reference
-+ * was taken.
-  */
- static unsigned int
- svc_pool_map_get(void)
-@@ -253,6 +253,7 @@ svc_pool_map_get(void)
- 
- 	if (m->count++) {
- 		mutex_unlock(&svc_pool_map_mutex);
-+		WARN_ON_ONCE(m->npools <= 1);
- 		return m->npools;
- 	}
- 
-@@ -268,29 +269,36 @@ svc_pool_map_get(void)
- 		break;
- 	}
- 
--	if (npools < 0) {
-+	if (npools <= 0) {
- 		/* default, or memory allocation failure */
- 		npools = 1;
- 		m->mode = SVC_POOL_GLOBAL;
- 	}
- 	m->npools = npools;
- 
-+	if (npools == 1)
-+		/* service is unpooled, so doesn't hold a reference */
-+		m->count--;
-+
- 	mutex_unlock(&svc_pool_map_mutex);
--	return m->npools;
-+	return npools;
+@@ -652,7 +652,7 @@ svc_rqst_alloc(struct svc_serv *serv, struct svc_pool *pool, int node)
  }
+ EXPORT_SYMBOL_GPL(svc_rqst_alloc);
  
- /*
-- * Drop a reference to the global map of cpus to pools.
-+ * Drop a reference to the global map of cpus to pools, if
-+ * pools were in use, i.e. if npools > 1.
-  * When the last reference is dropped, the map data is
-  * freed; this allows the sysadmin to change the pool
-  * mode using the pool_mode module option without
-  * rebooting or re-loading sunrpc.ko.
-  */
- static void
--svc_pool_map_put(void)
-+svc_pool_map_put(int npools)
+-struct svc_rqst *
++static struct svc_rqst *
+ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
  {
- 	struct svc_pool_map *m = &svc_pool_map;
- 
-+	if (npools <= 1)
-+		return;
- 	mutex_lock(&svc_pool_map_mutex);
- 
- 	if (!--m->count) {
-@@ -359,21 +367,18 @@ svc_pool_for_cpu(struct svc_serv *serv, int cpu)
- 	struct svc_pool_map *m = &svc_pool_map;
- 	unsigned int pidx = 0;
- 
--	/*
--	 * An uninitialised map happens in a pure client when
--	 * lockd is brought up, so silently treat it the
--	 * same as SVC_POOL_GLOBAL.
--	 */
--	if (svc_serv_is_pooled(serv)) {
--		switch (m->mode) {
--		case SVC_POOL_PERCPU:
--			pidx = m->to_pool[cpu];
--			break;
--		case SVC_POOL_PERNODE:
--			pidx = m->to_pool[cpu_to_node(cpu)];
--			break;
--		}
-+	if (serv->sv_nrpools <= 1)
-+		return serv->sv_pools;
-+
-+	switch (m->mode) {
-+	case SVC_POOL_PERCPU:
-+		pidx = m->to_pool[cpu];
-+		break;
-+	case SVC_POOL_PERNODE:
-+		pidx = m->to_pool[cpu_to_node(cpu)];
-+		break;
- 	}
-+
- 	return &serv->sv_pools[pidx % serv->sv_nrpools];
+ 	struct svc_rqst	*rqstp;
+@@ -672,7 +672,6 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
+ 	spin_unlock_bh(&pool->sp_lock);
+ 	return rqstp;
  }
+-EXPORT_SYMBOL_GPL(svc_prepare_thread);
  
-@@ -526,7 +531,7 @@ svc_create_pooled(struct svc_program *prog, unsigned int bufsize,
- 		goto out_err;
- 	return serv;
- out_err:
--	svc_pool_map_put();
-+	svc_pool_map_put(npools);
- 	return NULL;
- }
- EXPORT_SYMBOL_GPL(svc_create_pooled);
-@@ -561,8 +566,7 @@ svc_destroy(struct kref *ref)
- 
- 	cache_clean_deferred(serv);
- 
--	if (svc_serv_is_pooled(serv))
--		svc_pool_map_put();
-+	svc_pool_map_put(serv->sv_nrpools);
- 
- 	kfree(serv->sv_pools);
- 	kfree(serv);
+ /*
+  * Choose a pool in which to create a new thread, for svc_set_num_threads
 -- 
 2.43.0
 
