@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76FB89C441
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE6E89C3A9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67CFF1F211F9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C63A2839BE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F93126F2A;
-	Mon,  8 Apr 2024 13:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0218E12D219;
+	Mon,  8 Apr 2024 13:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfVhOdJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNfdIecq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037AF126F0A;
-	Mon,  8 Apr 2024 13:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE62612D1FF;
+	Mon,  8 Apr 2024 13:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583827; cv=none; b=fGmplQ6LVq38rRqQ2eI2Sn7+VFpKbk/5XDCcx7cxv6llJkByXdZjzVWsY3Qk/ZQsvs9oegadSgL3GZvLPU4b+Tuo3hKeDqSW2oQkmND6GtbgyxS2n/K2L+wsxgzbjrnWfS/zOG5q+TrvDMy53ocg+/1rnfg495uudFFodPpIqPo=
+	t=1712583481; cv=none; b=X6lDsUD22vd9Ltww6PYPobY/IfUTa9qVTH3HrF/oYn7qQUh7BH3mloxos2+u2QPkTS5vhNqIxQHNeACa/P65PaEud3VQpEoFOLU5qXE2bOyADz9QNeOdlaPQDACX76hMVlgvjzI0QTrS70odBHzBWDFL+8wCBdjWVuw3mi/pSbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583827; c=relaxed/simple;
-	bh=HB7J9mEouAcbej7Aw6miYIUMt6kmLD7KePhd6ht19WI=;
+	s=arc-20240116; t=1712583481; c=relaxed/simple;
+	bh=X3C7VIoeTLFfwPgkc6YaB9zLKDJ/QskwXh0zyv4L3YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBrf6LKdvA5eGU8/ZSquNMUPEFM4/YaNEAuLbPfMVEYjh3TR7V0MaBF8W+OKHu+YADc8OarRjoeqJSLpJK5TzAYZDLsBgBNq8csYZjdtIFfaa/e6n7TzkIn9VBWko0KmZEoCIoSr2cfLr0sfizOuQuOPwb+Ml+QzgdKB/xiiEBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfVhOdJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838DFC433C7;
-	Mon,  8 Apr 2024 13:43:46 +0000 (UTC)
+	 MIME-Version; b=rRj8xqUaJQ5KXmNKlngUY2kYgZG/4U3B2IQPa2Yie4NbyhBP8UT7TaYuLaYMcvVuFSp0+EIL1js578a1og7tsYixYFL5LVJNtKTzyH7Gtczg4ysKb7FxVFHLEaR0/yBhNXIE1FJoZz69RAasjMlEFebeCnwIEWpZI1ff6sfcPM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNfdIecq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DB0C43390;
+	Mon,  8 Apr 2024 13:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583826;
-	bh=HB7J9mEouAcbej7Aw6miYIUMt6kmLD7KePhd6ht19WI=;
+	s=korg; t=1712583481;
+	bh=X3C7VIoeTLFfwPgkc6YaB9zLKDJ/QskwXh0zyv4L3YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bfVhOdJ8fG7DSadIDdb7+17ngXoF3QeXw6quPyL7qdCQgxWflV8nRCJ6lTvhKOTVz
-	 dFwvnOIEeBBNxKN9EzrJp/0Z1oocma3kPcDRsXMqTk+T0M9GgAgWzoHkNPe8vqy+XW
-	 EOJzGHS6E+00DYGdJPKXLBsVKTm205gmp8gXIRSA=
+	b=kNfdIecq3XVBbb6anW9gBvUDIqZ7kBJbelZkDjw4WKumrdxrLxV7Q7B8QGPvOjzax
+	 qc2Qx/CE3JyTX3cBaAOF57J6LY6e3zskgwSCbMfV0KoXYtSnu0fkYyoxoAQLx4rMGO
+	 nw7hst6MRtVDCHHNY/zC1bB49YbCpgrF0Cp2R120=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.8 224/273] ASoC: SOF: ipc4-pcm: Invalidate the stream_start_offset in PAUSED state
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.6 200/252] ice: fix typo in assignment
 Date: Mon,  8 Apr 2024 14:58:19 +0200
-Message-ID: <20240408125316.365103618@linuxfoundation.org>
+Message-ID: <20240408125312.858935939@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-commit 3ce3bc36d91510389955b47e36ea4c4e94fcbdd3 upstream.
+commit 6c5b6ca7642f2992502a22dbd8b80927de174b67 upstream.
 
-When the final state is SOF_IPC4_PIPE_PAUSED, it is possible that the
-stream will be restarted (resume or start) in which case we need to update
-the offset from the firmware.
+Fix an obviously incorrect assignment, created with a typo or cut-n-paste
+error.
 
-Cc: stable@vger.kernel.org # 6.8
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240321130814.4412-14-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5995ef88e3a8 ("ice: realloc VSI stats arrays")
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc4-pcm.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/sof/ipc4-pcm.c
-+++ b/sound/soc/sof/ipc4-pcm.c
-@@ -420,8 +420,19 @@ static int sof_ipc4_trigger_pipelines(st
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -3111,7 +3111,7 @@ ice_vsi_realloc_stat_arrays(struct ice_v
+ 		}
  	}
  
- 	/* return if this is the final state */
--	if (state == SOF_IPC4_PIPE_PAUSED)
-+	if (state == SOF_IPC4_PIPE_PAUSED) {
-+		struct sof_ipc4_timestamp_info *time_info;
-+
-+		/*
-+		 * Invalidate the stream_start_offset to make sure that it is
-+		 * going to be updated if the stream resumes
-+		 */
-+		time_info = spcm->stream[substream->stream].private;
-+		if (time_info)
-+			time_info->stream_start_offset = SOF_IPC4_INVALID_STREAM_POSITION;
-+
- 		goto free;
-+	}
- skip_pause_transition:
- 	/* else set the RUNNING/RESET state in the DSP */
- 	ret = sof_ipc4_set_multi_pipeline_state(sdev, state, trigger_list);
+-	tx_ring_stats = vsi_stat->rx_ring_stats;
++	tx_ring_stats = vsi_stat->tx_ring_stats;
+ 	vsi_stat->tx_ring_stats =
+ 		krealloc_array(vsi_stat->tx_ring_stats, req_txq,
+ 			       sizeof(*vsi_stat->tx_ring_stats),
 
 
 
