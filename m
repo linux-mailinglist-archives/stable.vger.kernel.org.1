@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-37661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E8989C5E5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BA489C30E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5268A1F21480
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA3C21C21520
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372EC7E0F0;
-	Mon,  8 Apr 2024 14:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8297867D;
+	Mon,  8 Apr 2024 13:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+a+hsVO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+foeCub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2229745D6;
-	Mon,  8 Apr 2024 14:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAA36FE35;
+	Mon,  8 Apr 2024 13:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584889; cv=none; b=UgYATvVkW8wDAnHJgOyFRPjG7W1/I0qhytSLSkYUPXG4MJoevZ8g3vgYM4ynDK37PZJU5fEIIldqURMQqLxCUh3D77nSiW27PAwkitqaa8OM++kHObrbYQ6Ti4UiRTcxBdKh4LM8Jr+1dINUG82eIlPlrUo1iIsGk9+JPjVFAnI=
+	t=1712583121; cv=none; b=A2xpn8DsdT2JrbafM5BwNwSEnEg3c3bkHM1MRvZLOkTT9rWsouequARsOYTtaO1GKfp2pWpF0Yg1s9oIO3QNUcWnt8hN1M90xAsW21dKoJIbWSoy9fIblUqd/SieHpI6jH5mWcGmSXWRKj40PnwshORS4+SCD+s9vqjrYNX8d0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584889; c=relaxed/simple;
-	bh=jbyJmQQRvfKC9YTa9aQ3t/LbVDPl9wqB0COth/jJ42E=;
+	s=arc-20240116; t=1712583121; c=relaxed/simple;
+	bh=thXKxMJzTVqYg/s5cqyNJ5BAVbBgc08/7HuJxD441gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mE3EchJuL5OeBrTrGPh+DZOqpAIEfFv6KeW1oR0eVpquJq2Ae00yXMvQozVuLUntupxCvtImLLdFVKdwSecWoducKAFb+c0up6QYREO+RcgVSt6LAwsdodvHgziG16ACuG5e/dNAkNufU7+9yMHdtQZXL0DbN8/86GGYX/++sZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+a+hsVO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6192CC433F1;
-	Mon,  8 Apr 2024 14:01:28 +0000 (UTC)
+	 MIME-Version; b=NrR3jgzWr9zEewCIK2mRoZ6frzBVK/kD1o5MBJTaGXXgTmaJsAnIDvKgVSbuBulwkqRdUjJ9P9ncvuPYzodtxR/jiIHjjoIwNvun27hrNnhqgUJd1D1CgV4ldEvnMFwaLbN4xuzLZa0oyCA0sTnzfRj1DwpuUQwixtAWLFQjdg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+foeCub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360F0C433C7;
+	Mon,  8 Apr 2024 13:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584888;
-	bh=jbyJmQQRvfKC9YTa9aQ3t/LbVDPl9wqB0COth/jJ42E=;
+	s=korg; t=1712583121;
+	bh=thXKxMJzTVqYg/s5cqyNJ5BAVbBgc08/7HuJxD441gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+a+hsVOvidUFt7GLr7CyG7VjKtXiNrdkc47poQCkCNKJg+e1wZGkiT5Otxux8lbi
-	 TBTdMsI4cmCmRLrw+fo/iaZptPeYrjvU2oL70wFxVywK8ASU399BL5XLB5Z1SNb4gr
-	 z9IfSfD1/u9fpp2qyyOg0R7CcE0n/SKG9Xj3eMjY=
+	b=H+foeCubAZVmqq5K7seVLYYXoyOSTqQdZfcRoCzYnVEby/U9p24mtqXsCpVKSwQXb
+	 4CtukOcLmo9Ya7+gsyewbSJs1R1Tj0XqEbS7wMj6hrwYpsKZ7G6eUkiSSZLGLT8NyE
+	 EezMF8s4RSMfVKnQleM0FPtibZvzg7IUR7uZ3CKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.15 592/690] usb: typec: ucsi: Ack unsupported commands
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 159/252] 9p: Fix read/write debug statements to report server reply
 Date: Mon,  8 Apr 2024 14:57:38 +0200
-Message-ID: <20240408125421.032129766@linuxfoundation.org>
+Message-ID: <20240408125311.589370079@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-commit 6b5c85ddeea77d18c4b69e3bda60e9374a20c304 upstream.
+[ Upstream commit be3193e58ec210b2a72fb1134c2a0695088a911d ]
 
-If a command completes the OPM must send an ack. This applies
-to unsupported commands, too.
+Previous conversion to iov missed these debug statements which would now
+always print the requested size instead of the actual server reply.
 
-Send the required ACK for unsupported commands.
+Write also added a loop in a much older commit but we didn't report
+these, while reads do report each iteration -- it's more coherent to
+keep reporting all requests to server so move that at the same time.
 
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-4-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7f02464739da ("9p: convert to advancing variant of iov_iter_get_pages_alloc()")
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Message-ID: <20240109-9p-rw-trace-v1-1-327178114257@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/9p/client.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -138,8 +138,12 @@ static int ucsi_exec_command(struct ucsi
- 	if (!(cci & UCSI_CCI_COMMAND_COMPLETE))
- 		return -EIO;
+diff --git a/net/9p/client.c b/net/9p/client.c
+index e265a0ca6bddd..f7e90b4769bba 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -1583,7 +1583,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+ 		received = rsize;
+ 	}
  
--	if (cci & UCSI_CCI_NOT_SUPPORTED)
-+	if (cci & UCSI_CCI_NOT_SUPPORTED) {
-+		if (ucsi_acknowledge_command(ucsi) < 0)
-+			dev_err(ucsi->dev,
-+				"ACK of unsupported command failed\n");
- 		return -EOPNOTSUPP;
-+	}
+-	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", count);
++	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", received);
  
- 	if (cci & UCSI_CCI_ERROR) {
- 		if (cmd == UCSI_GET_ERROR_STATUS)
+ 	if (non_zc) {
+ 		int n = copy_to_iter(dataptr, received, to);
+@@ -1609,9 +1609,6 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 	int total = 0;
+ 	*err = 0;
+ 
+-	p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %zd\n",
+-		 fid->fid, offset, iov_iter_count(from));
+-
+ 	while (iov_iter_count(from)) {
+ 		int count = iov_iter_count(from);
+ 		int rsize = fid->iounit;
+@@ -1623,6 +1620,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 		if (count < rsize)
+ 			rsize = count;
+ 
++		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %d (/%d)\n",
++			 fid->fid, offset, rsize, count);
++
+ 		/* Don't bother zerocopy for small IO (< 1024) */
+ 		if (clnt->trans_mod->zc_request && rsize > 1024) {
+ 			req = p9_client_zc_rpc(clnt, P9_TWRITE, NULL, from, 0,
+@@ -1650,7 +1650,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 			written = rsize;
+ 		}
+ 
+-		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", count);
++		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", written);
+ 
+ 		p9_req_put(clnt, req);
+ 		iov_iter_revert(from, count - written - iov_iter_count(from));
+-- 
+2.43.0
+
 
 
 
