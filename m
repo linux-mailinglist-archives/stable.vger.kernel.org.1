@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0C289C643
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5C989C27A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F9D6B2AE3E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C26E2B24BB1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A0A7CF39;
-	Mon,  8 Apr 2024 13:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5367F7BAF0;
+	Mon,  8 Apr 2024 13:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHEF5MZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPW6fJgH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5483A7EEF2;
-	Mon,  8 Apr 2024 13:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102A47350E;
+	Mon,  8 Apr 2024 13:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584691; cv=none; b=aj5uUJVitQ26MBAgTrAMTs6St0GgzZDR+FKeeIDd//Ljbsyb3he56Egt+j/DkrQWufEr9OZJtTWFu/3XyORcHsBP34IFPVkzTyPvp9CC1RuYmeavnpNw8q1nMPbxtnUqFB7yg4Pg0XBY0aqNIXqU8pbiQH48Q9tcfuq7Bc1ocis=
+	t=1712582432; cv=none; b=kuNoBCyNvmLx6ohUKSWoPYdI+8uvuqWXrSR4xGMJ5a8Uwzl/xPIdo/VBbAe84LiLwqQ+hDT80hc6DbhL+Wkjxq5olGjKoacQ2Nn3wPJEOUnvK7m3xqnxPsX5XYIdrkrCyFspEyyDHhbDaPWk95C68A+dJ6z880QCpSEmocOurNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584691; c=relaxed/simple;
-	bh=DgA7W/1lVFYHRJ9nl65Tno/j/a92M+YKFp3lQhCEA3Y=;
+	s=arc-20240116; t=1712582432; c=relaxed/simple;
+	bh=KrODIwKBDV/2lY7Uii/Z/Rbxarc8fRHsWhYgnP24gQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHu3VjewVDBP5B1n80UB5EghCjYOJ6QNdJGf7KcXmBUFhve3cGacB6D38F2L5nOtfqqLmcfVgUujTfjkpACjAvuK7Eur+WiW+r8BuxtQmONHOZom2kFI+atsF56v+7uHrl2h0U9684dKs7Kyq/GLqAIJOonnbarZWOONEIbPDXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHEF5MZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03BFC43390;
-	Mon,  8 Apr 2024 13:58:10 +0000 (UTC)
+	 MIME-Version; b=nSMf6/4sitDaq7nlO5PmNwvIrseaqqiAdV0gKcwZUOS1qPO93F7z0Yyn2YHiFE0sCnt2Lu3ljLdfq6rdeO4MpXMPpEaLOXMMa+AZ/GcrvqvPMG5W0GRa04nhDSqJPQ+SghcskHLm/SiWIeLcJAhd1Cxma5X3zAHWijQz+ULiskA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPW6fJgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B4FC433C7;
+	Mon,  8 Apr 2024 13:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584691;
-	bh=DgA7W/1lVFYHRJ9nl65Tno/j/a92M+YKFp3lQhCEA3Y=;
+	s=korg; t=1712582430;
+	bh=KrODIwKBDV/2lY7Uii/Z/Rbxarc8fRHsWhYgnP24gQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHEF5MZIu/RLyC9/cH6sXCxyi8Bei2IzNlPRJOb71hZkHqcon2ynn0W0JX+PNweq6
-	 idIt4gIgvX7khtf5XpFP0GSWzsJ9unfy96GhirN06WEPYtZJQoNltWu7IpRCkGqYVN
-	 E35Km+irPXMOmBp5hz1kvC5kz2crIB3zDprk24nU=
+	b=kPW6fJgHUexsASsVPGDWNtCF3+8YD3zhfrtZvh7Vp/7RAMSyGRw1HaZQ/irCmvhXC
+	 Ua92dAA3SfPUTuESXTREktD84QpHTShZDgbLH6c6tjLr36fDpxxdNsOCjUAy22vhNj
+	 EF39ON+dE4y6THfYrGrmxQRk7R5FI3MFjiLHrsnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 525/690] NFSD: copy the whole verifier in nfsd_copy_write_verifier
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 092/252] x86/nospec: Refactor UNTRAIN_RET[_*]
 Date: Mon,  8 Apr 2024 14:56:31 +0200
-Message-ID: <20240408125418.662552251@linuxfoundation.org>
+Message-ID: <20240408125309.509983848@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 90d2175572470ba7f55da8447c72ddd4942923c4 ]
+Commit e8efc0800b8b5045ba8c0d1256bfbb47e92e192a upstream.
 
-Currently, we're only memcpy'ing the first __be32. Ensure we copy into
-both words.
+Factor out the UNTRAIN_RET[_*] common bits into a helper macro.
 
-Fixes: 91d2e9b56cf5 ("NFSD: Clean up the nfsd_net::nfssvc_boot field")
-Reported-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/f06d45489778bd49623297af2a983eea09067a74.1693889988.git.jpoimboe@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfssvc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |   31 ++++++++++---------------------
+ 1 file changed, 10 insertions(+), 21 deletions(-)
 
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 325d3d3f12110..a0ecec54d3d7d 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -363,7 +363,7 @@ void nfsd_copy_write_verifier(__be32 verf[2], struct nfsd_net *nn)
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -288,35 +288,24 @@
+  * As such, this must be placed after every *SWITCH_TO_KERNEL_CR3 at a point
+  * where we have a stack but before any RET instruction.
+  */
+-.macro UNTRAIN_RET
++.macro __UNTRAIN_RET ibpb_feature, call_depth_insns
+ #if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
+ 	VALIDATE_UNRET_END
+ 	ALTERNATIVE_3 "",						\
+ 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+-		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB,	\
+-		     __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
++		      "call entry_ibpb", \ibpb_feature,			\
++		     __stringify(\call_depth_insns), X86_FEATURE_CALL_DEPTH
+ #endif
+ .endm
  
- 	do {
- 		read_seqbegin_or_lock(&nn->writeverf_lock, &seq);
--		memcpy(verf, nn->writeverf, sizeof(*verf));
-+		memcpy(verf, nn->writeverf, sizeof(nn->writeverf));
- 	} while (need_seqretry(&nn->writeverf_lock, seq));
- 	done_seqretry(&nn->writeverf_lock, seq);
- }
--- 
-2.43.0
-
+-.macro UNTRAIN_RET_VM
+-#if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
+-	VALIDATE_UNRET_END
+-	ALTERNATIVE_3 "",						\
+-		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+-		      "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT,	\
+-		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
+-#endif
+-.endm
++#define UNTRAIN_RET \
++	__UNTRAIN_RET X86_FEATURE_ENTRY_IBPB, __stringify(RESET_CALL_DEPTH)
+ 
+-.macro UNTRAIN_RET_FROM_CALL
+-#if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
+-	VALIDATE_UNRET_END
+-	ALTERNATIVE_3 "",						\
+-		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+-		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB,	\
+-		      __stringify(RESET_CALL_DEPTH_FROM_CALL), X86_FEATURE_CALL_DEPTH
+-#endif
+-.endm
++#define UNTRAIN_RET_VM \
++	__UNTRAIN_RET X86_FEATURE_IBPB_ON_VMEXIT, __stringify(RESET_CALL_DEPTH)
++
++#define UNTRAIN_RET_FROM_CALL \
++	__UNTRAIN_RET X86_FEATURE_ENTRY_IBPB, __stringify(RESET_CALL_DEPTH_FROM_CALL)
+ 
+ 
+ .macro CALL_DEPTH_ACCOUNT
 
 
 
