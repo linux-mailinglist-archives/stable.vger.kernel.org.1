@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC4289C605
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E2289C218
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7109BB2AB82
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CAB2283022
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CB37EF03;
-	Mon,  8 Apr 2024 13:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72417E57C;
+	Mon,  8 Apr 2024 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfYjiwi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1y9XUH2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EB77D408;
-	Mon,  8 Apr 2024 13:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61EE7D3F8;
+	Mon,  8 Apr 2024 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584662; cv=none; b=Az+HMxGVZPmXEpJBO615sqwUsMUX4KOxK3VJ5FbsZCvJOfO405kZx/vW9BquyYwO7I0iNJjojJxn1jMzfzBtqkecj/fIfXD+WICgs7xQMtXpn7WgtibQ5Uu2+oGRc3NpF9HPVJVQnZiGt8W9kJZ2kb2/sZMWFAvaglajqetqeEE=
+	t=1712582579; cv=none; b=htHOE79c6w6nzN5zh2s5mVkiDIYNNg3E1gLvmGFK+WgT+EJJuYfscy0jqkErAil8viY6ppJFPetnk5NVnmuXzWBujYY7fkHkviziGl7AagiC5iCSc2I3cVac8qjK5TOYQ27c8XXHI/+RsPjLKgPZNSz/XFCjvbQF271/WGrhzgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584662; c=relaxed/simple;
-	bh=PkSGCuN14fvS5g1j+Jxynvr8LOazr1t9L2CG3hF3EJ4=;
+	s=arc-20240116; t=1712582579; c=relaxed/simple;
+	bh=8BdWP4hYjBWoC4tna54iMV7u8z9BpXF+4Qd/DWfoAMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKJnUbpBWhsBYOcrFTXrHsruE9XXg0m1X41k+XODgDvmgtW/a5N8mLTMK1biR6TbwLPjA4732H32buQvmEoDSNNXJaoSI5YpHFE7uCIQoTAMwuadsaBQnEoKUxOjNHKwElHH2voBzIDu6445HeXZITbTP4kz/k0LQLvBMjO2/K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfYjiwi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC97C433C7;
-	Mon,  8 Apr 2024 13:57:41 +0000 (UTC)
+	 MIME-Version; b=Lzivj8Zg1sbVqgPbqaUO9z0vphGe+Qb+HH73J3Y4TiGB95LdEjnxAzCtpRVPnNDRnVXTBa2hx0FM/6S/50MLncOpuo77LYdSrdyCKuxpFyZy7IsS/vkc0SQP+pMBCLMCCUcPFY0VnrbMRfm12dKYSTDbnlNE62t75va9aCZoJUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1y9XUH2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E061C433F1;
+	Mon,  8 Apr 2024 13:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584661;
-	bh=PkSGCuN14fvS5g1j+Jxynvr8LOazr1t9L2CG3hF3EJ4=;
+	s=korg; t=1712582579;
+	bh=8BdWP4hYjBWoC4tna54iMV7u8z9BpXF+4Qd/DWfoAMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfYjiwi8jBtX3LZKu34Cm9Qj4MpBQP85FGUhesrkxHkQdbEDS5ZezU4D8kywylitS
-	 ImPSXDv/VA/KTP94OkenPsgHz5UrVjfvPmn7D1ODiKWSuXndP1+OyuzdpJCYvhbDjI
-	 w1OqN/VfkLxBBIgSCGQR39E5/QJRmOksVcMNA0e4=
+	b=R1y9XUH2lUvul3OZKA7fjPSfKUkFTkOjQg1l9Rk8cej+OMNx2jmpj+A0+5fDmJL6Q
+	 Cf55ZEms5YwyAzrEu8DBl4C2vO4emrudaGkz9IQNh1ITl8mkGDB1MkXUPiI2ZWaEgg
+	 6s3cZkKjT6K8Jgqfe7DT50wxWad2XphIig1LWZXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 485/690] NFSD: Update file_hashtbl() helpers
+	Douglas Anderson <dianders@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.8 076/273] Bluetooth: add quirk for broken address properties
 Date: Mon,  8 Apr 2024 14:55:51 +0200
-Message-ID: <20240408125417.213634572@linuxfoundation.org>
+Message-ID: <20240408125311.665089217@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 3fe828caddd81e68e9d29353c6e9285a658ca056 ]
+commit 39646f29b100566451d37abc4cc8cdd583756dfe upstream.
 
-Enable callers to use const pointers for type safety.
+Some Bluetooth controllers lack persistent storage for the device
+address and instead one can be provided by the boot firmware using the
+'local-bd-address' devicetree property.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+The Bluetooth devicetree bindings clearly states that the address should
+be specified in little-endian order, but due to a long-standing bug in
+the Qualcomm driver which reversed the address some boot firmware has
+been providing the address in big-endian order instead.
+
+Add a new quirk that can be set on platforms with broken firmware and
+use it to reverse the address when parsing the property so that the
+underlying driver bug can be fixed.
+
+Fixes: 5c0a1001c8be ("Bluetooth: hci_qca: Add helper to set device address")
+Cc: stable@vger.kernel.org      # 5.1
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/bluetooth/hci.h |    9 +++++++++
+ net/bluetooth/hci_sync.c    |    5 ++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index b2a4d442af669..aa7374933de77 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -721,7 +721,7 @@ static unsigned int ownerstr_hashval(struct xdr_netobj *ownername)
- #define FILE_HASH_BITS                   8
- #define FILE_HASH_SIZE                  (1 << FILE_HASH_BITS)
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -176,6 +176,15 @@ enum {
+ 	 */
+ 	HCI_QUIRK_USE_BDADDR_PROPERTY,
  
--static unsigned int file_hashval(struct svc_fh *fh)
-+static unsigned int file_hashval(const struct svc_fh *fh)
- {
- 	struct inode *inode = d_inode(fh->fh_dentry);
++	/* When this quirk is set, the Bluetooth Device Address provided by
++	 * the 'local-bd-address' fwnode property is incorrectly specified in
++	 * big-endian order.
++	 *
++	 * This quirk can be set before hci_register_dev is called or
++	 * during the hdev->setup vendor callback.
++	 */
++	HCI_QUIRK_BDADDR_PROPERTY_BROKEN,
++
+ 	/* When this quirk is set, the duplicate filtering during
+ 	 * scanning is based on Bluetooth devices addresses. To allow
+ 	 * RSSI based updates, restart scanning if needed.
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -3224,7 +3224,10 @@ static void hci_dev_get_bd_addr_from_pro
+ 	if (ret < 0 || !bacmp(&ba, BDADDR_ANY))
+ 		return;
  
-@@ -4686,7 +4686,7 @@ move_to_close_lru(struct nfs4_ol_stateid *s, struct net *net)
+-	bacpy(&hdev->public_addr, &ba);
++	if (test_bit(HCI_QUIRK_BDADDR_PROPERTY_BROKEN, &hdev->quirks))
++		baswap(&hdev->public_addr, &ba);
++	else
++		bacpy(&hdev->public_addr, &ba);
+ }
  
- /* search file_hashtbl[] for file */
- static struct nfs4_file *
--find_file_locked(struct svc_fh *fh, unsigned int hashval)
-+find_file_locked(const struct svc_fh *fh, unsigned int hashval)
- {
- 	struct nfs4_file *fp;
- 
--- 
-2.43.0
-
+ struct hci_init_stage {
 
 
 
