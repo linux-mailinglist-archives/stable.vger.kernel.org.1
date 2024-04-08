@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-37139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CCC89C37E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4338289C3BF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BB18283B42
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67BDC1C21A45
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4455D126F1C;
-	Mon,  8 Apr 2024 13:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2FD1311B1;
+	Mon,  8 Apr 2024 13:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wv2rCCsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEZy1wKp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CE17D09F;
-	Mon,  8 Apr 2024 13:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3787E58C;
+	Mon,  8 Apr 2024 13:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583361; cv=none; b=pN3VFy8SsQ/hSSBGL+mhaKYMjQnNW6Sy8bYoohgyZE2K7RB8/jJ35rLLvMA2scnWnrt077FidoX+tMaIubi8QpScnZQtOLNCM6khuA+UnAmMVF4x/RrRe92wyYrv7UrmjDQvIdQztW/XL4Sy73srMSeZgmmd2WOIEvpNhUGVnKM=
+	t=1712583502; cv=none; b=tlWuC5JgZXeHcUcDwqgqbFRLwigGyG15vL9u5kULXny6JxrS1uxwYL/l4zUcY1FvCu++2n3X11Q94aCMd8HF7GOivHqXYq/FKjih0ajvtqEKDSmhruhLuicdkjRqkkGV0ayRGi7Z+bvQebSTYwsJ35Vo+T/7jmzcnPjNJ6cgbXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583361; c=relaxed/simple;
-	bh=/wl4n6TMvO5XNaYBxluFbm/n+7Me0egCTrepcjudcis=;
+	s=arc-20240116; t=1712583502; c=relaxed/simple;
+	bh=eOdOuftJWc/0BOyWgzC6HcCdZD9mFcEIQJXGp2NjaTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9NIm/8AJi7KHhNKbww0cIYEYka5HSwpYwktdjVxBEVQjMb82UcnH32WaedsMIO3rhy0zNkJalP0qhhaBciIg7Coy09rKcaLLmlCprXsHj1tkJziAEdjplqRqHSe48mYPVik72ul2w8dbAFi/+MxkqSWEW/3agXQJripc0j3QD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wv2rCCsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFF5C433F1;
-	Mon,  8 Apr 2024 13:36:00 +0000 (UTC)
+	 MIME-Version; b=oPhBAeIxJGeJRvBdHcbUKSMAiccFbWaVHjJqyL+hsDDGaNzCKnjaojvSaZHaVG8hrFUtzeViYBauM0Mw1WxRY1nq47udbB7XRYM/i37k/MSGeHrzc36zau3AnACllHQL/aJdolFn9GPkegzZPG2G6105bqSD5615JwExHN9e7D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEZy1wKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44740C43394;
+	Mon,  8 Apr 2024 13:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583360;
-	bh=/wl4n6TMvO5XNaYBxluFbm/n+7Me0egCTrepcjudcis=;
+	s=korg; t=1712583502;
+	bh=eOdOuftJWc/0BOyWgzC6HcCdZD9mFcEIQJXGp2NjaTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wv2rCCsGboXGXog9c+uthXbnPJn2obZ8z3iMr7gazuc53fl7dwI2NMCDlH4UOeiQn
-	 cPW9kPlTs5xEfmYDIehPoBLNMm/MxynrvPunPehdVtmqcFuhxz83ceviKqwhWGFLn/
-	 GFUHJoaLrE4xCsxRsdr6AI6Sy7hXq/ixMjuy394o=
+	b=WEZy1wKpxv2qYgRcBSAn6jW8W8UHV7iSiwrbtFRbtOUvCHA6W4My1HMsDXmE2x3Rr
+	 23KYZynZTbtcBUTZmEqqiv23mQ+ugFuZm4LErIf7FibUOVehPLl8JMQpCPIHht7iLX
+	 XgSiY31ozvOQoLIWU1LgaLYlx9uQFw40IPZ4KOvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	NeilBrown <neilb@suse.de>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 238/690] lockd: move lockd_start_svc() call into lockd_create_svc()
-Date: Mon,  8 Apr 2024 14:51:44 +0200
-Message-ID: <20240408125408.265634422@linuxfoundation.org>
+Subject: [PATCH 5.15 239/690] lockd: move svc_exit_thread() into the thread
+Date: Mon,  8 Apr 2024 14:51:45 +0200
+Message-ID: <20240408125408.304403340@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,100 +67,101 @@ Content-Transfer-Encoding: 8bit
 
 From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit b73a2972041bee70eb0cbbb25fa77828c63c916b ]
+[ Upstream commit 6a4e2527a63620a820c4ebf3596b57176da26fb3 ]
 
-lockd_start_svc() only needs to be called once, just after the svc is
-created.  If the start fails, the svc is discarded too.
+The normal place to call svc_exit_thread() is from the thread itself
+just before it exists.
+Do this for lockd.
 
-It thus makes sense to call lockd_start_svc() from lockd_create_svc().
-This allows us to remove the test against nlmsvc_rqst at the start of
-lockd_start_svc() - it must always be NULL.
-
-lockd_up() only held an extra reference on the svc until a thread was
-created - then it dropped it.  The thread - and thus the extra reference
-- will remain until kthread_stop() is called.
-Now that the thread is created in lockd_create_svc(), the extra
-reference can be dropped there.  So the 'serv' variable is no longer
-needed in lockd_up().
+This means that nlmsvc_rqst is not used out side of lockd_start_svc(),
+so it can be made local to that function, and renamed to 'rqst'.
 
 Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/lockd/svc.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ fs/lockd/svc.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
-index 20cebb191350f..91e7c839841ec 100644
+index 91e7c839841ec..9aa499a761591 100644
 --- a/fs/lockd/svc.c
 +++ b/fs/lockd/svc.c
-@@ -359,9 +359,6 @@ static int lockd_start_svc(struct svc_serv *serv)
+@@ -56,7 +56,6 @@ static DEFINE_MUTEX(nlmsvc_mutex);
+ static unsigned int		nlmsvc_users;
+ static struct svc_serv		*nlmsvc_serv;
+ static struct task_struct	*nlmsvc_task;
+-static struct svc_rqst		*nlmsvc_rqst;
+ unsigned long			nlmsvc_timeout;
+ 
+ unsigned int lockd_net_id;
+@@ -182,6 +181,11 @@ lockd(void *vrqstp)
+ 	nlm_shutdown_hosts();
+ 	cancel_delayed_work_sync(&ln->grace_period_end);
+ 	locks_end_grace(&ln->lockd_manager);
++
++	dprintk("lockd_down: service stopped\n");
++
++	svc_exit_thread(rqstp);
++
+ 	return 0;
+ }
+ 
+@@ -358,13 +362,14 @@ static void lockd_unregister_notifiers(void)
+ static int lockd_start_svc(struct svc_serv *serv)
  {
  	int error;
++	struct svc_rqst *rqst;
  
--	if (nlmsvc_rqst)
--		return 0;
--
  	/*
  	 * Create the kernel thread and wait for it to start.
  	 */
-@@ -406,6 +403,7 @@ static const struct svc_serv_ops lockd_sv_ops = {
- static int lockd_create_svc(void)
- {
- 	struct svc_serv *serv;
-+	int error;
+-	nlmsvc_rqst = svc_prepare_thread(serv, &serv->sv_pools[0], NUMA_NO_NODE);
+-	if (IS_ERR(nlmsvc_rqst)) {
+-		error = PTR_ERR(nlmsvc_rqst);
++	rqst = svc_prepare_thread(serv, &serv->sv_pools[0], NUMA_NO_NODE);
++	if (IS_ERR(rqst)) {
++		error = PTR_ERR(rqst);
+ 		printk(KERN_WARNING
+ 			"lockd_up: svc_rqst allocation failed, error=%d\n",
+ 			error);
+@@ -374,24 +379,23 @@ static int lockd_start_svc(struct svc_serv *serv)
+ 	svc_sock_update_bufs(serv);
+ 	serv->sv_maxconn = nlm_max_connections;
  
- 	/*
- 	 * Check whether we're already up and running.
-@@ -432,6 +430,13 @@ static int lockd_create_svc(void)
- 		printk(KERN_WARNING "lockd_up: create service failed\n");
- 		return -ENOMEM;
+-	nlmsvc_task = kthread_create(lockd, nlmsvc_rqst, "%s", serv->sv_name);
++	nlmsvc_task = kthread_create(lockd, rqst, "%s", serv->sv_name);
+ 	if (IS_ERR(nlmsvc_task)) {
+ 		error = PTR_ERR(nlmsvc_task);
+ 		printk(KERN_WARNING
+ 			"lockd_up: kthread_run failed, error=%d\n", error);
+ 		goto out_task;
  	}
-+
-+	error = lockd_start_svc(serv);
-+	/* The thread now holds the only reference */
-+	svc_put(serv);
-+	if (error < 0)
-+		return error;
-+
- 	nlmsvc_serv = serv;
- 	register_inetaddr_notifier(&lockd_inetaddr_notifier);
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -446,7 +451,6 @@ static int lockd_create_svc(void)
-  */
- int lockd_up(struct net *net, const struct cred *cred)
- {
--	struct svc_serv *serv;
- 	int error;
+-	nlmsvc_rqst->rq_task = nlmsvc_task;
++	rqst->rq_task = nlmsvc_task;
+ 	wake_up_process(nlmsvc_task);
  
- 	mutex_lock(&nlmsvc_mutex);
-@@ -454,25 +458,19 @@ int lockd_up(struct net *net, const struct cred *cred)
- 	error = lockd_create_svc();
- 	if (error)
- 		goto err_create;
--	serv = nlmsvc_serv;
+ 	dprintk("lockd_up: service started\n");
+ 	return 0;
  
--	error = lockd_up_net(serv, net, cred);
-+	error = lockd_up_net(nlmsvc_serv, net, cred);
- 	if (error < 0) {
- 		goto err_put;
- 	}
- 
--	error = lockd_start_svc(serv);
--	if (error < 0) {
--		lockd_down_net(serv, net);
--		goto err_put;
--	}
- 	nlmsvc_users++;
- err_put:
- 	if (nlmsvc_users == 0) {
- 		lockd_unregister_notifiers();
-+		kthread_stop(nlmsvc_task);
- 		nlmsvc_serv = NULL;
- 	}
--	svc_put(serv);
- err_create:
- 	mutex_unlock(&nlmsvc_mutex);
+ out_task:
+-	svc_exit_thread(nlmsvc_rqst);
++	svc_exit_thread(rqst);
+ 	nlmsvc_task = NULL;
+ out_rqst:
+-	nlmsvc_rqst = NULL;
  	return error;
+ }
+ 
+@@ -500,9 +504,6 @@ lockd_down(struct net *net)
+ 	}
+ 	lockd_unregister_notifiers();
+ 	kthread_stop(nlmsvc_task);
+-	dprintk("lockd_down: service stopped\n");
+-	svc_exit_thread(nlmsvc_rqst);
+-	nlmsvc_rqst = NULL;
+ 	dprintk("lockd_down: service destroyed\n");
+ 	nlmsvc_serv = NULL;
+ 	nlmsvc_task = NULL;
 -- 
 2.43.0
 
