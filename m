@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-37525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBFF089C53B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A782B89C052
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 772B12841F4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA64A1C21A04
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9FA78286;
-	Mon,  8 Apr 2024 13:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4878E62148;
+	Mon,  8 Apr 2024 13:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYMOrb1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8TgWu7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA2E6EB72;
-	Mon,  8 Apr 2024 13:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AEC2DF73;
+	Mon,  8 Apr 2024 13:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584489; cv=none; b=XXVyI1xVZUkll9OPrnz3oALSyDWQBgO5mSSZlmEDzAirIjRdYrjBijCMLtwFSv3yuFKx7jbEzf/4fgfqa0BfTqvUBrBBtpECc9WdWydHc32Dds7SvkTQpy3lq2yzkVW3dH9i0MJlFX73hLLBLswNTP0vE9N0M/klFnRpBoC8U7E=
+	t=1712581645; cv=none; b=dsqR7/vtkZM5QuHrXZS6HlfEbTz1nop2Zn7ts+BZI5PwW6ZAf8jc/DkEmNqAZ7t5dQNg8V9W9Aqf2o2Q9tgySXDebIcHDJU7g4cOR3bxFyne5gi0+zMXnEx4rFB4/YVGU4byHI3RtSaHm4TqccGCtShd8+PHWM8rNOZ17nievDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584489; c=relaxed/simple;
-	bh=zrEmmviOT6firgP2LkwLtHxP+4U8auWJkgeMtdFqELg=;
+	s=arc-20240116; t=1712581645; c=relaxed/simple;
+	bh=NUsdpof4R7/qY9JOb6s9aYkNeOYkNRJSpT7K6zhlIXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1YGoe9WdhVfKzY4kK2QiofKh4kHkjHc8wHM+wAiVlF8uMu4aG5YKBMBFuY9hPvPSoFrpk/0jvIKR4vG/U4UL0X3XBWdaYY/WljMcnGCkMld8q/KUqmp1HOjZHi94kmq9/gQX+EZbNoKz3WQ+VpEONyiDnF1OTHnyyDL/Waj5UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYMOrb1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D2DC433F1;
-	Mon,  8 Apr 2024 13:54:48 +0000 (UTC)
+	 MIME-Version; b=IdUWBi6ngLD86MbuZ6KZsjbhNPXvAlbzvZrOwFCdjqPCPdFqX6jQOllxU23RaWDSMZ2Xquvlkqo6uDZV7xu1CXd7xMkSivnagfS7qnASgzEV0qzj4N6Fj6ue5RGMwIu91e6hnv8ZRXagtlE+pwibUlU/gZX7k5xu+eDsd2Ak+jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8TgWu7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69043C433F1;
+	Mon,  8 Apr 2024 13:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584489;
-	bh=zrEmmviOT6firgP2LkwLtHxP+4U8auWJkgeMtdFqELg=;
+	s=korg; t=1712581644;
+	bh=NUsdpof4R7/qY9JOb6s9aYkNeOYkNRJSpT7K6zhlIXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYMOrb1AHaF4IXViq1KAQL8ej4qorpbp9MCl17fN6/1HN24HP1/SENBYGr/Yvfj0D
-	 v8kKZw/bN2Sh0h1h4PY1fIE5fAMe+2sYk1pMQnmB0az1r/Ime1fL99vm3yaf64gfBu
-	 knNTK7aVIJFKMMoMom2cEGGAgdcuHJPnEo5iraDI=
+	b=c8TgWu7rnhelJpWYnfZN0Jui5/YTQJ7GMDErcXuTM7hBeZ+UVid60x19ESvF8U6tk
+	 NCcGVen1folo/HyXXdMuQxHIKUWqGYdPpeMCXrA0Sza5Rac/eELYG0hbarKs78v5Z8
+	 BJV4f2NAHnKYe1fK859BBrjVhxdR2IZD58L4isd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 5.15 415/690] nfsd_splice_actor(): handle compound pages
-Date: Mon,  8 Apr 2024 14:54:41 +0200
-Message-ID: <20240408125414.625567765@linuxfoundation.org>
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Jeremy Cline <jeremy@jcline.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
+	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Subject: [PATCH 6.8 007/273] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
+Date: Mon,  8 Apr 2024 14:54:42 +0200
+Message-ID: <20240408125309.511046440@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-[ Upstream commit bfbfb6182ad1d7d184b16f25165faad879147f79 ]
+[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
 
-pipe_buffer might refer to a compound page (and contain more than a PAGE_SIZE
-worth of data).  Theoretically it had been possible since way back, but
-nfsd_splice_actor() hadn't run into that until copy_page_to_iter() change.
-Fortunately, the only thing that changes for compound pages is that we
-need to stuff each relevant subpage in and convert the offset into offset
-in the first subpage.
+syzbot reported the following uninit-value access issue [1][2]:
 
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Tested-by: Benjamin Coddington <bcodding@redhat.com>
-Fixes: f0f6b614f83d "copy_page_to_iter(): don't split high-order page in case of ITER_PIPE"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+nci_rx_work() parses and processes received packet. When the payload
+length is zero, each message type handler reads uninitialized payload
+and KMSAN detects this issue. The receipt of a packet with a zero-size
+payload is considered unexpected, and therefore, such packets should be
+silently discarded.
+
+This patch resolved this issue by checking payload size before calling
+each message type handler codes.
+
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
+Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
+Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index ad689215b1f37..343af6341e5e1 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -846,10 +846,15 @@ nfsd_splice_actor(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
- 		  struct splice_desc *sd)
- {
- 	struct svc_rqst *rqstp = sd->u.data;
--
--	svc_rqst_replace_page(rqstp, buf->page);
--	if (rqstp->rq_res.page_len == 0)
--		rqstp->rq_res.page_base = buf->offset;
-+	struct page *page = buf->page;	// may be a compound one
-+	unsigned offset = buf->offset;
-+	int i;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index cdad47b140fa4..0d26c8ec9993e 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1516,6 +1516,11 @@ static void nci_rx_work(struct work_struct *work)
+ 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
+ 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
+ 
++		if (!nci_plen(skb->data)) {
++			kfree_skb(skb);
++			break;
++		}
 +
-+	page += offset / PAGE_SIZE;
-+	for (i = sd->len; i > 0; i -= PAGE_SIZE)
-+		svc_rqst_replace_page(rqstp, page++);
-+	if (rqstp->rq_res.page_len == 0)	// first call
-+		rqstp->rq_res.page_base = offset % PAGE_SIZE;
- 	rqstp->rq_res.page_len += sd->len;
- 	return sd->len;
- }
+ 		/* Process frame */
+ 		switch (nci_mt(skb->data)) {
+ 		case NCI_MT_RSP_PKT:
 -- 
 2.43.0
 
