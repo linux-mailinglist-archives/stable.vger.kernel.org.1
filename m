@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-36534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5C089C042
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE3089C047
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E108B1C20BD3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D6731F23C9A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01886F08E;
-	Mon,  8 Apr 2024 13:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F55D6CDA8;
+	Mon,  8 Apr 2024 13:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ozy4fubk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qi6JX/hE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1ED2DF73;
-	Mon,  8 Apr 2024 13:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D554481A6;
+	Mon,  8 Apr 2024 13:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581606; cv=none; b=kWRFpXF3prVibVFJRyMY4KYWxMfOyJ+5OUNojvQGpKDQjQVRG0kLZ3IpRJPpDBiAnK/lFKsVX6krNrAGBd6IbH3ZBpG5s8zZvBY7ZV9gFrvwKjxiYMjTW51jHTcU1hfVd+ANDlIices0l4PyNzdaKooSYCyQ4B20gHYPAgDYImc=
+	t=1712581618; cv=none; b=UuJzWXZHXXFGbMag3U91AEDHIFKz5for/YvdhEpYsTcvjfwO0S+G0T0u1Fx5393sUXFcMKW+vUX3pJV8IEc/v2IAjCZuTRRXy69HtMOQchV0Jrj2bkS8Oelt06dtE62oMTdmLB/LEEeU+1du0z5tXJZt6zN6cy8xZmUJnr+eb6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581606; c=relaxed/simple;
-	bh=CCDxNZ7Ykk0JYoEAPZ0SGHm8fw9X6PIfCBKk/3fcC1c=;
+	s=arc-20240116; t=1712581618; c=relaxed/simple;
+	bh=nhzibUf5RDel8Lz9xVoBBV9Plo9GJ+MHbcsPkEAiP24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzLEQ7G03+4oDciWGqLqZ4l3rvxGEXkVNa+9CzqU4T354ZghGddUikvhKy/8m4tRXgsgXq400FFXHlC+i6DeNgMBZSnDgc+HScUVhX1aZLXx0xA6USwGceCwQRRzWwhFq0Mje9OGywyFxnb5PQFlGUNtRD/o2aqQUFO2QyaYGE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ozy4fubk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D34C433F1;
-	Mon,  8 Apr 2024 13:06:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VjClxy74+iOvsbwXegTMaM7E20hg0sySA9Wzx+zN4a8P5enUzAtol9InnS+elCTl7zWAqX0rWQhipS3Fh1W/+BS0rGexPvi4HvntOoJcfOExqpV3ySVFfZSghPfuilXVcbIO10utzYvybSi3nEwYt7lOsMN5maTnJOe7clIBKH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qi6JX/hE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D879FC433F1;
+	Mon,  8 Apr 2024 13:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581606;
-	bh=CCDxNZ7Ykk0JYoEAPZ0SGHm8fw9X6PIfCBKk/3fcC1c=;
+	s=korg; t=1712581618;
+	bh=nhzibUf5RDel8Lz9xVoBBV9Plo9GJ+MHbcsPkEAiP24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ozy4fubkNliqD9uLHbJ4k6caJHG80E+7IV0+yO+e1YsAk1q7mpavicBa351pvePLa
-	 si2XmAd9UJEmG2dsbc/UiO30vj3Zt5krngNd0XKBDaVuhnHZmHA2MXphyT6x01spaF
-	 Dck4tkVRDVuvSMMVPqcy8Htgts3/LVlojQd5fAPY=
+	b=Qi6JX/hE+qdQYefX5X7N8XvrzJoop0tH1NTkswI1yEStr3d8noNj1bno3FSOjfDBT
+	 Li2nA05eoF4cXKsmzNbzMCRgl1wSJYAxQIe7qqFTuDX6ofuIVN+xLWjvkY9vfNCbmd
+	 76xJtg2rcoWktZUMtlS2GzRIX+M70RRYqPgvwPwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay12@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Pavel Sakharov <p.sakharov@ispras.ru>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 004/273] bpf, arm64: fix bug in BPF_LDX_MEMSX
-Date: Mon,  8 Apr 2024 14:54:39 +0200
-Message-ID: <20240408125309.419268184@linuxfoundation.org>
+Subject: [PATCH 6.8 005/273] dma-buf: Fix NULL pointer dereference in sanitycheck()
+Date: Mon,  8 Apr 2024 14:54:40 +0200
+Message-ID: <20240408125309.450758356@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -60,87 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay12@gmail.com>
+From: Pavel Sakharov <p.sakharov@ispras.ru>
 
-[ Upstream commit 114b5b3b4bde7358624437be2f12cde1b265224e ]
+[ Upstream commit 2295bd846765c766701e666ed2e4b35396be25e6 ]
 
-A64_LDRSW() takes three registers: Xt, Xn, Xm as arguments and it loads
-and sign extends the value at address Xn + Xm into register Xt.
+If due to a memory allocation failure mock_chain() returns NULL, it is
+passed to dma_fence_enable_sw_signaling() resulting in NULL pointer
+dereference there.
 
-Currently, the offset is being directly used in place of the tmp
-register which has the offset already loaded by the last emitted
-instruction.
+Call dma_fence_enable_sw_signaling() only if mock_chain() succeeds.
 
-This will cause JIT failures. The easiest way to reproduce this is to
-test the following code through test_bpf module:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-{
-	"BPF_LDX_MEMSX | BPF_W",
-	.u.insns_int = {
-		BPF_LD_IMM64(R1, 0x00000000deadbeefULL),
-		BPF_LD_IMM64(R2, 0xffffffffdeadbeefULL),
-		BPF_STX_MEM(BPF_DW, R10, R1, -7),
-		BPF_LDX_MEMSX(BPF_W, R0, R10, -7),
-		BPF_JMP_REG(BPF_JNE, R0, R2, 1),
-		BPF_ALU64_IMM(BPF_MOV, R0, 0),
-		BPF_EXIT_INSN(),
-	},
-	INTERNAL,
-	{ },
-	{ { 0, 0 } },
-	.stack_depth = 7,
-},
-
-We need to use the offset as -7 to trigger this code path, there could
-be other valid ways to trigger this from proper BPF programs as well.
-
-This code is rejected by the JIT because -7 is passed to A64_LDRSW() but
-it expects a valid register (0 - 31).
-
- roott@pjy:~# modprobe test_bpf test_name="BPF_LDX_MEMSX | BPF_W"
- [11300.490371] test_bpf: test_bpf: set 'test_bpf' as the default test_suite.
- [11300.491750] test_bpf: #345 BPF_LDX_MEMSX | BPF_W
- [11300.493179] aarch64_insn_encode_register: unknown register encoding -7
- [11300.494133] aarch64_insn_encode_register: unknown register encoding -7
- [11300.495292] FAIL to select_runtime err=-524
- [11300.496804] test_bpf: Summary: 0 PASSED, 1 FAILED, [0/0 JIT'ed]
- modprobe: ERROR: could not insert 'test_bpf': Invalid argument
-
-Applying this patch fixes the issue.
-
- root@pjy:~# modprobe test_bpf test_name="BPF_LDX_MEMSX | BPF_W"
- [  292.837436] test_bpf: test_bpf: set 'test_bpf' as the default test_suite.
- [  292.839416] test_bpf: #345 BPF_LDX_MEMSX | BPF_W jited:1 156 PASS
- [  292.844794] test_bpf: Summary: 1 PASSED, 0 FAILED, [1/1 JIT'ed]
-
-Fixes: cc88f540da52 ("bpf, arm64: Support sign-extension load instructions")
-Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
-Message-ID: <20240312235917.103626-1-puranjay12@gmail.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: d62c43a953ce ("dma-buf: Enable signaling on fence for selftests")
+Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240319231527.1821372-1-p.sakharov@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma-buf/st-dma-fence-chain.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 8955da5c47cf7..582c4c2491edc 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -1189,7 +1189,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
- 			} else {
- 				emit_a64_mov_i(1, tmp, off, ctx);
- 				if (sign_extend)
--					emit(A64_LDRSW(dst, src_adj, off_adj), ctx);
-+					emit(A64_LDRSW(dst, src, tmp), ctx);
- 				else
- 					emit(A64_LDR32(dst, src, tmp), ctx);
- 			}
+diff --git a/drivers/dma-buf/st-dma-fence-chain.c b/drivers/dma-buf/st-dma-fence-chain.c
+index 9c2a0c082a768..ed4b323886e43 100644
+--- a/drivers/dma-buf/st-dma-fence-chain.c
++++ b/drivers/dma-buf/st-dma-fence-chain.c
+@@ -84,11 +84,11 @@ static int sanitycheck(void *arg)
+ 		return -ENOMEM;
+ 
+ 	chain = mock_chain(NULL, f, 1);
+-	if (!chain)
++	if (chain)
++		dma_fence_enable_sw_signaling(chain);
++	else
+ 		err = -ENOMEM;
+ 
+-	dma_fence_enable_sw_signaling(chain);
+-
+ 	dma_fence_signal(f);
+ 	dma_fence_put(f);
+ 
 -- 
 2.43.0
 
