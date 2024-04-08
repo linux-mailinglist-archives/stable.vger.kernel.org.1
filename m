@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-37705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B3389C60F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C39A89C3BE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA3F61C23BEE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35AE22844B6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331837F499;
-	Mon,  8 Apr 2024 14:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2A2131BA5;
+	Mon,  8 Apr 2024 13:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbaEXZ2b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vl2v7SZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41CE7E772;
-	Mon,  8 Apr 2024 14:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE91131191;
+	Mon,  8 Apr 2024 13:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585020; cv=none; b=t5PxIsDuOH1qlYeBnytyxlAs/oWrfRyOg5xyXcFZzoPMQwP1wcZ7o62vUV/m5+BZK3fRTxazQYk5sEefpRvQQHLtVYylXwhrDfFTswIYWxvkICrnnfiEojKEwRQ3/v9AtaYnyk1fRv8RrB+TctKLtzU8PwEZ99kVBVOpHU5kskE=
+	t=1712583499; cv=none; b=IGWSbCmuR7DOGtzLnRgaWTVdbyTIsa0sE7HwqCwss283Q6f8NE/U9i/qXs2MPt4wcmmNv5Nf70T07r8872KFHGjriEwm9eLCgHWVEHfoeB4CjVij7GEmDiTNAXiea+xlUNUxXCziE66+sVFhL+lldlAmwCour+jB9uJlnXwzDi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585020; c=relaxed/simple;
-	bh=z+NUA1Iv35txOX55w5CYvvYAAHJG5FqfPh0+7ueAB/w=;
+	s=arc-20240116; t=1712583499; c=relaxed/simple;
+	bh=QowQnAWyvhEaAFHF73jGr8negnrZorYy70YHySnFtXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WlpR+EnYKjfXYBLxtxc444PjGm8htYZl2zQ0LKsvQTCe7qD6y6aMZPvBkyoXSIu3gPCoQjmKYywTFUvGHeJhNILYk68LlxvsrOBHR4QIqf+is99UStFco4dvlIhSFmtFTvW0NApvFLNz02v97pqWryGjDc9RkTVL1et0SnyiVXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbaEXZ2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B58C433F1;
-	Mon,  8 Apr 2024 14:03:39 +0000 (UTC)
+	 MIME-Version; b=SSu1mTSTQhjvkX6zD4oLqFkicwgfDcGfKJcI6cF5vPfhhmdXLgHtQkrpTAmVx/RCon8TGiede8ij8Tn8BiVUnbeELo2t265mDgVg9GcAK4Kf/89nXqD1g0cPPxP/PJyQf9z+gLWNdz/cIsasJx18sHEpj/FhNJWdvWTf2g/xZTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vl2v7SZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537B6C433C7;
+	Mon,  8 Apr 2024 13:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585019;
-	bh=z+NUA1Iv35txOX55w5CYvvYAAHJG5FqfPh0+7ueAB/w=;
+	s=korg; t=1712583499;
+	bh=QowQnAWyvhEaAFHF73jGr8negnrZorYy70YHySnFtXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbaEXZ2bvWR3R04hbbBO7BiAVYCOW83wgSs6lKKIpm397bcbdUtJd0IBEIXjG9RIR
-	 luOFXemumgL+aaDQ7diKCRrd8o7PBPGTaiQogNA3c3gIn5Urz9UYLDWmvkwN1tWMe6
-	 r6R/K9vPvzks1iFIdQ81f/D85GMHmqBPhWTm3rKk=
+	b=Vl2v7SZdRg0eBJvB/1UUnGrhGpYh0Tvb34FPUzpl0lxpjS/vpl31OGK3EKItbjOEJ
+	 rctO2LK+GdDchfWe0YC1IRbTCILBRe3SUOU8XmhnUWdTbo4lWsnfQckHuk90Sf3Wys
+	 1+QjNIPidQCFTxS1triPbIy8+2kiMwuxb3PaJmSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Matlack <dmatlack@google.com>,
-	Pasha Tatashin <tatashin@google.com>,
-	Michael Krebs <mkrebs@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15 635/690] KVM: x86: Mark target gfn of emulated atomic instruction as dirty
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 6.6 202/252] gpio: cdev: check for NULL labels when sanitizing them for irqs
 Date: Mon,  8 Apr 2024 14:58:21 +0200
-Message-ID: <20240408125422.672310129@linuxfoundation.org>
+Message-ID: <20240408125312.923918218@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 910c57dfa4d113aae6571c2a8b9ae8c430975902 upstream.
+commit b3b95964590a3d756d69ea8604c856de805479ad upstream.
 
-When emulating an atomic access on behalf of the guest, mark the target
-gfn dirty if the CMPXCHG by KVM is attempted and doesn't fault.  This
-fixes a bug where KVM effectively corrupts guest memory during live
-migration by writing to guest memory without informing userspace that the
-page is dirty.
+We need to take into account that a line's consumer label may be NULL
+and not try to kstrdup() it in that case but rather pass the NULL
+pointer up the stack to the interrupt request function.
 
-Marking the page dirty got unintentionally dropped when KVM's emulated
-CMPXCHG was converted to do a user access.  Before that, KVM explicitly
-mapped the guest page into kernel memory, and marked the page dirty during
-the unmap phase.
+To that end: let make_irq_label() return NULL as a valid return value
+and use ERR_PTR() instead to signal an allocation failure to callers.
 
-Mark the page dirty even if the CMPXCHG fails, as the old data is written
-back on failure, i.e. the page is still written.  The value written is
-guaranteed to be the same because the operation is atomic, but KVM's ABI
-is that all writes are dirty logged regardless of the value written.  And
-more importantly, that's what KVM did before the buggy commit.
-
-Huge kudos to the folks on the Cc list (and many others), who did all the
-actual work of triaging and debugging.
-
-Fixes: 1c2361f667f3 ("KVM: x86: Use __try_cmpxchg_user() to emulate atomic accesses")
 Cc: stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>
-Cc: Pasha Tatashin <tatashin@google.com>
-Cc: Michael Krebs <mkrebs@google.com>
-base-commit: 6769ea8da8a93ed4630f1ce64df6aafcaabfce64
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20240215010004.1456078-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: b34490879baa ("gpio: cdev: sanitize the label before requesting the interrupt")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/lkml/20240402093534.212283-1-naresh.kamboju@linaro.org/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpio/gpiolib-cdev.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7109,6 +7109,16 @@ static int emulator_cmpxchg_emulated(str
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1012,7 +1012,16 @@ static u32 gpio_v2_line_config_debounce_
  
- 	if (r < 0)
- 		return X86EMUL_UNHANDLEABLE;
+ static inline char *make_irq_label(const char *orig)
+ {
+-	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
++	char *new;
 +
-+	/*
-+	 * Mark the page dirty _before_ checking whether or not the CMPXCHG was
-+	 * successful, as the old value is written back on failure.  Note, for
-+	 * live migration, this is unnecessarily conservative as CMPXCHG writes
-+	 * back the original value and the access is atomic, but KVM's ABI is
-+	 * that all writes are dirty logged, regardless of the value written.
-+	 */
-+	kvm_vcpu_mark_page_dirty(vcpu, gpa_to_gfn(gpa));
++	if (!orig)
++		return NULL;
 +
- 	if (r)
- 		return X86EMUL_CMPXCHG_FAILED;
++	new = kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
++	if (!new)
++		return ERR_PTR(-ENOMEM);
++
++	return new;
+ }
+ 
+ static inline void free_irq_label(const char *label)
+@@ -1086,8 +1095,8 @@ static int edge_detector_setup(struct li
+ 	irqflags |= IRQF_ONESHOT;
+ 
+ 	label = make_irq_label(line->req->label);
+-	if (!label)
+-		return -ENOMEM;
++	if (IS_ERR(label))
++		return PTR_ERR(label);
+ 
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+@@ -2194,8 +2203,8 @@ static int lineevent_create(struct gpio_
+ 		goto out_free_le;
+ 
+ 	label = make_irq_label(le->label);
+-	if (!label) {
+-		ret = -ENOMEM;
++	if (IS_ERR(label)) {
++		ret = PTR_ERR(label);
+ 		goto out_free_le;
+ 	}
  
 
 
