@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD7C89C472
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C4489C3E8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722851C229AF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2072B280CF5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3AB757FF;
-	Mon,  8 Apr 2024 13:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CD28061A;
+	Mon,  8 Apr 2024 13:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOJ7rzqT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2naLb8+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5C379F0;
-	Mon,  8 Apr 2024 13:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF979F0;
+	Mon,  8 Apr 2024 13:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583952; cv=none; b=LbMSsPFH9VnuPXzpHyowm+ip60EPOo4kn3UDE7WsXHNI8eV7kCvgs6efVlJwD/lRSNtkXb8nH/56AzVMlQgMJjI5oMPtiZTmeJ6Xkaf6MKoFjRIh9WbvfXd/O4x29lJN07JMGfuCvokCREujHFwOSq2Zhkr3eW25uYtjiawvhMo=
+	t=1712583602; cv=none; b=C9tEM4HZDhb/lMbb/O7EYqJEXesZgGvf/yx1hYVX1hqgJ8hEaw3IMch054vs7m27DDryoVYoDh4PdtkdgIlYz9n810zw0PBT0F+KmnWo4QIkI4xsjdzKr+l7BXr2wcKRS8Ge8VGSi5Q9IMVdCvOyotCUWmRslW7wGYOommv3i6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583952; c=relaxed/simple;
-	bh=lktuGZ+v7Pqv8Gz8hgbXivd7xL5DJwFj4aapl22aJwY=;
+	s=arc-20240116; t=1712583602; c=relaxed/simple;
+	bh=UQDujH7IJfUKK3aiHmjTGtROBZsrnmlon+IiHGAtbLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qd26iLRh9O34TwE7rdwzdt/7Q0YMDYJPrWUmoKMDl1jIggLu+Zrq9TXYQ43zEJIjNtzAbRkxASeqLtvLg36eHyuaF7lnwDUnQP288vzYCO4Nb8pCtdBj0t8x2jfn6eGEKuavVtY+8c5z/4y/hZpgSSnin8Xb+ho3wiKB6cZhuB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOJ7rzqT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD01C433C7;
-	Mon,  8 Apr 2024 13:45:51 +0000 (UTC)
+	 MIME-Version; b=jFDuiGxMazPKUH+TPyuE3i5DQUJrXfQ0Yu0wtBqSGLXlIAQmSgvfTip+uFiwkTPH0g6rnUMoOzW5CupgHKjDArctunyHQvGwjVBRXYKrWKKQ2BQy9TajcEB5vZSxjwEQHimFyUqAT3CKBaK9zid/+SFt1BgkpBdDggjZzDHWthQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2naLb8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA59C433C7;
+	Mon,  8 Apr 2024 13:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583952;
-	bh=lktuGZ+v7Pqv8Gz8hgbXivd7xL5DJwFj4aapl22aJwY=;
+	s=korg; t=1712583602;
+	bh=UQDujH7IJfUKK3aiHmjTGtROBZsrnmlon+IiHGAtbLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOJ7rzqTKH7ySG3aSudl/I9OQfxFtNJlLAsh4ye2zpzeClRpnk8IM3H7uvZmMAPU2
-	 cmTfEAvUnoFk8DvwOdavA86fLAKZ8phPRcxg9SbfJKjRLGUQNWmpegEgBW8prED2qC
-	 xalssm4Ch6TMRCVxiYF5qnPr6lVrYgfCA9OgVM9E=
+	b=F2naLb8+MqexSEk463uoBXHnOLmlvMGoGdPwgYtmZTnLkrWq9Iwx1sSJCBUkdRagF
+	 rJ3rLHU6vFkLjbQ4x3tffj4bElbfgJkCn8CkjPU6hbkodpdbB/cqO3qBIC52Wo6bDS
+	 hGGK9pFrL044LL0whscw9qVI5YOMt5yK8zttxAbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.8 237/273] arm64/ptrace: Use saved floating point state type to determine SVE layout
-Date: Mon,  8 Apr 2024 14:58:32 +0200
-Message-ID: <20240408125316.790034148@linuxfoundation.org>
+	Herve Codina <herve.codina@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Rob Herring <robh@kernel.org>
+Subject: [PATCH 6.6 214/252] driver core: Introduce device_link_wait_removal()
+Date: Mon,  8 Apr 2024 14:58:33 +0200
+Message-ID: <20240408125313.304077656@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit b017a0cea627fcbe158fc2c214fe893e18c4d0c4 upstream.
+commit 0462c56c290a99a7f03e817ae5b843116dfb575c upstream.
 
-The SVE register sets have two different formats, one of which is a wrapped
-version of the standard FPSIMD register set and another with actual SVE
-register data. At present we check TIF_SVE to see if full SVE register
-state should be provided when reading the SVE regset but if we were in a
-syscall we may have saved only floating point registers even though that is
-set.
+The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+introduces a workqueue to release the consumer and supplier devices used
+in the devlink.
+In the job queued, devices are release and in turn, when all the
+references to these devices are dropped, the release function of the
+device itself is called.
 
-Fix this and simplify the logic by checking and using the format which we
-recorded when deciding if we should use FPSIMD or SVE format.
+Nothing is present to provide some synchronisation with this workqueue
+in order to ensure that all ongoing releasing operations are done and
+so, some other operations can be started safely.
 
-Fixes: 8c845e273104 ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
-Cc: <stable@vger.kernel.org> # 6.2.x
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240325-arm64-ptrace-fp-type-v1-1-8dc846caf11f@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+For instance, in the following sequence:
+  1) of_platform_depopulate()
+  2) of_overlay_remove()
+
+During the step 1, devices are released and related devlinks are removed
+(jobs pushed in the workqueue).
+During the step 2, OF nodes are destroyed but, without any
+synchronisation with devlink removal jobs, of_overlay_remove() can raise
+warnings related to missing of_node_put():
+  ERROR: memory leak, expected refcount 1 instead of 2
+
+Indeed, the missing of_node_put() call is going to be done, too late,
+from the workqueue job execution.
+
+Introduce device_link_wait_removal() to offer a way to synchronize
+operations waiting for the end of devlink removals (i.e. end of
+workqueue jobs).
+Also, as a flushing operation is done on the workqueue, the workqueue
+used is moved from a system-wide workqueue to a local one.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240325152140.198219-2-herve.codina@bootlin.com
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/ptrace.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/base/core.c    |   26 +++++++++++++++++++++++---
+ include/linux/device.h |    1 +
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -729,7 +729,6 @@ static void sve_init_header_from_task(st
- {
- 	unsigned int vq;
- 	bool active;
--	bool fpsimd_only;
- 	enum vec_type task_type;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(voi
+ static void __fw_devlink_link_to_consumers(struct device *dev);
+ static bool fw_devlink_drv_reg_done;
+ static bool fw_devlink_best_effort;
++static struct workqueue_struct *device_link_wq;
  
- 	memset(header, 0, sizeof(*header));
-@@ -745,12 +744,10 @@ static void sve_init_header_from_task(st
- 	case ARM64_VEC_SVE:
- 		if (test_tsk_thread_flag(target, TIF_SVE_VL_INHERIT))
- 			header->flags |= SVE_PT_VL_INHERIT;
--		fpsimd_only = !test_tsk_thread_flag(target, TIF_SVE);
- 		break;
- 	case ARM64_VEC_SME:
- 		if (test_tsk_thread_flag(target, TIF_SME_VL_INHERIT))
- 			header->flags |= SVE_PT_VL_INHERIT;
--		fpsimd_only = false;
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
-@@ -758,7 +755,7 @@ static void sve_init_header_from_task(st
- 	}
+ /**
+  * __fwnode_link_add - Create a link between two fwnode_handles.
+@@ -531,12 +532,26 @@ static void devlink_dev_release(struct d
+ 	/*
+ 	 * It may take a while to complete this work because of the SRCU
+ 	 * synchronization in device_link_release_fn() and if the consumer or
+-	 * supplier devices get deleted when it runs, so put it into the "long"
+-	 * workqueue.
++	 * supplier devices get deleted when it runs, so put it into the
++	 * dedicated workqueue.
+ 	 */
+-	queue_work(system_long_wq, &link->rm_work);
++	queue_work(device_link_wq, &link->rm_work);
+ }
  
- 	if (active) {
--		if (fpsimd_only) {
-+		if (target->thread.fp_type == FP_STATE_FPSIMD) {
- 			header->flags |= SVE_PT_REGS_FPSIMD;
- 		} else {
- 			header->flags |= SVE_PT_REGS_SVE;
++/**
++ * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
++ */
++void device_link_wait_removal(void)
++{
++	/*
++	 * devlink removal jobs are queued in the dedicated work queue.
++	 * To be sure that all removal jobs are terminated, ensure that any
++	 * scheduled work has run to completion.
++	 */
++	flush_workqueue(device_link_wq);
++}
++EXPORT_SYMBOL_GPL(device_link_wait_removal);
++
+ static struct class devlink_class = {
+ 	.name = "devlink",
+ 	.dev_groups = devlink_groups,
+@@ -4090,9 +4105,14 @@ int __init devices_init(void)
+ 	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
+ 	if (!sysfs_dev_char_kobj)
+ 		goto char_kobj_err;
++	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);
++	if (!device_link_wq)
++		goto wq_err;
+ 
+ 	return 0;
+ 
++ wq_err:
++	kobject_put(sysfs_dev_char_kobj);
+  char_kobj_err:
+ 	kobject_put(sysfs_dev_block_kobj);
+  block_kobj_err:
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1250,6 +1250,7 @@ void device_link_del(struct device_link
+ void device_link_remove(void *consumer, struct device *supplier);
+ void device_links_supplier_sync_state_pause(void);
+ void device_links_supplier_sync_state_resume(void);
++void device_link_wait_removal(void);
+ 
+ /* Create alias, so I can be autoloaded. */
+ #define MODULE_ALIAS_CHARDEV(major,minor) \
 
 
 
