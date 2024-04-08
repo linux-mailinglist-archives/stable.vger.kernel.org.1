@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9811889C0E9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:15:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F4389C380
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BCFEB26B56
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568D61F22228
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C34C6F53D;
-	Mon,  8 Apr 2024 13:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024BC1272A2;
+	Mon,  8 Apr 2024 13:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCnCPLKN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4y4sot4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDCB2DF73;
-	Mon,  8 Apr 2024 13:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B162F7D09F;
+	Mon,  8 Apr 2024 13:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581750; cv=none; b=Qz0W2Oy6jlmGsSrYfXzD49Q1o2VKsMGTI+qkwoYzeqJ56qPd/4uc+Jm92W74eGIayKecJ4Z0+1BIiz9wreZECTKMKWg3+8gv10KavcgBDP8buLjvERmQvTODLOrSTwEB+gKCxBE+xEYaO9L64g/QfzYy/BEi0Rhfv4fTZNcreLc=
+	t=1712583366; cv=none; b=OZYFTemDFwN65NDiMdFzMTXw5hEHcZvaGJx4RSHODdt21bxjt7IyW2rCNBIsujCp3UiPeSDLJg3p1Tr15W6wLMRcfhJrQxm7CGY7PSGkiQVZoXxOG7vhlimsdq1coZfX6F4BC4tK81pcOa5lX3Z1E+KFolpwWQz9lWJyLJFP5to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581750; c=relaxed/simple;
-	bh=fb7NgpMy6iuFTlBy8I7m1qCYZtBOiUG0pDR1WttjJuY=;
+	s=arc-20240116; t=1712583366; c=relaxed/simple;
+	bh=v9Yyugpl5ZGZ6XRnT9lsWxmTVQ+yP7RjTNwrcj0p7tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMUuUQ9JPEhLDu2J/czXPogbIqNBwHXPPCZheBqX8wIGSi+8SjosrnP00mnsSyTRZ/fS8QNVVoGqV48LpHvi5/txvt+3IUyxz/orbmCe3eDJzbbUjukJbllpVnzOPESRVSH6TdeIHe8t0F6M1yE7RaNjiCmyFtU7Lls1IqsI8yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCnCPLKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8762C433F1;
-	Mon,  8 Apr 2024 13:09:09 +0000 (UTC)
+	 MIME-Version; b=mqoCxBE+P5kyGeexjY5PWPzvNLF9YCmtBPgI1ozDXQFUB8aQO9davSlrHMlgZRyFHCQcYfiNDuc4NCTiC8l+WxOLR0bm7JgBnqj9X4PPxbHOurnpqGAvVS2DXj+ahXKvOEqdRmZpialUiJJiLXKiXU1j0OTPs+lef17szYkQ0VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4y4sot4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A963C433C7;
+	Mon,  8 Apr 2024 13:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581750;
-	bh=fb7NgpMy6iuFTlBy8I7m1qCYZtBOiUG0pDR1WttjJuY=;
+	s=korg; t=1712583366;
+	bh=v9Yyugpl5ZGZ6XRnT9lsWxmTVQ+yP7RjTNwrcj0p7tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCnCPLKNABfVI3JlkU7e1PZgW0efX8QI3Spfq4csJ4PX3k2AmdcIhAC9wP0w2mLiO
-	 zIFy2TNjoVDl2Q/x7DSErv16dKZ/6GWctE2lJJJc6df7N4NNlaYP8914xccjX2v0v4
-	 V2TOeHQ1aEPCD9iP8hwnFxSPcpC03gl4e/ieNi9A=
+	b=s4y4sot467lkNlpcED1bWHHZ2KQKz7oNGPAzW1oDqxBLI7hkvncxiyPHLxLf+E5j9
+	 j8vGdoVHcxs74k4Z7EMHJJPJoIBrr+aYJZ9oUDbp8C69YLVLANZrij40/mdw00h2t3
+	 99HBRfBW+hzvgYGclx0/jeG/clKd87QJtbF2uOW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Divya Koppera <divya.koppera@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 049/138] net: phy: micrel: lan8814: Fix when enabling/disabling 1-step timestamping
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 164/252] ALSA: hda: cs35l56: Add ACPI device match tables
 Date: Mon,  8 Apr 2024 14:57:43 +0200
-Message-ID: <20240408125257.752523073@linuxfoundation.org>
+Message-ID: <20240408125311.740628407@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-commit de99e1ea3a35f23ff83a31d6b08f43d27b2c6345 upstream.
+[ Upstream commit 2d0401ee38d43ab0e4cdd02dfc9d402befb2b5c8 ]
 
-There are 2 issues with the blamed commit.
-1. When the phy is initialized, it would enable the disabled of UDPv4
-   checksums. The UDPv6 checksum is already enabled by default. So when
-   1-step is configured then it would clear these flags.
-2. After the 1-step is configured, then if 2-step is configured then the
-   1-step would be still configured because it is not clearing the flag.
-   So the sync frames will still have origin timestamps set.
+Adding the ACPI HIDs to the match table triggers the cs35l56-hda modules
+to be loaded on boot so that Serial Multi Instantiate can add the
+devices to the bus and begin the driver init sequence.
 
-Fix this by reading first the value of the register and then
-just change bit 12 as this one determines if the timestamp needs to
-be inserted in the frame, without changing any other bits.
-
-Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
-Link: https://lore.kernel.org/r/20240402071634.2483524-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
+Message-ID: <20240328121355.18972-1-simont@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ sound/pci/hda/cs35l56_hda_i2c.c | 13 +++++++++++--
+ sound/pci/hda/cs35l56_hda_spi.c | 13 +++++++++++--
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -2188,6 +2188,7 @@ static int lan8814_hwtstamp(struct mii_t
- 	struct hwtstamp_config config;
- 	int txcfg = 0, rxcfg = 0;
- 	int pkt_ts_enable;
-+	int tx_mod;
+diff --git a/sound/pci/hda/cs35l56_hda_i2c.c b/sound/pci/hda/cs35l56_hda_i2c.c
+index 757a4d193e0fb..c31f60b0421e5 100644
+--- a/sound/pci/hda/cs35l56_hda_i2c.c
++++ b/sound/pci/hda/cs35l56_hda_i2c.c
+@@ -49,10 +49,19 @@ static const struct i2c_device_id cs35l56_hda_i2c_id[] = {
+ 	{}
+ };
  
- 	if (copy_from_user(&config, ifr->ifr_data, sizeof(config)))
- 		return -EFAULT;
-@@ -2237,9 +2238,14 @@ static int lan8814_hwtstamp(struct mii_t
- 	lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_RX_TIMESTAMP_EN, pkt_ts_enable);
- 	lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_TIMESTAMP_EN, pkt_ts_enable);
++static const struct acpi_device_id cs35l56_acpi_hda_match[] = {
++	{ "CSC3554", 0 },
++	{ "CSC3556", 0 },
++	{ "CSC3557", 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(acpi, cs35l56_acpi_hda_match);
++
+ static struct i2c_driver cs35l56_hda_i2c_driver = {
+ 	.driver = {
+-		.name		= "cs35l56-hda",
+-		.pm		= &cs35l56_hda_pm_ops,
++		.name		  = "cs35l56-hda",
++		.acpi_match_table = cs35l56_acpi_hda_match,
++		.pm		  = &cs35l56_hda_pm_ops,
+ 	},
+ 	.id_table	= cs35l56_hda_i2c_id,
+ 	.probe		= cs35l56_hda_i2c_probe,
+diff --git a/sound/pci/hda/cs35l56_hda_spi.c b/sound/pci/hda/cs35l56_hda_spi.c
+index 756aec342eab7..52c9e04b3c55f 100644
+--- a/sound/pci/hda/cs35l56_hda_spi.c
++++ b/sound/pci/hda/cs35l56_hda_spi.c
+@@ -49,10 +49,19 @@ static const struct spi_device_id cs35l56_hda_spi_id[] = {
+ 	{}
+ };
  
--	if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
-+	tx_mod = lanphy_read_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD);
-+	if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ONESTEP_SYNC) {
- 		lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
--				      PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
-+				      tx_mod | PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
-+	} else if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ON) {
-+		lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
-+				      tx_mod & ~PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
-+	}
- 
- 	if (config.rx_filter != HWTSTAMP_FILTER_NONE)
- 		lan8814_config_ts_intr(ptp_priv->phydev, true);
++static const struct acpi_device_id cs35l56_acpi_hda_match[] = {
++	{ "CSC3554", 0 },
++	{ "CSC3556", 0 },
++	{ "CSC3557", 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(acpi, cs35l56_acpi_hda_match);
++
+ static struct spi_driver cs35l56_hda_spi_driver = {
+ 	.driver = {
+-		.name		= "cs35l56-hda",
+-		.pm		= &cs35l56_hda_pm_ops,
++		.name		  = "cs35l56-hda",
++		.acpi_match_table = cs35l56_acpi_hda_match,
++		.pm		  = &cs35l56_hda_pm_ops,
+ 	},
+ 	.id_table	= cs35l56_hda_spi_id,
+ 	.probe		= cs35l56_hda_spi_probe,
+-- 
+2.43.0
+
 
 
 
