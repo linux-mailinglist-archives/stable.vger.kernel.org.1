@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0699D89C5B7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA30D89C287
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:31:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358951C22498
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8FF51C21BD2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7E27CF1B;
-	Mon,  8 Apr 2024 13:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBCC7EEF4;
+	Mon,  8 Apr 2024 13:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L70kaUd4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKY6EFUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A701745D6;
-	Mon,  8 Apr 2024 13:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB6C7E0E4;
+	Mon,  8 Apr 2024 13:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584765; cv=none; b=QhEfyss0+jn4U9ZsKxoaBmK+zY3w8s5ul1o72D6XOWjULdkVDlm1bJlZ0PwrAtzDCzpuwjygJWj7fRPPCfT1nT+c0XeitcCB5r74IfNTXu0Fx0HVWWeZoO3V6UH/0Q7wWB3eLYglg/O19Jpt2Jha14OsuHuDRw29dF3IzXG183I=
+	t=1712582851; cv=none; b=YzWptvuBqjnKA1K4oXxiuZsrKvtDxvJoPo+E4lDbBiiniw+epMRNaCUJ2e2fMbV9eLWTXIUafWHzzMQSA6l+sSkd86W4Fy1sAwY55V/lS8ZsEteqQ9lBDgodmNfpmSmTkqTURKghRmJc30HKs8tGZCnDdLg+pjRkesZmP4cFpyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584765; c=relaxed/simple;
-	bh=smZHEJGXHvkM4vwb7+OscsGpR13JU2foSqgLxyI21+c=;
+	s=arc-20240116; t=1712582851; c=relaxed/simple;
+	bh=vwxC8xGQ6Ga323TXqJfXcGCI+bsJ/pyjxNAhgXU2edQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sU3NUsSNzJ3WYV/Ij1bEQ2iA9hLj/X5zYhMdXrnT55yUurF6pffHLmln806xRq5NiSzjJlm5ivcdMiYqvMt/hWA5Z6K3pVgIpSZpzs3jg4S69HTsvS76cXiQPlsL9fUtxnD9g1r4ZxbTVkFDnKcuaVKk4ZAMFtlWuOKGTanhc3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L70kaUd4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967DBC433C7;
-	Mon,  8 Apr 2024 13:59:24 +0000 (UTC)
+	 MIME-Version; b=aoUp58o+H6Zj25j1lw0fdifJN9S6V6fQjyoatjAa+45Zbpm/t77ZZhx+clak0hiNleaAsmC/nJGJ821Labi4QeWX0LfkKWYWKz2C74C6lTPKSD+nW8E8LKsrrXcuj+DnCwW+5EUXCS+GFAIenztNBSTuVHinWiEdmyBgQGmReHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKY6EFUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2335EC433F1;
+	Mon,  8 Apr 2024 13:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584765;
-	bh=smZHEJGXHvkM4vwb7+OscsGpR13JU2foSqgLxyI21+c=;
+	s=korg; t=1712582851;
+	bh=vwxC8xGQ6Ga323TXqJfXcGCI+bsJ/pyjxNAhgXU2edQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L70kaUd4JNHQeYqtCulEU5+vSTjJxCNfxNmvr+KghlXcVQlSGcbdwXFqFU74sxyeS
-	 yTmFDUGOXSGMu5+4JR97e5pmVUtd23nMlio62xSojOecLkFLoNhcUtO/deYAhV1cnM
-	 VrSS1nLNQwN/6OkKUIofIEAT5BF8uXhkuKU8wecM=
+	b=kKY6EFUtwYRshFwd8B4SSlQpU644AVFYELiCIToGAJw0P8uIDQeYVr5hUmroYa8ey
+	 PmX130GL2lqu2VUlE27ZfYL7Fsxz1hw3TX9Ar8pabSmlYpsd6NbQ7wlBAsNSiNE6dl
+	 687zSGfWj33EN7W994grwHR/creGPG3npFZtUeTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 519/690] nfsd: clean up potential nfsd_file refcount leaks in COPY codepath
+	Petr Oros <poros@redhat.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.8 110/273] ice: fix enabling RX VLAN filtering
 Date: Mon,  8 Apr 2024 14:56:25 +0200
-Message-ID: <20240408125418.447235042@linuxfoundation.org>
+Message-ID: <20240408125312.718105443@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit 6ba434cb1a8d403ea9aad1b667c3ea3ad8b3191f ]
+commit 8edfc7a40e3300fc6c5fa7a3228a24d5bcd86ba5 upstream.
 
-There are two different flavors of the nfsd4_copy struct. One is
-embedded in the compound and is used directly in synchronous copies. The
-other is dynamically allocated, refcounted and tracked in the client
-struture. For the embedded one, the cleanup just involves releasing any
-nfsd_files held on its behalf. For the async one, the cleanup is a bit
-more involved, and we need to dequeue it from lists, unhash it, etc.
+ice_port_vlan_on/off() was introduced in commit 2946204b3fa8 ("ice:
+implement bridge port vlan"). But ice_port_vlan_on() incorrectly assigns
+ena_rx_filtering to inner_vlan_ops in DVM mode.
+This causes an error when rx_filtering cannot be enabled in legacy mode.
 
-There is at least one potential refcount leak in this code now. If the
-kthread_create call fails, then both the src and dst nfsd_files in the
-original nfsd4_copy object are leaked.
+Reproducer:
+ echo 1 > /sys/class/net/$PF/device/sriov_numvfs
+ ip link set $PF vf 0 spoofchk off trust on vlan 3
+dmesg:
+ ice 0000:41:00.0: failed to enable Rx VLAN filtering for VF 0 VSI 9 during VF rebuild, error -95
 
-The cleanup in this codepath is also sort of weird. In the async copy
-case, we'll have up to four nfsd_file references (src and dst for both
-flavors of copy structure). They are both put at the end of
-nfsd4_do_async_copy, even though the ones held on behalf of the embedded
-one outlive that structure.
-
-Change it so that we always clean up the nfsd_file refs held by the
-embedded copy structure before nfsd4_copy returns. Rework
-cleanup_async_copy to handle both inter and intra copies. Eliminate
-nfsd4_cleanup_intra_ssc since it now becomes a no-op.
-
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 2946204b3fa8 ("ice: implement bridge port vlan")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_vf_vsi_vlan_ops.c |   18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 6fb5f10602233..ada46ef5a093d 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1512,7 +1512,6 @@ nfsd4_cleanup_inter_ssc(struct nfsd4_ssc_umount_item *nsui, struct file *filp,
- 	long timeout = msecs_to_jiffies(nfsd4_ssc_umount_timeout);
+--- a/drivers/net/ethernet/intel/ice/ice_vf_vsi_vlan_ops.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_vsi_vlan_ops.c
+@@ -26,24 +26,22 @@ static void ice_port_vlan_on(struct ice_
+ 	struct ice_vsi_vlan_ops *vlan_ops;
+ 	struct ice_pf *pf = vsi->back;
  
- 	nfs42_ssc_close(filp);
--	nfsd_file_put(dst);
- 	fput(filp);
+-	if (ice_is_dvm_ena(&pf->hw)) {
+-		vlan_ops = &vsi->outer_vlan_ops;
++	/* setup inner VLAN ops */
++	vlan_ops = &vsi->inner_vlan_ops;
  
- 	spin_lock(&nn->nfsd_ssc_lock);
-@@ -1562,13 +1561,6 @@ nfsd4_setup_intra_ssc(struct svc_rqst *rqstp,
- 				 &copy->nf_dst);
- }
- 
--static void
--nfsd4_cleanup_intra_ssc(struct nfsd_file *src, struct nfsd_file *dst)
--{
--	nfsd_file_put(src);
--	nfsd_file_put(dst);
--}
+-		/* setup outer VLAN ops */
+-		vlan_ops->set_port_vlan = ice_vsi_set_outer_port_vlan;
+-		vlan_ops->clear_port_vlan = ice_vsi_clear_outer_port_vlan;
 -
- static void nfsd4_cb_offload_release(struct nfsd4_callback *cb)
- {
- 	struct nfsd4_cb_offload *cbo =
-@@ -1683,12 +1675,18 @@ static void dup_copy_fields(struct nfsd4_copy *src, struct nfsd4_copy *dst)
- 	dst->ss_nsui = src->ss_nsui;
- }
+-		/* setup inner VLAN ops */
+-		vlan_ops = &vsi->inner_vlan_ops;
++	if (ice_is_dvm_ena(&pf->hw)) {
+ 		vlan_ops->add_vlan = noop_vlan_arg;
+ 		vlan_ops->del_vlan = noop_vlan_arg;
+ 		vlan_ops->ena_stripping = ice_vsi_ena_inner_stripping;
+ 		vlan_ops->dis_stripping = ice_vsi_dis_inner_stripping;
+ 		vlan_ops->ena_insertion = ice_vsi_ena_inner_insertion;
+ 		vlan_ops->dis_insertion = ice_vsi_dis_inner_insertion;
+-	} else {
+-		vlan_ops = &vsi->inner_vlan_ops;
  
-+static void release_copy_files(struct nfsd4_copy *copy)
-+{
-+	if (copy->nf_src)
-+		nfsd_file_put(copy->nf_src);
-+	if (copy->nf_dst)
-+		nfsd_file_put(copy->nf_dst);
-+}
-+
- static void cleanup_async_copy(struct nfsd4_copy *copy)
- {
- 	nfs4_free_copy_state(copy);
--	nfsd_file_put(copy->nf_dst);
--	if (!nfsd4_ssc_is_inter(copy))
--		nfsd_file_put(copy->nf_src);
-+	release_copy_files(copy);
- 	spin_lock(&copy->cp_clp->async_lock);
- 	list_del(&copy->copies);
- 	spin_unlock(&copy->cp_clp->async_lock);
-@@ -1748,7 +1746,6 @@ static int nfsd4_do_async_copy(void *data)
- 	} else {
- 		nfserr = nfsd4_do_copy(copy, copy->nf_src->nf_file,
- 				       copy->nf_dst->nf_file, false);
--		nfsd4_cleanup_intra_ssc(copy->nf_src, copy->nf_dst);
++		/* setup outer VLAN ops */
++		vlan_ops = &vsi->outer_vlan_ops;
++		vlan_ops->set_port_vlan = ice_vsi_set_outer_port_vlan;
++		vlan_ops->clear_port_vlan = ice_vsi_clear_outer_port_vlan;
++	} else {
+ 		vlan_ops->set_port_vlan = ice_vsi_set_inner_port_vlan;
+ 		vlan_ops->clear_port_vlan = ice_vsi_clear_inner_port_vlan;
  	}
- 
- do_callback:
-@@ -1811,9 +1808,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	} else {
- 		status = nfsd4_do_copy(copy, copy->nf_src->nf_file,
- 				       copy->nf_dst->nf_file, true);
--		nfsd4_cleanup_intra_ssc(copy->nf_src, copy->nf_dst);
- 	}
- out:
-+	release_copy_files(copy);
- 	return status;
- out_err:
- 	if (async_copy)
--- 
-2.43.0
-
 
 
 
