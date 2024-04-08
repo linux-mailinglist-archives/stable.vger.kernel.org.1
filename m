@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-36453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB3D89BFEF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BC189C273
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F45B1F24D81
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09CBF1F21FC3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8490277F1B;
-	Mon,  8 Apr 2024 13:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140A67CF0F;
+	Mon,  8 Apr 2024 13:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1k0RCcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUUsdarU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C3D7175B;
-	Mon,  8 Apr 2024 13:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5244768F0;
+	Mon,  8 Apr 2024 13:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581370; cv=none; b=pO5ASjl5nrCPYNshyAd8n5F7MYCqht6Ta9f/HBPa3HW5JxemG8jjXRPFp/8dr1asajgJk6MRJuR0XHlOK52gGRRP73TW9Jl6ZG3SWFt2+t62D/U0vq26k4fWLK/Nv2IUNQx3MjfVoSDxt8qbAXoB8rgR0oDjIBpchlBJnwaaaDk=
+	t=1712582804; cv=none; b=bg1Y1tE1UQ3rz6jtVfI9/OeV41tELjqXkbfDLIWLTSQv+yxA2y0Y/k/8k394v6wfYMVAAQoFER5EyLz+C6ZTYa512EF68xSSX0uZHx2a7kxDRYGQOymeod7A2HkTN+xWGFI3bHjD+Uv9yDlG8jPTtnP5MR964wpU8WYjSacjdVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581370; c=relaxed/simple;
-	bh=OqzVzNcjKbDLw09MWA7w3x7e7kGDfXAn2XY1iatP1LY=;
+	s=arc-20240116; t=1712582804; c=relaxed/simple;
+	bh=6BhjOJE5/AFteU3rXNAmsY3wMnYPZ/8+059sNYFviTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQ0dBxjxY5V9E+ERuy7z4sAKYHbiBGR5e3mvp631XCdHOWKILxLKDvIXEhsuv3eVclymyqjjL5JaECxfsQ9Q1pc1+DXwYueKTbNRgyN+chQaQxLTj4HXyZt8H9KV7FC631d2wXs1DG+8DX+2Ag/WJPU2zNqIC1CtFJEiuGlWvoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1k0RCcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF237C433C7;
-	Mon,  8 Apr 2024 13:02:49 +0000 (UTC)
+	 MIME-Version; b=R0Q+4BUfCCA00sOKQPjJeLOeCaC2ODtVafE30xGBsNWc8KGc03NbB8WZzmrJ4D7d1xD+K78rAePoBVsO7cWe9cTlv7Ck0QJAAZcGMGGZbreZiX1XzEoHj4/+TxihDPMRd8Ii743DpObatxWV4jO/amD+UVr+xkUKinSwihK6LQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUUsdarU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDD7C433F1;
+	Mon,  8 Apr 2024 13:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581370;
-	bh=OqzVzNcjKbDLw09MWA7w3x7e7kGDfXAn2XY1iatP1LY=;
+	s=korg; t=1712582804;
+	bh=6BhjOJE5/AFteU3rXNAmsY3wMnYPZ/8+059sNYFviTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1k0RCcsuuvIbmHmu/NFRE84eeXsEp9ygRvRWjoL92e3WH/pLjDpZQANNjvuUFacv
-	 OGZw9YLGkdnE9W7XNPy+p0qpwqZGZST28DQRAgJ+DvHJHcEMC6La6hBCG9L7Gitc8X
-	 ucPPKmVemtIhVRXqIWs/mh+ivC8ix/k9c/BY9mzY=
+	b=qUUsdarU/53EjPO2Y4Qn0UUxxji8upBwiWmrlRTDPfPyRzYxBrnn80/qqxdI9Kzjz
+	 ILJU3TPGh96z+2jlWoApgq1or52t+b7atXzkD3NlIqibZmnuJrdyA2nG+JFGTqewQy
+	 u5ccHdgOe70dG9an0p9V4jHSskRrJ3dEeWknM1go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/138] ACPICA: debugger: check status of acpi_evaluate_object() in acpi_db_walk_for_fields()
+	Paolo Abeni <pabeni@redhat.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 125/252] udp: prevent local UDP tunnel packets from being GROed
 Date: Mon,  8 Apr 2024 14:57:04 +0200
-Message-ID: <20240408125256.549310191@linuxfoundation.org>
+Message-ID: <20240408125310.503605951@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 40e2710860e57411ab57a1529c5a2748abbe8a19 ]
+commit 64235eabc4b5b18c507c08a1f16cdac6c5661220 upstream.
 
-ACPICA commit 9061cd9aa131205657c811a52a9f8325a040c6c9
+GRO has a fundamental issue with UDP tunnel packets as it can't detect
+those in a foolproof way and GRO could happen before they reach the
+tunnel endpoint. Previous commits have fixed issues when UDP tunnel
+packets come from a remote host, but if those packets are issued locally
+they could run into checksum issues.
 
-Errors in acpi_evaluate_object() can lead to incorrect state of buffer.
+If the inner packet has a partial checksum the information will be lost
+in the GRO logic, either in udp4/6_gro_complete or in
+udp_gro_complete_segment and packets will have an invalid checksum when
+leaving the host.
 
-This can lead to access to data in previously ACPI_FREEd buffer and
-secondary ACPI_FREE to the same buffer later.
+Prevent local UDP tunnel packets from ever being GROed at the outer UDP
+level.
 
-Handle errors in acpi_evaluate_object the same way it is done earlier
-with acpi_ns_handle_to_pathname.
+Due to skb->encapsulation being wrongly used in some drivers this is
+actually only preventing UDP tunnel packets with a partial checksum to
+be GROed (see iptunnel_handle_offloads) but those were also the packets
+triggering issues so in practice this should be sufficient.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Link: https://github.com/acpica/acpica/commit/9061cd9a
-Fixes: 5fd033288a86 ("ACPICA: debugger: add command to dump all fields of particular subtype")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Fixes: 36707061d6ba ("udp: allow forwarding of plain (non-fraglisted) UDP GRO packets")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/dbnames.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv4/udp_offload.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
-index b91155ea9c343..c9131259f717b 100644
---- a/drivers/acpi/acpica/dbnames.c
-+++ b/drivers/acpi/acpica/dbnames.c
-@@ -550,8 +550,12 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
- 	ACPI_FREE(buffer.pointer);
- 
- 	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
--	acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
--
-+	status = acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
-+	if (ACPI_FAILURE(status)) {
-+		acpi_os_printf("Could Not evaluate object %p\n",
-+			       obj_handle);
-+		return (AE_OK);
-+	}
- 	/*
- 	 * Since this is a field unit, surround the output in braces
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -559,6 +559,12 @@ struct sk_buff *udp_gro_receive(struct l
  	 */
--- 
-2.43.0
-
+ 	NAPI_GRO_CB(skb)->is_flist = 0;
+ 	if (!sk || !udp_sk(sk)->gro_receive) {
++		/* If the packet was locally encapsulated in a UDP tunnel that
++		 * wasn't detected above, do not GRO.
++		 */
++		if (skb->encapsulation)
++			goto out;
++
+ 		if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
+ 			NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
+ 
 
 
 
