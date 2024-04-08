@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-36861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1A089C20F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8969F89C5A6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3FA41F22E6A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBAE61C22172
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A577E110;
-	Mon,  8 Apr 2024 13:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A697F7F8;
+	Mon,  8 Apr 2024 13:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3BKc3hq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEFpZtMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CFC7641E;
-	Mon,  8 Apr 2024 13:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC3B7F7D0;
+	Mon,  8 Apr 2024 13:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582556; cv=none; b=g9tgTm10g3jtNXQiVfXgFam71eeTzp0wvTxwO5927sEePB00TJGWD4CxBd6+FoyxOh+voNhCvLrUtGmuQATM5ZGLWj6m2RD8cMJfX0lUjofHulN+obZqulZCDN1VtSlnWI0IkfKGluS9fCdE/Wdqt+oRs7k6iRyGWmdcpQeLKGI=
+	t=1712584727; cv=none; b=Cv9JjzZtepawvWfpkxuYwVeNxpCEJKwG9dg+6/fCR9LkPyhi7ocfW09eGsK7R3m6aLzzUW1xPEz4akmkZTZdujeKqBx4fORuXQj0H4rziLJZLxETW0hPN17vRSKnW4WzkF/Xvoym54O2xFpqOxQ3lsI18dff4KR5x64rp58u8bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582556; c=relaxed/simple;
-	bh=L/oV5a9fseatXTzA3MF46cSSQDyYpdDsvmwqtkLYEiw=;
+	s=arc-20240116; t=1712584727; c=relaxed/simple;
+	bh=1CApaVpIdmsIKUmxK0ArvtWnptCqQGcTtlVBl0sMFGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnTonL8CA1gYVNKgbFCcrKV3ViLpe2O0O2eRWFI1SPr9QBXTl8vc/lejKC0y3yGTvoazExLT/bA+bD+YzTkSQKCxXmuSZ2aPCuy3isTm8tRoiDO/t63DDBcnCaBt+19urCL/KLM2yn4J9F1niHrNmawPqvzcIldp0IZF2IPERyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3BKc3hq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4024C433C7;
-	Mon,  8 Apr 2024 13:22:35 +0000 (UTC)
+	 MIME-Version; b=G3w6ynZg54bQX/u/V8A6OKgYqWhnsjGiUFEAwxAPEQBLBjZjU+JEFJhyUqSqNX3lsJlLz85R7hctHtFt/PH4SrJbtKhqzHp8dPCTNFFenkbHX9+zQqaun48yCvEimie0tAwLcI5vZsCbRMVWVpKThjz37rR9ri64aEg55VlFLBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEFpZtMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845A2C433C7;
+	Mon,  8 Apr 2024 13:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582556;
-	bh=L/oV5a9fseatXTzA3MF46cSSQDyYpdDsvmwqtkLYEiw=;
+	s=korg; t=1712584726;
+	bh=1CApaVpIdmsIKUmxK0ArvtWnptCqQGcTtlVBl0sMFGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3BKc3hqgV21gUyWZlKNXwbrCmxZ3zbLlHCnm4ve84expx4BGw1fXOT9HK4Y/TJjd
-	 5OgkRGtb65ehswKPbMS5wVDJ9FwxaW53PIgmZx+AybdaGx9GQlOB9ziGCl2h/+2e/l
-	 X1GQHWPQXdzq4PEQ9328FTsWbKj1PejFn2aghCa4=
+	b=hEFpZtMr5R+IwSXrtTwWsGmsaYEY57i9mDT8sOZllVc/KQm9SvASqizbxTkpR3lmN
+	 dvN8P9PaBRWUA4NGMzs2hA8b/r49Qg7m9wGQvzWajVBSs4SSKmcMDQX/uk9PlZITDA
+	 ZMkkPdfaim5uP5JaOZplTOroBtFRK8sVX3J+Q8v0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shaoqin Huang <shahuang@redhat.com>,
-	Quentin Perret <qperret@google.com>,
-	Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.6 102/252] KVM: arm64: Ensure target address is granule-aligned for range TLBI
-Date: Mon,  8 Apr 2024 14:56:41 +0200
-Message-ID: <20240408125309.811722899@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 536/690] nfsd: allow reaping files still under writeback
+Date: Mon,  8 Apr 2024 14:56:42 +0200
+Message-ID: <20240408125419.079153627@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 4c36a156738887c1edd78589fe192d757989bcde upstream.
+[ Upstream commit dcb779fcd4ed5984ad15991d574943d12a8693d1 ]
 
-When zapping a table entry in stage2_try_break_pte(), we issue range
-TLB invalidation for the region that was mapped by the table. However,
-we neglect to align the base address down to the granule size and so
-if we ended up reaching the table entry via a misaligned address then
-we will accidentally skip invalidation for some prefix of the affected
-address range.
+On most filesystems, there is no reason to delay reaping an nfsd_file
+just because its underlying inode is still under writeback. nfsd just
+relies on client activity or the local flusher threads to do writeback.
 
-Align 'ctx->addr' down to the granule size when performing TLB
-invalidation for an unmapped table in stage2_try_break_pte().
+The main exception is NFS, which flushes all of its dirty data on last
+close. Add a new EXPORT_OP_FLUSH_ON_CLOSE flag to allow filesystems to
+signal that they do this, and only skip closing files under writeback on
+such filesystems.
 
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Shaoqin Huang <shahuang@redhat.com>
-Cc: Quentin Perret <qperret@google.com>
-Fixes: defc8cc7abf0 ("KVM: arm64: Invalidate the table entries upon a range")
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240327124853.11206-5-will@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also, remove a redundant NULL file pointer check in
+nfsd_file_check_writeback, and clean up nfs's export op flag
+definitions.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+[ cel: adjusted to apply to v5.15.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/arm64/kvm/hyp/pgtable.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/nfs/export.c          |  9 ++++++---
+ fs/nfsd/filecache.c      | 12 +++++++++++-
+ include/linux/exportfs.h |  1 +
+ 3 files changed, 18 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -805,12 +805,15 @@ static bool stage2_try_break_pte(const s
- 		 * Perform the appropriate TLB invalidation based on the
- 		 * evicted pte value (if any).
- 		 */
--		if (kvm_pte_table(ctx->old, ctx->level))
--			kvm_tlb_flush_vmid_range(mmu, ctx->addr,
--						kvm_granule_size(ctx->level));
--		else if (kvm_pte_valid(ctx->old))
-+		if (kvm_pte_table(ctx->old, ctx->level)) {
-+			u64 size = kvm_granule_size(ctx->level);
-+			u64 addr = ALIGN_DOWN(ctx->addr, size);
-+
-+			kvm_tlb_flush_vmid_range(mmu, addr, size);
-+		} else if (kvm_pte_valid(ctx->old)) {
- 			kvm_call_hyp(__kvm_tlb_flush_vmid_ipa, mmu,
- 				     ctx->addr, ctx->level);
-+		}
- 	}
+diff --git a/fs/nfs/export.c b/fs/nfs/export.c
+index 37a1a88df7717..eafa9d7b0911b 100644
+--- a/fs/nfs/export.c
++++ b/fs/nfs/export.c
+@@ -178,7 +178,10 @@ const struct export_operations nfs_export_ops = {
+ 	.fh_to_dentry = nfs_fh_to_dentry,
+ 	.get_parent = nfs_get_parent,
+ 	.fetch_iversion = nfs_fetch_iversion,
+-	.flags = EXPORT_OP_NOWCC|EXPORT_OP_NOSUBTREECHK|
+-		EXPORT_OP_CLOSE_BEFORE_UNLINK|EXPORT_OP_REMOTE_FS|
+-		EXPORT_OP_NOATOMIC_ATTR,
++	.flags = EXPORT_OP_NOWCC		|
++		 EXPORT_OP_NOSUBTREECHK		|
++		 EXPORT_OP_CLOSE_BEFORE_UNLINK	|
++		 EXPORT_OP_REMOTE_FS		|
++		 EXPORT_OP_NOATOMIC_ATTR	|
++		 EXPORT_OP_FLUSH_ON_CLOSE,
+ };
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 1d4c0387c4192..080d796547854 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -401,13 +401,23 @@ nfsd_file_check_writeback(struct nfsd_file *nf)
+ 	struct file *file = nf->nf_file;
+ 	struct address_space *mapping;
  
- 	if (stage2_pte_is_counted(ctx->old))
+-	if (!file || !(file->f_mode & FMODE_WRITE))
++	/* File not open for write? */
++	if (!(file->f_mode & FMODE_WRITE))
+ 		return false;
++
++	/*
++	 * Some filesystems (e.g. NFS) flush all dirty data on close.
++	 * On others, there is no need to wait for writeback.
++	 */
++	if (!(file_inode(file)->i_sb->s_export_op->flags & EXPORT_OP_FLUSH_ON_CLOSE))
++		return false;
++
+ 	mapping = file->f_mapping;
+ 	return mapping_tagged(mapping, PAGECACHE_TAG_DIRTY) ||
+ 		mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK);
+ }
+ 
++
+ static bool nfsd_file_lru_add(struct nfsd_file *nf)
+ {
+ 	set_bit(NFSD_FILE_REFERENCED, &nf->nf_flags);
+diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
+index fe848901fcc3a..218fc5c54e901 100644
+--- a/include/linux/exportfs.h
++++ b/include/linux/exportfs.h
+@@ -221,6 +221,7 @@ struct export_operations {
+ #define EXPORT_OP_NOATOMIC_ATTR		(0x10) /* Filesystem cannot supply
+ 						  atomic attribute updates
+ 						*/
++#define EXPORT_OP_FLUSH_ON_CLOSE	(0x20) /* fs flushes file data on close */
+ 	unsigned long	flags;
+ };
+ 
+-- 
+2.43.0
+
 
 
 
