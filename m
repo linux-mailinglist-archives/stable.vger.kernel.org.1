@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C923C89C43A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EBF89C346
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0761A1C22B39
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87D4283556
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F64686131;
-	Mon,  8 Apr 2024 13:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894377C0A9;
+	Mon,  8 Apr 2024 13:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqk56xjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hc+AE6Mk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23E27FBDF;
-	Mon,  8 Apr 2024 13:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481CC6A352;
+	Mon,  8 Apr 2024 13:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583806; cv=none; b=T8Nsgpaf8H2FwhtADGwUuoH9iP3+9QbJkqbB1Q9O95FZqiV6aWWfPhmz6cpKsh22+Jk+S/TXQjfxxPa44uSJgOUqIJU0xWjXDBrjnWS/p/2mXYsFJpV8DI/sV5byTbIYbLxHR4pZ3PEDHkHtSRor6NcbsRw0scG53yL+3jbvcuw=
+	t=1712583224; cv=none; b=Ruf0kWzmOXn+BHpAnNM0E+/DAATjo/8X7JfdD4w8d22gwyWPdvLlKFXOsL7Mi6mx4+v8a4WQb5Wi+h+NbD3h+sF+y54S6xnxMr+krtpYKUdOhZKQER9QIUpDokqM2ZYmlDk9m8A/5eYKbbgMm7tivBHtEP7wSLnXI0XCQHjpAto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583806; c=relaxed/simple;
-	bh=oTZ33Dphkek/5F7wDlndm612/kRtIAJMKWk8rbfBfjY=;
+	s=arc-20240116; t=1712583224; c=relaxed/simple;
+	bh=KeTurwbzpiRMOqKSdMJSpcKMdVIU82+hLynqX9v+j84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMDrBxdbbkv5AIQ1vaOveQU+pVdUvHJoUaDVZbt6oJpq+2LjHj4yOXZYQWlcmBW7F9ljKGma2VYVYI9Uq2qwSmc24dgaDwBTZIiVit4BDCkMn2vNVI2XPoEpagkRSE8zZoQZ01R/CAdn9LLZLKjrwi0u62wavOUkXq9A41W3A9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqk56xjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A805C43390;
-	Mon,  8 Apr 2024 13:43:26 +0000 (UTC)
+	 MIME-Version; b=Wp/ZhU9/Wrrslr0IvksStvsb1v5ZYc2gKbutwTZ+FLv2R6Wu/nh8t/gNEyczgMbgwQpNk2RbGyWWh5TG0oQmKBRkLA5PVtH8ONpJnUpOfCNz/PH5NMK/xur2j3BpyX3lxal84YbA3UtQg/uJW8SlGj1hkn4iP16Qh/KOkKxfVSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hc+AE6Mk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72543C433C7;
+	Mon,  8 Apr 2024 13:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583806;
-	bh=oTZ33Dphkek/5F7wDlndm612/kRtIAJMKWk8rbfBfjY=;
+	s=korg; t=1712583223;
+	bh=KeTurwbzpiRMOqKSdMJSpcKMdVIU82+hLynqX9v+j84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqk56xjOCjJsoZWznGOE3V7uEmao24uN/J2khA+yIY+/d45/vzlil3q6WEu7u61wx
-	 udYv3ea1FzecygL47ExbdjPwm/WsE9+VtZUPrNRjd5u9zQik7wuLjuCbm53JxfozIm
-	 pLsGkUAZU+NdLEseuexVbXlGyN7RT75nWaTTWYYo=
+	b=Hc+AE6MkdCKzuldUEYST6fNezG62SZPL7xas8sXjPN+EX9NNCg2Bi6jsfDgp5pfsP
+	 6jVAeSXMZcVXZQr2X0baRogeqI6y1K0xIRl5r+3I9LfgC3GXURWKG+VEN5OQn2Nm2/
+	 AMp7woQfT1gADhoyijNKJEsbCWalZPl2/shbrDlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.8 194/273] x86/retpoline: Add NOENDBR annotation to the SRSO dummy return thunk
-Date: Mon,  8 Apr 2024 14:57:49 +0200
-Message-ID: <20240408125315.351385873@linuxfoundation.org>
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 171/252] ASoC: rt712-sdca-sdw: fix locking sequence
+Date: Mon,  8 Apr 2024 14:57:50 +0200
+Message-ID: <20240408125311.966850608@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit b377c66ae3509ccea596512d6afb4777711c4870 upstream.
+[ Upstream commit c8b2e5c1b959d100990e4f0cbad38e7d047bb97c ]
 
-srso_alias_untrain_ret() is special code, even if it is a dummy
-which is called in the !SRSO case, so annotate it like its real
-counterpart, to address the following objtool splat:
+The disable_irq_lock protects the 'disable_irq' value, we need to lock
+before testing it.
 
-  vmlinux.o: warning: objtool: .export_symbol+0x2b290: data relocation to !ENDBR: srso_alias_untrain_ret+0x0
-
-Fixes: 4535e1a4174c ("x86/bugs: Fix the SRSO mitigation on Zen3/4")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240405144637.17908-1-bp@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7a8735c1551e ("ASoC: rt712-sdca: fix for JD event handling in ClockStop Mode0")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@linux.intel.com>
+Link: https://msgid.link/r/20240325221817.206465-5-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/retpoline.S |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/rt712-sdca-sdw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -230,6 +230,7 @@ SYM_CODE_END(srso_return_thunk)
- /* Dummy for the alternative in CALL_UNTRAIN_RET. */
- SYM_CODE_START(srso_alias_untrain_ret)
- 	ANNOTATE_UNRET_SAFE
-+	ANNOTATE_NOENDBR
- 	ret
- 	int3
- SYM_FUNC_END(srso_alias_untrain_ret)
+diff --git a/sound/soc/codecs/rt712-sdca-sdw.c b/sound/soc/codecs/rt712-sdca-sdw.c
+index 6b644a89c5890..ba877432cea61 100644
+--- a/sound/soc/codecs/rt712-sdca-sdw.c
++++ b/sound/soc/codecs/rt712-sdca-sdw.c
+@@ -438,13 +438,14 @@ static int __maybe_unused rt712_sdca_dev_resume(struct device *dev)
+ 		return 0;
+ 
+ 	if (!slave->unattach_request) {
++		mutex_lock(&rt712->disable_irq_lock);
+ 		if (rt712->disable_irq == true) {
+-			mutex_lock(&rt712->disable_irq_lock);
++
+ 			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK1, SDW_SCP_SDCA_INTMASK_SDCA_0);
+ 			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK2, SDW_SCP_SDCA_INTMASK_SDCA_8);
+ 			rt712->disable_irq = false;
+-			mutex_unlock(&rt712->disable_irq_lock);
+ 		}
++		mutex_unlock(&rt712->disable_irq_lock);
+ 		goto regmap_sync;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
