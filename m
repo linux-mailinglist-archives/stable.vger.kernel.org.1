@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC4489C277
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E6C89C5B6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC4F282272
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 049D71C2178A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932647D080;
-	Mon,  8 Apr 2024 13:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2A37D062;
+	Mon,  8 Apr 2024 13:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNqHFeOd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLPZDRVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1882E405;
-	Mon,  8 Apr 2024 13:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AA37C6C9;
+	Mon,  8 Apr 2024 13:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582825; cv=none; b=Q8D7EL0X/kLXohNpFNAlI19iXjJdV0hw/e1NHjdo5U6e7dOZ2lMth4U/lUMPfko8aY9gjlURK06EmbJZWtHjKZ3uXFHKUuZ105m44Ol57Rgv4e5exZyvG8+jQdiksLEQqtF/cmoOWs4cR12MXq8wanaQKncrEr72aEtkzSpgeQY=
+	t=1712584762; cv=none; b=BgbyzBZhCv09NRZTtcKRuwC1m5lKuRRJ+SDoDzqXemSzxgM3Wh2ouF8T4Uj+wHKLT4rwyOjrwfD1zsTqAw48WDtBKuC97WSQFf0Lol1Quc8/rn2eSky8JOncD+JS/ml3Io6eSlE1zprnDIYm07rgCHpSxkcGR5KiMNMTihcuw10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582825; c=relaxed/simple;
-	bh=VuBCR92U/0DvCH5xQYa+uKVxVnhcj0uRCpgzUAkv7jE=;
+	s=arc-20240116; t=1712584762; c=relaxed/simple;
+	bh=nvq5sTeHTklv/PegVXUCfggxMWFlo0j95auTV+/9t88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qU6Em0XRX0bnCMwdWAvo/H7V3427nPWyv8MtvF/+e0RzP1PiKMmlrX5wtOCElFHsGUFLYDVo31vMguBGD5Gfk8/BqqWNgl8W8yGNf3OxXQqYSK76NC2UvMyakmZ0+7U2LOppiuGVBpIMhVissO+TxA5jCQoy0KnAt1tAAhQhSHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNqHFeOd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95C3C433C7;
-	Mon,  8 Apr 2024 13:27:04 +0000 (UTC)
+	 MIME-Version; b=sC8k0W65IUqDxQ6T37V2wGzmIJvlrhapz9Yo+mEQ2eoGAfIDUlbYMnGnmoPPgT9/vP1RqzQnRjNS8j/GFbp+jKAhz2SovZE/iwaBGph3trT/CVFC6Ut4YP+8KBWLTdpk5Mv77l9iPDMXPrqCdfLRG6hum1AmVu91XwvVfx54z8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLPZDRVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CD7C433C7;
+	Mon,  8 Apr 2024 13:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582825;
-	bh=VuBCR92U/0DvCH5xQYa+uKVxVnhcj0uRCpgzUAkv7jE=;
+	s=korg; t=1712584762;
+	bh=nvq5sTeHTklv/PegVXUCfggxMWFlo0j95auTV+/9t88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNqHFeOd/UmqSuyI+GetVifQKSXt0I2SmySee1rSp7sIV8dVONgjXGnbaXe8066RB
-	 BKU1tQ2z0D2Z4OJazTL+/6I39+WP3HhORnpIGO6A9ZMFMOAkQad+Ake8oz4LcIg/m5
-	 jayKf64QtBMsYKL3vYmo+A4gS/uMwGeK20yeS1wU=
+	b=NLPZDRVYNbQbGBY+vPb/MW6bLumxSGGjNy4dy4y+cG1IpjEUCVKW0rf8BfM00HWdO
+	 atU1xe2IjWI2oQA2UjU8RJtM1OdaSuERMy7J+yu9BbGWd4cejZgFCSGB213IbbVZbO
+	 /e9+g0HwO3KhonJ3quATJS2kK8rXa67YtW9xkyf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.8 108/273] gro: fix ownership transfer
-Date: Mon,  8 Apr 2024 14:56:23 +0200
-Message-ID: <20240408125312.658101895@linuxfoundation.org>
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 518/690] nfsd: allow nfsd_file_get to sanely handle a NULL pointer
+Date: Mon,  8 Apr 2024 14:56:24 +0200
+Message-ID: <20240408125418.407564270@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit ed4cccef64c1d0d5b91e69f7a8a6697c3a865486 upstream.
+[ Upstream commit 70f62231cdfd52357836733dd31db787e0412ab2 ]
 
-If packets are GROed with fraglist they might be segmented later on and
-continue their journey in the stack. In skb_segment_list those skbs can
-be reused as-is. This is an issue as their destructor was removed in
-skb_gro_receive_list but not the reference to their socket, and then
-they can't be orphaned. Fix this by also removing the reference to the
-socket.
+...and remove some now-useless NULL pointer checks in its callers.
 
-For example this could be observed,
-
-  kernel BUG at include/linux/skbuff.h:3131!  (skb_orphan)
-  RIP: 0010:ip6_rcv_core+0x11bc/0x19a0
-  Call Trace:
-   ipv6_list_rcv+0x250/0x3f0
-   __netif_receive_skb_list_core+0x49d/0x8f0
-   netif_receive_skb_list_internal+0x634/0xd40
-   napi_complete_done+0x1d2/0x7d0
-   gro_cell_poll+0x118/0x1f0
-
-A similar construction is found in skb_gro_receive, apply the same
-change there.
-
-Fixes: 5e10da5385d2 ("skbuff: allow 'slow_gro' for skb carring sock reference")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/core/gro.c         |    3 ++-
- net/ipv4/udp_offload.c |    3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ fs/nfsd/filecache.c | 5 ++---
+ fs/nfsd/nfs4state.c | 4 +---
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -195,8 +195,9 @@ int skb_gro_receive(struct sk_buff *p, s
- 	}
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 68c7c82f8b3bb..206742bbbd682 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -451,7 +451,7 @@ static bool nfsd_file_lru_remove(struct nfsd_file *nf)
+ struct nfsd_file *
+ nfsd_file_get(struct nfsd_file *nf)
+ {
+-	if (likely(refcount_inc_not_zero(&nf->nf_ref)))
++	if (nf && refcount_inc_not_zero(&nf->nf_ref))
+ 		return nf;
+ 	return NULL;
+ }
+@@ -1106,8 +1106,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	rcu_read_lock();
+ 	nf = rhashtable_lookup(&nfsd_file_rhash_tbl, &key,
+ 			       nfsd_file_rhash_params);
+-	if (nf)
+-		nf = nfsd_file_get(nf);
++	nf = nfsd_file_get(nf);
+ 	rcu_read_unlock();
  
- merge:
--	/* sk owenrship - if any - completely transferred to the aggregated packet */
-+	/* sk ownership - if any - completely transferred to the aggregated packet */
- 	skb->destructor = NULL;
-+	skb->sk = NULL;
- 	delta_truesize = skb->truesize;
- 	if (offset > headlen) {
- 		unsigned int eat = offset - headlen;
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -449,8 +449,9 @@ static int skb_gro_receive_list(struct s
- 	NAPI_GRO_CB(p)->count++;
- 	p->data_len += skb->len;
+ 	if (nf) {
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 5c261cc807e8e..628e564e530bf 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -602,9 +602,7 @@ put_nfs4_file(struct nfs4_file *fi)
+ static struct nfsd_file *
+ __nfs4_get_fd(struct nfs4_file *f, int oflag)
+ {
+-	if (f->fi_fds[oflag])
+-		return nfsd_file_get(f->fi_fds[oflag]);
+-	return NULL;
++	return nfsd_file_get(f->fi_fds[oflag]);
+ }
  
--	/* sk owenrship - if any - completely transferred to the aggregated packet */
-+	/* sk ownership - if any - completely transferred to the aggregated packet */
- 	skb->destructor = NULL;
-+	skb->sk = NULL;
- 	p->truesize += skb->truesize;
- 	p->len += skb->len;
- 
+ static struct nfsd_file *
+-- 
+2.43.0
+
 
 
 
