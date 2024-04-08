@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-37168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AFEE89C39B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD5C89C39D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8469F1F227CE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308CB1F2266E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4D912B141;
-	Mon,  8 Apr 2024 13:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7CC12BE93;
+	Mon,  8 Apr 2024 13:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjjGIFUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+sTkq7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E857E111;
-	Mon,  8 Apr 2024 13:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB397E111;
+	Mon,  8 Apr 2024 13:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583445; cv=none; b=a7SD751ym+r7Rsa4T8at2sy0LFtGo+dvB/yhEo/E2g3rThROkaF2GtQlOdAfqsRa7wJm/4rYq1tZV3K4JPxgTJZetfcJJHOtj6S8uROYmmbjwI5P/FjBcxV4H/nFhoqDef0rymYtl0XC1ZkYt2lAbNsYva1QaBcOnPnObHodbYo=
+	t=1712583455; cv=none; b=TFbSEIdfNW5mEkmpiXDs1oAOtHiHTWZ8fy6jntP6fSMy9H9Ww2o5vlkFRFF6d5MDHBz480n522GNY5KZbB8Y+0nRH6NK4WFd4cPrDKR7+eN0Y3WucFDs0sSioNLiDD4bJ0akOrqqy/xMaXwCRXdgqL15Is9EyY5wLddlL8PlD4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583445; c=relaxed/simple;
-	bh=jzSGQ0GvXL6bQhMZJeIupZn8NofFZE0yt5QVmHsORG4=;
+	s=arc-20240116; t=1712583455; c=relaxed/simple;
+	bh=FbwquyQ7iTzWuhIYncSLaEYxGdMKxSTtlt3yC+d3f0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKHDg1tB86xb4uTxt3fMNw8wVKKSlCRl5uFO60hf3JfP7/rXzDwt+zoX/SOc4sFVYXZgXardtwAi2THMlUaQEiwAwq+nARQjY9l/QHODZQtwYzVhnp9mIARnwuLtVUBbkFhe3rmaNQqOfLz5pCXNkfnb5FY84UdzCDCdP1hJMvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjjGIFUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB59C433F1;
-	Mon,  8 Apr 2024 13:37:25 +0000 (UTC)
+	 MIME-Version; b=HOFpyaS/T5FJ+06i4PWnXem3wW3zbTucNEqNqo8ed0Wgn+Z66YjKe/TDj2T3E9vPF4VmlARvcqizH67atv38phPyn+UL5R6ftZD8zpaR3Fx3u6ca7c5Tc0kBrw/0PQM5BhMVkruT0CoMfIeKQoiRCg1U/jLYhjFSQC5AVWBW4eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+sTkq7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA432C433C7;
+	Mon,  8 Apr 2024 13:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583445;
-	bh=jzSGQ0GvXL6bQhMZJeIupZn8NofFZE0yt5QVmHsORG4=;
+	s=korg; t=1712583455;
+	bh=FbwquyQ7iTzWuhIYncSLaEYxGdMKxSTtlt3yC+d3f0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjjGIFUCvtJDElt2Vb2+aad2xJ+fee4TXTCVRdEjyQ4VGoFt61M0neUdYNsbMm88e
-	 bJeL2VJ/wA/u3Yo8Zp44/jkIhj3biRFQFqdUTVz/JEx7kAIktv/8N8miZIbJN1oELX
-	 UkY4tFk1PgfTTELiWyVx/pDD5gj+iMxBQWrZ5cno=
+	b=q+sTkq7ldLbTgPXomgtdgEKnjZEX5/QrkiZ12KLtS9J2nGBmki5ubaOfULca4YZ8B
+	 J3zuFtx8B0iHbscfMotCtVPRHi3WbXXokCtT5lTg02KVTrepsmIBvNO0n7jPghV3PA
+	 Hi9x9zLu1s+3vVPsQinVyQRoKFQltGE51ryCaPOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 248/690] NFSD: simplify per-net file cache management
-Date: Mon,  8 Apr 2024 14:51:54 +0200
-Message-ID: <20240408125408.604219954@linuxfoundation.org>
+Subject: [PATCH 5.15 249/690] NFSD: Combine XDR error tracepoints
+Date: Mon,  8 Apr 2024 14:51:55 +0200
+Message-ID: <20240408125408.634681314@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -65,184 +64,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 1463b38e7cf34d4cc60f41daff459ad807b2e408 ]
+[ Upstream commit 70e94d757b3e1f46486d573729d84c8955c81dce ]
 
-We currently have a 'laundrette' for closing cached files - a different
-work-item for each network-namespace.
+Clean up: The garbage_args and cant_encode tracepoints report the
+same information as each other, so combine them into a single
+tracepoint class to reduce code duplication and slightly reduce the
+size of trace.o.
 
-These 'laundrettes' (aka struct nfsd_fcache_disposal) are currently on a
-list, and are freed using rcu.
-
-The list is not necessary as we have a per-namespace structure (struct
-nfsd_net) which can hold a link to the nfsd_fcache_disposal.
-The use of kfree_rcu is also unnecessary as the cache is cleaned of all
-files associated with a given namespace, and no new files can be added,
-before the nfsd_fcache_disposal is freed.
-
-So add a '->fcache_disposal' link to nfsd_net, and discard the list
-management and rcu usage.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/filecache.c | 76 +++++++++------------------------------------
- fs/nfsd/netns.h     |  2 ++
- 2 files changed, 17 insertions(+), 61 deletions(-)
+ fs/nfsd/trace.h | 28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index fbc0628c599af..b99852b30308a 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -44,12 +44,9 @@ struct nfsd_fcache_bucket {
- static DEFINE_PER_CPU(unsigned long, nfsd_file_cache_hits);
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index 61943a629cdee..1c98a0f857498 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -47,7 +47,7 @@
+ 			       rqstp->rq_xprt->xpt_remotelen); \
+ 		} while (0);
  
- struct nfsd_fcache_disposal {
--	struct list_head list;
- 	struct work_struct work;
--	struct net *net;
- 	spinlock_t lock;
- 	struct list_head freeme;
--	struct rcu_head rcu;
- };
+-TRACE_EVENT(nfsd_garbage_args_err,
++DECLARE_EVENT_CLASS(nfsd_xdr_err_class,
+ 	TP_PROTO(
+ 		const struct svc_rqst *rqstp
+ 	),
+@@ -69,27 +69,13 @@ TRACE_EVENT(nfsd_garbage_args_err,
+ 	)
+ );
  
- static struct workqueue_struct *nfsd_filecache_wq __read_mostly;
-@@ -62,8 +59,6 @@ static long				nfsd_file_lru_flags;
- static struct fsnotify_group		*nfsd_file_fsnotify_group;
- static atomic_long_t			nfsd_filecache_count;
- static struct delayed_work		nfsd_filecache_laundrette;
--static DEFINE_SPINLOCK(laundrette_lock);
--static LIST_HEAD(laundrettes);
+-TRACE_EVENT(nfsd_cant_encode_err,
+-	TP_PROTO(
+-		const struct svc_rqst *rqstp
+-	),
+-	TP_ARGS(rqstp),
+-	TP_STRUCT__entry(
+-		NFSD_TRACE_PROC_ARG_FIELDS
++#define DEFINE_NFSD_XDR_ERR_EVENT(name) \
++DEFINE_EVENT(nfsd_xdr_err_class, nfsd_##name##_err, \
++	TP_PROTO(const struct svc_rqst *rqstp), \
++	TP_ARGS(rqstp))
  
- static void nfsd_file_gc(void);
- 
-@@ -360,19 +355,13 @@ nfsd_file_list_remove_disposal(struct list_head *dst,
- static void
- nfsd_file_list_add_disposal(struct list_head *files, struct net *net)
- {
--	struct nfsd_fcache_disposal *l;
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+	struct nfsd_fcache_disposal *l = nn->fcache_disposal;
- 
--	rcu_read_lock();
--	list_for_each_entry_rcu(l, &laundrettes, list) {
--		if (l->net == net) {
--			spin_lock(&l->lock);
--			list_splice_tail_init(files, &l->freeme);
--			spin_unlock(&l->lock);
--			queue_work(nfsd_filecache_wq, &l->work);
--			break;
--		}
--	}
--	rcu_read_unlock();
-+	spin_lock(&l->lock);
-+	list_splice_tail_init(files, &l->freeme);
-+	spin_unlock(&l->lock);
-+	queue_work(nfsd_filecache_wq, &l->work);
- }
- 
- static void
-@@ -748,7 +737,7 @@ nfsd_file_cache_purge(struct net *net)
- }
- 
- static struct nfsd_fcache_disposal *
--nfsd_alloc_fcache_disposal(struct net *net)
-+nfsd_alloc_fcache_disposal(void)
- {
- 	struct nfsd_fcache_disposal *l;
- 
-@@ -756,7 +745,6 @@ nfsd_alloc_fcache_disposal(struct net *net)
- 	if (!l)
- 		return NULL;
- 	INIT_WORK(&l->work, nfsd_file_delayed_close);
--	l->net = net;
- 	spin_lock_init(&l->lock);
- 	INIT_LIST_HEAD(&l->freeme);
- 	return l;
-@@ -765,61 +753,27 @@ nfsd_alloc_fcache_disposal(struct net *net)
- static void
- nfsd_free_fcache_disposal(struct nfsd_fcache_disposal *l)
- {
--	rcu_assign_pointer(l->net, NULL);
- 	cancel_work_sync(&l->work);
- 	nfsd_file_dispose_list(&l->freeme);
--	kfree_rcu(l, rcu);
--}
+-		__field(u32, vers)
+-		__field(u32, proc)
+-	),
+-	TP_fast_assign(
+-		NFSD_TRACE_PROC_ARG_ASSIGNMENTS
 -
--static void
--nfsd_add_fcache_disposal(struct nfsd_fcache_disposal *l)
--{
--	spin_lock(&laundrette_lock);
--	list_add_tail_rcu(&l->list, &laundrettes);
--	spin_unlock(&laundrette_lock);
--}
--
--static void
--nfsd_del_fcache_disposal(struct nfsd_fcache_disposal *l)
--{
--	spin_lock(&laundrette_lock);
--	list_del_rcu(&l->list);
--	spin_unlock(&laundrette_lock);
--}
--
--static int
--nfsd_alloc_fcache_disposal_net(struct net *net)
--{
--	struct nfsd_fcache_disposal *l;
--
--	l = nfsd_alloc_fcache_disposal(net);
--	if (!l)
--		return -ENOMEM;
--	nfsd_add_fcache_disposal(l);
--	return 0;
-+	kfree(l);
- }
+-		__entry->vers = rqstp->rq_vers;
+-		__entry->proc = rqstp->rq_proc;
+-	),
+-	TP_printk("xid=0x%08x vers=%u proc=%u",
+-		__entry->xid, __entry->vers, __entry->proc
+-	)
+-);
++DEFINE_NFSD_XDR_ERR_EVENT(garbage_args);
++DEFINE_NFSD_XDR_ERR_EVENT(cant_encode);
  
- static void
- nfsd_free_fcache_disposal_net(struct net *net)
- {
--	struct nfsd_fcache_disposal *l;
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+	struct nfsd_fcache_disposal *l = nn->fcache_disposal;
- 
--	rcu_read_lock();
--	list_for_each_entry_rcu(l, &laundrettes, list) {
--		if (l->net != net)
--			continue;
--		nfsd_del_fcache_disposal(l);
--		rcu_read_unlock();
--		nfsd_free_fcache_disposal(l);
--		return;
--	}
--	rcu_read_unlock();
-+	nfsd_free_fcache_disposal(l);
- }
- 
- int
- nfsd_file_cache_start_net(struct net *net)
- {
--	return nfsd_alloc_fcache_disposal_net(net);
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+
-+	nn->fcache_disposal = nfsd_alloc_fcache_disposal();
-+	return nn->fcache_disposal ? 0 : -ENOMEM;
- }
- 
- void
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index 021acdc0d03bb..9e8b77d2a3a47 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -185,6 +185,8 @@ struct nfsd_net {
- 
- 	/* utsname taken from the process that starts the server */
- 	char			nfsd_name[UNX_MAXNODENAME+1];
-+
-+	struct nfsd_fcache_disposal *fcache_disposal;
- };
- 
- /* Simple check to find out if a given net was properly initialized */
+ #define show_nfsd_may_flags(x)						\
+ 	__print_flags(x, "|",						\
 -- 
 2.43.0
 
