@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BB389C3EF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3533789C41C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 867E61F2160E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 302CCB2B95E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3F38061F;
-	Mon,  8 Apr 2024 13:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516BB85939;
+	Mon,  8 Apr 2024 13:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ru+gFwd8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nt9Qpn7h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4A379F0;
-	Mon,  8 Apr 2024 13:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D017BAE7;
+	Mon,  8 Apr 2024 13:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583622; cv=none; b=eP3LMAfWAG/j02yaNk83Ol2iTdbY87op8n+gwDtoXRuww6ZkAb5IPY5dXBj33UnzW0GqMPczmUmbicD3M4STwRj7e5Vv1gKpp+6dKlK/4CmK/Ab7XZ6sMwOq1dG+abFRzuSnbPqJ5SYsdoHht/4Dk5oBcT3ZQ8p5ZNiWA4g2sAo=
+	t=1712583291; cv=none; b=Ol7x96VIZLII2YgIkeRvhYLAb/u9P+BJsFYtz4LY6prO/u2swHbDLhO2YmEEzxtN4F1yoBoDVCqpw7KlKhJ1S6N41IzuN7/QrWDNBWI7OXjsHqherGWeKJ59A20R5zdJG2MDTK9aE1GCKjz9KdIIo6uAB0BOvjySzcYAG9XCGdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583622; c=relaxed/simple;
-	bh=XuezbCvt1ruLuGs3N4clcLn90765vSzkbQ3HkIOfuog=;
+	s=arc-20240116; t=1712583291; c=relaxed/simple;
+	bh=xABvOtCrVNJi37P6ygDwCAbobH5N7zfgFOdL+L2Sgg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAmlPv9CM4Q96rVmWU2eDpCEX9XER9PJd5z2dupsq/guYEo4GIZnmzwg/gBgWP3L1aI3SjbF3cSbRhNBaRbI6EbSCC5Er69iFmeCAo2VUoABuquZh4rhEYYH1SgKOF//PrKYFuCBnhWp9PwT5odTyL36BRLGty6y4RVMzvHQgCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ru+gFwd8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628A0C433F1;
-	Mon,  8 Apr 2024 13:40:22 +0000 (UTC)
+	 MIME-Version; b=aFVsQzzbRY7YvHPPzegYT4noXzlVbrIi1tE/BoAWmRrbT0vR357zvwSM3zU3IwS6Aofnacv49dxZIW0zvbfjW7FxvMECyNdVj3BOOAf5Y6wvQgDXZucD2wwn5WOLpUQZfn9+HL3vf+cnLs0XDA/1asq10CxcDwZbppkIQphYuX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nt9Qpn7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB16C433F1;
+	Mon,  8 Apr 2024 13:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583622;
-	bh=XuezbCvt1ruLuGs3N4clcLn90765vSzkbQ3HkIOfuog=;
+	s=korg; t=1712583290;
+	bh=xABvOtCrVNJi37P6ygDwCAbobH5N7zfgFOdL+L2Sgg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ru+gFwd80+DocAk/pTDW/6CvSdDVDZGGNEz7pVEBG6Ap53vnO/HqoE3KxU4I4MgGP
-	 KTw+X9k9amPveEU4FVT+13DKw0p5lVnfw1DQuJdl/IwRSw8DsVUjTifNEyZ9REKqi7
-	 pPMN0lFlnw6J7HmXN0tUIGI+Yw18fuhxz2bB8hlE=
+	b=Nt9Qpn7hASbAw9dMy1PM/W/XAPfzaPCsh4jZuS+Ptf0+hMByIXiMSbbx9u24JvSGR
+	 hFqjOjTrzuEZNybHRpXJXTGKF/GWUhrcRFrDxGIRg/b8s7WLs3eTA6LGHauA5Fu2qx
+	 mIXQtOTadJwhvpH3a4k1ZzHik0ZKnHfHotaEMk20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.8 202/273] ALSA: hda/realtek - Fix inactive headset mic jack
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 178/252] spi: s3c64xx: define a magic value
 Date: Mon,  8 Apr 2024 14:57:57 +0200
-Message-ID: <20240408125315.597727953@linuxfoundation.org>
+Message-ID: <20240408125312.184511973@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit daf6c4681a74034d5723e2fb761e0d7f3a1ca18f upstream.
+[ Upstream commit ff8faa8a5c0f4c2da797cd22a163ee3cc8823b13 ]
 
-This patch adds the existing fixup to certain TF platforms implementing
-the ALC274 codec with a headset jack. It fixes/activates the inactive
-microphone of the headset.
+Define a magic value, it will be used in the next patch as well.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: <stable@vger.kernel.org>
-Message-ID: <20240328102757.50310-1-wse@tuxedocomputers.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://msgid.link/r/20240216070555.2483977-3-tudor.ambarus@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-s3c64xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10427,6 +10427,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d05, 0x1147, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
-+	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 29e99410c9716..3da940e6299f0 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -76,6 +76,7 @@
+ #define S3C64XX_SPI_INT_RX_FIFORDY_EN		(1<<1)
+ #define S3C64XX_SPI_INT_TX_FIFORDY_EN		(1<<0)
+ 
++#define S3C64XX_SPI_ST_TX_FIFO_LVL_SHIFT	6
+ #define S3C64XX_SPI_ST_RX_OVERRUN_ERR		(1<<5)
+ #define S3C64XX_SPI_ST_RX_UNDERRUN_ERR		(1<<4)
+ #define S3C64XX_SPI_ST_TX_OVERRUN_ERR		(1<<3)
+@@ -106,7 +107,8 @@
+ #define FIFO_LVL_MASK(i) ((i)->port_conf->fifo_lvl_mask[i->port_id])
+ #define S3C64XX_SPI_ST_TX_DONE(v, i) (((v) & \
+ 				(1 << (i)->port_conf->tx_st_done)) ? 1 : 0)
+-#define TX_FIFO_LVL(v, i) (((v) >> 6) & FIFO_LVL_MASK(i))
++#define TX_FIFO_LVL(v, i) (((v) >> S3C64XX_SPI_ST_TX_FIFO_LVL_SHIFT) &	\
++			   FIFO_LVL_MASK(i))
+ #define RX_FIFO_LVL(v, i) (((v) >> (i)->port_conf->rx_lvl_offset) & \
+ 					FIFO_LVL_MASK(i))
+ #define FIFO_DEPTH(i) ((FIFO_LVL_MASK(i) >> 1) + 1)
+-- 
+2.43.0
+
 
 
 
