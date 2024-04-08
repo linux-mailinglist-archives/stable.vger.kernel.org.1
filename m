@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-37303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD4289C448
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8518989C44C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A064E1C221DB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24A631F22375
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005E1128826;
-	Mon,  8 Apr 2024 13:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D1D129E7A;
+	Mon,  8 Apr 2024 13:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEd2WrlE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDPmo9fU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21E9128387;
-	Mon,  8 Apr 2024 13:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542FF1292FC;
+	Mon,  8 Apr 2024 13:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583838; cv=none; b=DnJUAqhS3t5pI4cta8tn4Mnm0Beb5yoiPDPW/Wf/PPSQo4GY2zcz2R1ZOc1E4cJrft7Lyqe1YkMmLpQC/NU0WgF5Dp6suk2hsGBZEcYQTVfFfyO+1lI3kjY6pPjMeHORi2zNe2PrdRSgZJOUNZU2S0BiMxXwagkDs8f3eGfr/SY=
+	t=1712583850; cv=none; b=Rm/nbrAxEKS1ulJZp+sGZHI2DqF/eBCFAQ/HDAjszGmN/0kqDiJAtTkSoxcVsDijbQslrndM7HOeY370NbGga3XycSnOm/HPBny/1+YM3dQQdIOTz7hEdti5p9PQeSswuFnRkuAwJhbr089bTzCcRJNzeY2U5ArZAtmtbaFx8hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583838; c=relaxed/simple;
-	bh=K4dXdF2nLlF/AvtFeR9NEZtDrvBEG/cKqMykMOswjvY=;
+	s=arc-20240116; t=1712583850; c=relaxed/simple;
+	bh=TNQWf7L2DCmYkzA6M1vB3jBeK8LQ8ytMJKxUekvDZt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqMwW+uzz73KFsvliIiiznf3lOmai1XTC32tpGGJwnRsBgb15dCAktL7NrOj3f003B1aAhvhb4lbKSeii/hwKvGsPlULTPw8BLKvJYJfe9dcHd2nVXb1enlNmOi7euX/p2ai6vkRcPm+pDx84o87OQGHZlRW09bR7Xc7BmuT0J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEd2WrlE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38856C433F1;
-	Mon,  8 Apr 2024 13:43:58 +0000 (UTC)
+	 MIME-Version; b=rKekQsnCXwMiU1SgxNttFZFYIAtslEKO+sz74lO6jpyFx3b5l4Bc9mtWiu7I0embcFXfjza0n3ZH0j/3oLxsj+tpf9NzEOYOlQkbGZrzrdC8Kmap8znKmCpDcRwIuR2XhGq/0gq5JLh/01bB9Cdc0N4VQXitF51bSOikHeb4WHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDPmo9fU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D169FC43390;
+	Mon,  8 Apr 2024 13:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583838;
-	bh=K4dXdF2nLlF/AvtFeR9NEZtDrvBEG/cKqMykMOswjvY=;
+	s=korg; t=1712583850;
+	bh=TNQWf7L2DCmYkzA6M1vB3jBeK8LQ8ytMJKxUekvDZt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEd2WrlEXwLpMsVl5Stmo0qZ+/WI/a62B6Ng/QH9SiFP+0lRENDCZXKLSie8yqTlC
-	 S4Xwx9LqFu2b0bL57XE2aqlRe96u5aESky77oBh/Twma5UdWsJZB1gXpEq2eW7uw/8
-	 lsD4h6yixM5ewPo8ye8ZGIXknRwXqHwQIiZ0PpUo=
+	b=rDPmo9fUcFWfqHmRZxV4WK6KvOWx9wi+vMlpVJZVxrtjxVrRRMMBnVQkLirMhWHQ9
+	 qHCDNDVCzBwpKWDNuwE+/A7Vrga6iK5I9uGGXUrkjscyr/X3LOHh11vxY+/SVDdYTB
+	 fHFOn9aVYZGJnQK/87cz2Goxh1T1sUwoJfOpN74s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jan Kara <jack@suse.cz>,
 	Amir Goldstein <amir73il@gmail.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 294/690] inotify: use fsnotify group lock helpers
-Date: Mon,  8 Apr 2024 14:52:40 +0200
-Message-ID: <20240408125410.269100322@linuxfoundation.org>
+Subject: [PATCH 5.15 295/690] nfsd: use fsnotify group lock helpers
+Date: Mon,  8 Apr 2024 14:52:41 +0200
+Message-ID: <20240408125410.301421638@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,41 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 642054b87058019be36033f73c3e48ffff1915aa ]
+[ Upstream commit b8962a9d8cc2d8c93362e2f684091c79f702f6f3 ]
 
-inotify inode marks pin the inode so there is no need to set the
-FSNOTIFY_GROUP_NOFS flag.
+Before commit 9542e6a643fc6 ("nfsd: Containerise filecache laundrette")
+nfsd would close open files in direct reclaim context and that could
+cause a deadlock when fsnotify mark allocation went into direct reclaim
+and nfsd shrinker tried to free existing fsnotify marks.
 
-Link: https://lore.kernel.org/r/20220422120327.3459282-8-amir73il@gmail.com
+To avoid issues like this in future code, set the FSNOTIFY_GROUP_NOFS
+flag on nfsd fsnotify group to prevent going into direct reclaim from
+fsnotify_add_inode_mark().
+
+Link: https://lore.kernel.org/r/20220422120327.3459282-10-amir73il@gmail.com
 Suggested-by: Jan Kara <jack@suse.cz>
 Link: https://lore.kernel.org/r/20220321112310.vpr7oxro2xkz5llh@quack3.lan/
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/inotify/inotify_user.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/filecache.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/fs/notify/inotify/inotify_user.c b/fs/notify/inotify/inotify_user.c
-index 0d8e1bead23ea..266b1302290ba 100644
---- a/fs/notify/inotify/inotify_user.c
-+++ b/fs/notify/inotify/inotify_user.c
-@@ -632,13 +632,13 @@ static int inotify_update_watch(struct fsnotify_group *group, struct inode *inod
- {
- 	int ret = 0;
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 97ca256a76323..b1afe6db589f2 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -118,14 +118,14 @@ nfsd_file_mark_find_or_create(struct nfsd_file *nf)
+ 	struct inode *inode = nf->nf_inode;
  
--	mutex_lock(&group->mark_mutex);
-+	fsnotify_group_lock(group);
- 	/* try to update and existing watch with the new arg */
- 	ret = inotify_update_existing_watch(group, inode, arg);
- 	/* no mark present, try to add a new one */
- 	if (ret == -ENOENT)
- 		ret = inotify_new_watch(group, inode, arg);
--	mutex_unlock(&group->mark_mutex);
-+	fsnotify_group_unlock(group);
+ 	do {
+-		mutex_lock(&nfsd_file_fsnotify_group->mark_mutex);
++		fsnotify_group_lock(nfsd_file_fsnotify_group);
+ 		mark = fsnotify_find_mark(&inode->i_fsnotify_marks,
+-				nfsd_file_fsnotify_group);
++					  nfsd_file_fsnotify_group);
+ 		if (mark) {
+ 			nfm = nfsd_file_mark_get(container_of(mark,
+ 						 struct nfsd_file_mark,
+ 						 nfm_mark));
+-			mutex_unlock(&nfsd_file_fsnotify_group->mark_mutex);
++			fsnotify_group_unlock(nfsd_file_fsnotify_group);
+ 			if (nfm) {
+ 				fsnotify_put_mark(mark);
+ 				break;
+@@ -133,8 +133,9 @@ nfsd_file_mark_find_or_create(struct nfsd_file *nf)
+ 			/* Avoid soft lockup race with nfsd_file_mark_put() */
+ 			fsnotify_destroy_mark(mark, nfsd_file_fsnotify_group);
+ 			fsnotify_put_mark(mark);
+-		} else
+-			mutex_unlock(&nfsd_file_fsnotify_group->mark_mutex);
++		} else {
++			fsnotify_group_unlock(nfsd_file_fsnotify_group);
++		}
  
- 	return ret;
- }
+ 		/* allocate a new nfm */
+ 		new = kmem_cache_alloc(nfsd_file_mark_slab, GFP_KERNEL);
+@@ -672,7 +673,7 @@ nfsd_file_cache_init(void)
+ 	}
+ 
+ 	nfsd_file_fsnotify_group = fsnotify_alloc_group(&nfsd_file_fsnotify_ops,
+-							0);
++							FSNOTIFY_GROUP_NOFS);
+ 	if (IS_ERR(nfsd_file_fsnotify_group)) {
+ 		pr_err("nfsd: unable to create fsnotify group: %ld\n",
+ 			PTR_ERR(nfsd_file_fsnotify_group));
 -- 
 2.43.0
 
