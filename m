@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E1589C317
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCD389C5B3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BE3CB2978A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EEBB282F19
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42A07EF06;
-	Mon,  8 Apr 2024 13:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5CD7C6CC;
+	Mon,  8 Apr 2024 13:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGvmOV7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5eISuZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7798F7E0E4;
-	Mon,  8 Apr 2024 13:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA29768F0;
+	Mon,  8 Apr 2024 13:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583068; cv=none; b=RCt8fJAPMzMDE/RWQGYSuCjuWysuNWpA4taxHkeV1tEPGG+xd1PbsnOIT86XARwrYLWylBc/rd93KWgEPNN1clWjxMfSdgLQdoPKD3icNR22a5mhH7sgbZB37Orr87a/XbqNhgVOcJo1UCKwPwOk9xs2YR97jeFTvVqH/vOeBRs=
+	t=1712584756; cv=none; b=FMR/jyGwK50G3Lo6wvvBI7A3Gt3bG5YKXNCVtFVZ3J6wQVOJhcu7/tmos0qSQ6LN46Ia6scyiq2rDz6DE2CbVlt4LXqbGDl6sU1NEmpJVMjJp+nkjfva1y+47/WwpZxPMA6dJeYOYHWJQx4w9F/EFXvbtjLN5gyBbPoeoUq5/n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583068; c=relaxed/simple;
-	bh=qlVTU1ugldFSiIC8ZJXrznrg4voNOD8hGcFhI81DJ04=;
+	s=arc-20240116; t=1712584756; c=relaxed/simple;
+	bh=0cEapJxFkB36QhNnA5Rhqi51ye3J7o6DZ3v8YmZND1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+6EO1RUMfjvgByjNI9JiBg7V5slMhU0mchN5zE6DHL0GM1GNU16lBngf1EIrS1w10zsmzBI9VOgw/Da0EClvBV2S0KFhJwYH+u7RzFCrq0KUryoOSGI/x/HYN5eo+c3g53s26fJYDKOEweg0U+WlaP3Z0/L2YnY4BbZdeEEpH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGvmOV7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4B5C433C7;
-	Mon,  8 Apr 2024 13:31:07 +0000 (UTC)
+	 MIME-Version; b=XWJsbIOEF0xOjRV2diixCmJ++Rw73PNTF3PT6YK4MFmkN2cUKsqyDk3R2lakjeVI8CKcmwRWa6+pnxDVfopTCHuttpiAhZ2khlhp0QtuivSadDbsftiecCRzfRYlV2Q2SWjHwIP4MogfFKr3/CXL0nGdFg8evBrfPM81KCGTILY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5eISuZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AEAC433C7;
+	Mon,  8 Apr 2024 13:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583068;
-	bh=qlVTU1ugldFSiIC8ZJXrznrg4voNOD8hGcFhI81DJ04=;
+	s=korg; t=1712584756;
+	bh=0cEapJxFkB36QhNnA5Rhqi51ye3J7o6DZ3v8YmZND1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGvmOV7uZrPsme1E/Co+7/TNGxcTWx+ovqm0Ar/5GjHHiNYoLuwSA+mQH8Jzc584j
-	 tfbWKFp2DVEi+hNRiVGM243ArjQT/JCIjZtoamAAiYSBz5q0cvODO6KFabYEbQS742
-	 QblIYDqZb4dtoknZp11bm+ZYWO1ai4kWWa1uR35I=
+	b=W5eISuZwwsuqkpAsdKQ4qxb51EUI2yGYO2Z7KfeeAcdSN8yQIXO1CLL2jHKNsegoA
+	 DwH3v03ei4z4q5MQsra9rKvm2LigxBN1xGYMTUDS0lbGrRYI2pxCc5m/pJwJqz1YK/
+	 pCxqMbDgJW9Q+R8R3aAS9IBQXNHa+APU+S2l0G9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 136/273] net: ravb: Let IP-specific receive function to interrogate descriptors
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 545/690] nfsd: dont allow nfsd threads to be signalled.
 Date: Mon,  8 Apr 2024 14:56:51 +0200
-Message-ID: <20240408125313.515509830@linuxfoundation.org>
+Message-ID: <20240408125419.398734564@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 2b993bfdb47b3aaafd8fe9cd5038b5e297b18ee1 ]
+[ Upstream commit 3903902401451b1cd9d797a8c79769eb26ac7fe5 ]
 
-ravb_poll() initial code used to interrogate the first descriptor of the
-RX queue in case gPTP is false to determine if ravb_rx() should be called.
-This is done for non-gPTP IPs. For gPTP IPs the driver PTP-specific
-information was used to determine if receive function should be called. As
-every IP has its own receive function that interrogates the RX descriptors
-list in the same way the ravb_poll() was doing there is no need to double
-check this in ravb_poll(). Removing the code from ravb_poll() leads to a
-cleaner code.
+The original implementation of nfsd used signals to stop threads during
+shutdown.
+In Linux 2.3.46pre5 nfsd gained the ability to shutdown threads
+internally it if was asked to run "0" threads.  After this user-space
+transitioned to using "rpc.nfsd 0" to stop nfsd and sending signals to
+threads was no longer an important part of the API.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 596a4254915f ("net: ravb: Always process TX descriptor ring")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In commit 3ebdbe5203a8 ("SUNRPC: discard svo_setup and rename
+svc_set_num_threads_sync()") (v5.17-rc1~75^2~41) we finally removed the
+use of signals for stopping threads, using kthread_stop() instead.
+
+This patch makes the "obvious" next step and removes the ability to
+signal nfsd threads - or any svc threads.  nfsd stops allowing signals
+and we don't check for their delivery any more.
+
+This will allow for some simplification in later patches.
+
+A change worth noting is in nfsd4_ssc_setup_dul().  There was previously
+a signal_pending() check which would only succeed when the thread was
+being shut down.  It should really have tested kthread_should_stop() as
+well.  Now it just does the latter, not the former.
+
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ fs/nfs/callback.c     |  9 +--------
+ fs/nfsd/nfs4proc.c    |  5 ++---
+ fs/nfsd/nfssvc.c      | 12 ------------
+ net/sunrpc/svc_xprt.c | 16 ++++++----------
+ 4 files changed, 9 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index f7566cfa45ca3..266ed984a98fa 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1284,25 +1284,16 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	struct net_device *ndev = napi->dev;
- 	struct ravb_private *priv = netdev_priv(ndev);
- 	const struct ravb_hw_info *info = priv->info;
--	bool gptp = info->gptp || info->ccc_gac;
--	struct ravb_rx_desc *desc;
- 	unsigned long flags;
- 	int q = napi - priv->napi;
- 	int mask = BIT(q);
- 	int quota = budget;
--	unsigned int entry;
+diff --git a/fs/nfs/callback.c b/fs/nfs/callback.c
+index 456af7d230cf1..46a0a2d6962e1 100644
+--- a/fs/nfs/callback.c
++++ b/fs/nfs/callback.c
+@@ -80,9 +80,6 @@ nfs4_callback_svc(void *vrqstp)
+ 	set_freezable();
  
--	if (!gptp) {
--		entry = priv->cur_rx[q] % priv->num_rx_ring[q];
--		desc = &priv->gbeth_rx_ring[entry];
--	}
- 	/* Processing RX Descriptor Ring */
- 	/* Clear RX interrupt */
- 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
--	if (gptp || desc->die_dt != DT_FEMPTY) {
--		if (ravb_rx(ndev, &quota, q))
--			goto out;
--	}
-+	if (ravb_rx(ndev, &quota, q))
-+		goto out;
+ 	while (!kthread_freezable_should_stop(NULL)) {
+-
+-		if (signal_pending(current))
+-			flush_signals(current);
+ 		/*
+ 		 * Listen for a request on the socket
+ 		 */
+@@ -112,11 +109,7 @@ nfs41_callback_svc(void *vrqstp)
+ 	set_freezable();
  
- 	/* Processing TX Descriptor Ring */
- 	spin_lock_irqsave(&priv->lock, flags);
+ 	while (!kthread_freezable_should_stop(NULL)) {
+-
+-		if (signal_pending(current))
+-			flush_signals(current);
+-
+-		prepare_to_wait(&serv->sv_cb_waitq, &wq, TASK_INTERRUPTIBLE);
++		prepare_to_wait(&serv->sv_cb_waitq, &wq, TASK_IDLE);
+ 		spin_lock_bh(&serv->sv_cb_lock);
+ 		if (!list_empty(&serv->sv_cb_list)) {
+ 			req = list_first_entry(&serv->sv_cb_list,
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index ba53cd89ec62c..b6d768bd5ccca 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1313,12 +1313,11 @@ static __be32 nfsd4_ssc_setup_dul(struct nfsd_net *nn, char *ipaddr,
+ 		/* found a match */
+ 		if (ni->nsui_busy) {
+ 			/*  wait - and try again */
+-			prepare_to_wait(&nn->nfsd_ssc_waitq, &wait,
+-				TASK_INTERRUPTIBLE);
++			prepare_to_wait(&nn->nfsd_ssc_waitq, &wait, TASK_IDLE);
+ 			spin_unlock(&nn->nfsd_ssc_lock);
+ 
+ 			/* allow 20secs for mount/unmount for now - revisit */
+-			if (signal_pending(current) ||
++			if (kthread_should_stop() ||
+ 					(schedule_timeout(20*HZ) == 0)) {
+ 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 				kfree(work);
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index a0ecec54d3d7d..8063fab2c0279 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -952,15 +952,6 @@ nfsd(void *vrqstp)
+ 
+ 	current->fs->umask = 0;
+ 
+-	/*
+-	 * thread is spawned with all signals set to SIG_IGN, re-enable
+-	 * the ones that will bring down the thread
+-	 */
+-	allow_signal(SIGKILL);
+-	allow_signal(SIGHUP);
+-	allow_signal(SIGINT);
+-	allow_signal(SIGQUIT);
+-
+ 	atomic_inc(&nfsdstats.th_cnt);
+ 
+ 	set_freezable();
+@@ -985,9 +976,6 @@ nfsd(void *vrqstp)
+ 		validate_process_creds();
+ 	}
+ 
+-	/* Clear signals before calling svc_exit_thread() */
+-	flush_signals(current);
+-
+ 	atomic_dec(&nfsdstats.th_cnt);
+ 
+ out:
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index 67ccf1a6459ae..b19592673eef2 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -700,8 +700,8 @@ static int svc_alloc_arg(struct svc_rqst *rqstp)
+ 			/* Made progress, don't sleep yet */
+ 			continue;
+ 
+-		set_current_state(TASK_INTERRUPTIBLE);
+-		if (signalled() || kthread_should_stop()) {
++		set_current_state(TASK_IDLE);
++		if (kthread_should_stop()) {
+ 			set_current_state(TASK_RUNNING);
+ 			return -EINTR;
+ 		}
+@@ -736,7 +736,7 @@ rqst_should_sleep(struct svc_rqst *rqstp)
+ 		return false;
+ 
+ 	/* are we shutting down? */
+-	if (signalled() || kthread_should_stop())
++	if (kthread_should_stop())
+ 		return false;
+ 
+ 	/* are we freezing? */
+@@ -758,11 +758,7 @@ static struct svc_xprt *svc_get_next_xprt(struct svc_rqst *rqstp, long timeout)
+ 	if (rqstp->rq_xprt)
+ 		goto out_found;
+ 
+-	/*
+-	 * We have to be able to interrupt this wait
+-	 * to bring down the daemons ...
+-	 */
+-	set_current_state(TASK_INTERRUPTIBLE);
++	set_current_state(TASK_IDLE);
+ 	smp_mb__before_atomic();
+ 	clear_bit(SP_CONGESTED, &pool->sp_flags);
+ 	clear_bit(RQ_BUSY, &rqstp->rq_flags);
+@@ -784,7 +780,7 @@ static struct svc_xprt *svc_get_next_xprt(struct svc_rqst *rqstp, long timeout)
+ 	if (!time_left)
+ 		atomic_long_inc(&pool->sp_stats.threads_timedout);
+ 
+-	if (signalled() || kthread_should_stop())
++	if (kthread_should_stop())
+ 		return ERR_PTR(-EINTR);
+ 	return ERR_PTR(-EAGAIN);
+ out_found:
+@@ -882,7 +878,7 @@ int svc_recv(struct svc_rqst *rqstp, long timeout)
+ 	try_to_freeze();
+ 	cond_resched();
+ 	err = -EINTR;
+-	if (signalled() || kthread_should_stop())
++	if (kthread_should_stop())
+ 		goto out;
+ 
+ 	xprt = svc_get_next_xprt(rqstp, timeout);
 -- 
 2.43.0
 
