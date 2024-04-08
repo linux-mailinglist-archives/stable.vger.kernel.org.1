@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-36956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8D989C280
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 852BF89C3A0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AECA21C21E9D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1959EB2CA58
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF627E118;
-	Mon,  8 Apr 2024 13:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9877EEE1;
+	Mon,  8 Apr 2024 13:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZppYmU8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxUnElMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E3D7E110;
-	Mon,  8 Apr 2024 13:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AAB7E105;
+	Mon,  8 Apr 2024 13:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582834; cv=none; b=iRrHf+nEUPUy0IsZqAjke97igYZBAUolLijvvdhjgZGCI5Vj4wIcw2zNlrjVXQHLisEfMnEV4QTBn5qZPsvczZpDpqG+s3saIoUM31MqBJgPDAYE4B2sBPeo+hJ9xawbh8f2YHJdcwsZVnGYzdEwYYy4nA5UA1Wn8ry/ayGcEW8=
+	t=1712582845; cv=none; b=UDvTtrwS+1ngZK4G6TUyKBx/WDb24pVr8KVBREbTBxWplWtdw+ezTPtBFMWmI/XKNnw78U/kk+i33eLh3+z58okH8JH1T3GBmiBfrT/Cn3XHN9k+5R/Vgf2Cf5Ok429aa6C6j5v+H9Z+OgK1EJQOq1/VLtNVF61ShNIvkuanQM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582834; c=relaxed/simple;
-	bh=iSQ7hOWbxt5AfpWrNC3D56u5STPjv2juOm9tLasZCMw=;
+	s=arc-20240116; t=1712582845; c=relaxed/simple;
+	bh=zKWW2+vhAHU0tGheOHQGDV6lBehIwwJm12jsw8jcPcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hl8yIfm6ZNVc37aEFRCP+a33nrTtALtkVUe6DPyIN1c3MIcJ5gZQ/1UqG+ph022pXfzDfnXUxNsMWMkofh00RSDwjrN49rSHbxa0dqxX3KzStNbPdHmuOHEgmZal30Lq4PP4CL2LSxaDRuO96z8aL69D05DutydDfR0Y0wVT7sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZppYmU8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8429AC433F1;
-	Mon,  8 Apr 2024 13:27:13 +0000 (UTC)
+	 MIME-Version; b=qFb6L4SrlkWWuHApi6BXoE8YID5izb5gRAZfqoh+P1p0R/RFUvUXG9vHnTumKSY0AWM4BFNk+rVPpvTDjn4j+cPViHjbJrm3bPP27hzWDaVWyIHo2GdXhZCn4UZin5ahi2qCsk/7eSzWdFzn2Tzfi6/4PJmGoBOIKMrL1/aB8mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxUnElMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313C4C433F1;
+	Mon,  8 Apr 2024 13:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582833;
-	bh=iSQ7hOWbxt5AfpWrNC3D56u5STPjv2juOm9tLasZCMw=;
+	s=korg; t=1712582845;
+	bh=zKWW2+vhAHU0tGheOHQGDV6lBehIwwJm12jsw8jcPcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZppYmU8VcUMvfkFUokFWPLzaNrJSfvGEEqO67Inb7tf883ywHLjdA0BCRGUiB1Rr
-	 08KKrKXI5Q5uT9hMKFRkIlJ2yk1iTe1v3ycOfLYZRmKRX8dUkDzP03UnFCeJ3oQF2I
-	 4jXHQ16TXwpn6wdwdHYBY+vNcmM0qCrJf25YYZ6Y=
+	b=KxUnElMYjiG3bMwsAlsK0W+vBbdFrO6PTy4ItGdFFD2BH2+OmjW15iXrd2giIqlV1
+	 6/MSLgqpQjCAaQyxbwnEkHmBdR6zLFLCnxSgZgtNmZQDCZ33+YjXma+XMXW+pr6kRd
+	 cyOj85X9OQqKYjUMYDNI4IMH46A2AKG/LKvLqIUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
 	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Gabriel Krisman Bertazi <krisman@collabora.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 179/690] fanotify: Allow file handle encoding for unhashed events
-Date: Mon,  8 Apr 2024 14:50:45 +0200
-Message-ID: <20240408125406.048869760@linuxfoundation.org>
+Subject: [PATCH 5.15 180/690] fanotify: Encode empty file handle when no inode is provided
+Date: Mon,  8 Apr 2024 14:50:46 +0200
+Message-ID: <20240408125406.081413625@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,40 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-[ Upstream commit 74fe4734897a2da2ae2a665a5e622cd490d36eaf ]
+[ Upstream commit 272531ac619b374ab474e989eb387162fded553f ]
 
-Allow passing a NULL hash to fanotify_encode_fh and avoid calculating
-the hash if not needed.
+Instead of failing, encode an invalid file handle in fanotify_encode_fh
+if no inode is provided.  This bogus file handle will be reported by
+FAN_FS_ERROR for non-inode errors.
 
-Link: https://lore.kernel.org/r/20211025192746.66445-15-krisman@collabora.com
-Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20211025192746.66445-16-krisman@collabora.com
 Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fanotify/fanotify.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/notify/fanotify/fanotify.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index 397ee623ff1e8..ec84fee7ad01c 100644
+index ec84fee7ad01c..c64d61b673caf 100644
 --- a/fs/notify/fanotify/fanotify.c
 +++ b/fs/notify/fanotify/fanotify.c
-@@ -403,8 +403,12 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
+@@ -370,8 +370,14 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
+ 	fh->type = FILEID_ROOT;
+ 	fh->len = 0;
+ 	fh->flags = 0;
++
++	/*
++	 * Invalid FHs are used by FAN_FS_ERROR for errors not
++	 * linked to any inode. The f_handle won't be reported
++	 * back to userspace.
++	 */
+ 	if (!inode)
+-		return 0;
++		goto out;
+ 
+ 	/*
+ 	 * !gpf means preallocated variable size fh, but fh_len could
+@@ -403,6 +409,7 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
  	fh->type = type;
  	fh->len = fh_len;
  
--	/* Mix fh into event merge key */
--	*hash ^= fanotify_hash_fh(fh);
-+	/*
-+	 * Mix fh into event merge key.  Hash might be NULL in case of
-+	 * unhashed FID events (i.e. FAN_FS_ERROR).
-+	 */
-+	if (hash)
-+		*hash ^= fanotify_hash_fh(fh);
- 
- 	return FANOTIFY_FH_HDR_LEN + fh_len;
- 
++out:
+ 	/*
+ 	 * Mix fh into event merge key.  Hash might be NULL in case of
+ 	 * unhashed FID events (i.e. FAN_FS_ERROR).
 -- 
 2.43.0
 
