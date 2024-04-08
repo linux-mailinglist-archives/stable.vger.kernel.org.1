@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E6C89C5B6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891F589C1A8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 049D71C2178A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF091F214E9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2A37D062;
-	Mon,  8 Apr 2024 13:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F27C85640;
+	Mon,  8 Apr 2024 13:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLPZDRVY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XC65ypN7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AA37C6C9;
-	Mon,  8 Apr 2024 13:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD137FBBC;
+	Mon,  8 Apr 2024 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584762; cv=none; b=BgbyzBZhCv09NRZTtcKRuwC1m5lKuRRJ+SDoDzqXemSzxgM3Wh2ouF8T4Uj+wHKLT4rwyOjrwfD1zsTqAw48WDtBKuC97WSQFf0Lol1Quc8/rn2eSky8JOncD+JS/ml3Io6eSlE1zprnDIYm07rgCHpSxkcGR5KiMNMTihcuw10=
+	t=1712582340; cv=none; b=uNg3z+60MD/1GatA42m6/v1btEbvEiok1XB5V1gggoliZTT/VSjBqYa+ZSVsek6UgsgEXJzP9Ey71ZcheWxfoJCZEf0NwJBV98H0SQrZ/3OdeJTr9YAKKUM/COMxboeY8woAE1CU07qcbOucCV3Ik/uo+CszG0eT9kc4Ts+0YiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584762; c=relaxed/simple;
-	bh=nvq5sTeHTklv/PegVXUCfggxMWFlo0j95auTV+/9t88=;
+	s=arc-20240116; t=1712582340; c=relaxed/simple;
+	bh=p9BHwuc7X6ky+qDzGEjoVzWBW7/nNwtpbQFpt/DpULw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sC8k0W65IUqDxQ6T37V2wGzmIJvlrhapz9Yo+mEQ2eoGAfIDUlbYMnGnmoPPgT9/vP1RqzQnRjNS8j/GFbp+jKAhz2SovZE/iwaBGph3trT/CVFC6Ut4YP+8KBWLTdpk5Mv77l9iPDMXPrqCdfLRG6hum1AmVu91XwvVfx54z8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLPZDRVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CD7C433C7;
-	Mon,  8 Apr 2024 13:59:21 +0000 (UTC)
+	 MIME-Version; b=CIoaVj120GqFMaKSPQImgnZZAKA9bqUqjBbLSt6pPZNu56YMuOuV9ffoyCOERSL3Q5ZqIEbl8RcSsp9O1cL1hKs+6e44Upqz4MWLLiMbzloH3tQk6G4BGdzC9lYEjNT45nO1j84sGYvj2hieq73LBhQZLroUhDKHM+iElSUU+5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XC65ypN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03363C433F1;
+	Mon,  8 Apr 2024 13:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584762;
-	bh=nvq5sTeHTklv/PegVXUCfggxMWFlo0j95auTV+/9t88=;
+	s=korg; t=1712582340;
+	bh=p9BHwuc7X6ky+qDzGEjoVzWBW7/nNwtpbQFpt/DpULw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLPZDRVYNbQbGBY+vPb/MW6bLumxSGGjNy4dy4y+cG1IpjEUCVKW0rf8BfM00HWdO
-	 atU1xe2IjWI2oQA2UjU8RJtM1OdaSuERMy7J+yu9BbGWd4cejZgFCSGB213IbbVZbO
-	 /e9+g0HwO3KhonJ3quATJS2kK8rXa67YtW9xkyf0=
+	b=XC65ypN7ZolFLu0wDiVhWHnVEsMSCaBKoqC9BuhM4mRVc/GS61sPhfBu82odxqFcZ
+	 sf79oKNqBpdvhx6ZXJ2t2bg+OveyKRGJre2RYRR21SJHH4bXX+KA1FtwCcHJKixiC7
+	 Tm9gKzWlbv45Ik+RgLkR0KeyqSGhuF5XJs5XI+Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 518/690] nfsd: allow nfsd_file_get to sanely handle a NULL pointer
+	Leonidas Spyropoulos <artafinde@archlinux.com>,
+	Arthur Borsboom <arthurborsboom@gmail.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 085/252] xen-netfront: Add missing skb_mark_for_recycle
 Date: Mon,  8 Apr 2024 14:56:24 +0200
-Message-ID: <20240408125418.407564270@linuxfoundation.org>
+Message-ID: <20240408125309.283301521@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Jesper Dangaard Brouer <hawk@kernel.org>
 
-[ Upstream commit 70f62231cdfd52357836733dd31db787e0412ab2 ]
+commit 037965402a010898d34f4e35327d22c0a95cd51f upstream.
 
-...and remove some now-useless NULL pointer checks in its callers.
+Notice that skb_mark_for_recycle() is introduced later than fixes tag in
+commit 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycling").
 
-Suggested-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+It is believed that fixes tag were missing a call to page_pool_release_page()
+between v5.9 to v5.14, after which is should have used skb_mark_for_recycle().
+Since v6.6 the call page_pool_release_page() were removed (in
+commit 535b9c61bdef ("net: page_pool: hide page_pool_release_page()")
+and remaining callers converted (in commit 6bfef2ec0172 ("Merge branch
+'net-page_pool-remove-page_pool_release_page'")).
+
+This leak became visible in v6.8 via commit dba1b8a7ab68 ("mm/page_pool: catch
+page_pool memory leaks").
+
+Cc: stable@vger.kernel.org
+Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
+Reported-by: Leonidas Spyropoulos <artafinde@archlinux.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218654
+Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/r/171154167446.2671062.9127105384591237363.stgit@firesoul
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/filecache.c | 5 ++---
- fs/nfsd/nfs4state.c | 4 +---
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/net/xen-netfront.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 68c7c82f8b3bb..206742bbbd682 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -451,7 +451,7 @@ static bool nfsd_file_lru_remove(struct nfsd_file *nf)
- struct nfsd_file *
- nfsd_file_get(struct nfsd_file *nf)
- {
--	if (likely(refcount_inc_not_zero(&nf->nf_ref)))
-+	if (nf && refcount_inc_not_zero(&nf->nf_ref))
- 		return nf;
- 	return NULL;
- }
-@@ -1106,8 +1106,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	rcu_read_lock();
- 	nf = rhashtable_lookup(&nfsd_file_rhash_tbl, &key,
- 			       nfsd_file_rhash_params);
--	if (nf)
--		nf = nfsd_file_get(nf);
-+	nf = nfsd_file_get(nf);
- 	rcu_read_unlock();
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -285,6 +285,7 @@ static struct sk_buff *xennet_alloc_one_
+ 		return NULL;
+ 	}
+ 	skb_add_rx_frag(skb, 0, page, 0, 0, PAGE_SIZE);
++	skb_mark_for_recycle(skb);
  
- 	if (nf) {
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 5c261cc807e8e..628e564e530bf 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -602,9 +602,7 @@ put_nfs4_file(struct nfs4_file *fi)
- static struct nfsd_file *
- __nfs4_get_fd(struct nfs4_file *f, int oflag)
- {
--	if (f->fi_fds[oflag])
--		return nfsd_file_get(f->fi_fds[oflag]);
--	return NULL;
-+	return nfsd_file_get(f->fi_fds[oflag]);
- }
- 
- static struct nfsd_file *
--- 
-2.43.0
-
+ 	/* Align ip header to a 16 bytes boundary */
+ 	skb_reserve(skb, NET_IP_ALIGN);
 
 
 
