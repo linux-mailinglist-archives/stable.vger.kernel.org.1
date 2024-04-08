@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-36661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C9E89C120
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:18:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F7589C1F6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEE641F214DC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:18:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492D11C21D0C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395727F7DB;
-	Mon,  8 Apr 2024 13:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202197C6C9;
+	Mon,  8 Apr 2024 13:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trI9LBLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsDRtzrm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1327F7F0;
-	Mon,  8 Apr 2024 13:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20106D1A9;
+	Mon,  8 Apr 2024 13:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581979; cv=none; b=oacQjyIWwzecStdgar2MMLRKw6H2qicI9Mi5ZS3lqhLKkK1ZvUSTDKdwCoCuEX3hPasRBJMdCNUMSc90jkdOW33FJlHT4nU+dIJUeJi0blRAGhBGmlpkNHyIqHJxFKj1TRVzSY54ezgpE27dxzy8O+Ot7bOMsJFp4H2WWNQdTo4=
+	t=1712582471; cv=none; b=jqXLdSVSOvDCmDOOiw5wXNSH9mmUtrHvt4npdaa5YfSd26TYPyA2AN7w23eD9XscjSBKNe5/J7IuQiWjsthwlYRfWmZ8HL/FHMok3/uUWmXhz/lVgiHTEvAG176GDC9+l9uPm4x5dEn5E/tNRjrbOfMjxPdg158fF0z6vZDx3r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581979; c=relaxed/simple;
-	bh=YDSOsmpmdzEkDcq04GLXyHw/awn3Qnoe04rjDkOQBvE=;
+	s=arc-20240116; t=1712582471; c=relaxed/simple;
+	bh=QWIcRRJKa9GEFEjpT0+OlPcCrE8uZgJzuu0ro3Iqb0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxU8ISeszwDOSj5u9NnveQzxk9ihvsqm+Q8kwLxX58nBmhhd8VQRtSjgFiJCqU54Ww3me7xgmHLhr1SQT6ZRt6HxK1mvs647Ndn8Ul5iWuDXe5QB3UVazChJaEMdad6NJse9ClxFfqd1cdBmiyyImbmb5hCGr+0BAJ1qVc/6sUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trI9LBLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70030C433F1;
-	Mon,  8 Apr 2024 13:12:58 +0000 (UTC)
+	 MIME-Version; b=aY9UxJfCwVNi5BgMQmePGwoZsvzznSvwWvyGnYdlqv/cjyaQAeeGQIRCZ2QKOZVFyZ+ty1TTxQhoLbMENSimWgTC8JKg+baQeeP6PREitaHESNDTuhU9BKWRosgRStTXA1xCwhIkSBUGavrqPOdyyZ02LUo3gIudg8xKSutxrJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsDRtzrm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548BAC43394;
+	Mon,  8 Apr 2024 13:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581978;
-	bh=YDSOsmpmdzEkDcq04GLXyHw/awn3Qnoe04rjDkOQBvE=;
+	s=korg; t=1712582471;
+	bh=QWIcRRJKa9GEFEjpT0+OlPcCrE8uZgJzuu0ro3Iqb0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trI9LBLS8BCt+0Flcc++3BHAFKflpZgMChOkZXt41w1NqRGNJfPGPZyEBxy3m6OtZ
-	 20hHmNipGUgbDk7/IFN/C9aSnIzoNCniCwfQAdZlz9+MWaZ57/nMEbIM563lfgNBVG
-	 Cdns435HiMkS42n6VyhyTU4D74pM7b42yOFalpbo=
+	b=XsDRtzrmYa6hUv3mbeLIKga5wOja/0aghEHV+TRYyCyWNJFsavgTo9qVpeRkeV5Un
+	 FLGQ8zQa5vF1sYVJlbFx6+aHuvjnMSyBo+AvoLusy/UsJXmYGiB8F7O4KvRiFoCoCl
+	 SiDs+2g/VRODEXOQ+PBYRim47NspbKx8zidhwlkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/252] btrfs: ensure fiemap doesnt race with writes when FIEMAP_FLAG_SYNC is given
-Date: Mon,  8 Apr 2024 14:55:53 +0200
-Message-ID: <20240408125308.312970422@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.8 079/273] netfilter: nf_tables: release batch on table validation from abort path
+Date: Mon,  8 Apr 2024 14:55:54 +0200
+Message-ID: <20240408125311.756004480@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,166 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 418b09027743d9a9fb39116bed46a192f868a3c3 ]
+commit a45e6889575c2067d3c0212b6bc1022891e65b91 upstream.
 
-When FIEMAP_FLAG_SYNC is given to fiemap the expectation is that that
-are no concurrent writes and we get a stable view of the inode's extent
-layout.
+Unlike early commit path stage which triggers a call to abort, an
+explicit release of the batch is required on abort, otherwise mutex is
+released and commit_list remains in place.
 
-When the flag is given we flush all IO (and wait for ordered extents to
-complete) and then lock the inode in shared mode, however that leaves open
-the possibility that a write might happen right after the flushing and
-before locking the inode. So fix this by flushing again after locking the
-inode - we leave the initial flushing before locking the inode to avoid
-holding the lock and blocking other RO operations while waiting for IO
-and ordered extents to complete. The second flushing while holding the
-inode's lock will most of the time do nothing or very little since the
-time window for new writes to have happened is small.
+Add WARN_ON_ONCE to ensure commit_list is empty from the abort path
+before releasing the mutex.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 978b63f7464a ("btrfs: fix race when detecting delalloc ranges during fiemap")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After this patch, commit_list is always assumed to be empty before
+grabbing the mutex, therefore
+
+  03c1f1ef1584 ("netfilter: Cleanup nft_net->module_list from nf_tables_exit_net()")
+
+only needs to release the pending modules for registration.
+
+Cc: stable@vger.kernel.org
+Fixes: c0391b6ab810 ("netfilter: nf_tables: missing validation from the abort path")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c | 21 ++++++++-------------
- fs/btrfs/inode.c     | 22 +++++++++++++++++++++-
- 2 files changed, 29 insertions(+), 14 deletions(-)
+ net/netfilter/nf_tables_api.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index fc8eb8d86ca25..45d427c3033d7 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2953,17 +2953,15 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 	range_end = round_up(start + len, sectorsize);
- 	prev_extent_end = range_start;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10451,10 +10451,11 @@ static int __nf_tables_abort(struct net
+ 	struct nft_trans *trans, *next;
+ 	LIST_HEAD(set_update_list);
+ 	struct nft_trans_elem *te;
++	int err = 0;
  
--	btrfs_inode_lock(inode, BTRFS_ILOCK_SHARED);
--
- 	ret = fiemap_find_last_extent_offset(inode, path, &last_extent_end);
- 	if (ret < 0)
--		goto out_unlock;
-+		goto out;
- 	btrfs_release_path(path);
+ 	if (action == NFNL_ABORT_VALIDATE &&
+ 	    nf_tables_validate(net) < 0)
+-		return -EAGAIN;
++		err = -EAGAIN;
  
- 	path->reada = READA_FORWARD;
- 	ret = fiemap_search_slot(inode, path, range_start);
- 	if (ret < 0) {
--		goto out_unlock;
-+		goto out;
- 	} else if (ret > 0) {
- 		/*
- 		 * No file extent item found, but we may have delalloc between
-@@ -3010,7 +3008,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 						  backref_ctx, 0, 0, 0,
- 						  prev_extent_end, hole_end);
- 			if (ret < 0) {
--				goto out_unlock;
-+				goto out;
- 			} else if (ret > 0) {
- 				/* fiemap_fill_next_extent() told us to stop. */
- 				stopped = true;
-@@ -3066,7 +3064,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 								  extent_gen,
- 								  backref_ctx);
- 				if (ret < 0)
--					goto out_unlock;
-+					goto out;
- 				else if (ret > 0)
- 					flags |= FIEMAP_EXTENT_SHARED;
- 			}
-@@ -3077,7 +3075,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 		}
+ 	list_for_each_entry_safe_reverse(trans, next, &nft_net->commit_list,
+ 					 list) {
+@@ -10647,7 +10648,7 @@ static int __nf_tables_abort(struct net
+ 	else
+ 		nf_tables_module_autoload_cleanup(net);
  
- 		if (ret < 0) {
--			goto out_unlock;
-+			goto out;
- 		} else if (ret > 0) {
- 			/* fiemap_fill_next_extent() told us to stop. */
- 			stopped = true;
-@@ -3088,12 +3086,12 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- next_item:
- 		if (fatal_signal_pending(current)) {
- 			ret = -EINTR;
--			goto out_unlock;
-+			goto out;
- 		}
- 
- 		ret = fiemap_next_leaf_item(inode, path);
- 		if (ret < 0) {
--			goto out_unlock;
-+			goto out;
- 		} else if (ret > 0) {
- 			/* No more file extent items for this inode. */
- 			break;
-@@ -3117,7 +3115,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 					  &delalloc_cached_state, backref_ctx,
- 					  0, 0, 0, prev_extent_end, range_end - 1);
- 		if (ret < 0)
--			goto out_unlock;
-+			goto out;
- 		prev_extent_end = range_end;
- 	}
- 
-@@ -3155,9 +3153,6 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 	}
- 
- 	ret = emit_last_fiemap_cache(fieinfo, &cache);
--
--out_unlock:
--	btrfs_inode_unlock(inode, BTRFS_ILOCK_SHARED);
- out:
- 	free_extent_state(delalloc_cached_state);
- 	btrfs_free_backref_share_ctx(backref_ctx);
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index ca79c2b8adc46..1ac14223ffb50 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -7813,6 +7813,7 @@ struct iomap_dio *btrfs_dio_write(struct kiocb *iocb, struct iov_iter *iter,
- static int btrfs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 			u64 start, u64 len)
- {
-+	struct btrfs_inode *btrfs_inode = BTRFS_I(inode);
- 	int	ret;
- 
- 	ret = fiemap_prep(inode, fieinfo, start, &len, 0);
-@@ -7838,7 +7839,26 @@ static int btrfs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 			return ret;
- 	}
- 
--	return extent_fiemap(BTRFS_I(inode), fieinfo, start, len);
-+	btrfs_inode_lock(btrfs_inode, BTRFS_ILOCK_SHARED);
-+
-+	/*
-+	 * We did an initial flush to avoid holding the inode's lock while
-+	 * triggering writeback and waiting for the completion of IO and ordered
-+	 * extents. Now after we locked the inode we do it again, because it's
-+	 * possible a new write may have happened in between those two steps.
-+	 */
-+	if (fieinfo->fi_flags & FIEMAP_FLAG_SYNC) {
-+		ret = btrfs_wait_ordered_range(inode, 0, LLONG_MAX);
-+		if (ret) {
-+			btrfs_inode_unlock(btrfs_inode, BTRFS_ILOCK_SHARED);
-+			return ret;
-+		}
-+	}
-+
-+	ret = extent_fiemap(btrfs_inode, fieinfo, start, len);
-+	btrfs_inode_unlock(btrfs_inode, BTRFS_ILOCK_SHARED);
-+
-+	return ret;
+-	return 0;
++	return err;
  }
  
- static int btrfs_writepages(struct address_space *mapping,
--- 
-2.43.0
-
+ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+@@ -10660,6 +10661,9 @@ static int nf_tables_abort(struct net *n
+ 	gc_seq = nft_gc_seq_begin(nft_net);
+ 	ret = __nf_tables_abort(net, action);
+ 	nft_gc_seq_end(nft_net, gc_seq);
++
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 
+ 	return ret;
+@@ -11461,9 +11465,10 @@ static void __net_exit nf_tables_exit_ne
+ 
+ 	gc_seq = nft_gc_seq_begin(nft_net);
+ 
+-	if (!list_empty(&nft_net->commit_list) ||
+-	    !list_empty(&nft_net->module_list))
+-		__nf_tables_abort(net, NFNL_ABORT_NONE);
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
++	if (!list_empty(&nft_net->module_list))
++		nf_tables_module_autoload_cleanup(net);
+ 
+ 	__nft_release_tables(net);
+ 
 
 
 
