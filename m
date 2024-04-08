@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-37328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5159689C465
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4977589C4C7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CEB72840A2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE6701F2131B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E07F7F481;
-	Mon,  8 Apr 2024 13:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B327E0F0;
+	Mon,  8 Apr 2024 13:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVfP7Wuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHhjEwqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3C97EF06;
-	Mon,  8 Apr 2024 13:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373DF3A1C7;
+	Mon,  8 Apr 2024 13:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583911; cv=none; b=VbJyIt4AByl2Ec0Md+p5eNoNIeRarqdzQf+f65LSIIUi/XLNP4BO2aIszShIzlFU23Bk+o9g8Fs/oZs4xZ5XnWnesQRMIKITqfoFdEbc9uB/bzJW5Fp91QtvM87rjns7ELa3RJ6ftrh3tSxXyyF4wUdcGz8zpHy8ZnHdP+1t4t4=
+	t=1712584183; cv=none; b=F4YSVp1FuDy1kCxZxFAiapIGZL0Q3jnqf27a+iGx0wKpVxzOCgKmTBx7ov8p8sm0CFbyUA7rRadIeboVX/bT0yfGviqongLOXyKudnSpU1+v68Wd5ef54Cr/8q24YgvZsoxNHjOO2BoEsGEpL+t6bQ+t7koWOlkJf0HLTFMmU34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583911; c=relaxed/simple;
-	bh=frRbsWdKE2Ou1pqA59yH7vpZwkCJ0FWcLZG3Em+KfFI=;
+	s=arc-20240116; t=1712584183; c=relaxed/simple;
+	bh=yjlukIX8Ty6P4Pd/em9VEPanfqsNB7WA7oCx8Yht7uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIdqYi/DNxtfz3IlKJZzwi1p1bsngweEq73Le1YI/EGteKpPROdDqxMrMjUEO8rWt2oSyHQHoHHZ42bXHpl69lOaI47glM+Yj8QY17BgBIeI2Ga+eZmAnlre/kORXsayW+ibZOkttdefgnRXGptHnO8+yDBnSj7FtTrWAaKzqBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVfP7Wuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B793AC433C7;
-	Mon,  8 Apr 2024 13:45:10 +0000 (UTC)
+	 MIME-Version; b=egiEg8b2PGUzhNNqTI3vfVm5459pFS6xR/OAMlrVqKpswHhtc+eZX8gD8is8GYNsTbBlxd654XCWVqM4diW8fnFUM1QQl5DMJSgYy6RCqB3SPoBc3MKoIkkF1u1nB+CK4NBzfYQZJV/Ef++YLd43GFr16Zg60edXhyJ995VN7eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHhjEwqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C16C433F1;
+	Mon,  8 Apr 2024 13:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583911;
-	bh=frRbsWdKE2Ou1pqA59yH7vpZwkCJ0FWcLZG3Em+KfFI=;
+	s=korg; t=1712584183;
+	bh=yjlukIX8Ty6P4Pd/em9VEPanfqsNB7WA7oCx8Yht7uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVfP7Wuzrr7XdfkJlI4uPj/+yR01A3Cuy3aoEC23OD/Zb5wS8slV5udy14wbf7QkX
-	 XYLhuv1fGjfq6lV5dkeVTckPUu6ut09VS7K4KRAhC2M4zbdhyrgjVRnTgBeKuW0x9Z
-	 Oi3qrPuApMv4KkqAI2xdtUyd95UT1W55bFolDHgc=
+	b=dHhjEwqpkSdZFZgT899jZvW7m24Le7jwOoD/wQp4wA9CDN/qCxCiNfKWYybjS5Ffs
+	 mQJ7WaI+mF6COYfXYLIuI5r9v7Ovllf+onznPTgQFIoCeMgGGbb94+sAfKgYDNn1yn
+	 58YyKS4I3JQP6uUDmVw7XTBlHEdmzsjf1cyUcA3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	Ingo Molnar <mingo@kernel.org>,
 	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 248/252] x86/head/64: Move the __head definition to <asm/init.h>
-Date: Mon,  8 Apr 2024 14:59:07 +0200
-Message-ID: <20240408125314.354577702@linuxfoundation.org>
+Subject: [PATCH 6.8 273/273] x86/efistub: Remap kernel text read-only before dropping NX attribute
+Date: Mon,  8 Apr 2024 14:59:08 +0200
+Message-ID: <20240408125317.990064727@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit d2a285d65bfde3218fd0c3b88794d0135ced680b upstream.
+commit 9c55461040a9264b7e44444c53d26480b438eda6 upstream.
 
-Move the __head section definition to a header to widen its use.
+Currently, the EFI stub invokes the EFI memory attributes protocol to
+strip any NX restrictions from the entire loaded kernel, resulting in
+all code and data being mapped read-write-execute.
 
-An upcoming patch will mark the code as __head in mem_encrypt_identity.c too.
+The point of the EFI memory attributes protocol is to remove the need
+for all memory allocations to be mapped with both write and execute
+permissions by default, and make it the OS loader's responsibility to
+transition data mappings to code mappings where appropriate.
 
-Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/0583f57977be184689c373fe540cbd7d85ca2047.1697525407.git.houwenlong.hwl@antgroup.com
+Even though the UEFI specification does not appear to leave room for
+denying memory attribute changes based on security policy, let's be
+cautious and avoid relying on the ability to create read-write-execute
+mappings. This is trivially achievable, given that the amount of kernel
+code executing via the firmware's 1:1 mapping is rather small and
+limited to the .head.text region. So let's drop the NX restrictions only
+on that subregion, but not before remapping it as read-only first.
+
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/init.h |    2 ++
- arch/x86/kernel/head64.c    |    3 +--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/Makefile       |    2 +-
+ arch/x86/boot/compressed/misc.c         |    1 +
+ arch/x86/include/asm/boot.h             |    1 +
+ drivers/firmware/efi/libstub/x86-stub.c |   11 ++++++++++-
+ 4 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/init.h
-+++ b/arch/x86/include/asm/init.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_X86_INIT_H
- #define _ASM_X86_INIT_H
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -84,7 +84,7 @@ LDFLAGS_vmlinux += -T
+ hostprogs	:= mkpiggy
+ HOST_EXTRACFLAGS += -I$(srctree)/tools/include
  
-+#define __head	__section(".head.text")
+-sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
++sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__start_rodata\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
+ 
+ quiet_cmd_voffset = VOFFSET $@
+       cmd_voffset = $(NM) $< | sed -n $(sed-voffset) > $@
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -330,6 +330,7 @@ static size_t parse_elf(void *output)
+ 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
+ }
+ 
++const unsigned long kernel_text_size = VO___start_rodata - VO__text;
+ const unsigned long kernel_total_size = VO__end - VO__text;
+ 
+ static u8 boot_heap[BOOT_HEAP_SIZE] __aligned(4);
+--- a/arch/x86/include/asm/boot.h
++++ b/arch/x86/include/asm/boot.h
+@@ -81,6 +81,7 @@
+ 
+ #ifndef __ASSEMBLY__
+ extern unsigned int output_len;
++extern const unsigned long kernel_text_size;
+ extern const unsigned long kernel_total_size;
+ 
+ unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -238,6 +238,15 @@ efi_status_t efi_adjust_memory_range_pro
+ 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
+ 
+ 	if (memattr != NULL) {
++		status = efi_call_proto(memattr, set_memory_attributes,
++					rounded_start,
++					rounded_end - rounded_start,
++					EFI_MEMORY_RO);
++		if (status != EFI_SUCCESS) {
++			efi_warn("Failed to set EFI_MEMORY_RO attribute\n");
++			return status;
++		}
 +
- struct x86_mapping_info {
- 	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
- 	void *context;			 /* context for alloc_pgt_page */
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -41,6 +41,7 @@
- #include <asm/trapnr.h>
- #include <asm/sev.h>
- #include <asm/tdx.h>
-+#include <asm/init.h>
+ 		status = efi_call_proto(memattr, clear_memory_attributes,
+ 					rounded_start,
+ 					rounded_end - rounded_start,
+@@ -818,7 +827,7 @@ static efi_status_t efi_decompress_kerne
  
- /*
-  * Manage page tables very early on.
-@@ -84,8 +85,6 @@ static struct desc_ptr startup_gdt_descr
- 	.address = 0,
- };
+ 	*kernel_entry = addr + entry;
  
--#define __head	__section(".head.text")
--
- static void __head *fixup_pointer(void *ptr, unsigned long physaddr)
- {
- 	return ptr - (void *)_text + (void *)physaddr;
+-	return efi_adjust_memory_range_protection(addr, kernel_total_size);
++	return efi_adjust_memory_range_protection(addr, kernel_text_size);
+ }
+ 
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
 
 
 
