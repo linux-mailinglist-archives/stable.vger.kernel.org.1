@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-36547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A782B89C052
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E8689C519
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA64A1C21A04
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57B3A1F232BA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4878E62148;
-	Mon,  8 Apr 2024 13:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49F171B3D;
+	Mon,  8 Apr 2024 13:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8TgWu7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKCuoldf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AEC2DF73;
-	Mon,  8 Apr 2024 13:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B4C524AF;
+	Mon,  8 Apr 2024 13:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581645; cv=none; b=dsqR7/vtkZM5QuHrXZS6HlfEbTz1nop2Zn7ts+BZI5PwW6ZAf8jc/DkEmNqAZ7t5dQNg8V9W9Aqf2o2Q9tgySXDebIcHDJU7g4cOR3bxFyne5gi0+zMXnEx4rFB4/YVGU4byHI3RtSaHm4TqccGCtShd8+PHWM8rNOZ17nievDg=
+	t=1712584395; cv=none; b=aAJU9XaV9os2b8B6558Lvc5IfQ9R69zUcGk1v5IggBxG3c6aeOk+XsCqTfIYkCyyNvxo69HOEf8x6uHhTew5L9bde2/ErYkVivFZHBlEMrlqP8BvnF+rHOa4wosbgY/K66TqxtvErqBpT5+hnEi8H3aB4tcPu8shJimeHex/GZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581645; c=relaxed/simple;
-	bh=NUsdpof4R7/qY9JOb6s9aYkNeOYkNRJSpT7K6zhlIXU=;
+	s=arc-20240116; t=1712584395; c=relaxed/simple;
+	bh=mQT6iBZUp5CDIFnNIK5yjB6yYRhaKP0OXQYRT9BF4u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdUWBi6ngLD86MbuZ6KZsjbhNPXvAlbzvZrOwFCdjqPCPdFqX6jQOllxU23RaWDSMZ2Xquvlkqo6uDZV7xu1CXd7xMkSivnagfS7qnASgzEV0qzj4N6Fj6ue5RGMwIu91e6hnv8ZRXagtlE+pwibUlU/gZX7k5xu+eDsd2Ak+jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8TgWu7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69043C433F1;
-	Mon,  8 Apr 2024 13:07:24 +0000 (UTC)
+	 MIME-Version; b=aCTDjpoLMkI5SmCJQoMKXuJ4Yg2waUuxRADI/nesFrzZKMlQ+4N8waTUMKfKCEPif/Ez/fbILj4Xxdh0+3sxnlfJFKmmlCxNZ3vGNa8zVdNQQ2CaD1zq6jBxXdyf8DkQ9r4YY+9b7fQGRnNBsQs8f1tHCi1PTR1IyqjMUObk0Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKCuoldf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A38CC433C7;
+	Mon,  8 Apr 2024 13:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581644;
-	bh=NUsdpof4R7/qY9JOb6s9aYkNeOYkNRJSpT7K6zhlIXU=;
+	s=korg; t=1712584395;
+	bh=mQT6iBZUp5CDIFnNIK5yjB6yYRhaKP0OXQYRT9BF4u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8TgWu7rnhelJpWYnfZN0Jui5/YTQJ7GMDErcXuTM7hBeZ+UVid60x19ESvF8U6tk
-	 NCcGVen1folo/HyXXdMuQxHIKUWqGYdPpeMCXrA0Sza5Rac/eELYG0hbarKs78v5Z8
-	 BJV4f2NAHnKYe1fK859BBrjVhxdR2IZD58L4isd4=
+	b=gKCuoldfGqSoensuVnrVK14iqxH6EHvHwy0HxF3nxWixeRH+XfEoLMZI6n48b7gOM
+	 9fccp1t4s4toLtvvWKaTawU8Tr6UxuIWByuFBQzybHkcXi97J2RpC0/MBhxwgFeIK2
+	 wTj/qZS9tu2U3KMpxBGv/hTAtUJwCqk2KFoxm1Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Jeremy Cline <jeremy@jcline.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
-	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
-Subject: [PATCH 6.8 007/273] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 416/690] NFSD: move from strlcpy with unused retval to strscpy
 Date: Mon,  8 Apr 2024 14:54:42 +0200
-Message-ID: <20240408125309.511046440@linuxfoundation.org>
+Message-ID: <20240408125414.673879992@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
+[ Upstream commit 72f78ae00a8e5d7abe13abac8305a300f6afd74b ]
 
-syzbot reported the following uninit-value access issue [1][2]:
+Follow the advice of the below link and prefer 'strscpy' in this
+subsystem. Conversion is 1:1 because the return value is not used.
+Generated by a coccinelle script.
 
-nci_rx_work() parses and processes received packet. When the payload
-length is zero, each message type handler reads uninitialized payload
-and KMSAN detects this issue. The receipt of a packet with a zero-size
-payload is considered unexpected, and therefore, such packets should be
-silently discarded.
-
-This patch resolved this issue by checking payload size before calling
-each message type handler codes.
-
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
-Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
-Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/nfc/nci/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfsd/nfs4idmap.c | 8 ++++----
+ fs/nfsd/nfs4proc.c  | 2 +-
+ fs/nfsd/nfssvc.c    | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index cdad47b140fa4..0d26c8ec9993e 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1516,6 +1516,11 @@ static void nci_rx_work(struct work_struct *work)
- 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
- 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
+diff --git a/fs/nfsd/nfs4idmap.c b/fs/nfsd/nfs4idmap.c
+index f92161ce1f97d..e70a1a2999b7b 100644
+--- a/fs/nfsd/nfs4idmap.c
++++ b/fs/nfsd/nfs4idmap.c
+@@ -82,8 +82,8 @@ ent_init(struct cache_head *cnew, struct cache_head *citm)
+ 	new->id = itm->id;
+ 	new->type = itm->type;
  
-+		if (!nci_plen(skb->data)) {
-+			kfree_skb(skb);
-+			break;
-+		}
-+
- 		/* Process frame */
- 		switch (nci_mt(skb->data)) {
- 		case NCI_MT_RSP_PKT:
+-	strlcpy(new->name, itm->name, sizeof(new->name));
+-	strlcpy(new->authname, itm->authname, sizeof(new->authname));
++	strscpy(new->name, itm->name, sizeof(new->name));
++	strscpy(new->authname, itm->authname, sizeof(new->authname));
+ }
+ 
+ static void
+@@ -548,7 +548,7 @@ idmap_name_to_id(struct svc_rqst *rqstp, int type, const char *name, u32 namelen
+ 		return nfserr_badowner;
+ 	memcpy(key.name, name, namelen);
+ 	key.name[namelen] = '\0';
+-	strlcpy(key.authname, rqst_authname(rqstp), sizeof(key.authname));
++	strscpy(key.authname, rqst_authname(rqstp), sizeof(key.authname));
+ 	ret = idmap_lookup(rqstp, nametoid_lookup, &key, nn->nametoid_cache, &item);
+ 	if (ret == -ENOENT)
+ 		return nfserr_badowner;
+@@ -584,7 +584,7 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
+ 	int ret;
+ 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+ 
+-	strlcpy(key.authname, rqst_authname(rqstp), sizeof(key.authname));
++	strscpy(key.authname, rqst_authname(rqstp), sizeof(key.authname));
+ 	ret = idmap_lookup(rqstp, idtoname_lookup, &key, nn->idtoname_cache, &item);
+ 	if (ret == -ENOENT)
+ 		return encode_ascii_id(xdr, id);
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 5e4b7858b2e50..b2e6fa962f7d9 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1346,7 +1346,7 @@ static __be32 nfsd4_ssc_setup_dul(struct nfsd_net *nn, char *ipaddr,
+ 		return 0;
+ 	}
+ 	if (work) {
+-		strlcpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
++		strscpy(work->nsui_ipaddr, ipaddr, sizeof(work->nsui_ipaddr) - 1);
+ 		refcount_set(&work->nsui_refcnt, 2);
+ 		work->nsui_busy = true;
+ 		list_add_tail(&work->nsui_list, &nn->nfsd_ssc_mount_list);
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 011c556caa1e7..8b1afde192118 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -799,7 +799,7 @@ nfsd_svc(int nrservs, struct net *net, const struct cred *cred)
+ 	if (nrservs == 0 && nn->nfsd_serv == NULL)
+ 		goto out;
+ 
+-	strlcpy(nn->nfsd_name, utsname()->nodename,
++	strscpy(nn->nfsd_name, utsname()->nodename,
+ 		sizeof(nn->nfsd_name));
+ 
+ 	error = nfsd_create_serv(net);
 -- 
 2.43.0
 
