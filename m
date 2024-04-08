@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7367A89C6A5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:16:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E0689C3E0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34913B2B103
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E9961F22619
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DA680BF8;
-	Mon,  8 Apr 2024 14:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476747BAF4;
+	Mon,  8 Apr 2024 13:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knzkzjKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjzI1Z8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB3B8004B;
-	Mon,  8 Apr 2024 14:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059A7745C5;
+	Mon,  8 Apr 2024 13:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584911; cv=none; b=OggDQsTaB7Lhz1aDmalVNTkjVreRffoXSfHqg3DOxTHbBgIQqWtSOrj5lm+quJRaDe64NEKKatk/1QzsRJqbTVgzpUjTHsarXEL8YGqwrSEhIBiQhGFdyXFMlNQaNTdoaQrrvpCquA+2wGI8HmFbs2QaeCVxAqMoaq5sIIC3PPg=
+	t=1712583588; cv=none; b=Vre0CfE241jnOY5j01ApuDPSls5HdZT2xMCiitfOPUJmQ4GyuSUMnfqHMPNg2z3dyHCOc5X5T3HRqNRQr057AdmVeIUnVFshji5rvZTmFyMZ8kpV8eJg7wtcTp3CBrknHNSwjUjaxATb6/jNe5oUXdtm7JL4339bRyGvfC2b5Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584911; c=relaxed/simple;
-	bh=PuM+TdXgWewqil07r1jTEk4UblsRMXXSpuBtRXaSaPE=;
+	s=arc-20240116; t=1712583588; c=relaxed/simple;
+	bh=tjh47309BwWynbz2Ju8UJaoAUgHjrFE7gTgxdaal4vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oe2mrK+xAHvdVLyq5hzX0N7s5YJ44KajLGh8hwhjB+w/E6M1CbadJj2mOYviRmD3W50GMsEK0YfykVt09IefKskdtwSdkDrhEKDDEhfmS/FQg4OiLsZjVZchNYnoQINURcLNWg18rRBtF+3F76uLcvvDeWic/N0mhOMGXCHcla8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knzkzjKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0233AC433F1;
-	Mon,  8 Apr 2024 14:01:50 +0000 (UTC)
+	 MIME-Version; b=WIGjo5kh0OJjghhsUcokowSO5hvtpd/HmZzpY9/vMvGNwGJM5egEqf706nP0Z+44pGWzBJw5IeIUXKk9AiqTdR28g9d/g73m6kw/7EJ5wbDD+YXZLhZ7mYHamTem00b/5A2BSk6evdihtKk8KCDQW2U6D7qH7RB6It7Z6F1Bo8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjzI1Z8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E169C433C7;
+	Mon,  8 Apr 2024 13:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584911;
-	bh=PuM+TdXgWewqil07r1jTEk4UblsRMXXSpuBtRXaSaPE=;
+	s=korg; t=1712583587;
+	bh=tjh47309BwWynbz2Ju8UJaoAUgHjrFE7gTgxdaal4vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knzkzjKmI1kHV3wNRjVFowjBgQ8BTF68FekmPYgd7NBN77K89gZgg0vhk93X6HmIk
-	 fWejsTRVZyO7g/YsHbnKIQ/PWhmvJoQ9JNelx7A7xVJxN4vn7aGKadjd+uEH5/JWWU
-	 nMFK4w29WrfO62QGgBicX2GooMxo5PtYd7btI30E=
+	b=JjzI1Z8qJSMLAK4WnfSX1rZsO6O7apIxnwOCJHRRuecf9Ujgm4jBmP3sxhraSSqd3
+	 FWF2TKBu7cI7vEmODwg6qIIbG9QUrR3NoHUat2W03P+hx2qsGb680O/rE5T1le4YIm
+	 tSrtttwadSYhB0x0fmQC3pyGZjoKWs/O2/A78hkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 5.15 581/690] ALSA: sh: aica: reorder cleanup operations to avoid UAF bugs
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 172/273] ASoC: amd: acp: fix for acp_init function error handling
 Date: Mon,  8 Apr 2024 14:57:27 +0200
-Message-ID: <20240408125420.640279333@linuxfoundation.org>
+Message-ID: <20240408125314.602449940@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit 051e0840ffa8ab25554d6b14b62c9ab9e4901457 upstream.
+[ Upstream commit 2c603a4947a1247102ccb008d5eb6f37a4043c98 ]
 
-The dreamcastcard->timer could schedule the spu_dma_work and the
-spu_dma_work could also arm the dreamcastcard->timer.
+If acp_init() fails, acp pci driver probe should return error.
+Add acp_init() function return value check logic.
 
-When the snd_pcm_substream is closing, the aica_channel will be
-deallocated. But it could still be dereferenced in the worker
-thread. The reason is that del_timer() will return directly
-regardless of whether the timer handler is running or not and
-the worker could be rescheduled in the timer handler. As a result,
-the UAF bug will happen. The racy situation is shown below:
-
-      (Thread 1)                 |      (Thread 2)
-snd_aicapcm_pcm_close()          |
- ...                             |  run_spu_dma() //worker
-                                 |    mod_timer()
-  flush_work()                   |
-  del_timer()                    |  aica_period_elapsed() //timer
-  kfree(dreamcastcard->channel)  |    schedule_work()
-                                 |  run_spu_dma() //worker
-  ...                            |    dreamcastcard->channel-> //USE
-
-In order to mitigate this bug and other possible corner cases,
-call mod_timer() conditionally in run_spu_dma(), then implement
-PCM sync_stop op to cancel both the timer and worker. The sync_stop
-op will be called from PCM core appropriately when needed.
-
-Fixes: 198de43d758c ("[ALSA] Add ALSA support for the SEGA Dreamcast PCM device")
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Message-ID: <20240326094238.95442-1-duoming@zju.edu.cn>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e61b415515d3 ("ASoC: amd: acp: refactor the acp init and de-init sequence")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20240329053815.2373979-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/sh/aica.c |   17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ sound/soc/amd/acp/acp-pci.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/sh/aica.c
-+++ b/sound/sh/aica.c
-@@ -278,7 +278,8 @@ static void run_spu_dma(struct work_stru
- 		dreamcastcard->clicks++;
- 		if (unlikely(dreamcastcard->clicks >= AICA_PERIOD_NUMBER))
- 			dreamcastcard->clicks %= AICA_PERIOD_NUMBER;
--		mod_timer(&dreamcastcard->timer, jiffies + 1);
-+		if (snd_pcm_running(dreamcastcard->substream))
-+			mod_timer(&dreamcastcard->timer, jiffies + 1);
+diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
+index 440b91d4f261c..5f35b90eab8d3 100644
+--- a/sound/soc/amd/acp/acp-pci.c
++++ b/sound/soc/amd/acp/acp-pci.c
+@@ -115,7 +115,10 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
+ 		goto unregister_dmic_dev;
  	}
- }
  
-@@ -290,6 +291,8 @@ static void aica_period_elapsed(struct t
- 	/*timer function - so cannot sleep */
- 	int play_period;
- 	struct snd_pcm_runtime *runtime;
-+	if (!snd_pcm_running(substream))
-+		return;
- 	runtime = substream->runtime;
- 	dreamcastcard = substream->pcm->private_data;
- 	/* Have we played out an additional period? */
-@@ -350,12 +353,19 @@ static int snd_aicapcm_pcm_open(struct s
- 	return 0;
- }
- 
-+static int snd_aicapcm_pcm_sync_stop(struct snd_pcm_substream *substream)
-+{
-+	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
+-	acp_init(chip);
++	ret = acp_init(chip);
++	if (ret)
++		goto unregister_dmic_dev;
 +
-+	del_timer_sync(&dreamcastcard->timer);
-+	cancel_work_sync(&dreamcastcard->spu_dma_work);
-+	return 0;
-+}
-+
- static int snd_aicapcm_pcm_close(struct snd_pcm_substream
- 				 *substream)
- {
- 	struct snd_card_aica *dreamcastcard = substream->pcm->private_data;
--	flush_work(&(dreamcastcard->spu_dma_work));
--	del_timer(&dreamcastcard->timer);
- 	dreamcastcard->substream = NULL;
- 	kfree(dreamcastcard->channel);
- 	spu_disable();
-@@ -401,6 +411,7 @@ static const struct snd_pcm_ops snd_aica
- 	.prepare = snd_aicapcm_pcm_prepare,
- 	.trigger = snd_aicapcm_pcm_trigger,
- 	.pointer = snd_aicapcm_pcm_pointer,
-+	.sync_stop = snd_aicapcm_pcm_sync_stop,
- };
- 
- /* TO DO: set up to handle more than one pcm instance */
+ 	res = devm_kcalloc(&pci->dev, num_res, sizeof(struct resource), GFP_KERNEL);
+ 	if (!res) {
+ 		ret = -ENOMEM;
+-- 
+2.43.0
+
 
 
 
