@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBF689C0B9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04F289C520
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A772B247F1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 408BB1F23382
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D387670CCB;
-	Mon,  8 Apr 2024 13:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D9871753;
+	Mon,  8 Apr 2024 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+rjJ3kE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwUGWYSe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9274C2E62C;
-	Mon,  8 Apr 2024 13:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401926EB72;
+	Mon,  8 Apr 2024 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581788; cv=none; b=rtGKBohoC30XLA6YrJTt7cntjU9kHx7HEOAPKgnP0chlLZ+GQQdJ50cbja+8L/Gd8PkaLpoCI4QbPuK55OewnRNH8QaHnKtQZtvcm3w+C8nIzOX1UJnZWSWSYMjUkn3wS3gg/f/aX861/J29ArRFjk6NwpjRsiCl6nvgIaNYU4A=
+	t=1712584413; cv=none; b=J7NWAXOb5YOIC/u6syzpvT4/fNOKwH4t4N0tMied0FFkJgJk/ftWxuUO89FbAXSk+yP1vFEyhyaxbb7Qod5I03hH7dR70cNXQHNooNE077m/zALEEpjp9QPP2OdCeoS8MsmWVYnUijwgZrcuHhVl3A/3uBIXi8MG2bYVnMg28Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581788; c=relaxed/simple;
-	bh=SKA4slfBrqhpjfvO+HF5fEaRAdjQhG83Oe3IJN/LBUM=;
+	s=arc-20240116; t=1712584413; c=relaxed/simple;
+	bh=tbTu+AseHWIEIAdHCJ13iLvbZAfqn3hmL8mG1QVVKEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsmPMEE5Lm0z4TFkFokpQtqPLlWCY2A9r7Pt2ym+HmvYKS05jGvkqFHOgU4uLnP8nbsQF2bQlKpwFnarmpeH74Hw5n4HNiSFZY7NV/aaiVumeXH3HvpYesyqGc7fNHZQi1rn0xbP+tXBMbzIPV2/nbT8kSM5+T0yHuuqVi5bs0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+rjJ3kE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19864C433F1;
-	Mon,  8 Apr 2024 13:09:47 +0000 (UTC)
+	 MIME-Version; b=etFT+8h7pttjOqsTezDSxlrIC3AmMKClh4bMQF4xAiBXPZamF52OFSqeFJENbuWIHnjj0EGuP4PELnIe4m6gYsRCQ26WgQEcDoiOPWWbBXM1hKxDqMmdEm2VEIhjnrN8Z+mgeQVlw1Pe85/djg8etq9/xEk4t5RxKe9jPpypJuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwUGWYSe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA80C433F1;
+	Mon,  8 Apr 2024 13:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581788;
-	bh=SKA4slfBrqhpjfvO+HF5fEaRAdjQhG83Oe3IJN/LBUM=;
+	s=korg; t=1712584413;
+	bh=tbTu+AseHWIEIAdHCJ13iLvbZAfqn3hmL8mG1QVVKEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+rjJ3kEhFO5Wyx7vw4P0mfPkTw7QXnSrXbAGTGwvvlAAGEoY+hqZQmHU/qjlWTqL
-	 9LJRyL3EkaOymBgWCx9o98KvgLJt3X7VOSCdds+Jv7CCpvLFli3VSZg2UU9lCqd7IY
-	 Gs+yMpD9syMnY1qceJUuZFmNBaPMFAJl3FuKz2Bk=
+	b=MwUGWYSeTawDux/dA5C4AvZ16TTzxd1sfjD0BgcDt7SHdeKzZVUkgkM1k0T1qrYcz
+	 0Q2YwlkrMStZcxkB2GmM1TQvweHBvHZY0i3WmEYzJS64E8iwHzzPw6YULYyK0pQP2U
+	 V4UslEsV0ck1eZu9sQUvVdO9an9cfdIAsN37zv10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Welty <brian.welty@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 020/273] drm/xe: Add exec_queue.sched_props.job_timeout_ms
-Date: Mon,  8 Apr 2024 14:54:55 +0200
-Message-ID: <20240408125309.922551811@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 5.15 430/690] NFSD: Refactor nfsd_setattr()
+Date: Mon,  8 Apr 2024 14:54:56 +0200
+Message-ID: <20240408125415.185557432@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Welty <brian.welty@intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 6ae24344e2e3e12e06f7b382af4bba2fd417b2ff ]
+[ Upstream commit c0aa1913db57219e91a0a8832363cbafb3a9cf8f ]
 
-The purpose here is to allow to optimize exec_queue_set_job_timeout()
-in follow-on patch.  Currently it does q->ops->set_job_timeout(...).
-But we'd like to apply exec_queue_user_extensions much earlier and
-q->ops cannot be called before __xe_exec_queue_init().
+Move code that will be retried (in a subsequent patch) into a helper
+function.
 
-It will be much more efficient to instead only have to set
-q->sched_props.job_timeout_ms when applying user extensions. That value
-will then be used during q->ops->init().
-
-Signed-off-by: Brian Welty <brian.welty@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Stable-dep-of: 9c1256369c10 ("drm/xe/guc_submit: use jiffies for job timeout")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.c       | 2 ++
- drivers/gpu/drm/xe/xe_exec_queue_types.h | 2 ++
- drivers/gpu/drm/xe/xe_guc_submit.c       | 2 +-
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ fs/nfsd/vfs.c | 97 ++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 57 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index 49223026c89fd..a176d9ad6d1b8 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -66,6 +66,8 @@ static struct xe_exec_queue *__xe_exec_queue_create(struct xe_device *xe,
- 	q->sched_props.timeslice_us = hwe->eclass->sched_props.timeslice_us;
- 	q->sched_props.preempt_timeout_us =
- 				hwe->eclass->sched_props.preempt_timeout_us;
-+	q->sched_props.job_timeout_ms =
-+				hwe->eclass->sched_props.job_timeout_ms;
- 	if (q->flags & EXEC_QUEUE_FLAG_KERNEL &&
- 	    q->flags & EXEC_QUEUE_FLAG_HIGH_PRIORITY)
- 		q->sched_props.priority = XE_EXEC_QUEUE_PRIORITY_KERNEL;
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-index 36f4901d8d7ee..747106584f752 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-@@ -132,6 +132,8 @@ struct xe_exec_queue {
- 		u32 timeslice_us;
- 		/** @preempt_timeout_us: preemption timeout in micro-seconds */
- 		u32 preempt_timeout_us;
-+		/** @job_timeout_ms: job timeout in milliseconds */
-+		u32 job_timeout_ms;
- 		/** @priority: priority of this exec queue */
- 		enum xe_exec_queue_priority priority;
- 	} sched_props;
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index f22ae717b0b2d..9d5e3afef5057 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1216,7 +1216,7 @@ static int guc_exec_queue_init(struct xe_exec_queue *q)
- 	init_waitqueue_head(&ge->suspend_wait);
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 77f8ab3826d75..392df2353556e 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -344,8 +344,61 @@ nfsd_get_write_access(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	return nfserrno(get_write_access(inode));
+ }
  
- 	timeout = (q->vm && xe_vm_in_lr_mode(q->vm)) ? MAX_SCHEDULE_TIMEOUT :
--		  q->hwe->eclass->sched_props.job_timeout_ms;
-+		  q->sched_props.job_timeout_ms;
- 	err = xe_sched_init(&ge->sched, &drm_sched_ops, &xe_sched_ops,
- 			    get_submit_wq(guc),
- 			    q->lrc[0].ring.size / MAX_JOB_SIZE_BYTES, 64,
+-/*
+- * Set various file attributes.  After this call fhp needs an fh_put.
++static int __nfsd_setattr(struct dentry *dentry, struct iattr *iap)
++{
++	int host_err;
++
++	if (iap->ia_valid & ATTR_SIZE) {
++		/*
++		 * RFC5661, Section 18.30.4:
++		 *   Changing the size of a file with SETATTR indirectly
++		 *   changes the time_modify and change attributes.
++		 *
++		 * (and similar for the older RFCs)
++		 */
++		struct iattr size_attr = {
++			.ia_valid	= ATTR_SIZE | ATTR_CTIME | ATTR_MTIME,
++			.ia_size	= iap->ia_size,
++		};
++
++		if (iap->ia_size < 0)
++			return -EFBIG;
++
++		host_err = notify_change(&init_user_ns, dentry, &size_attr, NULL);
++		if (host_err)
++			return host_err;
++		iap->ia_valid &= ~ATTR_SIZE;
++
++		/*
++		 * Avoid the additional setattr call below if the only other
++		 * attribute that the client sends is the mtime, as we update
++		 * it as part of the size change above.
++		 */
++		if ((iap->ia_valid & ~ATTR_MTIME) == 0)
++			return 0;
++	}
++
++	if (!iap->ia_valid)
++		return 0;
++
++	iap->ia_valid |= ATTR_CTIME;
++	return notify_change(&init_user_ns, dentry, iap, NULL);
++}
++
++/**
++ * nfsd_setattr - Set various file attributes.
++ * @rqstp: controlling RPC transaction
++ * @fhp: filehandle of target
++ * @attr: attributes to set
++ * @check_guard: set to 1 if guardtime is a valid timestamp
++ * @guardtime: do not act if ctime.tv_sec does not match this timestamp
++ *
++ * This call may adjust the contents of @attr (in particular, this
++ * call may change the bits in the na_iattr.ia_valid field).
++ *
++ * Returns nfs_ok on success, otherwise an NFS status code is
++ * returned. Caller must release @fhp by calling fh_put in either
++ * case.
+  */
+ __be32
+ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+@@ -358,7 +411,7 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	int		accmode = NFSD_MAY_SATTR;
+ 	umode_t		ftype = 0;
+ 	__be32		err;
+-	int		host_err = 0;
++	int		host_err;
+ 	bool		get_write_count;
+ 	bool		size_change = (iap->ia_valid & ATTR_SIZE);
+ 
+@@ -415,43 +468,7 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	}
+ 
+ 	inode_lock(inode);
+-	if (size_change) {
+-		/*
+-		 * RFC5661, Section 18.30.4:
+-		 *   Changing the size of a file with SETATTR indirectly
+-		 *   changes the time_modify and change attributes.
+-		 *
+-		 * (and similar for the older RFCs)
+-		 */
+-		struct iattr size_attr = {
+-			.ia_valid	= ATTR_SIZE | ATTR_CTIME | ATTR_MTIME,
+-			.ia_size	= iap->ia_size,
+-		};
+-
+-		host_err = -EFBIG;
+-		if (iap->ia_size < 0)
+-			goto out_unlock;
+-
+-		host_err = notify_change(&init_user_ns, dentry, &size_attr, NULL);
+-		if (host_err)
+-			goto out_unlock;
+-		iap->ia_valid &= ~ATTR_SIZE;
+-
+-		/*
+-		 * Avoid the additional setattr call below if the only other
+-		 * attribute that the client sends is the mtime, as we update
+-		 * it as part of the size change above.
+-		 */
+-		if ((iap->ia_valid & ~ATTR_MTIME) == 0)
+-			goto out_unlock;
+-	}
+-
+-	if (iap->ia_valid) {
+-		iap->ia_valid |= ATTR_CTIME;
+-		host_err = notify_change(&init_user_ns, dentry, iap, NULL);
+-	}
+-
+-out_unlock:
++	host_err = __nfsd_setattr(dentry, iap);
+ 	if (attr->na_seclabel && attr->na_seclabel->len)
+ 		attr->na_labelerr = security_inode_setsecctx(dentry,
+ 			attr->na_seclabel->data, attr->na_seclabel->len);
 -- 
 2.43.0
 
