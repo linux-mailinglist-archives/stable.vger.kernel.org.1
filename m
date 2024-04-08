@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB4B89C08F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9905C89C54D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B9851F21CF8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBCC01C229B4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B276A352;
-	Mon,  8 Apr 2024 13:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF8978286;
+	Mon,  8 Apr 2024 13:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTvaKUwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nfQiGGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729C070CDA;
-	Mon,  8 Apr 2024 13:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B5C6EB72;
+	Mon,  8 Apr 2024 13:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581794; cv=none; b=ISJWK40nvNYataOP7p5JEvOc0yUVgDgqTJYP8yh+LBERl41HYnLyzXoPRy6isHWu+AfoA+h8+BAij61Rf/tJu8e9ZPS4je6kAx+i2TINszHF45XzcBbtHRjoRDwNzDSPj40Zw2lT35ZF52XNSIMIGVfzOg+ILBd5a2IV6ZAngp0=
+	t=1712584542; cv=none; b=gmh5h4/GM3B3fbT6AhQ3Cvc3smE1oWeOz16kspBZ3d/5oPx+DfpgDmOhz9E1s0Q3uxQCJo7gjAq8SBgI17pMOo2YLhFvVC9YpOWbIehz9wjpqRKSi3tT+pDLRkx824VZqBg8l7JNrueWnF3c6dtYunA0Wtt+ut1n1YXoZgEFly0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581794; c=relaxed/simple;
-	bh=tyvHKsiy2TABhj3ZWVp7jlaw9PBbQWYNXQ2SNAz9hyo=;
+	s=arc-20240116; t=1712584542; c=relaxed/simple;
+	bh=LQ4sXvMpyILRMdXVrvljBdKHiF0jHsfzWUV90pUWfEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEue3tapjDCul+W10Q9ofzut9D3G3imBwjt4Kr7yajN0oLQAb7T0E6OJ7NCq6RqzGgyC+IuciBml0QD6vt7LYpuR11e9/jrOGDPD5vdF/oxyAdremsAfFjlWU/jODkjyPxycPxA9M2taBi9XExoaiXxpf8vcK17lr/lzxiuNbAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTvaKUwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6671C43390;
-	Mon,  8 Apr 2024 13:09:53 +0000 (UTC)
+	 MIME-Version; b=dWayr74Rzl9uMX2UeHyZKuJnzFnkKBbb2+F/btU5sbnU9kZ4hSa8t9AYRb6zkMFRPwRq8jdeKMNlFRsW50NxLin0TrL6rtGNWNHvDxryE4MOM9IV0mHzogSpnjGITv8M4EvI71TZhRPK0ESQ4DSgnKOboTyvpQaKSS62ERC7TBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nfQiGGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D2DC433F1;
+	Mon,  8 Apr 2024 13:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581794;
-	bh=tyvHKsiy2TABhj3ZWVp7jlaw9PBbQWYNXQ2SNAz9hyo=;
+	s=korg; t=1712584541;
+	bh=LQ4sXvMpyILRMdXVrvljBdKHiF0jHsfzWUV90pUWfEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VTvaKUwBi+rR0iCbQRxZikIfY2ZU8CaljKxx+JRjTgN8bhwXvi3SJ34zVNCTjdA5h
-	 Y6FnCIBEpPx2fnvACce53gcFunz3RH0sVnTjNq3Z6qhOjoxWbzGVZq1nwvA91Fxy/x
-	 X47jLKvFXU7MwVTYXHCppJhICD2nQPK1kMwAAIUc=
+	b=2nfQiGGteCEz5OM8rCQCEuPzYwPJ2hXi4PRCGOm8YdBiM9v/ysO19QxhiXQFujC2g
+	 agyWav+XeQ8pi9BfX9OvsIhFVXnNbqQTSUpJOFH7EzBKnqy7KOMqhKOGFeDKUZX/fw
+	 JhF17erHey2AF0q3VKXqgXD8q6XDotIj/DuxzeUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/252] Octeontx2-af: fix pause frame configuration in GMP mode
+	Jeff Layton <jlayton@kernel.org>,
+	Tom Talpey <tom@talpey.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 473/690] nfsd: ignore requests to disable unsupported versions
 Date: Mon,  8 Apr 2024 14:55:39 +0200
-Message-ID: <20240408125307.884607169@linuxfoundation.org>
+Message-ID: <20240408125416.733711443@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 40d4b4807cadd83fb3f46cc8cd67a945b5b25461 ]
+[ Upstream commit 8e823bafff2308753d430566256c83d8085952da ]
 
-The Octeontx2 MAC block (CGX) has separate data paths (SMU and GMP) for
-different speeds, allowing for efficient data transfer.
+The kernel currently errors out if you attempt to enable or disable a
+version that it doesn't recognize. Change it to ignore attempts to
+disable an unrecognized version. If we don't support it, then there is
+no harm in doing so.
 
-The previous patch which added pause frame configuration has a bug due
-to which pause frame feature is not working in GMP mode.
-
-This patch fixes the issue by configurating appropriate registers.
-
-Fixes: f7e086e754fe ("octeontx2-af: Pause frame configuration at cgx")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326052720.4441-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfsd/nfsctl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index 6c18d3d2442eb..2539c985f695a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -808,6 +808,11 @@ static int cgx_lmac_enadis_pause_frm(void *cgxd, int lmac_id,
- 	if (!is_lmac_valid(cgx, lmac_id))
- 		return -ENODEV;
- 
-+	cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
-+	cfg &= ~CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
-+	cfg |= rx_pause ? CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK : 0x0;
-+	cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
-+
- 	cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
- 	cfg &= ~CGX_SMUX_RX_FRM_CTL_CTL_BCK;
- 	cfg |= rx_pause ? CGX_SMUX_RX_FRM_CTL_CTL_BCK : 0x0;
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index dc74a947a440c..68ed42fd29fc8 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -601,7 +601,9 @@ static ssize_t __write_versions(struct file *file, char *buf, size_t size)
+ 				}
+ 				break;
+ 			default:
+-				return -EINVAL;
++				/* Ignore requests to disable non-existent versions */
++				if (cmd == NFSD_SET)
++					return -EINVAL;
+ 			}
+ 			vers += len + 1;
+ 		} while ((len = qword_get(&mesg, vers, size)) > 0);
 -- 
 2.43.0
 
