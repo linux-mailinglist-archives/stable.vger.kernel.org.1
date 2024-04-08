@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-36560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEE789C062
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5B789C52C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F03081F21CC9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FABA1C2223C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FDA6A352;
-	Mon,  8 Apr 2024 13:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C1B74438;
+	Mon,  8 Apr 2024 13:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqw3cjnx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiJYo+xP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247CA2DF73;
-	Mon,  8 Apr 2024 13:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CF26EB72;
+	Mon,  8 Apr 2024 13:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581683; cv=none; b=g38PPeguYG75r6RdCh4al8ixbayF4hUUjfqjOj7Hc3fd9RncbfcADuF9rC3Us3jrzeXMgSh5SN29NZlDx0BN8UJtCP1JaFqGlQXYOoO2s/oQl2n+hH53DnZ8ZJ59lblruwub7zYLuT3TDwl7I4PAdnFr+doq+T6lYfiiThJd0h8=
+	t=1712584448; cv=none; b=DNJTie650HSO9pQJ3/CD9u8lhX54POllBgEq7z1IG2JOKWf0jfqV438i8hcgPLp5oE7Jsv1+aCOpLXIxFqaxQY3A49ZvHIOO7qrLlxh+hEU7o1iUeU4kG17Y+wfzsdHfclRuBAbdqP8k/AWgxWuCWOzmgdZ71/oXF9qGGpfNXyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581683; c=relaxed/simple;
-	bh=sIibRmTEO9bPy+OwmWF/hejFB9eYy2oD2wA4qE8Dn94=;
+	s=arc-20240116; t=1712584448; c=relaxed/simple;
+	bh=l9W/71XjqxwHNzU/5a6ey4AaM1QVTcAgBBfohX5V0TM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOeqPx5d0sD5CuzWfmUY7GhDegkGpA2zZaCVA5sHTGN6/E4DZezyv88T8Gieis/sb+YsC95SoluFfF3jQXOE/g/k3V5NJi64Sk74LxrNwL0HH1AdeeDpWePbh8QnqNrdmfSV5zObRX3huMgiRkywsSLst8GLXONAHs4fsg84H58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqw3cjnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24E8C433F1;
-	Mon,  8 Apr 2024 13:08:02 +0000 (UTC)
+	 MIME-Version; b=uk1XImIRN3kblzuHGfrhGDAVK/fl0sLq6WKL2Os1Krh7a1Cg/2ojKWq/vh6DYApiQerLsC32nfo2HB25Y4J7eSKbszk+ov7A5Qdfkt0Tw43gIHCbS3RvRrx3NnZ9IC7imFhjkP1FHL0NbUefls1GVTK7iErk3seJ5JaAuq/AnKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiJYo+xP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEF4C433C7;
+	Mon,  8 Apr 2024 13:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581683;
-	bh=sIibRmTEO9bPy+OwmWF/hejFB9eYy2oD2wA4qE8Dn94=;
+	s=korg; t=1712584448;
+	bh=l9W/71XjqxwHNzU/5a6ey4AaM1QVTcAgBBfohX5V0TM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hqw3cjnxmi+ZZPU+mZ1oLT9yOnFKBH8PwXl58sZzIvTndq9O0TWPEn3ZZbENYtYmJ
-	 NlruWu0pubFWo1125UNkBPZRJl24gC8ag46bd0didz9TjrYkWRVpzPWdatG+J0UT5Z
-	 8HpSMPEXwEmK+GD05sw1MW6k65FIyNGK+BUQR9co=
+	b=AiJYo+xPEbR3RcqiRxUUMp6n7jPW48Gayn9bNDlNKMy1fTseIlNKFnQB3lWNnIFw8
+	 0V++NEHe7eRKHhLeMwtWHKBuOo/cvuW6duzCKjrLBGZGd/XLE3cuLR+jjrVlW+kNQk
+	 wqoR9aDjX218x1KA6RNWnwkjyQh9RinB+0VIHlwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Jeremy Cline <jeremy@jcline.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
-	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 008/252] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 441/690] NFSD: Clean up nfs4svc_encode_compoundres()
 Date: Mon,  8 Apr 2024 14:55:07 +0200
-Message-ID: <20240408125306.905310388@linuxfoundation.org>
+Message-ID: <20240408125415.621729411@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
+[ Upsteam commit 9993a66317fc9951322483a9edbfae95a640b210 ]
 
-syzbot reported the following uninit-value access issue [1][2]:
+In today's Linux NFS server implementation, the NFS dispatcher
+initializes each XDR result stream, and the NFSv4 .pc_func and
+.pc_encode methods all use xdr_stream-based encoding. This keeps
+rq_res.len automatically updated. There is no longer a need for
+the WARN_ON_ONCE() check in nfs4svc_encode_compoundres().
 
-nci_rx_work() parses and processes received packet. When the payload
-length is zero, each message type handler reads uninitialized payload
-and KMSAN detects this issue. The receipt of a packet with a zero-size
-payload is considered unexpected, and therefore, such packets should be
-silently discarded.
-
-This patch resolved this issue by checking payload size before calling
-each message type handler codes.
-
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
-Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
-Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/nfc/nci/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfsd/nfs4xdr.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 12684d835cb53..772ddb5824d9e 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1516,6 +1516,11 @@ static void nci_rx_work(struct work_struct *work)
- 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
- 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 6c43cf52a885f..76028a5c81d1d 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -5470,12 +5470,8 @@ bool
+ nfs4svc_encode_compoundres(struct svc_rqst *rqstp, struct xdr_stream *xdr)
+ {
+ 	struct nfsd4_compoundres *resp = rqstp->rq_resp;
+-	struct xdr_buf *buf = xdr->buf;
+ 	__be32 *p;
  
-+		if (!nci_plen(skb->data)) {
-+			kfree_skb(skb);
-+			break;
-+		}
-+
- 		/* Process frame */
- 		switch (nci_mt(skb->data)) {
- 		case NCI_MT_RSP_PKT:
+-	WARN_ON_ONCE(buf->len != buf->head[0].iov_len + buf->page_len +
+-				 buf->tail[0].iov_len);
+-
+ 	/*
+ 	 * Send buffer space for the following items is reserved
+ 	 * at the top of nfsd4_proc_compound().
 -- 
 2.43.0
 
