@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC52689C06C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312A489C53A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42AE21F2131B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6163D1C22633
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5E36A352;
-	Mon,  8 Apr 2024 13:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AA378285;
+	Mon,  8 Apr 2024 13:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FM9+BUX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2ggnJV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4062DF73;
-	Mon,  8 Apr 2024 13:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF4942046;
+	Mon,  8 Apr 2024 13:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581709; cv=none; b=gHmn5kCte12CqvXYujbTW3sB6lRzsCZQBtZ1MnYbMfGJMvO4tTEjAlFtPqJVxoXE3pT/NqezfO5S4DarNYQGCwqrOE9PkBM4HOfjDkyCquu/tn8Tb0o3rTkrjdaAMVs5UT/Rn6L2OsAHHMSRDStPlbVMThsQklDTwI2hqi5GsxU=
+	t=1712584483; cv=none; b=hOGWN8b5Co7vCwxo3soksoqL83DslV7Ovu//4M7tTVO7SUR8gDHSrzAz8O8Mnv1uU2PL2GsE4XIUe5tFXuEnSAPz7cr3tm+NWfUbwX1OKXYjmVqarxYkTYhwwGkeOrIOlLde9ys8ddgDloqqeq7LuENah3mwB+c+anUkNysVmaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581709; c=relaxed/simple;
-	bh=/v6xcaatby8wpjpO1f3b5BYTDkMqHUs+cmVmmG3AzRU=;
+	s=arc-20240116; t=1712584483; c=relaxed/simple;
+	bh=HsLK+CH7D5qw030Pdc9pYr0hvv8WDPY92zQonQkjC+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=msi4BzwjFAokSpf41nHR+PgsPk+LAe14trEAECcL/Hvd0gBWv2BbzzbhXVWtYm2L3pVRdhDCHOTZagVe96BssudFZG7J/Kc3ZdT8Ba9a36p5ZXRoHN4hKEL0+FJwguJqxlgo2v+OmqfntJe0S467ouZga7dlLLg6NL1qAjSqDVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FM9+BUX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE4CC43390;
-	Mon,  8 Apr 2024 13:08:28 +0000 (UTC)
+	 MIME-Version; b=KiWip2O8XHYuusp5RM08y2P5PE4HE2SKOUrT5ZQm+9w8p3VwOXDistIBfZka0xmD+n3k43iOpNAn8iBX5P67GPKFr/3//I/KVUsjp8rNWoGJPbvfRoJG42+Uej9PLuILiWGPzLrA9t31NrxX7RoD85BQhyI4h3+mQsrJPfhttlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2ggnJV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE906C433C7;
+	Mon,  8 Apr 2024 13:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581709;
-	bh=/v6xcaatby8wpjpO1f3b5BYTDkMqHUs+cmVmmG3AzRU=;
+	s=korg; t=1712584483;
+	bh=HsLK+CH7D5qw030Pdc9pYr0hvv8WDPY92zQonQkjC+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FM9+BUX6ySiSdM72QJCfTQqyp/DYFC86z05YaTGclEszp4cTIDDxBOIJBkKE4Mw8/
-	 uO2OzeUvqkbC71PkxGdrdOHjcfh1G/Z8lnptJKn6rvMk1ksgm4VlFO03eyafd9r8Sq
-	 a5u8EEkaWJmwT87zvD+5fYxB2L214tFeMenFanNY=
+	b=E2ggnJV4SKKJ7npHhOQQtjchpfh2XehZPGW0Ymc8QSjcsvpKm9w++VKtFpKIfDIdt
+	 ks5o+8f/VygiN4APC9lKl5W/dUMDMLhgyFgD9AU2CMPu/XynyscezBYp28lCi+Ij+Y
+	 6ydKm5NNcfRRYGOvN7XqLYAwZC1WL49OEgmTM5pI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 014/273] ALSA: hda: cs35l56: Set the init_done flag before component_add()
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 423/690] NFSD: drop fname and flen args from nfsd_create_locked()
 Date: Mon,  8 Apr 2024 14:54:49 +0200
-Message-ID: <20240408125309.728109990@linuxfoundation.org>
+Message-ID: <20240408125414.929058542@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit cafe9c6a72cf1ffe96d2561d988a141cb5c093db ]
+[ Upstream commit 9558f9304ca1903090fa5d995a3269a8e82804b4 ]
 
-Initialization is completed before adding the component as that can
-start the process of the device binding and trigger actions that check
-init_done.
+nfsd_create_locked() does not use the "fname" and "flen" arguments, so
+drop them from declaration and all callers.
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
-Message-ID: <20240325145510.328378-1-rf@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- sound/pci/hda/cs35l56_hda.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfsproc.c | 5 ++---
+ fs/nfsd/vfs.c     | 5 ++---
+ fs/nfsd/vfs.h     | 4 ++--
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
-index 75a14ba54fcd1..43a445bd961fb 100644
---- a/sound/pci/hda/cs35l56_hda.c
-+++ b/sound/pci/hda/cs35l56_hda.c
-@@ -1017,14 +1017,14 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int id)
- 	pm_runtime_mark_last_busy(cs35l56->base.dev);
- 	pm_runtime_enable(cs35l56->base.dev);
- 
-+	cs35l56->base.init_done = true;
-+
- 	ret = component_add(cs35l56->base.dev, &cs35l56_hda_comp_ops);
- 	if (ret) {
- 		dev_err(cs35l56->base.dev, "Register component failed: %d\n", ret);
- 		goto pm_err;
- 	}
- 
--	cs35l56->base.init_done = true;
--
- 	return 0;
- 
- pm_err:
+diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
+index 4b19cc727ea50..ee02ede74bf53 100644
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -391,9 +391,8 @@ nfsd_proc_create(struct svc_rqst *rqstp)
+ 	resp->status = nfs_ok;
+ 	if (!inode) {
+ 		/* File doesn't exist. Create it and set attrs */
+-		resp->status = nfsd_create_locked(rqstp, dirfhp, argp->name,
+-						  argp->len, &attrs, type, rdev,
+-						  newfhp);
++		resp->status = nfsd_create_locked(rqstp, dirfhp, &attrs, type,
++						  rdev, newfhp);
+ 	} else if (type == S_IFREG) {
+ 		dprintk("nfsd:   existing %s, valid=%x, size=%ld\n",
+ 			argp->name, attr->ia_valid, (long) attr->ia_size);
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 343af6341e5e1..77f8ab3826d75 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1257,7 +1257,7 @@ nfsd_check_ignore_resizing(struct iattr *iap)
+ /* The parent directory should already be locked: */
+ __be32
+ nfsd_create_locked(struct svc_rqst *rqstp, struct svc_fh *fhp,
+-		   char *fname, int flen, struct nfsd_attrs *attrs,
++		   struct nfsd_attrs *attrs,
+ 		   int type, dev_t rdev, struct svc_fh *resfhp)
+ {
+ 	struct dentry	*dentry, *dchild;
+@@ -1384,8 +1384,7 @@ nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (err)
+ 		goto out_unlock;
+ 	fh_fill_pre_attrs(fhp);
+-	err = nfsd_create_locked(rqstp, fhp, fname, flen, attrs, type,
+-				 rdev, resfhp);
++	err = nfsd_create_locked(rqstp, fhp, attrs, type, rdev, resfhp);
+ 	fh_fill_post_attrs(fhp);
+ out_unlock:
+ 	inode_unlock(dentry->d_inode);
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index c95cd414b4bb0..120521bc7b247 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -79,8 +79,8 @@ __be32		nfsd4_clone_file_range(struct svc_rqst *rqstp,
+ 				       u64 count, bool sync);
+ #endif /* CONFIG_NFSD_V4 */
+ __be32		nfsd_create_locked(struct svc_rqst *, struct svc_fh *,
+-				char *name, int len, struct nfsd_attrs *attrs,
+-				int type, dev_t rdev, struct svc_fh *res);
++				struct nfsd_attrs *attrs, int type, dev_t rdev,
++				struct svc_fh *res);
+ __be32		nfsd_create(struct svc_rqst *, struct svc_fh *,
+ 				char *name, int len, struct nfsd_attrs *attrs,
+ 				int type, dev_t rdev, struct svc_fh *res);
 -- 
 2.43.0
 
