@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40C089C129
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:18:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAB289C653
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FDCC283280
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:18:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 445F3B28CE6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AEB12BEAA;
-	Mon,  8 Apr 2024 13:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32171763F1;
+	Mon,  8 Apr 2024 13:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaiFHDf5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOGYheDq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F2912BEA0;
-	Mon,  8 Apr 2024 13:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A6D42046;
+	Mon,  8 Apr 2024 13:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581993; cv=none; b=D9X6GLcnv8bzooPKRMnbEBluv/pgF25fmzXZRBuTJhZ9PffOB8Bhk62QsAPBstZ8QSt7rryYxweK3KL96CfcNPS8X1DF2d/PfHEOzoWlSgvHYZpA0SeGFT+K62l/ncNJE6tu2qvyd1cYpz5WpDHLxfLIdo1bZR2JiioaIrNbO/s=
+	t=1712584469; cv=none; b=kuvsUyCtgI98UkfxvHBhQLTYDpPGuCiiWBeqKYLLTI3Ydw6LMGbDrD6fi3xXh23ZLayx/ViJK8EYWELUvLZkVHLnxYtqPJ6TV9Ue/jkSq7lqWL6wqgR8rQ2Wdjm+XTwhvtK78G+i8dWUkdZ+Lf73DVm6kpTHdb7ML2+BRjk1qI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581993; c=relaxed/simple;
-	bh=A16dzNdHfdpZ0qTU0qj12nJHY5EP8NtL3kHpy23UgfQ=;
+	s=arc-20240116; t=1712584469; c=relaxed/simple;
+	bh=313xyx46Vy4DkI2B0fbGr/NDIjwY3Rz0fjs3IPO28lY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dekezO5UuW01iJc039aoj2UgWsDGnMZ2EZzKaD8HndQKxoy2dJUWL1AAZRnWMuRMQkhNmZe5gZS7536GPvuiRPn6qi5MqPqX48O1wACFSAzGb3IXO0+mzrlQ1LF3UEIhDr0sr36hh58rttvBndR+1Q1+2gPRdO+e1oas5ql9nMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaiFHDf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCB5C433F1;
-	Mon,  8 Apr 2024 13:13:13 +0000 (UTC)
+	 MIME-Version; b=uFW/2llSHDah/GlChTD+dcMu0+NEn6FnczxB5W9mKF5bx+Na/XBPj2cV7/MQ6yhjs3Kwz5qnONK3i6GiRVNejUPRHdbwk2Cy0hV57UYFs+6rPoQtHF8zCzxeuw1ITaWQOZieSA78Z7Glv2WpEd8AhIBavTwbIsdH7tXTM9m2KDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOGYheDq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E19EC433F1;
+	Mon,  8 Apr 2024 13:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581993;
-	bh=A16dzNdHfdpZ0qTU0qj12nJHY5EP8NtL3kHpy23UgfQ=;
+	s=korg; t=1712584468;
+	bh=313xyx46Vy4DkI2B0fbGr/NDIjwY3Rz0fjs3IPO28lY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaiFHDf5+LGsclcWMvRMigq8zSDuKGJocxTWdPqVNJ+oI7J08Tf5zKh6rLCrCZ5Mt
-	 IXqJeHl0yEzHV9oydlAcLZyon80Fb7MQ9LNNJZda4AUAN4PYDGtD0q7zA3CNqtBqsk
-	 LQp/kxGM2xbbSYJXaBWOzyJ5clQaH7OzjJr8t6pw=
+	b=xOGYheDq+cWXWb6g4QHogR1LEdHtJRCDBmpW9EV94rOpQq8ZVCAJmvxunln0F5dd4
+	 OpKAEd6n84mUGawl8LbM18Ntg60J8w3tN/GYUG4yT+GVeBa7D974vgxKYGCCOWdigs
+	 Sbg9WlAdLbkTyyvZCG5Ewdpxb3Tj3j9vyiFItKnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 038/273] tls: adjust recv return with async crypto and failed copy to userspace
+	ChenXiaoSong <chenxiaosong2@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 447/690] nfsd: use DEFINE_SHOW_ATTRIBUTE to define client_info_fops
 Date: Mon,  8 Apr 2024 14:55:13 +0200
-Message-ID: <20240408125310.475239315@linuxfoundation.org>
+Message-ID: <20240408125415.839246844@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: ChenXiaoSong <chenxiaosong2@huawei.com>
 
-[ Upstream commit 85eef9a41d019b59be7bc91793f26251909c0710 ]
+[ Upstream commit 1d7f6b302b75ff7acb9eb3cab0c631b10cfa7542 ]
 
-process_rx_list may not copy as many bytes as we want to the userspace
-buffer, for example in case we hit an EFAULT during the copy. If this
-happens, we should only count the bytes that were actually copied,
-which may be 0.
+Use DEFINE_SHOW_ATTRIBUTE helper macro to simplify the code.
 
-Subtracting async_copy_bytes is correct in both peek and !peek cases,
-because decrypted == async_copy_bytes + peeked for the peek case: peek
-is always !ZC, and we can go through either the sync or async path. In
-the async case, we add chunk to both decrypted and
-async_copy_bytes. In the sync case, we add chunk to both decrypted and
-peeked. I missed that in commit 6caaf104423d ("tls: fix peeking with
-sync+async decryption").
+inode is converted from seq_file->file instead of seq_file->private in
+client_info_show().
 
-Fixes: 4d42cd6bc2ac ("tls: rx: fix return value for async crypto")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1b5a1eaab3c088a9dd5d9f1059ceecd7afe888d1.1711120964.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: ChenXiaoSong <chenxiaosong2@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/tls/tls_sw.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfs4state.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 3cdc6bc9fba69..14faf6189eb14 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2158,6 +2158,9 @@ int tls_sw_recvmsg(struct sock *sk,
- 		else
- 			err = process_rx_list(ctx, msg, &control, 0,
- 					      async_copy_bytes, is_peek, NULL);
-+
-+		/* we could have copied less than we wanted, and possibly nothing */
-+		decrypted += max(err, 0) - async_copy_bytes;
- 	}
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 8cbb66b07d519..cc258f2988c73 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -2503,7 +2503,7 @@ static const char *cb_state2str(int state)
  
- 	copied += decrypted;
+ static int client_info_show(struct seq_file *m, void *v)
+ {
+-	struct inode *inode = m->private;
++	struct inode *inode = file_inode(m->file);
+ 	struct nfs4_client *clp;
+ 	u64 clid;
+ 
+@@ -2543,17 +2543,7 @@ static int client_info_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static int client_info_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, client_info_show, inode);
+-}
+-
+-static const struct file_operations client_info_fops = {
+-	.open		= client_info_open,
+-	.read		= seq_read,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(client_info);
+ 
+ static void *states_start(struct seq_file *s, loff_t *pos)
+ 	__acquires(&clp->cl_lock)
 -- 
 2.43.0
 
