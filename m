@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84B789C483
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38DB89C62D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46DD11F21BB7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC76285F01
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCCA7D09A;
-	Mon,  8 Apr 2024 13:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2698005E;
+	Mon,  8 Apr 2024 14:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHQt4GeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLcLFayQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B527B7D07E;
-	Mon,  8 Apr 2024 13:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFCA80034;
+	Mon,  8 Apr 2024 14:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584001; cv=none; b=JrN8r23zBEBp9XoH0Q95ydQNyiy7BjoXkVs1flN/JFZGCFVvYfdyLuLtyg1ffMhsDzeJ8bau6t7xrFZGPVs5KNbsxsF6jqKgPbA2wb4SwWH0YjxbRjsOvj/V5qg89H3rSyMFoZRrg2Cw6uozg1FR4NrPkuZ5KtyGEZjc0j919m4=
+	t=1712585122; cv=none; b=Esa0lOfKFsxbPyLojC/L3jZwrt8zgv1ggF7LagtkLQBjJOIVYWDgM/NrSTn80VYFjPSKQ03s6wSm7iY/w33+WPkflZsEIhBAUF7PF6JB5dEKOjeLgXK7OG1+TGcbjwcb7QG9t1OAWLBVABGu81XA+ZdMvKLChXqcD0I8tqdYXXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584001; c=relaxed/simple;
-	bh=DhCE44rGo9Q1AC0KtQ78880apy9K3tzXOZ2YW3ZV+eE=;
+	s=arc-20240116; t=1712585122; c=relaxed/simple;
+	bh=2/Mt5RY+vt9z0+N1MI0LVkaZkvNY4lwrgF9QTceYHO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EE8wYGDwyLSkXM319ojWjm5Xs0pVpgd475/htV6w5O8np6RnZdPJcmS6pa/C6EBQS6+nnkf+0TQBVyy3+a+2r4S9lfCrcpgrooLbwSvaO1g+bjjt5zbF3dvofRmExwB7j9u0tytSAnOTsdG2BGIOyvWonPdJWbCKymYbflbdEVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHQt4GeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296B1C433C7;
-	Mon,  8 Apr 2024 13:46:40 +0000 (UTC)
+	 MIME-Version; b=hIADteasSZ5Xvg9EoQGE/P4dm/ogjokkSUZFtdScGVSXgala1krnqDigGpr+virFTkebV5prvVvZiT7mOnOanaXPbepkqy8i+v9RwAsgyCvGskUkVAVpLQ0W2dSbZrRkiaraTOuu8vn135pANEesVru9s7vm87Hj4Xy1vZgrdTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLcLFayQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B5BC433F1;
+	Mon,  8 Apr 2024 14:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584001;
-	bh=DhCE44rGo9Q1AC0KtQ78880apy9K3tzXOZ2YW3ZV+eE=;
+	s=korg; t=1712585122;
+	bh=2/Mt5RY+vt9z0+N1MI0LVkaZkvNY4lwrgF9QTceYHO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHQt4GeMlEpN+Y578tk/ds4tnYpmhV+Y5ELfPNPnFeMQBQPDmZPfw+P2U/PKIG2hQ
-	 32fzdMspdV8l0bd9fglEnhhwTdMzfnB76LbwN1UnoKYV7rcrnkm7kqDOnFr4lPQP6V
-	 5xDrM8PaAHlHINxYlWzJTCLD5Q1x/OfAuPeRWx1A=
+	b=NLcLFayQxZ6TgzFJCo3lavH2hDEVsynd6VetH+sjzoDquJYLsyQIDA0cfsDKNETlL
+	 fbrUkVlEXq8jp/FqQ1+VNkJ5MmrVg8+q71CBXuAHBRzmNTUeto3dVfnueHv2bWjve2
+	 MmW72ltGzimr5fC3/t5ePCdK0A4KGETzaOzMnCfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 237/252] smb: client: fix potential UAF in cifs_signal_cifsd_for_reconnect()
+	Stephen Lee <slee08177@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 670/690] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
 Date: Mon,  8 Apr 2024 14:58:56 +0200
-Message-ID: <20240408125314.006347842@linuxfoundation.org>
+Message-ID: <20240408125423.987312849@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Stephen Lee <slee08177@gmail.com>
 
-commit e0e50401cc3921c9eaf1b0e667db174519ea939f upstream.
+[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+In snd_soc_info_volsw(), mask is generated by figuring out the index of
+the most significant bit set in max and converting the index to a
+bitmask through bit shift 1. Unintended wraparound occurs when max is an
+integer value with msb bit set. Since the bit shift value 1 is treated
+as an integer type, the left shift operation will wraparound and set
+mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
+`1ULL` to prevent the wraparound.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
+Signed-off-by: Stephen Lee <slee08177@gmail.com>
+Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/soc-ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -178,6 +178,8 @@ cifs_signal_cifsd_for_reconnect(struct T
- 
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_for_each_entry(ses, &pserver->smb_ses_list, smb_ses_list) {
-+		if (cifs_ses_exiting(ses))
-+			continue;
- 		spin_lock(&ses->chan_lock);
- 		for (i = 0; i < ses->chan_count; i++) {
- 			if (!ses->chans[i].server)
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index c56379fac9272..57caa91a4376e 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -246,7 +246,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
+ 	int max = mc->max;
+ 	int min = mc->min;
+ 	int sign_bit = mc->sign_bit;
+-	unsigned int mask = (1 << fls(max)) - 1;
++	unsigned int mask = (1ULL << fls(max)) - 1;
+ 	unsigned int invert = mc->invert;
+ 	int val;
+ 	int ret;
+-- 
+2.43.0
+
 
 
 
