@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-37540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8028389C54B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C6D89C082
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EACEB1F2368E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E35281B4F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B9D79955;
-	Mon,  8 Apr 2024 13:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4173970CCB;
+	Mon,  8 Apr 2024 13:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEbcE1Gj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO0Sr0Y0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A4C42046;
-	Mon,  8 Apr 2024 13:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38426F08E;
+	Mon,  8 Apr 2024 13:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584533; cv=none; b=m663W5p1LAITtp2QamFcZ9LuGT2wDT2qCw4Wo6ivC4vqFn3gTCvVPVa4cgNJ7ZKOM63SnjH4cGA2VIbD4xlzMdTn7FH8Sn54x4yeYPmrtQFBR5WNA0JlgQwNPW6/QA7j0wyOlcfZzr8I8N+zOAqezrrmP1rrba6nlLYUbRUtSUE=
+	t=1712581756; cv=none; b=OPnIHO1Oz4MQnDYboCDqF+hB5MlFtdZUdsj9oKNC4dFKW8MjRqNsLrJQ5vvrVRhmkBP/FeUqWRBALeNdJiMCkVna4vnG9im+/US1CwRG2X4hPUCsNY3NhJuxV5FxPInX/NoAY744sDfMMr3Y6mF8B9NfFyAT/8lj2/71ex86+3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584533; c=relaxed/simple;
-	bh=/tEmNMNnyXmU0uAwQKbznORgVgz+UW2ujG6coSZze8Q=;
+	s=arc-20240116; t=1712581756; c=relaxed/simple;
+	bh=sMXx4vtjYbaBJN+68n9CR6w9sLVlTb9BjdnaTtoD13c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pc/wyf9xfJTdZwaF0wU+XNxvgrtV5Ul+tEQjScx1pUVeuv/e6tseddxoZnTDaYJ0O0jNw4JTeWXCh/0SEd5bqUbj42wVWi9aEiKYnCh1uGZ7QBNRDyWcXR+Eq/C4rfI6co27JB26ncY2Xiyo/lRpK/lhswGS773ZuaGlTtXxkBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEbcE1Gj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05DEC433F1;
-	Mon,  8 Apr 2024 13:55:32 +0000 (UTC)
+	 MIME-Version; b=dLLRDtJ901P1QS0L+/tppNMs3Zx1VVlf1NdJsCdmBNvnPFZGkh+1B03V5pBgA1PcXDfeaHzWGN0/Tw6oBsuGIBTxwYBSXtGsOyc+yXa1Sv1CROFxCAMKNbhkiprsN4Rv1bh/X9oMWJk47yELnOhM8th6x+WfTvBWKZP6/yVBgkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO0Sr0Y0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD90C433F1;
+	Mon,  8 Apr 2024 13:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584533;
-	bh=/tEmNMNnyXmU0uAwQKbznORgVgz+UW2ujG6coSZze8Q=;
+	s=korg; t=1712581755;
+	bh=sMXx4vtjYbaBJN+68n9CR6w9sLVlTb9BjdnaTtoD13c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEbcE1GjkP7Ipw1qs4Mdddp6s39MAAmWi6UP94F8RKKZPiX7VMigAsydeshFJL5co
-	 gxM6gYMvws7vMrIox9Q+wI9Cj+M9gkZmmgcp0QTxbXQYMJBee9I9bY988EWjdDJu4O
-	 Xiic9bwIU6u2GvZwAb5aIvwqwSDUItn9oftsZhfQ=
+	b=qO0Sr0Y0GnWiBOKtm3H5kgIl9J2Xs5ySa1c2j6kPxAMqq124k5mfWhU/WG6k8Oxer
+	 zAazwfV7pM8berLYiO7koO0cHhEtMf5t0crlvvmwZHpb4t/uDjMDUhY4+KQq1xfaBO
+	 syd0TMcllk3VSPtjYbiZdyD2/XzUb56XzpEDtQFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 470/690] NFSD: Simplify READ_PLUS
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/252] netfilter: nf_tables: skip netdev hook unregistration if table is dormant
 Date: Mon,  8 Apr 2024 14:55:36 +0200
-Message-ID: <20240408125416.637921674@linuxfoundation.org>
+Message-ID: <20240408125307.793454498@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,211 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna Schumaker <Anna.Schumaker@Netapp.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit eeadcb75794516839078c28b3730132aeb700ce6 ]
+[ Upstream commit 216e7bf7402caf73f4939a8e0248392e96d7c0da ]
 
-Chuck had suggested reverting READ_PLUS so it returns a single DATA
-segment covering the requested read range. This prepares the server for
-a future "sparse read" function so support can easily be added without
-needing to rip out the old READ_PLUS code at the same time.
+Skip hook unregistration when adding or deleting devices from an
+existing netdev basechain. Otherwise, commit/abort path try to
+unregister hooks which not enabled.
 
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Fixes: 7d937b107108 ("netfilter: nf_tables: support for deleting devices in an existing netdev chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 139 +++++++++++-----------------------------------
- 1 file changed, 32 insertions(+), 107 deletions(-)
+ net/netfilter/nf_tables_api.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 76028a5c81d1d..c2457a9ac00aa 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -4778,79 +4778,37 @@ nfsd4_encode_offload_status(struct nfsd4_compoundres *resp, __be32 nfserr,
- 
- static __be32
- nfsd4_encode_read_plus_data(struct nfsd4_compoundres *resp,
--			    struct nfsd4_read *read,
--			    unsigned long *maxcount, u32 *eof,
--			    loff_t *pos)
-+			    struct nfsd4_read *read)
- {
--	struct xdr_stream *xdr = resp->xdr;
-+	bool splice_ok = test_bit(RQ_SPLICE_OK, &resp->rqstp->rq_flags);
- 	struct file *file = read->rd_nf->nf_file;
--	int starting_len = xdr->buf->len;
--	loff_t hole_pos;
--	__be32 nfserr;
--	__be32 *p, tmp;
--	__be64 tmp64;
--
--	hole_pos = pos ? *pos : vfs_llseek(file, read->rd_offset, SEEK_HOLE);
--	if (hole_pos > read->rd_offset)
--		*maxcount = min_t(unsigned long, *maxcount, hole_pos - read->rd_offset);
--	*maxcount = min_t(unsigned long, *maxcount, (xdr->buf->buflen - xdr->buf->len));
-+	struct xdr_stream *xdr = resp->xdr;
-+	unsigned long maxcount;
-+	__be32 nfserr, *p;
- 
- 	/* Content type, offset, byte count */
- 	p = xdr_reserve_space(xdr, 4 + 8 + 4);
- 	if (!p)
--		return nfserr_resource;
-+		return nfserr_io;
-+	if (resp->xdr->buf->page_len && splice_ok) {
-+		WARN_ON_ONCE(splice_ok);
-+		return nfserr_serverfault;
-+	}
- 
--	read->rd_vlen = xdr_reserve_space_vec(xdr, resp->rqstp->rq_vec, *maxcount);
--	if (read->rd_vlen < 0)
--		return nfserr_resource;
-+	maxcount = min_t(unsigned long, read->rd_length,
-+			 (xdr->buf->buflen - xdr->buf->len));
- 
--	nfserr = nfsd_readv(resp->rqstp, read->rd_fhp, file, read->rd_offset,
--			    resp->rqstp->rq_vec, read->rd_vlen, maxcount, eof);
-+	if (file->f_op->splice_read && splice_ok)
-+		nfserr = nfsd4_encode_splice_read(resp, read, file, maxcount);
-+	else
-+		nfserr = nfsd4_encode_readv(resp, read, file, maxcount);
- 	if (nfserr)
- 		return nfserr;
--	xdr_truncate_encode(xdr, starting_len + 16 + xdr_align_size(*maxcount));
--
--	tmp = htonl(NFS4_CONTENT_DATA);
--	write_bytes_to_xdr_buf(xdr->buf, starting_len,      &tmp,   4);
--	tmp64 = cpu_to_be64(read->rd_offset);
--	write_bytes_to_xdr_buf(xdr->buf, starting_len + 4,  &tmp64, 8);
--	tmp = htonl(*maxcount);
--	write_bytes_to_xdr_buf(xdr->buf, starting_len + 12, &tmp,   4);
--
--	tmp = xdr_zero;
--	write_bytes_to_xdr_buf(xdr->buf, starting_len + 16 + *maxcount, &tmp,
--			       xdr_pad_size(*maxcount));
--	return nfs_ok;
--}
--
--static __be32
--nfsd4_encode_read_plus_hole(struct nfsd4_compoundres *resp,
--			    struct nfsd4_read *read,
--			    unsigned long *maxcount, u32 *eof)
--{
--	struct file *file = read->rd_nf->nf_file;
--	loff_t data_pos = vfs_llseek(file, read->rd_offset, SEEK_DATA);
--	loff_t f_size = i_size_read(file_inode(file));
--	unsigned long count;
--	__be32 *p;
--
--	if (data_pos == -ENXIO)
--		data_pos = f_size;
--	else if (data_pos <= read->rd_offset || (data_pos < f_size && data_pos % PAGE_SIZE))
--		return nfsd4_encode_read_plus_data(resp, read, maxcount, eof, &f_size);
--	count = data_pos - read->rd_offset;
- 
--	/* Content type, offset, byte count */
--	p = xdr_reserve_space(resp->xdr, 4 + 8 + 8);
--	if (!p)
--		return nfserr_resource;
--
--	*p++ = htonl(NFS4_CONTENT_HOLE);
-+	*p++ = cpu_to_be32(NFS4_CONTENT_DATA);
- 	p = xdr_encode_hyper(p, read->rd_offset);
--	p = xdr_encode_hyper(p, count);
-+	*p = cpu_to_be32(read->rd_length);
- 
--	*eof = (read->rd_offset + count) >= f_size;
--	*maxcount = min_t(unsigned long, count, *maxcount);
- 	return nfs_ok;
- }
- 
-@@ -4858,69 +4816,36 @@ static __be32
- nfsd4_encode_read_plus(struct nfsd4_compoundres *resp, __be32 nfserr,
- 		       struct nfsd4_read *read)
- {
--	unsigned long maxcount, count;
-+	struct file *file = read->rd_nf->nf_file;
- 	struct xdr_stream *xdr = resp->xdr;
--	struct file *file;
- 	int starting_len = xdr->buf->len;
--	int last_segment = xdr->buf->len;
--	int segments = 0;
--	__be32 *p, tmp;
--	bool is_data;
--	loff_t pos;
--	u32 eof;
-+	u32 segments = 0;
-+	__be32 *p;
- 
- 	if (nfserr)
- 		return nfserr;
--	file = read->rd_nf->nf_file;
- 
- 	/* eof flag, segment count */
- 	p = xdr_reserve_space(xdr, 4 + 4);
- 	if (!p)
--		return nfserr_resource;
-+		return nfserr_io;
- 	xdr_commit_encode(xdr);
- 
--	maxcount = min_t(unsigned long, read->rd_length,
--			 (xdr->buf->buflen - xdr->buf->len));
--	count    = maxcount;
--
--	eof = read->rd_offset >= i_size_read(file_inode(file));
--	if (eof)
-+	read->rd_eof = read->rd_offset >= i_size_read(file_inode(file));
-+	if (read->rd_eof)
- 		goto out;
- 
--	pos = vfs_llseek(file, read->rd_offset, SEEK_HOLE);
--	is_data = pos > read->rd_offset;
--
--	while (count > 0 && !eof) {
--		maxcount = count;
--		if (is_data)
--			nfserr = nfsd4_encode_read_plus_data(resp, read, &maxcount, &eof,
--						segments == 0 ? &pos : NULL);
--		else
--			nfserr = nfsd4_encode_read_plus_hole(resp, read, &maxcount, &eof);
--		if (nfserr)
--			goto out;
--		count -= maxcount;
--		read->rd_offset += maxcount;
--		is_data = !is_data;
--		last_segment = xdr->buf->len;
--		segments++;
--	}
--
--out:
--	if (nfserr && segments == 0)
-+	nfserr = nfsd4_encode_read_plus_data(resp, read);
-+	if (nfserr) {
- 		xdr_truncate_encode(xdr, starting_len);
--	else {
--		if (nfserr) {
--			xdr_truncate_encode(xdr, last_segment);
--			nfserr = nfs_ok;
--			eof = 0;
--		}
--		tmp = htonl(eof);
--		write_bytes_to_xdr_buf(xdr->buf, starting_len,     &tmp, 4);
--		tmp = htonl(segments);
--		write_bytes_to_xdr_buf(xdr->buf, starting_len + 4, &tmp, 4);
-+		return nfserr;
- 	}
- 
-+	segments++;
-+
-+out:
-+	p = xdr_encode_bool(p, read->rd_eof);
-+	*p = cpu_to_be32(segments);
- 	return nfserr;
- }
- 
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 6e4e22a10a826..b2ef7e37f11cd 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10083,9 +10083,11 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 			if (nft_trans_chain_update(trans)) {
+ 				nf_tables_chain_notify(&trans->ctx, NFT_MSG_DELCHAIN,
+ 						       &nft_trans_chain_hooks(trans));
+-				nft_netdev_unregister_hooks(net,
+-							    &nft_trans_chain_hooks(trans),
+-							    true);
++				if (!(trans->ctx.table->flags & NFT_TABLE_F_DORMANT)) {
++					nft_netdev_unregister_hooks(net,
++								    &nft_trans_chain_hooks(trans),
++								    true);
++				}
+ 			} else {
+ 				nft_chain_del(trans->ctx.chain);
+ 				nf_tables_chain_notify(&trans->ctx, NFT_MSG_DELCHAIN,
+@@ -10357,9 +10359,11 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 			break;
+ 		case NFT_MSG_NEWCHAIN:
+ 			if (nft_trans_chain_update(trans)) {
+-				nft_netdev_unregister_hooks(net,
+-							    &nft_trans_chain_hooks(trans),
+-							    true);
++				if (!(trans->ctx.table->flags & NFT_TABLE_F_DORMANT)) {
++					nft_netdev_unregister_hooks(net,
++								    &nft_trans_chain_hooks(trans),
++								    true);
++				}
+ 				free_percpu(nft_trans_chain_stats(trans));
+ 				kfree(nft_trans_chain_name(trans));
+ 				nft_trans_destroy(trans);
 -- 
 2.43.0
 
