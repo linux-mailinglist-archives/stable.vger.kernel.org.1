@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3906A89C15D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584F789C53E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF0AE1F21067
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECA271F236E3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80417BAF0;
-	Mon,  8 Apr 2024 13:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB3E762E5;
+	Mon,  8 Apr 2024 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hc/d2Oc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQgZoxl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959EE7350E;
-	Mon,  8 Apr 2024 13:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDFB42046;
+	Mon,  8 Apr 2024 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582159; cv=none; b=AOim/g8hBK1ggXJfvZgwQvlDEoIsnxH6dLOMIy8VA5yaz3lTYcPrFnpLB/eJ0rPwKELViTH3yPNuer6hx2BRBgADLuYE6WAV//HS8FauBV+1R2Pshp946B1KylTOJ9jCecRRnF2maC1sFp11T8iB5NKR6Pqf22QH0jlOcjMpSRw=
+	t=1712584501; cv=none; b=vAIRB6uCy6VXVhjrjRJspPOmWk/+NmR7t7WAD8D4xUVQnNugJMYwdnmYWJISC5+X5C9SKeUnBJz6Jn2fzLXGjiicreyTI4tl9AlsRvBYogFLIFlLEmobkUuh3bxgYZip5EUnulxLKZsX0KNjGOlRYHp2KwAaKuiGSPWz5nLxLVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582159; c=relaxed/simple;
-	bh=vGhuM3PdE6BbHFd2gZ131slYvF6l/W0EwcnmGRSsCHc=;
+	s=arc-20240116; t=1712584501; c=relaxed/simple;
+	bh=XcLawigW5NARb7ki/Nd/3pOkD/lilKPCz8okykQ9+EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kv9hfSnDjDky+Xzi8TI0jhrUgcFjgDPgBUexpvmc7je0zRkVEouKZf6Ii0rtUK5Yv5ZKsPPsSTUHbCuL9I1/bjebh93dcYLcHoUoUbR4y2SPQ/G4lR+M3m88lf9SmsI+rr0RYdGlHfJDz/MB+Eh5rEhE3eJqvxgV0jAhoQIFPQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hc/d2Oc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8B6C433C7;
-	Mon,  8 Apr 2024 13:15:58 +0000 (UTC)
+	 MIME-Version; b=H+KZv1jkKPIrYn/KH+67XwHNTf57VvsHQ0f3MomJzOlNt956ilgyLcpxQJ7bMJNACJ4cbh2Mp5eWCp6/tOsqbmRbWsvK/s4j7g1p3lVWkrE51QGtTBiRUQdkgG6eTHRakjxDJhb7+1LoF8YzVNAM8xVjZGfZNf0nW2urarmiLI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQgZoxl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F03AC433F1;
+	Mon,  8 Apr 2024 13:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582159;
-	bh=vGhuM3PdE6BbHFd2gZ131slYvF6l/W0EwcnmGRSsCHc=;
+	s=korg; t=1712584501;
+	bh=XcLawigW5NARb7ki/Nd/3pOkD/lilKPCz8okykQ9+EQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hc/d2Oc7oHNHSQ/Vkht1LChIIIjAHKFsbc5OPwKz9vQsK6foiI1rHTufjKNLUA0YU
-	 mjFvt+elRScuL+YSaEdE8iaXoXlPmsRxVDCTaUvIWC2cy/uRIqeY9Hmxq2dr4hhMgf
-	 x4acx9t2lRAGX6PfQZdCUHzUXkyY4fZVwTBv2CEw=
+	b=QQgZoxl1gBVOUbE5eHEZo5ULPf+C4d/R5Au1oA6Cy4CkAZrhHvglrgKMm2jzQfRYb
+	 Z+WoUkTNx9hbMb+xduvu4Wmc8AY8dtQc6UJn3/8XFgHH9y9tzq2u5Bl0odCEuT4p7W
+	 iX42t8FQCV0vLAethGAItVtjp5LTRXeV2CsrwwBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 051/273] Octeontx2-af: fix pause frame configuration in GMP mode
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 460/690] nfsd: rework hashtable handling in nfsd_do_file_acquire
 Date: Mon,  8 Apr 2024 14:55:26 +0200
-Message-ID: <20240408125310.878762107@linuxfoundation.org>
+Message-ID: <20240408125416.283064114@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 40d4b4807cadd83fb3f46cc8cd67a945b5b25461 ]
+[ Upstream commit 243a5263014a30436c93ed3f1f864c1da845455e ]
 
-The Octeontx2 MAC block (CGX) has separate data paths (SMU and GMP) for
-different speeds, allowing for efficient data transfer.
+nfsd_file is RCU-freed, so we need to hold the rcu_read_lock long enough
+to get a reference after finding it in the hash. Take the
+rcu_read_lock() and call rhashtable_lookup directly.
 
-The previous patch which added pause frame configuration has a bug due
-to which pause frame feature is not working in GMP mode.
+Switch to using rhashtable_lookup_insert_key as well, and use the usual
+retry mechanism if we hit an -EEXIST. Rename the "retry" bool to
+open_retry, and eliminiate the insert_err goto target.
 
-This patch fixes the issue by configurating appropriate registers.
-
-Fixes: f7e086e754fe ("octeontx2-af: Pause frame configuration at cgx")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326052720.4441-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfsd/filecache.c | 52 +++++++++++++++++++--------------------------
+ 1 file changed, 22 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index 3c0f55b3e48ea..b86f3224f0b78 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -808,6 +808,11 @@ static int cgx_lmac_enadis_pause_frm(void *cgxd, int lmac_id,
- 	if (!is_lmac_valid(cgx, lmac_id))
- 		return -ENODEV;
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index a0d93e797cdce..0b19eb015c6c8 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -1041,9 +1041,10 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		.need	= may_flags & NFSD_FILE_MAY_MASK,
+ 		.net	= SVC_NET(rqstp),
+ 	};
+-	struct nfsd_file *nf, *new;
+-	bool retry = true;
++	bool open_retry = true;
++	struct nfsd_file *nf;
+ 	__be32 status;
++	int ret;
  
-+	cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
-+	cfg &= ~CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
-+	cfg |= rx_pause ? CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK : 0x0;
-+	cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
+ 	status = fh_verify(rqstp, fhp, S_IFREG,
+ 				may_flags|NFSD_MAY_OWNER_OVERRIDE);
+@@ -1053,35 +1054,33 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	key.cred = get_current_cred();
+ 
+ retry:
+-	/* Avoid allocation if the item is already in cache */
+-	nf = rhashtable_lookup_fast(&nfsd_file_rhash_tbl, &key,
+-				    nfsd_file_rhash_params);
++	rcu_read_lock();
++	nf = rhashtable_lookup(&nfsd_file_rhash_tbl, &key,
++			       nfsd_file_rhash_params);
+ 	if (nf)
+ 		nf = nfsd_file_get(nf);
++	rcu_read_unlock();
+ 	if (nf)
+ 		goto wait_for_construction;
+ 
+-	new = nfsd_file_alloc(&key, may_flags);
+-	if (!new) {
++	nf = nfsd_file_alloc(&key, may_flags);
++	if (!nf) {
+ 		status = nfserr_jukebox;
+ 		goto out_status;
+ 	}
+ 
+-	nf = rhashtable_lookup_get_insert_key(&nfsd_file_rhash_tbl,
+-					      &key, &new->nf_rhash,
+-					      nfsd_file_rhash_params);
+-	if (!nf) {
+-		nf = new;
+-		goto open_file;
+-	}
+-	if (IS_ERR(nf))
+-		goto insert_err;
+-	nf = nfsd_file_get(nf);
+-	if (nf == NULL) {
+-		nf = new;
++	ret = rhashtable_lookup_insert_key(&nfsd_file_rhash_tbl,
++					   &key, &nf->nf_rhash,
++					   nfsd_file_rhash_params);
++	if (likely(ret == 0))
+ 		goto open_file;
+-	}
+-	nfsd_file_slab_free(&new->nf_rcu);
 +
- 	cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
- 	cfg &= ~CGX_SMUX_RX_FRM_CTL_CTL_BCK;
- 	cfg |= rx_pause ? CGX_SMUX_RX_FRM_CTL_CTL_BCK : 0x0;
++	nfsd_file_slab_free(&nf->nf_rcu);
++	if (ret == -EEXIST)
++		goto retry;
++	trace_nfsd_file_insert_err(rqstp, key.inode, may_flags, ret);
++	status = nfserr_jukebox;
++	goto out_status;
+ 
+ wait_for_construction:
+ 	wait_on_bit(&nf->nf_flags, NFSD_FILE_PENDING, TASK_UNINTERRUPTIBLE);
+@@ -1089,11 +1088,11 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	/* Did construction of this file fail? */
+ 	if (!test_bit(NFSD_FILE_HASHED, &nf->nf_flags)) {
+ 		trace_nfsd_file_cons_err(rqstp, key.inode, may_flags, nf);
+-		if (!retry) {
++		if (!open_retry) {
+ 			status = nfserr_jukebox;
+ 			goto out;
+ 		}
+-		retry = false;
++		open_retry = false;
+ 		nfsd_file_put_noref(nf);
+ 		goto retry;
+ 	}
+@@ -1141,13 +1140,6 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	smp_mb__after_atomic();
+ 	wake_up_bit(&nf->nf_flags, NFSD_FILE_PENDING);
+ 	goto out;
+-
+-insert_err:
+-	nfsd_file_slab_free(&new->nf_rcu);
+-	trace_nfsd_file_insert_err(rqstp, key.inode, may_flags, PTR_ERR(nf));
+-	nf = NULL;
+-	status = nfserr_jukebox;
+-	goto out_status;
+ }
+ 
+ /**
 -- 
 2.43.0
 
