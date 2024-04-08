@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-36725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BA489C15E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A55D89C39F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11BA282A74
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BE2F1C231CE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44B37BAE7;
-	Mon,  8 Apr 2024 13:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D7312B17C;
+	Mon,  8 Apr 2024 13:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHXC8Sqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feJDF0wn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DA67442A;
-	Mon,  8 Apr 2024 13:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C497E118;
+	Mon,  8 Apr 2024 13:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582162; cv=none; b=PMFPPu9y/SzoDNbPha81UUhjcBvQ1/5L+VWX/w2EbUUVcsXkMIZYsgmRGt5lFNpZ8T/nugjNERaoSVu0GJ5pr2BqVLfr7EVrN4dGTOqgy7qLszAI9EwE/mdM3WtjEIm/AnDaHtzqEBq8zyUfNy8EPB20uo2YyZc2jSmNqok9G5U=
+	t=1712583461; cv=none; b=Wwnmy9nRuOIvlPcblqOLNb6o6KlaBdrXr2IqI+YUpKIuYpeul3hCz4XzyRfgr0M8U57U9e4jNZMPgMtZH2L0I9hhx+y4yKOX2XTc6abSOUMyuDkZEHu9EJWvX9WdNg5b3YejtCrcBqfTgPNyCCAg0okb2QTdejNgYwM4F6amyGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582162; c=relaxed/simple;
-	bh=+Nd7S7+R5g+YsIHBVMvQWrUcO4CCyuzIIkmIEijwh3E=;
+	s=arc-20240116; t=1712583461; c=relaxed/simple;
+	bh=yAImMykiGDTPsiGej3zl6X0KPFLI7JyDw14SRu6jPLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TI8JHoBa6GIGgg8qe52JfWM2cHKphksM9SLxKvu5OIfcL5yvvMtZopEq0/BjR4xRyRozmCzESWa+QXZKzFAyPjGoroO/6Kx1woOtWVGgMVQ9v+8nFGLfmJGz6QDXIGmLSi/fkXthXNtWXjIcRVD5YRHVrk8ISEg6p0NZBDyk/Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHXC8Sqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C83C43390;
-	Mon,  8 Apr 2024 13:16:01 +0000 (UTC)
+	 MIME-Version; b=fugBs6niguMuDLlW6tXrMm1zbcua/CTacnPuyy8tObMjjKr2FD90oBpjrkmOEKTJREUAi+R0ilP9OBBHgBzkokq2k54Eer4x6DJZ4lVsWE7KAiVc2ZUooR5rSb8e7VLp6bjFNvlPCxfH4HoovPvDMPngYfrY7/7LF4lsnzb4sh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feJDF0wn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D7FC433C7;
+	Mon,  8 Apr 2024 13:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582162;
-	bh=+Nd7S7+R5g+YsIHBVMvQWrUcO4CCyuzIIkmIEijwh3E=;
+	s=korg; t=1712583460;
+	bh=yAImMykiGDTPsiGej3zl6X0KPFLI7JyDw14SRu6jPLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xHXC8SqoulwEGKQCfxBGyaOmEpHrYXKCc3rd8fr84Ldqz9KudPw+PFjD+glHFISIx
-	 c62bQuiLYGqQPpgj9NVV0Umyt4tQb0ftPPIwgMQRW4vjwzcy2BseHERrm2Ym3EbcwI
-	 yxXLI6R5qcNY6M1kOMBVVNTffZeplNqg2CmlkkPw=
+	b=feJDF0wnBg04i4CYo/9/o5BMQJW9NkVxIKU9pTRtQia4lVzkYCrusL+IpF8fF+PAq
+	 CjvkInh5dtV+Al4Pu6pn8AalBEByw5ysG9lplpHvFKM77EjVDevcp0LroG+CnUhW3J
+	 I6g5dG7Jwc7/eG0s0TlPLd+AS91p3g7Aej2qDrkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andrea Parri <andrea@rivosinc.com>,
+	Andy Chiu <andy.chiu@sifive.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/138] net: ravb: Always process TX descriptor ring
+Subject: [PATCH 6.6 198/252] riscv: Disable preemption when using patch_map()
 Date: Mon,  8 Apr 2024 14:58:17 +0200
-Message-ID: <20240408125258.806943510@linuxfoundation.org>
+Message-ID: <20240408125312.797908310@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 596a4254915f94c927217fe09c33a6828f33fb25 ]
+[ Upstream commit a370c2419e4680a27382d9231edcf739d5d74efc ]
 
-The TX queue should be serviced each time the poll function is called,
-even if the full RX work budget has been consumed. This prevents
-starvation of the TX queue when RX bandwidth usage is high.
+patch_map() uses fixmap mappings to circumvent the non-writability of
+the kernel text mapping.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240402145305.82148-1-paul.barker.ct@bp.renesas.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The __set_fixmap() function only flushes the current cpu tlb, it does
+not emit an IPI so we must make sure that while we use a fixmap mapping,
+the current task is not migrated on another cpu which could miss the
+newly introduced fixmap mapping.
+
+So in order to avoid any task migration, disable the preemption.
+
+Reported-by: Andrea Parri <andrea@rivosinc.com>
+Closes: https://lore.kernel.org/all/ZcS+GAaM25LXsBOl@andrea/
+Reported-by: Andy Chiu <andy.chiu@sifive.com>
+Closes: https://lore.kernel.org/linux-riscv/CABgGipUMz3Sffu-CkmeUB1dKVwVQ73+7=sgC45-m0AE9RCjOZg@mail.gmail.com/
+Fixes: cad539baa48f ("riscv: implement a memset like function for text")
+Fixes: 0ff7c3b33127 ("riscv: Use text_mutex instead of patch_lock")
+Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
+Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: Puranjay Mohan <puranjay12@gmail.com>
+Link: https://lore.kernel.org/r/20240326203017.310422-3-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/patch.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 36e2718c564ac..b11cc365d19e3 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1294,12 +1294,12 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	int q = napi - priv->napi;
- 	int mask = BIT(q);
- 	int quota = budget;
-+	bool unmask;
+diff --git a/arch/riscv/kernel/patch.c b/arch/riscv/kernel/patch.c
+index 37e87fdcf6a00..30e12b310cab7 100644
+--- a/arch/riscv/kernel/patch.c
++++ b/arch/riscv/kernel/patch.c
+@@ -80,6 +80,8 @@ static int __patch_insn_set(void *addr, u8 c, size_t len)
+ 	 */
+ 	lockdep_assert_held(&text_mutex);
  
- 	/* Processing RX Descriptor Ring */
- 	/* Clear RX interrupt */
- 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
--	if (ravb_rx(ndev, &quota, q))
--		goto out;
-+	unmask = !ravb_rx(ndev, &quota, q);
- 
- 	/* Processing TX Descriptor Ring */
- 	spin_lock_irqsave(&priv->lock, flags);
-@@ -1309,6 +1309,9 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	netif_wake_subqueue(ndev, q);
- 	spin_unlock_irqrestore(&priv->lock, flags);
- 
-+	if (!unmask)
-+		goto out;
++	preempt_disable();
 +
- 	napi_complete(napi);
+ 	if (across_pages)
+ 		patch_map(addr + PAGE_SIZE, FIX_TEXT_POKE1);
  
- 	/* Re-enable RX/TX interrupts */
+@@ -92,6 +94,8 @@ static int __patch_insn_set(void *addr, u8 c, size_t len)
+ 	if (across_pages)
+ 		patch_unmap(FIX_TEXT_POKE1);
+ 
++	preempt_enable();
++
+ 	return 0;
+ }
+ NOKPROBE_SYMBOL(__patch_insn_set);
+@@ -122,6 +126,8 @@ static int __patch_insn_write(void *addr, const void *insn, size_t len)
+ 	if (!riscv_patch_in_stop_machine)
+ 		lockdep_assert_held(&text_mutex);
+ 
++	preempt_disable();
++
+ 	if (across_pages)
+ 		patch_map(addr + PAGE_SIZE, FIX_TEXT_POKE1);
+ 
+@@ -134,6 +140,8 @@ static int __patch_insn_write(void *addr, const void *insn, size_t len)
+ 	if (across_pages)
+ 		patch_unmap(FIX_TEXT_POKE1);
+ 
++	preempt_enable();
++
+ 	return ret;
+ }
+ NOKPROBE_SYMBOL(__patch_insn_write);
 -- 
 2.43.0
 
