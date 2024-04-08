@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C5989C1FF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6529489C40C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F09812824FA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 975071C20E08
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778DA7CF39;
-	Mon,  8 Apr 2024 13:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0877D07F;
+	Mon,  8 Apr 2024 13:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRrudbTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgDG8Wga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B227CF1A;
-	Mon,  8 Apr 2024 13:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3217BAE7;
+	Mon,  8 Apr 2024 13:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582489; cv=none; b=FI7X5d970djDzDRJKflRofYRfw9MP8Xpmzx4gsTvSDdHP7nFie8oDm+CgBJNYJsRs64Gn7cMjemtjyaNEZxZBJiU5eHooTNJLgqjSRv6t9caWlIyMssagA8+WFUwBDaRdIBUMZKHfsKwzCn5BEJTyqkBJjwqMWZARYbbM9xz39E=
+	t=1712583707; cv=none; b=AVCk85IGslPmNwsmPXTOKWs7M8oOn19DqxHj5m0Lmo1TpkuTWIrTRkIZf4DU3rGOG09gQUR8HWo0yxtLl/9fKmJaIvyjLa/2JN8o9yIvOzomGvj2BIz0BdpXQqQ/Bcn3cKlhO4mgyoUB7+qNMG0put98fAwUnbmw60Pn1pM+gF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582489; c=relaxed/simple;
-	bh=JEE0graCl/VQFoMV4dl3PKsgklRUvZc9Y2pY7juNrec=;
+	s=arc-20240116; t=1712583707; c=relaxed/simple;
+	bh=VUgW+zaxbAv9aubgxoj7OfEiF6q4JYbqtwlL2Cjkdh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LT0N//xmKoWj7qJ63GM9AksueGv8/LnvyJ1NbVvhSJIF8+ieRvcgHOx9dtDRoFzDFS5x9liB6vz5eqWn84+QXCcX3UxF9J1NoKd2qiv42OpKxc6wIRSf0P6OzE5wJI4tmNfsfzazTIiZJzkl2qMEydt4z9ARVJkHq1J5yRWNgn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRrudbTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2335C433C7;
-	Mon,  8 Apr 2024 13:21:28 +0000 (UTC)
+	 MIME-Version; b=eZd0fh17JaemiDyrWq1W2G0Nxu614AbNp8SF/VHyuw6WIJqQSsJla+yNV7S9ffOMj6MngyfRGf2OthzmJQ3bPxXoh9OYs+UrxBEDlnkI9aUjR4HYHK1R6V3OpocR04PNK03E8T5DluadreT3K9UXopJibbW9yHelI798svBA5TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgDG8Wga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AD5C43390;
+	Mon,  8 Apr 2024 13:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582489;
-	bh=JEE0graCl/VQFoMV4dl3PKsgklRUvZc9Y2pY7juNrec=;
+	s=korg; t=1712583707;
+	bh=VUgW+zaxbAv9aubgxoj7OfEiF6q4JYbqtwlL2Cjkdh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRrudbTRtxJLfANQjjp8v/387S6uQxMANRbJR22Bq65sHBBAPAsJN9BbDbyt3lGlC
-	 NRFWQGOGpVZfJiwQH+LOdOnIm26MGzESZnKLxtBTuC8ML82OO6vNX7U2yFdQphIptg
-	 Y2Q3w0yYja1qgtHvHet6SSEVrB/THNfmv2Q8tj1w=
+	b=GgDG8WgasIvie492YRhlHjBnHeYtwrQbhGBzlmMC9I/GycPiiB/RiVDaw3BOj8WWg
+	 yGW1NmzmRkzv2ucrbxh2i4VqHOPvxp6NFE/c95K/ZMm2mFXv3Wwav9uNC02DvxlTBE
+	 +W7BROODuzG8OWWQFul1P1aoZVVl+wWODQV+Hy1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Benes <vbenes@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/138] nfsd: hold a lighter-weight client reference over CB_RECALL_ANY
+	Stefan ORear <sorear@fastmail.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 225/252] riscv: process: Fix kernel gp leakage
 Date: Mon,  8 Apr 2024 14:58:44 +0200
-Message-ID: <20240408125259.654845070@linuxfoundation.org>
+Message-ID: <20240408125313.639952849@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Stefan O'Rear <sorear@fastmail.com>
 
-[ Upstream commit 10396f4df8b75ff6ab0aa2cd74296565466f2c8d ]
+commit d14fa1fcf69db9d070e75f1c4425211fa619dfc8 upstream.
 
-Currently the CB_RECALL_ANY job takes a cl_rpc_users reference to the
-client. While a callback job is technically an RPC that counter is
-really more for client-driven RPCs, and this has the effect of
-preventing the client from being unhashed until the callback completes.
+childregs represents the registers which are active for the new thread
+in user context. For a kernel thread, childregs->gp is never used since
+the kernel gp is not touched by switch_to. For a user mode helper, the
+gp value can be observed in user space after execve or possibly by other
+means.
 
-If nfsd decides to send a CB_RECALL_ANY just as the client reboots, we
-can end up in a situation where the callback can't complete on the (now
-dead) callback channel, but the new client can't connect because the old
-client can't be unhashed. This usually manifests as a NFS4ERR_DELAY
-return on the CREATE_SESSION operation.
+[From the email thread]
 
-The job is only holding a reference to the client so it can clear a flag
-after the RPC completes. Fix this by having CB_RECALL_ANY instead hold a
-reference to the cl_nfsdfs.cl_ref. Typically we only take that sort of
-reference when dealing with the nfsdfs info files, but it should work
-appropriately here to ensure that the nfs4_client doesn't disappear.
+The /* Kernel thread */ comment is somewhat inaccurate in that it is also used
+for user_mode_helper threads, which exec a user process, e.g. /sbin/init or
+when /proc/sys/kernel/core_pattern is a pipe. Such threads do not have
+PF_KTHREAD set and are valid targets for ptrace etc. even before they exec.
 
-Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
-Reported-by: Vladimir Benes <vbenes@redhat.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+childregs is the *user* context during syscall execution and it is observable
+from userspace in at least five ways:
+
+1. kernel_execve does not currently clear integer registers, so the starting
+   register state for PID 1 and other user processes started by the kernel has
+   sp = user stack, gp = kernel __global_pointer$, all other integer registers
+   zeroed by the memset in the patch comment.
+
+   This is a bug in its own right, but I'm unwilling to bet that it is the only
+   way to exploit the issue addressed by this patch.
+
+2. ptrace(PTRACE_GETREGSET): you can PTRACE_ATTACH to a user_mode_helper thread
+   before it execs, but ptrace requires SIGSTOP to be delivered which can only
+   happen at user/kernel boundaries.
+
+3. /proc/*/task/*/syscall: this is perfectly happy to read pt_regs for
+   user_mode_helpers before the exec completes, but gp is not one of the
+   registers it returns.
+
+4. PERF_SAMPLE_REGS_USER: LOCKDOWN_PERF normally prevents access to kernel
+   addresses via PERF_SAMPLE_REGS_INTR, but due to this bug kernel addresses
+   are also exposed via PERF_SAMPLE_REGS_USER which is permitted under
+   LOCKDOWN_PERF. I have not attempted to write exploit code.
+
+5. Much of the tracing infrastructure allows access to user registers. I have
+   not attempted to determine which forms of tracing allow access to user
+   registers without already allowing access to kernel registers.
+
+Fixes: 7db91e57a0ac ("RISC-V: Task implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan O'Rear <sorear@fastmail.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240327061258.2370291-1-sorear@fastmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/riscv/kernel/process.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index e4522e86e984e..8d15959004ad2 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -2889,12 +2889,9 @@ static void
- nfsd4_cb_recall_any_release(struct nfsd4_callback *cb)
- {
- 	struct nfs4_client *clp = cb->cb_clp;
--	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -26,8 +26,6 @@
+ #include <asm/cpuidle.h>
+ #include <asm/vector.h>
  
--	spin_lock(&nn->client_lock);
- 	clear_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
--	put_client_renew_locked(clp);
--	spin_unlock(&nn->client_lock);
-+	drop_client(clp);
- }
+-register unsigned long gp_in_global __asm__("gp");
+-
+ #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_STACKPROTECTOR_PER_TASK)
+ #include <linux/stackprotector.h>
+ unsigned long __stack_chk_guard __read_mostly;
+@@ -186,7 +184,6 @@ int copy_thread(struct task_struct *p, c
+ 	if (unlikely(args->fn)) {
+ 		/* Kernel thread */
+ 		memset(childregs, 0, sizeof(struct pt_regs));
+-		childregs->gp = gp_in_global;
+ 		/* Supervisor/Machine, irqs on: */
+ 		childregs->status = SR_PP | SR_PIE;
  
- static const struct nfsd4_callback_ops nfsd4_cb_recall_any_ops = {
-@@ -6231,7 +6228,7 @@ deleg_reaper(struct nfsd_net *nn)
- 		list_add(&clp->cl_ra_cblist, &cblist);
- 
- 		/* release in nfsd4_cb_recall_any_release */
--		atomic_inc(&clp->cl_rpc_users);
-+		kref_get(&clp->cl_nfsdfs.cl_ref);
- 		set_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
- 		clp->cl_ra_time = ktime_get_boottime_seconds();
- 	}
--- 
-2.43.0
-
 
 
 
