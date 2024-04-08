@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB31F89C36F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C3189C00E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE3B91C220FA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94091F23506
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE0A85C51;
-	Mon,  8 Apr 2024 13:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF917C6D5;
+	Mon,  8 Apr 2024 13:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDUzW/ME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luF6FSKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2557D3FE;
-	Mon,  8 Apr 2024 13:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C06C7641E;
+	Mon,  8 Apr 2024 13:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583314; cv=none; b=pGI2IGq9pMrP+lqhj6058kTqq795JVZYsAnqtX2kup52XsYXGxKD7tuh2EDvCbgDE8qZilV4B3FYveFSqBRshH59qHgQpIlK+VfAjNmXn3JG6JmlQYS1+uhwAz5VaTNdKPDPfNieKOlkull4/1TVcGH8zqgKFgNeRQN9Selh5fg=
+	t=1712581469; cv=none; b=GXrPRq05+CFHQfLl2ZB3dAzlLFrJd2DLP+TwyT+H2Z5IwtIS0wlFwW6hbScjerc4EvxJOEZ4H1OaCmwGyeogeqKy2Nh1roEEa0X3omXpxcUVYpE8v/rspkOIYrlvDxr5y/Fd5OU4CaF5GiMxoIq/eZrF1YzAGB+MDk5reg9hHgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583314; c=relaxed/simple;
-	bh=28HHMVpsX9IC94/cdaRo7lL2hwYHPf7zYk+NvL6IPmQ=;
+	s=arc-20240116; t=1712581469; c=relaxed/simple;
+	bh=DEig/NCiH5gQfUVE36t4b5jmkDZfM0BFnJUSMp4y8jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXAZxWeMnJPQ1UrqW+bljMMza7Oq8VVkYR9LNg8p3H/zqBdBndToCAhYUhKYWWNkWCpQFZTWBTkiF6cjXEhbPFpkVm40dvXHRhLegt0pDVZOwOrdU4EtZPJghUnNHf2r5jfIdBx9bx4rIaMJxHscoV58Qa7oL7UavZwNaS8VT90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDUzW/ME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2D6C433C7;
-	Mon,  8 Apr 2024 13:35:13 +0000 (UTC)
+	 MIME-Version; b=i92E+vwjYt2dnB1Ni+DDAy6dMs1CzXw7azq4OC3HsuhmfeVaxfPGeOlu/EpOaNQRMI2i9ByfDPWq2YbFG+/vQyrkKjGG8XVOGSaP/R28nwCU1bgfX0kKhbrzoFyUNdfCM1MrDP5sr7zZoE4cVQWp5k2KrSM1qpVTOA6dcxxSJTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luF6FSKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E93C433C7;
+	Mon,  8 Apr 2024 13:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583314;
-	bh=28HHMVpsX9IC94/cdaRo7lL2hwYHPf7zYk+NvL6IPmQ=;
+	s=korg; t=1712581469;
+	bh=DEig/NCiH5gQfUVE36t4b5jmkDZfM0BFnJUSMp4y8jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDUzW/ME4of9qEWXdfwO6DDymWaaM/GfmoHw+vdBOdpaetADbcNJv7X1EqtrMwnc2
-	 COwNy+jK7N/sFktwvi+Qly025Tc9QexxhaYNz3K75MtCvvtXkzz5vdJLzdOE7YbQ1D
-	 7dq2TuDr/XM748DiP5WFKrxDiRjODE73QjSLsJPU=
+	b=luF6FSKQRBQMxnlikOQX4+Qwl2F6e6O/yorVwQQ4EPBhDe7cnpf06egQdLtY612tV
+	 ww02gmrgwi0sPyoe1XjCHh2m52kJ/giy4Pac0wg/Z/fI/G5234xeb1mEWpBPLOT3F1
+	 9GOmgOTOUGoI+ji7iPYFpE/hgNbn6g+zQ0ibZXho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Lee <slee08177@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 163/273] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
+Subject: [PATCH 6.1 024/138] x86/cpufeatures: Add new word for scattered features
 Date: Mon,  8 Apr 2024 14:57:18 +0200
-Message-ID: <20240408125314.332751847@linuxfoundation.org>
+Message-ID: <20240408125256.981736281@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Lee <slee08177@gmail.com>
+From: Sandipan Das <sandipan.das@amd.com>
 
-[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
+[ Upstream commit 7f274e609f3d5f45c22b1dd59053f6764458b492 ]
 
-In snd_soc_info_volsw(), mask is generated by figuring out the index of
-the most significant bit set in max and converting the index to a
-bitmask through bit shift 1. Unintended wraparound occurs when max is an
-integer value with msb bit set. Since the bit shift value 1 is treated
-as an integer type, the left shift operation will wraparound and set
-mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
-`1ULL` to prevent the wraparound.
+Add a new word for scattered features because all free bits among the
+existing Linux-defined auxiliary flags have been exhausted.
 
-Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
-Signed-off-by: Stephen Lee <slee08177@gmail.com>
-Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/8380d2a0da469a1f0ad75b8954a79fb689599ff6.1711091584.git.sandipan.das@amd.com
+Stable-dep-of: 598c2fafc06f ("perf/x86/amd/lbr: Use freeze based on availability")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/cpufeature.h        | 6 ++++--
+ arch/x86/include/asm/cpufeatures.h       | 2 +-
+ arch/x86/include/asm/disabled-features.h | 3 ++-
+ arch/x86/include/asm/required-features.h | 3 ++-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index 2d25748ca7066..b27e89ff6a167 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -263,7 +263,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
- 	int max = mc->max;
- 	int min = mc->min;
- 	int sign_bit = mc->sign_bit;
--	unsigned int mask = (1 << fls(max)) - 1;
-+	unsigned int mask = (1ULL << fls(max)) - 1;
- 	unsigned int invert = mc->invert;
- 	int val;
- 	int ret;
+diff --git a/arch/x86/include/asm/cpufeature.h b/arch/x86/include/asm/cpufeature.h
+index f835b328ba24f..578c3020be7b4 100644
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -96,8 +96,9 @@ extern const char * const x86_bug_flags[NBUGINTS*32];
+ 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 18, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 19, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 20, feature_bit) ||	\
++	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 21, feature_bit) ||	\
+ 	   REQUIRED_MASK_CHECK					  ||	\
+-	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
++	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
+ 
+ #define DISABLED_MASK_BIT_SET(feature_bit)				\
+ 	 ( CHECK_BIT_IN_MASK_WORD(DISABLED_MASK,  0, feature_bit) ||	\
+@@ -121,8 +122,9 @@ extern const char * const x86_bug_flags[NBUGINTS*32];
+ 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 18, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 19, feature_bit) ||	\
+ 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 20, feature_bit) ||	\
++	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 21, feature_bit) ||	\
+ 	   DISABLED_MASK_CHECK					  ||	\
+-	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
++	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
+ 
+ #define cpu_has(c, bit)							\
+ 	(__builtin_constant_p(bit) && REQUIRED_MASK_BIT_SET(bit) ? 1 :	\
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 9a157942ae3dd..09cca23f020eb 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -13,7 +13,7 @@
+ /*
+  * Defines x86 CPU feature bits
+  */
+-#define NCAPINTS			21	   /* N 32-bit words worth of info */
++#define NCAPINTS			22	   /* N 32-bit words worth of info */
+ #define NBUGINTS			2	   /* N 32-bit bug flags */
+ 
+ /*
+diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
+index 000037078db43..380e963149cc7 100644
+--- a/arch/x86/include/asm/disabled-features.h
++++ b/arch/x86/include/asm/disabled-features.h
+@@ -112,6 +112,7 @@
+ #define DISABLED_MASK18	0
+ #define DISABLED_MASK19	0
+ #define DISABLED_MASK20	0
+-#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
++#define DISABLED_MASK21	0
++#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
+ 
+ #endif /* _ASM_X86_DISABLED_FEATURES_H */
+diff --git a/arch/x86/include/asm/required-features.h b/arch/x86/include/asm/required-features.h
+index 7ba1726b71c7b..e9187ddd3d1fd 100644
+--- a/arch/x86/include/asm/required-features.h
++++ b/arch/x86/include/asm/required-features.h
+@@ -99,6 +99,7 @@
+ #define REQUIRED_MASK18	0
+ #define REQUIRED_MASK19	0
+ #define REQUIRED_MASK20	0
+-#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
++#define REQUIRED_MASK21	0
++#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
+ 
+ #endif /* _ASM_X86_REQUIRED_FEATURES_H */
 -- 
 2.43.0
 
