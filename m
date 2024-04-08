@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5C589C0E4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:14:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E6F89C64B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38E66284CC4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:14:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B59CAB28BE2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9160F84FCE;
-	Mon,  8 Apr 2024 13:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11587762E5;
+	Mon,  8 Apr 2024 13:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyfn9nKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uq+pzvn8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A05B84D03;
-	Mon,  8 Apr 2024 13:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C451342046;
+	Mon,  8 Apr 2024 13:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581850; cv=none; b=IwuvUPJKirwej5CEkHZyts9dgNoob3TZjCa+aXBlpnf/Uv10gRNkOnz5u+l/pcc29JS0vA6RygFKhDN+3+j0dszL3fUqQ/4PbDBjDtYkHuZjmNHWMwnOTaNpXe6DPjDx6v8BTdaxVoHSlOMzRTiUqNKIPyy6MiTSa+cMO03HCc4=
+	t=1712584515; cv=none; b=SLQ0LoRExMvy3yB6m7P1Fl1PQ5MJxVst3MuAcKT8ThUKzDIrkHkYSo1GL2yV/PmKV1W+rYOSaNxnDc5IKJ4G+tC9EhEBWGCc3Nf7EkwsO6y9x+sSpcq5/eL80Mi/c6Mmjhq3fxrSBQKF61h2XXuWDVKymcDprbUDhtRnKp87m/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581850; c=relaxed/simple;
-	bh=p1uNTQT6UPwmAHYzicBYzeC6DJIx9bSfW3BgnCeOxCk=;
+	s=arc-20240116; t=1712584515; c=relaxed/simple;
+	bh=TaVl3kbbWRNCwd/ULduU9eHN38N7FYif80kVtR4oEik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ey70TbiD/+oHlCh8a+UQYcjat1ifQ8Rw/AayZ3o8DoNzQYj0vNRMImQV0tTA6VDJe5jJTrRNdj48wpkdqPNs1Nia5xgwanDe0CRCMQHhmpqiS7MKGYO98Jw6A6ikQ0gOGdaRz9/xGo9RVZ96g2K4jZ2D/DqPjjdqkxSIk5+tFk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyfn9nKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CB7C43330;
-	Mon,  8 Apr 2024 13:10:49 +0000 (UTC)
+	 MIME-Version; b=Kzbv2MCdzPQWSUmJyb1YP2c+zkLi/VbSW+s427VCPkrklMmpdDineiXsORYMyQFLQW92stxy6ydjzqE4IkbXeBKQ6VHhrVYHwhRP3keWdBKG3pa/aaAhEQXzjI/eG6gKomT+SQM95CeslpPNKHqreYS7p5KrL2WTKzLpRrJ+21M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uq+pzvn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC9AC433F1;
+	Mon,  8 Apr 2024 13:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581849;
-	bh=p1uNTQT6UPwmAHYzicBYzeC6DJIx9bSfW3BgnCeOxCk=;
+	s=korg; t=1712584515;
+	bh=TaVl3kbbWRNCwd/ULduU9eHN38N7FYif80kVtR4oEik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iyfn9nKJjZXS6yj9/oPM8BK86V++JO8yYRfo8AGNzGO8EZK9vQt7ak3Ay24V5vUYh
-	 72+8V/dCvBVppbgQl6ninsKkavzFUmdh9/wqgxjabUyiS+93tUJffX/scP2JYu8JdM
-	 FrDwpgACF/GDWYeDlYfpj7EUrveoNueIqUUJVAuY=
+	b=uq+pzvn8nNNUrJDQRgZC8XEsKwBOXzbw/7UnT9vvlkkquvoLNW9+9Q5ijakMzCh5v
+	 +F0gzakJoXLiNWtkBHhpXgFePmxmTQdxH2ThoL2g8EvrdEEOUOmKTHN+QqS8VuxExd
+	 GKmChcSchbV3vPjOcH7AmdBhZvLwEzB/YSW2Egic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/252] tls: get psock ref after taking rxlock to avoid leak
-Date: Mon,  8 Apr 2024 14:55:30 +0200
-Message-ID: <20240408125307.612069168@linuxfoundation.org>
+	Yongcheng Yang <yoyang@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 465/690] nfsd: put the export reference in nfsd4_verify_deleg_dentry
+Date: Mon,  8 Apr 2024 14:55:31 +0200
+Message-ID: <20240408125416.465941578@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 417e91e856099e9b8a42a2520e2255e6afe024be ]
+[ Upstream commit 50256e4793a5e5ab77703c82a47344ad2e774a59 ]
 
-At the start of tls_sw_recvmsg, we take a reference on the psock, and
-then call tls_rx_reader_lock. If that fails, we return directly
-without releasing the reference.
+nfsd_lookup_dentry returns an export reference in addition to the dentry
+ref. Ensure that we put it too.
 
-Instead of adding a new label, just take the reference after locking
-has succeeded, since we don't need it before.
-
-Fixes: 4cbc325ed6b4 ("tls: rx: allow only one reader at a time")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/fe2ade22d030051ce4c3638704ed58b67d0df643.1711120964.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2138866
+Fixes: 876c553cb410 ("NFSD: verify the opened dentry after setting a delegation")
+Reported-by: Yongcheng Yang <yoyang@redhat.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 925de4caa894a..df166f6afad82 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1976,10 +1976,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 	if (unlikely(flags & MSG_ERRQUEUE))
- 		return sock_recv_errqueue(sk, msg, len, SOL_IP, IP_RECVERR);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index d19629de2af5d..7cfc92aa2a236 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5397,6 +5397,7 @@ nfsd4_verify_deleg_dentry(struct nfsd4_open *open, struct nfs4_file *fp,
+ 	if (err)
+ 		return -EAGAIN;
  
--	psock = sk_psock_get(sk);
- 	err = tls_rx_reader_lock(sk, ctx, flags & MSG_DONTWAIT);
- 	if (err < 0)
- 		return err;
-+	psock = sk_psock_get(sk);
- 	bpf_strp_enabled = sk_psock_strp_enabled(psock);
- 
- 	/* If crypto failed the connection is broken */
++	exp_put(exp);
+ 	dput(child);
+ 	if (child != file_dentry(fp->fi_deleg_file->nf_file))
+ 		return -EAGAIN;
 -- 
 2.43.0
 
