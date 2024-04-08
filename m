@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E8789C646
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15AC389C22F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27BE11F21CDA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:06:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5ABF2835CA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118998175F;
-	Mon,  8 Apr 2024 14:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FF980600;
+	Mon,  8 Apr 2024 13:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2PtAPC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUd0Kt9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C327280BF8;
-	Mon,  8 Apr 2024 14:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90DD70CCB;
+	Mon,  8 Apr 2024 13:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585162; cv=none; b=TV9cSZ4Ay5RrSPtUoLn0aiIUaTmme4k2ov6akDBExWYH6gCKopn/JVOol6O1M3h8uyR3c+1SBGCNmJRvLTyMZSk8uKwO/dd1wtAyUKibxaHEMrETfbwqZxUg5jQx7yevFCCDR+NhfIlQVMeSWj9/JBfCWL5ltQwSJN8bpkmSww4=
+	t=1712582611; cv=none; b=Fn6nsKvT2RVk/0K545qnw8UhdVVC+/TL1ZFBMS6edNXe0pZx6al2bKOp3EVM8633l90aQa9pKN1JbVpHtJHGuPVwqyuQ/fAa29bIjN8AwKNcQcw742iG0KSxASQGaY9W23g3zHDB0Msz0EBuLLY4jQWfdZo2fQSIV87uINZ55vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585162; c=relaxed/simple;
-	bh=BGPP2mNM4raiPsMhB4cbtPLXrSH8JzYhV570iDF4vwg=;
+	s=arc-20240116; t=1712582611; c=relaxed/simple;
+	bh=OWzyGGVeWqMyWdr8xljKVR4waN5OKGzmjmSuznnexVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ja5+a5FZCIuRIGvi4nTAGIe97gV4QlWz9+0V12vRuetwro3V5DCZU8QRU4+QJSx+iCE5I42hCYb30LmuP4npcpV7Xj43gfdKQwoGmjhMNZ/Aftt20CUUA4Ob6T2/7YghRQLOOR/QlMMcf/uWmr5x3GdPLb09Njli2Kwjw/qwWlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2PtAPC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A995C433C7;
-	Mon,  8 Apr 2024 14:06:02 +0000 (UTC)
+	 MIME-Version; b=nO4hfW7cbWgBYixdthe8UvfOCQd7rzORfXuXqwTkbuAqqoYq3NHJ1F+RDNRd+/hqxthJiUQGfiyZsEwxwEyVW1m5xeeoa6kv04vH+LF2NW29peijFsd98KgUiKcF6C1d/WihZVV757jhZGc1NzCKovNkR+tsKoaL9GljdwJ87fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUd0Kt9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E53C433F1;
+	Mon,  8 Apr 2024 13:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585162;
-	bh=BGPP2mNM4raiPsMhB4cbtPLXrSH8JzYhV570iDF4vwg=;
+	s=korg; t=1712582611;
+	bh=OWzyGGVeWqMyWdr8xljKVR4waN5OKGzmjmSuznnexVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2PtAPC+sSTWlA3rakrjWTZGOhoM9XxiKN1VcWDq3xr4c19rreorv5QoI3TYMEh/Q
-	 tiT2rQ/NHDxlJt93DXwIYA84zEojOn0FVdswulEAFvRrVfHy+6xybRRd3vPBUvcd0a
-	 UFJSCW4Dvxs30tvSOCby7oTwGCBT4yT99udw/UwE=
+	b=xUd0Kt9Nc7Po63f0A3d0jm3fivtze5oO8l3hJILGre+X+0wmQekKH2p6CfCh/E9sP
+	 YCZ0V0oZmdoUsrOplGYC2arwG6Yvf+rBGZ5NKihMAba7dLUcrtImeTv4mGsyVxevkf
+	 6iJ7+yAYSVTzAcAyz+UpDDWgwUhcwChFKAQyqQEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.15 654/690] i40e: fix i40e_count_filters() to count only active/new filters
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 106/138] s390/pai: cleanup event initialization
 Date: Mon,  8 Apr 2024 14:58:40 +0200
-Message-ID: <20240408125423.345991092@linuxfoundation.org>
+Message-ID: <20240408125259.527373484@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit eb58c598ce45b7e787568fe27016260417c3d807 upstream.
+[ Upstream commit 4711b7b8f99583f6105a33e91f106125134beacb ]
 
-The bug usually affects untrusted VFs, because they are limited to 18 MACs,
-it affects them badly, not letting to create MAC all filters.
-Not stable to reproduce, it happens when VF user creates MAC filters
-when other MACVLAN operations are happened in parallel.
-But consequence is that VF can't receive desired traffic.
+Setting event::hw.last_tag to zero is not necessary. The memory
+for each event is dynamically allocated by the kernel common code and
+initialized to zero already.  Remove this unnecessary assignment.
+Move the comment to function paicrypt_start() for clarification.
 
-Fix counter to be bumped only for new or active filters.
-
-Fixes: 621650cabee5 ("i40e: Refactoring VF MAC filters counting to make more reliable")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/s390/kernel/perf_pai_crypto.c | 11 +++++------
+ arch/s390/kernel/perf_pai_ext.c    |  1 -
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -1231,8 +1231,11 @@ int i40e_count_filters(struct i40e_vsi *
- 	int bkt;
- 	int cnt = 0;
+diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+index 4b773653a951b..3758e972bb5f9 100644
+--- a/arch/s390/kernel/perf_pai_crypto.c
++++ b/arch/s390/kernel/perf_pai_crypto.c
+@@ -207,12 +207,6 @@ static int paicrypt_event_init(struct perf_event *event)
+ 	if (rc)
+ 		return rc;
  
--	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
--		++cnt;
-+	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
-+		if (f->state == I40E_FILTER_NEW ||
-+		    f->state == I40E_FILTER_ACTIVE)
-+			++cnt;
-+	}
+-	/* Event initialization sets last_tag to 0. When later on the events
+-	 * are deleted and re-added, do not reset the event count value to zero.
+-	 * Events are added, deleted and re-added when 2 or more events
+-	 * are active at the same time.
+-	 */
+-	event->hw.last_tag = 0;
+ 	event->destroy = paicrypt_event_destroy;
  
- 	return cnt;
- }
+ 	if (a->sample_period) {
+@@ -246,6 +240,11 @@ static void paicrypt_start(struct perf_event *event, int flags)
+ {
+ 	u64 sum;
+ 
++	/* Event initialization sets last_tag to 0. When later on the events
++	 * are deleted and re-added, do not reset the event count value to zero.
++	 * Events are added, deleted and re-added when 2 or more events
++	 * are active at the same time.
++	 */
+ 	if (!event->hw.last_tag) {
+ 		event->hw.last_tag = 1;
+ 		sum = paicrypt_getall(event);		/* Get current value */
+diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+index 663cd37f8b293..53915401c3f63 100644
+--- a/arch/s390/kernel/perf_pai_ext.c
++++ b/arch/s390/kernel/perf_pai_ext.c
+@@ -267,7 +267,6 @@ static int paiext_event_init(struct perf_event *event)
+ 	rc = paiext_alloc(a, event);
+ 	if (rc)
+ 		return rc;
+-	event->hw.last_tag = 0;
+ 	event->destroy = paiext_event_destroy;
+ 
+ 	if (a->sample_period) {
+-- 
+2.43.0
+
 
 
 
