@@ -1,98 +1,126 @@
-Return-Path: <stable+bounces-36301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9F789B4B5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 01:51:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9A689B4D2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 02:00:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED8E2830DD
-	for <lists+stable@lfdr.de>; Sun,  7 Apr 2024 23:51:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 218B41C20B2C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 00:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81515446D3;
-	Sun,  7 Apr 2024 23:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIReazuM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34302F50;
+	Mon,  8 Apr 2024 00:00:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out28-69.mail.aliyun.com (out28-69.mail.aliyun.com [115.124.28.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FC547F48;
-	Sun,  7 Apr 2024 23:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85297D2F5;
+	Mon,  8 Apr 2024 00:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712533908; cv=none; b=IkiHc6xR3kHhwzB+fKtVPSSmLzUb3xJuxVEglYbTyNmOAZy1zJAnFdTq3ohJNlbOrmLL2Iqthk60sSOggyw7WHAFfUDItHyRZBkMZESMJnMqioH71QVBL3ORmO4jHxa56FaLIObYunccdCZffaW7wkgJib8P11SnR4LVhQVBDdo=
+	t=1712534428; cv=none; b=NjlfTuZwkoVLEzHQjH1C7KvTMs2gl9x8hpC4PMtXnP8tu0E+Yjov5A1XWOaGrPqn4o6oRlZoz92lD9UFZ+dbwZw3zNRf18zQDgsOsyDM5ifP3TPjwnNJ0m9Qt4p7TrNCCZ3+Nya7h4obXydjm2CCnmrQkYvxbmmUqNnOy3NZR2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712533908; c=relaxed/simple;
-	bh=c9AV06zEDRUY+STVK91qqsfok0ys+fFnMj1b/OQ26rM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AQHWIfoTbt2Jt3XH2BqLy7SRv4SaxB3y7PhohP0L6laUGZGJlqyQAs+Reriawzg6Ux9MuX99Z4zhz2DtFOfLCdoIBQ8V6Mw4MjrtkbuP+PBRrSkZZSk7iLmWNc2UAnKuO4FuiTYDW7XYSMr2GycGLDJAuossvFT44a5hirrcOlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIReazuM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8822EC433C7;
-	Sun,  7 Apr 2024 23:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712533907;
-	bh=c9AV06zEDRUY+STVK91qqsfok0ys+fFnMj1b/OQ26rM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EIReazuMf6MdO3iR1+tKwywe+60c9OzkvrxOUMH6dPKrnbHe5g1lCdir4dO9DRjAE
-	 nK3LX6TE1p5p9tUSPZ8Yb0BmO3q/fkmYw0B9N23mplDdLU8qYq/GTR/ncrNG2pM64e
-	 pZWVH9DNCxJ0Sgz80B79fChTNAHE8PwtYNqzgBwWJzGmHJv8OMJ2QmHyJp/29IM8I6
-	 rkiWfKFVjwMbtef5Is1CyBpyH+Uq8F+mkN+maRHScF8hPH9wD+b9FEyGwwHc+KWvHB
-	 nPS+0EfWSGzhyBVD+ygmfO23/Zlfs4x1uVUf40iX0N8o4Y4smc0NuhMrwYw8QNvoHC
-	 jmm/NXqGyrCxA==
-Date: Sun, 7 Apr 2024 19:51:47 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Edmund Raile <edmund.raile@proton.me>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.6 52/75] PCI: Mark LSI FW643 to avoid bus reset
-Message-ID: <ZhMxk4Sn4N0AAFSu@sashalap>
-References: <20240329124330.3089520-52-sashal@kernel.org>
- <20240329151702.GA1643117@bhelgaas>
+	s=arc-20240116; t=1712534428; c=relaxed/simple;
+	bh=VYoTCMahrqGMLq/wVZiFhH4HAP4gWEo41IECyqjr6Kk=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:Message-Id:
+	 MIME-Version:Content-Type; b=fAk8ZgE4ohNMGN22+1fv8WIn7/UxHmSbk+yN5RvFMB/pBzqguSN+LTChiCRuFkzxKaCZWrcT2++1Vk0kcw7K4G1xXpQFqEN1ut97QbnSxVCa1a110+O2qKR3OSEBfrLcQTzNzRr4YpyHiBnoeMYqPR8WBhM3ewrsS9yrCoBsjnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com; spf=pass smtp.mailfrom=e16-tech.com; arc=none smtp.client-ip=115.124.28.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=e16-tech.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04792926|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0308407-0.000406287-0.968753;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047203;MF=wangyugui@e16-tech.com;NM=1;PH=DS;RN=3;RT=3;SR=0;TI=SMTPD_---.X4fYkYZ_1712534413;
+Received: from 192.168.2.112(mailfrom:wangyugui@e16-tech.com fp:SMTPD_---.X4fYkYZ_1712534413)
+          by smtp.aliyun-inc.com;
+          Mon, 08 Apr 2024 08:00:14 +0800
+Date: Mon, 08 Apr 2024 08:00:15 +0800
+From: Wang Yugui <wangyugui@e16-tech.com>
+To: Qu Wenruo <wqu@suse.com>
+Subject: Re: [PATCH] btrfs: fix wrong block_start calculation for btrfs_drop_extent_map_range()
+Cc: linux-btrfs@vger.kernel.org,
+ stable@vger.kernel.org
+In-Reply-To: <4240e179e2439dd1698798e2de79ec59990cbaa0.1712452660.git.wqu@suse.com>
+References: <4240e179e2439dd1698798e2de79ec59990cbaa0.1712452660.git.wqu@suse.com>
+Message-Id: <20240408080014.74B2.409509F4@e16-tech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20240329151702.GA1643117@bhelgaas>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Becky! ver. 2.81.06 [en]
 
-On Fri, Mar 29, 2024 at 10:17:02AM -0500, Bjorn Helgaas wrote:
->On Fri, Mar 29, 2024 at 08:42:33AM -0400, Sasha Levin wrote:
->> From: Edmund Raile <edmund.raile@proton.me>
->>
->> [ Upstream commit 29a43dc130ce65d365a8ea9e1cc4bc51005a353e ]
->>
->> Apparently the LSI / Agere FW643 can't recover after a Secondary Bus Reset
->> and requires a power-off or suspend/resume and rescan.
->>
->> VFIO resets a device before assigning it to a VM, and the FW643 doesn't
->> support any other reset methods, so this problem prevented assignment of
->> FW643 to VMs.
->>
->> Prevent use of Secondary Bus Reset for this device.
->>
->> With this change, the FW643 can be assigned to VMs with VFIO.  Note that it
->> will not be reset, resulting in leaking state between VMs and host.
->>
->> Link: https://lore.kernel.org/r/20240227131401.17913-1-edmund.raile@proton.me
->> Signed-off-by: Edmund Raile <edmund.raile@proton.me>
->> [bhelgaas: commit log, comment]
->> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->We're about to revert this upstream, so I wouldn't backport this to
->any stable trees:
->
->https://lore.kernel.org/r/20240328212302.1582483-1-helgaas@kernel.org
+Hi,
 
-I'll drop it, thanks!
+> [BUG]
+> During my extent_map cleanup/refactor, with more than too strict sanity
+> checks, extent-map-tests::test_case_7() would crash my extent_map sanity
+> checks.
+> 
+> The problem is, after btrfs_drop_extent_map_range(), the resulted
+> extent_map has a @block_start way too large.
+> Meanwhile my btrfs_file_extent_item based members are returning a
+> correct @disk_bytenr along with correct @offset.
+> 
+> The extent map layout looks like this:
+> 
+>      0        16K    32K       48K
+>      | PINNED |      | Regular |
+> 
+> The regular em at [32K, 48K) also has 32K @block_start.
+> 
+> Then drop range [0, 36K), which should shrink the regular one to be
+> [36K, 48K).
+> However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
+> 
+> [CAUSE]
+> Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
+> that covers the target range but is still beyond it, we need to split
+> that extent map into half:
+> 
+> 	|<-- drop range -->|
+> 		 |<----- existing extent_map --->|
+> 
+> And if the extent map is not compressed, we need to forward
+> extent_map::block_start by the difference between the end of drop range
+> and the extent map start.
+> 
+> However in that particular case, the difference is calculated using
+> (start + len - em->start).
+> 
+> The problem is @start can be modified if the drop range covers any
+> pinned extent.
+> 
+> This leads to wrong calculation, and would be caught by my later
+> extent_map sanity checks, which checks the em::block_start against
+> btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
+> 
+> And unfortunately this is going to cause data corruption, as the
+> splitted em is pointing an incorrect location, can cause either
+> unexpected read error or wild writes.
+> 
+> [FIX]
+> Fix it by avoiding using @start completely, and use @end - em->start
+> instead, which @end is exclusive bytenr number.
+> 
+> And update the test case to verify the @block_start to prevent such
+> problem from happening.
+> 
+> CC: stable@vger.kernel.org # 6.7+
+> Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
 
--- 
-Thanks,
-Sasha
+$ git describe --contains c962098ca4af
+v6.5-rc7~4^2
+
+so it should be
+CC: stable@vger.kernel.org # 6.5+
+
+Best Regards
+Wang Yugui (wangyugui@e16-tech.com)
+2024/04/08
+
+
 
