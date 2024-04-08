@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-37290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB2F89C439
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8ED89C61F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEE492809CC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CFB81C22AFB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC6B8612E;
-	Mon,  8 Apr 2024 13:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23187F49C;
+	Mon,  8 Apr 2024 14:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UW0akM89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFEWqA2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CA385C62;
-	Mon,  8 Apr 2024 13:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865DC7F47F;
+	Mon,  8 Apr 2024 14:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583804; cv=none; b=OfHqIBqhXEHet6WNuuYH61c7t66xjZWlBRbuCwtiIto2wu6d5VmjXp0P2IpMD4v9J4Q/hyU027hbTR7u7+caeX/syCcfWJpRUHkqba4Y0xzxTuTtqxJObJLgdxa9tBxUZ1xOkhQhVEtR+JEYSGM8bkfoP268Wdu+RoqpBgdkHTU=
+	t=1712585072; cv=none; b=o0xL4KCzmIg/eJQ3RDPVuwjcqmk1iQcr/NeQvjeoIV9C5XI28OegwZwExoq/2WxS9JxPekapy9epC5rb98/jdfUdQafVpImRiuJKnGsYN0sAoWuarrRw1oWfuTrPnzhArDCSjZF9Et/33SwGWiF+D8VyB0GjDOPb+HKEqDO7RjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583804; c=relaxed/simple;
-	bh=UB7h9nRoHHN/eCGTQS25C0A8AUf77r0kDWBeA33/Ep4=;
+	s=arc-20240116; t=1712585072; c=relaxed/simple;
+	bh=Ay6u+A8/arVcTLKZ4crBxJqdgtH3AnvApgNygnNa8lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUYsvsrDnXDIyurFqnGjhKem0wCNBRWlvSDC1Lzr37GCQx2f9TYxSWz0Xi48/MkzBpgKqzev91nckM83ZVMWy2pmzo1ubKYc+7+Ydyk3FkQXMiaPsneFBuFAhcpAWZoaZl/E69xEBSeXD2vhZ+HqU69ediydgM0/eMUytELRE4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UW0akM89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1D5C43390;
-	Mon,  8 Apr 2024 13:43:23 +0000 (UTC)
+	 MIME-Version; b=AVqrLm+Il/7t0fZZiOr+iR/hfQZrWft0rLxabApyxVaWrrfvWTRFrJiRYfqxTb8P3+wQhl6gj3vI1DXKbyLHmeBIdt3Am5RFSQfB/NVFjRkzB7gSXKSsMZeCZ9eQAk1JRdvK3hWCn2riMncYnRr9XYSBIks8C9H81oi2au2LHXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFEWqA2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F8EC433F1;
+	Mon,  8 Apr 2024 14:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583803;
-	bh=UB7h9nRoHHN/eCGTQS25C0A8AUf77r0kDWBeA33/Ep4=;
+	s=korg; t=1712585072;
+	bh=Ay6u+A8/arVcTLKZ4crBxJqdgtH3AnvApgNygnNa8lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UW0akM896nE9Og6sFmihgcfURgnk28GAxCfVUwOlW/2NvmHF29ufAikeeEdYSPBq1
-	 h1H7wvzq1wK65SUs955M32Z1UtH+UijgaVSM+w7gZqZydBI6PYLJrJFxLzyrBbVI6X
-	 6+H1YZdOM4pbVYLxtRq8dE31dHRiX2roVRdo4H7U=
+	b=cFEWqA2IIm64h9GT4csiwu9zAerdjrGnK892FLxjEpo9kRCgQzrSb3NuIxOOF8Fuu
+	 AnL6c/6uQhc1ShtAKM4BhZgjjek0k0B3jACXRjCQS3ttzyh+MeeEkmGJo+KT4rdBCG
+	 JPpfltmMTGSm/0tYMtdjptgo8uUKd3lFBNKJaBrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 213/252] io_uring/kbuf: hold io_buffer_list reference over mmap
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 646/690] selftests: reuseaddr_conflict: add missing new line at the end of the output
 Date: Mon,  8 Apr 2024 14:58:32 +0200
-Message-ID: <20240408125313.272095078@linuxfoundation.org>
+Message-ID: <20240408125423.051479027@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,119 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 561e4f9451d65fc2f7eef564e0064373e3019793 upstream.
+commit 31974122cfdeaf56abc18d8ab740d580d9833e90 upstream.
 
-If we look up the kbuf, ensure that it doesn't get unregistered until
-after we're done with it. Since we're inside mmap, we cannot safely use
-the io_uring lock. Rely on the fact that we can lookup the buffer list
-under RCU now and grab a reference to it, preventing it from being
-unregistered until we're done with it. The lookup returns the
-io_buffer_list directly with it referenced.
+The netdev CI runs in a VM and captures serial, so stdout and
+stderr get combined. Because there's a missing new line in
+stderr the test ends up corrupting KTAP:
 
-Cc: stable@vger.kernel.org # v6.4+
-Fixes: 5cf4f52e6d8a ("io_uring: free io_buffer_list entries via RCU")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+  # Successok 1 selftests: net: reuseaddr_conflict
+
+which should have been:
+
+  # Success
+  ok 1 selftests: net: reuseaddr_conflict
+
+Fixes: 422d8dc6fd3a ("selftest: add a reuseaddr test")
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240329160559.249476-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   11 ++++++-----
- io_uring/kbuf.c     |   31 +++++++++++++++++++++++++------
- io_uring/kbuf.h     |    4 +++-
- 3 files changed, 34 insertions(+), 12 deletions(-)
+ tools/testing/selftests/net/reuseaddr_conflict.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3429,14 +3429,15 @@ static void *io_uring_validate_mmap_requ
- 		ptr = ctx->sq_sqes;
- 		break;
- 	case IORING_OFF_PBUF_RING: {
-+		struct io_buffer_list *bl;
- 		unsigned int bgid;
- 
- 		bgid = (offset & ~IORING_OFF_MMAP_MASK) >> IORING_OFF_PBUF_SHIFT;
--		rcu_read_lock();
--		ptr = io_pbuf_get_address(ctx, bgid);
--		rcu_read_unlock();
--		if (!ptr)
--			return ERR_PTR(-EINVAL);
-+		bl = io_pbuf_get_bl(ctx, bgid);
-+		if (IS_ERR(bl))
-+			return bl;
-+		ptr = bl->buf_ring;
-+		io_put_bl(ctx, bl);
- 		break;
- 		}
- 	default:
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -273,7 +273,7 @@ static int __io_remove_buffers(struct io
- 	return i;
- }
- 
--static void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
-+void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
- {
- 	if (atomic_dec_and_test(&bl->refs)) {
- 		__io_remove_buffers(ctx, bl, -1U);
-@@ -689,16 +689,35 @@ int io_unregister_pbuf_ring(struct io_ri
+--- a/tools/testing/selftests/net/reuseaddr_conflict.c
++++ b/tools/testing/selftests/net/reuseaddr_conflict.c
+@@ -109,6 +109,6 @@ int main(void)
+ 	fd1 = open_port(0, 1);
+ 	if (fd1 >= 0)
+ 		error(1, 0, "Was allowed to create an ipv4 reuseport on an already bound non-reuseport socket with no ipv6");
+-	fprintf(stderr, "Success");
++	fprintf(stderr, "Success\n");
  	return 0;
  }
- 
--void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid)
-+struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
-+				      unsigned long bgid)
- {
- 	struct io_buffer_list *bl;
-+	bool ret;
- 
--	bl = __io_buffer_get_list(ctx, bgid);
-+	/*
-+	 * We have to be a bit careful here - we're inside mmap and cannot grab
-+	 * the uring_lock. This means the buffer_list could be simultaneously
-+	 * going away, if someone is trying to be sneaky. Look it up under rcu
-+	 * so we know it's not going away, and attempt to grab a reference to
-+	 * it. If the ref is already zero, then fail the mapping. If successful,
-+	 * the caller will call io_put_bl() to drop the the reference at at the
-+	 * end. This may then safely free the buffer_list (and drop the pages)
-+	 * at that point, vm_insert_pages() would've already grabbed the
-+	 * necessary vma references.
-+	 */
-+	rcu_read_lock();
-+	bl = xa_load(&ctx->io_bl_xa, bgid);
-+	/* must be a mmap'able buffer ring and have pages */
-+	ret = false;
-+	if (bl && bl->is_mmap)
-+		ret = atomic_inc_not_zero(&bl->refs);
-+	rcu_read_unlock();
- 
--	if (!bl || !bl->is_mmap)
--		return NULL;
-+	if (ret)
-+		return bl;
- 
--	return bl->buf_ring;
-+	return ERR_PTR(-EINVAL);
- }
- 
- /*
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -60,7 +60,9 @@ unsigned int __io_put_kbuf(struct io_kio
- 
- void io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
- 
--void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid);
-+void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl);
-+struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
-+				      unsigned long bgid);
- 
- static inline void io_kbuf_recycle_ring(struct io_kiocb *req)
- {
 
 
 
