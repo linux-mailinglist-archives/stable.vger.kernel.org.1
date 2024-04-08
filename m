@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-36827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80D389C1F5
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516D189C1F4
 	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19936282A22
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E60181F22087
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89297C0AB;
-	Mon,  8 Apr 2024 13:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D3A7C6CA;
+	Mon,  8 Apr 2024 13:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgfEV0E9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lh96z1uL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9477C0A6;
-	Mon,  8 Apr 2024 13:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65496D1A9;
+	Mon,  8 Apr 2024 13:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582457; cv=none; b=hd/++Tt+a0ic1t1gGAcRPXlPiUCaHjLa9lHoXUeInTI6PH0i4Pj9krgsVWax378TaOX5En5wxB2eDxIhtb0rRnTASNyLkI8CynlxwU/uuJkcyfjkPbetrP8NOgymoQ331qCp0LI6O+iUAviJxweMHOwwZsvOr4UDd7CqExE8c6U=
+	t=1712582469; cv=none; b=EiD2ulG+k6wvzuYf+1CL3eRkC6BnB29zxNF4zWFMbqCb4c+4vAV1VZ76C0Dq/35ICLixM8O97e2AbqiwKnEwPogvAl35HLynNNy9Zdf0AFou32zvgfm8hxQcCSst6WQ5uEIoD27mmTwXOlTtQcp7Pw1uy+mS8O17qAQsgtl7ySg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582457; c=relaxed/simple;
-	bh=hS7mWQJBRZcixIxnsgqdNstf8WybhjBvycj5fg1q8kk=;
+	s=arc-20240116; t=1712582469; c=relaxed/simple;
+	bh=Ig/z5ONIMgROIKpYmo22P+xm/KhXugXkM65oZhvPgqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XIbqNwmDCRL4KGccc5+9iAEkIZSVwIcDqnwD5dKZo2VTuHYyD/3h42d2gyE+9jfVHjJihxPd12p2zFDfhvpXMp6ypUsaMw32rK5WAmnmWRPLpcvFYPPUuXGmgNBfUBrcRymS0bVTNRvLTXZSLLxAKlW63lDG+rmeefSZeeNqQcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgfEV0E9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7326C433F1;
-	Mon,  8 Apr 2024 13:20:56 +0000 (UTC)
+	 MIME-Version; b=iT8yBGvGBJp9w4+MieIr5TzJTd+Ej51YSrq1nGc9sKf2u2x+VJ1HAdjzJLWHcsOUOvU11ml5xLJ5jpq+TkmtyCYT0sVIwF4uFQlVGPn8TB1ZmhrHfO1jZ24oy3iWB5JFM1iRpmBCMd6DWrOMOxt29vJfaraFeYyQoyIO7Ccx5Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lh96z1uL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D43FC433F1;
+	Mon,  8 Apr 2024 13:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582457;
-	bh=hS7mWQJBRZcixIxnsgqdNstf8WybhjBvycj5fg1q8kk=;
+	s=korg; t=1712582468;
+	bh=Ig/z5ONIMgROIKpYmo22P+xm/KhXugXkM65oZhvPgqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgfEV0E9qYxMygOj5HVwNJdExvIUaOkNJ2fdGTQMIV9y1jz7dzezExWUfAn4hHAXy
-	 zv1XdEINAtySxepLDdFDUCY2dG9pfbZLuhdZ8E4BQZ/vcqD/YODZcZK9wweP3x4Fde
-	 C25cJcGRrqITEKffWCSXNFcj075VgL1HIbpHgqmY=
+	b=lh96z1uLToaBqEF3rMRqT814yvfeE7qnJKSfeBgZo28T3VTnrWIvNf5pGkgzLhq1n
+	 jCkfumtx5guBlp28xn/JMA4fAUVI7RSF5PLZ0lUOyJjm5AncV4S8B0P92xOOlIHkq2
+	 ELSTjbP20QZxzisO5tljNcw8iulYyqD8j3WQR29I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Rickard x Andersson <rickaran@axis.com>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Subject: [PATCH 5.15 147/690] tty: serial: imx: Fix broken RS485
-Date: Mon,  8 Apr 2024 14:50:13 +0200
-Message-ID: <20240408125404.838576463@linuxfoundation.org>
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
+	Krister Johansen <kjlx@templeofstupid.com>
+Subject: [PATCH 5.15 148/690] KVM: arm64: Work out supported block level at compile time
+Date: Mon,  8 Apr 2024 14:50:14 +0200
+Message-ID: <20240408125404.877751397@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,86 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rickard x Andersson <rickaran@axis.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-commit 672448ccf9b6a676f96f9352cbf91f4d35f4084a upstream.
+commit 3b5c082bbfa20d9a57924edd655bbe63fe98ab06 upstream.
 
-When about to transmit the function imx_uart_start_tx is called and in
-some RS485 configurations this function will call imx_uart_stop_rx. The
-problem is that imx_uart_stop_rx will enable loopback in order to
-release the RS485 bus, but when loopback is enabled transmitted data
-will just be looped to RX.
+Work out the minimum page table level where KVM supports block mappings
+at compile time. While at it, rewrite the comment around supported block
+mappings to directly describe what KVM supports instead of phrasing in
+terms of what it does not.
 
-This patch fixes the above problem by not enabling loopback when about
-to transmit.
-
-This driver now works well when used for RS485 half duplex master
-configurations.
-
-Fixes: 79d0224f6bf2 ("tty: serial: imx: Handle RS485 DE signal active high")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Rickard x Andersson <rickaran@axis.com>
-Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Link: https://lore.kernel.org/r/20240221115304.509811-1-rickaran@axis.com
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20221007234151.461779-2-oliver.upton@linux.dev
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/imx.c |   22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/kvm_pgtable.h |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -491,8 +491,7 @@ static void imx_uart_stop_tx(struct uart
- 	}
- }
+--- a/arch/arm64/include/asm/kvm_pgtable.h
++++ b/arch/arm64/include/asm/kvm_pgtable.h
+@@ -13,6 +13,18 @@
  
--/* called with port.lock taken and irqs off */
--static void imx_uart_stop_rx(struct uart_port *port)
-+static void imx_uart_stop_rx_with_loopback_ctrl(struct uart_port *port, bool loopback)
- {
- 	struct imx_port *sport = (struct imx_port *)port;
- 	u32 ucr1, ucr2, ucr4, uts;
-@@ -514,7 +513,7 @@ static void imx_uart_stop_rx(struct uart
- 	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
- 	if (port->rs485.flags & SER_RS485_ENABLED &&
- 	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
--	    sport->have_rtscts && !sport->have_rtsgpio) {
-+	    sport->have_rtscts && !sport->have_rtsgpio && loopback) {
- 		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
- 		uts |= UTS_LOOP;
- 		imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-@@ -527,6 +526,16 @@ static void imx_uart_stop_rx(struct uart
- }
+ #define KVM_PGTABLE_MAX_LEVELS		4U
  
- /* called with port.lock taken and irqs off */
-+static void imx_uart_stop_rx(struct uart_port *port)
-+{
-+	/*
-+	 * Stop RX and enable loopback in order to make sure RS485 bus
-+	 * is not blocked. Se comment in imx_uart_probe().
-+	 */
-+	imx_uart_stop_rx_with_loopback_ctrl(port, true);
-+}
++/*
++ * The largest supported block sizes for KVM (no 52-bit PA support):
++ *  - 4K (level 1):	1GB
++ *  - 16K (level 2):	32MB
++ *  - 64K (level 2):	512MB
++ */
++#ifdef CONFIG_ARM64_4K_PAGES
++#define KVM_PGTABLE_MIN_BLOCK_LEVEL	1U
++#else
++#define KVM_PGTABLE_MIN_BLOCK_LEVEL	2U
++#endif
 +
-+/* called with port.lock taken and irqs off */
- static void imx_uart_enable_ms(struct uart_port *port)
+ static inline u64 kvm_get_parange(u64 mmfr0)
  {
- 	struct imx_port *sport = (struct imx_port *)port;
-@@ -714,8 +723,13 @@ static void imx_uart_start_tx(struct uar
- 				imx_uart_rts_inactive(sport, &ucr2);
- 			imx_uart_writel(sport, ucr2, UCR2);
+ 	u64 parange = cpuid_feature_extract_unsigned_field(mmfr0,
+@@ -58,11 +70,7 @@ static inline u64 kvm_granule_size(u32 l
  
-+			/*
-+			 * Since we are about to transmit we can not stop RX
-+			 * with loopback enabled because that will make our
-+			 * transmitted data being just looped to RX.
-+			 */
- 			if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
--				imx_uart_stop_rx(port);
-+				imx_uart_stop_rx_with_loopback_ctrl(port, false);
+ static inline bool kvm_level_supports_block_mapping(u32 level)
+ {
+-	/*
+-	 * Reject invalid block mappings and don't bother with 4TB mappings for
+-	 * 52-bit PAs.
+-	 */
+-	return !(level == 0 || (PAGE_SIZE != SZ_4K && level == 1));
++	return level >= KVM_PGTABLE_MIN_BLOCK_LEVEL;
+ }
  
- 			sport->tx_state = WAIT_AFTER_RTS;
- 			start_hrtimer_ms(&sport->trigger_start_tx,
+ /**
 
 
 
