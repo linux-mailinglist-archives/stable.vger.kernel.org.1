@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-37645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62FD89C5D0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A833889C2AD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619B52832AE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48E611F24B46
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BEF7E0F3;
-	Mon,  8 Apr 2024 14:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8089481AB4;
+	Mon,  8 Apr 2024 13:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8/VYX3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bC8mnTWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AA47D085;
-	Mon,  8 Apr 2024 14:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E92C8173C;
+	Mon,  8 Apr 2024 13:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584841; cv=none; b=AqWXvHrbQn23Zb6s8I6CiCP4S5xoYcFWiA4EEvrjJozACdJcrUSONM6x8eK26Lu3QhnLWRaEZOAs6WiV4Aafxah6E7rVY3sR/f4vGmFjqwyzjyNx0NhKbh0KYX3RYwjFRcF9+2kHcHpCFMcMFnCCpMwh7vgpBDFisNnTZdIfU4M=
+	t=1712582965; cv=none; b=tBkAKBvC0VxWv2IWBQ7ysu4RJgHH7xfVKUgWorlY7N1u1xL9qr0P6w2CxgXuNdJPQu+G4QQx3EJ56/7TLpTOQHJ+rh8XJAlakr0vw7FZ7QareMoMvr4y8Np/fRajCcvN4RssEbJmyHnySM4sFLfWMGlpfrfpMDkNH7HQMO7zf6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584841; c=relaxed/simple;
-	bh=GhBr9hAirzDcs5quPhdh/G7RMEE5u+Fmm/+b34wDhtg=;
+	s=arc-20240116; t=1712582965; c=relaxed/simple;
+	bh=o3XyHjdVN8pX6LAJjZJ8EXCHyqZiD0B8BpYAJ3MUDP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2I3A8r5GKpBQ+0g3KO7MjORyfQxh5dhd7+koNZfqpf0jhemUbCeriUn41bTUPENfcgbOs63rHn/e6cSpsU8X2zIlj5z9qyUM8ACZsYvb3gtNhSYL111ceFnAJb3PyIMRJTc3MYsFnDQZCqWFteXaKZtrWz9fo0StbnWHvv64IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8/VYX3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBF0C433F1;
-	Mon,  8 Apr 2024 14:00:41 +0000 (UTC)
+	 MIME-Version; b=Q/yQxHExt96ti/RupWtXaXZjrIP7z2VVDTBhQ5YWzOT/nzA8zAN3hWtVOVifzf5khzDsQyRkENmu/zesuwDcqZ8SnBBKnV+3LUEDysitpINk7Ck7SrAwy4PzNYvu6lMOnpOcgHNfZd0QskrOVClnkJc5+JwaTtkrZZFQs3XDN3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bC8mnTWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E7DC433F1;
+	Mon,  8 Apr 2024 13:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584841;
-	bh=GhBr9hAirzDcs5quPhdh/G7RMEE5u+Fmm/+b34wDhtg=;
+	s=korg; t=1712582964;
+	bh=o3XyHjdVN8pX6LAJjZJ8EXCHyqZiD0B8BpYAJ3MUDP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8/VYX3WNpEa4gju0WwpmZfS/C56EsJk+bPPFE4N6Ev5LLcX1z8HcDGY3Kjxo0wJY
-	 gnmpJQAC01pkfWZN5dXXIBH8m38MNEFgcHjzpP2XK9A4yZ2u5XfzHVX/9d/2Nhf1eU
-	 1yNBpWDVtDCxnRmUY5/lC8CRMf7/4++T+SHjvEhc=
+	b=bC8mnTWXQtiO9ryQiD9Pk1tn/J9w//F2YieffhcVshF1WFaYlPuUdTlHP2gMM66Rl
+	 QsfZSX+GzISiXfEzveovWusbmSdOJL2T8R3qqufrV11D/KLnhS/7WwfdM1DxAKQs6r
+	 tu0HOlOPkVuxMaPUHI7tgfkxNA6c62FVq4HqxNLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Avri Altman <avri.altman@wdc.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 575/690] mmc: core: Avoid negative index with array access
-Date: Mon,  8 Apr 2024 14:57:21 +0200
-Message-ID: <20240408125420.437278241@linuxfoundation.org>
+	Ivan Vecera <ivecera@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 143/252] virtchnl: Add header dependencies
+Date: Mon,  8 Apr 2024 14:57:22 +0200
+Message-ID: <20240408125311.090726796@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit cf55a7acd1ed38afe43bba1c8a0935b51d1dc014 upstream.
+[ Upstream commit 7151d87a175c6618fe81705755eb3dc4199cad4e ]
 
-Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") assigns
-prev_idata = idatas[i - 1], but doesn't check that the iterator i is
-greater than zero. Let's fix this by adding a check.
+The <linux/avf/virtchnl.h> uses BIT, struct_size and ETH_ALEN macros
+but does not include appropriate header files that defines them.
+Add these dependencies so this header file can be included anywhere.
 
-Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
-Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240313133744.2405325-2-mikko.rapeli@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/avf/virtchnl.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -485,7 +485,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
- 	if (idata->flags & MMC_BLK_IOC_DROP)
- 		return 0;
+diff --git a/include/linux/avf/virtchnl.h b/include/linux/avf/virtchnl.h
+index d0807ad43f933..6424aa06fb08d 100644
+--- a/include/linux/avf/virtchnl.h
++++ b/include/linux/avf/virtchnl.h
+@@ -4,6 +4,10 @@
+ #ifndef _VIRTCHNL_H_
+ #define _VIRTCHNL_H_
  
--	if (idata->flags & MMC_BLK_IOC_SBC)
-+	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
- 		prev_idata = idatas[i - 1];
- 
- 	/*
++#include <linux/bitops.h>
++#include <linux/overflow.h>
++#include <uapi/linux/if_ether.h>
++
+ /* Description:
+  * This header file describes the Virtual Function (VF) - Physical Function
+  * (PF) communication protocol used by the drivers for all devices starting
+-- 
+2.43.0
+
 
 
 
