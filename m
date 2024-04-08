@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-36814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1CF89C1E1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8284489C172
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BBE51F22D57
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B32FC1C21604
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1907BAF3;
-	Mon,  8 Apr 2024 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657DB7CF17;
+	Mon,  8 Apr 2024 13:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQigXOD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lvr8uuDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3268172A;
-	Mon,  8 Apr 2024 13:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2457B7C6EB;
+	Mon,  8 Apr 2024 13:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582422; cv=none; b=LFwY2ZWlRvHzFuDamkWMLOUlOkbVIcGtOGkGC1BzyzWcwUz0KXCyCgNskwOOtrz/2RlkGAVQGWJCMuNk6oKZ7CfoQPIH5k4WH2RZEh5FEBk8hUwHjB8IDhMEX3iMU9bjTPFF1arC6p0csGs/W5USy1tR4xJHBxRM8q/m1IuAOfo=
+	t=1712582206; cv=none; b=FtSzJYTO92NYn/vFf+arhM+LsVkfyOehpF/UdKJls35hTzPrF/PCM/u04bY0qlnr/cNB0HKRPkH78+x8BlhXZnA1r748nfu0FMdjSJ6BHuJ8onyUTCDbZpzw5ruI29sIfoZnMxAmU6Ii2530gbd9PQMemVvoWOXiMm8MjPXCMIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582422; c=relaxed/simple;
-	bh=xFPVqMzb5M/eqZrzW7wA+ZzVgXHJ1RfDkyfO8bLS9UA=;
+	s=arc-20240116; t=1712582206; c=relaxed/simple;
+	bh=qRTJ9+6rTbsAU3hdunc36l0yPNe2IKfR5AQz6C68y+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eaxZ3uc3ITCM9+kRdlABzvBBUP4s8+TjoGHqFweWG/U9uqp0cKXBE2M2UNlSVaUgkWsM53v+AJt2ErLeBEbGsRBeBeZykTqnHJGlo2ndkqsRMp6mWuzKJ2iJK6TN6pjTz1YB5fcb2Kun1yzVZf2LARE+XfR6tMVAPmjHXo6t0Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQigXOD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F45C43394;
-	Mon,  8 Apr 2024 13:20:21 +0000 (UTC)
+	 MIME-Version; b=htELbeWOkUI+sETFLObAVDsH2pMaLqnBiob+aJMPOTl5RsKy1uEioyC5hV/lJnvwCUDI2O1dGVLl1Dx4YjAgWFVDl4pH1Qu/T+Mdv8FEO988leC8tqs/VCTjykiKPKvqqOfJT53ryXbhYQAOz1zeAvat51P78toi49N0vGUJqjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lvr8uuDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CACDC433F1;
+	Mon,  8 Apr 2024 13:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582421;
-	bh=xFPVqMzb5M/eqZrzW7wA+ZzVgXHJ1RfDkyfO8bLS9UA=;
+	s=korg; t=1712582206;
+	bh=qRTJ9+6rTbsAU3hdunc36l0yPNe2IKfR5AQz6C68y+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQigXOD3T21+bqLu0pOz21suTt5JdfyohgAgPq/1EMnRFN546y9qNc1AWJQDVEDrB
-	 ljOGFcsi7qIF2UmU/KG6+F2uVkuNWuq1ylt3qi7KQffE//M8mK4TC2Mxs4Kx2H61ui
-	 q6PIOUp7D0VhvbzGYPBeC+3xJZ+GK+zLFNOxaC4I=
+	b=Lvr8uuDd4U+NzwvTRZtBxFWS9MTxwM0HyOf/5LeI0v+lYKWHjXodmh6tnRQDetCmJ
+	 JFczl5oAKI8OIY0jUU4v/ZEmlmrFZ/iqB4EueUVOHQQbnH/yGE+oS10EcvRrDcKThw
+	 v+v63n6tEYKhsrAmgqfXUdwTnIoC6IDMg2CVUlic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 5.15 122/690] xfrm: Avoid clang fortify warning in copy_to_user_tmpl()
-Date: Mon,  8 Apr 2024 14:49:48 +0200
-Message-ID: <20240408125403.985300157@linuxfoundation.org>
+	Gabe Kirkpatrick <gkirkpatrick@google.com>,
+	Josh Eads <josheads@google.com>,
+	Peter Gonda <pgonda@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.15 123/690] KVM: SVM: Flush pages under kvm->lock to fix UAF in svm_register_enc_region()
+Date: Mon,  8 Apr 2024 14:49:49 +0200
+Message-ID: <20240408125404.015070012@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,57 +68,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 1a807e46aa93ebad1dfbed4f82dc3bf779423a6e upstream.
+commit 5ef1d8c1ddbf696e47b226e11888eaf8d9e8e807 upstream.
 
-After a couple recent changes in LLVM, there is a warning (or error with
-CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
-specifically the memset() in copy_to_user_tmpl().
+Do the cache flush of converted pages in svm_register_enc_region() before
+dropping kvm->lock to fix use-after-free issues where region and/or its
+array of pages could be freed by a different task, e.g. if userspace has
+__unregister_enc_region_locked() already queued up for the region.
 
-  In file included from net/xfrm/xfrm_user.c:14:
-  ...
-  include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-    438 |                         __write_overflow_field(p_size_field, size);
-        |                         ^
-  1 error generated.
+Note, the "obvious" alternative of using local variables doesn't fully
+resolve the bug, as region->pages is also dynamically allocated.  I.e. the
+region structure itself would be fine, but region->pages could be freed.
 
-While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
-is first assigned in copy_templates() by calling validate_tmpl() first
-(so there should not be any issue in practice), LLVM/clang cannot really
-deduce that across the boundaries of these functions. Without that
-knowledge, it cannot assume that the loop stops before i is greater than
-XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
-memset().
+Flushing multiple pages under kvm->lock is unfortunate, but the entire
+flow is a rare slow path, and the manual flush is only needed on CPUs that
+lack coherency for encrypted memory.
 
-To make the bounds of ->xfrm_nr clear to the compiler and add additional
-defense in case copy_to_user_tmpl() is ever used in a path where
-->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
-add an explicit bound check and early return, which clears up the
-warning.
-
+Fixes: 19a23da53932 ("Fix unsynchronized access to sev members through svm_register_enc_region")
+Reported-by: Gabe Kirkpatrick <gkirkpatrick@google.com>
+Cc: Josh Eads <josheads@google.com>
+Cc: Peter Gonda <pgonda@google.com>
 Cc: stable@vger.kernel.org
-Link: https://github.com/ClangBuiltLinux/linux/issues/1985
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20240217013430.2079561-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_user.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/svm/sev.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -1850,6 +1850,9 @@ static int copy_to_user_tmpl(struct xfrm
- 	if (xp->xfrm_nr == 0)
- 		return 0;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1662,20 +1662,22 @@ int svm_register_enc_region(struct kvm *
+ 		goto e_free;
+ 	}
  
-+	if (xp->xfrm_nr > XFRM_MAX_DEPTH)
-+		return -ENOBUFS;
+-	region->uaddr = range->addr;
+-	region->size = range->size;
+-
+-	list_add_tail(&region->list, &sev->regions_list);
+-	mutex_unlock(&kvm->lock);
+-
+ 	/*
+ 	 * The guest may change the memory encryption attribute from C=0 -> C=1
+ 	 * or vice versa for this memory range. Lets make sure caches are
+ 	 * flushed to ensure that guest data gets written into memory with
+-	 * correct C-bit.
++	 * correct C-bit.  Note, this must be done before dropping kvm->lock,
++	 * as region and its array of pages can be freed by a different task
++	 * once kvm->lock is released.
+ 	 */
+ 	sev_clflush_pages(region->pages, region->npages);
+ 
++	region->uaddr = range->addr;
++	region->size = range->size;
 +
- 	for (i = 0; i < xp->xfrm_nr; i++) {
- 		struct xfrm_user_tmpl *up = &vec[i];
- 		struct xfrm_tmpl *kp = &xp->xfrm_vec[i];
++	list_add_tail(&region->list, &sev->regions_list);
++	mutex_unlock(&kvm->lock);
++
+ 	return ret;
+ 
+ e_free:
 
 
 
