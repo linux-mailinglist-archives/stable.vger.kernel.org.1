@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-36937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A24289C2B5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:33:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 893BD89BFEE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A922BB285D0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E28EE1F24D1B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC34F7BAFF;
-	Mon,  8 Apr 2024 13:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3C52E62C;
+	Mon,  8 Apr 2024 13:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+43CACs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUhyKh4U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8795524AF;
-	Mon,  8 Apr 2024 13:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C79D481A6;
+	Mon,  8 Apr 2024 13:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582778; cv=none; b=IZdRzz1r2sL6UXnKq/23PRukYcF3z9GUnIegyFJuKD29PFt5ZA+I0ReCpsNK9gPRzzdt/3sShGUM+ph6ZXRy40K4Iey4yG5iRlmiaa6REyPzG1lMwgGa8+MWj5e1wKil0NHIoU7LqGPkz/Vqhoe8VoBkRBop/zc1SSedSYQYB0w=
+	t=1712581361; cv=none; b=ffLvYVDD6rUOE3i4szUx3EahskyOFjmBLFFNFUAQsW085oF6fau6UOIG1GT59oOFkxh2deRlbx2El3yFIsPfYTcar3SZZ3KOGXnfuxDhWqh60k66zG46NViCXlC8EaKWHyln/TgOeFLiyT8irlKg4Bw9QjhKVnY9th3Bc8poOBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582778; c=relaxed/simple;
-	bh=MFvwOc5oNUN2cWVA9nPKmUVSdHVqZMIJ9YGEqj7NM6U=;
+	s=arc-20240116; t=1712581361; c=relaxed/simple;
+	bh=NFTplQ+cylo5kb8IKFTRiphqsqorHi2/sQOEqv8JHtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DA1BUryYcP6gINx7/xNhDvdda/U876H0x5vz+7hLdQX2mJAm2D0V5z9xZxJW0tDIFPBRirXjGDp6uLBKTKuzDWPlYoJ0afUa9YX1CNJ3ayC2P3ugrYewVXfsB2Rw9lONp7HFptJKdz+amIerIS0N8wZV6W2m+sD7nOG68wx24J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+43CACs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE1BC433C7;
-	Mon,  8 Apr 2024 13:26:18 +0000 (UTC)
+	 MIME-Version; b=JcU2mNmdZrt7MH5SFkYWVFJMuYhJEIDlZL7Y3O2gmrta59v46PV5qIq4kZzOG5LeC/s6LV2X67zSTwcvu6GaH+PoaoAZypKS3gpOSUNk3B4NYJWSvPszSWT2j3/jq06QgidKaT1gH7eZMNIYtGCC08AAdqX75VPzVJnHEly/MOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUhyKh4U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA613C433C7;
+	Mon,  8 Apr 2024 13:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582778;
-	bh=MFvwOc5oNUN2cWVA9nPKmUVSdHVqZMIJ9YGEqj7NM6U=;
+	s=korg; t=1712581361;
+	bh=NFTplQ+cylo5kb8IKFTRiphqsqorHi2/sQOEqv8JHtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+43CACsYxC+jNGpCkvJvzBmW6Ny0slvhZ6X98yWfMV/YXH782nOS61ZBoSaqUgdi
-	 GsFP+CtMo83Ivm12VrSbbost+h71ibdk0AH0EmzDHAluW1Dqb89ZdALYEV2hbsoiQC
-	 IHu1KjrAaB8O7k58uKlVeyAQ71ewrN/lUa19KkxU=
+	b=jUhyKh4UKUyjoHJHrkrZZPPa8RHEB6mJiii5nukS9ercrsUvpAKgzzJLFTEAwnA3S
+	 BE9W+teMft1Nr3tpTx59WKKas3wb6KvsJVOaHUZeM/0OBttMxrtSngDYYf5aEHrPXU
+	 edeUvtJ/4xGhnPr/ZSNhUhpSpI6Ic0Kjx8ElkqEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 123/252] udp: do not accept non-tunnel GSO skbs landing in a tunnel
+	Josef Bacik <josef@toxicpanda.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 008/138] tcp: properly terminate timers for kernel sockets
 Date: Mon,  8 Apr 2024 14:57:02 +0200
-Message-ID: <20240408125310.442812180@linuxfoundation.org>
+Message-ID: <20240408125256.487848106@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +64,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 3d010c8031e39f5fa1e8b13ada77e0321091011f upstream.
+[ Upstream commit 151c9c724d05d5b0dd8acd3e11cb69ef1f2dbada ]
 
-When rx-udp-gro-forwarding is enabled UDP packets might be GROed when
-being forwarded. If such packets might land in a tunnel this can cause
-various issues and udp_gro_receive makes sure this isn't the case by
-looking for a matching socket. This is performed in
-udp4/6_gro_lookup_skb but only in the current netns. This is an issue
-with tunneled packets when the endpoint is in another netns. In such
-cases the packets will be GROed at the UDP level, which leads to various
-issues later on. The same thing can happen with rx-gro-list.
+We had various syzbot reports about tcp timers firing after
+the corresponding netns has been dismantled.
 
-We saw this with geneve packets being GROed at the UDP level. In such
-case gso_size is set; later the packet goes through the geneve rx path,
-the geneve header is pulled, the offset are adjusted and frag_list skbs
-are not adjusted with regard to geneve. When those skbs hit
-skb_fragment, it will misbehave. Different outcomes are possible
-depending on what the GROed skbs look like; from corrupted packets to
-kernel crashes.
+Fortunately Josef Bacik could trigger the issue more often,
+and could test a patch I wrote two years ago.
 
-One example is a BUG_ON[1] triggered in skb_segment while processing the
-frag_list. Because gso_size is wrong (geneve header was pulled)
-skb_segment thinks there is "geneve header size" of data in frag_list,
-although it's in fact the next packet. The BUG_ON itself has nothing to
-do with the issue. This is only one of the potential issues.
+When TCP sockets are closed, we call inet_csk_clear_xmit_timers()
+to 'stop' the timers.
 
-Looking up for a matching socket in udp_gro_receive is fragile: the
-lookup could be extended to all netns (not speaking about performances)
-but nothing prevents those packets from being modified in between and we
-could still not find a matching socket. It's OK to keep the current
-logic there as it should cover most cases but we also need to make sure
-we handle tunnel packets being GROed too early.
+inet_csk_clear_xmit_timers() can be called from any context,
+including when socket lock is held.
+This is the reason it uses sk_stop_timer(), aka del_timer().
+This means that ongoing timers might finish much later.
 
-This is done by extending the checks in udp_unexpected_gso: GSO packets
-lacking the SKB_GSO_UDP_TUNNEL/_CSUM bits and landing in a tunnel must
-be segmented.
+For user sockets, this is fine because each running timer
+holds a reference on the socket, and the user socket holds
+a reference on the netns.
 
-[1] kernel BUG at net/core/skbuff.c:4408!
-    RIP: 0010:skb_segment+0xd2a/0xf70
-    __udp_gso_segment+0xaa/0x560
+For kernel sockets, we risk that the netns is freed before
+timer can complete, because kernel sockets do not hold
+reference on the netns.
 
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Fixes: 36707061d6ba ("udp: allow forwarding of plain (non-fraglisted) UDP GRO packets")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch adds inet_csk_clear_xmit_timers_sync() function
+that using sk_stop_timer_sync() to make sure all timers
+are terminated before the kernel socket is released.
+Modules using kernel sockets close them in their netns exit()
+handler.
+
+Also add sock_not_owned_by_me() helper to get LOCKDEP
+support : inet_csk_clear_xmit_timers_sync() must not be called
+while socket lock is held.
+
+It is very possible we can revert in the future commit
+3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
+which attempted to solve the issue in rds only.
+(net/smc/af_smc.c and net/mptcp/subflow.c have similar code)
+
+We probably can remove the check_net() tests from
+tcp_out_of_resources() and __tcp_close() in the future.
+
+Reported-by: Josef Bacik <josef@toxicpanda.com>
+Closes: https://lore.kernel.org/netdev/20240314210740.GA2823176@perftesting/
+Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
+Fixes: 8a68173691f0 ("net: sk_clone_lock() should only do get_net() if the parent is not a kernel socket")
+Link: https://lore.kernel.org/bpf/CANn89i+484ffqb93aQm1N-tjxxvb3WDKX0EbD7318RwRgsatjw@mail.gmail.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Josef Bacik <josef@toxicpanda.com>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/20240322135732.1535772-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h    |   28 ++++++++++++++++++++++++++++
- net/ipv4/udp.c         |    7 +++++++
- net/ipv4/udp_offload.c |    6 ++++--
- net/ipv6/udp.c         |    2 +-
- 4 files changed, 40 insertions(+), 3 deletions(-)
+ include/net/inet_connection_sock.h |  1 +
+ include/net/sock.h                 |  7 +++++++
+ net/ipv4/inet_connection_sock.c    | 14 ++++++++++++++
+ net/ipv4/tcp.c                     |  2 ++
+ 4 files changed, 24 insertions(+)
 
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -140,6 +140,24 @@ static inline void udp_cmsg_recv(struct
- 	}
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 080968d6e6c53..8132f330306db 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -172,6 +172,7 @@ void inet_csk_init_xmit_timers(struct sock *sk,
+ 			       void (*delack_handler)(struct timer_list *),
+ 			       void (*keepalive_handler)(struct timer_list *));
+ void inet_csk_clear_xmit_timers(struct sock *sk);
++void inet_csk_clear_xmit_timers_sync(struct sock *sk);
+ 
+ static inline void inet_csk_schedule_ack(struct sock *sk)
+ {
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 579732d47dfc4..60577751ea9e8 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1833,6 +1833,13 @@ static inline void sock_owned_by_me(const struct sock *sk)
+ #endif
  }
  
-+DECLARE_STATIC_KEY_FALSE(udp_encap_needed_key);
-+#if IS_ENABLED(CONFIG_IPV6)
-+DECLARE_STATIC_KEY_FALSE(udpv6_encap_needed_key);
-+#endif
-+
-+static inline bool udp_encap_needed(void)
++static inline void sock_not_owned_by_me(const struct sock *sk)
 +{
-+	if (static_branch_unlikely(&udp_encap_needed_key))
-+		return true;
-+
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (static_branch_unlikely(&udpv6_encap_needed_key))
-+		return true;
++#ifdef CONFIG_LOCKDEP
++	WARN_ON_ONCE(lockdep_sock_is_held(sk) && debug_locks);
 +#endif
-+
-+	return false;
 +}
 +
- static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
+ static inline bool sock_owned_by_user(const struct sock *sk)
  {
- 	if (!skb_is_gso(skb))
-@@ -153,6 +171,16 @@ static inline bool udp_unexpected_gso(st
- 	    !udp_test_bit(ACCEPT_FRAGLIST, sk))
- 		return true;
- 
-+	/* GSO packets lacking the SKB_GSO_UDP_TUNNEL/_CSUM bits might still
-+	 * land in a tunnel as the socket check in udp_gro_receive cannot be
-+	 * foolproof.
-+	 */
-+	if (udp_encap_needed() &&
-+	    READ_ONCE(udp_sk(sk)->encap_rcv) &&
-+	    !(skb_shinfo(skb)->gso_type &
-+	      (SKB_GSO_UDP_TUNNEL | SKB_GSO_UDP_TUNNEL_CSUM)))
-+		return true;
-+
- 	return false;
+ 	sock_owned_by_me(sk);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 79fa19a36bbd1..f7832d4253820 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -771,6 +771,20 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
  }
+ EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
  
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -584,6 +584,13 @@ static inline bool __udp_is_mcast_sock(s
- }
- 
- DEFINE_STATIC_KEY_FALSE(udp_encap_needed_key);
-+EXPORT_SYMBOL(udp_encap_needed_key);
++void inet_csk_clear_xmit_timers_sync(struct sock *sk)
++{
++	struct inet_connection_sock *icsk = inet_csk(sk);
 +
-+#if IS_ENABLED(CONFIG_IPV6)
-+DEFINE_STATIC_KEY_FALSE(udpv6_encap_needed_key);
-+EXPORT_SYMBOL(udpv6_encap_needed_key);
-+#endif
++	/* ongoing timer handlers need to acquire socket lock. */
++	sock_not_owned_by_me(sk);
 +
- void udp_encap_enable(void)
++	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
++
++	sk_stop_timer_sync(sk, &icsk->icsk_retransmit_timer);
++	sk_stop_timer_sync(sk, &icsk->icsk_delack_timer);
++	sk_stop_timer_sync(sk, &sk->sk_timer);
++}
++
+ void inet_csk_delete_keepalive_timer(struct sock *sk)
  {
- 	static_branch_inc(&udp_encap_needed_key);
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -552,8 +552,10 @@ struct sk_buff *udp_gro_receive(struct l
- 	unsigned int off = skb_gro_offset(skb);
- 	int flush = 1;
- 
--	/* we can do L4 aggregation only if the packet can't land in a tunnel
--	 * otherwise we could corrupt the inner stream
-+	/* We can do L4 aggregation only if the packet can't land in a tunnel
-+	 * otherwise we could corrupt the inner stream. Detecting such packets
-+	 * cannot be foolproof and the aggregation might still happen in some
-+	 * cases. Such packets should be caught in udp_unexpected_gso later.
- 	 */
- 	NAPI_GRO_CB(skb)->is_flist = 0;
- 	if (!sk || !udp_sk(sk)->gro_receive) {
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -450,7 +450,7 @@ csum_copy_err:
- 	goto try_again;
+ 	sk_stop_timer(sk, &sk->sk_timer);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 5a165e29f7be4..f01c0a5d2c37b 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3052,6 +3052,8 @@ void tcp_close(struct sock *sk, long timeout)
+ 	lock_sock(sk);
+ 	__tcp_close(sk, timeout);
+ 	release_sock(sk);
++	if (!sk->sk_net_refcnt)
++		inet_csk_clear_xmit_timers_sync(sk);
+ 	sock_put(sk);
  }
- 
--DEFINE_STATIC_KEY_FALSE(udpv6_encap_needed_key);
-+DECLARE_STATIC_KEY_FALSE(udpv6_encap_needed_key);
- void udpv6_encap_enable(void)
- {
- 	static_branch_inc(&udpv6_encap_needed_key);
+ EXPORT_SYMBOL(tcp_close);
+-- 
+2.43.0
+
 
 
 
