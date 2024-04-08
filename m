@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E5E89C40A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757F289C12F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841E01F21554
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 158CC1F219C4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3817CF34;
-	Mon,  8 Apr 2024 13:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6285980028;
+	Mon,  8 Apr 2024 13:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNH6g6FO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZniIDCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61016A35A;
-	Mon,  8 Apr 2024 13:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EDB77F1B;
+	Mon,  8 Apr 2024 13:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583702; cv=none; b=GaRPPUam6pSivtUl0JxzhgXvKTC2OYXgZwZKFpDQ6lYUSTzE5dMC2ACKH7PNw/94GOReoykzUbG178C78EmkwY/pbRBiY3STigKSkPDuRTiZPp93fN0uz87bC1hZqbRbLi7qoHS7bdo9sZMg0n38V6ijK93a+IaICH1z8O0Y8gQ=
+	t=1712582011; cv=none; b=OB9AMvRoumNcwt6sWrzP5Dh/w6f9R6Hket4pp2VSvJf31K7Q3sSGdF3Bq7v+mwc7jLhC8ppzAtapG1EDcqnBmtqvYwIR/2OtY7gBU55aS7YTQZLKCysuHXbDVpEFG1/1pKbdwoWUQKuoxKqTxljXxswgAXBsecSGoPiZmFXmJ0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583702; c=relaxed/simple;
-	bh=lmewIyPsIK4EfW8XAJNHI4nHGHGWIHZNWUXhUa+AL14=;
+	s=arc-20240116; t=1712582011; c=relaxed/simple;
+	bh=4SyZfx+9InlhIBsJpau/cJ+3HybbgM0oTbHSmEgBOvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOpRu8avvetky6iVYQekcIjgMeh556iVpWL+A22ZQHhM9Rp2uTMJGNJWdySRj6g4QLiyox6DqpRkc07wGwvNDrXiVF00p/cnZuwf/isJ1mPUC7wBwHbWjGeXfiNjDLHr32r+Uvwmtv5R4DJ2QfZ05rg4c7LR0Qn3yk4qq4ym+HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNH6g6FO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365BBC433F1;
-	Mon,  8 Apr 2024 13:41:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FDeJ9WCNEPONIORJ3kv/vh/6Y10iabdL9FIomMwseYfipiAIqhmkADM53ad0i7SMgMhZng9MoFM1mwKIiwG7id8Tk6MZtWdPzXKLU/YzzXP3zHUrwSwVGG/It9eQ1dzfowzpPewC7h7WSMnpdVzde9nI9HanA4xFU/D92lSMUrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZniIDCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D60BC433F1;
+	Mon,  8 Apr 2024 13:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583701;
-	bh=lmewIyPsIK4EfW8XAJNHI4nHGHGWIHZNWUXhUa+AL14=;
+	s=korg; t=1712582011;
+	bh=4SyZfx+9InlhIBsJpau/cJ+3HybbgM0oTbHSmEgBOvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNH6g6FOwMe6rUPcn3zjs2QJjr6d1BY6hBe26UvD+A5Y5wbwvpitxGuK/mE2PtOeC
-	 8JEU+eLN197QlweyIw8Hu44pnBJ/dO4vh/xqky3nHuEbqI87LYmGdY0/Ee2qOSSlSG
-	 wPTB04XXTAwNH1bSfk17BhVo/20ATQfdhAkVkdK4=
+	b=BZniIDCcGoz5M6u2U+1jvFTZFWL5YfD3AipdInQMrjCdvACgLfMYbWVGoHgWeypYY
+	 +iFWusqYGwpRyc7kP4KCSp63REINQeYwNPp5KbOoCcFvEHN/7EBsqjK1N96n0jzZaC
+	 SaMl8ZobQndXr1dqXJqmJ4kkVzNOtY9XWuX36Zz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Karlsson <rasmus.karlsson@pajlada.com>,
-	Iskren Chernev <me@iskren.info>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 210/273] io_uring: use private workqueue for exit work
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 071/138] drm/amd: Add concept of running prepare_suspend() sequence for IP blocks
 Date: Mon,  8 Apr 2024 14:58:05 +0200
-Message-ID: <20240408125315.880074381@linuxfoundation.org>
+Message-ID: <20240408125258.430163089@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 73eaa2b583493b680c6f426531d6736c39643bfb upstream.
+[ Upstream commit cb11ca3233aa3303dc11dca25977d2e7f24be00f ]
 
-Rather than use the system unbound event workqueue, use an io_uring
-specific one. This avoids dependencies with the tty, which also uses
-the system_unbound_wq, and issues flushes of said workqueue from inside
-its poll handling.
+If any IP blocks allocate memory during their hw_fini() sequence
+this can cause the suspend to fail under memory pressure.  Introduce
+a new phase that IP blocks can use to allocate memory before suspend
+starts so that it can potentially be evicted into swap instead.
 
-Cc: stable@vger.kernel.org
-Reported-by: Rasmus Karlsson <rasmus.karlsson@pajlada.com>
-Tested-by: Rasmus Karlsson <rasmus.karlsson@pajlada.com>
-Tested-by: Iskren Chernev <me@iskren.info>
-Link: https://github.com/axboe/liburing/issues/1113
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: ca299b4512d4 ("drm/amd: Flush GFXOFF requests in prepare stage")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 12 +++++++++++-
+ drivers/gpu/drm/amd/include/amd_shared.h   |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -152,6 +152,7 @@ static bool io_uring_try_cancel_requests
- static void io_queue_sqe(struct io_kiocb *req);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 902a446cc4d38..77e35b919b064 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4180,7 +4180,7 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
+ int amdgpu_device_prepare(struct drm_device *dev)
+ {
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+-	int r;
++	int i, r;
  
- struct kmem_cache *req_cachep;
-+static struct workqueue_struct *iou_wq __ro_after_init;
+ 	if (dev->switch_power_state == DRM_SWITCH_POWER_OFF)
+ 		return 0;
+@@ -4190,6 +4190,16 @@ int amdgpu_device_prepare(struct drm_device *dev)
+ 	if (r)
+ 		return r;
  
- static int __read_mostly sysctl_io_uring_disabled;
- static int __read_mostly sysctl_io_uring_group = -1;
-@@ -3139,7 +3140,7 @@ static __cold void io_ring_ctx_wait_and_
- 	 * noise and overhead, there's no discernable change in runtime
- 	 * over using system_wq.
- 	 */
--	queue_work(system_unbound_wq, &ctx->exit_work);
-+	queue_work(iou_wq, &ctx->exit_work);
++	for (i = 0; i < adev->num_ip_blocks; i++) {
++		if (!adev->ip_blocks[i].status.valid)
++			continue;
++		if (!adev->ip_blocks[i].version->funcs->prepare_suspend)
++			continue;
++		r = adev->ip_blocks[i].version->funcs->prepare_suspend((void *)adev);
++		if (r)
++			return r;
++	}
++
+ 	return 0;
  }
  
- static int io_uring_release(struct inode *inode, struct file *file)
-@@ -4164,6 +4165,8 @@ static int __init io_uring_init(void)
- 					  SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT,
- 					  NULL);
- 
-+	iou_wq = alloc_workqueue("iou_exit", WQ_UNBOUND, 64);
-+
- #ifdef CONFIG_SYSCTL
- 	register_sysctl_init("kernel", kernel_io_uring_disabled_table);
- #endif
+diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/amd/include/amd_shared.h
+index f175e65b853a0..34467427c9f97 100644
+--- a/drivers/gpu/drm/amd/include/amd_shared.h
++++ b/drivers/gpu/drm/amd/include/amd_shared.h
+@@ -294,6 +294,7 @@ struct amd_ip_funcs {
+ 	int (*hw_init)(void *handle);
+ 	int (*hw_fini)(void *handle);
+ 	void (*late_fini)(void *handle);
++	int (*prepare_suspend)(void *handle);
+ 	int (*suspend)(void *handle);
+ 	int (*resume)(void *handle);
+ 	bool (*is_idle)(void *handle);
+-- 
+2.43.0
+
 
 
 
