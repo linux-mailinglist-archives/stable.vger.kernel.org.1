@@ -1,124 +1,128 @@
-Return-Path: <stable+bounces-37771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A301489C73D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:40:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D3689C744
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B62B91C21151
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:40:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2A9F1C21D33
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785E313E8AE;
-	Mon,  8 Apr 2024 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E0D13EFE3;
+	Mon,  8 Apr 2024 14:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DvciASTP"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FJvj7XPN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o5hWglGe"
 X-Original-To: stable@vger.kernel.org
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C65613CFAF;
-	Mon,  8 Apr 2024 14:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93E113E8A5;
+	Mon,  8 Apr 2024 14:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712587241; cv=none; b=F2314xs8XmhCU4FTsZEIe5XlRIMQYYFi/HLtWgPmhKbwENXeluBte9ldYx67ibNKfskAmrEtoGRZanIOzldmTmT2I+Rzm5MuvqD99zq0jc6n2lFhbqKncQqJCki7KlzWu75BHlTFhE/IYgp9f94JkM9Sa1h12K48rRIlBxw7W94=
+	t=1712587288; cv=none; b=p/R5p8NtCAf0SWEyvvC4JIUA8S2M1LtyUlVHXOXZzCx2ZSgmLSFoB0+yRATiV6AO8Ffma4R6Qurkc0El1Oj88CFbwlTAajm0cZM6CGy9v/nAecB03kEhjPazbp9i6OHmllz9pMcI1mb3Jdv8QHXt4Kbb81JTqjlrTOi1O4wR6iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712587241; c=relaxed/simple;
-	bh=8X0MVOWlSi+HfrtqF9UetPVZ+u7e6t0GGlZGIkUh+fk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bjae0jqq1p6PbtJt2NPuMiz+dMZO64+KrVv22oNzLuwMQ15o29FlerLxep3GbpPdHCHsJE302vto9RvvYA+liTsNPsqDGsamNpR1j7DmbaBLGSoil9dQta8ZNUvigCYO9fwL1sOYMrJgU9IdjSYbsO/I0DJNs3FrHOBdxgDtc1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DvciASTP; arc=none smtp.client-ip=217.70.178.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from relay2-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::222])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id DDD8EC21C2;
-	Mon,  8 Apr 2024 14:40:30 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8B7B040007;
-	Mon,  8 Apr 2024 14:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1712587223;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1712587288; c=relaxed/simple;
+	bh=wGLCl0UtKRYyeiLABxCw182vgu+6IzM/i6MltoJlpjM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=LFvdEQ60Oh2mYsBvBd7OCoBVjkCYaFfhdxZr2Irhv2gDXrZ8bhtykHFq7V2AbGYTcenAZT5FdOcSgshoDMrAbMqzXjFs26Jm3oVAOsqT6rt9CEwJRwZ6X/eApm39Ii4Sj/9p+SJqJbBJ6bJPqWQa74kctXyHuF5Pi0kO0j+cSa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FJvj7XPN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o5hWglGe; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 08 Apr 2024 14:41:24 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712587285;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zzXXIjVTOW/GVigtP+lIc6F2DTSKnHcKv5KIDE8o188=;
-	b=DvciASTPrZ7p7Twm4rU2E4rW4lwWEthuTrCWrALitdoFetUariBc6YaLP5P1QuXkTH72o8
-	lFgYvuKSTDWF86pLjBeklcMgY1o7Rule2Ql2sLReXfJDQRxHNdurKAwxB0fiAugeGi9AyK
-	7XNEnw5JOfyLxFe5+khimRumVJUNQQWd35/VXJgTxinocaGKvxPOw3PE+skzhNmQKQejst
-	ljkO6IEcgNx6EictOEMWWBeN+rYwocHW28XKzo+lUTexugKjee92FovMPgiO7qgpvGZtnZ
-	MsEESdrndAf6HcAnMgljkhI+oUl8L2FJh0K6kaEF9T/sxaY+od6OXu2B0KSTfQ==
-Date: Mon, 8 Apr 2024 16:40:21 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Wolfram Sang
- <wsa@kernel.org>, Mark Brown <broonie@kernel.org>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Rob Herring <robh@kernel.org>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Luca Ceresoli
- <luca.ceresoli@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, Android Kernel Team
- <kernel-team@android.com>
-Subject: Re: [PATCH 2/2] of: property: fw_devlink: Fix links to supplier
- when created from phandles
-Message-ID: <20240408164021.6f13bf66@bootlin.com>
-In-Reply-To: <CAGETcx-oMbjtgW-sqzP6GPuM9BwgQrYJawpui3QMf1A-ETHpvg@mail.gmail.com>
-References: <20240220111044.133776-1-herve.codina@bootlin.com>
-	<20240220111044.133776-3-herve.codina@bootlin.com>
-	<CAGETcx_xkVJn1NvCmztAv13N-7ZGqZ+KfkFg-Xn__skEBiYtHw@mail.gmail.com>
-	<20240221095137.616d2aaa@bootlin.com>
-	<CAGETcx9eFuqwJTSrGz9Or8nfHCN3=kNO5KpXwdUxQ4Z7FxHZug@mail.gmail.com>
-	<20240321125904.3ed99eb5@bootlin.com>
-	<CAGETcx-oMbjtgW-sqzP6GPuM9BwgQrYJawpui3QMf1A-ETHpvg@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	bh=E0Jncqt8D3n+3eK13S2Wr0ZgD2itn9OYxVF/OOG1ric=;
+	b=FJvj7XPN+tdj76wnRLLFSgCIg8Ulvm2O+O8xWDk1YyJh/Bthy+ta2+frwkbg0TUsdUrvPi
+	yIhUkVKPusErEKgI0O7wgZyhyYO0oLHgTn+GvVHdXFRVv56Sv6cKWi4ESWp9M/31OV40DC
+	fOtvzBIUKndNxJUdh8i19Gq55TO85jMhYsKhoJADnMOluVxxTpYNkHhI5M+gowKoywrWMC
+	L6Gdyb/MGpTFl5QkxzwyqbvD71emdBV4uvphWG8GFBDB40hxyIu5/qAG3QJTwVUqL22/H6
+	gBkk8ZcAFRI8z6/drTyx+MhNEph8cjJTkivtSAxPRGveRZJkqCHh+xJzS5k3ZQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712587285;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E0Jncqt8D3n+3eK13S2Wr0ZgD2itn9OYxVF/OOG1ric=;
+	b=o5hWglGexCXouQimqVgyoNiVGf0SPgq4iQNy2+vH/r7uA7GpgKrarDyqq3hQa2+fhClToc
+	J7K95O1LNICNOhDg==
+From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] irqflags: Explicitly ignore
+ lockdep_hrtimer_exit() argument
+Cc: kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240408074609.3170807-1-arnd@kernel.org>
+References: <20240408074609.3170807-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Message-ID: <171258728424.10875.1653913152123120483.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hi Sarava,
+The following commit has been merged into the timers/urgent branch of tip:
 
-On Fri, 22 Mar 2024 19:00:03 -0700
-Saravana Kannan <saravanak@google.com> wrote:
+Commit-ID:     c1d11fc2c8320871b40730991071dd0a0b405bc8
+Gitweb:        https://git.kernel.org/tip/c1d11fc2c8320871b40730991071dd0a0b405bc8
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Mon, 08 Apr 2024 09:46:01 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 08 Apr 2024 16:34:18 +02:00
 
-> On Thu, Mar 21, 2024 at 4:59 AM Herve Codina <herve.codina@bootlin.com> wrote:
-> >
-> > Hi Saravana,
-> >
-> > On Mon, 4 Mar 2024 23:14:13 -0800
-> > Saravana Kannan <saravanak@google.com> wrote:
-> >
-> > ...  
-> > >
-> > > Thanks for the example. Let me think about this a bit on how we could
-> > > fix this and get back to you.
-> > >
-> > > Please do ping me if I don't get back in a week or two.
-> > >  
-> >
-> > This is my ping.
-> > Do you move forward ?  
-> 
-> Thanks for the ping. I thought about it a bit. I think the right fix
-> it to undo the overlay fix I had suggested to Geert and then make the
-> overlay code call __fw_devlink_pickup_dangling_consumers() on the
-> parent device of the top level overlay nodes that get added that don't
-> have a device created for them.
-> 
-> I'll try to wrap up a patch for this on Monday. But if you want to
-> take a shot at this, that's ok too.
-> 
+irqflags: Explicitly ignore lockdep_hrtimer_exit() argument
 
-I didn't see anything on this topic. Maybe I missed the related modifications.
-Did you move forward on that patch ?
+When building with 'make W=1' but CONFIG_TRACE_IRQFLAGS=n, the
+unused argument to lockdep_hrtimer_exit() causes a warning:
 
-Best regards,
-Hervé
+kernel/time/hrtimer.c:1655:14: error: variable 'expires_in_hardirq' set but not used [-Werror=unused-but-set-variable]
+
+This is intentional behavior, so add a cast to void to shut up the warning.
+
+Fixes: 73d20564e0dc ("hrtimer: Don't dereference the hrtimer pointer after the callback")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240408074609.3170807-1-arnd@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202311191229.55QXHVc6-lkp@intel.com/
+---
+ include/linux/irqflags.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index 147feeb..3f003d5 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -114,7 +114,7 @@ do {						\
+ # define lockdep_softirq_enter()		do { } while (0)
+ # define lockdep_softirq_exit()			do { } while (0)
+ # define lockdep_hrtimer_enter(__hrtimer)	false
+-# define lockdep_hrtimer_exit(__context)	do { } while (0)
++# define lockdep_hrtimer_exit(__context)	do { (void)(__context); } while (0)
+ # define lockdep_posixtimer_enter()		do { } while (0)
+ # define lockdep_posixtimer_exit()		do { } while (0)
+ # define lockdep_irq_work_enter(__work)		do { } while (0)
 
