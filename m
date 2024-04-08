@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AB189C45B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7989289C3C8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1F91F22210
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACCCE1C20B1D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E226E7BB0C;
-	Mon,  8 Apr 2024 13:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658AD7BB0C;
+	Mon,  8 Apr 2024 13:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lu7uy4+x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uR7cU0an"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10236FE35;
-	Mon,  8 Apr 2024 13:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E957E59F;
+	Mon,  8 Apr 2024 13:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583885; cv=none; b=Yg5ZABArVSX0c3KzCoxIp1p7zmYjQF8cNS7TinrkByLlmAwr2SHYOFE3Gsm8YjQKMh0Qpz3C/OYT1In/l1HKN5RyTUNWTD48mObIXnodJmoHZUZ+0g9GJ/mSXnndoq3qVDkPkGrdqxpQGtlBLpXWNPj0kEc1FrIggCUhPQegApg=
+	t=1712583541; cv=none; b=IB4LMKa3jIewloxFAtLHU0jhzmSjk3yC9iu9/7BEDbdCpLr5HeJxAMOzFwT+5yPbkWGBmDh7FPb3lrWBgaTeFZDsHICVS4yIT7/Vr46EZewI+9/VN7Afn6eXMpd8IXFp0fE/zVM+yb1+/7zLm1BxZEefiIXriyYUwzfSf21tb3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583885; c=relaxed/simple;
-	bh=N1v9wdxwv/7VhbxA9zgImmkDAZ7OuoUcs5OMcmnnADE=;
+	s=arc-20240116; t=1712583541; c=relaxed/simple;
+	bh=RZ86TbakRrbfJLY+e66EplpRfpG8CLm1x7Dzb1mhlts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcX1EipHnFgdK7F+qdVWRnJqzoAX+WK53izvo+jfqUEWWbIu9gftmZNndFvua9a4bj8L23DypuJXOmBjka9H9HgMFyYh69Riompd+ZhKddp+3f8u7K2BDTCU2QMP1GiTRLJtirj8rE2+a5tyhSgHQDJbAZG/Uzi3UX5bi+akJVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lu7uy4+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFD0C433C7;
-	Mon,  8 Apr 2024 13:44:44 +0000 (UTC)
+	 MIME-Version; b=VKKhzFLStQt9r5Sig4rBlvCWYFSg4HL8iGBr5CkhEU3k4FHp6cTxsULzb6ZWI3jdZFRVdoFTd6r2u0wKWQwMTdGxBaqPQKaOQqeuKaKU6yA8J4uPomVjXHqKVKcUg/g1g5La348xl+BmGDe3kgUmTGDnqveXHG9bDURe5BDtqYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uR7cU0an; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFF1C433C7;
+	Mon,  8 Apr 2024 13:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583885;
-	bh=N1v9wdxwv/7VhbxA9zgImmkDAZ7OuoUcs5OMcmnnADE=;
+	s=korg; t=1712583541;
+	bh=RZ86TbakRrbfJLY+e66EplpRfpG8CLm1x7Dzb1mhlts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lu7uy4+x3AWN1GFYNW7FpLqJRzsRpGncGxrC8QrzZJyxh8HB2IP36FSGLl2gRuGQ6
-	 GsZaIUHVk/ZyUxYgqU4+3Bz+td2SmIk5SzDMNsTsRd0EMUBgScK0USwXDs5IBzC9oP
-	 n1tHzsYZaDJJvgpa5JQEEfurjzYP518aAk4FlKKw=
+	b=uR7cU0an74zyGCYRYAKaNzcLdJfj8dz6uIG0bjtYc8WjjcDmCoa5rl914ZtrP9QW3
+	 gGFwgbz87m0pwxIOH5HlRbWNYnjN3LpevhcGKV5SGxR7RsIOppq1+vkPy/lnbEFNMF
+	 ZDZizZLZ7KIGSzw9Xqv3pjCiT+dRWWbCzsvCSIwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.8 230/273] of: module: prevent NULL pointer dereference in vsnprintf()
+	James Christopher Adduono <jc@adduono.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 206/252] ksmbd: do not set SMB2_GLOBAL_CAP_ENCRYPTION for SMB 3.1.1
 Date: Mon,  8 Apr 2024 14:58:25 +0200
-Message-ID: <20240408125316.568552761@linuxfoundation.org>
+Message-ID: <20240408125313.044434788@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit a1aa5390cc912934fee76ce80af5f940452fa987 upstream.
+commit 5ed11af19e56f0434ce0959376d136005745a936 upstream.
 
-In of_modalias(), we can get passed the str and len parameters which would
-cause a kernel oops in vsnprintf() since it only allows passing a NULL ptr
-when the length is also 0. Also, we need to filter out the negative values
-of the len parameter as these will result in a really huge buffer since
-snprintf() takes size_t parameter while ours is ssize_t...
+SMB2_GLOBAL_CAP_ENCRYPTION flag should be used only for 3.0 and
+3.0.2 dialects. This flags set cause compatibility problems with
+other SMB clients.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
-
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reported-by: James Christopher Adduono <jc@adduono.com>
+Tested-by: James Christopher Adduono <jc@adduono.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1d211023-3923-685b-20f0-f3f90ea56e1f@omp.ru
-Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/module.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/smb/server/smb2ops.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/of/module.c
-+++ b/drivers/of/module.c
-@@ -16,6 +16,14 @@ ssize_t of_modalias(const struct device_
- 	ssize_t csize;
- 	ssize_t tsize;
+--- a/fs/smb/server/smb2ops.c
++++ b/fs/smb/server/smb2ops.c
+@@ -228,6 +228,11 @@ void init_smb3_0_server(struct ksmbd_con
+ 	    conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
  
-+	/*
-+	 * Prevent a kernel oops in vsnprintf() -- it only allows passing a
-+	 * NULL ptr when the length is also 0. Also filter out the negative
-+	 * lengths...
-+	 */
-+	if ((len > 0 && !str) || len < 0)
-+		return -EINVAL;
++	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
++	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
++	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
++		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
 +
- 	/* Name & Type */
- 	/* %p eats all alphanum characters, so %c must be used here */
- 	csize = snprintf(str, len, "of:N%pOFn%c%s", np, 'T',
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
+ }
+@@ -275,11 +280,6 @@ int init_smb3_11_server(struct ksmbd_con
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
+ 			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
+ 
+-	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
+-	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
+-	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
+-		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
+-
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
+ 
 
 
 
