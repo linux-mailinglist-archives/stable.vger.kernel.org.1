@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D7489C378
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A62FD89C5D0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3DC31C22153
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619B52832AE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEBC86240;
-	Mon,  8 Apr 2024 13:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BEF7E0F3;
+	Mon,  8 Apr 2024 14:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2wckF2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8/VYX3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF1C7D417;
-	Mon,  8 Apr 2024 13:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AA47D085;
+	Mon,  8 Apr 2024 14:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583344; cv=none; b=Z+LbYwohIf/COpCjMGHN9ojCqOFGUKuLmQSLNGNxCnrUIVcsUH6It74Rj70S0tCND4NqrO7LAklJGyWFd/BhDdAmcPh1ntFZVB/Wg3Egh0NDOilYCSeQCBsmMBDtQY5mAQrfdlhMi/mb5C6gnjlEMv3AZWbUsr6pUAquqztvjtc=
+	t=1712584841; cv=none; b=AqWXvHrbQn23Zb6s8I6CiCP4S5xoYcFWiA4EEvrjJozACdJcrUSONM6x8eK26Lu3QhnLWRaEZOAs6WiV4Aafxah6E7rVY3sR/f4vGmFjqwyzjyNx0NhKbh0KYX3RYwjFRcF9+2kHcHpCFMcMFnCCpMwh7vgpBDFisNnTZdIfU4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583344; c=relaxed/simple;
-	bh=hkyzYiT/J1uzTOr7t8tefRAB6Ide0NZ3Q0huVqOR5SQ=;
+	s=arc-20240116; t=1712584841; c=relaxed/simple;
+	bh=GhBr9hAirzDcs5quPhdh/G7RMEE5u+Fmm/+b34wDhtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSHLZaqIq7ywe2PLEXMsnq5kQmPyIkKxRWMXkq7PANns0p+yHBHyIVW/64QomBIvSWDRXahb4gl2FtG2WsVnRDCvLVaR/DCS6p4YZnXWWWs9BjSwcziF3bd+ugmAh8wwfyguS8lNgU+7113uKRJ23iGZ11Anb8aGLFTCOlpo2y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2wckF2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1623DC433F1;
-	Mon,  8 Apr 2024 13:35:42 +0000 (UTC)
+	 MIME-Version; b=d2I3A8r5GKpBQ+0g3KO7MjORyfQxh5dhd7+koNZfqpf0jhemUbCeriUn41bTUPENfcgbOs63rHn/e6cSpsU8X2zIlj5z9qyUM8ACZsYvb3gtNhSYL111ceFnAJb3PyIMRJTc3MYsFnDQZCqWFteXaKZtrWz9fo0StbnWHvv64IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8/VYX3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBF0C433F1;
+	Mon,  8 Apr 2024 14:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583343;
-	bh=hkyzYiT/J1uzTOr7t8tefRAB6Ide0NZ3Q0huVqOR5SQ=;
+	s=korg; t=1712584841;
+	bh=GhBr9hAirzDcs5quPhdh/G7RMEE5u+Fmm/+b34wDhtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2wckF2FOnYfGrPxrETczw4sD2ebbzfdBQA5wVu9W1vO/AEzfyVJyt8ZyhAG+fUX8
-	 BpMqGw6mBx659jnJeFi39rnOg4eJ+TwmihfgvLsINugH/Nuz2upS8+PkjwlBVRyJoC
-	 x7RTURGd1BG8u/LdxEEIQyzSWZwjvahkkOWcq7Hw=
+	b=U8/VYX3WNpEa4gju0WwpmZfS/C56EsJk+bPPFE4N6Ev5LLcX1z8HcDGY3Kjxo0wJY
+	 gnmpJQAC01pkfWZN5dXXIBH8m38MNEFgcHjzpP2XK9A4yZ2u5XfzHVX/9d/2Nhf1eU
+	 1yNBpWDVtDCxnRmUY5/lC8CRMf7/4++T+SHjvEhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 166/273] spi: s3c64xx: explicitly include <linux/bits.h>
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Avri Altman <avri.altman@wdc.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 575/690] mmc: core: Avoid negative index with array access
 Date: Mon,  8 Apr 2024 14:57:21 +0200
-Message-ID: <20240408125314.421965144@linuxfoundation.org>
+Message-ID: <20240408125420.437278241@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-[ Upstream commit 4568fa574fcef3811a8140702979f076ef0f5bc0 ]
+commit cf55a7acd1ed38afe43bba1c8a0935b51d1dc014 upstream.
 
-The driver uses GENMASK() but does not include <linux/bits.h>.
+Commit 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu") assigns
+prev_idata = idatas[i - 1], but doesn't check that the iterator i is
+greater than zero. Let's fix this by adding a check.
 
-It is good practice to directly include all headers used, it avoids
-implicit dependencies and spurious breakage if someone rearranges
-headers and causes the implicit include to vanish.
-
-Include the missing header.
-
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20240207120431.2766269-4-tudor.ambarus@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
+Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20240313133744.2405325-2-mikko.rapeli@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-s3c64xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/core/block.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 26d389d95af92..1e519b1537e71 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -3,6 +3,7 @@
- // Copyright (c) 2009 Samsung Electronics Co., Ltd.
- //      Jaswinder Singh <jassi.brar@samsung.com>
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -485,7 +485,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	if (idata->flags & MMC_BLK_IOC_DROP)
+ 		return 0;
  
-+#include <linux/bits.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/dma-mapping.h>
--- 
-2.43.0
-
+-	if (idata->flags & MMC_BLK_IOC_SBC)
++	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
+ 		prev_idata = idatas[i - 1];
+ 
+ 	/*
 
 
 
