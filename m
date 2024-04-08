@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-37224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159AA89C3EB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0BBE89C3EE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C58D52840C3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77A9028101B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D1280624;
-	Mon,  8 Apr 2024 13:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47842811E8;
+	Mon,  8 Apr 2024 13:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kP9iqJ6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y20Cn6pG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3523D79F0;
-	Mon,  8 Apr 2024 13:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DBE79F0;
+	Mon,  8 Apr 2024 13:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583611; cv=none; b=cmaU4+G/A1DIRk6eOPjX4tATqaJWHow1pch6iE50w7pnKfP7ronXlXljVTd5tjni6vxY4J6KvD8nfQZ2QR2CexZ3oHxoFzuNKOIZxiYSTV1TCouWgwl9+ug/AlleS7hM2AolmFu3cQO5wHBaJsO6bhg9qnxciNUMeARdNz9sXoU=
+	t=1712583620; cv=none; b=YKW+mJ6eav3Li75/mx8jW9Zw277aQk777mfa3Av3G9z0/tAomS1krWYbeef4Z4HjCfA0/DdSZjkHKZP4Am6xycZHBFOQ9ZrKBjotDp4C+MSWwHkN1VSQw10ZJnaM9HAkWCdQsLN6iYTFli93ccp5WAWZmmWemmm0r4MIakDIP1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583611; c=relaxed/simple;
-	bh=U4nRN8wHqxg+i1jiwPbaAfe8j/ptRZyBFFxLZBApTw4=;
+	s=arc-20240116; t=1712583620; c=relaxed/simple;
+	bh=fYYqaCTKTh4LnG41XjtwgBU0LxzWfgWHv6MxJVL4Ac4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVvW23rDjIFklQuaLmaRodLnakvJFfN5WRDKunNAdJmD74TsRv16Mrr+nvzp03z6RV+89vigXn/f2BgSKcnN3eSQGnOyzYQNg7F0qQDoXq1ESE3aXucpiiUE1vXqrU7tdjtNB1ijhT69+tOjKxsv8N05kLZfffTq4LKiRLy7RHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kP9iqJ6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B4AC433C7;
-	Mon,  8 Apr 2024 13:40:10 +0000 (UTC)
+	 MIME-Version; b=gaXYQmUzWSlkJdMEPFQBHi3S9UI7OilfWRBk9UWW9ys0vcSBnA5Ciu8OSa87gjTI86qzgdibG+b0IsTDTZEz705jOddTIcfLT+Ck3zbpFi8WWpm6/jwI4ABiV3niKBSKU0Mvk2O8mq0KwZF5MeayHNW4xt1sVTyID7D8xNVzJF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y20Cn6pG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7215FC433F1;
+	Mon,  8 Apr 2024 13:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583611;
-	bh=U4nRN8wHqxg+i1jiwPbaAfe8j/ptRZyBFFxLZBApTw4=;
+	s=korg; t=1712583619;
+	bh=fYYqaCTKTh4LnG41XjtwgBU0LxzWfgWHv6MxJVL4Ac4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kP9iqJ6VZrccNt/DN7WO83DIALSuARj6OyPgOiVT3/bmJ8P8PxRiwW4r2N0gvm8VT
-	 Y0yHlnhNCdOQu7A1v0Ok119s0HSt4YgjuIZhAJpPdVK/V/qpD7vcxfzLdlKm3TqbRz
-	 m3uHDf7H9kpByOUb6lyO8TOHWA3Xs/JF73YXO9aY=
+	b=y20Cn6pGIeY1T8Cp9v7Q6pb1eeE/+NNyLzhEj5GxTgkudnno6baP+WlijsHf9lADg
+	 z8C1Mj+TFurfHp27eu8MPmdtx9O6tLvjs9lTW/wZkDZw7T+SS7Fk7StOvZ0CxCDh3r
+	 2YItyQ+2JPhHksnW6bE6cf75VVCnBBpxbC+lwjro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.6 215/252] of: dynamic: Synchronize of_changeset_destroy() with the devlink removals
-Date: Mon,  8 Apr 2024 14:58:34 +0200
-Message-ID: <20240408125313.334738784@linuxfoundation.org>
+	David Hildenbrand <david@redhat.com>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 216/252] x86/mm/pat: fix VM_PAT handling in COW mappings
+Date: Mon,  8 Apr 2024 14:58:35 +0200
+Message-ID: <20240408125313.365205614@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
 References: <20240408125306.643546457@linuxfoundation.org>
@@ -68,72 +73,231 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: David Hildenbrand <david@redhat.com>
 
-commit 8917e7385346bd6584890ed362985c219fe6ae84 upstream.
+commit 04c35ab3bdae7fefbd7c7a7355f29fa03a035221 upstream.
 
-In the following sequence:
-  1) of_platform_depopulate()
-  2) of_overlay_remove()
+PAT handling won't do the right thing in COW mappings: the first PTE (or,
+in fact, all PTEs) can be replaced during write faults to point at anon
+folios.  Reliably recovering the correct PFN and cachemode using
+follow_phys() from PTEs will not work in COW mappings.
 
-During the step 1, devices are destroyed and devlinks are removed.
-During the step 2, OF nodes are destroyed but
-__of_changeset_entry_destroy() can raise warnings related to missing
-of_node_put():
-  ERROR: memory leak, expected refcount 1 instead of 2 ...
+Using follow_phys(), we might just get the address+protection of the anon
+folio (which is very wrong), or fail on swap/nonswap entries, failing
+follow_phys() and triggering a WARN_ON_ONCE() in untrack_pfn() and
+track_pfn_copy(), not properly calling free_pfn_range().
 
-Indeed, during the devlink removals performed at step 1, the removal
-itself releasing the device (and the attached of_node) is done by a job
-queued in a workqueue and so, it is done asynchronously with respect to
-function calls.
-When the warning is present, of_node_put() will be called but wrongly
-too late from the workqueue job.
+In free_pfn_range(), we either wouldn't call memtype_free() or would call
+it with the wrong range, possibly leaking memory.
 
-In order to be sure that any ongoing devlink removals are done before
-the of_node destruction, synchronize the of_changeset_destroy() with the
-devlink removals.
+To fix that, let's update follow_phys() to refuse returning anon folios,
+and fallback to using the stored PFN inside vma->vm_pgoff for COW mappings
+if we run into that.
 
-Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240325152140.198219-3-herve.codina@bootlin.com
-Signed-off-by: Rob Herring <robh@kernel.org>
+We will now properly handle untrack_pfn() with COW mappings, where we
+don't need the cachemode.  We'll have to fail fork()->track_pfn_copy() if
+the first page was replaced by an anon folio, though: we'd have to store
+the cachemode in the VMA to make this work, likely growing the VMA size.
+
+For now, lets keep it simple and let track_pfn_copy() just fail in that
+case: it would have failed in the past with swap/nonswap entries already,
+and it would have done the wrong thing with anon folios.
+
+Simple reproducer to trigger the WARN_ON_ONCE() in untrack_pfn():
+
+<--- C reproducer --->
+ #include <stdio.h>
+ #include <sys/mman.h>
+ #include <unistd.h>
+ #include <liburing.h>
+
+ int main(void)
+ {
+         struct io_uring_params p = {};
+         int ring_fd;
+         size_t size;
+         char *map;
+
+         ring_fd = io_uring_setup(1, &p);
+         if (ring_fd < 0) {
+                 perror("io_uring_setup");
+                 return 1;
+         }
+         size = p.sq_off.array + p.sq_entries * sizeof(unsigned);
+
+         /* Map the submission queue ring MAP_PRIVATE */
+         map = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE,
+                    ring_fd, IORING_OFF_SQ_RING);
+         if (map == MAP_FAILED) {
+                 perror("mmap");
+                 return 1;
+         }
+
+         /* We have at least one page. Let's COW it. */
+         *map = 0;
+         pause();
+         return 0;
+ }
+<--- C reproducer --->
+
+On a system with 16 GiB RAM and swap configured:
+ # ./iouring &
+ # memhog 16G
+ # killall iouring
+[  301.552930] ------------[ cut here ]------------
+[  301.553285] WARNING: CPU: 7 PID: 1402 at arch/x86/mm/pat/memtype.c:1060 untrack_pfn+0xf4/0x100
+[  301.553989] Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_g
+[  301.558232] CPU: 7 PID: 1402 Comm: iouring Not tainted 6.7.5-100.fc38.x86_64 #1
+[  301.558772] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebu4
+[  301.559569] RIP: 0010:untrack_pfn+0xf4/0x100
+[  301.559893] Code: 75 c4 eb cf 48 8b 43 10 8b a8 e8 00 00 00 3b 6b 28 74 b8 48 8b 7b 30 e8 ea 1a f7 000
+[  301.561189] RSP: 0018:ffffba2c0377fab8 EFLAGS: 00010282
+[  301.561590] RAX: 00000000ffffffea RBX: ffff9208c8ce9cc0 RCX: 000000010455e047
+[  301.562105] RDX: 07fffffff0eb1e0a RSI: 0000000000000000 RDI: ffff9208c391d200
+[  301.562628] RBP: 0000000000000000 R08: ffffba2c0377fab8 R09: 0000000000000000
+[  301.563145] R10: ffff9208d2292d50 R11: 0000000000000002 R12: 00007fea890e0000
+[  301.563669] R13: 0000000000000000 R14: ffffba2c0377fc08 R15: 0000000000000000
+[  301.564186] FS:  0000000000000000(0000) GS:ffff920c2fbc0000(0000) knlGS:0000000000000000
+[  301.564773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  301.565197] CR2: 00007fea88ee8a20 CR3: 00000001033a8000 CR4: 0000000000750ef0
+[  301.565725] PKRU: 55555554
+[  301.565944] Call Trace:
+[  301.566148]  <TASK>
+[  301.566325]  ? untrack_pfn+0xf4/0x100
+[  301.566618]  ? __warn+0x81/0x130
+[  301.566876]  ? untrack_pfn+0xf4/0x100
+[  301.567163]  ? report_bug+0x171/0x1a0
+[  301.567466]  ? handle_bug+0x3c/0x80
+[  301.567743]  ? exc_invalid_op+0x17/0x70
+[  301.568038]  ? asm_exc_invalid_op+0x1a/0x20
+[  301.568363]  ? untrack_pfn+0xf4/0x100
+[  301.568660]  ? untrack_pfn+0x65/0x100
+[  301.568947]  unmap_single_vma+0xa6/0xe0
+[  301.569247]  unmap_vmas+0xb5/0x190
+[  301.569532]  exit_mmap+0xec/0x340
+[  301.569801]  __mmput+0x3e/0x130
+[  301.570051]  do_exit+0x305/0xaf0
+...
+
+Link: https://lkml.kernel.org/r/20240403212131.929421-3-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Wupeng Ma <mawupeng1@huawei.com>
+Closes: https://lkml.kernel.org/r/20240227122814.3781907-1-mawupeng1@huawei.com
+Fixes: b1a86e15dc03 ("x86, pat: remove the dependency on 'vm_pgoff' in track/untrack pfn vma routines")
+Fixes: 5899329b1910 ("x86: PAT: implement track/untrack of pfnmap regions for x86 - v3")
+Acked-by: Ingo Molnar <mingo@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/dynamic.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/mm/pat/memtype.c |   49 ++++++++++++++++++++++++++++++++--------------
+ mm/memory.c               |    4 +++
+ 2 files changed, 39 insertions(+), 14 deletions(-)
 
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -9,6 +9,7 @@
- 
- #define pr_fmt(fmt)	"OF: " fmt
- 
-+#include <linux/device.h>
- #include <linux/of.h>
- #include <linux/spinlock.h>
- #include <linux/slab.h>
-@@ -667,6 +668,17 @@ void of_changeset_destroy(struct of_chan
- {
- 	struct of_changeset_entry *ce, *cen;
- 
-+	/*
-+	 * When a device is deleted, the device links to/from it are also queued
-+	 * for deletion. Until these device links are freed, the devices
-+	 * themselves aren't freed. If the device being deleted is due to an
-+	 * overlay change, this device might be holding a reference to a device
-+	 * node that will be freed. So, wait until all already pending device
-+	 * links are deleted before freeing a device node. This ensures we don't
-+	 * free any device node that has a non-zero reference count.
-+	 */
-+	device_link_wait_removal();
-+
- 	list_for_each_entry_safe_reverse(ce, cen, &ocs->entries, node)
- 		__of_changeset_entry_destroy(ce);
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -950,6 +950,38 @@ static void free_pfn_range(u64 paddr, un
+ 		memtype_free(paddr, paddr + size);
  }
+ 
++static int get_pat_info(struct vm_area_struct *vma, resource_size_t *paddr,
++		pgprot_t *pgprot)
++{
++	unsigned long prot;
++
++	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_PAT));
++
++	/*
++	 * We need the starting PFN and cachemode used for track_pfn_remap()
++	 * that covered the whole VMA. For most mappings, we can obtain that
++	 * information from the page tables. For COW mappings, we might now
++	 * suddenly have anon folios mapped and follow_phys() will fail.
++	 *
++	 * Fallback to using vma->vm_pgoff, see remap_pfn_range_notrack(), to
++	 * detect the PFN. If we need the cachemode as well, we're out of luck
++	 * for now and have to fail fork().
++	 */
++	if (!follow_phys(vma, vma->vm_start, 0, &prot, paddr)) {
++		if (pgprot)
++			*pgprot = __pgprot(prot);
++		return 0;
++	}
++	if (is_cow_mapping(vma->vm_flags)) {
++		if (pgprot)
++			return -EINVAL;
++		*paddr = (resource_size_t)vma->vm_pgoff << PAGE_SHIFT;
++		return 0;
++	}
++	WARN_ON_ONCE(1);
++	return -EINVAL;
++}
++
+ /*
+  * track_pfn_copy is called when vma that is covering the pfnmap gets
+  * copied through copy_page_range().
+@@ -960,20 +992,13 @@ static void free_pfn_range(u64 paddr, un
+ int track_pfn_copy(struct vm_area_struct *vma)
+ {
+ 	resource_size_t paddr;
+-	unsigned long prot;
+ 	unsigned long vma_size = vma->vm_end - vma->vm_start;
+ 	pgprot_t pgprot;
+ 
+ 	if (vma->vm_flags & VM_PAT) {
+-		/*
+-		 * reserve the whole chunk covered by vma. We need the
+-		 * starting address and protection from pte.
+-		 */
+-		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
+-			WARN_ON_ONCE(1);
++		if (get_pat_info(vma, &paddr, &pgprot))
+ 			return -EINVAL;
+-		}
+-		pgprot = __pgprot(prot);
++		/* reserve the whole chunk covered by vma. */
+ 		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
+ 	}
+ 
+@@ -1048,7 +1073,6 @@ void untrack_pfn(struct vm_area_struct *
+ 		 unsigned long size, bool mm_wr_locked)
+ {
+ 	resource_size_t paddr;
+-	unsigned long prot;
+ 
+ 	if (vma && !(vma->vm_flags & VM_PAT))
+ 		return;
+@@ -1056,11 +1080,8 @@ void untrack_pfn(struct vm_area_struct *
+ 	/* free the chunk starting from pfn or the whole chunk */
+ 	paddr = (resource_size_t)pfn << PAGE_SHIFT;
+ 	if (!paddr && !size) {
+-		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
+-			WARN_ON_ONCE(1);
++		if (get_pat_info(vma, &paddr, NULL))
+ 			return;
+-		}
+-
+ 		size = vma->vm_end - vma->vm_start;
+ 	}
+ 	free_pfn_range(paddr, size);
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5674,6 +5674,10 @@ int follow_phys(struct vm_area_struct *v
+ 		goto out;
+ 	pte = ptep_get(ptep);
+ 
++	/* Never return PFNs of anon folios in COW mappings. */
++	if (vm_normal_folio(vma, address, pte))
++		goto unlock;
++
+ 	if ((flags & FOLL_WRITE) && !pte_write(pte))
+ 		goto unlock;
+ 
 
 
 
