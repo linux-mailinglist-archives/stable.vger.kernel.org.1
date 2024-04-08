@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D824F89C325
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E2589C5EC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7993B1F21E5E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F57A1C23A59
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA067BAF5;
-	Mon,  8 Apr 2024 13:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE0580600;
+	Mon,  8 Apr 2024 14:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7VsrrAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgSTVVQx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CB77BAF0;
-	Mon,  8 Apr 2024 13:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66818004F;
+	Mon,  8 Apr 2024 14:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583175; cv=none; b=dxJHFN+UcLd9uWGk0yRJZHOrptxP/1uHhKpFG6DvY9Ow4Y2tnv+dZICDL127AL2EpVEbqMoTlGu857Ety/SnH9nOoNOEwS5X4jTqM3bNoIbmyBPFS16nw/PB6ONeRrd0Ie5ABBCP0mTFAicqyFWG5ZXOGaELqKeHw1NOK+1mCxw=
+	t=1712584914; cv=none; b=ITPre+TdMXb5l6n5QWQ7xdisITBkoXtPsrrI/gGgAeKJWxdRRO/6bg248u07zD2Hge3iAHa1lME08FNIEiw6sI0JzkqOmdAg2Uk1nNNV32FLr1J1toBTgE2lcaX/dP48O23nPSh7nRMxQueYb/N+UVFwdDD3+4PqxE/LmFm8x94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583175; c=relaxed/simple;
-	bh=O5i9JM8XCHKJbwXWixY+uNXA6Yf1NYMtSQswOhoxCno=;
+	s=arc-20240116; t=1712584914; c=relaxed/simple;
+	bh=V1PGbPa/m3u+c/DjIEGsmykkvQCd8a5uUfy9Ea74gWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8tGjUgQUkMaQW1/Q11m8WPjcMdJpr+3gR6tj1A6mLnYosLAfSx+8kCUauN0xY6Hs17aG0Ctqt9Hicx8j6bHOyDTNbo9UyCayWlCTD3eDfVVNiYVmFL86s/cAyfR4+PXtsb0SNVZdYC+DO8UylpjzAeb+Tnj4JQUZv3Nwjd6BPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7VsrrAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C634C433C7;
-	Mon,  8 Apr 2024 13:32:54 +0000 (UTC)
+	 MIME-Version; b=Ej9uqrr9QaA+I//BOXPAPyJy5MxjRpH3OPpjEYPrn5aLMM0GPr9HsZZpOjX0EteNIoxtxjWfBmcCLSRXGLbci4IjwmEOaPqbEsMNEFjhavlD+py0oRAUmzaQIv3ncjk26b551N8tKRZXMuXC9Z2BOTlTIKIXWK8xZ/25fCl04Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgSTVVQx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1403C433F1;
+	Mon,  8 Apr 2024 14:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583174;
-	bh=O5i9JM8XCHKJbwXWixY+uNXA6Yf1NYMtSQswOhoxCno=;
+	s=korg; t=1712584914;
+	bh=V1PGbPa/m3u+c/DjIEGsmykkvQCd8a5uUfy9Ea74gWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7VsrrANhbldsq1gSgbdaB76IzF2TCzCn8TjPkq0ed7AxVKkHESxT7vdzZzzJIPkx
-	 q3C+sYEiJWsBO6PQUxt3q+XAg1qiYXSGIZx6vI3i4XCSsE/3LPtxKhzdaTaIL27RQP
-	 TNfqtDjaisj1N4sqfA3as5eUo2ikTns0Vvm6aYXg=
+	b=IgSTVVQxiiv1qGO/Nc3rtxbXUhFdtAnVnPH3huv/vnMc0aDEXDWdFB8c3UaxPj8ve
+	 KebcD924JkPIKIVI/zKVniFJENQRski8jpZxMFSCsXGKgJJgvd7gWx6ALhS1dpx3c7
+	 8INszc5gE+ZvgJx7pVFb/t9ACTFaGMbvRUV03mr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/252] nouveau/uvmm: fix addr/range calcs for remap operations
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 599/690] scsi: qla2xxx: Fix double free of fcport
 Date: Mon,  8 Apr 2024 14:57:45 +0200
-Message-ID: <20240408125311.806399110@linuxfoundation.org>
+Message-ID: <20240408125421.297032784@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit be141849ec00ef39935bf169c0f194ac70bf85ce ]
+commit 82f522ae0d97119a43da53e0f729275691b9c525 upstream.
 
-dEQP-VK.sparse_resources.image_rebind.2d_array.r64i.128_128_8
-was causing a remap operation like the below.
+The server was crashing after LOGO because fcport was getting freed twice.
 
-op_remap: prev: 0000003fffed0000 00000000000f0000 00000000a5abd18a 0000000000000000
-op_remap: next:
-op_remap: unmap: 0000003fffed0000 0000000000100000 0
-op_map: map: 0000003ffffc0000 0000000000010000 000000005b1ba33c 00000000000e0000
+ -----------[ cut here ]-----------
+ kernel BUG at mm/slub.c:371!
+ invalid opcode: 0000 1 SMP PTI
+ CPU: 35 PID: 4610 Comm: bash Kdump: loaded Tainted: G OE --------- - - 4.18.0-425.3.1.el8.x86_64 #1
+ Hardware name: HPE ProLiant DL360 Gen10/ProLiant DL360 Gen10, BIOS U32 09/03/2021
+ RIP: 0010:set_freepointer.part.57+0x0/0x10
+ RSP: 0018:ffffb07107027d90 EFLAGS: 00010246
+ RAX: ffff9cb7e3150000 RBX: ffff9cb7e332b9c0 RCX: ffff9cb7e3150400
+ RDX: 0000000000001f37 RSI: 0000000000000000 RDI: ffff9cb7c0005500
+ RBP: fffff693448c5400 R08: 0000000080000000 R09: 0000000000000009
+ R10: 0000000000000000 R11: 0000000000132af0 R12: ffff9cb7c0005500
+ R13: ffff9cb7e3150000 R14: ffffffffc06990e0 R15: ffff9cb7ea85ea58
+ FS: 00007ff6b79c2740(0000) GS:ffff9cb8f7ec0000(0000) knlGS:0000000000000000
+ CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055b426b7d700 CR3: 0000000169c18002 CR4: 00000000007706e0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+ kfree+0x238/0x250
+ qla2x00_els_dcmd_sp_free+0x20/0x230 [qla2xxx]
+ ? qla24xx_els_dcmd_iocb+0x607/0x690 [qla2xxx]
+ qla2x00_issue_logo+0x28c/0x2a0 [qla2xxx]
+ ? qla2x00_issue_logo+0x28c/0x2a0 [qla2xxx]
+ ? kernfs_fop_write+0x11e/0x1a0
 
-This was resulting in an unmap operation from 0x3fffed0000+0xf0000, 0x100000
-which was corrupting the pagetables and oopsing the kernel.
+Remove one of the free calls and add check for valid fcport. Also use
+function qla2x00_free_fcport() instead of kfree().
 
-Fixes the prev + unmap range calcs to use start/end and map back to addr/range.
-
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
-Cc: Danilo Krummrich <dakr@redhat.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240328024317.2041851-1-airlied@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-9-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_uvmm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_iocb.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_uvmm.c b/drivers/gpu/drm/nouveau/nouveau_uvmm.c
-index aae780e4a4aa3..2bbcdc649e862 100644
---- a/drivers/gpu/drm/nouveau/nouveau_uvmm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_uvmm.c
-@@ -804,15 +804,15 @@ op_remap(struct drm_gpuva_op_remap *r,
- 	struct drm_gpuva_op_unmap *u = r->unmap;
- 	struct nouveau_uvma *uvma = uvma_from_va(u->va);
- 	u64 addr = uvma->va.va.addr;
--	u64 range = uvma->va.va.range;
-+	u64 end = uvma->va.va.addr + uvma->va.va.range;
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -2638,7 +2638,8 @@ static void qla2x00_els_dcmd_sp_free(srb
+ {
+ 	struct srb_iocb *elsio = &sp->u.iocb_cmd;
  
- 	if (r->prev)
- 		addr = r->prev->va.addr + r->prev->va.range;
+-	kfree(sp->fcport);
++	if (sp->fcport)
++		qla2x00_free_fcport(sp->fcport);
  
- 	if (r->next)
--		range = r->next->va.addr - addr;
-+		end = r->next->va.addr;
+ 	if (elsio->u.els_logo.els_logo_pyld)
+ 		dma_free_coherent(&sp->vha->hw->pdev->dev, DMA_POOL_SIZE,
+@@ -2751,6 +2752,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	if (!elsio->u.els_logo.els_logo_pyld) {
+ 		/* ref: INIT */
+ 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
++		qla2x00_free_fcport(fcport);
+ 		return QLA_FUNCTION_FAILED;
+ 	}
  
--	op_unmap_range(u, addr, range);
-+	op_unmap_range(u, addr, end - addr);
- }
+@@ -2785,7 +2787,6 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
+ 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
  
- static int
--- 
-2.43.0
-
+ 	wait_for_completion(&elsio->u.els_logo.comp);
+-	qla2x00_free_fcport(fcport);
+ 
+ 	/* ref: INIT */
+ 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
 
 
 
