@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-36816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061D889C1E6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB1589C642
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E3732827A7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A386286814
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477EF8626A;
-	Mon,  8 Apr 2024 13:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A9681732;
+	Mon,  8 Apr 2024 14:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9+Ih+hb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjbMytoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AB484A34;
-	Mon,  8 Apr 2024 13:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3290E8172A;
+	Mon,  8 Apr 2024 14:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582428; cv=none; b=aqcAXhF9rNUb6E4wSsYmv3TGV4LXr54aBWzgHkdAPWqvw9getSABotpFleYkxZNF6aSC1kr5T4nFQAkK2FFZIFJD7lTOCIKult5PL+0gGrFSy4xGq2pBX1B5SbeC1ZI0NyFqs13NpqEG3/KpkbUxklrjbbdwJAxGx0V6P3y9PqM=
+	t=1712585160; cv=none; b=J9FVsKoaGvWVGQmJVKu6XEZoEuvUEt94PV4HKfENipq9Ulz5W3OIFT1Bu2/1031TzhurMw+ZiQTd8rDdTX/6I+OiXrKkKcTl6M26isUpkcwfk+FnJ4Etp5FIYuhzfeHYSvCozaKkilHbA1fWbHVa41G45ro6kk6eVTokNHrJ2Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582428; c=relaxed/simple;
-	bh=gR8eFvqp3wTxLqkL3LFEEsZTQz2Le+ETIQv/FYZ6umE=;
+	s=arc-20240116; t=1712585160; c=relaxed/simple;
+	bh=Z2TRkrOBCeZt3NukXqjKJON2FKB/lZ9Y/C8pckbjxM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVs7V7bYlUdPAJl2T7ra65rDO3oTwk9a1ePwzn0ftiWwa6Rn6d7IENwMDahlC+ebUmrZJBL5jsMHmdBZTZi3Sfcks/fEHhn+NXfJAttKNobvm3TGcG/01Srayt3YDDr9IM7jWsMXk3YAqX2S083g7ryZYcM7RZYzJwfa9i2uhjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9+Ih+hb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4116EC433B1;
-	Mon,  8 Apr 2024 13:20:27 +0000 (UTC)
+	 MIME-Version; b=XAjqNb6+jYdt7wzogAjL86FBSj5OPsLoib7rzSrbzo6DJbi03ZRsApvOJEFakIERCjs+wv5tev8U80HGhy8StRJzcdbJQwfJ7te4fkC0pqiSfJzjkhD6jGHCESzVWs3s5Gu+o160ILJG8IiIfnYazk5THi8293k/xscMsanq7x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjbMytoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A03C433F1;
+	Mon,  8 Apr 2024 14:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582427;
-	bh=gR8eFvqp3wTxLqkL3LFEEsZTQz2Le+ETIQv/FYZ6umE=;
+	s=korg; t=1712585159;
+	bh=Z2TRkrOBCeZt3NukXqjKJON2FKB/lZ9Y/C8pckbjxM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9+Ih+hbgPDeNWYugAJ1tZAE33bPD8NOJNWSxS8urhh6Q0yvWX2xHjzrLo6CMLo9T
-	 Uzfx46pZEpiVtBte4Nn7vd6WkhMuUGfoCTRF1A4eUY53LqQV/Al1EV1LgMSsFFxmED
-	 LQ+4+4n89Io+Cf1luvJdDILsbSQJWZexrJd7IbW4=
+	b=mjbMytoEhPuUJohKTyOh++0bnWES4wQAGavdMXB7qXmkorrq9tCJ4nobHpvSCtjA5
+	 vForoQLx3z/TBWC87rLBICONIcLCA0QIa6Of2AHBIKJB2vw0xk1cq+PhkplTkPyWdG
+	 P5WRhgoSr38enl1aNlABHQkvjTMECeZcCXbFldK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/138] s390/pai: initialize event count once at initialization
-Date: Mon,  8 Apr 2024 14:58:38 +0200
-Message-ID: <20240408125259.465523082@linuxfoundation.org>
+	Su Hui <suhui@nfschina.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 653/690] octeontx2-pf: check negative error code in otx2_open()
+Date: Mon,  8 Apr 2024 14:58:39 +0200
+Message-ID: <20240408125423.304327086@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit b286997e83dcf7b498329a66a8a22fc8a5bf50f0 ]
+commit e709acbd84fb6ef32736331b0147f027a3ef4c20 upstream.
 
-Event count value is initialized and set to zero in function
-paicrypt_start().  This function is called once per CPU when an
-event is started on that CPU. This leads to event count value
-being set to zero as many times as there are online CPUs.
-This is not necessary. The event count value is bound to the event
-and it is sufficient to initialize the event counter once at
-event creation time. This is done when the event structure
-is dynamicly allocated with __GFP_ZERO flag. This sets
-member count to zero.
+otx2_rxtx_enable() return negative error code such as -EIO,
+check -EIO rather than EIO to fix this problem.
 
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c926252205c4 ("octeontx2-pf: Disable packet I/O for graceful exit")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://lore.kernel.org/r/20240328020620.4054692-1-suhui@nfschina.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_pai_crypto.c | 1 -
- arch/s390/kernel/perf_pai_ext.c    | 1 -
- 2 files changed, 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
-index a7e815563f411..7eb138b07e7be 100644
---- a/arch/s390/kernel/perf_pai_crypto.c
-+++ b/arch/s390/kernel/perf_pai_crypto.c
-@@ -250,7 +250,6 @@ static void paicrypt_start(struct perf_event *event, int flags)
- 	if (!event->hw.last_tag) {
- 		event->hw.last_tag = 1;
- 		sum = paicrypt_getall(event);		/* Get current value */
--		local64_set(&event->count, 0);
- 		local64_set(&event->hw.prev_count, sum);
- 	}
- }
-diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
-index d6bc919530143..663cd37f8b293 100644
---- a/arch/s390/kernel/perf_pai_ext.c
-+++ b/arch/s390/kernel/perf_pai_ext.c
-@@ -333,7 +333,6 @@ static void paiext_start(struct perf_event *event, int flags)
- 	event->hw.last_tag = 1;
- 	sum = paiext_getall(event);		/* Get current value */
- 	local64_set(&event->hw.prev_count, sum);
--	local64_set(&event->count, 0);
- }
- 
- static int paiext_add(struct perf_event *event, int flags)
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1795,7 +1795,7 @@ int otx2_open(struct net_device *netdev)
+ 	 * mcam entries are enabled to receive the packets. Hence disable the
+ 	 * packet I/O.
+ 	 */
+-	if (err == EIO)
++	if (err == -EIO)
+ 		goto err_disable_rxtx;
+ 	else if (err)
+ 		goto err_tx_stop_queues;
 
 
 
