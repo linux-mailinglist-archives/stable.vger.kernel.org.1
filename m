@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-37008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563FA89C4BB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 232C389C5FE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD42FB2D5A7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEB2528367E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99DB74BE8;
-	Mon,  8 Apr 2024 13:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837737FBDA;
+	Mon,  8 Apr 2024 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTXNQCXG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1fl7M9E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CA96D1A9;
-	Mon,  8 Apr 2024 13:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF527F499;
+	Mon,  8 Apr 2024 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582985; cv=none; b=lV4YPmvNdH26yMD0PPgHhpm7e7gEfrlSGP8Bf1VXS8YgEotCYQYMBCC8/GMG/61w47RMK6futhYQoZWIssn31aRXCG/wqcuo9jNOKrFy4wBRugBYl8b4gdXfHrPcGp4TydZhgdLlWAOmqAYvhx3xIi9q+TOBHK5q11jWe5RMZsk=
+	t=1712584973; cv=none; b=jJy4M87RbibK561Tqws/olPqxLqXu/VSCdxXIjx8b8j0wJPLysh+0Q4gF3dXI5m7T0MW6Rhnq8yKURIIQGP8PWajsGaIcerHP+eE9C11w33gCRENLgl9hI9duThjcFarfK15N4HFZyHeCSv8iFUTeUlGE6OAWoZwswU2qJOUQ7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582985; c=relaxed/simple;
-	bh=Pcj9/mJfk3+IC/53sbw1VlMQfN4nEWIj9+bmFViZLlo=;
+	s=arc-20240116; t=1712584973; c=relaxed/simple;
+	bh=/TYVNtY1C1XGsRQZaaMq1IsN3METX0rWkMa2HOSKdX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+SZcfTfr3stF1RPmnjIA9lsriL5PH0P/uTr2UJkMYhDBc3dOAwcdv1oysn85AZAJbl/Wc6LGfMy2DDn4TbG2E91MI516QlUvO1Qvokp9Akm4xEL+AMX0JJbZ6UoXyzCzAl4Htp4VZPLVUSsRK5SxbGohfjIt2PT1jhOkb1b9hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTXNQCXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA02DC43390;
-	Mon,  8 Apr 2024 13:29:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N4SKb/LZsUeJrJf7NoXINWpHbY/otWOYFnDThCsjsxJmZ40V1k2vhJ/8SVLvQEKH7SajkqD6sLJZBKOAywZV5Np2txKmjkKrn7v+qXckvnfBDHnNbQmiN7fdds8R0OzkBr7JIu+/rIfBF+xqdBl053DDCCkd7dlSo2tXCRsL7eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1fl7M9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB6EC433C7;
+	Mon,  8 Apr 2024 14:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582985;
-	bh=Pcj9/mJfk3+IC/53sbw1VlMQfN4nEWIj9+bmFViZLlo=;
+	s=korg; t=1712584973;
+	bh=/TYVNtY1C1XGsRQZaaMq1IsN3METX0rWkMa2HOSKdX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTXNQCXGtqrnKkMxVvGPZ7WUVF6WhlC+6vE2M54jqrVr9l2qhmofF6MgSLx7IcH35
-	 Slcd+xCwm9b+l/YSPEEVOcpwYapl+lPA1vGe3C8C4G6V9cv7PxdHWYoj0+6bP5Buce
-	 DcxuPF7UqNrOSAZHWXaj0fGyzqOfjIYRoI4/+PLs=
+	b=N1fl7M9EgXO2373a4h86f0lYcFZo3OpzLyMoQy8Tg00eTifgqYOuk5/gKmytydNvJ
+	 xmjNLMPdMQWFVOayh8ZySScohCxTho09UHWml9G8Ne6+3geEMw+OYjOqd/bZKgNEkU
+	 DZwfnWAZiswfuVfP4zXefsoBvbMcfjF8rOT4bYuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.6 145/252] i40e: Move memory allocation structures to i40e_alloc.h
-Date: Mon,  8 Apr 2024 14:57:24 +0200
-Message-ID: <20240408125311.153218764@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 579/690] drm/amdgpu: Use drm_mode_copy()
+Date: Mon,  8 Apr 2024 14:57:25 +0200
+Message-ID: <20240408125420.579306553@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +64,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit ef5d54078d451973f90e123fafa23fc95c2a08ae ]
+[ Upstream commit 426c89aa203bcec9d9cf6eea36735eafa1b1f099 ]
 
-Structures i40e_dma_mem & i40e_virt_mem are defined i40e_osdep.h while
-memory allocation functions that use them are declared in i40e_alloc.h
-Move them there.
+struct drm_display_mode embeds a list head, so overwriting
+the full struct with another one will corrupt the list
+(if the destination mode is on a list). Use drm_mode_copy()
+instead which explicitly preserves the list head of
+the destination mode.
 
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
+Even if we know the destination mode is not on any list
+using drm_mode_copy() seems decent as it sets a good
+example. Bad examples of not using it might eventually
+get copied into code where preserving the list head
+actually matters.
+
+Obviously one case not covered here is when the mode
+itself is embedded in a larger structure and the whole
+structure is copied. But if we are careful when copying
+into modes embedded in structures I think we can be a
+little more reassured that bogus list heads haven't been
+propagated in.
+
+@is_mode_copy@
+@@
+drm_mode_copy(...)
+{
+...
+}
+
+@depends on !is_mode_copy@
+struct drm_display_mode *mode;
+expression E, S;
+@@
+(
+- *mode = E
++ drm_mode_copy(mode, &E)
+|
+- memcpy(mode, E, S)
++ drm_mode_copy(mode, E)
+)
+
+@depends on !is_mode_copy@
+struct drm_display_mode mode;
+expression E;
+@@
+(
+- mode = E
++ drm_mode_copy(&mode, &E)
+|
+- memcpy(&mode, E, S)
++ drm_mode_copy(&mode, E)
+)
+
+@@
+struct drm_display_mode *mode;
+@@
+- &*mode
++ mode
+
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 79f3e38f60e5 ("drm/amd/display: Preserve original aspect ratio in create stream")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_adminq.h |  1 +
- drivers/net/ethernet/intel/i40e/i40e_alloc.h  | 14 ++++++++++++++
- drivers/net/ethernet/intel/i40e/i40e_osdep.h  | 12 ------------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c    | 4 ++--
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_adminq.h b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
-index 267f2e0a21ce8..1c3d2bc5c3f79 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_adminq.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
-@@ -4,6 +4,7 @@
- #ifndef _I40E_ADMINQ_H_
- #define _I40E_ADMINQ_H_
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+index c777aff164b76..654f99f4107ea 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
+@@ -625,7 +625,7 @@ amdgpu_connector_fixup_lcd_native_mode(struct drm_encoder *encoder,
+ 		if (mode->type & DRM_MODE_TYPE_PREFERRED) {
+ 			if (mode->hdisplay != native_mode->hdisplay ||
+ 			    mode->vdisplay != native_mode->vdisplay)
+-				memcpy(native_mode, mode, sizeof(*mode));
++				drm_mode_copy(native_mode, mode);
+ 		}
+ 	}
  
-+#include "i40e_alloc.h"
- #include "i40e_osdep.h"
- #include "i40e_adminq_cmd.h"
+@@ -634,7 +634,7 @@ amdgpu_connector_fixup_lcd_native_mode(struct drm_encoder *encoder,
+ 		list_for_each_entry_safe(mode, t, &connector->probed_modes, head) {
+ 			if (mode->hdisplay == native_mode->hdisplay &&
+ 			    mode->vdisplay == native_mode->vdisplay) {
+-				*native_mode = *mode;
++				drm_mode_copy(native_mode, mode);
+ 				drm_mode_set_crtcinfo(native_mode, CRTC_INTERLACE_HALVE_V);
+ 				DRM_DEBUG_KMS("Determined LVDS native mode details from EDID\n");
+ 				break;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 7385efe699f88..9356decd14513 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6219,7 +6219,7 @@ get_highest_refresh_rate_mode(struct amdgpu_dm_connector *aconnector,
+ 		}
+ 	}
  
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_alloc.h b/drivers/net/ethernet/intel/i40e/i40e_alloc.h
-index 4b2d8da048c64..e0dde326255d6 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_alloc.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_alloc.h
-@@ -4,8 +4,22 @@
- #ifndef _I40E_ALLOC_H_
- #define _I40E_ALLOC_H_
+-	aconnector->freesync_vid_base = *m_pref;
++	drm_mode_copy(&aconnector->freesync_vid_base, m_pref);
+ 	return m_pref;
+ }
  
-+#include <linux/types.h>
-+
- struct i40e_hw;
- 
-+/* memory allocation tracking */
-+struct i40e_dma_mem {
-+	void *va;
-+	dma_addr_t pa;
-+	u32 size;
-+};
-+
-+struct i40e_virt_mem {
-+	void *va;
-+	u32 size;
-+};
-+
- /* prototype for functions used for dynamic memory allocation */
- int i40e_allocate_dma_mem(struct i40e_hw *hw,
- 			  struct i40e_dma_mem *mem,
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_osdep.h b/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-index 70cac3bb31ec3..fd18895cfb56b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-@@ -29,18 +29,6 @@ struct device *i40e_hw_to_dev(struct i40e_hw *hw);
- #define rd64(a, reg)		readq((a)->hw_addr + (reg))
- #define i40e_flush(a)		readl((a)->hw_addr + I40E_GLGEN_STAT)
- 
--/* memory allocation tracking */
--struct i40e_dma_mem {
--	void *va;
--	dma_addr_t pa;
--	u32 size;
--};
--
--struct i40e_virt_mem {
--	void *va;
--	u32 size;
--};
--
- #define i40e_debug(h, m, s, ...)				\
- do {								\
- 	if (((m) & (h)->debug_mask))				\
+@@ -6333,8 +6333,8 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
+ 				 is_freesync_video_mode(&mode, aconnector);
+ 		if (recalculate_timing) {
+ 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
+-			saved_mode = mode;
+-			mode = *freesync_mode;
++			drm_mode_copy(&saved_mode, &mode);
++			drm_mode_copy(&mode, freesync_mode);
+ 		} else {
+ 			decide_crtc_timing_for_drm_display_mode(
+ 				&mode, preferred_mode, scale);
 -- 
 2.43.0
 
