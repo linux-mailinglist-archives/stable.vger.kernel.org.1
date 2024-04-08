@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CEC89C39A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A37B89C60E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80C631F22378
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAC7CB2BB92
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0943412B14A;
-	Mon,  8 Apr 2024 13:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4157E772;
+	Mon,  8 Apr 2024 14:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnJl/XY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPsk3Xa7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E5512AAC3;
-	Mon,  8 Apr 2024 13:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBCF7F492;
+	Mon,  8 Apr 2024 14:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583442; cv=none; b=db+DtCWBJJThoF7lY21T/e8SyUSW4rDi8dfLI8G5jek+Sguck5Rbjr4TzFU+ySylVEuTJqG9xO6Cs+iixa4kAE9/yvD9MWVuGbSIdZwN4iLVU+EB/map+w3wTfjbD9gt1taJ4WGWj9+pVLd/gTmKNi26gSfe0bsUx9vGTyQ6YyI=
+	t=1712584999; cv=none; b=d1YcL+8eqB5o5upeqvALx949N7j8FLCRvy4dm45qX7R9pBpDe/GxhfwjjyfCkU5JuLkNoiyvV8/QVeAa6u6OeEemZJUP3Gc1l3EydUtEuStZ0vwd8b3/3mPHRRnF1Oqwn6CknmPvkwOB5oHpWKPwvcbRP9pajOkTKFtTvwE3f3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583442; c=relaxed/simple;
-	bh=8WnXANvX861nRnLOTdNQ+JiRaLfrNJyvo8uCCNgQ53M=;
+	s=arc-20240116; t=1712584999; c=relaxed/simple;
+	bh=74JCT4EIqqZFrnyW3bFHlnIHj8XoDjUw/KbuTzr3EXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGY0drHnbSIpzg1/cXy9NNTge4y1UTRYUWSv4IRfkmUDq9KqQSA7Q3xzpRXfmLGd9HWWlarn1TtXm/qD9tEA+KeJQP2NQBjVJpmFrIJMbsf83Rv5CJq0uaQy0sV9alfmQfrYnCgiknAOsdclX/krL6f3H8xSt+7XnP0QeCPBjRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnJl/XY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A7CC433F1;
-	Mon,  8 Apr 2024 13:37:22 +0000 (UTC)
+	 MIME-Version; b=mBaB3rM+l5dbAeKtgGX4skWVBBp7yvGTXC8emVmotDzxOELvN/X7njBP4mKacOVjKnnnIw+C1YnrSFUdpataR21wUl5EYcAuNKhXgkZciD5uzN372YSx/C5XBPkx77W17Qi8lVEsXkzu5SCxmpT+czm2opdL8exs5yz+0/WQScU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPsk3Xa7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033EDC433C7;
+	Mon,  8 Apr 2024 14:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583442;
-	bh=8WnXANvX861nRnLOTdNQ+JiRaLfrNJyvo8uCCNgQ53M=;
+	s=korg; t=1712584999;
+	bh=74JCT4EIqqZFrnyW3bFHlnIHj8XoDjUw/KbuTzr3EXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnJl/XY6eH9WH+C9ppV2B1TdPRvGhJoK8fyvfhuUIxo7uATOFn9Iawc0tsXtL+VuL
-	 4Y7ZI+pYEUs1IbXcn63xXC5TFp/vlezDpNimXQoEDQ41I8i+25johQ+F0pfY5e+386
-	 OkKaIxwicRcFDhSm5MzeP1zettfsThbcbf8q4qB8=
+	b=BPsk3Xa7WnYEBJTqkgA2ERVgGUKas5wDD94I5A60XCzIXzLUocQqxALVpGPNKrbjH
+	 HAT/yv7xp7EOWz1LxN3JtDf9OsSQXQ/3mfJrTuwZsFfszqo3ELJt/bICchw61Ua07u
+	 6e/MkC+rLLyeNL6rgqUukH/GKAvhQi2gyOn25wu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 196/252] ASoC: SOF: amd: fix for false dsp interrupts
+	Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Waiman Long <longman@redhat.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 5.15 629/690] locking/rwsem: Disable preemption while trying for rwsem lock
 Date: Mon,  8 Apr 2024 14:58:15 +0200
-Message-ID: <20240408125312.737542426@linuxfoundation.org>
+Message-ID: <20240408125422.444420264@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
 
-[ Upstream commit b9846a386734e73a1414950ebfd50f04919f5e24 ]
+commit 48dfb5d2560d36fb16c7d430c229d1604ea7d185 upstream.
 
-Before ACP firmware loading, DSP interrupts are not expected.
-Sometimes after reboot, it's observed that before ACP firmware is loaded
-false DSP interrupt is reported.
-Registering the interrupt handler before acp initialization causing false
-interrupts sometimes on reboot as ACP reset is not applied.
-Correct the sequence by invoking acp initialization sequence prior to
-registering interrupt handler.
+Make the region inside the rwsem_write_trylock non preemptible.
 
-Fixes: 738a2b5e2cc9 ("ASoC: SOF: amd: Add IPC support for ACP IP block")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://msgid.link/r/20240404041717.430545-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We observe RT task is hogging CPU when trying to acquire rwsem lock
+which was acquired by a kworker task but before the rwsem owner was set.
+
+Here is the scenario:
+1. CFS task (affined to a particular CPU) takes rwsem lock.
+
+2. CFS task gets preempted by a RT task before setting owner.
+
+3. RT task (FIFO) is trying to acquire the lock, but spinning until
+RT throttling happens for the lock as the lock was taken by CFS task.
+
+This patch attempts to fix the above issue by disabling preemption
+until owner is set for the lock. While at it also fix the issues
+at the places where rwsem_{set,clear}_owner() are called.
+
+This also adds lockdep annotation of preemption disable in
+rwsem_{set,clear}_owner() on Peter Z. suggestion.
+
+Signed-off-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/1662661467-24203-1-git-send-email-quic_mojha@quicinc.com
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/amd/acp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/locking/rwsem.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
-index 4c54ce212de6a..cc006d7038d97 100644
---- a/sound/soc/sof/amd/acp.c
-+++ b/sound/soc/sof/amd/acp.c
-@@ -522,6 +522,10 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
- 		goto unregister_dev;
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -133,14 +133,19 @@
+  * the owner value concurrently without lock. Read from owner, however,
+  * may not need READ_ONCE() as long as the pointer value is only used
+  * for comparison and isn't being dereferenced.
++ *
++ * Both rwsem_{set,clear}_owner() functions should be in the same
++ * preempt disable section as the atomic op that changes sem->count.
+  */
+ static inline void rwsem_set_owner(struct rw_semaphore *sem)
+ {
++	lockdep_assert_preemption_disabled();
+ 	atomic_long_set(&sem->owner, (long)current);
+ }
+ 
+ static inline void rwsem_clear_owner(struct rw_semaphore *sem)
+ {
++	lockdep_assert_preemption_disabled();
+ 	atomic_long_set(&sem->owner, 0);
+ }
+ 
+@@ -251,13 +256,16 @@ static inline bool rwsem_read_trylock(st
+ static inline bool rwsem_write_trylock(struct rw_semaphore *sem)
+ {
+ 	long tmp = RWSEM_UNLOCKED_VALUE;
++	bool ret = false;
+ 
++	preempt_disable();
+ 	if (atomic_long_try_cmpxchg_acquire(&sem->count, &tmp, RWSEM_WRITER_LOCKED)) {
+ 		rwsem_set_owner(sem);
+-		return true;
++		ret = true;
  	}
  
-+	ret = acp_init(sdev);
-+	if (ret < 0)
-+		goto free_smn_dev;
-+
- 	sdev->ipc_irq = pci->irq;
- 	ret = request_threaded_irq(sdev->ipc_irq, acp_irq_handler, acp_irq_thread,
- 				   IRQF_SHARED, "AudioDSP", sdev);
-@@ -531,10 +535,6 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
- 		goto free_smn_dev;
- 	}
+-	return false;
++	preempt_enable();
++	return ret;
+ }
  
--	ret = acp_init(sdev);
--	if (ret < 0)
--		goto free_ipc_irq;
--
- 	sdev->dsp_box.offset = 0;
- 	sdev->dsp_box.size = BOX_SIZE_512;
+ /*
+@@ -1341,8 +1349,10 @@ static inline void __up_write(struct rw_
+ 	DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) &&
+ 			    !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE), sem);
  
--- 
-2.43.0
-
++	preempt_disable();
+ 	rwsem_clear_owner(sem);
+ 	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
++	preempt_enable();
+ 	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
+ 		rwsem_wake(sem);
+ }
 
 
 
