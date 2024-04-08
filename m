@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-37639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C3589C5F4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0530C89C365
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C2DBB2C05D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36C851C22051
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644F97C0BF;
-	Mon,  8 Apr 2024 14:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D3A8594B;
+	Mon,  8 Apr 2024 13:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6ksJqaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zif/j3wr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D727BAF5;
-	Mon,  8 Apr 2024 14:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A2C8593C;
+	Mon,  8 Apr 2024 13:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584824; cv=none; b=ts8FhMOzk9pKHzySg4AnGKfmvYiqqyp/1LOWEDWTJEah6a6BAlXEebsiOiwBYFgwr544lyz3oVf0N8/LN6+xRAIIgsBKfQnO6HuGiusMFDZFMbQzKmfo9ynDz2qfYi/3gbXvElxerALhgYmv3urSacsExtUzwq1VWWV/MMwAnnA=
+	t=1712583288; cv=none; b=jVgxZ8zLJ929ftOfd0d2lGSE7hn10MqHa3XELDCx6BYNdnvV2j994TCG2nRbfjfjIIV34Ux8CI08xf4w9OITV+i0rTgwqLBJmNZx8r4EkSukbmkSAHLEj0ks8fS4ElZjW3sRk5IlIt/SEgnqrhP+03sxHWM/9MIY7CoPDe6l+vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584824; c=relaxed/simple;
-	bh=9jgapzTSxP3WpY64By3FAnTMJnZgQQhZfSmkE69aZKw=;
+	s=arc-20240116; t=1712583288; c=relaxed/simple;
+	bh=u01GUJB3z8HRCe7XLeIIRqh00aDyDB40cLgSs8CtYsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fIG8IN1wsbGEbaFYN6s9/10ySJhDStJxjqdBbeFk3FQh7A+CSfJTTtKTwNNjvpQs4k/RhwV2tM3fOYMvsF3dBHyKLjOESHpFfmzRo1btJnw1YSgW4zc/3ffgmZvF5fZUrAUD2I7exyEOuKnaHWPu5UcUSpT+OsPkyAOzhaoG1Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6ksJqaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F24BC433F1;
-	Mon,  8 Apr 2024 14:00:23 +0000 (UTC)
+	 MIME-Version; b=BLbNbNcdNc4mWsqLXf91kqkapGCizO/HC3OV6oAJpMqUxHa385vB2TT1nZkDcvEv3ZHynWepMSALo9uzEDKX0OKoCs72jFPswsIuiWhcg+qo8SFoJTtVtSL2TJ6lXGZyH47tPWv7BVi2/RLCx4mSrfdQphqjA+PPOtHhP+FUZ/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zif/j3wr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15F8C433C7;
+	Mon,  8 Apr 2024 13:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584824;
-	bh=9jgapzTSxP3WpY64By3FAnTMJnZgQQhZfSmkE69aZKw=;
+	s=korg; t=1712583288;
+	bh=u01GUJB3z8HRCe7XLeIIRqh00aDyDB40cLgSs8CtYsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6ksJqaKJ7kyZVo3r8kC7exHsyCX2qY1uDTH42maeSQQy4SGi2LA0nDzzxqQdV3Hi
-	 kgU2Zn3TEJEd6Xc5zeF9MZvGP4HBwJxdy9VTJoxmzLk9Om7SheUzTJFp+npC/gyc7y
-	 R3uICGizEp811ZmPNe1RhVzx5JrBBdoAgW7jvNAI=
+	b=Zif/j3wrynskidXMPIUZBz4l3wepSOC+F0Mco7v6UtbLVxTmKbAdfkKLjgG72XyKE
+	 R4PDoiDWoqm7tQ7rny1DBDDo2cbUMGiGhv52xA4GrA5JKmzdRj08t6BqL22lIZu9od
+	 MkSn+Z2svW7mWBwTIf1Q46NA4GfsL99m4SA5Xlm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Sperbeck <jsperbeck@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 569/690] init: open /initrd.image with O_LARGEFILE
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 160/273] ASoC: rt711-sdw: fix locking sequence
 Date: Mon,  8 Apr 2024 14:57:15 +0200
-Message-ID: <20240408125420.234727194@linuxfoundation.org>
+Message-ID: <20240408125314.240751952@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Sperbeck <jsperbeck@google.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 4624b346cf67400ef46a31771011fb798dd2f999 upstream.
+[ Upstream commit aae86cfd8790bcc7693a5a0894df58de5cb5128c ]
 
-If initrd data is larger than 2Gb, we'll eventually fail to write to the
-/initrd.image file when we hit that limit, unless O_LARGEFILE is set.
+The disable_irq_lock protects the 'disable_irq' value, we need to lock
+before testing it.
 
-Link: https://lkml.kernel.org/r/20240317221522.896040-1-jsperbeck@google.com
-Signed-off-by: John Sperbeck <jsperbeck@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b69de265bd0e ("ASoC: rt711: fix for JD event handling in ClockStop Mode0")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@linux.intel.com>
+Link: https://msgid.link/r/20240325221817.206465-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/initramfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/rt711-sdw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -655,7 +655,7 @@ static void __init populate_initrd_image
+diff --git a/sound/soc/codecs/rt711-sdw.c b/sound/soc/codecs/rt711-sdw.c
+index 3f5773310ae8c..988451f24a756 100644
+--- a/sound/soc/codecs/rt711-sdw.c
++++ b/sound/soc/codecs/rt711-sdw.c
+@@ -536,12 +536,12 @@ static int __maybe_unused rt711_dev_resume(struct device *dev)
+ 		return 0;
  
- 	printk(KERN_INFO "rootfs image is not initramfs (%s); looks like an initrd\n",
- 			err);
--	file = filp_open("/initrd.image", O_WRONLY | O_CREAT, 0700);
-+	file = filp_open("/initrd.image", O_WRONLY|O_CREAT|O_LARGEFILE, 0700);
- 	if (IS_ERR(file))
- 		return;
+ 	if (!slave->unattach_request) {
++		mutex_lock(&rt711->disable_irq_lock);
+ 		if (rt711->disable_irq == true) {
+-			mutex_lock(&rt711->disable_irq_lock);
+ 			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
+ 			rt711->disable_irq = false;
+-			mutex_unlock(&rt711->disable_irq_lock);
+ 		}
++		mutex_unlock(&rt711->disable_irq_lock);
+ 		goto regmap_sync;
+ 	}
  
+-- 
+2.43.0
+
 
 
 
