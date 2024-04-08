@@ -1,61 +1,54 @@
-Return-Path: <stable+bounces-36484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80F389C00A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F00389BFE3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56D101F22EC6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A8A1280F1A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFF97C0A9;
-	Mon,  8 Apr 2024 13:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C1A7C097;
+	Mon,  8 Apr 2024 13:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0iTQh4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1YLh8iA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE037175B;
-	Mon,  8 Apr 2024 13:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEDE2E405;
+	Mon,  8 Apr 2024 13:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581460; cv=none; b=coeYcQ/uzoOdM+/1Tx5ES2SxZpVdaqP6NSjJAJ+PkgGh7qayy8atIovbrbpnMfBAYF3ri3jEJau47l7qJ9TzG+xZ3cCInYHK5ej3SboWxK3+uOnGBSK4un8xT+y2XDe3I6QKI5z1mP4s0GtT3PD1JClMpacpu0j2/R8gbh62w8Y=
+	t=1712581314; cv=none; b=cahpB+Mn0DF68fk+ZvgHHZbC+CXClVQV8Btmd5j3z6t7ovb/kjVFitzSWlNM+t2tSJD61Ujp2GaAvnlSi1W2fXQwY69+s7dgcr2Dpwodhlt2+ZhKdfoyQzwRfF36QSDVsTJ1m6KMaDWmnbF6kbawUTxTa5PuJb/FqloA11MZRF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581460; c=relaxed/simple;
-	bh=Oi4YoKNspqn+fHxRvJnscXWei5awyVwRciCOIxGjj00=;
+	s=arc-20240116; t=1712581314; c=relaxed/simple;
+	bh=WGpgnkW4+JbYbrBxpqFV436td9DEqIqgw3aqle7HQVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cI+a5dt9l+PU0vh7iiWlNUVioEV3gauGF7uTraaMWWhTrEEipQQ9RJSzr7VUvyow+sqifsGJy18iJqNIglVmccSor3S64V7OQVOqiEHkhGgLb9Oi9AsLOZ4MAZpXfodFoeGcNNECtr/y3dTnlbQa/jELOCOO1ze6MxFTWkoVH/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0iTQh4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6C8C433C7;
-	Mon,  8 Apr 2024 13:04:19 +0000 (UTC)
+	 MIME-Version; b=hoUtAcozMrY8hFFGtkWXkYXDtNP4wuUo9r2eHaj8toD66eB0/KSMVGCeBWxjwZBkqSC0xh3XJv0QT500qPL6GDovQLQ7APQHRhITl5DJjEX6epwOh26qKW8ahr1Y408rxsADzdIVHLy46Hq+bvfvtviLr0l+5U6lDGuygRKB9fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1YLh8iA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BB0C433F1;
+	Mon,  8 Apr 2024 13:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581460;
-	bh=Oi4YoKNspqn+fHxRvJnscXWei5awyVwRciCOIxGjj00=;
+	s=korg; t=1712581314;
+	bh=WGpgnkW4+JbYbrBxpqFV436td9DEqIqgw3aqle7HQVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0iTQh4p4xhVLi+O/Cl8GK4aBpaAlaCn0ivcJ59TBwg4fuvRBjHOH+YJIT2D8ZRl6
-	 uH8G8AhcNLV+uxDpMQ48A8rYD86JHfDwwiqiVzsKHW+VGqOCsjA2lE/lZ1cEOi2izy
-	 J9WYGGqGnERp7cl++JjHd05jbyyBehJfU4qxyiys=
+	b=j1YLh8iAuaBov9JvBiTyWZ53i5VZDqyQHFdA+6kc1PyuYHZ0om433WPL5UJD8oiQ0
+	 b/q05Un0FDwToe70g+IJ4drPzIdiDmM3TVvfzPsmv4jdc53PGtbPomfqRaq0VXvip1
+	 fzBLKwcZDa+hG1mzZZ4M2iJA+9gQ9oGnfi3MJFP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Igor Zhbanov <izh1979@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	sparclinux@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Nick Alcock <nick.alcock@oracle.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/690] sparc: vDSO: fix return value of __setup handler
-Date: Mon,  8 Apr 2024 14:48:07 +0200
-Message-ID: <20240408125400.328628883@linuxfoundation.org>
+Subject: [PATCH 5.15 022/690] crypto: qat - fix double free during reset
+Date: Mon,  8 Apr 2024 14:48:08 +0200
+Message-ID: <20240408125400.366335679@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -74,55 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
 
-[ Upstream commit 5378f00c935bebb846b1fdb0e79cb76c137c56b5 ]
+[ Upstream commit 01aed663e6c421aeafc9c330bda630976b50a764 ]
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from vdso_setup().
+There is no need to free the reset_data structure if the recovery is
+unsuccessful and the reset is synchronous. The function
+adf_dev_aer_schedule_reset() handles the cleanup properly. Only
+asynchronous resets require such structure to be freed inside the reset
+worker.
 
-Fixes: 9a08862a5d2e ("vDSO for sparc")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Nick Alcock <nick.alcock@oracle.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-Link: https://lore.kernel.org/r/20240211052808.22635-1-rdunlap@infradead.org
+Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
+Signed-off-by: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 7d42e097607c ("crypto: qat - resolve race condition during AER recovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/vdso/vma.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/crypto/qat/qat_common/adf_aer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
-index cc19e09b0fa1e..b073153c711ad 100644
---- a/arch/sparc/vdso/vma.c
-+++ b/arch/sparc/vdso/vma.c
-@@ -449,9 +449,8 @@ static __init int vdso_setup(char *s)
- 	unsigned long val;
- 
- 	err = kstrtoul(s, 10, &val);
--	if (err)
--		return err;
--	vdso_enabled = val;
--	return 0;
-+	if (!err)
-+		vdso_enabled = val;
-+	return 1;
- }
- __setup("vdso=", vdso_setup);
+diff --git a/drivers/crypto/qat/qat_common/adf_aer.c b/drivers/crypto/qat/qat_common/adf_aer.c
+index ed3e40bc56eb2..b3138f8fc3f30 100644
+--- a/drivers/crypto/qat/qat_common/adf_aer.c
++++ b/drivers/crypto/qat/qat_common/adf_aer.c
+@@ -95,7 +95,8 @@ static void adf_device_reset_worker(struct work_struct *work)
+ 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
+ 		/* The device hanged and we can't restart it so stop here */
+ 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
+-		kfree(reset_data);
++		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
++			kfree(reset_data);
+ 		WARN(1, "QAT: device restart failed. Device is unusable\n");
+ 		return;
+ 	}
 -- 
 2.43.0
 
