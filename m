@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-37409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E8B89C4B9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D5889C4BC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C6131C22280
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54FA1C2255B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B5C7C098;
-	Mon,  8 Apr 2024 13:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C33C7CF17;
+	Mon,  8 Apr 2024 13:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPV22Lr/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4n6drN+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25A27C08C;
-	Mon,  8 Apr 2024 13:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1DB7C6C8;
+	Mon,  8 Apr 2024 13:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584147; cv=none; b=OvGKr5Fi3/IHhd7cjX8wYpboQsmdoHvUKZyAKsoyRhICUrPPk+ZNLqD0HNHrYuTJ6xM9eZseKxCDX9o2OyYIlWnhBBH1N+YcR0y3ybms6n/3Ok7Tqz2QfqvE2qk1JWgq5MFZ9uthKGl5f8X1LqKlu+2C5DSkA39SLzib95tDFI4=
+	t=1712584154; cv=none; b=bDH3umThC+j4523K8cwrWJIK/FdbebxAY/TM6bwb6K3trb2oBINO8fLE1/KAGtHaNoibyE1N+Mqb8QPKd6OPsaKdjCyO5RwxLybynnhPgk7KP/J88p95mj4vYVbqfQdAi/rLsvM4iZ42PzmvmtDcoZV4LhyDtc2lhFoJE2aPCRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584147; c=relaxed/simple;
-	bh=nRTFhvtz8pChsze8NEQYa2j1K2Is96EedcmqYSKYv4U=;
+	s=arc-20240116; t=1712584154; c=relaxed/simple;
+	bh=R9jQTtDJlqEcOD40B8MgNBdYjhSeDFhgv4x0SOvDUcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OT+QFef95+UiGRpy0TugdeJeohpjaud8eKwgP2Z+SGIX6InnhCptI4M55dnsf5EIyPJ1pEyMem0xDypEU25cqIQH4++N2JFjucs8fDrRP1mK0cOlwkC5hGN7KYulbWZamsukZm+3nLJFHZvHrLh+LHkyh6PiHtamugLHLNsJCwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPV22Lr/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6BDC433F1;
-	Mon,  8 Apr 2024 13:49:07 +0000 (UTC)
+	 MIME-Version; b=VjQOa+eUCVlPhE0StKA1l4J+WRH0ayCX69KvAtI6/XWm+uS/d7rK256JIX8fbMm+Cq6n1pW4x06R01r3RWo/d+6nKOGjwvZJzBVTKgll3w0HOj9etF/L0mGunnS/Su3L0PWaTmkpWXxbD659UkoZfuzzdVqnQKZR1fT0ZhK5TSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4n6drN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C631C433F1;
+	Mon,  8 Apr 2024 13:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584147;
-	bh=nRTFhvtz8pChsze8NEQYa2j1K2Is96EedcmqYSKYv4U=;
+	s=korg; t=1712584153;
+	bh=R9jQTtDJlqEcOD40B8MgNBdYjhSeDFhgv4x0SOvDUcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPV22Lr/YqEAxg0S4rDH4WbFXDCauHpA1ivTlhaikyzM6d3wC2Ld32HwFS3uz2A/9
-	 GAWiZtMmwpKK/Q3w35GYgUopT3z8JPwQQmBSL/vNvM/zkqD7keE4ZfIt0rRI53GrE+
-	 iamhR3wvADyhoKFfgy/h8aa7mx/Y+yMq0Dh9T2WA=
+	b=o4n6drN+yKpqfEPvg7SbTI+dihKPUDUVF6EpwsEU0vRtGo+XYI0X9SI8yPiSelF2v
+	 EiEZpm4iww5JVw7A/9r7aPdG+PUQowsW4cfwp4KPyJpA2BdON31/AFOB4ZTp9fe62W
+	 CmEcVGNRz68EDUO8Alq433e+CyL0RJFs5WOm6hJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Bergantinos Corpas <rbergant@redhat.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 341/690] NLM: Defend against file_lock changes after vfs_test_lock()
-Date: Mon,  8 Apr 2024 14:53:27 +0200
-Message-ID: <20240408125411.974031570@linuxfoundation.org>
+Subject: [PATCH 5.15 342/690] NFSD: Instrument fh_verify()
+Date: Mon,  8 Apr 2024 14:53:28 +0200
+Message-ID: <20240408125412.003210090@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,141 +64,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 184cefbe62627730c30282df12bcff9aae4816ea ]
+[ Upstream commit 051382885552e12541cc0ebf82092be374a9ed2a ]
 
-Instead of trusting that struct file_lock returns completely unchanged
-after vfs_test_lock() when there's no conflicting lock, stash away our
-nlm_lockowner reference so we can properly release it for all cases.
+Capture file handles and how they map to local inodes. In particular,
+NFSv4 PUTFH uses fh_verify() so we can now observe which file handles
+are the target of OPEN, LOOKUP, RENAME, and so on.
 
-This defends against another file_lock implementation overwriting fl_owner
-when the return type is F_UNLCK.
-
-Reported-by: Roberto Bergantinos Corpas <rbergant@redhat.com>
-Tested-by: Roberto Bergantinos Corpas <rbergant@redhat.com>
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/lockd/svc4proc.c         |  4 +++-
- fs/lockd/svclock.c          | 10 +---------
- fs/lockd/svcproc.c          |  5 ++++-
- include/linux/lockd/lockd.h |  1 +
- 4 files changed, 9 insertions(+), 11 deletions(-)
+ fs/nfsd/nfsfh.c |  5 +++--
+ fs/nfsd/trace.h | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 2 deletions(-)
 
-diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
-index 1c9214801e69e..930e90f21b151 100644
---- a/fs/lockd/svc4proc.c
-+++ b/fs/lockd/svc4proc.c
-@@ -95,6 +95,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
-+	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index c29baa03dfafd..5e2ed4b2a925c 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -331,8 +331,6 @@ fh_verify(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type, int access)
+ 	struct dentry	*dentry;
+ 	__be32		error;
  
- 	dprintk("lockd: TEST4        called\n");
-@@ -104,6 +105,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
-+	test_owner = argp->lock.fl.fl_owner;
- 	/* Now check for conflicting locks */
- 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
- 	if (resp->status == nlm_drop_reply)
-@@ -111,7 +113,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	else
- 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
- 
--	nlmsvc_release_lockowner(&argp->lock);
-+	nlmsvc_put_lockowner(test_owner);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index cb3658ab9b7ae..9c1aa75441e1c 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -340,7 +340,7 @@ nlmsvc_get_lockowner(struct nlm_lockowner *lockowner)
- 	return lockowner;
- }
- 
--static void nlmsvc_put_lockowner(struct nlm_lockowner *lockowner)
-+void nlmsvc_put_lockowner(struct nlm_lockowner *lockowner)
- {
- 	if (!refcount_dec_and_lock(&lockowner->count, &lockowner->host->h_lock))
- 		return;
-@@ -590,7 +590,6 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 	int			error;
- 	int			mode;
- 	__be32			ret;
--	struct nlm_lockowner	*test_owner;
- 
- 	dprintk("lockd: nlmsvc_testlock(%s/%ld, ty=%d, %Ld-%Ld)\n",
- 				nlmsvc_file_inode(file)->i_sb->s_id,
-@@ -604,9 +603,6 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 		goto out;
+-	dprintk("nfsd: fh_verify(%s)\n", SVCFH_fmt(fhp));
+-
+ 	if (!fhp->fh_dentry) {
+ 		error = nfsd_set_fh_dentry(rqstp, fhp);
+ 		if (error)
+@@ -340,6 +338,9 @@ fh_verify(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type, int access)
  	}
- 
--	/* If there's a conflicting lock, remember to clean up the test lock */
--	test_owner = (struct nlm_lockowner *)lock->fl.fl_owner;
--
- 	mode = lock_to_openmode(&lock->fl);
- 	error = vfs_test_lock(file->f_file[mode], &lock->fl);
- 	if (error) {
-@@ -635,10 +631,6 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 	conflock->fl.fl_end = lock->fl.fl_end;
- 	locks_release_private(&lock->fl);
- 
--	/* Clean up the test lock */
--	lock->fl.fl_owner = NULL;
--	nlmsvc_put_lockowner(test_owner);
--
- 	ret = nlm_lck_denied;
- out:
- 	return ret;
-diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
-index 99696d3f6dd66..c215a4599d5c8 100644
---- a/fs/lockd/svcproc.c
-+++ b/fs/lockd/svcproc.c
-@@ -116,6 +116,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
-+	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
- 
- 	dprintk("lockd: TEST          called\n");
-@@ -125,6 +126,8 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
-+	test_owner = argp->lock.fl.fl_owner;
+ 	dentry = fhp->fh_dentry;
+ 	exp = fhp->fh_export;
 +
- 	/* Now check for conflicting locks */
- 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
- 	if (resp->status == nlm_drop_reply)
-@@ -133,7 +136,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 		dprintk("lockd: TEST          status %d vers %d\n",
- 			ntohl(resp->status), rqstp->rq_vers);
++	trace_nfsd_fh_verify(rqstp, fhp, type, access);
++
+ 	/*
+ 	 * We still have to do all these permission checks, even when
+ 	 * fh_dentry is already set:
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index 3cff3ada00a85..593218d8a54d0 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -171,6 +171,52 @@ TRACE_EVENT(nfsd_compound_encode_err,
+ 		__entry->opnum, __entry->status)
+ );
  
--	nlmsvc_release_lockowner(&argp->lock);
-+	nlmsvc_put_lockowner(test_owner);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
-diff --git a/include/linux/lockd/lockd.h b/include/linux/lockd/lockd.h
-index fcef192e5e45e..70ce419e27093 100644
---- a/include/linux/lockd/lockd.h
-+++ b/include/linux/lockd/lockd.h
-@@ -292,6 +292,7 @@ void		  nlmsvc_locks_init_private(struct file_lock *, struct nlm_host *, pid_t);
- __be32		  nlm_lookup_file(struct svc_rqst *, struct nlm_file **,
- 					struct nlm_lock *);
- void		  nlm_release_file(struct nlm_file *);
-+void		  nlmsvc_put_lockowner(struct nlm_lockowner *);
- void		  nlmsvc_release_lockowner(struct nlm_lock *);
- void		  nlmsvc_mark_resources(struct net *);
- void		  nlmsvc_free_host_resources(struct nlm_host *);
++#define show_fs_file_type(x) \
++	__print_symbolic(x, \
++		{ S_IFLNK,		"LNK" }, \
++		{ S_IFREG,		"REG" }, \
++		{ S_IFDIR,		"DIR" }, \
++		{ S_IFCHR,		"CHR" }, \
++		{ S_IFBLK,		"BLK" }, \
++		{ S_IFIFO,		"FIFO" }, \
++		{ S_IFSOCK,		"SOCK" })
++
++TRACE_EVENT(nfsd_fh_verify,
++	TP_PROTO(
++		const struct svc_rqst *rqstp,
++		const struct svc_fh *fhp,
++		umode_t type,
++		int access
++	),
++	TP_ARGS(rqstp, fhp, type, access),
++	TP_STRUCT__entry(
++		__field(unsigned int, netns_ino)
++		__sockaddr(server, rqstp->rq_xprt->xpt_remotelen)
++		__sockaddr(client, rqstp->rq_xprt->xpt_remotelen)
++		__field(u32, xid)
++		__field(u32, fh_hash)
++		__field(void *, inode)
++		__field(unsigned long, type)
++		__field(unsigned long, access)
++	),
++	TP_fast_assign(
++		__entry->netns_ino = SVC_NET(rqstp)->ns.inum;
++		__assign_sockaddr(server, &rqstp->rq_xprt->xpt_local,
++		       rqstp->rq_xprt->xpt_locallen);
++		__assign_sockaddr(client, &rqstp->rq_xprt->xpt_remote,
++				  rqstp->rq_xprt->xpt_remotelen);
++		__entry->xid = be32_to_cpu(rqstp->rq_xid);
++		__entry->fh_hash = knfsd_fh_hash(&fhp->fh_handle);
++		__entry->inode = d_inode(fhp->fh_dentry);
++		__entry->type = type;
++		__entry->access = access;
++	),
++	TP_printk("xid=0x%08x fh_hash=0x%08x inode=%p type=%s access=%s",
++		__entry->xid, __entry->fh_hash, __entry->inode,
++		show_fs_file_type(__entry->type),
++		show_nfsd_may_flags(__entry->access)
++	)
++);
+ 
+ DECLARE_EVENT_CLASS(nfsd_fh_err_class,
+ 	TP_PROTO(struct svc_rqst *rqstp,
 -- 
 2.43.0
 
