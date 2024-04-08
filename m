@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-37273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E08389C428
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A915989C46F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AA43282B38
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651212844D3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67FA8564D;
-	Mon,  8 Apr 2024 13:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5847BB11;
+	Mon,  8 Apr 2024 13:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMpZiH0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBgeqQih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957AA2DF73;
-	Mon,  8 Apr 2024 13:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9847BAFD;
+	Mon,  8 Apr 2024 13:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583754; cv=none; b=Pp1CD+I5cBwlQbZHERwtzHd7LSg5galCRCF7aMmGgIJU2x8TIML0CxNfqNoJDiVZqUWh2NdrKOwokmnteYs63+P+8CdAEGk6hQNE99LbUlq6VOCS0DCROBGyP/QI+V/ZHIbioEe05V8xBsfMxtQ/CIWSvyFJkq/hTwEqLjc0qO4=
+	t=1712583943; cv=none; b=WaTb9HJJQVQdYxNx1NDu6mAtOel7MBP46aRHNW3Sb3wGWwKBnz8C1m3GDkbjuzUpqXohEu5Aa0Yw631bITKUSiFfu/ybe5SFZguQR36VvxMXeOywlyj13jDjfYA1j+9tT/uhQh1uxDcjRNgQSczguM1DE1uBy4TqVoZseUcqNiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583754; c=relaxed/simple;
-	bh=kYIaQBP/CFhsKOq0W4yDU3qgIoZCdz+0pCKL1lKMdUc=;
+	s=arc-20240116; t=1712583943; c=relaxed/simple;
+	bh=sKSzK1Tm9bpS6l/B7XY+KldpNJwPJflpym7ieBTHNCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCtbSL8ua0PwwC4Xxypr3urz2tdqne24opbsRiBOyk+14rNUokc1sM+UA2WOiliH9y6kSJFtqKtsx6VWuxJaaf2UtPtV6xGdlGOMXWYlaa73wJqExeGci/WwpZ6bk9+WwBGsq2y3lVxak9wwI0qETeeOTfSKP4t8TCxg9izH2bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMpZiH0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB7CC433F1;
-	Mon,  8 Apr 2024 13:42:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gK5LIL45VvJ37cwywvEG88sQ8ectAFr2/AkYau5wYmXznG0xJmwDLB/MfuhuVrbRH5bvDJGw/9vWttjOUebTL0wXo7z3bIPuLsmHQeSLC1rapltKgcP1TKEok3o9i0rzE2gp2VG0unQu3uqBrQfm6G11IKDCBlZ9l5eADgHodbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBgeqQih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39B6C43399;
+	Mon,  8 Apr 2024 13:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583754;
-	bh=kYIaQBP/CFhsKOq0W4yDU3qgIoZCdz+0pCKL1lKMdUc=;
+	s=korg; t=1712583943;
+	bh=sKSzK1Tm9bpS6l/B7XY+KldpNJwPJflpym7ieBTHNCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMpZiH0RHUXS1KycMyDOugcdKDUzYuvSowobs5FCBFuznI+YKa8NUwgNHhxLwbBIL
-	 LGmfzI7DHBduaG1vOCcgCJiuDkqSxyEBjIwK+AeHwAfxbDDYSCxXPK+dxc33mhQqSy
-	 /4DQeyNGsjXxQREQwSrpvU7zXt4tT8GtMGAuUgis=
+	b=qBgeqQihIrwkffLe/N0hBrgDmIwBrvyyESAMcj1ZcdDKlNNw25wo0USvh20tl0AFM
+	 Yycu27nRWy+BBmtr9ljN0/gkIeyKe+en/acocqf1BjHK10blflhUuBwOA8OfBSwjfj
+	 CVWuBK+RWKVduykZfWM7/zaGo0kTluU4AnuQpTkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Karlsson <rasmus.karlsson@pajlada.com>,
-	Iskren Chernev <me@iskren.info>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 212/252] io_uring: use private workqueue for exit work
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Andy Chiu <andy.chiu@sifive.com>,
+	Vineet Gupta <vineetg@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.8 236/273] riscv: Fix vector state restore in rt_sigreturn()
 Date: Mon,  8 Apr 2024 14:58:31 +0200
-Message-ID: <20240408125313.232345218@linuxfoundation.org>
+Message-ID: <20240408125316.759435540@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +63,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-commit 73eaa2b583493b680c6f426531d6736c39643bfb upstream.
+commit c27fa53b858b4ee6552a719aa599c250cf98a586 upstream.
 
-Rather than use the system unbound event workqueue, use an io_uring
-specific one. This avoids dependencies with the tty, which also uses
-the system_unbound_wq, and issues flushes of said workqueue from inside
-its poll handling.
+The RISC-V Vector specification states in "Appendix D: Calling
+Convention for Vector State" [1] that "Executing a system call causes
+all caller-saved vector registers (v0-v31, vl, vtype) and vstart to
+become unspecified.". In the RISC-V kernel this is called "discarding
+the vstate".
 
+Returning from a signal handler via the rt_sigreturn() syscall, vector
+discard is also performed. However, this is not an issue since the
+vector state should be restored from the sigcontext, and therefore not
+care about the vector discard.
+
+The "live state" is the actual vector register in the running context,
+and the "vstate" is the vector state of the task. A dirty live state,
+means that the vstate and live state are not in synch.
+
+When vectorized user_from_copy() was introduced, an bug sneaked in at
+the restoration code, related to the discard of the live state.
+
+An example when this go wrong:
+
+  1. A userland application is executing vector code
+  2. The application receives a signal, and the signal handler is
+     entered.
+  3. The application returns from the signal handler, using the
+     rt_sigreturn() syscall.
+  4. The live vector state is discarded upon entering the
+     rt_sigreturn(), and the live state is marked as "dirty", indicating
+     that the live state need to be synchronized with the current
+     vstate.
+  5. rt_sigreturn() restores the vstate, except the Vector registers,
+     from the sigcontext
+  6. rt_sigreturn() restores the Vector registers, from the sigcontext,
+     and now the vectorized user_from_copy() is used. The dirty live
+     state from the discard is saved to the vstate, making the vstate
+     corrupt.
+  7. rt_sigreturn() returns to the application, which crashes due to
+     corrupted vstate.
+
+Note that the vectorized user_from_copy() is invoked depending on the
+value of CONFIG_RISCV_ISA_V_UCOPY_THRESHOLD. Default is 768, which
+means that vlen has to be larger than 128b for this bug to trigger.
+
+The fix is simply to mark the live state as non-dirty/clean prior
+performing the vstate restore.
+
+Link: https://github.com/riscv/riscv-isa-manual/releases/download/riscv-isa-release-8abdb41-2024-03-26/unpriv-isa-asciidoc.pdf # [1]
+Reported-by: Charlie Jenkins <charlie@rivosinc.com>
+Reported-by: Vineet Gupta <vgupta@kernel.org>
+Fixes: c2a658d41924 ("riscv: lib: vectorize copy_to_user/copy_from_user")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Andy Chiu <andy.chiu@sifive.com>
+Tested-by: Vineet Gupta <vineetg@rivosinc.com>
+Link: https://lore.kernel.org/r/20240403072638.567446-1-bjorn@kernel.org
 Cc: stable@vger.kernel.org
-Reported-by: Rasmus Karlsson <rasmus.karlsson@pajlada.com>
-Tested-by: Rasmus Karlsson <rasmus.karlsson@pajlada.com>
-Tested-by: Iskren Chernev <me@iskren.info>
-Link: https://github.com/axboe/liburing/issues/1113
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/signal.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -148,6 +148,7 @@ static bool io_uring_try_cancel_requests
- static void io_queue_sqe(struct io_kiocb *req);
+--- a/arch/riscv/kernel/signal.c
++++ b/arch/riscv/kernel/signal.c
+@@ -119,6 +119,13 @@ static long __restore_v_state(struct pt_
+ 	struct __sc_riscv_v_state __user *state = sc_vec;
+ 	void __user *datap;
  
- struct kmem_cache *req_cachep;
-+static struct workqueue_struct *iou_wq __ro_after_init;
- 
- static int __read_mostly sysctl_io_uring_disabled;
- static int __read_mostly sysctl_io_uring_group = -1;
-@@ -3180,7 +3181,7 @@ static __cold void io_ring_ctx_wait_and_
- 	 * noise and overhead, there's no discernable change in runtime
- 	 * over using system_wq.
- 	 */
--	queue_work(system_unbound_wq, &ctx->exit_work);
-+	queue_work(iou_wq, &ctx->exit_work);
- }
- 
- static int io_uring_release(struct inode *inode, struct file *file)
-@@ -4664,6 +4665,8 @@ static int __init io_uring_init(void)
- 				offsetof(struct io_kiocb, cmd.data),
- 				sizeof_field(struct io_kiocb, cmd.data), NULL);
- 
-+	iou_wq = alloc_workqueue("iou_exit", WQ_UNBOUND, 64);
++	/*
++	 * Mark the vstate as clean prior performing the actual copy,
++	 * to avoid getting the vstate incorrectly clobbered by the
++	 *  discarded vector state.
++	 */
++	riscv_v_vstate_set_restore(current, regs);
 +
- #ifdef CONFIG_SYSCTL
- 	register_sysctl_init("kernel", kernel_io_uring_disabled_table);
- #endif
+ 	/* Copy everything of __sc_riscv_v_state except datap. */
+ 	err = __copy_from_user(&current->thread.vstate, &state->v_state,
+ 			       offsetof(struct __riscv_v_ext_state, datap));
+@@ -133,13 +140,7 @@ static long __restore_v_state(struct pt_
+ 	 * Copy the whole vector content from user space datap. Use
+ 	 * copy_from_user to prevent information leak.
+ 	 */
+-	err = copy_from_user(current->thread.vstate.datap, datap, riscv_v_vsize);
+-	if (unlikely(err))
+-		return err;
+-
+-	riscv_v_vstate_set_restore(current, regs);
+-
+-	return err;
++	return copy_from_user(current->thread.vstate.datap, datap, riscv_v_vsize);
+ }
+ #else
+ #define save_v_state(task, regs) (0)
 
 
 
