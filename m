@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BBC89C61C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC7A89C413
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA1301C23773
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21925282A96
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0425B7F495;
-	Mon,  8 Apr 2024 14:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2EE7D3F6;
+	Mon,  8 Apr 2024 13:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11HPadh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3I1rNc2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CDB7F470;
-	Mon,  8 Apr 2024 14:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5C37D3E4;
+	Mon,  8 Apr 2024 13:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585066; cv=none; b=JngQMwnNAgOmcx0cdhT5IYp19YtkgrFq195mXQsuc1kV2feiZ/2F5S4yN0OhdiiRzClOAC3HTeXnM3LK/WMyEqbHFX/iLKrbq0rgOezyCKcCCBoXMyPua36qzzVcNgHw2bAmjnBaJ8l8NESGQ3ZFBbKMKWAQk47oPcMc5lD/0nc=
+	t=1712583719; cv=none; b=e3k0myqkRJvPrdADj4/WafwbXkmdWFyFgNj82f59rBlQwVrxPRyJYI2pflDdB0vz8UuEC+qHX0ABR8k34Ld7j11cRj1VODG1WTyhLyrz0yB2N6JOWbPyHsAip4Ehct53kITrouqcIEbJtKUY2VIRcYld3+JXBl5eTE0hYXG2crs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585066; c=relaxed/simple;
-	bh=t5Ulj0ZV1Wiv8wC9CsfaBdXRKvT2FObOiH5kNBhP48E=;
+	s=arc-20240116; t=1712583719; c=relaxed/simple;
+	bh=P0UaRJ3NSIbMQ66a7rEDG/gOWlEN47nHVo3T02arpTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUP41auJLoYd7P+WG0ohWz3ZnRJA2O03eqZ6UlOHJTYR6HLC7j1LJ4664QZbC6+RBozaPbxaWDnPMhDFk+qeFZC4dkyeXu8d1/oiXDgxE8+oACljw5IxYtu0CJcbVoX70xwm4K+teNJfld/9wwZyz3R+j5tFkq5vpqvqWmfIVoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11HPadh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C7FC433C7;
-	Mon,  8 Apr 2024 14:04:26 +0000 (UTC)
+	 MIME-Version; b=tltoYX0rDsRSTmwypqNvMpeA7uyxiRL0Kh3S8Y0nKngv2G/CQFfxdOx4LsOSksSWlqGW5JsLszPLaQ1JCxlJLzadhrGwoIxtqQmzBQyjeG66iwlQp08GgWZOz1DeOjsvp8xMZADrwWzzT0Xzrh/4TieHmMPM/LIoKcNdD0xkLlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3I1rNc2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F5AC433C7;
+	Mon,  8 Apr 2024 13:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585066;
-	bh=t5Ulj0ZV1Wiv8wC9CsfaBdXRKvT2FObOiH5kNBhP48E=;
+	s=korg; t=1712583719;
+	bh=P0UaRJ3NSIbMQ66a7rEDG/gOWlEN47nHVo3T02arpTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11HPadh6Cuv6lHOjnAdYc7WoeO7V9wFIOdkcNpkrNDDT/0rzJTLnpiU3uWidEn1FS
-	 +8cB+Igcz9jrwArxbYCe1u9h9zmgRuh2tpe6rym7I3e/ZF+dFqdtDi8HS5ZUVHE2aW
-	 kB/OpMH2Q97Nq/sfqwP9d/dnWTMGfCRA6MxB+lek=
+	b=E3I1rNc2mcQKx8U7PgclBl4aV/jfuGM7Xn0tdqN9lSyJfYv7CQ+cWo/JBDbK9QLp3
+	 gZCY5+ni+qUmG8BB4Gw0pvGsL/wU/1/eRfLEfIva48StyreurgkcGEPwOPdrbQ/1Jd
+	 xIkW8ce78UrxFf15f9hBFocWHZMhP9H2FtsnqXjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 621/690] r8169: fix issue caused by buggy BIOS on certain boards with RTL8168d
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 212/273] ASoC: SOF: Add dsp_max_burst_size_in_ms member to snd_sof_pcm_stream
 Date: Mon,  8 Apr 2024 14:58:07 +0200
-Message-ID: <20240408125422.134585414@linuxfoundation.org>
+Message-ID: <20240408125315.942269651@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 5d872c9f46bd2ea3524af3c2420a364a13667135 upstream.
+commit fb9f8125ed9d9b8e11f309a7dbfbe7b40de48fba upstream.
 
-On some boards with this chip version the BIOS is buggy and misses
-to reset the PHY page selector. This results in the PHY ID read
-accessing registers on a different page, returning a more or
-less random value. Fix this by resetting the page selector first.
+The dsp_max_burst_size_in_ms can be used to save the length of the maximum
+burst size in ms the host DMA will use.
 
-Fixes: f1e911d5d0df ("r8169: add basic phylib support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/64f2055e-98b8-45ec-8568-665e3d54d4e6@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Platform code can place constraint using this to avoid user space
+requesting too small ALSA buffer which will result xruns.
+
+Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240321130814.4412-2-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ sound/soc/sof/sof-audio.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -5138,6 +5138,15 @@ static int r8169_mdio_register(struct rt
- 	struct mii_bus *new_bus;
- 	int ret;
- 
-+	/* On some boards with this chip version the BIOS is buggy and misses
-+	 * to reset the PHY page selector. This results in the PHY ID read
-+	 * accessing registers on a different page, returning a more or
-+	 * less random value. Fix this by resetting the page selector first.
-+	 */
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_25 ||
-+	    tp->mac_version == RTL_GIGA_MAC_VER_26)
-+		r8169_mdio_write(tp, 0x1f, 0);
-+
- 	new_bus = devm_mdiobus_alloc(&pdev->dev);
- 	if (!new_bus)
- 		return -ENOMEM;
+--- a/sound/soc/sof/sof-audio.h
++++ b/sound/soc/sof/sof-audio.h
+@@ -321,6 +321,7 @@ struct snd_sof_pcm_stream {
+ 	struct work_struct period_elapsed_work;
+ 	struct snd_soc_dapm_widget_list *list; /* list of connected DAPM widgets */
+ 	bool d0i3_compatible; /* DSP can be in D0I3 when this pcm is opened */
++	unsigned int dsp_max_burst_size_in_ms; /* The maximum size of the host DMA burst in ms */
+ 	/*
+ 	 * flag to indicate that the DSP pipelines should be kept
+ 	 * active or not while suspending the stream
 
 
 
