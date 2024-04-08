@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3D989C5C4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA7D89C344
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0542928325C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57451F22373
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE477FBAA;
-	Mon,  8 Apr 2024 14:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88CC7C08D;
+	Mon,  8 Apr 2024 13:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WD68KZ/9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8+ZLFZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BA37FBAF;
-	Mon,  8 Apr 2024 14:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779616FE1A;
+	Mon,  8 Apr 2024 13:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584800; cv=none; b=Lo6x4mFEqFY6BZkLPpoc4olY9rPAD/qilSt+YI8eDvYj2IWX45Zti8njgJonI/C8Cqg5qeL0EmL034VSJuopuXADbkQJsTAi9TNZgvAjK5/GG8Rcv2BD7u6EuZuzfrsqUtkkJriNtfx7WGSWL/Lmd6q9KpAyqUuNEVUAKcJpLNA=
+	t=1712583218; cv=none; b=IH36FuVemeezUD/bCY025f09F0R/HHi9+/pxNv8V7G33cVelLBGmKyk3Y3ziPBqXWkXPzr4Q32lt5cwzayR7NuA4pFKr5LsvRp/YsgY5jlobFESHcrzoh4HqT3IbQWaQ31UWRMOImVFBFNcTwatmrleihpzKHRHZ8DOcqssikM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584800; c=relaxed/simple;
-	bh=q8sMp8kGQH1QPa+IvpAyYesEQUSNfYfKNh9MGYdLWnc=;
+	s=arc-20240116; t=1712583218; c=relaxed/simple;
+	bh=qAoxYwKr4GsEx3di/arZ8PDf743F4KIYJnRVKv6Ot+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tgBIV4MvMXGUuqhDSDZA9SbB91W10yhxDU+AcwTaKOiFcxPBEyC54cTOJAmRwA6/KgBvN+53/G0/AW7mwIJqQcVD7+1yKtSbcwl9lNGwug8rBn2MvJWt1BDqTMz+NBMVcgq1PRw5dG088eNOyWZZGu2LVdECekmB+OQaCJ+uUBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WD68KZ/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A8BC433F1;
-	Mon,  8 Apr 2024 13:59:59 +0000 (UTC)
+	 MIME-Version; b=YdJbP9Uh02+bjlwF3a06gfmJi3ubHtTEFXFRjWRV/D3qND6gD7dZZL+xanB6mqDj7nt6k0t/sXJOgoufkOfSM4l3W/xd9PGNx24wFxKnXC1FvLo60EFimde0W8/nPrLttCW5+XI9B4ZNPaqCUGrD3OjdknhSs7Con0PGcIXEd5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8+ZLFZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF69AC433F1;
+	Mon,  8 Apr 2024 13:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584800;
-	bh=q8sMp8kGQH1QPa+IvpAyYesEQUSNfYfKNh9MGYdLWnc=;
+	s=korg; t=1712583218;
+	bh=qAoxYwKr4GsEx3di/arZ8PDf743F4KIYJnRVKv6Ot+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WD68KZ/9ym+SORWLlt5hV/skwKWzcCnVSmj+oQLJjPIeFJk6Ot90kqq3RUDyWyHZm
-	 Ln1Veotzu4EYeX0pjs3T98tdaVkB4yviCXIkFUwAxv99XnPdDAntDBMsqaSOyLny4d
-	 I9gFkvmK1fcOcuHOtz+Cdard13Belp1zG1uEfbyQ=
+	b=P8+ZLFZTkwOsKtWZbY1Egh5p6w8nj4eZ83KW14vQx1tkdlB4l6vbQCs9Iwv4f6AHc
+	 UV4IBTiqAG/LVthYZDC5lWVCKX+e3IU+FqXLwKIefHi3DNssh799ayhtxfA87NEg/c
+	 hOByYzpr+0A+vIt1o9FKZxuByVzoSJtBs2hVdMww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 5.15 562/690] vfio/pci: Lock external INTx masking ops
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 153/273] regmap: maple: Fix cache corruption in regcache_maple_drop()
 Date: Mon,  8 Apr 2024 14:57:08 +0200
-Message-ID: <20240408125419.999234256@linuxfoundation.org>
+Message-ID: <20240408125314.031276564@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 810cd4bb53456d0503cc4e7934e063835152c1b7 ]
+[ Upstream commit 00bb549d7d63a21532e76e4a334d7807a54d9f31 ]
 
-Mask operations through config space changes to DisINTx may race INTx
-configuration changes via ioctl.  Create wrappers that add locking for
-paths outside of the core interrupt code.
+When keeping the upper end of a cache block entry, the entry[] array
+must be indexed by the offset from the base register of the block,
+i.e. max - mas.index.
 
-In particular, irq_type is updated holding igate, therefore testing
-is_intx() requires holding igate.  For example clearing DisINTx from
-config space can otherwise race changes of the interrupt configuration.
+The code was indexing entry[] by only the register address, leading
+to an out-of-bounds access that copied some part of the kernel
+memory over the cache contents.
 
-This aligns interfaces which may trigger the INTx eventfd into two
-camps, one side serialized by igate and the other only enabled while
-INTx is configured.  A subsequent patch introduces synchronization for
-the latter flows.
+This bug was not detected by the regmap KUnit test because it only
+tests with a block of registers starting at 0, so mas.index == 0.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-Reported-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-3-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: f033c26de5a5 ("regmap: Add maple tree based register cache")
+Link: https://msgid.link/r/20240327114406.976986-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c |   30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ drivers/base/regmap/regcache-maple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -33,11 +33,13 @@ static void vfio_send_intx_eventfd(void
- 		eventfd_signal(vdev->ctx[0].trigger, 1);
- }
+diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
+index 41edd6a430eb4..c1776127a5724 100644
+--- a/drivers/base/regmap/regcache-maple.c
++++ b/drivers/base/regmap/regcache-maple.c
+@@ -145,7 +145,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
+ 			upper_index = max + 1;
+ 			upper_last = mas.last;
  
--void vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
-+static void __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
- {
- 	struct pci_dev *pdev = vdev->pdev;
- 	unsigned long flags;
- 
-+	lockdep_assert_held(&vdev->igate);
-+
- 	spin_lock_irqsave(&vdev->irqlock, flags);
- 
- 	/*
-@@ -65,6 +67,13 @@ void vfio_pci_intx_mask(struct vfio_pci_
- 	spin_unlock_irqrestore(&vdev->irqlock, flags);
- }
- 
-+void vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
-+{
-+	mutex_lock(&vdev->igate);
-+	__vfio_pci_intx_mask(vdev);
-+	mutex_unlock(&vdev->igate);
-+}
-+
- /*
-  * If this is triggered by an eventfd, we can't call eventfd_signal
-  * or else we'll deadlock on the eventfd wait queue.  Return >0 when
-@@ -107,12 +116,21 @@ static int vfio_pci_intx_unmask_handler(
- 	return ret;
- }
- 
--void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
-+static void __vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
- {
-+	lockdep_assert_held(&vdev->igate);
-+
- 	if (vfio_pci_intx_unmask_handler(vdev, NULL) > 0)
- 		vfio_send_intx_eventfd(vdev, NULL);
- }
- 
-+void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
-+{
-+	mutex_lock(&vdev->igate);
-+	__vfio_pci_intx_unmask(vdev);
-+	mutex_unlock(&vdev->igate);
-+}
-+
- static irqreturn_t vfio_intx_handler(int irq, void *dev_id)
- {
- 	struct vfio_pci_core_device *vdev = dev_id;
-@@ -428,11 +446,11 @@ static int vfio_pci_set_intx_unmask(stru
- 		return -EINVAL;
- 
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		vfio_pci_intx_unmask(vdev);
-+		__vfio_pci_intx_unmask(vdev);
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		uint8_t unmask = *(uint8_t *)data;
- 		if (unmask)
--			vfio_pci_intx_unmask(vdev);
-+			__vfio_pci_intx_unmask(vdev);
- 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
- 		int32_t fd = *(int32_t *)data;
- 		if (fd >= 0)
-@@ -455,11 +473,11 @@ static int vfio_pci_set_intx_mask(struct
- 		return -EINVAL;
- 
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		vfio_pci_intx_mask(vdev);
-+		__vfio_pci_intx_mask(vdev);
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		uint8_t mask = *(uint8_t *)data;
- 		if (mask)
--			vfio_pci_intx_mask(vdev);
-+			__vfio_pci_intx_mask(vdev);
- 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
- 		return -ENOTTY; /* XXX implement me */
- 	}
+-			upper = kmemdup(&entry[max + 1],
++			upper = kmemdup(&entry[max - mas.index + 1],
+ 					((mas.last - max) *
+ 					 sizeof(unsigned long)),
+ 					map->alloc_flags);
+-- 
+2.43.0
+
 
 
 
