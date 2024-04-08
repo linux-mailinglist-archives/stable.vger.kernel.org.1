@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC3F89C17A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 457C089C23A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4BDAB286DD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D31282CFB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00957BAF5;
-	Mon,  8 Apr 2024 13:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E578172F;
+	Mon,  8 Apr 2024 13:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jR1JwJ3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ku6nPpBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0AB7BAE7;
-	Mon,  8 Apr 2024 13:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AC881727;
+	Mon,  8 Apr 2024 13:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582156; cv=none; b=ehzWqL4pl9u9os+SEnjsEf10zzM13HB4AnxK3q2V5LTlql5ROn0jJquCpJo26MXoNeL6grYE6po/w9r8qzfh3YB6HvXNUZhI2J4SjgtGgFAb3s/30SzVtz48g+3IfuZNnu0vxHBTQrxrgRHb3wfeDUO2fCVWFQtHIE5wejrVbLA=
+	t=1712582638; cv=none; b=pnhZ0SsqQL5lH0J2CvxmN5CegJkdWSEWapwixIQCLNczsZxYqcHnDCGHnXv0sIbMzUpZqgt5AHszZTvvXs5WId8JyacU1DzVjm5hHjxnBvyriUazfF7ANXQHVlAn1Pv4w9b2TOH0d0iHc5ixSkvKQf4A5bQpiyJwNfMOHN52p30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582156; c=relaxed/simple;
-	bh=saR6ED4fDaM1istcXEmH99JGv/3Zpp17j5CMcblAQIk=;
+	s=arc-20240116; t=1712582638; c=relaxed/simple;
+	bh=j3zNujywYCzU46xoqD+r1yA8xpWX7gCnjCjuapawjaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tof93yvmqqnfyqVhOKyp1tGcT+QLPZfzquts9d9ajhOt2KmRaMbz3B+kVePjjm/Die/ST+GohCrlg0bhZ36yPGQ9QRJudb92UPEXy5/uZ2lCBBo54U602eVQsxs7RSicpCrisP4ry0FeeA/sdIaAke2/IYk76yNRxOyYUdiGF4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jR1JwJ3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A83C433C7;
-	Mon,  8 Apr 2024 13:15:56 +0000 (UTC)
+	 MIME-Version; b=sAR1GzJOZHj4VdHhR9LhqaXsu3gO9QMwoJrnjAqCGhcicsNaQW+pisiYPWcScAM4iYe3Pim870K8teCmLlPYS/hbyY81M9r7enuA9EMKsDlI/SXQ+YmJIFzoz8OQUmRyfwA7plIE1GuAK7KCVxX5Djz8TByHu7N92E+rRVdRM40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ku6nPpBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4B0C433C7;
+	Mon,  8 Apr 2024 13:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582156;
-	bh=saR6ED4fDaM1istcXEmH99JGv/3Zpp17j5CMcblAQIk=;
+	s=korg; t=1712582638;
+	bh=j3zNujywYCzU46xoqD+r1yA8xpWX7gCnjCjuapawjaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jR1JwJ3uZ39aBPM28kRVJ7MDXjMhW4COcmKcmNR2FFKqc+UBGTCYwnbBUtT3E+GrA
-	 /UpZiJxjkVQyhOsbDGOPbF6TcTUejODcLQWIuGsuFSqXam6UnzJ5+we546wQsN78ce
-	 D5du6b0gCjA0U4lBm2k/mTUBchA26gyJGyXGpYII=
+	b=Ku6nPpBueFpLGSNZCoWqbrYvEdBy/DYhZ0fwJFeeQTw8PC0J/GSmRAYsoazY+wW45
+	 jnCc9yT2BuDcPj0IcWXr3m3p4fMV/x56J0108ifFSButWim6l5WNHpGkiMAbWxh+Fr
+	 rWDrENN/cEsCQJbbpKtfaFkgO6IF9J+OiJgSMX7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>
-Subject: [PATCH 6.6 068/252] gpio: cdev: sanitize the label before requesting the interrupt
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.8 092/273] vboxsf: Avoid an spurious warning if load_nls_xxx() fails
 Date: Mon,  8 Apr 2024 14:56:07 +0200
-Message-ID: <20240408125308.747253681@linuxfoundation.org>
+Message-ID: <20240408125312.158275442@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
+commit de3f64b738af57e2732b91a0774facc675b75b54 upstream.
 
-When an interrupt is requested, a procfs directory is created under
-"/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
-the request_irq() variants.
+If an load_nls_xxx() function fails a few lines above, the 'sbi->bdi_id' is
+still 0.
+So, in the error handling path, we will call ida_simple_remove(..., 0)
+which is not allocated yet.
 
-What follows is that the string must not contain the "/" character or
-the procfs mkdir operation will fail. We don't have such constraints for
-GPIO consumer labels which are used verbatim as interrupt labels for
-GPIO irqs. We must therefore sanitize the consumer string before
-requesting the interrupt.
+In order to prevent a spurious "ida_free called for id=0 which is not
+allocated." message, tweak the error handling path and add a new label.
 
-Let's replace all "/" with ":".
-
-Cc: stable@vger.kernel.org
-Reported-by: Stefan Wahren <wahrenst@gmx.net>
-Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Kent Gibson <warthog618@gmail.com>
+Fixes: 0fd169576648 ("fs: Add VirtualBox guest shared folder (vboxsf) support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/d09eaaa4e2e08206c58a1a27ca9b3e81dc168773.1698835730.git.christophe.jaillet@wanadoo.fr
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ fs/vboxsf/super.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1010,10 +1010,20 @@ static u32 gpio_v2_line_config_debounce_
- 	return 0;
- }
- 
-+static inline char *make_irq_label(const char *orig)
-+{
-+	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
-+}
-+
-+static inline void free_irq_label(const char *label)
-+{
-+	kfree(label);
-+}
-+
- static void edge_detector_stop(struct line *line)
- {
- 	if (line->irq) {
--		free_irq(line->irq, line);
-+		free_irq_label(free_irq(line->irq, line));
- 		line->irq = 0;
+--- a/fs/vboxsf/super.c
++++ b/fs/vboxsf/super.c
+@@ -151,7 +151,7 @@ static int vboxsf_fill_super(struct supe
+ 		if (!sbi->nls) {
+ 			vbg_err("vboxsf: Count not load '%s' nls\n", nls_name);
+ 			err = -EINVAL;
+-			goto fail_free;
++			goto fail_destroy_idr;
+ 		}
  	}
  
-@@ -1038,6 +1048,7 @@ static int edge_detector_setup(struct li
- 	unsigned long irqflags = 0;
- 	u64 eflags;
- 	int irq, ret;
-+	char *label;
- 
- 	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
- 	if (eflags && !kfifo_initialized(&line->req->events)) {
-@@ -1074,11 +1085,17 @@ static int edge_detector_setup(struct li
- 			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
- 	irqflags |= IRQF_ONESHOT;
- 
-+	label = make_irq_label(line->req->label);
-+	if (!label)
-+		return -ENOMEM;
-+
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
--				   irqflags, line->req->label, line);
--	if (ret)
-+				   irqflags, label, line);
-+	if (ret) {
-+		free_irq_label(label);
- 		return ret;
-+	}
- 
- 	line->irq = irq;
- 	return 0;
-@@ -1943,7 +1960,7 @@ static void lineevent_free(struct lineev
- 		blocking_notifier_chain_unregister(&le->gdev->device_notifier,
- 						   &le->device_unregistered_nb);
- 	if (le->irq)
--		free_irq(le->irq, le);
-+		free_irq_label(free_irq(le->irq, le));
- 	if (le->desc)
- 		gpiod_free(le->desc);
- 	kfree(le->label);
-@@ -2091,6 +2108,7 @@ static int lineevent_create(struct gpio_
- 	int fd;
- 	int ret;
- 	int irq, irqflags = 0;
-+	char *label;
- 
- 	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
- 		return -EFAULT;
-@@ -2175,15 +2193,23 @@ static int lineevent_create(struct gpio_
- 	if (ret)
- 		goto out_free_le;
- 
-+	label = make_irq_label(le->label);
-+	if (!label) {
-+		ret = -ENOMEM;
-+		goto out_free_le;
-+	}
-+
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(irq,
- 				   lineevent_irq_handler,
- 				   lineevent_irq_thread,
- 				   irqflags,
--				   le->label,
-+				   label,
- 				   le);
--	if (ret)
-+	if (ret) {
-+		free_irq_label(label);
- 		goto out_free_le;
-+	}
- 
- 	le->irq = irq;
- 
+@@ -224,6 +224,7 @@ fail_free:
+ 		ida_simple_remove(&vboxsf_bdi_ida, sbi->bdi_id);
+ 	if (sbi->nls)
+ 		unload_nls(sbi->nls);
++fail_destroy_idr:
+ 	idr_destroy(&sbi->ino_idr);
+ 	kfree(sbi);
+ 	return err;
 
 
 
