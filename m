@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-36703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9AB89C14B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D088889C41D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C8FE1C21C78
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0101BB28289
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA9881ACA;
-	Mon,  8 Apr 2024 13:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770647E103;
+	Mon,  8 Apr 2024 13:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMmx4M2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su032Z8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A31971742;
-	Mon,  8 Apr 2024 13:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32717129E7C;
+	Mon,  8 Apr 2024 13:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582098; cv=none; b=E5O2j0OPAlMN7Pfedr0vXtVk/LykufcA8yFrp+63yhPm4CZtPBwl9tUBgq6RJR5Xml8pzoXgQxiGtdl5CVI5+TgNUpkxSXJGU9G4X9ts/O2ND+jsRTG6NPVh1DxWHyfrh37aQSeT5z6AEp6+bdN2ure9jLVu1OCa5uV2eg4sE/w=
+	t=1712583422; cv=none; b=QSUhSOvZ4Oj/A0ZVpxnX5FtUrbIanlrGe1eoJUIm2GNlY0vlarmguQl73MEyXjiC4nDxPp4rTFDmd/GzZyXdso+Ttc0Fe78ycvfTbpO8cO7q+ZaWygU2QE9V0sDPBmZ3Bvr0WkDhwE1SzLTqskLg+XicxPO7Jx8SIGm9S6hazQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582098; c=relaxed/simple;
-	bh=zxVolm5yqEW6hFs4y5PGHRvOosTBaYDdvsfeea08IJI=;
+	s=arc-20240116; t=1712583422; c=relaxed/simple;
+	bh=Zqo1zTxMjH/dHOrP7LQWbz3djpDWjl7Cuu/ed4N+8m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hh4giWw6nQVruNwM/kUqQOYIWGvd5DUgx+phkk9TGTbFpjo4NnzSoJ8VGqFjRccaiep7QD4KcereQ803NzmNmqwLfPuNcHe9OTFICu28GsnI9jorBnsizATfU4EKNpEGMEh1myhW+HNUfg/APGAZ2tm6zHQXZ6VqfQ4Ly0yUu7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMmx4M2Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025FAC433F1;
-	Mon,  8 Apr 2024 13:14:57 +0000 (UTC)
+	 MIME-Version; b=IY/2RFvD/c7SSQ3kZESb0z97wr//eGPpgpMf15dvYfbL8tGbmFXNrVIyMVx6QHGza4MmlsRn6zjPkYM7lhIrEzHSYfm7MRBQq8tRTgbTDpWBEh92WAuWKHsuBzKA8Io5RIbPaMAJNBkyJJCLgqnKZFF8pumgcM/vzXC5qH22fNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su032Z8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF03C43390;
+	Mon,  8 Apr 2024 13:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582098;
-	bh=zxVolm5yqEW6hFs4y5PGHRvOosTBaYDdvsfeea08IJI=;
+	s=korg; t=1712583422;
+	bh=Zqo1zTxMjH/dHOrP7LQWbz3djpDWjl7Cuu/ed4N+8m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMmx4M2YJYyYGewrKEMobymopXa0IDa7Znfa9okE4LvB/qIQXzJ95/t6rZkU/HsaT
-	 PySrw7g4BL/FTsbqWpnWN2AAYe2cZeQy5R21HPBh7/mdrAL2iSRAFeRRCcZemDNyxy
-	 jbcVZI3bvoe6ikuMNBIk5u5ISxARGLN6k2l+9a3k=
+	b=Su032Z8jdFtrUFNsCnoGKVshNRF4yET5W36J0u9hLEzKLIrZ3V+KvakeKoJeS85Rh
+	 1jPGfhBP0ubFNkXSFD8jtdAZd4hNHEbl7hpiDMMOAh5IQV32QsodPmvGrKlEgJWO0X
+	 ui8NlfmNxB2tmdsOQ/PAOqnIfuPjmO9K17Ghygsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/138] r8169: prepare rtl_hw_aspm_clkreq_enable for usage in atomic context
-Date: Mon,  8 Apr 2024 14:58:12 +0200
-Message-ID: <20240408125258.653918178@linuxfoundation.org>
+Subject: [PATCH 6.6 194/252] s390/pai: fix sampling event removal for PMU device driver
+Date: Mon,  8 Apr 2024 14:58:13 +0200
+Message-ID: <20240408125312.677112733@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 49ef7d846d4bd77b0b9f1f801fc765b004690a07 ]
+[ Upstream commit e9f3af02f63909f41b43c28330434cc437639c5c ]
 
-Bail out if the function is used with chip versions that don't support
-ASPM configuration. In addition remove the delay, it tuned out that
-it's not needed, also vendor driver r8125 doesn't have it.
+In case of a sampling event, the PAI PMU device drivers need a
+reference to this event.  Currently to PMU device driver reference
+is removed when a sampling event is destroyed. This may lead to
+situations where the reference of the PMU device driver is removed
+while being used by a different sampling event.
+Reset the event reference pointer of the PMU device driver when
+a sampling event is deleted and before the next one might be added.
 
-Suggested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 5e864d90b208 ("r8169: skip DASH fw status checks when DASH is disabled")
+Fixes: 39d62336f5c1 ("s390/pai: add support for cryptography counters")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/s390/kernel/perf_pai_crypto.c | 10 +++++++---
+ arch/s390/kernel/perf_pai_ext.c    | 10 +++++++---
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 4a1710b2726ce..256630f57ffe1 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2772,6 +2772,9 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
- 
- static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+index 65cc74ab4cdd8..1eefbe2ff4189 100644
+--- a/arch/s390/kernel/perf_pai_crypto.c
++++ b/arch/s390/kernel/perf_pai_crypto.c
+@@ -53,7 +53,6 @@ static void paicrypt_event_destroy(struct perf_event *event)
  {
-+	if (tp->mac_version < RTL_GIGA_MAC_VER_32)
-+		return;
+ 	struct paicrypt_map *cpump = per_cpu_ptr(&paicrypt_map, event->cpu);
+ 
+-	cpump->event = NULL;
+ 	static_branch_dec(&pai_key);
+ 	mutex_lock(&pai_reserve_mutex);
+ 	debug_sprintf_event(cfm_dbg, 5, "%s event %#llx cpu %d users %d"
+@@ -278,10 +277,15 @@ static int paicrypt_add(struct perf_event *event, int flags)
+ 
+ static void paicrypt_stop(struct perf_event *event, int flags)
+ {
+-	if (!event->attr.sample_period)	/* Counting */
++	struct paicrypt_mapptr *mp = this_cpu_ptr(paicrypt_root.mapptr);
++	struct paicrypt_map *cpump = mp->mapptr;
 +
- 	/* Don't enable ASPM in the chip if OS can't control ASPM */
- 	if (enable && tp->aspm_manageable) {
- 		rtl_mod_config5(tp, 0, ASPM_en);
-@@ -2801,8 +2804,6 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
- 		rtl_mod_config2(tp, ClkReqEn, 0);
- 		rtl_mod_config5(tp, ASPM_en, 0);
- 	}
--
--	udelay(10);
++	if (!event->attr.sample_period) {	/* Counting */
+ 		paicrypt_read(event);
+-	else				/* Sampling */
++	} else {				/* Sampling */
+ 		perf_sched_cb_dec(event->pmu);
++		cpump->event = NULL;
++	}
+ 	event->hw.state = PERF_HES_STOPPED;
  }
  
- static void rtl_set_fifo_size(struct rtl8169_private *tp, u16 rx_stat,
+diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+index bac95261ec46d..a9235071ca70b 100644
+--- a/arch/s390/kernel/perf_pai_ext.c
++++ b/arch/s390/kernel/perf_pai_ext.c
+@@ -122,7 +122,6 @@ static void paiext_event_destroy(struct perf_event *event)
+ 	struct paiext_map *cpump = mp->mapptr;
+ 
+ 	mutex_lock(&paiext_reserve_mutex);
+-	cpump->event = NULL;
+ 	if (refcount_dec_and_test(&cpump->refcnt))	/* Last reference gone */
+ 		paiext_free(mp);
+ 	paiext_root_free();
+@@ -355,10 +354,15 @@ static int paiext_add(struct perf_event *event, int flags)
+ 
+ static void paiext_stop(struct perf_event *event, int flags)
+ {
+-	if (!event->attr.sample_period)	/* Counting */
++	struct paiext_mapptr *mp = this_cpu_ptr(paiext_root.mapptr);
++	struct paiext_map *cpump = mp->mapptr;
++
++	if (!event->attr.sample_period) {	/* Counting */
+ 		paiext_read(event);
+-	else				/* Sampling */
++	} else {				/* Sampling */
+ 		perf_sched_cb_dec(event->pmu);
++		cpump->event = NULL;
++	}
+ 	event->hw.state = PERF_HES_STOPPED;
+ }
+ 
 -- 
 2.43.0
 
