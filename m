@@ -1,138 +1,129 @@
-Return-Path: <stable+bounces-37784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383D389C9CB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 18:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6162089C9EC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 18:41:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B65C1C23C82
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:38:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 938FD1C247EC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A136E143894;
-	Mon,  8 Apr 2024 16:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF32B142E93;
+	Mon,  8 Apr 2024 16:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cifxUkDf"
 X-Original-To: stable@vger.kernel.org
-Received: from cae.in-ulm.de (cae.in-ulm.de [217.10.14.231])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93AA1428F3
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 16:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.14.231
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D9F14264D;
+	Mon,  8 Apr 2024 16:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712594173; cv=none; b=lLvk9e29oOtJtpDSoGsTjLNt/6jtliYXOu8b9C9y1aozseU4c4ggJnK21WnrGQk/fYmkJjzuxF7PA6a4JAN0H7CDZ8WT1qK16H61rV2exR7+3zerFe1pZzLcOPpHUJncPey2La8YE2iOJQu1ywJG8rom+HCOwXaRuQT62QM/YuA=
+	t=1712594488; cv=none; b=KMtWSvraPs/adEmdXFV8f1kRlCAyUQuZaNgZtSy1OUWpZCX9QNegMRqmX3CpGeBWb6zKNOUD6HiX9A0wyAstOIByAF7xDHQ3ulPAOrrFmNTrfrs1EeMuHlKE14wHmx+sdxKI/e1OhEA2lcrMGu2V0OMWXIEFk4LT9C/zUMsboZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712594173; c=relaxed/simple;
-	bh=CWWNwMNgAzKNmYdnyVzGseCF66ItLiQl0/7FAOyNL/U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fIywTSsv2SV6xQiLp4qb0fn1G4bQnfND6xChXeuS4WLNsK77L+9TwrVTVNRMSck7FeMgwJaraBA7sECGV4F4xgzwNjd7PbDquoUvpdGIp6YyVXmuw28i3N8mbhnJ362CBEunJN2vAp8svGF4bXzRXnySEH1npz9BaW3CqhTZ1JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de; spf=pass smtp.mailfrom=c--e.de; arc=none smtp.client-ip=217.10.14.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c--e.de
-Received: by cae.in-ulm.de (Postfix, from userid 1000)
-	id 8FDE814055D; Mon,  8 Apr 2024 18:36:08 +0200 (CEST)
-Date: Mon, 8 Apr 2024 18:36:08 +0200
-From: "Christian A. Ehrhardt" <lk@c--e.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 6.8 131/273] usb: typec: ucsi: Check for notifications
- after init
-Message-ID: <ZhQc+AoLGkrJB1to@cae.in-ulm.de>
-References: <20240408125309.280181634@linuxfoundation.org>
- <20240408125313.358936582@linuxfoundation.org>
+	s=arc-20240116; t=1712594488; c=relaxed/simple;
+	bh=TjLTzA6JDfXXdlz0RREi2DNgQIkZGNpTQemJBXI3JFM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=XuzVwHMMV3ri5hyERW5EtheizRUwii/NFf6SVlH02xIMB7qrx/SmAh9UaG9VaUvgosv9u35uJbOxtObMokvg3TmLqzFcuin/9YczGK2w1H7I7pc+qFGAEylQbmeSEZSXR15w6571CCAtcnqI2oiJzIUMsoU+lq6EuiD55b1hdsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cifxUkDf; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 438AfWuH019862;
+	Mon, 8 Apr 2024 16:41:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=TdhNvuTHq7dEziJFTqEsp6X+46JLjpqwWk7ezu+cHOc=; b=ci
+	fxUkDfBmVemqO42SbMBEl7jyYeYtFtcPSOqwPnwdY5T5xmeuRDijxXlzsBSC3lyu
+	tBmw4rl7p8aY6qz8WpDamKx7IrEK4N2mRtUFHMDxJoIlMbCLOa3HlfxsFnBjrsay
+	IR7lXr+cjAaXOPhS0VtpdlcnZYAvsti2o/WywnsM1oip/o9KumoF+6Z5smx7dOry
+	gVXym0kD+ag62WBbOZ9igxCho9k0ftsT/jpSHoGvib2mKesmOGZs8vt2y48q4ffR
+	FZJVxgiYxpayRnZLHs0btK+d/886vWNML4hPZAr/wJI87Aiu+1G4cAIyRF51jxwb
+	5pHDLWedHH89Fpks6oGQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xcbg39d0h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Apr 2024 16:41:17 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 438GfHSJ025275
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 8 Apr 2024 16:41:17 GMT
+Received: from [10.71.109.81] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 8 Apr 2024
+ 09:41:16 -0700
+Message-ID: <23986455-9e35-0106-8835-6bd67bd90b7c@quicinc.com>
+Date: Mon, 8 Apr 2024 09:41:15 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240408125313.358936582@linuxfoundation.org>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6
+Content-Language: en-US
+To: Johan Hovold <johan+linaro@kernel.org>, Vinod Koul <vkoul@kernel.org>
+CC: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Neil
+ Armstrong <neil.armstrong@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-phy@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Dmitry
+ Baryshkov <dmitry.baryshkov@linaro.org>
+References: <20240408093023.506-1-johan+linaro@kernel.org>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20240408093023.506-1-johan+linaro@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 16U9_4TI00xjALNLzjMCNoRm_alnWFxu
+X-Proofpoint-ORIG-GUID: 16U9_4TI00xjALNLzjMCNoRm_alnWFxu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-08_15,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 impostorscore=0 bulkscore=0
+ clxscore=1011 malwarescore=0 spamscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404080129
 
 
-Hi Greg,
 
-On Mon, Apr 08, 2024 at 02:56:46PM +0200, Greg Kroah-Hartman wrote:
-> 6.8-stable review patch.  If anyone has any objections, please let me know.
+On 4/8/2024 2:30 AM, Johan Hovold wrote:
+> Commit 5abed58a8bde ("phy: qcom: qmp-combo: Fix VCO div offset on v3")
+> fixed a regression introduced in 6.5 by making sure that the correct
+> offset is used for the DP_PHY_VCO_DIV register on v3 hardware.
 > 
-> ------------------
+> Unfortunately, that fix instead broke DisplayPort on v5_5nm and v6
+> hardware as it failed to add the corresponding offsets also to those
+> register tables.
 > 
-> From: Christian A. Ehrhardt <lk@c--e.de>
-> 
-> [ Upstream commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 ]
-> 
-> The completion notification for the final SET_NOTIFICATION_ENABLE
-> command during initialization can include a connector change
-> notification.  However, at the time this completion notification is
-> processed, the ucsi struct is not ready to handle this notification.
-> As a result the notification is ignored and the controller
-> never sends an interrupt again.
-> 
-> Re-check CCI for a pending connector state change after
-> initialization is complete. Adjust the corresponding debug
-> message accordingly.
-
-As discussed previously, this one should not go into the stable
-trees without the follow up fix that is in you usb-linus tree but
-not yet in mainline. This applies to all stable branches. Let me
-know if you want a separate mail for each branch.
-
-Thanks
-Christian
-
-> Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-> Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Fixes: 815891eee668 ("phy: qcom-qmp-combo: Introduce orientation variable")
+> Fixes: 5abed58a8bde ("phy: qcom: qmp-combo: Fix VCO div offset on v3")
+> Cc: stable@vger.kernel.org	# 6.5: 5abed58a8bde
+> Cc: Stephen Boyd <swboyd@chromium.org>
+> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->  drivers/usb/typec/ucsi/ucsi.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+>   drivers/phy/qualcomm/phy-qcom-qmp-combo.c     | 2 ++
+>   drivers/phy/qualcomm/phy-qcom-qmp-dp-phy-v5.h | 1 +
+>   drivers/phy/qualcomm/phy-qcom-qmp-dp-phy-v6.h | 1 +
+>   3 files changed, 4 insertions(+)
 > 
-> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-> index 0bfe5e906e543..96da828f556a9 100644
-> --- a/drivers/usb/typec/ucsi/ucsi.c
-> +++ b/drivers/usb/typec/ucsi/ucsi.c
-> @@ -962,7 +962,7 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
->  	struct ucsi_connector *con = &ucsi->connector[num - 1];
->  
->  	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
-> -		dev_dbg(ucsi->dev, "Bogus connector change event\n");
-> +		dev_dbg(ucsi->dev, "Early connector change event\n");
->  		return;
->  	}
->  
-> @@ -1393,6 +1393,7 @@ static int ucsi_init(struct ucsi *ucsi)
->  {
->  	struct ucsi_connector *con, *connector;
->  	u64 command, ntfy;
-> +	u32 cci;
->  	int ret;
->  	int i;
->  
-> @@ -1445,6 +1446,13 @@ static int ucsi_init(struct ucsi *ucsi)
->  
->  	ucsi->connector = connector;
->  	ucsi->ntfy = ntfy;
-> +
-> +	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-> +	if (ret)
-> +		return ret;
-> +	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
-> +		ucsi_connector_change(ucsi, cci);
-> +
->  	return 0;
->  
->  err_unregister:
-> -- 
-> 2.43.0
-> 
-> 
-> 
-> 
+
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
