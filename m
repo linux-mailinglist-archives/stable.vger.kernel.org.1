@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-36704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C96B289C14D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CB689C150
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68E591F216C4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86A9E1C2188B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ADC823A2;
-	Mon,  8 Apr 2024 13:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350BF823D9;
+	Mon,  8 Apr 2024 13:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUjvB3hC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+lZxzuw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6395B81AC9;
-	Mon,  8 Apr 2024 13:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E608E823A6;
+	Mon,  8 Apr 2024 13:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582101; cv=none; b=kZWbcl9e1qAq8LW2f7gGCMRW6QL42KtaUZdoAT9YM5zyOQIeKmOjADSmrcAAvOqGwJyxGG4rNvDZvYTjopTKWixcScLWLUXqBxtsxk/loQSB1vKQ9jYWc71lETsD6ZiApq5nnihnJHLTkxHYgdPsx4I8OvkBPcfcXEFW6lwr60M=
+	t=1712582116; cv=none; b=eGwieRX1XkhKGZzNi9iN7MDICLSz6NdOPB00sxqGpXbj0DR8d/lwaCEhI7A776FJ7EKESGA9SNlDsOhEF6wI30BJutfh/6/8bAtnep+W+2Az7t5yGVdwFPf2lVxdIFVsuDt18Er1RhiTJZaHNE+JCE7BbEc9W0UN7YCzuwHvYFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582101; c=relaxed/simple;
-	bh=XVpYYfq8Xw+Gjm/0fh7UWwr6YTEP2120pKKSOHJyTE4=;
+	s=arc-20240116; t=1712582116; c=relaxed/simple;
+	bh=hzHGzmbkVuQBWvrrF8ko5Tga8leAxFEWwMoDouiXx7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eDhuvk6eC1ckCGO0AsN/Pipp/JYAqsTTth7TR6s+8+5YVT7LmoUGQz9Q9nKAaSvh/f6/IGNgeEN9vFEohSVAbN0uULFi+fG6s9dwTSn+QLD8Y6FOhSheElQjSXIt+mlTIvgD5MpQ+EdxpubtKvl9aSkcy1OkDPSHZTFKwgwTVuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUjvB3hC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD27C433F1;
-	Mon,  8 Apr 2024 13:15:00 +0000 (UTC)
+	 MIME-Version; b=GC3RFOmgvP+Fwj++sFoLyRATbFW7/Xl515pOc9vN5dd0ZR6/Nrun+E71wOm0eMSaBT9QJ3yapvmJ+0/53V64sDVpgRln8n+9JcqDfr16Qb5xz3xUwPOmYJPoBZqIyJ9VnYC99FegUkoSeyhpSzr4743kO26vP6tMrHZQZ3xUnMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+lZxzuw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D89AC433F1;
+	Mon,  8 Apr 2024 13:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582101;
-	bh=XVpYYfq8Xw+Gjm/0fh7UWwr6YTEP2120pKKSOHJyTE4=;
+	s=korg; t=1712582115;
+	bh=hzHGzmbkVuQBWvrrF8ko5Tga8leAxFEWwMoDouiXx7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUjvB3hC7olX+L/B7uX3/U0i5obaTUQyCE7QXReiVdu7OakVw71quaOLd9A+3juJg
-	 faW2SUvZvHxfwiqIYMQjvhM7kesMtME3g06yN48mqMpHVezDKDY/femOgYI8wEAO0n
-	 IK55ui3JLPOverDCgQXwsZNGYFj2X2czAUe2R3Ek=
+	b=y+lZxzuwU0GKJ2e6Bm2VL3f01rfwipFYMxOixktedVGZwoSkwtYHHKsQ9Z1cdd4Gp
+	 2yAEFmlXbMeoX+S0TBNj+7+FY9m1HpQhFLIg17wDy04lD3qcaUIQgJTW4tbFiU9V5Q
+	 GlmOV0/aWirnTkpaoOXbbyjcA7VKxXUo25fiRhM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 111/690] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
-Date: Mon,  8 Apr 2024 14:49:37 +0200
-Message-ID: <20240408125403.546212853@linuxfoundation.org>
+Subject: [PATCH 5.15 112/690] drm/amd/display: Return the correct HDCP error code
+Date: Mon,  8 Apr 2024 14:49:38 +0200
+Message-ID: <20240408125403.592378736@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -61,44 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 ]
+[ Upstream commit e64b3f55e458ce7e2087a0051f47edabf74545e7 ]
 
-Otherwise after the GTT bo is released, the GTT and gart space is freed
-but amdgpu_ttm_backend_unbind will not clear the gart page table entry
-and leave valid mapping entry pointing to the stale system page. Then
-if GPU access the gart address mistakely, it will read undefined value
-instead page fault, harder to debug and reproduce the real issue.
+[WHY & HOW]
+If the display is null when creating an HDCP session, return a proper
+error code.
 
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index b06fb1fa411b4..9a1b19e3d4378 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -859,6 +859,7 @@ static int amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
- 		r = amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
- 				     gtt->ttm.dma_address, flags);
- 	}
-+	gtt->bound = true;
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+index be61975f14703..11939be2b46ab 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -509,6 +509,9 @@ enum mod_hdcp_status mod_hdcp_hdcp2_create_session(struct mod_hdcp *hdcp)
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
+ 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
  
- gart_bind_fail:
- 	if (r)
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
++
+ 	hdcp_cmd->in_msg.hdcp2_create_session_v2.display_handle = display->index;
+ 
+ 	if (hdcp->connection.link.adjust.hdcp2.force_type == MOD_HDCP_FORCE_TYPE_0)
 -- 
 2.43.0
 
