@@ -1,110 +1,158 @@
-Return-Path: <stable+bounces-37126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498C089C372
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69D389C443
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D891E1F219FE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EA532837FC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E80986126;
-	Mon,  8 Apr 2024 13:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECC71272A6;
+	Mon,  8 Apr 2024 13:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cguiKLxp";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KptT8UAe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E547D413
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 13:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E79126F1C;
+	Mon,  8 Apr 2024 13:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583325; cv=none; b=D0JcihpdNWCrA612f6HbWfBVG+W0p+j43uWhD/nhhRMKTY6NuD4VqF89D/N6VW2Y4lAHDPq9u7Tx0R1Llz6JmMVhWwbRPyUyz3+4J3ml/vXzwMTSfgUyET8oIyQtxFsG70mim4Q69KBxMV+ioOppHdBvBGJWsvb4KuFWn54ZbFU=
+	t=1712583828; cv=none; b=hvEyM2o0WbxngDA2ikcJsFf43c8ntapeqKecsoRGoG8S3tgMzgrOSpN1ygQd51n5dQl60hAoZg0F1SPYWqvQJ9gG2XHQvcQUBzMEuKpUsjbdvTu2N2lO2PbD93zlhfEXp3xnkd1pNi8S7Jo0cDNEXQB3t+dnsw7Ty3EKBEHEWIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583325; c=relaxed/simple;
-	bh=QzID8QBM4d0TPssMG/Zyt2dw7OJJF0xwNDkHYAmuFSg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GqpJgneWiwkQNOZiWqyaRb88CsOgfwX4LxElVpkBTEnOe01SuX6s3IHLsk9dlZ+QG0L1pQUwrFrMVbYmkb+BP6YXWnB+abhh1IM1l/mYSdLYSGsVKXfRliQqpLBkVG9MTBTaQRWABSfkL3L6A+AGrFfK66Yvmgb3IjGUGZzhseU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Date: Mon, 8 Apr 2024 15:35:20 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.8 046/273] netfilter: nf_tables: reject table flag and
- netdev basechain updates
-Message-ID: <ZhPymMVOJRCLQaWc@calendula>
-References: <20240408125309.280181634@linuxfoundation.org>
- <20240408125310.727931386@linuxfoundation.org>
- <ZhPxo5aJctUtO4Go@calendula>
+	s=arc-20240116; t=1712583828; c=relaxed/simple;
+	bh=Ht9+braf5DRdwXMp5BNshCyyK7j7FT6PjFBX4CjhN5g=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=cOW5Oo0quxVncnM94LGqU8rz7EMf8qGDihVWAZY2RyMOxTI6W0XJW+cHfgF9j8Z1BTgiO04kE7iAz282Q+XCopBJ3uqfE454VH5xnvcE8CNnLKRVJTYDsh6oZSLGscZRzUx/RY2Rte7Yu71r44ZXCAtt99wQXuBr0A/NoAkCnaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cguiKLxp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KptT8UAe; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 08 Apr 2024 13:43:43 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712583825;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cx7hvmoBnbU6N4Biz/cWNGxgHUtup3NQEcMZo3BfAaU=;
+	b=cguiKLxpfgVs+nPq5DM8i3kzpkPgs9RbSwrAWncdxSmf1ocP2pgsFdgr2ayb6AYT4dZDeT
+	S+79OVifH7HTXwQrPSQsYhdrVuGQytY9fRhGqissbKP4KYoOZIro3g3ffG0GKEwfrdAXxY
+	Mtqq8L+9j4K4TEdzCoMsLr1FuHAHlKNvgLKTabL+zBsYC3+F0xub0UjDpgW2tGanl2XYBZ
+	7XY42fSTJDi9mcSXfKsXA/cKwnFT/AtywxHhBcrZq/G0Qw/y/8XA5icgRfHHPFrgy6kdr1
+	YOM/TxeTsDCde3Y2nNxopMZ+ywyaIs9pQ3ygAZbf/VC1rlk38LHj9Zc4UjK5lg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712583825;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cx7hvmoBnbU6N4Biz/cWNGxgHUtup3NQEcMZo3BfAaU=;
+	b=KptT8UAejTmusaOA1epx9SlTCvdN1NkcUlkoe5oYbkBknQtSZ5TxCdrhU2qTTvd2frpAz5
+	5/J6XBOjD4k94EBQ==
+From: "tip-bot2 for Adam Dunlap" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/apic: Force native_apic_mem_read() to use the
+ MOV instruction
+Cc: Adam Dunlap <acdunlap@google.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Ard Biesheuvel <ardb@kernel.org>,
+ Kevin Loughlin <kevinloughlin@google.com>,  <stable@vger.kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240318230927.2191933-1-acdunlap@google.com>
+References: <20240318230927.2191933-1-acdunlap@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZhPxo5aJctUtO4Go@calendula>
+Message-ID: <171258382395.10875.3450595381344943404.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 08, 2024 at 03:31:17PM +0200, Pablo Neira Ayuso wrote:
-> On Mon, Apr 08, 2024 at 02:55:21PM +0200, Greg Kroah-Hartman wrote:
-> > 6.8-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Pablo Neira Ayuso <pablo@netfilter.org>
-> > 
-> > [ Upstream commit 1e1fb6f00f52812277963365d9bd835b9b0ea4e0 ]
-> > 
-> > netdev basechain updates are stored in the transaction object hook list.
-> > When setting on the table dormant flag, it iterates over the existing
-> > hooks in the basechain. Thus, skipping the hooks that are being
-> > added/deleted in this transaction, which leaves hook registration in
-> > inconsistent state.
-> > 
-> > Reject table flag updates in combination with netdev basechain updates
-> > in the same batch:
-> > 
-> > - Update table flags and add/delete basechain: Check from basechain update
-> >   path if there are pending flag updates for this table.
-> > - add/delete basechain and update table flags: Iterate over the transaction
-> >   list to search for basechain updates from the table update path.
-> > 
-> > In both cases, the batch is rejected. Based on suggestion from Florian Westphal.
-> > 
-> > Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
-> > Fixes: 7d937b107108f ("netfilter: nf_tables: support for deleting devices in an existing netdev chain")
-> > Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  net/netfilter/nf_tables_api.c | 31 ++++++++++++++++++++++++++++++-
-> >  1 file changed, 30 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-> > index 00288b31f734c..db233965631bb 100644
-> > --- a/net/netfilter/nf_tables_api.c
-> > +++ b/net/netfilter/nf_tables_api.c
-> > @@ -1198,6 +1198,25 @@ static void nf_tables_table_disable(struct net *net, struct nft_table *table)
-> >  #define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
-> >  					 __NFT_TABLE_F_WAS_AWAKEN)
-> >  
-> > +static bool nft_table_pending_update(const struct nft_ctx *ctx)
-> > +{
-> > +	struct nftables_pernet *nft_net = nft_pernet(ctx->net);
-> > +	struct nft_trans *trans;
-> > +
-> > +	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
-> > +		return true;
-> > +
-> > +	list_for_each_entry(trans, &nft_net->commit_list, list) {
-> > +		if ((trans->msg_type == NFT_MSG_NEWCHAIN ||
->                 ^.........................................^
-> 
-> Remove this, only update is narrowed down.
+The following commit has been merged into the x86/urgent branch of tip:
 
-Apologies.
+Commit-ID:     5ce344beaca688f4cdea07045e0b8f03dc537e74
+Gitweb:        https://git.kernel.org/tip/5ce344beaca688f4cdea07045e0b8f03dc537e74
+Author:        Adam Dunlap <acdunlap@google.com>
+AuthorDate:    Mon, 18 Mar 2024 16:09:27 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 08 Apr 2024 15:37:57 +02:00
 
-Patch is fine.
+x86/apic: Force native_apic_mem_read() to use the MOV instruction
+
+When done from a virtual machine, instructions that touch APIC memory
+must be emulated. By convention, MMIO accesses are typically performed
+via io.h helpers such as readl() or writeq() to simplify instruction
+emulation/decoding (ex: in KVM hosts and SEV guests) [0].
+
+Currently, native_apic_mem_read() does not follow this convention,
+allowing the compiler to emit instructions other than the MOV
+instruction generated by readl(). In particular, when the kernel is
+compiled with clang and run as a SEV-ES or SEV-SNP guest, the compiler
+would emit a TESTL instruction which is not supported by the SEV-ES
+emulator, causing a boot failure in that environment. It is likely the
+same problem would happen in a TDX guest as that uses the same
+instruction emulator as SEV-ES.
+
+To make sure all emulators can emulate APIC memory reads via MOV, use
+the readl() function in native_apic_mem_read(). It is expected that any
+emulator would support MOV in any addressing mode as it is the most
+generic and is what is usually emitted currently.
+
+The TESTL instruction is emitted when native_apic_mem_read() is inlined
+into apic_mem_wait_icr_idle(). The emulator comes from
+insn_decode_mmio() in arch/x86/lib/insn-eval.c. It's not worth it to
+extend insn_decode_mmio() to support more instructions since, in theory,
+the compiler could choose to output nearly any instruction for such
+reads which would bloat the emulator beyond reason.
+
+  [0] https://lore.kernel.org/all/20220405232939.73860-12-kirill.shutemov@linux.intel.com/
+
+  [ bp: Massage commit message, fix typos. ]
+
+Signed-off-by: Adam Dunlap <acdunlap@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Kevin Loughlin <kevinloughlin@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240318230927.2191933-1-acdunlap@google.com
+---
+ arch/x86/include/asm/apic.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 94ce0f7..e6ab0cf 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -13,6 +13,7 @@
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+ #include <asm/hardirq.h>
++#include <asm/io.h>
+ 
+ #define ARCH_APICTIMER_STOPS_ON_C3	1
+ 
+@@ -98,7 +99,7 @@ static inline void native_apic_mem_write(u32 reg, u32 v)
+ 
+ static inline u32 native_apic_mem_read(u32 reg)
+ {
+-	return *((volatile u32 *)(APIC_BASE + reg));
++	return readl((void __iomem *)(APIC_BASE + reg));
+ }
+ 
+ static inline void native_apic_mem_eoi(void)
 
