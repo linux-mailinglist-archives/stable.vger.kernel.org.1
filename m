@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-37171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD5C89C39D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD6F89C3A1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308CB1F2266E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CA391F22567
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7CC12BE93;
-	Mon,  8 Apr 2024 13:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1A212BEAC;
+	Mon,  8 Apr 2024 13:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+sTkq7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4EHCYET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB397E111;
-	Mon,  8 Apr 2024 13:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29347E111;
+	Mon,  8 Apr 2024 13:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583455; cv=none; b=TFbSEIdfNW5mEkmpiXDs1oAOtHiHTWZ8fy6jntP6fSMy9H9Ww2o5vlkFRFF6d5MDHBz480n522GNY5KZbB8Y+0nRH6NK4WFd4cPrDKR7+eN0Y3WucFDs0sSioNLiDD4bJ0akOrqqy/xMaXwCRXdgqL15Is9EyY5wLddlL8PlD4g=
+	t=1712583464; cv=none; b=rUV1PdmFPkQQkYWRc+F2ec/gvwRrFQNH/bMv7Llh/rQ1HCodj2TuCVziUdgYJDOGB3QlT9iYDojvocdrfS7YuK083Re2PYsz6BEIyhGOIrmhf3uMePOfpmneO/tJQRx8J0BLxEHOKp+nNKa2BCbVnjYGtmDl7IdNIxFiEymcUac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583455; c=relaxed/simple;
-	bh=FbwquyQ7iTzWuhIYncSLaEYxGdMKxSTtlt3yC+d3f0o=;
+	s=arc-20240116; t=1712583464; c=relaxed/simple;
+	bh=1i18xejKdyUni0ljU+IHQuId+CQyub2GKi/vAaJtAHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HOFpyaS/T5FJ+06i4PWnXem3wW3zbTucNEqNqo8ed0Wgn+Z66YjKe/TDj2T3E9vPF4VmlARvcqizH67atv38phPyn+UL5R6ftZD8zpaR3Fx3u6ca7c5Tc0kBrw/0PQM5BhMVkruT0CoMfIeKQoiRCg1U/jLYhjFSQC5AVWBW4eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+sTkq7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA432C433C7;
-	Mon,  8 Apr 2024 13:37:34 +0000 (UTC)
+	 MIME-Version; b=gNlIP5G8Lcy/092eSQ5lqkde6f8PS7zU11GkvCaMNkP62xMyssec+IrD2dzzY5Bc+2XwVjISoLeFJWghaTLT7tEZJ7RcQJTb3ul+GhbFa2MlV83pKN0sWsdcIDDhcWQYogJiJNGyGh7kKJk1QWyZ8fY5jNIoBYSAeYGfzbhhACs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4EHCYET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BEBC433F1;
+	Mon,  8 Apr 2024 13:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583455;
-	bh=FbwquyQ7iTzWuhIYncSLaEYxGdMKxSTtlt3yC+d3f0o=;
+	s=korg; t=1712583463;
+	bh=1i18xejKdyUni0ljU+IHQuId+CQyub2GKi/vAaJtAHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+sTkq7ldLbTgPXomgtdgEKnjZEX5/QrkiZ12KLtS9J2nGBmki5ubaOfULca4YZ8B
-	 J3zuFtx8B0iHbscfMotCtVPRHi3WbXXokCtT5lTg02KVTrepsmIBvNO0n7jPghV3PA
-	 Hi9x9zLu1s+3vVPsQinVyQRoKFQltGE51ryCaPOQ=
+	b=O4EHCYETbO71A8KHUqjG6ywRkp5dOyiXhnxjW9s1TyBTDqJm0t9t0ymPHZ0hgSDIU
+	 5TPbgZgXTWZXb9eatuXdFkeflxMEmw5EmyCyXpydK4ohAE3iB9WyUDKf0qApNSvqdj
+	 BysCqFa5HVdfCkUTKptEouqgZIJ06gvs4fCvod4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	"J. Bruce Fields" <bfields@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 249/690] NFSD: Combine XDR error tracepoints
-Date: Mon,  8 Apr 2024 14:51:55 +0200
-Message-ID: <20240408125408.634681314@linuxfoundation.org>
+Subject: [PATCH 5.15 250/690] nfsd: improve stateid access bitmask documentation
+Date: Mon,  8 Apr 2024 14:51:56 +0200
+Message-ID: <20240408125408.664494430@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -64,67 +65,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: J. Bruce Fields <bfields@redhat.com>
 
-[ Upstream commit 70e94d757b3e1f46486d573729d84c8955c81dce ]
+[ Upstream commit 3dcd1d8aab00c5d3a0a3725253c86440b1a0f5a7 ]
 
-Clean up: The garbage_args and cant_encode tracepoints report the
-same information as each other, so combine them into a single
-tracepoint class to reduce code duplication and slightly reduce the
-size of trace.o.
+The use of the bitmaps is confusing.  Add a cross-reference to make it
+easier to find the existing comment.  Add an updated reference with URL
+to make it quicker to look up.  And a bit more editorializing about the
+value of this.
 
+Signed-off-by: J. Bruce Fields <bfields@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/trace.h | 28 +++++++---------------------
- 1 file changed, 7 insertions(+), 21 deletions(-)
+ fs/nfsd/nfs4state.c | 14 ++++++++++----
+ fs/nfsd/state.h     |  4 ++++
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 61943a629cdee..1c98a0f857498 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -47,7 +47,7 @@
- 			       rqstp->rq_xprt->xpt_remotelen); \
- 		} while (0);
- 
--TRACE_EVENT(nfsd_garbage_args_err,
-+DECLARE_EVENT_CLASS(nfsd_xdr_err_class,
- 	TP_PROTO(
- 		const struct svc_rqst *rqstp
- 	),
-@@ -69,27 +69,13 @@ TRACE_EVENT(nfsd_garbage_args_err,
- 	)
- );
- 
--TRACE_EVENT(nfsd_cant_encode_err,
--	TP_PROTO(
--		const struct svc_rqst *rqstp
--	),
--	TP_ARGS(rqstp),
--	TP_STRUCT__entry(
--		NFSD_TRACE_PROC_ARG_FIELDS
-+#define DEFINE_NFSD_XDR_ERR_EVENT(name) \
-+DEFINE_EVENT(nfsd_xdr_err_class, nfsd_##name##_err, \
-+	TP_PROTO(const struct svc_rqst *rqstp), \
-+	TP_ARGS(rqstp))
- 
--		__field(u32, vers)
--		__field(u32, proc)
--	),
--	TP_fast_assign(
--		NFSD_TRACE_PROC_ARG_ASSIGNMENTS
--
--		__entry->vers = rqstp->rq_vers;
--		__entry->proc = rqstp->rq_proc;
--	),
--	TP_printk("xid=0x%08x vers=%u proc=%u",
--		__entry->xid, __entry->vers, __entry->proc
--	)
--);
-+DEFINE_NFSD_XDR_ERR_EVENT(garbage_args);
-+DEFINE_NFSD_XDR_ERR_EVENT(cant_encode);
- 
- #define show_nfsd_may_flags(x)						\
- 	__print_flags(x, "|",						\
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index e14b38d6751d8..f7e2beded6d7f 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -360,11 +360,13 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
+  * st_{access,deny}_bmap field of the stateid, in order to track not
+  * only what share bits are currently in force, but also what
+  * combinations of share bits previous opens have used.  This allows us
+- * to enforce the recommendation of rfc 3530 14.2.19 that the server
+- * return an error if the client attempt to downgrade to a combination
+- * of share bits not explicable by closing some of its previous opens.
++ * to enforce the recommendation in
++ * https://datatracker.ietf.org/doc/html/rfc7530#section-16.19.4 that
++ * the server return an error if the client attempt to downgrade to a
++ * combination of share bits not explicable by closing some of its
++ * previous opens.
+  *
+- * XXX: This enforcement is actually incomplete, since we don't keep
++ * This enforcement is arguably incomplete, since we don't keep
+  * track of access/deny bit combinations; so, e.g., we allow:
+  *
+  *	OPEN allow read, deny write
+@@ -372,6 +374,10 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
+  *	DOWNGRADE allow read, deny none
+  *
+  * which we should reject.
++ *
++ * But you could also argue that our current code is already overkill,
++ * since it only exists to return NFS4ERR_INVAL on incorrect client
++ * behavior.
+  */
+ static unsigned int
+ bmap_to_share_mode(unsigned long bmap)
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index e73bdbb1634ab..6eb3c7157214b 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -568,6 +568,10 @@ struct nfs4_ol_stateid {
+ 	struct list_head		st_locks;
+ 	struct nfs4_stateowner		*st_stateowner;
+ 	struct nfs4_clnt_odstate	*st_clnt_odstate;
++/*
++ * These bitmasks use 3 separate bits for READ, ALLOW, and BOTH; see the
++ * comment above bmap_to_share_mode() for explanation:
++ */
+ 	unsigned char			st_access_bmap;
+ 	unsigned char			st_deny_bmap;
+ 	struct nfs4_ol_stateid		*st_openstp;
 -- 
 2.43.0
 
