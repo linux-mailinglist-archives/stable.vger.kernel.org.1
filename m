@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-36717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7E789C157
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA54089C57F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2BD01F21B59
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6974EB256FD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D0C7BAF3;
-	Mon,  8 Apr 2024 13:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAE37E119;
+	Mon,  8 Apr 2024 13:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vajLjT3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWIc6Hoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5608E82D7A;
-	Mon,  8 Apr 2024 13:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA277E111;
+	Mon,  8 Apr 2024 13:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582139; cv=none; b=VqELO4NrhU97inn0BWKtRrMoOMB7Zb8cb1N+km7FMWK3FzWW42VFJ8AlgUoAl5bqOaxXCHs5iD8Xkf2JSdcuhEsoanilHRBhieqK2JuQsoh/Cb82b+a7gU8mVdc9v1hF1sfCGt6q2w2kAAKHxfbP7lBinzABKAMkwW7c//X6h3s=
+	t=1712583451; cv=none; b=h2zKwiL25Sm9ES+LRKh6OmIyf+Q4j8/gGtpniHh9GErOt6sXQHyiG4ir3WeOI1anH0vOoPd4VDIuV2JaAWrvcm/J35li9LqpxLQLgHefhNS5Xzt4LYmLgVX3y4x+CPsSnNsnMqAalvSdkhoCUfymnEvAl320wUGUl/8JXJ8Z5go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582139; c=relaxed/simple;
-	bh=lbjA8vsWh+2m4JtnE/EkO7ZQ+q/5KnIOuqaEUvtLGRE=;
+	s=arc-20240116; t=1712583451; c=relaxed/simple;
+	bh=PKB67+WkpO7oKhj3biD2iELSbLn4Wordgb7EXrFVCi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EitPTu5prcXdYgfjmqpiDuIgqtQ/SwlkfVzJGKRP1gJzjdIuVKtMk3lAjJDYfbVwM8m1Rh450ZcsXli3zvKn72uWsrbg6rW/dgrwKDFCgjF2u/Q4brS1SUdroGwaSfiAMB0Wkr3tD55Tjo391i9phfdEfEVRW3VfpZtqw3jsQCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vajLjT3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CEDC433C7;
-	Mon,  8 Apr 2024 13:15:38 +0000 (UTC)
+	 MIME-Version; b=nQaalLaJFrdVFuaPevFQOgNTwp21leawbT1u6lHNl2UcmtpaxT0UhiVx3KprFoDbZRpZR9c/8npuVPxAvGYU/LLrg7xsE9QH/JekGfzbskp1vWls0BagIhpXBIlJEOFHWOGJVKjN0gjSPn0JITvj9SAIat4BqtKqanjWZ0OOhGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWIc6Hoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEFCC433F1;
+	Mon,  8 Apr 2024 13:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582139;
-	bh=lbjA8vsWh+2m4JtnE/EkO7ZQ+q/5KnIOuqaEUvtLGRE=;
+	s=korg; t=1712583451;
+	bh=PKB67+WkpO7oKhj3biD2iELSbLn4Wordgb7EXrFVCi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vajLjT3P7XX+DsHWnzOW8KELeEWTJFedqutfQoHTMNLYMI8XmP8JRlM66FW3zDWT4
-	 M8/e3n969+/QzMH279tG1adNdSCu2DdOUf6q0k5g8f68MRj0AEx5NGSOb5neNGM/1K
-	 zbIgH4HZpItBSkrX60zYtCW/E8BNJNuoHA3XigW8=
+	b=gWIc6HohEr1DKGW1ydIzIDd1d4nBsalIaHdWcDsy7ublnP0Ye0ytlwJmzdDTZ+sDS
+	 dPSpFfT+sWHwAj/h9mGoYrb4BHlQnReK8VZO6iSaPrDam4fJrsXD1K8/sXzgaQINsA
+	 t/6KSQMPO+EfnDO77IwlsqQUk8zfut+2rkKPMrg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jan Schunk <scpcom@gmx.de>,
+	Alexander Duyck <alexander.duyck@gmail.com>,
+	Jakub Kacinski <kuba@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/138] net: fec: Set mac_managed_pm during probe
-Date: Mon,  8 Apr 2024 14:58:15 +0200
-Message-ID: <20240408125258.745559134@linuxfoundation.org>
+Subject: [PATCH 6.6 197/252] SUNRPC: Fix a slow server-side memory leak with RPC-over-TCP
+Date: Mon,  8 Apr 2024 14:58:16 +0200
+Message-ID: <20240408125312.767899107@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit cbc17e7802f5de37c7c262204baadfad3f7f99e5 ]
+[ Upstream commit 05258a0a69b3c5d2c003f818702c0a52b6fea861 ]
 
-Setting mac_managed_pm during interface up is too late.
+Jan Schunk reports that his small NFS servers suffer from memory
+exhaustion after just a few days. A bisect shows that commit
+e18e157bb5c8 ("SUNRPC: Send RPC message on TCP with a single
+sock_sendmsg() call") is the first bad commit.
 
-In situations where the link is not brought up yet and the system suspends
-the regular PHY power management will run. Since the FEC ETHEREN control
-bit is cleared (automatically) on suspend the controller is off in resume.
-When the regular PHY power management resume path runs in this context it
-will write to the MII_DATA register but nothing will be transmitted on the
-MDIO bus.
+That commit assumed that sock_sendmsg() releases all the pages in
+the underlying bio_vec array, but the reality is that it doesn't.
+svc_xprt_release() releases the rqst's response pages, but the
+record marker page fragment isn't one of those, so it is never
+released.
 
-This can be observed by the following log:
+This is a narrow fix that can be applied to stable kernels. A
+more extensive fix is in the works.
 
-    fec 5b040000.ethernet eth0: MDIO read timeout
-    Microchip LAN87xx T1 5b040000.ethernet-1:04: PM: dpm_run_callback(): mdio_bus_phy_resume+0x0/0xc8 returns -110
-    Microchip LAN87xx T1 5b040000.ethernet-1:04: PM: failed to resume: error -110
-
-The data written will however remain in the MII_DATA register.
-
-When the link later is set to administrative up it will trigger a call to
-fec_restart() which will restore the MII_SPEED register. This triggers the
-quirk explained in f166f890c8f0 ("net: ethernet: fec: Replace interrupt
-driven MDIO with polled IO") causing an extra MII_EVENT.
-
-This extra event desynchronizes all the MDIO register reads, causing them
-to complete too early. Leading all reads to read as 0 because
-fec_enet_mdio_wait() returns too early.
-
-When a Microchip LAN8700R PHY is connected to the FEC, the 0 reads causes
-the PHY to be initialized incorrectly and the PHY will not transmit any
-ethernet signal in this state. It cannot be brought out of this state
-without a power cycle of the PHY.
-
-Fixes: 557d5dc83f68 ("net: fec: use mac-managed PHY PM")
-Closes: https://lore.kernel.org/netdev/1f45bdbe-eab1-4e59-8f24-add177590d27@actia.se/
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-[jernberg: commit message]
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://lore.kernel.org/r/20240328155909.59613-2-john.ernberg@actia.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Jan Schunk <scpcom@gmx.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218671
+Fixes: e18e157bb5c8 ("SUNRPC: Send RPC message on TCP with a single sock_sendmsg() call")
+Cc: Alexander Duyck <alexander.duyck@gmail.com>
+Cc: Jakub Kacinski <kuba@kernel.org>
+Cc: David Howells <dhowells@redhat.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/sunrpc/svcsock.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 51eb30c20c7cf..ebff14b0837d9 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2236,8 +2236,6 @@ static int fec_enet_mii_probe(struct net_device *ndev)
- 	fep->link = 0;
- 	fep->full_duplex = 0;
- 
--	phy_dev->mac_managed_pm = true;
--
- 	phy_attached_info(phy_dev);
- 
- 	return 0;
-@@ -2249,10 +2247,12 @@ static int fec_enet_mii_init(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	bool suppress_preamble = false;
-+	struct phy_device *phydev;
- 	struct device_node *node;
- 	int err = -ENXIO;
- 	u32 mii_speed, holdtime;
- 	u32 bus_freq;
-+	int addr;
- 
- 	/*
- 	 * The i.MX28 dual fec interfaces are not equal.
-@@ -2362,6 +2362,13 @@ static int fec_enet_mii_init(struct platform_device *pdev)
- 		goto err_out_free_mdiobus;
- 	of_node_put(node);
- 
-+	/* find all the PHY devices on the bus and set mac_managed_pm to true */
-+	for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
-+		phydev = mdiobus_get_phy(fep->mii_bus, addr);
-+		if (phydev)
-+			phydev->mac_managed_pm = true;
-+	}
-+
- 	mii_cnt++;
- 
- 	/* save fec0 mii_bus */
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index e0ce4276274be..933e12e3a55c7 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1216,15 +1216,6 @@ static int svc_tcp_recvfrom(struct svc_rqst *rqstp)
+  * MSG_SPLICE_PAGES is used exclusively to reduce the number of
+  * copy operations in this path. Therefore the caller must ensure
+  * that the pages backing @xdr are unchanging.
+- *
+- * Note that the send is non-blocking. The caller has incremented
+- * the reference count on each page backing the RPC message, and
+- * the network layer will "put" these pages when transmission is
+- * complete.
+- *
+- * This is safe for our RPC services because the memory backing
+- * the head and tail components is never kmalloc'd. These always
+- * come from pages in the svc_rqst::rq_pages array.
+  */
+ static int svc_tcp_sendmsg(struct svc_sock *svsk, struct svc_rqst *rqstp,
+ 			   rpc_fraghdr marker, unsigned int *sentp)
+@@ -1254,6 +1245,7 @@ static int svc_tcp_sendmsg(struct svc_sock *svsk, struct svc_rqst *rqstp,
+ 	iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, rqstp->rq_bvec,
+ 		      1 + count, sizeof(marker) + rqstp->rq_res.len);
+ 	ret = sock_sendmsg(svsk->sk_sock, &msg);
++	page_frag_free(buf);
+ 	if (ret < 0)
+ 		return ret;
+ 	*sentp += ret;
 -- 
 2.43.0
 
