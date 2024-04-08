@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797FE89C461
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A248589C195
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3599F284454
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E8AB282DDC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7B97F478;
-	Mon,  8 Apr 2024 13:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B69A7F496;
+	Mon,  8 Apr 2024 13:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBQh5sEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XTIQB7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A19A7F470;
-	Mon,  8 Apr 2024 13:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCA47F492;
+	Mon,  8 Apr 2024 13:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583902; cv=none; b=NgsAek9U+h+CR0o3S58Q2FBLlsEP3YRuO4fYpwe6k/zqlYvl2kJ/OvxtwDnCUiBEggXkfc6ijmxfJp1rX816Mno/ufD8H0k2p82+bPSYY4TX8FvvCmE3DWW9LC1C2wloo/iUl5iXgc8B0pTUZ40CHloA/UCIM1zozKpCOi+2RNs=
+	t=1712582285; cv=none; b=Msr/o+qGD+yxGC+mhpWksQEVYcUXjqSsNvKXFcP8maAWtkixwVZkRqjBo/w/3m0AaxeFZNklnZjJArDcbnsmpYL3OhrLsjCJh1NKIOAIn5fK3xMl++mQnqQ/3tllLFzICtc086Sh/EjWekkulQRYrjH2IoZu3c2NOguUTGAP5ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583902; c=relaxed/simple;
-	bh=A3T02lGkitPFzVpAhOJsIOOc0yKJqL63zXc/ptCqdcE=;
+	s=arc-20240116; t=1712582285; c=relaxed/simple;
+	bh=O5NMlOOZWCFh4y9VqLppuSlFjBPef1rXyJzXe6MsEZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KBxHX524RU6o/noIX1RZrgced6qmD4uw15iuFNET8ndtsZk1tg6EohHOVZRlmGy+teeLfAEVzc63gPzlGEQj9bOKD2c8cZmyEIEE779R7SXtSfmphO8qb0UYy/tYT6gVYn+iUiqVjEwjhO3iVTYwYW53Xgg9pWRwwxJNzz9yLXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBQh5sEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B45C433C7;
-	Mon,  8 Apr 2024 13:45:01 +0000 (UTC)
+	 MIME-Version; b=TnytDITRe05z9CsdCaYJ29hXMbJRe5OSf43A0FNAZ08MzI3AUX8pbvKIbRIFz8d6I4Hs4qRhmVIA+6sTb4DcpdX4pW89fU3lOy/4UB6UyNgkp9SBLF5qTbjok8J/5aZooi4HN0pMewPEpIPEiLEnBsqYepALP5QNZvGkUEmCNXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XTIQB7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68231C433C7;
+	Mon,  8 Apr 2024 13:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583902;
-	bh=A3T02lGkitPFzVpAhOJsIOOc0yKJqL63zXc/ptCqdcE=;
+	s=korg; t=1712582284;
+	bh=O5NMlOOZWCFh4y9VqLppuSlFjBPef1rXyJzXe6MsEZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBQh5sEf52yUj6Eq1IYwp69ZI0hPXVf2OWLMT3YnpZGEwRWONpb2+73Zg0n2+MAGM
-	 y1wtAWsojox8WsyjbYRBMH68QBPe4sYeQC+MBGnRuAVKbWf+KwP3GD4SZLj8Rpuarf
-	 Kr8m23PrCuTeEm25BnCda+yzJ4N6v1Y0yT+bnxo8=
+	b=1XTIQB7IChlZ0euJKQCdpS6u+NFb55yMPDdn5G0GToRgwhBYLteFjvwZpGeqKvNE1
+	 YOkDP9fF6qXpijLwh5L40Z6MT9EnF6w4jJCu0mbirbxxqgEHZqUOG7l2e7iEG3nhPb
+	 JROxGL7VKN7MwGbXkqDb2buY67FUmRmYfnV1V6rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.8 232/273] x86/mce: Make sure to grab mce_sysfs_mutex in set_bank()
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 093/138] ASoC: rt5682-sdw: fix locking sequence
 Date: Mon,  8 Apr 2024 14:58:27 +0200
-Message-ID: <20240408125316.628864746@linuxfoundation.org>
+Message-ID: <20240408125259.123797275@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,72 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 3ddf944b32f88741c303f0b21459dbb3872b8bc5 upstream.
+[ Upstream commit 310a5caa4e861616a27a83c3e8bda17d65026fa8 ]
 
-Modifying a MCA bank's MCA_CTL bits which control which error types to
-be reported is done over
+The disable_irq_lock protects the 'disable_irq' value, we need to lock
+before testing it.
 
-  /sys/devices/system/machinecheck/
-  ├── machinecheck0
-  │   ├── bank0
-  │   ├── bank1
-  │   ├── bank10
-  │   ├── bank11
-  ...
-
-sysfs nodes by writing the new bit mask of events to enable.
-
-When the write is accepted, the kernel deletes all current timers and
-reinits all banks.
-
-Doing that in parallel can lead to initializing a timer which is already
-armed and in the timer wheel, i.e., in use already:
-
-  ODEBUG: init active (active state 0) object: ffff888063a28000 object
-  type: timer_list hint: mce_timer_fn+0x0/0x240 arch/x86/kernel/cpu/mce/core.c:2642
-  WARNING: CPU: 0 PID: 8120 at lib/debugobjects.c:514
-  debug_print_object+0x1a0/0x2a0 lib/debugobjects.c:514
-
-Fix that by grabbing the sysfs mutex as the rest of the MCA sysfs code
-does.
-
-Reported by: Yue Sun <samsun1006219@gmail.com>
-Reported by: xingwei lee <xrivendell7@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/CAEkJfYNiENwQY8yV1LYJ9LjJs%2Bx_-PqMv98gKig55=2vbzffRw@mail.gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 02fb23d72720 ("ASoC: rt5682-sdw: fix for JD event handling in ClockStop Mode0")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@linux.intel.com>
+Link: https://msgid.link/r/20240325221817.206465-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/codecs/rt5682-sdw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -2474,12 +2474,14 @@ static ssize_t set_bank(struct device *s
- 		return -EINVAL;
+diff --git a/sound/soc/codecs/rt5682-sdw.c b/sound/soc/codecs/rt5682-sdw.c
+index 868a61c8b0608..7685011a09354 100644
+--- a/sound/soc/codecs/rt5682-sdw.c
++++ b/sound/soc/codecs/rt5682-sdw.c
+@@ -787,12 +787,12 @@ static int __maybe_unused rt5682_dev_resume(struct device *dev)
+ 		return 0;
  
- 	b = &per_cpu(mce_banks_array, s->id)[bank];
--
- 	if (!b->init)
- 		return -ENODEV;
+ 	if (!slave->unattach_request) {
++		mutex_lock(&rt5682->disable_irq_lock);
+ 		if (rt5682->disable_irq == true) {
+-			mutex_lock(&rt5682->disable_irq_lock);
+ 			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
+ 			rt5682->disable_irq = false;
+-			mutex_unlock(&rt5682->disable_irq_lock);
+ 		}
++		mutex_unlock(&rt5682->disable_irq_lock);
+ 		goto regmap_sync;
+ 	}
  
- 	b->ctl = new;
-+
-+	mutex_lock(&mce_sysfs_mutex);
- 	mce_restart();
-+	mutex_unlock(&mce_sysfs_mutex);
- 
- 	return size;
- }
+-- 
+2.43.0
+
 
 
 
