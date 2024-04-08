@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-37658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17E589C5E2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F70889C303
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92BC11F20EEB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9201C1C21A6D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7127CF26;
-	Mon,  8 Apr 2024 14:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570B47F47B;
+	Mon,  8 Apr 2024 13:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fG7El1lX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YN7SbAS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3B67C0A9;
-	Mon,  8 Apr 2024 14:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1653B7F48D;
+	Mon,  8 Apr 2024 13:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584879; cv=none; b=sXvhUlhqqE535ZdTPuFc8bHdoguGbVO2g9ZcKon/foEcP7SyBjLLcHlimoU+/5XA6PaYd09B4RNDJeKMBM+bMyMwsfGUnCY7SVT9wsrIvq5vKGgisB4cHSeUrygZttUKVoCdJrAYL9lV8F/dY2vkvju3w7OaoqzBEBrCHaTjfKQ=
+	t=1712583092; cv=none; b=gsMJsJf8wT76mwJk3ZzM6Ca7AKbCcSUIy8oIPjIT2sEG8IKSL58UUEBtXVUzrYnVntZnQ9lsBIaPopblfEKJiD2Io3GFyGiJp5YyjaUHh9bIDeLJvEnSRpGqwuM548xu8PF4/ZnnW/XasvUtpe27CiWCHI4DF2ac+ZMsbPPS22s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584879; c=relaxed/simple;
-	bh=K8uCQYwHWCpLnT7mhq69tuQ7a4vl71zBdJw+EaysQyM=;
+	s=arc-20240116; t=1712583092; c=relaxed/simple;
+	bh=RxuSQdjS5NIulvVYgQzZa9oX7LUi4alrSfwR3/gBASo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJCV5ODSCs4rhku3womPmZJ9zIeqj3N6LIgT87OXJ/XWJEk0tVkO/AcjOcFDhkUmjtQ6oJHjoVcCh1DkE+QAZr1Y3hubBhyk3hVVSgtFE1SwdrEmw+k9UDnnLKzRETmJGyOlJUzsXkesx5a9/XRNDUTe9ibLHftc2SlJuHOsiS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fG7El1lX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477E5C433C7;
-	Mon,  8 Apr 2024 14:01:19 +0000 (UTC)
+	 MIME-Version; b=O15OtS7SJzX6FU8Iy01JU1yJH4Ge8ueLeiSkepUav/LEETcAej4BIqhYDHaA8sTm4V4wWyA2iajt990WfECapuDu8WNoFEeVOKDpba+hWx8VO+zXuc+yEmPIRe/IY98hF15NF0Q+GLVmrn03z02Byw4MOef3hWcJk4kZyC0dLHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YN7SbAS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E95C433F1;
+	Mon,  8 Apr 2024 13:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584879;
-	bh=K8uCQYwHWCpLnT7mhq69tuQ7a4vl71zBdJw+EaysQyM=;
+	s=korg; t=1712583092;
+	bh=RxuSQdjS5NIulvVYgQzZa9oX7LUi4alrSfwR3/gBASo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fG7El1lX/ScaSsljBoE9GyqRL7SfzPfcW07Rof5w0SIJuHnV6oMeHt7KpQ5VWJasV
-	 8gltOyGHE6cjhh/gEx46hgWgpX7QLuzveHyLQXqnPJPJhHTRcN6sPh8qaL+IFfIlQI
-	 er5U/Owls5l3wWqjWx2pT2xf/CpVoObnOfARClxo=
+	b=YN7SbAS+GBMGTk20X12E4Qg6TttQvdULHlIA7/ViwEa4Fr2m9S9Tgwdnkq4+j3r3K
+	 7mZcPiUANHtRRX8BglUZxvxhONgtJIrJxshu9ck0U7eZm+qk5ucXjB/DjhyqhZ93wT
+	 vp4xk8u95XNSpWp2PoMD3eoBdiS//7WwkEtN0OWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 5.15 589/690] usb: dwc2: gadget: Fix exiting from clock gating
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 156/252] KVM: SVM: Use unsigned integers when dealing with ASIDs
 Date: Mon,  8 Apr 2024 14:57:35 +0200
-Message-ID: <20240408125420.911268105@linuxfoundation.org>
+Message-ID: <20240408125311.499365139@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +62,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 31f42da31417bec88158f3cf62d19db836217f1e upstream.
+[ Upstream commit 466eec4a22a76c462781bf6d45cb02cbedf21a61 ]
 
-Added exiting from the clock gating mode on USB Reset Detect interrupt
-if core in the clock gating mode.
-Added new condition to check core in clock gating mode or no.
+Convert all local ASID variables and parameters throughout the SEV code
+from signed integers to unsigned integers.  As ASIDs are fundamentally
+unsigned values, and the global min/max variables are appropriately
+unsigned integers, too.
 
-Fixes: 9b4965d77e11 ("usb: dwc2: Add exit clock gating from session request interrupt")
-Fixes: 5d240efddc7f ("usb: dwc2: Add exit clock gating from wakeup interrupt")
-Fixes: 16c729f90bdf ("usb: dwc2: Allow exit clock gating in urb enqueue")
-Fixes: 401411bbc4e6 ("usb: dwc2: Add exit clock gating before removing driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/cbcc2ccd37e89e339130797ed68ae4597db773ac.1708938774.git.Minas.Harutyunyan@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Functionally, this is a glorified nop as KVM guarantees min_sev_asid is
+non-zero, and no CPU supports -1u as the _only_ asid, i.e. the signed vs.
+unsigned goof won't cause problems in practice.
+
+Opportunistically use sev_get_asid() in sev_flush_encrypted_page() instead
+of open coding an equivalent.
+
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240131235609.4161407-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: 0aa6b90ef9d7 ("KVM: SVM: Add support for allowing zero SEV ASIDs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/core_intr.c |    9 ++++++---
- drivers/usb/dwc2/gadget.c    |    6 ++++++
- drivers/usb/dwc2/hcd.c       |    2 +-
- drivers/usb/dwc2/platform.c  |    2 +-
- 4 files changed, 14 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/sev.c | 18 ++++++++++--------
+ arch/x86/kvm/trace.h   | 10 +++++-----
+ 2 files changed, 15 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/dwc2/core_intr.c
-+++ b/drivers/usb/dwc2/core_intr.c
-@@ -327,7 +327,8 @@ static void dwc2_handle_session_req_intr
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index e86231c3b8a54..ea68a08cc89c2 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -84,9 +84,10 @@ struct enc_region {
+ };
  
- 			/* Exit gadget mode clock gating. */
- 			if (hsotg->params.power_down ==
--			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
-+			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
-+			    !hsotg->params.no_clock_gating)
- 				dwc2_gadget_exit_clock_gating(hsotg, 0);
- 		}
+ /* Called with the sev_bitmap_lock held, or on shutdown  */
+-static int sev_flush_asids(int min_asid, int max_asid)
++static int sev_flush_asids(unsigned int min_asid, unsigned int max_asid)
+ {
+-	int ret, asid, error = 0;
++	int ret, error = 0;
++	unsigned int asid;
  
-@@ -438,7 +439,8 @@ static void dwc2_handle_wakeup_detected_
+ 	/* Check if there are any ASIDs to reclaim before performing a flush */
+ 	asid = find_next_bit(sev_reclaim_asid_bitmap, nr_asids, min_asid);
+@@ -116,7 +117,7 @@ static inline bool is_mirroring_enc_context(struct kvm *kvm)
+ }
  
- 			/* Exit gadget mode clock gating. */
- 			if (hsotg->params.power_down ==
--			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
-+			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
-+			    !hsotg->params.no_clock_gating)
- 				dwc2_gadget_exit_clock_gating(hsotg, 0);
- 		} else {
- 			/* Change to L0 state */
-@@ -455,7 +457,8 @@ static void dwc2_handle_wakeup_detected_
- 			}
+ /* Must be called with the sev_bitmap_lock held */
+-static bool __sev_recycle_asids(int min_asid, int max_asid)
++static bool __sev_recycle_asids(unsigned int min_asid, unsigned int max_asid)
+ {
+ 	if (sev_flush_asids(min_asid, max_asid))
+ 		return false;
+@@ -143,8 +144,9 @@ static void sev_misc_cg_uncharge(struct kvm_sev_info *sev)
  
- 			if (hsotg->params.power_down ==
--			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
-+			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
-+			    !hsotg->params.no_clock_gating)
- 				dwc2_host_exit_clock_gating(hsotg, 1);
+ static int sev_asid_new(struct kvm_sev_info *sev)
+ {
+-	int asid, min_asid, max_asid, ret;
++	unsigned int asid, min_asid, max_asid;
+ 	bool retry = true;
++	int ret;
  
- 			/*
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -3728,6 +3728,12 @@ irq_retry:
- 		if (hsotg->in_ppd && hsotg->lx_state == DWC2_L2)
- 			dwc2_exit_partial_power_down(hsotg, 0, true);
+ 	WARN_ON(sev->misc_cg);
+ 	sev->misc_cg = get_current_misc_cg();
+@@ -187,7 +189,7 @@ static int sev_asid_new(struct kvm_sev_info *sev)
+ 	return ret;
+ }
  
-+		/* Exit gadget mode clock gating. */
-+		if (hsotg->params.power_down ==
-+		    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
-+		    !hsotg->params.no_clock_gating)
-+			dwc2_gadget_exit_clock_gating(hsotg, 0);
-+
- 		hsotg->lx_state = DWC2_L0;
- 	}
+-static int sev_get_asid(struct kvm *kvm)
++static unsigned int sev_get_asid(struct kvm *kvm)
+ {
+ 	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
  
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -4690,7 +4690,7 @@ static int _dwc2_hcd_urb_enqueue(struct
- 	}
+@@ -284,8 +286,8 @@ static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
  
- 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
--	    hsotg->bus_suspended) {
-+	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
- 		if (dwc2_is_device_mode(hsotg))
- 			dwc2_gadget_exit_clock_gating(hsotg, 0);
- 		else
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -344,7 +344,7 @@ static int dwc2_driver_remove(struct pla
+ static int sev_bind_asid(struct kvm *kvm, unsigned int handle, int *error)
+ {
++	unsigned int asid = sev_get_asid(kvm);
+ 	struct sev_data_activate activate;
+-	int asid = sev_get_asid(kvm);
+ 	int ret;
  
- 	/* Exit clock gating when driver is removed. */
- 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
--	    hsotg->bus_suspended) {
-+	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
- 		if (dwc2_is_device_mode(hsotg))
- 			dwc2_gadget_exit_clock_gating(hsotg, 0);
- 		else
+ 	/* activate ASID on the given handle */
+@@ -2314,7 +2316,7 @@ int sev_cpu_init(struct svm_cpu_data *sd)
+  */
+ static void sev_flush_encrypted_page(struct kvm_vcpu *vcpu, void *va)
+ {
+-	int asid = to_kvm_svm(vcpu->kvm)->sev_info.asid;
++	unsigned int asid = sev_get_asid(vcpu->kvm);
+ 
+ 	/*
+ 	 * Note!  The address must be a kernel address, as regular page walk
+@@ -2632,7 +2634,7 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm)
+ void pre_sev_run(struct vcpu_svm *svm, int cpu)
+ {
+ 	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, cpu);
+-	int asid = sev_get_asid(svm->vcpu.kvm);
++	unsigned int asid = sev_get_asid(svm->vcpu.kvm);
+ 
+ 	/* Assign the asid allocated with this SEV guest */
+ 	svm->asid = asid;
+diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+index 83843379813ee..b82e6ed4f0241 100644
+--- a/arch/x86/kvm/trace.h
++++ b/arch/x86/kvm/trace.h
+@@ -732,13 +732,13 @@ TRACE_EVENT(kvm_nested_intr_vmexit,
+  * Tracepoint for nested #vmexit because of interrupt pending
+  */
+ TRACE_EVENT(kvm_invlpga,
+-	    TP_PROTO(__u64 rip, int asid, u64 address),
++	    TP_PROTO(__u64 rip, unsigned int asid, u64 address),
+ 	    TP_ARGS(rip, asid, address),
+ 
+ 	TP_STRUCT__entry(
+-		__field(	__u64,	rip	)
+-		__field(	int,	asid	)
+-		__field(	__u64,	address	)
++		__field(	__u64,		rip	)
++		__field(	unsigned int,	asid	)
++		__field(	__u64,		address	)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -747,7 +747,7 @@ TRACE_EVENT(kvm_invlpga,
+ 		__entry->address	=	address;
+ 	),
+ 
+-	TP_printk("rip: 0x%016llx asid: %d address: 0x%016llx",
++	TP_printk("rip: 0x%016llx asid: %u address: 0x%016llx",
+ 		  __entry->rip, __entry->asid, __entry->address)
+ );
+ 
+-- 
+2.43.0
+
 
 
 
