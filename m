@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-36959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D3C89C284
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D3C89C046
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 846631C21E9C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58048B2ACE2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005677E76F;
-	Mon,  8 Apr 2024 13:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E558E70CDA;
+	Mon,  8 Apr 2024 13:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EITVZLDo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ffh75CyN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B240A7E58E;
-	Mon,  8 Apr 2024 13:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FA7481A6;
+	Mon,  8 Apr 2024 13:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582842; cv=none; b=Py1SzOrYNSv2LYHmVRYgNjS9lk1GlribLuKk2jhvGQVxps7FhPewm5xT+00gz3uMrgt77TiYUd8UGnIieIbrhA1EbkrteKt7b+MGFAmpx+QEcbJNsgh3S0RyurWBi6qMt2RfACeRZ75S7M6gy86Fx3rzlhsxihXlQ8Ca30pxPD0=
+	t=1712581393; cv=none; b=jFO9uSvNYn+pNqVko4v7EpA88QP6jN/dKe7DtsPWwkcNUpAcZ9iLJBWPTfMyfNU+3G8VZI6xIkrjz9JVz/56Ee3EA+tfMhInv9QgXS7Aes+AOxWzjRTx87VbRKWyB5R3nIetweRF9A3mKEacMqfBSTMjOVID23Shmp6VP7XqaNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582842; c=relaxed/simple;
-	bh=k4plPOWPcH9YGQm4plbF/vUIeCDRjMndxdCYPnSE6kw=;
+	s=arc-20240116; t=1712581393; c=relaxed/simple;
+	bh=cTZQTlwF5dBfqGYDNXZWpTMr6+sdinOSMeDlUFWLJHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doEOJjH/d6SMnhInJcRMZRfvHO0AFpMpd+YMzx4sIzQcC3DeBS7iscPPYpiiRdwevbNG4QlibfTcMpQ62Ny53zNYGdHxEIxgMoWcIGWnKW26zs+Jm+FzI/9R9gSBs6+OJEGsrFy9XV3edaACk6eyigwvr6OpaWQbjjOL+EukPtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EITVZLDo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B2BC433C7;
-	Mon,  8 Apr 2024 13:27:22 +0000 (UTC)
+	 MIME-Version; b=rece24DW60z/wmxTlYD6nt4t9RnNGufrcAzbHRUDiQ5uSaTL2/beCtb7BdFD4MOlK0q+zYxdcM+ESZe2BOld8y/+V21TxMtMjWn7lk7nQLgL/1tqn3ODvNX8vyEUXuLi6jHoqG9borucM/ZJjc6+syh1c0FvS9KpWm1C/howSDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ffh75CyN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2914CC433C7;
+	Mon,  8 Apr 2024 13:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582842;
-	bh=k4plPOWPcH9YGQm4plbF/vUIeCDRjMndxdCYPnSE6kw=;
+	s=korg; t=1712581393;
+	bh=cTZQTlwF5dBfqGYDNXZWpTMr6+sdinOSMeDlUFWLJHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EITVZLDoEOLFKTCITVRC1pwekQ9H2rv16ojsrbEmzuU4UQR4QZeIHSv+x2OO5UBIO
-	 yPRpb52+XjtdKG7jycTnseCFmbGfvvh2T4Lcnla+b2Ts9X9GwRjSpQtJEGxQAZowgG
-	 AhTMyhUW25BZbv7J9fqbBzJR4vv2S/T9Mc7Ek4d8=
+	b=Ffh75CyNkTqnPrdm5tjdgMTMibe/uVYis2tw2dcN26YNFLnSGortxVdfhwuaVvA0c
+	 ZucJydTQzgNhg/jgiWhkFMOoi7uLJTMhid4yliftfWLMXLSbl75HJlh3997RNbow7p
+	 pzy3Lv3X/Dbyij/ppB8VhxfQhlgsY0qmtwcRZrFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 128/252] octeontx2-af: Add array index check
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 013/138] net: hns3: mark unexcuted loopback test result as UNEXECUTED
 Date: Mon,  8 Apr 2024 14:57:07 +0200
-Message-ID: <20240408125310.594902811@linuxfoundation.org>
+Message-ID: <20240408125256.643421540@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Jian Shen <shenjian15@huawei.com>
 
-commit ef15ddeeb6bee87c044bf7754fac524545bf71e8 upstream.
+[ Upstream commit 5bd088d6c21a45ee70e6116879310e54174d75eb ]
 
-In rvu_map_cgx_lmac_pf() the 'iter', which is used as an array index, can reach
-value (up to 14) that exceed the size (MAX_LMAC_COUNT = 8) of the array.
-Fix this bug by adding 'iter' value check.
+Currently, loopback test may be skipped when resetting, but the test
+result will still show as 'PASS', because the driver doesn't set
+ETH_TEST_FL_FAILED flag. Fix it by setting the flag and
+initializating the value to UNEXECUTED.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 91c6945ea1f9 ("octeontx2-af: cn10k: Add RPM MAC support")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4c8dab1c709c ("net: hns3: reconstruct function hns3_self_test")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c |    2 ++
- 1 file changed, 2 insertions(+)
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -160,6 +160,8 @@ static int rvu_map_cgx_lmac_pf(struct rv
- 			continue;
- 		lmac_bmap = cgx_get_lmac_bmap(rvu_cgx_pdata(cgx, rvu));
- 		for_each_set_bit(iter, &lmac_bmap, rvu->hw->lmac_per_cgx) {
-+			if (iter >= MAX_LMAC_COUNT)
-+				continue;
- 			lmac = cgx_get_lmacid(rvu_cgx_pdata(cgx, rvu),
- 					      iter);
- 			rvu->pf2cgxlmac_map[pf] = cgxlmac_id_to_bmap(cgx, lmac);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+index e22835ae8a941..9fce976a08f01 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+@@ -78,6 +78,9 @@ static const struct hns3_stats hns3_rxq_stats[] = {
+ #define HNS3_NIC_LB_TEST_NO_MEM_ERR	1
+ #define HNS3_NIC_LB_TEST_TX_CNT_ERR	2
+ #define HNS3_NIC_LB_TEST_RX_CNT_ERR	3
++#define HNS3_NIC_LB_TEST_UNEXECUTED	4
++
++static int hns3_get_sset_count(struct net_device *netdev, int stringset);
+ 
+ static int hns3_lp_setup(struct net_device *ndev, enum hnae3_loop loop, bool en)
+ {
+@@ -419,18 +422,26 @@ static void hns3_do_external_lb(struct net_device *ndev,
+ static void hns3_self_test(struct net_device *ndev,
+ 			   struct ethtool_test *eth_test, u64 *data)
+ {
++	int cnt = hns3_get_sset_count(ndev, ETH_SS_TEST);
+ 	struct hns3_nic_priv *priv = netdev_priv(ndev);
+ 	struct hnae3_handle *h = priv->ae_handle;
+ 	int st_param[HNAE3_LOOP_NONE][2];
+ 	bool if_running = netif_running(ndev);
++	int i;
++
++	/* initialize the loopback test result, avoid marking an unexcuted
++	 * loopback test as PASS.
++	 */
++	for (i = 0; i < cnt; i++)
++		data[i] = HNS3_NIC_LB_TEST_UNEXECUTED;
+ 
+ 	if (hns3_nic_resetting(ndev)) {
+ 		netdev_err(ndev, "dev resetting!");
+-		return;
++		goto failure;
+ 	}
+ 
+ 	if (!(eth_test->flags & ETH_TEST_FL_OFFLINE))
+-		return;
++		goto failure;
+ 
+ 	if (netif_msg_ifdown(h))
+ 		netdev_info(ndev, "self test start\n");
+@@ -452,6 +463,10 @@ static void hns3_self_test(struct net_device *ndev,
+ 
+ 	if (netif_msg_ifdown(h))
+ 		netdev_info(ndev, "self test end\n");
++	return;
++
++failure:
++	eth_test->flags |= ETH_TEST_FL_FAILED;
+ }
+ 
+ static void hns3_update_limit_promisc_mode(struct net_device *netdev,
+-- 
+2.43.0
+
 
 
 
