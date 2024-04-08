@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-36943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A6189C2E8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DE089C685
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29D6BB2A50A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7704B2958E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565157C6CC;
-	Mon,  8 Apr 2024 13:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C37180BF8;
+	Mon,  8 Apr 2024 14:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YvZ+xo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOmzklwn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A11768EA;
-	Mon,  8 Apr 2024 13:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D6180BF3;
+	Mon,  8 Apr 2024 14:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582796; cv=none; b=CMLPFBfpf5hfxivY0IQGJUQ9uhK4UFMuNYZXe3Rm6cF1xiiDtQr/FfmtBMiqec9+qy/V1IS2tPTTqbz45IU1uvg3DcehoaHKQPYONyn3uARGrVFksHihuxLjW2/6KASyzP3IQ2+so4aHh9DdWXTfSyEToyiExmT9C0zAOahbroo=
+	t=1712585186; cv=none; b=tMdgALQ6dJfmJ6yYtWV6wK+CxKYeuwqJsfxEC8iv6rmVw+BcLTxH3FzyJ99avY8gjMAMQUHDmqE2+GbfpDpa02SVBbixOtptbK7dJ9rhLxLZaVJKtazp1uTEpR3W/S01rLuSDZd5W69gbAh66SufWXsB4PyDWtqjiZr7vqYYX2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582796; c=relaxed/simple;
-	bh=6YBEHVxYjXe25cpSd6sBP2WTDbR1eItjZMQJqD9UyTs=;
+	s=arc-20240116; t=1712585186; c=relaxed/simple;
+	bh=nvN5SQ+jjbjMmizusGpgRHSKSkS0l+3MhGVwklqrq/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnhTdlcLC5+MZiVWBBICAPWOs4A5TFyrFVm2lglN1AB/34S2tN56x3NU4Kkak/WHP2amyYd+X3RsevriW4As18jFIaJsbxwVk/h9Y0FM1JCcVNbLZHhM51spI/5ZdjA2B8r7SZSbS91/HQUSOuILRm6nl8ov0N3Ikfet2ovh0oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YvZ+xo0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D088C43390;
-	Mon,  8 Apr 2024 13:26:35 +0000 (UTC)
+	 MIME-Version; b=bCnnso2N+yE3cIIqnhYfVJkmDzQFsu4lquCnY8ClGVSRRFrVRj4e5gAJTHqDvd4Pgt7N3ZNN9u7SMZ/1NDHTb1n0hm8xKeIG5v9DR0OvDRQKp4VZQXfz4NR4AJSs+xRBaaF/mFxjmgZw7RWx1Ny8wLPmnNu9uanzl275K2Udy50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOmzklwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805ADC433C7;
+	Mon,  8 Apr 2024 14:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582795;
-	bh=6YBEHVxYjXe25cpSd6sBP2WTDbR1eItjZMQJqD9UyTs=;
+	s=korg; t=1712585185;
+	bh=nvN5SQ+jjbjMmizusGpgRHSKSkS0l+3MhGVwklqrq/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YvZ+xo0CSZ0FDYpHuqBnBnCc2FbOLTgbIYgViHrSWClHoyag7EolvXsfwmy5HOih
-	 /5lgYwk32ogwh5W8VixBA6a0Suk+EW439h31wHwvUbapEjGmBtTRAUrK4LcBKyIJL/
-	 c8VXpLUP02gvRnquhTFa4Jl6LiaXzRsxnNSOW5Tk=
+	b=bOmzklwnyuYLLsf68/ky5oLP4pA+4bbVJKAwo3vcwGmWy82QDnTL4ha3Up02TLArI
+	 QmUdNw3SwNPI9gdWgmbNbg+s+JjyP/Idi+AqPcgwNB4wIA0mEAzHJoe1HbDamrS4nh
+	 2+aoSVxyd3Qi5Jf94LH/4BoBCblEbEcXraHjxigU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 134/138] selftests: mptcp: join: fix dev in check_endpoint
+	stable@kernel.org,
+	Ulrich Weigand <ulrich.weigand@de.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 5.15 682/690] s390/entry: align system call table on 8 bytes
 Date: Mon,  8 Apr 2024 14:59:08 +0200
-Message-ID: <20240408125300.397182348@linuxfoundation.org>
+Message-ID: <20240408125424.432126203@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-commit 40061817d95bce6dd5634a61a65cd5922e6ccc92 upstream.
+commit 378ca2d2ad410a1cd5690d06b46c5e2297f4c8c0 upstream.
 
-There's a bug in pm_nl_check_endpoint(), 'dev' didn't be parsed correctly.
-If calling it in the 2nd test of endpoint_tests() too, it fails with an
-error like this:
+Align system call table on 8 bytes. With sys_call_table entry size
+of 8 bytes that eliminates the possibility of a system call pointer
+crossing cache line boundary.
 
- creation  [FAIL] expected '10.0.2.2 id 2 subflow dev dev' \
-                     found '10.0.2.2 id 2 subflow dev ns2eth2'
-
-The reason is '$2' should be set to 'dev', not '$1'. This patch fixes it.
-
-Fixes: 69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240329-upstream-net-20240329-fallback-mib-v1-2-324a8981da48@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in mptcp_join.sh: only the fix has been added, not the
-  verification because this modified subtest is quite different in
-  v6.1: to add this verification, we would need to change a bit the
-  subtest: pm_nl_check_endpoint() takes an extra argument for the
-  title, the next chk_subflow_nr() will no longer need the title, etc.
-  Easier with only the fix without the extra test. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: stable@kernel.org
+Suggested-by: Ulrich Weigand <ulrich.weigand@de.ibm.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Notes:
----
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/entry.S |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -725,7 +725,7 @@ pm_nl_check_endpoint()
- 			[ -n "$_flags" ]; flags="flags $_flags"
- 			shift
- 		elif [ $1 = "dev" ]; then
--			[ -n "$2" ]; dev="dev $1"
-+			[ -n "$2" ]; dev="dev $2"
- 			shift
- 		elif [ $1 = "id" ]; then
- 			_id=$2
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -685,6 +685,7 @@ ENDPROC(stack_overflow)
+ .Lthis_cpu:	.short	0
+ .Lstosm_tmp:	.byte	0
+ 	.section .rodata, "a"
++	.balign	8
+ #define SYSCALL(esame,emu)	.quad __s390x_ ## esame
+ 	.globl	sys_call_table
+ sys_call_table:
 
 
 
