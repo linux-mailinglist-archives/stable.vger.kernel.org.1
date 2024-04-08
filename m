@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1924189C620
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC8589C1F2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0891C23895
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80AA81F22857
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920D47FBAA;
-	Mon,  8 Apr 2024 14:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D7B7C6C8;
+	Mon,  8 Apr 2024 13:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWyH/T+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Op5Ja9+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BCF7F495;
-	Mon,  8 Apr 2024 14:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B2B74BF5;
+	Mon,  8 Apr 2024 13:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585078; cv=none; b=QMKI8GcQg7tssF5jkKGQxfO+S55VQFB+ptXcvdS1Fdg8AbVC9In+QFw+qtHqamg0UIPAHjrtIOBXwfb4wes+J22PGlzupGZK3qmrGgyOEdrfwON1DFzEIEv2R0S2Tc9yvGj5MZupimgulO48zR4VcXXbrbwuUOHbr+IPBff22m4=
+	t=1712582463; cv=none; b=UAIhKMgM8Hk3bJFeMRsV6DITNfskX1OUmm0ceJjCrP7SRRsySpDqtU+URcy+Xule2di6F58tEcMIicYdICCnNZ+ak+oNm83ir+/FypnwJE17zK4XmEicxA3Hm0P/pxIP/p1sVVmUqjqXskBKvF6Hgn0n5hX0Z9PMI8Mic29KIa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585078; c=relaxed/simple;
-	bh=TwlorOTyyVCUCmXD8634zE6ZUUrx5HKVpulD31f+woc=;
+	s=arc-20240116; t=1712582463; c=relaxed/simple;
+	bh=srGjS6wC6xztwvSqhzohZnwhyXtrsDFPk0WMCR8FCfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyZQPIK5g+KKT0VjPJASfCRDcnrge5YlRJ1pkNuKauxLdudw4goNMlzCyw149LO+3Kwu5E6q9ceRWlZqB58g6W+WD8HE1GxWnUGhcF4+pFFaRP12phGpfhtlkQ2l66wZQoWAU2fWcGHe1Aq04UBhz/BLa0mbislRSdf5jz/zRnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWyH/T+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6EFC433F1;
-	Mon,  8 Apr 2024 14:04:37 +0000 (UTC)
+	 MIME-Version; b=szHrhc0Kz0Nd0QRaes/HB3Y8+0fMzhH/7ndsrHLdSL53+2MmE8xLImuE4PNvlvBxq+85/57VXWEDhi1CXK1kQ3SWXoie7/HyAITA3Mg7iytVHNTWazQm/GR+azRFQsda022lHBp+J4IX0ULmBs6joV8WpNLKCfARV7LW7NmX7Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Op5Ja9+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C528C433C7;
+	Mon,  8 Apr 2024 13:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585078;
-	bh=TwlorOTyyVCUCmXD8634zE6ZUUrx5HKVpulD31f+woc=;
+	s=korg; t=1712582463;
+	bh=srGjS6wC6xztwvSqhzohZnwhyXtrsDFPk0WMCR8FCfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWyH/T+YKQxfoeUaUEJil9gKWNWmP/M0Y9gaZyY9WBLFwsY/idSkc6/iOWJOb2f/v
-	 NdKNuI8s+gyzlnMjp1J8QlIQZfGAh1bOhTkfeNpYRql3USisQLYEf7Oo3cA/BRpwjM
-	 Yfm8PSGHJwIeMfzOuOoQT1vkFExWDy4oZ4Wel7xo=
+	b=Op5Ja9+DOLtEv9UsXOmNnR8vuj0huVSkVWdQwKUJ/2PuY8gUQVFpNUDrvLqqSjK8H
+	 heYhfFkn42l2T4GDJi1KOr/hidpOoHqmDOktFAIcCR1Af8V0W6wIYzrkFvGsDZxesV
+	 r3PXpy91G8m5fhfV1WRLHmhqvq0xLEZqXLRAIRBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	Bikash Hazarika <bhazarika@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 656/690] scsi: qla2xxx: Update manufacturer details
+Subject: [PATCH 6.1 108/138] s390/pai: fix sampling event removal for PMU device driver
 Date: Mon,  8 Apr 2024 14:58:42 +0200
-Message-ID: <20240408125423.423274391@linuxfoundation.org>
+Message-ID: <20240408125259.590784335@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bikash Hazarika <bhazarika@marvell.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 1ccad27716ecad1fd58c35e579bedb81fa5e1ad5 ]
+[ Upstream commit e9f3af02f63909f41b43c28330434cc437639c5c ]
 
-Update manufacturer details to indicate Marvell Semiconductors.
+In case of a sampling event, the PAI PMU device drivers need a
+reference to this event.  Currently to PMU device driver reference
+is removed when a sampling event is destroyed. This may lead to
+situations where the reference of the PMU device driver is removed
+while being used by a different sampling event.
+Reset the event reference pointer of the PMU device driver when
+a sampling event is deleted and before the next one might be added.
 
-Link: https://lore.kernel.org/r/20220713052045.10683-10-njavali@marvell.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Bikash Hazarika <bhazarika@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 688fa069fda6 ("scsi: qla2xxx: Update manufacturer detail")
+Fixes: 39d62336f5c1 ("s390/pai: add support for cryptography counters")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h | 2 +-
- drivers/scsi/qla2xxx/qla_gs.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/kernel/perf_pai_crypto.c | 10 +++++++---
+ arch/s390/kernel/perf_pai_ext.c    | 10 +++++++---
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
-index 3c876967e8b16..bab890f1110a1 100644
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -78,7 +78,7 @@ typedef union {
- #include "qla_nvme.h"
- #define QLA2XXX_DRIVER_NAME	"qla2xxx"
- #define QLA2XXX_APIDEV		"ql2xapidev"
--#define QLA2XXX_MANUFACTURER	"QLogic Corporation"
-+#define QLA2XXX_MANUFACTURER	"Marvell Semiconductor, Inc."
+diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+index ba2d2e61df747..93ccb5c955530 100644
+--- a/arch/s390/kernel/perf_pai_crypto.c
++++ b/arch/s390/kernel/perf_pai_crypto.c
+@@ -53,7 +53,6 @@ static void paicrypt_event_destroy(struct perf_event *event)
+ {
+ 	struct paicrypt_map *cpump = per_cpu_ptr(&paicrypt_map, event->cpu);
  
- /*
-  * We have MAILBOX_REGISTER_COUNT sized arrays in a few places,
-diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
-index d3742a83d2fd7..b0f3bf42c3405 100644
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -1615,7 +1615,7 @@ qla2x00_hba_attributes(scsi_qla_host_t *vha, void *entries,
- 	eiter->type = cpu_to_be16(FDMI_HBA_MANUFACTURER);
- 	alen = scnprintf(
- 		eiter->a.manufacturer, sizeof(eiter->a.manufacturer),
--		"%s", "QLogic Corporation");
-+		"%s", QLA2XXX_MANUFACTURER);
- 	alen += FDMI_ATTR_ALIGNMENT(alen);
- 	alen += FDMI_ATTR_TYPELEN(eiter);
- 	eiter->len = cpu_to_be16(alen);
+-	cpump->event = NULL;
+ 	static_branch_dec(&pai_key);
+ 	mutex_lock(&pai_reserve_mutex);
+ 	debug_sprintf_event(cfm_dbg, 5, "%s event %#llx cpu %d users %d"
+@@ -275,10 +274,15 @@ static int paicrypt_add(struct perf_event *event, int flags)
+ 
+ static void paicrypt_stop(struct perf_event *event, int flags)
+ {
+-	if (!event->attr.sample_period)	/* Counting */
++	struct paicrypt_mapptr *mp = this_cpu_ptr(paicrypt_root.mapptr);
++	struct paicrypt_map *cpump = mp->mapptr;
++
++	if (!event->attr.sample_period) {	/* Counting */
+ 		paicrypt_read(event);
+-	else				/* Sampling */
++	} else {				/* Sampling */
+ 		perf_sched_cb_dec(event->pmu);
++		cpump->event = NULL;
++	}
+ 	event->hw.state = PERF_HES_STOPPED;
+ }
+ 
+diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+index 09aebfcf679df..bbaad21123d38 100644
+--- a/arch/s390/kernel/perf_pai_ext.c
++++ b/arch/s390/kernel/perf_pai_ext.c
+@@ -128,7 +128,6 @@ static void paiext_event_destroy(struct perf_event *event)
+ 	struct paiext_map *cpump = mp->mapptr;
+ 
+ 	mutex_lock(&paiext_reserve_mutex);
+-	cpump->event = NULL;
+ 	if (refcount_dec_and_test(&cpump->refcnt))	/* Last reference gone */
+ 		paiext_free(mp);
+ 	paiext_root_free();
+@@ -361,10 +360,15 @@ static int paiext_add(struct perf_event *event, int flags)
+ 
+ static void paiext_stop(struct perf_event *event, int flags)
+ {
+-	if (!event->attr.sample_period)	/* Counting */
++	struct paiext_mapptr *mp = this_cpu_ptr(paiext_root.mapptr);
++	struct paiext_map *cpump = mp->mapptr;
++
++	if (!event->attr.sample_period) {	/* Counting */
+ 		paiext_read(event);
+-	else				/* Sampling */
++	} else {				/* Sampling */
+ 		perf_sched_cb_dec(event->pmu);
++		cpump->event = NULL;
++	}
+ 	event->hw.state = PERF_HES_STOPPED;
+ }
+ 
 -- 
 2.43.0
 
