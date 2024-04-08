@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-37403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B130289C4B4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14ED689C637
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C3602840B9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8FB51F21599
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7599C7BAF0;
-	Mon,  8 Apr 2024 13:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3918060B;
+	Mon,  8 Apr 2024 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byXG8O87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J03HqzC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C9D79F0;
-	Mon,  8 Apr 2024 13:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABD980617;
+	Mon,  8 Apr 2024 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584130; cv=none; b=JaJzPIWfITPmiGDKaKVgMNedh17JZx0JFHhA/68xSfuH4f20FHsKUaQQOPAjaCrhIB4u9vDhdBELBA6br46ljCMOnixEG+ue0960QQvsK3uaiR+gPAPbHFtdyurlCrKYvCKZVe8iZhQDBmvqs3dnviCICGADN+t6gudS6+wXiHA=
+	t=1712585142; cv=none; b=uYOWBl1/rr436yWZNNByiGC7RD2wNpXcdKG1XnmW1YAjObmMoE/eCccPC1IasKieyhK9UPKJqFTajyCAIGw8/9bjfIvbfcRhNaj77U8ptUpq49OX75tJj/5jhNNKQpEeB4zSeUNMBRQJxVLtk2VZQe5EZ9J8NaRfS4gTgsvk7zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584130; c=relaxed/simple;
-	bh=/6o7Hr9LrNFzsd741WCZVFLJ0xZKSGNrkzFP6TRKtFQ=;
+	s=arc-20240116; t=1712585142; c=relaxed/simple;
+	bh=BjQS7e01G7c5lldkMD2vn99bzs6EsHMuC+HCskdrzD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8Uub+cWKBqQrj/hIbNtYqlHYNUhMiY+nYaNTYZZFd+ssFcirvAuuXMlBnIN1Yqz3UyZXEz680tyk6fdGFe7SAIKJK23vlvq1gxea0soIJG1yzS3CL9Q5jApN7qtiYAVhXM0XaNUPMg32ds7cEenTORhBeI382QtDR5m6pD37NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byXG8O87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1609C433C7;
-	Mon,  8 Apr 2024 13:48:49 +0000 (UTC)
+	 MIME-Version; b=KI0WdmEYkYK6hKKJi79I2LYag+D591mYGG2RUjAI2YTW6QARrl8kRhsd/hhZ1I9Ro3YupEPD6juKIdZj//YzXE7fegFbRKk5DASfUdQmQc258+B0N5Nle4GWohrxJERj6oI2P1Tt3EYISYVq6yLkUdoxcZOOouSjRC+dW+3Xbw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J03HqzC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC357C433F1;
+	Mon,  8 Apr 2024 14:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584130;
-	bh=/6o7Hr9LrNFzsd741WCZVFLJ0xZKSGNrkzFP6TRKtFQ=;
+	s=korg; t=1712585142;
+	bh=BjQS7e01G7c5lldkMD2vn99bzs6EsHMuC+HCskdrzD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byXG8O873f6M9Iu/qMZTU/+abE8ql3+RkG2N7q8+RFatMT8NSY6/fQF0Er2FE/rwY
-	 wIC4gsmAkcDI4by+ujmhHD1tO0IgTzJ2fdQAsl4gYMYT46gAQrB1QesfbjvE1jE1X/
-	 N/UKdLRefeIGP5X+k4xKxILMRiwkM67n0Zcl2WYg=
+	b=J03HqzC0awT750aITyGufN6taLNItijNFqdBuvZrY48U3htwZbu9Hg7AInak5n4qU
+	 Sz6VeBHUwtT7darXx5+wEi42Rpf/K3Ebipjw/b0V6ci1489poNhd1pLiGhpoi4SUQ3
+	 2m4YxI5cu8JKAFnMrC+PLla0Qj9kFaTJewK/FlkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfgang Walter <linux@stwm.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jann Horn <jannh@google.com>,
+	Stafford Horne <shorne@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 266/273] Revert "x86/mpparse: Register APIC address only once"
-Date: Mon,  8 Apr 2024 14:59:01 +0200
-Message-ID: <20240408125317.757730311@linuxfoundation.org>
+Subject: [PATCH 5.15 676/690] openrisc: Fix pagewalk usage in arch_dma_{clear, set}_uncached
+Date: Mon,  8 Apr 2024 14:59:02 +0200
+Message-ID: <20240408125424.199793721@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jann Horn <jannh@google.com>
 
-This reverts commit 3428faa0d675f6a6284331731b762dc041011b3c which is
-commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 upstream.
+[ Upstream commit 28148a17c988b614534f457da86893f83664ad43 ]
 
-It is reported to cause problems in the stable branches, so revert it.
+Since commit 8782fb61cc848 ("mm: pagewalk: Fix race between unmap and page
+walker"), walk_page_range() on kernel ranges won't work anymore,
+walk_page_range_novma() must be used instead.
 
-Link: https://lore.kernel.org/r/899b7c1419a064a2b721b78eade06659@stwm.de
-Reported-by: Wolfgang Walter <linux@stwm.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note: I don't have an openrisc development setup, so this is completely
+untested.
+
+Fixes: 8782fb61cc848 ("mm: pagewalk: Fix race between unmap and page walker")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/mpparse.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/openrisc/kernel/dma.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kernel/mpparse.c
-+++ b/arch/x86/kernel/mpparse.c
-@@ -196,12 +196,12 @@ static int __init smp_read_mpc(struct mp
- 	if (!smp_check_mpc(mpc, oem, str))
- 		return 0;
+diff --git a/arch/openrisc/kernel/dma.c b/arch/openrisc/kernel/dma.c
+index a82b2caaa560d..b3edbb33b621d 100644
+--- a/arch/openrisc/kernel/dma.c
++++ b/arch/openrisc/kernel/dma.c
+@@ -74,10 +74,10 @@ void *arch_dma_set_uncached(void *cpu_addr, size_t size)
+ 	 * We need to iterate through the pages, clearing the dcache for
+ 	 * them and setting the cache-inhibit bit.
+ 	 */
+-	mmap_read_lock(&init_mm);
+-	error = walk_page_range(&init_mm, va, va + size, &set_nocache_walk_ops,
+-			NULL);
+-	mmap_read_unlock(&init_mm);
++	mmap_write_lock(&init_mm);
++	error = walk_page_range_novma(&init_mm, va, va + size,
++			&set_nocache_walk_ops, NULL, NULL);
++	mmap_write_unlock(&init_mm);
  
--	if (early) {
--		/* Initialize the lapic mapping */
--		if (!acpi_lapic)
--			register_lapic_address(mpc->lapic);
-+	/* Initialize the lapic mapping */
-+	if (!acpi_lapic)
-+		register_lapic_address(mpc->lapic);
-+
-+	if (early)
- 		return 1;
--	}
+ 	if (error)
+ 		return ERR_PTR(error);
+@@ -88,11 +88,11 @@ void arch_dma_clear_uncached(void *cpu_addr, size_t size)
+ {
+ 	unsigned long va = (unsigned long)cpu_addr;
  
- 	/* Now process the configuration blocks. */
- 	while (count < mpc->length) {
+-	mmap_read_lock(&init_mm);
++	mmap_write_lock(&init_mm);
+ 	/* walk_page_range shouldn't be able to fail here */
+-	WARN_ON(walk_page_range(&init_mm, va, va + size,
+-			&clear_nocache_walk_ops, NULL));
+-	mmap_read_unlock(&init_mm);
++	WARN_ON(walk_page_range_novma(&init_mm, va, va + size,
++			&clear_nocache_walk_ops, NULL, NULL));
++	mmap_write_unlock(&init_mm);
+ }
+ 
+ void arch_sync_dma_for_device(phys_addr_t addr, size_t size,
+-- 
+2.43.0
+
 
 
 
