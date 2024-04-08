@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-37148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B58889C387
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D486489C38A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DD6F1C21ED8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10B6E1C22500
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C637D3F4;
-	Mon,  8 Apr 2024 13:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B76A128829;
+	Mon,  8 Apr 2024 13:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdK+/DUZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn9jo7VY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503D5127B5F;
-	Mon,  8 Apr 2024 13:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC998128372;
+	Mon,  8 Apr 2024 13:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583387; cv=none; b=i2WSkflSk5xlx/cygvfRHZPdgecyteOP1vhpwZTnhbaEu6KB1yPFZUHUJci0KIyILTKKK1ytQZq5rSFd6bqkuODqzrRZ3DWzKbW9mPjL7o/PaGpuQD/Fcxov8Cz6rgDsOS8DoiOXYA2mIVsdTuuIRQPOJ2BtN2+zP30GQgZRNHc=
+	t=1712583395; cv=none; b=WqOd2zfJTlTNazE7L1hLRKhicE5PRS7O21gbexc7LtxQZ2gt2fDVbDNV45SBKH+L7cQz/n3XlmcFj/4W4gP+T1Ocipgmy7DZ0XRwD0/LIhm4u1h8Zlnl9R3mt4v9rjFqZ4mh4h5P+qqD5c60eUnwKs5yf8/yb7dZjSrqzMyj8ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583387; c=relaxed/simple;
-	bh=iB+30781Vv4OkQt4qYcChy2LmBCScrq0EI/LAIDEqmk=;
+	s=arc-20240116; t=1712583395; c=relaxed/simple;
+	bh=igVkDiJg82gO6PSDzff0AeQpaauFcduGPKbVrEymsH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NpKGfma4DGbHAnsxEt/6Yc95F+dUXcts5SzNvqeYwbpNd86TrLg2UmFjdgE/EqrL/uFeEzkCsbFJWhEC7Oz0BsTC7AbGulg21PTVtdGTF7iYYIRwXA29k9jHgabkfPBSzWHH7htzVVCi0XzPOCfyn8dUCWL1lF2t4wCr94gPyJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdK+/DUZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B423C433C7;
-	Mon,  8 Apr 2024 13:36:26 +0000 (UTC)
+	 MIME-Version; b=Hi+vLLO7CE9w/X9SpCGiyAv9JIiooW7FOSW1QCUbvwlyJ75J+RUHHYIZg0C/1iecjyvMM7jAsIlfOUd/SYCatzq7rFI/T8x4lqKagIpL/LYrx7OLMup2X4UuT3qzwt1Ky8Ajp3lYAExd/xieC59iuzg9s2mQPqSKKK11r0Bt0uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn9jo7VY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3C6C433F1;
+	Mon,  8 Apr 2024 13:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583387;
-	bh=iB+30781Vv4OkQt4qYcChy2LmBCScrq0EI/LAIDEqmk=;
+	s=korg; t=1712583395;
+	bh=igVkDiJg82gO6PSDzff0AeQpaauFcduGPKbVrEymsH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdK+/DUZKzjD9ugIW5xhC4g7FkUpTtSxbhdHQs4/80rBvLp5Jt/iwCUVrNziVJOkv
-	 Y5NfQA5SqOimoEqvsRxc1pKy1APZxPdeSgi2GSZjgWp7sjLrNhhVJDHROx3yyk8EAM
-	 kbNBU7SowPTLlpsvNLTZhSmYEbEFy/fgZ1WMAjmU=
+	b=Gn9jo7VY6rFRwUgO8Q4hJ10Q7P12+dN9Qk6C3PVq/+7nYhbslZ94WXGhK37RJ2XuX
+	 oyNh+LekTE62idPnd+fJVQFohivYScnGVzuwAX47VY9N5JQK2ikAMrqar1ePd2ni49
+	 V2C/136iwNBH9nkqF4dnNbCR09U7QzBjoeGFTt7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	NeilBrown <neilb@suse.de>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 242/690] SUNRPC: move the pool_map definitions (back) into svc.c
-Date: Mon,  8 Apr 2024 14:51:48 +0200
-Message-ID: <20240408125408.416906144@linuxfoundation.org>
+Subject: [PATCH 5.15 243/690] SUNRPC: always treat sv_nrpools==1 as "not pooled"
+Date: Mon,  8 Apr 2024 14:51:49 +0200
+Message-ID: <20240408125408.447704931@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,138 +67,159 @@ Content-Transfer-Encoding: 8bit
 
 From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit cf0e124e0a489944d08fcc3c694d2b234d2cc658 ]
+[ Upstream commit 93aa619eb0b42eec2f3a9b4d9db41f5095390aec ]
 
-These definitions are not used outside of svc.c, and there is no
-evidence that they ever have been.  So move them into svc.c
-and make the declarations 'static'.
+Currently 'pooled' services hold a reference on the pool_map, and
+'unpooled' services do not.
+svc_destroy() uses the presence of ->svo_function (via
+svc_serv_is_pooled()) to determine if the reference should be dropped.
+There is no direct correlation between being pooled and the use of
+svo_function, though in practice, lockd is the only non-pooled service,
+and the only one not to use svo_function.
+
+This is untidy and would cause problems if we changed lockd to use
+svc_set_num_threads(), which requires the use of ->svo_function.
+
+So change the test for "is the service pooled" to "is sv_nrpools > 1".
+
+This means that when svc_pool_map_get() returns 1, it must NOT take a
+reference to the pool.
+
+We discard svc_serv_is_pooled(), and test sv_nrpools directly.
 
 Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- include/linux/sunrpc/svc.h | 25 -------------------------
- net/sunrpc/svc.c           | 31 +++++++++++++++++++++++++------
- 2 files changed, 25 insertions(+), 31 deletions(-)
+ net/sunrpc/svc.c | 54 ++++++++++++++++++++++++++----------------------
+ 1 file changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index 71b3a9e3fc4a8..35bb1c4393400 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -496,29 +496,6 @@ struct svc_procedure {
- 	const char *		pc_name;	/* for display */
- };
- 
--/*
-- * Mode for mapping cpus to pools.
-- */
--enum {
--	SVC_POOL_AUTO = -1,	/* choose one of the others */
--	SVC_POOL_GLOBAL,	/* no mapping, just a single global pool
--				 * (legacy & UP mode) */
--	SVC_POOL_PERCPU,	/* one pool per cpu */
--	SVC_POOL_PERNODE	/* one pool per numa node */
--};
--
--struct svc_pool_map {
--	int count;			/* How many svc_servs use us */
--	int mode;			/* Note: int not enum to avoid
--					 * warnings about "enumeration value
--					 * not handled in switch" */
--	unsigned int npools;
--	unsigned int *pool_to;		/* maps pool id to cpu or node */
--	unsigned int *to_pool;		/* maps cpu or node to pool id */
--};
--
--extern struct svc_pool_map svc_pool_map;
--
- /*
-  * Function prototypes.
-  */
-@@ -535,8 +512,6 @@ void		   svc_rqst_replace_page(struct svc_rqst *rqstp,
- 					 struct page *page);
- void		   svc_rqst_free(struct svc_rqst *);
- void		   svc_exit_thread(struct svc_rqst *);
--unsigned int	   svc_pool_map_get(void);
--void		   svc_pool_map_put(void);
- struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
- 			const struct svc_serv_ops *);
- int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
 diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 07443f7e2d870..8fbfea9f2a04c 100644
+index 8fbfea9f2a04c..fee7a22578b64 100644
 --- a/net/sunrpc/svc.c
 +++ b/net/sunrpc/svc.c
-@@ -41,14 +41,35 @@ static void svc_unregister(const struct svc_serv *serv, struct net *net);
+@@ -37,8 +37,6 @@
  
+ static void svc_unregister(const struct svc_serv *serv, struct net *net);
+ 
+-#define svc_serv_is_pooled(serv)    ((serv)->sv_ops->svo_function)
+-
  #define SVC_POOL_DEFAULT	SVC_POOL_GLOBAL
  
-+/*
-+ * Mode for mapping cpus to pools.
-+ */
-+enum {
-+	SVC_POOL_AUTO = -1,	/* choose one of the others */
-+	SVC_POOL_GLOBAL,	/* no mapping, just a single global pool
-+				 * (legacy & UP mode) */
-+	SVC_POOL_PERCPU,	/* one pool per cpu */
-+	SVC_POOL_PERNODE	/* one pool per numa node */
-+};
-+
  /*
-  * Structure for mapping cpus to pools and vice versa.
-  * Setup once during sunrpc initialisation.
-  */
--struct svc_pool_map svc_pool_map = {
-+
-+struct svc_pool_map {
-+	int count;			/* How many svc_servs use us */
-+	int mode;			/* Note: int not enum to avoid
-+					 * warnings about "enumeration value
-+					 * not handled in switch" */
-+	unsigned int npools;
-+	unsigned int *pool_to;		/* maps pool id to cpu or node */
-+	unsigned int *to_pool;		/* maps cpu or node to pool id */
-+};
-+
-+static struct svc_pool_map svc_pool_map = {
- 	.mode = SVC_POOL_DEFAULT
- };
--EXPORT_SYMBOL_GPL(svc_pool_map);
+@@ -240,8 +238,10 @@ svc_pool_map_init_pernode(struct svc_pool_map *m)
  
- static DEFINE_MUTEX(svc_pool_map_mutex);/* protects svc_pool_map.count only */
- 
-@@ -222,7 +243,7 @@ svc_pool_map_init_pernode(struct svc_pool_map *m)
-  * vice versa).  Initialise the map if we're the first user.
-  * Returns the number of pools.
+ /*
+  * Add a reference to the global map of cpus to pools (and
+- * vice versa).  Initialise the map if we're the first user.
+- * Returns the number of pools.
++ * vice versa) if pools are in use.
++ * Initialise the map if we're the first user.
++ * Returns the number of pools. If this is '1', no reference
++ * was taken.
   */
--unsigned int
-+static unsigned int
+ static unsigned int
  svc_pool_map_get(void)
- {
- 	struct svc_pool_map *m = &svc_pool_map;
-@@ -257,7 +278,6 @@ svc_pool_map_get(void)
+@@ -253,6 +253,7 @@ svc_pool_map_get(void)
+ 
+ 	if (m->count++) {
+ 		mutex_unlock(&svc_pool_map_mutex);
++		WARN_ON_ONCE(m->npools <= 1);
+ 		return m->npools;
+ 	}
+ 
+@@ -268,29 +269,36 @@ svc_pool_map_get(void)
+ 		break;
+ 	}
+ 
+-	if (npools < 0) {
++	if (npools <= 0) {
+ 		/* default, or memory allocation failure */
+ 		npools = 1;
+ 		m->mode = SVC_POOL_GLOBAL;
+ 	}
+ 	m->npools = npools;
+ 
++	if (npools == 1)
++		/* service is unpooled, so doesn't hold a reference */
++		m->count--;
++
  	mutex_unlock(&svc_pool_map_mutex);
- 	return m->npools;
+-	return m->npools;
++	return npools;
  }
--EXPORT_SYMBOL_GPL(svc_pool_map_get);
  
  /*
-  * Drop a reference to the global map of cpus to pools.
-@@ -266,7 +286,7 @@ EXPORT_SYMBOL_GPL(svc_pool_map_get);
+- * Drop a reference to the global map of cpus to pools.
++ * Drop a reference to the global map of cpus to pools, if
++ * pools were in use, i.e. if npools > 1.
+  * When the last reference is dropped, the map data is
+  * freed; this allows the sysadmin to change the pool
   * mode using the pool_mode module option without
   * rebooting or re-loading sunrpc.ko.
   */
--void
-+static void
- svc_pool_map_put(void)
+ static void
+-svc_pool_map_put(void)
++svc_pool_map_put(int npools)
  {
  	struct svc_pool_map *m = &svc_pool_map;
-@@ -283,7 +303,6 @@ svc_pool_map_put(void)
  
- 	mutex_unlock(&svc_pool_map_mutex);
++	if (npools <= 1)
++		return;
+ 	mutex_lock(&svc_pool_map_mutex);
+ 
+ 	if (!--m->count) {
+@@ -359,21 +367,18 @@ svc_pool_for_cpu(struct svc_serv *serv, int cpu)
+ 	struct svc_pool_map *m = &svc_pool_map;
+ 	unsigned int pidx = 0;
+ 
+-	/*
+-	 * An uninitialised map happens in a pure client when
+-	 * lockd is brought up, so silently treat it the
+-	 * same as SVC_POOL_GLOBAL.
+-	 */
+-	if (svc_serv_is_pooled(serv)) {
+-		switch (m->mode) {
+-		case SVC_POOL_PERCPU:
+-			pidx = m->to_pool[cpu];
+-			break;
+-		case SVC_POOL_PERNODE:
+-			pidx = m->to_pool[cpu_to_node(cpu)];
+-			break;
+-		}
++	if (serv->sv_nrpools <= 1)
++		return serv->sv_pools;
++
++	switch (m->mode) {
++	case SVC_POOL_PERCPU:
++		pidx = m->to_pool[cpu];
++		break;
++	case SVC_POOL_PERNODE:
++		pidx = m->to_pool[cpu_to_node(cpu)];
++		break;
+ 	}
++
+ 	return &serv->sv_pools[pidx % serv->sv_nrpools];
  }
--EXPORT_SYMBOL_GPL(svc_pool_map_put);
  
- static int svc_pool_map_get_node(unsigned int pidx)
- {
+@@ -526,7 +531,7 @@ svc_create_pooled(struct svc_program *prog, unsigned int bufsize,
+ 		goto out_err;
+ 	return serv;
+ out_err:
+-	svc_pool_map_put();
++	svc_pool_map_put(npools);
+ 	return NULL;
+ }
+ EXPORT_SYMBOL_GPL(svc_create_pooled);
+@@ -561,8 +566,7 @@ svc_destroy(struct kref *ref)
+ 
+ 	cache_clean_deferred(serv);
+ 
+-	if (svc_serv_is_pooled(serv))
+-		svc_pool_map_put();
++	svc_pool_map_put(serv->sv_nrpools);
+ 
+ 	kfree(serv->sv_pools);
+ 	kfree(serv);
 -- 
 2.43.0
 
