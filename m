@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-36448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7996589BFEC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC1989C268
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A28D1F24CDF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B00E61C21A97
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A02870CCB;
-	Mon,  8 Apr 2024 13:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1D171B3D;
+	Mon,  8 Apr 2024 13:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeYZOtOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfLqkneb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5C96F08B;
-	Mon,  8 Apr 2024 13:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0854B6A352;
+	Mon,  8 Apr 2024 13:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581356; cv=none; b=ZBrPmAg6BUudQTy+hvNFvZBPTRlh9HcNTafcU694m3DDHFKwcp5Od/LRkLZExEDGTrlO8SH2QYMk8CNcVkxRc3/MRY5waIyhQmsjjl04iicDXWQbV+vCiS531rUjLXWyOPQeMUE+L5a0MbEava/MO6ot6KdankCsykXCtX0XOLQ=
+	t=1712582764; cv=none; b=kuWlowL9es8c41qkwJEkOiqz9nZwTOpv3tbIV2SZmASCpZ2XErUMXEL1JH02BLJHFAQkQl1KIMJa7SFFO9c3b6935M8+bsNQD3bg6H7w/DM6pfg9H9AmNipI+LGqgnxbUw181GDSzd3OaiqmrEder/f4jwrBkGkuf0r/Qe/s8Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581356; c=relaxed/simple;
-	bh=he+zHfL3tDShvQ7q0MNP0c2Oprn9hdhxEArWpSGCW5M=;
+	s=arc-20240116; t=1712582764; c=relaxed/simple;
+	bh=L9sM6eSjvmHkquu61uVKlNsTFxylEoJwgZj3ASk5oJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snplA6Pt/220zIX9KcI0o2wVd2seiIWNtYOaCTpDTDxksgW8YBMZWRB139Mled6KWwCjkv2RZ8qfTI0zBzSqC1Llx9Us9vQpXvcDeOKGXIvPJeeCZE3JRIyMaeJJhkwzQtwwkxNjeNDhmefVHqVa8+B06CDs71RlKmA4GeJmEjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeYZOtOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D171C433C7;
-	Mon,  8 Apr 2024 13:02:34 +0000 (UTC)
+	 MIME-Version; b=txqbxl3N+J73wjw5gI+H18Ik8iB5LedH+dAnRBbJI+D99Neiz+dx+PSRkzlhtJHr31M+g6KPoTCHP54MsZwzHEgGXxZhV9C/pSCXF3SR6sXORl5ibmV4KNHKFPpC0UNKnXRdFb8Oo+qpmVXh6zUTH3BOSrSmmzA2O+EJQKa9l/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfLqkneb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814E0C433C7;
+	Mon,  8 Apr 2024 13:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581355;
-	bh=he+zHfL3tDShvQ7q0MNP0c2Oprn9hdhxEArWpSGCW5M=;
+	s=korg; t=1712582763;
+	bh=L9sM6eSjvmHkquu61uVKlNsTFxylEoJwgZj3ASk5oJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JeYZOtObYLl89H265qeYI1P4fAgCzckgOjhm6ADhyreh2qqkpVFN8zhLsUUd91jpT
-	 1Ywu5NayYv2Ger93CL0NT+9Ht2doxPam2NVHk6Q9a3dUbJrKVJDl0RNvYIVl+ldInQ
-	 qho4ufDus+ILl59+l5+kHGfoIQpnuKdyMorwJqgA=
+	b=YfLqknebkPqlT0vkJTSzQomEbFdqpNv5ihjAQKFX9BEjj1BWIl9jbt4PIO58igmpk
+	 SM6u7E+Cmt9SYyr6uq6avOU2Td996T15fJA+ztE9rWWkrTf6cT/Rp5Nc6+6Ddlvlrq
+	 u56SXDb5q1d83FggK1kgw1/h7nmBRwdE5HSPRoJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Thorsten Winkler <twinkler@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/138] s390/qeth: handle deferred cc1
+	Atlas Yu <atlas.yu@canonical.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 122/252] r8169: skip DASH fw status checks when DASH is disabled
 Date: Mon,  8 Apr 2024 14:57:01 +0200
-Message-ID: <20240408125256.455719289@linuxfoundation.org>
+Message-ID: <20240408125310.412450350@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Atlas Yu <atlas.yu@canonical.com>
 
-[ Upstream commit afb373ff3f54c9d909efc7f810dc80a9742807b2 ]
+commit 5e864d90b20803edf6bd44a99fb9afa7171785f2 upstream.
 
-The IO subsystem expects a driver to retry a ccw_device_start, when the
-subsequent interrupt response block (irb) contains a deferred
-condition code 1.
+On devices that support DASH, the current code in the "rtl_loop_wait" function
+raises false alarms when DASH is disabled. This occurs because the function
+attempts to wait for the DASH firmware to be ready, even though it's not
+relevant in this case.
 
-Symptoms before this commit:
-On the read channel we always trigger the next read anyhow, so no
-different behaviour here.
-On the write channel we may experience timeout errors, because the
-expected reply will never be received without the retry.
-Other callers of qeth_send_control_data() may wrongly assume that the ccw
-was successful, which may cause problems later.
+r8169 0000:0c:00.0 eth0: RTL8168ep/8111ep, 38:7c:76:49:08:d9, XID 502, IRQ 86
+r8169 0000:0c:00.0 eth0: jumbo features [frames: 9194 bytes, tx checksumming: ko]
+r8169 0000:0c:00.0 eth0: DASH disabled
+...
+r8169 0000:0c:00.0 eth0: rtl_ep_ocp_read_cond == 0 (loop: 30, delay: 10000).
 
-Note that since
-commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-and
-commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
-deferred CC1s are much more likely to occur. See the commit message of the
-latter for more background information.
+This patch modifies the driver start/stop functions to skip checking the DASH
+firmware status when DASH is explicitly disabled. This prevents unnecessary
+delays and false alarms.
 
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Co-developed-by: Thorsten Winkler <twinkler@linux.ibm.com>
-Signed-off-by: Thorsten Winkler <twinkler@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240321115337.3564694-1-wintera@linux.ibm.com
+The patch has been tested on several ThinkStation P8/PX workstations.
+
+Fixes: 0ab0c45d8aae ("r8169: add handling DASH when DASH is disabled")
+Signed-off-by: Atlas Yu <atlas.yu@canonical.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20240328055152.18443-1-atlas.yu@canonical.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/net/qeth_core_main.c | 38 +++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |   31 ++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
-index ae4b6d24bc902..1e6340e2c2588 100644
---- a/drivers/s390/net/qeth_core_main.c
-+++ b/drivers/s390/net/qeth_core_main.c
-@@ -1179,6 +1179,20 @@ static int qeth_check_irb_error(struct qeth_card *card, struct ccw_device *cdev,
- 	}
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -1201,17 +1201,40 @@ static void rtl8168ep_stop_cmac(struct r
+ 	RTL_W8(tp, IBCR0, RTL_R8(tp, IBCR0) & ~0x01);
  }
  
-+/**
-+ * qeth_irq() - qeth interrupt handler
-+ * @cdev: ccw device
-+ * @intparm: expect pointer to iob
-+ * @irb: Interruption Response Block
-+ *
-+ * In the good path:
-+ * corresponding qeth channel is locked with last used iob as active_cmd.
-+ * But this function is also called for error interrupts.
-+ *
-+ * Caller ensures that:
-+ * Interrupts are disabled; ccw device lock is held;
-+ *
-+ */
- static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
- 		struct irb *irb)
- {
-@@ -1220,11 +1234,10 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
- 		iob = (struct qeth_cmd_buffer *) (addr_t)intparm;
- 	}
- 
--	qeth_unlock_channel(card, channel);
--
- 	rc = qeth_check_irb_error(card, cdev, irb);
- 	if (rc) {
- 		/* IO was terminated, free its resources. */
-+		qeth_unlock_channel(card, channel);
- 		if (iob)
- 			qeth_cancel_cmd(iob, rc);
- 		return;
-@@ -1268,6 +1281,7 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
- 		rc = qeth_get_problem(card, cdev, irb);
- 		if (rc) {
- 			card->read_or_write_problem = 1;
-+			qeth_unlock_channel(card, channel);
- 			if (iob)
- 				qeth_cancel_cmd(iob, rc);
- 			qeth_clear_ipacmd_list(card);
-@@ -1276,6 +1290,26 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
- 		}
- 	}
- 
-+	if (scsw_cmd_is_valid_cc(&irb->scsw) && irb->scsw.cmd.cc == 1 && iob) {
-+		/* channel command hasn't started: retry.
-+		 * active_cmd is still set to last iob
-+		 */
-+		QETH_CARD_TEXT(card, 2, "irqcc1");
-+		rc = ccw_device_start_timeout(cdev, __ccw_from_cmd(iob),
-+					      (addr_t)iob, 0, 0, iob->timeout);
-+		if (rc) {
-+			QETH_DBF_MESSAGE(2,
-+					 "ccw retry on %x failed, rc = %i\n",
-+					 CARD_DEVID(card), rc);
-+			QETH_CARD_TEXT_(card, 2, " err%d", rc);
-+			qeth_unlock_channel(card, channel);
-+			qeth_cancel_cmd(iob, rc);
-+		}
++static void rtl_dash_loop_wait(struct rtl8169_private *tp,
++			       const struct rtl_cond *c,
++			       unsigned long usecs, int n, bool high)
++{
++	if (!tp->dash_enabled)
 +		return;
-+	}
++	rtl_loop_wait(tp, c, usecs, n, high);
++}
 +
-+	qeth_unlock_channel(card, channel);
++static void rtl_dash_loop_wait_high(struct rtl8169_private *tp,
++				    const struct rtl_cond *c,
++				    unsigned long d, int n)
++{
++	rtl_dash_loop_wait(tp, c, d, n, true);
++}
 +
- 	if (iob) {
- 		/* sanity check: */
- 		if (irb->scsw.cmd.count > iob->length) {
--- 
-2.43.0
-
++static void rtl_dash_loop_wait_low(struct rtl8169_private *tp,
++				   const struct rtl_cond *c,
++				   unsigned long d, int n)
++{
++	rtl_dash_loop_wait(tp, c, d, n, false);
++}
++
+ static void rtl8168dp_driver_start(struct rtl8169_private *tp)
+ {
+ 	r8168dp_oob_notify(tp, OOB_CMD_DRIVER_START);
+-	rtl_loop_wait_high(tp, &rtl_dp_ocp_read_cond, 10000, 10);
++	rtl_dash_loop_wait_high(tp, &rtl_dp_ocp_read_cond, 10000, 10);
+ }
+ 
+ static void rtl8168ep_driver_start(struct rtl8169_private *tp)
+ {
+ 	r8168ep_ocp_write(tp, 0x01, 0x180, OOB_CMD_DRIVER_START);
+ 	r8168ep_ocp_write(tp, 0x01, 0x30, r8168ep_ocp_read(tp, 0x30) | 0x01);
+-	rtl_loop_wait_high(tp, &rtl_ep_ocp_read_cond, 10000, 30);
++	rtl_dash_loop_wait_high(tp, &rtl_ep_ocp_read_cond, 10000, 30);
+ }
+ 
+ static void rtl8168_driver_start(struct rtl8169_private *tp)
+@@ -1225,7 +1248,7 @@ static void rtl8168_driver_start(struct
+ static void rtl8168dp_driver_stop(struct rtl8169_private *tp)
+ {
+ 	r8168dp_oob_notify(tp, OOB_CMD_DRIVER_STOP);
+-	rtl_loop_wait_low(tp, &rtl_dp_ocp_read_cond, 10000, 10);
++	rtl_dash_loop_wait_low(tp, &rtl_dp_ocp_read_cond, 10000, 10);
+ }
+ 
+ static void rtl8168ep_driver_stop(struct rtl8169_private *tp)
+@@ -1233,7 +1256,7 @@ static void rtl8168ep_driver_stop(struct
+ 	rtl8168ep_stop_cmac(tp);
+ 	r8168ep_ocp_write(tp, 0x01, 0x180, OOB_CMD_DRIVER_STOP);
+ 	r8168ep_ocp_write(tp, 0x01, 0x30, r8168ep_ocp_read(tp, 0x30) | 0x01);
+-	rtl_loop_wait_low(tp, &rtl_ep_ocp_read_cond, 10000, 10);
++	rtl_dash_loop_wait_low(tp, &rtl_ep_ocp_read_cond, 10000, 10);
+ }
+ 
+ static void rtl8168_driver_stop(struct rtl8169_private *tp)
 
 
 
