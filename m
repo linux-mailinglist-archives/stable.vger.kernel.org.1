@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-36610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CCF89C09D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:10:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF4189C342
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F3B1F220AC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:10:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF6C228341C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C430C7172F;
-	Mon,  8 Apr 2024 13:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0289982888;
+	Mon,  8 Apr 2024 13:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgeryJqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQOrwkDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFE22E62C;
-	Mon,  8 Apr 2024 13:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B317C08D;
+	Mon,  8 Apr 2024 13:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581829; cv=none; b=AsP+xEmuZOQJZt9U1sk+e4OvcD6hkXdOQ0FZ6U6hpXgFwxN9dpABqe1wveQgrXA6OpXB5mbTIUGE+sRkP8bkpQ1hzhzttZPiIex8TTkmNXK7nWJPvOdOkBWz587mmogzxnv/PPm4KnFSsw9bJKmrXWduOGQvW4rC/ouAv6BMmV8=
+	t=1712583212; cv=none; b=JbVb9lw9+fvCe9125ZoazLiDViorPAFZ5o2YTOD7YGPN0wyo7IW47LO92J3bMInBshn8c9i9A2i/efqKk/jJQaw8+Exyz6+U9sbbY/Xw5y6qpeHf6Q6rNUD5zWeYHaGtGVHpoaeLHFJPTB2aSwsiRLVp3GJ/5/rCLEg6J1VH11I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581829; c=relaxed/simple;
-	bh=tX3BKCTiNucS3nGMTpqtJNke4S0wc8byz02zJW2WTpw=;
+	s=arc-20240116; t=1712583212; c=relaxed/simple;
+	bh=qwyqwOSB0b0aCf5EGCCkx+KTGNyyyooey5jngDl/oIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFDKtn+yd7tmYA0d6ZMuvn1oVB8nTqktAvKUMP3htS8g3XusdZIc3k9xwo1YNCfELX8fxDPo/OcfaMCb12g2RuuPJU4lsfEKxoKN2QSjz/cL4GMbQOOTddv9dMcg7ko7y0tn28uKPX82tsCNSD28Uzy0XhjksjE7Gx49fxfO0dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgeryJqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066B3C433C7;
-	Mon,  8 Apr 2024 13:10:28 +0000 (UTC)
+	 MIME-Version; b=AGZlLITbEuMfwzmW66DN1SaH49Iateg4Vvxp7JE3MVP0rCvyLd9SSi81t9Fe+YwrTPjd+EQINPjLVhm7TgLk5wkc5PlfE1AczW69x6lhLKfyFOtmWiknvIJrKbD3u1BSsJ6IapwmuloOwqU4gw1bspZqgAFtQwouKBD+3Wp0se0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQOrwkDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EF6C433F1;
+	Mon,  8 Apr 2024 13:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581829;
-	bh=tX3BKCTiNucS3nGMTpqtJNke4S0wc8byz02zJW2WTpw=;
+	s=korg; t=1712583212;
+	bh=qwyqwOSB0b0aCf5EGCCkx+KTGNyyyooey5jngDl/oIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgeryJqtpI72MORvn9MVeSIRmYozXvJKVb+GEItlZ3D+SlGfCGiqEb/svdfYETW3v
-	 obKf9nq1Czu6O6lMs4UKQSpi94AnjfOVg+gm6TKPeqQvhNjLBvUDeVgpHAi+QDdu+G
-	 gsVElLZHH4zyzvPiFoMIEj2LLhTM2SRG5c2FlhOo=
+	b=aQOrwkDZFdeterOOBLLfSSBeh0lEX40/aHunHcPYxvbS/gH74daGyqks4NOOqTruO
+	 56cSV4TTYM0TkvT8jj1HY6PLkMjQp/vMyRp6f/jx86M/5+bgCZTJKrd58TUSablWng
+	 dxT3JtNYOP7LUuDzCzQ+PrkAVbHnkP+WbSfPltyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 055/138] i40e: Fix VF MAC filter removal
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 170/252] ASoC: rt711-sdw: fix locking sequence
 Date: Mon,  8 Apr 2024 14:57:49 +0200
-Message-ID: <20240408125257.935701437@linuxfoundation.org>
+Message-ID: <20240408125311.937519679@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit ea2a1cfc3b2019bdea6324acd3c03606b60d71ad upstream.
+[ Upstream commit aae86cfd8790bcc7693a5a0894df58de5cb5128c ]
 
-Commit 73d9629e1c8c ("i40e: Do not allow untrusted VF to remove
-administratively set MAC") fixed an issue where untrusted VF was
-allowed to remove its own MAC address although this was assigned
-administratively from PF. Unfortunately the introduced check
-is wrong because it causes that MAC filters for other MAC addresses
-including multi-cast ones are not removed.
+The disable_irq_lock protects the 'disable_irq' value, we need to lock
+before testing it.
 
-<snip>
-	if (ether_addr_equal(addr, vf->default_lan_addr.addr) &&
-	    i40e_can_vf_change_mac(vf))
-		was_unimac_deleted = true;
-	else
-		continue;
-
-	if (i40e_del_mac_filter(vsi, al->list[i].addr)) {
-	...
-</snip>
-
-The else path with `continue` effectively skips any MAC filter
-removal except one for primary MAC addr when VF is allowed to do so.
-Fix the check condition so the `continue` is only done for primary
-MAC address.
-
-Fixes: 73d9629e1c8c ("i40e: Do not allow untrusted VF to remove administratively set MAC")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240329180638.211412-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b69de265bd0e ("ASoC: rt711: fix for JD event handling in ClockStop Mode0")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@linux.intel.com>
+Link: https://msgid.link/r/20240325221817.206465-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ sound/soc/codecs/rt711-sdw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3078,11 +3078,12 @@ static int i40e_vc_del_mac_addr_msg(stru
- 		/* Allow to delete VF primary MAC only if it was not set
- 		 * administratively by PF or if VF is trusted.
- 		 */
--		if (ether_addr_equal(addr, vf->default_lan_addr.addr) &&
--		    i40e_can_vf_change_mac(vf))
--			was_unimac_deleted = true;
--		else
--			continue;
-+		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
-+			if (i40e_can_vf_change_mac(vf))
-+				was_unimac_deleted = true;
-+			else
-+				continue;
-+		}
+diff --git a/sound/soc/codecs/rt711-sdw.c b/sound/soc/codecs/rt711-sdw.c
+index 3f5773310ae8c..988451f24a756 100644
+--- a/sound/soc/codecs/rt711-sdw.c
++++ b/sound/soc/codecs/rt711-sdw.c
+@@ -536,12 +536,12 @@ static int __maybe_unused rt711_dev_resume(struct device *dev)
+ 		return 0;
  
- 		if (i40e_del_mac_filter(vsi, al->list[i].addr)) {
- 			ret = I40E_ERR_INVALID_MAC_ADDR;
+ 	if (!slave->unattach_request) {
++		mutex_lock(&rt711->disable_irq_lock);
+ 		if (rt711->disable_irq == true) {
+-			mutex_lock(&rt711->disable_irq_lock);
+ 			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
+ 			rt711->disable_irq = false;
+-			mutex_unlock(&rt711->disable_irq_lock);
+ 		}
++		mutex_unlock(&rt711->disable_irq_lock);
+ 		goto regmap_sync;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
