@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0235089C3F0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3817D89C51B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BEF1F22C17
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A8E4B21EAA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DC780BF8;
-	Mon,  8 Apr 2024 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12AD839E6;
+	Mon,  8 Apr 2024 13:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW0F2BRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohnWeNBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E7080619;
-	Mon,  8 Apr 2024 13:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3B27C6C5;
+	Mon,  8 Apr 2024 13:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583625; cv=none; b=bGrY3DVnWm9cfsmpi+ypRcm7t/G0HveLDCjjRR2vQbvSykSHNEcGBQVOQ+jhCXNrZOulljWQBS+KswXwBLQFKt0hdxB6m/UAMYtjClExGdBWXaqZWeWLROyfCkNTmcf9xwEfPv7pLhBW5UyMkaIBME9fjFHR+UmCAJVxCxEkBMU=
+	t=1712583241; cv=none; b=lDYbVmRfhOv9ApVLEn4dKnsq3q4Xkx3XdiHUMVr+q/vUa1PBQTwpnW9bybxf7mJjedTPLVZWTaAsS4k1TOTuJyQeK1NY3oSL9rPZ0QIopZYhpH1owF5T6pBOjlVuUQxN5mVNY7zPmJLusa8SWuHKeHp5odKHbqEvaj31JB4h0y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583625; c=relaxed/simple;
-	bh=qcEiK+QbEy6ipHKml2J8hNkfkEZgq/nlfyUYK/eRKGs=;
+	s=arc-20240116; t=1712583241; c=relaxed/simple;
+	bh=cc11txN4mMeI3esiWnjCNS4HTYT/01I0LX6y3q6O0QA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S49JUb5fsSxyMyoCMfZ3QqANtV4+SsYXleoPLvSU+cpUDqgM7KeymB1qczWadxwu3MSSuQlS4xDiGwT2wSR93wiu3Pnnpabdb+wBoqWlWCwTnHZyssxW08DQ7cB+VjRQZCvh2+OEl3I9tzHtSMcSwEIw6PaHcq9gXWyZF4B3hYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW0F2BRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9BBC433F1;
-	Mon,  8 Apr 2024 13:40:25 +0000 (UTC)
+	 MIME-Version; b=HtagznUfKGKSliTVkdgk4CHEnkmMwcAabOSTrjDFrubo5uJsbLYYTbRRlESRGdaCkRiC5MblcagIIu452ZXFsLff12lYj21VFEtABQ3ceFDL69I+T3guUVEihNeXFugb8rkhyQ8yQMCLQvc4eLIu8kOarGJ3WkUGfSFbSXgwPVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohnWeNBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FD8C433C7;
+	Mon,  8 Apr 2024 13:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583625;
-	bh=qcEiK+QbEy6ipHKml2J8hNkfkEZgq/nlfyUYK/eRKGs=;
+	s=korg; t=1712583241;
+	bh=cc11txN4mMeI3esiWnjCNS4HTYT/01I0LX6y3q6O0QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PW0F2BRr2cPR6Tq5M8VfgFrbCasFO6LOfAnCPRmRRjQY3whCsfay+P6CUiWBIjQQf
-	 TUTqyKeEaHq3g6CK3zxyHQ0DdLAeZavYjEVTqwpzPGkwinB1EykfFxVGbneP5H1Dpc
-	 FjSszCaJh7BH6E3q3yHsC+2SCjp+O5+1xlchJJiU=
+	b=ohnWeNBVDFxuWYQzk4VLz/apWq0/1HiCnFklgarjl4RBL3n2vzBpiIRbj7U4ya/4C
+	 1ScQIxlyrhQhyWwJ5ALJTZmxPwPyg5vneNOIRoNJ92nmC+mH3fRRBEzjpdC+yjDOqM
+	 1lTdH+fzPU0TCp1JXVLhrH/cKhF3QtahwnS0iraM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 6.8 196/273] gpio: cdev: check for NULL labels when sanitizing them for irqs
-Date: Mon,  8 Apr 2024 14:57:51 +0200
-Message-ID: <20240408125315.413060428@linuxfoundation.org>
+	Stephen Lee <slee08177@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 173/252] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
+Date: Mon,  8 Apr 2024 14:57:52 +0200
+Message-ID: <20240408125312.028034726@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Stephen Lee <slee08177@gmail.com>
 
-commit b3b95964590a3d756d69ea8604c856de805479ad upstream.
+[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
 
-We need to take into account that a line's consumer label may be NULL
-and not try to kstrdup() it in that case but rather pass the NULL
-pointer up the stack to the interrupt request function.
+In snd_soc_info_volsw(), mask is generated by figuring out the index of
+the most significant bit set in max and converting the index to a
+bitmask through bit shift 1. Unintended wraparound occurs when max is an
+integer value with msb bit set. Since the bit shift value 1 is treated
+as an integer type, the left shift operation will wraparound and set
+mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
+`1ULL` to prevent the wraparound.
 
-To that end: let make_irq_label() return NULL as a valid return value
-and use ERR_PTR() instead to signal an allocation failure to callers.
-
-Cc: stable@vger.kernel.org
-Fixes: b34490879baa ("gpio: cdev: sanitize the label before requesting the interrupt")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/lkml/20240402093534.212283-1-naresh.kamboju@linaro.org/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
+Signed-off-by: Stephen Lee <slee08177@gmail.com>
+Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ sound/soc/soc-ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1091,7 +1091,16 @@ static u32 gpio_v2_line_config_debounce_
- 
- static inline char *make_irq_label(const char *orig)
- {
--	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
-+	char *new;
-+
-+	if (!orig)
-+		return NULL;
-+
-+	new = kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
-+	if (!new)
-+		return ERR_PTR(-ENOMEM);
-+
-+	return new;
- }
- 
- static inline void free_irq_label(const char *label)
-@@ -1164,8 +1173,8 @@ static int edge_detector_setup(struct li
- 	irqflags |= IRQF_ONESHOT;
- 
- 	label = make_irq_label(line->req->label);
--	if (!label)
--		return -ENOMEM;
-+	if (IS_ERR(label))
-+		return PTR_ERR(label);
- 
- 	/* Request a thread to read the events */
- 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
-@@ -2223,8 +2232,8 @@ static int lineevent_create(struct gpio_
- 		goto out_free_le;
- 
- 	label = make_irq_label(le->label);
--	if (!label) {
--		ret = -ENOMEM;
-+	if (IS_ERR(label)) {
-+		ret = PTR_ERR(label);
- 		goto out_free_le;
- 	}
- 
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index 2d25748ca7066..b27e89ff6a167 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -263,7 +263,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
+ 	int max = mc->max;
+ 	int min = mc->min;
+ 	int sign_bit = mc->sign_bit;
+-	unsigned int mask = (1 << fls(max)) - 1;
++	unsigned int mask = (1ULL << fls(max)) - 1;
+ 	unsigned int invert = mc->invert;
+ 	int val;
+ 	int ret;
+-- 
+2.43.0
+
 
 
 
