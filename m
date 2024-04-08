@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-37261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC7A89C413
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF0389C3D8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21925282A96
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07B31C21356
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2EE7D3F6;
-	Mon,  8 Apr 2024 13:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15F613A255;
+	Mon,  8 Apr 2024 13:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3I1rNc2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNk0Zb2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5C37D3E4;
-	Mon,  8 Apr 2024 13:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B1A13957F;
+	Mon,  8 Apr 2024 13:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583719; cv=none; b=e3k0myqkRJvPrdADj4/WafwbXkmdWFyFgNj82f59rBlQwVrxPRyJYI2pflDdB0vz8UuEC+qHX0ABR8k34Ld7j11cRj1VODG1WTyhLyrz0yB2N6JOWbPyHsAip4Ehct53kITrouqcIEbJtKUY2VIRcYld3+JXBl5eTE0hYXG2crs=
+	t=1712583567; cv=none; b=Hw2EezqTsPEL1RqdzJ7DcLC2OGxMGfzLjvLXTChxJThU/pUSf1jqdbiHPP18kg0nqXe5OWMwx3pNLoSdR6sIpX4uycFrW0BZE3XEgexFv7PQZOGcxgTaubtgPN8Z9ALniBlyQ/bbMrEDAqgnemLFvnJDkhQ/Hm/K7Am64reBiw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583719; c=relaxed/simple;
-	bh=P0UaRJ3NSIbMQ66a7rEDG/gOWlEN47nHVo3T02arpTY=;
+	s=arc-20240116; t=1712583567; c=relaxed/simple;
+	bh=EEmbfV3uQpwgGCJO7dnHWa+5UKtHYq3/CeiV/4Cwsf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tltoYX0rDsRSTmwypqNvMpeA7uyxiRL0Kh3S8Y0nKngv2G/CQFfxdOx4LsOSksSWlqGW5JsLszPLaQ1JCxlJLzadhrGwoIxtqQmzBQyjeG66iwlQp08GgWZOz1DeOjsvp8xMZADrwWzzT0Xzrh/4TieHmMPM/LIoKcNdD0xkLlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3I1rNc2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F5AC433C7;
-	Mon,  8 Apr 2024 13:41:58 +0000 (UTC)
+	 MIME-Version; b=ayrolShWi21zcYLIEaxElFxxV8JeJCLAyrXD8674KQj5BnWZUP0BZiVeV6+j28h9MhVW6tDAHZ3v1W7uJBW8g/EZvhmFK3JZ7EES15HH49hGwMhiFpL2u/5oTHOhUu+Bdc3NW3qxORr+wc+HW9u3chc87HpeOvmIUlrbhtf/xpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNk0Zb2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08DDC433C7;
+	Mon,  8 Apr 2024 13:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583719;
-	bh=P0UaRJ3NSIbMQ66a7rEDG/gOWlEN47nHVo3T02arpTY=;
+	s=korg; t=1712583567;
+	bh=EEmbfV3uQpwgGCJO7dnHWa+5UKtHYq3/CeiV/4Cwsf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3I1rNc2mcQKx8U7PgclBl4aV/jfuGM7Xn0tdqN9lSyJfYv7CQ+cWo/JBDbK9QLp3
-	 gZCY5+ni+qUmG8BB4Gw0pvGsL/wU/1/eRfLEfIva48StyreurgkcGEPwOPdrbQ/1Jd
-	 xIkW8ce78UrxFf15f9hBFocWHZMhP9H2FtsnqXjw=
+	b=TNk0Zb2vg7ccGdLUZGfPmfQRGdLnguA7yDONhYnk69uDKf8G/2VMPL5cb/oX6MeGp
+	 jdkzoasVVCc5ui1f8ADwhHm6sU3nAYaMwXWrsIZ7dDMSk3ndHJseoFxj8bo6kXLzna
+	 hUzQdVVsqpFXaYU9QUxrSk/IoGDVHWI9aLi9oHF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.8 212/273] ASoC: SOF: Add dsp_max_burst_size_in_ms member to snd_sof_pcm_stream
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 188/252] cifs: Fix caching to try to do open O_WRONLY as rdwr on server
 Date: Mon,  8 Apr 2024 14:58:07 +0200
-Message-ID: <20240408125315.942269651@linuxfoundation.org>
+Message-ID: <20240408125312.497212281@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +69,256 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: David Howells <dhowells@redhat.com>
 
-commit fb9f8125ed9d9b8e11f309a7dbfbe7b40de48fba upstream.
+[ Upstream commit e9e62243a3e2322cf639f653a0b0a88a76446ce7 ]
 
-The dsp_max_burst_size_in_ms can be used to save the length of the maximum
-burst size in ms the host DMA will use.
+When we're engaged in local caching of a cifs filesystem, we cannot perform
+caching of a partially written cache granule unless we can read the rest of
+the granule.  This can result in unexpected access errors being reported to
+the user.
 
-Platform code can place constraint using this to avoid user space
-requesting too small ALSA buffer which will result xruns.
+Fix this by the following: if a file is opened O_WRONLY locally, but the
+mount was given the "-o fsc" flag, try first opening the remote file with
+GENERIC_READ|GENERIC_WRITE and if that returns -EACCES, try dropping the
+GENERIC_READ and doing the open again.  If that last succeeds, invalidate
+the cache for that file as for O_DIRECT.
 
-Cc: stable@vger.kernel.org # 6.8
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240321130814.4412-2-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/sof-audio.h |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/dir.c     | 15 +++++++++++++
+ fs/smb/client/file.c    | 48 ++++++++++++++++++++++++++++++++---------
+ fs/smb/client/fscache.h |  6 ++++++
+ 3 files changed, 59 insertions(+), 10 deletions(-)
 
---- a/sound/soc/sof/sof-audio.h
-+++ b/sound/soc/sof/sof-audio.h
-@@ -321,6 +321,7 @@ struct snd_sof_pcm_stream {
- 	struct work_struct period_elapsed_work;
- 	struct snd_soc_dapm_widget_list *list; /* list of connected DAPM widgets */
- 	bool d0i3_compatible; /* DSP can be in D0I3 when this pcm is opened */
-+	unsigned int dsp_max_burst_size_in_ms; /* The maximum size of the host DMA burst in ms */
+diff --git a/fs/smb/client/dir.c b/fs/smb/client/dir.c
+index 580a27a3a7e62..855468a32904e 100644
+--- a/fs/smb/client/dir.c
++++ b/fs/smb/client/dir.c
+@@ -189,6 +189,7 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	int disposition;
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
+ 
+ 	*oplock = 0;
+ 	if (tcon->ses->server->oplocks)
+@@ -200,6 +201,10 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 		return PTR_ERR(full_path);
+ 	}
+ 
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (oflags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
++
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ 	if (tcon->unix_ext && cap_unix(tcon->ses) && !tcon->broken_posix_open &&
+ 	    (CIFS_UNIX_POSIX_PATH_OPS_CAP &
+@@ -276,6 +281,8 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 		desired_access |= GENERIC_READ; /* is this too little? */
+ 	if (OPEN_FMODE(oflags) & FMODE_WRITE)
+ 		desired_access |= GENERIC_WRITE;
++	if (rdwr_for_fscache == 1)
++		desired_access |= GENERIC_READ;
+ 
+ 	disposition = FILE_OVERWRITE_IF;
+ 	if ((oflags & (O_CREAT | O_EXCL)) == (O_CREAT | O_EXCL))
+@@ -304,6 +311,7 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	if (!tcon->unix_ext && (mode & S_IWUGO) == 0)
+ 		create_options |= CREATE_OPTION_READONLY;
+ 
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -317,8 +325,15 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	rc = server->ops->open(xid, &oparms, oplock, buf);
+ 	if (rc) {
+ 		cifs_dbg(FYI, "cifs_create returned 0x%x\n", rc);
++		if (rc == -EACCES && rdwr_for_fscache == 1) {
++			desired_access &= ~GENERIC_READ;
++			rdwr_for_fscache = 2;
++			goto retry_open;
++		}
+ 		goto out;
+ 	}
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+ 
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
  	/*
- 	 * flag to indicate that the DSP pipelines should be kept
- 	 * active or not while suspending the stream
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index c711d5eb2987e..606972a95465b 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -206,12 +206,12 @@ cifs_mark_open_files_invalid(struct cifs_tcon *tcon)
+ 	 */
+ }
+ 
+-static inline int cifs_convert_flags(unsigned int flags)
++static inline int cifs_convert_flags(unsigned int flags, int rdwr_for_fscache)
+ {
+ 	if ((flags & O_ACCMODE) == O_RDONLY)
+ 		return GENERIC_READ;
+ 	else if ((flags & O_ACCMODE) == O_WRONLY)
+-		return GENERIC_WRITE;
++		return rdwr_for_fscache == 1 ? (GENERIC_READ | GENERIC_WRITE) : GENERIC_WRITE;
+ 	else if ((flags & O_ACCMODE) == O_RDWR) {
+ 		/* GENERIC_ALL is too much permission to request
+ 		   can cause unnecessary access denied on create */
+@@ -348,11 +348,16 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	int create_options = CREATE_NOT_DIR;
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
+ 
+ 	if (!server->ops->open)
+ 		return -ENOSYS;
+ 
+-	desired_access = cifs_convert_flags(f_flags);
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (f_flags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
++
++	desired_access = cifs_convert_flags(f_flags, rdwr_for_fscache);
+ 
+ /*********************************************************************
+  *  open flag mapping table:
+@@ -389,6 +394,7 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	if (f_flags & O_DIRECT)
+ 		create_options |= CREATE_NO_BUFFER;
+ 
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -400,8 +406,16 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	};
+ 
+ 	rc = server->ops->open(xid, &oparms, oplock, buf);
+-	if (rc)
++	if (rc) {
++		if (rc == -EACCES && rdwr_for_fscache == 1) {
++			desired_access = cifs_convert_flags(f_flags, 0);
++			rdwr_for_fscache = 2;
++			goto retry_open;
++		}
+ 		return rc;
++	}
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+ 
+ 	/* TODO: Add support for calling posix query info but with passing in fid */
+ 	if (tcon->unix_ext)
+@@ -834,11 +848,11 @@ int cifs_open(struct inode *inode, struct file *file)
+ use_cache:
+ 	fscache_use_cookie(cifs_inode_cookie(file_inode(file)),
+ 			   file->f_mode & FMODE_WRITE);
+-	if (file->f_flags & O_DIRECT &&
+-	    (!((file->f_flags & O_ACCMODE) != O_RDONLY) ||
+-	     file->f_flags & O_APPEND))
+-		cifs_invalidate_cache(file_inode(file),
+-				      FSCACHE_INVAL_DIO_WRITE);
++	if (!(file->f_flags & O_DIRECT))
++		goto out;
++	if ((file->f_flags & (O_ACCMODE | O_APPEND)) == O_RDONLY)
++		goto out;
++	cifs_invalidate_cache(file_inode(file), FSCACHE_INVAL_DIO_WRITE);
+ 
+ out:
+ 	free_dentry_path(page);
+@@ -903,6 +917,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	int disposition = FILE_OPEN;
+ 	int create_options = CREATE_NOT_DIR;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
+ 
+ 	xid = get_xid();
+ 	mutex_lock(&cfile->fh_mutex);
+@@ -966,7 +981,11 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	}
+ #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+ 
+-	desired_access = cifs_convert_flags(cfile->f_flags);
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (cfile->f_flags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
++
++	desired_access = cifs_convert_flags(cfile->f_flags, rdwr_for_fscache);
+ 
+ 	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
+ 	if (cfile->f_flags & O_SYNC)
+@@ -978,6 +997,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	if (server->ops->get_lease_key)
+ 		server->ops->get_lease_key(inode, &cfile->fid);
+ 
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -1003,6 +1023,11 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 		/* indicate that we need to relock the file */
+ 		oparms.reconnect = true;
+ 	}
++	if (rc == -EACCES && rdwr_for_fscache == 1) {
++		desired_access = cifs_convert_flags(cfile->f_flags, 0);
++		rdwr_for_fscache = 2;
++		goto retry_open;
++	}
+ 
+ 	if (rc) {
+ 		mutex_unlock(&cfile->fh_mutex);
+@@ -1011,6 +1036,9 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 		goto reopen_error_exit;
+ 	}
+ 
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
++
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ reopen_success:
+ #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+diff --git a/fs/smb/client/fscache.h b/fs/smb/client/fscache.h
+index a3d73720914f8..1f2ea9f5cc9a8 100644
+--- a/fs/smb/client/fscache.h
++++ b/fs/smb/client/fscache.h
+@@ -109,6 +109,11 @@ static inline void cifs_readahead_to_fscache(struct inode *inode,
+ 		__cifs_readahead_to_fscache(inode, pos, len);
+ }
+ 
++static inline bool cifs_fscache_enabled(struct inode *inode)
++{
++	return fscache_cookie_enabled(cifs_inode_cookie(inode));
++}
++
+ #else /* CONFIG_CIFS_FSCACHE */
+ static inline
+ void cifs_fscache_fill_coherency(struct inode *inode,
+@@ -124,6 +129,7 @@ static inline void cifs_fscache_release_inode_cookie(struct inode *inode) {}
+ static inline void cifs_fscache_unuse_inode_cookie(struct inode *inode, bool update) {}
+ static inline struct fscache_cookie *cifs_inode_cookie(struct inode *inode) { return NULL; }
+ static inline void cifs_invalidate_cache(struct inode *inode, unsigned int flags) {}
++static inline bool cifs_fscache_enabled(struct inode *inode) { return false; }
+ 
+ static inline int cifs_fscache_query_occupancy(struct inode *inode,
+ 					       pgoff_t first, unsigned int nr_pages,
+-- 
+2.43.0
+
 
 
 
