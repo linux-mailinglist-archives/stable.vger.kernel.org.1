@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB9A89C32D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B4589C08E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ECB01F21BD9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A61A1F21ACA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C048061A;
-	Mon,  8 Apr 2024 13:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC5270CCB;
+	Mon,  8 Apr 2024 13:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9nKXJc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NrL/kBFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AC37BB15;
-	Mon,  8 Apr 2024 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDE22E62C;
+	Mon,  8 Apr 2024 13:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583183; cv=none; b=UbUXXXkxtKMMN5Olu6obIr8hgEAQuSBlkapfSuaH9VEumm4aEa9loZYFhivXPBpGmJsoZnm+Cf98EZkmKkDAR/N/ZCSb3jyI0CZatuOzmnYxVTzqmEDbIeB5BjedM/Kdx4ijGSpL7cv44as7aNKRWH3zb1ADp+aGku52QCMb3GI=
+	t=1712581791; cv=none; b=QfeNiWpXYuewORJ+i5rZbroe78TC8sCUDaDAHuBIprlQoQvvVwvV5n6Yf8B2pzox1X3fvOz6q//mMGVVJZqtmYvkj/Oepwe4gh4osXUc2xvGhCkcCIzmnRZPubCZfz5Q92DeowYhqY0Xyfo0uyuyJEH8IM+f/YZgmzSb2V4qEBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583183; c=relaxed/simple;
-	bh=Eueu/bweULtXvbFJ6fge3m12UFv5OIQIjlKosWICp4M=;
+	s=arc-20240116; t=1712581791; c=relaxed/simple;
+	bh=0IVUcbZqHFz+sTizvVUTGs1bqPaU1XsMxE/bp/CRcyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pG1N34x5vjmA0rIJOhmgzNzPS8IdZkYeawd4t39j9WjRhzvZXHYynDGG99YDSkBVnA3Oy4MeqQsF80FEQo0ewEUx4sZGGJ+1WPlgZjxznhi70rykG2BA4lmswfsiMALMoK+ugngXrAv4YsVMZZG61v/pWQCj5SE5SAj5tlQ3a+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9nKXJc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4F3C433C7;
-	Mon,  8 Apr 2024 13:33:02 +0000 (UTC)
+	 MIME-Version; b=MZvFvqqAYBsKbtVbCJjqDRuLp2SvPahwWvUi6pAk7P9hPtWisMBlrncASbync8guQOMpdnvNP00hwQOu2qdRzT4SDBvG2/NEsW78yYnjKZ8nJb1rBErgh2whXJuJ/X8koc4tGm8fka4qD8U6z8QkU25LYonLeL/ozMyaL/PPd7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NrL/kBFL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B2CC433F1;
+	Mon,  8 Apr 2024 13:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583183;
-	bh=Eueu/bweULtXvbFJ6fge3m12UFv5OIQIjlKosWICp4M=;
+	s=korg; t=1712581791;
+	bh=0IVUcbZqHFz+sTizvVUTGs1bqPaU1XsMxE/bp/CRcyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9nKXJc4HOAPxirt9yksRPZW/gAJczqWqQdmopBYBV4LV/Te8lGz5UZw3Ak/tU4e+
-	 H8m3fgtRnvqpw3/PIa0y06V1VPYoHzVmeC4r6iju/tqg0GX4jEcTqRNg2KGkU/PcKi
-	 6Tir4U+8eoKAUXsVd2v3KYghQa3RMb1DDakdZPas=
+	b=NrL/kBFL+iMmU0iXYDy0X0+dFSsYLMwU+fIeWTl1TRd+NvOTsUnYmyi4yrKq6K36+
+	 C3sZkvTmPg4avU3V0u2LpYFzdNa78nTgrkY3WTz5qop0hKgtdo7C9zh+2BAPssm4Vu
+	 oV4ytLiQx4bvLvBmqySugjbs1VvIehUr/0OlsWXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominik Behr <dbehr@chromium.org>,
-	Rob Clark <robdclark@chromium.org>,
-	Simon Ser <contact@emersion.fr>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/252] drm/prime: Unbreak virtgpu dma-buf export
+	Antoine Tenart <atenart@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 052/138] gro: fix ownership transfer
 Date: Mon,  8 Apr 2024 14:57:46 +0200
-Message-ID: <20240408125311.846284438@linuxfoundation.org>
+Message-ID: <20240408125257.844996664@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit a4ec240f6b7c21cf846d10017c3ce423a0eae92c ]
+commit ed4cccef64c1d0d5b91e69f7a8a6697c3a865486 upstream.
 
-virtgpu "vram" GEM objects do not implement obj->get_sg_table().  But
-they also don't use drm_gem_map_dma_buf().  In fact they may not even
-have guest visible pages.  But it is perfectly fine to export and share
-with other virtual devices.
+If packets are GROed with fraglist they might be segmented later on and
+continue their journey in the stack. In skb_segment_list those skbs can
+be reused as-is. This is an issue as their destructor was removed in
+skb_gro_receive_list but not the reference to their socket, and then
+they can't be orphaned. Fix this by also removing the reference to the
+socket.
 
-Reported-by: Dominik Behr <dbehr@chromium.org>
-Fixes: 207395da5a97 ("drm/prime: reject DMA-BUF attach when get_sg_table is missing")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Simon Ser <contact@emersion.fr>
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240322214801.319975-1-robdclark@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example this could be observed,
+
+  kernel BUG at include/linux/skbuff.h:3131!  (skb_orphan)
+  RIP: 0010:ip6_rcv_core+0x11bc/0x19a0
+  Call Trace:
+   ipv6_list_rcv+0x250/0x3f0
+   __netif_receive_skb_list_core+0x49d/0x8f0
+   netif_receive_skb_list_internal+0x634/0xd40
+   napi_complete_done+0x1d2/0x7d0
+   gro_cell_poll+0x118/0x1f0
+
+A similar construction is found in skb_gro_receive, apply the same
+change there.
+
+Fixes: 5e10da5385d2 ("skbuff: allow 'slow_gro' for skb carring sock reference")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_prime.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/core/gro.c         |    3 ++-
+ net/ipv4/udp_offload.c |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_prime.c b/drivers/gpu/drm/drm_prime.c
-index 7352bde299d54..03bd3c7bd0dc2 100644
---- a/drivers/gpu/drm/drm_prime.c
-+++ b/drivers/gpu/drm/drm_prime.c
-@@ -582,7 +582,12 @@ int drm_gem_map_attach(struct dma_buf *dma_buf,
- {
- 	struct drm_gem_object *obj = dma_buf->priv;
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -252,8 +252,9 @@ int skb_gro_receive(struct sk_buff *p, s
+ 	}
  
--	if (!obj->funcs->get_sg_table)
-+	/*
-+	 * drm_gem_map_dma_buf() requires obj->get_sg_table(), but drivers
-+	 * that implement their own ->map_dma_buf() do not.
-+	 */
-+	if (dma_buf->ops->map_dma_buf == drm_gem_map_dma_buf &&
-+	    !obj->funcs->get_sg_table)
- 		return -ENOSYS;
+ merge:
+-	/* sk owenrship - if any - completely transferred to the aggregated packet */
++	/* sk ownership - if any - completely transferred to the aggregated packet */
+ 	skb->destructor = NULL;
++	skb->sk = NULL;
+ 	delta_truesize = skb->truesize;
+ 	if (offset > headlen) {
+ 		unsigned int eat = offset - headlen;
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -441,8 +441,9 @@ static int skb_gro_receive_list(struct s
+ 	NAPI_GRO_CB(p)->count++;
+ 	p->data_len += skb->len;
  
- 	return drm_gem_pin(obj);
--- 
-2.43.0
-
+-	/* sk owenrship - if any - completely transferred to the aggregated packet */
++	/* sk ownership - if any - completely transferred to the aggregated packet */
+ 	skb->destructor = NULL;
++	skb->sk = NULL;
+ 	p->truesize += skb->truesize;
+ 	p->len += skb->len;
+ 
 
 
 
