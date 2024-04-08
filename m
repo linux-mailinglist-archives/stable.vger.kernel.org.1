@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-36460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C6A889BFF5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4191D89BFF6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17FD1F23819
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D69F41F236DF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1308F74C09;
-	Mon,  8 Apr 2024 13:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D9D76058;
+	Mon,  8 Apr 2024 13:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddWcZRQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxvJ2ZWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25D16A352;
-	Mon,  8 Apr 2024 13:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C702DF73;
+	Mon,  8 Apr 2024 13:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581390; cv=none; b=Ofc3pWGy70i7qiGJB4uYu/3NxmxGfUgVDXxe6KQUkVw9RBnBAQul1iqmkpOeujiJW3/V5OrTjbmJhG2BW6c7hA/06nVNnhiriSY0XhFsyy5BXff7+QU4XIR75Dedl51Ihky2IFSPIeb2eEp+JTUdMM/haZQICy4Mv51/mUErMSs=
+	t=1712581396; cv=none; b=eQ0rnSW1sMCRQzZiWafiIJp+mRbpM5J7dxOySQFNtfXilTqM5058vOpxmWOXG6bNjt/g9fEYxg39HYyjNpe8tg/2Z0UGeiQdTTbEgDTeyc3TnHgSZ+rkbyfUlsFjpxU6mBHiCERSnAP59xWa38PUmZi72oc7VzKtYyY8HMMvD6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581390; c=relaxed/simple;
-	bh=n1tzjMIKJw8GhjDTOCYb6QUPKx8K4WNLSW/HpRtjApw=;
+	s=arc-20240116; t=1712581396; c=relaxed/simple;
+	bh=dr6xY1tk9EeYc+sc+51zqQi8MRBIhoF6us6I9re7fzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkTmDyKpHGeB8toqrjV/3OZB3D/NaSX/xYaOMJIE2mhhfiARyV3eLHZQz9frlb9ufhdI+p8YrtoyNADSnnO098Ty+SY9bbfGn29gQBhU2mKHVKfbXkoOLfHY3/AHl4SA1Xj8BktPtkAK/hIRQBmvIh7lHrqVLK6H7D83VgLIdl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddWcZRQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C9BC433F1;
-	Mon,  8 Apr 2024 13:03:10 +0000 (UTC)
+	 MIME-Version; b=Y2xudljM6BivhVl6dipgN8OdaFcApD0Jn9p1A4zFd7AeOiGJrUY0qmwIR1Jt1W+L/+UXBSHXTIcpXpxvfr9kyRYGg2t8HFhRE1eazu09r0a6zebiiAcYmbHPOaj4CqqprkGHeowyWygZ04mi3wWv5ypwclxgG6iJEbdAFDyhkCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxvJ2ZWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B38C433F1;
+	Mon,  8 Apr 2024 13:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581390;
-	bh=n1tzjMIKJw8GhjDTOCYb6QUPKx8K4WNLSW/HpRtjApw=;
+	s=korg; t=1712581396;
+	bh=dr6xY1tk9EeYc+sc+51zqQi8MRBIhoF6us6I9re7fzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddWcZRQflBtS55cXRAf1tUDIZoOLs3J2jB+fRCTp8tgeol0MI1x1qww/XlECyaQHm
-	 WIlRjTj/ysGOGJSyO+fW/+Md1BViZCyukloSeVz1TWthC+4pn5GYzP2uccslMd0p2M
-	 fHnAIjWz7Lbr9iflVer+fL+eNySqPWxQoU4JDXo0=
+	b=hxvJ2ZWN13djhuuqR70wBkIG+xzXXxs4YQJG9X7NaZxh1M2uxhKqWx6/ZvqasKlcf
+	 0qd+499RQdEtTi04LElDGm1ectqqY+L2oR0f14F9xdRITIumZXHoJa996/D3//A9jt
+	 OzPhZljcpCDY2Yq3tOgm3aLC9xXCqTHCSq2q4uh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stephen Boyd <sboyd@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 043/690] clk: qcom: mmcc-apq8084: fix terminating of frequency table arrays
-Date: Mon,  8 Apr 2024 14:48:29 +0200
-Message-ID: <20240408125401.091609006@linuxfoundation.org>
+Subject: [PATCH 5.15 044/690] clk: qcom: mmcc-msm8974: fix terminating of frequency table arrays
+Date: Mon,  8 Apr 2024 14:48:30 +0200
+Message-ID: <20240408125401.121149535@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,7 +69,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit a903cfd38d8dee7e754fb89fd1bebed99e28003d ]
+[ Upstream commit e2c02a85bf53ae86d79b5fccf0a75ac0b78e0c96 ]
 
 The frequency table arrays are supposed to be terminated with an
 empty element. Add such entry to the end of the arrays where it
@@ -79,33 +79,33 @@ qcom_find_freq_floor().
 
 Only compile tested.
 
-Fixes: 2b46cd23a5a2 ("clk: qcom: Add APQ8084 Multimedia Clock Controller (MMCC) support")
+Fixes: d8b212014e69 ("clk: qcom: Add support for MSM8974's multimedia clock controller (MMCC)")
 Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
 Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-6-074334f0905c@gmail.com
+Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-7-074334f0905c@gmail.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-apq8084.c | 2 ++
+ drivers/clk/qcom/mmcc-msm8974.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/mmcc-apq8084.c b/drivers/clk/qcom/mmcc-apq8084.c
-index fbfcf00067394..c2fd0e8f4bc09 100644
---- a/drivers/clk/qcom/mmcc-apq8084.c
-+++ b/drivers/clk/qcom/mmcc-apq8084.c
-@@ -333,6 +333,7 @@ static struct freq_tbl ftbl_mmss_axi_clk[] = {
- 	F(333430000, P_MMPLL1, 3.5, 0, 0),
+diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
+index a1552b6771bc6..26509bcd4f802 100644
+--- a/drivers/clk/qcom/mmcc-msm8974.c
++++ b/drivers/clk/qcom/mmcc-msm8974.c
+@@ -267,6 +267,7 @@ static struct freq_tbl ftbl_mmss_axi_clk[] = {
+ 	F(291750000, P_MMPLL1, 4, 0, 0),
  	F(400000000, P_MMPLL0, 2, 0, 0),
  	F(466800000, P_MMPLL1, 2.5, 0, 0),
 +	{ }
  };
  
  static struct clk_rcg2 mmss_axi_clk_src = {
-@@ -357,6 +358,7 @@ static struct freq_tbl ftbl_ocmemnoc_clk[] = {
+@@ -291,6 +292,7 @@ static struct freq_tbl ftbl_ocmemnoc_clk[] = {
  	F(150000000, P_GPLL0, 4, 0, 0),
- 	F(228570000, P_MMPLL0, 3.5, 0, 0),
- 	F(320000000, P_MMPLL0, 2.5, 0, 0),
+ 	F(291750000, P_MMPLL1, 4, 0, 0),
+ 	F(400000000, P_MMPLL0, 2, 0, 0),
 +	{ }
  };
  
