@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-36738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3437589C184
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E123089C256
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C958B25891
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FAD41C21A97
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCDF6D1A9;
-	Mon,  8 Apr 2024 13:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9418563D;
+	Mon,  8 Apr 2024 13:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDd6GToQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJB3lnhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD987D085;
-	Mon,  8 Apr 2024 13:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B391839E6;
+	Mon,  8 Apr 2024 13:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582201; cv=none; b=bPdBBO+2zoDOIF23oh47hpt6ct4SJgfZJDqCa9Vj3WEdBH1zzICtVZ9EQttGcJZqDIF2ic+CwwXCnf69HlpX08ikrwTn+hsXBJ4e0Qbp8XSEfRgdAQmmZsq2RbroWVzbUP7ZCw6DCdjnp1WUSAGSz6zMk3fa4tA3W9xKouDJ/oQ=
+	t=1712582711; cv=none; b=rvApxSzud5kfP919N/ZCpYmN4ByrEsJmTnoOKMQrWsL/AujxSC0CaVeCSDiIZn+ulFyGljNkHQb9fZP6faB1+9d+hMpypEWrmoHnhjT9YtEEZqx3uye/q8k6zRGvLk9pM0rIWYP71YchDjYHUM61oBu3ntaKgtmSlToKZ9gVTa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582201; c=relaxed/simple;
-	bh=RtoX7ZWxTxhUqK8EZ4mZEZ9Mr6eLoydK/C281ciizm0=;
+	s=arc-20240116; t=1712582711; c=relaxed/simple;
+	bh=uZ68KJto9LnOEQS+IUgmnvV/z93uE1lvTLoWDKUJJ+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jomoxJtYMP53NVd8zrU8sTPXp4LUhp2OsJI5RX/HKlF8fuQvIB8uTNksNs+qrZcZsAi5B8eqAWbRBvW286LQUAsfJYGGcU1KLFUAR5kXo87YvQIXdbMknwsjtFsn5MAaJ1cDeGjfU8FP2+BIX/yd4kdz1/t17VlWCanY2Yf+6xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDd6GToQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE08EC433F1;
-	Mon,  8 Apr 2024 13:16:39 +0000 (UTC)
+	 MIME-Version; b=j7hZyiSG7Uve315ZPPFPrss1ZGmKJilHGueiOS5epLG8tL1cRW8lAzi0oPsJ/oeQEX2Can+pbmU2CxrixDUNRFinZ+TYGIy65KhaGgTVtWh2qb0yl0fGsBRH0I919wZvFh04dp5y0zg7P9uo62GCrA5/pjOkg4YT/BRnVi3ytZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJB3lnhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FDCC43390;
+	Mon,  8 Apr 2024 13:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582200;
-	bh=RtoX7ZWxTxhUqK8EZ4mZEZ9Mr6eLoydK/C281ciizm0=;
+	s=korg; t=1712582711;
+	bh=uZ68KJto9LnOEQS+IUgmnvV/z93uE1lvTLoWDKUJJ+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDd6GToQ8+Ni2Sm+8gSQZsbsm+GGOH23KEHo411EQoFg3MeKKBhwBw96D0OYUAYMB
-	 w+pv8T/t6OSSovhAFboK2lV1/Y/vyYbnn6UNl1H/e+QaX+RPgbgdU0FwkI2zDmHdPa
-	 b/Zur7/kxlm1lGNMpYopMRH8V11G0OuN77BLX7jA=
+	b=fJB3lnhwlru4M3pW3glgu05fAfUiFt056+MToRpkBQR3/Vo3cgUAZjIhiDV07pgZX
+	 cZ5pa1FqfoovkAoAP5KQljAXyE5KpIRru6yJQCVKemv3uh6x0NtxtzzFCFQszsvxa8
+	 uoaj1jd6JTzNAxHkUMURR3qb+oAbWs5/1zDbQqUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 074/252] x86/cpufeatures: Add CPUID_LNX_5 to track recently added Linux-defined word
-Date: Mon,  8 Apr 2024 14:56:13 +0200
-Message-ID: <20240408125308.928146674@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Michael Walle <mwalle@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.8 099/273] net: dsa: sja1105: Fix parameters order in sja1110_pcs_mdio_write_c45()
+Date: Mon,  8 Apr 2024 14:56:14 +0200
+Message-ID: <20240408125312.376594462@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 8cb4a9a82b21623dbb4b3051dd30d98356cf95bc upstream.
+commit c120209bce34c49dcaba32f15679574327d09f63 upstream.
 
-Add CPUID_LNX_5 to track cpufeatures' word 21, and add the appropriate
-compile-time assert in KVM to prevent direct lookups on the features in
-CPUID_LNX_5.  KVM uses X86_FEATURE_* flags to manage guest CPUID, and so
-must translate features that are scattered by Linux from the Linux-defined
-bit to the hardware-defined bit, i.e. should never try to directly access
-scattered features in guest CPUID.
+The definition and declaration of sja1110_pcs_mdio_write_c45() don't have
+parameters in the same order.
 
-Opportunistically add NR_CPUID_WORDS to enum cpuid_leafs, along with a
-compile-time assert in KVM's CPUID infrastructure to ensure that future
-additions update cpuid_leafs along with NCAPINTS.
+Knowing that sja1110_pcs_mdio_write_c45() is used as a function pointer
+in 'sja1105_info' structure with .pcs_mdio_write_c45, and that we have:
 
-No functional change intended.
+   int (*pcs_mdio_write_c45)(struct mii_bus *bus, int phy, int mmd,
+				  int reg, u16 val);
 
-Fixes: 7f274e609f3d ("x86/cpufeatures: Add new word for scattered features")
-Cc: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+it is likely that the definition is the one to change.
+
+Found with cppcheck, funcArgOrderDifferent.
+
+Fixes: ae271547bba6 ("net: dsa: sja1105: C45 only transactions for PCS")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/ff2a5af67361988b3581831f7bd1eddebfb4c48f.1712082763.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeature.h |    2 ++
- arch/x86/kvm/reverse_cpuid.h      |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/net/dsa/sja1105/sja1105_mdio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/cpufeature.h
-+++ b/arch/x86/include/asm/cpufeature.h
-@@ -33,6 +33,8 @@ enum cpuid_leafs
- 	CPUID_7_EDX,
- 	CPUID_8000_001F_EAX,
- 	CPUID_8000_0021_EAX,
-+	CPUID_LNX_5,
-+	NR_CPUID_WORDS,
- };
- 
- #define X86_CAP_FMT_NUM "%d:%d"
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -102,10 +102,12 @@ static const struct cpuid_reg reverse_cp
-  */
- static __always_inline void reverse_cpuid_check(unsigned int x86_leaf)
- {
-+	BUILD_BUG_ON(NR_CPUID_WORDS != NCAPINTS);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_1);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_2);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_3);
- 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_4);
-+	BUILD_BUG_ON(x86_leaf == CPUID_LNX_5);
- 	BUILD_BUG_ON(x86_leaf >= ARRAY_SIZE(reverse_cpuid));
- 	BUILD_BUG_ON(reverse_cpuid[x86_leaf].function == 0);
+--- a/drivers/net/dsa/sja1105/sja1105_mdio.c
++++ b/drivers/net/dsa/sja1105/sja1105_mdio.c
+@@ -94,7 +94,7 @@ int sja1110_pcs_mdio_read_c45(struct mii
+ 	return tmp & 0xffff;
  }
+ 
+-int sja1110_pcs_mdio_write_c45(struct mii_bus *bus, int phy, int reg, int mmd,
++int sja1110_pcs_mdio_write_c45(struct mii_bus *bus, int phy, int mmd, int reg,
+ 			       u16 val)
+ {
+ 	struct sja1105_mdio_private *mdio_priv = bus->priv;
 
 
 
