@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-37513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF9289C52E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5253289C16E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C05028410F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC01280D7A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A71174BF5;
-	Mon,  8 Apr 2024 13:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B05285276;
+	Mon,  8 Apr 2024 13:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2SVQbNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQEKDYuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AB76EB72;
-	Mon,  8 Apr 2024 13:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF0A84D35;
+	Mon,  8 Apr 2024 13:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584454; cv=none; b=Nv7iOQux+yI2ShFB2wjqLNxMbx7PskU9gdVtvhWlbsrBXoQTJjow6dfsxr+KdcL2RwKDgY8t7zlIP9PdqzZbHo7F2/L0xNh5B9LJBoPeCRDyfEmQpRY4DRX3HWKeADow3dCcLBsdxmlLqxviQJ1Hih+/xDSiDT5TDhGfTRLNeFs=
+	t=1712582191; cv=none; b=qSgWxyU9VHkhEGhlbaNl5tVuFTWpDj+CS6GTAkI8GhTPV7K0zWrAY8ELFAsZUkzRYhHth7mm07eBjEfm7Hm6qEW/tW5Nml8AQ96c0XLqzWlZq4PppHn2e/k7Z13vcLqhsnq5CD/oon4h+kLVjVtfExIDKDt8eIkL4sGCwMNTxvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584454; c=relaxed/simple;
-	bh=DR+C/O0RfWtla/eAWXjuZPwPm1ukHIQjuVmtaNyjGHY=;
+	s=arc-20240116; t=1712582191; c=relaxed/simple;
+	bh=wIYT7nDJiNbgKvNPeCcWisb3qCDZzVqBvBY1AJQkJPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eljJ1NUTAq2MKc6TQZs5Le2H3V8lzZ/UdObeF9H9uZCd0GR9VltPeDkFXp1NFBWj5ALZebyFWE/LsBwY+t7E+ZcQJvFjAVtP+1MDgwbZDG43UxCN/sqMSdhG0q8CzGUIB4r8TGpCyRoHN0aEzonEryWGYtzWix/hrKc/VkkFSx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2SVQbNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E86C433F1;
-	Mon,  8 Apr 2024 13:54:13 +0000 (UTC)
+	 MIME-Version; b=Kto3PYxget6jQe4wUrl2cxyyjKNUmELlTUEOmfKcyJOjC/YMXtIe1TYb9BZlvf2PPvSUaFLFzScLuolvzoGLN4Rs6mDfG/PiUsIoRKJaa6h1IGN1h4lyPmu/cl8UTvn+u9LrIRlwLOeE/wbbabgb9q8YCA2aQn5TYpln7AmLGp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQEKDYuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436BFC433C7;
+	Mon,  8 Apr 2024 13:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584454;
-	bh=DR+C/O0RfWtla/eAWXjuZPwPm1ukHIQjuVmtaNyjGHY=;
+	s=korg; t=1712582191;
+	bh=wIYT7nDJiNbgKvNPeCcWisb3qCDZzVqBvBY1AJQkJPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2SVQbNgMz4Czvfma91uiMTrCMy7WYgzLoALIEMIiLCntKsmc91KraOQyhqL2zwWR
-	 P/3y7OOb0FDmHisWRbwx18dFK+DT9+xDDcgWhnPowxCd4bAm91xMqIox8rhJnfTYbH
-	 pO6LJD+JrUHrJzanpX24yvUt8cbIW/eHUMG5I2pg=
+	b=wQEKDYuF7aYERYnCPz7b7oDDZEDviGJMi/BpJtmQy34Dz8UEFN363176UzoQkgRBL
+	 zRA2dgV2X+/QGrrPeNKjdo8qlF7YLGT8DC7n29dR7HO4BOhPg+zVxHMqlwZVRQafE0
+	 5YGl+34MxngfLLZCbf8JbeSc3tL9EYkQlqinxXBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 443/690] NFSD: Remove unused nfsd4_compoundargs::cachetype field
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 034/273] net: hns3: fix index limit to support all queue stats
 Date: Mon,  8 Apr 2024 14:55:09 +0200
-Message-ID: <20240408125415.695298746@linuxfoundation.org>
+Message-ID: <20240408125310.354180660@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,34 +66,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 77e378cf2a595d8e39cddf28a31efe6afd9394a0 ]
+[ Upstream commit 47e39d213e09c6cae0d6b4d95e454ea404013312 ]
 
-This field was added by commit 1091006c5eb1 ("nfsd: turn on reply
-cache for NFSv4") but was never put to use.
+Currently, hns hardware supports more than 512 queues and the index limit
+in hclge_comm_tqps_update_stats is wrong. So this patch removes it.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 287db5c40d15 ("net: hns3: create new set of common tqp stats APIs for PF and VF reuse")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/xdr4.h | 1 -
- 1 file changed, 1 deletion(-)
+ .../ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index 7fcbc7a46c157..b2bc85421b507 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -724,7 +724,6 @@ struct nfsd4_compoundargs {
- 	u32				opcnt;
- 	struct nfsd4_op			*ops;
- 	struct nfsd4_op			iops[8];
--	int				cachetype;
- };
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
+index f3c9395d8351c..618f66d9586b3 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
+@@ -85,7 +85,7 @@ int hclge_comm_tqps_update_stats(struct hnae3_handle *handle,
+ 		hclge_comm_cmd_setup_basic_desc(&desc, HCLGE_OPC_QUERY_TX_STATS,
+ 						true);
  
- struct nfsd4_compoundres {
+-		desc.data[0] = cpu_to_le32(tqp->index & 0x1ff);
++		desc.data[0] = cpu_to_le32(tqp->index);
+ 		ret = hclge_comm_cmd_send(hw, &desc, 1);
+ 		if (ret) {
+ 			dev_err(&hw->cmq.csq.pdev->dev,
 -- 
 2.43.0
 
