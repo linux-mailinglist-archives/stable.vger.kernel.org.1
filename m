@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-37341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7864089C471
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31A489C31C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33BA5284430
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0EC6B2C8AB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664177BB1F;
-	Mon,  8 Apr 2024 13:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3702D7E56B;
+	Mon,  8 Apr 2024 13:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwwur65l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkvMJeNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A717B3FD;
-	Mon,  8 Apr 2024 13:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EDF7D07D;
+	Mon,  8 Apr 2024 13:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583949; cv=none; b=CRTpS6XOtRwWRapuXfKiXOh7La58hReyB+ufsHKgGdjucd12zX8mPEoYP/z+j01vEzE6v1bNVmXnPVTX8YSLh2PxrIkGPtWfw1tid9/GBdcSTDW9al8ckyLb19WQ/B51KkhbI3UKC9nCfzl9kjGem/bT3JGTen1qJ+ROiYgWDMQ=
+	t=1712582837; cv=none; b=r9GRvvV1AaAhdUmHik6dYEv0ucVrAztEZdMezhmNba2ubOJjU6v1BnLUsaYf0kZmTZfxKlSawou39BkR6iT9wM9vnoTROd51rMApq4cMuk62RYKAx3mRuw4uKLhoyJ6rG1C75LqQXXxIVOQmL8uA977OB6Q2G1iwJpd3eDILhCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583949; c=relaxed/simple;
-	bh=ek/i6/uUinQDXJ7d2Sy7ayBfSKglTXagNUtGgNQGBO8=;
+	s=arc-20240116; t=1712582837; c=relaxed/simple;
+	bh=OJvyWPFM+Uisvzvkv5POpUlVz8xXncqH5N7PQ1UPico=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iaqYgdEFb4lrOFUCHRNc1FEfPjk60llPiMKqoS1LguF2+F0EvY2zcs6XHxSV0n3evtaNDOeYtI/12g41DIXvD32vcD6zoxcjurciwd7FBz/M+SBL0T0QDdLiH+gAWvIScShYM7YiX+OF43DQAHvIxmDJB7BaP+0s1+c/+g885kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwwur65l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1FCC433F1;
-	Mon,  8 Apr 2024 13:45:48 +0000 (UTC)
+	 MIME-Version; b=fOAg90KHMwhzZD4XUj5mPVtdithy7Dz9+lS74lj77W+6e1dot1OF6hu2BWUJCghPdDkkWWpCxUVw7pGUj5tf8uG6xIa8W3Voq5J+Rp59NkzhnyMdIm/vmONXXj9PANvW++IieI2d/8dRREtEMRj9MzlhL1efK9NBCX7dB0wZr/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkvMJeNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70716C433F1;
+	Mon,  8 Apr 2024 13:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583949;
-	bh=ek/i6/uUinQDXJ7d2Sy7ayBfSKglTXagNUtGgNQGBO8=;
+	s=korg; t=1712582836;
+	bh=OJvyWPFM+Uisvzvkv5POpUlVz8xXncqH5N7PQ1UPico=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nwwur65lTilBu4z2xZvlLx3g+AfR28JWhMoX/nkIeY8hM+RNorWHpkaYdZCqSGp8X
-	 47P8v9//ITDdCCPVY4xITvB0RnsMsw9gbr5vbQYhjW/o2iGFQGqvfJqiS5ZSVXp3uj
-	 gL4Uo7Or6HoFx3u1+/+LSHTut2RBAv/ElbGx6JPI=
+	b=ZkvMJeNorwAL14OJGg5YZZA+Oq1aWFvMxSJ6alMlraTAc7viQrc+rIv7MdI4azQLE
+	 if5WVFXGIQCJPM9Q65J4yHwSF5iYwWUXJNAE+Ha+uioE9wKxa1s23B65vJDublyiG7
+	 tke9sY46bUJOinqcN4dmZGd4WR6Ks+6JHbYm90dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 252/252] x86/efistub: Remap kernel text read-only before dropping NX attribute
+	David Hildenbrand <david@redhat.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miklos Szeredi <miklos@szeredi.hu>
+Subject: [PATCH 6.1 137/138] mm/secretmem: fix GUP-fast succeeding on secretmem folios
 Date: Mon,  8 Apr 2024 14:59:11 +0200
-Message-ID: <20240408125314.475046982@linuxfoundation.org>
+Message-ID: <20240408125300.488795726@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,98 +67,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 9c55461040a9264b7e44444c53d26480b438eda6 upstream.
+commit 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706 upstream.
 
-Currently, the EFI stub invokes the EFI memory attributes protocol to
-strip any NX restrictions from the entire loaded kernel, resulting in
-all code and data being mapped read-write-execute.
+folio_is_secretmem() currently relies on secretmem folios being LRU
+folios, to save some cycles.
 
-The point of the EFI memory attributes protocol is to remove the need
-for all memory allocations to be mapped with both write and execute
-permissions by default, and make it the OS loader's responsibility to
-transition data mappings to code mappings where appropriate.
+However, folios might reside in a folio batch without the LRU flag set, or
+temporarily have their LRU flag cleared.  Consequently, the LRU flag is
+unreliable for this purpose.
 
-Even though the UEFI specification does not appear to leave room for
-denying memory attribute changes based on security policy, let's be
-cautious and avoid relying on the ability to create read-write-execute
-mappings. This is trivially achievable, given that the amount of kernel
-code executing via the firmware's 1:1 mapping is rather small and
-limited to the .head.text region. So let's drop the NX restrictions only
-on that subregion, but not before remapping it as read-only first.
+In particular, this is the case when secretmem_fault() allocates a fresh
+page and calls filemap_add_folio()->folio_add_lru().  The folio might be
+added to the per-cpu folio batch and won't get the LRU flag set until the
+batch was drained using e.g., lru_add_drain().
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Consequently, folio_is_secretmem() might not detect secretmem folios and
+GUP-fast can succeed in grabbing a secretmem folio, crashing the kernel
+when we would later try reading/writing to the folio, because the folio
+has been unmapped from the directmap.
+
+Fix it by removing that unreliable check.
+
+Link: https://lkml.kernel.org/r/20240326143210.291116-2-david@redhat.com
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
+Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
+Tested-by: Miklos Szeredi <mszeredi@redhat.com>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/Makefile       |    2 +-
- arch/x86/boot/compressed/misc.c         |    1 +
- arch/x86/include/asm/boot.h             |    1 +
- drivers/firmware/efi/libstub/x86-stub.c |   11 ++++++++++-
- 4 files changed, 13 insertions(+), 2 deletions(-)
+ include/linux/secretmem.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -84,7 +84,7 @@ LDFLAGS_vmlinux += -T
- hostprogs	:= mkpiggy
- HOST_EXTRACFLAGS += -I$(srctree)/tools/include
+--- a/include/linux/secretmem.h
++++ b/include/linux/secretmem.h
+@@ -14,10 +14,10 @@ static inline bool page_is_secretmem(str
+ 	 * Using page_mapping() is quite slow because of the actual call
+ 	 * instruction and repeated compound_head(page) inside the
+ 	 * page_mapping() function.
+-	 * We know that secretmem pages are not compound and LRU so we can
++	 * We know that secretmem pages are not compound, so we can
+ 	 * save a couple of cycles here.
+ 	 */
+-	if (PageCompound(page) || !PageLRU(page))
++	if (PageCompound(page))
+ 		return false;
  
--sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
-+sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__start_rodata\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
- 
- quiet_cmd_voffset = VOFFSET $@
-       cmd_voffset = $(NM) $< | sed -n $(sed-voffset) > $@
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -330,6 +330,7 @@ static size_t parse_elf(void *output)
- 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
- }
- 
-+const unsigned long kernel_text_size = VO___start_rodata - VO__text;
- const unsigned long kernel_total_size = VO__end - VO__text;
- 
- static u8 boot_heap[BOOT_HEAP_SIZE] __aligned(4);
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -81,6 +81,7 @@
- 
- #ifndef __ASSEMBLY__
- extern unsigned int output_len;
-+extern const unsigned long kernel_text_size;
- extern const unsigned long kernel_total_size;
- 
- unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -238,6 +238,15 @@ efi_status_t efi_adjust_memory_range_pro
- 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
- 
- 	if (memattr != NULL) {
-+		status = efi_call_proto(memattr, set_memory_attributes,
-+					rounded_start,
-+					rounded_end - rounded_start,
-+					EFI_MEMORY_RO);
-+		if (status != EFI_SUCCESS) {
-+			efi_warn("Failed to set EFI_MEMORY_RO attribute\n");
-+			return status;
-+		}
-+
- 		status = efi_call_proto(memattr, clear_memory_attributes,
- 					rounded_start,
- 					rounded_end - rounded_start,
-@@ -816,7 +825,7 @@ static efi_status_t efi_decompress_kerne
- 
- 	*kernel_entry = addr + entry;
- 
--	return efi_adjust_memory_range_protection(addr, kernel_total_size);
-+	return efi_adjust_memory_range_protection(addr, kernel_text_size);
- }
- 
- static void __noreturn enter_kernel(unsigned long kernel_addr,
+ 	mapping = (struct address_space *)
 
 
 
