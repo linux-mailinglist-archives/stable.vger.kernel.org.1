@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E6789C018
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D4489C5C7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BD1BB2AF09
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1CE4282E4E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD897BAE7;
-	Mon,  8 Apr 2024 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BFB7FBCF;
+	Mon,  8 Apr 2024 14:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="halekLFS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/KyQWEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4726CDA8;
-	Mon,  8 Apr 2024 13:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702E67FBC7;
+	Mon,  8 Apr 2024 14:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581419; cv=none; b=DB5g8PmPwSiqHeqRD37UWNIi4IYyxgDuDQNTGJkTUqzI7OEZof1cObcSD9l4cfFgH5iGLKNnHrUMf92H5hFzHz/W7AQmAklLn/5V2NLiHyZKLslyc8emi+jKBIM8iJjYypoR1eXfD/QFK0wFYWqGYW69gP6boJMPWlNzlhEWiTM=
+	t=1712584809; cv=none; b=OXpnqUsdRILBgKW7Yr38QW3MFCEH725da99HTyyjUJLdM+48JDTNPwVBbDp5/urUEp26t5WT6siZzUkABqbXlUOv68/KaMvBU8NsCAm0e5an3y/XO1uo4W9c/gVm70FTcOW2JAEWcDmd4RhXjPY+g4aNOyVwgq/LuPNPNWnbTcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581419; c=relaxed/simple;
-	bh=+nj9dmyu2R8QvuXwVFyoRQBGN2DIlzf089++O6AMBKQ=;
+	s=arc-20240116; t=1712584809; c=relaxed/simple;
+	bh=uIwQ+b++UUZ8DUX/+1XzLdIsHdWcLqvY2riqbgDMLzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLbSx4YLzq7D4Jr139kwziwISZeAtDWjsqTXcUYN1XAgtG2BjCvIk73P5oSN+NlimPlBk19TisOwQ8XSG0ZiF1MkpausJ15Saar0S3CPusF1EzRSGNN/2tn42sfGrpi6xHu2qIXtEcO4okKv4WR3sU8dUT0YYDv+SgEkDIw92ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=halekLFS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8E0C433C7;
-	Mon,  8 Apr 2024 13:03:39 +0000 (UTC)
+	 MIME-Version; b=B8FMmU5bGBhdbc/+xPEyRUQgF6KgbWBmxayO1ny5KL/bmHE6Kx8wXstT3FJQGJPnpPSwn7lXtcvdlma4Am10FYJOAZnrT0DXpldW0Lxf7vBrmeyAZAu2d4Wa1VeBuTfDL4LDoJtiRqHJ4LKPcDVkEOtSKMpylA9AqguKSMwbcSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/KyQWEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB67C433C7;
+	Mon,  8 Apr 2024 14:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581419;
-	bh=+nj9dmyu2R8QvuXwVFyoRQBGN2DIlzf089++O6AMBKQ=;
+	s=korg; t=1712584809;
+	bh=uIwQ+b++UUZ8DUX/+1XzLdIsHdWcLqvY2riqbgDMLzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=halekLFSwt+qQQgTqkKsdcuavE+5ITKhz9KJdl/RiAvZn0Xhg89ldA5AeiGblX8Co
-	 4/D3oPCwCc/D37ZooIvhgY0n9glmhShbCLrd4dPjmqD5OyaLkcJFaUfzXZVsuu2wxo
-	 k8WFwurbc0gf315kAo2lQbEr0vSS2UwNQUIXQsmY=
+	b=T/KyQWENvz/SR2bb+NMrLr4hWM1/vVRMp0rQTfkvo6l0fcUS4iJ6Gqa4z9WVDiXbu
+	 LJ2LNEhUsU3XIwviCkaq7pvfky9IDEG6iJjGVaaGG4CT2wktPqBt0p22pFBd71spRm
+	 FvfcZIMGs3KAko/p7b3KCPGKXNRda/WjnJv922hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/138] mlxbf_gige: call request_irq() after NAPI initialized
+	Eric Auger <eric.auger@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.15 565/690] vfio/platform: Create persistent IRQ handlers
 Date: Mon,  8 Apr 2024 14:57:11 +0200
-Message-ID: <20240408125256.766836545@linuxfoundation.org>
+Message-ID: <20240408125420.100140677@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +62,255 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit f7442a634ac06b953fc1f7418f307b25acd4cfbc ]
+[ Upstream commit 675daf435e9f8e5a5eab140a9864dfad6668b375 ]
 
-The mlxbf_gige driver encounters a NULL pointer exception in
-mlxbf_gige_open() when kdump is enabled.  The sequence to reproduce
-the exception is as follows:
-a) enable kdump
-b) trigger kdump via "echo c > /proc/sysrq-trigger"
-c) kdump kernel executes
-d) kdump kernel loads mlxbf_gige module
-e) the mlxbf_gige module runs its open() as the
-   the "oob_net0" interface is brought up
-f) mlxbf_gige module will experience an exception
-   during its open(), something like:
+The vfio-platform SET_IRQS ioctl currently allows loopback triggering of
+an interrupt before a signaling eventfd has been configured by the user,
+which thereby allows a NULL pointer dereference.
 
-     Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-     Mem abort info:
-       ESR = 0x0000000086000004
-       EC = 0x21: IABT (current EL), IL = 32 bits
-       SET = 0, FnV = 0
-       EA = 0, S1PTW = 0
-       FSC = 0x04: level 0 translation fault
-     user pgtable: 4k pages, 48-bit VAs, pgdp=00000000e29a4000
-     [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-     Internal error: Oops: 0000000086000004 [#1] SMP
-     CPU: 0 PID: 812 Comm: NetworkManager Tainted: G           OE     5.15.0-1035-bluefield #37-Ubuntu
-     Hardware name: https://www.mellanox.com BlueField-3 SmartNIC Main Card/BlueField-3 SmartNIC Main Card, BIOS 4.6.0.13024 Jan 19 2024
-     pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-     pc : 0x0
-     lr : __napi_poll+0x40/0x230
-     sp : ffff800008003e00
-     x29: ffff800008003e00 x28: 0000000000000000 x27: 00000000ffffffff
-     x26: ffff000066027238 x25: ffff00007cedec00 x24: ffff800008003ec8
-     x23: 000000000000012c x22: ffff800008003eb7 x21: 0000000000000000
-     x20: 0000000000000001 x19: ffff000066027238 x18: 0000000000000000
-     x17: ffff578fcb450000 x16: ffffa870b083c7c0 x15: 0000aaab010441d0
-     x14: 0000000000000001 x13: 00726f7272655f65 x12: 6769675f6662786c
-     x11: 0000000000000000 x10: 0000000000000000 x9 : ffffa870b0842398
-     x8 : 0000000000000004 x7 : fe5a48b9069706ea x6 : 17fdb11fc84ae0d2
-     x5 : d94a82549d594f35 x4 : 0000000000000000 x3 : 0000000000400100
-     x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000066027238
-     Call trace:
-      0x0
-      net_rx_action+0x178/0x360
-      __do_softirq+0x15c/0x428
-      __irq_exit_rcu+0xac/0xec
-      irq_exit+0x18/0x2c
-      handle_domain_irq+0x6c/0xa0
-      gic_handle_irq+0xec/0x1b0
-      call_on_irq_stack+0x20/0x2c
-      do_interrupt_handler+0x5c/0x70
-      el1_interrupt+0x30/0x50
-      el1h_64_irq_handler+0x18/0x2c
-      el1h_64_irq+0x7c/0x80
-      __setup_irq+0x4c0/0x950
-      request_threaded_irq+0xf4/0x1bc
-      mlxbf_gige_request_irqs+0x68/0x110 [mlxbf_gige]
-      mlxbf_gige_open+0x5c/0x170 [mlxbf_gige]
-      __dev_open+0x100/0x220
-      __dev_change_flags+0x16c/0x1f0
-      dev_change_flags+0x2c/0x70
-      do_setlink+0x220/0xa40
-      __rtnl_newlink+0x56c/0x8a0
-      rtnl_newlink+0x58/0x84
-      rtnetlink_rcv_msg+0x138/0x3c4
-      netlink_rcv_skb+0x64/0x130
-      rtnetlink_rcv+0x20/0x30
-      netlink_unicast+0x2ec/0x360
-      netlink_sendmsg+0x278/0x490
-      __sock_sendmsg+0x5c/0x6c
-      ____sys_sendmsg+0x290/0x2d4
-      ___sys_sendmsg+0x84/0xd0
-      __sys_sendmsg+0x70/0xd0
-      __arm64_sys_sendmsg+0x2c/0x40
-      invoke_syscall+0x78/0x100
-      el0_svc_common.constprop.0+0x54/0x184
-      do_el0_svc+0x30/0xac
-      el0_svc+0x48/0x160
-      el0t_64_sync_handler+0xa4/0x12c
-      el0t_64_sync+0x1a4/0x1a8
-     Code: bad PC value
-     ---[ end trace 7d1c3f3bf9d81885 ]---
-     Kernel panic - not syncing: Oops: Fatal exception in interrupt
-     Kernel Offset: 0x2870a7a00000 from 0xffff800008000000
-     PHYS_OFFSET: 0x80000000
-     CPU features: 0x0,000005c1,a3332a5a
-     Memory Limit: none
-     ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+Rather than register the IRQ relative to a valid trigger, register all
+IRQs in a disabled state in the device open path.  This allows mask
+operations on the IRQ to nest within the overall enable state governed
+by a valid eventfd signal.  This decouples @masked, protected by the
+@locked spinlock from @trigger, protected via the @igate mutex.
 
-The exception happens because there is a pending RX interrupt before the
-call to request_irq(RX IRQ) executes.  Then, the RX IRQ handler fires
-immediately after this request_irq() completes. The RX IRQ handler runs
-"napi_schedule()" before NAPI is fully initialized via "netif_napi_add()"
-and "napi_enable()", both which happen later in the open() logic.
+In doing so, it's guaranteed that changes to @trigger cannot race the
+IRQ handlers because the IRQ handler is synchronously disabled before
+modifying the trigger, and loopback triggering of the IRQ via ioctl is
+safe due to serialization with trigger changes via igate.
 
-The logic in mlxbf_gige_open() must fully initialize NAPI before any calls
-to request_irq() execute.
+For compatibility, request_irq() failures are maintained to be local to
+the SET_IRQS ioctl rather than a fatal error in the open device path.
+This allows, for example, a userspace driver with polling mode support
+to continue to work regardless of moving the request_irq() call site.
+This necessarily blocks all SET_IRQS access to the failed index.
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Link: https://lore.kernel.org/r/20240325183627.7641-1-davthompson@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Eric Auger <eric.auger@redhat.com>
+Cc:  <stable@vger.kernel.org>
+Fixes: 57f972e2b341 ("vfio/platform: trigger an interrupt via eventfd")
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-7-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlxbf_gige/mlxbf_gige_main.c      | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/vfio/platform/vfio_platform_irq.c |  101 ++++++++++++++++++++----------
+ 1 file changed, 68 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index 113e3d9d33530..65e92541db6e5 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -139,13 +139,10 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	control |= MLXBF_GIGE_CONTROL_PORT_EN;
- 	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
- 
--	err = mlxbf_gige_request_irqs(priv);
--	if (err)
--		return err;
- 	mlxbf_gige_cache_stats(priv);
- 	err = mlxbf_gige_clean_port(priv);
- 	if (err)
--		goto free_irqs;
-+		return err;
- 
- 	/* Clear driver's valid_polarity to match hardware,
- 	 * since the above call to clean_port() resets the
-@@ -166,6 +163,10 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	napi_enable(&priv->napi);
- 	netif_start_queue(netdev);
- 
-+	err = mlxbf_gige_request_irqs(priv);
-+	if (err)
-+		goto napi_deinit;
-+
- 	/* Set bits in INT_EN that we care about */
- 	int_en = MLXBF_GIGE_INT_EN_HW_ACCESS_ERROR |
- 		 MLXBF_GIGE_INT_EN_TX_CHECKSUM_INPUTS |
-@@ -182,14 +183,17 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 
+--- a/drivers/vfio/platform/vfio_platform_irq.c
++++ b/drivers/vfio/platform/vfio_platform_irq.c
+@@ -136,6 +136,16 @@ static int vfio_platform_set_irq_unmask(
  	return 0;
- 
-+napi_deinit:
-+	netif_stop_queue(netdev);
-+	napi_disable(&priv->napi);
-+	netif_napi_del(&priv->napi);
-+	mlxbf_gige_rx_deinit(priv);
-+
- tx_deinit:
- 	mlxbf_gige_tx_deinit(priv);
- 
- phy_deinit:
- 	phy_stop(phydev);
--
--free_irqs:
--	mlxbf_gige_free_irqs(priv);
- 	return err;
  }
  
--- 
-2.43.0
-
++/*
++ * The trigger eventfd is guaranteed valid in the interrupt path
++ * and protected by the igate mutex when triggered via ioctl.
++ */
++static void vfio_send_eventfd(struct vfio_platform_irq *irq_ctx)
++{
++	if (likely(irq_ctx->trigger))
++		eventfd_signal(irq_ctx->trigger, 1);
++}
++
+ static irqreturn_t vfio_automasked_irq_handler(int irq, void *dev_id)
+ {
+ 	struct vfio_platform_irq *irq_ctx = dev_id;
+@@ -155,7 +165,7 @@ static irqreturn_t vfio_automasked_irq_h
+ 	spin_unlock_irqrestore(&irq_ctx->lock, flags);
+ 
+ 	if (ret == IRQ_HANDLED)
+-		eventfd_signal(irq_ctx->trigger, 1);
++		vfio_send_eventfd(irq_ctx);
+ 
+ 	return ret;
+ }
+@@ -164,22 +174,19 @@ static irqreturn_t vfio_irq_handler(int
+ {
+ 	struct vfio_platform_irq *irq_ctx = dev_id;
+ 
+-	eventfd_signal(irq_ctx->trigger, 1);
++	vfio_send_eventfd(irq_ctx);
+ 
+ 	return IRQ_HANDLED;
+ }
+ 
+ static int vfio_set_trigger(struct vfio_platform_device *vdev, int index,
+-			    int fd, irq_handler_t handler)
++			    int fd)
+ {
+ 	struct vfio_platform_irq *irq = &vdev->irqs[index];
+ 	struct eventfd_ctx *trigger;
+-	int ret;
+ 
+ 	if (irq->trigger) {
+-		irq_clear_status_flags(irq->hwirq, IRQ_NOAUTOEN);
+-		free_irq(irq->hwirq, irq);
+-		kfree(irq->name);
++		disable_irq(irq->hwirq);
+ 		eventfd_ctx_put(irq->trigger);
+ 		irq->trigger = NULL;
+ 	}
+@@ -187,30 +194,20 @@ static int vfio_set_trigger(struct vfio_
+ 	if (fd < 0) /* Disable only */
+ 		return 0;
+ 
+-	irq->name = kasprintf(GFP_KERNEL, "vfio-irq[%d](%s)",
+-						irq->hwirq, vdev->name);
+-	if (!irq->name)
+-		return -ENOMEM;
+-
+ 	trigger = eventfd_ctx_fdget(fd);
+-	if (IS_ERR(trigger)) {
+-		kfree(irq->name);
++	if (IS_ERR(trigger))
+ 		return PTR_ERR(trigger);
+-	}
+ 
+ 	irq->trigger = trigger;
+ 
+-	irq_set_status_flags(irq->hwirq, IRQ_NOAUTOEN);
+-	ret = request_irq(irq->hwirq, handler, 0, irq->name, irq);
+-	if (ret) {
+-		kfree(irq->name);
+-		eventfd_ctx_put(trigger);
+-		irq->trigger = NULL;
+-		return ret;
+-	}
+-
+-	if (!irq->masked)
+-		enable_irq(irq->hwirq);
++	/*
++	 * irq->masked effectively provides nested disables within the overall
++	 * enable relative to trigger.  Specifically request_irq() is called
++	 * with NO_AUTOEN, therefore the IRQ is initially disabled.  The user
++	 * may only further disable the IRQ with a MASK operations because
++	 * irq->masked is initially false.
++	 */
++	enable_irq(irq->hwirq);
+ 
+ 	return 0;
+ }
+@@ -229,7 +226,7 @@ static int vfio_platform_set_irq_trigger
+ 		handler = vfio_irq_handler;
+ 
+ 	if (!count && (flags & VFIO_IRQ_SET_DATA_NONE))
+-		return vfio_set_trigger(vdev, index, -1, handler);
++		return vfio_set_trigger(vdev, index, -1);
+ 
+ 	if (start != 0 || count != 1)
+ 		return -EINVAL;
+@@ -237,7 +234,7 @@ static int vfio_platform_set_irq_trigger
+ 	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		int32_t fd = *(int32_t *)data;
+ 
+-		return vfio_set_trigger(vdev, index, fd, handler);
++		return vfio_set_trigger(vdev, index, fd);
+ 	}
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+@@ -261,6 +258,14 @@ int vfio_platform_set_irqs_ioctl(struct
+ 		    unsigned start, unsigned count, uint32_t flags,
+ 		    void *data) = NULL;
+ 
++	/*
++	 * For compatibility, errors from request_irq() are local to the
++	 * SET_IRQS path and reflected in the name pointer.  This allows,
++	 * for example, polling mode fallback for an exclusive IRQ failure.
++	 */
++	if (IS_ERR(vdev->irqs[index].name))
++		return PTR_ERR(vdev->irqs[index].name);
++
+ 	switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
+ 	case VFIO_IRQ_SET_ACTION_MASK:
+ 		func = vfio_platform_set_irq_mask;
+@@ -281,7 +286,7 @@ int vfio_platform_set_irqs_ioctl(struct
+ 
+ int vfio_platform_irq_init(struct vfio_platform_device *vdev)
+ {
+-	int cnt = 0, i;
++	int cnt = 0, i, ret = 0;
+ 
+ 	while (vdev->get_irq(vdev, cnt) >= 0)
+ 		cnt++;
+@@ -292,29 +297,54 @@ int vfio_platform_irq_init(struct vfio_p
+ 
+ 	for (i = 0; i < cnt; i++) {
+ 		int hwirq = vdev->get_irq(vdev, i);
++		irq_handler_t handler = vfio_irq_handler;
+ 
+-		if (hwirq < 0)
++		if (hwirq < 0) {
++			ret = -EINVAL;
+ 			goto err;
++		}
+ 
+ 		spin_lock_init(&vdev->irqs[i].lock);
+ 
+ 		vdev->irqs[i].flags = VFIO_IRQ_INFO_EVENTFD;
+ 
+-		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK)
++		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK) {
+ 			vdev->irqs[i].flags |= VFIO_IRQ_INFO_MASKABLE
+ 						| VFIO_IRQ_INFO_AUTOMASKED;
++			handler = vfio_automasked_irq_handler;
++		}
+ 
+ 		vdev->irqs[i].count = 1;
+ 		vdev->irqs[i].hwirq = hwirq;
+ 		vdev->irqs[i].masked = false;
++		vdev->irqs[i].name = kasprintf(GFP_KERNEL,
++					       "vfio-irq[%d](%s)", hwirq,
++					       vdev->name);
++		if (!vdev->irqs[i].name) {
++			ret = -ENOMEM;
++			goto err;
++		}
++
++		ret = request_irq(hwirq, handler, IRQF_NO_AUTOEN,
++				  vdev->irqs[i].name, &vdev->irqs[i]);
++		if (ret) {
++			kfree(vdev->irqs[i].name);
++			vdev->irqs[i].name = ERR_PTR(ret);
++		}
+ 	}
+ 
+ 	vdev->num_irqs = cnt;
+ 
+ 	return 0;
+ err:
++	for (--i; i >= 0; i--) {
++		if (!IS_ERR(vdev->irqs[i].name)) {
++			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
++			kfree(vdev->irqs[i].name);
++		}
++	}
+ 	kfree(vdev->irqs);
+-	return -EINVAL;
++	return ret;
+ }
+ 
+ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
+@@ -324,7 +354,12 @@ void vfio_platform_irq_cleanup(struct vf
+ 	for (i = 0; i < vdev->num_irqs; i++) {
+ 		vfio_virqfd_disable(&vdev->irqs[i].mask);
+ 		vfio_virqfd_disable(&vdev->irqs[i].unmask);
+-		vfio_set_trigger(vdev, i, -1, NULL);
++		if (!IS_ERR(vdev->irqs[i].name)) {
++			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
++			if (vdev->irqs[i].trigger)
++				eventfd_ctx_put(vdev->irqs[i].trigger);
++			kfree(vdev->irqs[i].name);
++		}
+ 	}
+ 
+ 	vdev->num_irqs = 0;
 
 
 
