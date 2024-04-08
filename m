@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-37210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE2489C589
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9974D89C466
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 877EDB2A353
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1189B1F20B64
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B287FBD7;
-	Mon,  8 Apr 2024 13:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FB97F487;
+	Mon,  8 Apr 2024 13:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="us+dv0Ev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCgCDhEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827987FBC8;
-	Mon,  8 Apr 2024 13:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E8B7EF06;
+	Mon,  8 Apr 2024 13:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583570; cv=none; b=LMirlUn2wIsZDWQSGdO2loq/o5VsFLwfaOGd5slWgxigg2HssnxiNT5y+0RYs6cCTNKYG6tko+mKX2OOwlS+0iruHOImL7Ds8oX5FHjkphBPq+XgIkoNKNtTzgaZ+uJ8cTxpkkAbe3cAFhp7W5j7+O2Ds6+VujnGIj3hHxVzR7U=
+	t=1712583914; cv=none; b=g41yl7tGZmrd6XBh5deGhuRksaU6oohfz/Jql3zZDV2sOQH5HdQpjsDpMqDyfVDtl7/jzzEUX+l+argi/+7f1BaRHvNVYgpdrm4Eta7Bjv/zvl1vCm9GhZUO0tvl5LKAA9TQn4rXjRH34EnXowKDTzNftojM04KSNC6O4fHQRp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583570; c=relaxed/simple;
-	bh=5PY2Noq0WUtP8f2J3VHBWDlldL8BQ+6618ZhTDS/UOY=;
+	s=arc-20240116; t=1712583914; c=relaxed/simple;
+	bh=HuQV/kFnMx8St8cDGtrP90BoGWtSrCfmx8O0X7bVCM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfXckn7UEF5V2vLfGtleSwmrLDOqNop7ju+k8iCz7g47L9K9ZPJWBAo8tBgYbCxBBFviZY2ekjm0a+7APl4hm3hy9GtQdOSFqcPO52dEJ1xItwAhdHJKrnLQGs/vXws5KwvbBB6X9ZnlqXaR8A7u9TeNbUkps5vGnc2AR5rNs1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=us+dv0Ev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B67C433C7;
-	Mon,  8 Apr 2024 13:39:29 +0000 (UTC)
+	 MIME-Version; b=YGyagd1JkcoEjsXRDSAh1zdP5AfsVOhG/JJX9FoeeRhQiareKVjabTc1ff4W6sTYKeWABlDjuXF88lhg0J49AViyqmb6aII5jZYk5IXfQhsYTtCDNRiLNgdEgXUmPUKBlzjVmVu484skyA2gJYUEoXvLwstRF/0rGk5uXbiWOOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCgCDhEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A312AC433C7;
+	Mon,  8 Apr 2024 13:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583570;
-	bh=5PY2Noq0WUtP8f2J3VHBWDlldL8BQ+6618ZhTDS/UOY=;
+	s=korg; t=1712583914;
+	bh=HuQV/kFnMx8St8cDGtrP90BoGWtSrCfmx8O0X7bVCM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=us+dv0EvIgwjtfho0TUk5sP9P82X1W8gnpSO4NyfFfYEDaynrJghvtR/q//Pct58p
-	 ZyTqLHQcpxx9JYLmNpndKR606xbdPTiULpbz8W4GRDSn30O+aefCnColMsxyGTi5Xl
-	 dHFL6fTYv6vi7sgR4hMILhjb9u2YpNXkjFNKIGzA=
+	b=WCgCDhEKa56lNwtZIlRlVIjY5ilK2pbqcW4BQZ5u2eZfvh6qVzHfjLAq+AeBlEono
+	 4SIO9KqD+bKJcEiEJgqMVUdZJeIFnocG938KkvQDS/5Yd+m9WXyMWN1DKZ5Yv4jpvt
+	 dXWD1N5vYVKFld1431MmAq9kwfSXmsmJFjjsEZto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 209/252] io_uring/kbuf: get rid of lower BGID lists
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.8 233/273] x86/coco: Require seeding RNG with RDRAND on CoCo systems
 Date: Mon,  8 Apr 2024 14:58:28 +0200
-Message-ID: <20240408125313.140400563@linuxfoundation.org>
+Message-ID: <20240408125316.667515064@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,205 +64,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit 09ab7eff38202159271534d2f5ad45526168f2a5 upstream.
+commit 99485c4c026f024e7cb82da84c7951dbe3deb584 upstream.
 
-Just rely on the xarray for any kind of bgid. This simplifies things, and
-it really doesn't bring us much, if anything.
+There are few uses of CoCo that don't rely on working cryptography and
+hence a working RNG. Unfortunately, the CoCo threat model means that the
+VM host cannot be trusted and may actively work against guests to
+extract secrets or manipulate computation. Since a malicious host can
+modify or observe nearly all inputs to guests, the only remaining source
+of entropy for CoCo guests is RDRAND.
 
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+If RDRAND is broken -- due to CPU hardware fault -- the RNG as a whole
+is meant to gracefully continue on gathering entropy from other sources,
+but since there aren't other sources on CoCo, this is catastrophic.
+This is mostly a concern at boot time when initially seeding the RNG, as
+after that the consequences of a broken RDRAND are much more
+theoretical.
+
+So, try at boot to seed the RNG using 256 bits of RDRAND output. If this
+fails, panic(). This will also trigger if the system is booted without
+RDRAND, as RDRAND is essential for a safe CoCo boot.
+
+Add this deliberately to be "just a CoCo x86 driver feature" and not
+part of the RNG itself. Many device drivers and platforms have some
+desire to contribute something to the RNG, and add_device_randomness()
+is specifically meant for this purpose.
+
+Any driver can call it with seed data of any quality, or even garbage
+quality, and it can only possibly make the quality of the RNG better or
+have no effect, but can never make it worse.
+
+Rather than trying to build something into the core of the RNG, consider
+the particular CoCo issue just a CoCo issue, and therefore separate it
+all out into driver (well, arch/platform) code.
+
+  [ bp: Massage commit message. ]
+
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Elena Reshetova <elena.reshetova@intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240326160735.73531-1-Jason@zx2c4.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |    1 
- io_uring/io_uring.c            |    2 -
- io_uring/kbuf.c                |   70 ++++-------------------------------------
- 3 files changed, 8 insertions(+), 65 deletions(-)
+ arch/x86/coco/core.c        |   41 +++++++++++++++++++++++++++++++++++++++++
+ arch/x86/include/asm/coco.h |    2 ++
+ arch/x86/kernel/setup.c     |    2 ++
+ 3 files changed, 45 insertions(+)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -250,7 +250,6 @@ struct io_ring_ctx {
- 
- 		struct io_submit_state	submit_state;
- 
--		struct io_buffer_list	*io_bl;
- 		struct xarray		io_bl_xa;
- 
- 		struct io_hash_table	cancel_table_locked;
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -343,7 +343,6 @@ static __cold struct io_ring_ctx *io_rin
- err:
- 	kfree(ctx->cancel_table.hbs);
- 	kfree(ctx->cancel_table_locked.hbs);
--	kfree(ctx->io_bl);
- 	xa_destroy(&ctx->io_bl_xa);
- 	kfree(ctx);
- 	return NULL;
-@@ -2934,7 +2933,6 @@ static __cold void io_ring_ctx_free(stru
- 		io_wq_put_hash(ctx->hash_map);
- 	kfree(ctx->cancel_table.hbs);
- 	kfree(ctx->cancel_table_locked.hbs);
--	kfree(ctx->io_bl);
- 	xa_destroy(&ctx->io_bl_xa);
- 	kfree(ctx);
- }
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -17,8 +17,6 @@
- 
- #define IO_BUFFER_LIST_BUF_PER_PAGE (PAGE_SIZE / sizeof(struct io_uring_buf))
- 
--#define BGID_ARRAY	64
--
- /* BIDs are addressed by a 16-bit field in a CQE */
- #define MAX_BIDS_PER_BGID (1 << 16)
- 
-@@ -31,13 +29,9 @@ struct io_provide_buf {
- 	__u16				bid;
- };
- 
--static struct io_buffer_list *__io_buffer_get_list(struct io_ring_ctx *ctx,
--						   struct io_buffer_list *bl,
--						   unsigned int bgid)
-+static inline struct io_buffer_list *__io_buffer_get_list(struct io_ring_ctx *ctx,
-+							  unsigned int bgid)
- {
--	if (bl && bgid < BGID_ARRAY)
--		return &bl[bgid];
--
- 	return xa_load(&ctx->io_bl_xa, bgid);
- }
- 
-@@ -53,7 +47,7 @@ static inline struct io_buffer_list *io_
- {
- 	lockdep_assert_held(&ctx->uring_lock);
- 
--	return __io_buffer_get_list(ctx, ctx->io_bl, bgid);
-+	return __io_buffer_get_list(ctx, bgid);
- }
- 
- static int io_buffer_add_list(struct io_ring_ctx *ctx,
-@@ -66,10 +60,6 @@ static int io_buffer_add_list(struct io_
- 	 */
- 	bl->bgid = bgid;
- 	smp_store_release(&bl->is_ready, 1);
--
--	if (bgid < BGID_ARRAY)
--		return 0;
--
- 	return xa_err(xa_store(&ctx->io_bl_xa, bgid, bl, GFP_KERNEL));
- }
- 
-@@ -215,24 +205,6 @@ void __user *io_buffer_select(struct io_
- 	return ret;
- }
- 
--static __cold int io_init_bl_list(struct io_ring_ctx *ctx)
--{
--	struct io_buffer_list *bl;
--	int i;
--
--	bl = kcalloc(BGID_ARRAY, sizeof(struct io_buffer_list), GFP_KERNEL);
--	if (!bl)
--		return -ENOMEM;
--
--	for (i = 0; i < BGID_ARRAY; i++) {
--		INIT_LIST_HEAD(&bl[i].buf_list);
--		bl[i].bgid = i;
--	}
--
--	smp_store_release(&ctx->io_bl, bl);
--	return 0;
--}
--
- /*
-  * Mark the given mapped range as free for reuse
+--- a/arch/x86/coco/core.c
++++ b/arch/x86/coco/core.c
+@@ -3,13 +3,17 @@
+  * Confidential Computing Platform Capability checks
+  *
+  * Copyright (C) 2021 Advanced Micro Devices, Inc.
++ * Copyright (C) 2024 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+  *
+  * Author: Tom Lendacky <thomas.lendacky@amd.com>
   */
-@@ -305,13 +277,6 @@ void io_destroy_buffers(struct io_ring_c
- {
- 	struct io_buffer_list *bl;
- 	unsigned long index;
--	int i;
--
--	for (i = 0; i < BGID_ARRAY; i++) {
--		if (!ctx->io_bl)
--			break;
--		__io_remove_buffers(ctx, &ctx->io_bl[i], -1U);
--	}
  
- 	xa_for_each(&ctx->io_bl_xa, index, bl) {
- 		xa_erase(&ctx->io_bl_xa, bl->bgid);
-@@ -485,12 +450,6 @@ int io_provide_buffers(struct io_kiocb *
+ #include <linux/export.h>
+ #include <linux/cc_platform.h>
++#include <linux/string.h>
++#include <linux/random.h>
  
- 	io_ring_submit_lock(ctx, issue_flags);
++#include <asm/archrandom.h>
+ #include <asm/coco.h>
+ #include <asm/processor.h>
  
--	if (unlikely(p->bgid < BGID_ARRAY && !ctx->io_bl)) {
--		ret = io_init_bl_list(ctx);
--		if (ret)
--			goto err;
--	}
--
- 	bl = io_buffer_get_list(ctx, p->bgid);
- 	if (unlikely(!bl)) {
- 		bl = kzalloc(sizeof(*bl), GFP_KERNEL_ACCOUNT);
-@@ -503,14 +462,9 @@ int io_provide_buffers(struct io_kiocb *
- 		if (ret) {
- 			/*
- 			 * Doesn't need rcu free as it was never visible, but
--			 * let's keep it consistent throughout. Also can't
--			 * be a lower indexed array group, as adding one
--			 * where lookup failed cannot happen.
-+			 * let's keep it consistent throughout.
- 			 */
--			if (p->bgid >= BGID_ARRAY)
--				kfree_rcu(bl, rcu);
--			else
--				WARN_ON_ONCE(1);
-+			kfree_rcu(bl, rcu);
- 			goto err;
- 		}
+@@ -148,3 +152,40 @@ u64 cc_mkdec(u64 val)
  	}
-@@ -675,12 +629,6 @@ int io_register_pbuf_ring(struct io_ring
- 	if (reg.ring_entries >= 65536)
- 		return -EINVAL;
- 
--	if (unlikely(reg.bgid < BGID_ARRAY && !ctx->io_bl)) {
--		int ret = io_init_bl_list(ctx);
--		if (ret)
--			return ret;
--	}
--
- 	bl = io_buffer_get_list(ctx, reg.bgid);
- 	if (bl) {
- 		/* if mapped buffer ring OR classic exists, don't allow */
-@@ -730,10 +678,8 @@ int io_unregister_pbuf_ring(struct io_ri
- 		return -EINVAL;
- 
- 	__io_remove_buffers(ctx, bl, -1U);
--	if (bl->bgid >= BGID_ARRAY) {
--		xa_erase(&ctx->io_bl_xa, bl->bgid);
--		kfree_rcu(bl, rcu);
--	}
-+	xa_erase(&ctx->io_bl_xa, bl->bgid);
-+	kfree_rcu(bl, rcu);
- 	return 0;
  }
+ EXPORT_SYMBOL_GPL(cc_mkdec);
++
++__init void cc_random_init(void)
++{
++	/*
++	 * The seed is 32 bytes (in units of longs), which is 256 bits, which
++	 * is the security level that the RNG is targeting.
++	 */
++	unsigned long rng_seed[32 / sizeof(long)];
++	size_t i, longs;
++
++	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++		return;
++
++	/*
++	 * Since the CoCo threat model includes the host, the only reliable
++	 * source of entropy that can be neither observed nor manipulated is
++	 * RDRAND. Usually, RDRAND failure is considered tolerable, but since
++	 * CoCo guests have no other unobservable source of entropy, it's
++	 * important to at least ensure the RNG gets some initial random seeds.
++	 */
++	for (i = 0; i < ARRAY_SIZE(rng_seed); i += longs) {
++		longs = arch_get_random_longs(&rng_seed[i], ARRAY_SIZE(rng_seed) - i);
++
++		/*
++		 * A zero return value means that the guest doesn't have RDRAND
++		 * or the CPU is physically broken, and in both cases that
++		 * means most crypto inside of the CoCo instance will be
++		 * broken, defeating the purpose of CoCo in the first place. So
++		 * just panic here because it's absolutely unsafe to continue
++		 * executing.
++		 */
++		if (longs == 0)
++			panic("RDRAND is defective.");
++	}
++	add_device_randomness(rng_seed, sizeof(rng_seed));
++	memzero_explicit(rng_seed, sizeof(rng_seed));
++}
+--- a/arch/x86/include/asm/coco.h
++++ b/arch/x86/include/asm/coco.h
+@@ -21,6 +21,7 @@ static inline void cc_set_mask(u64 mask)
  
-@@ -741,7 +687,7 @@ void *io_pbuf_get_address(struct io_ring
+ u64 cc_mkenc(u64 val);
+ u64 cc_mkdec(u64 val);
++void cc_random_init(void);
+ #else
+ #define cc_vendor (CC_VENDOR_NONE)
+ 
+@@ -33,6 +34,7 @@ static inline u64 cc_mkdec(u64 val)
  {
- 	struct io_buffer_list *bl;
+ 	return val;
+ }
++static inline void cc_random_init(void) { }
+ #endif
  
--	bl = __io_buffer_get_list(ctx, smp_load_acquire(&ctx->io_bl), bgid);
-+	bl = __io_buffer_get_list(ctx, bgid);
+ #endif /* _ASM_X86_COCO_H */
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -35,6 +35,7 @@
+ #include <asm/bios_ebda.h>
+ #include <asm/bugs.h>
+ #include <asm/cacheinfo.h>
++#include <asm/coco.h>
+ #include <asm/cpu.h>
+ #include <asm/efi.h>
+ #include <asm/gart.h>
+@@ -993,6 +994,7 @@ void __init setup_arch(char **cmdline_p)
+ 	 * memory size.
+ 	 */
+ 	mem_encrypt_setup_arch();
++	cc_random_init();
  
- 	if (!bl || !bl->is_mmap)
- 		return NULL;
+ 	efi_fake_memmap();
+ 	efi_find_mirror();
 
 
 
