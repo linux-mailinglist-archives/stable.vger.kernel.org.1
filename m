@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-36740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8284489C172
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDE289C175
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B32FC1C21604
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ECC11F2205D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657DB7CF17;
-	Mon,  8 Apr 2024 13:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED577D3E0;
+	Mon,  8 Apr 2024 13:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lvr8uuDd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkJPYsC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2457B7C6EB;
-	Mon,  8 Apr 2024 13:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99DB7D096;
+	Mon,  8 Apr 2024 13:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582206; cv=none; b=FtSzJYTO92NYn/vFf+arhM+LsVkfyOehpF/UdKJls35hTzPrF/PCM/u04bY0qlnr/cNB0HKRPkH78+x8BlhXZnA1r748nfu0FMdjSJ6BHuJ8onyUTCDbZpzw5ruI29sIfoZnMxAmU6Ii2530gbd9PQMemVvoWOXiMm8MjPXCMIU=
+	t=1712582214; cv=none; b=CZYYnH8KEU1JsZS6ow16r+8PHOmAATA+RMe07iveYnaocYXz0EnbeSH0UuBsFFD2cTXWdav12CU6sUB32Y0LSHt2iNKdNbNiOffQBI3klQABXtwJHI+Of0ge4dXq1hEaYUwVROfPewSkVZtCerhAkJQacXT6Jpu5pWDo+mbnp6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582206; c=relaxed/simple;
-	bh=qRTJ9+6rTbsAU3hdunc36l0yPNe2IKfR5AQz6C68y+c=;
+	s=arc-20240116; t=1712582214; c=relaxed/simple;
+	bh=FLeYJh8a4AS0P2UZfcPivKo+NUX4cpJ/988Ig0Rpylk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htELbeWOkUI+sETFLObAVDsH2pMaLqnBiob+aJMPOTl5RsKy1uEioyC5hV/lJnvwCUDI2O1dGVLl1Dx4YjAgWFVDl4pH1Qu/T+Mdv8FEO988leC8tqs/VCTjykiKPKvqqOfJT53ryXbhYQAOz1zeAvat51P78toi49N0vGUJqjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lvr8uuDd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CACDC433F1;
-	Mon,  8 Apr 2024 13:16:45 +0000 (UTC)
+	 MIME-Version; b=O7W+xv2604HoJ21xz3OKY0G37yGfb5+Nw3KxubolHrJ6Kza1E3p1/mJ+7IuE62FrLXbmdeTJ7MFUeqUdLQPhl1RKDplN1JIsm/6GtdOz+x642fM4pflWJ2+FryipZG5XfB2gkimTkXhI1dL3uVTU5+QuiUrQftTRMeSLDPwDhT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkJPYsC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F18C433F1;
+	Mon,  8 Apr 2024 13:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582206;
-	bh=qRTJ9+6rTbsAU3hdunc36l0yPNe2IKfR5AQz6C68y+c=;
+	s=korg; t=1712582214;
+	bh=FLeYJh8a4AS0P2UZfcPivKo+NUX4cpJ/988Ig0Rpylk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lvr8uuDd4U+NzwvTRZtBxFWS9MTxwM0HyOf/5LeI0v+lYKWHjXodmh6tnRQDetCmJ
-	 JFczl5oAKI8OIY0jUU4v/ZEmlmrFZ/iqB4EueUVOHQQbnH/yGE+oS10EcvRrDcKThw
-	 v+v63n6tEYKhsrAmgqfXUdwTnIoC6IDMg2CVUlic=
+	b=mkJPYsC9tTxZPLwp4ecI456aBza33Abd/E9yck0Yjjy0v1VUSmBAUKhBe6iXYEK79
+	 puKVrYupAsZc5rNqHHw4rJgjlrZcd63xhzLHWuPYQ1Mqp5v+ZzIK5+eHp/hQuQl45b
+	 XmtAHxt6Yzly74Bt2+SopvYEX1d1PL4mR4U3GL0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabe Kirkpatrick <gkirkpatrick@google.com>,
-	Josh Eads <josheads@google.com>,
-	Peter Gonda <pgonda@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.15 123/690] KVM: SVM: Flush pages under kvm->lock to fix UAF in svm_register_enc_region()
-Date: Mon,  8 Apr 2024 14:49:49 +0200
-Message-ID: <20240408125404.015070012@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linke li <lilinke99@qq.com>,
+	Rabin Vincent <rabin@rab.in>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 124/690] tracing: Use .flush() call to wake up readers
+Date: Mon,  8 Apr 2024 14:49:50 +0200
+Message-ID: <20240408125404.054336677@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,68 +71,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 5ef1d8c1ddbf696e47b226e11888eaf8d9e8e807 upstream.
+commit e5d7c1916562f0e856eb3d6f569629fcd535fed2 upstream.
 
-Do the cache flush of converted pages in svm_register_enc_region() before
-dropping kvm->lock to fix use-after-free issues where region and/or its
-array of pages could be freed by a different task, e.g. if userspace has
-__unregister_enc_region_locked() already queued up for the region.
+The .release() function does not get called until all readers of a file
+descriptor are finished.
 
-Note, the "obvious" alternative of using local variables doesn't fully
-resolve the bug, as region->pages is also dynamically allocated.  I.e. the
-region structure itself would be fine, but region->pages could be freed.
+If a thread is blocked on reading a file descriptor in ring_buffer_wait(),
+and another thread closes the file descriptor, it will not wake up the
+other thread as ring_buffer_wake_waiters() is called by .release(), and
+that will not get called until the .read() is finished.
 
-Flushing multiple pages under kvm->lock is unfortunate, but the entire
-flow is a rare slow path, and the manual flush is only needed on CPUs that
-lack coherency for encrypted memory.
+The issue originally showed up in trace-cmd, but the readers are actually
+other processes with their own file descriptors. So calling close() would wake
+up the other tasks because they are blocked on another descriptor then the
+one that was closed(). But there's other wake ups that solve that issue.
 
-Fixes: 19a23da53932 ("Fix unsynchronized access to sev members through svm_register_enc_region")
-Reported-by: Gabe Kirkpatrick <gkirkpatrick@google.com>
-Cc: Josh Eads <josheads@google.com>
-Cc: Peter Gonda <pgonda@google.com>
+When a thread is blocked on a read, it can still hang even when another
+thread closed its descriptor.
+
+This is what the .flush() callback is for. Have the .flush() wake up the
+readers.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240308202432.107909457@goodmis.org
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20240217013430.2079561-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linke li <lilinke99@qq.com>
+Cc: Rabin Vincent <rabin@rab.in>
+Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ kernel/trace/trace.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1662,20 +1662,22 @@ int svm_register_enc_region(struct kvm *
- 		goto e_free;
- 	}
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8228,6 +8228,20 @@ tracing_buffers_read(struct file *filp,
+ 	return size;
+ }
  
--	region->uaddr = range->addr;
--	region->size = range->size;
--
--	list_add_tail(&region->list, &sev->regions_list);
--	mutex_unlock(&kvm->lock);
--
- 	/*
- 	 * The guest may change the memory encryption attribute from C=0 -> C=1
- 	 * or vice versa for this memory range. Lets make sure caches are
- 	 * flushed to ensure that guest data gets written into memory with
--	 * correct C-bit.
-+	 * correct C-bit.  Note, this must be done before dropping kvm->lock,
-+	 * as region and its array of pages can be freed by a different task
-+	 * once kvm->lock is released.
- 	 */
- 	sev_clflush_pages(region->pages, region->npages);
- 
-+	region->uaddr = range->addr;
-+	region->size = range->size;
++static int tracing_buffers_flush(struct file *file, fl_owner_t id)
++{
++	struct ftrace_buffer_info *info = file->private_data;
++	struct trace_iterator *iter = &info->iter;
 +
-+	list_add_tail(&region->list, &sev->regions_list);
-+	mutex_unlock(&kvm->lock);
++	iter->wait_index++;
++	/* Make sure the waiters see the new wait_index */
++	smp_wmb();
 +
- 	return ret;
++	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
++
++	return 0;
++}
++
+ static int tracing_buffers_release(struct inode *inode, struct file *file)
+ {
+ 	struct ftrace_buffer_info *info = file->private_data;
+@@ -8239,12 +8253,6 @@ static int tracing_buffers_release(struc
  
- e_free:
+ 	__trace_array_put(iter->tr);
+ 
+-	iter->wait_index++;
+-	/* Make sure the waiters see the new wait_index */
+-	smp_wmb();
+-
+-	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
+-
+ 	if (info->spare)
+ 		ring_buffer_free_read_page(iter->array_buffer->buffer,
+ 					   info->spare_cpu, info->spare);
+@@ -8458,6 +8466,7 @@ static const struct file_operations trac
+ 	.read		= tracing_buffers_read,
+ 	.poll		= tracing_buffers_poll,
+ 	.release	= tracing_buffers_release,
++	.flush		= tracing_buffers_flush,
+ 	.splice_read	= tracing_buffers_splice_read,
+ 	.unlocked_ioctl = tracing_buffers_ioctl,
+ 	.llseek		= no_llseek,
 
 
 
