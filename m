@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-36761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E905689C18C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C9089C193
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2682A1C21C78
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07C8F1F21BE6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A669B7EF00;
-	Mon,  8 Apr 2024 13:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5770B7F48A;
+	Mon,  8 Apr 2024 13:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IejM+3w1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgJOh+er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6417B7D3F6;
-	Mon,  8 Apr 2024 13:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D4F7EF1E;
+	Mon,  8 Apr 2024 13:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582267; cv=none; b=idzdwA1gLr2QH9a8IzwMQuGmeVkeZPl2Zpq69OM6lNKjfEH9k9E+mdZI2dWjQoRgVuQ8e9aAETJHgIvKCjjq7JwKHKDaMStXiiGeHO9EaSr6yxSwY5+bDX2dGfPUCxaGFV13S/kl2Dyvvcfxf2Rkb87gSynqvoODGw8Qb91mOZE=
+	t=1712582279; cv=none; b=AhuoMaxJbC8rNHu2BIIpI6EuLwI9t6G7kZwfkFPyQJzDhNb0lrHXEj+wmswL6d7+XluN99Wcn7oob47GZSos9cgAaK4Nsjbri56a348B4Fr8OA3DrxoW9uO2z6JSDe6EDYCuX9kbLUIJiX6wMnC4QQq5NJuxjwAJf1L4WOLI3x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582267; c=relaxed/simple;
-	bh=y5ZGkUKE6a7x+WcoYi7XyxGPfnXIwuIn8lTH8mGR798=;
+	s=arc-20240116; t=1712582279; c=relaxed/simple;
+	bh=gFC03ZUrKDoI5wjmqMgNN7D/1ZHK25grRXC+l6Rorzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V5A9mUUA1KYiQ6vIByMIsYIRRcZ+DLR1tdtYd51ggwJOkaXYq6525aahdseaSko+dOqSpofRvZbV86rgMml1Hppk8KdcPf/pv1LTFxF3U2Pzb2rZxPuBoCoP+oAf2ueaGBOPLTlT3Xq28hG/arZZ3mBSnYhuWVZUa3SAmvpnlr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IejM+3w1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0220C433C7;
-	Mon,  8 Apr 2024 13:17:46 +0000 (UTC)
+	 MIME-Version; b=FAmasaQr43YvoVg7VCHttfCgPisPUyOJHcq15+0xYxU8CFfopnwdE6c7s3ql1csmDpk0hfGKPl5v2WfmoJtKLtcM+dw1Pi6G9vck7JzrdJlsMlwnWYsGkuJfVTp6lLbbY/X/E1U4tnS5JWPC4yswaiMCYzcYYfbrEaiRuXQPYIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgJOh+er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93848C433C7;
+	Mon,  8 Apr 2024 13:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582267;
-	bh=y5ZGkUKE6a7x+WcoYi7XyxGPfnXIwuIn8lTH8mGR798=;
+	s=korg; t=1712582279;
+	bh=gFC03ZUrKDoI5wjmqMgNN7D/1ZHK25grRXC+l6Rorzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IejM+3w1BZI22jOdleTG4EJqSb0UMo/qqkuRja8UasjtzzV/RjR11PgwY87zmmArc
-	 Hu724Z7bPA9flNQK1D36LnyqBZmDP2cT31Mkr3kVw3YSicUmIprg0tSjLUYimceQJt
-	 a04xrDztPMqLBicWIbxMq+OrpnwEEBebdeFv5mro=
+	b=jgJOh+erMTnA3OZEEca7aHNSsycwnhXgnZKTtSHxZjmUpMZkj0KQenP9gzekB5RPW
+	 PdIu6rfw8ZIBsf2Eh2eItUSlVopXuKGFSV0iMU5AaOnqrvkB1bZkTBMTt6acLQ2ytn
+	 ilYIrzQ2eFjRIQSqWqikpodd7ZqLtkPl9/c2lFE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
-Subject: [PATCH 5.15 128/690] usb: gadget: ncm: Fix handling of zero block length packets
-Date: Mon,  8 Apr 2024 14:49:54 +0200
-Message-ID: <20240408125404.179206857@linuxfoundation.org>
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 129/690] usb: port: Dont try to peer unused USB ports based on location
+Date: Mon,  8 Apr 2024 14:49:55 +0200
+Message-ID: <20240408125404.210615341@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -59,68 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit f90ce1e04cbcc76639d6cba0fdbd820cd80b3c70 upstream.
+commit 69c63350e573367f9c8594162288cffa8a26d0d1 upstream.
 
-While connecting to a Linux host with CDC_NCM_NTB_DEF_SIZE_TX
-set to 65536, it has been observed that we receive short packets,
-which come at interval of 5-10 seconds sometimes and have block
-length zero but still contain 1-2 valid datagrams present.
+Unused USB ports may have bogus location data in ACPI PLD tables.
+This causes port peering failures as these unused USB2 and USB3 ports
+location may match.
 
-According to the NCM spec:
+Due to these failures the driver prints a
+"usb: port power management may be unreliable" warning, and
+unnecessarily blocks port power off during runtime suspend.
 
-"If wBlockLength = 0x0000, the block is terminated by a
-short packet. In this case, the USB transfer must still
-be shorter than dwNtbInMaxSize or dwNtbOutMaxSize. If
-exactly dwNtbInMaxSize or dwNtbOutMaxSize bytes are sent,
-and the size is a multiple of wMaxPacketSize for the
-given pipe, then no ZLP shall be sent.
+This was debugged on a couple DELL systems where the unused ports
+all returned zeroes in their location data.
+Similar bugreports exist for other systems.
 
-wBlockLength= 0x0000 must be used with extreme care, because
-of the possibility that the host and device may get out of
-sync, and because of test issues.
+Don't try to peer or match ports that have connect type set to
+USB_PORT_NOT_USED.
 
-wBlockLength = 0x0000 allows the sender to reduce latency by
-starting to send a very large NTB, and then shortening it when
-the sender discovers that there’s not sufficient data to justify
-sending a large NTB"
-
-However, there is a potential issue with the current implementation,
-as it checks for the occurrence of multiple NTBs in a single
-giveback by verifying if the leftover bytes to be processed is zero
-or not. If the block length reads zero, we would process the same
-NTB infintely because the leftover bytes is never zero and it leads
-to a crash. Fix this by bailing out if block length reads zero.
-
-Cc: stable@vger.kernel.org
-Fixes: 427694cfaafa ("usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Link: https://lore.kernel.org/r/20240228115441.2105585-1-quic_kriskura@quicinc.com
+Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
+Cc: stable@vger.kernel.org # v3.16+
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
+Link: https://lore.kernel.org/r/20240222233343.71856-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/port.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1352,7 +1352,7 @@ parse_ntb:
- 	if (to_process == 1 &&
- 	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
- 		to_process--;
--	} else if (to_process > 0) {
-+	} else if ((to_process > 0) && (block_len != 0)) {
- 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
- 		goto parse_ntb;
- 	}
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -450,7 +450,7 @@ static int match_location(struct usb_dev
+ 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
+ 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
+ 
+-	if (!peer_hub)
++	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
+ 		return 0;
+ 
+ 	hcd = bus_to_hcd(hdev->bus);
+@@ -461,7 +461,8 @@ static int match_location(struct usb_dev
+ 
+ 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
+ 		peer = peer_hub->ports[port1 - 1];
+-		if (peer && peer->location == port_dev->location) {
++		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
++		    peer->location == port_dev->location) {
+ 			link_peers_report(port_dev, peer);
+ 			return 1; /* done */
+ 		}
 
 
 
