@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-36917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EEE89C258
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C7289C4B6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FC20281789
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A23E1F22EBE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3760C85654;
-	Mon,  8 Apr 2024 13:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FA87BB11;
+	Mon,  8 Apr 2024 13:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omzVGlMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaP3ZEcD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E890185641;
-	Mon,  8 Apr 2024 13:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FB379F0;
+	Mon,  8 Apr 2024 13:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582720; cv=none; b=CgbANTqtb/M73ZQsuMKJ6JdmGKkWqJwcEw69tIyKAN19yJczM3fweRf7fWiQMg23Wu4WhLkobT03ousx/9nDwvuC7+Giu8cXfk75BkKp1di7UKzHkxtPr5Dpvgc2zg23hZTiobBCGKowxsneLNynlcT/9sPRWSkX0RU1jnrLoiQ=
+	t=1712584136; cv=none; b=a6oDD84BCwUWwnI3mnBEgnx1pii+r99qWmYfLkSyQtJMQ8YAtkpWxsiwA7CEzGmmFe8psJZMPIOu+gvuIA50GMikZeCVdZFAv+T7cwlGmCATslo9QFfdnaTInKIakJbC8UV/ty20cdP9bJsNzIrvKfRAyf9XfEfrr1Oo4z3jwYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582720; c=relaxed/simple;
-	bh=jijnplkliz0h+2AFhW+zfks5EhXRqChk7s8VV6X7Yk0=;
+	s=arc-20240116; t=1712584136; c=relaxed/simple;
+	bh=r+qBFI4/69hITdYmR9MdGxoYAPjKxdov9+yfFox7aNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHryN24W3M+qjTJ2mnm+e+TQ2oUCJLuTMLTZarWndzKohPLA52MN11zCXFlKeeUU4ajIDgZMBN5wy3Uk7JObDoJ899RlYIl/QqJ4HtoMv1hqjgCDmAlg8Y/rvB1W5EAD6KJ/LZw6uwEem62Mh3lyyV6atp7fZncnZ9cG2bYeM6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omzVGlMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B124C43390;
-	Mon,  8 Apr 2024 13:25:19 +0000 (UTC)
+	 MIME-Version; b=bAiRFrWS3k2B7k6YyRJbw8brpXH0ItXF1VoJ4mFNB/Je17o9tC17+nJDBsnrTPyoX2+BCE3Jcqg4AwT73Qwgv92bSg3jgzNf2EQOsH3iRHjfEtSTWEVw8aaNFdtR5rArDnZMAqBgZF1Oyc+lrN8BE6pIghLTGKzcgKZo1Qtt+YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaP3ZEcD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E222C433F1;
+	Mon,  8 Apr 2024 13:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582719;
-	bh=jijnplkliz0h+2AFhW+zfks5EhXRqChk7s8VV6X7Yk0=;
+	s=korg; t=1712584136;
+	bh=r+qBFI4/69hITdYmR9MdGxoYAPjKxdov9+yfFox7aNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omzVGlMdfyhS7PlZ9+pRiqlO8a/qB5MRRvGQupdiJLc2gBQjLvNcs9xuUi5Iv1bVb
-	 wpIEL1Zxdt22zda26JAwcZqs5W0g6kwA+TMnUjPC+peu0N70WH0+pQmP3JjY/lmAV+
-	 uam0bckUFvFoKDwoTJ/qebEnmfy3zQunkIuGFJ3A=
+	b=YaP3ZEcDYt63+AjrBfBgy5258W58V90lDKZknQ/+32xXtZYkLUmo2DlD0IK7xnhxT
+	 yDBy1pZmB6SVxxA+2eA/n8Njk/6sdhlKD1UH8bnUQ5vv4/F7fULLCC/Y33R87cye5N
+	 v+zW4dDJ3opXCnbZ5M8nv3VZEhd1V63x/o8xL6IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 128/138] smb: client: fix potential UAF in cifs_stats_proc_show()
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.8 267/273] bpf: put uprobe links path and task in release callback
 Date: Mon,  8 Apr 2024 14:59:02 +0200
-Message-ID: <20240408125300.213501116@linuxfoundation.org>
+Message-ID: <20240408125317.787818005@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 0865ffefea197b437ba78b5dd8d8e256253efd65 upstream.
+commit e9c856cabefb71d47b2eeb197f72c9c88e9b45b0 upstream.
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+There is no need to delay putting either path or task to deallocation
+step. It can be done right after bpf_uprobe_unregister. Between release
+and dealloc, there could be still some running BPF programs, but they
+don't access either task or path, only data in link->uprobes, so it is
+safe to do.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+On the other hand, doing path_put() in dealloc callback makes this
+dealloc sleepable because path_put() itself might sleep. Which is
+problematic due to the need to call uprobe's dealloc through call_rcu(),
+which is what is done in the next bug fix patch. So solve the problem by
+releasing these resources early.
+
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20240328052426.3042617-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/bpf_trace.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -648,6 +648,8 @@ static int cifs_stats_proc_show(struct s
- 			}
- #endif /* STATS2 */
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+			if (cifs_ses_exiting(ses))
-+				continue;
- 			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 				i++;
- 				seq_printf(m, "\n%d) %s", i, tcon->tree_name);
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3142,6 +3142,9 @@ static void bpf_uprobe_multi_link_releas
+ 
+ 	umulti_link = container_of(link, struct bpf_uprobe_multi_link, link);
+ 	bpf_uprobe_unregister(&umulti_link->path, umulti_link->uprobes, umulti_link->cnt);
++	if (umulti_link->task)
++		put_task_struct(umulti_link->task);
++	path_put(&umulti_link->path);
+ }
+ 
+ static void bpf_uprobe_multi_link_dealloc(struct bpf_link *link)
+@@ -3149,9 +3152,6 @@ static void bpf_uprobe_multi_link_deallo
+ 	struct bpf_uprobe_multi_link *umulti_link;
+ 
+ 	umulti_link = container_of(link, struct bpf_uprobe_multi_link, link);
+-	if (umulti_link->task)
+-		put_task_struct(umulti_link->task);
+-	path_put(&umulti_link->path);
+ 	kvfree(umulti_link->uprobes);
+ 	kfree(umulti_link);
+ }
 
 
 
