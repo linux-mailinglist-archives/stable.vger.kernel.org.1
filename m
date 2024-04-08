@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-37527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AC289C53C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22CA89C056
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 361DA1F23364
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C99D281CA0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFEF78285;
-	Mon,  8 Apr 2024 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD916A352;
+	Mon,  8 Apr 2024 13:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOFcEDcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjPtp4Vr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C29A74BF5;
-	Mon,  8 Apr 2024 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFA22DF73;
+	Mon,  8 Apr 2024 13:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584495; cv=none; b=umvhYmOrf27XqHcDtRHJWwtYWDXiBEa77Qh9fIVLMoABlUEr440ecb+nWGIEiSAKn6wbl0b4E0C9vLeWXzj5uR5cveWjhNsB0BO2s+ACgqMZ5peRHp4TJMHIqM2RtbFzJC46sIGoksJ3HK997AbW8kyRupCcSxsLcK4sXbrOpD8=
+	t=1712581653; cv=none; b=r7x+bW2PMsDl1+M0PJYUO2NCNOUNQdBTxKqEwSLsI3R9IQ6S29ke+kiSSDgRhnSukpEunzykau19D+sfY8pmK7XTBV1YO3pToyQc5hBq3eDXo1RFbjlJuBp9OoOmby2AYsRVlT4dXGuPmmTxMmgw22WVtgXPamjosuCqvNHPzVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584495; c=relaxed/simple;
-	bh=zbGbyx+3wZWnOj+N8cIToEobqYZjGfoKzNVGKzF2/MA=;
+	s=arc-20240116; t=1712581653; c=relaxed/simple;
+	bh=+699HSDCyriVvpdTkCtQ8XDRwpL/12Ox7W0ywvXVrpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExT3htxYjyOL8BQ0vHOIC7ayBDtxU9VxwiO08DaTwCh/WBgOjG4x8yWKdr3ouQY1BikQNGYxfObM/f0D4ziJawEekRSLjin2bwoqEc2xlI+/JYVtujQq2f8VmuKjl/MMBLcfDSdAfK5INH/HnBQBp6l0k9ycI/i206UPawDc/yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOFcEDcW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E09C433F1;
-	Mon,  8 Apr 2024 13:54:54 +0000 (UTC)
+	 MIME-Version; b=UT0tjSGtAXkD28wuxQZQOfizxkqbdk5xK1Ty5AZlC4pxEKK10Eeet1UMaf3dNrIMorTaYFW5mr08pbFXbwYgG+CVCVR07c3wCltOUSn1N5tyTIStZOzV4rgO9bOvrwpLKFgrvMuF9zXHrWAY1Q26FpoaRU3m/PUz/rQbfrdv30o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjPtp4Vr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F81C43390;
+	Mon,  8 Apr 2024 13:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584495;
-	bh=zbGbyx+3wZWnOj+N8cIToEobqYZjGfoKzNVGKzF2/MA=;
+	s=korg; t=1712581653;
+	bh=+699HSDCyriVvpdTkCtQ8XDRwpL/12Ox7W0ywvXVrpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOFcEDcW8AeUSsGL2ZtV89V2HH+hYsnob4w0su0eE2L+gewbkA75zpUQPj2HEai0C
-	 rmYtYbOKfVgggFBr3heDLY2L5XPY4QFpgzwxrokOhpe8Do1SIJEIPCb90XG+tEAbPe
-	 nvWCT1GQMjc9WQSEjB7Scxl7NGbg2JCn7JMQadws=
+	b=rjPtp4VrUzh4gBjnNl6pyDTCmMes+CCWXmxWJAM37972/uusI8n7DtX6YmGs0YUDP
+	 pz4MffEbP2nvxZb7NvIRKLtWMBjWR3WKa6uoPk8zdTZifFjUcTM+fOYlllUuMprXer
+	 ulGEG0ZHRe4ZxbE0n1epAI3awx8FmlMFWj2iKZ8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.15 458/690] fanotify: Remove obsoleted fanotify_event_has_path()
-Date: Mon,  8 Apr 2024 14:55:24 +0200
-Message-ID: <20240408125416.223889589@linuxfoundation.org>
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 026/252] net: hns3: fix index limit to support all queue stats
+Date: Mon,  8 Apr 2024 14:55:25 +0200
+Message-ID: <20240408125307.461428927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +66,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 7a80bf902d2bc722b4477442ee772e8574603185 ]
+[ Upstream commit 47e39d213e09c6cae0d6b4d95e454ea404013312 ]
 
-All uses of fanotify_event_has_path() have
-been removed since commit 9c61f3b560f5 ("fanotify: break up
-fanotify_alloc_event()"), now it is useless, so remove it.
+Currently, hns hardware supports more than 512 queues and the index limit
+in hclge_comm_tqps_update_stats is wrong. So this patch removes it.
 
-Link: https://lore.kernel.org/r/20220926023018.1505270-1-cuigaosheng1@huawei.com
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fixes: 287db5c40d15 ("net: hns3: create new set of common tqp stats APIs for PF and VF reuse")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify.h | 6 ------
- 1 file changed, 6 deletions(-)
+ .../ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/notify/fanotify/fanotify.h b/fs/notify/fanotify/fanotify.h
-index bf6d4d38afa04..57f51a9a3015d 100644
---- a/fs/notify/fanotify/fanotify.h
-+++ b/fs/notify/fanotify/fanotify.h
-@@ -452,12 +452,6 @@ static inline bool fanotify_is_error_event(u32 mask)
- 	return mask & FAN_FS_ERROR;
- }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
+index f3c9395d8351c..618f66d9586b3 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
+@@ -85,7 +85,7 @@ int hclge_comm_tqps_update_stats(struct hnae3_handle *handle,
+ 		hclge_comm_cmd_setup_basic_desc(&desc, HCLGE_OPC_QUERY_TX_STATS,
+ 						true);
  
--static inline bool fanotify_event_has_path(struct fanotify_event *event)
--{
--	return event->type == FANOTIFY_EVENT_TYPE_PATH ||
--		event->type == FANOTIFY_EVENT_TYPE_PATH_PERM;
--}
--
- static inline const struct path *fanotify_event_path(struct fanotify_event *event)
- {
- 	if (event->type == FANOTIFY_EVENT_TYPE_PATH)
+-		desc.data[0] = cpu_to_le32(tqp->index & 0x1ff);
++		desc.data[0] = cpu_to_le32(tqp->index);
+ 		ret = hclge_comm_cmd_send(hw, &desc, 1);
+ 		if (ret) {
+ 			dev_err(&hw->cmq.csq.pdev->dev,
 -- 
 2.43.0
 
