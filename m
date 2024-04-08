@@ -1,62 +1,54 @@
-Return-Path: <stable+bounces-36476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7AF89C000
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FD289C5CA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5073284992
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8914128338E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AD97BB1F;
-	Mon,  8 Apr 2024 13:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DA87F481;
+	Mon,  8 Apr 2024 14:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+KT8TTL"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbt0Mu3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A5564CF2;
-	Mon,  8 Apr 2024 13:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523527BAF5;
+	Mon,  8 Apr 2024 14:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581437; cv=none; b=FJU1eIUF9183cmgDNKPVNWIlJGT3+Zwd9b4v+z6G/REXl3cT0zLopkzOzH/y2ubCOmIEQPO9cEbsKbJxOfx3NAMWJM/s7akSePdfy++DUVa4mm+26F2aDuRrBm+ZkVQeP0o2W6IOvXJfhKTtMy/dkaykHL0slAfVWpiw3YQbIrQ=
+	t=1712584818; cv=none; b=g5E3CFUQihfmIKRuwEKxT+g88ywIf8lAdTUkfRaZC34UdUNLZoMdJNHBYBeqhAlIvIwUq5M9k6m11m92tT0BdwYNLVyeWRKVkp8aJrtTeUAQDAex0+woaGifjHViBiT2Q9/syR08Ue4Pelm/m4Jb8zHzYlVVF83vHo1Hng+rIlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581437; c=relaxed/simple;
-	bh=Nx84nNful3EhSCX9GDP3HZbAXgF2FzEiBKfHlDAeiw4=;
+	s=arc-20240116; t=1712584818; c=relaxed/simple;
+	bh=s9c9LcLqKLKXM4Cpa3Wp3iVkP2Q5CJmz1bSaW76zqFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+kwZYvBA0e/WeiPWdrCtqiIdsXl5lW3NXwwJZNw35pY3kmiNxwu2zxRHPJVPQLgjWMM9IyiabmCd7rbo1UBV73hlk7zFkInw2E8xUVWnAkpjY9ohy1TlGC3Tprv4e1SNjOBGbNPvD2d6r8iTJBuo/hCKSww0lH8yvYLokWQ1kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+KT8TTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10DFC433C7;
-	Mon,  8 Apr 2024 13:03:56 +0000 (UTC)
+	 MIME-Version; b=kLIQICC0bF0T1SFuUItKdOQLfKab1HnAd82BoQnOnaiRTgO8EIkCmpWIr4CLQ+VgUb6eeAyArzueHEkOvR7ihvQIqCuYW0BWfE1K+HgvKxkSFeNh0x49WsRHqowcvYT3yM9R+wFve38p0xKfvZeNhwjUKEZ4Ypd0g+zGiCJDUJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbt0Mu3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC990C433F1;
+	Mon,  8 Apr 2024 14:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581437;
-	bh=Nx84nNful3EhSCX9GDP3HZbAXgF2FzEiBKfHlDAeiw4=;
+	s=korg; t=1712584818;
+	bh=s9c9LcLqKLKXM4Cpa3Wp3iVkP2Q5CJmz1bSaW76zqFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+KT8TTLx84PkHk8YMW5QmyJFiQm6emyaGbV+Pl+nyLjK9pDCjkp2KsFng2UdHs3x
-	 uD9TznLOaPcjzgwD0fNO7Y624EIzCwiZDCUVMv4Q6J+sAxMxp9ZQUnVdAu/C375Ybb
-	 DXcAqzE0hrQzsWAwdYir8EznKR5K7IoOEBC9IJEA=
+	b=bbt0Mu3yuqdIz/SqUe3u7s63ujyeMpsA6Z30C9uYwzEXUQI6YXgcESh0fW3ho4/be
+	 QereHIRmhkirZpepcnNhqeSjgkOzG/adTEqw1krxQVgl2hTAJu12Wy1F0gwk2eAs9I
+	 F9cUC/6isaHzEQVKWqyLTLlg9sxf1L9zjUOPWKYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/138] cifs: Fix duplicate fscache cookie warnings
+	patches@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	"GONG, Ruiqi" <gongruiqi1@huawei.com>, GONG@web.codeaurora.org
+Subject: [PATCH 5.15 567/690] serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for FIFO
 Date: Mon,  8 Apr 2024 14:57:13 +0200
-Message-ID: <20240408125256.827989943@linuxfoundation.org>
+Message-ID: <20240408125420.164826371@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 8876a37277cb832e1861c35f8c661825179f73f5 ]
+commit dbf4ab821804df071c8b566d9813083125e6d97b upstream.
 
-fscache emits a lot of duplicate cookie warnings with cifs because the
-index key for the fscache cookies does not include everything that the
-cifs_find_inode() function does.  The latter is used with iget5_locked() to
-distinguish between inodes in the local inode cache.
+The SC16IS7XX IC supports a burst mode to access the FIFOs where the
+initial register address is sent ($00), followed by all the FIFO data
+without having to resend the register address each time. In this mode, the
+IC doesn't increment the register address for each R/W byte.
 
-Fix this by adding the creation time and file type to the fscache cookie
-key.
+The regmap_raw_read() and regmap_raw_write() are functions which can
+perform IO over multiple registers. They are currently used to read/write
+from/to the FIFO, and although they operate correctly in this burst mode on
+the SPI bus, they would corrupt the regmap cache if it was not disabled
+manually. The reason is that when the R/W size is more than 1 byte, these
+functions assume that the register address is incremented and handle the
+cache accordingly.
 
-Additionally, add a couple of comments to note that if one is changed the
-other must be also.
+Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
+remove the manual cache control which was a workaround when using the
+_raw_ versions. FIFO registers are properly declared as volatile so
+cache will not be used/updated for FIFO accesses.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
+Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/fscache.c | 16 +++++++++++++++-
- fs/smb/client/inode.c   |  2 ++
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/client/fscache.c b/fs/smb/client/fscache.c
-index f64bad513ba6d..6df4ab2a6e5dc 100644
---- a/fs/smb/client/fscache.c
-+++ b/fs/smb/client/fscache.c
-@@ -12,6 +12,16 @@
- #include "cifs_fs_sb.h"
- #include "cifsproto.h"
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -376,9 +376,7 @@ static void sc16is7xx_fifo_read(struct u
+ 	const u8 line = sc16is7xx_line(port);
+ 	u8 addr = (SC16IS7XX_RHR_REG << SC16IS7XX_REG_SHIFT) | line;
  
-+/*
-+ * Key for fscache inode.  [!] Contents must match comparisons in cifs_find_inode().
-+ */
-+struct cifs_fscache_inode_key {
+-	regcache_cache_bypass(s->regmap, true);
+-	regmap_raw_read(s->regmap, addr, s->buf, rxlen);
+-	regcache_cache_bypass(s->regmap, false);
++	regmap_noinc_read(s->regmap, addr, s->buf, rxlen);
+ }
+ 
+ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+@@ -394,9 +392,7 @@ static void sc16is7xx_fifo_write(struct
+ 	if (unlikely(!to_send))
+ 		return;
+ 
+-	regcache_cache_bypass(s->regmap, true);
+-	regmap_raw_write(s->regmap, addr, s->buf, to_send);
+-	regcache_cache_bypass(s->regmap, false);
++	regmap_noinc_write(s->regmap, addr, s->buf, to_send);
+ }
+ 
+ static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
+@@ -489,6 +485,11 @@ static bool sc16is7xx_regmap_precious(st
+ 	return false;
+ }
+ 
++static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
++{
++	return reg == SC16IS7XX_RHR_REG;
++}
 +
-+	__le64  uniqueid;	/* server inode number */
-+	__le64  createtime;	/* creation time on server */
-+	u8	type;		/* S_IFMT file type */
-+} __packed;
-+
- static void cifs_fscache_fill_volume_coherency(
- 	struct cifs_tcon *tcon,
- 	struct cifs_fscache_volume_coherency_data *cd)
-@@ -97,15 +107,19 @@ void cifs_fscache_release_super_cookie(struct cifs_tcon *tcon)
- void cifs_fscache_get_inode_cookie(struct inode *inode)
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
  {
- 	struct cifs_fscache_inode_coherency_data cd;
-+	struct cifs_fscache_inode_key key;
- 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
- 	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+@@ -1439,6 +1440,8 @@ static struct regmap_config regcfg = {
+ 	.cache_type = REGCACHE_RBTREE,
+ 	.volatile_reg = sc16is7xx_regmap_volatile,
+ 	.precious_reg = sc16is7xx_regmap_precious,
++	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
++	.readable_noinc_reg = sc16is7xx_regmap_noinc,
+ };
  
-+	key.uniqueid	= cpu_to_le64(cifsi->uniqueid);
-+	key.createtime	= cpu_to_le64(cifsi->createtime);
-+	key.type	= (inode->i_mode & S_IFMT) >> 12;
- 	cifs_fscache_fill_coherency(&cifsi->netfs.inode, &cd);
- 
- 	cifsi->netfs.cache =
- 		fscache_acquire_cookie(tcon->fscache, 0,
--				       &cifsi->uniqueid, sizeof(cifsi->uniqueid),
-+				       &key, sizeof(key),
- 				       &cd, sizeof(cd),
- 				       i_size_read(&cifsi->netfs.inode));
- 	if (cifsi->netfs.cache)
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 5343898bac8a6..634f28f0d331e 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1274,6 +1274,8 @@ cifs_find_inode(struct inode *inode, void *opaque)
- {
- 	struct cifs_fattr *fattr = opaque;
- 
-+	/* [!] The compared values must be the same in struct cifs_fscache_inode_key. */
-+
- 	/* don't match inode with different uniqueid */
- 	if (CIFS_I(inode)->uniqueid != fattr->cf_uniqueid)
- 		return 0;
--- 
-2.43.0
-
+ #ifdef CONFIG_SERIAL_SC16IS7XX_SPI
 
 
 
