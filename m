@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-36928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE8189C264
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4617189C5DF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59894283172
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FED01C22574
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1427BB15;
-	Mon,  8 Apr 2024 13:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A358003B;
+	Mon,  8 Apr 2024 14:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zy49btvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2tk2BzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5A86A352;
-	Mon,  8 Apr 2024 13:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232B37FBC8;
+	Mon,  8 Apr 2024 14:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582752; cv=none; b=ddokj50V7o2oKoTsYvDBsnuLiw4E5bIDDEYFwhq9XNGCmw4od54gQDGkCMP01iZ2DwFB8sAL5eWuTDyg6uHB+3S9+X0lQWVy+3LIITeiFAP163KB/vhkdJPd+4nO/cFw+ZGszIaJEuWXoa8af+KlWHrgMaX9bC590d0uZkJXHoI=
+	t=1712584868; cv=none; b=WlObbBHT2PzTfTToOvrFWswD+wYuO6G2HvhKJVKoinr21S/e8NjHLzCYrulphmI1JNGZRUE+8cY1wPz/2/4Q5eJ179fxSb+ilnKyKWqleobaNJBoBFWyV+S3fA5o5wyoJYJ4O2E4/uG3JqmsOTludJR4gTQJ9+37bmWsEQqoLRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582752; c=relaxed/simple;
-	bh=/Vf3jZQHwfOPCMOrs7CX8Umn5JmL5ZNXKFEuwldMSuM=;
+	s=arc-20240116; t=1712584868; c=relaxed/simple;
+	bh=0yRo/eMJRV+dTuuqs6ir0VM/Qo0W/oM+SgYlb4+QkNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLKvUehXW9hvVQUq2t0DthFYiI0c5v79sZByQbe8rsvbz39afet5t+xMs2e4iBA2Q2YEAcPPX6x52DQX2bLBNM/DiuWPYdTOvFlqoE5+lg1wE5GAJcAwND5ieWsZjgAQQdHDU3Bn53fRt5m3vs5a/aJyh1/FNY+zhMD9VbzLPMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zy49btvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39D7C433F1;
-	Mon,  8 Apr 2024 13:25:51 +0000 (UTC)
+	 MIME-Version; b=OjOXJXQmMO8DP24JFBdtHtdXaifVUMEUw4Vz9jBT0ZmR+WKKBtafDc5PUESZvI0pf/ZpYvDT38V6t1o46z4ZAVyAWtXICBcp3lZ4dOKWUERYmN5dgl2RdhqM2/dszW/Dvmi4kwSlZtamu9PFAi/oMc37n9p4TwNO1zsLCySVhvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2tk2BzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCBBC433C7;
+	Mon,  8 Apr 2024 14:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582752;
-	bh=/Vf3jZQHwfOPCMOrs7CX8Umn5JmL5ZNXKFEuwldMSuM=;
+	s=korg; t=1712584868;
+	bh=0yRo/eMJRV+dTuuqs6ir0VM/Qo0W/oM+SgYlb4+QkNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zy49btvYrIBx8pKQdGSJpK34qHeNwCjqF5OqSuQMAekxmDZUYMM9yO0sXAZ2UUO8a
-	 p91y1Pt6uw4s2mXziuJKbnAECRQZI1l6oxw07ZvvjxIvn8cQrpunCU4TE0n116j7T6
-	 Au0HRrqPE+yAqW8Lq9bdPv6zY+ZWSemzqCbdrzHw=
+	b=a2tk2BzKyIZ67SC8EXhYXlewgdyv6B+Jd/zEXvENFcaBAioFvP7ccS7v2eINRCG8v
+	 310Nmkri+mcVQ5aOvSeaP5hYHzlje7FtarP/tp4CZYSQLbGkdVB0yANF9659n6lG5q
+	 9e+z5+sLx9NDZZ9abxIpPanTyaCwNitLp0MeL+ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 121/252] mlxbf_gige: stop interface during shutdown
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 554/690] nfsd: dont take fi_lock in nfsd_break_deleg_cb()
 Date: Mon,  8 Apr 2024 14:57:00 +0200
-Message-ID: <20240408125310.382968433@linuxfoundation.org>
+Message-ID: <20240408125419.683589300@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: NeilBrown <neilb@suse.de>
 
-commit 09ba28e1cd3cf715daab1fca6e1623e22fd754a6 upstream.
+[ Upstream commit 5ea9a7c5fe4149f165f0e3b624fe08df02b6c301 ]
 
-The mlxbf_gige driver intermittantly encounters a NULL pointer
-exception while the system is shutting down via "reboot" command.
-The mlxbf_driver will experience an exception right after executing
-its shutdown() method.  One example of this exception is:
+A recent change to check_for_locks() changed it to take ->flc_lock while
+holding ->fi_lock.  This creates a lock inversion (reported by lockdep)
+because there is a case where ->fi_lock is taken while holding
+->flc_lock.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000070
-Mem abort info:
-  ESR = 0x0000000096000004
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x04: level 0 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000004
-  CM = 0, WnR = 0
-user pgtable: 4k pages, 48-bit VAs, pgdp=000000011d373000
-[0000000000000070] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 96000004 [#1] SMP
-CPU: 0 PID: 13 Comm: ksoftirqd/0 Tainted: G S         OE     5.15.0-bf.6.gef6992a #1
-Hardware name: https://www.mellanox.com BlueField SoC/BlueField SoC, BIOS 4.0.2.12669 Apr 21 2023
-pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : mlxbf_gige_handle_tx_complete+0xc8/0x170 [mlxbf_gige]
-lr : mlxbf_gige_poll+0x54/0x160 [mlxbf_gige]
-sp : ffff8000080d3c10
-x29: ffff8000080d3c10 x28: ffffcce72cbb7000 x27: ffff8000080d3d58
-x26: ffff0000814e7340 x25: ffff331cd1a05000 x24: ffffcce72c4ea008
-x23: ffff0000814e4b40 x22: ffff0000814e4d10 x21: ffff0000814e4128
-x20: 0000000000000000 x19: ffff0000814e4a80 x18: ffffffffffffffff
-x17: 000000000000001c x16: ffffcce72b4553f4 x15: ffff80008805b8a7
-x14: 0000000000000000 x13: 0000000000000030 x12: 0101010101010101
-x11: 7f7f7f7f7f7f7f7f x10: c2ac898b17576267 x9 : ffffcce720fa5404
-x8 : ffff000080812138 x7 : 0000000000002e9a x6 : 0000000000000080
-x5 : ffff00008de3b000 x4 : 0000000000000000 x3 : 0000000000000001
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
-Call trace:
- mlxbf_gige_handle_tx_complete+0xc8/0x170 [mlxbf_gige]
- mlxbf_gige_poll+0x54/0x160 [mlxbf_gige]
- __napi_poll+0x40/0x1c8
- net_rx_action+0x314/0x3a0
- __do_softirq+0x128/0x334
- run_ksoftirqd+0x54/0x6c
- smpboot_thread_fn+0x14c/0x190
- kthread+0x10c/0x110
- ret_from_fork+0x10/0x20
-Code: 8b070000 f9000ea0 f95056c0 f86178a1 (b9407002)
----[ end trace 7cc3941aa0d8e6a4 ]---
-Kernel panic - not syncing: Oops: Fatal exception in interrupt
-Kernel Offset: 0x4ce722520000 from 0xffff800008000000
-PHYS_OFFSET: 0x80000000
-CPU features: 0x000005c1,a3330e5a
-Memory Limit: none
----[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+->flc_lock is held across ->fl_lmops callbacks, and
+nfsd_break_deleg_cb() is one of those and does take ->fi_lock.  However
+it doesn't need to.
 
-During system shutdown, the mlxbf_gige driver's shutdown() is always executed.
-However, the driver's stop() method will only execute if networking interface
-configuration logic within the Linux distribution has been setup to do so.
+Prior to v4.17-rc1~110^2~22 ("nfsd: create a separate lease for each
+delegation") nfsd_break_deleg_cb() would walk the ->fi_delegations list
+and so needed the lock.  Since then it doesn't walk the list and doesn't
+need the lock.
 
-If shutdown() executes but stop() does not execute, NAPI remains enabled
-and this can lead to an exception if NAPI is scheduled while the hardware
-interface has only been partially deinitialized.
+Two actions are performed under the lock.  One is to call
+nfsd_break_one_deleg which calls nfsd4_run_cb().  These doesn't act on
+the nfs4_file at all, so don't need the lock.
 
-The networking interface managed by the mlxbf_gige driver must be properly
-stopped during system shutdown so that IFF_UP is cleared, the hardware
-interface is put into a clean state, and NAPI is fully deinitialized.
+The other is to set ->fi_had_conflict which is in the nfs4_file.
+This field is only ever set here (except when initialised to false)
+so there is no possible problem will multiple threads racing when
+setting it.
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/20240325210929.25362-1-davthompson@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The field is tested twice in nfs4_set_delegation().  The first test does
+not hold a lock and is documented as an opportunistic optimisation, so
+it doesn't impose any need to hold ->fi_lock while setting
+->fi_had_conflict.
+
+The second test in nfs4_set_delegation() *is* make under ->fi_lock, so
+removing the locking when ->fi_had_conflict is set could make a change.
+The change could only be interesting if ->fi_had_conflict tested as
+false even though nfsd_break_one_deleg() ran before ->fi_lock was
+unlocked.  i.e. while hash_delegation_locked() was running.
+As hash_delegation_lock() doesn't interact in any way with nfs4_run_cb()
+there can be no importance to this interaction.
+
+So this patch removes the locking from nfsd_break_one_deleg() and moves
+the final test on ->fi_had_conflict out of the locked region to make it
+clear that locking isn't important to the test.  It is still tested
+*after* vfs_setlease() has succeeded.  This might be significant and as
+vfs_setlease() takes ->flc_lock, and nfsd_break_one_deleg() is called
+under ->flc_lock this "after" is a true ordering provided by a spinlock.
+
+Fixes: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4state.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/phy.h>
- #include <linux/platform_device.h>
-+#include <linux/rtnetlink.h>
- #include <linux/skbuff.h>
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 64a8567ea4c40..0f1ece95bd642 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4950,10 +4950,8 @@ nfsd_break_deleg_cb(struct file_lock *fl)
+ 	 */
+ 	fl->fl_break_time = 0;
  
- #include "mlxbf_gige.h"
-@@ -494,8 +495,13 @@ static void mlxbf_gige_shutdown(struct p
- {
- 	struct mlxbf_gige *priv = platform_get_drvdata(pdev);
- 
--	writeq(0, priv->base + MLXBF_GIGE_INT_EN);
--	mlxbf_gige_clean_port(priv);
-+	rtnl_lock();
-+	netif_device_detach(priv->netdev);
-+
-+	if (netif_running(priv->netdev))
-+		dev_close(priv->netdev);
-+
-+	rtnl_unlock();
+-	spin_lock(&fp->fi_lock);
+ 	fp->fi_had_conflict = true;
+ 	nfsd_break_one_deleg(dp);
+-	spin_unlock(&fp->fi_lock);
+ 	return false;
  }
  
- static const struct acpi_device_id __maybe_unused mlxbf_gige_acpi_match[] = {
+@@ -5541,12 +5539,13 @@ nfs4_set_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
+ 	if (status)
+ 		goto out_unlock;
+ 
++	status = -EAGAIN;
++	if (fp->fi_had_conflict)
++		goto out_unlock;
++
+ 	spin_lock(&state_lock);
+ 	spin_lock(&fp->fi_lock);
+-	if (fp->fi_had_conflict)
+-		status = -EAGAIN;
+-	else
+-		status = hash_delegation_locked(dp, fp);
++	status = hash_delegation_locked(dp, fp);
+ 	spin_unlock(&fp->fi_lock);
+ 	spin_unlock(&state_lock);
+ 
+-- 
+2.43.0
+
 
 
 
