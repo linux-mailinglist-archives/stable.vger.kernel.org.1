@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D8989C2E2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:36:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9031589C5CC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 047271F25B26
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:36:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2C601C22B24
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181F912A14C;
-	Mon,  8 Apr 2024 13:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3E67C6C9;
+	Mon,  8 Apr 2024 14:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THH3QeCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqu4g8MY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C948112A146;
-	Mon,  8 Apr 2024 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1871B7A15C;
+	Mon,  8 Apr 2024 14:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583032; cv=none; b=bxaFG7s5G7bLtkUCXI+xOk1hNDbrJrf0yVkt4h1BMFSPz6aGNha9rivXXDMDP8JvdnmyQora/6D2ODr5q3DGR6gi5JFh1XMlIQplwqMoR3Wgl9r0CJ8izid0VZYj7AJOhplFo4mzjarriPIcrPdg7DSFwGye+WwUc380iC805bw=
+	t=1712584830; cv=none; b=Z3V4Xu7F0F58gg26e+5BG1OeGRLmE5rybIt8jGFyaIM7cXs0eX/wo07jyBcz14YYUu7nyg9orj+zdGjZ9Cqxqx+bv7EAlB+nRabM3xNkjpd35+Dirxezym23DdTe2EvN9uTx8wsucR8s2+OsdKjJ9flbP61zhJNQZxYywVrWwbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583032; c=relaxed/simple;
-	bh=13KyGkv5D9KPnM+rgUGmBS8PV+MRM1H6xwTb8CKxC3M=;
+	s=arc-20240116; t=1712584830; c=relaxed/simple;
+	bh=WoDeIiGR8+I9ON1Y2ROoS2d92EXcqGow8woKO01llwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDd2mZMn8X5DznsCPG8c8U0HcaYetmfYT4VCDfU9uxnaVgWcCzywXIPG4KK9gbRi159jHMdtTueXoCYEVeuSiwTfycsa8PdG2qWMVuwP/1kORboO8AltiPiS4FH4vPoW4JhMnXlR1/RlyUF4M5kyJ8zRpkKyvD5+kr/z+UXW878=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THH3QeCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5260DC433C7;
-	Mon,  8 Apr 2024 13:30:32 +0000 (UTC)
+	 MIME-Version; b=WB7pSq5i+JR/lqkvylQf+y7sjcN6Z4ptXuBawCNfT6FrNcTzUtuz8lZ/nRg7UG1IIqQtXy6qF4Zs/7gTwWtUk6O8RWHWqSY1GRWqLrQcpnT5z5L7aHNyExlMmFwxBEO2MrinAGgHRhUhLinYAUpmqdcf5ubF+l/EaaFxeV/SY68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqu4g8MY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FA0C433C7;
+	Mon,  8 Apr 2024 14:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583032;
-	bh=13KyGkv5D9KPnM+rgUGmBS8PV+MRM1H6xwTb8CKxC3M=;
+	s=korg; t=1712584830;
+	bh=WoDeIiGR8+I9ON1Y2ROoS2d92EXcqGow8woKO01llwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THH3QeCCc+GtoMqiKfJgUGyQixRfJADIGalMIKF3a1Urr/J/Xs4iKKlaWanDjrGPh
-	 CBeTeQiuO/x9S1IcrfRw9FwsaO036tNTglOipWEjSuye5S25GWRZT+QLpKA03iafKm
-	 hA/+LXe5tDCco5yZHN7MS/ElqHvwP2tbvXsZwdgM=
+	b=Vqu4g8MY5K/jD+Rzxr+4I/D1FllzeE1NzgTVdyb2B3rydV964utmy6L0uRZx1RMyw
+	 QJRPLHZ02SDU0X9P7rN6IleqhFjeDGG+Z2Gibd1tc9+PlimelISXLEq32g7TOz8qlq
+	 cn+DmSp7yRjQGuYQ1GSYrnZFV1NX/JenFr+sZH9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/252] drm/amd: Flush GFXOFF requests in prepare stage
+	ranygh@riseup.net,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 571/690] wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
 Date: Mon,  8 Apr 2024 14:57:17 +0200
-Message-ID: <20240408125310.925242757@linuxfoundation.org>
+Message-ID: <20240408125420.303384648@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit ca299b4512d4b4f516732a48ce9aa19d91f4473e ]
+commit 4f2bdb3c5e3189297e156b3ff84b140423d64685 upstream.
 
-If the system hasn't entered GFXOFF when suspend starts it can cause
-hangs accessing GC and RLC during the suspend stage.
+When moving a station out of a VLAN and deleting the VLAN afterwards, the
+fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
+use-after-free bugs. Fix this by immediately calling ieee80211_check_fast_rx
+after the VLAN change.
 
-Cc: <stable@vger.kernel.org> # 6.1.y: 5095d5418193 ("drm/amd: Evict resources during PM ops prepare() callback")
-Cc: <stable@vger.kernel.org> # 6.1.y: cb11ca3233aa ("drm/amd: Add concept of running prepare_suspend() sequence for IP blocks")
-Cc: <stable@vger.kernel.org> # 6.1.y: 2ceec37b0e3d ("drm/amd: Add missing kernel doc for prepare_suspend()")
-Cc: <stable@vger.kernel.org> # 6.1.y: 3a9626c816db ("drm/amd: Stop evicting resources on APUs in suspend")
-Cc: <stable@vger.kernel.org> # 6.6.y: 5095d5418193 ("drm/amd: Evict resources during PM ops prepare() callback")
-Cc: <stable@vger.kernel.org> # 6.6.y: cb11ca3233aa ("drm/amd: Add concept of running prepare_suspend() sequence for IP blocks")
-Cc: <stable@vger.kernel.org> # 6.6.y: 2ceec37b0e3d ("drm/amd: Add missing kernel doc for prepare_suspend()")
-Cc: <stable@vger.kernel.org> # 6.6.y: 3a9626c816db ("drm/amd: Stop evicting resources on APUs in suspend")
-Cc: <stable@vger.kernel.org> # 6.1+
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3132
-Fixes: ab4750332dbe ("drm/amdgpu/sdma5.2: add begin/end_use ring callbacks")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: ranygh@riseup.net
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://msgid.link/20240316074336.40442-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/cfg.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 4ebe42395708f..062d78818da16 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4117,6 +4117,8 @@ int amdgpu_device_prepare(struct drm_device *dev)
- 	if (r)
- 		return r;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1845,15 +1845,14 @@ static int ieee80211_change_station(stru
+ 		}
  
-+	flush_delayed_work(&adev->gfx.gfx_off_delay_work);
-+
- 	for (i = 0; i < adev->num_ip_blocks; i++) {
- 		if (!adev->ip_blocks[i].status.valid)
- 			continue;
--- 
-2.43.0
-
+ 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
+-		    sta->sdata->u.vlan.sta) {
+-			ieee80211_clear_fast_rx(sta);
++		    sta->sdata->u.vlan.sta)
+ 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
+-		}
+ 
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
+ 			ieee80211_vif_dec_num_mcast(sta->sdata);
+ 
+ 		sta->sdata = vlansdata;
++		ieee80211_check_fast_rx(sta);
+ 		ieee80211_check_fast_xmit(sta);
+ 
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED)) {
 
 
 
