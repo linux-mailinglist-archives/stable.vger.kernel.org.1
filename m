@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-36911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE5289C253
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559B389C5C8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D5181F223DF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 878931C225D4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FFF85284;
-	Mon,  8 Apr 2024 13:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5B87FBCE;
+	Mon,  8 Apr 2024 14:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToOte288"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UILcStDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B3485631;
-	Mon,  8 Apr 2024 13:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810967F487;
+	Mon,  8 Apr 2024 14:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582702; cv=none; b=Yh1c8gBdMn5OJZ872juHokmJ3ko/SjvHMnDC1IQkypDstKpjKVPJPcrFY328hvosRjJ59Y12MpUOfl527S3sdDgcjaPE1XDbxt+eBSds9NS9ZAk+fIkOBdukJIG41Qtm4HW+WMP3Q8N1ZH5ZWkD1vj0R/Z/NkgMxH5gqsJ5hYYA=
+	t=1712584812; cv=none; b=RkaB6RIl1J2XmTy9chN26lGlggfIVp7UfZeCKNJOULYLcT35+tTeY1HJOiYx8LApAlRWM8yUrgab/uG3YoRkD7rdO9rgK+ShcV2jADNG1Z/kAJR/exshJ+4xgnOc7XUP/CmTxjCbyWb+9uH4FJR/1ULDzjYvbd9TzLRJJu33fno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582702; c=relaxed/simple;
-	bh=UASRQWEEHny6bZL1oAcOqbpCEpWsk2ys30o5Wzh7PJY=;
+	s=arc-20240116; t=1712584812; c=relaxed/simple;
+	bh=BnPBss2oVFtKrwxvDhQzXn0jrPiDwwJ0VEnDZ6P6mh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDZdjld7E7eghS7GVGZdJZ9jmJxN7n79S3mNVTYSLZaPn18g07q4JJiLiURqqVh9L+EHpW7Ki7MFjTze8RWN6jNYv5AdeiDmOIGyQZPjisiRw1EnmHeKjRdJXeUR+Qq7f1pAvVZZvk40LfBgFZJL/48hE5fl8Y8mt08HWLBlDjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToOte288; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E75C433F1;
-	Mon,  8 Apr 2024 13:25:01 +0000 (UTC)
+	 MIME-Version; b=Lo+VVUJmdJR/+ADaD5iN44e1MVtiE47tZbxfLeQkCEA9Pgh7sup67tQIyN4nA6gj1I8eQ7GHJeYC3M3mTVPbpeDtfw2ofTKJGVIdrbHCOszU84swXzHkSHM3Ocf5q+1HXjikN8tCEUb8tY5HrJA4kxaRUUmzCj2UbTNMgWdDK98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UILcStDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3F6C433F1;
+	Mon,  8 Apr 2024 14:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582702;
-	bh=UASRQWEEHny6bZL1oAcOqbpCEpWsk2ys30o5Wzh7PJY=;
+	s=korg; t=1712584812;
+	bh=BnPBss2oVFtKrwxvDhQzXn0jrPiDwwJ0VEnDZ6P6mh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToOte288v1jqgt7y7Zwx0gtpwwrdGYucUCKofc3dCMcZzGU9m8kNyXVzeeu5RG58l
-	 bzMDQJOohHUtqfSaFYQVaUNH+rjve3f6uMcN2a0yuxpTHHjF+BOlgB+ZFBcW4vrkCA
-	 +NJdwnM+7jkT0SVyT7WyDmYWh4lclPS0sw2pGj1E=
+	b=UILcStDbwHaACQXK8SIuSBRd0qEQ2Gg1E4WedoIFRBYsi+rBNcIfInCX9C0T06zUe
+	 cQzhPMhBx60x9Bo/rwu5+/blurCqxrsKPZ7ys+BNVMtQhABPPGsU92Fn7K6SNsr0mp
+	 u8S1Zor95oc83ALnHGAuK0BqvzBJiqZxv+o1dF7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 114/252] ice: fix enabling RX VLAN filtering
-Date: Mon,  8 Apr 2024 14:56:53 +0200
-Message-ID: <20240408125310.173745693@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 548/690] Documentation: Add missing documentation for EXPORT_OP flags
+Date: Mon,  8 Apr 2024 14:56:54 +0200
+Message-ID: <20240408125419.489264413@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 8edfc7a40e3300fc6c5fa7a3228a24d5bcd86ba5 upstream.
+[ Upstream commit b38a6023da6a12b561f0421c6a5a1f7624a1529c ]
 
-ice_port_vlan_on/off() was introduced in commit 2946204b3fa8 ("ice:
-implement bridge port vlan"). But ice_port_vlan_on() incorrectly assigns
-ena_rx_filtering to inner_vlan_ops in DVM mode.
-This causes an error when rx_filtering cannot be enabled in legacy mode.
+The commits that introduced these flags neglected to update the
+Documentation/filesystems/nfs/exporting.rst file.
 
-Reproducer:
- echo 1 > /sys/class/net/$PF/device/sriov_numvfs
- ip link set $PF vf 0 spoofchk off trust on vlan 3
-dmesg:
- ice 0000:41:00.0: failed to enable Rx VLAN filtering for VF 0 VSI 9 during VF rebuild, error -95
-
-Fixes: 2946204b3fa8 ("ice: implement bridge port vlan")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- .../ethernet/intel/ice/ice_vf_vsi_vlan_ops.c   | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ Documentation/filesystems/nfs/exporting.rst | 26 +++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_vsi_vlan_ops.c b/drivers/net/ethernet/intel/ice/ice_vf_vsi_vlan_ops.c
-index 80dc4bcdd3a4..b3e1bdcb80f8 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_vsi_vlan_ops.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_vsi_vlan_ops.c
-@@ -26,24 +26,22 @@ static void ice_port_vlan_on(struct ice_vsi *vsi)
- 	struct ice_vsi_vlan_ops *vlan_ops;
- 	struct ice_pf *pf = vsi->back;
- 
-+	/* setup inner VLAN ops */
-+	vlan_ops = &vsi->inner_vlan_ops;
+diff --git a/Documentation/filesystems/nfs/exporting.rst b/Documentation/filesystems/nfs/exporting.rst
+index 0e98edd353b5f..6f59a364f84cd 100644
+--- a/Documentation/filesystems/nfs/exporting.rst
++++ b/Documentation/filesystems/nfs/exporting.rst
+@@ -215,3 +215,29 @@ following flags are defined:
+     This flag causes nfsd to close any open files for this inode _before_
+     calling into the vfs to do an unlink or a rename that would replace
+     an existing file.
 +
- 	if (ice_is_dvm_ena(&pf->hw)) {
--		vlan_ops = &vsi->outer_vlan_ops;
--
--		/* setup outer VLAN ops */
--		vlan_ops->set_port_vlan = ice_vsi_set_outer_port_vlan;
--		vlan_ops->clear_port_vlan = ice_vsi_clear_outer_port_vlan;
--
--		/* setup inner VLAN ops */
--		vlan_ops = &vsi->inner_vlan_ops;
- 		vlan_ops->add_vlan = noop_vlan_arg;
- 		vlan_ops->del_vlan = noop_vlan_arg;
- 		vlan_ops->ena_stripping = ice_vsi_ena_inner_stripping;
- 		vlan_ops->dis_stripping = ice_vsi_dis_inner_stripping;
- 		vlan_ops->ena_insertion = ice_vsi_ena_inner_insertion;
- 		vlan_ops->dis_insertion = ice_vsi_dis_inner_insertion;
--	} else {
--		vlan_ops = &vsi->inner_vlan_ops;
- 
-+		/* setup outer VLAN ops */
-+		vlan_ops = &vsi->outer_vlan_ops;
-+		vlan_ops->set_port_vlan = ice_vsi_set_outer_port_vlan;
-+		vlan_ops->clear_port_vlan = ice_vsi_clear_outer_port_vlan;
-+	} else {
- 		vlan_ops->set_port_vlan = ice_vsi_set_inner_port_vlan;
- 		vlan_ops->clear_port_vlan = ice_vsi_clear_inner_port_vlan;
- 	}
++  EXPORT_OP_REMOTE_FS - Backing storage for this filesystem is remote
++    PF_LOCAL_THROTTLE exists for loopback NFSD, where a thread needs to
++    write to one bdi (the final bdi) in order to free up writes queued
++    to another bdi (the client bdi). Such threads get a private balance
++    of dirty pages so that dirty pages for the client bdi do not imact
++    the daemon writing to the final bdi. For filesystems whose durable
++    storage is not local (such as exported NFS filesystems), this
++    constraint has negative consequences. EXPORT_OP_REMOTE_FS enables
++    an export to disable writeback throttling.
++
++  EXPORT_OP_NOATOMIC_ATTR - Filesystem does not update attributes atomically
++    EXPORT_OP_NOATOMIC_ATTR indicates that the exported filesystem
++    cannot provide the semantics required by the "atomic" boolean in
++    NFSv4's change_info4. This boolean indicates to a client whether the
++    returned before and after change attributes were obtained atomically
++    with the respect to the requested metadata operation (UNLINK,
++    OPEN/CREATE, MKDIR, etc).
++
++  EXPORT_OP_FLUSH_ON_CLOSE - Filesystem flushes file data on close(2)
++    On most filesystems, inodes can remain under writeback after the
++    file is closed. NFSD relies on client activity or local flusher
++    threads to handle writeback. Certain filesystems, such as NFS, flush
++    all of an inode's dirty data on last close. Exports that behave this
++    way should set EXPORT_OP_FLUSH_ON_CLOSE so that NFSD knows to skip
++    waiting for writeback when closing such files.
 -- 
-2.44.0
+2.43.0
 
 
 
