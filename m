@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB53189C614
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700D489C3CB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19AF61C23C9E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 276B52826CB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B728A7FBDF;
-	Mon,  8 Apr 2024 14:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7D57B3FA;
+	Mon,  8 Apr 2024 13:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLHM6dXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4Qw+miz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EB87D3FD;
-	Mon,  8 Apr 2024 14:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2146D1A9;
+	Mon,  8 Apr 2024 13:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585034; cv=none; b=sRTIJfuWFMjTWHCJ4PsN6ScCs31hrwF/kMs98gJcuXT8maL3HVt+56WfopQylsmB7CeLDTEwOKfW6xP27TNirkUyi+LG8xmlK3V1IvqDRmwMhFnIzRHB4SNYLyQg6R2Wr62m9ZlGc3Kl5xUJrVIyqA9lbuLm5Fu7jYt2bqqQWHo=
+	t=1712583550; cv=none; b=TiqhLk3W9KHTEbOi0L3/Tnpqqpr5mz2qnUR2NcrmRr4tkgYD6pDGzb4/o8P+UJ+6Sra7lXl0n7wTPo4orfMsRsPJAkovtyhT4pdQU0O4aoOx/RWHzUtL5z0KAc5yKr1DA7jBI4Erf5eImPku0gblrkx1SLJmKF099jV8LRyBz1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585034; c=relaxed/simple;
-	bh=mGX2+ToTnV+NZymyioXocs2e9msMu/gdR7g79kj5XJE=;
+	s=arc-20240116; t=1712583550; c=relaxed/simple;
+	bh=K+nQGlhHonBNpLq4NMQR6bNywHNXPpuIYKDftVcZA6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZe0Q3QuREMNAmnpalgLtaoi2Q1yjP9x5BRURzEdn/5DjME6cS+jy+iK6o+UPFsh8vzjA2P6cmEPj8FVxmsn5CdHk2cpUSE6Ea/pnCyRDgW4w5Dklu813Y5bEYN8bFwNNvrvbJtCQGlBdJVYegNiCqmwIHb+kBUBQ5sSt9f60TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLHM6dXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2703C433F1;
-	Mon,  8 Apr 2024 14:03:53 +0000 (UTC)
+	 MIME-Version; b=HRrfKCbVjc7GthYAt0oEmAMiKcon6kp3RoZLqn3PbPZCElvV6VXkiJNbQi2ner8+BtDHGsjST0yzGq0BDiI9HLPsEFtIYeRJt/mOZBpIDEHdPdMpVV03PRrhqYaOET5gRm+dDgRIlMH9Rk+wxPb3JQz96kbJtmW/0ZTrgLhH3KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4Qw+miz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65711C433C7;
+	Mon,  8 Apr 2024 13:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585034;
-	bh=mGX2+ToTnV+NZymyioXocs2e9msMu/gdR7g79kj5XJE=;
+	s=korg; t=1712583549;
+	bh=K+nQGlhHonBNpLq4NMQR6bNywHNXPpuIYKDftVcZA6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DLHM6dXhhDyfT5QtjQ9/iILZQbQ4m/SWUOjSmH2DQpnydbQwdwvMkdijKQgAB2yCs
-	 rBqfv2Sb3c2DaJ4bEbkjkt3uliwieWfV9uSrl2EZF+YGK8GZ+l4207pM+3KLNRkDlv
-	 xn7WFcgQ9iBnEBBzrp1hFFqFIU+aJWT0E0I+t8/w=
+	b=d4Qw+mizV3YU0LSNgzxd7g3/oOOoTbBhdpTmb1uV/HDjhG9lhT7nCT/vbgH8aamYC
+	 n9Yan5yBp5l5GXcWx/7g0vr9G+sTYoiEjO5N4nsdJTm6HeMLTtNNc9Pg4FVopTl+2n
+	 O3lueepcng/sVHhjgJiJ/RSOJH/PzrhEhzLdtVZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.15 640/690] vboxsf: Avoid an spurious warning if load_nls_xxx() fails
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 207/252] ALSA: hda/realtek - Fix inactive headset mic jack
 Date: Mon,  8 Apr 2024 14:58:26 +0200
-Message-ID: <20240408125422.851145224@linuxfoundation.org>
+Message-ID: <20240408125313.074626350@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit de3f64b738af57e2732b91a0774facc675b75b54 upstream.
+commit daf6c4681a74034d5723e2fb761e0d7f3a1ca18f upstream.
 
-If an load_nls_xxx() function fails a few lines above, the 'sbi->bdi_id' is
-still 0.
-So, in the error handling path, we will call ida_simple_remove(..., 0)
-which is not allocated yet.
+This patch adds the existing fixup to certain TF platforms implementing
+the ALC274 codec with a headset jack. It fixes/activates the inactive
+microphone of the headset.
 
-In order to prevent a spurious "ida_free called for id=0 which is not
-allocated." message, tweak the error handling path and add a new label.
-
-Fixes: 0fd169576648 ("fs: Add VirtualBox guest shared folder (vboxsf) support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/d09eaaa4e2e08206c58a1a27ca9b3e81dc168773.1698835730.git.christophe.jaillet@wanadoo.fr
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Message-ID: <20240328102757.50310-1-wse@tuxedocomputers.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/vboxsf/super.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/vboxsf/super.c
-+++ b/fs/vboxsf/super.c
-@@ -151,7 +151,7 @@ static int vboxsf_fill_super(struct supe
- 		if (!sbi->nls) {
- 			vbg_err("vboxsf: Count not load '%s' nls\n", nls_name);
- 			err = -EINVAL;
--			goto fail_free;
-+			goto fail_destroy_idr;
- 		}
- 	}
- 
-@@ -224,6 +224,7 @@ fail_free:
- 		ida_simple_remove(&vboxsf_bdi_ida, sbi->bdi_id);
- 	if (sbi->nls)
- 		unload_nls(sbi->nls);
-+fail_destroy_idr:
- 	idr_destroy(&sbi->ino_idr);
- 	kfree(sbi);
- 	return err;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10302,6 +10302,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d05, 0x1147, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
+ 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
+ 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
++	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
 
 
 
