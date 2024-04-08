@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1620F89C5E0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3D289C320
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47FE91C22280
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AEB71F212FD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADB27FBC8;
-	Mon,  8 Apr 2024 14:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C066980038;
+	Mon,  8 Apr 2024 13:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynZUJmm/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvRnP+9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AD57FBB2;
-	Mon,  8 Apr 2024 14:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E00A80023;
+	Mon,  8 Apr 2024 13:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584871; cv=none; b=KQB0qUtSZqoGDkbldVJyEXvtUe21Ivwtk05YqBTxKJb1Xg2YPZK08SGo6KFiY6Zz3s4JWRs5zn6n9xqHb/km0ddxQ1PhzqxMwZtopA3LDd+TbcU0zDqD5eph1/3KXI1yPXenQPBcgZgvy5EFzfAnnV6M89KnWUg6TGnisphHwhU=
+	t=1712583163; cv=none; b=obraU5kGXwzFk3dodsTYqHfh7gTSIE2p8qEXiH4xGGK2KCMS9DcI/1EniEr759SO6pv2SphhRvYgmfOvh9ScsOH0CTmuGg9v/VTYM45M+MjmpdF+tLahSAkUE2+IpNyXS8f3MlJaohIRtF4OGCXhZgNC4f64tL3hSJjNvKMeeTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584871; c=relaxed/simple;
-	bh=GgjYMMV9B64e8sQsv1HvJaYi1SlQ44/hAHHs70StKGw=;
+	s=arc-20240116; t=1712583163; c=relaxed/simple;
+	bh=lVFvH+NLq8qT154B9G8JEIz/JGg9s1/pnkJUuwr+JXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOkne7LmRhmTP8CekSST7oCykwdFi2bs/XZJg7vezZkI+9gIEAx6rD7wk4M5nTzWKH1g73hcErhJpp3ipFdH4cL96nB6tvoB12zAp/YArCHEM6kydAUYvpWM7VIK39kzNbvZcIMGuemHYjAdeF56tl0lDPFVvXH+ye6/MU2p6DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynZUJmm/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B4EC433C7;
-	Mon,  8 Apr 2024 14:01:10 +0000 (UTC)
+	 MIME-Version; b=J9DwsgAIRUeKaEHLzGp7Ka9MeQ82+/eYed9OLTkZTZjWbrPTuvqZZFqGs5IxM+ct3bHBe8c79Cw1C/ueXcV7Lc1lV8dG5BxRyODq/kwHg5+Xh/wDkRwn7aeMvvptArU72kuoKqwIaxdtm6UwWuIZ28KBVdRaZxj+7vH2zQJ0ofM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvRnP+9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C82C43390;
+	Mon,  8 Apr 2024 13:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584870;
-	bh=GgjYMMV9B64e8sQsv1HvJaYi1SlQ44/hAHHs70StKGw=;
+	s=korg; t=1712583163;
+	bh=lVFvH+NLq8qT154B9G8JEIz/JGg9s1/pnkJUuwr+JXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynZUJmm/d0DS7Zqyr3U4kwZSzeVRBgvggRUHhstzzjO2fJX1XjJd+obLqPiA5mCQw
-	 2I0VM3X9N75nXjKCJkxyipyTZdVTz2TFr9d3tyzcnQ4NooZ2zs83QhgJIRx8qILjdz
-	 vutB/TrQd6cZTQCeFIU6dZGkGLElMIJlIqLhvqYc=
+	b=zvRnP+9owflGYx6WmvGIi4EetBBovZNbM0yt57E33pTDYMhfy+H33To+fJtbBATGr
+	 IBLg57i6CAb6+SsZey6tXEjgFgC+m0usniLPIycszi8TNYGlyXF903mfK/yoeaqz9y
+	 ao8p7hPuwliHDDMd7IdszMDQMHjDSHqvfAKU0wMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 555/690] nfsd: dont call locks_release_private() twice concurrently
-Date: Mon,  8 Apr 2024 14:57:01 +0200
-Message-ID: <20240408125419.719976126@linuxfoundation.org>
+	Samuel Holland <samuel.holland@sifive.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 147/273] riscv: mm: Fix prototype to avoid discarding const
+Date: Mon,  8 Apr 2024 14:57:02 +0200
+Message-ID: <20240408125313.852384716@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 05eda6e75773592760285e10ac86c56d683be17f ]
+[ Upstream commit 674bc0168e6b68070c75df22e97ab63b6eb60d89 ]
 
-It is possible for free_blocked_lock() to be called twice concurrently,
-once from nfsd4_lock() and once from nfsd4_release_lockowner() calling
-remove_blocked_locks().  This is why a kref was added.
+__flush_tlb_range() does not modify the provided cpumask, so its cmask
+parameter can be pointer-to-const. This avoids the unsafe cast of
+cpu_online_mask.
 
-It is perfectly safe for locks_delete_block() and kref_put() to be
-called in parallel as they use locking or atomicity respectively as
-protection.  However locks_release_private() has no locking.  It is
-safe for it to be called twice sequentially, but not concurrently.
-
-This patch moves that call from free_blocked_lock() where it could race
-with itself, to free_nbl() where it cannot.  This will slightly delay
-the freeing of private info or release of the owner - but not by much.
-It is arguably more natural for this freeing to happen in free_nbl()
-where the structure itself is freed.
-
-This bug was found by code inspection - it has not been seen in practice.
-
-Fixes: 47446d74f170 ("nfsd4: add refcount for nfsd4_blocked_lock")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 54d7431af73e ("riscv: Add support for BATCHED_UNMAP_TLB_FLUSH")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240301201837.2826172-1-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/mm/tlbflush.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 0f1ece95bd642..ccc235a8bc1b4 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -318,6 +318,7 @@ free_nbl(struct kref *kref)
- 	struct nfsd4_blocked_lock *nbl;
- 
- 	nbl = container_of(kref, struct nfsd4_blocked_lock, nbl_kref);
-+	locks_release_private(&nbl->nbl_lock);
- 	kfree(nbl);
+diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
+index 893566e004b73..07d743f87b3f6 100644
+--- a/arch/riscv/mm/tlbflush.c
++++ b/arch/riscv/mm/tlbflush.c
+@@ -99,7 +99,7 @@ static void __ipi_flush_tlb_range_asid(void *info)
+ 	local_flush_tlb_range_asid(d->start, d->size, d->stride, d->asid);
  }
  
-@@ -325,7 +326,6 @@ static void
- free_blocked_lock(struct nfsd4_blocked_lock *nbl)
+-static void __flush_tlb_range(struct cpumask *cmask, unsigned long asid,
++static void __flush_tlb_range(const struct cpumask *cmask, unsigned long asid,
+ 			      unsigned long start, unsigned long size,
+ 			      unsigned long stride)
  {
- 	locks_delete_block(&nbl->nbl_lock);
--	locks_release_private(&nbl->nbl_lock);
- 	kref_put(&nbl->nbl_kref, free_nbl);
+@@ -200,7 +200,7 @@ void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 
+ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ {
+-	__flush_tlb_range((struct cpumask *)cpu_online_mask, FLUSH_TLB_NO_ASID,
++	__flush_tlb_range(cpu_online_mask, FLUSH_TLB_NO_ASID,
+ 			  start, end - start, PAGE_SIZE);
  }
  
 -- 
