@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-37202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE7989C3CA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D824F89C325
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 384832825FF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7993B1F21E5E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F957EF04;
-	Mon,  8 Apr 2024 13:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA067BAF5;
+	Mon,  8 Apr 2024 13:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCDwifWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7VsrrAN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082036D1A9;
-	Mon,  8 Apr 2024 13:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CB77BAF0;
+	Mon,  8 Apr 2024 13:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583547; cv=none; b=Vxc0Pdg0Akuf6BrhvZt1aMkJVQD3zvtEcER+mUukz3qQ6/ggxU26KDw8WNAw9bFLlmt1beokjorr6R2H6ivDF59cubuj29bHdoGH34yv/P6LhSOBpYynVvnmfKY9+Xd+46vUbNwYd5ijMbgqhI/rD9ajJQKApm3mG3UK26gsi9Q=
+	t=1712583175; cv=none; b=dxJHFN+UcLd9uWGk0yRJZHOrptxP/1uHhKpFG6DvY9Ow4Y2tnv+dZICDL127AL2EpVEbqMoTlGu857Ety/SnH9nOoNOEwS5X4jTqM3bNoIbmyBPFS16nw/PB6ONeRrd0Ie5ABBCP0mTFAicqyFWG5ZXOGaELqKeHw1NOK+1mCxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583547; c=relaxed/simple;
-	bh=dNjQ0CnRXkdBr2J71NHb/+jdRWtBMBQL2elgFPZRrtM=;
+	s=arc-20240116; t=1712583175; c=relaxed/simple;
+	bh=O5i9JM8XCHKJbwXWixY+uNXA6Yf1NYMtSQswOhoxCno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=razYxZZS2I0c+U9KMpZhOQ0gfrpyVIJaWCl1Y25yh3qHv3zG3Ay1rx3TguSRRZsKVSPPn1azgEyWJnxN0UOVP+3mXZiaonjcTLw+TQBaWR4jQ0xSNkiH5CtqvtPuZybvNGKWL7E7JL8sWIT5aXzjCrWt/ypgv4awidT9hBStjbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCDwifWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF39C433C7;
-	Mon,  8 Apr 2024 13:39:06 +0000 (UTC)
+	 MIME-Version; b=I8tGjUgQUkMaQW1/Q11m8WPjcMdJpr+3gR6tj1A6mLnYosLAfSx+8kCUauN0xY6Hs17aG0Ctqt9Hicx8j6bHOyDTNbo9UyCayWlCTD3eDfVVNiYVmFL86s/cAyfR4+PXtsb0SNVZdYC+DO8UylpjzAeb+Tnj4JQUZv3Nwjd6BPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7VsrrAN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C634C433C7;
+	Mon,  8 Apr 2024 13:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583546;
-	bh=dNjQ0CnRXkdBr2J71NHb/+jdRWtBMBQL2elgFPZRrtM=;
+	s=korg; t=1712583174;
+	bh=O5i9JM8XCHKJbwXWixY+uNXA6Yf1NYMtSQswOhoxCno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCDwifWLl8Zqttuk1yLU3purOG/2PF6guPGZjTpDUC9Zl8bA4oBlWiNas4TcVxuDA
-	 zBzBipq/yBe5kYxe3VOFIZd9Ro0KNKVTbBr5kDI3pVmi/qNgGJ//W6ax1Vq9OfEYDZ
-	 xZjfdJGrrxtUPwCORdRH3wXS1loNDR+CtC1WvXHY=
+	b=m7VsrrANhbldsq1gSgbdaB76IzF2TCzCn8TjPkq0ed7AxVKkHESxT7vdzZzzJIPkx
+	 q3C+sYEiJWsBO6PQUxt3q+XAg1qiYXSGIZx6vI3i4XCSsE/3LPtxKhzdaTaIL27RQP
+	 TNfqtDjaisj1N4sqfA3as5eUo2ikTns0Vvm6aYXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Parri <andrea@rivosinc.com>,
-	Andy Chiu <andy.chiu@sifive.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Puranjay Mohan <puranjay12@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 190/273] riscv: Disable preemption when using patch_map()
+Subject: [PATCH 6.6 166/252] nouveau/uvmm: fix addr/range calcs for remap operations
 Date: Mon,  8 Apr 2024 14:57:45 +0200
-Message-ID: <20240408125315.200973830@linuxfoundation.org>
+Message-ID: <20240408125311.806399110@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit a370c2419e4680a27382d9231edcf739d5d74efc ]
+[ Upstream commit be141849ec00ef39935bf169c0f194ac70bf85ce ]
 
-patch_map() uses fixmap mappings to circumvent the non-writability of
-the kernel text mapping.
+dEQP-VK.sparse_resources.image_rebind.2d_array.r64i.128_128_8
+was causing a remap operation like the below.
 
-The __set_fixmap() function only flushes the current cpu tlb, it does
-not emit an IPI so we must make sure that while we use a fixmap mapping,
-the current task is not migrated on another cpu which could miss the
-newly introduced fixmap mapping.
+op_remap: prev: 0000003fffed0000 00000000000f0000 00000000a5abd18a 0000000000000000
+op_remap: next:
+op_remap: unmap: 0000003fffed0000 0000000000100000 0
+op_map: map: 0000003ffffc0000 0000000000010000 000000005b1ba33c 00000000000e0000
 
-So in order to avoid any task migration, disable the preemption.
+This was resulting in an unmap operation from 0x3fffed0000+0xf0000, 0x100000
+which was corrupting the pagetables and oopsing the kernel.
 
-Reported-by: Andrea Parri <andrea@rivosinc.com>
-Closes: https://lore.kernel.org/all/ZcS+GAaM25LXsBOl@andrea/
-Reported-by: Andy Chiu <andy.chiu@sifive.com>
-Closes: https://lore.kernel.org/linux-riscv/CABgGipUMz3Sffu-CkmeUB1dKVwVQ73+7=sgC45-m0AE9RCjOZg@mail.gmail.com/
-Fixes: cad539baa48f ("riscv: implement a memset like function for text")
-Fixes: 0ff7c3b33127 ("riscv: Use text_mutex instead of patch_lock")
-Co-developed-by: Andy Chiu <andy.chiu@sifive.com>
-Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Acked-by: Puranjay Mohan <puranjay12@gmail.com>
-Link: https://lore.kernel.org/r/20240326203017.310422-3-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes the prev + unmap range calcs to use start/end and map back to addr/range.
+
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
+Cc: Danilo Krummrich <dakr@redhat.com>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240328024317.2041851-1-airlied@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/patch.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_uvmm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/kernel/patch.c b/arch/riscv/kernel/patch.c
-index 37e87fdcf6a00..30e12b310cab7 100644
---- a/arch/riscv/kernel/patch.c
-+++ b/arch/riscv/kernel/patch.c
-@@ -80,6 +80,8 @@ static int __patch_insn_set(void *addr, u8 c, size_t len)
- 	 */
- 	lockdep_assert_held(&text_mutex);
+diff --git a/drivers/gpu/drm/nouveau/nouveau_uvmm.c b/drivers/gpu/drm/nouveau/nouveau_uvmm.c
+index aae780e4a4aa3..2bbcdc649e862 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_uvmm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_uvmm.c
+@@ -804,15 +804,15 @@ op_remap(struct drm_gpuva_op_remap *r,
+ 	struct drm_gpuva_op_unmap *u = r->unmap;
+ 	struct nouveau_uvma *uvma = uvma_from_va(u->va);
+ 	u64 addr = uvma->va.va.addr;
+-	u64 range = uvma->va.va.range;
++	u64 end = uvma->va.va.addr + uvma->va.va.range;
  
-+	preempt_disable();
-+
- 	if (across_pages)
- 		patch_map(addr + PAGE_SIZE, FIX_TEXT_POKE1);
+ 	if (r->prev)
+ 		addr = r->prev->va.addr + r->prev->va.range;
  
-@@ -92,6 +94,8 @@ static int __patch_insn_set(void *addr, u8 c, size_t len)
- 	if (across_pages)
- 		patch_unmap(FIX_TEXT_POKE1);
+ 	if (r->next)
+-		range = r->next->va.addr - addr;
++		end = r->next->va.addr;
  
-+	preempt_enable();
-+
- 	return 0;
+-	op_unmap_range(u, addr, range);
++	op_unmap_range(u, addr, end - addr);
  }
- NOKPROBE_SYMBOL(__patch_insn_set);
-@@ -122,6 +126,8 @@ static int __patch_insn_write(void *addr, const void *insn, size_t len)
- 	if (!riscv_patch_in_stop_machine)
- 		lockdep_assert_held(&text_mutex);
  
-+	preempt_disable();
-+
- 	if (across_pages)
- 		patch_map(addr + PAGE_SIZE, FIX_TEXT_POKE1);
- 
-@@ -134,6 +140,8 @@ static int __patch_insn_write(void *addr, const void *insn, size_t len)
- 	if (across_pages)
- 		patch_unmap(FIX_TEXT_POKE1);
- 
-+	preempt_enable();
-+
- 	return ret;
- }
- NOKPROBE_SYMBOL(__patch_insn_write);
+ static int
 -- 
 2.43.0
 
