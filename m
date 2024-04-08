@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-37276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5E989C42B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B174789C42E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEC0F282610
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E327E1C2249A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E2F85659;
-	Mon,  8 Apr 2024 13:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521267E119;
+	Mon,  8 Apr 2024 13:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxkSOBoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/NHaOcV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D272DF73;
-	Mon,  8 Apr 2024 13:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1153B7C0AB;
+	Mon,  8 Apr 2024 13:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583763; cv=none; b=lbxlBt6ie1aryFKF51MCDwDLT4Mt/RjYzDUcc9JDxvZE6YbpsWGLLanwYURv6i97fKrfpki53Qv9DbxgHFItahsXC5BR+EHcHuY5oSZI3Ug8XVeXefU1WkYGGWqQP4WXUsPFG6qKvrtxl9b63EePhStZaoDfZV7kvSteDRINVjY=
+	t=1712583772; cv=none; b=NmUxWTke8fHypr1EMJyvPPJni83vDUE6mj7TFkXO7+6fV+U3ta188O9EPFXqT5leRlUYA85Pa/MvQ6+hv+u/jcBNVXebN1eXlj4hSK20lz+GCFWTQdckPghPefVju3JpxveWQAuSxA4ki9adHnP4BPZIaSc53DAAdUfXVq1u2lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583763; c=relaxed/simple;
-	bh=fzwbhfsKYp/oOERJ8VN442ewgT+cLGYI+DLh7Gw2bbc=;
+	s=arc-20240116; t=1712583772; c=relaxed/simple;
+	bh=/WpKZlFTXk/hnd43MrgWoviqopoQe4nID2RZCzbdF2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIkvPUSknFvm98QeMrXLIgyCv4eOvVw2g0rgCg3ox/OjSesl2jm0u+KfTobdFYxhoyI0QRPhl33mziMvi/tljyjJcsd25lR75nAAE4GOBZvaF3gLonfG8JI37O3Z4FDLlmDJRptz9F0wLLvnZOhJogkiYEJyETDXwG308yh3UsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxkSOBoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21A6C433C7;
-	Mon,  8 Apr 2024 13:42:42 +0000 (UTC)
+	 MIME-Version; b=EZd/8SWEqYs1FNY+dh5R22PU7efJJG0WS5BJVQOZ8FNwTmFc9Zh20NMknS2eQMrIF7BCnwJBGDlDyujkSN4S5p6k/Zs53WSvBestQjqnbUToRc83zYq57uyXxX10+jS6AWyW0eP7Tx+sVFtu1QX72NMpTAxRdmea3ieLrMXDoyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/NHaOcV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0DAC433C7;
+	Mon,  8 Apr 2024 13:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583763;
-	bh=fzwbhfsKYp/oOERJ8VN442ewgT+cLGYI+DLh7Gw2bbc=;
+	s=korg; t=1712583771;
+	bh=/WpKZlFTXk/hnd43MrgWoviqopoQe4nID2RZCzbdF2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XxkSOBoWevBpOITNGkih3ulgFz09B4qHzewFLIcgZQAuqCBYMJy3iUb5859yotynC
-	 wO+x70c0xjn+OvKWGTDuvmL4A4n8Tp/qc6fla8l+OtFPNGjx2/+LU/QAdn8l9WvZOm
-	 2hJHxkQ0+2dMjQx6pMw2mI43DxUuxuPGjyeqETHE=
+	b=B/NHaOcV6A2KLlUf1+Rt0Cmw9CiHVexpRfpXjJWBodRQ3rZAh1SKDdVX9B6DoCfUg
+	 tDacAWDvdoE4LTK9kZXDxJYf8t41xg3JD9pGit+jyNHe5cYCilZbO/prC6x2VRx8E2
+	 0G5fJS6xJsZynZeiGHi+ENWsYLmutU3GEKeS2Tgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Koschel <jakobkoschel@gmail.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 282/690] nfsd: fix using the correct variable for sizeof()
-Date: Mon,  8 Apr 2024 14:52:28 +0200
-Message-ID: <20240408125409.826782911@linuxfoundation.org>
+Subject: [PATCH 5.15 283/690] fsnotify: fix merge with parents ignored mask
+Date: Mon,  8 Apr 2024 14:52:29 +0200
+Message-ID: <20240408125409.863692483@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -65,33 +66,141 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakob Koschel <jakobkoschel@gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 4fc5f5346592cdc91689455d83885b0af65d71b8 ]
+[ Upstream commit 4f0b903ded728c505850daf2914bfc08841f0ae6 ]
 
-While the original code is valid, it is not the obvious choice for the
-sizeof() call and in preparation to limit the scope of the list iterator
-variable the sizeof should be changed to the size of the destination.
+fsnotify_parent() does not consider the parent's mark at all unless
+the parent inode shows interest in events on children and in the
+specific event.
 
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+So unless parent added an event to both its mark mask and ignored mask,
+the event will not be ignored.
+
+Fix this by declaring the interest of an object in an event when the
+event is in either a mark mask or ignored mask.
+
+Link: https://lore.kernel.org/r/20220223151438.790268-2-amir73il@gmail.com
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4layouts.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/notify/fanotify/fanotify_user.c | 17 +++++++++--------
+ fs/notify/mark.c                   |  4 ++--
+ include/linux/fsnotify_backend.h   | 15 +++++++++++++++
+ 3 files changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/fs/nfsd/nfs4layouts.c b/fs/nfsd/nfs4layouts.c
-index 2673019d30ecd..7018d209b784a 100644
---- a/fs/nfsd/nfs4layouts.c
-+++ b/fs/nfsd/nfs4layouts.c
-@@ -421,7 +421,7 @@ nfsd4_insert_layout(struct nfsd4_layoutget *lgp, struct nfs4_layout_stateid *ls)
- 	new = kmem_cache_alloc(nfs4_layout_cache, GFP_KERNEL);
- 	if (!new)
- 		return nfserr_jukebox;
--	memcpy(&new->lo_seg, seg, sizeof(lp->lo_seg));
-+	memcpy(&new->lo_seg, seg, sizeof(new->lo_seg));
- 	new->lo_state = ls;
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index ce84eb8443b10..9ed9d7f6c2b50 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -999,17 +999,18 @@ static __u32 fanotify_mark_remove_from_mask(struct fsnotify_mark *fsn_mark,
+ 					    __u32 mask, unsigned int flags,
+ 					    __u32 umask, int *destroy)
+ {
+-	__u32 oldmask = 0;
++	__u32 oldmask, newmask;
  
- 	spin_lock(&fp->fi_lock);
+ 	/* umask bits cannot be removed by user */
+ 	mask &= ~umask;
+ 	spin_lock(&fsn_mark->lock);
++	oldmask = fsnotify_calc_mask(fsn_mark);
+ 	if (!(flags & FAN_MARK_IGNORED_MASK)) {
+-		oldmask = fsn_mark->mask;
+ 		fsn_mark->mask &= ~mask;
+ 	} else {
+ 		fsn_mark->ignored_mask &= ~mask;
+ 	}
++	newmask = fsnotify_calc_mask(fsn_mark);
+ 	/*
+ 	 * We need to keep the mark around even if remaining mask cannot
+ 	 * result in any events (e.g. mask == FAN_ONDIR) to support incremenal
+@@ -1019,7 +1020,7 @@ static __u32 fanotify_mark_remove_from_mask(struct fsnotify_mark *fsn_mark,
+ 	*destroy = !((fsn_mark->mask | fsn_mark->ignored_mask) & ~umask);
+ 	spin_unlock(&fsn_mark->lock);
+ 
+-	return mask & oldmask;
++	return oldmask & ~newmask;
+ }
+ 
+ static int fanotify_remove_mark(struct fsnotify_group *group,
+@@ -1077,23 +1078,23 @@ static int fanotify_remove_inode_mark(struct fsnotify_group *group,
+ }
+ 
+ static __u32 fanotify_mark_add_to_mask(struct fsnotify_mark *fsn_mark,
+-				       __u32 mask,
+-				       unsigned int flags)
++				       __u32 mask, unsigned int flags)
+ {
+-	__u32 oldmask = -1;
++	__u32 oldmask, newmask;
+ 
+ 	spin_lock(&fsn_mark->lock);
++	oldmask = fsnotify_calc_mask(fsn_mark);
+ 	if (!(flags & FAN_MARK_IGNORED_MASK)) {
+-		oldmask = fsn_mark->mask;
+ 		fsn_mark->mask |= mask;
+ 	} else {
+ 		fsn_mark->ignored_mask |= mask;
+ 		if (flags & FAN_MARK_IGNORED_SURV_MODIFY)
+ 			fsn_mark->flags |= FSNOTIFY_MARK_FLAG_IGNORED_SURV_MODIFY;
+ 	}
++	newmask = fsnotify_calc_mask(fsn_mark);
+ 	spin_unlock(&fsn_mark->lock);
+ 
+-	return mask & ~oldmask;
++	return newmask & ~oldmask;
+ }
+ 
+ static struct fsnotify_mark *fanotify_add_new_mark(struct fsnotify_group *group,
+diff --git a/fs/notify/mark.c b/fs/notify/mark.c
+index b42629d2fc1c6..c86982be2d505 100644
+--- a/fs/notify/mark.c
++++ b/fs/notify/mark.c
+@@ -127,7 +127,7 @@ static void __fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+ 		return;
+ 	hlist_for_each_entry(mark, &conn->list, obj_list) {
+ 		if (mark->flags & FSNOTIFY_MARK_FLAG_ATTACHED)
+-			new_mask |= mark->mask;
++			new_mask |= fsnotify_calc_mask(mark);
+ 	}
+ 	*fsnotify_conn_mask_p(conn) = new_mask;
+ }
+@@ -692,7 +692,7 @@ int fsnotify_add_mark_locked(struct fsnotify_mark *mark,
+ 	if (ret)
+ 		goto err;
+ 
+-	if (mark->mask)
++	if (mark->mask || mark->ignored_mask)
+ 		fsnotify_recalc_mask(mark->connector);
+ 
+ 	return ret;
+diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
+index 790c31844db5d..5f9c960049b07 100644
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -601,6 +601,21 @@ extern void fsnotify_remove_queued_event(struct fsnotify_group *group,
+ 
+ /* functions used to manipulate the marks attached to inodes */
+ 
++/* Get mask for calculating object interest taking ignored mask into account */
++static inline __u32 fsnotify_calc_mask(struct fsnotify_mark *mark)
++{
++	__u32 mask = mark->mask;
++
++	if (!mark->ignored_mask)
++		return mask;
++
++	/*
++	 * If mark is interested in ignoring events on children, the object must
++	 * show interest in those events for fsnotify_parent() to notice it.
++	 */
++	return mask | (mark->ignored_mask & ALL_FSNOTIFY_EVENTS);
++}
++
+ /* Get mask of events for a list of marks */
+ extern __u32 fsnotify_conn_mask(struct fsnotify_mark_connector *conn);
+ /* Calculate mask of events for a list of marks */
 -- 
 2.43.0
 
