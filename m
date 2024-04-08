@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-37161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131D889C4F0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:51:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E216B89C394
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08FDAB2BDA0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D5A6283CDB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CE412A144;
-	Mon,  8 Apr 2024 13:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1597212A169;
+	Mon,  8 Apr 2024 13:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLUSEGhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8WzyEvl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140BC129A6F;
-	Mon,  8 Apr 2024 13:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9118129A6F;
+	Mon,  8 Apr 2024 13:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583425; cv=none; b=KNY3DHOV3AICQSXJUIlWiAYhb65VviU+prAc7p4pFpMtpP9/ipUE6RFgEbtDcIZpXFlpCvjy9CCbeS0fU3MtJ93QeoQfSHERukgaoo/cbb5ATYeGkIWetIO7wLK9f7YdVgCY6hRFB6FmEA/R9Zbh1FIvqbMY/hO42yn/T6yyfZs=
+	t=1712583433; cv=none; b=Kmw4Xn7ztJcrUKC969TV4CmftNdWrm/zDh1VHlSAvA3iOgMxA03dkM2E5cqfsgk+s4CdrSG2ZbJW8Mt/KEgbxCXGKsgJhX/1dBYFYoZFXE1Lm2Rg/q6weJZXPwL4FmJ7rloA3JM+aCfn5/EQxQMoIz8JFd7LwqiS/G9rSi8lA2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583425; c=relaxed/simple;
-	bh=6AEMHcR3NPZKtkOZcGFRT64TudVwIfK5oW+3fL+sDrk=;
+	s=arc-20240116; t=1712583433; c=relaxed/simple;
+	bh=sYwnlPmHgR5GK1Mg/8HlJNpVPPqOM0b9NFEDQVafzoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkAVtsdMhuC0Vb+aqiyrw0cXSMPFGN5W7DQmwMiAhOeS/eaP+fJMpHrJooph5WyXDEPO1UtTCJLUuKDUMxHMf7JCZ99JT9a2aacpfcl1/CemwmknJVyRyuSDSwBSeONprJdsruebCMT0/LdUTUefh2xs25j3mjGib+Inz9F0oDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLUSEGhR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC29C43390;
-	Mon,  8 Apr 2024 13:37:04 +0000 (UTC)
+	 MIME-Version; b=GRp5vFX0nuAOtFYfj5bM8wo3B2DKUXyPuAA33P/iIphaC8T9ATNDAX67fgzdqEpCph8jDrJSy9Ghvsh2kYhJM9M5cF/hWVF5i8Va4dRpe86ypsnKW/2ISjv5JXOWMnyWDNR8DB8oS0rdEbOaFDz76v3KXlAlVBs16aouM1ImPx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8WzyEvl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C467C433C7;
+	Mon,  8 Apr 2024 13:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583425;
-	bh=6AEMHcR3NPZKtkOZcGFRT64TudVwIfK5oW+3fL+sDrk=;
+	s=korg; t=1712583433;
+	bh=sYwnlPmHgR5GK1Mg/8HlJNpVPPqOM0b9NFEDQVafzoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLUSEGhR0tV2JPLAVIbmPgiPQbiWaohFADE7WiRTF7Jpsht/9NUOF4AgoiLjhgVvR
-	 gY4axD/GaYSwMtd8fo20hjnY8eKSoaHkfePQyaacez6cdk2T5gw26Twe10uA8bLIjG
-	 QehxgMl6bnX7AtRFGDMRbjRE4UxuvG6/nACLJJ9E=
+	b=E8WzyEvlpg2iqJUPh2G+dSno9fD8LqXtr+j71jh+ffEnJD23KrFp6UAORSohHSrCY
+	 xLCAZgOASAHZcIFdHwU9cZ42EBOEOJjDEUPL4OCbw22yKh+AK7FuP/y6jXn11KOqUP
+	 oUXVY2GMR4lrnwV9hb5hCaw1KzzxiQkV4lPeXWfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 246/690] NFSD: Remove be32_to_cpu() from DRC hash function
-Date: Mon,  8 Apr 2024 14:51:52 +0200
-Message-ID: <20240408125408.541231217@linuxfoundation.org>
+Subject: [PATCH 5.15 247/690] NFSD: Fix inconsistent indenting
+Date: Mon,  8 Apr 2024 14:51:53 +0200
+Message-ID: <20240408125408.572314874@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -64,43 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit 7578b2f628db27281d3165af0aa862311883a858 ]
+[ Upstream commit 1e37d0e5bda45881eea1bec4b812def72c7d4aea ]
 
-Commit 7142b98d9fd7 ("nfsd: Clean up drc cache in preparation for
-global spinlock elimination"), billed as a clean-up, added
-be32_to_cpu() to the DRC hash function without explanation. That
-commit removed two comments that state that byte-swapping in the
-hash function is unnecessary without explaining whether there was
-a need for that change.
+Eliminate the follow smatch warning:
 
-On some Intel CPUs, the swab32 instruction is known to cause a CPU
-pipeline stall. be32_to_cpu() does not add extra randomness, since
-the hash multiplication is done /before/ shifting to the high-order
-bits of the result.
+fs/nfsd/nfs4xdr.c:4766 nfsd4_encode_read_plus_hole() warn: inconsistent
+indenting.
 
-As a micro-optimization, remove the unnecessary transform from the
-DRC hash function.
-
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfscache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4xdr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
-index 6b9ef15c9c03b..a838909502907 100644
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -87,7 +87,7 @@ nfsd_hashsize(unsigned int limit)
- static u32
- nfsd_cache_hash(__be32 xid, struct nfsd_net *nn)
- {
--	return hash_32(be32_to_cpu(xid), nn->maskbits);
-+	return hash_32((__force u32)xid, nn->maskbits);
- }
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 1483cd1b5eed7..506ecfca2338b 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -4807,8 +4807,8 @@ nfsd4_encode_read_plus_hole(struct nfsd4_compoundres *resp,
+ 		return nfserr_resource;
  
- static struct svc_cacherep *
+ 	*p++ = htonl(NFS4_CONTENT_HOLE);
+-	 p   = xdr_encode_hyper(p, read->rd_offset);
+-	 p   = xdr_encode_hyper(p, count);
++	p = xdr_encode_hyper(p, read->rd_offset);
++	p = xdr_encode_hyper(p, count);
+ 
+ 	*eof = (read->rd_offset + count) >= f_size;
+ 	*maxcount = min_t(unsigned long, count, *maxcount);
 -- 
 2.43.0
 
