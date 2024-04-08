@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-36889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457C089C23A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 810CF89C23E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D31282CFB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D243283653
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E578172F;
-	Mon,  8 Apr 2024 13:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E77081AAA;
+	Mon,  8 Apr 2024 13:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ku6nPpBu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoandXEp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AC881727;
-	Mon,  8 Apr 2024 13:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E027981749;
+	Mon,  8 Apr 2024 13:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582638; cv=none; b=pnhZ0SsqQL5lH0J2CvxmN5CegJkdWSEWapwixIQCLNczsZxYqcHnDCGHnXv0sIbMzUpZqgt5AHszZTvvXs5WId8JyacU1DzVjm5hHjxnBvyriUazfF7ANXQHVlAn1Pv4w9b2TOH0d0iHc5ixSkvKQf4A5bQpiyJwNfMOHN52p30=
+	t=1712582653; cv=none; b=i6bwDIThtFhWZ1LRRpK0dfcf9xyGTCuREY1OKqTA91WXi5JD1Xx0MukEPvH+HM2Lw+OS0oXkX6Ed2I5wQaRMHsYLbdrgVH9Rjlbls7XUg6lVBez+p4Y2NPq3V3wTvRMGVva/+GMQ2iOFx3YQdcueoYFTSu6DENd0Gnxxc6SBvo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582638; c=relaxed/simple;
-	bh=j3zNujywYCzU46xoqD+r1yA8xpWX7gCnjCjuapawjaA=;
+	s=arc-20240116; t=1712582653; c=relaxed/simple;
+	bh=vRH42ZCmFi1gmn2QjDYr1nvzM7cmhqbDlXtVxmjAhfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAR1GzJOZHj4VdHhR9LhqaXsu3gO9QMwoJrnjAqCGhcicsNaQW+pisiYPWcScAM4iYe3Pim870K8teCmLlPYS/hbyY81M9r7enuA9EMKsDlI/SXQ+YmJIFzoz8OQUmRyfwA7plIE1GuAK7KCVxX5Djz8TByHu7N92E+rRVdRM40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ku6nPpBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4B0C433C7;
-	Mon,  8 Apr 2024 13:23:57 +0000 (UTC)
+	 MIME-Version; b=ecvyzZxqxjzCaUOYTv+JEmxLdlS4dcOX64IdkW3QnqYjPoyBqr6u69mK08WM6DGqDEv9ObF4Zuu4ryUEfGlu/bqL2B/SqB5Prt9opN5qyN51+o0zqVuu4CNwT3CO8tpwecSJXDdJ+n9Hjkj+Jslj/lI5ciyJjzIXvKUnYkaCdfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoandXEp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6740FC433C7;
+	Mon,  8 Apr 2024 13:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582638;
-	bh=j3zNujywYCzU46xoqD+r1yA8xpWX7gCnjCjuapawjaA=;
+	s=korg; t=1712582652;
+	bh=vRH42ZCmFi1gmn2QjDYr1nvzM7cmhqbDlXtVxmjAhfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ku6nPpBueFpLGSNZCoWqbrYvEdBy/DYhZ0fwJFeeQTw8PC0J/GSmRAYsoazY+wW45
-	 jnCc9yT2BuDcPj0IcWXr3m3p4fMV/x56J0108ifFSButWim6l5WNHpGkiMAbWxh+Fr
-	 rWDrENN/cEsCQJbbpKtfaFkgO6IF9J+OiJgSMX7c=
+	b=aoandXEpve80FXPQGcdjuAbltHGhD6tZG4scqzmq6Ve/z6mq6EGae/33CqQudCCRj
+	 2g3l4oUPRSmJssrdZbcMUhQdZzWx5ru/OhlRKVyU9S4S2MgA/eKBpP/NPZApwDaCWE
+	 3iZzQdiMEZT2Q7JwtJrxIAQB0zXMrxPubk86F6L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.8 092/273] vboxsf: Avoid an spurious warning if load_nls_xxx() fails
-Date: Mon,  8 Apr 2024 14:56:07 +0200
-Message-ID: <20240408125312.158275442@linuxfoundation.org>
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
+	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: [PATCH 6.8 093/273] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
+Date: Mon,  8 Apr 2024 14:56:08 +0200
+Message-ID: <20240408125312.189097959@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -65,47 +70,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jakub Sitnicki <jakub@cloudflare.com>
 
-commit de3f64b738af57e2732b91a0774facc675b75b54 upstream.
+commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
 
-If an load_nls_xxx() function fails a few lines above, the 'sbi->bdi_id' is
-still 0.
-So, in the error handling path, we will call ida_simple_remove(..., 0)
-which is not allocated yet.
+syzkaller started using corpuses where a BPF tracing program deletes
+elements from a sockmap/sockhash map. Because BPF tracing programs can be
+invoked from any interrupt context, locks taken during a map_delete_elem
+operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
+is possible, as reported by lockdep:
 
-In order to prevent a spurious "ida_free called for id=0 which is not
-allocated." message, tweak the error handling path and add a new label.
+       CPU0                    CPU1
+       ----                    ----
+  lock(&htab->buckets[i].lock);
+                               local_irq_disable();
+                               lock(&host->lock);
+                               lock(&htab->buckets[i].lock);
+  <Interrupt>
+    lock(&host->lock);
 
-Fixes: 0fd169576648 ("fs: Add VirtualBox guest shared folder (vboxsf) support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/d09eaaa4e2e08206c58a1a27ca9b3e81dc168773.1698835730.git.christophe.jaillet@wanadoo.fr
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Locks in sockmap are hardirq-unsafe by design. We expects elements to be
+deleted from sockmap/sockhash only in task (normal) context with interrupts
+enabled, or in softirq context.
+
+Detect when map_delete_elem operation is invoked from a context which is
+_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
+error.
+
+Note that map updates are not affected by this issue. BPF verifier does not
+allow updating sockmap/sockhash from a BPF tracing program today.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
+Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
+Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
+Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/vboxsf/super.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/sock_map.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/vboxsf/super.c
-+++ b/fs/vboxsf/super.c
-@@ -151,7 +151,7 @@ static int vboxsf_fill_super(struct supe
- 		if (!sbi->nls) {
- 			vbg_err("vboxsf: Count not load '%s' nls\n", nls_name);
- 			err = -EINVAL;
--			goto fail_free;
-+			goto fail_destroy_idr;
- 		}
- 	}
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -411,6 +411,9 @@ static int __sock_map_delete(struct bpf_
+ 	struct sock *sk;
+ 	int err = 0;
  
-@@ -224,6 +224,7 @@ fail_free:
- 		ida_simple_remove(&vboxsf_bdi_ida, sbi->bdi_id);
- 	if (sbi->nls)
- 		unload_nls(sbi->nls);
-+fail_destroy_idr:
- 	idr_destroy(&sbi->ino_idr);
- 	kfree(sbi);
- 	return err;
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
++
+ 	spin_lock_bh(&stab->lock);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+@@ -933,6 +936,9 @@ static long sock_hash_delete_elem(struct
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
+ 
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
++
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
+ 
 
 
 
