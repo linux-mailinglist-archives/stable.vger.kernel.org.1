@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-37150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D2189C389
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087F989C65D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F6BB1C222C1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17D70B21A8E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E722128392;
-	Mon,  8 Apr 2024 13:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299277E78F;
+	Mon,  8 Apr 2024 14:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP8PnpZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2Xcm5PC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDBD12837F;
-	Mon,  8 Apr 2024 13:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8907C0A9;
+	Mon,  8 Apr 2024 14:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583393; cv=none; b=ccQ7njuoWFnbInmJEvnxdTP5vC5YwD2nPmcPeSfz90vbpZgk8l4PG6mq3MKZe6Wr2cf0qjxc9Yp7Q4A1Ya9kv1B9DvwbH4tNBaw36E9kiiBM9QT7uXEypevZX/PYHXrO9qkPMXOqDMV1perVJSVT2V7s8HnKMZ2oCyq7fk5BQD8=
+	t=1712584985; cv=none; b=FCqZW0ob0xNnRxp7rgjWEDM6Qg6nLbeXiCwicuc4CjRlqA7luKS+X1B2LJmc4lSnKRSP0eZsbaZwZbNLG+13gu/b478E1/pUDOCeIkMAvFyCzYVlnB7hIZLZyQYsh3Y+sd7L82cot9+ZN5gsZxnC5nCPjfOj+2McIku4TQ+WcoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583393; c=relaxed/simple;
-	bh=y7I308wMdYENCbpCdBpeHopAnxgXZR7SdRtmZnqS30w=;
+	s=arc-20240116; t=1712584985; c=relaxed/simple;
+	bh=YO09xG1AUUIug5kl7aF+wWIeqBUvZlUT/YowXsk4qjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9Tgx1UA8IqYceQtd68+Bx/4Ui1ePQwmobdHl7htwAMEYJpvWO1OetV0Bs936zdJjw7rFFBPOxcjCgfgv5GW57GSxmsmxcFtXvAWgfhZm1UNY6CZn7Pc02BqxvNYUnfKzA1510RwM72xm9KNFXv1jyDbgOxyS9TgEbYxFec2P4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP8PnpZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6479EC433C7;
-	Mon,  8 Apr 2024 13:36:32 +0000 (UTC)
+	 MIME-Version; b=c01f9z0n3duFw3rV5G4ES4KCtpNG7OkuH6GdWa2J4GhoJteOFfRnvvoWMSuhz/+iARrU4c+LFKuPjRe+aFaRkH56wVzjBZ6FH3wHQQjovkTCvkz7gKhFt7umIHwr+wKZtlEoMnVqiBZGfRzkpVeu9xpy+UkWgQiQTySQ8YerDog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2Xcm5PC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61936C433F1;
+	Mon,  8 Apr 2024 14:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583392;
-	bh=y7I308wMdYENCbpCdBpeHopAnxgXZR7SdRtmZnqS30w=;
+	s=korg; t=1712584984;
+	bh=YO09xG1AUUIug5kl7aF+wWIeqBUvZlUT/YowXsk4qjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CP8PnpZyDcqA3YvGm9tkEwnthfbtBfgYrNJEjn7hr/EMLSJzHwhEqPuqtqxK0hXEa
-	 P/80lRb1UvlKFkjrHVAPgKhjjetFlTIP6vUNH6lL1nb58CeDg1LkELGJc6JsjrZu0A
-	 GgbvVKVet3+rxjBVX74dFsxVwIyNavDl09Exob58=
+	b=U2Xcm5PCgh6bLiHJogyewWvwFeU6OBTvtTmOHCIsBlgz3WH/9gbDO3ngS5Tyv0CUZ
+	 57/5LQWM/W5VcVaybrdZDCXOV3/MbU7eQsQ4epB2OhUdU/2rT/OgpGnmEHDTr/lmUp
+	 WcI17nX859BwCEzxQmn61lL+loqqxqDYHVRdif5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/252] s390/pai_crypto: remove per-cpu variable assignement in event initialization
+	Rob Clark <robdclark@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 624/690] arm64: dts: qcom: sc7180-trogdor: mark bluetooth address as broken
 Date: Mon,  8 Apr 2024 14:58:10 +0200
-Message-ID: <20240408125312.586264239@linuxfoundation.org>
+Message-ID: <20240408125422.250795869@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit aecd5a37b5ef4de4f6402dc079672e4243cc4c13 ]
+commit e12e28009e584c8f8363439f6a928ec86278a106 upstream.
 
-Function paicrypt_event_init() initializes the PMU device driver
-specific details for an event. It is called once per event creation.
-The function paicrypt_event_init() is not necessarily executed on
-that CPU the event will be used for.
-When an event is activated, function paicrypt_start() is used to
-start the event on that CPU.
-The per CPU data structure struct paicrypt_map has a pointer to
-the event which is active for a particular CPU. This pointer is
-set in function paicrypt_start() to point to the currently installed
-event. There is no need to also set this pointer in function
-paicrypt_event_init() where is might be assigned to the wrong CPU.
-Therefore remove this assignment in paicrypt_event_init().
+Several Qualcomm Bluetooth controllers lack persistent storage for the
+device address and instead one can be provided by the boot firmware
+using the 'local-bd-address' devicetree property.
 
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The Bluetooth bindings clearly states that the address should be
+specified in little-endian order, but due to a long-standing bug in the
+Qualcomm driver which reversed the address some boot firmware has been
+providing the address in big-endian order instead.
+
+The boot firmware in SC7180 Trogdor Chromebooks is known to be affected
+so mark the 'local-bd-address' property as broken to maintain backwards
+compatibility with older firmware when fixing the underlying driver bug.
+
+Note that ChromeOS always updates the kernel and devicetree in lockstep
+so that there is no need to handle backwards compatibility with older
+devicetrees.
+
+Fixes: 7ec3e67307f8 ("arm64: dts: qcom: sc7180-trogdor: add initial trogdor and lazor dt")
+Cc: stable@vger.kernel.org      # 5.10
+Cc: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_pai_crypto.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
-index 0921cea849125..1ac74333a78dc 100644
---- a/arch/s390/kernel/perf_pai_crypto.c
-+++ b/arch/s390/kernel/perf_pai_crypto.c
-@@ -216,7 +216,6 @@ static int paicrypt_event_init(struct perf_event *event)
- 	 * are active at the same time.
- 	 */
- 	event->hw.last_tag = 0;
--	cpump->event = event;
- 	event->destroy = paicrypt_event_destroy;
+--- a/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
+@@ -911,6 +911,8 @@ ap_spi_fp: &spi10 {
+ 		vddrf-supply = <&pp1300_l2c>;
+ 		vddch0-supply = <&pp3300_l10c>;
+ 		max-speed = <3200000>;
++
++		qcom,local-bd-address-broken;
+ 	};
+ };
  
- 	if (a->sample_period) {
--- 
-2.43.0
-
 
 
 
