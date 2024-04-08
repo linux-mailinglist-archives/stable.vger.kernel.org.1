@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-36967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBFA089C28D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:31:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D07D889C348
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D891C21F49
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B5DE28363A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9D97FBB9;
-	Mon,  8 Apr 2024 13:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3903982C88;
+	Mon,  8 Apr 2024 13:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYe4ixcx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQ8neMiQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C55D7FBB0;
-	Mon,  8 Apr 2024 13:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98C142046;
+	Mon,  8 Apr 2024 13:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582866; cv=none; b=Xj2lKAwcVZTIPjByU5InlL+P5xUb6rYtn5tIjx0ckj3TABG/e1C6K1HhV4/ALh4g50LqVF9R47QTLwYzz6rKq8TqFFUKAPXnf4jNfp/SnVKCGcXCbCDvuOYsKYfGIK62lDdY1XPOAw907q8VROfcjsSHe9FpnsN+he4QUjiELYY=
+	t=1712583230; cv=none; b=hdj9+S+0NMOCeZXLxJthtcwyKQKZ9DgO1mTwyeEcNslRn7GWnaRmYm3AL5UzEfIzEj0N5T0+rmfY24MOIIzgjn1vu4Fb9HYEC/h4Kn7RBgIdehVLQNUlmuBzt3LqLhICh52vu7QtRj27yLyzX86Yu8vDyIZLFGgvFsfUV39OimA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582866; c=relaxed/simple;
-	bh=bU4Knkmyx1swVDwsO8OzOwSscjaPQO3NXHUzh3iqNu4=;
+	s=arc-20240116; t=1712583230; c=relaxed/simple;
+	bh=3HCpQYVREw9ReSFuXvksQW+ecotZ9Wf8neP5jorJEd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snonGe+1KMIzoTBJkANmMGMdrAFog1GudmyhlWb4uI6LhU4VZ8n/wWhAcKLC+nEjBfUrEI1LYw0/3Psgc8EW3czSq8ADCeJs3o4DWWjtW0Xirt7cK1hNsC11SMx3/Cx8mF4STYm8Nr5LG3PEuVdxV1FDbtKEW1zcItSbYJVqmro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYe4ixcx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD29FC433F1;
-	Mon,  8 Apr 2024 13:27:45 +0000 (UTC)
+	 MIME-Version; b=jW8XqvkGngvCEpz6q1xny0xL304h9+YBf/Gq8bA4NNd2cIMiwUxav+d08ANBgEei8juOaH+Pqoh9yed7TCTwOqetpLJ5WMktnZl+Sxdh5ka2cxHDFoLKylLJngGibuwXXk/LCouk3PTpGrAUcMeOvoy13nzi8T1kogcS88B7gUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQ8neMiQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703F6C433F1;
+	Mon,  8 Apr 2024 13:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582866;
-	bh=bU4Knkmyx1swVDwsO8OzOwSscjaPQO3NXHUzh3iqNu4=;
+	s=korg; t=1712583229;
+	bh=3HCpQYVREw9ReSFuXvksQW+ecotZ9Wf8neP5jorJEd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iYe4ixcx4LugTY3N3+sVIzws3ZIi5HP76pTv8cUz8QnGA29pDGsKPqFFOOCYcu6Vd
-	 CLDVrK4qVMvQ0T1jLrG8/TNaUJkaE1W93Dqen673GA+klWFKzBPtwTUtaAQPttY+D/
-	 uW/6JIz8s1asc1HcD0aAfMzmHxHu24fQ3dLpMAQg=
+	b=TQ8neMiQjUIq+SeOCCoeZ/AMYLmNRCuo7gYLfBZSrygXl7brQ6zMkEGMb0M7MawRz
+	 6nQgmeOI+b0zBGE8GnHyXSatYzsTXFKI+8sLZJMIxF/WIx6Aiu56XgCkRlyBrdzwGf
+	 QYZWeS4fJKhpT8G7N3gwxvFYlVpOjSNQE7ewxneA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 130/252] i40e: fix vf may be used uninitialized in this function warning
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 154/273] ALSA: hda: cs35l56: Add ACPI device match tables
 Date: Mon,  8 Apr 2024 14:57:09 +0200
-Message-ID: <20240408125310.666048534@linuxfoundation.org>
+Message-ID: <20240408125314.060383154@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,151 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-commit f37c4eac99c258111d414d31b740437e1925b8e8 upstream.
+[ Upstream commit 2d0401ee38d43ab0e4cdd02dfc9d402befb2b5c8 ]
 
-To fix the regression introduced by commit 52424f974bc5, which causes
-servers hang in very hard to reproduce conditions with resets races.
-Using two sources for the information is the root cause.
-In this function before the fix bumping v didn't mean bumping vf
-pointer. But the code used this variables interchangeably, so stale vf
-could point to different/not intended vf.
+Adding the ACPI HIDs to the match table triggers the cs35l56-hda modules
+to be loaded on boot so that Serial Multi Instantiate can add the
+devices to the bus and begin the driver init sequence.
 
-Remove redundant "v" variable and iterate via single VF pointer across
-whole function instead to guarantee VF pointer validity.
-
-Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
+Message-ID: <20240328121355.18972-1-simont@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   34 +++++++++------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ sound/pci/hda/cs35l56_hda_i2c.c | 13 +++++++++++--
+ sound/pci/hda/cs35l56_hda_spi.c | 13 +++++++++++--
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1628,8 +1628,8 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- {
- 	struct i40e_hw *hw = &pf->hw;
- 	struct i40e_vf *vf;
--	int i, v;
- 	u32 reg;
-+	int i;
+diff --git a/sound/pci/hda/cs35l56_hda_i2c.c b/sound/pci/hda/cs35l56_hda_i2c.c
+index a9ef6d86de839..09a810a50a12b 100644
+--- a/sound/pci/hda/cs35l56_hda_i2c.c
++++ b/sound/pci/hda/cs35l56_hda_i2c.c
+@@ -53,10 +53,19 @@ static const struct i2c_device_id cs35l56_hda_i2c_id[] = {
+ 	{}
+ };
  
- 	/* If we don't have any VFs, then there is nothing to reset */
- 	if (!pf->num_alloc_vfs)
-@@ -1640,11 +1640,10 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 		return false;
++static const struct acpi_device_id cs35l56_acpi_hda_match[] = {
++	{ "CSC3554", 0 },
++	{ "CSC3556", 0 },
++	{ "CSC3557", 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(acpi, cs35l56_acpi_hda_match);
++
+ static struct i2c_driver cs35l56_hda_i2c_driver = {
+ 	.driver = {
+-		.name		= "cs35l56-hda",
+-		.pm		= &cs35l56_hda_pm_ops,
++		.name		  = "cs35l56-hda",
++		.acpi_match_table = cs35l56_acpi_hda_match,
++		.pm		  = &cs35l56_hda_pm_ops,
+ 	},
+ 	.id_table	= cs35l56_hda_i2c_id,
+ 	.probe		= cs35l56_hda_i2c_probe,
+diff --git a/sound/pci/hda/cs35l56_hda_spi.c b/sound/pci/hda/cs35l56_hda_spi.c
+index 080426de90830..04f9fe6197dc5 100644
+--- a/sound/pci/hda/cs35l56_hda_spi.c
++++ b/sound/pci/hda/cs35l56_hda_spi.c
+@@ -53,10 +53,19 @@ static const struct spi_device_id cs35l56_hda_spi_id[] = {
+ 	{}
+ };
  
- 	/* Begin reset on all VFs at once */
--	for (v = 0; v < pf->num_alloc_vfs; v++) {
--		vf = &pf->vf[v];
-+	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
- 		/* If VF is being reset no need to trigger reset again */
- 		if (!test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
--			i40e_trigger_vf_reset(&pf->vf[v], flr);
-+			i40e_trigger_vf_reset(vf, flr);
- 	}
- 
- 	/* HW requires some time to make sure it can flush the FIFO for a VF
-@@ -1653,14 +1652,13 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 	 * the VFs using a simple iterator that increments once that VF has
- 	 * finished resetting.
- 	 */
--	for (i = 0, v = 0; i < 10 && v < pf->num_alloc_vfs; i++) {
-+	for (i = 0, vf = &pf->vf[0]; i < 10 && vf < &pf->vf[pf->num_alloc_vfs]; ++i) {
- 		usleep_range(10000, 20000);
- 
- 		/* Check each VF in sequence, beginning with the VF to fail
- 		 * the previous check.
- 		 */
--		while (v < pf->num_alloc_vfs) {
--			vf = &pf->vf[v];
-+		while (vf < &pf->vf[pf->num_alloc_vfs]) {
- 			if (!test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states)) {
- 				reg = rd32(hw, I40E_VPGEN_VFRSTAT(vf->vf_id));
- 				if (!(reg & I40E_VPGEN_VFRSTAT_VFRD_MASK))
-@@ -1670,7 +1668,7 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 			/* If the current VF has finished resetting, move on
- 			 * to the next VF in sequence.
- 			 */
--			v++;
-+			++vf;
- 		}
- 	}
- 
-@@ -1680,39 +1678,39 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 	/* Display a warning if at least one VF didn't manage to reset in
- 	 * time, but continue on with the operation.
- 	 */
--	if (v < pf->num_alloc_vfs)
-+	if (vf < &pf->vf[pf->num_alloc_vfs])
- 		dev_err(&pf->pdev->dev, "VF reset check timeout on VF %d\n",
--			pf->vf[v].vf_id);
-+			vf->vf_id);
- 	usleep_range(10000, 20000);
- 
- 	/* Begin disabling all the rings associated with VFs, but do not wait
- 	 * between each VF.
- 	 */
--	for (v = 0; v < pf->num_alloc_vfs; v++) {
-+	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
- 		/* On initial reset, we don't have any queues to disable */
--		if (pf->vf[v].lan_vsi_idx == 0)
-+		if (vf->lan_vsi_idx == 0)
- 			continue;
- 
- 		/* If VF is reset in another thread just continue */
- 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
- 			continue;
- 
--		i40e_vsi_stop_rings_no_wait(pf->vsi[pf->vf[v].lan_vsi_idx]);
-+		i40e_vsi_stop_rings_no_wait(pf->vsi[vf->lan_vsi_idx]);
- 	}
- 
- 	/* Now that we've notified HW to disable all of the VF rings, wait
- 	 * until they finish.
- 	 */
--	for (v = 0; v < pf->num_alloc_vfs; v++) {
-+	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
- 		/* On initial reset, we don't have any queues to disable */
--		if (pf->vf[v].lan_vsi_idx == 0)
-+		if (vf->lan_vsi_idx == 0)
- 			continue;
- 
- 		/* If VF is reset in another thread just continue */
- 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
- 			continue;
- 
--		i40e_vsi_wait_queues_disabled(pf->vsi[pf->vf[v].lan_vsi_idx]);
-+		i40e_vsi_wait_queues_disabled(pf->vsi[vf->lan_vsi_idx]);
- 	}
- 
- 	/* Hw may need up to 50ms to finish disabling the RX queues. We
-@@ -1721,12 +1719,12 @@ bool i40e_reset_all_vfs(struct i40e_pf *
- 	mdelay(50);
- 
- 	/* Finish the reset on each VF */
--	for (v = 0; v < pf->num_alloc_vfs; v++) {
-+	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
- 		/* If VF is reset in another thread just continue */
- 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
- 			continue;
- 
--		i40e_cleanup_reset_vf(&pf->vf[v]);
-+		i40e_cleanup_reset_vf(vf);
- 	}
- 
- 	i40e_flush(hw);
++static const struct acpi_device_id cs35l56_acpi_hda_match[] = {
++	{ "CSC3554", 0 },
++	{ "CSC3556", 0 },
++	{ "CSC3557", 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(acpi, cs35l56_acpi_hda_match);
++
+ static struct spi_driver cs35l56_hda_spi_driver = {
+ 	.driver = {
+-		.name		= "cs35l56-hda",
+-		.pm		= &cs35l56_hda_pm_ops,
++		.name		  = "cs35l56-hda",
++		.acpi_match_table = cs35l56_acpi_hda_match,
++		.pm		  = &cs35l56_hda_pm_ops,
+ 	},
+ 	.id_table	= cs35l56_hda_spi_id,
+ 	.probe		= cs35l56_hda_spi_probe,
+-- 
+2.43.0
+
 
 
 
