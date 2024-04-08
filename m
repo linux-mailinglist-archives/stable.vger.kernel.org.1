@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31C489C50A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:52:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816CB89C68C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:13:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4A7BB24B1F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB168B2E205
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5EF85C6C;
-	Mon,  8 Apr 2024 13:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689307FBD3;
+	Mon,  8 Apr 2024 14:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H28mlllc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UimtgBVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8C87D416;
-	Mon,  8 Apr 2024 13:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261707E0F3;
+	Mon,  8 Apr 2024 14:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583337; cv=none; b=sTzm3JuI2vQBtk3EWfSwn8TCptnYmAQmAE+WgNw/Rf/wG7mJxaTeknYM+Jh4xz73dd0GfAiOjJTJF4qfoLxagBCiRD5Z2AkVxZBa7G1aKZF5xIvk2tCtms25Rv5cXffUHIZ5qhTkBz8L9FA2I9H1iLCH5181Yl+YW6rK/a1kHSs=
+	t=1712585052; cv=none; b=P02U4Of+wxvwOYHfPawuUaPY2GdOQEmgQzBdBreN4K05oIQSN87W+Xyb4u7VV3+YseDK7j/vyxPEb7p11gWKnbuEbky9wtpqKitv798orqmjygVd9lpeLinQMd8Hg8CgTGVKNbAadRi7Z2kfyklS+Wa6ddzXG2/H1O9q6Udr0kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583337; c=relaxed/simple;
-	bh=lE7CPWTdvL4L84BL5CTuC7ES+jSyISCn1MOQhvBtUIc=;
+	s=arc-20240116; t=1712585052; c=relaxed/simple;
+	bh=pN1P/vKXqpeiAGKlrO8EmxKX6uRaVm3LGP7+tmfcDR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R36dpCdchahrhHEtKTKPL+IBmIvBeoMG9f6MW0t3WDvhPTT6g3qnn+HJq7Rq2O+dBLRmWl40FkJGl1BvyX7SDNZEhEDqzTjwOCF57Q3QgX0KRTjrP3EWGIXCfGszxbkM7HdDlsVYuimVcmnpcYmLeF0PP8s3zdDspKp71UyBGkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H28mlllc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CC6C433C7;
-	Mon,  8 Apr 2024 13:35:37 +0000 (UTC)
+	 MIME-Version; b=XO13nwiMYv3ZIEGLWkE4t40R/dnaAG4R4sLyXOM8Jpa9X9d9Dkfc6l4qAR0cTJe3mdjxsL++pBhbu8Ky2ktpDTshKVYjtuoYVWSwDw45yos92p7SpUDA0jigQm6nhyhQlQJoejxtCo8Ykg5qbR5GL9Vc29y0o+EHqvnIq3gMeF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UimtgBVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E39C433C7;
+	Mon,  8 Apr 2024 14:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583337;
-	bh=lE7CPWTdvL4L84BL5CTuC7ES+jSyISCn1MOQhvBtUIc=;
+	s=korg; t=1712585052;
+	bh=pN1P/vKXqpeiAGKlrO8EmxKX6uRaVm3LGP7+tmfcDR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H28mlllcd2svk7u6wgsGdRWsJpAwnbFjBKil8ETXg8b9SglTE9wGtF7OVALhqAznf
-	 E3mSwebDKUyOgY03fkt21UPTxPpA/R96meW1oAEkIQSrkEZs2mIDfVRUUxSQ70O++1
-	 MJGgQ4J2U5EasCVQZrljcwJSGxYnOuxyF01DXFUE=
+	b=UimtgBVVjrPZdvMkUdQ8Y4nGjxNsFYY96j79s37NhCczvrMBymIBKIWRJaq1EBWoM
+	 0tyGc2YjyNA1/WpiPlDhgyvWfNdEah5XVo99KirgXJ3eAefj/NKAit6/Pp1yrkiChC
+	 rN0g7rF8+DsnAx5XKbsHICagxICB3hUcZyq/AgOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/252] regmap: maple: Fix uninitialized symbol ret warnings
+Subject: [PATCH 5.15 616/690] ACPICA: debugger: check status of acpi_evaluate_object() in acpi_db_walk_for_fields()
 Date: Mon,  8 Apr 2024 14:58:02 +0200
-Message-ID: <20240408125312.345313448@linuxfoundation.org>
+Message-ID: <20240408125421.926350670@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit eaa03486d932572dfd1c5f64f9dfebe572ad88c0 ]
+[ Upstream commit 40e2710860e57411ab57a1529c5a2748abbe8a19 ]
 
-Fix warnings reported by smatch by initializing local 'ret' variable
-to 0.
+ACPICA commit 9061cd9aa131205657c811a52a9f8325a040c6c9
 
-drivers/base/regmap/regcache-maple.c:186 regcache_maple_drop()
-error: uninitialized symbol 'ret'.
-drivers/base/regmap/regcache-maple.c:290 regcache_maple_sync()
-error: uninitialized symbol 'ret'.
+Errors in acpi_evaluate_object() can lead to incorrect state of buffer.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f033c26de5a5 ("regmap: Add maple tree based register cache")
-Link: https://lore.kernel.org/r/20240329144630.1965159-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This can lead to access to data in previously ACPI_FREEd buffer and
+secondary ACPI_FREE to the same buffer later.
+
+Handle errors in acpi_evaluate_object the same way it is done earlier
+with acpi_ns_handle_to_pathname.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Link: https://github.com/acpica/acpica/commit/9061cd9a
+Fixes: 5fd033288a86 ("ACPICA: debugger: add command to dump all fields of particular subtype")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regcache-maple.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/acpica/dbnames.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
-index c1776127a5724..55999a50ccc0b 100644
---- a/drivers/base/regmap/regcache-maple.c
-+++ b/drivers/base/regmap/regcache-maple.c
-@@ -112,7 +112,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
- 	unsigned long *entry, *lower, *upper;
- 	unsigned long lower_index, lower_last;
- 	unsigned long upper_index, upper_last;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
+index b91155ea9c343..c9131259f717b 100644
+--- a/drivers/acpi/acpica/dbnames.c
++++ b/drivers/acpi/acpica/dbnames.c
+@@ -550,8 +550,12 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
+ 	ACPI_FREE(buffer.pointer);
  
- 	lower = NULL;
- 	upper = NULL;
-@@ -244,7 +244,7 @@ static int regcache_maple_sync(struct regmap *map, unsigned int min,
- 	unsigned long lmin = min;
- 	unsigned long lmax = max;
- 	unsigned int r, v, sync_start;
--	int ret;
-+	int ret = 0;
- 	bool sync_needed = false;
- 
- 	map->cache_bypass = true;
+ 	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
+-	acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
+-
++	status = acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
++	if (ACPI_FAILURE(status)) {
++		acpi_os_printf("Could Not evaluate object %p\n",
++			       obj_handle);
++		return (AE_OK);
++	}
+ 	/*
+ 	 * Since this is a field unit, surround the output in braces
+ 	 */
 -- 
 2.43.0
 
