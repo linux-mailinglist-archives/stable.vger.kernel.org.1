@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-37711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348CF89C615
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797FE89C461
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 663061C225FB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3599F284454
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F052180022;
-	Mon,  8 Apr 2024 14:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7B97F478;
+	Mon,  8 Apr 2024 13:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bzd47SZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBQh5sEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED4A7D3FD;
-	Mon,  8 Apr 2024 14:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A19A7F470;
+	Mon,  8 Apr 2024 13:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585037; cv=none; b=JXWR/9UQEG1apatH4w7AtM85iJ4v3nvL3dWftGHFh/wYpAvo5IPE9Uo6I2qrhH72eeHZKhyv07V3RSHmv+RX886L5MCAFnQrsaqOG4POdl4Ys3wuaaKHSxwpIevMeCFldJ8AqtNejbftfAJzIw6T25WHZarkzJrPrdudjcUGb40=
+	t=1712583902; cv=none; b=NgsAek9U+h+CR0o3S58Q2FBLlsEP3YRuO4fYpwe6k/zqlYvl2kJ/OvxtwDnCUiBEggXkfc6ijmxfJp1rX816Mno/ufD8H0k2p82+bPSYY4TX8FvvCmE3DWW9LC1C2wloo/iUl5iXgc8B0pTUZ40CHloA/UCIM1zozKpCOi+2RNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585037; c=relaxed/simple;
-	bh=B7Vynkpedk3YatoeNcu/mX4JYfoEUfSqJY6JWkY5rtc=;
+	s=arc-20240116; t=1712583902; c=relaxed/simple;
+	bh=A3T02lGkitPFzVpAhOJsIOOc0yKJqL63zXc/ptCqdcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jztKsIYe0FAnz9ccg3+7rDuJaLF2dG0+dFwrOtDbZjBL+kaO2QkYOOkV/haAwvx2cDv0vkUrEjv9pb/cP6HYs7QhRykszpc4pN2ZZgy9vyVKWtaauUC8FfIBDkJ97cNdJoh3Y+dZLkrTj1tWAByvrfpioszL9ivExbsCU+HKXik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bzd47SZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC0BC433C7;
-	Mon,  8 Apr 2024 14:03:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KBxHX524RU6o/noIX1RZrgced6qmD4uw15iuFNET8ndtsZk1tg6EohHOVZRlmGy+teeLfAEVzc63gPzlGEQj9bOKD2c8cZmyEIEE779R7SXtSfmphO8qb0UYy/tYT6gVYn+iUiqVjEwjhO3iVTYwYW53Xgg9pWRwwxJNzz9yLXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBQh5sEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B45C433C7;
+	Mon,  8 Apr 2024 13:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585037;
-	bh=B7Vynkpedk3YatoeNcu/mX4JYfoEUfSqJY6JWkY5rtc=;
+	s=korg; t=1712583902;
+	bh=A3T02lGkitPFzVpAhOJsIOOc0yKJqL63zXc/ptCqdcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bzd47SZLIVeaqIhpARhKeiTBAroa7F/wljsoh5Tn+cPxERDLpYBtG0QN/xks72yKA
-	 PuUWFj3RHg0dNR/ViiZbMf0E1revtuPg39P+VdUgVYXYO2w0G5wRPKOVYc7nnitFNu
-	 NFH7SrecDnX/1VbN2E0WQB54cLIXxjHPBkXV/eR4=
+	b=oBQh5sEf52yUj6Eq1IYwp69ZI0hPXVf2OWLMT3YnpZGEwRWONpb2+73Zg0n2+MAGM
+	 y1wtAWsojox8WsyjbYRBMH68QBPe4sYeQC+MBGnRuAVKbWf+KwP3GD4SZLj8Rpuarf
+	 Kr8m23PrCuTeEm25BnCda+yzJ4N6v1Y0yT+bnxo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	yue sun <samsun1006219@gmail.com>,
-	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
-	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH 5.15 641/690] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.8 232/273] x86/mce: Make sure to grab mce_sysfs_mutex in set_bank()
 Date: Mon,  8 Apr 2024 14:58:27 +0200
-Message-ID: <20240408125422.889168998@linuxfoundation.org>
+Message-ID: <20240408125316.628864746@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Sitnicki <jakub@cloudflare.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
+commit 3ddf944b32f88741c303f0b21459dbb3872b8bc5 upstream.
 
-syzkaller started using corpuses where a BPF tracing program deletes
-elements from a sockmap/sockhash map. Because BPF tracing programs can be
-invoked from any interrupt context, locks taken during a map_delete_elem
-operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
-is possible, as reported by lockdep:
+Modifying a MCA bank's MCA_CTL bits which control which error types to
+be reported is done over
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(&htab->buckets[i].lock);
-                               local_irq_disable();
-                               lock(&host->lock);
-                               lock(&htab->buckets[i].lock);
-  <Interrupt>
-    lock(&host->lock);
+  /sys/devices/system/machinecheck/
+  ├── machinecheck0
+  │   ├── bank0
+  │   ├── bank1
+  │   ├── bank10
+  │   ├── bank11
+  ...
 
-Locks in sockmap are hardirq-unsafe by design. We expects elements to be
-deleted from sockmap/sockhash only in task (normal) context with interrupts
-enabled, or in softirq context.
+sysfs nodes by writing the new bit mask of events to enable.
 
-Detect when map_delete_elem operation is invoked from a context which is
-_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
-error.
+When the write is accepted, the kernel deletes all current timers and
+reinits all banks.
 
-Note that map updates are not affected by this issue. BPF verifier does not
-allow updating sockmap/sockhash from a BPF tracing program today.
+Doing that in parallel can lead to initializing a timer which is already
+armed and in the timer wheel, i.e., in use already:
 
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
-Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
-Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
-Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
+  ODEBUG: init active (active state 0) object: ffff888063a28000 object
+  type: timer_list hint: mce_timer_fn+0x0/0x240 arch/x86/kernel/cpu/mce/core.c:2642
+  WARNING: CPU: 0 PID: 8120 at lib/debugobjects.c:514
+  debug_print_object+0x1a0/0x2a0 lib/debugobjects.c:514
+
+Fix that by grabbing the sysfs mutex as the rest of the MCA sysfs code
+does.
+
+Reported by: Yue Sun <samsun1006219@gmail.com>
+Reported by: xingwei lee <xrivendell7@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/CAEkJfYNiENwQY8yV1LYJ9LjJs%2Bx_-PqMv98gKig55=2vbzffRw@mail.gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock_map.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kernel/cpu/mce/core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -413,6 +413,9 @@ static int __sock_map_delete(struct bpf_
- 	struct sock *sk;
- 	int err = 0;
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -2474,12 +2474,14 @@ static ssize_t set_bank(struct device *s
+ 		return -EINVAL;
  
-+	if (irqs_disabled())
-+		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
+ 	b = &per_cpu(mce_banks_array, s->id)[bank];
+-
+ 	if (!b->init)
+ 		return -ENODEV;
+ 
+ 	b->ctl = new;
 +
- 	raw_spin_lock_bh(&stab->lock);
- 	sk = *psk;
- 	if (!sk_test || sk_test == sk)
-@@ -931,6 +934,9 @@ static int sock_hash_delete_elem(struct
- 	struct bpf_shtab_elem *elem;
- 	int ret = -ENOENT;
++	mutex_lock(&mce_sysfs_mutex);
+ 	mce_restart();
++	mutex_unlock(&mce_sysfs_mutex);
  
-+	if (irqs_disabled())
-+		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
-+
- 	hash = sock_hash_bucket_hash(key, key_size);
- 	bucket = sock_hash_select_bucket(htab, hash);
- 
+ 	return size;
+ }
 
 
 
