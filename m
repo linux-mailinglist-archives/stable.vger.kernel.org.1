@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-36490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF4589C014
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAABC89C0B8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B0D1F23C3E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00B88B2B688
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BFA7D074;
-	Mon,  8 Apr 2024 13:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E6762DA;
+	Mon,  8 Apr 2024 13:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sa17xG+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFhD0tP7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C277442A;
-	Mon,  8 Apr 2024 13:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D83A2E405;
+	Mon,  8 Apr 2024 13:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581477; cv=none; b=HkZIE+uXIBI6crfCM36yqHd4hgtwgQaPMNjEkJtIVbP99ob/wv4oeJmN48+lGHjCS0eQvJ6KZ5EZVXTyKDSVBQVCZDFFAtZ+FnQg8kZG9SPM6DeRVblURgb3N6cb65BoLDJ3XwxJnjiLnOZYcFQBBgbJ3gZHXTLQaeetSV91eRg=
+	t=1712581486; cv=none; b=kmiEpOgY1ia0YGxjIy7My76MTmsLNakUJ9qhL9Zcp/mL0kmJMLyB4Cny5Hrfs/48BrysjAXfd2f1/EKtZtRGwSCUyI/C72+FyXLcEur9iSzhGBSSMg+PFgr1bs9ACJEYd4cSpPE8wDX8WzD6MyP4vpml8XA8IU5SJ5D3DrULgLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581477; c=relaxed/simple;
-	bh=adzpFUvJYhlQHFQsatNEziRP0Q2ZC19wMmka6q/hsRU=;
+	s=arc-20240116; t=1712581486; c=relaxed/simple;
+	bh=2n/AXk4A0FS5Kj6BgO/Ar3+q4xs8T1l3O9VBN08WhFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxK62AO7Iq1n9CEgGSQl7Z+v4Tr0te5u7K+2deT6YYcfGfeAKMeSth6bb5bRhcEsg5VGCa/aH7Hj3ka9UDbQuifb18UYVDzAI0Z2uQLbSLSvow2pemlzn1gxVYCH6h52tfpQkf1FvKmC+uZ8xVlcirvwXi2plxBM5uGMwbeak9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sa17xG+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443F8C433C7;
-	Mon,  8 Apr 2024 13:04:37 +0000 (UTC)
+	 MIME-Version; b=ZCD/V6fwgXz/bL2QQ4RynAbYYJSSuInm6aecnQ9awFWyILAlmcJOke6cvEIm7tsS3UEdMPLft+EqTGybD6SZdRZZvo3ciUw9m7TQGsxUMv1SI7t0fEKwVTGNrYmweOU3M23meSTTjItjIwLN8i4eiFT91MnBCMRHeJ6Gk/TcOcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFhD0tP7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29A1C433C7;
+	Mon,  8 Apr 2024 13:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581477;
-	bh=adzpFUvJYhlQHFQsatNEziRP0Q2ZC19wMmka6q/hsRU=;
+	s=korg; t=1712581486;
+	bh=2n/AXk4A0FS5Kj6BgO/Ar3+q4xs8T1l3O9VBN08WhFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sa17xG+hkDN+6TXDYThYqwMV09od45Y58JhCqaofsYCjE+iB1XzGCgdm1sFL/FcZ9
-	 rt2osYKqK+RQVAWpnrDrka1FJ94SAARCEaJbPJ8ncc4CZmlkva5s+Oc5Gf6cEtzXhw
-	 WMZrxoSjVFqtIFZEjFAnyLCVLNbLhAwq5M2nWIp0=
+	b=rFhD0tP75iiy01MCbwdF14HfYvQEJUaB6LCjn2c76Y+EsRdJeG+Xkza0LS7fgzpza
+	 T2kU3fANTzmQT/DXb69jjQ2UHU8Wv8mmgXyWs6VSlO09hHfUo7yzKgMXhNpi+iH8jQ
+	 afAslX/Qy7jcv6p8N6kvoVTuz9218n5l6BVoJ2FA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/138] perf/x86/amd/lbr: Use freeze based on availability
-Date: Mon,  8 Apr 2024 14:57:19 +0200
-Message-ID: <20240408125257.011823204@linuxfoundation.org>
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.1 026/138] KVM: arm64: Fix host-programmed guest events in nVHE
+Date: Mon,  8 Apr 2024 14:57:20 +0200
+Message-ID: <20240408125257.041337141@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
 References: <20240408125256.218368873@linuxfoundation.org>
@@ -66,131 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 598c2fafc06fe5c56a1a415fb7b544b31453d637 ]
+commit e89c928bedd77d181edc2df01cb6672184775140 upstream.
 
-Currently, the LBR code assumes that LBR Freeze is supported on all processors
-when X86_FEATURE_AMD_LBR_V2 is available i.e. CPUID leaf 0x80000022[EAX]
-bit 1 is set. This is incorrect as the availability of the feature is
-additionally dependent on CPUID leaf 0x80000022[EAX] bit 2 being set,
-which may not be set for all Zen 4 processors.
+Programming PMU events in the host that count during guest execution is
+a feature supported by perf, e.g.
 
-Define a new feature bit for LBR and PMC freeze and set the freeze enable bit
-(FLBRI) in DebugCtl (MSR 0x1d9) conditionally.
+  perf stat -e cpu_cycles:G ./lkvm run
 
-It should still be possible to use LBR without freeze for profile-guided
-optimization of user programs by using an user-only branch filter during
-profiling. When the user-only filter is enabled, branches are no longer
-recorded after the transition to CPL 0 upon PMI arrival. When branch
-entries are read in the PMI handler, the branch stack does not change.
+While this works for VHE, the guest/host event bitmaps are not carried
+through to the hypervisor in the nVHE configuration. Make
+kvm_pmu_update_vcpu_events() conditional on whether or not _hardware_
+supports PMUv3 rather than if the vCPU as vPMU enabled.
 
-E.g.
-
-  $ perf record -j any,u -e ex_ret_brn_tkn ./workload
-
-Since the feature bit is visible under flags in /proc/cpuinfo, it can be
-used to determine the feasibility of use-cases which require LBR Freeze
-to be supported by the hardware such as profile-guided optimization of
-kernels.
-
-Fixes: ca5b7c0d9621 ("perf/x86/amd/lbr: Add LbrExtV2 branch record support")
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/69a453c97cfd11c6f2584b19f937fe6df741510f.1711091584.git.sandipan.das@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 84d751a019a9 ("KVM: arm64: Pass pmu events to hyp via vcpu")
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240305184840.636212-3-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/amd/core.c         |  4 ++--
- arch/x86/events/amd/lbr.c          | 16 ++++++++++------
- arch/x86/include/asm/cpufeatures.h |  8 ++++++++
- arch/x86/kernel/cpu/scattered.c    |  1 +
- 4 files changed, 21 insertions(+), 8 deletions(-)
+ include/kvm/arm_pmu.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index fd091b9dd7067..3ac069a4559b0 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -904,8 +904,8 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 	if (!status)
- 		goto done;
- 
--	/* Read branch records before unfreezing */
--	if (status & GLOBAL_STATUS_LBRS_FROZEN) {
-+	/* Read branch records */
-+	if (x86_pmu.lbr_nr) {
- 		amd_pmu_lbr_read();
- 		status &= ~GLOBAL_STATUS_LBRS_FROZEN;
- 	}
-diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
-index 38a75216c12cf..b8fe74e8e0a60 100644
---- a/arch/x86/events/amd/lbr.c
-+++ b/arch/x86/events/amd/lbr.c
-@@ -400,10 +400,12 @@ void amd_pmu_lbr_enable_all(void)
- 		wrmsrl(MSR_AMD64_LBR_SELECT, lbr_select);
- 	}
- 
--	rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
--	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
-+	if (cpu_feature_enabled(X86_FEATURE_AMD_LBR_PMC_FREEZE)) {
-+		rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
-+		wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+	}
- 
--	wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
- 	wrmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg | DBG_EXTN_CFG_LBRV2EN);
- }
- 
-@@ -416,10 +418,12 @@ void amd_pmu_lbr_disable_all(void)
- 		return;
- 
- 	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
--	rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
--
- 	wrmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg & ~DBG_EXTN_CFG_LBRV2EN);
--	wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl & ~DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+
-+	if (cpu_feature_enabled(X86_FEATURE_AMD_LBR_PMC_FREEZE)) {
-+		rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
-+		wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl & ~DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+	}
- }
- 
- __init int amd_pmu_lbr_init(void)
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 09cca23f020eb..1280daa729757 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -432,6 +432,14 @@
- #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* "" MSR_PRED_CMD[IBPB] flushes all branch type predictions */
- #define X86_FEATURE_SRSO_NO		(20*32+29) /* "" CPU is not affected by SRSO */
- 
-+/*
-+ * Extended auxiliary flags: Linux defined - for features scattered in various
-+ * CPUID levels like 0x80000022, etc.
-+ *
-+ * Reuse free bits when adding new feature flags!
-+ */
-+#define X86_FEATURE_AMD_LBR_PMC_FREEZE	(21*32+ 0) /* AMD LBR and PMC Freeze */
-+
- /*
-  * BUG word(s)
+--- a/include/kvm/arm_pmu.h
++++ b/include/kvm/arm_pmu.h
+@@ -85,7 +85,7 @@ void kvm_vcpu_pmu_restore_host(struct kv
   */
-diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-index fc01f81f6e2a3..94e0a42528dcb 100644
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -46,6 +46,7 @@ static const struct cpuid_bit cpuid_bits[] = {
- 	{ X86_FEATURE_MBA,		CPUID_EBX,  6, 0x80000008, 0 },
- 	{ X86_FEATURE_PERFMON_V2,	CPUID_EAX,  0, 0x80000022, 0 },
- 	{ X86_FEATURE_AMD_LBR_V2,	CPUID_EAX,  1, 0x80000022, 0 },
-+	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
- 	{ 0, 0, 0, 0, 0 }
- };
+ #define kvm_pmu_update_vcpu_events(vcpu)				\
+ 	do {								\
+-		if (!has_vhe() && kvm_vcpu_has_pmu(vcpu))		\
++		if (!has_vhe() && kvm_arm_support_pmu_v3())		\
+ 			vcpu->arch.pmu.events = *kvm_get_pmu_events();	\
+ 	} while (0)
  
--- 
-2.43.0
-
 
 
 
