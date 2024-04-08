@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-36884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5871589C250
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571B789C239
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DB97B2C2D7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4BBF1F21976
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E517480604;
-	Mon,  8 Apr 2024 13:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF20F6CDA9;
+	Mon,  8 Apr 2024 13:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5Pa59Aw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCsjbgK3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A366F7BAE4;
-	Mon,  8 Apr 2024 13:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1717D419;
+	Mon,  8 Apr 2024 13:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582623; cv=none; b=XhR+OqqzrzZHcInwWIXuYxjxL9zEaPTChQ+Of8vFt48t3nk8pjnCK7Vo6cm8kCchSTC0p3dZ5j1Qw77BHfsBU5wsuoPTi2mYo9pssR5/n0R6dssoQ0X9ZNl9+X6I9PnSm1voMOz3ld/e1IO4EdGMbz5gCViRlShYaNNZhOMsfUk=
+	t=1712582635; cv=none; b=S25mOcNB7ojNerqZhiYfdSHnjcj1rfc1v9GwK2EzrdJ2R7aPskuoY5rGYvnHuFmpfSHmeRWpkcqYBhTsQzWUZ2KzBLj3rv0eztMU086RsBMqwsKZppvTIcc9mluLMVi3copAey9yBTM0Uf5MyAtxrckEPyJpso5jvjYF1vCyhPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582623; c=relaxed/simple;
-	bh=R1SgYRTmZXosVK482rCcirfdkzY6KilmQgQDSPBEKj8=;
+	s=arc-20240116; t=1712582635; c=relaxed/simple;
+	bh=wBfDkII/2Z+SeDq0iv9Cu+pJnDAeQOz6JNs5UzTF6T8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuZjniFzV5JdGSgC+9WJH0vCF8NJ8L6bF/hIiNwroXZdj90OOd+DvQNHX9yMAbaMFvAdNBH8vjoSj30YMTTJMPfu0gxflRPSscSgmIz4fNoTvCsTE/VNvIXXIpgqJliPk+U8C3mXahJsYiJkBG/nYlxc1b3KsS8Ad7T4Ph6SOZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5Pa59Aw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B12C433C7;
-	Mon,  8 Apr 2024 13:23:42 +0000 (UTC)
+	 MIME-Version; b=VSY9Z4v5OPaJRawDgc/haMXqBuOF0ZJr/BnM+0UELrczUpnHEBuJNXh7mNu+osso8XWeoD9Ejpr6EAIb4fAl10pAq3VFaCyKp5UHvErDqm0/90qAvqhckTb9UoTczFTOoXkrh68zf/uxR4jwZHpN3E7R7YuPwd3JLrlGyIqtB9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCsjbgK3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEACCC433F1;
+	Mon,  8 Apr 2024 13:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582623;
-	bh=R1SgYRTmZXosVK482rCcirfdkzY6KilmQgQDSPBEKj8=;
+	s=korg; t=1712582635;
+	bh=wBfDkII/2Z+SeDq0iv9Cu+pJnDAeQOz6JNs5UzTF6T8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5Pa59Awzin51+Tg114xi28aTv9AsdziRQr/mLA2t4nyiZ1dVOs85Q/mNV4fOcJhz
-	 +FUKxX17pbn9/JIOVWLJTW9PH+KdcWpJ9xUvP4pgC5kbcBOqYcEFrlpNCDDBzowlnk
-	 W7ocQPNwwQnB2WkTgO0tzC4HCJK7emwDnMB8rBZ4=
+	b=pCsjbgK3URxPQENNSVK6kMo7+waXF7VRHyPWMNOQCmCbtrERb80S54inzt3FP5AH3
+	 K51BXPFzFKSsNuaFUIjsqdQnvW3kG1zj08an1vEOa6W1Jir7EHE805qNyje1BGLEvp
+	 hmHijghkHglKVCFu/kHD8F0QVqmXmsLpzZxpmCIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.15 160/690] KVM/x86: Export RFDS_NO and RFDS_CLEAR to guests
-Date: Mon,  8 Apr 2024 14:50:26 +0200
-Message-ID: <20240408125405.337123299@linuxfoundation.org>
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 161/690] arch: Introduce CONFIG_FUNCTION_ALIGNMENT
+Date: Mon,  8 Apr 2024 14:50:27 +0200
+Message-ID: <20240408125405.383915127@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,49 +66,191 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 2a0180129d726a4b953232175857d442651b55a0 upstream.
+commit d49a0626216b95cd4bf696f6acf55f39a16ab0bb upstream.
 
-Mitigation for RFDS requires RFDS_CLEAR capability which is enumerated
-by MSR_IA32_ARCH_CAPABILITIES bit 27. If the host has it set, export it
-to guests so that they can deploy the mitigation.
+Generic function-alignment infrastructure.
 
-RFDS_NO indicates that the system is not vulnerable to RFDS, export it
-to guests so that they don't deploy the mitigation unnecessarily. When
-the host is not affected by X86_BUG_RFDS, but has RFDS_NO=0, synthesize
-RFDS_NO to the guest.
+Architectures can select FUNCTION_ALIGNMENT_xxB symbols; the
+FUNCTION_ALIGNMENT symbol is then set to the largest such selected
+size, 0 otherwise.
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+>From this the -falign-functions compiler argument and __ALIGN macro
+are set.
+
+This incorporates the DEBUG_FORCE_FUNCTION_ALIGN_64B knob and future
+alignment requirements for x86_64 (later in this series) into a single
+place.
+
+NOTE: also removes the 0x90 filler byte from the generic __ALIGN
+      primitive, that value makes no sense outside of x86.
+
+NOTE: .balign 0 reverts to a no-op.
+
+Requested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Change-Id: I053b3c408d56988381feb8c8bdb5e27ea221755f
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220915111143.719248727@infradead.org
+[cascardo: adjust context at arch/x86/Kconfig]
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Makefile                           |    4 ++--
+ arch/Kconfig                       |   24 ++++++++++++++++++++++++
+ arch/ia64/Kconfig                  |    1 +
+ arch/ia64/Makefile                 |    2 +-
+ arch/x86/Kconfig                   |    2 ++
+ arch/x86/boot/compressed/head_64.S |    8 ++++++++
+ arch/x86/include/asm/linkage.h     |    4 +---
+ include/asm-generic/vmlinux.lds.h  |    4 ++--
+ include/linux/linkage.h            |    4 ++--
+ lib/Kconfig.debug                  |    1 +
+ 10 files changed, 44 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1498,7 +1498,8 @@ static unsigned int num_msr_based_featur
- 	 ARCH_CAP_SKIP_VMENTRY_L1DFLUSH | ARCH_CAP_SSB_NO | ARCH_CAP_MDS_NO | \
- 	 ARCH_CAP_PSCHANGE_MC_NO | ARCH_CAP_TSX_CTRL_MSR | ARCH_CAP_TAA_NO | \
- 	 ARCH_CAP_SBDR_SSDP_NO | ARCH_CAP_FBSDP_NO | ARCH_CAP_PSDP_NO | \
--	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO)
-+	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO | \
-+	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR)
+--- a/Makefile
++++ b/Makefile
+@@ -1000,8 +1000,8 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_CFI)
+ export CC_FLAGS_CFI
+ endif
  
- static u64 kvm_get_arch_capabilities(void)
- {
-@@ -1535,6 +1536,8 @@ static u64 kvm_get_arch_capabilities(voi
- 		data |= ARCH_CAP_SSB_NO;
- 	if (!boot_cpu_has_bug(X86_BUG_MDS))
- 		data |= ARCH_CAP_MDS_NO;
-+	if (!boot_cpu_has_bug(X86_BUG_RFDS))
-+		data |= ARCH_CAP_RFDS_NO;
+-ifdef CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B
+-KBUILD_CFLAGS += -falign-functions=64
++ifneq ($(CONFIG_FUNCTION_ALIGNMENT),0)
++KBUILD_CFLAGS += -falign-functions=$(CONFIG_FUNCTION_ALIGNMENT)
+ endif
  
- 	if (!boot_cpu_has(X86_FEATURE_RTM)) {
- 		/*
+ # arch Makefile may override CC so keep this after arch Makefile is included
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -1303,4 +1303,28 @@ source "kernel/gcov/Kconfig"
+ 
+ source "scripts/gcc-plugins/Kconfig"
+ 
++config FUNCTION_ALIGNMENT_4B
++	bool
++
++config FUNCTION_ALIGNMENT_8B
++	bool
++
++config FUNCTION_ALIGNMENT_16B
++	bool
++
++config FUNCTION_ALIGNMENT_32B
++	bool
++
++config FUNCTION_ALIGNMENT_64B
++	bool
++
++config FUNCTION_ALIGNMENT
++	int
++	default 64 if FUNCTION_ALIGNMENT_64B
++	default 32 if FUNCTION_ALIGNMENT_32B
++	default 16 if FUNCTION_ALIGNMENT_16B
++	default 8 if FUNCTION_ALIGNMENT_8B
++	default 4 if FUNCTION_ALIGNMENT_4B
++	default 0
++
+ endmenu
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -63,6 +63,7 @@ config IA64
+ 	select PCI_MSI_ARCH_FALLBACKS if PCI_MSI
+ 	select SET_FS
+ 	select ZONE_DMA32
++	select FUNCTION_ALIGNMENT_32B
+ 	default y
+ 	help
+ 	  The Itanium Processor Family is Intel's 64-bit successor to
+--- a/arch/ia64/Makefile
++++ b/arch/ia64/Makefile
+@@ -23,7 +23,7 @@ KBUILD_AFLAGS_KERNEL := -mconstant-gp
+ EXTRA		:=
+ 
+ cflags-y	:= -pipe $(EXTRA) -ffixed-r13 -mfixed-range=f12-f15,f32-f127 \
+-		   -falign-functions=32 -frename-registers -fno-optimize-sibling-calls
++		   -frename-registers -fno-optimize-sibling-calls
+ KBUILD_CFLAGS_KERNEL := -mconstant-gp
+ 
+ GAS_STATUS	= $(shell $(srctree)/arch/ia64/scripts/check-gas "$(CC)" "$(OBJDUMP)")
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -267,6 +267,8 @@ config X86
+ 	select HAVE_ARCH_KCSAN			if X86_64
+ 	select X86_FEATURE_NAMES		if PROC_FS
+ 	select PROC_PID_ARCH_STATUS		if PROC_FS
++	select FUNCTION_ALIGNMENT_16B		if X86_64 || X86_ALIGNMENT_16
++	select FUNCTION_ALIGNMENT_4B
+ 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+ 
+ config INSTRUCTION_DECODER
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -38,6 +38,14 @@
+ #include "pgtable.h"
+ 
+ /*
++ * Fix alignment at 16 bytes. Following CONFIG_FUNCTION_ALIGNMENT will result
++ * in assembly errors due to trying to move .org backward due to the excessive
++ * alignment.
++ */
++#undef __ALIGN
++#define __ALIGN		.balign	16, 0x90
++
++/*
+  * Locally defined symbols should be marked hidden:
+  */
+ 	.hidden _bss
+--- a/arch/x86/include/asm/linkage.h
++++ b/arch/x86/include/asm/linkage.h
+@@ -13,10 +13,8 @@
+ 
+ #ifdef __ASSEMBLY__
+ 
+-#if defined(CONFIG_X86_64) || defined(CONFIG_X86_ALIGNMENT_16)
+-#define __ALIGN		.p2align 4, 0x90
++#define __ALIGN		.balign CONFIG_FUNCTION_ALIGNMENT, 0x90;
+ #define __ALIGN_STR	__stringify(__ALIGN)
+-#endif
+ 
+ #if defined(CONFIG_RETHUNK) && !defined(__DISABLE_EXPORTS) && !defined(BUILD_VDSO)
+ #define RET	jmp __x86_return_thunk
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -81,8 +81,8 @@
+ #define RO_EXCEPTION_TABLE
+ #endif
+ 
+-/* Align . to a 8 byte boundary equals to maximum function alignment. */
+-#define ALIGN_FUNCTION()  . = ALIGN(8)
++/* Align . function alignment. */
++#define ALIGN_FUNCTION()  . = ALIGN(CONFIG_FUNCTION_ALIGNMENT)
+ 
+ /*
+  * LD_DEAD_CODE_DATA_ELIMINATION option enables -fdata-sections, which
+--- a/include/linux/linkage.h
++++ b/include/linux/linkage.h
+@@ -69,8 +69,8 @@
+ #endif
+ 
+ #ifndef __ALIGN
+-#define __ALIGN		.align 4,0x90
+-#define __ALIGN_STR	".align 4,0x90"
++#define __ALIGN			.balign CONFIG_FUNCTION_ALIGNMENT
++#define __ALIGN_STR		__stringify(__ALIGN)
+ #endif
+ 
+ #ifdef __ASSEMBLY__
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -424,6 +424,7 @@ config SECTION_MISMATCH_WARN_ONLY
+ config DEBUG_FORCE_FUNCTION_ALIGN_64B
+ 	bool "Force all function address 64B aligned"
+ 	depends on EXPERT && (X86_64 || ARM64 || PPC32 || PPC64 || ARC)
++	select FUNCTION_ALIGNMENT_64B
+ 	help
+ 	  There are cases that a commit from one domain changes the function
+ 	  address alignment of other domains, and cause magic performance
 
 
 
