@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-37016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A4489C2CC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:34:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E08789C299
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3AE31C2199C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:34:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7488CB2BF48
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182C78594D;
-	Mon,  8 Apr 2024 13:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A31E8004B;
+	Mon,  8 Apr 2024 13:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6Lpljpu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMaa1jAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C879D85939;
-	Mon,  8 Apr 2024 13:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD4670CCB;
+	Mon,  8 Apr 2024 13:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583008; cv=none; b=IyUAkxPRJx3qvBMZ6rZiw2KlsLOZ0DbI5BrQ26/R8JQR6rzwQeQSGztWHNbTJFDzvUSQtGIa+ash19ciVArmwC91/1mhJsIPFbqO6W8x2q5JRBgupdd0Sf421qeveAswQzQIEj83fS9JTu0m2ASTlJwjzd/s+79vGaJ2R5Esc/U=
+	t=1712582606; cv=none; b=FCO4HAllmcMFzyz1SGLtV75FhSUtOQ/SwgmbGHET8Smis835kTOZPp17nOZ2UFoEulS8N3eegbBDb800a2NUNxQ/0S/Oi7q19ZRjBeIBparQXsdy+GIkAT+QcUf64msSSGhcACnthNwBqJmJvBmMhFbVhKScaS7wTV/wh3ReobA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583008; c=relaxed/simple;
-	bh=fXMIy29sDD2D9ohxeOdUp58mxc0vV7yQaOaG55d/Tz8=;
+	s=arc-20240116; t=1712582606; c=relaxed/simple;
+	bh=G8UQQ2OqNHKpOOqg+UGQaZ4V7XGsYj4jdCEVTOUvRy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFqpgCdRqesxDi68XbrTkF22sA5O9aQ2VnMP2D5V1t5JHnwLaUCCZHM8IoZPcH4TjyfKNdS2a2dD+wXJAI2fZtMzOYEfzSkLSkh7PDM0nm/JTz2xNHX/MQxRF130l5uf/8HRPFx4Qq+J5v96VAL56FGlrwpNrb2qMmVMicVtVi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6Lpljpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52206C433C7;
-	Mon,  8 Apr 2024 13:30:08 +0000 (UTC)
+	 MIME-Version; b=BZCnhQR0OnTl+RNiLTPSVu75sAA/B3JmcCWqoCSq7ZqAQQF5WgLfbyK31KrcVo5HWVZ1ZN2qc3vyQtfCVSxx37c/RQeu4l1XiyDHTDuXWTOddZKF+MuvdKeaAgFyDqZwjiQdeddivjqtEaR8b+XHt186idw0CIBnFHjDAD3bTPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMaa1jAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECC4C43390;
+	Mon,  8 Apr 2024 13:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583008;
-	bh=fXMIy29sDD2D9ohxeOdUp58mxc0vV7yQaOaG55d/Tz8=;
+	s=korg; t=1712582605;
+	bh=G8UQQ2OqNHKpOOqg+UGQaZ4V7XGsYj4jdCEVTOUvRy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6LpljpurF1c6ROcuqYzPST5HaCPHiJzgnce43bTGFZBQjUc47iYz87Ul8N96KigD
-	 EFeax8b2mEYss3Ost3CG9Nbnc1hF092rWg9ekF+t9MC9vgtrI+5McopKY0PhWDeK2G
-	 +vzAUT56rLL4xHIlvyZMVkeOYDZxfMdHn2PSwodg=
+	b=eMaa1jAaSixm0HonASgS1s6LuOl9zWa8BnTMrStdlqCcVAr4tpWg27QAPKcc9+4Jt
+	 EOQj930E1UhmdM2l0HHIHcfxehJOLUGIVcLTbLQN5UT6VkMBVW4IWB6owMikRhczoN
+	 XVlamQfr/FMZTXgpoJbcaMC/iklGhqo859AThE0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 130/273] scsi: sg: Avoid sg device teardown race
+	Piotr Wejman <piotrwejman90@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 106/252] net: stmmac: fix rx queue priority assignment
 Date: Mon,  8 Apr 2024 14:56:45 +0200
-Message-ID: <20240408125313.328979478@linuxfoundation.org>
+Message-ID: <20240408125309.933528518@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Piotr Wejman <piotrwejman90@gmail.com>
 
-[ Upstream commit 27f58c04a8f438078583041468ec60597841284d ]
+commit b3da86d432b7cd65b025a11f68613e333d2483db upstream.
 
-sg_remove_sfp_usercontext() must not use sg_device_destroy() after calling
-scsi_device_put().
+The driver should ensure that same priority is not mapped to multiple
+rx queues. From DesignWare Cores Ethernet Quality-of-Service
+Databook, section 17.1.29 MAC_RxQ_Ctrl2:
+"[...]The software must ensure that the content of this field is
+mutually exclusive to the PSRQ fields for other queues, that is,
+the same priority is not mapped to multiple Rx queues[...]"
 
-sg_device_destroy() is accessing the parent scsi_device request_queue which
-will already be set to NULL when the preceding call to scsi_device_put()
-removed the last reference to the parent scsi_device.
+Previously rx_queue_priority() function was:
+- clearing all priorities from a queue
+- adding new priorities to that queue
+After this patch it will:
+- first assign new priorities to a queue
+- then remove those priorities from all other queues
+- keep other priorities previously assigned to that queue
 
-The resulting NULL pointer exception will then crash the kernel.
-
-Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
-Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://lore.kernel.org/r/20240320213032.18221-1-Alexander@wetzel-home.de
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a8f5102af2a7 ("net: stmmac: TX and RX queue priority configuration")
+Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
+Signed-off-by: Piotr Wejman <piotrwejman90@gmail.com>
+Link: https://lore.kernel.org/r/20240401192239.33942-1-piotrwejman90@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   |   40 +++++++++++++++-----
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   38 +++++++++++++++----
+ 2 files changed, 62 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 86210e4dd0d35..ff6894ce5404e 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2207,6 +2207,7 @@ sg_remove_sfp_usercontext(struct work_struct *work)
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -92,19 +92,41 @@ static void dwmac4_rx_queue_priority(str
+ 				     u32 prio, u32 queue)
  {
- 	struct sg_fd *sfp = container_of(work, struct sg_fd, ew.work);
- 	struct sg_device *sdp = sfp->parentdp;
-+	struct scsi_device *device = sdp->device;
- 	Sg_request *srp;
- 	unsigned long iflags;
+ 	void __iomem *ioaddr = hw->pcsr;
+-	u32 base_register;
+-	u32 value;
++	u32 clear_mask = 0;
++	u32 ctrl2, ctrl3;
++	int i;
  
-@@ -2232,8 +2233,9 @@ sg_remove_sfp_usercontext(struct work_struct *work)
- 			"sg_remove_sfp: sfp=0x%p\n", sfp));
- 	kfree(sfp);
+-	base_register = (queue < 4) ? GMAC_RXQ_CTRL2 : GMAC_RXQ_CTRL3;
+-	if (queue >= 4)
+-		queue -= 4;
++	ctrl2 = readl(ioaddr + GMAC_RXQ_CTRL2);
++	ctrl3 = readl(ioaddr + GMAC_RXQ_CTRL3);
++
++	/* The software must ensure that the same priority
++	 * is not mapped to multiple Rx queues
++	 */
++	for (i = 0; i < 4; i++)
++		clear_mask |= ((prio << GMAC_RXQCTRL_PSRQX_SHIFT(i)) &
++						GMAC_RXQCTRL_PSRQX_MASK(i));
  
--	scsi_device_put(sdp->device);
-+	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
- 	kref_put(&sdp->d_ref, sg_device_destroy);
-+	scsi_device_put(device);
- 	module_put(THIS_MODULE);
+-	value = readl(ioaddr + base_register);
++	ctrl2 &= ~clear_mask;
++	ctrl3 &= ~clear_mask;
+ 
+-	value &= ~GMAC_RXQCTRL_PSRQX_MASK(queue);
+-	value |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
++	/* First assign new priorities to a queue, then
++	 * clear them from others queues
++	 */
++	if (queue < 4) {
++		ctrl2 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
+ 						GMAC_RXQCTRL_PSRQX_MASK(queue);
+-	writel(value, ioaddr + base_register);
++
++		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
++		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
++	} else {
++		queue -= 4;
++
++		ctrl3 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
++						GMAC_RXQCTRL_PSRQX_MASK(queue);
++
++		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
++		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
++	}
  }
  
--- 
-2.43.0
-
+ static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -105,17 +105,41 @@ static void dwxgmac2_rx_queue_prio(struc
+ 				   u32 queue)
+ {
+ 	void __iomem *ioaddr = hw->pcsr;
+-	u32 value, reg;
++	u32 clear_mask = 0;
++	u32 ctrl2, ctrl3;
++	int i;
+ 
+-	reg = (queue < 4) ? XGMAC_RXQ_CTRL2 : XGMAC_RXQ_CTRL3;
+-	if (queue >= 4)
++	ctrl2 = readl(ioaddr + XGMAC_RXQ_CTRL2);
++	ctrl3 = readl(ioaddr + XGMAC_RXQ_CTRL3);
++
++	/* The software must ensure that the same priority
++	 * is not mapped to multiple Rx queues
++	 */
++	for (i = 0; i < 4; i++)
++		clear_mask |= ((prio << XGMAC_PSRQ_SHIFT(i)) &
++						XGMAC_PSRQ(i));
++
++	ctrl2 &= ~clear_mask;
++	ctrl3 &= ~clear_mask;
++
++	/* First assign new priorities to a queue, then
++	 * clear them from others queues
++	 */
++	if (queue < 4) {
++		ctrl2 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
++						XGMAC_PSRQ(queue);
++
++		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
++		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
++	} else {
+ 		queue -= 4;
+ 
+-	value = readl(ioaddr + reg);
+-	value &= ~XGMAC_PSRQ(queue);
+-	value |= (prio << XGMAC_PSRQ_SHIFT(queue)) & XGMAC_PSRQ(queue);
++		ctrl3 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
++						XGMAC_PSRQ(queue);
+ 
+-	writel(value, ioaddr + reg);
++		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
++		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
++	}
+ }
+ 
+ static void dwxgmac2_tx_queue_prio(struct mac_device_info *hw, u32 prio,
 
 
 
