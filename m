@@ -1,55 +1,51 @@
-Return-Path: <stable+bounces-37340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7118B89C470
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DEE889C473
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A235F1C222A2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A9BC1C22C34
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845817BB1A;
-	Mon,  8 Apr 2024 13:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696F97B3FD;
+	Mon,  8 Apr 2024 13:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsoiFOao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKoMcVgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C7C7B3E5;
-	Mon,  8 Apr 2024 13:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2887771753;
+	Mon,  8 Apr 2024 13:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583946; cv=none; b=SOynHFhE74LpYuObjvytPWUWrVOfkqtJIQb6dLrtsEBIu34iiOH0E9IL6mqClUFxvtLmKuB97/nmBKk57eKX37lQHYzxhd0dgoI9zfqX0A48TORb8aXCIqCqtm7N8AHXgYXfdZ9yi+WPf9eKC0TTgaIqKceGnAfuojtI5560nqI=
+	t=1712583955; cv=none; b=VdzpCteKiZmnDzvuVuiMGA0gZwJuqVt2CYJpYmxxVDpJ8voPo9pkjPqeXTke78vy16SByda81mNZUnUsqG2FELZwabcpOFbcGMNBUtes8tzI77RuvBx8wJgLIDko1TgoqGkXJopvaFzN0y4ccofOY0y93tcy60sOage/Lh90O+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583946; c=relaxed/simple;
-	bh=jHvBzsK4zl4XHuugyjqixf7mD78SjsJUnDbfz9w3Mdk=;
+	s=arc-20240116; t=1712583955; c=relaxed/simple;
+	bh=6X1Dedy6Ju8ohZ0KGBRarU7uLRfNnxYbPf/vdVHByFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evEfjJu+g3gnSrst7wI+IcJO0j2Roz9H92u4JY180po8+cf0/JH0WW/soJr4XV82Bi4flk4ddGl4okdsKvECz6rY51rJAFKZGxvqsp4JZYoE42c4b6sXXmjjjiUEsC7zUUL41FGgaX98V/LJUDvOhEwiPMW4edX1DKrksXXhIJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsoiFOao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1E9C433F1;
-	Mon,  8 Apr 2024 13:45:45 +0000 (UTC)
+	 MIME-Version; b=DfHZMxEwyVenJzH2H5noO+9KhfAulKL36oyndcn3nTSDBqyZc5Iyvxriu3xvELu+a2zfFbR1oL8C7mRCEhAXL3I/vmX0KFntijL1T3yefK+1CNfpdSO1af4hf7y6aoVTz7kyOaViduCki0G06ZK9u24JF3lbbI5Bu2Go96cWnmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKoMcVgZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DFEC433C7;
+	Mon,  8 Apr 2024 13:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583946;
-	bh=jHvBzsK4zl4XHuugyjqixf7mD78SjsJUnDbfz9w3Mdk=;
+	s=korg; t=1712583955;
+	bh=6X1Dedy6Ju8ohZ0KGBRarU7uLRfNnxYbPf/vdVHByFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsoiFOao6OOqmfZAyQeWBCKghVyN+5ElCEg1vgemjCSCN8x9zl+5B+BppzTkGxsCi
-	 jt2GlrZ/fXTChxiEIXRNVvgKMvlclnlnIEeZJQ5MrjHLaFt4Ym49KY4cfJZGXjHon/
-	 3aaStRbBcIBgl4JnQ3lN7QZTjQrCL9pZIqBSGBd0=
+	b=XKoMcVgZpzOVkRqrtmrWtafmguG6iSYtQugpyqxLax8HfKIIGNY7QtIh8QGyr7ADx
+	 MO2N66a7pSsQ5Q2wUni8MMcdB/xnVTnu17Q8qm7yyvIpyK6qdp8r2G2WUpb2/j4ZTK
+	 2LvUO6kxjr0KjmACDZGTKIXOiVJ9jyNFVKjvlAqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Averin <vvs@openvz.org>,
-	"Christian Brauner (Microsoft)" <brauner@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jan Kara <jack@suse.cz>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 305/690] fanotify: fix incorrect fmode_t casts
-Date: Mon,  8 Apr 2024 14:52:51 +0200
-Message-ID: <20240408125410.643941340@linuxfoundation.org>
+Subject: [PATCH 5.15 306/690] NFSD: Clean up nfsd_splice_actor()
+Date: Mon,  8 Apr 2024 14:52:52 +0200
+Message-ID: <20240408125410.678925597@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,51 +64,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasily Averin <vvs@openvz.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit dccd855771b37820b6d976a99729c88259549f85 ]
+[ Upstream commit 91e23b1c39820bfed642119ff6b6ef9f43cf09ce ]
 
-Fixes sparce warnings:
-fs/notify/fanotify/fanotify_user.c:267:63: sparse:
- warning: restricted fmode_t degrades to integer
-fs/notify/fanotify/fanotify_user.c:1351:28: sparse:
- warning: restricted fmode_t degrades to integer
+nfsd_splice_actor() checks that the page being spliced does not
+match the previous element in the svc_rqst::rq_pages array. We
+believe this is to prevent a double put_page() in cases where the
+READ payload is partially contained in the xdr_buf's head buffer.
 
-FMODE_NONTIFY have bitwise fmode_t type and requires __force attribute
-for any casts.
+However, the NFSD READ proc functions no longer place any part of
+the READ payload in the head buffer, in order to properly support
+NFS/RDMA READ with Write chunks. Therefore, simplify the logic in
+nfsd_splice_actor() to remove this unnecessary check.
 
-Signed-off-by: Vasily Averin <vvs@openvz.org>
-Reviewed-by: Christian Brauner (Microsoft) <brauner@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/9adfd6ac-1b89-791e-796b-49ada3293985@openvz.org
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fanotify/fanotify_user.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/vfs.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 4471043955f87..6db5a0b03a78d 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -260,7 +260,7 @@ static int create_fd(struct fsnotify_group *group, struct path *path,
- 	 * originally opened O_WRONLY.
- 	 */
- 	new_file = dentry_open(path,
--			       group->fanotify_data.f_flags | FMODE_NONOTIFY,
-+			       group->fanotify_data.f_flags | __FMODE_NONOTIFY,
- 			       current_cred());
- 	if (IS_ERR(new_file)) {
- 		/*
-@@ -1373,7 +1373,7 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
- 	    (!(fid_mode & FAN_REPORT_NAME) || !(fid_mode & FAN_REPORT_FID)))
- 		return -EINVAL;
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 00e956bdefaae..541f39ab450ce 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -856,17 +856,11 @@ nfsd_splice_actor(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ 		  struct splice_desc *sd)
+ {
+ 	struct svc_rqst *rqstp = sd->u.data;
+-	struct page **pp = rqstp->rq_next_page;
+-	struct page *page = buf->page;
  
--	f_flags = O_RDWR | FMODE_NONOTIFY;
-+	f_flags = O_RDWR | __FMODE_NONOTIFY;
- 	if (flags & FAN_CLOEXEC)
- 		f_flags |= O_CLOEXEC;
- 	if (flags & FAN_NONBLOCK)
+-	if (rqstp->rq_res.page_len == 0) {
+-		svc_rqst_replace_page(rqstp, page);
++	svc_rqst_replace_page(rqstp, buf->page);
++	if (rqstp->rq_res.page_len == 0)
+ 		rqstp->rq_res.page_base = buf->offset;
+-	} else if (page != pp[-1]) {
+-		svc_rqst_replace_page(rqstp, page);
+-	}
+ 	rqstp->rq_res.page_len += sd->len;
+-
+ 	return sd->len;
+ }
+ 
 -- 
 2.43.0
 
