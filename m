@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-36533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F11F89C041
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5FD89C55A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7EB1F23518
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAF1283F54
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E17664CF2;
-	Mon,  8 Apr 2024 13:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410187BAEE;
+	Mon,  8 Apr 2024 13:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+Roq5bk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGfy0xJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16622DF73;
-	Mon,  8 Apr 2024 13:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A9379955;
+	Mon,  8 Apr 2024 13:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581603; cv=none; b=Sn28tuwbJvXLz5eYn4Osxl/ZQhXlg4AyG6OfHAKzdz7ANzv8nyz4XIL7aD/m2M/RqtGJQec0WKOD3cVvRb1eo5/pLQojqp6FR2+rAn0436R9SpIdVAH+pIvpHQfVjW8S+Bbiwfgby+3DJ/OxmyEtq5cF1G7xFHt7+GwmZ6FiYv8=
+	t=1712584577; cv=none; b=MvobhJpJE5hJvHyP4dPoqu/QR2/p42lXZRNIlMDQMcdlH3pb/iLPTqcKmlivN91WhkGqYRu9i0u/QGXI5LEZiz2VbnVXsZTZiphFIK00iZOBz1VSsqOPF49Wwu+HQ7gwx+eVRdYX6YKjNYjn1nm65GHOWf7pMuTQor0nxvja9fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581603; c=relaxed/simple;
-	bh=JBugk8JeSbsPuB3Jhx+FEvuZowQjjdEiso3q2mTjjUw=;
+	s=arc-20240116; t=1712584577; c=relaxed/simple;
+	bh=4ME4xsKJbYACVYICYrJ9I6fZwc+PDBoSoEWCHvGtTys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nr5+ZtT1EBus+TmIC+12QA/ulAIHOkYQtoCzcMGwleXyKpwt0cXn5yrUJCXUGpISplyC8yB5q31jLavgsAtX22E1wypYkQalFYYivnbD5+n4XwWW4o4NNMKdJzhOmZnOgMCiOkcbswLOvSyn7yMYEqRN5lRRWb1vkEVVfWcRg3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+Roq5bk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C4FC433C7;
-	Mon,  8 Apr 2024 13:06:42 +0000 (UTC)
+	 MIME-Version; b=n8k0OW9Xc1Y1jVu0GSe7ErA3dS5Jc/zmMs1CSny1VPD6owqVm/gaHXDM1UQBXz+o1IynpoFat30ksSZf77Pe5vgfmy+Outi68ThxWZgB3BbFU3XIAqqwCI8+V+vMyAY8EKVJ7973dKlJfxjAbBxB3R6+bECG8v74MwsW7BQjdcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGfy0xJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FC4C433F1;
+	Mon,  8 Apr 2024 13:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581603;
-	bh=JBugk8JeSbsPuB3Jhx+FEvuZowQjjdEiso3q2mTjjUw=;
+	s=korg; t=1712584576;
+	bh=4ME4xsKJbYACVYICYrJ9I6fZwc+PDBoSoEWCHvGtTys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+Roq5bkpIBrS/JM0f35q/zuRk18PiLCUF74rfuTWWJ4vzH8FRo30WN9Uy9cBX7NU
-	 wlzg1U+EGMfQldpy3QwXP/gJAgnY3G9jVypb2iwAkUwAJ0tklx/b48Km2timi8S3J0
-	 XEWaf9DVp+lfK4BIoVuwDuuDj5RWGfN+H+aiiSAU=
+	b=TGfy0xJAAgcTdThRCicMWeukHUvXN9z+J1dy2zMDuFHZ4AdxAdbE0arofs4zPiOU6
+	 msi32B6JbtiTd/UZ/sdx/o1297njkqJ0sqnic51CGM1pr0jy2QSHyhIFh3A2Y7L0PK
+	 0ag+mD/S9gOmeRf+h3OzW4lUwHRPSeZtTSex8oeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/252] tcp: properly terminate timers for kernel sockets
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 455/690] nfsd: extra checks when freeing delegation stateids
 Date: Mon,  8 Apr 2024 14:55:21 +0200
-Message-ID: <20240408125307.340393931@linuxfoundation.org>
+Message-ID: <20240408125416.115661254@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 151c9c724d05d5b0dd8acd3e11cb69ef1f2dbada ]
+[ Upstream commit 895ddf5ed4c54ea9e3533606d7a8b4e4f27f95ef ]
 
-We had various syzbot reports about tcp timers firing after
-the corresponding netns has been dismantled.
+We've had some reports of problems in the refcounting for delegation
+stateids that we've yet to track down. Add some extra checks to ensure
+that we've removed the object from various lists before freeing it.
 
-Fortunately Josef Bacik could trigger the issue more often,
-and could test a patch I wrote two years ago.
-
-When TCP sockets are closed, we call inet_csk_clear_xmit_timers()
-to 'stop' the timers.
-
-inet_csk_clear_xmit_timers() can be called from any context,
-including when socket lock is held.
-This is the reason it uses sk_stop_timer(), aka del_timer().
-This means that ongoing timers might finish much later.
-
-For user sockets, this is fine because each running timer
-holds a reference on the socket, and the user socket holds
-a reference on the netns.
-
-For kernel sockets, we risk that the netns is freed before
-timer can complete, because kernel sockets do not hold
-reference on the netns.
-
-This patch adds inet_csk_clear_xmit_timers_sync() function
-that using sk_stop_timer_sync() to make sure all timers
-are terminated before the kernel socket is released.
-Modules using kernel sockets close them in their netns exit()
-handler.
-
-Also add sock_not_owned_by_me() helper to get LOCKDEP
-support : inet_csk_clear_xmit_timers_sync() must not be called
-while socket lock is held.
-
-It is very possible we can revert in the future commit
-3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
-which attempted to solve the issue in rds only.
-(net/smc/af_smc.c and net/mptcp/subflow.c have similar code)
-
-We probably can remove the check_net() tests from
-tcp_out_of_resources() and __tcp_close() in the future.
-
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Closes: https://lore.kernel.org/netdev/20240314210740.GA2823176@perftesting/
-Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
-Fixes: 8a68173691f0 ("net: sk_clone_lock() should only do get_net() if the parent is not a kernel socket")
-Link: https://lore.kernel.org/bpf/CANn89i+484ffqb93aQm1N-tjxxvb3WDKX0EbD7318RwRgsatjw@mail.gmail.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Josef Bacik <josef@toxicpanda.com>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/20240322135732.1535772-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2127067
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- include/net/inet_connection_sock.h |  1 +
- include/net/sock.h                 |  7 +++++++
- net/ipv4/inet_connection_sock.c    | 14 ++++++++++++++
- net/ipv4/tcp.c                     |  2 ++
- 4 files changed, 24 insertions(+)
+ fs/nfsd/nfs4state.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 01a73bf74fa19..6ecac01115d9c 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -173,6 +173,7 @@ void inet_csk_init_xmit_timers(struct sock *sk,
- 			       void (*delack_handler)(struct timer_list *),
- 			       void (*keepalive_handler)(struct timer_list *));
- void inet_csk_clear_xmit_timers(struct sock *sk);
-+void inet_csk_clear_xmit_timers_sync(struct sock *sk);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 61978ad43a0f7..d19629de2af5d 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1071,7 +1071,12 @@ static struct nfs4_ol_stateid * nfs4_alloc_open_stateid(struct nfs4_client *clp)
  
- static inline void inet_csk_schedule_ack(struct sock *sk)
+ static void nfs4_free_deleg(struct nfs4_stid *stid)
  {
-diff --git a/include/net/sock.h b/include/net/sock.h
-index e70c903b04f30..25780942ec8bf 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1808,6 +1808,13 @@ static inline void sock_owned_by_me(const struct sock *sk)
- #endif
+-	WARN_ON(!list_empty(&stid->sc_cp_list));
++	struct nfs4_delegation *dp = delegstateid(stid);
++
++	WARN_ON_ONCE(!list_empty(&stid->sc_cp_list));
++	WARN_ON_ONCE(!list_empty(&dp->dl_perfile));
++	WARN_ON_ONCE(!list_empty(&dp->dl_perclnt));
++	WARN_ON_ONCE(!list_empty(&dp->dl_recall_lru));
+ 	kmem_cache_free(deleg_slab, stid);
+ 	atomic_long_dec(&num_delegations);
  }
- 
-+static inline void sock_not_owned_by_me(const struct sock *sk)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	WARN_ON_ONCE(lockdep_sock_is_held(sk) && debug_locks);
-+#endif
-+}
-+
- static inline bool sock_owned_by_user(const struct sock *sk)
- {
- 	sock_owned_by_me(sk);
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 762817d6c8d70..a587cb6be807c 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -774,6 +774,20 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
- }
- EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
- 
-+void inet_csk_clear_xmit_timers_sync(struct sock *sk)
-+{
-+	struct inet_connection_sock *icsk = inet_csk(sk);
-+
-+	/* ongoing timer handlers need to acquire socket lock. */
-+	sock_not_owned_by_me(sk);
-+
-+	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
-+
-+	sk_stop_timer_sync(sk, &icsk->icsk_retransmit_timer);
-+	sk_stop_timer_sync(sk, &icsk->icsk_delack_timer);
-+	sk_stop_timer_sync(sk, &sk->sk_timer);
-+}
-+
- void inet_csk_delete_keepalive_timer(struct sock *sk)
- {
- 	sk_stop_timer(sk, &sk->sk_timer);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 68bb8d6bcc113..f8df35f7352a5 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2931,6 +2931,8 @@ void tcp_close(struct sock *sk, long timeout)
- 	lock_sock(sk);
- 	__tcp_close(sk, timeout);
- 	release_sock(sk);
-+	if (!sk->sk_net_refcnt)
-+		inet_csk_clear_xmit_timers_sync(sk);
- 	sock_put(sk);
- }
- EXPORT_SYMBOL(tcp_close);
 -- 
 2.43.0
 
