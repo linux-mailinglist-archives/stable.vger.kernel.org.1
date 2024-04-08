@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-36551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1844089C0E0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:14:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF0D89C00B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACDF0B23F38
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2C631F20F78
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBF86CDA8;
-	Mon,  8 Apr 2024 13:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794E17C6C5;
+	Mon,  8 Apr 2024 13:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2kUSzWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9j9lWFr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8412E62C;
-	Mon,  8 Apr 2024 13:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A78D7C0AB;
+	Mon,  8 Apr 2024 13:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581656; cv=none; b=JelMRf/DYIzKiWUhO0uItDJbYDnGJ3PRoJwWx97xzCZXvIBJrh+XBhkifvWdtLnNCL/WiTw38meHCZhXzBQp4r4RJK3hS8OO+pCkNmKc9zUYLH9+kQtppROlvM3HUFCC7yS6jExCXqR0g210txr1OYD3qA644r52WHbrvSCiP+Q=
+	t=1712581466; cv=none; b=CwwYxEiOuBUbuPH78lvdIBoakdEAUhZfvpTXigusYChGtGCeuY5fooV2pl9+gdH6VkzRkHttVDW4qJ2pj3oEY8ZWm7lnxYfwkvkltAXMWFBfZve6dR0epaXfUUKrFng5OfvjsvTS8fJVl51oiihkXHwXijIATjn+uFzyG+L5oYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581656; c=relaxed/simple;
-	bh=pMxXvSTz3Xe73W1rQkAqaOzira12XfuY6fUvaKyE1X4=;
+	s=arc-20240116; t=1712581466; c=relaxed/simple;
+	bh=GT9Kvt6/z1+7/Xpl2+cosILDoOcIZyYtUaXOIhzG+ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0l+B3C9o/vHfGQIwji7XzsQ7AtMTF+8jrjt58O1OPpfvOzLGtGdQJKVkLBKX9l8/6wkICadaIU7/Rgwx8Xx/EcvIAovFfMzUrmExQu5LJYPc5Z6R6fUUUUobWC+MuXIyK04EaMggas07QVgq0BW5z/Lp1UdS0nHZU3NGkpufRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2kUSzWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F21BC433F1;
-	Mon,  8 Apr 2024 13:07:36 +0000 (UTC)
+	 MIME-Version; b=DesRr72pCF9Q+hO7Rse2s7Lc++b4HoNU9nWS271jXgw75W2Num7oeqyMr+8uMGzrLnzEEOu4yt7DtFhDscOsS0angLDs8EPC05DNyIvZRhpH0eGK77xUjckOAbkqNuD/ZJmkgIIbT+vKwG8RbNGgNrf8EIFuteUGbA+XJa9DAXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9j9lWFr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68DFC433F1;
+	Mon,  8 Apr 2024 13:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581656;
-	bh=pMxXvSTz3Xe73W1rQkAqaOzira12XfuY6fUvaKyE1X4=;
+	s=korg; t=1712581466;
+	bh=GT9Kvt6/z1+7/Xpl2+cosILDoOcIZyYtUaXOIhzG+ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2kUSzWj42Ef1XNww3UCCTfuLC9sMpQhZx4uAgmWF8HVI6SC9h/qX0WZ+XJkYfM94
-	 B9RthPB6iJJ3kU+5Wcd+av60mnD2RezQeC58Pg7kpcuYL+5qP466o9xZKEzXtytH6r
-	 kUF3xrr/ccXboPnOIEtVM5WohrTUSRzDdzEeIy0E=
+	b=y9j9lWFrNF7UqVvYWxXgEv0d2yivom7TMh5d3GjO3iaC73NcTiZMfW/jftxBoJ2jJ
+	 t/G9EakTMpKs1EVZph8PBC61Abc+0t47MsDLYY8JdemR4qAMyRgpW4daoG7p3jK/jS
+	 GR/KxNcealSfQWMtHW01Mlewuelme9vWWfWs8DtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhruva Gole <d-gole@ti.com>,
-	Qingliang Li <qingliang.li@mediatek.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/690] PM: sleep: wakeirq: fix wake irq warning in system suspend
-Date: Mon,  8 Apr 2024 14:48:38 +0200
-Message-ID: <20240408125401.409034287@linuxfoundation.org>
+Subject: [PATCH 5.15 053/690] mmc: tmio: avoid concurrent runs of mmc_request_done()
+Date: Mon,  8 Apr 2024 14:48:39 +0200
+Message-ID: <20240408125401.442230827@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,57 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qingliang Li <qingliang.li@mediatek.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit e7a7681c859643f3f2476b2a28a494877fd89442 ]
+[ Upstream commit e8d1b41e69d72c62865bebe8f441163ec00b3d44 ]
 
-When driver uses pm_runtime_force_suspend() as the system suspend callback
-function and registers the wake irq with reverse enable ordering, the wake
-irq will be re-enabled when entering system suspend, triggering an
-'Unbalanced enable for IRQ xxx' warning. In this scenario, the call
-sequence during system suspend is as follows:
-  suspend_devices_and_enter()
-    -> dpm_suspend_start()
-      -> dpm_run_callback()
-        -> pm_runtime_force_suspend()
-          -> dev_pm_enable_wake_irq_check()
-          -> dev_pm_enable_wake_irq_complete()
+With the to-be-fixed commit, the reset_work handler cleared 'host->mrq'
+outside of the spinlock protected critical section. That leaves a small
+race window during execution of 'tmio_mmc_reset()' where the done_work
+handler could grab a pointer to the now invalid 'host->mrq'. Both would
+use it to call mmc_request_done() causing problems (see link below).
 
-    -> suspend_enter()
-      -> dpm_suspend_noirq()
-        -> device_wakeup_arm_wake_irqs()
-          -> dev_pm_arm_wake_irq()
+However, 'host->mrq' cannot simply be cleared earlier inside the
+critical section. That would allow new mrqs to come in asynchronously
+while the actual reset of the controller still needs to be done. So,
+like 'tmio_mmc_set_ios()', an ERR_PTR is used to prevent new mrqs from
+coming in but still avoiding concurrency between work handlers.
 
-To fix this issue, complete the setting of WAKE_IRQ_DEDICATED_ENABLED flag
-in dev_pm_enable_wake_irq_complete() to avoid redundant irq enablement.
-
-Fixes: 8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Qingliang Li <qingliang.li@mediatek.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/all/20240220061356.3001761-1-dirk.behme@de.bosch.com/
+Fixes: df3ef2d3c92c ("mmc: protect the tmio_mmc driver against a theoretical race")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: stable@vger.kernel.org # 3.0+
+Link: https://lore.kernel.org/r/20240305104423.3177-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/wakeirq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/tmio_mmc_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
-index 6f2cdd8643afa..ab6eced7f5762 100644
---- a/drivers/base/power/wakeirq.c
-+++ b/drivers/base/power/wakeirq.c
-@@ -362,8 +362,10 @@ void dev_pm_enable_wake_irq_complete(struct device *dev)
- 		return;
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index 437048bb80273..5024cae411d3a 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -259,6 +259,8 @@ static void tmio_mmc_reset_work(struct work_struct *work)
+ 	else
+ 		mrq->cmd->error = -ETIMEDOUT;
  
- 	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED &&
--	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE)
-+	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE) {
- 		enable_irq(wirq->irq);
-+		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
-+	}
- }
++	/* No new calls yet, but disallow concurrent tmio_mmc_done_work() */
++	host->mrq = ERR_PTR(-EBUSY);
+ 	host->cmd = NULL;
+ 	host->data = NULL;
  
- /**
 -- 
 2.43.0
 
