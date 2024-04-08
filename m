@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AEF89C37C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 271EE89C022
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FB5E2837FC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77D8286253
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BBB7D41B;
-	Mon,  8 Apr 2024 13:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DBD7BAE7;
+	Mon,  8 Apr 2024 13:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7b8y90V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQyPpaCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3321C7D401;
-	Mon,  8 Apr 2024 13:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086F36CDA8;
+	Mon,  8 Apr 2024 13:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583355; cv=none; b=uR1PmC/1hTxXMO7CEFNF4UINEOhkM0trdNVp1tjZIRi7hVjDz5CHEGT0CDgroua8Vmq9xidSEG6tBv8j9SWgyGwFEOdIPkonDXTggynxjJwulBl/9XTpWdBugixObWyt+VpajZEIkAQu7p2+CHAMARq2NcDAhK53patGdYfljnk=
+	t=1712581507; cv=none; b=PRk2puzUhlwHzrXDBk4vDE2rrGIl3V/EYC+HXqCSyiUMw6gi68ITDAWe+GqSYXscTdAll/8tH2H98NSErUyhT9T0VzCeDbfRN79PaYJpI/8bQV6QxF7qqBh8pkW/2TAjfltPJ+kzAUgKW8hkiLdOlFnmaC/vRizZY+VpNBrKMos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583355; c=relaxed/simple;
-	bh=egeLnAjo5yBe0YCDBFxZVYhrAOARDg0Xb0Ea7fFgviM=;
+	s=arc-20240116; t=1712581507; c=relaxed/simple;
+	bh=WyQJSy9ELpF3w/b/U60AMBrNb5iUCaVMwQPWZLMHEo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXoj+wgPHa1KIbqulCswXvpcMwUcFdwIJlEhAPyUijIERw5ST1LbrLWYt+FMiSsEsyd2NVsiKOfItwzKy+mYmdLmb5734kYJV0oXqca6QnhA/3W85C/0zT7RncizsLBHy+mGIdkjAhN8anlCjg7IzrATQyp426TPjfJ6bceXp1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7b8y90V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC45C433C7;
-	Mon,  8 Apr 2024 13:35:54 +0000 (UTC)
+	 MIME-Version; b=ubM9lIDEqrgzgXSvJqD7caGb+euWLBgI8mFebO6OtUXfrbfkoG4v8H1lw8yIXkyHm6zxj+Gfn9CM3EWzh/XvTe8nmwaTcXatNFIDuEWGPpstc0NrDIld0kN4W2t1CQvKJpo6DhciAoWRSyfmUF9wbrH4/B8C4cZfBHyk+npAA8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQyPpaCt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A695C433F1;
+	Mon,  8 Apr 2024 13:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583355;
-	bh=egeLnAjo5yBe0YCDBFxZVYhrAOARDg0Xb0Ea7fFgviM=;
+	s=korg; t=1712581506;
+	bh=WyQJSy9ELpF3w/b/U60AMBrNb5iUCaVMwQPWZLMHEo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7b8y90V1MYGIqzRlTSjg1yXX6vhteaeVjwBPD5lmKhJ8YBqYXtcD6r0/tedxF783
-	 Xl7aCk5bTvXd3McO7cjEYDy3S1ZBg1y3ZOi3Fg8WuKVCpSfwbQ0OPNvqLBK0iraKrR
-	 Z5cFLiSNUI6xGjdyBcqTOoHt54pNEQA9SgkyHc/E=
+	b=jQyPpaCtcVxASL2LrlQUuHjPnZpp993ETz0bNiz7hmkK3pFNeKbHlxWWqoxm0s3Z9
+	 aDqzbB40janOCvdFLLlYsm9uPTGkYtyJhsGWAJKO+Zbuf3Ko/HZJj1yljGQzQu/zs0
+	 WWrOXouWiHTOe99dljOaJn8siIl//bMPP8YQizGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 167/273] spi: s3c64xx: remove else after return
+	Sandipan Das <sandipan.das@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 028/138] x86/cpufeatures: Add CPUID_LNX_5 to track recently added Linux-defined word
 Date: Mon,  8 Apr 2024 14:57:22 +0200
-Message-ID: <20240408125314.452124226@linuxfoundation.org>
+Message-ID: <20240408125257.101330576@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 9d47e411f4d636519a8d26587928d34cf52c0c1f ]
+commit 8cb4a9a82b21623dbb4b3051dd30d98356cf95bc upstream.
 
-Else case is not needed after a return, remove it.
+Add CPUID_LNX_5 to track cpufeatures' word 21, and add the appropriate
+compile-time assert in KVM to prevent direct lookups on the features in
+CPUID_LNX_5.  KVM uses X86_FEATURE_* flags to manage guest CPUID, and so
+must translate features that are scattered by Linux from the Linux-defined
+bit to the hardware-defined bit, i.e. should never try to directly access
+scattered features in guest CPUID.
 
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20240207120431.2766269-9-tudor.ambarus@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Opportunistically add NR_CPUID_WORDS to enum cpuid_leafs, along with a
+compile-time assert in KVM's CPUID infrastructure to ensure that future
+additions update cpuid_leafs along with NCAPINTS.
+
+No functional change intended.
+
+Fixes: 7f274e609f3d ("x86/cpufeatures: Add new word for scattered features")
+Cc: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-s3c64xx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/cpufeature.h |    2 ++
+ arch/x86/kvm/reverse_cpuid.h      |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 1e519b1537e71..29e99410c9716 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -406,12 +406,10 @@ static bool s3c64xx_spi_can_dma(struct spi_controller *host,
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -33,6 +33,8 @@ enum cpuid_leafs
+ 	CPUID_7_EDX,
+ 	CPUID_8000_001F_EAX,
+ 	CPUID_8000_0021_EAX,
++	CPUID_LNX_5,
++	NR_CPUID_WORDS,
+ };
+ 
+ #define X86_CAP_FMT_NUM "%d:%d"
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -83,10 +83,12 @@ static const struct cpuid_reg reverse_cp
+  */
+ static __always_inline void reverse_cpuid_check(unsigned int x86_leaf)
  {
- 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
- 
--	if (sdd->rx_dma.ch && sdd->tx_dma.ch) {
-+	if (sdd->rx_dma.ch && sdd->tx_dma.ch)
- 		return xfer->len > FIFO_DEPTH(sdd);
--	} else {
--		return false;
--	}
- 
-+	return false;
++	BUILD_BUG_ON(NR_CPUID_WORDS != NCAPINTS);
+ 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_1);
+ 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_2);
+ 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_3);
+ 	BUILD_BUG_ON(x86_leaf == CPUID_LNX_4);
++	BUILD_BUG_ON(x86_leaf == CPUID_LNX_5);
+ 	BUILD_BUG_ON(x86_leaf >= ARRAY_SIZE(reverse_cpuid));
+ 	BUILD_BUG_ON(reverse_cpuid[x86_leaf].function == 0);
  }
- 
- static int s3c64xx_enable_datapath(struct s3c64xx_spi_driver_data *sdd,
--- 
-2.43.0
-
 
 
 
