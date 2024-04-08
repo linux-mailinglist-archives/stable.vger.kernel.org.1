@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-36459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B9689C09A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:10:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980F489C33A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BB72B29516
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7EC1C22144
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F3B74BEC;
-	Mon,  8 Apr 2024 13:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AD681AB1;
+	Mon,  8 Apr 2024 13:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oksu0rCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMOZFER7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4CA2DF73;
-	Mon,  8 Apr 2024 13:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F7474BE5;
+	Mon,  8 Apr 2024 13:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581387; cv=none; b=ljdUNYLBZ7fagH1MgRkoxvPJLIb+wUsBOc/mEC8v70/ikd64ohKoEJWxCVbpArMI1NBMoiAqvNQ3hiRVoxG3KabbfqNwoeLGSq+6kV0USOo4YHRow9+OiTsb2JbHlFg99DntRZLwGTPoQie38dsT4ldSAaYGSbrkEcu/q9XQQnk=
+	t=1712583201; cv=none; b=BFvcDngSOiPTWqmcYRm4/dvvn+L9vpcPmnPytVtj80MqhcJoaf15PU5Vr1SYkZijL4vZBN+OS0c8C2uG8lwql4ivLT+Ht+GxEa7oeCRuaa2p26dofEnYlI6eD1IvRI0Y+QczPKhUnyOHrxOU42LDzHGOjdgwj5lm00ZwCwH5ZSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581387; c=relaxed/simple;
-	bh=tVQUDWk3Cg7WNVzCVscOskSCLDeWzC3zeKnRdbVJDRE=;
+	s=arc-20240116; t=1712583201; c=relaxed/simple;
+	bh=ZRCycMPPD/jZpX48ZH6ohdd2zHAa0klTgJDXW5f5wIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hlxe4MmVw0ngIStiedjVnEJ78+CofMK6pgqK2BGzmjTOx0uuEE+Tskrp3qfO4dX2myfSCpOAdV2c2w0Rar9ISiZIdEC42jFmmwkk5PB0k+Z8vRGjTnE18hNppVfJ+XC+duGces72DPbO36fp8A6X2gyh1qXTulwEy2syCDoBxZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oksu0rCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DAAC433C7;
-	Mon,  8 Apr 2024 13:03:07 +0000 (UTC)
+	 MIME-Version; b=PXDq98shKGVgTSh22Qhuu04hZpFEdX5T5CCkrI9xorlBH5W+YlRgA8H3Jahi4yz7nYTd1LxUm/6oYS9UgaD1nPSl30ANzk422v9d8UmuumlY4eiK5i9uMRWIMnmretZ6k4A0yE+uGAnrerYnFs2P4rCfhFeiqyVawe6WGxYjxlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMOZFER7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA04C433F1;
+	Mon,  8 Apr 2024 13:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581387;
-	bh=tVQUDWk3Cg7WNVzCVscOskSCLDeWzC3zeKnRdbVJDRE=;
+	s=korg; t=1712583200;
+	bh=ZRCycMPPD/jZpX48ZH6ohdd2zHAa0klTgJDXW5f5wIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oksu0rChcg3j2li9XA4LPM2eT4vsFpZmOEa50C4SCN9cHxVbulPwcKPFI2VaqTDUo
-	 Ud+sLyu9Fa8L529bAQqZ4Toq3rnAMx0wRisn7wbFaPs1/nLUaUGREMEbrOdG2aohE+
-	 0NbyloPQHuPYsaQulqDsTfUsQU3NGloNZq7D5eFE=
+	b=WMOZFER7ZPz4N4T3/Ne1J2ghjbi/J5SScG5NtlyaE5NWGXp/3Bt5MWdMkPwWjbGSX
+	 n6MyOt8ib1Tu9lh6x/7857rvRdcyIMLi68xDf6DraoGeMBRwrtkc+9CMsFLcOqrhOf
+	 rcciXpnOWlptYeU23xgM1Kvt9ahyAMqPbbTSKtQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ivan Komarov <ivan.komarov@dfyz.info>,
+	Victor Isaev <isv@google.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/138] net: hns3: fix kernel crash when devlink reload during pf initialization
+Subject: [PATCH 6.8 151/273] RISC-V: Update AT_VECTOR_SIZE_ARCH for new AT_MINSIGSTKSZ
 Date: Mon,  8 Apr 2024 14:57:06 +0200
-Message-ID: <20240408125256.610904716@linuxfoundation.org>
+Message-ID: <20240408125313.972133691@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Victor Isaev <victor@torrio.net>
 
-[ Upstream commit 93305b77ffcb042f1538ecc383505e87d95aa05a ]
+[ Upstream commit 13dddf9319808badd2c1f5d7007b4e82838a648e ]
 
-The devlink reload process will access the hardware resources,
-but the register operation is done before the hardware is initialized.
-So, processing the devlink reload during initialization may lead to kernel
-crash. This patch fixes this by taking devl_lock during initialization.
+"riscv: signal: Report signal frame size to userspace via auxv" (e92f469)
+has added new constant AT_MINSIGSTKSZ but failed to increment the size of
+auxv, keeping AT_VECTOR_SIZE_ARCH at 9.
+This fix correctly increments AT_VECTOR_SIZE_ARCH to 10, following the
+approach in the commit 94b07c1 ("arm64: signal: Report signal frame size
+to userspace via auxv").
 
-Fixes: b741269b2759 ("net: hns3: add support for registering devlink for PF")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/73883406.20231215232720@torrio.net
+Link: https://lore.kernel.org/all/20240102133617.3649-1-victor@torrio.net/
+Reported-by: Ivan Komarov <ivan.komarov@dfyz.info>
+Closes: https://lore.kernel.org/linux-riscv/CY3Z02NYV1C4.11BLB9PLVW9G1@fedora/
+Fixes: e92f469b0771 ("riscv: signal: Report signal frame size to userspace via auxv")
+Signed-off-by: Victor Isaev <isv@google.com>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/riscv/include/uapi/asm/auxvec.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 27037ce795902..9db363fbc34fd 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11604,6 +11604,8 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 	if (ret)
- 		goto err_pci_uninit;
+diff --git a/arch/riscv/include/uapi/asm/auxvec.h b/arch/riscv/include/uapi/asm/auxvec.h
+index 10aaa83db89ef..95050ebe9ad00 100644
+--- a/arch/riscv/include/uapi/asm/auxvec.h
++++ b/arch/riscv/include/uapi/asm/auxvec.h
+@@ -34,7 +34,7 @@
+ #define AT_L3_CACHEGEOMETRY	47
  
-+	devl_lock(hdev->devlink);
-+
- 	/* Firmware command queue initialize */
- 	ret = hclge_comm_cmd_queue_init(hdev->pdev, &hdev->hw.hw);
- 	if (ret)
-@@ -11778,6 +11780,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ /* entries in ARCH_DLINFO */
+-#define AT_VECTOR_SIZE_ARCH	9
++#define AT_VECTOR_SIZE_ARCH	10
+ #define AT_MINSIGSTKSZ		51
  
- 	hclge_task_schedule(hdev, round_jiffies_relative(HZ));
- 
-+	devl_unlock(hdev->devlink);
- 	return 0;
- 
- err_mdiobus_unreg:
-@@ -11790,6 +11793,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- err_cmd_uninit:
- 	hclge_comm_cmd_uninit(hdev->ae_dev, &hdev->hw.hw);
- err_devlink_uninit:
-+	devl_unlock(hdev->devlink);
- 	hclge_devlink_uninit(hdev);
- err_pci_uninit:
- 	pcim_iounmap(pdev, hdev->hw.hw.io_base);
+ #endif /* _UAPI_ASM_RISCV_AUXVEC_H */
 -- 
 2.43.0
 
