@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-37712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C4989C6B2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:17:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1415589C116
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EF21B293C7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F21F1C2122B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE257F470;
-	Mon,  8 Apr 2024 14:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD477640D;
+	Mon,  8 Apr 2024 13:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1G87qjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfB/8+a6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870D47D3FD;
-	Mon,  8 Apr 2024 14:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297A57EF0E;
+	Mon,  8 Apr 2024 13:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585040; cv=none; b=a0/32kcklQPFOkmZtNlPwg+nzfGqdAgbCdh9RtUEgxmj6iuQLCVbJRHfyq8a7I79j2109KYdKllkOuUTX13QfZGDaf+D9pzzhZbmeB0iFMaAV8M2VzCgG+e+aNYqnv7QyUEZ8idZ4mOiBo4+K9RN6sGpzEe5+pgSZbyO6DANlYg=
+	t=1712581958; cv=none; b=KoCOVrcvpGIP6cUVofITT6Fcv+nR0eZqtzERJ2Ecy0bcz5ynK0xxIolavOGLYiul04i2Ni5S4gGwzMaf+YzUeFhK72UUsO6XmolQe3+KnGZi25l7ftl1aDZXJRjohHvLzHW3ZlYncDKVQziOwCmuHiwd8oTbCaLaBnP/Vnfoi1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585040; c=relaxed/simple;
-	bh=p1XYna4yt54+tnj1UqzD6NFauw59SELPZK9n3u2sBTQ=;
+	s=arc-20240116; t=1712581958; c=relaxed/simple;
+	bh=Ggn6hs5hT7+Ctl2op6vuG+lzesDmplDpRLB7iMhoBRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuk/zFiWI+Y1t46S3ZkhT4sKwZEzkbJvY5+DLymOWjie2ys1jLRgqF/mxiuQo6yNiFBfxU3pInv3g9uSCn3uLTnsijno91k83S8Dqu/Ia0xBgXspavjzBFmt4aLECGMonWI4BtvZbypcYSWTfiwSPU+hTgKyuRonYp141zqZurQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1G87qjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32A4C433C7;
-	Mon,  8 Apr 2024 14:03:59 +0000 (UTC)
+	 MIME-Version; b=kSEFOSl7UrtQAKhRfjdJdXEEQMYrVrXd/dOxtvThzxJaHkImW2xjOa8X/9qvwxSjdE4aqGUySWnikscxRZZDU9AEr7Kv6255thAk4mGd+o08q3Vw0eVgupwCeHgwNU4wW6XnuzTYnxQ06GNd1DvBaj0oWWuPcrTYabT5Pt9FrxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfB/8+a6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E4FC433C7;
+	Mon,  8 Apr 2024 13:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585040;
-	bh=p1XYna4yt54+tnj1UqzD6NFauw59SELPZK9n3u2sBTQ=;
+	s=korg; t=1712581958;
+	bh=Ggn6hs5hT7+Ctl2op6vuG+lzesDmplDpRLB7iMhoBRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1G87qjf17sl2yc8UGuX3TA6GOSIcETwOPY7XhF/UrizFl5/NBRsBe5mdT/lGqkyv
-	 nYvhN+1S2yoDMSs2svflRqKBKE/DqoHdkdRyM/xF0MxMqquWZwM+mHyX69Wc6Y1wEd
-	 3RPR4SQ8pmDTMTnZsxcVUFQwNZbKQr+eymdUbWWE=
+	b=VfB/8+a6Uass4AJNMIv3N9BFHv4NaWj/uMuVb1019gKuQX8RzSQTjt8ofu3HCjs4b
+	 Fs5tlUCSn5xfTKMEJK/YV2MghSklaQ1KnAzVv+XoiUjF5Tf4kbZvA+1RhA7XvGOpja
+	 kuZyob79JzV4HOTdHwy2Y7ku/Y8hupV2h2IkVw78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 615/690] tcp: properly terminate timers for kernel sockets
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 067/138] i40e: fix i40e_count_filters() to count only active/new filters
 Date: Mon,  8 Apr 2024 14:58:01 +0200
-Message-ID: <20240408125421.890638129@linuxfoundation.org>
+Message-ID: <20240408125258.304373131@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,143 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-[ Upstream commit 151c9c724d05d5b0dd8acd3e11cb69ef1f2dbada ]
+commit eb58c598ce45b7e787568fe27016260417c3d807 upstream.
 
-We had various syzbot reports about tcp timers firing after
-the corresponding netns has been dismantled.
+The bug usually affects untrusted VFs, because they are limited to 18 MACs,
+it affects them badly, not letting to create MAC all filters.
+Not stable to reproduce, it happens when VF user creates MAC filters
+when other MACVLAN operations are happened in parallel.
+But consequence is that VF can't receive desired traffic.
 
-Fortunately Josef Bacik could trigger the issue more often,
-and could test a patch I wrote two years ago.
+Fix counter to be bumped only for new or active filters.
 
-When TCP sockets are closed, we call inet_csk_clear_xmit_timers()
-to 'stop' the timers.
-
-inet_csk_clear_xmit_timers() can be called from any context,
-including when socket lock is held.
-This is the reason it uses sk_stop_timer(), aka del_timer().
-This means that ongoing timers might finish much later.
-
-For user sockets, this is fine because each running timer
-holds a reference on the socket, and the user socket holds
-a reference on the netns.
-
-For kernel sockets, we risk that the netns is freed before
-timer can complete, because kernel sockets do not hold
-reference on the netns.
-
-This patch adds inet_csk_clear_xmit_timers_sync() function
-that using sk_stop_timer_sync() to make sure all timers
-are terminated before the kernel socket is released.
-Modules using kernel sockets close them in their netns exit()
-handler.
-
-Also add sock_not_owned_by_me() helper to get LOCKDEP
-support : inet_csk_clear_xmit_timers_sync() must not be called
-while socket lock is held.
-
-It is very possible we can revert in the future commit
-3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
-which attempted to solve the issue in rds only.
-(net/smc/af_smc.c and net/mptcp/subflow.c have similar code)
-
-We probably can remove the check_net() tests from
-tcp_out_of_resources() and __tcp_close() in the future.
-
-Reported-by: Josef Bacik <josef@toxicpanda.com>
-Closes: https://lore.kernel.org/netdev/20240314210740.GA2823176@perftesting/
-Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
-Fixes: 8a68173691f0 ("net: sk_clone_lock() should only do get_net() if the parent is not a kernel socket")
-Link: https://lore.kernel.org/bpf/CANn89i+484ffqb93aQm1N-tjxxvb3WDKX0EbD7318RwRgsatjw@mail.gmail.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Josef Bacik <josef@toxicpanda.com>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://lore.kernel.org/r/20240322135732.1535772-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 621650cabee5 ("i40e: Refactoring VF MAC filters counting to make more reliable")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet_connection_sock.h |  1 +
- include/net/sock.h                 |  7 +++++++
- net/ipv4/inet_connection_sock.c    | 14 ++++++++++++++
- net/ipv4/tcp.c                     |  2 ++
- 4 files changed, 24 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 798aad21694e2..b6b7e210f9d7a 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -169,6 +169,7 @@ void inet_csk_init_xmit_timers(struct sock *sk,
- 			       void (*delack_handler)(struct timer_list *),
- 			       void (*keepalive_handler)(struct timer_list *));
- void inet_csk_clear_xmit_timers(struct sock *sk);
-+void inet_csk_clear_xmit_timers_sync(struct sock *sk);
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1249,8 +1249,11 @@ int i40e_count_filters(struct i40e_vsi *
+ 	int bkt;
+ 	int cnt = 0;
  
- static inline void inet_csk_schedule_ack(struct sock *sk)
- {
-diff --git a/include/net/sock.h b/include/net/sock.h
-index e19eebaf59f73..44ebec3fdda64 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1751,6 +1751,13 @@ static inline void sock_owned_by_me(const struct sock *sk)
- #endif
- }
+-	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
+-		++cnt;
++	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
++		if (f->state == I40E_FILTER_NEW ||
++		    f->state == I40E_FILTER_ACTIVE)
++			++cnt;
++	}
  
-+static inline void sock_not_owned_by_me(const struct sock *sk)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	WARN_ON_ONCE(lockdep_sock_is_held(sk) && debug_locks);
-+#endif
-+}
-+
- static inline bool sock_owned_by_user(const struct sock *sk)
- {
- 	sock_owned_by_me(sk);
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index da43957a58438..27975a44d1f9d 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -589,6 +589,20 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
+ 	return cnt;
  }
- EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
- 
-+void inet_csk_clear_xmit_timers_sync(struct sock *sk)
-+{
-+	struct inet_connection_sock *icsk = inet_csk(sk);
-+
-+	/* ongoing timer handlers need to acquire socket lock. */
-+	sock_not_owned_by_me(sk);
-+
-+	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
-+
-+	sk_stop_timer_sync(sk, &icsk->icsk_retransmit_timer);
-+	sk_stop_timer_sync(sk, &icsk->icsk_delack_timer);
-+	sk_stop_timer_sync(sk, &sk->sk_timer);
-+}
-+
- void inet_csk_delete_keepalive_timer(struct sock *sk)
- {
- 	sk_stop_timer(sk, &sk->sk_timer);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 521c15962c719..16fd3da68e9f6 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2916,6 +2916,8 @@ void tcp_close(struct sock *sk, long timeout)
- 	lock_sock(sk);
- 	__tcp_close(sk, timeout);
- 	release_sock(sk);
-+	if (!sk->sk_net_refcnt)
-+		inet_csk_clear_xmit_timers_sync(sk);
- 	sock_put(sk);
- }
- EXPORT_SYMBOL(tcp_close);
--- 
-2.43.0
-
 
 
 
