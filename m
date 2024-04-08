@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205DF89C3FB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FCC89C1EB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0830282757
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9FDF1F22805
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADE77C0BF;
-	Mon,  8 Apr 2024 13:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27FE7BB1F;
+	Mon,  8 Apr 2024 13:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2xaAI7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nh/uARtq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4136A352;
-	Mon,  8 Apr 2024 13:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D932DF73;
+	Mon,  8 Apr 2024 13:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583660; cv=none; b=hddUjGERq9XIohVkfKDTII93qgszqOg7vuwPI7KSgtQQEX5fIqWwJM2/JvwQ3QXr5e7czunWodl5ll9ao5kXOaYRBhdU3E0sr+Kqci5LNU3Op2DZCtFMNYPTPRBCB2nTQSCYiluuiYGCpoL/Y+vqycnHKDTB4ivafKpLlYt7Sb0=
+	t=1712582439; cv=none; b=Z8uYjeEuh7aFqVQ60RKRLsxtzLh47WDoLWmr50RQ6msQF0vlxL8BNqs2hlPMWCrVlpRrUpxbwDUD8HCrCWnh4vztJqYxuB+K9YjbRCHq4d+HGNuyKikx+7jIuKJCtwxTyy9UkZvRFTltIrKcSmTiQem1gFTSgEfhKLQytFAcmh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583660; c=relaxed/simple;
-	bh=43L5rZTcPNyLXxpSAaoi0xD6uZIFcnXCEIKRVli1Qmc=;
+	s=arc-20240116; t=1712582439; c=relaxed/simple;
+	bh=n9x6ok8IImWtzPVDMWsTqfSjXIWwmp0w6UsVUf2qeFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnFCUsHILGEinNM+qKOUWhnijZP7y/rWyd+fa02M03pCVatW+tMm/Ozdj1hKWxz/s5th55d7BP/IAfgAp3WC8ei4EfjHGyVKZdnXmsYmqef7Llr7lFGvi2nUs+lX+DKTjIlL+aU14V7fqA7iFQtfW6ZsjNDJis7MlU1VjD1IgbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2xaAI7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47932C433F1;
-	Mon,  8 Apr 2024 13:41:00 +0000 (UTC)
+	 MIME-Version; b=QM0fsbbBvakUw7pFMfknoVb5852/upEkktIx2Nol6MFFo0BLzDQ4OVVkn5oUQwoo0/sCVNdw4jrfBxOoFJl0s0XV3ugRoGIrz8xOeEUIKC6gz3RsBRBAO/Oy5VkQT/WxbGqSFEBDEY+vfQhS3S9gurv0CANoTajzOSdkl2YTcEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nh/uARtq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE05DC433C7;
+	Mon,  8 Apr 2024 13:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583660;
-	bh=43L5rZTcPNyLXxpSAaoi0xD6uZIFcnXCEIKRVli1Qmc=;
+	s=korg; t=1712582439;
+	bh=n9x6ok8IImWtzPVDMWsTqfSjXIWwmp0w6UsVUf2qeFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2xaAI7J2eLV5MpvhwMpwul0u0CrbEyvRiofS0+dCiu8T9ziV87xfMV+b8qPpFxxT
-	 CLqJKq/3WSXvw49QVH+IbmD0REdUXV0JjEve02IU//APhehb8/JyOgGKMgOFpOEiG2
-	 EgRY6TAiNdnLjWtB1BpOqyAJjN6o8gJeUh121T9Q=
+	b=Nh/uARtqtvAaLWyZB3KbzutQGuc4qMHBGlLZe+u77ch5ObAK+dIjkws78jfs+j/NP
+	 V1HfE6Yio9WXYnd40/rBTlDznOw8egnTl/qLBI28HiouDFL/eieusfNLJYY4JZfOWk
+	 JRQcvKCxblUr/tSTPF8vHQqpvyGpRoEqcWBPCv6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 220/252] arm64/ptrace: Use saved floating point state type to determine SVE layout
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/138] s390/pai_crypto: remove per-cpu variable assignement in event initialization
 Date: Mon,  8 Apr 2024 14:58:39 +0200
-Message-ID: <20240408125313.485326128@linuxfoundation.org>
+Message-ID: <20240408125259.497391381@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit b017a0cea627fcbe158fc2c214fe893e18c4d0c4 upstream.
+[ Upstream commit aecd5a37b5ef4de4f6402dc079672e4243cc4c13 ]
 
-The SVE register sets have two different formats, one of which is a wrapped
-version of the standard FPSIMD register set and another with actual SVE
-register data. At present we check TIF_SVE to see if full SVE register
-state should be provided when reading the SVE regset but if we were in a
-syscall we may have saved only floating point registers even though that is
-set.
+Function paicrypt_event_init() initializes the PMU device driver
+specific details for an event. It is called once per event creation.
+The function paicrypt_event_init() is not necessarily executed on
+that CPU the event will be used for.
+When an event is activated, function paicrypt_start() is used to
+start the event on that CPU.
+The per CPU data structure struct paicrypt_map has a pointer to
+the event which is active for a particular CPU. This pointer is
+set in function paicrypt_start() to point to the currently installed
+event. There is no need to also set this pointer in function
+paicrypt_event_init() where is might be assigned to the wrong CPU.
+Therefore remove this assignment in paicrypt_event_init().
 
-Fix this and simplify the logic by checking and using the format which we
-recorded when deciding if we should use FPSIMD or SVE format.
-
-Fixes: 8c845e273104 ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
-Cc: <stable@vger.kernel.org> # 6.2.x
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240325-arm64-ptrace-fp-type-v1-1-8dc846caf11f@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/ptrace.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/s390/kernel/perf_pai_crypto.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -728,7 +728,6 @@ static void sve_init_header_from_task(st
- {
- 	unsigned int vq;
- 	bool active;
--	bool fpsimd_only;
- 	enum vec_type task_type;
+diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+index 7eb138b07e7be..4b773653a951b 100644
+--- a/arch/s390/kernel/perf_pai_crypto.c
++++ b/arch/s390/kernel/perf_pai_crypto.c
+@@ -213,7 +213,6 @@ static int paicrypt_event_init(struct perf_event *event)
+ 	 * are active at the same time.
+ 	 */
+ 	event->hw.last_tag = 0;
+-	cpump->event = event;
+ 	event->destroy = paicrypt_event_destroy;
  
- 	memset(header, 0, sizeof(*header));
-@@ -744,12 +743,10 @@ static void sve_init_header_from_task(st
- 	case ARM64_VEC_SVE:
- 		if (test_tsk_thread_flag(target, TIF_SVE_VL_INHERIT))
- 			header->flags |= SVE_PT_VL_INHERIT;
--		fpsimd_only = !test_tsk_thread_flag(target, TIF_SVE);
- 		break;
- 	case ARM64_VEC_SME:
- 		if (test_tsk_thread_flag(target, TIF_SME_VL_INHERIT))
- 			header->flags |= SVE_PT_VL_INHERIT;
--		fpsimd_only = false;
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
-@@ -757,7 +754,7 @@ static void sve_init_header_from_task(st
- 	}
- 
- 	if (active) {
--		if (fpsimd_only) {
-+		if (target->thread.fp_type == FP_STATE_FPSIMD) {
- 			header->flags |= SVE_PT_REGS_FPSIMD;
- 		} else {
- 			header->flags |= SVE_PT_REGS_SVE;
+ 	if (a->sample_period) {
+-- 
+2.43.0
+
 
 
 
