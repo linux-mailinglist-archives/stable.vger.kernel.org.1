@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BA489C30E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D07B789C3A6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA3C21C21520
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EEF31C2385D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8297867D;
-	Mon,  8 Apr 2024 13:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5B512C817;
+	Mon,  8 Apr 2024 13:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+foeCub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBdIBKfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAA36FE35;
-	Mon,  8 Apr 2024 13:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B6A7E111;
+	Mon,  8 Apr 2024 13:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583121; cv=none; b=A2xpn8DsdT2JrbafM5BwNwSEnEg3c3bkHM1MRvZLOkTT9rWsouequARsOYTtaO1GKfp2pWpF0Yg1s9oIO3QNUcWnt8hN1M90xAsW21dKoJIbWSoy9fIblUqd/SieHpI6jH5mWcGmSXWRKj40PnwshORS4+SCD+s9vqjrYNX8d0M=
+	t=1712583478; cv=none; b=i4Cx1Q1JtNI2lIaqNWY0L0EsBvwFAcy1RGmls09/iuXpDczQlTeYuFJMvuZ1x0OXGBVN4GUBn6AREDOQjJAj7/DKDG3C6lChww8mYD8CZKOcb9nvj5QGBGO0Db4hL/S0dG0Hg0DBOTyAaSexrkmDB9Ubo+ZqlJsaUyXNnW4rtbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583121; c=relaxed/simple;
-	bh=thXKxMJzTVqYg/s5cqyNJ5BAVbBgc08/7HuJxD441gw=;
+	s=arc-20240116; t=1712583478; c=relaxed/simple;
+	bh=bmUR6TOBtMTHOwL/IuXJQEb11F4plyfDaEbWzGnb8C4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrR3jgzWr9zEewCIK2mRoZ6frzBVK/kD1o5MBJTaGXXgTmaJsAnIDvKgVSbuBulwkqRdUjJ9P9ncvuPYzodtxR/jiIHjjoIwNvun27hrNnhqgUJd1D1CgV4ldEvnMFwaLbN4xuzLZa0oyCA0sTnzfRj1DwpuUQwixtAWLFQjdg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+foeCub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360F0C433C7;
-	Mon,  8 Apr 2024 13:32:01 +0000 (UTC)
+	 MIME-Version; b=hGssZyAZYExLb5rkxQt09aw1Maurm3+W3/nHNbq8m3ORjQ2YCQ6eenYKFL7CpY2KpEDMqpmA9EyniMUSdxo/Y+Yv3QNvIJUsd+5PdpF0qnSdvxLsDgWqliqdAHWWK6WYUcvXzpS3GYp8O6Kq260nqy7E135pX9qmtMRoh3xk3KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBdIBKfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2386CC433F1;
+	Mon,  8 Apr 2024 13:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583121;
-	bh=thXKxMJzTVqYg/s5cqyNJ5BAVbBgc08/7HuJxD441gw=;
+	s=korg; t=1712583478;
+	bh=bmUR6TOBtMTHOwL/IuXJQEb11F4plyfDaEbWzGnb8C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+foeCubAZVmqq5K7seVLYYXoyOSTqQdZfcRoCzYnVEby/U9p24mtqXsCpVKSwQXb
-	 4CtukOcLmo9Ya7+gsyewbSJs1R1Tj0XqEbS7wMj6hrwYpsKZ7G6eUkiSSZLGLT8NyE
-	 EezMF8s4RSMfVKnQleM0FPtibZvzg7IUR7uZ3CKg=
+	b=LBdIBKfM4TKZ2Hs+AZLpoLb8HZi8A2b92KcJ5qMZ8nB6F9feNw7Gikd+KNiPozyib
+	 sM9WMhEA46BjIYUVqIfsLxkVSdmMh/n/ZmOV2SVPMXGCLbsuK3IqMOjIKpwlbLZI+q
+	 WbE7yjy7cyeIxzDkFyKS9hTa9oMnl+z0XF572Uy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Nikita Travkin <nikita@trvn.ru>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/252] 9p: Fix read/write debug statements to report server reply
+Subject: [PATCH 6.8 183/273] thermal: gov_power_allocator: Allow binding without trip points
 Date: Mon,  8 Apr 2024 14:57:38 +0200
-Message-ID: <20240408125311.589370079@linuxfoundation.org>
+Message-ID: <20240408125314.969670696@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+From: Nikita Travkin <nikita@trvn.ru>
 
-[ Upstream commit be3193e58ec210b2a72fb1134c2a0695088a911d ]
+[ Upstream commit da781936e7c301e6197eb6513775748e79fb2575 ]
 
-Previous conversion to iov missed these debug statements which would now
-always print the requested size instead of the actual server reply.
+IPA probe function was recently refactored to perform extra error checks
+and make sure the thermal zone has trip points necessary for the IPA
+operation. With this change, if a thermal zone is probed such that it
+has no trip points that IPA can use, IPA will fail and the TZ won't be
+created. This is the case if a platform defines a TZ without cooling
+devices and only with "hot"/"critical" trip points, often found on some
+Qualcomm devices [1].
 
-Write also added a loop in a much older commit but we didn't report
-these, while reads do report each iteration -- it's more coherent to
-keep reporting all requests to server so move that at the same time.
+Documentation across IPA code (notably get_governor_trips() kerneldoc)
+suggests that IPA is supposed to handle such TZ even if it won't
+actually do anything.
 
-Fixes: 7f02464739da ("9p: convert to advancing variant of iov_iter_get_pages_alloc()")
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Message-ID: <20240109-9p-rw-trace-v1-1-327178114257@codewreck.org>
+This commit partially reverts the previous change to allow IPA to bind
+to such "empty" thermal zones.
+
+Fixes: e83747c2f8e3 ("thermal: gov_power_allocator: Set up trip points earlier")
+Link: arch/arm64/boot/dts/qcom/sc7180.dtsi#n4776 # [1]
+Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/thermal/gov_power_allocator.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index e265a0ca6bddd..f7e90b4769bba 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1583,7 +1583,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 		received = rsize;
- 	}
+diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
+index 207a6a3936b54..38581583ad289 100644
+--- a/drivers/thermal/gov_power_allocator.c
++++ b/drivers/thermal/gov_power_allocator.c
+@@ -679,11 +679,6 @@ static int power_allocator_bind(struct thermal_zone_device *tz)
+ 		return -ENOMEM;
  
--	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", count);
-+	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", received);
+ 	get_governor_trips(tz, params);
+-	if (!params->trip_max) {
+-		dev_warn(&tz->device, "power_allocator: missing trip_max\n");
+-		kfree(params);
+-		return -EINVAL;
+-	}
  
- 	if (non_zc) {
- 		int n = copy_to_iter(dataptr, received, to);
-@@ -1609,9 +1609,6 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 	int total = 0;
- 	*err = 0;
+ 	ret = check_power_actors(tz, params);
+ 	if (ret < 0) {
+@@ -712,9 +707,10 @@ static int power_allocator_bind(struct thermal_zone_device *tz)
+ 	if (!tz->tzp->sustainable_power)
+ 		dev_warn(&tz->device, "power_allocator: sustainable_power will be estimated\n");
  
--	p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %zd\n",
--		 fid->fid, offset, iov_iter_count(from));
--
- 	while (iov_iter_count(from)) {
- 		int count = iov_iter_count(from);
- 		int rsize = fid->iounit;
-@@ -1623,6 +1620,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 		if (count < rsize)
- 			rsize = count;
+-	estimate_pid_constants(tz, tz->tzp->sustainable_power,
+-			       params->trip_switch_on,
+-			       params->trip_max->temperature);
++	if (params->trip_max)
++		estimate_pid_constants(tz, tz->tzp->sustainable_power,
++				       params->trip_switch_on,
++				       params->trip_max->temperature);
  
-+		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %d (/%d)\n",
-+			 fid->fid, offset, rsize, count);
-+
- 		/* Don't bother zerocopy for small IO (< 1024) */
- 		if (clnt->trans_mod->zc_request && rsize > 1024) {
- 			req = p9_client_zc_rpc(clnt, P9_TWRITE, NULL, from, 0,
-@@ -1650,7 +1650,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 			written = rsize;
- 		}
+ 	reset_pid_controller(params);
  
--		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", count);
-+		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", written);
- 
- 		p9_req_put(clnt, req);
- 		iov_iter_revert(from, count - written - iov_iter_count(from));
 -- 
 2.43.0
 
