@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-37515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB7289C533
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D41289C073
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC8D1283CEE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39A14281D5B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413207C089;
-	Mon,  8 Apr 2024 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99582E62C;
+	Mon,  8 Apr 2024 13:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBJ4+z8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sru1NLcX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B257BB1A;
-	Mon,  8 Apr 2024 13:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F112DF73;
+	Mon,  8 Apr 2024 13:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584460; cv=none; b=Qg5IQ2ysqtVShKBmioDN8BiW1mIfkUj1IAzNMVoGB84QGMbejUrPu2Q8VsWhwEtD3Gz0p3qLI7PvdNS5lYfQrzYDMGqKseCCvrKr1D6b2mV//6/YESHWUT0U25bggSCVymhkgNZmYw2PxCH00WpBkIiHx93+0SE8EI2i+Bh2z1M=
+	t=1712581722; cv=none; b=tmoSJKsWJrT5Wckj45gZ2ySGzjLw7sxfXK9r3a1+KK3ZvGYh+umoC9ze8AJq/Wk3wHJQWYrDs0YiV4Jgkx+vaG9JY8IFi3vvwhtipvqisYpYU3laRkLk8lrLiqbftM7l8qELYln+yV5axe0SfAX9ZraGinFU+dyFSc+1QSbVWAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584460; c=relaxed/simple;
-	bh=Hq84RSrJYMln1VwAWP6IrDaM3ouH0Efv9tTqJNjGIgE=;
+	s=arc-20240116; t=1712581722; c=relaxed/simple;
+	bh=iIRyXzmrWUuM7a5YwAh5mDrtv2jzR2hU+oa1k4RT1D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tz2sENnz9ola014AfxxUeqqFlCvqFQbNu4FGugwq4Z7vWNzaXSwPLeBgBHgmn6yDUyK/0o+DI2sDsmrpsEu2FgHLzo0GS1KplsWxE8Ib7f2j5guusURracLzRNNGiCb9a/wp001ANDvhIlxqFQBYUi4v41IT+LaOmpc1O1z9nTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBJ4+z8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A502C433C7;
-	Mon,  8 Apr 2024 13:54:19 +0000 (UTC)
+	 MIME-Version; b=uBOPASQVwOzPb+WoE7vs8FdfL4kI9ASFA1Dho505TX7JUj0FvRTD92TPSg1oFDiND+4kJ8hUwrBDD01UKBifV+2PknWiQWvHFJByODvhfYG/2fQ7Q92ELVHt6x+FuJC0tx9w8jdmv2PUqND1ZJ45j5VeggnZd9vphliImXDzRbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sru1NLcX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5718C433C7;
+	Mon,  8 Apr 2024 13:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584459;
-	bh=Hq84RSrJYMln1VwAWP6IrDaM3ouH0Efv9tTqJNjGIgE=;
+	s=korg; t=1712581721;
+	bh=iIRyXzmrWUuM7a5YwAh5mDrtv2jzR2hU+oa1k4RT1D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QBJ4+z8CucuL/ar7pWcY52e+mRRZIyetPbIJIffIqKuEcue8pms1ex8FrqhzBMNLO
-	 WG+TyT16qUyTZo6ul2vPxKSkmcsWLdsfdqTcMiw6hYf2zSN4yyifwgSfrkDsO6iim2
-	 rjnnYj5vRG4B4NLSCwuxUshDnOq+90Ox5BUhG7k0=
+	b=Sru1NLcX56YtB9Jgw+XkUlwTQYXFZ8Nj2fG8m7I3+FMuCfEdLTn+C8YDpEUGFmpzr
+	 2pwIdukpofCs7yXhylPA65d2umGgAgyaZ8Ecl/64YTUOBVWGwS6lNhA+sN8T2XNkP2
+	 pixZP0xdfbV+g/ZWKafjZT88L09FNseWpgHutkuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 418/690] NFSD enforce filehandle check for source file in COPY
-Date: Mon,  8 Apr 2024 14:54:44 +0200
-Message-ID: <20240408125414.754986402@linuxfoundation.org>
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 010/273] mlxbf_gige: stop PHY during open() error paths
+Date: Mon,  8 Apr 2024 14:54:45 +0200
+Message-ID: <20240408125309.606179771@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 754035ff79a14886e68c0c9f6fa80adb21f12b53 ]
+[ Upstream commit d6c30c5a168f8586b8bcc0d8e42e2456eb05209b ]
 
-If the passed in filehandle for the source file in the COPY operation
-is not a regular file, the server MUST return NFS4ERR_WRONG_TYPE.
+The mlxbf_gige_open() routine starts the PHY as part of normal
+initialization.  The mlxbf_gige_open() routine must stop the
+PHY during its error paths.
 
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-[ cel: adjusted to apply to v5.15.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index b2e6fa962f7d9..b2bfe540c1cb0 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1760,7 +1760,13 @@ static int nfsd4_do_async_copy(void *data)
- 		filp = nfs42_ssc_open(copy->ss_mnt, &copy->c_fh,
- 				      &copy->stateid);
- 		if (IS_ERR(filp)) {
--			nfserr = nfserr_offload_denied;
-+			switch (PTR_ERR(filp)) {
-+			case -EBADF:
-+				nfserr = nfserr_wrong_type;
-+				break;
-+			default:
-+				nfserr = nfserr_offload_denied;
-+			}
- 			/* ss_mnt will be unmounted by the laundromat */
- 			goto do_callback;
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index 3d09fa54598f1..cef0e2d3f1a7b 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -157,7 +157,7 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ 
+ 	err = mlxbf_gige_tx_init(priv);
+ 	if (err)
+-		goto free_irqs;
++		goto phy_deinit;
+ 	err = mlxbf_gige_rx_init(priv);
+ 	if (err)
+ 		goto tx_deinit;
+@@ -185,6 +185,9 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ tx_deinit:
+ 	mlxbf_gige_tx_deinit(priv);
+ 
++phy_deinit:
++	phy_stop(phydev);
++
+ free_irqs:
+ 	mlxbf_gige_free_irqs(priv);
+ 	return err;
 -- 
 2.43.0
 
