@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DB189C510
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:52:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EA489C0B2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2941F23323
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:52:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E29FB22047
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A636EB72;
-	Mon,  8 Apr 2024 13:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602C06A352;
+	Mon,  8 Apr 2024 13:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lJsP+BQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef+AAyJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4146442046;
-	Mon,  8 Apr 2024 13:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C31A2DF73;
+	Mon,  8 Apr 2024 13:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584372; cv=none; b=OliUc/osgmUG4BfoDLsWZpQrhHU8QZp5DE1UJpfJ/zrpUI6p/rRCX0v1buZEEjvExdiLu52FVc8j0g9h7L+Wa1je7ZDxknobJCi4RXqXComBw/nE08R95g6Wjmivgy8nzAt/PsqWAtG2+P81b6MpCxOx2ywrq22tyCo1j2xiNHw=
+	t=1712581633; cv=none; b=sxCQMU+q6tSptNtycL3qIaf7WFS9DZmNYDeCYhmqXwgRnySGqXDxfzBWz4kNgvpmXs6U38uBPBEz3DkOac2YL7VPb7VHXm4i7gVpcGCnaIwoJtxoJLSWG/ADljqDg/e3n78KhILAwFbtIpfVzRaZHSeTZvFjFvsM7j6S811xf+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584372; c=relaxed/simple;
-	bh=YaFpXzc41gsFWvHTHGrzZjb6BRAjMPBC2XvKASQVo4Y=;
+	s=arc-20240116; t=1712581633; c=relaxed/simple;
+	bh=NKTyB0A+TaPZ020jPSDV4PSE7JtwiW7Vy3sIw2DMZ4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aG6PAdL1dmx31IGiVc7k2ROCNk74VrH+D7wF8tOYRScoBccMhOTwvM5Bov+0Ntd8guikMGWYX4Hqvn6csFgjTy19D9IKFfbbjWIEjiMKxgqXwJ97LWacHyFCbAdBiiW2IAZSRMdP0Zj0QLOJFxr2DwJ4PW9mN+e5wRmjW+g6p0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lJsP+BQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A4DC433C7;
-	Mon,  8 Apr 2024 13:52:51 +0000 (UTC)
+	 MIME-Version; b=IXrOPl2pZXYmWJOWMHtMb67KL0Rf9qo/NMwigzQngTKx2W8QW7yaV6rd5Jxf0w+wXK+dUThnNIQGpqKlCRsYHZX53JJzZEaqn/HnPSBBTpqHgDjc45wT9Y2MWdxb4R3Cp7kj3NuRUHhgP7c/Ztf5J8MTjmOElH5BJaKHE70CtA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef+AAyJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB2AC433C7;
+	Mon,  8 Apr 2024 13:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584372;
-	bh=YaFpXzc41gsFWvHTHGrzZjb6BRAjMPBC2XvKASQVo4Y=;
+	s=korg; t=1712581633;
+	bh=NKTyB0A+TaPZ020jPSDV4PSE7JtwiW7Vy3sIw2DMZ4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1lJsP+BQYWc8E86dz62kSWdiEr19FSBv+ay/1/aS2REGQqc37CIdMrsXbwz3eN24y
-	 kATCXFx3U0X/5rylUT5KVp8bt0EOrJSzDpA+T4epsD10K4y3FOB5JeqnXpfi+X/wjz
-	 SUnUAlVSwAIy5uCvz0tSl9fUYE6CgkxxbCuoK6pY=
+	b=Ef+AAyJ6oCLLg7CGuCYzXHccYsb8r6e4lfL6lPOGOEXxtEIjUqnkOvU3ps2AA/3AH
+	 pGKTu7hfkUQcYWakj9TNUvrbMLfcNCA5uABPv8pmYhB4eEUwlZYxZZgNAWQyVcOuiT
+	 avhAgQwTPGIbqtYKGjj+I8SMphWIQPTyOgVAX21A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 414/690] NFSD: fix regression with setting ACLs.
-Date: Mon,  8 Apr 2024 14:54:40 +0200
-Message-ID: <20240408125414.587326363@linuxfoundation.org>
+	Artem Savkov <asavkov@redhat.com>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 006/273] arm64: bpf: fix 32bit unconditional bswap
+Date: Mon,  8 Apr 2024 14:54:41 +0200
+Message-ID: <20240408125309.480519361@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Artem Savkov <asavkov@redhat.com>
 
-[ Upstream commit 00801cd92d91e94aa04d687f9bb9a9104e7c3d46 ]
+[ Upstream commit a51cd6bf8e10793103c5870ff9e4db295a843604 ]
 
-A recent patch moved ACL setting into nfsd_setattr().
-Unfortunately it didn't work as nfsd_setattr() aborts early if
-iap->ia_valid is 0.
+In case when is64 == 1 in emit(A64_REV32(is64, dst, dst), ctx) the
+generated insn reverses byte order for both high and low 32-bit words,
+resuling in an incorrect swap as indicated by the jit test:
 
-Remove this test, and instead avoid calling notify_change() when
-ia_valid is 0.
+[ 9757.262607] test_bpf: #312 BSWAP 16: 0x0123456789abcdef -> 0xefcd jited:1 8 PASS
+[ 9757.264435] test_bpf: #313 BSWAP 32: 0x0123456789abcdef -> 0xefcdab89 jited:1 ret 1460850314 != -271733879 (0x5712ce8a != 0xefcdab89)FAIL (1 times)
+[ 9757.266260] test_bpf: #314 BSWAP 64: 0x0123456789abcdef -> 0x67452301 jited:1 8 PASS
+[ 9757.268000] test_bpf: #315 BSWAP 64: 0x0123456789abcdef >> 32 -> 0xefcdab89 jited:1 8 PASS
+[ 9757.269686] test_bpf: #316 BSWAP 16: 0xfedcba9876543210 -> 0x1032 jited:1 8 PASS
+[ 9757.271380] test_bpf: #317 BSWAP 32: 0xfedcba9876543210 -> 0x10325476 jited:1 ret -1460850316 != 271733878 (0xa8ed3174 != 0x10325476)FAIL (1 times)
+[ 9757.273022] test_bpf: #318 BSWAP 64: 0xfedcba9876543210 -> 0x98badcfe jited:1 7 PASS
+[ 9757.274721] test_bpf: #319 BSWAP 64: 0xfedcba9876543210 >> 32 -> 0x10325476 jited:1 9 PASS
 
-This means that nfsd_setattr() will now *always* lock the inode.
-Previously it didn't if only a ATTR_MODE change was requested on a
-symlink (see Commit 15b7a1b86d66 ("[PATCH] knfsd: fix setattr-on-symlink
-error return")). I don't think this change really matters.
+Fix this by forcing 32bit variant of rev32.
 
-Fixes: c0cbe70742f4 ("NFSD: add posix ACLs to struct nfsd_attrs")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 1104247f3f979 ("bpf, arm64: Support unconditional bswap")
+Signed-off-by: Artem Savkov <asavkov@redhat.com>
+Tested-by: Puranjay Mohan <puranjay12@gmail.com>
+Acked-by: Puranjay Mohan <puranjay12@gmail.com>
+Acked-by: Xu Kuohai <xukuohai@huawei.com>
+Message-ID: <20240321081809.158803-1-asavkov@redhat.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 66d4a126f20ab..ad689215b1f37 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -299,6 +299,10 @@ commit_metadata(struct svc_fh *fhp)
- static void
- nfsd_sanitize_attrs(struct inode *inode, struct iattr *iap)
- {
-+	/* Ignore mode updates on symlinks */
-+	if (S_ISLNK(inode->i_mode))
-+		iap->ia_valid &= ~ATTR_MODE;
-+
- 	/* sanitize the mode change */
- 	if (iap->ia_valid & ATTR_MODE) {
- 		iap->ia_mode &= S_IALLUGO;
-@@ -354,7 +358,7 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	int		accmode = NFSD_MAY_SATTR;
- 	umode_t		ftype = 0;
- 	__be32		err;
--	int		host_err;
-+	int		host_err = 0;
- 	bool		get_write_count;
- 	bool		size_change = (iap->ia_valid & ATTR_SIZE);
- 
-@@ -392,13 +396,6 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	dentry = fhp->fh_dentry;
- 	inode = d_inode(dentry);
- 
--	/* Ignore any mode updates on symlinks */
--	if (S_ISLNK(inode->i_mode))
--		iap->ia_valid &= ~ATTR_MODE;
--
--	if (!iap->ia_valid)
--		return 0;
--
- 	nfsd_sanitize_attrs(inode, iap);
- 
- 	if (check_guard && guardtime != inode->i_ctime.tv_sec)
-@@ -449,8 +446,10 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 			goto out_unlock;
- 	}
- 
--	iap->ia_valid |= ATTR_CTIME;
--	host_err = notify_change(&init_user_ns, dentry, iap, NULL);
-+	if (iap->ia_valid) {
-+		iap->ia_valid |= ATTR_CTIME;
-+		host_err = notify_change(&init_user_ns, dentry, iap, NULL);
-+	}
- 
- out_unlock:
- 	if (attr->na_seclabel && attr->na_seclabel->len)
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 582c4c2491edc..00217d8d034b7 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -876,7 +876,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 			emit(A64_UXTH(is64, dst, dst), ctx);
+ 			break;
+ 		case 32:
+-			emit(A64_REV32(is64, dst, dst), ctx);
++			emit(A64_REV32(0, dst, dst), ctx);
+ 			/* upper 32 bits already cleared */
+ 			break;
+ 		case 64:
 -- 
 2.43.0
 
