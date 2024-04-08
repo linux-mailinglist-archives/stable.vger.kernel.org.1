@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-36779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C0A89C19F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A1C89C5B4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC3F1C21740
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B216EB28F96
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8503C7F7F4;
-	Mon,  8 Apr 2024 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214547B3FD;
+	Mon,  8 Apr 2024 13:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpZvTVzK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3/NbtyA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B00768F0;
-	Mon,  8 Apr 2024 13:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20DC6EB72;
+	Mon,  8 Apr 2024 13:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582320; cv=none; b=L/pFYxnhnnPCrIrHnzC9jZcuhZz/gzMOWi3gDo3QCInBjFV9daJEd8T4BnHrf2b8c+uUh+vGh0yzdOB4wvG0gUSAR9qt/dZnCJQL+fuBUxwbZpBJ06YKQLC2zYbubRNDo7tkTjW6D6geXQhMMDYFzYsuu4XPWfwNg3UtRXsIjGI=
+	t=1712584544; cv=none; b=A6AKXSrroh+abQ3K3Mt5Z32OEWNTviYa1gLZdBdWFdwZ8t2FqTZI5mZ1nbY8P2xaz15Gwe1pUVBpBHZhHS1JlcTxUwzoVYdToOPH4h9NsElLwSe5F5eRL+9lK0AxqshwkJqDV6fMYv3QGXHkN4MiJkr/9xJgxGlF/xAhBQiWlDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582320; c=relaxed/simple;
-	bh=e1Ff7Efw2dSLyGnqwNlEND7ppMA0J5nT1gBksvAYf8w=;
+	s=arc-20240116; t=1712584544; c=relaxed/simple;
+	bh=vq9uD8w7WRM0Wgw3qOqpNfGYj1ha7/IND/GffRCC9dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WIgKFI4ZRAi6MaQaHZRDwbG6rNlL1uR7s2ZK70FjdGw+vxm+glS9ttnJeaLQA63kPvkQjA8aibx9khsJW5nodDjwS8NG8mGFfLxN6sPE+gS17sC7l8tIX4KWgdwI4VJ4oi0WZiqiKiCT/yfv+ZC6cfahuXwLz5nVHkJn3GR7l3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpZvTVzK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA6CC433F1;
-	Mon,  8 Apr 2024 13:18:39 +0000 (UTC)
+	 MIME-Version; b=pi7itlCpEW86w9LNcnkDX8gsmeq+1JyJsvj4RJx98E1YTjWDTbSl+0PsLB4ZCyOxETL1AHgMdqyIN28AIRXB1lFmdd20heHl0WkWswxXNDVuZcHrDrQCwlxpjtjCx9IjLuxCz8OnfAk8K8noEhyFm3pu4toZqKb5CDUFLRVE+cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3/NbtyA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C77BC433F1;
+	Mon,  8 Apr 2024 13:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582319;
-	bh=e1Ff7Efw2dSLyGnqwNlEND7ppMA0J5nT1gBksvAYf8w=;
+	s=korg; t=1712584544;
+	bh=vq9uD8w7WRM0Wgw3qOqpNfGYj1ha7/IND/GffRCC9dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpZvTVzKt2qEEn6ZdOVmmWVpyP2IAM/KxHAfknswh1F+LmSmhG6SJGQSWcp7Dk83+
-	 UTGbjJZLLi0mEb/55il4wkNuqfQhQ4lACKqt/91NuAuNhre9goUjM38UVOsae9T9kz
-	 JB555kPZrERkEkdArbsLJzCMKahsYTJzIgO5jjRY=
+	b=S3/NbtyASfpLqluwJ4deiVJMe/AJTrSP7vpKU3DTwp/Bx1tCdLpxBvDX/QzXfRKgS
+	 5PeANvMFvQlFgwf7OEw5nZgCwEaIEYPKMJWvkzclId/N+9nB57nfhBXtpRYVCDOYDi
+	 KoFy4+C7jIHZI2v9+mC7L1OBND7CSuzKszw3UY78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>
-Subject: [PATCH 6.8 065/273] RISC-V: KVM: Fix APLIC in_clrip[x] read emulation
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 474/690] nfsd: move nfserrno() to vfs.c
 Date: Mon,  8 Apr 2024 14:55:40 +0200
-Message-ID: <20240408125311.320062293@linuxfoundation.org>
+Message-ID: <20240408125416.774931763@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,75 +59,256 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 8e936e98718f005c986be0bfa1ee6b355acf96be upstream.
+[ Upstream commit cb12fae1c34b1fa7eaae92c5aadc72d86d7fae19 ]
 
-The reads to APLIC in_clrip[x] registers returns rectified input values
-of the interrupt sources.
+nfserrno() is common to all nfs versions, but nfsproc.c is specifically
+for NFSv2. Move it to vfs.c, and the prototype to vfs.h.
 
-A rectified input value of an interrupt source is defined by the section
-"4.5.2 Source configurations (sourcecfg[1]–sourcecfg[1023])" of the
-RISC-V AIA specification as:
+While we're in here, remove the #ifdef EDQUOT check in this function.
+It's apparently a holdover from the initial merge of the nfsd code in
+1997. No other place in the kernel checks that that symbol is defined
+before using it, so I think we can dispense with it here.
 
-    rectified input value = (incoming wire value) XOR (source is inverted)
-
-Update the riscv_aplic_input() implementation to match the above.
-
-Cc: stable@vger.kernel.org
-Fixes: 74967aa208e2 ("RISC-V: KVM: Add in-kernel emulation of AIA APLIC")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20240321085041.1955293-3-apatel@ventanamicro.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/riscv/kvm/aia_aplic.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ fs/nfsd/blocklayout.c    |  1 +
+ fs/nfsd/blocklayoutxdr.c |  1 +
+ fs/nfsd/export.h         |  1 -
+ fs/nfsd/flexfilelayout.c |  1 +
+ fs/nfsd/nfs4idmap.c      |  1 +
+ fs/nfsd/nfsproc.c        | 62 ---------------------------------------
+ fs/nfsd/vfs.c            | 63 ++++++++++++++++++++++++++++++++++++++++
+ fs/nfsd/vfs.h            |  1 +
+ 8 files changed, 68 insertions(+), 63 deletions(-)
 
---- a/arch/riscv/kvm/aia_aplic.c
-+++ b/arch/riscv/kvm/aia_aplic.c
-@@ -197,16 +197,31 @@ static void aplic_write_enabled(struct a
+diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
+index c99dee99a3c15..0ddd20cb68064 100644
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -16,6 +16,7 @@
+ #include "blocklayoutxdr.h"
+ #include "pnfs.h"
+ #include "filecache.h"
++#include "vfs.h"
  
- static bool aplic_read_input(struct aplic *aplic, u32 irq)
+ #define NFSDDBG_FACILITY	NFSDDBG_PNFS
+ 
+diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
+index 2455dc8be18a8..1ed2f691ebb90 100644
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -9,6 +9,7 @@
+ 
+ #include "nfsd.h"
+ #include "blocklayoutxdr.h"
++#include "vfs.h"
+ 
+ #define NFSDDBG_FACILITY	NFSDDBG_PNFS
+ 
+diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
+index ee0e3aba4a6e5..d03f7f6a8642d 100644
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -115,7 +115,6 @@ struct svc_export *	rqst_find_fsidzero_export(struct svc_rqst *);
+ int			exp_rootfh(struct net *, struct auth_domain *,
+ 					char *path, struct knfsd_fh *, int maxsize);
+ __be32			exp_pseudoroot(struct svc_rqst *, struct svc_fh *);
+-__be32			nfserrno(int errno);
+ 
+ static inline void exp_put(struct svc_export *exp)
  {
--	bool ret;
--	unsigned long flags;
-+	u32 sourcecfg, sm, raw_input, irq_inverted;
- 	struct aplic_irq *irqd;
-+	unsigned long flags;
-+	bool ret = false;
+diff --git a/fs/nfsd/flexfilelayout.c b/fs/nfsd/flexfilelayout.c
+index 2e2f1d5e9f623..fabc21ed68cea 100644
+--- a/fs/nfsd/flexfilelayout.c
++++ b/fs/nfsd/flexfilelayout.c
+@@ -15,6 +15,7 @@
  
- 	if (!irq || aplic->nr_irqs <= irq)
- 		return false;
- 	irqd = &aplic->irqs[irq];
+ #include "flexfilelayoutxdr.h"
+ #include "pnfs.h"
++#include "vfs.h"
  
- 	raw_spin_lock_irqsave(&irqd->lock, flags);
--	ret = (irqd->state & APLIC_IRQ_STATE_INPUT) ? true : false;
-+
-+	sourcecfg = irqd->sourcecfg;
-+	if (sourcecfg & APLIC_SOURCECFG_D)
-+		goto skip;
-+
-+	sm = sourcecfg & APLIC_SOURCECFG_SM_MASK;
-+	if (sm == APLIC_SOURCECFG_SM_INACTIVE)
-+		goto skip;
-+
-+	raw_input = (irqd->state & APLIC_IRQ_STATE_INPUT) ? 1 : 0;
-+	irq_inverted = (sm == APLIC_SOURCECFG_SM_LEVEL_LOW ||
-+			sm == APLIC_SOURCECFG_SM_EDGE_FALL) ? 1 : 0;
-+	ret = !!(raw_input ^ irq_inverted);
-+
-+skip:
- 	raw_spin_unlock_irqrestore(&irqd->lock, flags);
+ #define NFSDDBG_FACILITY	NFSDDBG_PNFS
  
- 	return ret;
+diff --git a/fs/nfsd/nfs4idmap.c b/fs/nfsd/nfs4idmap.c
+index e70a1a2999b7b..5e9809aff37eb 100644
+--- a/fs/nfsd/nfs4idmap.c
++++ b/fs/nfsd/nfs4idmap.c
+@@ -41,6 +41,7 @@
+ #include "idmap.h"
+ #include "nfsd.h"
+ #include "netns.h"
++#include "vfs.h"
+ 
+ /*
+  * Turn off idmapping when using AUTH_SYS.
+diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
+index 82b3ddeacc338..52fc222c34f26 100644
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -848,65 +848,3 @@ const struct svc_version nfsd_version2 = {
+ 	.vs_dispatch	= nfsd_dispatch,
+ 	.vs_xdrsize	= NFS2_SVC_XDRSIZE,
+ };
+-
+-/*
+- * Map errnos to NFS errnos.
+- */
+-__be32
+-nfserrno (int errno)
+-{
+-	static struct {
+-		__be32	nfserr;
+-		int	syserr;
+-	} nfs_errtbl[] = {
+-		{ nfs_ok, 0 },
+-		{ nfserr_perm, -EPERM },
+-		{ nfserr_noent, -ENOENT },
+-		{ nfserr_io, -EIO },
+-		{ nfserr_nxio, -ENXIO },
+-		{ nfserr_fbig, -E2BIG },
+-		{ nfserr_stale, -EBADF },
+-		{ nfserr_acces, -EACCES },
+-		{ nfserr_exist, -EEXIST },
+-		{ nfserr_xdev, -EXDEV },
+-		{ nfserr_mlink, -EMLINK },
+-		{ nfserr_nodev, -ENODEV },
+-		{ nfserr_notdir, -ENOTDIR },
+-		{ nfserr_isdir, -EISDIR },
+-		{ nfserr_inval, -EINVAL },
+-		{ nfserr_fbig, -EFBIG },
+-		{ nfserr_nospc, -ENOSPC },
+-		{ nfserr_rofs, -EROFS },
+-		{ nfserr_mlink, -EMLINK },
+-		{ nfserr_nametoolong, -ENAMETOOLONG },
+-		{ nfserr_notempty, -ENOTEMPTY },
+-#ifdef EDQUOT
+-		{ nfserr_dquot, -EDQUOT },
+-#endif
+-		{ nfserr_stale, -ESTALE },
+-		{ nfserr_jukebox, -ETIMEDOUT },
+-		{ nfserr_jukebox, -ERESTARTSYS },
+-		{ nfserr_jukebox, -EAGAIN },
+-		{ nfserr_jukebox, -EWOULDBLOCK },
+-		{ nfserr_jukebox, -ENOMEM },
+-		{ nfserr_io, -ETXTBSY },
+-		{ nfserr_notsupp, -EOPNOTSUPP },
+-		{ nfserr_toosmall, -ETOOSMALL },
+-		{ nfserr_serverfault, -ESERVERFAULT },
+-		{ nfserr_serverfault, -ENFILE },
+-		{ nfserr_io, -EREMOTEIO },
+-		{ nfserr_stale, -EOPENSTALE },
+-		{ nfserr_io, -EUCLEAN },
+-		{ nfserr_perm, -ENOKEY },
+-		{ nfserr_no_grace, -ENOGRACE},
+-	};
+-	int	i;
+-
+-	for (i = 0; i < ARRAY_SIZE(nfs_errtbl); i++) {
+-		if (nfs_errtbl[i].syserr == errno)
+-			return nfs_errtbl[i].nfserr;
+-	}
+-	WARN_ONCE(1, "nfsd: non-standard errno: %d\n", errno);
+-	return nfserr_io;
+-}
+-
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 88a2ad962a055..70a967789a611 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -48,6 +48,69 @@
+ 
+ #define NFSDDBG_FACILITY		NFSDDBG_FILEOP
+ 
++/**
++ * nfserrno - Map Linux errnos to NFS errnos
++ * @errno: POSIX(-ish) error code to be mapped
++ *
++ * Returns the appropriate (net-endian) nfserr_* (or nfs_ok if errno is 0). If
++ * it's an error we don't expect, log it once and return nfserr_io.
++ */
++__be32
++nfserrno (int errno)
++{
++	static struct {
++		__be32	nfserr;
++		int	syserr;
++	} nfs_errtbl[] = {
++		{ nfs_ok, 0 },
++		{ nfserr_perm, -EPERM },
++		{ nfserr_noent, -ENOENT },
++		{ nfserr_io, -EIO },
++		{ nfserr_nxio, -ENXIO },
++		{ nfserr_fbig, -E2BIG },
++		{ nfserr_stale, -EBADF },
++		{ nfserr_acces, -EACCES },
++		{ nfserr_exist, -EEXIST },
++		{ nfserr_xdev, -EXDEV },
++		{ nfserr_mlink, -EMLINK },
++		{ nfserr_nodev, -ENODEV },
++		{ nfserr_notdir, -ENOTDIR },
++		{ nfserr_isdir, -EISDIR },
++		{ nfserr_inval, -EINVAL },
++		{ nfserr_fbig, -EFBIG },
++		{ nfserr_nospc, -ENOSPC },
++		{ nfserr_rofs, -EROFS },
++		{ nfserr_mlink, -EMLINK },
++		{ nfserr_nametoolong, -ENAMETOOLONG },
++		{ nfserr_notempty, -ENOTEMPTY },
++		{ nfserr_dquot, -EDQUOT },
++		{ nfserr_stale, -ESTALE },
++		{ nfserr_jukebox, -ETIMEDOUT },
++		{ nfserr_jukebox, -ERESTARTSYS },
++		{ nfserr_jukebox, -EAGAIN },
++		{ nfserr_jukebox, -EWOULDBLOCK },
++		{ nfserr_jukebox, -ENOMEM },
++		{ nfserr_io, -ETXTBSY },
++		{ nfserr_notsupp, -EOPNOTSUPP },
++		{ nfserr_toosmall, -ETOOSMALL },
++		{ nfserr_serverfault, -ESERVERFAULT },
++		{ nfserr_serverfault, -ENFILE },
++		{ nfserr_io, -EREMOTEIO },
++		{ nfserr_stale, -EOPENSTALE },
++		{ nfserr_io, -EUCLEAN },
++		{ nfserr_perm, -ENOKEY },
++		{ nfserr_no_grace, -ENOGRACE},
++	};
++	int	i;
++
++	for (i = 0; i < ARRAY_SIZE(nfs_errtbl); i++) {
++		if (nfs_errtbl[i].syserr == errno)
++			return nfs_errtbl[i].nfserr;
++	}
++	WARN_ONCE(1, "nfsd: non-standard errno: %d\n", errno);
++	return nfserr_io;
++}
++
+ /* 
+  * Called from nfsd_lookup and encode_dirent. Check if we have crossed 
+  * a mount point.
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index 120521bc7b247..8ddd687f83599 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -60,6 +60,7 @@ static inline void nfsd_attrs_free(struct nfsd_attrs *attrs)
+ 	posix_acl_release(attrs->na_dpacl);
+ }
+ 
++__be32		nfserrno (int errno);
+ int		nfsd_cross_mnt(struct svc_rqst *rqstp, struct dentry **dpp,
+ 		                struct svc_export **expp);
+ __be32		nfsd_lookup(struct svc_rqst *, struct svc_fh *,
+-- 
+2.43.0
+
 
 
 
