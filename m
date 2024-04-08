@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-36475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C82E89BFFE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C6189C005
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E12091F247DE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA22B285830
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6C26F08E;
-	Mon,  8 Apr 2024 13:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212E371B20;
+	Mon,  8 Apr 2024 13:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YrI6Qrg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5m7xHq7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C38364CF2;
-	Mon,  8 Apr 2024 13:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D116F53D;
+	Mon,  8 Apr 2024 13:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581434; cv=none; b=XfoNZd2h0t0ZoeADHIk63E72Bvz/1hg9Vgc1Wn9UN1xFjwIxN4xfsJu/vwFHW5xS3zcTUAT73KYJQwHXek0gg16HOgvPMXGHY/1kyuxeFrzQnEpVj34ORzDtg/XlYsNRyLRFARHJW9xacRD10LpU0FkyVfUlc5vJtSMvPnXR6R8=
+	t=1712581445; cv=none; b=AimPDjr9M8eUPoiMozm9RggB8EuX7fZXrkANp1JygefpMq5srFAJXQfhlO+9MZ+zmYedzgcBQfEZFzJYmL5xWmbbVGCRquDuC5hJxlVTu2hgei6B3ss4HOBRzIjNhXJqFDoJfKw1YH+rC8fXNjG+rEqY0eDWytpSOYYFzOtnZHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581434; c=relaxed/simple;
-	bh=FShwbESrRW0uBhY/Y5AQ9wf1o8VKqH9B7Wj8f01oNU4=;
+	s=arc-20240116; t=1712581445; c=relaxed/simple;
+	bh=DUB2hXY1/ExP3a3QEwJzpWWCxpOcm+9xBtb1ZuVddMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WCwpDdFTreXUfdiyKYai+R0/p4WwGrqtdjX+gtJFxdCgNC/e0+Su2ILi36VxP6anngVMdkD9jgdRLxViC9VRfhFah+Ub2A6jzGpGtfEaJMBfRyAVVq9wTiydBQoPKGir9ZXawlIPqcm4oTKIxVX2Dm8wLt0UCXubKS096JEuFuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YrI6Qrg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8ACFC433C7;
-	Mon,  8 Apr 2024 13:03:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BvdY4wxf1KIi1DQt3Bfv5dahNQiynMWYMCzi2aguB+aInDK+CZPheFtV7q3aqJ7zgR3AvLfGMtsTbjgl1GBpRO2cGOthi/zvNkLzxwA4lYJMDXG+0Cl1kFG31eeBN7V1IIvaykVofb1rpieMYQVG4JEGe/MMZbbs6T/MsjY90q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5m7xHq7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0C9C433F1;
+	Mon,  8 Apr 2024 13:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581434;
-	bh=FShwbESrRW0uBhY/Y5AQ9wf1o8VKqH9B7Wj8f01oNU4=;
+	s=korg; t=1712581445;
+	bh=DUB2hXY1/ExP3a3QEwJzpWWCxpOcm+9xBtb1ZuVddMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YrI6QrgQXmcVKUsnvTFzUG/KllMNo1fLgsf7oyNItuw0xAyPfUsnntGG6lGgXCj3
-	 g+sRaggRqZa58HAJlAHSv5xrWBLlvnkqVw2jqh/KAdnyTN8FtnABJfpZEMj3iDbqPO
-	 Rl5KYTR7I6swA0wXQjpGDAHBkmkTmbdzgpQsr5Co=
+	b=N5m7xHq7W9Fvbl2zVE1gkRpx6Ttd1oGVKURgerXO/Ayzamf6Wdy4H5AD4Wqexf0+Q
+	 Y4yeI1/fDtRZU0HQuim5MSW/9wj7w+GEInHbksn//rpfNWah1w022+jXHXzOyh8uxz
+	 E5DeAhFrHEJAnoRjdU5lj/zQA4PpxTnyFHolOfPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20H=C3=A4ggstr=C3=B6m?= <christian.haggstrom@orexplore.com>,
+	=?UTF-8?q?Aur=C3=A9lien=20Jacobs?= <aurel@gnuage.org>,
 	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/690] USB: serial: cp210x: add ID for MGP Instruments PDS100
-Date: Mon,  8 Apr 2024 14:48:35 +0200
-Message-ID: <20240408125401.300844631@linuxfoundation.org>
+Subject: [PATCH 5.15 050/690] USB: serial: option: add MeiG Smart SLM320 product
+Date: Mon,  8 Apr 2024 14:48:36 +0200
+Message-ID: <20240408125401.342049981@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,39 +67,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Häggström <christian.haggstrom@orexplore.com>
+From: Aurélien Jacobs <aurel@gnuage.org>
 
-[ Upstream commit a0d9d868491a362d421521499d98308c8e3a0398 ]
+[ Upstream commit 46809c51565b83881aede6cdf3b0d25254966a41 ]
 
-The radiation meter has the text MGP Instruments PDS-100G or PDS-100GN
-produced by Mirion Technologies. Tested by forcing the driver
-association with
+Update the USB serial option driver to support MeiG Smart SLM320.
 
-  echo 10c4 863c > /sys/bus/usb-serial/drivers/cp210x/new_id
+ID 2dee:4d41 UNISOC UNISOC-8910
 
-and then setting the serial port in 115200 8N1 mode. The device
-announces ID_USB_VENDOR_ENC=Silicon\x20Labs and ID_USB_MODEL_ENC=PDS100
+T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 9 Spd=480 MxCh= 0
+D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
+P: Vendor=2dee ProdID=4d41 Rev=00.00
+S: Manufacturer=UNISOC
+S: Product=UNISOC-8910
+C: #Ifs= 8 Cfg#= 1 Atr=e0 MxPwr=400mA
+I: If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Signed-off-by: Christian Häggström <christian.haggstrom@orexplore.com>
+Tested successfully a PPP LTE connection using If#= 0.
+Not sure of the purpose of every other serial interfaces.
+
+Signed-off-by: Aurélien Jacobs <aurel@gnuage.org>
 Cc: stable@vger.kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cp210x.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/option.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
-index bd72e9adc497a..ff814f9298db0 100644
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -144,6 +144,7 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(0x10C4, 0x85EA) }, /* AC-Services IBUS-IF */
- 	{ USB_DEVICE(0x10C4, 0x85EB) }, /* AC-Services CIS-IBUS */
- 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
-+	{ USB_DEVICE(0x10C4, 0x863C) }, /* MGP Instruments PDS100 */
- 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
- 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
- 	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+index c0a0cca65437f..1a3e5a9414f07 100644
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -613,6 +613,11 @@ static void option_instat_callback(struct urb *urb);
+ /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
+ #define LUAT_PRODUCT_AIR720U			0x4e00
+ 
++/* MeiG Smart Technology products */
++#define MEIGSMART_VENDOR_ID			0x2dee
++/* MeiG Smart SLM320 based on UNISOC UIS8910 */
++#define MEIGSMART_PRODUCT_SLM320		0x4d41
++
+ /* Device flags */
+ 
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2282,6 +2287,7 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 -- 
 2.43.0
 
