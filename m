@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD51289C456
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6143A89C638
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 849EC2826AC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93D661C212BB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DA17EF0A;
-	Mon,  8 Apr 2024 13:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E74080630;
+	Mon,  8 Apr 2024 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6PRm12B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Wn/2P/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B8E4D5AB;
-	Mon,  8 Apr 2024 13:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E08680603;
+	Mon,  8 Apr 2024 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583870; cv=none; b=GIByrTZFiNG+scxE95dFl0XKeg9LZXIKa+FENQPcTe5b87gIEmw7Ae1OYxl6LrzO7bvgVkgt0n82YPemirSXvzwcCqyIm+LzdbdEFbNepF3LBw9eEC8QKhlhGyoFVyzVtoMdHyWS5xrMQtzT+hoqQoom1BPn4+f5Ai2XCgoag4A=
+	t=1712585145; cv=none; b=p2FDF8PN75QoeOXnkJtRwhY/F5tiJaDc1TzaH9Evij1tcA9SBNkW9aeK+o1DkRjx86t2cfiwU68kOo9wOSOxQViFg5Lh8Z00ONiAEA6wm9khRKbRIxDMrji5p4jb1pMbWHzAfhhyWuECEDT6ZuGoqgeC6WUfW8yjRKAXBjZUNVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583870; c=relaxed/simple;
-	bh=95Uza7XXIOnxaHo5+HLpX607gbQbTGZpx4BRddNQ+DI=;
+	s=arc-20240116; t=1712585145; c=relaxed/simple;
+	bh=kQsR7o+W2GLyhsJU0qCw0IG5QPazfMqIf+CezEz/EqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+SpWgIAaRx5cu3t2+XovAY0N8BbfAlycAXyzc1td43b+9zQb9PWEs4lR/h5GvyEdbl2I+s7Wz5bd7nIG4NUOkj9wXpliPhvhFVfLRjs5xnfH98Lb/VKLan8GHoBX4RKL8uxAuKUdqPyN8eoH3LErGR6beb0qcfX+dDUaPhz2EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6PRm12B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8E9C433C7;
-	Mon,  8 Apr 2024 13:44:30 +0000 (UTC)
+	 MIME-Version; b=vAz4k/SDRdya8WpvFeuafB6YKLaBonpHYqU6SYO2Mo6LnP8LAUvobIwE0FSI6AHLXNROTdKuWb09w/cFX1Sr0Pm9CYEGl1QE9zUYQ849YgEkh1YHXjGh7uKwvdT75m9NFiAz40FdPue7t2VCqwcAddzzHzBOm8nPUoFym1WFRFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Wn/2P/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C3EC433F1;
+	Mon,  8 Apr 2024 14:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583870;
-	bh=95Uza7XXIOnxaHo5+HLpX607gbQbTGZpx4BRddNQ+DI=;
+	s=korg; t=1712585145;
+	bh=kQsR7o+W2GLyhsJU0qCw0IG5QPazfMqIf+CezEz/EqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6PRm12B2L9+lVQ2I9vCGXuaPXb7Ga3udeEejUYNtaHrmcbDTU9OqTfPkSc64DR9W
-	 2eB6jXZ11NS+FkJLu4O/6klc5rb3ZUFsuC0AP9al+nNvSt3CoYqMEeB+n6Us5qv59D
-	 2vpkkbsnL0aajeEt1mtMUC8fTiT5i7rIkhjRHaHo=
+	b=0Wn/2P/tCMqBY43gjqw6IwGcxymXcOFnWa7ucKuuiO0GEya2AaGf2kQE/q74KC4e4
+	 EXegMzvLHgEB1MjClZfp+syn8MG+yF6oQv78630l3s7xXivRoem8dvWgABd6m4fnAf
+	 keu4u6fnB2Aj2ZycknYlhPxL5TyC19t2JQkpuDeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 244/252] mptcp: dont overwrite sock_ops in mptcp_is_tcpsk()
+	Jann Horn <jannh@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+011e4ea1da6692cf881c@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 677/690] fs/pipe: Fix lockdep false-positive in watchqueue pipe_write()
 Date: Mon,  8 Apr 2024 14:59:03 +0200
-Message-ID: <20240408125314.225890434@linuxfoundation.org>
+Message-ID: <20240408125424.243001626@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,192 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Jann Horn <jannh@google.com>
 
-commit 8e2b8a9fa512709e6fee744dcd4e2a20ee7f5c56 upstream.
+[ Upstream commit 055ca83559912f2cfd91c9441427bac4caf3c74e ]
 
-Eric Dumazet suggests:
+When you try to splice between a normal pipe and a notification pipe,
+get_pipe_info(..., true) fails, so splice() falls back to treating the
+notification pipe like a normal pipe - so we end up in
+iter_file_splice_write(), which first locks the input pipe, then calls
+vfs_iter_write(), which locks the output pipe.
 
- > The fact that mptcp_is_tcpsk() was able to write over sock->ops was a
- > bit strange to me.
- > mptcp_is_tcpsk() should answer a question, with a read-only argument.
+Lockdep complains about that, because we're taking a pipe lock while
+already holding another pipe lock.
 
-re-factor code to avoid overwriting sock_ops inside that function. Also,
-change the helper name to reflect the semantics and to disambiguate from
-its dual, sk_is_mptcp(). While at it, collapse mptcp_stream_accept() and
-mptcp_accept() into a single function, where fallback / non-fallback are
-separated into a single sk_is_mptcp() conditional.
+I think this probably (?) can't actually lead to deadlocks, since you'd
+need another way to nest locking a normal pipe into locking a
+watch_queue pipe, but the lockdep annotations don't make that clear.
 
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/432
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Bail out earlier in pipe_write() for notification pipes, before taking
+the pipe lock.
+
+Reported-and-tested-by: <syzbot+011e4ea1da6692cf881c@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=011e4ea1da6692cf881c
+Fixes: c73be61cede5 ("pipe: Add general notification queue support")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20231124150822.2121798-1-jannh@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |  108 ++++++++++++++++++++-------------------------------
- 1 file changed, 44 insertions(+), 64 deletions(-)
+ fs/pipe.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -55,28 +55,14 @@ static u64 mptcp_wnd_end(const struct mp
- 	return READ_ONCE(msk->wnd_end);
- }
+diff --git a/fs/pipe.c b/fs/pipe.c
+index a8b8ef2dae7b7..0a8095070b70e 100644
+--- a/fs/pipe.c
++++ b/fs/pipe.c
+@@ -423,6 +423,18 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
+ 	bool was_empty = false;
+ 	bool wake_next_writer = false;
  
--static bool mptcp_is_tcpsk(struct sock *sk)
-+static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
- {
--	struct socket *sock = sk->sk_socket;
--
--	if (unlikely(sk->sk_prot == &tcp_prot)) {
--		/* we are being invoked after mptcp_accept() has
--		 * accepted a non-mp-capable flow: sk is a tcp_sk,
--		 * not an mptcp one.
--		 *
--		 * Hand the socket over to tcp so all further socket ops
--		 * bypass mptcp.
--		 */
--		WRITE_ONCE(sock->ops, &inet_stream_ops);
--		return true;
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
--		WRITE_ONCE(sock->ops, &inet6_stream_ops);
--		return true;
-+	if (sk->sk_prot == &tcpv6_prot)
-+		return &inet6_stream_ops;
- #endif
--	}
--
--	return false;
-+	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
-+	return &inet_stream_ops;
- }
- 
- static int __mptcp_socket_create(struct mptcp_sock *msk)
-@@ -3328,44 +3314,6 @@ void mptcp_rcv_space_init(struct mptcp_s
- 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
- }
- 
--static struct sock *mptcp_accept(struct sock *ssk, int flags, int *err,
--				 bool kern)
--{
--	struct sock *newsk;
--
--	pr_debug("ssk=%p, listener=%p", ssk, mptcp_subflow_ctx(ssk));
--	newsk = inet_csk_accept(ssk, flags, err, kern);
--	if (!newsk)
--		return NULL;
--
--	pr_debug("newsk=%p, subflow is mptcp=%d", newsk, sk_is_mptcp(newsk));
--	if (sk_is_mptcp(newsk)) {
--		struct mptcp_subflow_context *subflow;
--		struct sock *new_mptcp_sock;
--
--		subflow = mptcp_subflow_ctx(newsk);
--		new_mptcp_sock = subflow->conn;
--
--		/* is_mptcp should be false if subflow->conn is missing, see
--		 * subflow_syn_recv_sock()
--		 */
--		if (WARN_ON_ONCE(!new_mptcp_sock)) {
--			tcp_sk(newsk)->is_mptcp = 0;
--			goto out;
--		}
--
--		newsk = new_mptcp_sock;
--		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_MPCAPABLEPASSIVEACK);
--	} else {
--		MPTCP_INC_STATS(sock_net(ssk),
--				MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK);
--	}
--
--out:
--	newsk->sk_kern_sock = kern;
--	return newsk;
--}
--
- void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
- {
- 	struct mptcp_subflow_context *subflow, *tmp;
-@@ -3802,7 +3750,6 @@ static struct proto mptcp_prot = {
- 	.connect	= mptcp_connect,
- 	.disconnect	= mptcp_disconnect,
- 	.close		= mptcp_close,
--	.accept		= mptcp_accept,
- 	.setsockopt	= mptcp_setsockopt,
- 	.getsockopt	= mptcp_getsockopt,
- 	.shutdown	= mptcp_shutdown,
-@@ -3912,18 +3859,36 @@ static int mptcp_stream_accept(struct so
- 	if (!ssk)
- 		return -EINVAL;
- 
--	newsk = mptcp_accept(ssk, flags, &err, kern);
-+	pr_debug("ssk=%p, listener=%p", ssk, mptcp_subflow_ctx(ssk));
-+	newsk = inet_csk_accept(ssk, flags, &err, kern);
- 	if (!newsk)
- 		return err;
- 
--	lock_sock(newsk);
--
--	__inet_accept(sock, newsock, newsk);
--	if (!mptcp_is_tcpsk(newsock->sk)) {
--		struct mptcp_sock *msk = mptcp_sk(newsk);
-+	pr_debug("newsk=%p, subflow is mptcp=%d", newsk, sk_is_mptcp(newsk));
-+	if (sk_is_mptcp(newsk)) {
- 		struct mptcp_subflow_context *subflow;
-+		struct sock *new_mptcp_sock;
++	/*
++	 * Reject writing to watch queue pipes before the point where we lock
++	 * the pipe.
++	 * Otherwise, lockdep would be unhappy if the caller already has another
++	 * pipe locked.
++	 * If we had to support locking a normal pipe and a notification pipe at
++	 * the same time, we could set up lockdep annotations for that, but
++	 * since we don't actually need that, it's simpler to just bail here.
++	 */
++	if (pipe_has_watch_queue(pipe))
++		return -EXDEV;
 +
-+		subflow = mptcp_subflow_ctx(newsk);
-+		new_mptcp_sock = subflow->conn;
-+
-+		/* is_mptcp should be false if subflow->conn is missing, see
-+		 * subflow_syn_recv_sock()
-+		 */
-+		if (WARN_ON_ONCE(!new_mptcp_sock)) {
-+			tcp_sk(newsk)->is_mptcp = 0;
-+			goto tcpfallback;
-+		}
-+
-+		newsk = new_mptcp_sock;
-+		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_MPCAPABLEPASSIVEACK);
-+
-+		newsk->sk_kern_sock = kern;
-+		lock_sock(newsk);
-+		__inet_accept(sock, newsock, newsk);
- 
- 		set_bit(SOCK_CUSTOM_SOCKOPT, &newsock->flags);
-+		msk = mptcp_sk(newsk);
- 		msk->in_accept_queue = 0;
- 
- 		/* set ssk->sk_socket of accept()ed flows to mptcp socket.
-@@ -3945,6 +3910,21 @@ static int mptcp_stream_accept(struct so
- 			if (unlikely(list_is_singular(&msk->conn_list)))
- 				mptcp_set_state(newsk, TCP_CLOSE);
- 		}
-+	} else {
-+		MPTCP_INC_STATS(sock_net(ssk),
-+				MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK);
-+tcpfallback:
-+		newsk->sk_kern_sock = kern;
-+		lock_sock(newsk);
-+		__inet_accept(sock, newsock, newsk);
-+		/* we are being invoked after accepting a non-mp-capable
-+		 * flow: sk is a tcp_sk, not an mptcp one.
-+		 *
-+		 * Hand the socket over to tcp so all further socket ops
-+		 * bypass mptcp.
-+		 */
-+		WRITE_ONCE(newsock->sk->sk_socket->ops,
-+			   mptcp_fallback_tcp_ops(newsock->sk));
+ 	/* Null write succeeds. */
+ 	if (unlikely(total_len == 0))
+ 		return 0;
+@@ -435,11 +447,6 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
+ 		goto out;
  	}
- 	release_sock(newsk);
  
+-	if (pipe_has_watch_queue(pipe)) {
+-		ret = -EXDEV;
+-		goto out;
+-	}
+-
+ 	/*
+ 	 * If it wasn't empty we try to merge new data into
+ 	 * the last buffer.
+-- 
+2.43.0
+
 
 
 
