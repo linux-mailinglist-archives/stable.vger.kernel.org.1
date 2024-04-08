@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-36765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C9089C193
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7BF89C199
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07C8F1F21BE6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B28DC1F218AF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5770B7F48A;
-	Mon,  8 Apr 2024 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BDC7F7C7;
+	Mon,  8 Apr 2024 13:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgJOh+er"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU7mQ8cA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D4F7EF1E;
-	Mon,  8 Apr 2024 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1877F49B;
+	Mon,  8 Apr 2024 13:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582279; cv=none; b=AhuoMaxJbC8rNHu2BIIpI6EuLwI9t6G7kZwfkFPyQJzDhNb0lrHXEj+wmswL6d7+XluN99Wcn7oob47GZSos9cgAaK4Nsjbri56a348B4Fr8OA3DrxoW9uO2z6JSDe6EDYCuX9kbLUIJiX6wMnC4QQq5NJuxjwAJf1L4WOLI3x0=
+	t=1712582290; cv=none; b=kssmZZ9yE7u3++LUien7IiZBt0H1yNOETdBkonUMDzSZnFYKKDuF7ZE0T9xbOANIqlHe382isjmURHx2tUB5evBzcpQsjcrmVPgYoM8V8WgihMTtx8aqOikoi3Eqft96jVHLio1x6DDDKTJKXfGtl8SC9BwV2PlWM8QM/2rWmio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582279; c=relaxed/simple;
-	bh=gFC03ZUrKDoI5wjmqMgNN7D/1ZHK25grRXC+l6Rorzg=;
+	s=arc-20240116; t=1712582290; c=relaxed/simple;
+	bh=dUuwR+/MBJ5WV/KjLhop6+zkhZguxSvz683CVygXBZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FAmasaQr43YvoVg7VCHttfCgPisPUyOJHcq15+0xYxU8CFfopnwdE6c7s3ql1csmDpk0hfGKPl5v2WfmoJtKLtcM+dw1Pi6G9vck7JzrdJlsMlwnWYsGkuJfVTp6lLbbY/X/E1U4tnS5JWPC4yswaiMCYzcYYfbrEaiRuXQPYIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgJOh+er; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93848C433C7;
-	Mon,  8 Apr 2024 13:17:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YJlakTmf8i2YtDucZ9QNrVwoto1QST+nQH6u2F7mriNGcGMQQLupIffcKqjCBSPHMfCy9YlnMuoa2ec12BAmtjrlkDyLSbl+TsBWwsRZYPaXguLpSbQqR0q3KgvKxzAdlR2yCIbM1ObYCo8nJqwf7Gii7d5uEbDuvAtubsto2dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU7mQ8cA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32728C433C7;
+	Mon,  8 Apr 2024 13:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582279;
-	bh=gFC03ZUrKDoI5wjmqMgNN7D/1ZHK25grRXC+l6Rorzg=;
+	s=korg; t=1712582290;
+	bh=dUuwR+/MBJ5WV/KjLhop6+zkhZguxSvz683CVygXBZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgJOh+erMTnA3OZEEca7aHNSsycwnhXgnZKTtSHxZjmUpMZkj0KQenP9gzekB5RPW
-	 PdIu6rfw8ZIBsf2Eh2eItUSlVopXuKGFSV0iMU5AaOnqrvkB1bZkTBMTt6acLQ2ytn
-	 ilYIrzQ2eFjRIQSqWqikpodd7ZqLtkPl9/c2lFE8=
+	b=EU7mQ8cAVCsVHJ3TMaXgsICap8GdBdGl8bJ+Aw4yqLVqIzY7jCrcM/r/cljlF0XYy
+	 9jS4ZJYSFx6foBtRdNHIuYR/Tk3hgYMj2147tKf00xTKTZYbs1eS1u7eAaWMw1MTaH
+	 IiiGTIGy5/6H6viWv4qGzXCtHIckMjkgf4f6wo5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.15 129/690] usb: port: Dont try to peer unused USB ports based on location
-Date: Mon,  8 Apr 2024 14:49:55 +0200
-Message-ID: <20240408125404.210615341@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Subject: [PATCH 5.15 130/690] tty: serial: fsl_lpuart: avoid idle preamble pending if CTS is enabled
+Date: Mon,  8 Apr 2024 14:49:56 +0200
+Message-ID: <20240408125404.250541040@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -59,66 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 69c63350e573367f9c8594162288cffa8a26d0d1 upstream.
+commit 74cb7e0355fae9641f825afa389d3fba3b617714 upstream.
 
-Unused USB ports may have bogus location data in ACPI PLD tables.
-This causes port peering failures as these unused USB2 and USB3 ports
-location may match.
+If the remote uart device is not connected or not enabled after booting
+up, the CTS line is high by default. At this time, if we enable the flow
+control when opening the device(for example, using “stty -F /dev/ttyLP4
+crtscts” command), there will be a pending idle preamble(first writing 0
+and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
+cannot be sent out, resulting in the uart port fail to close(waiting for
+TX empty), so the user space stty will have to wait for a long time or
+forever.
 
-Due to these failures the driver prints a
-"usb: port power management may be unreliable" warning, and
-unnecessarily blocks port power off during runtime suspend.
+This is an LPUART IP bug(idle preamble has higher priority than CTS),
+here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
+so that the idle preamble does not get stuck due to CTS is deasserted.
 
-This was debugged on a couple DELL systems where the unused ports
-all returned zeroes in their location data.
-Similar bugreports exist for other systems.
-
-Don't try to peer or match ports that have connect type set to
-USB_PORT_NOT_USED.
-
-Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
-Link: https://lore.kernel.org/r/20240222233343.71856-1-mathias.nyman@linux.intel.com
+Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20240305015706.1050769-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -450,7 +450,7 @@ static int match_location(struct usb_dev
- 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
- 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -2237,9 +2237,12 @@ lpuart32_set_termios(struct uart_port *p
  
--	if (!peer_hub)
-+	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
- 		return 0;
+ 	lpuart32_write(&sport->port, bd, UARTBAUD);
+ 	lpuart32_serial_setbrg(sport, baud);
+-	lpuart32_write(&sport->port, modem, UARTMODIR);
+-	lpuart32_write(&sport->port, ctrl, UARTCTRL);
++	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
++	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
+ 	/* restore control register */
++	lpuart32_write(&sport->port, ctrl, UARTCTRL);
++	/* re-enable the CTS if needed */
++	lpuart32_write(&sport->port, modem, UARTMODIR);
  
- 	hcd = bus_to_hcd(hdev->bus);
-@@ -461,7 +461,8 @@ static int match_location(struct usb_dev
- 
- 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
- 		peer = peer_hub->ports[port1 - 1];
--		if (peer && peer->location == port_dev->location) {
-+		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
-+		    peer->location == port_dev->location) {
- 			link_peers_report(port_dev, peer);
- 			return 1; /* done */
- 		}
+ 	if (old && sport->lpuart_dma_rx_use) {
+ 		if (!lpuart_start_rx_dma(sport))
 
 
 
