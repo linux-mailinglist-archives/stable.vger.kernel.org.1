@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-36537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776AB89C045
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DF589C55B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0E631F23841
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB1F01C229EC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC5964CF2;
-	Mon,  8 Apr 2024 13:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255BB7BAF5;
+	Mon,  8 Apr 2024 13:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeYANdeC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAsnVBSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC5C2DF73;
-	Mon,  8 Apr 2024 13:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F2F79955;
+	Mon,  8 Apr 2024 13:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581615; cv=none; b=pvSehrNp/9/lztJfS1ItX6qMnKae7gvi++N3Xw7lKwAcvwKuleGHN61mTydLCDzY4Ksij7vRtaoRjm0meCsR52Pj+M+UwZzbQZRfGY67cFm5nE8leuPtQKX7KObg1P1w/RKAgJsFtdoOi0UZKhE+ql4j3uyibRn8ENPB7P562ws=
+	t=1712584579; cv=none; b=TeJ/04qXabxZhgJrybJhelrrwKcvJIY0lKyy06NSNg3YA2k2ziJRuyt1jypOZ/SK3yUmtXqAnjELg2SZNP6v89V5V7+qeHPxHWat6L4Ne5mOmqqT4ib9a11Iq5HKgs3uVXJYl/sHVRul9Vh/3I4L+4GMYQbhsJMNj8qlSHyIJUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581615; c=relaxed/simple;
-	bh=RTgmlha4iJLVngme6WhczJ0sGIn9qd5nT89q5oUFlCs=;
+	s=arc-20240116; t=1712584579; c=relaxed/simple;
+	bh=6qUhdZ9AnB/Gs6tnVNw1n5e5cR6FnFlGeRMzy38ShnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kWiPgsjJKrX2dtw48hzUzDxFX6xy+hFOGXRxWxOjNUi+N7J08au9qO4WstDzedvI3krHW+7nws5tkJIJgiML2Gx73nmKj0zfzRJulAN5AnRajN8f47vDazy/dVF8RLi7WH1KN2NxMnStdo8SQsvPnP0D9PyKhpfxntA92CHIpCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeYANdeC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61F1C433F1;
-	Mon,  8 Apr 2024 13:06:54 +0000 (UTC)
+	 MIME-Version; b=INVUtpNika5LTKTQJTSeRQJjEGHElALFf9cM8rLpNWmsWN8aJi7PxmNvgaxSWnXuTfD6D0d26+tf27Uqf7Kc4bKVwifbQrrd5DkHXNLFTLITgQizvBIl9tIhOD5Qt+Ygko33ZvRZEpGcDF9l7oA7FOQUfmDuru/VeRMu1TMepnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAsnVBSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F943C433F1;
+	Mon,  8 Apr 2024 13:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581615;
-	bh=RTgmlha4iJLVngme6WhczJ0sGIn9qd5nT89q5oUFlCs=;
+	s=korg; t=1712584579;
+	bh=6qUhdZ9AnB/Gs6tnVNw1n5e5cR6FnFlGeRMzy38ShnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeYANdeCKcUHfWWaTXVXSnOy12Idj54UnF3yeaMsf55IaDQhQz1z6MSgJIee5qdNo
-	 ARxKgKahSI/GzPEmg42673S03wxcSFwbjZQWed8u4tcpev6LZ15O/ZvSXMGuKUApxQ
-	 lFhhxVLPKOaw+qWaLnGZucPLHeUc8BxYJAXLBvtQ=
+	b=uAsnVBSfjaVTCLXlzj99EI/ecgW93xNM7A62DbmZi0g1fjwldVbKoWaUWOio1+Lr0
+	 xcAMG9HbkbYqfEAn02x0ABxNG0C9zc/GnhYWVezvE9Hr3Sz+9uhDH/GbtDFaUVl8hy
+	 YjB+Ofkc2oy4wcvjxcStHUOrReSqkc2j/e8xAmgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Liviu Dudau <liviu@dudau.co.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/252] net: wwan: t7xx: Split 64bit accesses to fix alignment issues
+	Matthew Bobrowski <repnop@google.com>,
+	"Christian Brauner (Microsoft)" <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 456/690] fs/notify: constify path
 Date: Mon,  8 Apr 2024 14:55:22 +0200
-Message-ID: <20240408125307.371564786@linuxfoundation.org>
+Message-ID: <20240408125416.153679277@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bj=C3=B8rn Mork <bjorn@mork.no>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 7d5a7dd5a35876f0ecc286f3602a88887a788217 ]
+[ Upstream commit d5bf88895f24686641c39420ee6df716dc1d95d8 ]
 
-Some of the registers are aligned on a 32bit boundary, causing
-alignment faults on 64bit platforms.
-
- Unable to handle kernel paging request at virtual address ffffffc084a1d004
- Mem abort info:
- ESR =3D 0x0000000096000061
- EC =3D 0x25: DABT (current EL), IL =3D 32 bits
- SET =3D 0, FnV =3D 0
- EA =3D 0, S1PTW =3D 0
- FSC =3D 0x21: alignment fault
- Data abort info:
- ISV =3D 0, ISS =3D 0x00000061, ISS2 =3D 0x00000000
- CM =3D 0, WnR =3D 1, TnD =3D 0, TagAccess =3D 0
- GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
- swapper pgtable: 4k pages, 39-bit VAs, pgdp=3D0000000046ad6000
- [ffffffc084a1d004] pgd=3D100000013ffff003, p4d=3D100000013ffff003, pud=3D1=
-00000013ffff003, pmd=3D0068000020a00711
- Internal error: Oops: 0000000096000061 [#1] SMP
- Modules linked in: mtk_t7xx(+) qcserial pppoe ppp_async option nft_fib_ine=
-t nf_flow_table_inet mt7921u(O) mt7921s(O) mt7921e(O) mt7921_common(O) iwlm=
-vm(O) iwldvm(O) usb_wwan rndis_host qmi_wwan pppox ppp_generic nft_reject_i=
-pv6 nft_reject_ipv4 nft_reject_inet nft_reject nft_redir nft_quota nft_numg=
-en nft_nat nft_masq nft_log nft_limit nft_hash nft_flow_offload nft_fib_ipv=
-6 nft_fib_ipv4 nft_fib nft_ct nft_chain_nat nf_tables nf_nat nf_flow_table =
-nf_conntrack mt7996e(O) mt792x_usb(O) mt792x_lib(O) mt7915e(O) mt76_usb(O) =
-mt76_sdio(O) mt76_connac_lib(O) mt76(O) mac80211(O) iwlwifi(O) huawei_cdc_n=
-cm cfg80211(O) cdc_ncm cdc_ether wwan usbserial usbnet slhc sfp rtc_pcf8563=
- nfnetlink nf_reject_ipv6 nf_reject_ipv4 nf_log_syslog nf_defrag_ipv6 nf_de=
-frag_ipv4 mt6577_auxadc mdio_i2c libcrc32c compat(O) cdc_wdm cdc_acm at24 c=
-rypto_safexcel pwm_fan i2c_gpio i2c_smbus industrialio i2c_algo_bit i2c_mux=
-_reg i2c_mux_pca954x i2c_mux_pca9541 i2c_mux_gpio i2c_mux dummy oid_registr=
-y tun sha512_arm64 sha1_ce sha1_generic seqiv
- md5 geniv des_generic libdes cbc authencesn authenc leds_gpio xhci_plat_hc=
-d xhci_pci xhci_mtk_hcd xhci_hcd nvme nvme_core gpio_button_hotplug(O) dm_m=
-irror dm_region_hash dm_log dm_crypt dm_mod dax usbcore usb_common ptp aqua=
-ntia pps_core mii tpm encrypted_keys trusted
- CPU: 3 PID: 5266 Comm: kworker/u9:1 Tainted: G O 6.6.22 #0
- Hardware name: Bananapi BPI-R4 (DT)
- Workqueue: md_hk_wq t7xx_fsm_uninit [mtk_t7xx]
- pstate: 804000c5 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
- pc : t7xx_cldma_hw_set_start_addr+0x1c/0x3c [mtk_t7xx]
- lr : t7xx_cldma_start+0xac/0x13c [mtk_t7xx]
- sp : ffffffc085d63d30
- x29: ffffffc085d63d30 x28: 0000000000000000 x27: 0000000000000000
- x26: 0000000000000000 x25: ffffff80c804f2c0 x24: ffffff80ca196c05
- x23: 0000000000000000 x22: ffffff80c814b9b8 x21: ffffff80c814b128
- x20: 0000000000000001 x19: ffffff80c814b080 x18: 0000000000000014
- x17: 0000000055c9806b x16: 000000007c5296d0 x15: 000000000f6bca68
- x14: 00000000dbdbdce4 x13: 000000001aeaf72a x12: 0000000000000001
- x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
- x8 : ffffff80ca1ef6b4 x7 : ffffff80c814b818 x6 : 0000000000000018
- x5 : 0000000000000870 x4 : 0000000000000000 x3 : 0000000000000000
- x2 : 000000010a947000 x1 : ffffffc084a1d004 x0 : ffffffc084a1d004
- Call trace:
- t7xx_cldma_hw_set_start_addr+0x1c/0x3c [mtk_t7xx]
- t7xx_fsm_uninit+0x578/0x5ec [mtk_t7xx]
- process_one_work+0x154/0x2a0
- worker_thread+0x2ac/0x488
- kthread+0xe0/0xec
- ret_from_fork+0x10/0x20
- Code: f9400800 91001000 8b214001 d50332bf (f9000022)
- ---[ end trace 0000000000000000 ]---
-
-The inclusion of io-64-nonatomic-lo-hi.h indicates that all 64bit
-accesses can be replaced by pairs of nonatomic 32bit access.  Fix
-alignment by forcing all accesses to be 32bit on 64bit platforms.
-
-Link: https://forum.openwrt.org/t/fibocom-fm350-gl-support/142682/72
-Fixes: 39d439047f1d ("net: wwan: t7xx: Add control DMA interface")
-Signed-off-by: Bj=C3=B8rn Mork <bjorn@mork.no>
-Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Tested-by: Liviu Dudau <liviu@dudau.co.uk>
-Link: https://lore.kernel.org/r/20240322144000.1683822-1-bjorn@mork.no
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Matthew Bobrowski <repnop@google.com>
+Reviewed-by: Christian Brauner (Microsoft) <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/wwan/t7xx/t7xx_cldma.c     | 4 ++--
- drivers/net/wwan/t7xx/t7xx_hif_cldma.c | 9 +++++----
- drivers/net/wwan/t7xx/t7xx_pcie_mac.c  | 8 ++++----
- 3 files changed, 11 insertions(+), 10 deletions(-)
+ fs/notify/fanotify/fanotify.c      | 2 +-
+ fs/notify/fanotify/fanotify.h      | 2 +-
+ fs/notify/fanotify/fanotify_user.c | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_cldma.c b/drivers/net/wwan/t7xx/t7x=
-x_cldma.c
-index 9f43f256db1d0..f0a4783baf1f3 100644
---- a/drivers/net/wwan/t7xx/t7xx_cldma.c
-+++ b/drivers/net/wwan/t7xx/t7xx_cldma.c
-@@ -106,7 +106,7 @@ bool t7xx_cldma_tx_addr_is_set(struct t7xx_cldma_hw *hw=
-_info, unsigned int qno)
+diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
+index cd7d09a569fff..a2a15bc4df280 100644
+--- a/fs/notify/fanotify/fanotify.c
++++ b/fs/notify/fanotify/fanotify.c
+@@ -18,7 +18,7 @@
+ 
+ #include "fanotify.h"
+ 
+-static bool fanotify_path_equal(struct path *p1, struct path *p2)
++static bool fanotify_path_equal(const struct path *p1, const struct path *p2)
  {
- 	u32 offset =3D REG_CLDMA_UL_START_ADDRL_0 + qno * ADDR_SIZE;
-=20
--	return ioread64(hw_info->ap_pdn_base + offset);
-+	return ioread64_lo_hi(hw_info->ap_pdn_base + offset);
+ 	return p1->mnt == p2->mnt && p1->dentry == p2->dentry;
  }
-=20
- void t7xx_cldma_hw_set_start_addr(struct t7xx_cldma_hw *hw_info, unsigned =
-int qno, u64 address,
-@@ -117,7 +117,7 @@ void t7xx_cldma_hw_set_start_addr(struct t7xx_cldma_hw =
-*hw_info, unsigned int qn
-=20
- 	reg =3D tx_rx =3D=3D MTK_RX ? hw_info->ap_ao_base + REG_CLDMA_DL_START_AD=
-DRL_0 :
- 				hw_info->ap_pdn_base + REG_CLDMA_UL_START_ADDRL_0;
--	iowrite64(address, reg + offset);
-+	iowrite64_lo_hi(address, reg + offset);
+diff --git a/fs/notify/fanotify/fanotify.h b/fs/notify/fanotify/fanotify.h
+index 1d9f11255c64f..bf6d4d38afa04 100644
+--- a/fs/notify/fanotify/fanotify.h
++++ b/fs/notify/fanotify/fanotify.h
+@@ -458,7 +458,7 @@ static inline bool fanotify_event_has_path(struct fanotify_event *event)
+ 		event->type == FANOTIFY_EVENT_TYPE_PATH_PERM;
  }
-=20
- void t7xx_cldma_hw_resume_queue(struct t7xx_cldma_hw *hw_info, unsigned in=
-t qno,
-diff --git a/drivers/net/wwan/t7xx/t7xx_hif_cldma.c b/drivers/net/wwan/t7xx=
-/t7xx_hif_cldma.c
-index cc70360364b7d..554ba4669cc8d 100644
---- a/drivers/net/wwan/t7xx/t7xx_hif_cldma.c
-+++ b/drivers/net/wwan/t7xx/t7xx_hif_cldma.c
-@@ -139,8 +139,9 @@ static int t7xx_cldma_gpd_rx_from_q(struct cldma_queue =
-*queue, int budget, bool
- 				return -ENODEV;
- 			}
-=20
--			gpd_addr =3D ioread64(hw_info->ap_pdn_base + REG_CLDMA_DL_CURRENT_ADDRL=
-_0 +
--					    queue->index * sizeof(u64));
-+			gpd_addr =3D ioread64_lo_hi(hw_info->ap_pdn_base +
-+						  REG_CLDMA_DL_CURRENT_ADDRL_0 +
-+						  queue->index * sizeof(u64));
- 			if (req->gpd_addr =3D=3D gpd_addr || hwo_polling_count++ >=3D 100)
- 				return 0;
-=20
-@@ -318,8 +319,8 @@ static void t7xx_cldma_txq_empty_hndl(struct cldma_queu=
-e *queue)
- 		struct t7xx_cldma_hw *hw_info =3D &md_ctrl->hw_info;
-=20
- 		/* Check current processing TGPD, 64-bit address is in a table by Q inde=
-x */
--		ul_curr_addr =3D ioread64(hw_info->ap_pdn_base + REG_CLDMA_UL_CURRENT_AD=
-DRL_0 +
--					queue->index * sizeof(u64));
-+		ul_curr_addr =3D ioread64_lo_hi(hw_info->ap_pdn_base + REG_CLDMA_UL_CURR=
-ENT_ADDRL_0 +
-+					      queue->index * sizeof(u64));
- 		if (req->gpd_addr !=3D ul_curr_addr) {
- 			spin_unlock_irqrestore(&md_ctrl->cldma_lock, flags);
- 			dev_err(md_ctrl->dev, "CLDMA%d queue %d is not empty\n",
-diff --git a/drivers/net/wwan/t7xx/t7xx_pcie_mac.c b/drivers/net/wwan/t7xx/=
-t7xx_pcie_mac.c
-index 76da4c15e3de1..f071ec7ff23d5 100644
---- a/drivers/net/wwan/t7xx/t7xx_pcie_mac.c
-+++ b/drivers/net/wwan/t7xx/t7xx_pcie_mac.c
-@@ -75,7 +75,7 @@ static void t7xx_pcie_mac_atr_tables_dis(void __iomem *pb=
-ase, enum t7xx_atr_src_
- 	for (i =3D 0; i < ATR_TABLE_NUM_PER_ATR; i++) {
- 		offset =3D ATR_PORT_OFFSET * port + ATR_TABLE_OFFSET * i;
- 		reg =3D pbase + ATR_PCIE_WIN0_T0_ATR_PARAM_SRC_ADDR + offset;
--		iowrite64(0, reg);
-+		iowrite64_lo_hi(0, reg);
- 	}
+ 
+-static inline struct path *fanotify_event_path(struct fanotify_event *event)
++static inline const struct path *fanotify_event_path(struct fanotify_event *event)
+ {
+ 	if (event->type == FANOTIFY_EVENT_TYPE_PATH)
+ 		return &FANOTIFY_PE(event)->path;
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index 879cd65b15187..d93418f213863 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -245,7 +245,7 @@ static struct fanotify_event *get_one_event(struct fsnotify_group *group,
+ 	return event;
  }
-=20
-@@ -112,17 +112,17 @@ static int t7xx_pcie_mac_atr_cfg(struct t7xx_pci_dev =
-*t7xx_dev, struct t7xx_atr_
-=20
- 	reg =3D pbase + ATR_PCIE_WIN0_T0_TRSL_ADDR + offset;
- 	value =3D cfg->trsl_addr & ATR_PCIE_WIN0_ADDR_ALGMT;
--	iowrite64(value, reg);
-+	iowrite64_lo_hi(value, reg);
-=20
- 	reg =3D pbase + ATR_PCIE_WIN0_T0_TRSL_PARAM + offset;
- 	iowrite32(cfg->trsl_id, reg);
-=20
- 	reg =3D pbase + ATR_PCIE_WIN0_T0_ATR_PARAM_SRC_ADDR + offset;
- 	value =3D (cfg->src_addr & ATR_PCIE_WIN0_ADDR_ALGMT) | (atr_size << 1) | =
-BIT(0);
--	iowrite64(value, reg);
-+	iowrite64_lo_hi(value, reg);
-=20
- 	/* Ensure ATR is set */
--	ioread64(reg);
-+	ioread64_lo_hi(reg);
- 	return 0;
+ 
+-static int create_fd(struct fsnotify_group *group, struct path *path,
++static int create_fd(struct fsnotify_group *group, const struct path *path,
+ 		     struct file **file)
+ {
+ 	int client_fd;
+@@ -615,7 +615,7 @@ static ssize_t copy_event_to_user(struct fsnotify_group *group,
+ 				  char __user *buf, size_t count)
+ {
+ 	struct fanotify_event_metadata metadata;
+-	struct path *path = fanotify_event_path(event);
++	const struct path *path = fanotify_event_path(event);
+ 	struct fanotify_info *info = fanotify_event_info(event);
+ 	unsigned int info_mode = FAN_GROUP_FLAG(group, FANOTIFY_INFO_MODES);
+ 	unsigned int pidfd_mode = info_mode & FAN_REPORT_PIDFD;
+@@ -1549,7 +1549,7 @@ static int fanotify_test_fid(struct dentry *dentry)
  }
-=20
---=20
+ 
+ static int fanotify_events_supported(struct fsnotify_group *group,
+-				     struct path *path, __u64 mask,
++				     const struct path *path, __u64 mask,
+ 				     unsigned int flags)
+ {
+ 	unsigned int mark_type = flags & FANOTIFY_MARK_TYPE_BITS;
+-- 
 2.43.0
 
 
