@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-36925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A01B89C261
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B24E89C396
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C0DF1C21DC4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D53EB2C5AD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5D47BAFD;
-	Mon,  8 Apr 2024 13:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E977BB1A;
+	Mon,  8 Apr 2024 13:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0tJ2Dk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pa47yOpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0628481A6;
-	Mon,  8 Apr 2024 13:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBC371B20;
+	Mon,  8 Apr 2024 13:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582744; cv=none; b=SwLaZAYVMQCZQqwuFin+Op04djBt8xpkTxNIbBe0E2gVCSrW5pyXMnr1EmDGaDg03XCEm9xzgTHU9imQQ7IFeiRIk/ZRkvn7dZmGLUUON++yQ5MDc609YClkobgmrmhY4pDsASjXl0xEcjLU/641LwBq6F2t/rcik4Zb3K3GwRw=
+	t=1712582755; cv=none; b=T44BWVpMwAmSvz0ADqBTJzNrNdRDFfRNFiDQxis9Bd4hBzQEsepnNeL7XFK3SRdyQ3vMFsvRuwKQDYOUTuSpg0uJBtr4JmuGArxUvsgAiFD7Ur0qpfskWzqAvxhC3xSlyiXu0libbLJFHvsxQ68TbIvd9zmIoC3TCyXj6SjTdvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582744; c=relaxed/simple;
-	bh=eNMQeopq75lRztzjDC02Knl0lmleE3JZvshGWotNfQE=;
+	s=arc-20240116; t=1712582755; c=relaxed/simple;
+	bh=Qv4+TDY30l/0dAOScrtEQRjmc6qmrzAGQ0Sj3uvZHTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMf3lJCQXE0+LBQQEKPiD7nEOH1sE1mR3l3tuHGrWvuozoJPPvYtoMQVKNjFrcBj6QCkZlsg43+m4GGiajZswAlE+RTt+f0IF5fiGxKotjWm1E5IhEZFOxjqIlX/ZSyjHwAn08MPaQxJvEEKMQgfdOlzPTRPCKS9J39wugsMKUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0tJ2Dk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067ABC433C7;
-	Mon,  8 Apr 2024 13:25:42 +0000 (UTC)
+	 MIME-Version; b=mJuy46qaYnzpm/lu5XFloLtcGBTs97cAz7gr9Jzopin102kwYPn9qaPlVvTUfmdd+5bl4TVmj6r2HfqTeGxynvj9GbQdFm3Wqgv4eBmFRjOaOJhsb0wJq0MY/kx4O8k43zT+XOLyAPTM5J6FkXvbNyfwF43w/zzjpOdVFSP0U5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pa47yOpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF59C43390;
+	Mon,  8 Apr 2024 13:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582743;
-	bh=eNMQeopq75lRztzjDC02Knl0lmleE3JZvshGWotNfQE=;
+	s=korg; t=1712582755;
+	bh=Qv4+TDY30l/0dAOScrtEQRjmc6qmrzAGQ0Sj3uvZHTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0tJ2Dk2bL7Jv6jHKB1fDOxJf5PDDsgjROpKSt2hIt7u4fq5P9TBYFuar6PzIX8L1
-	 9w29/G3iETipjUwmstxUFL2v95OAQZKMzdCrewqaHl6zmK0R/c2WdMCowxwbywHWa0
-	 XBZS2VbOoJqzUCMJp9/uFl6og4zbMJ++fpPEzueU=
+	b=pa47yOpWiaD0X6JaUlquv2n/lAb3uIM1QKkJGC1eVYMdQtZlD6Du/2R3aeBZRogAD
+	 gAgWg5dfORuAx5KmhxPpUlN2Xt5+vHo9hnTFzlC5SorXsTbNKbbbCkGyww+yTVNG4A
+	 3LzKhEvs+/vVD2Ow1DOv4Hx7Q8Bu9Jl8U+xLwkTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jan Kara <jack@suse.cz>,
 	Gabriel Krisman Bertazi <krisman@collabora.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 172/690] inotify: Dont force FS_IN_IGNORED
-Date: Mon,  8 Apr 2024 14:50:38 +0200
-Message-ID: <20240408125405.789573512@linuxfoundation.org>
+Subject: [PATCH 5.15 173/690] fsnotify: Add helper to detect overflow_event
+Date: Mon,  8 Apr 2024 14:50:39 +0200
+Message-ID: <20240408125405.826488174@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,19 +69,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-[ Upstream commit e0462f91d24756916fded4313d508e0fc52f39c9 ]
+[ Upstream commit 808967a0a4d2f4ce6a2005c5692fffbecaf018c1 ]
 
-According to Amir:
+Similarly to fanotify_is_perm_event and friends, provide a helper
+predicate to say whether a mask is of an overflow event.
 
-"FS_IN_IGNORED is completely internal to inotify and there is no need
-to set it in i_fsnotify_mask at all, so if we remove the bit from the
-output of inotify_arg_to_mask() no functionality will change and we will
-be able to overload the event bit for FS_ERROR."
-
-This is done in preparation to overload FS_ERROR with the notification
-mechanism in fanotify.
-
-Link: https://lore.kernel.org/r/20211025192746.66445-8-krisman@collabora.com
+Link: https://lore.kernel.org/r/20211025192746.66445-9-krisman@collabora.com
 Suggested-by: Amir Goldstein <amir73il@gmail.com>
 Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
@@ -89,27 +82,40 @@ Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/inotify/inotify_user.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/notify/fanotify/fanotify.h    | 3 ++-
+ include/linux/fsnotify_backend.h | 5 +++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/notify/inotify/inotify_user.c b/fs/notify/inotify/inotify_user.c
-index 9fb7701d2f8a0..b87759b8402be 100644
---- a/fs/notify/inotify/inotify_user.c
-+++ b/fs/notify/inotify/inotify_user.c
-@@ -94,10 +94,10 @@ static inline __u32 inotify_arg_to_mask(struct inode *inode, u32 arg)
- 	__u32 mask;
+diff --git a/fs/notify/fanotify/fanotify.h b/fs/notify/fanotify/fanotify.h
+index 4a5e555dc3d25..c42cf8fd7d798 100644
+--- a/fs/notify/fanotify/fanotify.h
++++ b/fs/notify/fanotify/fanotify.h
+@@ -315,7 +315,8 @@ static inline struct path *fanotify_event_path(struct fanotify_event *event)
+  */
+ static inline bool fanotify_is_hashed_event(u32 mask)
+ {
+-	return !fanotify_is_perm_event(mask) && !(mask & FS_Q_OVERFLOW);
++	return !(fanotify_is_perm_event(mask) ||
++		 fsnotify_is_overflow_event(mask));
+ }
  
- 	/*
--	 * Everything should accept their own ignored and should receive events
--	 * when the inode is unmounted.  All directories care about children.
-+	 * Everything should receive events when the inode is unmounted.
-+	 * All directories care about children.
- 	 */
--	mask = (FS_IN_IGNORED | FS_UNMOUNT);
-+	mask = (FS_UNMOUNT);
- 	if (S_ISDIR(inode->i_mode))
- 		mask |= FS_EVENT_ON_CHILD;
+ static inline unsigned int fanotify_event_hash_bucket(
+diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
+index a2db821e8a8f2..749bc85e1d1c4 100644
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -510,6 +510,11 @@ static inline void fsnotify_queue_overflow(struct fsnotify_group *group)
+ 	fsnotify_add_event(group, group->overflow_event, NULL, NULL);
+ }
  
++static inline bool fsnotify_is_overflow_event(u32 mask)
++{
++	return mask & FS_Q_OVERFLOW;
++}
++
+ static inline bool fsnotify_notify_queue_is_empty(struct fsnotify_group *group)
+ {
+ 	assert_spin_locked(&group->notification_lock);
 -- 
 2.43.0
 
