@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-37745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5988C89C633
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE6889C20D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B7271C21741
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2369CB21316
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D755380618;
-	Mon,  8 Apr 2024 14:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C846A80604;
+	Mon,  8 Apr 2024 13:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zv4WV2nT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPpSVLEP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9637D80603;
-	Mon,  8 Apr 2024 14:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A670CCB;
+	Mon,  8 Apr 2024 13:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585136; cv=none; b=UZW12r0AeWPu4JlA34+pwR2ZYsvB3vGzzhk78IfCMztaGPJsBMbzvbu9IApZH76f8De1Y9c43QrDayNJdYmuu4On2ynRSJEifGjbpeOSbtRXGiUOyYWN3w3/Wg2IxEODdXwZbOoc56kyvAeHYx0corWOSvom+r0IwH58ot6XOSE=
+	t=1712582375; cv=none; b=LrCskWMf3VIfi4dOM+eM2wOIvvcDxz7BQZKvaS1oulCCcHZKnhKLDjSuugPyGt7mvYc/HC7ohfiJrdOZ6ksUrpDDajprCpi78mdENH71FoIb4G4nlmSDq773yTd5Hl5v2UQe6A3bfADkPuEd3A7usQdsDKibOBoowm9lZs5uq/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585136; c=relaxed/simple;
-	bh=H3O2KRct1fR95ghpkF4AxJJtraB3K9yYHZVHYkpXTvc=;
+	s=arc-20240116; t=1712582375; c=relaxed/simple;
+	bh=NhvtdevDHN9Wq8sUJv73XolrMHEq35fQ58EhfySQfIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLf0MOsMl78c2uCse6sQK6ShGxAsxhh7rENlqYhOonX13ftTNVWtipXYuoMFZEUacwFbOROYZQkM5T3Pf4kF7Y+uslVo5UaEqSpOpTxWE4a1XvUqqwPMVCaYASjYyi22wuXOyiLptikCKf4K47X5JfQJbMQLeogWojwjlSLtiAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zv4WV2nT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C3BC433F1;
-	Mon,  8 Apr 2024 14:05:35 +0000 (UTC)
+	 MIME-Version; b=jZEgtd0K7FDvhnqoKRYo+7T/8fVSmTqn7je9ZmZfMFcbVw686l5v+90vKkjUDY3Dley4c62UzS4sZM5yxebfP7O8xk1vcGUzy3crCKJ3rZuCrTzC+Zgj0PWQGpgtsLGyFU06JltnbZRvRPyDGKJgJx4RdhU13vjYsoU0ZzDGF4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPpSVLEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDBEC433F1;
+	Mon,  8 Apr 2024 13:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585136;
-	bh=H3O2KRct1fR95ghpkF4AxJJtraB3K9yYHZVHYkpXTvc=;
+	s=korg; t=1712582375;
+	bh=NhvtdevDHN9Wq8sUJv73XolrMHEq35fQ58EhfySQfIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zv4WV2nTLo1B8Gco3hy8E6p+9TnQ/oWnY7jVzXZN3S3Nxou3L05vJL4uQYFugVsn1
-	 zSYDkuodaszPtKaXDilIz/JuJPz0GtvItoa+b/zdWfatwG4zcoUjPng9XpFItTp7au
-	 Z5+y4zDnwJJcO3V5r1Wpaydb5nwRWmSx/yzmWnKs=
+	b=nPpSVLEPuDw2wkkHy76jPryzOg/pfd+pRfNNZO2363jLEG+SqB15qlIHCW52Lv2g5
+	 jchiAtEAcxGA0ToPrVDAZWEj5s5lz7ppfCuOV+XdjWj3gOL3/ijgeSH8Htz/VAb5LU
+	 VNn5akQ7ZRHXGGaLQYS0lRLqRCOnz3pVIoyC2C44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 648/690] mlxbf_gige: stop interface during shutdown
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 100/138] cifs: Fix caching to try to do open O_WRONLY as rdwr on server
 Date: Mon,  8 Apr 2024 14:58:34 +0200
-Message-ID: <20240408125423.126744182@linuxfoundation.org>
+Message-ID: <20240408125259.342475642@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +69,256 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 09ba28e1cd3cf715daab1fca6e1623e22fd754a6 upstream.
+[ Upstream commit e9e62243a3e2322cf639f653a0b0a88a76446ce7 ]
 
-The mlxbf_gige driver intermittantly encounters a NULL pointer
-exception while the system is shutting down via "reboot" command.
-The mlxbf_driver will experience an exception right after executing
-its shutdown() method.  One example of this exception is:
+When we're engaged in local caching of a cifs filesystem, we cannot perform
+caching of a partially written cache granule unless we can read the rest of
+the granule.  This can result in unexpected access errors being reported to
+the user.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000070
-Mem abort info:
-  ESR = 0x0000000096000004
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x04: level 0 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000004
-  CM = 0, WnR = 0
-user pgtable: 4k pages, 48-bit VAs, pgdp=000000011d373000
-[0000000000000070] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 96000004 [#1] SMP
-CPU: 0 PID: 13 Comm: ksoftirqd/0 Tainted: G S         OE     5.15.0-bf.6.gef6992a #1
-Hardware name: https://www.mellanox.com BlueField SoC/BlueField SoC, BIOS 4.0.2.12669 Apr 21 2023
-pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : mlxbf_gige_handle_tx_complete+0xc8/0x170 [mlxbf_gige]
-lr : mlxbf_gige_poll+0x54/0x160 [mlxbf_gige]
-sp : ffff8000080d3c10
-x29: ffff8000080d3c10 x28: ffffcce72cbb7000 x27: ffff8000080d3d58
-x26: ffff0000814e7340 x25: ffff331cd1a05000 x24: ffffcce72c4ea008
-x23: ffff0000814e4b40 x22: ffff0000814e4d10 x21: ffff0000814e4128
-x20: 0000000000000000 x19: ffff0000814e4a80 x18: ffffffffffffffff
-x17: 000000000000001c x16: ffffcce72b4553f4 x15: ffff80008805b8a7
-x14: 0000000000000000 x13: 0000000000000030 x12: 0101010101010101
-x11: 7f7f7f7f7f7f7f7f x10: c2ac898b17576267 x9 : ffffcce720fa5404
-x8 : ffff000080812138 x7 : 0000000000002e9a x6 : 0000000000000080
-x5 : ffff00008de3b000 x4 : 0000000000000000 x3 : 0000000000000001
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
-Call trace:
- mlxbf_gige_handle_tx_complete+0xc8/0x170 [mlxbf_gige]
- mlxbf_gige_poll+0x54/0x160 [mlxbf_gige]
- __napi_poll+0x40/0x1c8
- net_rx_action+0x314/0x3a0
- __do_softirq+0x128/0x334
- run_ksoftirqd+0x54/0x6c
- smpboot_thread_fn+0x14c/0x190
- kthread+0x10c/0x110
- ret_from_fork+0x10/0x20
-Code: 8b070000 f9000ea0 f95056c0 f86178a1 (b9407002)
----[ end trace 7cc3941aa0d8e6a4 ]---
-Kernel panic - not syncing: Oops: Fatal exception in interrupt
-Kernel Offset: 0x4ce722520000 from 0xffff800008000000
-PHYS_OFFSET: 0x80000000
-CPU features: 0x000005c1,a3330e5a
-Memory Limit: none
----[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+Fix this by the following: if a file is opened O_WRONLY locally, but the
+mount was given the "-o fsc" flag, try first opening the remote file with
+GENERIC_READ|GENERIC_WRITE and if that returns -EACCES, try dropping the
+GENERIC_READ and doing the open again.  If that last succeeds, invalidate
+the cache for that file as for O_DIRECT.
 
-During system shutdown, the mlxbf_gige driver's shutdown() is always executed.
-However, the driver's stop() method will only execute if networking interface
-configuration logic within the Linux distribution has been setup to do so.
-
-If shutdown() executes but stop() does not execute, NAPI remains enabled
-and this can lead to an exception if NAPI is scheduled while the hardware
-interface has only been partially deinitialized.
-
-The networking interface managed by the mlxbf_gige driver must be properly
-stopped during system shutdown so that IFF_UP is cleared, the hardware
-interface is put into a clean state, and NAPI is fully deinitialized.
-
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/20240325210929.25362-1-davthompson@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/smb/client/dir.c     | 15 +++++++++++++
+ fs/smb/client/file.c    | 48 ++++++++++++++++++++++++++++++++---------
+ fs/smb/client/fscache.h |  6 ++++++
+ 3 files changed, 59 insertions(+), 10 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/phy.h>
- #include <linux/platform_device.h>
-+#include <linux/rtnetlink.h>
- #include <linux/skbuff.h>
+diff --git a/fs/smb/client/dir.c b/fs/smb/client/dir.c
+index e382b794acbed..863c7bc3db86f 100644
+--- a/fs/smb/client/dir.c
++++ b/fs/smb/client/dir.c
+@@ -180,6 +180,7 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	int disposition;
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
  
- #include "mlxbf_gige.h"
-@@ -419,8 +420,13 @@ static void mlxbf_gige_shutdown(struct p
- {
- 	struct mlxbf_gige *priv = platform_get_drvdata(pdev);
+ 	*oplock = 0;
+ 	if (tcon->ses->server->oplocks)
+@@ -191,6 +192,10 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 		return PTR_ERR(full_path);
+ 	}
  
--	writeq(0, priv->base + MLXBF_GIGE_INT_EN);
--	mlxbf_gige_clean_port(priv);
-+	rtnl_lock();
-+	netif_device_detach(priv->netdev);
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (oflags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
 +
-+	if (netif_running(priv->netdev))
-+		dev_close(priv->netdev);
-+
-+	rtnl_unlock();
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ 	if (tcon->unix_ext && cap_unix(tcon->ses) && !tcon->broken_posix_open &&
+ 	    (CIFS_UNIX_POSIX_PATH_OPS_CAP &
+@@ -267,6 +272,8 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 		desired_access |= GENERIC_READ; /* is this too little? */
+ 	if (OPEN_FMODE(oflags) & FMODE_WRITE)
+ 		desired_access |= GENERIC_WRITE;
++	if (rdwr_for_fscache == 1)
++		desired_access |= GENERIC_READ;
+ 
+ 	disposition = FILE_OVERWRITE_IF;
+ 	if ((oflags & (O_CREAT | O_EXCL)) == (O_CREAT | O_EXCL))
+@@ -295,6 +302,7 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	if (!tcon->unix_ext && (mode & S_IWUGO) == 0)
+ 		create_options |= CREATE_OPTION_READONLY;
+ 
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -308,8 +316,15 @@ static int cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned
+ 	rc = server->ops->open(xid, &oparms, oplock, buf);
+ 	if (rc) {
+ 		cifs_dbg(FYI, "cifs_create returned 0x%x\n", rc);
++		if (rc == -EACCES && rdwr_for_fscache == 1) {
++			desired_access &= ~GENERIC_READ;
++			rdwr_for_fscache = 2;
++			goto retry_open;
++		}
+ 		goto out;
+ 	}
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+ 
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ 	/*
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 0f3405e0f2e48..c240cea7ca349 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -77,12 +77,12 @@ cifs_mark_open_files_invalid(struct cifs_tcon *tcon)
+ 	 */
  }
  
- static const struct acpi_device_id __maybe_unused mlxbf_gige_acpi_match[] = {
+-static inline int cifs_convert_flags(unsigned int flags)
++static inline int cifs_convert_flags(unsigned int flags, int rdwr_for_fscache)
+ {
+ 	if ((flags & O_ACCMODE) == O_RDONLY)
+ 		return GENERIC_READ;
+ 	else if ((flags & O_ACCMODE) == O_WRONLY)
+-		return GENERIC_WRITE;
++		return rdwr_for_fscache == 1 ? (GENERIC_READ | GENERIC_WRITE) : GENERIC_WRITE;
+ 	else if ((flags & O_ACCMODE) == O_RDWR) {
+ 		/* GENERIC_ALL is too much permission to request
+ 		   can cause unnecessary access denied on create */
+@@ -219,11 +219,16 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	int create_options = CREATE_NOT_DIR;
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
+ 
+ 	if (!server->ops->open)
+ 		return -ENOSYS;
+ 
+-	desired_access = cifs_convert_flags(f_flags);
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (f_flags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
++
++	desired_access = cifs_convert_flags(f_flags, rdwr_for_fscache);
+ 
+ /*********************************************************************
+  *  open flag mapping table:
+@@ -260,6 +265,7 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	if (f_flags & O_DIRECT)
+ 		create_options |= CREATE_NO_BUFFER;
+ 
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -271,8 +277,16 @@ static int cifs_nt_open(const char *full_path, struct inode *inode, struct cifs_
+ 	};
+ 
+ 	rc = server->ops->open(xid, &oparms, oplock, buf);
+-	if (rc)
++	if (rc) {
++		if (rc == -EACCES && rdwr_for_fscache == 1) {
++			desired_access = cifs_convert_flags(f_flags, 0);
++			rdwr_for_fscache = 2;
++			goto retry_open;
++		}
+ 		return rc;
++	}
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+ 
+ 	/* TODO: Add support for calling posix query info but with passing in fid */
+ 	if (tcon->unix_ext)
+@@ -705,11 +719,11 @@ int cifs_open(struct inode *inode, struct file *file)
+ use_cache:
+ 	fscache_use_cookie(cifs_inode_cookie(file_inode(file)),
+ 			   file->f_mode & FMODE_WRITE);
+-	if (file->f_flags & O_DIRECT &&
+-	    (!((file->f_flags & O_ACCMODE) != O_RDONLY) ||
+-	     file->f_flags & O_APPEND))
+-		cifs_invalidate_cache(file_inode(file),
+-				      FSCACHE_INVAL_DIO_WRITE);
++	if (!(file->f_flags & O_DIRECT))
++		goto out;
++	if ((file->f_flags & (O_ACCMODE | O_APPEND)) == O_RDONLY)
++		goto out;
++	cifs_invalidate_cache(file_inode(file), FSCACHE_INVAL_DIO_WRITE);
+ 
+ out:
+ 	free_dentry_path(page);
+@@ -774,6 +788,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	int disposition = FILE_OPEN;
+ 	int create_options = CREATE_NOT_DIR;
+ 	struct cifs_open_parms oparms;
++	int rdwr_for_fscache = 0;
+ 
+ 	xid = get_xid();
+ 	mutex_lock(&cfile->fh_mutex);
+@@ -837,7 +852,11 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	}
+ #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+ 
+-	desired_access = cifs_convert_flags(cfile->f_flags);
++	/* If we're caching, we need to be able to fill in around partial writes. */
++	if (cifs_fscache_enabled(inode) && (cfile->f_flags & O_ACCMODE) == O_WRONLY)
++		rdwr_for_fscache = 1;
++
++	desired_access = cifs_convert_flags(cfile->f_flags, rdwr_for_fscache);
+ 
+ 	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
+ 	if (cfile->f_flags & O_SYNC)
+@@ -849,6 +868,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 	if (server->ops->get_lease_key)
+ 		server->ops->get_lease_key(inode, &cfile->fid);
+ 
++retry_open:
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+ 		.cifs_sb = cifs_sb,
+@@ -874,6 +894,11 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 		/* indicate that we need to relock the file */
+ 		oparms.reconnect = true;
+ 	}
++	if (rc == -EACCES && rdwr_for_fscache == 1) {
++		desired_access = cifs_convert_flags(cfile->f_flags, 0);
++		rdwr_for_fscache = 2;
++		goto retry_open;
++	}
+ 
+ 	if (rc) {
+ 		mutex_unlock(&cfile->fh_mutex);
+@@ -882,6 +907,9 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 		goto reopen_error_exit;
+ 	}
+ 
++	if (rdwr_for_fscache == 2)
++		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
++
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ reopen_success:
+ #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+diff --git a/fs/smb/client/fscache.h b/fs/smb/client/fscache.h
+index 67b601041f0a3..c691b98b442a6 100644
+--- a/fs/smb/client/fscache.h
++++ b/fs/smb/client/fscache.h
+@@ -108,6 +108,11 @@ static inline void cifs_readpage_to_fscache(struct inode *inode,
+ 		__cifs_readpage_to_fscache(inode, page);
+ }
+ 
++static inline bool cifs_fscache_enabled(struct inode *inode)
++{
++	return fscache_cookie_enabled(cifs_inode_cookie(inode));
++}
++
+ #else /* CONFIG_CIFS_FSCACHE */
+ static inline
+ void cifs_fscache_fill_coherency(struct inode *inode,
+@@ -123,6 +128,7 @@ static inline void cifs_fscache_release_inode_cookie(struct inode *inode) {}
+ static inline void cifs_fscache_unuse_inode_cookie(struct inode *inode, bool update) {}
+ static inline struct fscache_cookie *cifs_inode_cookie(struct inode *inode) { return NULL; }
+ static inline void cifs_invalidate_cache(struct inode *inode, unsigned int flags) {}
++static inline bool cifs_fscache_enabled(struct inode *inode) { return false; }
+ 
+ static inline int cifs_fscache_query_occupancy(struct inode *inode,
+ 					       pgoff_t first, unsigned int nr_pages,
+-- 
+2.43.0
+
 
 
 
