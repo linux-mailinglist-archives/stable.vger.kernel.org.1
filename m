@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-37283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F177F89C432
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDECA89C49F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90C2D1F2266E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F05321C2162B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A858594B;
-	Mon,  8 Apr 2024 13:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EBC8121A;
+	Mon,  8 Apr 2024 13:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UedhKBge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0BJ9ELF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951337E118;
-	Mon,  8 Apr 2024 13:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA763811FB;
+	Mon,  8 Apr 2024 13:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583783; cv=none; b=Z6P4tCfF0LNcIRObNGZpze/Q4d8LQ5RaZnZc5DjFbUJyxeHDl8LvaQrG842V+W154AgmH39SVeLl0t06tYyeeCwn5puKoZQcaeMgoABskcibSr1x65U5T5ARR1w85iP9DG6aN6c9XJH7ZuBZd8xI20rVnHtFcg6EO7fkC6quUmY=
+	t=1712584071; cv=none; b=TvL4FtdIjDJnbp9+zBSqIW8IitU9n3JxvoWoGGWlSy3XQWJRt4vomfCyRkiyRBPc64LGqM0zV3gQKrvpXgI8i4wbAq5Vre4kvCwouu6fx+xubT3uDtnTTi1IkbyhTkZFzCt7EYYPN8hQZOeumKmFeZ4qO3VcAY6tstvSFx3451w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583783; c=relaxed/simple;
-	bh=a3SYhrZOl3InBLw9VupUxjs1dUj1wik/XdM5pmQNWW4=;
+	s=arc-20240116; t=1712584071; c=relaxed/simple;
+	bh=XYi3AVwYcuy9LbL87wC4npvIstcvSSEOB7LY8a1TBW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HttwGz80ORauo1WjoZNvWRiPgiAVkawKRtNUSSj5LdtE3uhFJLJ8IqCMbU5ML9KJrAEmS5g13126RErZvV7YvehPAPyJDMaL+++7ms7ehIfm7FIHl1T/fg2T0uvtjEMQYZyfS/gZR6FViDWyVQogVu+dXJlboRHS0OyHBYgwN5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UedhKBge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACE7C433C7;
-	Mon,  8 Apr 2024 13:43:02 +0000 (UTC)
+	 MIME-Version; b=lSFd8w3fH2EDVRISFsy+Diik7iDi8CYDpzwu+tDkUd7/ocEcD/wM/iE+pWbjpk83RS0BY/FOvdDUOQXG1Bo8Xkq0cQK7aoPTeteANXzKvTczQ6TEhV2S96okdTAK88mTV6MPKaZfcTLFvDNvjiYtlaSpDXjndsEVBRK7eLga7uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0BJ9ELF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649B5C43390;
+	Mon,  8 Apr 2024 13:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583783;
-	bh=a3SYhrZOl3InBLw9VupUxjs1dUj1wik/XdM5pmQNWW4=;
+	s=korg; t=1712584071;
+	bh=XYi3AVwYcuy9LbL87wC4npvIstcvSSEOB7LY8a1TBW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UedhKBge97VhnLTWzbCaXX7rjwRNeX4SwY9anUIB1yVgE/UIrPFAxKJ4WChKa1zWU
-	 3DoFcdE8FYaMkYa5SW0EXs/Lh/7wRAOqJJ1bPaOioldNtPjJcqDh9BZ0bVqCAIgmNp
-	 8IDNmF3yoqZw1aHKfxQYKrCfgOi+P7fEEMGYym+g=
+	b=P0BJ9ELFwlAEe48uEukhwg2RqqpOvcFmRrIIVkOfs78XgrxmlMuPkS4+7q1wAzT2a
+	 c/lsMTL6dAUKYZILKvE9KxEJswRk0ruhBLbyFjiE+QvdE8YA/J5L5FhcwuADWkhBcY
+	 tlADJsL3d3fNA5HKjiBHnrsyik/2B3oJf1VLj998=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 233/252] smb: client: fix potential UAF in smb2_is_valid_oplock_break()
+Subject: [PATCH 6.8 257/273] smb: client: fix potential UAF in cifs_signal_cifsd_for_reconnect()
 Date: Mon,  8 Apr 2024 14:58:52 +0200
-Message-ID: <20240408125313.886595527@linuxfoundation.org>
+Message-ID: <20240408125317.444788435@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,13 +61,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Paulo Alcantara <pc@manguebit.com>
 
-commit 22863485a4626ec6ecf297f4cc0aef709bc862e4 upstream.
+commit e0e50401cc3921c9eaf1b0e667db174519ea939f upstream.
 
 Skip sessions that are being teared down (status == SES_EXITING) to
 avoid UAF.
@@ -77,20 +77,20 @@ Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2misc.c |    2 ++
+ fs/smb/client/connect.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/smb2misc.c
-+++ b/fs/smb/client/smb2misc.c
-@@ -697,6 +697,8 @@ smb2_is_valid_oplock_break(char *buffer,
- 	/* look up tcon based on tid & uid */
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -178,6 +178,8 @@ cifs_signal_cifsd_for_reconnect(struct T
+ 
  	spin_lock(&cifs_tcp_ses_lock);
  	list_for_each_entry(ses, &pserver->smb_ses_list, smb_ses_list) {
 +		if (cifs_ses_exiting(ses))
 +			continue;
- 		list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 
- 			spin_lock(&tcon->open_file_lock);
+ 		spin_lock(&ses->chan_lock);
+ 		for (i = 0; i < ses->chan_count; i++) {
+ 			if (!ses->chans[i].server)
 
 
 
