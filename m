@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-37026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77E189C2E9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:37:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE5E89C5B0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99126280F5D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:37:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EE311F21DE3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D808A7E111;
-	Mon,  8 Apr 2024 13:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E37D7F498;
+	Mon,  8 Apr 2024 13:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZRMtQrD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lu5A5niy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C1B12DD85;
-	Mon,  8 Apr 2024 13:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01D27BB1A;
+	Mon,  8 Apr 2024 13:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583038; cv=none; b=bbyE9usDlW9/9qVCeHzssLqlNmo/5b5iF8HqQx9VSIbSFVZ49pDLWWk45qtu15VFrWpsFWNt7WhM1jJ2selHCzj/NE6LNDVBSuDCtubCpfe377AP1MzwlWUob8r+AnWQ5i5RmpPb9L6ZtS7ukIykCqYHHreI7NO2Bxa03h187aU=
+	t=1712584744; cv=none; b=h9QQmuiAD1iOKock5DEtV0f2Kgnmo9BScIIg56DdTfcGU1poJtawHLl/FwWLahHUlccEtFGNEZaXLD2eOn8rcQ15GTqpB5HgTRiwP/DibGHUG4Gqgmof34LWJci1g4MJEw9lIP33MiY5HCVuTP00yblfHvS4equekydjSKIhXOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583038; c=relaxed/simple;
-	bh=sqe1EP9C83MFnujduD8c1Bg2ABtu1IkHmzMG/O+rbAA=;
+	s=arc-20240116; t=1712584744; c=relaxed/simple;
+	bh=ScBKePcjDSlTgB7JOMEqZI5R0lbfNZGiHBlsqRU281M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0vr4+vYnFRuKGUqZVBHJNkf3tC69U5FTdQYDVazLVXocWYeNdG+A6/mHTqnFxveDq1bWPIV8aRo/6bPgwy2LozHRqwGGGb2F6TQFOi2Y3+tJ1h/AQZY9OAFo1aXphCBB4Vi5u1r0xzalcDGLcOI26oWhUeNjn7JLVHyoJTAZLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZRMtQrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E00FC433C7;
-	Mon,  8 Apr 2024 13:30:37 +0000 (UTC)
+	 MIME-Version; b=bdg4bWFCNs5in/Zhu9ukI5t0/ZOF5v0xM+V4C9+y+o9rP4+8R3ofyQk3nJNBgXQRtGzf0p6zhoUGycPMUm/hsBGCHuHlztcSLcNKXLCBuSRnMcsu8/+f/ZfMGhafhfJLYDJtlrED9JAUJgXhg1OxX9sBd1UzOg4D9csp5sxT6B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lu5A5niy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56113C433C7;
+	Mon,  8 Apr 2024 13:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583038;
-	bh=sqe1EP9C83MFnujduD8c1Bg2ABtu1IkHmzMG/O+rbAA=;
+	s=korg; t=1712584744;
+	bh=ScBKePcjDSlTgB7JOMEqZI5R0lbfNZGiHBlsqRU281M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZRMtQrDMDxAZSGUC2QyPo+qmQgWlqauDrTFzkq0xwkJdrPLaS/eNbsakhmrJ2Jnc
-	 8punm5zjBRoBa9KGbDv/DqD/0W2gxdnUj8q5wu8ABUwgdimCDXwKbO3iYjkeidpmc0
-	 eNJZbXeL4sT4YIdeDv2CGo3mA7PYAFraPnI+em68=
+	b=Lu5A5niyHxtH8qCDLK9b+mJaMnqxXjUVCGHRLe4qsjzcVw7h5tQcDvNXjRAu1Y5Ps
+	 PRvsirz1Hg6opOvS4Kr4NYso8Tbrs6I7JOyZvxqqr6tsUhKcLiqPjJdm37ljlgy80q
+	 pJGn0pQC+n1T8iZDgUdSEQ1hg4PzkBejZZ1Ih9Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 133/273] e1000e: Minor flow correction in e1000_shutdown function
+	Ido Schimmel <idosch@idosch.org>,
+	NeilBrown <neilb@suse.de>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 542/690] lockd: drop inappropriate svc_get() from locked_get()
 Date: Mon,  8 Apr 2024 14:56:48 +0200
-Message-ID: <20240408125313.426810750@linuxfoundation.org>
+Message-ID: <20240408125419.284707801@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 662200e324daebe6859c1f0f3ea1538b0561425a ]
+[ Upstream commit 665e89ab7c5af1f2d260834c861a74b01a30f95f ]
 
-Add curly braces to avoid entering to an if statement where it is not
-always required in e1000_shutdown function.
-This improves code readability and might prevent non-deterministic
-behaviour in the future.
+The below-mentioned patch was intended to simplify refcounting on the
+svc_serv used by locked.  The goal was to only ever have a single
+reference from the single thread.  To that end we dropped a call to
+lockd_start_svc() (except when creating thread) which would take a
+reference, and dropped the svc_put(serv) that would drop that reference.
 
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240301184806.2634508-5-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 861e8086029e ("e1000e: move force SMBUS from enable ulp function to avoid PHY loss issue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unfortunately we didn't also remove the svc_get() from
+lockd_create_svc() in the case where the svc_serv already existed.
+So after the patch:
+ - on the first call the svc_serv was allocated and the one reference
+   was given to the thread, so there are no extra references
+ - on subsequent calls svc_get() was called so there is now an extra
+   reference.
+This is clearly not consistent.
+
+The inconsistency is also clear in the current code in lockd_get()
+takes *two* references, one on nlmsvc_serv and one by incrementing
+nlmsvc_users.   This clearly does not match lockd_put().
+
+So: drop that svc_get() from lockd_get() (which used to be in
+lockd_create_svc().
+
+Reported-by: Ido Schimmel <idosch@idosch.org>
+Closes: https://lore.kernel.org/linux-nfs/ZHsI%2FH16VX9kJQX1@shredder/T/#u
+Fixes: b73a2972041b ("lockd: move lockd_start_svc() call into lockd_create_svc()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/lockd/svc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index af5d9d97a0d6c..cc8c531ec3dff 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6688,14 +6688,14 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 	if (adapter->hw.phy.type == e1000_phy_igp_3) {
- 		e1000e_igp3_phy_powerdown_workaround_ich8lan(&adapter->hw);
- 	} else if (hw->mac.type >= e1000_pch_lpt) {
--		if (wufc && !(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC)))
-+		if (wufc && !(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC))) {
- 			/* ULP does not support wake from unicast, multicast
- 			 * or broadcast.
- 			 */
- 			retval = e1000_enable_ulp_lpt_lp(hw, !runtime);
--
--		if (retval)
--			return retval;
-+			if (retval)
-+				return retval;
-+		}
- 	}
+diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
+index 59ef8a1f843f3..5579e67da17db 100644
+--- a/fs/lockd/svc.c
++++ b/fs/lockd/svc.c
+@@ -355,7 +355,6 @@ static int lockd_get(void)
+ 	int error;
  
- 	/* Ensure that the appropriate bits are set in LPI_CTRL
+ 	if (nlmsvc_serv) {
+-		svc_get(nlmsvc_serv);
+ 		nlmsvc_users++;
+ 		return 0;
+ 	}
 -- 
 2.43.0
 
