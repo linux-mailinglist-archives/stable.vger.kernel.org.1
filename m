@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-37735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E9289C629
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4019C89C216
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 643A5285CF3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 728381C21CAD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79EB80022;
-	Mon,  8 Apr 2024 14:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B59A77F11;
+	Mon,  8 Apr 2024 13:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoNptXKp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZmTot6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E8369E1C;
-	Mon,  8 Apr 2024 14:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8282E405;
+	Mon,  8 Apr 2024 13:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585107; cv=none; b=MIau2YHfX53s7lYn22s021gksPxA/Vw5ab3xSGTzVc5pdgR+OaO0iKa18VfnHMibmC2hzD5dBOrgGMGw75C8iznNv8LWPugddmQpFB2NdouqiScXVq8/C990Z3/rCHKz9wPZvfrn6YoWSEF/qveoLhUdlarnWXqAN2Gamg2YTI0=
+	t=1712582576; cv=none; b=bLas0BB+n2LoK4SyIhlKXI/vuMiQQTOPqs20z7c9c4YuSzCkNupB0IdyEzx0rmZXQbX9KWCUb8Z1qVMmZ/WuTMI1juXbDoG52xmhTEX0o/+43RT3TS9+s90mvImFwWdIdc+Ssb3SN5IiFkW+kQgI47My0+7Pf/43iHW1Z4YB7fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585107; c=relaxed/simple;
-	bh=4Nz0M14N9sw4Z+c6fJX9f1Hprc6nfiek0PMDhJ+Wckc=;
+	s=arc-20240116; t=1712582576; c=relaxed/simple;
+	bh=dODMI4NtV5wyWD8R7uiQzWSq41hN/CaxNXu6WRAATX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=to5HEgHhHPrh4uqmsdailCHaVPXxbBSw5j1UZlGZoYVn2NOqauBBgyWC4zWyna14K+j/Tiq45GMHNc5QzTuueGkLxTvKoszNYBMztkpz5v7O/4MnecIK3T0B3CmXknLMQMGjBkNZ1jGcjvdahkfyflDYVo5u0kmEo0XLXno1+nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoNptXKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A49C43390;
-	Mon,  8 Apr 2024 14:05:06 +0000 (UTC)
+	 MIME-Version; b=U4EzGqTuTUcN4g5JbPt2oxgBNDay9BwfwuVCozHPzuiUcM+VBI+3p/0BVmJbDxm++PsOTZYRwQRMt5/pcDak3WBW4FifOhCQspSul2hg0PLVWISzSlOR7NLUNqJKJigSUuC0EGBULrVAkRCBW8kUefK6BFo0XqVmNQPmvm910dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZmTot6g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430D0C433F1;
+	Mon,  8 Apr 2024 13:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585107;
-	bh=4Nz0M14N9sw4Z+c6fJX9f1Hprc6nfiek0PMDhJ+Wckc=;
+	s=korg; t=1712582576;
+	bh=dODMI4NtV5wyWD8R7uiQzWSq41hN/CaxNXu6WRAATX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RoNptXKpiMbXTc8sKks20vQdbZ0ijR2PJ4vA6lP1K/8rIDG1O+Ks3lDo88Sjdia/D
-	 zy651CAdFokJaEJr96aznJ1UnSpYnSHYIQaHJVatGEc+ffRJ2FxsZKr1jItWE5wq2W
-	 XRYITuMznjRVJqORwVGlZjkvYoLzGMoqKlaOzPBU=
+	b=tZmTot6gwX8BCS7JGB+fnoXbrudRXEU5ZBDmG5uCatmmbG3p026d2mwOCf8J0O097
+	 aQ7Fh3AcHmzqZ428GEH7epfQxsesHIZQlPs2aXak0jZCyv/EEwrc9GXtaJYR4jbrHV
+	 45wDw1O/hl2sFiN+el7/AsnA0m/TMGeQ2yG+w410=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 665/690] net: fec: Set mac_managed_pm during probe
+	Herve Codina <herve.codina@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Rob Herring <robh@kernel.org>
+Subject: [PATCH 6.1 117/138] driver core: Introduce device_link_wait_removal()
 Date: Mon,  8 Apr 2024 14:58:51 +0200
-Message-ID: <20240408125423.777631746@linuxfoundation.org>
+Message-ID: <20240408125259.872703984@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit cbc17e7802f5de37c7c262204baadfad3f7f99e5 ]
+commit 0462c56c290a99a7f03e817ae5b843116dfb575c upstream.
 
-Setting mac_managed_pm during interface up is too late.
+The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+introduces a workqueue to release the consumer and supplier devices used
+in the devlink.
+In the job queued, devices are release and in turn, when all the
+references to these devices are dropped, the release function of the
+device itself is called.
 
-In situations where the link is not brought up yet and the system suspends
-the regular PHY power management will run. Since the FEC ETHEREN control
-bit is cleared (automatically) on suspend the controller is off in resume.
-When the regular PHY power management resume path runs in this context it
-will write to the MII_DATA register but nothing will be transmitted on the
-MDIO bus.
+Nothing is present to provide some synchronisation with this workqueue
+in order to ensure that all ongoing releasing operations are done and
+so, some other operations can be started safely.
 
-This can be observed by the following log:
+For instance, in the following sequence:
+  1) of_platform_depopulate()
+  2) of_overlay_remove()
 
-    fec 5b040000.ethernet eth0: MDIO read timeout
-    Microchip LAN87xx T1 5b040000.ethernet-1:04: PM: dpm_run_callback(): mdio_bus_phy_resume+0x0/0xc8 returns -110
-    Microchip LAN87xx T1 5b040000.ethernet-1:04: PM: failed to resume: error -110
+During the step 1, devices are released and related devlinks are removed
+(jobs pushed in the workqueue).
+During the step 2, OF nodes are destroyed but, without any
+synchronisation with devlink removal jobs, of_overlay_remove() can raise
+warnings related to missing of_node_put():
+  ERROR: memory leak, expected refcount 1 instead of 2
 
-The data written will however remain in the MII_DATA register.
+Indeed, the missing of_node_put() call is going to be done, too late,
+from the workqueue job execution.
 
-When the link later is set to administrative up it will trigger a call to
-fec_restart() which will restore the MII_SPEED register. This triggers the
-quirk explained in f166f890c8f0 ("net: ethernet: fec: Replace interrupt
-driven MDIO with polled IO") causing an extra MII_EVENT.
+Introduce device_link_wait_removal() to offer a way to synchronize
+operations waiting for the end of devlink removals (i.e. end of
+workqueue jobs).
+Also, as a flushing operation is done on the workqueue, the workqueue
+used is moved from a system-wide workqueue to a local one.
 
-This extra event desynchronizes all the MDIO register reads, causing them
-to complete too early. Leading all reads to read as 0 because
-fec_enet_mdio_wait() returns too early.
-
-When a Microchip LAN8700R PHY is connected to the FEC, the 0 reads causes
-the PHY to be initialized incorrectly and the PHY will not transmit any
-ethernet signal in this state. It cannot be brought out of this state
-without a power cycle of the PHY.
-
-Fixes: 557d5dc83f68 ("net: fec: use mac-managed PHY PM")
-Closes: https://lore.kernel.org/netdev/1f45bdbe-eab1-4e59-8f24-add177590d27@actia.se/
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-[jernberg: commit message]
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://lore.kernel.org/r/20240328155909.59613-2-john.ernberg@actia.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240325152140.198219-2-herve.codina@bootlin.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/base/core.c    |   26 +++++++++++++++++++++++---
+ include/linux/device.h |    1 +
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 6662c0013959e..972808777f308 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2132,8 +2132,6 @@ static int fec_enet_mii_probe(struct net_device *ndev)
- 	fep->link = 0;
- 	fep->full_duplex = 0;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -56,6 +56,7 @@ static bool fw_devlink_is_permissive(voi
+ static void __fw_devlink_link_to_consumers(struct device *dev);
+ static bool fw_devlink_drv_reg_done;
+ static bool fw_devlink_best_effort;
++static struct workqueue_struct *device_link_wq;
  
--	phy_dev->mac_managed_pm = true;
--
- 	phy_attached_info(phy_dev);
+ /**
+  * __fwnode_link_add - Create a link between two fwnode_handles.
+@@ -585,12 +586,26 @@ static void devlink_dev_release(struct d
+ 	/*
+ 	 * It may take a while to complete this work because of the SRCU
+ 	 * synchronization in device_link_release_fn() and if the consumer or
+-	 * supplier devices get deleted when it runs, so put it into the "long"
+-	 * workqueue.
++	 * supplier devices get deleted when it runs, so put it into the
++	 * dedicated workqueue.
+ 	 */
+-	queue_work(system_long_wq, &link->rm_work);
++	queue_work(device_link_wq, &link->rm_work);
+ }
+ 
++/**
++ * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
++ */
++void device_link_wait_removal(void)
++{
++	/*
++	 * devlink removal jobs are queued in the dedicated work queue.
++	 * To be sure that all removal jobs are terminated, ensure that any
++	 * scheduled work has run to completion.
++	 */
++	flush_workqueue(device_link_wq);
++}
++EXPORT_SYMBOL_GPL(device_link_wait_removal);
++
+ static struct class devlink_class = {
+ 	.name = "devlink",
+ 	.owner = THIS_MODULE,
+@@ -4132,9 +4147,14 @@ int __init devices_init(void)
+ 	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
+ 	if (!sysfs_dev_char_kobj)
+ 		goto char_kobj_err;
++	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);
++	if (!device_link_wq)
++		goto wq_err;
  
  	return 0;
-@@ -2145,10 +2143,12 @@ static int fec_enet_mii_init(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	bool suppress_preamble = false;
-+	struct phy_device *phydev;
- 	struct device_node *node;
- 	int err = -ENXIO;
- 	u32 mii_speed, holdtime;
- 	u32 bus_freq;
-+	int addr;
  
- 	/*
- 	 * The i.MX28 dual fec interfaces are not equal.
-@@ -2258,6 +2258,13 @@ static int fec_enet_mii_init(struct platform_device *pdev)
- 		goto err_out_free_mdiobus;
- 	of_node_put(node);
++ wq_err:
++	kobject_put(sysfs_dev_char_kobj);
+  char_kobj_err:
+ 	kobject_put(sysfs_dev_block_kobj);
+  block_kobj_err:
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1099,6 +1099,7 @@ void device_link_del(struct device_link
+ void device_link_remove(void *consumer, struct device *supplier);
+ void device_links_supplier_sync_state_pause(void);
+ void device_links_supplier_sync_state_resume(void);
++void device_link_wait_removal(void);
  
-+	/* find all the PHY devices on the bus and set mac_managed_pm to true */
-+	for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
-+		phydev = mdiobus_get_phy(fep->mii_bus, addr);
-+		if (phydev)
-+			phydev->mac_managed_pm = true;
-+	}
-+
- 	mii_cnt++;
- 
- 	/* save fec0 mii_bus */
--- 
-2.43.0
-
+ extern __printf(3, 4)
+ int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
 
 
 
