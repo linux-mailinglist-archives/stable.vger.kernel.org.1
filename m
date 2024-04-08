@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-36505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5764689C0BF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8373589C029
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1A01B29BA5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5E121C2080D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5307317D;
-	Mon,  8 Apr 2024 13:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778277BAFF;
+	Mon,  8 Apr 2024 13:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CebJGsMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18CDhu0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFCD2E62C;
-	Mon,  8 Apr 2024 13:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330392E62C;
+	Mon,  8 Apr 2024 13:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581521; cv=none; b=qqvmu4MmrKLJ4+ONNKMiHLYqyPHNcKuuKy4yaM4b81ut9nGH0iNQCz8mBiAe1f8B/LfezZfXxdTDV7jN/p50vn+G6QvATHQs0oj8gdJMsYbwP5lttCtbzqxV4Y1zmO+arFFCn7lnAaMnbk/lydMcqily6iRUYmXjv8WOtLHXBXs=
+	t=1712581533; cv=none; b=hxBhV0+JOKvAveRXUB4Xt0zfJ77bTCOn19qqv4MwIkswhPB9RdFeK5LkN2QAQ9Sqiime3haOzUg7qLAf5UPOMSvUjzNNGIYJKSIBkWBlbs3YW/xCx11sklOtTsQAbF/OU2Brrxf4BF9rR+nkcLn381h/dDIc7qW2Bg1B//Y02b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581521; c=relaxed/simple;
-	bh=I1nL7XBuy9d0nUUBJuMGkuqfbXApqqgyMrPXEX9BTgE=;
+	s=arc-20240116; t=1712581533; c=relaxed/simple;
+	bh=xI9oVSEsmPvkHLgZ8S83pLZQ37/F6s69sPoaKDYD3cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQu9f27YQOaWRtYK7uY0ZSjsytGX9XQcrUoaGSR1pQ72NzrBkT8rqelXwXostfE9a9LikPOa5uyrXEk0t3yGMiMe0lnm53zYcyhsCP2v2BM92L2S8E18jboccfr9JJJpqn/vRvjekWWC0dbRPh8j2JIEVLjg/ivNrtZ6Jw2h41Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CebJGsMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE75C433F1;
-	Mon,  8 Apr 2024 13:05:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pPUEfkv4WShYA8lDalxbN/oy454cPT3JNZAa6vejZpIvXd1TtbKZpwX0OvJKli+oj6g6LiChmh/GRKok+YyqHW/oGImZ2iGa4Wma7jpwUOyfQdypjXiEPoC2JHSNn25Jwc0ah2DhvxhBnpkcOQCBug8Nf86OGGAl+TV0XTTTu+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18CDhu0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1751C433F1;
+	Mon,  8 Apr 2024 13:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581521;
-	bh=I1nL7XBuy9d0nUUBJuMGkuqfbXApqqgyMrPXEX9BTgE=;
+	s=korg; t=1712581533;
+	bh=xI9oVSEsmPvkHLgZ8S83pLZQ37/F6s69sPoaKDYD3cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CebJGsMyHhsQghszCCbAPVQrj5AfSDIkYMpUtSuWXRnDkeUWgNsJaNH2r4Z+Xe48p
-	 cKMaMu34sl5YvcZpwsv/aklu/Hz7Ge3k+vz0X4s7sYdNQTgdnn8dYeaAy2q+TTFNfJ
-	 lpVCrDu3Vvxp5+CTQd10X/wz/KIMraXzPZzHl3m4=
+	b=18CDhu0/yej2XgInecisEsjbAQKbm8V7oZrDQPvZfKZqENY/xeVfmldslBuAafg2k
+	 c+bt3BMGbpFQJG7VBhxJTnPkLnAwS1GpkU1OulHQg+7LkXTS9Slie7Qqp4IkCZkBdC
+	 vcOc0kpjmPMXUNWpVBZSnxfQ7Q0zwwx0DYDAc5SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Lyakas <alex.lyakas@zadara.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 059/690] btrfs: fix off-by-one chunk length calculation at contains_pending_extent()
-Date: Mon,  8 Apr 2024 14:48:45 +0200
-Message-ID: <20240408125401.652942779@linuxfoundation.org>
+Subject: [PATCH 5.15 060/690] PCI: Drop pci_device_remove() test of pci_dev->driver
+Date: Mon,  8 Apr 2024 14:48:46 +0200
+Message-ID: <20240408125401.690881394@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -63,51 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit ae6bd7f9b46a29af52ebfac25d395757e2031d0d ]
+[ Upstream commit 097d9d414433315122f759ee6c2d8a7417a8ff0f ]
 
-At contains_pending_extent() the value of the end offset of a chunk we
-found in the device's allocation state io tree is inclusive, so when
-we calculate the length we pass to the in_range() macro, we must sum
-1 to the expression "physical_end - physical_offset".
+When the driver core calls pci_device_remove(), there is a driver bound
+to the device, so pci_dev->driver is never NULL.
 
-In practice the wrong calculation should be harmless as chunks sizes
-are never 1 byte and we should never have 1 byte ranges of unallocated
-space. Nevertheless fix the wrong calculation.
+Remove the unnecessary test of pci_dev->driver.
 
-Reported-by: Alex Lyakas <alex.lyakas@zadara.com>
-Link: https://lore.kernel.org/linux-btrfs/CAOcd+r30e-f4R-5x-S7sV22RJPe7+pgwherA6xqN2_qe7o4XTg@mail.gmail.com/
-Fixes: 1c11b63eff2a ("btrfs: replace pending/pinned chunks lists with io tree")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lore.kernel.org/r/20211004125935.2300113-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 9d5286d4e7f6 ("PCI/PM: Drain runtime-idle callbacks before driver removal")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci-driver.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index cc18ba50a61cf..1ce0fa487e5b2 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -1473,7 +1473,7 @@ static bool contains_pending_extent(struct btrfs_device *device, u64 *start,
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index f44c0667a83c6..3a9c49b0d05b0 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -459,16 +459,14 @@ static void pci_device_remove(struct device *dev)
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 	struct pci_driver *drv = pci_dev->driver;
  
- 		if (in_range(physical_start, *start, len) ||
- 		    in_range(*start, physical_start,
--			     physical_end - physical_start)) {
-+			     physical_end + 1 - physical_start)) {
- 			*start = physical_end + 1;
- 			return true;
- 		}
+-	if (drv) {
+-		if (drv->remove) {
+-			pm_runtime_get_sync(dev);
+-			drv->remove(pci_dev);
+-			pm_runtime_put_noidle(dev);
+-		}
+-		pcibios_free_irq(pci_dev);
+-		pci_dev->driver = NULL;
+-		pci_iov_remove(pci_dev);
++	if (drv->remove) {
++		pm_runtime_get_sync(dev);
++		drv->remove(pci_dev);
++		pm_runtime_put_noidle(dev);
+ 	}
++	pcibios_free_irq(pci_dev);
++	pci_dev->driver = NULL;
++	pci_iov_remove(pci_dev);
+ 
+ 	/* Undo the runtime PM settings in local_pci_probe() */
+ 	pm_runtime_put_sync(dev);
 -- 
 2.43.0
 
