@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E71189C1CF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6507789C599
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24F15282B8C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:24:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89D321C21791
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1FD785655;
-	Mon,  8 Apr 2024 13:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD35C7F47C;
+	Mon,  8 Apr 2024 13:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2M3EgEe5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElHHpXXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC4C82D7F;
-	Mon,  8 Apr 2024 13:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A83F7F476;
+	Mon,  8 Apr 2024 13:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582416; cv=none; b=kv0+aTwrgJfcwulIBzOooUWbwikqLYta8Lhs2l0HDI8vk8Qp54K6UTE1MD6LWH0IyyMPduezjFo+69yYsMtKGTHLRMGdPyMZpicOdqSSOoogStDOae84dHflWrB7/d6GuwuOxGrij5m21LVpd4KeaChOl//H+puH80cYUle84iU=
+	t=1712584688; cv=none; b=AOa/9XFSEJAYJ71BGbdDCVsJaUsm4h3gbesmAqMp3VafgfwIxtg7W/k5NeomGfIcN4pXcMpya2paiv3DxJrhS5Dd5bLh6hUSRwagdn5KAFrin63W4VEz7S+3nGrOJr/V9f90V3FLfTr57unNrw+c8PaZah8EmvcBonyou1MKvSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582416; c=relaxed/simple;
-	bh=Bq64CYr4mhcnQZ9DdlN4HE3eOmsYmGvetxG5S45GFkY=;
+	s=arc-20240116; t=1712584688; c=relaxed/simple;
+	bh=M4p5WvXtI6HFqiPSjEtefB1E6xHoTdC7jXReqjklr84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UzWuegjwcwMGFdh5C8GL66CTZt0x1CWD5ybovr6Y/U5quP/caHJ5bPFx4+BmhdzhYrrL+QaQcW4j3+mG6EbUiQ5a1evIaYR7BZPVVUOzvv1D+t01aCNG24GzJ9muSqdKEWwpFsTHW8xJyJQJHJCHRPLkmtmsR0MpAraWW6BNtLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2M3EgEe5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFCDC433C7;
-	Mon,  8 Apr 2024 13:20:15 +0000 (UTC)
+	 MIME-Version; b=HiZO0H1cdA5J+R6UKfNWt9Co9psLGx1bdrxluidKp/CGStNXghsK1l1RQ0AvGdKSxR86wUuOjwe5rt5kx5hTCTd8AwlY0Ztl0KZm835Lc19foEu6N0VZIfaAqFQQ4pTfF+YOFaP9evsHr58zLsS07MhWc++hSZSlRLlXMcmosLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElHHpXXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B73C433C7;
+	Mon,  8 Apr 2024 13:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582416;
-	bh=Bq64CYr4mhcnQZ9DdlN4HE3eOmsYmGvetxG5S45GFkY=;
+	s=korg; t=1712584688;
+	bh=M4p5WvXtI6HFqiPSjEtefB1E6xHoTdC7jXReqjklr84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2M3EgEe5ufEHCEC+9BcVp4StpimumYbQL9+ywcxhQ+x7ZqgPutlSWqixbWuJaWZLi
-	 30gKJikOITVHRT+kvnYw2LxQIRrvVE0CURcVUu8PsQSzh2fXmKVNxxVcD1l36fzu6+
-	 GFeSkhIf+yFLMaG/+XUD5fLdXj/UGfIbtweK2DYU=
+	b=ElHHpXXLkJGpwbikbCJ+it054rls+4MSnP2wHbiV+WOAxnRshtaHKl+cIa0wNN71F
+	 0L8wCwLYbKTBvWxNwhsYdfp4ipxsgejpcJNQ70T6JfpRLc1hWsc0Qp/aP+sEKPEFYJ
+	 Fna2pGexYx3ftYJpvNqqTzUcHEme5ClgGHA7ah5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 091/252] x86/srso: Disentangle rethunk-dependent options
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Pierguido Lambri <plambri@redhat.com>
+Subject: [PATCH 5.15 524/690] nfsd: dont fsync nfsd_files on last close
 Date: Mon,  8 Apr 2024 14:56:30 +0200
-Message-ID: <20240408125309.479400550@linuxfoundation.org>
+Message-ID: <20240408125418.623953902@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,349 +62,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-Commit 34a3cae7474c6e6f4a85aad4a7b8191b8b35cdcd upstream.
+[ Upstream commit 4c475eee02375ade6e864f1db16976ba0d96a0a2 ]
 
-CONFIG_RETHUNK, CONFIG_CPU_UNRET_ENTRY and CONFIG_CPU_SRSO are all
-tangled up.  De-spaghettify the code a bit.
+Most of the time, NFSv4 clients issue a COMMIT before the final CLOSE of
+an open stateid, so with NFSv4, the fsync in the nfsd_file_free path is
+usually a no-op and doesn't block.
 
-Some of the rethunk-related code has been shuffled around within the
-'.text..__x86.return_thunk' section, but otherwise there are no
-functional changes.  srso_alias_untrain_ret() and srso_alias_safe_ret()
-((which are very address-sensitive) haven't moved.
+We have a customer running knfsd over very slow storage (XFS over Ceph
+RBD). They were using the "async" export option because performance was
+more important than data integrity for this application. That export
+option turns NFSv4 COMMIT calls into no-ops. Due to the fsync in this
+codepath however, their final CLOSE calls would still stall (since a
+CLOSE effectively became a COMMIT).
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/2845084ed303d8384905db3b87b77693945302b4.1693889988.git.jpoimboe@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I think this fsync is not strictly necessary. We only use that result to
+reset the write verifier. Instead of fsync'ing all of the data when we
+free an nfsd_file, we can just check for writeback errors when one is
+acquired and when it is freed.
+
+If the client never comes back, then it'll never see the error anyway
+and there is no point in resetting it. If an error occurs after the
+nfsd_file is removed from the cache but before the inode is evicted,
+then it will reset the write verifier on the next nfsd_file_acquire,
+(since there will be an unseen error).
+
+The only exception here is if something else opens and fsyncs the file
+during that window. Given that local applications work with this
+limitation today, I don't see that as an issue.
+
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2166658
+Fixes: ac3a2585f018 ("nfsd: rework refcounting in filecache")
+Reported-and-tested-by: Pierguido Lambri <plambri@redhat.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/x86/include/asm/nospec-branch.h |   25 +++--
- arch/x86/kernel/cpu/bugs.c           |    5 -
- arch/x86/kernel/vmlinux.lds.S        |    7 -
- arch/x86/lib/retpoline.S             |  158 +++++++++++++++++++----------------
- 4 files changed, 109 insertions(+), 86 deletions(-)
+ fs/nfsd/filecache.c | 44 ++++++++++++--------------------------------
+ fs/nfsd/trace.h     | 31 -------------------------------
+ 2 files changed, 12 insertions(+), 63 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -289,19 +289,17 @@
-  * where we have a stack but before any RET instruction.
-  */
- .macro UNTRAIN_RET
--#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
--	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
-+#if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
- 	VALIDATE_UNRET_END
- 	ALTERNATIVE_3 "",						\
- 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
- 		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB,	\
--		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
-+		     __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
- #endif
- .endm
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 206742bbbd682..4a3796c6bd957 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -330,37 +330,27 @@ nfsd_file_alloc(struct nfsd_file_lookup_key *key, unsigned int may)
+ 	return nf;
+ }
  
- .macro UNTRAIN_RET_VM
--#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
--	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
-+#if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
- 	VALIDATE_UNRET_END
- 	ALTERNATIVE_3 "",						\
- 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-@@ -311,8 +309,7 @@
- .endm
- 
- .macro UNTRAIN_RET_FROM_CALL
--#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
--	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
-+#if defined(CONFIG_RETHUNK) || defined(CONFIG_CPU_IBPB_ENTRY)
- 	VALIDATE_UNRET_END
- 	ALTERNATIVE_3 "",						\
- 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-@@ -359,6 +356,20 @@ extern void __x86_return_thunk(void);
- static inline void __x86_return_thunk(void) {}
- #endif
- 
-+#ifdef CONFIG_CPU_UNRET_ENTRY
-+extern void retbleed_return_thunk(void);
-+#else
-+static inline void retbleed_return_thunk(void) {}
-+#endif
-+
-+#ifdef CONFIG_CPU_SRSO
-+extern void srso_return_thunk(void);
-+extern void srso_alias_return_thunk(void);
-+#else
-+static inline void srso_return_thunk(void) {}
-+static inline void srso_alias_return_thunk(void) {}
-+#endif
-+
- extern void retbleed_return_thunk(void);
- extern void srso_return_thunk(void);
- extern void srso_alias_return_thunk(void);
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -63,7 +63,7 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
- 
- static DEFINE_MUTEX(spec_ctrl_mutex);
- 
--void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
-+void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
- 
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
- static void update_spec_ctrl(u64 val)
-@@ -1108,8 +1108,7 @@ do_cmd_auto:
- 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
- 		setup_force_cpu_cap(X86_FEATURE_UNRET);
- 
--		if (IS_ENABLED(CONFIG_RETHUNK))
--			x86_return_thunk = retbleed_return_thunk;
-+		x86_return_thunk = retbleed_return_thunk;
- 
- 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
- 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -139,10 +139,7 @@ SECTIONS
- 		STATIC_CALL_TEXT
- 
- 		ALIGN_ENTRY_TEXT_BEGIN
--#ifdef CONFIG_CPU_SRSO
- 		*(.text..__x86.rethunk_untrain)
--#endif
--
- 		ENTRY_TEXT
- 
- #ifdef CONFIG_CPU_SRSO
-@@ -520,12 +517,12 @@ INIT_PER_CPU(irq_stack_backing_store);
-            "fixed_percpu_data is not at start of per-cpu area");
- #endif
- 
--#ifdef CONFIG_RETHUNK
-+#ifdef CONFIG_CPU_UNRET_ENTRY
- . = ASSERT((retbleed_return_thunk & 0x3f) == 0, "retbleed_return_thunk not cacheline-aligned");
--. = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
- #endif
- 
- #ifdef CONFIG_CPU_SRSO
-+. = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
- /*
-  * GNU ld cannot do XOR until 2.41.
-  * https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f6f78318fca803c4907fb8d7f6ded8295f1947b1
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -126,12 +126,13 @@ SYM_CODE_END(__x86_indirect_jump_thunk_a
- #include <asm/GEN-for-each-reg.h>
- #undef GEN
- #endif
--/*
-- * This function name is magical and is used by -mfunction-return=thunk-extern
-- * for the compiler to generate JMPs to it.
-- */
-+
- #ifdef CONFIG_RETHUNK
- 
-+	.section .text..__x86.return_thunk
-+
-+#ifdef CONFIG_CPU_SRSO
-+
- /*
-  * srso_alias_untrain_ret() and srso_alias_safe_ret() are placed at
-  * special addresses:
-@@ -147,9 +148,7 @@ SYM_CODE_END(__x86_indirect_jump_thunk_a
-  *
-  * As a result, srso_alias_safe_ret() becomes a safe return.
-  */
--#ifdef CONFIG_CPU_SRSO
--	.section .text..__x86.rethunk_untrain
--
-+	.pushsection .text..__x86.rethunk_untrain
- SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
-@@ -158,17 +157,9 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
- 	jmp srso_alias_return_thunk
- SYM_FUNC_END(srso_alias_untrain_ret)
- __EXPORT_THUNK(srso_alias_untrain_ret)
-+	.popsection
- 
--	.section .text..__x86.rethunk_safe
--#else
--/* dummy definition for alternatives */
--SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
--	ANNOTATE_UNRET_SAFE
--	ret
--	int3
--SYM_FUNC_END(srso_alias_untrain_ret)
--#endif
--
-+	.pushsection .text..__x86.rethunk_safe
- SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	lea 8(%_ASM_SP), %_ASM_SP
- 	UNWIND_HINT_FUNC
-@@ -183,8 +174,58 @@ SYM_CODE_START_NOALIGN(srso_alias_return
- 	call srso_alias_safe_ret
- 	ud2
- SYM_CODE_END(srso_alias_return_thunk)
-+	.popsection
-+
-+/*
-+ * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
-+ * above. On kernel entry, srso_untrain_ret() is executed which is a
++/**
++ * nfsd_file_check_write_error - check for writeback errors on a file
++ * @nf: nfsd_file to check for writeback errors
 + *
-+ * movabs $0xccccc30824648d48,%rax
-+ *
-+ * and when the return thunk executes the inner label srso_safe_ret()
-+ * later, it is a stack manipulation and a RET which is mispredicted and
-+ * thus a "safe" one to use.
++ * Check whether a nfsd_file has an unseen error. Reset the write
++ * verifier if so.
 + */
-+	.align 64
-+	.skip 64 - (srso_safe_ret - srso_untrain_ret), 0xcc
-+SYM_START(srso_untrain_ret, SYM_L_LOCAL, SYM_A_NONE)
-+	ANNOTATE_NOENDBR
-+	.byte 0x48, 0xb8
-+
-+/*
-+ * This forces the function return instruction to speculate into a trap
-+ * (UD2 in srso_return_thunk() below).  This RET will then mispredict
-+ * and execution will continue at the return site read from the top of
-+ * the stack.
-+ */
-+SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
-+	lea 8(%_ASM_SP), %_ASM_SP
-+	ret
-+	int3
-+	int3
-+	/* end of movabs */
-+	lfence
-+	call srso_safe_ret
-+	ud2
-+SYM_CODE_END(srso_safe_ret)
-+SYM_FUNC_END(srso_untrain_ret)
-+
-+SYM_CODE_START(srso_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
-+	call srso_safe_ret
-+	ud2
-+SYM_CODE_END(srso_return_thunk)
-+
-+#define JMP_SRSO_UNTRAIN_RET "jmp srso_untrain_ret"
-+#define JMP_SRSO_ALIAS_UNTRAIN_RET "jmp srso_alias_untrain_ret"
-+#else /* !CONFIG_CPU_SRSO */
-+#define JMP_SRSO_UNTRAIN_RET "ud2"
-+#define JMP_SRSO_ALIAS_UNTRAIN_RET "ud2"
-+#endif /* CONFIG_CPU_SRSO */
-+
-+#ifdef CONFIG_CPU_UNRET_ENTRY
- 
--	.section .text..__x86.return_thunk
- /*
-  * Some generic notes on the untraining sequences:
-  *
-@@ -265,65 +306,21 @@ SYM_CODE_END(retbleed_return_thunk)
- SYM_FUNC_END(retbleed_untrain_ret)
- __EXPORT_THUNK(retbleed_untrain_ret)
- 
--/*
-- * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
-- * above. On kernel entry, srso_untrain_ret() is executed which is a
-- *
-- * movabs $0xccccc30824648d48,%rax
-- *
-- * and when the return thunk executes the inner label srso_safe_ret()
-- * later, it is a stack manipulation and a RET which is mispredicted and
-- * thus a "safe" one to use.
-- */
--	.align 64
--	.skip 64 - (srso_safe_ret - srso_untrain_ret), 0xcc
--SYM_START(srso_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
--	ANNOTATE_NOENDBR
--	.byte 0x48, 0xb8
-+#define JMP_RETBLEED_UNTRAIN_RET "jmp retbleed_untrain_ret"
-+#else /* !CONFIG_CPU_UNRET_ENTRY */
-+#define JMP_RETBLEED_UNTRAIN_RET "ud2"
-+#endif /* CONFIG_CPU_UNRET_ENTRY */
- 
--/*
-- * This forces the function return instruction to speculate into a trap
-- * (UD2 in srso_return_thunk() below).  This RET will then mispredict
-- * and execution will continue at the return site read from the top of
-- * the stack.
-- */
--SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
--	lea 8(%_ASM_SP), %_ASM_SP
--	ret
--	int3
--	int3
--	/* end of movabs */
--	lfence
--	call srso_safe_ret
--	ud2
--SYM_CODE_END(srso_safe_ret)
--SYM_FUNC_END(srso_untrain_ret)
--__EXPORT_THUNK(srso_untrain_ret)
+ static void
+-nfsd_file_fsync(struct nfsd_file *nf)
+-{
+-	struct file *file = nf->nf_file;
+-	int ret;
 -
--SYM_CODE_START(srso_return_thunk)
--	UNWIND_HINT_FUNC
--	ANNOTATE_NOENDBR
--	call srso_safe_ret
--	ud2
--SYM_CODE_END(srso_return_thunk)
-+#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO)
- 
- SYM_FUNC_START(entry_untrain_ret)
--	ALTERNATIVE_2 "jmp retbleed_untrain_ret", \
--		      "jmp srso_untrain_ret", X86_FEATURE_SRSO, \
--		      "jmp srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
-+	ALTERNATIVE_2 JMP_RETBLEED_UNTRAIN_RET,				\
-+		      JMP_SRSO_UNTRAIN_RET, X86_FEATURE_SRSO,		\
-+		      JMP_SRSO_ALIAS_UNTRAIN_RET, X86_FEATURE_SRSO_ALIAS
- SYM_FUNC_END(entry_untrain_ret)
- __EXPORT_THUNK(entry_untrain_ret)
- 
--SYM_CODE_START(__x86_return_thunk)
--	UNWIND_HINT_FUNC
--	ANNOTATE_NOENDBR
--	ANNOTATE_UNRET_SAFE
--	ret
--	int3
--SYM_CODE_END(__x86_return_thunk)
--EXPORT_SYMBOL(__x86_return_thunk)
+-	if (!file || !(file->f_mode & FMODE_WRITE))
+-		return;
+-	ret = vfs_fsync(file, 1);
+-	trace_nfsd_file_fsync(nf, ret);
+-	if (ret)
+-		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
+-}
 -
--#endif /* CONFIG_RETHUNK */
-+#endif /* CONFIG_CPU_UNRET_ENTRY || CONFIG_CPU_SRSO */
+-static int
+ nfsd_file_check_write_error(struct nfsd_file *nf)
+ {
+ 	struct file *file = nf->nf_file;
  
- #ifdef CONFIG_CALL_DEPTH_TRACKING
+-	if (!file || !(file->f_mode & FMODE_WRITE))
+-		return 0;
+-	return filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err));
++	if ((file->f_mode & FMODE_WRITE) &&
++	    filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err)))
++		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
+ }
  
-@@ -358,3 +355,22 @@ SYM_FUNC_START(__x86_return_skl)
- SYM_FUNC_END(__x86_return_skl)
+ static void
+ nfsd_file_hash_remove(struct nfsd_file *nf)
+ {
+ 	trace_nfsd_file_unhash(nf);
+-
+-	if (nfsd_file_check_write_error(nf))
+-		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
+ 	rhashtable_remove_fast(&nfsd_file_rhash_tbl, &nf->nf_rhash,
+ 			       nfsd_file_rhash_params);
+ }
+@@ -386,23 +376,12 @@ nfsd_file_free(struct nfsd_file *nf)
+ 	this_cpu_add(nfsd_file_total_age, age);
  
- #endif /* CONFIG_CALL_DEPTH_TRACKING */
-+
-+/*
-+ * This function name is magical and is used by -mfunction-return=thunk-extern
-+ * for the compiler to generate JMPs to it.
-+ *
-+ * This code is only used during kernel boot or module init.  All
-+ * 'JMP __x86_return_thunk' sites are changed to something else by
-+ * apply_returns().
-+ */
-+SYM_CODE_START(__x86_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
-+SYM_CODE_END(__x86_return_thunk)
-+EXPORT_SYMBOL(__x86_return_thunk)
-+
-+#endif /* CONFIG_RETHUNK */
+ 	nfsd_file_unhash(nf);
+-
+-	/*
+-	 * We call fsync here in order to catch writeback errors. It's not
+-	 * strictly required by the protocol, but an nfsd_file could get
+-	 * evicted from the cache before a COMMIT comes in. If another
+-	 * task were to open that file in the interim and scrape the error,
+-	 * then the client may never see it. By calling fsync here, we ensure
+-	 * that writeback happens before the entry is freed, and that any
+-	 * errors reported result in the write verifier changing.
+-	 */
+-	nfsd_file_fsync(nf);
+-
+ 	if (nf->nf_mark)
+ 		nfsd_file_mark_put(nf->nf_mark);
+ 	if (nf->nf_file) {
+ 		get_file(nf->nf_file);
+ 		filp_close(nf->nf_file, NULL);
++		nfsd_file_check_write_error(nf);
+ 		fput(nf->nf_file);
+ 	}
+ 
+@@ -1157,6 +1136,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ out:
+ 	if (status == nfs_ok) {
+ 		this_cpu_inc(nfsd_file_acquisitions);
++		nfsd_file_check_write_error(nf);
+ 		*pnf = nf;
+ 	} else {
+ 		if (refcount_dec_and_test(&nf->nf_ref))
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index 5fb7e153ca865..276420ea3b8d9 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -1201,37 +1201,6 @@ TRACE_EVENT(nfsd_file_close,
+ 	)
+ );
+ 
+-TRACE_EVENT(nfsd_file_fsync,
+-	TP_PROTO(
+-		const struct nfsd_file *nf,
+-		int ret
+-	),
+-	TP_ARGS(nf, ret),
+-	TP_STRUCT__entry(
+-		__field(void *, nf_inode)
+-		__field(int, nf_ref)
+-		__field(int, ret)
+-		__field(unsigned long, nf_flags)
+-		__field(unsigned char, nf_may)
+-		__field(struct file *, nf_file)
+-	),
+-	TP_fast_assign(
+-		__entry->nf_inode = nf->nf_inode;
+-		__entry->nf_ref = refcount_read(&nf->nf_ref);
+-		__entry->ret = ret;
+-		__entry->nf_flags = nf->nf_flags;
+-		__entry->nf_may = nf->nf_may;
+-		__entry->nf_file = nf->nf_file;
+-	),
+-	TP_printk("inode=%p ref=%d flags=%s may=%s nf_file=%p ret=%d",
+-		__entry->nf_inode,
+-		__entry->nf_ref,
+-		show_nf_flags(__entry->nf_flags),
+-		show_nfsd_may_flags(__entry->nf_may),
+-		__entry->nf_file, __entry->ret
+-	)
+-);
+-
+ #include "cache.h"
+ 
+ TRACE_DEFINE_ENUM(RC_DROPIT);
+-- 
+2.43.0
+
 
 
 
