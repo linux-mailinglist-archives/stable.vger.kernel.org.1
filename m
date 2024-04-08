@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-36682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC2A89C136
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E61489C13B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349231F21527
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01001C21BFA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB5180BE7;
-	Mon,  8 Apr 2024 13:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C807F466;
+	Mon,  8 Apr 2024 13:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWdrtV0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOob+E4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546197E772;
-	Mon,  8 Apr 2024 13:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F638120F;
+	Mon,  8 Apr 2024 13:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582037; cv=none; b=Y3Bzqj2ijvMq9FG/nrYRxuuLj/41+qU4c5e8I8dzd90eFzKY5IbVC8cU8mC2woMkzZT8gGXKNb3YMTEM5Jk2vUiJyPjOcZV0JOOJzaU7IsNRItaWreMFeY//oMRC1D8/j+sZhskvZY035ONnT11WdAXPd4nd5GDGUTVS/dU6rmc=
+	t=1712582051; cv=none; b=RZ9Gi2XlcYNtI1lUaU3lyQpJq7LvMEENEIBp3ANr48kCtTLt5IMTmSZgbN9phJqWskKm8G4+UvfdE912bjk1BxVWguBijZtCDAUxYXgERPuaVd76zxmij3dSvptpCM4gmUr96oLNv1du0ATXrMHNaH0xWye8iHukLXiDOdS+OTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582037; c=relaxed/simple;
-	bh=v2J71xiz+hiPivYyvZa7MRtATMew/0rG5UlSA6Z8V/k=;
+	s=arc-20240116; t=1712582051; c=relaxed/simple;
+	bh=1ob2YYiujx+YbM9/yRAc/xQQmoRfXEj7woeZN5P6eec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ur0XmfGxcSF/X2PByzuSU64V5qE/r7q6j2IBTDjPgRRFjLE9/jAAfXbNIKQV4RW6qY+qfnd9GiLGAs7aTHWyS0+pqfZKQnCPFGYOgBMkkikA96NQP+XBfBfyGXmOHqICmN/xdWENckLmI+RhGL6sIgxFsT9YFUEa1vngUpf5NH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWdrtV0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A5DC433C7;
-	Mon,  8 Apr 2024 13:13:56 +0000 (UTC)
+	 MIME-Version; b=ESez3bYmTd9wWaAmLITM7LnFRzkOjB9XGNdrEQiGFJ4q8NP4ThEC9/AUPlGK8oKK2WtNi7Kbr+rLq9BmicGS8yk+tPIPe66HxiXt2JvcGb4SMaGSEMZ1u0L7ATBKiGzhPcxFrwTmSFCaHMIGdH2+xqUGBRcgVEyiJ/qi9+LL4OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOob+E4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395C6C433C7;
+	Mon,  8 Apr 2024 13:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582037;
-	bh=v2J71xiz+hiPivYyvZa7MRtATMew/0rG5UlSA6Z8V/k=;
+	s=korg; t=1712582051;
+	bh=1ob2YYiujx+YbM9/yRAc/xQQmoRfXEj7woeZN5P6eec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWdrtV0RGxBsX3jEhGystd61hms8K0NESZc0WQxNYw2yQiQyWPlyepDfvzwBZCuRM
-	 mNA391ptzPwZ6Re0zNTupw3eWQ+cQHPk+2RDcnQqiUscwpB9FJ9zLfS+FUCKlUAAIp
-	 idv77L2XJTDzwA/BiArWN33Not8Ga3F047i9LJHk=
+	b=dOob+E4y90XOZrVaVS3xPL/2GN3rgkRGop4NeWkqhTYfH/lAoFUHFhfpJObKM122M
+	 exRCry1gGWwbvIizfF0K9bFnsdSl7UjFl0C5soDQESty3A60Do+1+R31l3rHPOXQCY
+	 78ShgcHhI+Fi2tm6536Qgdf+ND5BPV5lma8u2eRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	netdev <netdev@vger.kernel.org>,
-	Yisen Zhuang <yisen.zhuang@huawei.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Yufeng Mo <moyufeng@huawei.com>,
-	Huazhong Tan <tanhuazhong@huawei.com>,
+	Lillian Berry <lillian@star-ark.net>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jiri Pirko <jiri@nvidia.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/690] net: hns3: tracing: fix hclgevf trace event strings
-Date: Mon,  8 Apr 2024 14:49:32 +0200
-Message-ID: <20240408125403.340520082@linuxfoundation.org>
+Subject: [PATCH 5.15 107/690] wireguard: netlink: check for dangling peer via is_dead instead of empty list
+Date: Mon,  8 Apr 2024 14:49:33 +0200
+Message-ID: <20240408125403.381509513@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,155 +62,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[ Upstream commit 3f9952e8d80cca2da3b47ecd5ad9ec16cfd1a649 ]
+[ Upstream commit 55b6c738673871c9b0edae05d0c97995c1ff08c4 ]
 
-The __string() and __assign_str() helper macros of the TRACE_EVENT() macro
-are going through some optimizations where only the source string of
-__string() will be used and the __assign_str() source will be ignored and
-later removed.
+If all peers are removed via wg_peer_remove_all(), rather than setting
+peer_list to empty, the peer is added to a temporary list with a head on
+the stack of wg_peer_remove_all(). If a netlink dump is resumed and the
+cursored peer is one that has been removed via wg_peer_remove_all(), it
+will iterate from that peer and then attempt to dump freed peers.
 
-To make sure that there's no issues, a new check is added between the
-__string() src argument and the __assign_str() src argument that does a
-strcmp() to make sure they are the same string.
+Fix this by instead checking peer->is_dead, which was explictly created
+for this purpose. Also move up the device_update_lock lockdep assertion,
+since reading is_dead relies on that.
 
-The hclgevf trace events have:
+It can be reproduced by a small script like:
 
-  __assign_str(devname, &hdev->nic.kinfo.netdev->name);
+    echo "Setting config..."
+    ip link add dev wg0 type wireguard
+    wg setconf wg0 /big-config
+    (
+            while true; do
+                    echo "Showing config..."
+                    wg showconf wg0 > /dev/null
+            done
+    ) &
+    sleep 4
+    wg setconf wg0 <(printf "[Peer]\nPublicKey=$(wg genkey)\n")
 
-Which triggers the warning:
+Resulting in:
 
-hclgevf_trace.h:34:39: error: passing argument 1 of ‘strcmp’ from incompatible pointer type [-Werror=incompatible-pointer-types]
-   34 |                 __assign_str(devname, &hdev->nic.kinfo.netdev->name);
- [..]
-arch/x86/include/asm/string_64.h:75:24: note: expected ‘const char *’ but argument is of type ‘char (*)[16]’
-   75 | int strcmp(const char *cs, const char *ct);
-      |            ~~~~~~~~~~~~^~
+    BUG: KASAN: slab-use-after-free in __lock_acquire+0x182a/0x1b20
+    Read of size 8 at addr ffff88811956ec70 by task wg/59
+    CPU: 2 PID: 59 Comm: wg Not tainted 6.8.0-rc2-debug+ #5
+    Call Trace:
+     <TASK>
+     dump_stack_lvl+0x47/0x70
+     print_address_description.constprop.0+0x2c/0x380
+     print_report+0xab/0x250
+     kasan_report+0xba/0xf0
+     __lock_acquire+0x182a/0x1b20
+     lock_acquire+0x191/0x4b0
+     down_read+0x80/0x440
+     get_peer+0x140/0xcb0
+     wg_get_device_dump+0x471/0x1130
 
-Because __assign_str() now has:
-
-	WARN_ON_ONCE(__builtin_constant_p(src) ?		\
-		     strcmp((src), __data_offsets.dst##_ptr_) :	\
-		     (src) != __data_offsets.dst##_ptr_);	\
-
-The problem is the '&' on hdev->nic.kinfo.netdev->name. That's because
-that name is:
-
-	char			name[IFNAMSIZ]
-
-Where passing an address '&' of a char array is not compatible with strcmp().
-
-The '&' is not necessary, remove it.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240313093454.3909afe7@gandalf.local.home
-
-Cc: netdev <netdev@vger.kernel.org>
-Cc: Yisen Zhuang <yisen.zhuang@huawei.com>
-Cc: Salil Mehta <salil.mehta@huawei.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Yufeng Mo <moyufeng@huawei.com>
-Cc: Huazhong Tan <tanhuazhong@huawei.com>
 Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Fixes: d8355240cf8fb ("net: hns3: add trace event support for PF/VF mailbox")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Reported-by: Lillian Berry <lillian@star-ark.net>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h  | 8 ++++----
- .../net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h    | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireguard/netlink.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
-index 8510b88d49820..f3cd5a376eca9 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_trace.h
-@@ -24,7 +24,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
- 		__field(u8, code)
- 		__field(u8, subcode)
- 		__string(pciname, pci_name(hdev->pdev))
--		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
-+		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
- 		__array(u32, mbx_data, PF_GET_MBX_LEN)
- 	),
- 
-@@ -33,7 +33,7 @@ TRACE_EVENT(hclge_pf_mbx_get,
- 		__entry->code = req->msg.code;
- 		__entry->subcode = req->msg.subcode;
- 		__assign_str(pciname, pci_name(hdev->pdev));
--		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
-+		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
- 		memcpy(__entry->mbx_data, req,
- 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
- 	),
-@@ -56,7 +56,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
- 		__field(u8, vfid)
- 		__field(u16, code)
- 		__string(pciname, pci_name(hdev->pdev))
--		__string(devname, &hdev->vport[0].nic.kinfo.netdev->name)
-+		__string(devname, hdev->vport[0].nic.kinfo.netdev->name)
- 		__array(u32, mbx_data, PF_SEND_MBX_LEN)
- 	),
- 
-@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_pf_mbx_send,
- 		__entry->vfid = req->dest_vfid;
- 		__entry->code = le16_to_cpu(req->msg.code);
- 		__assign_str(pciname, pci_name(hdev->pdev));
--		__assign_str(devname, &hdev->vport[0].nic.kinfo.netdev->name);
-+		__assign_str(devname, hdev->vport[0].nic.kinfo.netdev->name);
- 		memcpy(__entry->mbx_data, req,
- 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
- 	),
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
-index 5d4895bb57a17..b259e95dd53c2 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_trace.h
-@@ -23,7 +23,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
- 		__field(u8, vfid)
- 		__field(u16, code)
- 		__string(pciname, pci_name(hdev->pdev))
--		__string(devname, &hdev->nic.kinfo.netdev->name)
-+		__string(devname, hdev->nic.kinfo.netdev->name)
- 		__array(u32, mbx_data, VF_GET_MBX_LEN)
- 	),
- 
-@@ -31,7 +31,7 @@ TRACE_EVENT(hclge_vf_mbx_get,
- 		__entry->vfid = req->dest_vfid;
- 		__entry->code = le16_to_cpu(req->msg.code);
- 		__assign_str(pciname, pci_name(hdev->pdev));
--		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
-+		__assign_str(devname, hdev->nic.kinfo.netdev->name);
- 		memcpy(__entry->mbx_data, req,
- 		       sizeof(struct hclge_mbx_pf_to_vf_cmd));
- 	),
-@@ -55,7 +55,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
- 		__field(u8, code)
- 		__field(u8, subcode)
- 		__string(pciname, pci_name(hdev->pdev))
--		__string(devname, &hdev->nic.kinfo.netdev->name)
-+		__string(devname, hdev->nic.kinfo.netdev->name)
- 		__array(u32, mbx_data, VF_SEND_MBX_LEN)
- 	),
- 
-@@ -64,7 +64,7 @@ TRACE_EVENT(hclge_vf_mbx_send,
- 		__entry->code = req->msg.code;
- 		__entry->subcode = req->msg.subcode;
- 		__assign_str(pciname, pci_name(hdev->pdev));
--		__assign_str(devname, &hdev->nic.kinfo.netdev->name);
-+		__assign_str(devname, hdev->nic.kinfo.netdev->name);
- 		memcpy(__entry->mbx_data, req,
- 		       sizeof(struct hclge_mbx_vf_to_pf_cmd));
- 	),
+diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+index f5bc279c9a8c2..6523f9d5a1527 100644
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -255,17 +255,17 @@ static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 	if (!peers_nest)
+ 		goto out;
+ 	ret = 0;
+-	/* If the last cursor was removed via list_del_init in peer_remove, then
++	lockdep_assert_held(&wg->device_update_lock);
++	/* If the last cursor was removed in peer_remove or peer_remove_all, then
+ 	 * we just treat this the same as there being no more peers left. The
+ 	 * reason is that seq_nr should indicate to userspace that this isn't a
+ 	 * coherent dump anyway, so they'll try again.
+ 	 */
+ 	if (list_empty(&wg->peer_list) ||
+-	    (ctx->next_peer && list_empty(&ctx->next_peer->peer_list))) {
++	    (ctx->next_peer && ctx->next_peer->is_dead)) {
+ 		nla_nest_cancel(skb, peers_nest);
+ 		goto out;
+ 	}
+-	lockdep_assert_held(&wg->device_update_lock);
+ 	peer = list_prepare_entry(ctx->next_peer, &wg->peer_list, peer_list);
+ 	list_for_each_entry_continue(peer, &wg->peer_list, peer_list) {
+ 		if (get_peer(peer, skb, ctx)) {
 -- 
 2.43.0
 
