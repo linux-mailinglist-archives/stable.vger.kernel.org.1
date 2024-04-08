@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-37406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4A989C554
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24AAD89C621
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8ED16B2633E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49AA01C2389B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960A67BB1A;
-	Mon,  8 Apr 2024 13:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA38F7F49F;
+	Mon,  8 Apr 2024 14:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WL/CNUJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIEuU44z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FBB79F0;
-	Mon,  8 Apr 2024 13:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FF47F47C;
+	Mon,  8 Apr 2024 14:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584139; cv=none; b=pTn0j81GUZ0PHLKi4xBxMpuGgw2yOFscbucOy4eHmeevU2auTl4KnGhMcUbSdabmKGlIOESLwP6WtMakXdAOwxmdwgA1ahNZ1I2/ksImnFebQzPGrXoczOd3DiWybwO/lsYx5c5GFPXX3GKxx323GnEHabRJUAjducBQ2Tx+vvA=
+	t=1712585075; cv=none; b=BMfFh5mdF1qG9Vml+Y75razmqq6omUzluvB+u6S3o2Erx3MDnQnyWj8GbWpoLEObPyKXhs9RX4Ht3oR7g6HWgJ7+MiCb5IMW4L9Zw0MhRaYe7zSNism8tDbdCgbBgL0F4HhGAuq+ioovPQUo/tXT30LL2Jvm6l3df6EESxYXDrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584139; c=relaxed/simple;
-	bh=qYZkIg7CwvsOs5ML1cn9OGrnsM8MIkCqOZLEVQpGigU=;
+	s=arc-20240116; t=1712585075; c=relaxed/simple;
+	bh=rCPytSHaON4jfLYCFehFYxBfpHjK7THyRs1cRcl7FTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdrrMRDwZsqPPQaHtBC7Il/5uBAZSDmjxNIn/ZKFwyTwpIp7nOF+95FSorX4rS/siZZBJCFhD8N5JFl0Pv084vfMYlPcbymI1CszDyF0CfW8vEEKMvR5bUp60lv5hcfNjiR6KHP+eYesmoCEpgfn7ZonVklD4gwnzCdKE+aVl5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WL/CNUJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793C7C433C7;
-	Mon,  8 Apr 2024 13:48:58 +0000 (UTC)
+	 MIME-Version; b=Pdcl56hxEllbi6OQk/RKmFA77ymXwg2Wvz982J34P9MY1j2mIgMQSVOcJSFcJL5Ost9lPYGbETWj+vlMtTfK1Dnzoo2wMqY31juHR71hxoiyUSF9nqM2CUIr+oAhNR7SSjicVKiwxMXdXh2pU04c9BP+dmLqy8JnME0RZQ6lNoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIEuU44z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2950C433C7;
+	Mon,  8 Apr 2024 14:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584138;
-	bh=qYZkIg7CwvsOs5ML1cn9OGrnsM8MIkCqOZLEVQpGigU=;
+	s=korg; t=1712585075;
+	bh=rCPytSHaON4jfLYCFehFYxBfpHjK7THyRs1cRcl7FTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WL/CNUJmVn83mjb4QUk2c+G3XoBBA8kAm9GWjh09VLOiWGzLqUpc/E6J8Msxtq+lc
-	 CnrZC8XyZ5Q1pwRbYYjeXSEnxIvvCgI9SOgyirW/cjmgQCysqI3ngzLnQEAdA5HZMI
-	 jWhbciAFzTXJXrWZeYwOFI3Kywi0nf6qUoMJYjVs=
+	b=IIEuU44zP9JK6WNUYjJh0vXnlCtTr378jV8XIS31TIHrrRYW/hH2sI6x0w00vuot/
+	 imOdTchU13UoE3j+CPbE9MQ+KjyAc55yPqTABOgTEWjgfNM3jhgQgL8CGSRvtiEL2e
+	 Irt85+rpjAQxf/sVTomI3USi0XYT7n35eTWNCu10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.8 245/273] smb: client: refresh referral without acquiring refpath_lock
-Date: Mon,  8 Apr 2024 14:58:40 +0200
-Message-ID: <20240408125317.050430122@linuxfoundation.org>
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.15 655/690] i40e: fix vf may be used uninitialized in this function warning
+Date: Mon,  8 Apr 2024 14:58:41 +0200
+Message-ID: <20240408125423.384369144@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +65,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-commit 0a05ad21d77a188d06481c36d6016805a881bcc0 upstream.
+commit f37c4eac99c258111d414d31b740437e1925b8e8 upstream.
 
-Avoid refreshing DFS referral with refpath_lock acquired as the I/O
-could block for a while due to a potentially disconnected or slow DFS
-root server and then making other threads - that use same @server and
-don't require a DFS root server - unable to make any progress.
+To fix the regression introduced by commit 52424f974bc5, which causes
+servers hang in very hard to reproduce conditions with resets races.
+Using two sources for the information is the root cause.
+In this function before the fix bumping v didn't mean bumping vf
+pointer. But the code used this variables interchangeably, so stale vf
+could point to different/not intended vf.
 
-Cc: stable@vger.kernel.org # 6.4+
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Remove redundant "v" variable and iterate via single VF pointer across
+whole function instead to guarantee VF pointer validity.
+
+Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/dfs_cache.c |   44 ++++++++++++++++++++++++--------------------
- 1 file changed, 24 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   34 +++++++++------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
---- a/fs/smb/client/dfs_cache.c
-+++ b/fs/smb/client/dfs_cache.c
-@@ -1172,8 +1172,8 @@ static bool is_ses_good(struct cifs_ses
- 	return ret;
- }
- 
--/* Refresh dfs referral of tcon and mark it for reconnect if needed */
--static int __refresh_tcon(const char *path, struct cifs_ses *ses, bool force_refresh)
-+/* Refresh dfs referral of @ses and mark it for reconnect if needed */
-+static void __refresh_ses_referral(struct cifs_ses *ses, bool force_refresh)
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1626,8 +1626,8 @@ bool i40e_reset_all_vfs(struct i40e_pf *
  {
- 	struct TCP_Server_Info *server = ses->server;
- 	DFS_CACHE_TGT_LIST(old_tl);
-@@ -1181,10 +1181,21 @@ static int __refresh_tcon(const char *pa
- 	bool needs_refresh = false;
- 	struct cache_entry *ce;
- 	unsigned int xid;
-+	char *path = NULL;
- 	int rc = 0;
+ 	struct i40e_hw *hw = &pf->hw;
+ 	struct i40e_vf *vf;
+-	int i, v;
+ 	u32 reg;
++	int i;
  
- 	xid = get_xid();
+ 	/* If we don't have any VFs, then there is nothing to reset */
+ 	if (!pf->num_alloc_vfs)
+@@ -1638,11 +1638,10 @@ bool i40e_reset_all_vfs(struct i40e_pf *
+ 		return false;
  
-+	mutex_lock(&server->refpath_lock);
-+	if (server->leaf_fullpath) {
-+		path = kstrdup(server->leaf_fullpath + 1, GFP_ATOMIC);
-+		if (!path)
-+			rc = -ENOMEM;
-+	}
-+	mutex_unlock(&server->refpath_lock);
-+	if (!path)
-+		goto out;
-+
- 	down_read(&htable_rw_lock);
- 	ce = lookup_cache_entry(path);
- 	needs_refresh = force_refresh || IS_ERR(ce) || cache_entry_expired(ce);
-@@ -1218,19 +1229,17 @@ out:
- 	free_xid(xid);
- 	dfs_cache_free_tgts(&old_tl);
- 	dfs_cache_free_tgts(&new_tl);
--	return rc;
-+	kfree(path);
- }
+ 	/* Begin reset on all VFs at once */
+-	for (v = 0; v < pf->num_alloc_vfs; v++) {
+-		vf = &pf->vf[v];
++	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
+ 		/* If VF is being reset no need to trigger reset again */
+ 		if (!test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+-			i40e_trigger_vf_reset(&pf->vf[v], flr);
++			i40e_trigger_vf_reset(vf, flr);
+ 	}
  
--static int refresh_tcon(struct cifs_tcon *tcon, bool force_refresh)
-+static inline void refresh_ses_referral(struct cifs_ses *ses)
- {
--	struct TCP_Server_Info *server = tcon->ses->server;
--	struct cifs_ses *ses = tcon->ses;
-+	__refresh_ses_referral(ses, false);
-+}
- 
--	mutex_lock(&server->refpath_lock);
--	if (server->leaf_fullpath)
--		__refresh_tcon(server->leaf_fullpath + 1, ses, force_refresh);
--	mutex_unlock(&server->refpath_lock);
--	return 0;
-+static inline void force_refresh_ses_referral(struct cifs_ses *ses)
-+{
-+	__refresh_ses_referral(ses, true);
- }
- 
- /**
-@@ -1271,25 +1280,20 @@ int dfs_cache_remount_fs(struct cifs_sb_
+ 	/* HW requires some time to make sure it can flush the FIFO for a VF
+@@ -1651,14 +1650,13 @@ bool i40e_reset_all_vfs(struct i40e_pf *
+ 	 * the VFs using a simple iterator that increments once that VF has
+ 	 * finished resetting.
  	 */
- 	cifs_sb->mnt_cifs_flags |= CIFS_MOUNT_USE_PREFIX_PATH;
+-	for (i = 0, v = 0; i < 10 && v < pf->num_alloc_vfs; i++) {
++	for (i = 0, vf = &pf->vf[0]; i < 10 && vf < &pf->vf[pf->num_alloc_vfs]; ++i) {
+ 		usleep_range(10000, 20000);
  
--	return refresh_tcon(tcon, true);
-+	force_refresh_ses_referral(tcon->ses);
-+	return 0;
- }
+ 		/* Check each VF in sequence, beginning with the VF to fail
+ 		 * the previous check.
+ 		 */
+-		while (v < pf->num_alloc_vfs) {
+-			vf = &pf->vf[v];
++		while (vf < &pf->vf[pf->num_alloc_vfs]) {
+ 			if (!test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states)) {
+ 				reg = rd32(hw, I40E_VPGEN_VFRSTAT(vf->vf_id));
+ 				if (!(reg & I40E_VPGEN_VFRSTAT_VFRD_MASK))
+@@ -1668,7 +1666,7 @@ bool i40e_reset_all_vfs(struct i40e_pf *
+ 			/* If the current VF has finished resetting, move on
+ 			 * to the next VF in sequence.
+ 			 */
+-			v++;
++			++vf;
+ 		}
+ 	}
  
- /* Refresh all DFS referrals related to DFS tcon */
- void dfs_cache_refresh(struct work_struct *work)
- {
--	struct TCP_Server_Info *server;
- 	struct cifs_tcon *tcon;
- 	struct cifs_ses *ses;
+@@ -1678,39 +1676,39 @@ bool i40e_reset_all_vfs(struct i40e_pf *
+ 	/* Display a warning if at least one VF didn't manage to reset in
+ 	 * time, but continue on with the operation.
+ 	 */
+-	if (v < pf->num_alloc_vfs)
++	if (vf < &pf->vf[pf->num_alloc_vfs])
+ 		dev_err(&pf->pdev->dev, "VF reset check timeout on VF %d\n",
+-			pf->vf[v].vf_id);
++			vf->vf_id);
+ 	usleep_range(10000, 20000);
  
- 	tcon = container_of(work, struct cifs_tcon, dfs_cache_work.work);
+ 	/* Begin disabling all the rings associated with VFs, but do not wait
+ 	 * between each VF.
+ 	 */
+-	for (v = 0; v < pf->num_alloc_vfs; v++) {
++	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
+ 		/* On initial reset, we don't have any queues to disable */
+-		if (pf->vf[v].lan_vsi_idx == 0)
++		if (vf->lan_vsi_idx == 0)
+ 			continue;
  
--	for (ses = tcon->ses; ses; ses = ses->dfs_root_ses) {
--		server = ses->server;
--		mutex_lock(&server->refpath_lock);
--		if (server->leaf_fullpath)
--			__refresh_tcon(server->leaf_fullpath + 1, ses, false);
--		mutex_unlock(&server->refpath_lock);
--	}
-+	for (ses = tcon->ses; ses; ses = ses->dfs_root_ses)
-+		refresh_ses_referral(ses);
+ 		/* If VF is reset in another thread just continue */
+ 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+ 			continue;
  
- 	queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
- 			   atomic_read(&dfs_cache_ttl) * HZ);
+-		i40e_vsi_stop_rings_no_wait(pf->vsi[pf->vf[v].lan_vsi_idx]);
++		i40e_vsi_stop_rings_no_wait(pf->vsi[vf->lan_vsi_idx]);
+ 	}
+ 
+ 	/* Now that we've notified HW to disable all of the VF rings, wait
+ 	 * until they finish.
+ 	 */
+-	for (v = 0; v < pf->num_alloc_vfs; v++) {
++	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
+ 		/* On initial reset, we don't have any queues to disable */
+-		if (pf->vf[v].lan_vsi_idx == 0)
++		if (vf->lan_vsi_idx == 0)
+ 			continue;
+ 
+ 		/* If VF is reset in another thread just continue */
+ 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+ 			continue;
+ 
+-		i40e_vsi_wait_queues_disabled(pf->vsi[pf->vf[v].lan_vsi_idx]);
++		i40e_vsi_wait_queues_disabled(pf->vsi[vf->lan_vsi_idx]);
+ 	}
+ 
+ 	/* Hw may need up to 50ms to finish disabling the RX queues. We
+@@ -1719,12 +1717,12 @@ bool i40e_reset_all_vfs(struct i40e_pf *
+ 	mdelay(50);
+ 
+ 	/* Finish the reset on each VF */
+-	for (v = 0; v < pf->num_alloc_vfs; v++) {
++	for (vf = &pf->vf[0]; vf < &pf->vf[pf->num_alloc_vfs]; ++vf) {
+ 		/* If VF is reset in another thread just continue */
+ 		if (test_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+ 			continue;
+ 
+-		i40e_cleanup_reset_vf(&pf->vf[v]);
++		i40e_cleanup_reset_vf(vf);
+ 	}
+ 
+ 	i40e_flush(hw);
 
 
 
