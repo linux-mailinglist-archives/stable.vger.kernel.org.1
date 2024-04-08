@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-36581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1B289C07D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EC689C0B6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21A1B1F21162
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0C7EB24785
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC956FE1A;
-	Mon,  8 Apr 2024 13:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A5C6FE35;
+	Mon,  8 Apr 2024 13:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9BBFj8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bmj7Ms5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5366A352;
-	Mon,  8 Apr 2024 13:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBA42E62C;
+	Mon,  8 Apr 2024 13:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581744; cv=none; b=uP1WCPtgmeqnRHgkf2P1JOlDYTl5T62naNjpZJTgnw761EiS80foT656uEKLVPNY1TCuR0oVDjvzlh5J+g65wQrAaFTPWh6F/MAv2bb+ztXDsPeYw9hEaot1k80N/eIMCw+yRLGDHb0yyVAZBV8fUznLxKOg/x6r7S1CBwTVsec=
+	t=1712581759; cv=none; b=kuy32QxSmvqGpe7OazRvzfVHwTV36/M4MEltBHHPJiEeQvjsgWh5GVEt9VFD1DTzYHeR23fJglqw4Htkl6W2Bpom/RxXuOwBbmnWmgpEr9q0FULxupv3DcC42F6z8EGh+Y+/5qCWDWczYXLqkHOoB2HooEKW3BrU4kRJkB9MXnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581744; c=relaxed/simple;
-	bh=B5jjnMfOxAw6k3WfnLcLiSHbno77qpKx8Yr3ZGJPllE=;
+	s=arc-20240116; t=1712581759; c=relaxed/simple;
+	bh=uFdFnXx/mOrKDqo7gotHrdJDDSX5WEreqA52xR3SR18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgPycyedbQ8aFsb6bRPgs96+/muTX2FzBAK+bU3dsG3YOI4w2s8nxCKfr5aQtdfqdocX0ayH/zU+wTst7EfVNG69qTp92LKizsSlfXzHt7sFeKCuuMIIpYycSUBCCN7ghg4+ylpgo3EVQ2bgKe6HL5k7ZMYtw3AgzaaG6znPMzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9BBFj8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC882C433F1;
-	Mon,  8 Apr 2024 13:09:03 +0000 (UTC)
+	 MIME-Version; b=uiQ1oOcpzndhxdymSv69/JDLxwX8i487X89QMYo9wBWE7A/jAElXPMD6QudPQhkGs+B3xV8Y6rQe4bg64sqjQyO6PvOEpkl4FCS7sYJuS6MllGLiiia0u4lsfMuz5r3+teYnPRezkKACSaEA3oIv3GLsKMYlEdLJpCMVepws1Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bmj7Ms5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65111C433C7;
+	Mon,  8 Apr 2024 13:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581744;
-	bh=B5jjnMfOxAw6k3WfnLcLiSHbno77qpKx8Yr3ZGJPllE=;
+	s=korg; t=1712581758;
+	bh=uFdFnXx/mOrKDqo7gotHrdJDDSX5WEreqA52xR3SR18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9BBFj8QpjL6fyOct49Fu+uVE99toglURqaHPR40jdrc5PasJfmJDytXRKLlQC4CP
-	 QQdy6ATOf7eMKkH1e7kmPglEuF6cy/2D0wLvkS0648Gc/bf0i2Mr7TtDOAKjCVebnD
-	 A8M4FDODU4+sbAc3w4DakKDLCNpkyxl/UMOjEcA8=
+	b=Bmj7Ms5QhTlVIj3uRSDBtJcBf/1LCG7BE2wxn9nrPdZEeLEJcBzApWPvff9Pu72Ol
+	 v+UNhb4BZfkjVI1uoyZgy5tJSRNDttbaiyMyK5zEFYmnPvojwwkWcUxrej5Z8/35Bj
+	 jDQDPpF2e0UT8YhUwNnyfc3ECxUB9edkQza+0X50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Thibault <samuel.thibault@ens-lyon.org>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/690] speakup: Fix 8bit characters from direct synth
-Date: Mon,  8 Apr 2024 14:49:05 +0200
-Message-ID: <20240408125402.365606063@linuxfoundation.org>
+Subject: [PATCH 5.15 080/690] PCI/AER: Block runtime suspend when handling errors
+Date: Mon,  8 Apr 2024 14:49:06 +0200
+Message-ID: <20240408125402.397461804@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -65,47 +68,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Samuel Thibault <samuel.thibault@ens-lyon.org>
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
 
-[ Upstream commit b6c8dafc9d86eb77e502bb018ec4105e8d2fbf78 ]
+[ Upstream commit 002bf2fbc00e5c4b95fb167287e2ae7d1973281e ]
 
-When userland echoes 8bit characters to /dev/synth with e.g.
+PM runtime can be done simultaneously with AER error handling.  Avoid that
+by using pm_runtime_get_sync() before and pm_runtime_put() after reset in
+pcie_do_recovery() for all recovering devices.
 
-echo -e '\xe9' > /dev/synth
+pm_runtime_get_sync() will increase dev->power.usage_count counter to
+prevent any possible future request to runtime suspend a device.  It will
+also resume a device, if it was previously in D3hot state.
 
-synth_write would get characters beyond 0x7f, and thus negative when
-char is signed.  When given to synth_buffer_add which takes a u16, this
-would sign-extend and produce a U+ffxy character rather than U+xy.
-Users thus get garbled text instead of accents in their output.
+I tested with igc device by doing simultaneous aer_inject and rpm
+suspend/resume via /sys/bus/pci/devices/PCI_ID/power/control and can
+reproduce:
 
-Let's fix this by making sure that we read unsigned characters.
+  igc 0000:02:00.0: not ready 65535ms after bus reset; giving up
+  pcieport 0000:00:1c.2: AER: Root Port link has been reset (-25)
+  pcieport 0000:00:1c.2: AER: subordinate device reset failed
+  pcieport 0000:00:1c.2: AER: device recovery failed
+  igc 0000:02:00.0: Unable to change power state from D3hot to D0, device inaccessible
 
-Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Fixes: 89fc2ae80bb1 ("speakup: extend synth buffer to 16bit unicode characters")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240204155736.2oh4ot7tiaa2wpbh@begin
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem disappears when this patch is applied.
+
+Link: https://lore.kernel.org/r/20240212120135.146068-1-stanislaw.gruszka@linux.intel.com
+Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accessibility/speakup/synth.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/err.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/accessibility/speakup/synth.c b/drivers/accessibility/speakup/synth.c
-index 2b8699673bace..1e10f3c9567b8 100644
---- a/drivers/accessibility/speakup/synth.c
-+++ b/drivers/accessibility/speakup/synth.c
-@@ -208,8 +208,10 @@ void spk_do_flush(void)
- 	wake_up_process(speakup_task);
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index b576aa890c76b..410fc44d79ee2 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -13,6 +13,7 @@
+ #define dev_fmt(fmt) "AER: " fmt
+ 
+ #include <linux/pci.h>
++#include <linux/pm_runtime.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
+@@ -79,6 +80,18 @@ static int report_error_detected(struct pci_dev *dev,
+ 	return 0;
  }
  
--void synth_write(const char *buf, size_t count)
-+void synth_write(const char *_buf, size_t count)
- {
-+	const unsigned char *buf = (const unsigned char *) _buf;
++static int pci_pm_runtime_get_sync(struct pci_dev *pdev, void *data)
++{
++	pm_runtime_get_sync(&pdev->dev);
++	return 0;
++}
 +
- 	while (count--)
- 		synth_buffer_add(*buf++);
- 	synth_start();
++static int pci_pm_runtime_put(struct pci_dev *pdev, void *data)
++{
++	pm_runtime_put(&pdev->dev);
++	return 0;
++}
++
+ static int report_frozen_detected(struct pci_dev *dev, void *data)
+ {
+ 	return report_error_detected(dev, pci_channel_io_frozen, data);
+@@ -195,6 +208,8 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 	else
+ 		bridge = pci_upstream_bridge(dev);
+ 
++	pci_walk_bridge(bridge, pci_pm_runtime_get_sync, NULL);
++
+ 	pci_dbg(bridge, "broadcast error_detected message\n");
+ 	if (state == pci_channel_io_frozen) {
+ 		pci_walk_bridge(bridge, report_frozen_detected, &status);
+@@ -239,10 +254,15 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 		pcie_clear_device_status(dev);
+ 		pci_aer_clear_nonfatal_status(dev);
+ 	}
++
++	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
++
+ 	pci_info(bridge, "device recovery successful\n");
+ 	return status;
+ 
+ failed:
++	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
++
+ 	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
+ 
+ 	/* TODO: Should kernel panic here? */
 -- 
 2.43.0
 
