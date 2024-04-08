@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-36451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759C589C0BB
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2B389BFF1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 589A1B29C03
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE2CE2816CD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85897173E;
-	Mon,  8 Apr 2024 13:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C5B7D408;
+	Mon,  8 Apr 2024 13:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoFgELMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBgSegS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7773B481A6;
-	Mon,  8 Apr 2024 13:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DA77D3F6;
+	Mon,  8 Apr 2024 13:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581364; cv=none; b=etHV2rN9xGWzzoDrMazebJ+TZuA6KYs9S13ux1NXFSPXWZ4l9TrQXjD7sfGQUwtLXE1NIdQvaLQL+lGK7HbEoo/e027JDVHG8WF3X6y4YH6lWxXYC+OWsZ1zuDRKRbsGgcujCc/S57BcDcO7TqkwnMiDi2A6CDxZBWysZpG2adg=
+	t=1712581373; cv=none; b=j8kAvFaWk7GvQMVeLAOZ4iuqa70KMzHHk6mJXT65gw1pNbIObb9KgrU8BqG5WmsmID9gJfsztIQ04NIncTzGfK2+jEFVuAJuyWpTOFQopqA5oNGuIUxa8DvFzZozEP+9KLBImdf31fJ7THrC8GLw/O1xGPuL2DIIh0WVyzXoHJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581364; c=relaxed/simple;
-	bh=VI1cs2XhB49OL+WaOMwXzMTm0ikFFJRWQB9qEIJ/a14=;
+	s=arc-20240116; t=1712581373; c=relaxed/simple;
+	bh=9UCLUQPIqMj0ueXuxrChPOUK/pG0/2emyOp0XbulPcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StAG8q4fcmQPVrlT0CsZTB3+oZDUaA5nbI/4bmxlGWAcH3IvhSVwshDBQ8HAm6/MhlF4izj9gXuaEcBEv1jw0NXpsLjeXRWdUdw9TW4D1Ln0FOboFKqI09k71sCMb8EKIGpsNP0Jsz993SX5PjBTszRy/1u237H2wH05sb23GM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoFgELMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B1EC433F1;
-	Mon,  8 Apr 2024 13:02:43 +0000 (UTC)
+	 MIME-Version; b=qenDiHhKlwvjvrzsCJ6vrjGA/fA+0fDQ1m3eKBOiH8VIdgJd/YqXbH1hClLTIUepRXttJu/QLTSWj/6ETLWyS5+zI5uJrdypDHVrTMsMQ33fjzFE9+e1/AZbr4/5hWjrckidWyr3I+pS2bRA7O8A7jfotch7iCF4yG2MIHWG+9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBgSegS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD1DC433C7;
+	Mon,  8 Apr 2024 13:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581364;
-	bh=VI1cs2XhB49OL+WaOMwXzMTm0ikFFJRWQB9qEIJ/a14=;
+	s=korg; t=1712581373;
+	bh=9UCLUQPIqMj0ueXuxrChPOUK/pG0/2emyOp0XbulPcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WoFgELMn2VdKlmh0lnQWG+i9WGJXFguDPOg/6s4HXyTCEOL1QXKSW5wXTIsNDq/5h
-	 thHmBzsd3nyRvSsluBnhaxyDQHyNPYmeg5xQD7dbKmUMFr6eD6s0qm5wJxrX+wrZxO
-	 F21a07R2e/UW7YP3FJsbhkZ6XK/CZJFybAFx+bRU=
+	b=eBgSegS8sk37wCWhlLJDwfFlSgjWGC+SuQLMP8HXbElhcM3PIEzsR1543BQsBKYEI
+	 yV+6s7UFdR4A3SGWLjAHTI68xngaSRrFVKhTZqb3xd+AHcRqSASUnNREcBt1RBbGqr
+	 h4ezvgZrKjzpbTkysfHY9L94nDaYGyGWjuQZ/ZWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Maulik Shah <quic_mkshah@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/690] parisc: Strip upper 32 bit of sum in csum_ipv6_magic for 64-bit builds
-Date: Mon,  8 Apr 2024 14:48:25 +0200
-Message-ID: <20240408125400.944066048@linuxfoundation.org>
+Subject: [PATCH 5.15 040/690] PM: suspend: Set mem_sleep_current during kernel command line setup
+Date: Mon,  8 Apr 2024 14:48:26 +0200
+Message-ID: <20240408125400.989429907@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,52 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Maulik Shah <quic_mkshah@quicinc.com>
 
-[ Upstream commit 0568b6f0d863643db2edcc7be31165740c89fa82 ]
+[ Upstream commit 9bc4ffd32ef8943f5c5a42c9637cfd04771d021b ]
 
-IPv6 checksum tests with unaligned addresses on 64-bit builds result
-in unexpected failures.
+psci_init_system_suspend() invokes suspend_set_ops() very early during
+bootup even before kernel command line for mem_sleep_default is setup.
+This leads to kernel command line mem_sleep_default=s2idle not working
+as mem_sleep_current gets changed to deep via suspend_set_ops() and never
+changes back to s2idle.
 
-Expected expected == csum_result, but
-    expected == 46591 (0xb5ff)
-    csum_result == 46381 (0xb52d)
-with alignment offset 1
+Set mem_sleep_current along with mem_sleep_default during kernel command
+line setup as default suspend mode.
 
-Oddly enough, the problem disappeared after adding test code into
-the beginning of csum_ipv6_magic().
-
-As it turns out, the 'sum' parameter of csum_ipv6_magic() is declared as
-__wsum, which is a 32-bit variable. However, it is treated as 64-bit
-variable in the 64-bit assembler code. Tests showed that the upper 32 bit
-of the register used to pass the variable are _not_ cleared when entering
-the function. This can result in checksum calculation errors.
-
-Clearing the upper 32 bit of 'sum' as first operation in the assembler
-code fixes the problem.
-
-Acked-by: Helge Deller <deller@gmx.de>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/checksum.h | 1 +
+ kernel/power/suspend.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index c949aa20fa162..2aceebcd695c8 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -126,6 +126,7 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	** Try to keep 4 registers with "live" values ahead of the ALU.
- 	*/
+diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
+index 13d905dd32675..5d617639e81ed 100644
+--- a/kernel/power/suspend.c
++++ b/kernel/power/suspend.c
+@@ -187,6 +187,7 @@ static int __init mem_sleep_default_setup(char *str)
+ 		if (mem_sleep_labels[state] &&
+ 		    !strcmp(str, mem_sleep_labels[state])) {
+ 			mem_sleep_default = state;
++			mem_sleep_current = state;
+ 			break;
+ 		}
  
-+"	depdi		0, 31, 32, %0\n"/* clear upper half of incoming checksum */
- "	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
- "	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
- "	add		%4, %0, %0\n"
 -- 
 2.43.0
 
