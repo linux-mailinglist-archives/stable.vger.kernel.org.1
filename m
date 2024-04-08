@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C7289C4B6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD51289C456
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A23E1F22EBE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 849EC2826AC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FA87BB11;
-	Mon,  8 Apr 2024 13:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DA17EF0A;
+	Mon,  8 Apr 2024 13:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaP3ZEcD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6PRm12B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FB379F0;
-	Mon,  8 Apr 2024 13:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B8E4D5AB;
+	Mon,  8 Apr 2024 13:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584136; cv=none; b=a6oDD84BCwUWwnI3mnBEgnx1pii+r99qWmYfLkSyQtJMQ8YAtkpWxsiwA7CEzGmmFe8psJZMPIOu+gvuIA50GMikZeCVdZFAv+T7cwlGmCATslo9QFfdnaTInKIakJbC8UV/ty20cdP9bJsNzIrvKfRAyf9XfEfrr1Oo4z3jwYc=
+	t=1712583870; cv=none; b=GIByrTZFiNG+scxE95dFl0XKeg9LZXIKa+FENQPcTe5b87gIEmw7Ae1OYxl6LrzO7bvgVkgt0n82YPemirSXvzwcCqyIm+LzdbdEFbNepF3LBw9eEC8QKhlhGyoFVyzVtoMdHyWS5xrMQtzT+hoqQoom1BPn4+f5Ai2XCgoag4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584136; c=relaxed/simple;
-	bh=r+qBFI4/69hITdYmR9MdGxoYAPjKxdov9+yfFox7aNc=;
+	s=arc-20240116; t=1712583870; c=relaxed/simple;
+	bh=95Uza7XXIOnxaHo5+HLpX607gbQbTGZpx4BRddNQ+DI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAiRFrWS3k2B7k6YyRJbw8brpXH0ItXF1VoJ4mFNB/Je17o9tC17+nJDBsnrTPyoX2+BCE3Jcqg4AwT73Qwgv92bSg3jgzNf2EQOsH3iRHjfEtSTWEVw8aaNFdtR5rArDnZMAqBgZF1Oyc+lrN8BE6pIghLTGKzcgKZo1Qtt+YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaP3ZEcD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E222C433F1;
-	Mon,  8 Apr 2024 13:48:55 +0000 (UTC)
+	 MIME-Version; b=S+SpWgIAaRx5cu3t2+XovAY0N8BbfAlycAXyzc1td43b+9zQb9PWEs4lR/h5GvyEdbl2I+s7Wz5bd7nIG4NUOkj9wXpliPhvhFVfLRjs5xnfH98Lb/VKLan8GHoBX4RKL8uxAuKUdqPyN8eoH3LErGR6beb0qcfX+dDUaPhz2EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6PRm12B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8E9C433C7;
+	Mon,  8 Apr 2024 13:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584136;
-	bh=r+qBFI4/69hITdYmR9MdGxoYAPjKxdov9+yfFox7aNc=;
+	s=korg; t=1712583870;
+	bh=95Uza7XXIOnxaHo5+HLpX607gbQbTGZpx4BRddNQ+DI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YaP3ZEcDYt63+AjrBfBgy5258W58V90lDKZknQ/+32xXtZYkLUmo2DlD0IK7xnhxT
-	 yDBy1pZmB6SVxxA+2eA/n8Njk/6sdhlKD1UH8bnUQ5vv4/F7fULLCC/Y33R87cye5N
-	 v+zW4dDJ3opXCnbZ5M8nv3VZEhd1V63x/o8xL6IQ=
+	b=B6PRm12B2L9+lVQ2I9vCGXuaPXb7Ga3udeEejUYNtaHrmcbDTU9OqTfPkSc64DR9W
+	 2eB6jXZ11NS+FkJLu4O/6klc5rb3ZUFsuC0AP9al+nNvSt3CoYqMEeB+n6Us5qv59D
+	 2vpkkbsnL0aajeEt1mtMUC8fTiT5i7rIkhjRHaHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.8 267/273] bpf: put uprobe links path and task in release callback
-Date: Mon,  8 Apr 2024 14:59:02 +0200
-Message-ID: <20240408125317.787818005@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 244/252] mptcp: dont overwrite sock_ops in mptcp_is_tcpsk()
+Date: Mon,  8 Apr 2024 14:59:03 +0200
+Message-ID: <20240408125314.225890434@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +64,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit e9c856cabefb71d47b2eeb197f72c9c88e9b45b0 upstream.
+commit 8e2b8a9fa512709e6fee744dcd4e2a20ee7f5c56 upstream.
 
-There is no need to delay putting either path or task to deallocation
-step. It can be done right after bpf_uprobe_unregister. Between release
-and dealloc, there could be still some running BPF programs, but they
-don't access either task or path, only data in link->uprobes, so it is
-safe to do.
+Eric Dumazet suggests:
 
-On the other hand, doing path_put() in dealloc callback makes this
-dealloc sleepable because path_put() itself might sleep. Which is
-problematic due to the need to call uprobe's dealloc through call_rcu(),
-which is what is done in the next bug fix patch. So solve the problem by
-releasing these resources early.
+ > The fact that mptcp_is_tcpsk() was able to write over sock->ops was a
+ > bit strange to me.
+ > mptcp_is_tcpsk() should answer a question, with a read-only argument.
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20240328052426.3042617-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+re-factor code to avoid overwriting sock_ops inside that function. Also,
+change the helper name to reflect the semantics and to disambiguate from
+its dual, sk_is_mptcp(). While at it, collapse mptcp_stream_accept() and
+mptcp_accept() into a single function, where fallback / non-fallback are
+separated into a single sk_is_mptcp() conditional.
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/432
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/bpf_trace.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c |  108 ++++++++++++++++++++-------------------------------
+ 1 file changed, 44 insertions(+), 64 deletions(-)
 
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -3142,6 +3142,9 @@ static void bpf_uprobe_multi_link_releas
- 
- 	umulti_link = container_of(link, struct bpf_uprobe_multi_link, link);
- 	bpf_uprobe_unregister(&umulti_link->path, umulti_link->uprobes, umulti_link->cnt);
-+	if (umulti_link->task)
-+		put_task_struct(umulti_link->task);
-+	path_put(&umulti_link->path);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -55,28 +55,14 @@ static u64 mptcp_wnd_end(const struct mp
+ 	return READ_ONCE(msk->wnd_end);
  }
  
- static void bpf_uprobe_multi_link_dealloc(struct bpf_link *link)
-@@ -3149,9 +3152,6 @@ static void bpf_uprobe_multi_link_deallo
- 	struct bpf_uprobe_multi_link *umulti_link;
- 
- 	umulti_link = container_of(link, struct bpf_uprobe_multi_link, link);
--	if (umulti_link->task)
--		put_task_struct(umulti_link->task);
--	path_put(&umulti_link->path);
- 	kvfree(umulti_link->uprobes);
- 	kfree(umulti_link);
+-static bool mptcp_is_tcpsk(struct sock *sk)
++static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
+ {
+-	struct socket *sock = sk->sk_socket;
+-
+-	if (unlikely(sk->sk_prot == &tcp_prot)) {
+-		/* we are being invoked after mptcp_accept() has
+-		 * accepted a non-mp-capable flow: sk is a tcp_sk,
+-		 * not an mptcp one.
+-		 *
+-		 * Hand the socket over to tcp so all further socket ops
+-		 * bypass mptcp.
+-		 */
+-		WRITE_ONCE(sock->ops, &inet_stream_ops);
+-		return true;
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+-	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
+-		WRITE_ONCE(sock->ops, &inet6_stream_ops);
+-		return true;
++	if (sk->sk_prot == &tcpv6_prot)
++		return &inet6_stream_ops;
+ #endif
+-	}
+-
+-	return false;
++	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
++	return &inet_stream_ops;
  }
+ 
+ static int __mptcp_socket_create(struct mptcp_sock *msk)
+@@ -3328,44 +3314,6 @@ void mptcp_rcv_space_init(struct mptcp_s
+ 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
+ }
+ 
+-static struct sock *mptcp_accept(struct sock *ssk, int flags, int *err,
+-				 bool kern)
+-{
+-	struct sock *newsk;
+-
+-	pr_debug("ssk=%p, listener=%p", ssk, mptcp_subflow_ctx(ssk));
+-	newsk = inet_csk_accept(ssk, flags, err, kern);
+-	if (!newsk)
+-		return NULL;
+-
+-	pr_debug("newsk=%p, subflow is mptcp=%d", newsk, sk_is_mptcp(newsk));
+-	if (sk_is_mptcp(newsk)) {
+-		struct mptcp_subflow_context *subflow;
+-		struct sock *new_mptcp_sock;
+-
+-		subflow = mptcp_subflow_ctx(newsk);
+-		new_mptcp_sock = subflow->conn;
+-
+-		/* is_mptcp should be false if subflow->conn is missing, see
+-		 * subflow_syn_recv_sock()
+-		 */
+-		if (WARN_ON_ONCE(!new_mptcp_sock)) {
+-			tcp_sk(newsk)->is_mptcp = 0;
+-			goto out;
+-		}
+-
+-		newsk = new_mptcp_sock;
+-		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_MPCAPABLEPASSIVEACK);
+-	} else {
+-		MPTCP_INC_STATS(sock_net(ssk),
+-				MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK);
+-	}
+-
+-out:
+-	newsk->sk_kern_sock = kern;
+-	return newsk;
+-}
+-
+ void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
+ {
+ 	struct mptcp_subflow_context *subflow, *tmp;
+@@ -3802,7 +3750,6 @@ static struct proto mptcp_prot = {
+ 	.connect	= mptcp_connect,
+ 	.disconnect	= mptcp_disconnect,
+ 	.close		= mptcp_close,
+-	.accept		= mptcp_accept,
+ 	.setsockopt	= mptcp_setsockopt,
+ 	.getsockopt	= mptcp_getsockopt,
+ 	.shutdown	= mptcp_shutdown,
+@@ -3912,18 +3859,36 @@ static int mptcp_stream_accept(struct so
+ 	if (!ssk)
+ 		return -EINVAL;
+ 
+-	newsk = mptcp_accept(ssk, flags, &err, kern);
++	pr_debug("ssk=%p, listener=%p", ssk, mptcp_subflow_ctx(ssk));
++	newsk = inet_csk_accept(ssk, flags, &err, kern);
+ 	if (!newsk)
+ 		return err;
+ 
+-	lock_sock(newsk);
+-
+-	__inet_accept(sock, newsock, newsk);
+-	if (!mptcp_is_tcpsk(newsock->sk)) {
+-		struct mptcp_sock *msk = mptcp_sk(newsk);
++	pr_debug("newsk=%p, subflow is mptcp=%d", newsk, sk_is_mptcp(newsk));
++	if (sk_is_mptcp(newsk)) {
+ 		struct mptcp_subflow_context *subflow;
++		struct sock *new_mptcp_sock;
++
++		subflow = mptcp_subflow_ctx(newsk);
++		new_mptcp_sock = subflow->conn;
++
++		/* is_mptcp should be false if subflow->conn is missing, see
++		 * subflow_syn_recv_sock()
++		 */
++		if (WARN_ON_ONCE(!new_mptcp_sock)) {
++			tcp_sk(newsk)->is_mptcp = 0;
++			goto tcpfallback;
++		}
++
++		newsk = new_mptcp_sock;
++		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_MPCAPABLEPASSIVEACK);
++
++		newsk->sk_kern_sock = kern;
++		lock_sock(newsk);
++		__inet_accept(sock, newsock, newsk);
+ 
+ 		set_bit(SOCK_CUSTOM_SOCKOPT, &newsock->flags);
++		msk = mptcp_sk(newsk);
+ 		msk->in_accept_queue = 0;
+ 
+ 		/* set ssk->sk_socket of accept()ed flows to mptcp socket.
+@@ -3945,6 +3910,21 @@ static int mptcp_stream_accept(struct so
+ 			if (unlikely(list_is_singular(&msk->conn_list)))
+ 				mptcp_set_state(newsk, TCP_CLOSE);
+ 		}
++	} else {
++		MPTCP_INC_STATS(sock_net(ssk),
++				MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK);
++tcpfallback:
++		newsk->sk_kern_sock = kern;
++		lock_sock(newsk);
++		__inet_accept(sock, newsock, newsk);
++		/* we are being invoked after accepting a non-mp-capable
++		 * flow: sk is a tcp_sk, not an mptcp one.
++		 *
++		 * Hand the socket over to tcp so all further socket ops
++		 * bypass mptcp.
++		 */
++		WRITE_ONCE(newsock->sk->sk_socket->ops,
++			   mptcp_fallback_tcp_ops(newsock->sk));
+ 	}
+ 	release_sock(newsk);
+ 
 
 
 
