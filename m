@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2003C89C491
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3333C89C494
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51DCE1C22280
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81501F20EF3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DEC7FBDA;
-	Mon,  8 Apr 2024 13:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF4F80045;
+	Mon,  8 Apr 2024 13:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhdvCCjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXAxQVEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91A8768EA;
-	Mon,  8 Apr 2024 13:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8457E10B;
+	Mon,  8 Apr 2024 13:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584031; cv=none; b=aKu+v0GF33QFr3FIhRZ0tUGQnJB5VIo261VwcjaXRac1hKdRRQnZ/AG+/M8yfuNncqeRu2603iIAR+A3EXP4oCKDjWjlQvHHSw8eHVAfVs+r4D2WcZ4HKEpKwJDqoSKUzQOynDo9RiGtC7627I9BTygtqf9LQfC/dYVxq6CCxG4=
+	t=1712584036; cv=none; b=pcg1o0uuaT1Yy9TEl3Ye1mj/i2d7OWmEd+P8hahqySpao7sVz/jJrASw0efNaCj8GiLbM5p5Cg5eZSGXp0339G6ER2h+Uufjk4P8gHBoQ3khSNIGfe43stQaT0cV1ogKYemfqgE6k/FzVoFC48Wo83tYSRzgyrGE0/l7FSpVJW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584031; c=relaxed/simple;
-	bh=kVe0jQYd8FHHfL53lb/cTSpMyZoSd5TibzMKguiMcY0=;
+	s=arc-20240116; t=1712584036; c=relaxed/simple;
+	bh=NOScHutPeaM20eOCwsOOxkNdCKp2jiJefR2jcPn9sSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTrDom3lZFjw08OFh051l27e8wwnIYXlr9FH2DMI02f/SO9U3BR8Akfm8Ua5Q+MyC9quvZhQxV4pbZ+tLVQPbeanX+QGpcjlGIgvvvzCQT2RDAbcUiZs5xCjI9hWppNDBv9LAfjp3Q4RLSBP75hwSbW9SXaZ8yPm1pQH5nIDpDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhdvCCjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA6AC43390;
-	Mon,  8 Apr 2024 13:47:10 +0000 (UTC)
+	 MIME-Version; b=jxoOTnh7ekO4duFdK9107taJib5ZeI3RDaryrK8t6/wqhTnEzKMaFatVL51WdJ2sEO2S2Zw0217phmpiJ0hXR07TzlVdN23CggeVR6i6j+PaqbNCplzAGvX29QuREqsnWr5DUkO9wB84QUOguj2B+UN+DlydP4BL9U+EROHlfSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXAxQVEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4454DC433C7;
+	Mon,  8 Apr 2024 13:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584030;
-	bh=kVe0jQYd8FHHfL53lb/cTSpMyZoSd5TibzMKguiMcY0=;
+	s=korg; t=1712584036;
+	bh=NOScHutPeaM20eOCwsOOxkNdCKp2jiJefR2jcPn9sSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhdvCCjOMita8f02e6+wjS87Cp3q9vn2EkRaTkZV+PJF6rKaSLKDzauuiIn1l87UW
-	 h7FQQFGcVjrxBC0EpGyueJ0q8QqOwi5+GNEDsV314Bee+4JgdfvAA9Qkz3gTa/NTLI
-	 QzfgDeNzRJaJkh1xarpviaNThTQbu4gObKw7XXs4=
+	b=eXAxQVEb4Bg6sp/DP4zCSKhsis/cCOWfiXzPkPOUU6CMqnOv6RZ8SQ+UW9r7BdkAE
+	 XtDVOJtk9jzIwLNAfBme0FEN4N/oE4s+5eWFAPW7dW5cdQ8f1gHcGZVXn/Hw1VuQBK
+	 pvXjog+McrjHQl5zDuM8LGG8EwzKykRvDNbLJkkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 323/690] NFSD: Fix whitespace
-Date: Mon,  8 Apr 2024 14:53:09 +0200
-Message-ID: <20240408125411.325497911@linuxfoundation.org>
+Subject: [PATCH 5.15 324/690] NFSD: Move documenting comment for nfsd4_process_open2()
+Date: Mon,  8 Apr 2024 14:53:10 +0200
+Message-ID: <20240408125411.355058318@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,79 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 26320d7e317c37404c811603d50d811132aef78c ]
+[ Upstream commit 7e2ce0cc15a509b859199235a2bad9cece00f67a ]
 
-Clean up: Pull case arms back one tab stop to conform every other
-switch statement in fs/nfsd/nfs4proc.c.
+Clean up nfsd4_open() by converting a large comment at the only
+call site for nfsd4_process_open2() to a kerneldoc comment in
+front of that function.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4proc.c | 50 +++++++++++++++++++++++-----------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ fs/nfsd/nfs4proc.c  |  6 +-----
+ fs/nfsd/nfs4state.c | 12 ++++++++++++
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 611aedeab406b..6a9c7e6a23ba5 100644
+index 6a9c7e6a23ba5..3ac2978c596ae 100644
 --- a/fs/nfsd/nfs4proc.c
 +++ b/fs/nfsd/nfs4proc.c
-@@ -600,33 +600,33 @@ nfsd4_open(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+@@ -628,11 +628,7 @@ nfsd4_open(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		status = nfserr_inval;
  		goto out;
- 
- 	switch (open->op_claim_type) {
--		case NFS4_OPEN_CLAIM_DELEGATE_CUR:
--		case NFS4_OPEN_CLAIM_NULL:
--			status = do_open_lookup(rqstp, cstate, open, &resfh);
--			if (status)
--				goto out;
--			break;
--		case NFS4_OPEN_CLAIM_PREVIOUS:
--			status = nfs4_check_open_reclaim(cstate->clp);
--			if (status)
--				goto out;
--			open->op_openowner->oo_flags |= NFS4_OO_CONFIRMED;
--			reclaim = true;
--			fallthrough;
--		case NFS4_OPEN_CLAIM_FH:
--		case NFS4_OPEN_CLAIM_DELEG_CUR_FH:
--			status = do_open_fhandle(rqstp, cstate, open);
--			if (status)
--				goto out;
--			resfh = &cstate->current_fh;
--			break;
--		case NFS4_OPEN_CLAIM_DELEG_PREV_FH:
--             	case NFS4_OPEN_CLAIM_DELEGATE_PREV:
--			status = nfserr_notsupp;
-+	case NFS4_OPEN_CLAIM_DELEGATE_CUR:
-+	case NFS4_OPEN_CLAIM_NULL:
-+		status = do_open_lookup(rqstp, cstate, open, &resfh);
-+		if (status)
- 			goto out;
--		default:
--			status = nfserr_inval;
-+		break;
-+	case NFS4_OPEN_CLAIM_PREVIOUS:
-+		status = nfs4_check_open_reclaim(cstate->clp);
-+		if (status)
- 			goto out;
-+		open->op_openowner->oo_flags |= NFS4_OO_CONFIRMED;
-+		reclaim = true;
-+		fallthrough;
-+	case NFS4_OPEN_CLAIM_FH:
-+	case NFS4_OPEN_CLAIM_DELEG_CUR_FH:
-+		status = do_open_fhandle(rqstp, cstate, open);
-+		if (status)
-+			goto out;
-+		resfh = &cstate->current_fh;
-+		break;
-+	case NFS4_OPEN_CLAIM_DELEG_PREV_FH:
-+	case NFS4_OPEN_CLAIM_DELEGATE_PREV:
-+		status = nfserr_notsupp;
-+		goto out;
-+	default:
-+		status = nfserr_inval;
-+		goto out;
  	}
- 	/*
- 	 * nfsd4_process_open2() does the actual opening of the file.  If
+-	/*
+-	 * nfsd4_process_open2() does the actual opening of the file.  If
+-	 * successful, it (1) truncates the file if open->op_truncate was
+-	 * set, (2) sets open->op_stateid, (3) sets open->op_delegation.
+-	 */
++
+ 	status = nfsd4_process_open2(rqstp, resfh, open);
+ 	WARN(status && open->op_created,
+ 	     "nfsd4_process_open2 failed to open newly-created file! status=%u\n",
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index f9681a4d116ad..d79b736019d49 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5465,6 +5465,18 @@ static void nfsd4_deleg_xgrade_none_ext(struct nfsd4_open *open,
+ 	 */
+ }
+ 
++/**
++ * nfsd4_process_open2 - finish open processing
++ * @rqstp: the RPC transaction being executed
++ * @current_fh: NFSv4 COMPOUND's current filehandle
++ * @open: OPEN arguments
++ *
++ * If successful, (1) truncate the file if open->op_truncate was
++ * set, (2) set open->op_stateid, (3) set open->op_delegation.
++ *
++ * Returns %nfs_ok on success; otherwise an nfs4stat value in
++ * network byte order is returned.
++ */
+ __be32
+ nfsd4_process_open2(struct svc_rqst *rqstp, struct svc_fh *current_fh, struct nfsd4_open *open)
+ {
 -- 
 2.43.0
 
