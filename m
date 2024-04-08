@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-36713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E24289C16D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F8289C158
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36542B264C4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C25D928269E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575E882D7F;
-	Mon,  8 Apr 2024 13:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8377383CC7;
+	Mon,  8 Apr 2024 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReoVowH7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsHV3d5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139BF481A6;
-	Mon,  8 Apr 2024 13:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403837BAF4;
+	Mon,  8 Apr 2024 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582128; cv=none; b=rWENvsVRaIUyHCzpYBc6hmHIyJP1qz9S4jHtIZkf/Rg0gbMiSjNrJEpcoDFUQVVUPnyz0GQjY3tsxvQZdnpYp26e/D4PAVqBmacVefs0WUUiCdxE4lvyCou1yiVIoM34gi+rUqW51wWxtBj6S2l6s84KOTRoVsup0V72nv8ZpYQ=
+	t=1712582142; cv=none; b=O/XklCELTZNZ1Cs2PNR7K9jbMg678A5K63pj8CyCm/pVxDEc2ldtXRBxMDSwx+tNbcogGy8xrNmXuJNXOYaFDTdAdURtXwpEP/JrQYKKoeg3+64XWNo85WhYLEvlnfy15Zi5gLDDJnsNJmv2qSxp4y3owcXu1pg2urOvRFStta8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582128; c=relaxed/simple;
-	bh=WY2Fd6cl6RZ4sarIiB2i/ugMwPCbIahpho0DAw5d3l8=;
+	s=arc-20240116; t=1712582142; c=relaxed/simple;
+	bh=jBLdO0rouxu38U37pjDfMyRvFRTRiKlneL22Mbj0Ojg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkiYl2PYW4RAF+sP6YvYTHNv9nTqdcL+qbwq3u1NQS6RxFxyIoeAqihAt49iLtYOvvXwHjlVm6/8d6on+VzSEQQT4EMjs4WJQFTtdOv/2bD+sc9DpyWpLjS2BezMoCegq+aSLF8uE9AVm5tzbFaZrwQxdJoGi9MH5uCTVEzMFyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReoVowH7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CCCC433F1;
-	Mon,  8 Apr 2024 13:15:27 +0000 (UTC)
+	 MIME-Version; b=dHsS3D/g0uPOQPKMedfLBYbXvAaDhFU5RWnFd2rgptdodlpL83i4IIcBlTQIEEaAJZT6IzRGkht3p9PnPNGGkHAkzkMN26pzUk6T52+YbPQtEXtuZXx3LxR8MIiKapVLDRw/uV6zz7n8o9phm16EyYmMNmMjy50OjbqJ/pzVIK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsHV3d5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B275BC433C7;
+	Mon,  8 Apr 2024 13:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582127;
-	bh=WY2Fd6cl6RZ4sarIiB2i/ugMwPCbIahpho0DAw5d3l8=;
+	s=korg; t=1712582142;
+	bh=jBLdO0rouxu38U37pjDfMyRvFRTRiKlneL22Mbj0Ojg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReoVowH7vRqrFwyxmyYuGy5mEivSC4Z9QU++PXPYQELJY/mzcJDUD5um1ziU+3rZx
-	 8kSYYIlaP30drOhNmx9YL3vWOdaAPZ8AfM5dQj4vRRQyLs+h85qfNhUf0SK9ID0xis
-	 /fTsZJ6oII+AymmcPM93kgFTyq9HWFbs5McgPpwA=
+	b=jsHV3d5zsIQ7V5qRgpBKf9+cnJL8HDm9ElAEOANBQdkpywAaNj0JrJnqK7WGBwYZy
+	 yiBrHz4XoyoOBk0nfoC0j8EfsQ7gWCk3qCNK/erM+5GBGZUEvZyY0NSGf/jwwgGPvm
+	 yNfhkEWNpWXadChYyLaMpVGSlONkSShckLj87mXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Leo Ma <hanghong.ma@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	John Pittman <jpittman@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/690] drm/amd/display: Fix noise issue on HDMI AV mute
-Date: Mon,  8 Apr 2024 14:49:39 +0200
-Message-ID: <20240408125403.632545183@linuxfoundation.org>
+Subject: [PATCH 5.15 114/690] dm snapshot: fix lockup in dm_exception_table_exit
+Date: Mon,  8 Apr 2024 14:49:40 +0200
+Message-ID: <20240408125403.673075838@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -70,57 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Leo Ma <hanghong.ma@amd.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 69e3be6893a7e668660b05a966bead82bbddb01d ]
+[ Upstream commit 6e7132ed3c07bd8a6ce3db4bb307ef2852b322dc ]
 
-[Why]
-When mode switching is triggered there is momentary noise visible on
-some HDMI TV or displays.
+There was reported lockup when we exit a snapshot with many exceptions.
+Fix this by adding "cond_resched" to the loop that frees the exceptions.
 
-[How]
-Wait for 2 frames to make sure we have enough time to send out AV mute
-and sink receives a full frame.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: John Pittman <jpittman@redhat.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Leo Ma <hanghong.ma@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/md/dm-snap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index f834573758113..8d8114ee67f67 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -673,10 +673,20 @@ void dcn30_set_avmute(struct pipe_ctx *pipe_ctx, bool enable)
- 	if (pipe_ctx == NULL)
- 		return;
+diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
+index dcf34c6b05ad3..d3716d5c45c23 100644
+--- a/drivers/md/dm-snap.c
++++ b/drivers/md/dm-snap.c
+@@ -686,8 +686,10 @@ static void dm_exception_table_exit(struct dm_exception_table *et,
+ 	for (i = 0; i < size; i++) {
+ 		slot = et->table + i;
  
--	if (dc_is_hdmi_signal(pipe_ctx->stream->signal) && pipe_ctx->stream_res.stream_enc != NULL)
-+	if (dc_is_hdmi_signal(pipe_ctx->stream->signal) && pipe_ctx->stream_res.stream_enc != NULL) {
- 		pipe_ctx->stream_res.stream_enc->funcs->set_avmute(
- 				pipe_ctx->stream_res.stream_enc,
- 				enable);
-+
-+		/* Wait for two frame to make sure AV mute is sent out */
-+		if (enable) {
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VBLANK);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VBLANK);
-+			pipe_ctx->stream_res.tg->funcs->wait_for_state(pipe_ctx->stream_res.tg, CRTC_STATE_VACTIVE);
+-		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list)
++		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list) {
+ 			kmem_cache_free(mem, ex);
++			cond_resched();
 +		}
-+	}
- }
+ 	}
  
- void dcn30_update_info_frame(struct pipe_ctx *pipe_ctx)
+ 	kvfree(et->table);
 -- 
 2.43.0
 
