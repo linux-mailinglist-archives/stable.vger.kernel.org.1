@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BBB89C152
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CEC89C39A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E65B628109C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80C631F22378
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2380C8286D;
-	Mon,  8 Apr 2024 13:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0943412B14A;
+	Mon,  8 Apr 2024 13:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ki6pOqfm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnJl/XY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE24F7B3E5;
-	Mon,  8 Apr 2024 13:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E5512AAC3;
+	Mon,  8 Apr 2024 13:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582124; cv=none; b=QCgpO+XJ1x3GJ3k+z+DGwmLUJVEALxORcXSzF1yw8+5kAVvxSmdl1NkQwEVTCdWg977S5sCCM9FBiwON6HqMeqxm2Z8bW/h6eLdlnASJdGRxnUjVMQY+aqPzDqtuM/XziTXwY/PRA8UTKFuaJ9FMv2rWYbfrAwT4L4SVGeyPWHw=
+	t=1712583442; cv=none; b=db+DtCWBJJThoF7lY21T/e8SyUSW4rDi8dfLI8G5jek+Sguck5Rbjr4TzFU+ySylVEuTJqG9xO6Cs+iixa4kAE9/yvD9MWVuGbSIdZwN4iLVU+EB/map+w3wTfjbD9gt1taJ4WGWj9+pVLd/gTmKNi26gSfe0bsUx9vGTyQ6YyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582124; c=relaxed/simple;
-	bh=+Qc7XtZpDgOveubuvJSn4arihzMIVGLLvbek/przUKA=;
+	s=arc-20240116; t=1712583442; c=relaxed/simple;
+	bh=8WnXANvX861nRnLOTdNQ+JiRaLfrNJyvo8uCCNgQ53M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lddzU9tTMhq5oJh4qNXP70/eqgboUnTEUnpbTAvYNraKMYCkZzWpN8mY3wGyJp2s/M4gUuFFRQ+V5kdqs2kz856TQu1WNUo739TO9KqIJ4wnv4kBggALrUSjkBR3yW3yrUSzH/y/ADPO5lA0elL810ZVPUElrAcdUx7XGxJSIIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ki6pOqfm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D617C43390;
-	Mon,  8 Apr 2024 13:15:24 +0000 (UTC)
+	 MIME-Version; b=rGY0drHnbSIpzg1/cXy9NNTge4y1UTRYUWSv4IRfkmUDq9KqQSA7Q3xzpRXfmLGd9HWWlarn1TtXm/qD9tEA+KeJQP2NQBjVJpmFrIJMbsf83Rv5CJq0uaQy0sV9alfmQfrYnCgiknAOsdclX/krL6f3H8xSt+7XnP0QeCPBjRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnJl/XY6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A7CC433F1;
+	Mon,  8 Apr 2024 13:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582124;
-	bh=+Qc7XtZpDgOveubuvJSn4arihzMIVGLLvbek/przUKA=;
+	s=korg; t=1712583442;
+	bh=8WnXANvX861nRnLOTdNQ+JiRaLfrNJyvo8uCCNgQ53M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ki6pOqfm9lEbzxWwiVOXgGa6GaDpVXKe7edKVz1CpHtxaS/iu7yD5/dlfVJ7m6muB
-	 eUxLav63AyUS5vFc95KIQjVxk7ttzmi4zQ0ZC+xZ3V7zyeWTZIv/eEXhlY5HoRIerV
-	 Bj7G5APxhat+/BU5gFiKscv20fZIvC3Sr7byGrew=
+	b=tnJl/XY6eH9WH+C9ppV2B1TdPRvGhJoK8fyvfhuUIxo7uATOFn9Iawc0tsXtL+VuL
+	 4Y7ZI+pYEUs1IbXcn63xXC5TFp/vlezDpNimXQoEDQ41I8i+25johQ+F0pfY5e+386
+	 OkKaIxwicRcFDhSm5MzeP1zettfsThbcbf8q4qB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dennis Kirjanov <dkirjanov@suse.de>,
-	"David S. Miller" <davem@davemloft.net>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/138] drivers: net: convert to boolean for the mac_managed_pm flag
-Date: Mon,  8 Apr 2024 14:58:14 +0200
-Message-ID: <20240408125258.714038773@linuxfoundation.org>
+Subject: [PATCH 6.6 196/252] ASoC: SOF: amd: fix for false dsp interrupts
+Date: Mon,  8 Apr 2024 14:58:15 +0200
+Message-ID: <20240408125312.737542426@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Kirjanov <dkirjanov@suse.de>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit eca485d22165695587bed02d8b9d0f7f44246c4a ]
+[ Upstream commit b9846a386734e73a1414950ebfd50f04919f5e24 ]
 
-Signed-off-by: Dennis Kirjanov <dkirjanov@suse.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: cbc17e7802f5 ("net: fec: Set mac_managed_pm during probe")
+Before ACP firmware loading, DSP interrupts are not expected.
+Sometimes after reboot, it's observed that before ACP firmware is loaded
+false DSP interrupt is reported.
+Registering the interrupt handler before acp initialization causing false
+interrupts sometimes on reboot as ACP reset is not applied.
+Correct the sequence by invoking acp initialization sequence prior to
+registering interrupt handler.
+
+Fixes: 738a2b5e2cc9 ("ASoC: SOF: amd: Add IPC support for ACP IP block")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://msgid.link/r/20240404041717.430545-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 2 +-
- drivers/net/ethernet/realtek/r8169_main.c | 2 +-
- drivers/net/usb/asix_devices.c            | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/sof/amd/acp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 97d12c7eea772..51eb30c20c7cf 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2236,7 +2236,7 @@ static int fec_enet_mii_probe(struct net_device *ndev)
- 	fep->link = 0;
- 	fep->full_duplex = 0;
- 
--	phy_dev->mac_managed_pm = 1;
-+	phy_dev->mac_managed_pm = true;
- 
- 	phy_attached_info(phy_dev);
- 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 256630f57ffe1..6e3417712e402 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -5148,7 +5148,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
- 		return -EUNATCH;
+diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
+index 4c54ce212de6a..cc006d7038d97 100644
+--- a/sound/soc/sof/amd/acp.c
++++ b/sound/soc/sof/amd/acp.c
+@@ -522,6 +522,10 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
+ 		goto unregister_dev;
  	}
  
--	tp->phydev->mac_managed_pm = 1;
-+	tp->phydev->mac_managed_pm = true;
- 
- 	phy_support_asym_pause(tp->phydev);
- 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 6eacbf17f1c0c..34cd568b27f19 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -714,7 +714,7 @@ static int ax88772_init_phy(struct usbnet *dev)
++	ret = acp_init(sdev);
++	if (ret < 0)
++		goto free_smn_dev;
++
+ 	sdev->ipc_irq = pci->irq;
+ 	ret = request_threaded_irq(sdev->ipc_irq, acp_irq_handler, acp_irq_thread,
+ 				   IRQF_SHARED, "AudioDSP", sdev);
+@@ -531,10 +535,6 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
+ 		goto free_smn_dev;
  	}
  
- 	phy_suspend(priv->phydev);
--	priv->phydev->mac_managed_pm = 1;
-+	priv->phydev->mac_managed_pm = true;
+-	ret = acp_init(sdev);
+-	if (ret < 0)
+-		goto free_ipc_irq;
+-
+ 	sdev->dsp_box.offset = 0;
+ 	sdev->dsp_box.size = BOX_SIZE_512;
  
- 	phy_attached_info(priv->phydev);
- 
-@@ -734,7 +734,7 @@ static int ax88772_init_phy(struct usbnet *dev)
- 		return -ENODEV;
- 	}
- 
--	priv->phydev_int->mac_managed_pm = 1;
-+	priv->phydev_int->mac_managed_pm = true;
- 	phy_suspend(priv->phydev_int);
- 
- 	return 0;
 -- 
 2.43.0
 
