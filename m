@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3533789C41C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3863A89C110
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 302CCB2B95E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69F441C2166B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516BB85939;
-	Mon,  8 Apr 2024 13:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188B57E572;
+	Mon,  8 Apr 2024 13:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nt9Qpn7h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sp9gQvDA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D017BAE7;
-	Mon,  8 Apr 2024 13:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C994E7E575;
+	Mon,  8 Apr 2024 13:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583291; cv=none; b=Ol7x96VIZLII2YgIkeRvhYLAb/u9P+BJsFYtz4LY6prO/u2swHbDLhO2YmEEzxtN4F1yoBoDVCqpw7KlKhJ1S6N41IzuN7/QrWDNBWI7OXjsHqherGWeKJ59A20R5zdJG2MDTK9aE1GCKjz9KdIIo6uAB0BOvjySzcYAG9XCGdw=
+	t=1712581931; cv=none; b=mfYY6ct+e8wpvxLSWc+L/8550sTjj7DFa7dXRbZBT8/VOLM3htUph8wqKi57abCKRcAwQhYSK6kv5jIbwtwZmeqsJNi3KSyCuxkfJ3zIf5D1EY/KK4bu/ZGJNUSVAvtbrhnJIeoVwP6L/sMoi3eh77Sn3+Gt30fgxMQeLMR3dq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583291; c=relaxed/simple;
-	bh=xABvOtCrVNJi37P6ygDwCAbobH5N7zfgFOdL+L2Sgg4=;
+	s=arc-20240116; t=1712581931; c=relaxed/simple;
+	bh=GlBA0VH/4VOnjX13L9Cx9c8qI9vquKgL1ftP9O5OGpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFVsQzzbRY7YvHPPzegYT4noXzlVbrIi1tE/BoAWmRrbT0vR357zvwSM3zU3IwS6Aofnacv49dxZIW0zvbfjW7FxvMECyNdVj3BOOAf5Y6wvQgDXZucD2wwn5WOLpUQZfn9+HL3vf+cnLs0XDA/1asq10CxcDwZbppkIQphYuX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nt9Qpn7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB16C433F1;
-	Mon,  8 Apr 2024 13:34:50 +0000 (UTC)
+	 MIME-Version; b=bi1En7gFpYXo4AEUahrWNn213LpBfCBxLL7J7MdNwE6OPBd5X7/FC5eqHn3ffGx1Q7nUQp2x3dL2jnqS1wBZGE9xdShgkjJGw+3vj3X6K5t5Ehq7rx3XCXP6l13+w2mf0CIsMGDbepmArMU//eF5dZwaECsJggsVHDhy3Fw2O2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sp9gQvDA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5116EC433B2;
+	Mon,  8 Apr 2024 13:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583290;
-	bh=xABvOtCrVNJi37P6ygDwCAbobH5N7zfgFOdL+L2Sgg4=;
+	s=korg; t=1712581931;
+	bh=GlBA0VH/4VOnjX13L9Cx9c8qI9vquKgL1ftP9O5OGpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nt9Qpn7hASbAw9dMy1PM/W/XAPfzaPCsh4jZuS+Ptf0+hMByIXiMSbbx9u24JvSGR
-	 hFqjOjTrzuEZNybHRpXJXTGKF/GWUhrcRFrDxGIRg/b8s7WLs3eTA6LGHauA5Fu2qx
-	 mIXQtOTadJwhvpH3a4k1ZzHik0ZKnHfHotaEMk20=
+	b=sp9gQvDA6dMmTnt8BktJ4Z6phiZYjTikI5xoHQCazdjvO6vzqKnWD30cUPw1e5+kt
+	 cDsSihc8WvWMso6Q6oFGvLei76A2qlTfcKV3SxY4qK2cc5aWr8FN6vl3M2eFL7EOo6
+	 3i8iTWr4XGXvyUlMN53B6gA+BzXfHeX1BBr485qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/252] spi: s3c64xx: define a magic value
+	Paolo Abeni <pabeni@redhat.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 063/138] udp: prevent local UDP tunnel packets from being GROed
 Date: Mon,  8 Apr 2024 14:57:57 +0200
-Message-ID: <20240408125312.184511973@linuxfoundation.org>
+Message-ID: <20240408125258.181305031@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit ff8faa8a5c0f4c2da797cd22a163ee3cc8823b13 ]
+commit 64235eabc4b5b18c507c08a1f16cdac6c5661220 upstream.
 
-Define a magic value, it will be used in the next patch as well.
+GRO has a fundamental issue with UDP tunnel packets as it can't detect
+those in a foolproof way and GRO could happen before they reach the
+tunnel endpoint. Previous commits have fixed issues when UDP tunnel
+packets come from a remote host, but if those packets are issued locally
+they could run into checksum issues.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://msgid.link/r/20240216070555.2483977-3-tudor.ambarus@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the inner packet has a partial checksum the information will be lost
+in the GRO logic, either in udp4/6_gro_complete or in
+udp_gro_complete_segment and packets will have an invalid checksum when
+leaving the host.
+
+Prevent local UDP tunnel packets from ever being GROed at the outer UDP
+level.
+
+Due to skb->encapsulation being wrongly used in some drivers this is
+actually only preventing UDP tunnel packets with a partial checksum to
+be GROed (see iptunnel_handle_offloads) but those were also the packets
+triggering issues so in practice this should be sufficient.
+
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Fixes: 36707061d6ba ("udp: allow forwarding of plain (non-fraglisted) UDP GRO packets")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-s3c64xx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv4/udp_offload.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 29e99410c9716..3da940e6299f0 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -76,6 +76,7 @@
- #define S3C64XX_SPI_INT_RX_FIFORDY_EN		(1<<1)
- #define S3C64XX_SPI_INT_TX_FIFORDY_EN		(1<<0)
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -551,6 +551,12 @@ struct sk_buff *udp_gro_receive(struct l
+ 	 */
+ 	NAPI_GRO_CB(skb)->is_flist = 0;
+ 	if (!sk || !udp_sk(sk)->gro_receive) {
++		/* If the packet was locally encapsulated in a UDP tunnel that
++		 * wasn't detected above, do not GRO.
++		 */
++		if (skb->encapsulation)
++			goto out;
++
+ 		if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
+ 			NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
  
-+#define S3C64XX_SPI_ST_TX_FIFO_LVL_SHIFT	6
- #define S3C64XX_SPI_ST_RX_OVERRUN_ERR		(1<<5)
- #define S3C64XX_SPI_ST_RX_UNDERRUN_ERR		(1<<4)
- #define S3C64XX_SPI_ST_TX_OVERRUN_ERR		(1<<3)
-@@ -106,7 +107,8 @@
- #define FIFO_LVL_MASK(i) ((i)->port_conf->fifo_lvl_mask[i->port_id])
- #define S3C64XX_SPI_ST_TX_DONE(v, i) (((v) & \
- 				(1 << (i)->port_conf->tx_st_done)) ? 1 : 0)
--#define TX_FIFO_LVL(v, i) (((v) >> 6) & FIFO_LVL_MASK(i))
-+#define TX_FIFO_LVL(v, i) (((v) >> S3C64XX_SPI_ST_TX_FIFO_LVL_SHIFT) &	\
-+			   FIFO_LVL_MASK(i))
- #define RX_FIFO_LVL(v, i) (((v) >> (i)->port_conf->rx_lvl_offset) & \
- 					FIFO_LVL_MASK(i))
- #define FIFO_DEPTH(i) ((FIFO_LVL_MASK(i) >> 1) + 1)
--- 
-2.43.0
-
 
 
 
