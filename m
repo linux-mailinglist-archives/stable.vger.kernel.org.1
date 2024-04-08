@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-37258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BA989C40E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CBC89C133
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AC1C1F21E50
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C2E1C2166D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81C77D09A;
-	Mon,  8 Apr 2024 13:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AD880045;
+	Mon,  8 Apr 2024 13:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="th0ZisY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcc8vezC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647F47D091;
-	Mon,  8 Apr 2024 13:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F1678286;
+	Mon,  8 Apr 2024 13:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583710; cv=none; b=N1d9V3uL9TpWXfN3g7MY2/npOfKnW0w+X1JNw4ALrPgr14MBdPfccexNIIHBf7ESsMUjIC+0+mk5sQKc/Q+CGlO1aWoEpPCdNzZ1qD46hjt6kYvvWpOBrDvhzqBQILGcxRe+Rq++3fRDXbByFuNE0VVoZ0SglUZu0YphyKiov7s=
+	t=1712582034; cv=none; b=psbCKJPnnTPRR8kzgIVFVvfsOhN7weHrx0bnEWv8bzz9g70EXhZ0iAnryo+/sLUbuV48XsGjyUTGkgUmYFNSH05c3Sy+Nm1g3ZTxOZ/pR8wzbLO15UMWACuSJx1FqjQnqqxI8WB0RMm33aSchLwZmHMwn9zuXVdK1YwOTPz4WcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583710; c=relaxed/simple;
-	bh=B8gkt2hV06x7DQZXXRneoKufbaipLGRCGKQoIl9yWWE=;
+	s=arc-20240116; t=1712582034; c=relaxed/simple;
+	bh=WsVjFeAherLOP9mQdhqz+fgFpC8GX4QRjioI4ensOus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2GBRunbqZHaVTzAkgkgwu3SWNBvXi+mjuIBy9iWp32zFKykvaqfiO8zKRlphwmpHokMbtUiSu0nrhvV0WLAiOsniNprY3+Ki2Xb8jHIhYG+Rl/+youowXcpprC2wkh4o2A+/GwkFEGAufmXqsUVd8nHLfjQE0d02eYyJwW7Zws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=th0ZisY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1844C43390;
-	Mon,  8 Apr 2024 13:41:49 +0000 (UTC)
+	 MIME-Version; b=LkTdCuVbKrIhThZYFMMxZhJoBiy3RYKqigOY0+hIoBBEh1qORnZ4vH/9n9LF9DR1IPPDndwijaX+45pyALU4+txvE8DVarDZSgDaaRHArLXr0XYSO9Fq6FljdUlJFgtBUaiu8Wyo5y6nbbHJxa2MI8HSGt8boLFu13LluAPx5yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcc8vezC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D163BC433F1;
+	Mon,  8 Apr 2024 13:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583710;
-	bh=B8gkt2hV06x7DQZXXRneoKufbaipLGRCGKQoIl9yWWE=;
+	s=korg; t=1712582034;
+	bh=WsVjFeAherLOP9mQdhqz+fgFpC8GX4QRjioI4ensOus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=th0ZisY95oqkXi4sWO3IVbgLSmVciHXkfJ3QvjJiSLGsWo6DGe8npVWR3Mt0tGaS7
-	 wG/0S9IS0lj0wJ45aPos7oR3krfGw0S1GEXrYZFAC4YOyPwKTblqOJmm0p238MqEdK
-	 KNAdyBzPgmTIIJ/mb/mv2ABiAxG+JpGe2PX7HxCw=
+	b=vcc8vezCIvHSrSOaflFcrWvi1mTZPnawbPZm6souhCtowK5bjEAtmJwY6ewpHAvwi
+	 /cOKfBMvYVmGkM7g4yR8fj70hXG5RkUxyFw/Dd3Eu32r2aTvEPFC41iV6dSt6bQDfa
+	 1ZytfepEEA73U/saLyQxBYq3XItUF51IhWSkVIrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 211/273] io_uring/kbuf: hold io_buffer_list reference over mmap
-Date: Mon,  8 Apr 2024 14:58:06 +0200
-Message-ID: <20240408125315.910064424@linuxfoundation.org>
+	Joe Damato <jdamato@fastly.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Gurucharan <gurucharanx.g@intel.com>
+Subject: [PATCH 6.1 073/138] i40e: Store the irq number in i40e_q_vector
+Date: Mon,  8 Apr 2024 14:58:07 +0200
+Message-ID: <20240408125258.495553345@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,119 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Joe Damato <jdamato@fastly.com>
 
-commit 561e4f9451d65fc2f7eef564e0064373e3019793 upstream.
+[ Upstream commit 6b85a4f39ff7177b2428d4deab1151a31754e391 ]
 
-If we look up the kbuf, ensure that it doesn't get unregistered until
-after we're done with it. Since we're inside mmap, we cannot safely use
-the io_uring lock. Rely on the fact that we can lookup the buffer list
-under RCU now and grab a reference to it, preventing it from being
-unregistered until we're done with it. The lookup returns the
-io_buffer_list directly with it referenced.
+Make it easy to figure out the IRQ number for a particular i40e_q_vector by
+storing the assigned IRQ in the structure itself.
 
-Cc: stable@vger.kernel.org # v6.4+
-Fixes: 5cf4f52e6d8a ("io_uring: free io_buffer_list entries via RCU")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Acked-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Acked-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Tested-by: Gurucharan <gurucharanx.g@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: ea558de7238b ("i40e: Enforce software interrupt during busy-poll exit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |   11 ++++++-----
- io_uring/kbuf.c     |   31 +++++++++++++++++++++++++------
- io_uring/kbuf.h     |    4 +++-
- 3 files changed, 34 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h      | 1 +
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3422,14 +3422,15 @@ static void *io_uring_validate_mmap_requ
- 		ptr = ctx->sq_sqes;
- 		break;
- 	case IORING_OFF_PBUF_RING: {
-+		struct io_buffer_list *bl;
- 		unsigned int bgid;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 7d4cc4eafd59e..59c4e9d642980 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -992,6 +992,7 @@ struct i40e_q_vector {
+ 	struct rcu_head rcu;	/* to avoid race with update stats on free */
+ 	char name[I40E_INT_NAME_STR_LEN];
+ 	bool arm_wb_state;
++	int irq_num;		/* IRQ assigned to this q_vector */
+ } ____cacheline_internodealigned_in_smp;
  
- 		bgid = (offset & ~IORING_OFF_MMAP_MASK) >> IORING_OFF_PBUF_SHIFT;
--		rcu_read_lock();
--		ptr = io_pbuf_get_address(ctx, bgid);
--		rcu_read_unlock();
--		if (!ptr)
--			return ERR_PTR(-EINVAL);
-+		bl = io_pbuf_get_bl(ctx, bgid);
-+		if (IS_ERR(bl))
-+			return bl;
-+		ptr = bl->buf_ring;
-+		io_put_bl(ctx, bl);
- 		break;
+ /* lan device */
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 5be56db1dafda..ee0d7c29e8f17 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -4145,6 +4145,7 @@ static int i40e_vsi_request_irq_msix(struct i40e_vsi *vsi, char *basename)
  		}
- 	default:
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -275,7 +275,7 @@ static int __io_remove_buffers(struct io
- 	return i;
- }
  
--static void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
-+void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
- {
- 	if (atomic_dec_and_test(&bl->refs)) {
- 		__io_remove_buffers(ctx, bl, -1U);
-@@ -728,16 +728,35 @@ int io_register_pbuf_status(struct io_ri
- 	return 0;
- }
- 
--void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid)
-+struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
-+				      unsigned long bgid)
- {
- 	struct io_buffer_list *bl;
-+	bool ret;
- 
--	bl = __io_buffer_get_list(ctx, bgid);
-+	/*
-+	 * We have to be a bit careful here - we're inside mmap and cannot grab
-+	 * the uring_lock. This means the buffer_list could be simultaneously
-+	 * going away, if someone is trying to be sneaky. Look it up under rcu
-+	 * so we know it's not going away, and attempt to grab a reference to
-+	 * it. If the ref is already zero, then fail the mapping. If successful,
-+	 * the caller will call io_put_bl() to drop the the reference at at the
-+	 * end. This may then safely free the buffer_list (and drop the pages)
-+	 * at that point, vm_insert_pages() would've already grabbed the
-+	 * necessary vma references.
-+	 */
-+	rcu_read_lock();
-+	bl = xa_load(&ctx->io_bl_xa, bgid);
-+	/* must be a mmap'able buffer ring and have pages */
-+	ret = false;
-+	if (bl && bl->is_mmap)
-+		ret = atomic_inc_not_zero(&bl->refs);
-+	rcu_read_unlock();
- 
--	if (!bl || !bl->is_mmap)
--		return NULL;
-+	if (ret)
-+		return bl;
- 
--	return bl->buf_ring;
-+	return ERR_PTR(-EINVAL);
- }
- 
- /*
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -61,7 +61,9 @@ unsigned int __io_put_kbuf(struct io_kio
- 
- bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
- 
--void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid);
-+void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl);
-+struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
-+				      unsigned long bgid);
- 
- static inline bool io_kbuf_recycle_ring(struct io_kiocb *req)
- {
+ 		/* register for affinity change notifications */
++		q_vector->irq_num = irq_num;
+ 		q_vector->affinity_notify.notify = i40e_irq_affinity_notify;
+ 		q_vector->affinity_notify.release = i40e_irq_affinity_release;
+ 		irq_set_affinity_notifier(irq_num, &q_vector->affinity_notify);
+-- 
+2.43.0
+
 
 
 
