@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15EB89C524
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:53:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C7789C0EE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41051C2250C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F413E2861E3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF1B74438;
-	Mon,  8 Apr 2024 13:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD3785C7A;
+	Mon,  8 Apr 2024 13:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHE/T0dq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yF4lqteF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D253B6EB72;
-	Mon,  8 Apr 2024 13:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA6485954;
+	Mon,  8 Apr 2024 13:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584424; cv=none; b=oxUrnYq1BaY7JiNNDZT30GffIQ7vCe5yc547Oc53m4Z+9EDThrDVDuO9NQGzXp5Ds70Xg3q/+TWifzpxeOe4CsEDLc1+8k+dHBc6GvcrrKng98dAutdlzXIoW6pvzVDrRWLRtQLucH2G8qQ7Ai9hjiiVR3S6ptR6iCa72qluBzM=
+	t=1712581852; cv=none; b=Zmj9ppgtN9Z9fCrOPjPTythwm7yIgFLuHap5H9I/zoP9xhHVGn8aD7fJKI6+OZMFzell5ugC6cG/uQYjZKvYowZRoyHhFWRhHgPoeQWaUeIm855UlMtyw7ZYezkjUqVTd3K2pnkl7fTfEr1PkmmOiuzjyAmnYX0rG2fEX7pPBw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584424; c=relaxed/simple;
-	bh=q14isQLtueropXAEE7eWMIm3EZuj+eaOJalq2xgrKmY=;
+	s=arc-20240116; t=1712581852; c=relaxed/simple;
+	bh=GgzHqIMXezta75htC73tM5ZAKJgkJBRVd6C57xDHwHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICECbl+ptVoqg0WYlzLeAQWzMZdRzLrGdPmDBnoj3OIwRcZunmWWNORN7Q0Y2qjOXIDChQZRXbOOFOs34hATlbK5qxTeeP/Laht/KFfQ1fO4R/tUEm6QhKmZ+EtTOloEa3S6zuceGua32U3LJizGdOHHC51Bcyxl4MwC/gNbtgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHE/T0dq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFD3C433C7;
-	Mon,  8 Apr 2024 13:53:44 +0000 (UTC)
+	 MIME-Version; b=EGR1mr5UXUNZ11Jga1K3gQjPQ3X1z45r1weOKHfxipVQgduHQ1bVMhbFOSwWqTnWuiSUf77OpoDRKmOJh5xP9NNr59USdkeSaMxeN2I+IvFhkPGgVMakdat1jkRjcgun7GjqCJGHIgxOv332KFF84zhX/pOwqnUq7d0fdkoVqbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yF4lqteF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53347C433C7;
+	Mon,  8 Apr 2024 13:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584424;
-	bh=q14isQLtueropXAEE7eWMIm3EZuj+eaOJalq2xgrKmY=;
+	s=korg; t=1712581852;
+	bh=GgzHqIMXezta75htC73tM5ZAKJgkJBRVd6C57xDHwHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHE/T0dqDbLgepKbH4CDK4K7BwttCo7aari0bXoch3DK3kNbcrpYwRt6GTQPr5gFj
-	 bYdr/CI5Mf5b/9oOPWfCaK2J/BBr+pTIGGAJB99i4FId2QvKxUXpvR77xOnP1Gulij
-	 EmomH32mVVAjXWTpbLHw+Eh30yl4WXNmvJRH343o=
+	b=yF4lqteF9KsiqpY1AeCrDZr+dtAkniz44/jeOTFtIO97Y+ESiklKlWfPKwv0XGgUa
+	 M1vvfs3Hc+5BsoQK4gBSMjap5gEFMfmkt6DN6oPvcjtC4BbAV6rWD26C/1XlRJ0jYB
+	 DNrNTHspPuD2xS8UYM8EbL77dNS775Xej00PflnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 434/690] NFSD: keep track of the number of courtesy clients in the system
+	Prasad Pandit <pjp@fedoraproject.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 025/273] dpll: indent DPLL option type by a tab
 Date: Mon,  8 Apr 2024 14:55:00 +0200
-Message-ID: <20240408125415.333469739@linuxfoundation.org>
+Message-ID: <20240408125310.073313402@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +64,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-[ Upstream commit 3a4ea23d86a317c4b68b9a69d51f7e84e1e04357 ]
+[ Upstream commit cc2699268152d8e0386a36fe7c9271d7e23668f2 ]
 
-Add counter nfs4_courtesy_client_count to nfsd_net to keep track
-of the number of courtesy clients in the system.
+Indent config option type by a tab. It helps Kconfig parsers
+to read file without error.
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240322114819.1801795-1-ppandit@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/netns.h     |  2 ++
- fs/nfsd/nfs4state.c | 17 ++++++++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ drivers/dpll/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index ffe17743cc74b..55c7006d6109a 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -192,6 +192,8 @@ struct nfsd_net {
+diff --git a/drivers/dpll/Kconfig b/drivers/dpll/Kconfig
+index a4cae73f20d3d..20607ed542435 100644
+--- a/drivers/dpll/Kconfig
++++ b/drivers/dpll/Kconfig
+@@ -4,4 +4,4 @@
+ #
  
- 	atomic_t		nfs4_client_count;
- 	int			nfs4_max_clients;
-+
-+	atomic_t		nfsd_courtesy_clients;
- };
- 
- /* Simple check to find out if a given net was properly initialized */
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 6cb654e308787..6a7a99511111d 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -160,6 +160,13 @@ static bool is_client_expired(struct nfs4_client *clp)
- 	return clp->cl_time == 0;
- }
- 
-+static void nfsd4_dec_courtesy_client_count(struct nfsd_net *nn,
-+					struct nfs4_client *clp)
-+{
-+	if (clp->cl_state != NFSD4_ACTIVE)
-+		atomic_add_unless(&nn->nfsd_courtesy_clients, -1, 0);
-+}
-+
- static __be32 get_client_locked(struct nfs4_client *clp)
- {
- 	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
-@@ -169,6 +176,7 @@ static __be32 get_client_locked(struct nfs4_client *clp)
- 	if (is_client_expired(clp))
- 		return nfserr_expired;
- 	atomic_inc(&clp->cl_rpc_users);
-+	nfsd4_dec_courtesy_client_count(nn, clp);
- 	clp->cl_state = NFSD4_ACTIVE;
- 	return nfs_ok;
- }
-@@ -190,6 +198,7 @@ renew_client_locked(struct nfs4_client *clp)
- 
- 	list_move_tail(&clp->cl_lru, &nn->client_lru);
- 	clp->cl_time = ktime_get_boottime_seconds();
-+	nfsd4_dec_courtesy_client_count(nn, clp);
- 	clp->cl_state = NFSD4_ACTIVE;
- }
- 
-@@ -2248,6 +2257,7 @@ __destroy_client(struct nfs4_client *clp)
- 	if (clp->cl_cb_conn.cb_xprt)
- 		svc_xprt_put(clp->cl_cb_conn.cb_xprt);
- 	atomic_add_unless(&nn->nfs4_client_count, -1, 0);
-+	nfsd4_dec_courtesy_client_count(nn, clp);
- 	free_client(clp);
- 	wake_up_all(&expiry_wq);
- }
-@@ -4375,6 +4385,8 @@ void nfsd4_init_leases_net(struct nfsd_net *nn)
- 	max_clients = (u64)si.totalram * si.mem_unit / (1024 * 1024 * 1024);
- 	max_clients *= NFS4_CLIENTS_PER_GB;
- 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
-+
-+	atomic_set(&nn->nfsd_courtesy_clients, 0);
- }
- 
- static void init_nfs4_replay(struct nfs4_replay *rp)
-@@ -5928,8 +5940,11 @@ nfs4_get_client_reaplist(struct nfsd_net *nn, struct list_head *reaplist,
- 			goto exp_client;
- 		if (!state_expired(lt, clp->cl_time))
- 			break;
--		if (!atomic_read(&clp->cl_rpc_users))
-+		if (!atomic_read(&clp->cl_rpc_users)) {
-+			if (clp->cl_state == NFSD4_ACTIVE)
-+				atomic_inc(&nn->nfsd_courtesy_clients);
- 			clp->cl_state = NFSD4_COURTESY;
-+		}
- 		if (!client_has_state(clp))
- 			goto exp_client;
- 		if (!nfs4_anylock_blockers(clp))
+ config DPLL
+-  bool
++	bool
 -- 
 2.43.0
 
