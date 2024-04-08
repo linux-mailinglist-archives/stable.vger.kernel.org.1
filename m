@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF3B89C525
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:53:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B885C89C058
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F8D21F23376
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 751C928229E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156AD74BE5;
-	Mon,  8 Apr 2024 13:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A9362148;
+	Mon,  8 Apr 2024 13:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaN3wVFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XR5X9FdK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C706EB72;
-	Mon,  8 Apr 2024 13:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76D32DF73;
+	Mon,  8 Apr 2024 13:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584427; cv=none; b=WiBerVU2yAWHig4hBdfJKRrrInGrFX4tDM+7qwPZmvpPVEwNY4H7oAD2fJ4xX3HLYGZJeQigNMd3NWhB2d6nZU6sidEpGQAmtdvWwVwsGVB6J9+eb5ntWTyQQMzDs0sXDTStIRjLvZaXWfIV/uwRfXDHxjxEBwpBvpajqjX47bY=
+	t=1712581659; cv=none; b=ucc1rvuNQ/ebvD/dOQ8t9OL1xon6pHpGUkhk6ocgDWpJUQjdpwn4jZyohfUUlL3iH84n8MmFuu4bFEnllJ/gLGsRNpwl9ierzUsn9Eih/Pvos/hiAv5IG+k8jvRBhNKTZNEO1DsGqU+9R8Z9y1hNJsVeiFDGOlvSO+DLE0fpWFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584427; c=relaxed/simple;
-	bh=ID5uSg671lnaQFZpMB40f5yCZV148vCgOWzFiJYWJ7M=;
+	s=arc-20240116; t=1712581659; c=relaxed/simple;
+	bh=wM2WjcUBwqFwBdQGfPq5mYTe5v6LBssnj5mD1RmirZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMKzQI37TSqtQmGXrKsIup4Y2pj6RD87WPpq4gW49rL9ZaLqJXXqwpOS+nFZfkNvfHE3tPQIdsWD6AVvluRXNpLODrwVWvtzo6IV5pq+MRZVk0sJD8zlk+e4thbsUabwtTIcx3AqUP/Qe3oq7sET55N20I0r4L0mYTFczAPkVII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaN3wVFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA94C433F1;
-	Mon,  8 Apr 2024 13:53:47 +0000 (UTC)
+	 MIME-Version; b=Hp/ItKaMqRgZCP47qtZNHWfm5kxRfJniieuXqm/iKKEO6bUMsTY3Z8LKnuEEGrOF7ZpNtWSjV/X0SUrdIYabI/pleLxbAvBT+S/fCyuzvlVq6mfcz37y5i6PrEIPl/kbRVK9lS3DG2b1o2aSHbujeZkLhI2zGjLR7b3byP4keXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XR5X9FdK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A816C433F1;
+	Mon,  8 Apr 2024 13:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584427;
-	bh=ID5uSg671lnaQFZpMB40f5yCZV148vCgOWzFiJYWJ7M=;
+	s=korg; t=1712581659;
+	bh=wM2WjcUBwqFwBdQGfPq5mYTe5v6LBssnj5mD1RmirZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaN3wVFv6wdZaD9q4nVMHCAvWWb8iQ3UoZabRw/f6tqRRoa6nnxEf5aetgb2QrQ+l
-	 zO4bUn4iwmgPIVI5m091IxHCNSGH6k7TgDHVKE1eGVz8+OKFZuQurlPffky0lsGA9P
-	 CA6TSaBSf5qf2UU5ggpX8fnzItx2Q1s2qWApTT1o=
+	b=XR5X9FdKFfaoJohFf3xl/ySWRYT2MLpqP4E8kTo7BohvyxLKwEvLpL4wTkAbSCZCp
+	 81HqiC3cyRmD5FfNXSaT7CYFRdp6Gl9RSDDfP1swsxJ1l9QSRhfD8owAL+LHjUwOZD
+	 xctjoiN9T1C8pyFQIISVTkgmTned+plTWnQSBO48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 417/690] lockd: move from strlcpy with unused retval to strscpy
+	Jan Kara <jack@suse.cz>,
+	Jeff Layton <jlayton@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 008/273] nfsd: Fix error cleanup path in nfsd_rename()
 Date: Mon,  8 Apr 2024 14:54:43 +0200
-Message-ID: <20240408125414.716572281@linuxfoundation.org>
+Message-ID: <20240408125309.540966674@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 97f8e62572555f8ad578d7b1739ba64d5d2cac0f ]
+[ Upstream commit 9fe6e9e7b58944037714442384075c17cfde1c56 ]
 
-Follow the advice of the below link and prefer 'strscpy' in this
-subsystem. Conversion is 1:1 because the return value is not used.
-Generated by a coccinelle script.
+Commit a8b0026847b8 ("rename(): avoid a deadlock in the case of parents
+having no common ancestor") added an error bail out path. However this
+path does not drop the remount protection that has been acquired. Fix
+the cleanup path to properly drop the remount protection.
 
-Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: a8b0026847b8 ("rename(): avoid a deadlock in the case of parents having no common ancestor")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/vfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/lockd/host.c b/fs/lockd/host.c
-index f802223e71abe..cdc8e12cdac44 100644
---- a/fs/lockd/host.c
-+++ b/fs/lockd/host.c
-@@ -164,7 +164,7 @@ static struct nlm_host *nlm_alloc_host(struct nlm_lookup_host_info *ni,
- 	host->h_addrbuf    = nsm->sm_addrbuf;
- 	host->net	   = ni->net;
- 	host->h_cred	   = get_cred(ni->cred);
--	strlcpy(host->nodename, utsname()->nodename, sizeof(host->nodename));
-+	strscpy(host->nodename, utsname()->nodename, sizeof(host->nodename));
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index b7c7a9273ea01..4ed1e83defa23 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1833,7 +1833,7 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
+ 	trap = lock_rename(tdentry, fdentry);
+ 	if (IS_ERR(trap)) {
+ 		err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
+-		goto out;
++		goto out_want_write;
+ 	}
+ 	err = fh_fill_pre_attrs(ffhp);
+ 	if (err != nfs_ok)
+@@ -1903,6 +1903,7 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
+ 	}
+ out_unlock:
+ 	unlock_rename(tdentry, fdentry);
++out_want_write:
+ 	fh_drop_write(ffhp);
  
- out:
- 	return host;
+ 	/*
 -- 
 2.43.0
 
