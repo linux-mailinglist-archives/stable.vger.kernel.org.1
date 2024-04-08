@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BC189C273
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F15A89C5C1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09CBF1F21FC3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19CB9281B0B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140A67CF0F;
-	Mon,  8 Apr 2024 13:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD8980029;
+	Mon,  8 Apr 2024 13:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUUsdarU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr4lcSjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5244768F0;
-	Mon,  8 Apr 2024 13:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2417F7CF;
+	Mon,  8 Apr 2024 13:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582804; cv=none; b=bg1Y1tE1UQ3rz6jtVfI9/OeV41tELjqXkbfDLIWLTSQv+yxA2y0Y/k/8k394v6wfYMVAAQoFER5EyLz+C6ZTYa512EF68xSSX0uZHx2a7kxDRYGQOymeod7A2HkTN+xWGFI3bHjD+Uv9yDlG8jPTtnP5MR964wpU8WYjSacjdVg=
+	t=1712584788; cv=none; b=uUnYgL5aXuIpoy7YasEVzoepr2dGhCQ73fyT1SpYrJKSbcx9QXShxRQF+X6AlvWAl+3RXj9vZG2ZPuJtkIWIGYiXajq7PFJ8AyNjOy33zbkVHDWDIZIB6t5jnTFxXhFHR2vrsbg7lp4jX3gvH0/ZjRRtBYy1wYqBezbLdinrCwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582804; c=relaxed/simple;
-	bh=6BhjOJE5/AFteU3rXNAmsY3wMnYPZ/8+059sNYFviTw=;
+	s=arc-20240116; t=1712584788; c=relaxed/simple;
+	bh=g+rDNstIi7P51QrcVkacs/ZAf5DqbMTWcSvfYgjJewo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0Q+4BUfCCA00sOKQPjJeLOeCaC2ODtVafE30xGBsNWc8KGc03NbB8WZzmrJ4D7d1xD+K78rAePoBVsO7cWe9cTlv7Ck0QJAAZcGMGGZbreZiX1XzEoHj4/+TxihDPMRd8Ii743DpObatxWV4jO/amD+UVr+xkUKinSwihK6LQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUUsdarU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDD7C433F1;
-	Mon,  8 Apr 2024 13:26:44 +0000 (UTC)
+	 MIME-Version; b=Cvtm00czF9oAgYgcMhdaPYKVBpERp73XkMyqbMl1f61OJUt2zYnFuR3lppmz6Tm9FUyrHY/k0tHw+mud6+AvgRweDzldUkRHw6XeqVpqe5dUEOkDFCwxnyo90sgDOqeBu5eUrTQJDFb6l/HDtmuorb/keGRobmXOomYUn3qVgaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr4lcSjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03C6C43390;
+	Mon,  8 Apr 2024 13:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582804;
-	bh=6BhjOJE5/AFteU3rXNAmsY3wMnYPZ/8+059sNYFviTw=;
+	s=korg; t=1712584788;
+	bh=g+rDNstIi7P51QrcVkacs/ZAf5DqbMTWcSvfYgjJewo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qUUsdarU/53EjPO2Y4Qn0UUxxji8upBwiWmrlRTDPfPyRzYxBrnn80/qqxdI9Kzjz
-	 ILJU3TPGh96z+2jlWoApgq1or52t+b7atXzkD3NlIqibZmnuJrdyA2nG+JFGTqewQy
-	 u5ccHdgOe70dG9an0p9V4jHSskRrJ3dEeWknM1go=
+	b=vr4lcSjyaQDoJv5IFf8KtbZXOK3uZCnxdAf3AzKfuU/dFBzmuVv6vOFtppqwjDwJt
+	 X7iTVi3rcQErb3ljCSbmZBVGDKERwXrWrya/V5uVBdUausWVIGJf2OLSWliMdv9NGJ
+	 +Zc6kOnUhnRMdxmCeKy2rux0WEcLEoR2ocL1j8l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 125/252] udp: prevent local UDP tunnel packets from being GROed
+	Tim Schumacher <timschumi@gmx.de>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.15 558/690] efivarfs: Request at most 512 bytes for variable names
 Date: Mon,  8 Apr 2024 14:57:04 +0200
-Message-ID: <20240408125310.503605951@linuxfoundation.org>
+Message-ID: <20240408125419.838967102@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Tim Schumacher <timschumi@gmx.de>
 
-commit 64235eabc4b5b18c507c08a1f16cdac6c5661220 upstream.
+commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
 
-GRO has a fundamental issue with UDP tunnel packets as it can't detect
-those in a foolproof way and GRO could happen before they reach the
-tunnel endpoint. Previous commits have fixed issues when UDP tunnel
-packets come from a remote host, but if those packets are issued locally
-they could run into checksum issues.
+Work around a quirk in a few old (2011-ish) UEFI implementations, where
+a call to `GetNextVariableName` with a buffer size larger than 512 bytes
+will always return EFI_INVALID_PARAMETER.
 
-If the inner packet has a partial checksum the information will be lost
-in the GRO logic, either in udp4/6_gro_complete or in
-udp_gro_complete_segment and packets will have an invalid checksum when
-leaving the host.
+There is some lore around EFI variable names being up to 1024 bytes in
+size, but this has no basis in the UEFI specification, and the upper
+bounds are typically platform specific, and apply to the entire variable
+(name plus payload).
 
-Prevent local UDP tunnel packets from ever being GROed at the outer UDP
-level.
+Given that Linux does not permit creating files with names longer than
+NAME_MAX (255) bytes, 512 bytes (== 256 UTF-16 characters) is a
+reasonable limit.
 
-Due to skb->encapsulation being wrongly used in some drivers this is
-actually only preventing UDP tunnel packets with a partial checksum to
-be GROed (see iptunnel_handle_offloads) but those were also the packets
-triggering issues so in practice this should be sufficient.
-
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Fixes: 36707061d6ba ("udp: allow forwarding of plain (non-fraglisted) UDP GRO packets")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: <stable@vger.kernel.org> # 6.1+
+Signed-off-by: Tim Schumacher <timschumi@gmx.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+[timschumi@gmx.de: adjusted diff for changed context and code move]
+Signed-off-by: Tim Schumacher <timschumi@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp_offload.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/firmware/efi/vars.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -559,6 +559,12 @@ struct sk_buff *udp_gro_receive(struct l
- 	 */
- 	NAPI_GRO_CB(skb)->is_flist = 0;
- 	if (!sk || !udp_sk(sk)->gro_receive) {
-+		/* If the packet was locally encapsulated in a UDP tunnel that
-+		 * wasn't detected above, do not GRO.
-+		 */
-+		if (skb->encapsulation)
-+			goto out;
-+
- 		if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
- 			NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
+--- a/drivers/firmware/efi/vars.c
++++ b/drivers/firmware/efi/vars.c
+@@ -415,7 +415,7 @@ int efivar_init(int (*func)(efi_char16_t
+ 		void *data, bool duplicates, struct list_head *head)
+ {
+ 	const struct efivar_operations *ops;
+-	unsigned long variable_name_size = 1024;
++	unsigned long variable_name_size = 512;
+ 	efi_char16_t *variable_name;
+ 	efi_status_t status;
+ 	efi_guid_t vendor_guid;
+@@ -438,12 +438,13 @@ int efivar_init(int (*func)(efi_char16_t
+ 	}
  
+ 	/*
+-	 * Per EFI spec, the maximum storage allocated for both
+-	 * the variable name and variable data is 1024 bytes.
++	 * A small set of old UEFI implementations reject sizes
++	 * above a certain threshold, the lowest seen in the wild
++	 * is 512.
+ 	 */
+ 
+ 	do {
+-		variable_name_size = 1024;
++		variable_name_size = 512;
+ 
+ 		status = ops->get_next_variable(&variable_name_size,
+ 						variable_name,
+@@ -491,9 +492,13 @@ int efivar_init(int (*func)(efi_char16_t
+ 			break;
+ 		case EFI_NOT_FOUND:
+ 			break;
++		case EFI_BUFFER_TOO_SMALL:
++			pr_warn("efivars: Variable name size exceeds maximum (%lu > 512)\n",
++				variable_name_size);
++			status = EFI_NOT_FOUND;
++			break;
+ 		default:
+-			printk(KERN_WARNING "efivars: get_next_variable: status=%lx\n",
+-				status);
++			pr_warn("efivars: get_next_variable: status=%lx\n", status);
+ 			status = EFI_NOT_FOUND;
+ 			break;
+ 		}
 
 
 
