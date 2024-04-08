@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-36770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB0289C23F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E7489C24D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 134E8B28A20
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C15F1C21BFB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404197EF1F;
-	Mon,  8 Apr 2024 13:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BC580620;
+	Mon,  8 Apr 2024 13:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIEDvJmS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8VrDprN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27DD7E799;
-	Mon,  8 Apr 2024 13:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59A17D3E0;
+	Mon,  8 Apr 2024 13:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582294; cv=none; b=Xz0vY88XVkp2P7bd1BNxkWgy9G/oRYsxLq+pgm2GN6BqgJkNvRXO2rj/oF+8XOkub4V6kQsjW2WT8Tjdo2p/asTsWaCxS4PliC5u/ruhNS4pyX4xZEHM/4z8BnNp5AWJhz3WnngMxlfn+M61DL397B9EBvMhCtAeXZjc/otzMNw=
+	t=1712582690; cv=none; b=bkQjDVY05TfTt4OABce7v0nWAMjuJ5VLvCzlF9VJ7yyQHuRmA5cmSbLaCWfXF6Ivsa71h8Dy8mQ/ofNucfoPxb0Gy59iCJ+obOdJfHCr2e9wzObSI8QBrgT+whwbH6ctaCW4XasWPJEbZu1GPQzyY2m1knStf4NvYIx3j77zw2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582294; c=relaxed/simple;
-	bh=vgpBT0La6bLHdSodZMnmnpGCwVs/wZvvNLEOWRlcMRY=;
+	s=arc-20240116; t=1712582690; c=relaxed/simple;
+	bh=rkzLRix5ibMLZMekAGAT1KgX7aL4nqHx9MkRoh8BByI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GJXHulevxCgv2nKX+Ulrz5wg1/+JDqi6lUKkfXzic9GjriIiAlBr2qrTsKB6KlRBs5BqKg+xgseG4qGN2Cii3Yy1yClRnKpl2BqDPoOs9WR48ZjLAcyX4wpj1K/vCqh8Dqp1Vl8SHHHx4bvY0xMOjfZLUdOT8gLsTfv7SrNTQTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIEDvJmS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED99C433C7;
-	Mon,  8 Apr 2024 13:18:12 +0000 (UTC)
+	 MIME-Version; b=ZETl9dyGzOAv3foGrzHtTjKrHamdJC63qa+AZ1TUZ5A4LHvgvIDZOY71RuWarkWB4Nqu38PoZIQDdlXs8t2QAmHXbVj3lKSpMX1RW+Wnwecg5aIp9ae1/3oxNifAJ1AkbH6JkytCCIrpBTSS1+BcvaMlkxTE49b2cO6/9NjheyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8VrDprN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44704C433C7;
+	Mon,  8 Apr 2024 13:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582293;
-	bh=vgpBT0La6bLHdSodZMnmnpGCwVs/wZvvNLEOWRlcMRY=;
+	s=korg; t=1712582690;
+	bh=rkzLRix5ibMLZMekAGAT1KgX7aL4nqHx9MkRoh8BByI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIEDvJmS6Vgae0qh6bIu8mfxzXi7RaJJtslfXgBgRcvAqKNdjcBshi/7vxENXgLwX
-	 dR/EWQ6OFfTdaTzHNfBhVgJWTrQO0UJsp/UncgNRDh7d2lsKsaahIRsd2u9naLtVAr
-	 8OM1QRcg4sMlZQCkqMnSWUCIohbdMc6LGvuuabhY=
+	b=b8VrDprNtitaHXfPV97KOo0jrz6PB9GfO/nTXCjz5o/isPC1qztayNgSHXWjuzR1/
+	 tXXOa6zE3rVJWU7CRuKEE05K7t7y6/xIqkWfVNhprKcpOGmkFPXERI7ldwMsMTznAZ
+	 RhoMA0YBg3/UrFvo7dDjakgqm4CI1OATN/I3hLsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.6 072/252] selinux: avoid dereference of garbage after mount failure
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Shaoqin Huang <shahuang@redhat.com>
+Subject: [PATCH 6.8 096/273] KVM: arm64: Use TLBI_TTL_UNKNOWN in __kvm_tlb_flush_vmid_range()
 Date: Mon,  8 Apr 2024 14:56:11 +0200
-Message-ID: <20240408125308.866991066@linuxfoundation.org>
+Message-ID: <20240408125312.280258650@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +63,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Will Deacon <will@kernel.org>
 
-commit 37801a36b4d68892ce807264f784d818f8d0d39b upstream.
+commit 0f0ff097bf77663b8d2692e33d56119947611bb0 upstream.
 
-In case kern_mount() fails and returns an error pointer return in the
-error branch instead of continuing and dereferencing the error pointer.
+Commit c910f2b65518 ("arm64/mm: Update tlb invalidation routines for
+FEAT_LPA2") updated the __tlbi_level() macro to take the target level
+as an argument, with TLBI_TTL_UNKNOWN (rather than 0) indicating that
+the caller cannot provide level information. Unfortunately, the two
+implementations of __kvm_tlb_flush_vmid_range() were not updated and so
+now ask for an level 0 invalidation if FEAT_LPA2 is implemented.
 
-While on it drop the never read static variable selinuxfs_mount.
+Fix the problem by passing TLBI_TTL_UNKNOWN instead of 0 as the level
+argument to __flush_s2_tlb_range_op() in __kvm_tlb_flush_vmid_range().
 
-Cc: stable@vger.kernel.org
-Fixes: 0619f0f5e36f ("selinux: wrap selinuxfs state")
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Fixes: c910f2b65518 ("arm64/mm: Update tlb invalidation routines for FEAT_LPA2")
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240327124853.11206-4-will@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/selinuxfs.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm64/kvm/hyp/nvhe/tlb.c |    3 ++-
+ arch/arm64/kvm/hyp/vhe/tlb.c  |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -2135,7 +2135,6 @@ static struct file_system_type sel_fs_ty
- 	.kill_sb	= sel_kill_sb,
- };
+--- a/arch/arm64/kvm/hyp/nvhe/tlb.c
++++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
+@@ -154,7 +154,8 @@ void __kvm_tlb_flush_vmid_range(struct k
+ 	/* Switch to requested VMID */
+ 	__tlb_switch_to_guest(mmu, &cxt, false);
  
--static struct vfsmount *selinuxfs_mount __ro_after_init;
- struct path selinux_null __ro_after_init;
+-	__flush_s2_tlb_range_op(ipas2e1is, start, pages, stride, 0);
++	__flush_s2_tlb_range_op(ipas2e1is, start, pages, stride,
++				TLBI_TTL_UNKNOWN);
  
- static int __init init_sel_fs(void)
-@@ -2157,18 +2156,21 @@ static int __init init_sel_fs(void)
- 		return err;
- 	}
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+--- a/arch/arm64/kvm/hyp/vhe/tlb.c
++++ b/arch/arm64/kvm/hyp/vhe/tlb.c
+@@ -171,7 +171,8 @@ void __kvm_tlb_flush_vmid_range(struct k
+ 	/* Switch to requested VMID */
+ 	__tlb_switch_to_guest(mmu, &cxt);
  
--	selinux_null.mnt = selinuxfs_mount = kern_mount(&sel_fs_type);
--	if (IS_ERR(selinuxfs_mount)) {
-+	selinux_null.mnt = kern_mount(&sel_fs_type);
-+	if (IS_ERR(selinux_null.mnt)) {
- 		pr_err("selinuxfs:  could not mount!\n");
--		err = PTR_ERR(selinuxfs_mount);
--		selinuxfs_mount = NULL;
-+		err = PTR_ERR(selinux_null.mnt);
-+		selinux_null.mnt = NULL;
-+		return err;
- 	}
-+
- 	selinux_null.dentry = d_hash_and_lookup(selinux_null.mnt->mnt_root,
- 						&null_name);
- 	if (IS_ERR(selinux_null.dentry)) {
- 		pr_err("selinuxfs:  could not lookup null!\n");
- 		err = PTR_ERR(selinux_null.dentry);
- 		selinux_null.dentry = NULL;
-+		return err;
- 	}
+-	__flush_s2_tlb_range_op(ipas2e1is, start, pages, stride, 0);
++	__flush_s2_tlb_range_op(ipas2e1is, start, pages, stride,
++				TLBI_TTL_UNKNOWN);
  
- 	return err;
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
 
 
 
