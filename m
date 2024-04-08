@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1154189C044
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D56989C390
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41BFC1C214C9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31A161C22998
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AC76CDA8;
-	Mon,  8 Apr 2024 13:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8462F129E95;
+	Mon,  8 Apr 2024 13:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lZLQc9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QREoXyvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3411C2DF73;
-	Mon,  8 Apr 2024 13:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40092129E7C;
+	Mon,  8 Apr 2024 13:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581612; cv=none; b=UovHGo15RVLYNZNaZVs8VAxCkZ5H7u0nPVsv26JdHBZApLC2o/eY2NrIgvCQZgIBu4rUO5xvEE1eVSzeIueEgQ4RzlQnNsQxBGpyzde3bkHbzFmj9EKBHPbdXSqWQMyNXgnJq84gQ35lj599ZvBFiQt4ObInwy8ZfLLWXE98H7Q=
+	t=1712583419; cv=none; b=RttDnsRxcJ0TUEACm9NLT0C9fwYqvwnLaR0jV/b99nosIGHbXQF5TIGiPOdo2VQOofb5mikkfRi7hIWEYrvXunujzFgsIEVIt7Dehb4ns9Lmqcuh+W0eECNnP1oRt/LSslHpuiZMqYYjM14JbpDLxkV7dIak3gdBQ0md0C93364=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581612; c=relaxed/simple;
-	bh=OMsI9VmcL61/g484M5VbN/JvX9cT48N7k0wdn9x+lyk=;
+	s=arc-20240116; t=1712583419; c=relaxed/simple;
+	bh=8JZMUflGhjGbBMY1dHcB2Jttc6q9et8DLm0Xhy5iO/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dV3epkeN0J6cjQzUiHY5nqlpPLy3XUN0qoiRIy8mKeLgdKq7eP2yruK/s2lb8ZltodG4Z6HCOMcN3fIQYmiFyivJ2vh/TPj1tcUflz0e01hlYjuyzGK8WPzPBYOGBiag6isDyTgI1o+5dSkASRMUbY3Lk+D5qZ8dJfFznu2U1FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lZLQc9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFEAC433F1;
-	Mon,  8 Apr 2024 13:06:51 +0000 (UTC)
+	 MIME-Version; b=Z9rON4cqhos+xe0iNMEch29o0Siooa6D2BTj2yEBWjBz7yyjCIcWe2CvUYQ6n0QIKLKQ03OsCjb22HvGaqE+KPTPOv1syu0UCBU0rK7YjrqjtDenaxrtWuL8jxVxP1YvoLnR4bBacdpeBefSFB6l2EFwb4a8aE29jsv8x9KuaLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QREoXyvE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D52C433C7;
+	Mon,  8 Apr 2024 13:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581612;
-	bh=OMsI9VmcL61/g484M5VbN/JvX9cT48N7k0wdn9x+lyk=;
+	s=korg; t=1712583419;
+	bh=8JZMUflGhjGbBMY1dHcB2Jttc6q9et8DLm0Xhy5iO/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lZLQc9eX3OqE0SqSagfXChPa/VnCLkD8Vh0c1YWGGK6x1rNcNCpz+xFUtdA9sAvM
-	 idDNk4PnFQLxN8cBkunguHb7yvlYrTUrlSw0AwVjXZbQhJTlUt6xPL4E8WfuImRLVE
-	 aMsebB/xANJi6G1KW/8VP7AQcKoBeChZaOHyt7IA=
+	b=QREoXyvErMMsvO+sHvpA0K26b/uFjNz0UJmW1z97P+l2rhMFZgLmYc3dZ7uILt38o
+	 tE1254mZdmh1aPjcEYBY33Kz60dEZn8TU3ZASrMLiCfm+naME2QZuXzENCVSfpjD+v
+	 xvmxnfj7McsH5qw2LlIdKATzCNaO4nddwlpBj5wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@vge.kernel.org,
-	Marco Pinna <marco.pinn95@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 038/138] vsock/virtio: fix packet delivery to tap device
+	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 177/273] Revert "ALSA: emu10k1: fix synthesizer sample playback position and caching"
 Date: Mon,  8 Apr 2024 14:57:32 +0200
-Message-ID: <20240408125257.409354257@linuxfoundation.org>
+Message-ID: <20240408125314.767302265@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Pinna <marco.pinn95@gmail.com>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-commit b32a09ea7c38849ff925489a6bf5bd8914bc45df upstream.
+[ Upstream commit 03f56ed4ead162551ac596c9e3076ff01f1c5836 ]
 
-Commit 82dfb540aeb2 ("VSOCK: Add virtio vsock vsockmon hooks") added
-virtio_transport_deliver_tap_pkt() for handing packets to the
-vsockmon device. However, in virtio_transport_send_pkt_work(),
-the function is called before actually sending the packet (i.e.
-before placing it in the virtqueue with virtqueue_add_sgs() and checking
-whether it returned successfully).
-Queuing the packet in the virtqueue can fail even multiple times.
-However, in virtio_transport_deliver_tap_pkt() we deliver the packet
-to the monitoring tap interface only the first time we call it.
-This certainly avoids seeing the same packet replicated multiple times
-in the monitoring interface, but it can show the packet sent with the
-wrong timestamp or even before we succeed to queue it in the virtqueue.
+As already anticipated in the original commit, playback was broken for
+very short samples. I just didn't expect it to be an actual problem,
+because we're talking about less than 1.5 milliseconds here. But clearly
+such wavetable samples do actually exist.
 
-Move virtio_transport_deliver_tap_pkt() after calling virtqueue_add_sgs()
-and making sure it returned successfully.
+The problem was that for such short samples we'd set the current
+position beyond the end of the loop, so we'd run off the end of the
+sample and play garbage.
+This is a bigger (more audible) problem than the original one, which was
+that we'd start playback with garbage (whatever was still in the cache),
+which would be mostly masked by the note's attack phase.
 
-Fixes: 82dfb540aeb2 ("VSOCK: Add virtio vsock vsockmon hooks")
-Cc: stable@vge.kernel.org
-Signed-off-by: Marco Pinna <marco.pinn95@gmail.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/20240329161259.411751-1-marco.pinn95@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So revert to the old behavior for now. We'll subsequently fix it
+properly with a bigger patch series.
+Note that this isn't a full revert - the dead code is not re-introduced,
+because that would be silly.
+
+Fixes: df335e9a8bcb ("ALSA: emu10k1: fix synthesizer sample playback position and caching")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218625
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Message-ID: <20240401145805.528794-1-oswald.buddenhagen@gmx.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/emu10k1/emu10k1_callback.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -109,7 +109,6 @@ virtio_transport_send_pkt_work(struct wo
- 		if (!skb)
- 			break;
- 
--		virtio_transport_deliver_tap_pkt(skb);
- 		reply = virtio_vsock_skb_reply(skb);
- 
- 		sg_init_one(&hdr, virtio_vsock_hdr(skb), sizeof(*virtio_vsock_hdr(skb)));
-@@ -128,6 +127,8 @@ virtio_transport_send_pkt_work(struct wo
- 			break;
+diff --git a/sound/pci/emu10k1/emu10k1_callback.c b/sound/pci/emu10k1/emu10k1_callback.c
+index d36234b88fb42..941bfbf812ed3 100644
+--- a/sound/pci/emu10k1/emu10k1_callback.c
++++ b/sound/pci/emu10k1/emu10k1_callback.c
+@@ -255,7 +255,7 @@ lookup_voices(struct snd_emux *emu, struct snd_emu10k1 *hw,
+ 		/* check if sample is finished playing (non-looping only) */
+ 		if (bp != best + V_OFF && bp != best + V_FREE &&
+ 		    (vp->reg.sample_mode & SNDRV_SFNT_SAMPLE_SINGLESHOT)) {
+-			val = snd_emu10k1_ptr_read(hw, CCCA_CURRADDR, vp->ch) - 64;
++			val = snd_emu10k1_ptr_read(hw, CCCA_CURRADDR, vp->ch);
+ 			if (val >= vp->reg.loopstart)
+ 				bp = best + V_OFF;
  		}
+@@ -362,7 +362,7 @@ start_voice(struct snd_emux_voice *vp)
  
-+		virtio_transport_deliver_tap_pkt(skb);
-+
- 		if (reply) {
- 			struct virtqueue *rx_vq = vsock->vqs[VSOCK_VQ_RX];
- 			int val;
+ 	map = (hw->silent_page.addr << hw->address_mode) | (hw->address_mode ? MAP_PTI_MASK1 : MAP_PTI_MASK0);
+ 
+-	addr = vp->reg.start + 64;
++	addr = vp->reg.start;
+ 	temp = vp->reg.parm.filterQ;
+ 	ccca = (temp << 28) | addr;
+ 	if (vp->apitch < 0xe400)
+@@ -430,9 +430,6 @@ start_voice(struct snd_emux_voice *vp)
+ 		/* Q & current address (Q 4bit value, MSB) */
+ 		CCCA, ccca,
+ 
+-		/* cache */
+-		CCR, REG_VAL_PUT(CCR_CACHEINVALIDSIZE, 64),
+-
+ 		/* reset volume */
+ 		VTFT, vtarget | vp->ftarget,
+ 		CVCF, vtarget | CVCF_CURRENTFILTER_MASK,
+-- 
+2.43.0
+
 
 
 
