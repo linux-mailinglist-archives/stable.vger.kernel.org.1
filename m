@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA7D89C344
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E0E89C3D6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57451F22373
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0907CB2CABC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88CC7C08D;
-	Mon,  8 Apr 2024 13:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ED87EF03;
+	Mon,  8 Apr 2024 13:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8+ZLFZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFcpFiRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779616FE1A;
-	Mon,  8 Apr 2024 13:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACD17E0E4;
+	Mon,  8 Apr 2024 13:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583218; cv=none; b=IH36FuVemeezUD/bCY025f09F0R/HHi9+/pxNv8V7G33cVelLBGmKyk3Y3ziPBqXWkXPzr4Q32lt5cwzayR7NuA4pFKr5LsvRp/YsgY5jlobFESHcrzoh4HqT3IbQWaQ31UWRMOImVFBFNcTwatmrleihpzKHRHZ8DOcqssikM0=
+	t=1712582854; cv=none; b=UxquRPyN9g4kedT3wXanv1ax3QDdTcf8DZqGA7NM2q3O3CBPP1mPGZClSJtd9BSw46ps9BUIMpmq/vL1xe8p4x+E29tCo6XpZew1xMzsUYZtDKRcmKJdY621SObFvhMUYU+z4Zz4mezV32DSC05/f54UG0gGqE4vgXMpCJsZmIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583218; c=relaxed/simple;
-	bh=qAoxYwKr4GsEx3di/arZ8PDf743F4KIYJnRVKv6Ot+0=;
+	s=arc-20240116; t=1712582854; c=relaxed/simple;
+	bh=xPmTm84NxUAUAWZHHiD+NSkb5F96RVbrHcxgAm8fzHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YdJbP9Uh02+bjlwF3a06gfmJi3ubHtTEFXFRjWRV/D3qND6gD7dZZL+xanB6mqDj7nt6k0t/sXJOgoufkOfSM4l3W/xd9PGNx24wFxKnXC1FvLo60EFimde0W8/nPrLttCW5+XI9B4ZNPaqCUGrD3OjdknhSs7Con0PGcIXEd5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8+ZLFZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF69AC433F1;
-	Mon,  8 Apr 2024 13:33:37 +0000 (UTC)
+	 MIME-Version; b=czwLL4JHgI06iMTKF/JMN371mbOpXhgxfLKqUtNmcBk/RW4lbr2+jahCv1v9vsUb6s8CICOpKvHOIFym2d7aaZHncDEAuPnMuisGZKgtuXJUY1zbxJmN+Z/dteA1qvDr261ayVTtL9ThpJHCbPk0R3+++6mFxn/6J8+X741J1sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFcpFiRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0980BC433C7;
+	Mon,  8 Apr 2024 13:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583218;
-	bh=qAoxYwKr4GsEx3di/arZ8PDf743F4KIYJnRVKv6Ot+0=;
+	s=korg; t=1712582854;
+	bh=xPmTm84NxUAUAWZHHiD+NSkb5F96RVbrHcxgAm8fzHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8+ZLFZTkwOsKtWZbY1Egh5p6w8nj4eZ83KW14vQx1tkdlB4l6vbQCs9Iwv4f6AHc
-	 UV4IBTiqAG/LVthYZDC5lWVCKX+e3IU+FqXLwKIefHi3DNssh799ayhtxfA87NEg/c
-	 hOByYzpr+0A+vIt1o9FKZxuByVzoSJtBs2hVdMww=
+	b=gFcpFiRLUQn9gM8h/H8fCcfcj3UPGi2wiiv+0GND7sYzup1bLktGEszIb6TBjxXgt
+	 5AhU+scn5YYqwhWcvuTssa9DkjeJthfr4uI1ENVOygbH/4Fel+7Ubce8ByZatbr488
+	 Ze86XB+DKzEHgB0z3L36YuSyWkwoVUKcAz/2LUSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 153/273] regmap: maple: Fix cache corruption in regcache_maple_drop()
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.6 129/252] i40e: fix i40e_count_filters() to count only active/new filters
 Date: Mon,  8 Apr 2024 14:57:08 +0200
-Message-ID: <20240408125314.031276564@linuxfoundation.org>
+Message-ID: <20240408125310.625524080@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-[ Upstream commit 00bb549d7d63a21532e76e4a334d7807a54d9f31 ]
+commit eb58c598ce45b7e787568fe27016260417c3d807 upstream.
 
-When keeping the upper end of a cache block entry, the entry[] array
-must be indexed by the offset from the base register of the block,
-i.e. max - mas.index.
+The bug usually affects untrusted VFs, because they are limited to 18 MACs,
+it affects them badly, not letting to create MAC all filters.
+Not stable to reproduce, it happens when VF user creates MAC filters
+when other MACVLAN operations are happened in parallel.
+But consequence is that VF can't receive desired traffic.
 
-The code was indexing entry[] by only the register address, leading
-to an out-of-bounds access that copied some part of the kernel
-memory over the cache contents.
+Fix counter to be bumped only for new or active filters.
 
-This bug was not detected by the regmap KUnit test because it only
-tests with a block of registers starting at 0, so mas.index == 0.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f033c26de5a5 ("regmap: Add maple tree based register cache")
-Link: https://msgid.link/r/20240327114406.976986-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 621650cabee5 ("i40e: Refactoring VF MAC filters counting to make more reliable")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regcache-maple.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
-index 41edd6a430eb4..c1776127a5724 100644
---- a/drivers/base/regmap/regcache-maple.c
-+++ b/drivers/base/regmap/regcache-maple.c
-@@ -145,7 +145,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
- 			upper_index = max + 1;
- 			upper_last = mas.last;
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1249,8 +1249,11 @@ int i40e_count_filters(struct i40e_vsi *
+ 	int bkt;
+ 	int cnt = 0;
  
--			upper = kmemdup(&entry[max + 1],
-+			upper = kmemdup(&entry[max - mas.index + 1],
- 					((mas.last - max) *
- 					 sizeof(unsigned long)),
- 					map->alloc_flags);
--- 
-2.43.0
-
+-	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist)
+-		++cnt;
++	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
++		if (f->state == I40E_FILTER_NEW ||
++		    f->state == I40E_FILTER_ACTIVE)
++			++cnt;
++	}
+ 
+ 	return cnt;
+ }
 
 
 
