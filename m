@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BD789C1B2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F7589C57A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C742B2AF28
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C44722844F9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1A9823CD;
-	Mon,  8 Apr 2024 13:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448397CF17;
+	Mon,  8 Apr 2024 13:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MySinqmI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJaBizq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC5E7B3E5;
-	Mon,  8 Apr 2024 13:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FBD7BB17;
+	Mon,  8 Apr 2024 13:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582119; cv=none; b=b4GvM8co7l7oB6hGG33tKubpVBEcOz59i+FnyZs1m3s+5GgM0IrNnrRNwISTPeO9Z2x6zeX53NhM0p6gxywlCWhZiJ+iCADds6w/WxfMQpLAbHYb4DAxlPfbG9NNz5O731A3RqnKkAXyMjtpRr4RWuM0VqYb4LIpnXxhsCLbKrc=
+	t=1712584612; cv=none; b=khZWuL4gmiqo6GbLVVviWwWmid57QREclEZdMbFwf/qQBiiBsl+muf6vVZFKedPxmSadnPxEhAoBDyklpHkg+I9GWt20ZgKbx/h7k87wCGtgzyF9d9LU1uSZ4+F+eitZf0sAdyusFeN7eUP30XMsQEJSXh28AaByQ1ELFpd3pU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582119; c=relaxed/simple;
-	bh=+RZFbqoFRNN9TJc9kKOaDiuVFxWeBzt8fwzYOQCVqEE=;
+	s=arc-20240116; t=1712584612; c=relaxed/simple;
+	bh=S+Gre6jP/FKNvB+hey9Jq8Ri5r58DcGwZwe32mT6aOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmgzkoHDX6kwIvl7Hm5rez7BuuqfOqf4/Ajiv1gsSr2zNpKD9Qt8Q17378wyDJ92TTOzBKMca5GdfHzNFgUkpA3O/Xxcfgl/mxxMAMYVevw4ybcAuEN5KrYD+fqrjT5Ld+CO3K+QeymOusq0N0AP4zuGx95/bDvUPmfLaY9KjQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MySinqmI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7107CC433C7;
-	Mon,  8 Apr 2024 13:15:18 +0000 (UTC)
+	 MIME-Version; b=ZYivqY+o7oSJGWgFAEhqIdhWnXz99YqrjQYFRts/oyeEzATifanAlPMouQjrDo3qb1AhMnVuU/JMC0q3TcUeeAwtPVpRfCLPuOP/QrmAcClVS5MjncwkOKPPUqE77eGIjMwnQCuYV6tl5V4wwQu3ycOobs1KhajHrW3l+9p0q9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJaBizq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E721C433C7;
+	Mon,  8 Apr 2024 13:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582118;
-	bh=+RZFbqoFRNN9TJc9kKOaDiuVFxWeBzt8fwzYOQCVqEE=;
+	s=korg; t=1712584611;
+	bh=S+Gre6jP/FKNvB+hey9Jq8Ri5r58DcGwZwe32mT6aOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MySinqmIsfYXMM6s1Q1NCJBZXZHyNz8JvNR3C27kkqJhWG2KvkjIXo/fD+NQTvcZ7
-	 NjZQ14CVWiQQkShPdl8O1faL167iSmNciDsCpUpKVmfgUvGSuUJRhp/eSeULhC6sGN
-	 e5Wh6VfKJLGctHNaPkYmw8EfJoMnXNOHc+bpvHFc=
+	b=bJaBizq5+0/Ii5eY0IxneZy6ZRgRgProGJF4rtpAnGpidZE3j79Uke3Iz/IEPV2MI
+	 8QfFmRcVtpCswWbZ/ZNZGeDMR29BT2a9UPXfutjEEOCJOn1eA/pZMtP2VMpw+I0YWJ
+	 OBRnsBiAZ+Gxq9Hs/pFgrOV8RaAw4eIQbeL2uXPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/252] perf/x86/amd/lbr: Use freeze based on availability
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 498/690] NFSD: Use struct_size() helper in alloc_session()
 Date: Mon,  8 Apr 2024 14:56:04 +0200
-Message-ID: <20240408125308.656773065@linuxfoundation.org>
+Message-ID: <20240408125417.683753705@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-[ Upstream commit 598c2fafc06fe5c56a1a415fb7b544b31453d637 ]
+[ Upstream commit 85a0d0c9a58002ef7d1bf5e3ea630f4fbd42a4f0 ]
 
-Currently, the LBR code assumes that LBR Freeze is supported on all processors
-when X86_FEATURE_AMD_LBR_V2 is available i.e. CPUID leaf 0x80000022[EAX]
-bit 1 is set. This is incorrect as the availability of the feature is
-additionally dependent on CPUID leaf 0x80000022[EAX] bit 2 being set,
-which may not be set for all Zen 4 processors.
+Use struct_size() helper to simplify the code, no functional changes.
 
-Define a new feature bit for LBR and PMC freeze and set the freeze enable bit
-(FLBRI) in DebugCtl (MSR 0x1d9) conditionally.
-
-It should still be possible to use LBR without freeze for profile-guided
-optimization of user programs by using an user-only branch filter during
-profiling. When the user-only filter is enabled, branches are no longer
-recorded after the transition to CPL 0 upon PMI arrival. When branch
-entries are read in the PMI handler, the branch stack does not change.
-
-E.g.
-
-  $ perf record -j any,u -e ex_ret_brn_tkn ./workload
-
-Since the feature bit is visible under flags in /proc/cpuinfo, it can be
-used to determine the feasibility of use-cases which require LBR Freeze
-to be supported by the hardware such as profile-guided optimization of
-kernels.
-
-Fixes: ca5b7c0d9621 ("perf/x86/amd/lbr: Add LbrExtV2 branch record support")
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/69a453c97cfd11c6f2584b19f937fe6df741510f.1711091584.git.sandipan.das@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/x86/events/amd/core.c         |  4 ++--
- arch/x86/events/amd/lbr.c          | 16 ++++++++++------
- arch/x86/include/asm/cpufeatures.h |  8 ++++++++
- arch/x86/kernel/cpu/scattered.c    |  1 +
- 4 files changed, 21 insertions(+), 8 deletions(-)
+ fs/nfsd/nfs4state.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index b30349eeb7678..8ed10366c4a27 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -918,8 +918,8 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 	if (!status)
- 		goto done;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 39b315e3471f5..524865c7211ef 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1833,13 +1833,12 @@ static struct nfsd4_session *alloc_session(struct nfsd4_channel_attrs *fattrs,
+ 	int numslots = fattrs->maxreqs;
+ 	int slotsize = slot_bytes(fattrs);
+ 	struct nfsd4_session *new;
+-	int mem, i;
++	int i;
  
--	/* Read branch records before unfreezing */
--	if (status & GLOBAL_STATUS_LBRS_FROZEN) {
-+	/* Read branch records */
-+	if (x86_pmu.lbr_nr) {
- 		amd_pmu_lbr_read();
- 		status &= ~GLOBAL_STATUS_LBRS_FROZEN;
- 	}
-diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
-index eb31f850841a8..110e34c59643a 100644
---- a/arch/x86/events/amd/lbr.c
-+++ b/arch/x86/events/amd/lbr.c
-@@ -400,10 +400,12 @@ void amd_pmu_lbr_enable_all(void)
- 		wrmsrl(MSR_AMD64_LBR_SELECT, lbr_select);
- 	}
+-	BUILD_BUG_ON(NFSD_MAX_SLOTS_PER_SESSION * sizeof(struct nfsd4_slot *)
+-			+ sizeof(struct nfsd4_session) > PAGE_SIZE);
+-	mem = numslots * sizeof(struct nfsd4_slot *);
++	BUILD_BUG_ON(struct_size(new, se_slots, NFSD_MAX_SLOTS_PER_SESSION)
++		     > PAGE_SIZE);
  
--	rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
--	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
-+	if (cpu_feature_enabled(X86_FEATURE_AMD_LBR_PMC_FREEZE)) {
-+		rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
-+		wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+	}
- 
--	wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
- 	wrmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg | DBG_EXTN_CFG_LBRV2EN);
- }
- 
-@@ -416,10 +418,12 @@ void amd_pmu_lbr_disable_all(void)
- 		return;
- 
- 	rdmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg);
--	rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
--
- 	wrmsrl(MSR_AMD_DBG_EXTN_CFG, dbg_extn_cfg & ~DBG_EXTN_CFG_LBRV2EN);
--	wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl & ~DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+
-+	if (cpu_feature_enabled(X86_FEATURE_AMD_LBR_PMC_FREEZE)) {
-+		rdmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl);
-+		wrmsrl(MSR_IA32_DEBUGCTLMSR, dbg_ctl & ~DEBUGCTLMSR_FREEZE_LBRS_ON_PMI);
-+	}
- }
- 
- __init int amd_pmu_lbr_init(void)
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index a42db7bbe5933..9b2b99670d364 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -456,6 +456,14 @@
- #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* "" MSR_PRED_CMD[IBPB] flushes all branch type predictions */
- #define X86_FEATURE_SRSO_NO		(20*32+29) /* "" CPU is not affected by SRSO */
- 
-+/*
-+ * Extended auxiliary flags: Linux defined - for features scattered in various
-+ * CPUID levels like 0x80000022, etc.
-+ *
-+ * Reuse free bits when adding new feature flags!
-+ */
-+#define X86_FEATURE_AMD_LBR_PMC_FREEZE	(21*32+ 0) /* AMD LBR and PMC Freeze */
-+
- /*
-  * BUG word(s)
-  */
-diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-index 0dad49a09b7a9..a515328d9d7d8 100644
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -49,6 +49,7 @@ static const struct cpuid_bit cpuid_bits[] = {
- 	{ X86_FEATURE_BMEC,		CPUID_EBX,  3, 0x80000020, 0 },
- 	{ X86_FEATURE_PERFMON_V2,	CPUID_EAX,  0, 0x80000022, 0 },
- 	{ X86_FEATURE_AMD_LBR_V2,	CPUID_EAX,  1, 0x80000022, 0 },
-+	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
- 	{ 0, 0, 0, 0, 0 }
- };
- 
+-	new = kzalloc(sizeof(*new) + mem, GFP_KERNEL);
++	new = kzalloc(struct_size(new, se_slots, numslots), GFP_KERNEL);
+ 	if (!new)
+ 		return NULL;
+ 	/* allocate each struct nfsd4_slot and data cache in one piece */
 -- 
 2.43.0
 
