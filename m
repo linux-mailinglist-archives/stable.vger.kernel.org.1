@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-37226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9D389C3ED
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C42A89C3F1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05A61F21FC3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A852F1C215AD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF5D7B3FD;
-	Mon,  8 Apr 2024 13:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05330811F2;
+	Mon,  8 Apr 2024 13:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkyM1nI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfPqxdND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D9E8061F;
-	Mon,  8 Apr 2024 13:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70C780619;
+	Mon,  8 Apr 2024 13:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583617; cv=none; b=TAF5cQ1fBzILXXc9+N8FOw5hnQGfKcmgTNhKl2OVbpmNcxU1/LDI2yYklkRAbi2wHS3zcGr/8MvTaCeif4ygm66+wGIsdzBBCx9KfgL/eZnWgq2RawlsOD1tOhmoWryUpF8CerADoj8WVEEMzj9n/TK7TCx1pfOpvY39FXD/xRI=
+	t=1712583628; cv=none; b=hAd+lwDGort7GifOM61biMhJKtVEwHQEGnOHi5BmGhip8AxPdyOUVn4FOKF3Ey/QD7k7nBb7AMKHqD2Oqe3AOl52i++xFSu8sK5+YTDe0DM2zsBnEWwwoxIRgwRBqOrWcPURqaq/FYe4etECR7imPZPJPgOtllk6DZPdhc6Y2KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583617; c=relaxed/simple;
-	bh=oFepeX86pvylI+KE3BcPJcSTbAv5jTOEzJb8QX3rVzE=;
+	s=arc-20240116; t=1712583628; c=relaxed/simple;
+	bh=QIxXb7wByVYZfI7WzX7qKqeiVM080+/8sTpeZt072TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YST3Zns0xL7jbeyAuvVJJMw6h5+du2BPZ09SvfUKWyDjUHfGNT71BqFW+QlIZy+rrJztvSGfHdosAkdiMJYsGp7CFGijZUPN50IhdIQX3qBPexVYWQ/9SB7zPcqBDHDIw0D0ewBockLT1ckmh/ENFOUW1gGryC++duEPC+we2lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkyM1nI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84586C433F1;
-	Mon,  8 Apr 2024 13:40:16 +0000 (UTC)
+	 MIME-Version; b=jqlHC/xVlmAch8n0QqFJTmj3nS59p/zcIUwApl9RD/T+yOOpPdIPlDHvcmjXkyA+pwW3Q9iAE/wmQz64Wpf/WTHOyF1LSr3jLAkFVlDEPR3nMl+5V7+F5gTT0wmCLScWi9nT+ezcngxJ1Hdr+88GqzFgJi98MznI/SrMaMKhBP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfPqxdND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B66BC433C7;
+	Mon,  8 Apr 2024 13:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583616;
-	bh=oFepeX86pvylI+KE3BcPJcSTbAv5jTOEzJb8QX3rVzE=;
+	s=korg; t=1712583628;
+	bh=QIxXb7wByVYZfI7WzX7qKqeiVM080+/8sTpeZt072TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkyM1nI03fElwyTWXXsGUkzDstRDu5lk7Xi80lSMK8GQbZ1p4ivNmXEQk4u8kmz5p
-	 uDFYijaNkEj67H67rbtM5gIpmyM8PlmOSSygelBqR/RdPfs6ChVjcwucIkUQ4uOuuU
-	 p9005zF/o8QeHVPH1wkI4WfDxK52aY+dewATzpuM=
+	b=MfPqxdND5+sKpDZdOXEW5tjwIaFh/Z7molQ+eJo5ChSQJfBTIPdhnyEy4Y0LbbJQF
+	 hy0A2bDi6KuTZbuFYxxk3JlQA2SmALY2eDFZtrcrZCNAh3lkPoCzjZMNe6Ow9p4l9V
+	 nmS0EEit1p0JtLyzzNSEG253lRftBIyoUZ5DSR+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bruce Fields <bfields@fieldses.org>,
-	Ondrej Valousek <ondrej.valousek.xm@renesas.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 267/690] nfsd: Add support for the birth time attribute
-Date: Mon,  8 Apr 2024 14:52:13 +0200
-Message-ID: <20240408125409.291227022@linuxfoundation.org>
+Subject: [PATCH 5.15 268/690] orDate: Thu Sep 30 19:19:57 2021 -0400
+Date: Mon,  8 Apr 2024 14:52:14 +0200
+Message-ID: <20240408125409.330662285@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,64 +64,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ondrej Valousek <ondrej.valousek.xm@renesas.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit e377a3e698fb56cb63f6bddbebe7da76dc37e316 ]
+NFSD: De-duplicate hash bucket indexing
 
-For filesystems that supports "btime" timestamp (i.e. most modern
-filesystems do) we share it via kernel nfsd. Btime support for NFS
-client has already been added by Trond recently.
+[ Upstream commit 378a6109dd142a678f629b740f558365150f60f9 ]
 
-Suggested-by: Bruce Fields <bfields@fieldses.org>
-Signed-off-by: Ondrej Valousek <ondrej.valousek.xm@renesas.com>
-[ cel: addressed some whitespace/checkpatch nits ]
+Clean up: The details of finding the right hash bucket are exactly
+the same in both nfsd_cache_lookup() and nfsd_cache_update().
+
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4xdr.c | 10 ++++++++++
- fs/nfsd/nfsd.h    |  2 +-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ fs/nfsd/nfscache.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 19ddd80239944..771d3057577ef 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -2851,6 +2851,9 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
- 	err = vfs_getattr(&path, &stat, STATX_BASIC_STATS, AT_STATX_SYNC_AS_STAT);
- 	if (err)
- 		goto out_nfserr;
-+	if (!(stat.result_mask & STATX_BTIME))
-+		/* underlying FS does not offer btime so we can't share it */
-+		bmval1 &= ~FATTR4_WORD1_TIME_CREATE;
- 	if ((bmval0 & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
- 			FATTR4_WORD0_FILES_TOTAL | FATTR4_WORD0_MAXNAME)) ||
- 	    (bmval1 & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
-@@ -3251,6 +3254,13 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
- 		p = xdr_encode_hyper(p, (s64)stat.mtime.tv_sec);
- 		*p++ = cpu_to_be32(stat.mtime.tv_nsec);
- 	}
-+	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
-+		p = xdr_reserve_space(xdr, 12);
-+		if (!p)
-+			goto out_resource;
-+		p = xdr_encode_hyper(p, (s64)stat.btime.tv_sec);
-+		*p++ = cpu_to_be32(stat.btime.tv_nsec);
-+	}
- 	if (bmval1 & FATTR4_WORD1_MOUNTED_ON_FILEID) {
- 		struct kstat parent_stat;
- 		u64 ino = stat.ino;
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index 3e5008b475ff0..4fc1fd639527a 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -364,7 +364,7 @@ void		nfsd_lockd_shutdown(void);
-  | FATTR4_WORD1_OWNER	        | FATTR4_WORD1_OWNER_GROUP  | FATTR4_WORD1_RAWDEV           \
-  | FATTR4_WORD1_SPACE_AVAIL     | FATTR4_WORD1_SPACE_FREE   | FATTR4_WORD1_SPACE_TOTAL      \
-  | FATTR4_WORD1_SPACE_USED      | FATTR4_WORD1_TIME_ACCESS  | FATTR4_WORD1_TIME_ACCESS_SET  \
-- | FATTR4_WORD1_TIME_DELTA   | FATTR4_WORD1_TIME_METADATA    \
-+ | FATTR4_WORD1_TIME_DELTA      | FATTR4_WORD1_TIME_METADATA   | FATTR4_WORD1_TIME_CREATE      \
-  | FATTR4_WORD1_TIME_MODIFY     | FATTR4_WORD1_TIME_MODIFY_SET | FATTR4_WORD1_MOUNTED_ON_FILEID)
+diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
+index a838909502907..7880a2f2d29f6 100644
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -84,12 +84,6 @@ nfsd_hashsize(unsigned int limit)
+ 	return roundup_pow_of_two(limit / TARGET_BUCKET_SIZE);
+ }
  
- #define NFSD4_SUPPORTED_ATTRS_WORD2 0
+-static u32
+-nfsd_cache_hash(__be32 xid, struct nfsd_net *nn)
+-{
+-	return hash_32((__force u32)xid, nn->maskbits);
+-}
+-
+ static struct svc_cacherep *
+ nfsd_reply_cache_alloc(struct svc_rqst *rqstp, __wsum csum,
+ 			struct nfsd_net *nn)
+@@ -241,6 +235,14 @@ lru_put_end(struct nfsd_drc_bucket *b, struct svc_cacherep *rp)
+ 	list_move_tail(&rp->c_lru, &b->lru_head);
+ }
+ 
++static noinline struct nfsd_drc_bucket *
++nfsd_cache_bucket_find(__be32 xid, struct nfsd_net *nn)
++{
++	unsigned int hash = hash_32((__force u32)xid, nn->maskbits);
++
++	return &nn->drc_hashtbl[hash];
++}
++
+ static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
+ 			 unsigned int max)
+ {
+@@ -421,10 +423,8 @@ int nfsd_cache_lookup(struct svc_rqst *rqstp)
+ {
+ 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+ 	struct svc_cacherep	*rp, *found;
+-	__be32			xid = rqstp->rq_xid;
+ 	__wsum			csum;
+-	u32 hash = nfsd_cache_hash(xid, nn);
+-	struct nfsd_drc_bucket *b = &nn->drc_hashtbl[hash];
++	struct nfsd_drc_bucket	*b = nfsd_cache_bucket_find(rqstp->rq_xid, nn);
+ 	int type = rqstp->rq_cachetype;
+ 	int rtn = RC_DOIT;
+ 
+@@ -528,7 +528,6 @@ void nfsd_cache_update(struct svc_rqst *rqstp, int cachetype, __be32 *statp)
+ 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+ 	struct svc_cacherep *rp = rqstp->rq_cacherep;
+ 	struct kvec	*resv = &rqstp->rq_res.head[0], *cachv;
+-	u32		hash;
+ 	struct nfsd_drc_bucket *b;
+ 	int		len;
+ 	size_t		bufsize = 0;
+@@ -536,8 +535,7 @@ void nfsd_cache_update(struct svc_rqst *rqstp, int cachetype, __be32 *statp)
+ 	if (!rp)
+ 		return;
+ 
+-	hash = nfsd_cache_hash(rp->c_key.k_xid, nn);
+-	b = &nn->drc_hashtbl[hash];
++	b = nfsd_cache_bucket_find(rp->c_key.k_xid, nn);
+ 
+ 	len = resv->iov_len - ((char*)statp - (char*)resv->iov_base);
+ 	len >>= 2;
 -- 
 2.43.0
 
