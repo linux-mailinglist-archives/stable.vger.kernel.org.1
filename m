@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-37292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D0489C43B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A89289C449
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D660A1C22C34
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BB331C22063
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A4C8614C;
-	Mon,  8 Apr 2024 13:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE14A128387;
+	Mon,  8 Apr 2024 13:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Miyr1Ubi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+/3DDkv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3E57C0B0;
-	Mon,  8 Apr 2024 13:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C992127B7B;
+	Mon,  8 Apr 2024 13:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583809; cv=none; b=nXHlkqCjxo80JMBhC+PznbGHPZlSQEU5wpqjWaSPu9HipMLW1omfYs3w2mI9bt9JXXZsEdGMZIl7qeFP5wb7R12J5odsw1GaBNUuOisUy9BZSBKSV2A13MBFU5byhEllBWEzFbLcwKw0g3uLno/l0jT7vXGp6/QN5aRCoLm3ZFc=
+	t=1712583841; cv=none; b=G4ZEqvrEwlCnM5IjXdCjllpUDn25lGPQyynedrun7Dyof28zDTJynYw2+SNge/RV7mk2CgXs1sekeflyCK7HnQ420O77yx3iVeDyxZ6glTcYnT2e4WBNeiDa7vuumBCpLJLdd0LOTAsXQrEvy6c4UDl7Flj1PcW//2Ihcn1IlZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583809; c=relaxed/simple;
-	bh=5D1xEOOqAN7IdB7DLnxxW/HbUvltzSU2hzR5bhVXro8=;
+	s=arc-20240116; t=1712583841; c=relaxed/simple;
+	bh=C+wwCE05ANkR0iIjumODgA9l4SdOWXYIC49enn3BedE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sf2jeBUD5hmyxjMlr0rcaktj0zM8gKDtS8yg6TVtsoi8Rqm6v04AbSWHyILh00PTEx/pE13zekWDcxQReLG54XlX/HkN0cCYPEiyVcVjDuecPC2AaMml6xIe+PH3dAnRVBWBekrRphsyLOULpZ/+cNonxMJpdXECMzaocZ8f0r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Miyr1Ubi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB21C433F1;
-	Mon,  8 Apr 2024 13:43:29 +0000 (UTC)
+	 MIME-Version; b=OPu38PqjdO/2pcj6M29f3PbM9bYsbD1tItVKnGfvTX/6q7QSZPy0xwpufusrP1SiQ4/Pm6QSCjV5nKfS+aMCH36cjpl80ZEKc3JheH8nlXxWsT+yOZWKkg4usXVQYH6r3RYVoc0e3Rlm7nVWyUoIYH8gvb2BhLOQCQLzjlvu6Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+/3DDkv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB2EC433F1;
+	Mon,  8 Apr 2024 13:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583809;
-	bh=5D1xEOOqAN7IdB7DLnxxW/HbUvltzSU2hzR5bhVXro8=;
+	s=korg; t=1712583841;
+	bh=C+wwCE05ANkR0iIjumODgA9l4SdOWXYIC49enn3BedE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Miyr1UbixpAh5g3Ty7hQLSzVnD6OPIrQgG1YYdh/gKR0DcJZY422WWelWUkzd9X27
-	 NGtQKjSkjFvGr1AwHs+Mzyk/zViTDj2fAiCUlCwXFoFw1EDodIxdVzkO1wlKEWYu9n
-	 /zyvPV/YwjqKVmc2K7Ug4oyBUMzDO2YRwO1zx8B4=
+	b=k+/3DDkvq3LwWusWuUB2XQ7mvaDp2jQDKrNllX7pQxrXXw2z9Run/FIXkmOmZDHsA
+	 iIW1tDLXx5fo1dY7zUJ+ayU3Z5wn6yHv+kVUquj82kxI3qpuREXJYixgzQcJTeLVtK
+	 MTMqdupy4F/T20B5mm4cW2RL8ynNjwmSFVdpcIPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 287/690] nfsd: Clean up nfsd_file_put()
-Date: Mon,  8 Apr 2024 14:52:33 +0200
-Message-ID: <20240408125410.007964787@linuxfoundation.org>
+Subject: [PATCH 5.15 288/690] fanotify: do not allow setting dirent events in mask of non-dir
+Date: Mon,  8 Apr 2024 14:52:34 +0200
+Message-ID: <20240408125410.040322984@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -65,48 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 999397926ab3f78c7d1235cc4ca6e3c89d2769bf ]
+[ Upstream commit ceaf69f8eadcafb323392be88e7a5248c415d423 ]
 
-Make it a little less racy, by removing the refcount_read() test. Then
-remove the redundant 'is_hashed' variable.
+Dirent events (create/delete/move) are only reported on watched
+directory inodes, but in fanotify as well as in legacy inotify, it was
+always allowed to set them on non-dir inode, which does not result in
+any meaningful outcome.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Until kernel v5.17, dirent events in fanotify also differed from events
+"on child" (e.g. FAN_OPEN) in the information provided in the event.
+For example, FAN_OPEN could be set in the mask of a non-dir or the mask
+of its parent and event would report the fid of the child regardless of
+the marked object.
+By contrast, FAN_DELETE is not reported if the child is marked and the
+child fid was not reported in the events.
+
+Since kernel v5.17, with fanotify group flag FAN_REPORT_TARGET_FID, the
+fid of the child is reported with dirent events, like events "on child",
+which may create confusion for users expecting the same behavior as
+events "on child" when setting events in the mask on a child.
+
+The desired semantics of setting dirent events in the mask of a child
+are not clear, so for now, deny this action for a group initialized
+with flag FAN_REPORT_TARGET_FID and for the new event FAN_RENAME.
+We may relax this restriction in the future if we decide on the
+semantics and implement them.
+
+Fixes: d61fd650e9d2 ("fanotify: introduce group flag FAN_REPORT_TARGET_FID")
+Fixes: 8cc3b1ccd930 ("fanotify: wire up FAN_RENAME event")
+Link: https://lore.kernel.org/linux-fsdevel/20220505133057.zm5t6vumc4xdcnsg@quack3.lan/
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20220507080028.219826-1-amir73il@gmail.com
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/filecache.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ fs/notify/fanotify/fanotify_user.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 6cde6ef68996e..429ae485ebbbe 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -295,21 +295,14 @@ nfsd_file_put_noref(struct nfsd_file *nf)
- void
- nfsd_file_put(struct nfsd_file *nf)
- {
--	bool is_hashed;
--
- 	set_bit(NFSD_FILE_REFERENCED, &nf->nf_flags);
--	if (refcount_read(&nf->nf_ref) > 2 || !nf->nf_file) {
--		nfsd_file_put_noref(nf);
--		return;
--	}
--
--	is_hashed = test_bit(NFSD_FILE_HASHED, &nf->nf_flags) != 0;
--	if (!is_hashed) {
-+	if (test_bit(NFSD_FILE_HASHED, &nf->nf_flags) == 0) {
- 		nfsd_file_flush(nf);
- 		nfsd_file_put_noref(nf);
- 	} else {
- 		nfsd_file_put_noref(nf);
--		nfsd_file_schedule_laundrette();
-+		if (nf->nf_file)
-+			nfsd_file_schedule_laundrette();
- 	}
- 	if (atomic_long_read(&nfsd_filecache_count) >= NFSD_FILE_LRU_LIMIT)
- 		nfsd_file_gc();
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index 4f607fd793f3a..336ccec2abed3 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -1671,6 +1671,19 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
+ 	else
+ 		mnt = path.mnt;
+ 
++	/*
++	 * FAN_RENAME is not allowed on non-dir (for now).
++	 * We shouldn't have allowed setting any dirent events in mask of
++	 * non-dir, but because we always allowed it, error only if group
++	 * was initialized with the new flag FAN_REPORT_TARGET_FID.
++	 */
++	ret = -ENOTDIR;
++	if (inode && !S_ISDIR(inode->i_mode) &&
++	    ((mask & FAN_RENAME) ||
++	     ((mask & FANOTIFY_DIRENT_EVENTS) &&
++	      FAN_GROUP_FLAG(group, FAN_REPORT_TARGET_FID))))
++		goto path_put_and_out;
++
+ 	/* Mask out FAN_EVENT_ON_CHILD flag for sb/mount/non-dir marks */
+ 	if (mnt || !S_ISDIR(inode->i_mode)) {
+ 		mask &= ~FAN_EVENT_ON_CHILD;
 -- 
 2.43.0
 
