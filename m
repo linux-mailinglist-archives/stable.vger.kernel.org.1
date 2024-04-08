@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A522689C3F7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5846B89C3F9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45AB91F214B1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 136282843C3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA0E7C085;
-	Mon,  8 Apr 2024 13:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EFD6FE1A;
+	Mon,  8 Apr 2024 13:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTp05a1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsgsG8Ix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FB271742;
-	Mon,  8 Apr 2024 13:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B9A6A352;
+	Mon,  8 Apr 2024 13:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583646; cv=none; b=HR4sJFwmezN4PWRVN2OR+5NXX7+dnl7ZaTgGhQV/NIZObVblu1BpwhBVd70z3epitHLJjD3QOjgyl2lz94/IyCoj24S7r4inDaFtRSsrWLGUG8vrw19Ut1yRnu8KTBs6Z1yVNwkjC8mcp+MmJF0RPtQt7Wq1eljzWBP3k4KDynY=
+	t=1712583655; cv=none; b=pynWDnBNncH03VDMOmLGnEdIOHANaM++GJ+RJ+6TpI28j2b9BgMfnocSlt0jY28jFttoyxrR2TOe/E/7+p1o9atM1LpXli+yOQJ3NZFA+S1XwtXFJSZna2lBFbgW+yoH64YYuyp3JQcb4qTh233FSXXRZ/WqI+7VxMSPCt5JPXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583646; c=relaxed/simple;
-	bh=WdIRwSPAYv3PKHKCIGP3YH7ocrnL9kxx3woX/UOhi94=;
+	s=arc-20240116; t=1712583655; c=relaxed/simple;
+	bh=3z08YCY8HIgac9K0NZ+NJGFft2ct4pl6JV25k4ZvDMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGshF2ljrwpegGOzWy7wp94Zxc9MTleXu208kmzKP54cZNKk9UVnBfxfTucbp30ZTJZaznb1o6YR7egSwP6XgWdrRQ5m87KSqb8Yvnd0yhwFKNvVosaavK7uLt8XpllRZ0NUimOtinGaLPdvjlLt/cWL/2REhHs2u8h11VR0AbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTp05a1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2212C433C7;
-	Mon,  8 Apr 2024 13:40:45 +0000 (UTC)
+	 MIME-Version; b=Sks/3vH7wD+5ag5Hs3/I938KZFMAE3XFVZDpTO+JnfbPKYhRvcq0a4ugxId+S9tm6dzk4zut8YkUidnPYoUtjFY6SoF0sGXWSa7Tgh+tLwpup+Oy/uV3a39e/M8e8dgMOipjjaawAhmdKumgOmQQ5HAVYjy66ZUM4M8f0nf8xfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsgsG8Ix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B41BC433F1;
+	Mon,  8 Apr 2024 13:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583646;
-	bh=WdIRwSPAYv3PKHKCIGP3YH7ocrnL9kxx3woX/UOhi94=;
+	s=korg; t=1712583654;
+	bh=3z08YCY8HIgac9K0NZ+NJGFft2ct4pl6JV25k4ZvDMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTp05a1aUuwXUGTXUV94zAQOB9PvfDyzWJnT6GdsmF2g/J+Ia8aCZ92nTCdyfIbeL
-	 X5LfORsAS/HVY+/JDB/xB6doggr0zEA4/BpnkVFEf27wrJ5amkdsjACYRv30uXLrk6
-	 xaFG/uLCpYTBXiYZ+Lclv+WPmVXlp+YAX6Ivoqmw=
+	b=nsgsG8IxL957peQFVK0BsM9Th1GuvjAJoRO2dAnD5kSE4lx/Hsca3/uH+ljj7JY5T
+	 MKJ9jpNXEFGT+3D0jgoBi+q/T/AGqPoZZ9RVmgioe9xJ3dPiLXQ5Rfm56JjO35HNUm
+	 K8Mq8Ku3W9MR1NcLwyl3VCRLsOK6JvBDNywiubi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 270/690] NFSD: Streamline the rare "found" case
-Date: Mon,  8 Apr 2024 14:52:16 +0200
-Message-ID: <20240408125409.408204212@linuxfoundation.org>
+Subject: [PATCH 5.15 271/690] NFSD: Remove NFSD_PROC_ARGS_* macros
+Date: Mon,  8 Apr 2024 14:52:17 +0200
+Message-ID: <20240408125409.455570355@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,46 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit add1511c38166cf1036765f8c4aa939f0275a799 ]
+[ Upstream commit c1a3f2ce66c80cd9f2a4376fa35a5c8d05441c73 ]
 
-Move a rarely called function call site out of the hot path.
+Clean up.
 
-This is an exceptionally small improvement because the compiler
-inlines most of the functions that nfsd_cache_lookup() calls.
+The PROC_ARGS macros were added when I thought that NFSD tracepoints
+would be reporting endpoint information. However, tracepoints in the
+RPC server now report transport endpoint information, so in general
+there's no need for the upper layers to do that any more, and these
+macros can be retired.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfscache.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/nfsd/trace.h | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
-diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
-index 1523d2e3dae97..7da88bdc0d6c3 100644
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -448,11 +448,8 @@ int nfsd_cache_lookup(struct svc_rqst *rqstp)
- 	b = nfsd_cache_bucket_find(rqstp->rq_xid, nn);
- 	spin_lock(&b->cache_lock);
- 	found = nfsd_cache_insert(b, rp, nn);
--	if (found != rp) {
--		nfsd_reply_cache_free_locked(NULL, rp, nn);
--		rp = found;
-+	if (found != rp)
- 		goto found_entry;
--	}
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index c55fd77d43605..7f3f40f6c0ff3 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -13,22 +13,6 @@
+ #include "export.h"
+ #include "nfsfh.h"
  
- 	nfsd_stats_rc_misses_inc();
- 	rqstp->rq_cacherep = rp;
-@@ -470,8 +467,10 @@ int nfsd_cache_lookup(struct svc_rqst *rqstp)
+-#define NFSD_TRACE_PROC_ARG_FIELDS \
+-		__field(unsigned int, netns_ino) \
+-		__field(u32, xid) \
+-		__array(unsigned char, server, sizeof(struct sockaddr_in6)) \
+-		__array(unsigned char, client, sizeof(struct sockaddr_in6))
+-
+-#define NFSD_TRACE_PROC_ARG_ASSIGNMENTS \
+-		do { \
+-			__entry->netns_ino = SVC_NET(rqstp)->ns.inum; \
+-			__entry->xid = be32_to_cpu(rqstp->rq_xid); \
+-			memcpy(__entry->server, &rqstp->rq_xprt->xpt_local, \
+-			       rqstp->rq_xprt->xpt_locallen); \
+-			memcpy(__entry->client, &rqstp->rq_xprt->xpt_remote, \
+-			       rqstp->rq_xprt->xpt_remotelen); \
+-		} while (0);
+-
+ #define NFSD_TRACE_PROC_RES_FIELDS \
+ 		__field(unsigned int, netns_ino) \
+ 		__field(u32, xid) \
+@@ -53,16 +37,22 @@ DECLARE_EVENT_CLASS(nfsd_xdr_err_class,
+ 	),
+ 	TP_ARGS(rqstp),
+ 	TP_STRUCT__entry(
+-		NFSD_TRACE_PROC_ARG_FIELDS
+-
++		__field(unsigned int, netns_ino)
++		__field(u32, xid)
+ 		__field(u32, vers)
+ 		__field(u32, proc)
++		__sockaddr(server, rqstp->rq_xprt->xpt_locallen)
++		__sockaddr(client, rqstp->rq_xprt->xpt_remotelen)
+ 	),
+ 	TP_fast_assign(
+-		NFSD_TRACE_PROC_ARG_ASSIGNMENTS
++		const struct svc_xprt *xprt = rqstp->rq_xprt;
  
- found_entry:
- 	/* We found a matching entry which is either in progress or done. */
-+	nfsd_reply_cache_free_locked(NULL, rp, nn);
- 	nfsd_stats_rc_hits_inc();
- 	rtn = RC_DROPIT;
-+	rp = found;
- 
- 	/* Request being processed */
- 	if (rp->c_state == RC_INPROG)
++		__entry->netns_ino = xprt->xpt_net->ns.inum;
++		__entry->xid = be32_to_cpu(rqstp->rq_xid);
+ 		__entry->vers = rqstp->rq_vers;
+ 		__entry->proc = rqstp->rq_proc;
++		__assign_sockaddr(server, &xprt->xpt_local, xprt->xpt_locallen);
++		__assign_sockaddr(client, &xprt->xpt_remote, xprt->xpt_remotelen);
+ 	),
+ 	TP_printk("xid=0x%08x vers=%u proc=%u",
+ 		__entry->xid, __entry->vers, __entry->proc
 -- 
 2.43.0
 
