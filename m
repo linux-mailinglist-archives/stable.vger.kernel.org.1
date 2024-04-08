@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE57B89C051
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94AC289C53C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AABAD2819BA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 361DA1F23364
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB206F08E;
-	Mon,  8 Apr 2024 13:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFEF78285;
+	Mon,  8 Apr 2024 13:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxn1/+0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOFcEDcW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F8C2E62C;
-	Mon,  8 Apr 2024 13:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C29A74BF5;
+	Mon,  8 Apr 2024 13:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581641; cv=none; b=kBffunwDBD20jv+3eMIA6K2iMrMeHg9co5UL4J4uheTDI6pzmXddcflHiPYq8ykbaTOXctNwrlPGx+z6EMc+Lt73jeiWGN1kk9mHRNb1tEreJsN8nFJbUm6Jew5LRrjEHH9Vd0SbIGsDf8caCJC3wwf2m3J2IqnU0drD8n07Y4o=
+	t=1712584495; cv=none; b=umvhYmOrf27XqHcDtRHJWwtYWDXiBEa77Qh9fIVLMoABlUEr440ecb+nWGIEiSAKn6wbl0b4E0C9vLeWXzj5uR5cveWjhNsB0BO2s+ACgqMZ5peRHp4TJMHIqM2RtbFzJC46sIGoksJ3HK997AbW8kyRupCcSxsLcK4sXbrOpD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581641; c=relaxed/simple;
-	bh=7ZGrhziDn3fsa2IOniI8uJParAyimtPhVuf0ExRESBc=;
+	s=arc-20240116; t=1712584495; c=relaxed/simple;
+	bh=zbGbyx+3wZWnOj+N8cIToEobqYZjGfoKzNVGKzF2/MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlu24S+kcvLssO74qvx4/gnJxOA2Lt4F3vu8xiRCXvT7a9l3euHSedwpnbLAbdvAmwynKWrLlkUvTXY3t46IN+qC0dy6seO8cggxNKvKZOnuJi8tUuyRnQUkcu6dBj/lBogth/S2PRI558jMOANfuNTBIwKcu6C+XbWRSZUxuHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxn1/+0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFA5C433F1;
-	Mon,  8 Apr 2024 13:07:21 +0000 (UTC)
+	 MIME-Version; b=ExT3htxYjyOL8BQ0vHOIC7ayBDtxU9VxwiO08DaTwCh/WBgOjG4x8yWKdr3ouQY1BikQNGYxfObM/f0D4ziJawEekRSLjin2bwoqEc2xlI+/JYVtujQq2f8VmuKjl/MMBLcfDSdAfK5INH/HnBQBp6l0k9ycI/i206UPawDc/yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOFcEDcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E09C433F1;
+	Mon,  8 Apr 2024 13:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581641;
-	bh=7ZGrhziDn3fsa2IOniI8uJParAyimtPhVuf0ExRESBc=;
+	s=korg; t=1712584495;
+	bh=zbGbyx+3wZWnOj+N8cIToEobqYZjGfoKzNVGKzF2/MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxn1/+0ReAtgCoA8jmmYQjglT4EgR4ewkhi+0MwoNJKxuKym/AcLCY6cq/vNkewWJ
-	 mQ4WW136S3jOafm0YfUVDiMd0AWQNuG+W/H4Vu8SskX0Tp/F4Bbs/iqtAgFOxWECR/
-	 1UC789ziYByFi51YVnhEEh8ANfl3pG3rXnpcEmIA=
+	b=jOFcEDcW8AeUSsGL2ZtV89V2HH+hYsnob4w0su0eE2L+gewbkA75zpUQPj2HEai0C
+	 rmYtYbOKfVgggFBr3heDLY2L5XPY4QFpgzwxrokOhpe8Do1SIJEIPCb90XG+tEAbPe
+	 nvWCT1GQMjc9WQSEjB7Scxl7NGbg2JCn7JMQadws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/252] ACPICA: debugger: check status of acpi_evaluate_object() in acpi_db_walk_for_fields()
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 458/690] fanotify: Remove obsoleted fanotify_event_has_path()
 Date: Mon,  8 Apr 2024 14:55:24 +0200
-Message-ID: <20240408125307.431377544@linuxfoundation.org>
+Message-ID: <20240408125416.223889589@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 40e2710860e57411ab57a1529c5a2748abbe8a19 ]
+[ Upstream commit 7a80bf902d2bc722b4477442ee772e8574603185 ]
 
-ACPICA commit 9061cd9aa131205657c811a52a9f8325a040c6c9
+All uses of fanotify_event_has_path() have
+been removed since commit 9c61f3b560f5 ("fanotify: break up
+fanotify_alloc_event()"), now it is useless, so remove it.
 
-Errors in acpi_evaluate_object() can lead to incorrect state of buffer.
-
-This can lead to access to data in previously ACPI_FREEd buffer and
-secondary ACPI_FREE to the same buffer later.
-
-Handle errors in acpi_evaluate_object the same way it is done earlier
-with acpi_ns_handle_to_pathname.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Link: https://github.com/acpica/acpica/commit/9061cd9a
-Fixes: 5fd033288a86 ("ACPICA: debugger: add command to dump all fields of particular subtype")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20220926023018.1505270-1-cuigaosheng1@huawei.com
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- drivers/acpi/acpica/dbnames.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/notify/fanotify/fanotify.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
-index b91155ea9c343..c9131259f717b 100644
---- a/drivers/acpi/acpica/dbnames.c
-+++ b/drivers/acpi/acpica/dbnames.c
-@@ -550,8 +550,12 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
- 	ACPI_FREE(buffer.pointer);
+diff --git a/fs/notify/fanotify/fanotify.h b/fs/notify/fanotify/fanotify.h
+index bf6d4d38afa04..57f51a9a3015d 100644
+--- a/fs/notify/fanotify/fanotify.h
++++ b/fs/notify/fanotify/fanotify.h
+@@ -452,12 +452,6 @@ static inline bool fanotify_is_error_event(u32 mask)
+ 	return mask & FAN_FS_ERROR;
+ }
  
- 	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
--	acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
+-static inline bool fanotify_event_has_path(struct fanotify_event *event)
+-{
+-	return event->type == FANOTIFY_EVENT_TYPE_PATH ||
+-		event->type == FANOTIFY_EVENT_TYPE_PATH_PERM;
+-}
 -
-+	status = acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
-+	if (ACPI_FAILURE(status)) {
-+		acpi_os_printf("Could Not evaluate object %p\n",
-+			       obj_handle);
-+		return (AE_OK);
-+	}
- 	/*
- 	 * Since this is a field unit, surround the output in braces
- 	 */
+ static inline const struct path *fanotify_event_path(struct fanotify_event *event)
+ {
+ 	if (event->type == FANOTIFY_EVENT_TYPE_PATH)
 -- 
 2.43.0
 
