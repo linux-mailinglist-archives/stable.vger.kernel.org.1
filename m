@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5B789C52C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9F189C012
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FABA1C2223C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27FC3285E27
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C1B74438;
-	Mon,  8 Apr 2024 13:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E897D08D;
+	Mon,  8 Apr 2024 13:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiJYo+xP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NwTzRco"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CF26EB72;
-	Mon,  8 Apr 2024 13:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E8F7D07F;
+	Mon,  8 Apr 2024 13:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584448; cv=none; b=DNJTie650HSO9pQJ3/CD9u8lhX54POllBgEq7z1IG2JOKWf0jfqV438i8hcgPLp5oE7Jsv1+aCOpLXIxFqaxQY3A49ZvHIOO7qrLlxh+hEU7o1iUeU4kG17Y+wfzsdHfclRuBAbdqP8k/AWgxWuCWOzmgdZ71/oXF9qGGpfNXyE=
+	t=1712581472; cv=none; b=CxLf0EnqGEZsQOE9yO7Duq8HHbJxqhu3DjJvDEsf/G/Es6pxik517zeEq6VrVOVInsZjVx50+1y6E9k6Lv3+c7p84QCv2lXVEpKK5hHy5kPxbccb0IcJoUW+6CmI5AsNNc3MdwIlUexYwvCQVZXptPQJM1n2vjiKEp5mgTXYTqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584448; c=relaxed/simple;
-	bh=l9W/71XjqxwHNzU/5a6ey4AaM1QVTcAgBBfohX5V0TM=;
+	s=arc-20240116; t=1712581472; c=relaxed/simple;
+	bh=ArSJAl4tSTJCvgIh8UUN+38Yda4QLUf5+JhT6Htf9jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uk1XImIRN3kblzuHGfrhGDAVK/fl0sLq6WKL2Os1Krh7a1Cg/2ojKWq/vh6DYApiQerLsC32nfo2HB25Y4J7eSKbszk+ov7A5Qdfkt0Tw43gIHCbS3RvRrx3NnZ9IC7imFhjkP1FHL0NbUefls1GVTK7iErk3seJ5JaAuq/AnKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiJYo+xP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEF4C433C7;
-	Mon,  8 Apr 2024 13:54:07 +0000 (UTC)
+	 MIME-Version; b=ETOOkRux1n2T6cPZTZMlXfxEMLARA0lsC8hFG+PfqJqpJegswgr/XPIaqeIWEqIL19CtjjoTZgfwSnwCe+31mMDHesJjL2UdYqgtxACH4dEeUPYhqF1gpY41y+NajBsa6cpuSNdufZ+j86YPN14EkA6QcGJI9ruywSnRPQKDztk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NwTzRco; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C5CC433C7;
+	Mon,  8 Apr 2024 13:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584448;
-	bh=l9W/71XjqxwHNzU/5a6ey4AaM1QVTcAgBBfohX5V0TM=;
+	s=korg; t=1712581471;
+	bh=ArSJAl4tSTJCvgIh8UUN+38Yda4QLUf5+JhT6Htf9jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AiJYo+xPEbR3RcqiRxUUMp6n7jPW48Gayn9bNDlNKMy1fTseIlNKFnQB3lWNnIFw8
-	 0V++NEHe7eRKHhLeMwtWHKBuOo/cvuW6duzCKjrLBGZGd/XLE3cuLR+jjrVlW+kNQk
-	 wqoR9aDjX218x1KA6RNWnwkjyQh9RinB+0VIHlwU=
+	b=2NwTzRcoxp8LWjylWWqXI2zIyYZKF83OXHe6gvuuDMBAcqDeKIlJyzyrY3fXwZlkY
+	 S4GOSTJzEKFApiuvGjlZ/sgxP71flQ/ue4kmnxieNCTC2HF6KuSRcDcBKaWl/FcR2m
+	 YUgx5kHxIoTcsEMmZCM6S3CJJ0I6VnLbEJSh06jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 441/690] NFSD: Clean up nfs4svc_encode_compoundres()
-Date: Mon,  8 Apr 2024 14:55:07 +0200
-Message-ID: <20240408125415.621729411@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 009/252] tools: ynl: fix setting presence bits in simple nests
+Date: Mon,  8 Apr 2024 14:55:08 +0200
+Message-ID: <20240408125306.937244177@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upsteam commit 9993a66317fc9951322483a9edbfae95a640b210 ]
+[ Upstream commit f6c8f5e8694c7a78c94e408b628afa6255cc428a ]
 
-In today's Linux NFS server implementation, the NFS dispatcher
-initializes each XDR result stream, and the NFSv4 .pc_func and
-.pc_encode methods all use xdr_stream-based encoding. This keeps
-rq_res.len automatically updated. There is no longer a need for
-the WARN_ON_ONCE() check in nfs4svc_encode_compoundres().
+When we set members of simple nested structures in requests
+we need to set "presence" bits for all the nesting layers
+below. This has nothing to do with the presence type of
+the last layer.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: be5bea1cc0bf ("net: add basic C code generators for Netlink")
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20240321020214.1250202-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tools/net/ynl/ynl-gen-c.py | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 6c43cf52a885f..76028a5c81d1d 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5470,12 +5470,8 @@ bool
- nfs4svc_encode_compoundres(struct svc_rqst *rqstp, struct xdr_stream *xdr)
- {
- 	struct nfsd4_compoundres *resp = rqstp->rq_resp;
--	struct xdr_buf *buf = xdr->buf;
- 	__be32 *p;
+diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
+index 897af958cee85..575b7e248e521 100755
+--- a/tools/net/ynl/ynl-gen-c.py
++++ b/tools/net/ynl/ynl-gen-c.py
+@@ -198,8 +198,11 @@ class Type(SpecAttr):
+         presence = ''
+         for i in range(0, len(ref)):
+             presence = f"{var}->{'.'.join(ref[:i] + [''])}_present.{ref[i]}"
+-            if self.presence_type() == 'bit':
+-                code.append(presence + ' = 1;')
++            # Every layer below last is a nest, so we know it uses bit presence
++            # last layer is "self" and may be a complex type
++            if i == len(ref) - 1 and self.presence_type() != 'bit':
++                continue
++            code.append(presence + ' = 1;')
+         code += self._setter_lines(ri, member, presence)
  
--	WARN_ON_ONCE(buf->len != buf->head[0].iov_len + buf->page_len +
--				 buf->tail[0].iov_len);
--
- 	/*
- 	 * Send buffer space for the following items is reserved
- 	 * at the top of nfsd4_proc_compound().
+         func_name = f"{op_prefix(ri, direction, deref=deref)}_set_{'_'.join(ref)}"
 -- 
 2.43.0
 
