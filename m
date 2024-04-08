@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-36673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757F289C12F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E979389C61A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 158CC1F219C4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A05C628583A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6285980028;
-	Mon,  8 Apr 2024 13:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4447F49C;
+	Mon,  8 Apr 2024 14:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZniIDCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ha2aIXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EDB77F1B;
-	Mon,  8 Apr 2024 13:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E136A7E0F3;
+	Mon,  8 Apr 2024 14:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582011; cv=none; b=OB9AMvRoumNcwt6sWrzP5Dh/w6f9R6Hket4pp2VSvJf31K7Q3sSGdF3Bq7v+mwc7jLhC8ppzAtapG1EDcqnBmtqvYwIR/2OtY7gBU55aS7YTQZLKCysuHXbDVpEFG1/1pKbdwoWUQKuoxKqTxljXxswgAXBsecSGoPiZmFXmJ0c=
+	t=1712585061; cv=none; b=QFS1n0H55029D5Oa96fudSOr19ccHlBlQG9+IE/SAISvePIWomszAnL5Y9/dBK2vWwv0LgveiU9euuXxW5aaPx1q0GuYD52gYBfWyB792QcXdMK69W49FjDrWi6XZXXYdOik9TD6KaIJX7tAfxtwj0rE7ZSvCzdbsJFjJ0xoIjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582011; c=relaxed/simple;
-	bh=4SyZfx+9InlhIBsJpau/cJ+3HybbgM0oTbHSmEgBOvM=;
+	s=arc-20240116; t=1712585061; c=relaxed/simple;
+	bh=UroffI2rA+lViRJVvWvfu83p/hBDMajxWZiyIp1PQlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FDeJ9WCNEPONIORJ3kv/vh/6Y10iabdL9FIomMwseYfipiAIqhmkADM53ad0i7SMgMhZng9MoFM1mwKIiwG7id8Tk6MZtWdPzXKLU/YzzXP3zHUrwSwVGG/It9eQ1dzfowzpPewC7h7WSMnpdVzde9nI9HanA4xFU/D92lSMUrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZniIDCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D60BC433F1;
-	Mon,  8 Apr 2024 13:13:30 +0000 (UTC)
+	 MIME-Version; b=VYNItfoE/bby0SUW/qQb2bht1vM2yUy7Cm0AmuqH0LigILWEOhnsyi0HL2JT1qjuG/XA7IEnKfJB7BbsQGF1TFD/MwVVz6wtX5p1VAQBVE1o5qCqucGzntzHFYR2gATs5QXEYcnM1AI1sQWhwVMrOzuHPitWxSDcbP1G4cR+lM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ha2aIXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A96BC433C7;
+	Mon,  8 Apr 2024 14:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582011;
-	bh=4SyZfx+9InlhIBsJpau/cJ+3HybbgM0oTbHSmEgBOvM=;
+	s=korg; t=1712585060;
+	bh=UroffI2rA+lViRJVvWvfu83p/hBDMajxWZiyIp1PQlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZniIDCcGoz5M6u2U+1jvFTZFWL5YfD3AipdInQMrjCdvACgLfMYbWVGoHgWeypYY
-	 +iFWusqYGwpRyc7kP4KCSp63REINQeYwNPp5KbOoCcFvEHN/7EBsqjK1N96n0jzZaC
-	 SaMl8ZobQndXr1dqXJqmJ4kkVzNOtY9XWuX36Zz8=
+	b=1Ha2aIXExcOicrvYQZ/z8+TbefsNku7aQ5gWzGPRA03HsezZGOjrmH6nYXqkBeXwG
+	 CgTtgxKYDEwFICnusK6Po86o1EcXITyFJgUoL/2mm8hU4UCMBMrQ9uNtj44hdTT3/n
+	 gLKD09OhcYijXNfyDPs1hYpBgjD1+f96SYXoNlVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/138] drm/amd: Add concept of running prepare_suspend() sequence for IP blocks
+Subject: [PATCH 5.15 619/690] Octeontx2-af: fix pause frame configuration in GMP mode
 Date: Mon,  8 Apr 2024 14:58:05 +0200
-Message-ID: <20240408125258.430163089@linuxfoundation.org>
+Message-ID: <20240408125422.053016927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit cb11ca3233aa3303dc11dca25977d2e7f24be00f ]
+[ Upstream commit 40d4b4807cadd83fb3f46cc8cd67a945b5b25461 ]
 
-If any IP blocks allocate memory during their hw_fini() sequence
-this can cause the suspend to fail under memory pressure.  Introduce
-a new phase that IP blocks can use to allocate memory before suspend
-starts so that it can potentially be evicted into swap instead.
+The Octeontx2 MAC block (CGX) has separate data paths (SMU and GMP) for
+different speeds, allowing for efficient data transfer.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: ca299b4512d4 ("drm/amd: Flush GFXOFF requests in prepare stage")
+The previous patch which added pause frame configuration has a bug due
+to which pause frame feature is not working in GMP mode.
+
+This patch fixes the issue by configurating appropriate registers.
+
+Fixes: f7e086e754fe ("octeontx2-af: Pause frame configuration at cgx")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240326052720.4441-1-hkelam@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 12 +++++++++++-
- drivers/gpu/drm/amd/include/amd_shared.h   |  1 +
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 902a446cc4d38..77e35b919b064 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4180,7 +4180,7 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
- int amdgpu_device_prepare(struct drm_device *dev)
- {
- 	struct amdgpu_device *adev = drm_to_adev(dev);
--	int r;
-+	int i, r;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 3ade1a6e2f1e0..4dec201158956 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -787,6 +787,11 @@ static int cgx_lmac_enadis_pause_frm(void *cgxd, int lmac_id,
+ 	if (!is_lmac_valid(cgx, lmac_id))
+ 		return -ENODEV;
  
- 	if (dev->switch_power_state == DRM_SWITCH_POWER_OFF)
- 		return 0;
-@@ -4190,6 +4190,16 @@ int amdgpu_device_prepare(struct drm_device *dev)
- 	if (r)
- 		return r;
- 
-+	for (i = 0; i < adev->num_ip_blocks; i++) {
-+		if (!adev->ip_blocks[i].status.valid)
-+			continue;
-+		if (!adev->ip_blocks[i].version->funcs->prepare_suspend)
-+			continue;
-+		r = adev->ip_blocks[i].version->funcs->prepare_suspend((void *)adev);
-+		if (r)
-+			return r;
-+	}
++	cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
++	cfg &= ~CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
++	cfg |= rx_pause ? CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK : 0x0;
++	cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
 +
- 	return 0;
- }
- 
-diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/amd/include/amd_shared.h
-index f175e65b853a0..34467427c9f97 100644
---- a/drivers/gpu/drm/amd/include/amd_shared.h
-+++ b/drivers/gpu/drm/amd/include/amd_shared.h
-@@ -294,6 +294,7 @@ struct amd_ip_funcs {
- 	int (*hw_init)(void *handle);
- 	int (*hw_fini)(void *handle);
- 	void (*late_fini)(void *handle);
-+	int (*prepare_suspend)(void *handle);
- 	int (*suspend)(void *handle);
- 	int (*resume)(void *handle);
- 	bool (*is_idle)(void *handle);
+ 	cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
+ 	cfg &= ~CGX_SMUX_RX_FRM_CTL_CTL_BCK;
+ 	cfg |= rx_pause ? CGX_SMUX_RX_FRM_CTL_CTL_BCK : 0x0;
 -- 
 2.43.0
 
