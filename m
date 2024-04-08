@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-36588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117A389C0AD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A4B89C68B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AA56B24506
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6170B2737C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5CA6FE1A;
-	Mon,  8 Apr 2024 13:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3467F49C;
+	Mon,  8 Apr 2024 14:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlFIy8bl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYFua7pH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE32E2E62C;
-	Mon,  8 Apr 2024 13:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4107F47C;
+	Mon,  8 Apr 2024 14:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581764; cv=none; b=o7fA9I9kHJMpK/TUpAgXKoVbFGgGO9AUzEgwvkaPfbCTho82dd9UGX8rv8QXmaXY09mUQmgc+Agfj+iIvLJ/1/W7xVcZ7y5tHUMrbuEslJYtHpgTdhY7IOixno/zOfWIxfobHA0kkfWtwDngnXVl3FWkOb90ryyJ4jlEHy0iptU=
+	t=1712584909; cv=none; b=LPj3Jl2jjmYWyUg3/EDNMs0AbXtbcdvD4Fkzq+pNDMqQNfdZHQG6ovUqz5y41oWVMfeeC0s+brdokO0j/hkT7IhwYCa9z8jX/fcIKd6hlbRs0VUqUi/vlAITOOxs85kxR5WyrSbrrEM/cMkFvkbawDxJLoedsFe0+q5fF9WUH+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581764; c=relaxed/simple;
-	bh=+UcuGIvrW49PeukjK1jWbpVlv9Mtd+VmIsQNLjrcbRc=;
+	s=arc-20240116; t=1712584909; c=relaxed/simple;
+	bh=k5vpQ8nJg9DwkoQbeaoMFJv90hWN5wwDIIoU4/bSvsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jl3Ezo74qIuJ1usAahkN+6aEtOZPrAolQRezcCGE0Ib4F0yEJaMVu48jMhwgu6Qm2KYb+OxGmwGxgN36hnlxVQ0wWv+ecEI3aQySorSxJWS8sQCVRaeD1WoMYjlAKPCET5PAGA831aPf7AS+vNGwCgZlkxoBF5lWupPVlPTmPQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlFIy8bl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493DBC433F1;
-	Mon,  8 Apr 2024 13:09:24 +0000 (UTC)
+	 MIME-Version; b=bdUSQSHqxvGePUQT0vbd0smJfGG4FYWHc0WtRda//ZXqbGq1zB4F4trkBhHof/YbBkrnfsy38PC9EX2VR4kyNwqsqvpmptL/80Y5m7LyplNrJjRSmf1eZvUqHRpr8XAceg6A8RJJkxsTZW8QoJKoFtrxkg5ScafAdspb4rNC3x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYFua7pH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EE9C43394;
+	Mon,  8 Apr 2024 14:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581764;
-	bh=+UcuGIvrW49PeukjK1jWbpVlv9Mtd+VmIsQNLjrcbRc=;
+	s=korg; t=1712584908;
+	bh=k5vpQ8nJg9DwkoQbeaoMFJv90hWN5wwDIIoU4/bSvsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlFIy8blT9hqhOvVAuNWkRnqC9evUM4m3Ysa1R72fyek8wL5WND5OoTL+wtOxdWFH
-	 nIB0BeI5cSWLDGXhUaFijwAiZo5LQoAKGKA63nzN1fMnisFSyN/bXuQM5CVRV7T1of
-	 Lm+lzNIAP15RhdK+/rE+zW4qnktiwsh137drnJiY=
+	b=nYFua7pHoJxWJtVcMLh+OHMvKgrX7dmRvM//zs6B2u0LnMrhGfpFzcnVCAD5TRg/Z
+	 kv9q/BM0q6iOyppA1wZDhbC8h0fUh8jKqG29rw1zs5+au+IIosBMOPmfsH318CyhbX
+	 N9hBN6a6EE2YAS0egsrwy9lGx0+AoYosAbfbijTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 050/138] net: phy: micrel: Fix potential null pointer dereference
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 598/690] scsi: qla2xxx: Fix command flush on cable pull
 Date: Mon,  8 Apr 2024 14:57:44 +0200
-Message-ID: <20240408125257.784119794@linuxfoundation.org>
+Message-ID: <20240408125421.257624230@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 96c155943a703f0655c0c4cab540f67055960e91 upstream.
+commit a27d4d0e7de305def8a5098a614053be208d1aa1 upstream.
 
-In lan8814_get_sig_rx() and lan8814_get_sig_tx() ptp_parse_header() may
-return NULL as ptp_header due to abnormal packet type or corrupted packet.
-Fix this bug by adding ptp_header check.
+System crash due to command failed to flush back to SCSI layer.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+ BUG: unable to handle kernel NULL pointer dereference at 0000000000000000
+ PGD 0 P4D 0
+ Oops: 0000 [#1] SMP NOPTI
+ CPU: 27 PID: 793455 Comm: kworker/u130:6 Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
+ Hardware name: HPE ProLiant DL360 Gen10/ProLiant DL360 Gen10, BIOS U32 09/03/2021
+ Workqueue: nvme-wq nvme_fc_connect_ctrl_work [nvme_fc]
+ RIP: 0010:__wake_up_common+0x4c/0x190
+ Code: 24 10 4d 85 c9 74 0a 41 f6 01 04 0f 85 9d 00 00 00 48 8b 43 08 48 83 c3 08 4c 8d 48 e8 49 8d 41 18 48 39 c3 0f 84 f0 00 00 00 <49> 8b 41 18 89 54 24 08 31 ed 4c 8d 70 e8 45 8b 29 41 f6 c5 04 75
+ RSP: 0018:ffff95f3e0cb7cd0 EFLAGS: 00010086
+ RAX: 0000000000000000 RBX: ffff8b08d3b26328 RCX: 0000000000000000
+ RDX: 0000000000000001 RSI: 0000000000000003 RDI: ffff8b08d3b26320
+ RBP: 0000000000000001 R08: 0000000000000000 R09: ffffffffffffffe8
+ R10: 0000000000000000 R11: ffff95f3e0cb7a60 R12: ffff95f3e0cb7d20
+ R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
+ FS:  0000000000000000(0000) GS:ffff8b2fdf6c0000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 0000002f1e410002 CR4: 00000000007706e0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  __wake_up_common_lock+0x7c/0xc0
+  qla_nvme_ls_req+0x355/0x4c0 [qla2xxx]
+ qla2xxx [0000:12:00.1]-f084:3: qlt_free_session_done: se_sess 0000000000000000 / sess ffff8ae1407ca000 from port 21:32:00:02:ac:07:ee:b8 loop_id 0x02 s_id 01:02:00 logout 1 keep 0 els_logo 0
+ ? __nvme_fc_send_ls_req+0x260/0x380 [nvme_fc]
+ qla2xxx [0000:12:00.1]-207d:3: FCPort 21:32:00:02:ac:07:ee:b8 state transitioned from ONLINE to LOST - portid=010200.
+  ? nvme_fc_send_ls_req.constprop.42+0x1a/0x45 [nvme_fc]
+ qla2xxx [0000:12:00.1]-2109:3: qla2x00_schedule_rport_del 21320002ac07eeb8. rport ffff8ae598122000 roles 1
+ ? nvme_fc_connect_ctrl_work.cold.63+0x1e3/0xa7d [nvme_fc]
+ qla2xxx [0000:12:00.1]-f084:3: qlt_free_session_done: se_sess 0000000000000000 / sess ffff8ae14801e000 from port 21:32:01:02:ad:f7:ee:b8 loop_id 0x04 s_id 01:02:01 logout 1 keep 0 els_logo 0
+  ? __switch_to+0x10c/0x450
+ ? process_one_work+0x1a7/0x360
+ qla2xxx [0000:12:00.1]-207d:3: FCPort 21:32:01:02:ad:f7:ee:b8 state transitioned from ONLINE to LOST - portid=010201.
+  ? worker_thread+0x1ce/0x390
+  ? create_worker+0x1a0/0x1a0
+ qla2xxx [0000:12:00.1]-2109:3: qla2x00_schedule_rport_del 21320102adf7eeb8. rport ffff8ae3b2312800 roles 70
+  ? kthread+0x10a/0x120
+ qla2xxx [0000:12:00.1]-2112:3: qla_nvme_unregister_remote_port: unregister remoteport on ffff8ae14801e000 21320102adf7eeb8
+  ? set_kthread_struct+0x40/0x40
+ qla2xxx [0000:12:00.1]-2110:3: remoteport_delete of ffff8ae14801e000 21320102adf7eeb8 completed.
+  ? ret_from_fork+0x1f/0x40
+ qla2xxx [0000:12:00.1]-f086:3: qlt_free_session_done: waiting for sess ffff8ae14801e000 logout
 
-Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240329061631.33199-1-amishin@t-argos.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The system was under memory stress where driver was not able to allocate an
+SRB to carry out error recovery of cable pull.  The failure to flush causes
+upper layer to start modifying scsi_cmnd.  When the system frees up some
+memory, the subsequent cable pull trigger another command flush. At this
+point the driver access a null pointer when attempting to DMA unmap the
+SGL.
+
+Add a check to make sure commands are flush back on session tear down to
+prevent the null pointer access.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/scsi/qla2xxx/qla_target.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -2303,7 +2303,7 @@ static void lan8814_txtstamp(struct mii_
+--- a/drivers/scsi/qla2xxx/qla_target.c
++++ b/drivers/scsi/qla2xxx/qla_target.c
+@@ -1083,6 +1083,16 @@ void qlt_free_session_done(struct work_s
+ 		    "%s: sess %p logout completed\n", __func__, sess);
  	}
- }
  
--static void lan8814_get_sig_rx(struct sk_buff *skb, u16 *sig)
-+static bool lan8814_get_sig_rx(struct sk_buff *skb, u16 *sig)
- {
- 	struct ptp_header *ptp_header;
- 	u32 type;
-@@ -2313,7 +2313,11 @@ static void lan8814_get_sig_rx(struct sk
- 	ptp_header = ptp_parse_header(skb, type);
- 	skb_pull_inline(skb, ETH_HLEN);
- 
-+	if (!ptp_header)
-+		return false;
++	/* check for any straggling io left behind */
++	if (!(sess->flags & FCF_FCP2_DEVICE) &&
++	    qla2x00_eh_wait_for_pending_commands(sess->vha, sess->d_id.b24, 0, WAIT_TARGET)) {
++		ql_log(ql_log_warn, vha, 0x3027,
++		    "IO not return. Resetting.\n");
++		set_bit(ISP_ABORT_NEEDED, &vha->dpc_flags);
++		qla2xxx_wake_dpc(vha);
++		qla2x00_wait_for_chip_reset(vha);
++	}
 +
- 	*sig = (__force u16)(ntohs(ptp_header->sequence_id));
-+	return true;
- }
- 
- static bool lan8814_match_rx_ts(struct kszphy_ptp_priv *ptp_priv,
-@@ -2325,7 +2329,8 @@ static bool lan8814_match_rx_ts(struct k
- 	bool ret = false;
- 	u16 skb_sig;
- 
--	lan8814_get_sig_rx(skb, &skb_sig);
-+	if (!lan8814_get_sig_rx(skb, &skb_sig))
-+		return ret;
- 
- 	/* Iterate over all RX timestamps and match it with the received skbs */
- 	spin_lock_irqsave(&ptp_priv->rx_ts_lock, flags);
-@@ -2605,7 +2610,7 @@ static int lan8814_ptpci_adjfine(struct
- 	return 0;
- }
- 
--static void lan8814_get_sig_tx(struct sk_buff *skb, u16 *sig)
-+static bool lan8814_get_sig_tx(struct sk_buff *skb, u16 *sig)
- {
- 	struct ptp_header *ptp_header;
- 	u32 type;
-@@ -2613,7 +2618,11 @@ static void lan8814_get_sig_tx(struct sk
- 	type = ptp_classify_raw(skb);
- 	ptp_header = ptp_parse_header(skb, type);
- 
-+	if (!ptp_header)
-+		return false;
-+
- 	*sig = (__force u16)(ntohs(ptp_header->sequence_id));
-+	return true;
- }
- 
- static void lan8814_dequeue_tx_skb(struct kszphy_ptp_priv *ptp_priv)
-@@ -2631,7 +2640,8 @@ static void lan8814_dequeue_tx_skb(struc
- 
- 	spin_lock_irqsave(&ptp_priv->tx_queue.lock, flags);
- 	skb_queue_walk_safe(&ptp_priv->tx_queue, skb, skb_tmp) {
--		lan8814_get_sig_tx(skb, &skb_sig);
-+		if (!lan8814_get_sig_tx(skb, &skb_sig))
-+			continue;
- 
- 		if (memcmp(&skb_sig, &seq_id, sizeof(seq_id)))
- 			continue;
-@@ -2675,7 +2685,8 @@ static bool lan8814_match_skb(struct ksz
- 
- 	spin_lock_irqsave(&ptp_priv->rx_queue.lock, flags);
- 	skb_queue_walk_safe(&ptp_priv->rx_queue, skb, skb_tmp) {
--		lan8814_get_sig_rx(skb, &skb_sig);
-+		if (!lan8814_get_sig_rx(skb, &skb_sig))
-+			continue;
- 
- 		if (memcmp(&skb_sig, &rx_ts->seq_id, sizeof(rx_ts->seq_id)))
- 			continue;
+ 	if (sess->logo_ack_needed) {
+ 		sess->logo_ack_needed = 0;
+ 		qla24xx_async_notify_ack(vha, sess,
 
 
 
