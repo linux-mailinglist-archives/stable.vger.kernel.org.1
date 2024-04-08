@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-37025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8B189C373
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2670189C388
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E54BB2E6AD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:36:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5556283B5D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0E212BEBE;
-	Mon,  8 Apr 2024 13:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46411128383;
+	Mon,  8 Apr 2024 13:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFTPb0Jg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpA015cv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B78512D1FD;
-	Mon,  8 Apr 2024 13:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0465A128372;
+	Mon,  8 Apr 2024 13:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583036; cv=none; b=bZDcjwDRpjmYOnIg2fSmALcEaD2374f90kTBqdS04YrJgmsXxKx2HyGQiUL7r2Qd/F7fuisA6VIpOS5JXGT0Qy63D9/7n9DMvYZkkdJYS6f0mEt8kEAiTW9oziX4DbaFZ18XJtDZXWzyLg2TFe/vbBwjpJzY5iPcPESYcnNsS7k=
+	t=1712583390; cv=none; b=I9KYh0SFG0yfrx+2dxEWAIL1R9+E6lLQ09OKdkvGUncalV8XqTieOvloNPzSC6JallO3vZv8508TP/VdbRaG6ImIM63tlylgs18IYZTsxiabl6sVOR2ZC6TwpmSKk8O29jvmQ9ZnJnJL9q3sPHhAXPliqY7lxmh1HIVReG4Tx0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583036; c=relaxed/simple;
-	bh=+eqeKU8T9TcOha1V1jgvfKbMTWGuMyHTYtfqUKk04rM=;
+	s=arc-20240116; t=1712583390; c=relaxed/simple;
+	bh=du+Srk0KS5XSprjg4t3Z2MfgdWpqKKbD7LGAGiyrPVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ls40ReTcjl+uVPZ+l0SNu9sExGz0X5DsCqeWsRGFMCc2Bsl2QAOFiMG69DfXicJcOkLYqceLn8752sVdpQu3dZHHu+9eX2pNtk8wZZoIp8UbxAbWxy0FsfVaEj/kYhqEF0b2MN4NYLfaF0EA2vMKj+5UMq+WlgLbaGfIKxesA3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFTPb0Jg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351D2C433C7;
-	Mon,  8 Apr 2024 13:30:35 +0000 (UTC)
+	 MIME-Version; b=Fu1p5r8SiEVedchiZERQE2wP8BpbtVCSN9fjSeMyqidXmP+zPR6tnrOmT8gq+ZAF8ostZZmZYNcqCXt/Exqv692+s8Rb8KAwnHkF7y49WfCIMupGT8/k5SHWZiwW6GkkX3ExWa6zuOuDYKiPqyGqXv0etwaOZjWtZrPip5ezR/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpA015cv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F06C433C7;
+	Mon,  8 Apr 2024 13:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583035;
-	bh=+eqeKU8T9TcOha1V1jgvfKbMTWGuMyHTYtfqUKk04rM=;
+	s=korg; t=1712583389;
+	bh=du+Srk0KS5XSprjg4t3Z2MfgdWpqKKbD7LGAGiyrPVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kFTPb0Jgu5Fv4L/qRNxTp+ju4TJh00Qu7BAkIu+PQo9NQdqetEb2iyx1wpAm8Cpaf
-	 TRE97UTvwM4ElUJvD9CgnFjNH6JonxsE67iPNQDVul7sqz+cA2XdcX6WXBac7g/crN
-	 u0ADukDGfU+NefgTS7qB3P05m+oF9lYFpDe/iEt4=
+	b=cpA015cvf9cgZaNGQonzujn6/lrQOWat6AMfB7n/FY9BgyFsO2SUfAfGAucl716Gu
+	 862bcT5Jsn9dL8ETtvvIMX/NF0vPGnP8USw2rQNQMbKkymwtjw1dqzo1YBd0EZC/tN
+	 BHw5TgZ6LSBfmOmmbz43gO130pssp35KoKqmz1C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Mushayev <nikolay.mushayev@intel.com>,
-	Nir Efrati <nir.efrati@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/252] e1000e: Workaround for sporadic MDI error on Meteor Lake systems
+Subject: [PATCH 6.8 174/273] ata: sata_sx4: fix pdc20621_get_from_dimm() on 64-bit
 Date: Mon,  8 Apr 2024 14:57:29 +0200
-Message-ID: <20240408125311.312676780@linuxfoundation.org>
+Message-ID: <20240408125314.663373020@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,406 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 6dbdd4de0362c37e54e8b049781402e5a409e7d0 ]
+[ Upstream commit 52f80bb181a9a1530ade30bc18991900bbb9697f ]
 
-On some Meteor Lake systems accessing the PHY via the MDIO interface may
-result in an MDI error. This issue happens sporadically and in most cases
-a second access to the PHY via the MDIO interface results in success.
+gcc warns about a memcpy() with overlapping pointers because of an
+incorrect size calculation:
 
-As a workaround, introduce a retry counter which is set to 3 on Meteor
-Lake systems. The driver will only return an error if 3 consecutive PHY
-access attempts fail. The retry mechanism is disabled in specific flows,
-where MDI errors are expected.
+In file included from include/linux/string.h:369,
+                 from drivers/ata/sata_sx4.c:66:
+In function 'memcpy_fromio',
+    inlined from 'pdc20621_get_from_dimm.constprop' at drivers/ata/sata_sx4.c:962:2:
+include/linux/fortify-string.h:97:33: error: '__builtin_memcpy' accessing 4294934464 bytes at offsets 0 and [16, 16400] overlaps 6442385281 bytes at offset -2147450817 [-Werror=restrict]
+   97 | #define __underlying_memcpy     __builtin_memcpy
+      |                                 ^
+include/linux/fortify-string.h:620:9: note: in expansion of macro '__underlying_memcpy'
+  620 |         __underlying_##op(p, q, __fortify_size);                        \
+      |         ^~~~~~~~~~~~~
+include/linux/fortify-string.h:665:26: note: in expansion of macro '__fortify_memcpy_chk'
+  665 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
+      |                          ^~~~~~~~~~~~~~~~~~~~
+include/asm-generic/io.h:1184:9: note: in expansion of macro 'memcpy'
+ 1184 |         memcpy(buffer, __io_virt(addr), size);
+      |         ^~~~~~
 
-Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
-Suggested-by: Nikolay Mushayev <nikolay.mushayev@intel.com>
-Co-developed-by: Nir Efrati <nir.efrati@intel.com>
-Signed-off-by: Nir Efrati <nir.efrati@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+The problem here is the overflow of an unsigned 32-bit number to a
+negative that gets converted into a signed 'long', keeping a large
+positive number.
+
+Replace the complex calculation with a more readable min() variant
+that avoids the warning.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/hw.h      |   2 +
- drivers/net/ethernet/intel/e1000e/ich8lan.c |  33 ++++
- drivers/net/ethernet/intel/e1000e/phy.c     | 182 ++++++++++++--------
- drivers/net/ethernet/intel/e1000e/phy.h     |   2 +
- 4 files changed, 150 insertions(+), 69 deletions(-)
+ drivers/ata/sata_sx4.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/hw.h b/drivers/net/ethernet/intel/e1000e/hw.h
-index 1fef6bb5a5fbc..4b6e7536170ab 100644
---- a/drivers/net/ethernet/intel/e1000e/hw.h
-+++ b/drivers/net/ethernet/intel/e1000e/hw.h
-@@ -628,6 +628,7 @@ struct e1000_phy_info {
- 	u32 id;
- 	u32 reset_delay_us;	/* in usec */
- 	u32 revision;
-+	u32 retry_count;
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index b51d7a9d0d90c..a482741eb181f 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -957,8 +957,7 @@ static void pdc20621_get_from_dimm(struct ata_host *host, void *psource,
  
- 	enum e1000_media_type media_type;
+ 	offset -= (idx * window_size);
+ 	idx++;
+-	dist = ((long) (window_size - (offset + size))) >= 0 ? size :
+-		(long) (window_size - offset);
++	dist = min(size, window_size - offset);
+ 	memcpy_fromio(psource, dimm_mmio + offset / 4, dist);
  
-@@ -644,6 +645,7 @@ struct e1000_phy_info {
- 	bool polarity_correction;
- 	bool speed_downgraded;
- 	bool autoneg_wait_to_complete;
-+	bool retry_enabled;
- };
- 
- struct e1000_nvm_info {
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index a2788fd5f8bb8..717c52913e84b 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -222,11 +222,18 @@ static bool e1000_phy_is_accessible_pchlan(struct e1000_hw *hw)
- 	if (hw->mac.type >= e1000_pch_lpt) {
- 		/* Only unforce SMBus if ME is not active */
- 		if (!(er32(FWSM) & E1000_ICH_FWSM_FW_VALID)) {
-+			/* Switching PHY interface always returns MDI error
-+			 * so disable retry mechanism to avoid wasting time
-+			 */
-+			e1000e_disable_phy_retry(hw);
-+
- 			/* Unforce SMBus mode in PHY */
- 			e1e_rphy_locked(hw, CV_SMB_CTRL, &phy_reg);
- 			phy_reg &= ~CV_SMB_CTRL_FORCE_SMBUS;
- 			e1e_wphy_locked(hw, CV_SMB_CTRL, phy_reg);
- 
-+			e1000e_enable_phy_retry(hw);
-+
- 			/* Unforce SMBus mode in MAC */
- 			mac_reg = er32(CTRL_EXT);
- 			mac_reg &= ~E1000_CTRL_EXT_FORCE_SMBUS;
-@@ -310,6 +317,11 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 		goto out;
- 	}
- 
-+	/* There is no guarantee that the PHY is accessible at this time
-+	 * so disable retry mechanism to avoid wasting time
-+	 */
-+	e1000e_disable_phy_retry(hw);
-+
- 	/* The MAC-PHY interconnect may be in SMBus mode.  If the PHY is
- 	 * inaccessible and resetting the PHY is not blocked, toggle the
- 	 * LANPHYPC Value bit to force the interconnect to PCIe mode.
-@@ -380,6 +392,8 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 		break;
- 	}
- 
-+	e1000e_enable_phy_retry(hw);
-+
- 	hw->phy.ops.release(hw);
- 	if (!ret_val) {
- 
-@@ -449,6 +463,11 @@ static s32 e1000_init_phy_params_pchlan(struct e1000_hw *hw)
- 
- 	phy->id = e1000_phy_unknown;
- 
-+	if (hw->mac.type == e1000_pch_mtp) {
-+		phy->retry_count = 2;
-+		e1000e_enable_phy_retry(hw);
-+	}
-+
- 	ret_val = e1000_init_phy_workarounds_pchlan(hw);
- 	if (ret_val)
- 		return ret_val;
-@@ -1146,6 +1165,11 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
- 	if (ret_val)
- 		goto out;
- 
-+	/* Switching PHY interface always returns MDI error
-+	 * so disable retry mechanism to avoid wasting time
-+	 */
-+	e1000e_disable_phy_retry(hw);
-+
- 	/* Force SMBus mode in PHY */
- 	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
- 	if (ret_val)
-@@ -1153,6 +1177,8 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
- 	phy_reg |= CV_SMB_CTRL_FORCE_SMBUS;
- 	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
- 
-+	e1000e_enable_phy_retry(hw);
-+
- 	/* Force SMBus mode in MAC */
- 	mac_reg = er32(CTRL_EXT);
- 	mac_reg |= E1000_CTRL_EXT_FORCE_SMBUS;
-@@ -1313,6 +1339,11 @@ static s32 e1000_disable_ulp_lpt_lp(struct e1000_hw *hw, bool force)
- 		/* Toggle LANPHYPC Value bit */
- 		e1000_toggle_lanphypc_pch_lpt(hw);
- 
-+	/* Switching PHY interface always returns MDI error
-+	 * so disable retry mechanism to avoid wasting time
-+	 */
-+	e1000e_disable_phy_retry(hw);
-+
- 	/* Unforce SMBus mode in PHY */
- 	ret_val = e1000_read_phy_reg_hv_locked(hw, CV_SMB_CTRL, &phy_reg);
- 	if (ret_val) {
-@@ -1333,6 +1364,8 @@ static s32 e1000_disable_ulp_lpt_lp(struct e1000_hw *hw, bool force)
- 	phy_reg &= ~CV_SMB_CTRL_FORCE_SMBUS;
- 	e1000_write_phy_reg_hv_locked(hw, CV_SMB_CTRL, phy_reg);
- 
-+	e1000e_enable_phy_retry(hw);
-+
- 	/* Unforce SMBus mode in MAC */
- 	mac_reg = er32(CTRL_EXT);
- 	mac_reg &= ~E1000_CTRL_EXT_FORCE_SMBUS;
-diff --git a/drivers/net/ethernet/intel/e1000e/phy.c b/drivers/net/ethernet/intel/e1000e/phy.c
-index 96ff0ca561b6c..395746bcf8f7c 100644
---- a/drivers/net/ethernet/intel/e1000e/phy.c
-+++ b/drivers/net/ethernet/intel/e1000e/phy.c
-@@ -107,6 +107,16 @@ s32 e1000e_phy_reset_dsp(struct e1000_hw *hw)
- 	return e1e_wphy(hw, M88E1000_PHY_GEN_CONTROL, 0);
- }
- 
-+void e1000e_disable_phy_retry(struct e1000_hw *hw)
-+{
-+	hw->phy.retry_enabled = false;
-+}
-+
-+void e1000e_enable_phy_retry(struct e1000_hw *hw)
-+{
-+	hw->phy.retry_enabled = true;
-+}
-+
- /**
-  *  e1000e_read_phy_reg_mdic - Read MDI control register
-  *  @hw: pointer to the HW structure
-@@ -118,55 +128,73 @@ s32 e1000e_phy_reset_dsp(struct e1000_hw *hw)
-  **/
- s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data)
- {
-+	u32 i, mdic = 0, retry_counter, retry_max;
- 	struct e1000_phy_info *phy = &hw->phy;
--	u32 i, mdic = 0;
-+	bool success;
- 
- 	if (offset > MAX_PHY_REG_ADDRESS) {
- 		e_dbg("PHY Address %d is out of range\n", offset);
- 		return -E1000_ERR_PARAM;
- 	}
- 
-+	retry_max = phy->retry_enabled ? phy->retry_count : 0;
-+
- 	/* Set up Op-code, Phy Address, and register offset in the MDI
- 	 * Control register.  The MAC will take care of interfacing with the
- 	 * PHY to retrieve the desired data.
- 	 */
--	mdic = ((offset << E1000_MDIC_REG_SHIFT) |
--		(phy->addr << E1000_MDIC_PHY_SHIFT) |
--		(E1000_MDIC_OP_READ));
-+	for (retry_counter = 0; retry_counter <= retry_max; retry_counter++) {
-+		success = true;
- 
--	ew32(MDIC, mdic);
-+		mdic = ((offset << E1000_MDIC_REG_SHIFT) |
-+			(phy->addr << E1000_MDIC_PHY_SHIFT) |
-+			(E1000_MDIC_OP_READ));
- 
--	/* Poll the ready bit to see if the MDI read completed
--	 * Increasing the time out as testing showed failures with
--	 * the lower time out
--	 */
--	for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--		udelay(50);
--		mdic = er32(MDIC);
--		if (mdic & E1000_MDIC_READY)
--			break;
--	}
--	if (!(mdic & E1000_MDIC_READY)) {
--		e_dbg("MDI Read PHY Reg Address %d did not complete\n", offset);
--		return -E1000_ERR_PHY;
--	}
--	if (mdic & E1000_MDIC_ERROR) {
--		e_dbg("MDI Read PHY Reg Address %d Error\n", offset);
--		return -E1000_ERR_PHY;
--	}
--	if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
--		e_dbg("MDI Read offset error - requested %d, returned %d\n",
--		      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
--		return -E1000_ERR_PHY;
-+		ew32(MDIC, mdic);
-+
-+		/* Poll the ready bit to see if the MDI read completed
-+		 * Increasing the time out as testing showed failures with
-+		 * the lower time out
-+		 */
-+		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
-+			usleep_range(50, 60);
-+			mdic = er32(MDIC);
-+			if (mdic & E1000_MDIC_READY)
-+				break;
-+		}
-+		if (!(mdic & E1000_MDIC_READY)) {
-+			e_dbg("MDI Read PHY Reg Address %d did not complete\n",
-+			      offset);
-+			success = false;
-+		}
-+		if (mdic & E1000_MDIC_ERROR) {
-+			e_dbg("MDI Read PHY Reg Address %d Error\n", offset);
-+			success = false;
-+		}
-+		if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
-+			e_dbg("MDI Read offset error - requested %d, returned %d\n",
-+			      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
-+			success = false;
-+		}
-+
-+		/* Allow some time after each MDIC transaction to avoid
-+		 * reading duplicate data in the next MDIC transaction.
-+		 */
-+		if (hw->mac.type == e1000_pch2lan)
-+			usleep_range(100, 150);
-+
-+		if (success) {
-+			*data = (u16)mdic;
-+			return 0;
-+		}
-+
-+		if (retry_counter != retry_max) {
-+			e_dbg("Perform retry on PHY transaction...\n");
-+			mdelay(10);
-+		}
- 	}
--	*data = (u16)mdic;
- 
--	/* Allow some time after each MDIC transaction to avoid
--	 * reading duplicate data in the next MDIC transaction.
--	 */
--	if (hw->mac.type == e1000_pch2lan)
--		udelay(100);
--	return 0;
-+	return -E1000_ERR_PHY;
- }
- 
- /**
-@@ -179,56 +207,72 @@ s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data)
-  **/
- s32 e1000e_write_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 data)
- {
-+	u32 i, mdic = 0, retry_counter, retry_max;
- 	struct e1000_phy_info *phy = &hw->phy;
--	u32 i, mdic = 0;
-+	bool success;
- 
- 	if (offset > MAX_PHY_REG_ADDRESS) {
- 		e_dbg("PHY Address %d is out of range\n", offset);
- 		return -E1000_ERR_PARAM;
- 	}
- 
-+	retry_max = phy->retry_enabled ? phy->retry_count : 0;
-+
- 	/* Set up Op-code, Phy Address, and register offset in the MDI
- 	 * Control register.  The MAC will take care of interfacing with the
- 	 * PHY to retrieve the desired data.
- 	 */
--	mdic = (((u32)data) |
--		(offset << E1000_MDIC_REG_SHIFT) |
--		(phy->addr << E1000_MDIC_PHY_SHIFT) |
--		(E1000_MDIC_OP_WRITE));
-+	for (retry_counter = 0; retry_counter <= retry_max; retry_counter++) {
-+		success = true;
- 
--	ew32(MDIC, mdic);
-+		mdic = (((u32)data) |
-+			(offset << E1000_MDIC_REG_SHIFT) |
-+			(phy->addr << E1000_MDIC_PHY_SHIFT) |
-+			(E1000_MDIC_OP_WRITE));
- 
--	/* Poll the ready bit to see if the MDI read completed
--	 * Increasing the time out as testing showed failures with
--	 * the lower time out
--	 */
--	for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--		udelay(50);
--		mdic = er32(MDIC);
--		if (mdic & E1000_MDIC_READY)
--			break;
--	}
--	if (!(mdic & E1000_MDIC_READY)) {
--		e_dbg("MDI Write PHY Reg Address %d did not complete\n", offset);
--		return -E1000_ERR_PHY;
--	}
--	if (mdic & E1000_MDIC_ERROR) {
--		e_dbg("MDI Write PHY Red Address %d Error\n", offset);
--		return -E1000_ERR_PHY;
--	}
--	if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
--		e_dbg("MDI Write offset error - requested %d, returned %d\n",
--		      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
--		return -E1000_ERR_PHY;
--	}
-+		ew32(MDIC, mdic);
- 
--	/* Allow some time after each MDIC transaction to avoid
--	 * reading duplicate data in the next MDIC transaction.
--	 */
--	if (hw->mac.type == e1000_pch2lan)
--		udelay(100);
-+		/* Poll the ready bit to see if the MDI read completed
-+		 * Increasing the time out as testing showed failures with
-+		 * the lower time out
-+		 */
-+		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
-+			usleep_range(50, 60);
-+			mdic = er32(MDIC);
-+			if (mdic & E1000_MDIC_READY)
-+				break;
-+		}
-+		if (!(mdic & E1000_MDIC_READY)) {
-+			e_dbg("MDI Write PHY Reg Address %d did not complete\n",
-+			      offset);
-+			success = false;
-+		}
-+		if (mdic & E1000_MDIC_ERROR) {
-+			e_dbg("MDI Write PHY Reg Address %d Error\n", offset);
-+			success = false;
-+		}
-+		if (FIELD_GET(E1000_MDIC_REG_MASK, mdic) != offset) {
-+			e_dbg("MDI Write offset error - requested %d, returned %d\n",
-+			      offset, FIELD_GET(E1000_MDIC_REG_MASK, mdic));
-+			success = false;
-+		}
- 
--	return 0;
-+		/* Allow some time after each MDIC transaction to avoid
-+		 * reading duplicate data in the next MDIC transaction.
-+		 */
-+		if (hw->mac.type == e1000_pch2lan)
-+			usleep_range(100, 150);
-+
-+		if (success)
-+			return 0;
-+
-+		if (retry_counter != retry_max) {
-+			e_dbg("Perform retry on PHY transaction...\n");
-+			mdelay(10);
-+		}
-+	}
-+
-+	return -E1000_ERR_PHY;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/e1000e/phy.h b/drivers/net/ethernet/intel/e1000e/phy.h
-index c48777d095235..049bb325b4b14 100644
---- a/drivers/net/ethernet/intel/e1000e/phy.h
-+++ b/drivers/net/ethernet/intel/e1000e/phy.h
-@@ -51,6 +51,8 @@ s32 e1000e_read_phy_reg_bm2(struct e1000_hw *hw, u32 offset, u16 *data);
- s32 e1000e_write_phy_reg_bm2(struct e1000_hw *hw, u32 offset, u16 data);
- void e1000_power_up_phy_copper(struct e1000_hw *hw);
- void e1000_power_down_phy_copper(struct e1000_hw *hw);
-+void e1000e_disable_phy_retry(struct e1000_hw *hw);
-+void e1000e_enable_phy_retry(struct e1000_hw *hw);
- s32 e1000e_read_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 *data);
- s32 e1000e_write_phy_reg_mdic(struct e1000_hw *hw, u32 offset, u16 data);
- s32 e1000_read_phy_reg_hv(struct e1000_hw *hw, u32 offset, u16 *data);
+ 	psource += dist;
+@@ -1005,8 +1004,7 @@ static void pdc20621_put_to_dimm(struct ata_host *host, void *psource,
+ 	readl(mmio + PDC_DIMM_WINDOW_CTLR);
+ 	offset -= (idx * window_size);
+ 	idx++;
+-	dist = ((long)(s32)(window_size - (offset + size))) >= 0 ? size :
+-		(long) (window_size - offset);
++	dist = min(size, window_size - offset);
+ 	memcpy_toio(dimm_mmio + offset / 4, psource, dist);
+ 	writel(0x01, mmio + PDC_GENERAL_CTLR);
+ 	readl(mmio + PDC_GENERAL_CTLR);
 -- 
 2.43.0
 
