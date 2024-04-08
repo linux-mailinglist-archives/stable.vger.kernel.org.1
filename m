@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A71689C2F7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF2789C5B2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CBB41C2153A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF2FC1C21523
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE6713793C;
-	Mon,  8 Apr 2024 13:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80637C0BF;
+	Mon,  8 Apr 2024 13:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb+XuRBH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kj49y8+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6ED137918;
-	Mon,  8 Apr 2024 13:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FCB7BB1A;
+	Mon,  8 Apr 2024 13:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583056; cv=none; b=RzLUfM5yzCF2+11cMiL5SIKM7F6cxVaD4PX9jpZcwBrJpTVRrD5TK4aXsoVwYGK26Ro4FnGQH/r2I/38JfhHFxpW37grt9d58g9V12wpvLMqRKOUJqYhY89MMYDPy5D66YknTY4JLcT+bFmlTZBW17No1QNrIdBZvFg8Z2wRiEU=
+	t=1712584753; cv=none; b=BaIR0VfJ3gOi7uDa0BXbWxW0ksP4jMeQVoz+Bm0UQeDBxnWcEtvBl3UUqRMDTU+LuRX8NI9Ye7wvDnQ6n9EnOoReTf+qb23q1uO54fA/6wbDyPItGPcHBcer66KHtTgkaOq8ER7b3nj5Ys2CT4d9XaneMioA8omkjPvCvke4a38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583056; c=relaxed/simple;
-	bh=U9McpEbZuIUywBWh+wRWg+1Rl6KFi8PqokMu40kaCbE=;
+	s=arc-20240116; t=1712584753; c=relaxed/simple;
+	bh=I0LXOwe597XfoCLFFBc2DGy62Ws68OctWS0hfxYMH6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwlZK0V7/WJ3vBxkKbm2Hp6ceNsDdTJRym1Mtviow5hUaGgTHHXWgDNCLoPJEzgEA4qgeY7EdR06BM5IKdbXx2FXunr0WvtquyPYbbDFQKlo+Y84VaUZYn0rzpjG1hmW6/x1/A8/8lNsfuiSaoBKuF3o+p2i/djTDdvC7V+Xq8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb+XuRBH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95E7C43390;
-	Mon,  8 Apr 2024 13:30:55 +0000 (UTC)
+	 MIME-Version; b=mOFttWFIdpyNdhsPRlScCuQY5+Uvm6Er/XW2PPEnX8b2ag1a4d14P4crfXjX7cI4ZgNmcV6eEr8Id74ih+DPDA4j+6WQFrO36aVCWbsHKkyN/haSC0b1cK74nCHU+mX1b0Jnmlid7JaU+59Tmrl06tjKOSHKdpBT0KychafruCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kj49y8+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DC4C43390;
+	Mon,  8 Apr 2024 13:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583056;
-	bh=U9McpEbZuIUywBWh+wRWg+1Rl6KFi8PqokMu40kaCbE=;
+	s=korg; t=1712584753;
+	bh=I0LXOwe597XfoCLFFBc2DGy62Ws68OctWS0hfxYMH6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cb+XuRBHQz9RyAke7ISEvv1PTgmdxg4h+VtyfFLh5wIdB64iJcV6G06J4VFKIw5QK
-	 X3iQvTysSFLldOqBuWM0trSeydPvUmmxccwlAt1mqoagDYFHU+8imQu7hqf9Iasgo9
-	 C5xTvsOZyV3Nqc+5VDvoloio8WrBOYDrn88tJ3PI=
+	b=kj49y8+2mUSIdQdl1CcoL6nkoxjKTgunIW2SY2HNm3KVZWzHKMmcQYk6vboadtyzB
+	 7XzJelj2TU3k4WES0ZIuyweUK28RcLdyTGxharuu+fDrjCdpJFl3+L/r/JCQiUsRcG
+	 aK7Z6ZVXd+l9/H0B9orDdnhSUkJy+Fj6CPvT4bk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 135/273] mean_and_variance: Drop always failing tests
+	Tavian Barnes <tavianator@tavianator.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 544/690] nfsd: Fix creation time serialization order
 Date: Mon,  8 Apr 2024 14:56:50 +0200
-Message-ID: <20240408125313.485220939@linuxfoundation.org>
+Message-ID: <20240408125419.358165628@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Tavian Barnes <tavianator@tavianator.com>
 
-[ Upstream commit 97ca7c1f93bbac6982717a7055cd727813c45e61 ]
+[ Upstream commit d7dbed457c2ef83709a2a2723a2d58de43623449 ]
 
-mean_and_variance_test_2 and mean_and_variance_test_4 always fail.
-The input parameters to those tests are identical to the input parameters
-to tests 1 and 3, yet the expected result for tests 2 and 4 is different
-for the mean and stddev tests. That will always fail.
+In nfsd4_encode_fattr(), TIME_CREATE was being written out after all
+other times.  However, they should be written out in an order that
+matches the bit flags in bmval1, which in this case are
 
-     Expected mean_and_variance_get_mean(mv) == mean[i], but
-        mean_and_variance_get_mean(mv) == 22 (0x16)
-        mean[i] == 10 (0xa)
+    #define FATTR4_WORD1_TIME_ACCESS        (1UL << 15)
+    #define FATTR4_WORD1_TIME_CREATE        (1UL << 18)
+    #define FATTR4_WORD1_TIME_DELTA         (1UL << 19)
+    #define FATTR4_WORD1_TIME_METADATA      (1UL << 20)
+    #define FATTR4_WORD1_TIME_MODIFY        (1UL << 21)
 
-Drop the bad tests.
+so TIME_CREATE should come second.
 
-Fixes: 65bc41090720 ("mean and variance: More tests")
-Closes: https://lore.kernel.org/lkml/065b94eb-6a24-4248-b7d7-d3212efb4787@roeck-us.net/
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I noticed this on a FreeBSD NFSv4.2 client, which supports creation
+times.  On this client, file times were weirdly permuted.  With this
+patch applied on the server, times looked normal on the client.
+
+Fixes: e377a3e698fb ("nfsd: Add support for the birth time attribute")
+Link: https://unix.stackexchange.com/q/749605/56202
+Signed-off-by: Tavian Barnes <tavianator@tavianator.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/bcachefs/mean_and_variance_test.c | 28 +---------------------------
- 1 file changed, 1 insertion(+), 27 deletions(-)
+ fs/nfsd/nfs4xdr.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/bcachefs/mean_and_variance_test.c b/fs/bcachefs/mean_and_variance_test.c
-index 019583c3ca0ea..51093fa848202 100644
---- a/fs/bcachefs/mean_and_variance_test.c
-+++ b/fs/bcachefs/mean_and_variance_test.c
-@@ -130,20 +130,8 @@ static void mean_and_variance_test_1(struct kunit *test)
- 			d, mean, stddev, weighted_mean, weighted_stddev);
- }
- 
--static void mean_and_variance_test_2(struct kunit *test)
--{
--	s64 d[]			= { 100, 10, 10, 10, 10, 10, 10 };
--	s64 mean[]		= {  10, 10, 10, 10, 10, 10, 10 };
--	s64 stddev[]		= {   9,  9,  9,  9,  9,  9,  9 };
--	s64 weighted_mean[]	= {  32, 27, 22, 19, 17, 15, 14 };
--	s64 weighted_stddev[]	= {  38, 35, 31, 27, 24, 21, 18 };
--
--	do_mean_and_variance_test(test, 10, 6, ARRAY_SIZE(d), 2,
--			d, mean, stddev, weighted_mean, weighted_stddev);
--}
--
- /* Test behaviour where we switch from one steady state to another: */
--static void mean_and_variance_test_3(struct kunit *test)
-+static void mean_and_variance_test_2(struct kunit *test)
- {
- 	s64 d[]			= { 100, 100, 100, 100, 100 };
- 	s64 mean[]		= {  22,  32,  40,  46,  50 };
-@@ -155,18 +143,6 @@ static void mean_and_variance_test_3(struct kunit *test)
- 			d, mean, stddev, weighted_mean, weighted_stddev);
- }
- 
--static void mean_and_variance_test_4(struct kunit *test)
--{
--	s64 d[]			= { 100, 100, 100, 100, 100 };
--	s64 mean[]		= {  10,  11,  12,  13,  14 };
--	s64 stddev[]		= {   9,  13,  15,  17,  19 };
--	s64 weighted_mean[]	= {  32,  49,  61,  71,  78 };
--	s64 weighted_stddev[]	= {  38,  44,  44,  41,  38 };
--
--	do_mean_and_variance_test(test, 10, 6, ARRAY_SIZE(d), 2,
--			d, mean, stddev, weighted_mean, weighted_stddev);
--}
--
- static void mean_and_variance_fast_divpow2(struct kunit *test)
- {
- 	s64 i;
-@@ -224,8 +200,6 @@ static struct kunit_case mean_and_variance_test_cases[] = {
- 	KUNIT_CASE(mean_and_variance_weighted_advanced_test),
- 	KUNIT_CASE(mean_and_variance_test_1),
- 	KUNIT_CASE(mean_and_variance_test_2),
--	KUNIT_CASE(mean_and_variance_test_3),
--	KUNIT_CASE(mean_and_variance_test_4),
- 	{}
- };
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index c40876daf60c0..5b95499a1f344 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3365,6 +3365,11 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 		if (status)
+ 			goto out;
+ 	}
++	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
++		status = nfsd4_encode_nfstime4(xdr, &stat.btime);
++		if (status)
++			goto out;
++	}
+ 	if (bmval1 & FATTR4_WORD1_TIME_DELTA) {
+ 		p = xdr_reserve_space(xdr, 12);
+ 		if (!p)
+@@ -3381,11 +3386,6 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 		if (status)
+ 			goto out;
+ 	}
+-	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
+-		status = nfsd4_encode_nfstime4(xdr, &stat.btime);
+-		if (status)
+-			goto out;
+-	}
+ 	if (bmval1 & FATTR4_WORD1_MOUNTED_ON_FILEID) {
+ 		u64 ino = stat.ino;
  
 -- 
 2.43.0
