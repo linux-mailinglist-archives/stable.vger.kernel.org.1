@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0202589C2BC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:33:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 302A989C568
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BA72B28C68
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C545D1F23B2E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5D871742;
-	Mon,  8 Apr 2024 13:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B437D413;
+	Mon,  8 Apr 2024 13:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPtleZGi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vMu4A6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D62E762F7;
-	Mon,  8 Apr 2024 13:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42F9768F0;
+	Mon,  8 Apr 2024 13:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582509; cv=none; b=OJN5svllGttZLIQt4NV0J5+TCZOYhw7sbaTStRxbS9yCSBjjL4XJqs1EY7zQoVb6zMZ/SEvKtzKgt1h0uIviDVvtHYLxMcqUXAEbeX0F83MJTzMgcKwayd6nsw5HWwKphuOAAKLcvr7ylv+IbRXkya93gVkys6BUWZC3Q8B0Qx8=
+	t=1712584592; cv=none; b=aRYva9SpJ7K2eu8XPitrsnwB8ykrhThdaiPAfB95V4MgtyKDzLYd3OrIQtMPpIhSFSaAfs5w0iQbibAxXlxuPeY2SPy3M9mDhakT9pCiOPef83lfWNZl7TZK11+x83uyvX/JPluNZQhII1rsthSpQULnjcvscwYmk+O57lspPLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582509; c=relaxed/simple;
-	bh=eztxsFe4fwSiDeNDTTSYYR17KZJE2U1pr+0dQAbbUNA=;
+	s=arc-20240116; t=1712584592; c=relaxed/simple;
+	bh=4momn2rn7vJLEiSSx8J5g5cARBUWlSjOON6TrdK/Ujc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z09FhkD7e9fCaMF/UDjFpc7mqHanAIpV7lRLeknnua5hqmKA5UNCLauCq/CaS6JOPmMgjn3suIeuLM5Cu1B3PBJPimm+VzCKq/ClFfLJeZY+YyTA6GF4TxLNSNAfJHCQkZ5eSUJOuOJUGE0dStm+FA4WyNmu+i1b18Dr6rMNAR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPtleZGi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FADC433F1;
-	Mon,  8 Apr 2024 13:21:48 +0000 (UTC)
+	 MIME-Version; b=oNMgTQOySJLzeB1Wtp6U6R4Dl+ljlBqzgzFxFA5SJA/ZMox9AkAUIqttNPCD7NCpK2KB/QfCdazcOi6w8G0yd43IMtxTvtgtMuvP3A8xl05J2D9oDswjsFQnMj39iKsuEeTTO7YSam85ZmZ7AGmys5tqSityFpuR8OW/mywgDqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vMu4A6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB32C433F1;
+	Mon,  8 Apr 2024 13:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582509;
-	bh=eztxsFe4fwSiDeNDTTSYYR17KZJE2U1pr+0dQAbbUNA=;
+	s=korg; t=1712584591;
+	bh=4momn2rn7vJLEiSSx8J5g5cARBUWlSjOON6TrdK/Ujc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPtleZGipss0H5gjl9zHXb03dhX7Ve5/HSaQ7USuOKwbmLv4VElIyJMN7Sxy5m+ar
-	 2x/1C1CB+01LzWIGVLaaWcl22ALfcXZFB3FZVS51QWrHblYwkGyz2k5eylwG/lKAsB
-	 EzAKXCm9/dxUltCT0/d4TVRURkXiz4ic+rlkMZmI=
+	b=1vMu4A6zywtv0fERjuO40gIcW0Cxuc1qDnx0GrkUCucCzv+Kgv8t6XT+lGzUDyIuT
+	 MG17OVmFIabuFPkGo9o7iEaJcFlZ7evVXvQYLwDwtO5dlfu6bJKUJ3xp4FtcB8zCQi
+	 bCeLYzjxDvUN0IXeIlwMihPM/GgQZLV5/I/4erRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonidas Spyropoulos <artafinde@archlinux.com>,
-	Arthur Borsboom <arthurborsboom@gmail.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 082/273] xen-netfront: Add missing skb_mark_for_recycle
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 5.15 491/690] NFSD: Fix licensing header in filecache.c
 Date: Mon,  8 Apr 2024 14:55:57 +0200
-Message-ID: <20240408125311.847001433@linuxfoundation.org>
+Message-ID: <20240408125417.419781012@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesper Dangaard Brouer <hawk@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 037965402a010898d34f4e35327d22c0a95cd51f upstream.
+[ Upstream commit 3f054211b29c0fa06dfdcab402c795fd7e906be1 ]
 
-Notice that skb_mark_for_recycle() is introduced later than fixes tag in
-commit 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycling").
+Add a missing SPDX header.
 
-It is believed that fixes tag were missing a call to page_pool_release_page()
-between v5.9 to v5.14, after which is should have used skb_mark_for_recycle().
-Since v6.6 the call page_pool_release_page() were removed (in
-commit 535b9c61bdef ("net: page_pool: hide page_pool_release_page()")
-and remaining callers converted (in commit 6bfef2ec0172 ("Merge branch
-'net-page_pool-remove-page_pool_release_page'")).
-
-This leak became visible in v6.8 via commit dba1b8a7ab68 ("mm/page_pool: catch
-page_pool memory leaks").
-
-Cc: stable@vger.kernel.org
-Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
-Reported-by: Leonidas Spyropoulos <artafinde@archlinux.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218654
-Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://lore.kernel.org/r/171154167446.2671062.9127105384591237363.stgit@firesoul
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/xen-netfront.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/filecache.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -285,6 +285,7 @@ static struct sk_buff *xennet_alloc_one_
- 		return NULL;
- 	}
- 	skb_add_rx_frag(skb, 0, page, 0, 0, PAGE_SIZE);
-+	skb_mark_for_recycle(skb);
- 
- 	/* Align ip header to a 16 bytes boundary */
- 	skb_reserve(skb, NET_IP_ALIGN);
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index d681faf48cf85..b43d2d7ac5957 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -1,5 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+- * Open file cache.
++ * The NFSD open file cache.
+  *
+  * (c) 2015 - Jeff Layton <jeff.layton@primarydata.com>
+  *
+-- 
+2.43.0
+
 
 
 
