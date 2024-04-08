@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C50789C1C1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48FC89C2B2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E01721F2182B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BDB2B26894
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF21B8173C;
-	Mon,  8 Apr 2024 13:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E36B79955;
+	Mon,  8 Apr 2024 13:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pgo8Mc8h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsOgBfYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD5376413;
-	Mon,  8 Apr 2024 13:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D89B6FE35;
+	Mon,  8 Apr 2024 13:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582404; cv=none; b=XZEY8F6xU80RGBlH6GkQV4k+f2ZY3ossCbLhv9J/6XaePXvbp1ROC1nmJRbFtEPnDqa8d1db1wVomfr9NbNThA+xWHHf7prZycefxnGQjQ4ob/nxsf0cRJNBopjN9RTUXfXWbffc72PceJZPawjBRIBb+GccoUnO9+HwGDIPLCw=
+	t=1712582889; cv=none; b=c4/oT1xk8p940W/mDTSyzCoj8tguwZl33+IBr+KOmr2D0mT/H1AtQNDGyo/S1DtQTOuIdpmzK2zPLebeXEm5BgxQ7DQQLuOZxHisZIZ1ddG7R0WMXvxZkRr+SxL3fDZzhgsMs6qTYDjb4uvqMjF+/AtRX8SD+IPS3J3ZPmqDCeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582404; c=relaxed/simple;
-	bh=EsMjF/jGRJV7B+mHSlJdtJ4xvH75osOu6hj7QRLMEHU=;
+	s=arc-20240116; t=1712582889; c=relaxed/simple;
+	bh=ksrmcZ0DHxpWWgwJO2q96J/dIw7GBWymFPKZFHVxM0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWjxaROHrw1EKsh1kBD92LdHdUdJ72zPxfPsxTf8jyd+XCwB+ntLJL9cItbe3Zf39yXCFQLYA+96wX5GGnvOcmOA7Aczv9ll5+UOgiXlD3ws3R0tXBHwauhsPDXfjIfU8HX7epq4PPheZUXY9apf1JmtxHA0hvy2TM8tu7QVB+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pgo8Mc8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D0FC433C7;
-	Mon,  8 Apr 2024 13:20:03 +0000 (UTC)
+	 MIME-Version; b=gZ/ADZiuoqSVbdEyBGEhH2btL0R2Bi5RdAYDarzFZKNqOtKJeY0JeO5HDZno1C1iZgOGGnGlZIwgsIaZEGTSetKAxRbEFZSyWviaEZ9fyti7HSWzbToIlYqbgxVqoJO90a7uwYbMDaP3V3YDSzUViWFmWu0zHwJV9IH7VLyaxII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsOgBfYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3DA9C43390;
+	Mon,  8 Apr 2024 13:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582404;
-	bh=EsMjF/jGRJV7B+mHSlJdtJ4xvH75osOu6hj7QRLMEHU=;
+	s=korg; t=1712582889;
+	bh=ksrmcZ0DHxpWWgwJO2q96J/dIw7GBWymFPKZFHVxM0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pgo8Mc8hQialghxV2spSiVoBcMRVkwZLI81h1wJuE1LdIOJM3B4xv3Bs+pTTRrjO3
-	 h6uZzOIz5qcz0wL1U89JaSqsbSauwKjILTFo2L+cS5kvuG6RQ1/va9db8wnNvjWuwn
-	 FMlVQ+u9zCHeDAIR274M8q67WBcey+bBZ12vSYzI=
+	b=rsOgBfYQy2DNXvzfE0bheAvT35VIwXIMz2cMcshqtdOXWopXqpsmoxR1lIQ8Wh4UW
+	 r0IiTZSZuS5Jx1NfoFUaS3rs6kFeWnQ2rp7iH6kaiDkr578RfhAT0QgU+T7RkOJFBC
+	 US9K/gVjHyF8+jPGFrO460kfFkZH82JjVHxmQpHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 090/252] x86/srso: Improve i-cache locality for alias mitigation
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 114/273] selftests: reuseaddr_conflict: add missing new line at the end of the output
 Date: Mon,  8 Apr 2024 14:56:29 +0200
-Message-ID: <20240408125309.446964844@linuxfoundation.org>
+Message-ID: <20240408125312.842834870@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-Commit aa730cff0c26244e88066b5b461a9f5fbac13823 upstream.
+commit 31974122cfdeaf56abc18d8ab740d580d9833e90 upstream.
 
-Move srso_alias_return_thunk() to the same section as
-srso_alias_safe_ret() so they can share a cache line.
+The netdev CI runs in a VM and captures serial, so stdout and
+stderr get combined. Because there's a missing new line in
+stderr the test ends up corrupting KTAP:
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/eadaf5530b46a7ae8b936522da45ae555d2b3393.1693889988.git.jpoimboe@kernel.org
+  # Successok 1 selftests: net: reuseaddr_conflict
+
+which should have been:
+
+  # Success
+  ok 1 selftests: net: reuseaddr_conflict
+
+Fixes: 422d8dc6fd3a ("selftest: add a reuseaddr test")
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240329160559.249476-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/lib/retpoline.S |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/reuseaddr_conflict.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -177,15 +177,14 @@ SYM_START(srso_alias_safe_ret, SYM_L_GLO
- 	int3
- SYM_FUNC_END(srso_alias_safe_ret)
- 
--	.section .text..__x86.return_thunk
--
--SYM_CODE_START(srso_alias_return_thunk)
-+SYM_CODE_START_NOALIGN(srso_alias_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
- 	call srso_alias_safe_ret
- 	ud2
- SYM_CODE_END(srso_alias_return_thunk)
- 
-+	.section .text..__x86.return_thunk
- /*
-  * Some generic notes on the untraining sequences:
-  *
+--- a/tools/testing/selftests/net/reuseaddr_conflict.c
++++ b/tools/testing/selftests/net/reuseaddr_conflict.c
+@@ -109,6 +109,6 @@ int main(void)
+ 	fd1 = open_port(0, 1);
+ 	if (fd1 >= 0)
+ 		error(1, 0, "Was allowed to create an ipv4 reuseport on an already bound non-reuseport socket with no ipv6");
+-	fprintf(stderr, "Success");
++	fprintf(stderr, "Success\n");
+ 	return 0;
+ }
 
 
 
