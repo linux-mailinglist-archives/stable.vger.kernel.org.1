@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-37170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA54089C57F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980A589C60A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6974EB256FD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA1431C23996
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAE37E119;
-	Mon,  8 Apr 2024 13:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10CB80604;
+	Mon,  8 Apr 2024 14:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWIc6Hoh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgU2dWR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA277E111;
-	Mon,  8 Apr 2024 13:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E99680045;
+	Mon,  8 Apr 2024 14:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583451; cv=none; b=h2zKwiL25Sm9ES+LRKh6OmIyf+Q4j8/gGtpniHh9GErOt6sXQHyiG4ir3WeOI1anH0vOoPd4VDIuV2JaAWrvcm/J35li9LqpxLQLgHefhNS5Xzt4LYmLgVX3y4x+CPsSnNsnMqAalvSdkhoCUfymnEvAl320wUGUl/8JXJ8Z5go=
+	t=1712585002; cv=none; b=FlBgZzfLT5O49WT/am+fQ112Mp8FYuotH3G+SB5XvWgmekCkwGT4cHwZwBDSvqxs6gR7E+vBvkjvorWLcKl5JWGETODXI+2mflyZapb+DJiBL3Jwv5yt3ALBr+WQPItn81JCpWeoxnOkgnyrw2Y59StpdNEluVB6lRX981l6Gxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583451; c=relaxed/simple;
-	bh=PKB67+WkpO7oKhj3biD2iELSbLn4Wordgb7EXrFVCi4=;
+	s=arc-20240116; t=1712585002; c=relaxed/simple;
+	bh=Youz7XcCmZoP2GCRjumSyhA1GiHfWM7HxlsmCrAuC48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQaalLaJFrdVFuaPevFQOgNTwp21leawbT1u6lHNl2UcmtpaxT0UhiVx3KprFoDbZRpZR9c/8npuVPxAvGYU/LLrg7xsE9QH/JekGfzbskp1vWls0BagIhpXBIlJEOFHWOGJVKjN0gjSPn0JITvj9SAIat4BqtKqanjWZ0OOhGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWIc6Hoh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEFCC433F1;
-	Mon,  8 Apr 2024 13:37:30 +0000 (UTC)
+	 MIME-Version; b=HxVuUa5ZRnbC3/zKbt+IXQv8KRI56O43oL9+jsLOzT+l7oMMRhMEvUijwCNbEC0g+zfTxAkE5VT02NAFJTfhsFeEdTBIU75ZC9ZK+67LrtZvpQhO2dhLO3lgeeLLRGKqwyqjVmG8fGKfQBn12uBnWDJSD31aJofX1VPExJoRWDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgU2dWR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF441C433A6;
+	Mon,  8 Apr 2024 14:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583451;
-	bh=PKB67+WkpO7oKhj3biD2iELSbLn4Wordgb7EXrFVCi4=;
+	s=korg; t=1712585002;
+	bh=Youz7XcCmZoP2GCRjumSyhA1GiHfWM7HxlsmCrAuC48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gWIc6HohEr1DKGW1ydIzIDd1d4nBsalIaHdWcDsy7ublnP0Ye0ytlwJmzdDTZ+sDS
-	 dPSpFfT+sWHwAj/h9mGoYrb4BHlQnReK8VZO6iSaPrDam4fJrsXD1K8/sXzgaQINsA
-	 t/6KSQMPO+EfnDO77IwlsqQUk8zfut+2rkKPMrg8=
+	b=QgU2dWR3jasQ59hjmSefQEjZUJvvQr+4G5dD2hSjfqKTWcNEP03NJPk9Dd1/u0s/c
+	 AAJNoNlxwKlPiT3KVB+ztZRjZqeDRdvEAiTnXAF91ROy1nWeFIFKIvCPYhb6RBcohI
+	 QwIesm7/ENHyreoGG5Vc1LTuChLgx0A1npQyiJW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Schunk <scpcom@gmx.de>,
-	Alexander Duyck <alexander.duyck@gmail.com>,
-	Jakub Kacinski <kuba@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/252] SUNRPC: Fix a slow server-side memory leak with RPC-over-TCP
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 630/690] io_uring: ensure 0 is returned on file registration success
 Date: Mon,  8 Apr 2024 14:58:16 +0200
-Message-ID: <20240408125312.767899107@linuxfoundation.org>
+Message-ID: <20240408125422.483370130@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +60,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 05258a0a69b3c5d2c003f818702c0a52b6fea861 ]
+A previous backport mistakenly removed code that cleared 'ret' to zero,
+as the SCM logging was performed. Fix up the return value so we don't
+return an errant error on fixed file registration.
 
-Jan Schunk reports that his small NFS servers suffer from memory
-exhaustion after just a few days. A bisect shows that commit
-e18e157bb5c8 ("SUNRPC: Send RPC message on TCP with a single
-sock_sendmsg() call") is the first bad commit.
-
-That commit assumed that sock_sendmsg() releases all the pages in
-the underlying bio_vec array, but the reality is that it doesn't.
-svc_xprt_release() releases the rqst's response pages, but the
-record marker page fragment isn't one of those, so it is never
-released.
-
-This is a narrow fix that can be applied to stable kernels. A
-more extensive fix is in the works.
-
-Reported-by: Jan Schunk <scpcom@gmx.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218671
-Fixes: e18e157bb5c8 ("SUNRPC: Send RPC message on TCP with a single sock_sendmsg() call")
-Cc: Alexander Duyck <alexander.duyck@gmail.com>
-Cc: Jakub Kacinski <kuba@kernel.org>
-Cc: David Howells <dhowells@redhat.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d909d381c315 ("io_uring: drop any code related to SCM_RIGHTS")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/svcsock.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ io_uring/io_uring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index e0ce4276274be..933e12e3a55c7 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1216,15 +1216,6 @@ static int svc_tcp_recvfrom(struct svc_rqst *rqstp)
-  * MSG_SPLICE_PAGES is used exclusively to reduce the number of
-  * copy operations in this path. Therefore the caller must ensure
-  * that the pages backing @xdr are unchanging.
-- *
-- * Note that the send is non-blocking. The caller has incremented
-- * the reference count on each page backing the RPC message, and
-- * the network layer will "put" these pages when transmission is
-- * complete.
-- *
-- * This is safe for our RPC services because the memory backing
-- * the head and tail components is never kmalloc'd. These always
-- * come from pages in the svc_rqst::rq_pages array.
-  */
- static int svc_tcp_sendmsg(struct svc_sock *svsk, struct svc_rqst *rqstp,
- 			   rpc_fraghdr marker, unsigned int *sentp)
-@@ -1254,6 +1245,7 @@ static int svc_tcp_sendmsg(struct svc_sock *svsk, struct svc_rqst *rqstp,
- 	iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, rqstp->rq_bvec,
- 		      1 + count, sizeof(marker) + rqstp->rq_res.len);
- 	ret = sock_sendmsg(svsk->sk_sock, &msg);
-+	page_frag_free(buf);
- 	if (ret < 0)
- 		return ret;
- 	*sentp += ret;
--- 
-2.43.0
-
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -8422,7 +8422,7 @@ static int io_sqe_files_register(struct
+ 	}
+ 
+ 	io_rsrc_node_switch(ctx, NULL);
+-	return ret;
++	return 0;
+ out_fput:
+ 	for (i = 0; i < ctx->nr_user_files; i++) {
+ 		file = io_file_from_index(ctx, i);
 
 
 
