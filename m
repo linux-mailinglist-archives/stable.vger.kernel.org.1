@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-36708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FBC89C161
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:20:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A4189C434
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3856DB211C3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84C761C22660
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447F67BAEC;
-	Mon,  8 Apr 2024 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C3185C41;
+	Mon,  8 Apr 2024 13:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeUpRll4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcJhPbcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025257B3E5;
-	Mon,  8 Apr 2024 13:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651207D414;
+	Mon,  8 Apr 2024 13:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582113; cv=none; b=Q+HNJRUJ2ew3Up2d27wdxdXVPOsvl5pxY1WBeI0zV4cOoaSgEacNxXhvF5EPvYvw/KzYHM4v6lxtrCZ1kemIQ5CyrzGgOlY92Rw2nmKqc1PnA85WfDfJT311S/cwqBVSX6TtqPfpOx69diW5pHdGjmW5qBd3vJiFu5zvipnqU3E=
+	t=1712583789; cv=none; b=h7jmj/mMnhR97vX9dBGgJWA96ZwvAb56/3bsRIR+WFylBURwfsjoPm7YFwUhES9xBX6AMVvKiI0ASxyzfvWx6o/MnDPF1UMXGwnp/vEg3oEfPVcjY4V1gyHT8qfW87QuwOchCFupzI+nweotJa6nmhj2cbgfr8+xnD+zdgsaYPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582113; c=relaxed/simple;
-	bh=g32IY/klt5O9Ji3XXqcbOcyE8QHvprkXHdr01Lthukk=;
+	s=arc-20240116; t=1712583789; c=relaxed/simple;
+	bh=L1f0ankWjk8cVffmAezo81gnONLIjxy/AZdt94fQTic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AP5mmhxQAc2KJbwzPxGxT7V+XXK860d3xLSYJFn7+aF+IFTOlev7X0u7WF2onDqjLfIteu5fuI8E7zJ/BRa+NGfSyMW6rNb8+pDy0zVnzVyLweM2fwbviZHYLXQw7b0Y3pXhazUWI8Ys5yaf2Lzv/prePPurhKWVhXED4hs0ky4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeUpRll4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8011AC433C7;
-	Mon,  8 Apr 2024 13:15:12 +0000 (UTC)
+	 MIME-Version; b=t7xlFt2pL82CZJVj3CIoVZS7LzMfRfteFCFtlTwkFTbemdonBgAwr1tBFtoYRodo/JRs/KKc0AhSCC12VEYvJ2w7AoKAoafEIGey5/ljNe9Y3HuekttWGY0DePQpYpIeBPM5pKfu4eBXC469WIq0/lAPf4fN+6QwUJg7gW4nvG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcJhPbcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF911C433F1;
+	Mon,  8 Apr 2024 13:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582112;
-	bh=g32IY/klt5O9Ji3XXqcbOcyE8QHvprkXHdr01Lthukk=;
+	s=korg; t=1712583789;
+	bh=L1f0ankWjk8cVffmAezo81gnONLIjxy/AZdt94fQTic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BeUpRll4w3009fl4gR2/BwbeRtmZUiZOe6tGFrqmDbVfQYGMolSAwwudbPD6e5e4v
-	 W9tYahSGhQqfffAzfyaPSq4EaHztx9B+YDB0lvQGSansOq82w5p+z3m/PpJuFpZ1I8
-	 MWQnnx8jU+muuvLdy4Czx5v3ctCe0WSsL4MpSQSM=
+	b=YcJhPbcFpVAl9qyQxWBNC3eEja8vE/mLKNZbhCLBhf5KiY4sMAT+dgQzSN0pnum6A
+	 eJp7FjVpR/uG0yrguvSsd8nj4XmfhlbMhO0Xn50beYzWejiPUhx/CbnV1ASH941m+c
+	 N8xsCHuTXEcFl8ycQ8r0gPBEwUVoqG7T1zWbeSsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Jianguo Wu <wujianguo106@163.com>
-Subject: [PATCH 6.1 079/138] tcp: Fix bind() regression for v6-only wildcard and v4(-mapped-v6) non-wildcard addresses.
-Date: Mon,  8 Apr 2024 14:58:13 +0200
-Message-ID: <20240408125258.684268968@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 219/273] ASoC: SOF: Intel: hda-common-ops: Do not set the get_stream_position callback
+Date: Mon,  8 Apr 2024 14:58:14 +0200
+Message-ID: <20240408125316.192769819@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit d91ef1e1b55f730bee8ce286b02b7bdccbc42973 ]
+commit 4ab6c38c664442c1fc9911eb3c5c6953d3dbcca5 upstream.
 
-Jianguo Wu reported another bind() regression introduced by bhash2.
+The get_stream_position has been replaced by get_dai_frame_counter, it
+should not be set to allow it to be dropped from core code.
 
-Calling bind() for the following 3 addresses on the same port, the
-3rd one should fail but now succeeds.
-
-  1. 0.0.0.0 or ::ffff:0.0.0.0
-  2. [::] w/ IPV6_V6ONLY
-  3. IPv4 non-wildcard address or v4-mapped-v6 non-wildcard address
-
-The first two bind() create tb2 like this:
-
-  bhash2 -> tb2(:: w/ IPV6_V6ONLY) -> tb2(0.0.0.0)
-
-The 3rd bind() will match with the IPv6 only wildcard address bucket
-in inet_bind2_bucket_match_addr_any(), however, no conflicting socket
-exists in the bucket.  So, inet_bhash2_conflict() will returns false,
-and thus, inet_bhash2_addr_any_conflict() returns false consequently.
-
-As a result, the 3rd bind() bypasses conflict check, which should be
-done against the IPv4 wildcard address bucket.
-
-So, in inet_bhash2_addr_any_conflict(), we must iterate over all buckets.
-
-Note that we cannot add ipv6_only flag for inet_bind2_bucket as it
-would confuse the following patetrn.
-
-  1. [::] w/ SO_REUSE{ADDR,PORT} and IPV6_V6ONLY
-  2. [::] w/ SO_REUSE{ADDR,PORT}
-  3. IPv4 non-wildcard address or v4-mapped-v6 non-wildcard address
-
-The first bind() would create a bucket with ipv6_only flag true,
-the second bind() would add the [::] socket into the same bucket,
-and the third bind() could succeed based on the wrong assumption
-that ipv6_only bucket would not conflict with v4(-mapped-v6) address.
-
-Fixes: 28044fc1d495 ("net: Add a bhash2 table hashed by port and address")
-Diagnosed-by: Jianguo Wu <wujianguo106@163.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240326204251.51301-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240321130814.4412-10-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_connection_sock.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ sound/soc/sof/intel/hda-common-ops.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index f7832d4253820..8407098a59391 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -289,6 +289,7 @@ static bool inet_bhash2_addr_any_conflict(const struct sock *sk, int port, int l
- 	struct sock_reuseport *reuseport_cb;
- 	struct inet_bind_hashbucket *head2;
- 	struct inet_bind2_bucket *tb2;
-+	bool conflict = false;
- 	bool reuseport_cb_ok;
+diff --git a/sound/soc/sof/intel/hda-common-ops.c b/sound/soc/sof/intel/hda-common-ops.c
+index 4d7ea18604ee..d71bb66b9991 100644
+--- a/sound/soc/sof/intel/hda-common-ops.c
++++ b/sound/soc/sof/intel/hda-common-ops.c
+@@ -57,7 +57,6 @@ struct snd_sof_dsp_ops sof_hda_common_ops = {
+ 	.pcm_pointer	= hda_dsp_pcm_pointer,
+ 	.pcm_ack	= hda_dsp_pcm_ack,
  
- 	rcu_read_lock();
-@@ -301,18 +302,20 @@ static bool inet_bhash2_addr_any_conflict(const struct sock *sk, int port, int l
+-	.get_stream_position = hda_dsp_get_stream_llp,
+ 	.get_dai_frame_counter = hda_dsp_get_stream_llp,
+ 	.get_host_byte_counter = hda_dsp_get_stream_ldp,
  
- 	spin_lock(&head2->lock);
- 
--	inet_bind_bucket_for_each(tb2, &head2->chain)
--		if (inet_bind2_bucket_match_addr_any(tb2, net, port, l3mdev, sk))
--			break;
-+	inet_bind_bucket_for_each(tb2, &head2->chain) {
-+		if (!inet_bind2_bucket_match_addr_any(tb2, net, port, l3mdev, sk))
-+			continue;
- 
--	if (tb2 && inet_bhash2_conflict(sk, tb2, uid, relax, reuseport_cb_ok,
--					reuseport_ok)) {
--		spin_unlock(&head2->lock);
--		return true;
-+		if (!inet_bhash2_conflict(sk, tb2, uid, relax, reuseport_cb_ok,	reuseport_ok))
-+			continue;
-+
-+		conflict = true;
-+		break;
- 	}
- 
- 	spin_unlock(&head2->lock);
--	return false;
-+
-+	return conflict;
- }
- 
- /*
 -- 
-2.43.0
+2.44.0
 
 
 
