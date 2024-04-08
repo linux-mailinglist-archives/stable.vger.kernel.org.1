@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-36893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2271A89C23D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ACE89C240
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D274D2831B5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4296283210
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4035E81741;
-	Mon,  8 Apr 2024 13:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBB881AC8;
+	Mon,  8 Apr 2024 13:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N54SeiCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbFXQOY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27727172F;
-	Mon,  8 Apr 2024 13:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD5C81AC1;
+	Mon,  8 Apr 2024 13:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582650; cv=none; b=i1NWHOSd8g14DFDsXHnhBGvhXQZL12AU/0S6ei5h28580djtHBdCapvuLtTc/u/GuYksOWR8sCZsWnklOBiupsGKrxQFjgP7/Te1YfXcyrj1lVpeBU+kozueZjmItr8p1/sZ5C5s5WDAwXwuzi5aZMensypstfOd3Ko7Gys5zlM=
+	t=1712582661; cv=none; b=MUQcU3ZYEv9eAY5jjT3di/n2PdU61yIcJPErXVyDwff1FpYcBLZNJ5C8dDwfGvQYzbjA1Xuv5l8ouCcCT/uJ+VV2VYLxfKIIWd7Nm0KyKXssv67JZPCKhF243e3rS+7XvBP7QlshYx3FSCelNNxuRGxb9AOtTojyhFulCEiM/RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582650; c=relaxed/simple;
-	bh=/BrD77I+n/A7GtgnQQTC/8Cftzk8MRUUvKNA3NpeSoA=;
+	s=arc-20240116; t=1712582661; c=relaxed/simple;
+	bh=Z/fKzRHHkGx+DsHKaN6qwIPn3cGSoje1sB3HvNT8/GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdBpSSbOhkMyYS6pf7gNxdJxG46JkJbfiYoseABu0MX7EYWkKA44BQiiUDqtHL7cLuz03RCJR9Rxk7aG8K/eH3/sGpaM6yQ1kukyv82bXCn78y+fr0D1iZE5521tGTAHYav9OYTCIvd+0fjfN50G91KuddtoPOYMR7YA8NwYUWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N54SeiCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72916C433F1;
-	Mon,  8 Apr 2024 13:24:09 +0000 (UTC)
+	 MIME-Version; b=CAAdy+1mPgxT0WWpQzp2CP0b8/QaSXM+JX9wuWtLc1dOqETWg3HJPZMdKfBaepyIxXGK4YUg8Ubri8uCJWLEamlZiCdvHGsyy2oDfAIuRNpsg3E0/5K6FFTCUOXJI8mppsn+ihDQA3uo/R1tKuL1mnGiYYzc5zZiBPHQgwXysPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbFXQOY6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC12DC433F1;
+	Mon,  8 Apr 2024 13:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582649;
-	bh=/BrD77I+n/A7GtgnQQTC/8Cftzk8MRUUvKNA3NpeSoA=;
+	s=korg; t=1712582661;
+	bh=Z/fKzRHHkGx+DsHKaN6qwIPn3cGSoje1sB3HvNT8/GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N54SeiCcvaQYLCW8Nz4w6WT/l/X/BESuLu4Ciap3GiAb5zvlQrI3KwFCVE+Pax8kx
-	 x+gzCq52sCPZZNkgL69VDWGvAGzsXBH2iAVd+o9DSnY0xf9D+Y/UXE0Byhoxn1NPIb
-	 AG4FUp5iqZO/XqXkIgcMZ/XJ53u/BPbFiy+lta0U=
+	b=AbFXQOY6IauAnoVlMW3iwEP1zKeIYl4x30x1CJMEMAv5LGydzLIfEIle8AF7tADd8
+	 Jn9FcpERO9yV38HoflXPam1acRMR7YMgtDQ4D2XnKKUP0IUcW7H5qZZZTlSJ7ZP/uY
+	 75cJr2JmmJMUXdXC+/+FMk0wM7kDA6YfhpjNRdlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 162/690] x86/asm: Differentiate between code and function alignment
-Date: Mon,  8 Apr 2024 14:50:28 +0200
-Message-ID: <20240408125405.416389472@linuxfoundation.org>
+Subject: [PATCH 5.15 163/690] x86/alternatives: Introduce int3_emulate_jcc()
+Date: Mon,  8 Apr 2024 14:50:29 +0200
+Message-ID: <20240408125405.465779771@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,50 +67,133 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 8eb5d34e77c63fde8af21c691bcf6e3cd87f7829 upstream.
+commit db7adcfd1cec4e95155e37bc066fddab302c6340 upstream.
 
-Create SYM_F_ALIGN to differentiate alignment requirements between
-SYM_CODE and SYM_FUNC.
+Move the kprobe Jcc emulation into int3_emulate_jcc() so it can be
+used by more code -- specifically static_call() will need this.
 
-This distinction is useful later when adding padding in front of
-functions; IOW this allows following the compiler's
-patchable-function-entry option.
-
-[peterz: Changelog]
-
-Change-Id: I4f9bc0507e5c3fdb3e0839806989efc305e0a758
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220915111143.824822743@infradead.org
-[cascardo: adjust for missing commit c4691712b546 ("x86/linkage: Add ENDBR to SYM_FUNC_START*()")]
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20230123210607.057678245@infradead.org
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/linkage.h |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/text-patching.h |   31 ++++++++++++++++++++++++++++
+ arch/x86/kernel/kprobes/core.c       |   38 +++++++----------------------------
+ 2 files changed, 39 insertions(+), 30 deletions(-)
 
---- a/arch/x86/include/asm/linkage.h
-+++ b/arch/x86/include/asm/linkage.h
-@@ -11,11 +11,15 @@
- #define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
- #endif /* CONFIG_X86_32 */
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -181,6 +181,37 @@ void int3_emulate_ret(struct pt_regs *re
+ 	unsigned long ip = int3_emulate_pop(regs);
+ 	int3_emulate_jmp(regs, ip);
+ }
++
++static __always_inline
++void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigned long disp)
++{
++	static const unsigned long jcc_mask[6] = {
++		[0] = X86_EFLAGS_OF,
++		[1] = X86_EFLAGS_CF,
++		[2] = X86_EFLAGS_ZF,
++		[3] = X86_EFLAGS_CF | X86_EFLAGS_ZF,
++		[4] = X86_EFLAGS_SF,
++		[5] = X86_EFLAGS_PF,
++	};
++
++	bool invert = cc & 1;
++	bool match;
++
++	if (cc < 0xc) {
++		match = regs->flags & jcc_mask[cc >> 1];
++	} else {
++		match = ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
++			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
++		if (cc >= 0xe)
++			match = match || (regs->flags & X86_EFLAGS_ZF);
++	}
++
++	if ((match && !invert) || (!match && invert))
++		ip += disp;
++
++	int3_emulate_jmp(regs, ip);
++}
++
+ #endif /* !CONFIG_UML_X86 */
  
--#ifdef __ASSEMBLY__
+ #endif /* _ASM_X86_TEXT_PATCHING_H */
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -463,50 +463,26 @@ static void kprobe_emulate_call(struct k
+ }
+ NOKPROBE_SYMBOL(kprobe_emulate_call);
+ 
+-static nokprobe_inline
+-void __kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs, bool cond)
++static void kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs)
+ {
+ 	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
+ 
+-	if (cond)
+-		ip += p->ainsn.rel32;
++	ip += p->ainsn.rel32;
+ 	int3_emulate_jmp(regs, ip);
+ }
 -
- #define __ALIGN		.balign CONFIG_FUNCTION_ALIGNMENT, 0x90;
- #define __ALIGN_STR	__stringify(__ALIGN)
+-static void kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs)
+-{
+-	__kprobe_emulate_jmp(p, regs, true);
+-}
+ NOKPROBE_SYMBOL(kprobe_emulate_jmp);
  
-+#define ASM_FUNC_ALIGN		__ALIGN_STR
-+#define __FUNC_ALIGN		__ALIGN
-+#define SYM_F_ALIGN		__FUNC_ALIGN
-+
-+#ifdef __ASSEMBLY__
-+
- #if defined(CONFIG_RETHUNK) && !defined(__DISABLE_EXPORTS) && !defined(BUILD_VDSO)
- #define RET	jmp __x86_return_thunk
- #else /* CONFIG_RETPOLINE */
+-static const unsigned long jcc_mask[6] = {
+-	[0] = X86_EFLAGS_OF,
+-	[1] = X86_EFLAGS_CF,
+-	[2] = X86_EFLAGS_ZF,
+-	[3] = X86_EFLAGS_CF | X86_EFLAGS_ZF,
+-	[4] = X86_EFLAGS_SF,
+-	[5] = X86_EFLAGS_PF,
+-};
+-
+ static void kprobe_emulate_jcc(struct kprobe *p, struct pt_regs *regs)
+ {
+-	bool invert = p->ainsn.jcc.type & 1;
+-	bool match;
++	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
+ 
+-	if (p->ainsn.jcc.type < 0xc) {
+-		match = regs->flags & jcc_mask[p->ainsn.jcc.type >> 1];
+-	} else {
+-		match = ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
+-			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
+-		if (p->ainsn.jcc.type >= 0xe)
+-			match = match || (regs->flags & X86_EFLAGS_ZF);
+-	}
+-	__kprobe_emulate_jmp(p, regs, (match && !invert) || (!match && invert));
++	int3_emulate_jcc(regs, p->ainsn.jcc.type, ip, p->ainsn.rel32);
+ }
+ NOKPROBE_SYMBOL(kprobe_emulate_jcc);
+ 
+ static void kprobe_emulate_loop(struct kprobe *p, struct pt_regs *regs)
+ {
++	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
+ 	bool match;
+ 
+ 	if (p->ainsn.loop.type != 3) {	/* LOOP* */
+@@ -534,7 +510,9 @@ static void kprobe_emulate_loop(struct k
+ 	else if (p->ainsn.loop.type == 1)	/* LOOPE */
+ 		match = match && (regs->flags & X86_EFLAGS_ZF);
+ 
+-	__kprobe_emulate_jmp(p, regs, match);
++	if (match)
++		ip += p->ainsn.rel32;
++	int3_emulate_jmp(regs, ip);
+ }
+ NOKPROBE_SYMBOL(kprobe_emulate_loop);
+ 
 
 
 
