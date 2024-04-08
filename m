@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B0789C5AF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B42689C2DA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09F671F227F6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA3F22820D4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7C77F493;
-	Mon,  8 Apr 2024 13:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9EF85C43;
+	Mon,  8 Apr 2024 13:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFQUCbDW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnUZ91fD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02EF7BAF5;
-	Mon,  8 Apr 2024 13:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBED7E0E9;
+	Mon,  8 Apr 2024 13:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584742; cv=none; b=pt4/Xsxy4dSJm17cGgyBfD/cut/XVASBsBdHnUQpjYw5ryxOYMw8dwmWTJSUmRd/XgNenEp2AUPau8F/c8TkFjVO2vcLC2La/5cXD3rZshxfkzaPoTUMkRzv/wnZoAl8HPP7UfJxjSYsdZtENVFzKdB+Fh1gO0INbzA9zuLs0lU=
+	t=1712583027; cv=none; b=XKv4NDFGf3dB/ueOBy6BPk0eIWexRQ57KvHjZrn0TxaxXOXmH1s+/jzuf1Z5QLials+yWEo0D80DyQseb0F5mtZ45mCAwin+XhuhoC18nWQxp+LqlGFkQ7cPJJ++Tvm9V0Qzoq72wKeAHwtCyc1L9tkIfxDkH2l4idBnwKH86v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584742; c=relaxed/simple;
-	bh=Sp2dheCy0dFLQ4W3sCaOkR5JMdlCt1TJl8UTIzD284I=;
+	s=arc-20240116; t=1712583027; c=relaxed/simple;
+	bh=6UrXQlIA2iFkgSr3r929vQbW8Xfk6BcDQcKIH7XoKDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbGv1R0XW2FQhbjOf9LofljicHoOSRbM4iSkoNzuB01WG121vfYh/r5iOMXlY+Q27kg018ObYQITXgF5/WNuQFs/5mYDpOcdAv8jDPn8uMspngcqwScD3oKfEtGsfWmOQj8No15JN+jFBX4ZGNJkQgMe7ioqvVkDbvwYGGI6Osc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFQUCbDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67805C433F1;
-	Mon,  8 Apr 2024 13:59:01 +0000 (UTC)
+	 MIME-Version; b=lrCY5x3Z+LnwA+1ZY88XKL/PQ5VxojB7CWDo9Bsgjp5vJE+R4P2HEPLJzu+5Pi8r4Ydj9ePy8dtFuEFtKq6dwwB7wRB4tN4brxAfo33t0cP7+8XZ/DO9blMQYOwoV/KdjIGwoDxhH4hhA738PU9FP+iMKFmSp+XVmf2I7YyBbnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnUZ91fD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B98C43399;
+	Mon,  8 Apr 2024 13:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584741;
-	bh=Sp2dheCy0dFLQ4W3sCaOkR5JMdlCt1TJl8UTIzD284I=;
+	s=korg; t=1712583026;
+	bh=6UrXQlIA2iFkgSr3r929vQbW8Xfk6BcDQcKIH7XoKDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFQUCbDWG3a8tLS3KeUACQfPIAq0Fm2+vJ0pBmFV3cTNnj/f5Ym8YEMSApuBObpzJ
-	 gcs3DvfdmZccfmiurZ9DQPTUTAyB2LwoofVUjY8XRJWE8+bKJGoB1mvwg7HauIDoCQ
-	 sZkSVibP4Q9eMHH9/AuUbC1yNZVwIjvnlhPvgWwY=
+	b=TnUZ91fDhn2cFZVxEppNSEt9jQlCSElp9ozi1yeOgX19xM2GT2s/r2+zvSpysKiKc
+	 fDadPW40qKpY1cri+i7xOlFoiV4TWAMFSbHM9UDDWeZbtkIgE05bRaWyzkLjgNrcWi
+	 T4A9aIcsuwuo07ZMyQ3tQ6AG1WpjSVHpaGHAV+vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	NeilBrown <neilb@suse.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 541/690] nfsd: fix double fget() bug in __write_ports_addfd()
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 132/273] drm/amd: Flush GFXOFF requests in prepare stage
 Date: Mon,  8 Apr 2024 14:56:47 +0200
-Message-ID: <20240408125419.255856728@linuxfoundation.org>
+Message-ID: <20240408125313.389969678@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit c034203b6a9dae6751ef4371c18cb77983e30c28 ]
+[ Upstream commit ca299b4512d4b4f516732a48ce9aa19d91f4473e ]
 
-The bug here is that you cannot rely on getting the same socket
-from multiple calls to fget() because userspace can influence
-that.  This is a kind of double fetch bug.
+If the system hasn't entered GFXOFF when suspend starts it can cause
+hangs accessing GC and RLC during the suspend stage.
 
-The fix is to delete the svc_alien_sock() function and instead do
-the checking inside the svc_addsock() function.
-
-Fixes: 3064639423c4 ("nfsd: check passed socket's net matches NFSd superblock's one")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: NeilBrown <neilb@suse.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: <stable@vger.kernel.org> # 6.1.y: 5095d5418193 ("drm/amd: Evict resources during PM ops prepare() callback")
+Cc: <stable@vger.kernel.org> # 6.1.y: cb11ca3233aa ("drm/amd: Add concept of running prepare_suspend() sequence for IP blocks")
+Cc: <stable@vger.kernel.org> # 6.1.y: 2ceec37b0e3d ("drm/amd: Add missing kernel doc for prepare_suspend()")
+Cc: <stable@vger.kernel.org> # 6.1.y: 3a9626c816db ("drm/amd: Stop evicting resources on APUs in suspend")
+Cc: <stable@vger.kernel.org> # 6.6.y: 5095d5418193 ("drm/amd: Evict resources during PM ops prepare() callback")
+Cc: <stable@vger.kernel.org> # 6.6.y: cb11ca3233aa ("drm/amd: Add concept of running prepare_suspend() sequence for IP blocks")
+Cc: <stable@vger.kernel.org> # 6.6.y: 2ceec37b0e3d ("drm/amd: Add missing kernel doc for prepare_suspend()")
+Cc: <stable@vger.kernel.org> # 6.6.y: 3a9626c816db ("drm/amd: Stop evicting resources on APUs in suspend")
+Cc: <stable@vger.kernel.org> # 6.1+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3132
+Fixes: ab4750332dbe ("drm/amdgpu/sdma5.2: add begin/end_use ring callbacks")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c               |  7 +------
- include/linux/sunrpc/svcsock.h |  7 +++----
- net/sunrpc/svcsock.c           | 24 ++++++------------------
- 3 files changed, 10 insertions(+), 28 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index c2577ee7ffb22..76a60e7a75097 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -714,16 +714,11 @@ static ssize_t __write_ports_addfd(char *buf, struct net *net, const struct cred
- 	if (err != 0 || fd < 0)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 94bdb5fa6ebc6..1fbaf7b81d69a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4524,6 +4524,8 @@ int amdgpu_device_prepare(struct drm_device *dev)
+ 	if (r)
+ 		goto unprepare;
  
--	if (svc_alien_sock(net, fd)) {
--		printk(KERN_ERR "%s: socket net is different to NFSd's one\n", __func__);
--		return -EINVAL;
--	}
--
- 	err = nfsd_create_serv(net);
- 	if (err != 0)
- 		return err;
- 
--	err = svc_addsock(nn->nfsd_serv, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
-+	err = svc_addsock(nn->nfsd_serv, net, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
- 
- 	if (err >= 0 &&
- 	    !nn->nfsd_serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
-diff --git a/include/linux/sunrpc/svcsock.h b/include/linux/sunrpc/svcsock.h
-index bcc555c7ae9c6..13aff355d5a13 100644
---- a/include/linux/sunrpc/svcsock.h
-+++ b/include/linux/sunrpc/svcsock.h
-@@ -59,10 +59,9 @@ int		svc_recv(struct svc_rqst *, long);
- int		svc_send(struct svc_rqst *);
- void		svc_drop(struct svc_rqst *);
- void		svc_sock_update_bufs(struct svc_serv *serv);
--bool		svc_alien_sock(struct net *net, int fd);
--int		svc_addsock(struct svc_serv *serv, const int fd,
--					char *name_return, const size_t len,
--					const struct cred *cred);
-+int		svc_addsock(struct svc_serv *serv, struct net *net,
-+			    const int fd, char *name_return, const size_t len,
-+			    const struct cred *cred);
- void		svc_init_xprt_sock(void);
- void		svc_cleanup_xprt_sock(void);
- struct svc_xprt *svc_sock_create(struct svc_serv *serv, int prot);
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index be7081284a098..112236dd72901 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1334,25 +1334,10 @@ static struct svc_sock *svc_setup_socket(struct svc_serv *serv,
- 	return svsk;
- }
- 
--bool svc_alien_sock(struct net *net, int fd)
--{
--	int err;
--	struct socket *sock = sockfd_lookup(fd, &err);
--	bool ret = false;
--
--	if (!sock)
--		goto out;
--	if (sock_net(sock->sk) != net)
--		ret = true;
--	sockfd_put(sock);
--out:
--	return ret;
--}
--EXPORT_SYMBOL_GPL(svc_alien_sock);
--
- /**
-  * svc_addsock - add a listener socket to an RPC service
-  * @serv: pointer to RPC service to which to add a new listener
-+ * @net: caller's network namespace
-  * @fd: file descriptor of the new listener
-  * @name_return: pointer to buffer to fill in with name of listener
-  * @len: size of the buffer
-@@ -1362,8 +1347,8 @@ EXPORT_SYMBOL_GPL(svc_alien_sock);
-  * Name is terminated with '\n'.  On error, returns a negative errno
-  * value.
-  */
--int svc_addsock(struct svc_serv *serv, const int fd, char *name_return,
--		const size_t len, const struct cred *cred)
-+int svc_addsock(struct svc_serv *serv, struct net *net, const int fd,
-+		char *name_return, const size_t len, const struct cred *cred)
- {
- 	int err = 0;
- 	struct socket *so = sockfd_lookup(fd, &err);
-@@ -1374,6 +1359,9 @@ int svc_addsock(struct svc_serv *serv, const int fd, char *name_return,
- 
- 	if (!so)
- 		return err;
-+	err = -EINVAL;
-+	if (sock_net(so->sk) != net)
-+		goto out;
- 	err = -EAFNOSUPPORT;
- 	if ((so->sk->sk_family != PF_INET) && (so->sk->sk_family != PF_INET6))
- 		goto out;
++	flush_delayed_work(&adev->gfx.gfx_off_delay_work);
++
+ 	for (i = 0; i < adev->num_ip_blocks; i++) {
+ 		if (!adev->ip_blocks[i].status.valid)
+ 			continue;
 -- 
 2.43.0
 
