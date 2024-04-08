@@ -1,90 +1,91 @@
-Return-Path: <stable+bounces-37775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9B689C803
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 17:18:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F9F89C884
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 17:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1936B1C239A3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:18:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 265F6B2314E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFF813F457;
-	Mon,  8 Apr 2024 15:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40C91420D0;
+	Mon,  8 Apr 2024 15:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="IhX291S7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dW7uc67/"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355A313F44E;
-	Mon,  8 Apr 2024 15:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB82561F
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 15:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712589494; cv=none; b=DIABQg3ni+xtn0HIvBf+7eXEFNKzxcIM0bQHYm5+2ncDAIiwl4LEF2zpAQJe6AVRpa0l9hjWRU4g3B4/CM8O29/gMnBYZm/2g85Jm6Qs4OeMjZvNAUKiSNACHq7zMaPFF+tLAhFbLUrPSgpPV1ikCmawi1M0NyeGRlk+BEZBIkI=
+	t=1712590702; cv=none; b=HWeewh6KqhZdTfCtIoKYpKxPXa4gHcsmdvqD1UWMINX+QB1uDMgdSfilRVXg7vFglBEPdwkkLAoP2xGAWjqreWPcaY3QT1ITlr8AGoVzhFhQdQrVbHH+saP84ziozlEhGRcfdpfCWL7eyFbidfCSVxS/1jTlDaVKLo04sASFFM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712589494; c=relaxed/simple;
-	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=nGsfrjJxbwOke0WHc+38FvKKK+OtL7S4bXEPNh4HCKwUzWAXrTB03TbnRUi3WS/3J5tp0x8tQhLMnyRArf0tLmThjZJtnGuZNy/lNy1zUp2colD/eOkFu252wU6KEVfqAkFRLyJTNShuGEsblDFayzjxt/Lx16TGMvZ/FC2gYYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=IhX291S7; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1712589489; x=1713194289; i=rwarsow@gmx.de;
-	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-	b=IhX291S7lluxMBwADQ/JU54g0ZsokY32Kf9kDPmNuC/NdbFbkubo8Pbn88ZC1pvr
-	 0SJndP3U6Lo9oui8D9b6EbplTa3SLb3JFrLijSCQJRh5qopkmXqqIG9APU/EONtxK
-	 3BrDvWKtZk39CndhmcBvrYcLGTZxMF3Vgpse/ns8ekzNavSTKk/XlqolTGwlw03JZ
-	 9dhl51auzqSYXij4ASYHyLM47OVFyidpvVDb/ICHT1Bqq3oKAiaM+GFAZ/223aJUg
-	 Ltq4uGgdfgLcQFy3rEBSrZo9xkmXvDiB7+tFhTA0ZaA5IQuH9Rp6NGxDSoidHYt8r
-	 rEwSAw99ECOqYEu/4g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([87.122.66.77]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mz9Yv-1shIHK1zBz-00wBJz; Mon, 08
- Apr 2024 17:18:09 +0200
-Message-ID: <fbc9fbef-5ab9-436c-a52e-c8de3948e364@gmx.de>
-Date: Mon, 8 Apr 2024 17:18:09 +0200
+	s=arc-20240116; t=1712590702; c=relaxed/simple;
+	bh=6IXLTjcd6JqGOQbMDKa8PWG/UBTHXWFqxs/wZfO8js8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oy9snKSnHYSh2xxKtpRL2OF18njLupubmMMqoJT7LBBuXArUFyhCKrWREar2/I0L8DxkbNZqGui24sJcNGh7Fuj5STPPBSRmZc9q8aWqrhiAPwwPKdF3CGkLy9xivbtX7KcaZhoDxkPnTHxYueB+8nvKabpuqNv46v31fEOT2Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dW7uc67/; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712590700;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6IXLTjcd6JqGOQbMDKa8PWG/UBTHXWFqxs/wZfO8js8=;
+	b=dW7uc67/MDohw5FjXKnHaOnxe8F5mc9AwN0mXnN+3cMBzC7sOKNS54eTZawksewgpSGMst
+	1KnYx5HP6h5TGjqvSxKhL9acsUZHOmfD/CqOUHZ2DPVHb2QvvNCJQ810yHQJFI08ldfYEe
+	FaIfPevvErTiR60WpALNqaXtW7/MWXg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-139-x-K6YrKdNeuyXnMuSmr1WA-1; Mon, 08 Apr 2024 11:38:16 -0400
+X-MC-Unique: x-K6YrKdNeuyXnMuSmr1WA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D935800219;
+	Mon,  8 Apr 2024 15:38:16 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.193.114])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 0012F492BC7;
+	Mon,  8 Apr 2024 15:38:14 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: jarkko.palviainen@gmail.com
+Cc: jtornosm@redhat.com,
+	linux-usb@vger.kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [REGRESSION] ax88179_178a assigns the same MAC address to all USB network interfaces
+Date: Mon,  8 Apr 2024 17:38:08 +0200
+Message-ID: <20240408153809.620467-1-jtornosm@redhat.com>
+In-Reply-To: <ZhFl6xueHnuVHKdp@nuc>
+References: <ZhFl6xueHnuVHKdp@nuc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.8 000/273] 6.8.5-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:8y7W4j/LFXy0ER6gdmDeZFNO0WKY1pmWPbfoD6B37TcDpjpk7iZ
- zZKG6zDcXDlSYcX1GImbHlJYo2LSJEGpshiN1wLBpBjLfkpC6Li3mjGfJIPenk7mgsQALwL
- 2o560llNAaxUEUziVyXheQtdxOZpW+tzgfeMqJVcFHwBfjq/PONsLibeY/e29ifkkK+S/eb
- +D4GdVcGBC01Inlqj9iPw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:WwSEaqeBBik=;XsXGWh+06gqUIirR6ebvrhpmcBt
- wbqC0ayuQ3fOlSgWLmy2k9uieqmpUwEeYr20AUC6tAmF+2JULATZ61pjCMhxupEw4OtvOjv6m
- BHQ2RrEV5bkV9M0BAthWBnw3dSjAIK5xSeejtckoH5H5+I6RYm7FrDuwdOUqR2Jc4ZmVrzzTP
- dtZlEnHOQcpGfmC0ynlIT7bgtfwFW5pflbdvZhW4e9vd+btz1HMe9Vx6iAQtSQcaV3F/GtnSd
- Fa6h9BcjavktF4/gEQHwD5FUrzpM2YyX8qkThzdjJVzX4siPfoa+j9h8wirY75XpEBLsi2elB
- EgXt3yTmmWlLa1WMnBsXZDegftBm918jO8BehQifUyUinl/ssetTnvq39yqaYCUVDNiZLF9FJ
- MSMEZpNIAMXlpJEsdkD7ct1aPyQcJqX4BlUMoBfY0K6nHNmNIxFCmGW285uVfl+MqvAqY0r2k
- gZrzUqvcF/bZXKiW3dgUPMhj60G1njagY+V+Qa3c4DG84tHsjqh1v9got1rVLxSdwKH7GyMXL
- AdZGE+nkjODPcvfN2YDDGnXW2MMiqWpcoORWl2fdelCnhE87h9C//hg2+c9AkySoyXL1rJd+O
- DoTjSJg/yWOh6CkGI0pIcqhsZtG7/DhCrm54sJT7IElh9P1hmfoomeOgctZL/wqnz8kNgqG4T
- mfpHwGqkZDURPFix3k+n0iRoL8X4E/1GxvIpAmxK8JjnMaditECMb9bg8/P5sn7eE88E682aW
- ARUFmX42/4J4f51SL5kIDZM6Fd1l6lsNOI9ILCA+dbrLYdWe1KHn2kz5LAJYwWq1qCTRGcx9U
- /0HfHfSaptKcoqd/Mi4s39xOqX8kJQwDB6nqALdUFFKtk=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-Hi Greg
+Hello Jarkko,
 
-*no* regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+So, you are using two (or more) devices in the same machine and they are
+not getting the specific one and even they are getting the same locally
+administered address (random).
+It is strange that the second reset is affecting, because the read and
+previosuly stored address should be the same with one reset or with two.
+As the author of the commented commit, let me analyze it to try to fix it.
 
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Best regards
+José Ignacio
 
 
