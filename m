@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-37691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2D789C600
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE4589C13A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67BA02833BF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EB951C2122B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B4A7C6EB;
-	Mon,  8 Apr 2024 14:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2609A811FB;
+	Mon,  8 Apr 2024 13:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjlMbFkT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yu7W4hmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1359A7CF26;
-	Mon,  8 Apr 2024 14:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D809C8120D;
+	Mon,  8 Apr 2024 13:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584979; cv=none; b=NZpOzkbpcMBGQ4IKf1QyoL7v+C2mEqSIQp94HGI1CPb6i6C00zQfYkKYXg8UPTLzwZi4Y1c8LDJop2zd6MeLsGfkEeb/MIgGiLcnHaTIj+4qx8gsZayRirNWmHRjNSzOV0+cywYIy+iGmSNvUW+kgho1skWkJI2cRj3zDwszarE=
+	t=1712582048; cv=none; b=QsToSyHJaHtu0DcQJg5oMlPzIURa3erHAL9BGqeiG3/nq/D6NCDvVO79jbGAs8a8u5Q0qELGAFBkqaEG54p7GzmUIFpb/3ugM8DLKd+F2wW05cjisqHHakVePBS2JjfsSUImpT6Yal1wz6YWlw+t9ojwZFQTYuk+14EDkrMuPd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584979; c=relaxed/simple;
-	bh=v/LHDlFjZpa15RW7hBYLMp6wf6SCZ9POZC4lKqxp7eo=;
+	s=arc-20240116; t=1712582048; c=relaxed/simple;
+	bh=qOQ4tzqAJ4gi4i+lHW4XYqcqcLJSZGIF3QSrweI3wVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOt+nIylL3Ui4/0b1J/125Raw4ba+3PfnN6gDbA6IFgKRul5M2p29LtBoZpvhMWcRbZv0atY30IXG++DgY9fu2K2yBLfbkw1UPKonjFRjJxb8jM4lLD9ZqocDRE+Ef8eYxt46ILALSlgJERJA/s8lAFtrfaXbwoO6dOtcdEyYuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjlMbFkT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E961C433C7;
-	Mon,  8 Apr 2024 14:02:58 +0000 (UTC)
+	 MIME-Version; b=VfpCLKeG2vH/Ti5DRy88en0lKfdiJNXgKzjiTL8vlrcfmHBxy3hcgj96KVIlmZ+AJVUC9PIx6ZwAMoMqf6eXoTwY/V+V4VjqYXulSD362UsDQ6kn5Bsscct0r4gt69XZ1X9RXimkH5x/5PV/D1w8CGdgn/HkWLCFokuTPbuDCJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yu7W4hmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA64C433F1;
+	Mon,  8 Apr 2024 13:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584978;
-	bh=v/LHDlFjZpa15RW7hBYLMp6wf6SCZ9POZC4lKqxp7eo=;
+	s=korg; t=1712582048;
+	bh=qOQ4tzqAJ4gi4i+lHW4XYqcqcLJSZGIF3QSrweI3wVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjlMbFkT82w1pQdvK8eNmSZy026QrqGn+YiRcwfNDewKp/Rg/9SOhu82kLK5ezW0u
-	 d1fk/fBmCC+OPUQoYtB/jl2eXOyKCKSsJTej0iBbYQiODcY3Qq5BmBjMwlT1TnCCg2
-	 YTxzXMzHJM28KAuaUUyl0V0DHCDFVgkNvvo6SUps=
+	b=Yu7W4hmFzYmlbU5ZRqi+Ns1MrBjvX2bKsH4fVtBejIuem01DIFM9UUYQwL+kyiIMA
+	 h9U7QNg75pPqlEZLhyagdyiBPewv7kpu5SVMSwDSg3TKXcv4fEynO/LbRtaAbpnaSW
+	 XqE/9LqsQoKOTGtVbMHvdQInX5mJeYasZmessiqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.15 622/690] x86/cpufeatures: Add new word for scattered features
+	Ivan Vecera <ivecera@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 074/138] i40e: Remove _t suffix from enum type names
 Date: Mon,  8 Apr 2024 14:58:08 +0200
-Message-ID: <20240408125422.182039437@linuxfoundation.org>
+Message-ID: <20240408125258.527645933@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +65,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit 7f274e609f3d5f45c22b1dd59053f6764458b492 upstream.
+[ Upstream commit addca9175e5f74cf29e8ad918c38c09b8663b5b8 ]
 
-Add a new word for scattered features because all free bits among the
-existing Linux-defined auxiliary flags have been exhausted.
+Enum type names should not be suffixed by '_t'. Either to use
+'typedef enum name name_t' to so plain 'name_t var' instead of
+'enum name_t var'.
 
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/8380d2a0da469a1f0ad75b8954a79fb689599ff6.1711091584.git.sandipan.das@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20231113231047.548659-6-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ea558de7238b ("i40e: Enforce software interrupt during busy-poll exit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/cpufeature.h        |    6 ++++--
- arch/x86/include/asm/cpufeatures.h       |    2 +-
- arch/x86/include/asm/disabled-features.h |    3 ++-
- arch/x86/include/asm/required-features.h |    3 ++-
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h      | 4 ++--
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c  | 6 +++---
+ drivers/net/ethernet/intel/i40e/i40e_txrx.h | 4 ++--
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/arch/x86/include/asm/cpufeature.h
-+++ b/arch/x86/include/asm/cpufeature.h
-@@ -93,8 +93,9 @@ extern const char * const x86_bug_flags[
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 18, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 19, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 20, feature_bit) ||	\
-+	   CHECK_BIT_IN_MASK_WORD(REQUIRED_MASK, 21, feature_bit) ||	\
- 	   REQUIRED_MASK_CHECK					  ||	\
--	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
-+	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 59c4e9d642980..35862dedd59b5 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -108,7 +108,7 @@
+ #define I40E_MAX_BW_INACTIVE_ACCUM	4 /* accumulate 4 credits max */
  
- #define DISABLED_MASK_BIT_SET(feature_bit)				\
- 	 ( CHECK_BIT_IN_MASK_WORD(DISABLED_MASK,  0, feature_bit) ||	\
-@@ -118,8 +119,9 @@ extern const char * const x86_bug_flags[
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 18, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 19, feature_bit) ||	\
- 	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 20, feature_bit) ||	\
-+	   CHECK_BIT_IN_MASK_WORD(DISABLED_MASK, 21, feature_bit) ||	\
- 	   DISABLED_MASK_CHECK					  ||	\
--	   BUILD_BUG_ON_ZERO(NCAPINTS != 21))
-+	   BUILD_BUG_ON_ZERO(NCAPINTS != 22))
+ /* driver state flags */
+-enum i40e_state_t {
++enum i40e_state {
+ 	__I40E_TESTING,
+ 	__I40E_CONFIG_BUSY,
+ 	__I40E_CONFIG_DONE,
+@@ -156,7 +156,7 @@ enum i40e_state_t {
+ 	BIT_ULL(__I40E_PF_RESET_AND_REBUILD_REQUESTED)
  
- #define cpu_has(c, bit)							\
- 	(__builtin_constant_p(bit) && REQUIRED_MASK_BIT_SET(bit) ? 1 :	\
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -13,7 +13,7 @@
- /*
-  * Defines x86 CPU feature bits
+ /* VSI state flags */
+-enum i40e_vsi_state_t {
++enum i40e_vsi_state {
+ 	__I40E_VSI_DOWN,
+ 	__I40E_VSI_NEEDS_RESTART,
+ 	__I40E_VSI_SYNCING_FILTERS,
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+index 97a9efe7b713e..5f2555848a69e 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+@@ -34,7 +34,7 @@ enum i40e_ptp_pin {
+ 	GPIO_4
+ };
+ 
+-enum i40e_can_set_pins_t {
++enum i40e_can_set_pins {
+ 	CANT_DO_PINS = -1,
+ 	CAN_SET_PINS,
+ 	CAN_DO_PINS
+@@ -192,7 +192,7 @@ static bool i40e_is_ptp_pin_dev(struct i40e_hw *hw)
+  * return CAN_DO_PINS if pins can be manipulated within a NIC or
+  * return CANT_DO_PINS otherwise.
+  **/
+-static enum i40e_can_set_pins_t i40e_can_set_pins(struct i40e_pf *pf)
++static enum i40e_can_set_pins i40e_can_set_pins(struct i40e_pf *pf)
+ {
+ 	if (!i40e_is_ptp_pin_dev(&pf->hw)) {
+ 		dev_warn(&pf->pdev->dev,
+@@ -1081,7 +1081,7 @@ static void i40e_ptp_set_pins_hw(struct i40e_pf *pf)
+ static int i40e_ptp_set_pins(struct i40e_pf *pf,
+ 			     struct i40e_ptp_pins_settings *pins)
+ {
+-	enum i40e_can_set_pins_t pin_caps = i40e_can_set_pins(pf);
++	enum i40e_can_set_pins pin_caps = i40e_can_set_pins(pf);
+ 	int i = 0;
+ 
+ 	if (pin_caps == CANT_DO_PINS)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.h b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
+index 768290dc6f48b..602ddd956245e 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
+@@ -57,7 +57,7 @@ static inline u16 i40e_intrl_usec_to_reg(int intrl)
+  * mentioning ITR_INDX, ITR_NONE cannot be used as an index 'n' into any
+  * register but instead is a special value meaning "don't update" ITR0/1/2.
   */
--#define NCAPINTS			21	   /* N 32-bit words worth of info */
-+#define NCAPINTS			22	   /* N 32-bit words worth of info */
- #define NBUGINTS			2	   /* N 32-bit bug flags */
+-enum i40e_dyn_idx_t {
++enum i40e_dyn_idx {
+ 	I40E_IDX_ITR0 = 0,
+ 	I40E_IDX_ITR1 = 1,
+ 	I40E_IDX_ITR2 = 2,
+@@ -304,7 +304,7 @@ struct i40e_rx_queue_stats {
+ 	u64 page_busy_count;
+ };
  
- /*
---- a/arch/x86/include/asm/disabled-features.h
-+++ b/arch/x86/include/asm/disabled-features.h
-@@ -109,6 +109,7 @@
- #define DISABLED_MASK18	0
- #define DISABLED_MASK19	0
- #define DISABLED_MASK20	0
--#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
-+#define DISABLED_MASK21	0
-+#define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
- 
- #endif /* _ASM_X86_DISABLED_FEATURES_H */
---- a/arch/x86/include/asm/required-features.h
-+++ b/arch/x86/include/asm/required-features.h
-@@ -103,6 +103,7 @@
- #define REQUIRED_MASK18	0
- #define REQUIRED_MASK19	0
- #define REQUIRED_MASK20	0
--#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 21)
-+#define REQUIRED_MASK21	0
-+#define REQUIRED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
- 
- #endif /* _ASM_X86_REQUIRED_FEATURES_H */
+-enum i40e_ring_state_t {
++enum i40e_ring_state {
+ 	__I40E_TX_FDIR_INIT_DONE,
+ 	__I40E_TX_XPS_INIT_DONE,
+ 	__I40E_RING_STATE_NBITS /* must be last */
+-- 
+2.43.0
+
 
 
 
