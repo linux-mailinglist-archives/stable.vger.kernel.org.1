@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-37522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4888789C539
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E59E89C068
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF3831F235DD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF6CA1F20419
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E6A7BAFD;
-	Mon,  8 Apr 2024 13:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B6E6CDA8;
+	Mon,  8 Apr 2024 13:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOf7+rd+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9sd/8Gf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8094142046;
-	Mon,  8 Apr 2024 13:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67EE2DF73;
+	Mon,  8 Apr 2024 13:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584480; cv=none; b=XdRHs3kJIIWR1Bz7Mrohg/SagYlUFWOab+qcy9ziC8ck1OWpMmWLu/b3RWG1CRiBjHl0MRB9olnQl+aVll+2V55rvtoBhwr+OulR64PDReOYMzEdgbK6DfERR0LdIV/k2cygoM4qmj2mjCQdhJ6XSALMZtqp/8rq8qlaGzY8zds=
+	t=1712581697; cv=none; b=LXpMy/JCjTW/SNJqEB4At/VYB8OktCSmUBRb1wkbox5C+cPyHToW6nuGJ1NGToIaguFyV+HKOd7uG35jNQ8VbGr/lvtyOFQPpQxYVl/nafNA5kLzWlbUyJLsLpo6hc1CXDGeTGGU9sSgZUtJ9SOnjUTAlC5uDRUx/Y2kVyCUHwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584480; c=relaxed/simple;
-	bh=UOlvs8JznmNoUi65FoFcwnVtRXl+UTE0Hc/aHIOTPfI=;
+	s=arc-20240116; t=1712581697; c=relaxed/simple;
+	bh=i7/ey5LouSwJ9NtlaksfL/crOslbTIrxN9uhw9vv7Bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=luqaHUyK/6tv8BpdBe+4wr8HilZB9wtrhBVhWXZXdITu+RfuTyBWC6DXs6g08Ca5cSNg0z2XYvpws43eP6zoWx/AxuIriQ8vQuXOpffn2DHxp6W0z6AJyfST/0YnknIu7zxukYmYUDgp3QZ5YAGgiUpdKZInsFhLa7JZXhJITdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOf7+rd+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09208C433F1;
-	Mon,  8 Apr 2024 13:54:39 +0000 (UTC)
+	 MIME-Version; b=qzFKMo4LcUMqWcUxAGBHA5pz3Flwq17q1ZIaXv0D2DIF1HRfhYmPTnRjBNDs5m83lM4TVXc4WN3MPTHov0x4cT7AIwfINfo2MIwc4KReEhgJ5ZQdtuQaF/j1DUnsNnJsOhra+kC9XtlBASZLubtF71sHhjnZD+CX3zc5aenvPio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9sd/8Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484BAC433C7;
+	Mon,  8 Apr 2024 13:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584480;
-	bh=UOlvs8JznmNoUi65FoFcwnVtRXl+UTE0Hc/aHIOTPfI=;
+	s=korg; t=1712581697;
+	bh=i7/ey5LouSwJ9NtlaksfL/crOslbTIrxN9uhw9vv7Bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOf7+rd+2iY0WveSRyPQxIH5Z0zhnKJf0ecD0p6gEIMq76cxcPlB06wd6MGtGdV/s
-	 V77ZPWwMGSqya1dPrdqcAxKcACBJTCzlTS5dlFQJLY+ZS/m6gN3ucKXxzk9H1Cvtvy
-	 0GmCUcZdQZAG9oKQ0YXqOf7AZZEa+j1XHaVV3IbQ=
+	b=H9sd/8GfDBlpeUVTgHBC4FfMsp1V632BpEnU91w2fwnNqq39ef7HWWhoWRAhoggfa
+	 wpnpwjGMiReVXVBhY/hJBA573TEQUXqMrUNtAyprJbhK9Qcigrs6SgmawPqy2lPkds
+	 U7dj4AX0Pqt8rG4BpK6NzF+IJABpJ3/O1Pmn7Cjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 422/690] NFSD: Increase NFSD_MAX_OPS_PER_COMPOUND
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 013/273] wifi: iwlwifi: mvm: include link ID when releasing frames
 Date: Mon,  8 Apr 2024 14:54:48 +0200
-Message-ID: <20240408125414.889548919@linuxfoundation.org>
+Message-ID: <20240408125309.698212556@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 80e591ce636f3ae6855a0ca26963da1fdd6d4508 ]
+[ Upstream commit e78d7877308989ef91b64a3c746ae31324c07caa ]
 
-When attempting an NFSv4 mount, a Solaris NFSv4 client builds a
-single large COMPOUND that chains a series of LOOKUPs to get to the
-pseudo filesystem root directory that is to be mounted. The Linux
-NFS server's current maximum of 16 operations per NFSv4 COMPOUND is
-not large enough to ensure that this works for paths that are more
-than a few components deep.
+When releasing frames from the reorder buffer, the link ID was not
+included in the RX status information. This subsequently led mac80211 to
+drop the frame. Change it so that the link information is set
+immediately when possible so that it doesn't not need to be filled in
+anymore when submitting the frame to mac80211.
 
-Since NFSD_MAX_OPS_PER_COMPOUND is mostly a sanity check, and most
-NFSv4 COMPOUNDS are between 3 and 6 operations (thus they do not
-trigger any re-allocation of the operation array on the server),
-increasing this maximum should result in little to no impact.
-
-The ops array can get large now, so allocate it via vmalloc() to
-help ensure memory fragmentation won't cause an allocation failure.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216383
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: b8a85a1d42d7 ("wifi: iwlwifi: mvm: rxmq: report link ID to mac80211")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Tested-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.bbbd5e9bfe80.Iec1bf5c884e371f7bc5ea2534ed9ea8d3f2c0bf6@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 7 ++++---
- fs/nfsd/state.h   | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 20 ++++++++-----------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 5aafbd0f7ae30..0f30d93577e7b 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -42,6 +42,8 @@
- #include <linux/sunrpc/svcauth_gss.h>
- #include <linux/sunrpc/addr.h>
- #include <linux/xattr.h>
-+#include <linux/vmalloc.h>
-+
- #include <uapi/linux/xattr.h>
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 7bf2a5947e5e9..481dfbbe46162 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -236,21 +236,13 @@ static void iwl_mvm_add_rtap_sniffer_config(struct iwl_mvm *mvm,
+ static void iwl_mvm_pass_packet_to_mac80211(struct iwl_mvm *mvm,
+ 					    struct napi_struct *napi,
+ 					    struct sk_buff *skb, int queue,
+-					    struct ieee80211_sta *sta,
+-					    struct ieee80211_link_sta *link_sta)
++					    struct ieee80211_sta *sta)
+ {
+ 	if (unlikely(iwl_mvm_check_pn(mvm, skb, queue, sta))) {
+ 		kfree_skb(skb);
+ 		return;
+ 	}
  
- #include "idmap.h"
-@@ -2364,10 +2366,9 @@ nfsd4_decode_compound(struct nfsd4_compoundargs *argp)
- 			    NFSD_MAX_OPS_PER_COMPOUND);
+-	if (sta && sta->valid_links && link_sta) {
+-		struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
+-
+-		rx_status->link_valid = 1;
+-		rx_status->link_id = link_sta->link_id;
+-	}
+-
+ 	ieee80211_rx_napi(mvm->hw, sta, skb, napi);
+ }
  
- 	if (argp->opcnt > ARRAY_SIZE(argp->iops)) {
--		argp->ops = kzalloc(argp->opcnt * sizeof(*argp->ops), GFP_KERNEL);
-+		argp->ops = vcalloc(argp->opcnt, sizeof(*argp->ops));
- 		if (!argp->ops) {
- 			argp->ops = argp->iops;
--			dprintk("nfsd: couldn't allocate room for COMPOUND\n");
- 			return false;
+@@ -587,7 +579,7 @@ static void iwl_mvm_release_frames(struct iwl_mvm *mvm,
+ 		while ((skb = __skb_dequeue(skb_list))) {
+ 			iwl_mvm_pass_packet_to_mac80211(mvm, napi, skb,
+ 							reorder_buf->queue,
+-							sta, NULL /* FIXME */);
++							sta);
+ 			reorder_buf->num_stored--;
  		}
  	}
-@@ -5399,7 +5400,7 @@ void nfsd4_release_compoundargs(struct svc_rqst *rqstp)
- 	struct nfsd4_compoundargs *args = rqstp->rq_argp;
+@@ -2214,6 +2206,11 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 			if (IS_ERR(sta))
+ 				sta = NULL;
+ 			link_sta = rcu_dereference(mvm->fw_id_to_link_sta[id]);
++
++			if (sta && sta->valid_links && link_sta) {
++				rx_status->link_valid = 1;
++				rx_status->link_id = link_sta->link_id;
++			}
+ 		}
+ 	} else if (!is_multicast_ether_addr(hdr->addr2)) {
+ 		/*
+@@ -2357,8 +2354,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 		    !(desc->amsdu_info & IWL_RX_MPDU_AMSDU_LAST_SUBFRAME))
+ 			rx_status->flag |= RX_FLAG_AMSDU_MORE;
  
- 	if (args->ops != args->iops) {
--		kfree(args->ops);
-+		vfree(args->ops);
- 		args->ops = args->iops;
+-		iwl_mvm_pass_packet_to_mac80211(mvm, napi, skb, queue, sta,
+-						link_sta);
++		iwl_mvm_pass_packet_to_mac80211(mvm, napi, skb, queue, sta);
  	}
- 	while (args->to_free) {
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index ae596dbf86675..5d28beb290fef 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -175,7 +175,7 @@ static inline struct nfs4_delegation *delegstateid(struct nfs4_stid *s)
- /* Maximum number of slots per session. 160 is useful for long haul TCP */
- #define NFSD_MAX_SLOTS_PER_SESSION     160
- /* Maximum number of operations per session compound */
--#define NFSD_MAX_OPS_PER_COMPOUND	16
-+#define NFSD_MAX_OPS_PER_COMPOUND	50
- /* Maximum  session per slot cache size */
- #define NFSD_SLOT_CACHE_SIZE		2048
- /* Maximum number of NFSD_SLOT_CACHE_SIZE slots per session */
+ out:
+ 	rcu_read_unlock();
 -- 
 2.43.0
 
