@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4014089C2D2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:35:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B0789C5AF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 724581C218B7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:34:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09F671F227F6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B2485C42;
-	Mon,  8 Apr 2024 13:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7C77F493;
+	Mon,  8 Apr 2024 13:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSxgDAEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFQUCbDW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5957D3EC;
-	Mon,  8 Apr 2024 13:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02EF7BAF5;
+	Mon,  8 Apr 2024 13:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583017; cv=none; b=PiDXqnCYZsVbO2f6T3qmSvDjIScTvR2GuKsDWyRgPEuDREtgydSnJKILnm3uu0dBHA8vP5/2x1FxdqhSeSJ21+ELzpdpiYxn66fWPkoYcrv4x1iC1YPD2iTaXNcosKYt+ABpeklfLBlSIso4z0HBU/oGpP0M/Okyyd7jY21vMcs=
+	t=1712584742; cv=none; b=pt4/Xsxy4dSJm17cGgyBfD/cut/XVASBsBdHnUQpjYw5ryxOYMw8dwmWTJSUmRd/XgNenEp2AUPau8F/c8TkFjVO2vcLC2La/5cXD3rZshxfkzaPoTUMkRzv/wnZoAl8HPP7UfJxjSYsdZtENVFzKdB+Fh1gO0INbzA9zuLs0lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583017; c=relaxed/simple;
-	bh=bfMVdcU0QumuTCQFaIR0aXADPSouHgQE+11RvUk4WIE=;
+	s=arc-20240116; t=1712584742; c=relaxed/simple;
+	bh=Sp2dheCy0dFLQ4W3sCaOkR5JMdlCt1TJl8UTIzD284I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hO0emHHdFUBGVhRzg3coWwrSMI4+4XOeRssauImJDkNbNqjZUEqNVhlMbot9VunlYsbe8cY05arHrI2zgryoux2S2XmpBMnOqG9RVidlxOsux/ULS5Vz63rpVnJKqHqhe+MZf0yJriguefIvCSIF983QfsElVYXfQCVsFl8ML7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSxgDAEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E2CC433F1;
-	Mon,  8 Apr 2024 13:30:17 +0000 (UTC)
+	 MIME-Version; b=DbGv1R0XW2FQhbjOf9LofljicHoOSRbM4iSkoNzuB01WG121vfYh/r5iOMXlY+Q27kg018ObYQITXgF5/WNuQFs/5mYDpOcdAv8jDPn8uMspngcqwScD3oKfEtGsfWmOQj8No15JN+jFBX4ZGNJkQgMe7ioqvVkDbvwYGGI6Osc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFQUCbDW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67805C433F1;
+	Mon,  8 Apr 2024 13:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583017;
-	bh=bfMVdcU0QumuTCQFaIR0aXADPSouHgQE+11RvUk4WIE=;
+	s=korg; t=1712584741;
+	bh=Sp2dheCy0dFLQ4W3sCaOkR5JMdlCt1TJl8UTIzD284I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSxgDAEssfHgdO7RsxcKds/0IICvOuVLejX0pQkg24wZVFqJRB8XKuR/QAx2RPIMj
-	 /3uhVX7j0ee6HkPrh2aaX8xJntXE44uH9Wm2aL6HZP7lh1jSe5VPeVthM815x31cE9
-	 WvptQs8SK6uXir+/yk5k2hJQJevYGTmzC/i59i6c=
+	b=AFQUCbDWG3a8tLS3KeUACQfPIAq0Fm2+vJ0pBmFV3cTNnj/f5Ym8YEMSApuBObpzJ
+	 gcs3DvfdmZccfmiurZ9DQPTUTAyB2LwoofVUjY8XRJWE8+bKJGoB1mvwg7HauIDoCQ
+	 sZkSVibP4Q9eMHH9/AuUbC1yNZVwIjvnlhPvgWwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.8 131/273] usb: typec: ucsi: Check for notifications after init
-Date: Mon,  8 Apr 2024 14:56:46 +0200
-Message-ID: <20240408125313.358936582@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	NeilBrown <neilb@suse.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 541/690] nfsd: fix double fget() bug in __write_ports_addfd()
+Date: Mon,  8 Apr 2024 14:56:47 +0200
+Message-ID: <20240408125419.255856728@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 ]
+[ Upstream commit c034203b6a9dae6751ef4371c18cb77983e30c28 ]
 
-The completion notification for the final SET_NOTIFICATION_ENABLE
-command during initialization can include a connector change
-notification.  However, at the time this completion notification is
-processed, the ucsi struct is not ready to handle this notification.
-As a result the notification is ignored and the controller
-never sends an interrupt again.
+The bug here is that you cannot rely on getting the same socket
+from multiple calls to fget() because userspace can influence
+that.  This is a kind of double fetch bug.
 
-Re-check CCI for a pending connector state change after
-initialization is complete. Adjust the corresponding debug
-message accordingly.
+The fix is to delete the svc_alien_sock() function and instead do
+the checking inside the svc_addsock() function.
 
-Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3064639423c4 ("nfsd: check passed socket's net matches NFSd superblock's one")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: NeilBrown <neilb@suse.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/nfsd/nfsctl.c               |  7 +------
+ include/linux/sunrpc/svcsock.h |  7 +++----
+ net/sunrpc/svcsock.c           | 24 ++++++------------------
+ 3 files changed, 10 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 0bfe5e906e543..96da828f556a9 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -962,7 +962,7 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
- 	struct ucsi_connector *con = &ucsi->connector[num - 1];
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index c2577ee7ffb22..76a60e7a75097 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -714,16 +714,11 @@ static ssize_t __write_ports_addfd(char *buf, struct net *net, const struct cred
+ 	if (err != 0 || fd < 0)
+ 		return -EINVAL;
  
- 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
--		dev_dbg(ucsi->dev, "Bogus connector change event\n");
-+		dev_dbg(ucsi->dev, "Early connector change event\n");
- 		return;
- 	}
+-	if (svc_alien_sock(net, fd)) {
+-		printk(KERN_ERR "%s: socket net is different to NFSd's one\n", __func__);
+-		return -EINVAL;
+-	}
+-
+ 	err = nfsd_create_serv(net);
+ 	if (err != 0)
+ 		return err;
  
-@@ -1393,6 +1393,7 @@ static int ucsi_init(struct ucsi *ucsi)
+-	err = svc_addsock(nn->nfsd_serv, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
++	err = svc_addsock(nn->nfsd_serv, net, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
+ 
+ 	if (err >= 0 &&
+ 	    !nn->nfsd_serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
+diff --git a/include/linux/sunrpc/svcsock.h b/include/linux/sunrpc/svcsock.h
+index bcc555c7ae9c6..13aff355d5a13 100644
+--- a/include/linux/sunrpc/svcsock.h
++++ b/include/linux/sunrpc/svcsock.h
+@@ -59,10 +59,9 @@ int		svc_recv(struct svc_rqst *, long);
+ int		svc_send(struct svc_rqst *);
+ void		svc_drop(struct svc_rqst *);
+ void		svc_sock_update_bufs(struct svc_serv *serv);
+-bool		svc_alien_sock(struct net *net, int fd);
+-int		svc_addsock(struct svc_serv *serv, const int fd,
+-					char *name_return, const size_t len,
+-					const struct cred *cred);
++int		svc_addsock(struct svc_serv *serv, struct net *net,
++			    const int fd, char *name_return, const size_t len,
++			    const struct cred *cred);
+ void		svc_init_xprt_sock(void);
+ void		svc_cleanup_xprt_sock(void);
+ struct svc_xprt *svc_sock_create(struct svc_serv *serv, int prot);
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index be7081284a098..112236dd72901 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1334,25 +1334,10 @@ static struct svc_sock *svc_setup_socket(struct svc_serv *serv,
+ 	return svsk;
+ }
+ 
+-bool svc_alien_sock(struct net *net, int fd)
+-{
+-	int err;
+-	struct socket *sock = sockfd_lookup(fd, &err);
+-	bool ret = false;
+-
+-	if (!sock)
+-		goto out;
+-	if (sock_net(sock->sk) != net)
+-		ret = true;
+-	sockfd_put(sock);
+-out:
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(svc_alien_sock);
+-
+ /**
+  * svc_addsock - add a listener socket to an RPC service
+  * @serv: pointer to RPC service to which to add a new listener
++ * @net: caller's network namespace
+  * @fd: file descriptor of the new listener
+  * @name_return: pointer to buffer to fill in with name of listener
+  * @len: size of the buffer
+@@ -1362,8 +1347,8 @@ EXPORT_SYMBOL_GPL(svc_alien_sock);
+  * Name is terminated with '\n'.  On error, returns a negative errno
+  * value.
+  */
+-int svc_addsock(struct svc_serv *serv, const int fd, char *name_return,
+-		const size_t len, const struct cred *cred)
++int svc_addsock(struct svc_serv *serv, struct net *net, const int fd,
++		char *name_return, const size_t len, const struct cred *cred)
  {
- 	struct ucsi_connector *con, *connector;
- 	u64 command, ntfy;
-+	u32 cci;
- 	int ret;
- 	int i;
+ 	int err = 0;
+ 	struct socket *so = sockfd_lookup(fd, &err);
+@@ -1374,6 +1359,9 @@ int svc_addsock(struct svc_serv *serv, const int fd, char *name_return,
  
-@@ -1445,6 +1446,13 @@ static int ucsi_init(struct ucsi *ucsi)
- 
- 	ucsi->connector = connector;
- 	ucsi->ntfy = ntfy;
-+
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret)
-+		return ret;
-+	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
-+		ucsi_connector_change(ucsi, cci);
-+
- 	return 0;
- 
- err_unregister:
+ 	if (!so)
+ 		return err;
++	err = -EINVAL;
++	if (sock_net(so->sk) != net)
++		goto out;
+ 	err = -EAFNOSUPPORT;
+ 	if ((so->sk->sk_family != PF_INET) && (so->sk->sk_family != PF_INET6))
+ 		goto out;
 -- 
 2.43.0
 
