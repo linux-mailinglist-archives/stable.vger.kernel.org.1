@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-36672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1F889C131
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEE789C062
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 982A1282870
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F03081F21CC9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F37380027;
-	Mon,  8 Apr 2024 13:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FDA6A352;
+	Mon,  8 Apr 2024 13:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGnZzxEK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqw3cjnx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DACF7E0E4;
-	Mon,  8 Apr 2024 13:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247CA2DF73;
+	Mon,  8 Apr 2024 13:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582008; cv=none; b=Z4qqa87rlE8WarY5nEQGeiyjw8XtuJLatGTfdcWIONT8rzPjzjPncfEWj8DzlPQKW7ylRRTvNx0/cIefbbNlk+znWXMeoIbaok2ydKS4rY+OSAdXaJu02cgoha9TzyLLIvxFcHXi4bZwfk4sWI5GtwmBUEyYiGUwZTQwKcCJBn4=
+	t=1712581683; cv=none; b=g38PPeguYG75r6RdCh4al8ixbayF4hUUjfqjOj7Hc3fd9RncbfcADuF9rC3Us3jrzeXMgSh5SN29NZlDx0BN8UJtCP1JaFqGlQXYOoO2s/oQl2n+hH53DnZ8ZJ59lblruwub7zYLuT3TDwl7I4PAdnFr+doq+T6lYfiiThJd0h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582008; c=relaxed/simple;
-	bh=i0EhxiBI+UMasAsJOwXCWRkP+pxjm/TmSgMhxQJ7w1A=;
+	s=arc-20240116; t=1712581683; c=relaxed/simple;
+	bh=sIibRmTEO9bPy+OwmWF/hejFB9eYy2oD2wA4qE8Dn94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPBciubHS/z0OueE6fOZVT3C4vyI4HnNO73Q/iplrIl/ZShQL2VIHSItK5BhqXkASBrnQCsUJ+UWo+hI6J4F/3fbL1s+2xodfWFXU+1mPSUsir0uSSOFP3TpEe7A8xyVLFO+1kDaPqzAfTJANQiu3l9pAogsSICnUsJyf+8c0Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGnZzxEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F9DC433F1;
-	Mon,  8 Apr 2024 13:13:27 +0000 (UTC)
+	 MIME-Version; b=FOeqPx5d0sD5CuzWfmUY7GhDegkGpA2zZaCVA5sHTGN6/E4DZezyv88T8Gieis/sb+YsC95SoluFfF3jQXOE/g/k3V5NJi64Sk74LxrNwL0HH1AdeeDpWePbh8QnqNrdmfSV5zObRX3huMgiRkywsSLst8GLXONAHs4fsg84H58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqw3cjnx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24E8C433F1;
+	Mon,  8 Apr 2024 13:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582008;
-	bh=i0EhxiBI+UMasAsJOwXCWRkP+pxjm/TmSgMhxQJ7w1A=;
+	s=korg; t=1712581683;
+	bh=sIibRmTEO9bPy+OwmWF/hejFB9eYy2oD2wA4qE8Dn94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGnZzxEKNwWIvno2eWe8QsuJxjZGhQoMY6MTx43GGfk+gr/cVvKuecOjmRgKu5i4d
-	 jvo5lUl1Futw3q75H/0QQcwBKnlPLxcOOUdBkv2upg7+bLETBunpq9fIsTapZkXsYJ
-	 7rxYHDrOovKNdOqRgMNPDqd2/MFTrR21Fn7fT3jo=
+	b=hqw3cjnxmi+ZZPU+mZ1oLT9yOnFKBH8PwXl58sZzIvTndq9O0TWPEn3ZZbENYtYmJ
+	 NlruWu0pubFWo1125UNkBPZRJl24gC8ag46bd0didz9TjrYkWRVpzPWdatG+J0UT5Z
+	 8HpSMPEXwEmK+GD05sw1MW6k65FIyNGK+BUQR9co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Toth <ftoth@exalondelft.nl>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 032/273] gpiolib: Fix debug messaging in gpiod_find_and_request()
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Jeremy Cline <jeremy@jcline.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com,
+	syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 008/252] nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet
 Date: Mon,  8 Apr 2024 14:55:07 +0200
-Message-ID: <20240408125310.293501768@linuxfoundation.org>
+Message-ID: <20240408125306.905310388@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-[ Upstream commit 5c887b65bbd1a3fc28e2e20399acede0baa83edb ]
+[ Upstream commit d24b03535e5eb82e025219c2f632b485409c898f ]
 
-When consolidating GPIO lookups in ACPI code, the debug messaging
-had been reworked that the user may see
+syzbot reported the following uninit-value access issue [1][2]:
 
-  [   13.401147] (NULL device *): using ACPI '\_SB.LEDS.led-0' for '(null)' GPIO lookup
-  [   13.401378] gpio gpiochip0: Persistence not supported for GPIO 40
-  [   13.401402] gpio-40 (?): no flags found for (null)
+nci_rx_work() parses and processes received packet. When the payload
+length is zero, each message type handler reads uninitialized payload
+and KMSAN detects this issue. The receipt of a packet with a zero-size
+payload is considered unexpected, and therefore, such packets should be
+silently discarded.
 
-instead of
+This patch resolved this issue by checking payload size before calling
+each message type handler codes.
 
-  [   14.182962] gpio gpiochip0: Persistence not supported for GPIO 40
-  [   14.182994] gpio-40 (?): no flags found for gpios
-
-The '(null)' parts are less informative and likely scare the users.
-Replace them by '(default)' which can point out to the default connection
-IDs, such as 'gpios'.
-
-While at it, amend other places where con_id is used in the messages.
-
-Reported-by: Ferry Toth <ftoth@exalondelft.nl>
-Fixes: 8eb1f71e7acc ("gpiolib: consolidate GPIO lookups")
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Tested-by: Ferry Toth <ftoth@exalondelft.nl>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+7ea9413ea6749baf5574@syzkaller.appspotmail.com
+Reported-and-tested-by: syzbot+29b5ca705d2e0f4a44d2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7ea9413ea6749baf5574 [1]
+Closes: https://syzkaller.appspot.com/bug?extid=29b5ca705d2e0f4a44d2 [2]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c |   31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -2402,6 +2402,11 @@ char *gpiochip_dup_line_label(struct gpi
- }
- EXPORT_SYMBOL_GPL(gpiochip_dup_line_label);
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 12684d835cb53..772ddb5824d9e 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1516,6 +1516,11 @@ static void nci_rx_work(struct work_struct *work)
+ 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
+ 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
  
-+static inline const char *function_name_or_default(const char *con_id)
-+{
-+	return con_id ?: "(default)";
-+}
++		if (!nci_plen(skb->data)) {
++			kfree_skb(skb);
++			break;
++		}
 +
- /**
-  * gpiochip_request_own_desc - Allow GPIO chip to request its own descriptor
-  * @gc: GPIO chip
-@@ -2430,10 +2435,11 @@ struct gpio_desc *gpiochip_request_own_d
- 					    enum gpiod_flags dflags)
- {
- 	struct gpio_desc *desc = gpiochip_get_desc(gc, hwnum);
-+	const char *name = function_name_or_default(label);
- 	int ret;
- 
- 	if (IS_ERR(desc)) {
--		chip_err(gc, "failed to get GPIO descriptor\n");
-+		chip_err(gc, "failed to get GPIO %s descriptor\n", name);
- 		return desc;
- 	}
- 
-@@ -2443,8 +2449,8 @@ struct gpio_desc *gpiochip_request_own_d
- 
- 	ret = gpiod_configure_flags(desc, label, lflags, dflags);
- 	if (ret) {
--		chip_err(gc, "setup of own GPIO %s failed\n", label);
- 		gpiod_free_commit(desc);
-+		chip_err(gc, "setup of own GPIO %s failed\n", name);
- 		return ERR_PTR(ret);
- 	}
- 
-@@ -4119,19 +4125,17 @@ static struct gpio_desc *gpiod_find_by_f
- 					      enum gpiod_flags *flags,
- 					      unsigned long *lookupflags)
- {
-+	const char *name = function_name_or_default(con_id);
- 	struct gpio_desc *desc = ERR_PTR(-ENOENT);
- 
- 	if (is_of_node(fwnode)) {
--		dev_dbg(consumer, "using DT '%pfw' for '%s' GPIO lookup\n",
--			fwnode, con_id);
-+		dev_dbg(consumer, "using DT '%pfw' for '%s' GPIO lookup\n", fwnode, name);
- 		desc = of_find_gpio(to_of_node(fwnode), con_id, idx, lookupflags);
- 	} else if (is_acpi_node(fwnode)) {
--		dev_dbg(consumer, "using ACPI '%pfw' for '%s' GPIO lookup\n",
--			fwnode, con_id);
-+		dev_dbg(consumer, "using ACPI '%pfw' for '%s' GPIO lookup\n", fwnode, name);
- 		desc = acpi_find_gpio(fwnode, con_id, idx, flags, lookupflags);
- 	} else if (is_software_node(fwnode)) {
--		dev_dbg(consumer, "using swnode '%pfw' for '%s' GPIO lookup\n",
--			fwnode, con_id);
-+		dev_dbg(consumer, "using swnode '%pfw' for '%s' GPIO lookup\n", fwnode, name);
- 		desc = swnode_find_gpio(fwnode, con_id, idx, lookupflags);
- 	}
- 
-@@ -4147,6 +4151,7 @@ struct gpio_desc *gpiod_find_and_request
- 					 bool platform_lookup_allowed)
- {
- 	unsigned long lookupflags = GPIO_LOOKUP_FLAGS_DEFAULT;
-+	const char *name = function_name_or_default(con_id);
- 	struct gpio_desc *desc;
- 	int ret;
- 
-@@ -4162,7 +4167,7 @@ struct gpio_desc *gpiod_find_and_request
- 	}
- 
- 	if (IS_ERR(desc)) {
--		dev_dbg(consumer, "No GPIO consumer %s found\n", con_id);
-+		dev_dbg(consumer, "No GPIO consumer %s found\n", name);
- 		return desc;
- 	}
- 
-@@ -4183,15 +4188,14 @@ struct gpio_desc *gpiod_find_and_request
- 		 *
- 		 * FIXME: Make this more sane and safe.
- 		 */
--		dev_info(consumer,
--			 "nonexclusive access to GPIO for %s\n", con_id);
-+		dev_info(consumer, "nonexclusive access to GPIO for %s\n", name);
- 		return desc;
- 	}
- 
- 	ret = gpiod_configure_flags(desc, con_id, lookupflags, flags);
- 	if (ret < 0) {
--		dev_dbg(consumer, "setup of GPIO %s failed\n", con_id);
- 		gpiod_put(desc);
-+		dev_dbg(consumer, "setup of GPIO %s failed\n", name);
- 		return ERR_PTR(ret);
- 	}
- 
-@@ -4307,6 +4311,7 @@ EXPORT_SYMBOL_GPL(gpiod_get_optional);
- int gpiod_configure_flags(struct gpio_desc *desc, const char *con_id,
- 		unsigned long lflags, enum gpiod_flags dflags)
- {
-+	const char *name = function_name_or_default(con_id);
- 	int ret;
- 
- 	if (lflags & GPIO_ACTIVE_LOW)
-@@ -4350,7 +4355,7 @@ int gpiod_configure_flags(struct gpio_de
- 
- 	/* No particular flag request, return here... */
- 	if (!(dflags & GPIOD_FLAGS_BIT_DIR_SET)) {
--		gpiod_dbg(desc, "no flags found for %s\n", con_id);
-+		gpiod_dbg(desc, "no flags found for GPIO %s\n", name);
- 		return 0;
- 	}
- 
+ 		/* Process frame */
+ 		switch (nci_mt(skb->data)) {
+ 		case NCI_MT_RSP_PKT:
+-- 
+2.43.0
+
 
 
 
