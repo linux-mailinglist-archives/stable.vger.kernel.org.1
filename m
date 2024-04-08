@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-36739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA22389C1CD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1054C89C174
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F3C8B2B241
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE3EF282ABC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C86E7CF3E;
-	Mon,  8 Apr 2024 13:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD3A7D085;
+	Mon,  8 Apr 2024 13:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jm8051CI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJgrO+01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DC87CF0F;
-	Mon,  8 Apr 2024 13:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF63976058;
+	Mon,  8 Apr 2024 13:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582203; cv=none; b=fZpYEpg7GPesI9jS1vpv3zdWRRFEPQekQO728ZJRSTHFnryJtzHSR1vGTFcVwnLcQyZSsKqZKC6L7BNQsIHV0OuBGFr5fOZCDu4wQ1+LbNuu8SxQ97uDEDHlcLvZq1lRCvXH5iNRp0RTz4DuyM5T4kk1Cm1YoNdn8hjxn/Af/r8=
+	t=1712582212; cv=none; b=BOt/JHShROqVgqAI9wrqo9vE29A303Hc1Kny/Ec9W7p1S1pCN6h6VgCjaFQsVOqu1LbsDFh5HPs7NZZyW7bbK93XZum2i/mKhHMX2cL2kbnJ9vcTp0NFykpayx9O1eVQfYzpn7YrK26kJXDMTpcoPb69Gsi7ODIRA+/MYsUi668=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582203; c=relaxed/simple;
-	bh=S+YJUH8QCxqTDF9pjJYONp20ACRpqstV66NGFJ6zuag=;
+	s=arc-20240116; t=1712582212; c=relaxed/simple;
+	bh=wbryKzqPkaebgv6vTOV5OT4IAkI9p0N7ky+5aeqU6DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rh8iZk0cmJN6vsl6ViJyuzfePe1wnFthSAwtGrxaaFxPlUb8u91QIzi/fze66zE69MkVehxWomKzxts7jAc34eTmCN+lMGhQiFdMetrQU7k250eYWNmR2wWq8MACmrpqUV4h5ISbQsv52NmlenVOQUC3TNb1k4SyGIScX6PhIVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jm8051CI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4795C433F1;
-	Mon,  8 Apr 2024 13:16:42 +0000 (UTC)
+	 MIME-Version; b=cJ8aNvRLjar23YQxaOWLQuQ3HFf5HRe458I2bU3rhwDg+St3+GANaFwgDrJkHRD8cdLsA9g/QYeIVBLACL353R/htrXd3ntstKEQAyZz8bpgQXlMhHfprHaoTuRpoZiOBl3TdSfTidPR61w99crcD20ksDv5Z+beqcZTz8xYl9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJgrO+01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77137C433C7;
+	Mon,  8 Apr 2024 13:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582203;
-	bh=S+YJUH8QCxqTDF9pjJYONp20ACRpqstV66NGFJ6zuag=;
+	s=korg; t=1712582211;
+	bh=wbryKzqPkaebgv6vTOV5OT4IAkI9p0N7ky+5aeqU6DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jm8051CIEY52uSsQC2QaTYxBoDEoLZGt8ZluxZLIR1ZshsfTYrij7RfgaejDbiMi4
-	 3czOvqGpEn2VM7cV1btjM8B9EJaylczqpmrdkfl9TzssqlTtTIVQFBGeXM+cmkfK/Q
-	 rKKvmJDfUhKvNk+rB3YUokErM8y0azM+co1I3vvk=
+	b=hJgrO+01SEPQqbwLY6Z1dfAm0E1WMufsAT3sd14ushy7NOmE07Z9A4vMeUs+YYx8t
+	 InFnCVaDsvlrE85TLlosn74uo195cEOLHlN/unBFKIRROeV+xJug94D+FEGA9sWCRu
+	 RsD08fiaYCwNJyEuNf4/NIRar8A74nw+8Tve8mEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/138] KVM: SVM: WARN, but continue, if misc_cg_set_capacity() fails
-Date: Mon,  8 Apr 2024 14:58:20 +0200
-Message-ID: <20240408125258.900480733@linuxfoundation.org>
+Subject: [PATCH 6.1 087/138] KVM: SVM: Use unsigned integers when dealing with ASIDs
+Date: Mon,  8 Apr 2024 14:58:21 +0200
+Message-ID: <20240408125258.931580758@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
 References: <20240408125256.218368873@linuxfoundation.org>
@@ -68,54 +68,135 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 106ed2cad9f7bd803bd31a18fe7a9219b077bf95 ]
+[ Upstream commit 466eec4a22a76c462781bf6d45cb02cbedf21a61 ]
 
-WARN and continue if misc_cg_set_capacity() fails, as the only scenario
-in which it can fail is if the specified resource is invalid, which should
-never happen when CONFIG_KVM_AMD_SEV=y.  Deliberately not bailing "fixes"
-a theoretical bug where KVM would leak the ASID bitmaps on failure, which
-again can't happen.
+Convert all local ASID variables and parameters throughout the SEV code
+from signed integers to unsigned integers.  As ASIDs are fundamentally
+unsigned values, and the global min/max variables are appropriately
+unsigned integers, too.
 
-If the impossible should happen, the end result is effectively the same
-with respect to SEV and SEV-ES (they are unusable), while continuing on
-has the advantage of letting KVM load, i.e. userspace can still run
-non-SEV guests.
+Functionally, this is a glorified nop as KVM guarantees min_sev_asid is
+non-zero, and no CPU supports -1u as the _only_ asid, i.e. the signed vs.
+unsigned goof won't cause problems in practice.
 
-Reported-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Link: https://lore.kernel.org/r/20230607004449.1421131-1-seanjc@google.com
+Opportunistically use sev_get_asid() in sev_flush_encrypted_page() instead
+of open coding an equivalent.
+
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240131235609.4161407-3-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Stable-dep-of: 0aa6b90ef9d7 ("KVM: SVM: Add support for allowing zero SEV ASIDs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/kvm/svm/sev.c | 18 ++++++++++--------
+ arch/x86/kvm/trace.h   | 10 +++++-----
+ 2 files changed, 15 insertions(+), 13 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 1fe9257d87b2d..0316fdf5040f7 100644
+index 0316fdf5040f7..9e50eaf967f22 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -2214,9 +2214,7 @@ void __init sev_hardware_setup(void)
- 	}
+@@ -76,9 +76,10 @@ struct enc_region {
+ };
  
- 	sev_asid_count = max_sev_asid - min_sev_asid + 1;
--	if (misc_cg_set_capacity(MISC_CG_RES_SEV, sev_asid_count))
--		goto out;
--
-+	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV, sev_asid_count));
- 	sev_supported = true;
+ /* Called with the sev_bitmap_lock held, or on shutdown  */
+-static int sev_flush_asids(int min_asid, int max_asid)
++static int sev_flush_asids(unsigned int min_asid, unsigned int max_asid)
+ {
+-	int ret, asid, error = 0;
++	int ret, error = 0;
++	unsigned int asid;
  
- 	/* SEV-ES support requested? */
-@@ -2241,9 +2239,7 @@ void __init sev_hardware_setup(void)
- 		goto out;
+ 	/* Check if there are any ASIDs to reclaim before performing a flush */
+ 	asid = find_next_bit(sev_reclaim_asid_bitmap, nr_asids, min_asid);
+@@ -108,7 +109,7 @@ static inline bool is_mirroring_enc_context(struct kvm *kvm)
+ }
  
- 	sev_es_asid_count = min_sev_asid - 1;
--	if (misc_cg_set_capacity(MISC_CG_RES_SEV_ES, sev_es_asid_count))
--		goto out;
--
-+	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV_ES, sev_es_asid_count));
- 	sev_es_supported = true;
+ /* Must be called with the sev_bitmap_lock held */
+-static bool __sev_recycle_asids(int min_asid, int max_asid)
++static bool __sev_recycle_asids(unsigned int min_asid, unsigned int max_asid)
+ {
+ 	if (sev_flush_asids(min_asid, max_asid))
+ 		return false;
+@@ -135,8 +136,9 @@ static void sev_misc_cg_uncharge(struct kvm_sev_info *sev)
  
- out:
+ static int sev_asid_new(struct kvm_sev_info *sev)
+ {
+-	int asid, min_asid, max_asid, ret;
++	unsigned int asid, min_asid, max_asid;
+ 	bool retry = true;
++	int ret;
+ 
+ 	WARN_ON(sev->misc_cg);
+ 	sev->misc_cg = get_current_misc_cg();
+@@ -179,7 +181,7 @@ static int sev_asid_new(struct kvm_sev_info *sev)
+ 	return ret;
+ }
+ 
+-static int sev_get_asid(struct kvm *kvm)
++static unsigned int sev_get_asid(struct kvm *kvm)
+ {
+ 	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+ 
+@@ -276,8 +278,8 @@ static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 
+ static int sev_bind_asid(struct kvm *kvm, unsigned int handle, int *error)
+ {
++	unsigned int asid = sev_get_asid(kvm);
+ 	struct sev_data_activate activate;
+-	int asid = sev_get_asid(kvm);
+ 	int ret;
+ 
+ 	/* activate ASID on the given handle */
+@@ -2290,7 +2292,7 @@ int sev_cpu_init(struct svm_cpu_data *sd)
+  */
+ static void sev_flush_encrypted_page(struct kvm_vcpu *vcpu, void *va)
+ {
+-	int asid = to_kvm_svm(vcpu->kvm)->sev_info.asid;
++	unsigned int asid = sev_get_asid(vcpu->kvm);
+ 
+ 	/*
+ 	 * Note!  The address must be a kernel address, as regular page walk
+@@ -2611,7 +2613,7 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm)
+ void pre_sev_run(struct vcpu_svm *svm, int cpu)
+ {
+ 	struct svm_cpu_data *sd = per_cpu_ptr(&svm_data, cpu);
+-	int asid = sev_get_asid(svm->vcpu.kvm);
++	unsigned int asid = sev_get_asid(svm->vcpu.kvm);
+ 
+ 	/* Assign the asid allocated with this SEV guest */
+ 	svm->asid = asid;
+diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+index bc25589ad5886..6c1dcf44c4fa3 100644
+--- a/arch/x86/kvm/trace.h
++++ b/arch/x86/kvm/trace.h
+@@ -729,13 +729,13 @@ TRACE_EVENT(kvm_nested_intr_vmexit,
+  * Tracepoint for nested #vmexit because of interrupt pending
+  */
+ TRACE_EVENT(kvm_invlpga,
+-	    TP_PROTO(__u64 rip, int asid, u64 address),
++	    TP_PROTO(__u64 rip, unsigned int asid, u64 address),
+ 	    TP_ARGS(rip, asid, address),
+ 
+ 	TP_STRUCT__entry(
+-		__field(	__u64,	rip	)
+-		__field(	int,	asid	)
+-		__field(	__u64,	address	)
++		__field(	__u64,		rip	)
++		__field(	unsigned int,	asid	)
++		__field(	__u64,		address	)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -744,7 +744,7 @@ TRACE_EVENT(kvm_invlpga,
+ 		__entry->address	=	address;
+ 	),
+ 
+-	TP_printk("rip: 0x%016llx asid: %d address: 0x%016llx",
++	TP_printk("rip: 0x%016llx asid: %u address: 0x%016llx",
+ 		  __entry->rip, __entry->asid, __entry->address)
+ );
+ 
 -- 
 2.43.0
 
