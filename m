@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-36552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B885C89C058
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A044689C05E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 751C928229E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 396791F21415
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A9362148;
-	Mon,  8 Apr 2024 13:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF306CDA8;
+	Mon,  8 Apr 2024 13:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XR5X9FdK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtxqpExB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76D32DF73;
-	Mon,  8 Apr 2024 13:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE032DF73;
+	Mon,  8 Apr 2024 13:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581659; cv=none; b=ucc1rvuNQ/ebvD/dOQ8t9OL1xon6pHpGUkhk6ocgDWpJUQjdpwn4jZyohfUUlL3iH84n8MmFuu4bFEnllJ/gLGsRNpwl9ierzUsn9Eih/Pvos/hiAv5IG+k8jvRBhNKTZNEO1DsGqU+9R8Z9y1hNJsVeiFDGOlvSO+DLE0fpWFs=
+	t=1712581671; cv=none; b=s02NMuV5OaD6w5+S8haHixaoWkucZuvwXkHjJrbKqHCuO+sFUKzza7BYWMPFpUMaFWebCNrMeueIU0mwUOWViaiKxqEmrrMB5AWUUtiZrNx/0rR/FFNSTR/jy9RznaETS43POhPNSOJU01hSXOLI1a/YePgTbEigDFQRNLuHH/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581659; c=relaxed/simple;
-	bh=wM2WjcUBwqFwBdQGfPq5mYTe5v6LBssnj5mD1RmirZw=;
+	s=arc-20240116; t=1712581671; c=relaxed/simple;
+	bh=sWYASfj13JmfSWVT/IcI0Jl6JJePFkCHRXFIO+qi6bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hp/ItKaMqRgZCP47qtZNHWfm5kxRfJniieuXqm/iKKEO6bUMsTY3Z8LKnuEEGrOF7ZpNtWSjV/X0SUrdIYabI/pleLxbAvBT+S/fCyuzvlVq6mfcz37y5i6PrEIPl/kbRVK9lS3DG2b1o2aSHbujeZkLhI2zGjLR7b3byP4keXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XR5X9FdK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A816C433F1;
-	Mon,  8 Apr 2024 13:07:39 +0000 (UTC)
+	 MIME-Version; b=CEl/JbFFjqs8iSZjGBCzPklPEZcx/t0JvZYU+Ygy7fEmWupfy5cWmjGtnU83mzr7JQBSgzqWBhWIyxz4yiYgyU+TpOpn0SEiVJrj/LUJ5lBVTg71o/NSNMpDeQaT0xirXodtSJUGCq//ikoTeeRnCi9XeMyetXALRcEGC377RiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtxqpExB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038C0C433F1;
+	Mon,  8 Apr 2024 13:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581659;
-	bh=wM2WjcUBwqFwBdQGfPq5mYTe5v6LBssnj5mD1RmirZw=;
+	s=korg; t=1712581671;
+	bh=sWYASfj13JmfSWVT/IcI0Jl6JJePFkCHRXFIO+qi6bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XR5X9FdKFfaoJohFf3xl/ySWRYT2MLpqP4E8kTo7BohvyxLKwEvLpL4wTkAbSCZCp
-	 81HqiC3cyRmD5FfNXSaT7CYFRdp6Gl9RSDDfP1swsxJ1l9QSRhfD8owAL+LHjUwOZD
-	 xctjoiN9T1C8pyFQIISVTkgmTned+plTWnQSBO48=
+	b=dtxqpExB7mNMtBZrNWK7BIuhRCrmo310odXi6Op/w0q65LGN6CB0ELNi4AfNImP4P
+	 bwPDvwzaNXpUAuuZjKOdzA+TR06zOPYl/THAvKfUlaTfz/A+uD4Mu2H/i+Y5rri027
+	 JwTQYtf90KkZdopuQNuuSZa5/RJJ0YEyPJiw3mAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 008/273] nfsd: Fix error cleanup path in nfsd_rename()
-Date: Mon,  8 Apr 2024 14:54:43 +0200
-Message-ID: <20240408125309.540966674@linuxfoundation.org>
+Subject: [PATCH 6.8 009/273] tools: ynl: fix setting presence bits in simple nests
+Date: Mon,  8 Apr 2024 14:54:44 +0200
+Message-ID: <20240408125309.576157068@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -68,46 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 9fe6e9e7b58944037714442384075c17cfde1c56 ]
+[ Upstream commit f6c8f5e8694c7a78c94e408b628afa6255cc428a ]
 
-Commit a8b0026847b8 ("rename(): avoid a deadlock in the case of parents
-having no common ancestor") added an error bail out path. However this
-path does not drop the remount protection that has been acquired. Fix
-the cleanup path to properly drop the remount protection.
+When we set members of simple nested structures in requests
+we need to set "presence" bits for all the nesting layers
+below. This has nothing to do with the presence type of
+the last layer.
 
-Fixes: a8b0026847b8 ("rename(): avoid a deadlock in the case of parents having no common ancestor")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: be5bea1cc0bf ("net: add basic C code generators for Netlink")
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20240321020214.1250202-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/ynl-gen-c.py | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index b7c7a9273ea01..4ed1e83defa23 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1833,7 +1833,7 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
- 	trap = lock_rename(tdentry, fdentry);
- 	if (IS_ERR(trap)) {
- 		err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
--		goto out;
-+		goto out_want_write;
- 	}
- 	err = fh_fill_pre_attrs(ffhp);
- 	if (err != nfs_ok)
-@@ -1903,6 +1903,7 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
- 	}
- out_unlock:
- 	unlock_rename(tdentry, fdentry);
-+out_want_write:
- 	fh_drop_write(ffhp);
+diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
+index 7fc1aa788f6f5..c19dec2394915 100755
+--- a/tools/net/ynl/ynl-gen-c.py
++++ b/tools/net/ynl/ynl-gen-c.py
+@@ -243,8 +243,11 @@ class Type(SpecAttr):
+         presence = ''
+         for i in range(0, len(ref)):
+             presence = f"{var}->{'.'.join(ref[:i] + [''])}_present.{ref[i]}"
+-            if self.presence_type() == 'bit':
+-                code.append(presence + ' = 1;')
++            # Every layer below last is a nest, so we know it uses bit presence
++            # last layer is "self" and may be a complex type
++            if i == len(ref) - 1 and self.presence_type() != 'bit':
++                continue
++            code.append(presence + ' = 1;')
+         code += self._setter_lines(ri, member, presence)
  
- 	/*
+         func_name = f"{op_prefix(ri, direction, deref=deref)}_set_{'_'.join(ref)}"
 -- 
 2.43.0
 
