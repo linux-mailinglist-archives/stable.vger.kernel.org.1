@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7A189C21C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0699D89C5B7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAC1BB25D7D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358951C22498
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9B67F7F1;
-	Mon,  8 Apr 2024 13:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7E27CF1B;
+	Mon,  8 Apr 2024 13:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gv1xpQid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L70kaUd4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E9562148;
-	Mon,  8 Apr 2024 13:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A701745D6;
+	Mon,  8 Apr 2024 13:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582352; cv=none; b=p8Rj2bOS0d7ny1t7sf8QcsVdwqAR/p0eG1AxrNlDWVBX0DiN535yOU/OsPKxmR3tWBtH+TQatb8pzoeJirxQcq0Bvc7AztTHZX4EdrBL1jWiDzsUx4btCYv6CP1NUENKFH/ne6D36t5CkgULxAYXvk7WxKxUPLTSO4hj0aeZUR4=
+	t=1712584765; cv=none; b=QhEfyss0+jn4U9ZsKxoaBmK+zY3w8s5ul1o72D6XOWjULdkVDlm1bJlZ0PwrAtzDCzpuwjygJWj7fRPPCfT1nT+c0XeitcCB5r74IfNTXu0Fx0HVWWeZoO3V6UH/0Q7wWB3eLYglg/O19Jpt2Jha14OsuHuDRw29dF3IzXG183I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582352; c=relaxed/simple;
-	bh=KjPSBnoTuxBT6iMVdvOeNLiRMavrTHxZ/Oj8sZX5z1k=;
+	s=arc-20240116; t=1712584765; c=relaxed/simple;
+	bh=smZHEJGXHvkM4vwb7+OscsGpR13JU2foSqgLxyI21+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuN19YnmQmFoVNx3w6CKgb044rLV8bhTQpIF2d/wRiASzmCMwT7HSAi1VXsVGgY3yrk48JkbfRMH+LKXHVf1M7hMbgqmI+sYa/N3INDEQqVykyRFT0QpVhZuY64F3tv5wqKFnOoOTueLt+lmjSUi+hRhUceqiO8E7JPlUtvHeSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gv1xpQid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F142C433F1;
-	Mon,  8 Apr 2024 13:19:11 +0000 (UTC)
+	 MIME-Version; b=sU3NUsSNzJ3WYV/Ij1bEQ2iA9hLj/X5zYhMdXrnT55yUurF6pffHLmln806xRq5NiSzjJlm5ivcdMiYqvMt/hWA5Z6K3pVgIpSZpzs3jg4S69HTsvS76cXiQPlsL9fUtxnD9g1r4ZxbTVkFDnKcuaVKk4ZAMFtlWuOKGTanhc3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L70kaUd4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967DBC433C7;
+	Mon,  8 Apr 2024 13:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582352;
-	bh=KjPSBnoTuxBT6iMVdvOeNLiRMavrTHxZ/Oj8sZX5z1k=;
+	s=korg; t=1712584765;
+	bh=smZHEJGXHvkM4vwb7+OscsGpR13JU2foSqgLxyI21+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gv1xpQid2WNBsAwAONTCsvbfvYc02JAYG11/T9/3um1VgHAAIEj3uKlMHILauWty5
-	 KyhRALSDsFYGFAgc4IJiZWYcCCPC8BOybK0mdBI141nN7rh8cpyZBbHC+OvomKwvLt
-	 HVYPA/Qwnu4jIzfivpbJKjReJhRILj9J/5ihNO+E=
+	b=L70kaUd4JNHQeYqtCulEU5+vSTjJxCNfxNmvr+KghlXcVQlSGcbdwXFqFU74sxyeS
+	 yTmFDUGOXSGMu5+4JR97e5pmVUtd23nMlio62xSojOecLkFLoNhcUtO/deYAhV1cnM
+	 VrSS1nLNQwN/6OkKUIofIEAT5BF8uXhkuKU8wecM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahmoud Adam <mngyadam@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 086/252] net/rds: fix possible cp null dereference
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 519/690] nfsd: clean up potential nfsd_file refcount leaks in COPY codepath
 Date: Mon,  8 Apr 2024 14:56:25 +0200
-Message-ID: <20240408125309.313637542@linuxfoundation.org>
+Message-ID: <20240408125418.447235042@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahmoud Adam <mngyadam@amazon.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 62fc3357e079a07a22465b9b6ef71bb6ea75ee4b upstream.
+[ Upstream commit 6ba434cb1a8d403ea9aad1b667c3ea3ad8b3191f ]
 
-cp might be null, calling cp->cp_conn would produce null dereference
+There are two different flavors of the nfsd4_copy struct. One is
+embedded in the compound and is used directly in synchronous copies. The
+other is dynamically allocated, refcounted and tracked in the client
+struture. For the embedded one, the cleanup just involves releasing any
+nfsd_files held on its behalf. For the async one, the cleanup is a bit
+more involved, and we need to dequeue it from lists, unhash it, etc.
 
-[Simon Horman adds:]
+There is at least one potential refcount leak in this code now. If the
+kthread_create call fails, then both the src and dst nfsd_files in the
+original nfsd4_copy object are leaked.
 
-Analysis:
+The cleanup in this codepath is also sort of weird. In the async copy
+case, we'll have up to four nfsd_file references (src and dst for both
+flavors of copy structure). They are both put at the end of
+nfsd4_do_async_copy, even though the ones held on behalf of the embedded
+one outlive that structure.
 
-* cp is a parameter of __rds_rdma_map and is not reassigned.
+Change it so that we always clean up the nfsd_file refs held by the
+embedded copy structure before nfsd4_copy returns. Rework
+cleanup_async_copy to handle both inter and intra copies. Eliminate
+nfsd4_cleanup_intra_ssc since it now becomes a no-op.
 
-* The following call-sites pass a NULL cp argument to __rds_rdma_map()
-
-  - rds_get_mr()
-  - rds_get_mr_for_dest
-
-* Prior to the code above, the following assumes that cp may be NULL
-  (which is indicative, but could itself be unnecessary)
-
-	trans_private = rs->rs_transport->get_mr(
-		sg, nents, rs, &mr->r_key, cp ? cp->cp_conn : NULL,
-		args->vec.addr, args->vec.bytes,
-		need_odp ? ODP_ZEROBASED : ODP_NOT_NEEDED);
-
-* The code modified by this patch is guarded by IS_ERR(trans_private),
-  where trans_private is assigned as per the previous point in this analysis.
-
-  The only implementation of get_mr that I could locate is rds_ib_get_mr()
-  which can return an ERR_PTR if the conn (4th) argument is NULL.
-
-* ret is set to PTR_ERR(trans_private).
-  rds_ib_get_mr can return ERR_PTR(-ENODEV) if the conn (4th) argument is NULL.
-  Thus ret may be -ENODEV in which case the code in question will execute.
-
-Conclusion:
-* cp may be NULL at the point where this patch adds a check;
-  this patch does seem to address a possible bug
-
-Fixes: c055fc00c07b ("net/rds: fix WARNING in rds_conn_connect_if_down")
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326153132.55580-1-mngyadam@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/rds/rdma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4proc.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
---- a/net/rds/rdma.c
-+++ b/net/rds/rdma.c
-@@ -302,7 +302,7 @@ static int __rds_rdma_map(struct rds_soc
- 		}
- 		ret = PTR_ERR(trans_private);
- 		/* Trigger connection so that its ready for the next retry */
--		if (ret == -ENODEV)
-+		if (ret == -ENODEV && cp)
- 			rds_conn_connect_if_down(cp->cp_conn);
- 		goto out;
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 6fb5f10602233..ada46ef5a093d 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1512,7 +1512,6 @@ nfsd4_cleanup_inter_ssc(struct nfsd4_ssc_umount_item *nsui, struct file *filp,
+ 	long timeout = msecs_to_jiffies(nfsd4_ssc_umount_timeout);
+ 
+ 	nfs42_ssc_close(filp);
+-	nfsd_file_put(dst);
+ 	fput(filp);
+ 
+ 	spin_lock(&nn->nfsd_ssc_lock);
+@@ -1562,13 +1561,6 @@ nfsd4_setup_intra_ssc(struct svc_rqst *rqstp,
+ 				 &copy->nf_dst);
+ }
+ 
+-static void
+-nfsd4_cleanup_intra_ssc(struct nfsd_file *src, struct nfsd_file *dst)
+-{
+-	nfsd_file_put(src);
+-	nfsd_file_put(dst);
+-}
+-
+ static void nfsd4_cb_offload_release(struct nfsd4_callback *cb)
+ {
+ 	struct nfsd4_cb_offload *cbo =
+@@ -1683,12 +1675,18 @@ static void dup_copy_fields(struct nfsd4_copy *src, struct nfsd4_copy *dst)
+ 	dst->ss_nsui = src->ss_nsui;
+ }
+ 
++static void release_copy_files(struct nfsd4_copy *copy)
++{
++	if (copy->nf_src)
++		nfsd_file_put(copy->nf_src);
++	if (copy->nf_dst)
++		nfsd_file_put(copy->nf_dst);
++}
++
+ static void cleanup_async_copy(struct nfsd4_copy *copy)
+ {
+ 	nfs4_free_copy_state(copy);
+-	nfsd_file_put(copy->nf_dst);
+-	if (!nfsd4_ssc_is_inter(copy))
+-		nfsd_file_put(copy->nf_src);
++	release_copy_files(copy);
+ 	spin_lock(&copy->cp_clp->async_lock);
+ 	list_del(&copy->copies);
+ 	spin_unlock(&copy->cp_clp->async_lock);
+@@ -1748,7 +1746,6 @@ static int nfsd4_do_async_copy(void *data)
+ 	} else {
+ 		nfserr = nfsd4_do_copy(copy, copy->nf_src->nf_file,
+ 				       copy->nf_dst->nf_file, false);
+-		nfsd4_cleanup_intra_ssc(copy->nf_src, copy->nf_dst);
  	}
+ 
+ do_callback:
+@@ -1811,9 +1808,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	} else {
+ 		status = nfsd4_do_copy(copy, copy->nf_src->nf_file,
+ 				       copy->nf_dst->nf_file, true);
+-		nfsd4_cleanup_intra_ssc(copy->nf_src, copy->nf_dst);
+ 	}
+ out:
++	release_copy_files(copy);
+ 	return status;
+ out_err:
+ 	if (async_copy)
+-- 
+2.43.0
+
 
 
 
