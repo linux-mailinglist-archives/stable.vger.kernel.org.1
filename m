@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-36728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CC589C1D6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6EC89C666
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89F6BB22A88
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD83DB2A65B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771227172F;
-	Mon,  8 Apr 2024 13:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02A27D08A;
+	Mon,  8 Apr 2024 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tO6nJbOH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGYcBLuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C9B7442A;
-	Mon,  8 Apr 2024 13:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE857A15C;
+	Mon,  8 Apr 2024 13:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582171; cv=none; b=XyD+4RdIG6+qkrlyIIy72drTC2fPJ0+ydMRaQrOzgOeus9l/zF7YexW7ffXvEiGantvLbizYKNDR94eylNydVhpF5rdVt5PnPrIyjq3OJn0A8uPHOlqEQd+pkfRpgnhwbvVF0GEcscLu4BRqfaxU/mZlmEm5vCD7w2e8zyenJQY=
+	t=1712584630; cv=none; b=UceaKaDuKiyT0nPYssZkzFL6oYSvhT/MkpsF647v4PtoztAYMlz/kWTtqZ23pbMClL41pUH/L47bkPAabiZVgMqFG2TGbqF8JQn/l49Khz+WZjzKt/OQNZ2rmJLTIT5x2ynJQ/jB6k4aWErnChgH2ov6HZ7sa7oAG7sBG1QWN3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582171; c=relaxed/simple;
-	bh=Agax1ddfWYFn3szZzVoXOw7uRIX6Ibn/a9O3+UfBJCs=;
+	s=arc-20240116; t=1712584630; c=relaxed/simple;
+	bh=mg1+uRuyH95TNu3B17bRv5+vdo07kqA8L+GCJHa34X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fq5wyw0Xxw5q8Ch7icEIdZZSTwo1oRe+S8G5TFbZo8raBjq4DCKrievZGjmF6Lfw0JfAJNcI8l+VqmLR4/tvUg45SPtMErS8CK/QwYmNPeIZ7e69XFm28tczNgWAwi372MKTh+F3oBIWHdg3dDfl5TE/nUDdvREkvqh7W7CeNz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tO6nJbOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EDDC433C7;
-	Mon,  8 Apr 2024 13:16:10 +0000 (UTC)
+	 MIME-Version; b=DKHvGBUWYxcMM9Tcxxmv6KkNoPJ/iYQNOsBel2UN3+VX9bNCra5JeXhPK/pY/mgWrgbuQLj0F248xvmcqrqSyYjZr8jb3+aLpdQsH9fWSCeEdmcxgAbg8qY89bwLaV5h2Lm42O3YugUGGJgwnrA/KHSKIqR0t3RmuKE7FvGc/Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGYcBLuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9897C433C7;
+	Mon,  8 Apr 2024 13:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582171;
-	bh=Agax1ddfWYFn3szZzVoXOw7uRIX6Ibn/a9O3+UfBJCs=;
+	s=korg; t=1712584629;
+	bh=mg1+uRuyH95TNu3B17bRv5+vdo07kqA8L+GCJHa34X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tO6nJbOH3lAbLrFCWMaQd/4Q88rt0p2IF2mw98bUcY31RHUmbcUOjrxTBVXSxxbJa
-	 5wyrF7hn9J28gWQIl+w8Gij2meaADHtbb9H0jekGxdwXiXbVakuZlPNw1ZUsnYVAnr
-	 HK1OS26K+p7ncxojkFK7+H4xf7Qukrj6p4NaOOLM=
+	b=VGYcBLuCD5V7+IEQl+d5bqeCBroNkISBkxnj5TSBeBVjUqEvWOg7ZvnvSfw8GSDbd
+	 0BXfnEBRiq4XRepjC2FPQYrUCOkY28BxTjeWpvbl+6QovQ/pPCgs3Jl5pPnno4WpNL
+	 3kunW4H/jdrmHLl7z+RIILeyy4b/1XMIIaLQ5aIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>
-Subject: [PATCH 6.6 069/252] RISC-V: KVM: Fix APLIC setipnum_le/be write emulation
-Date: Mon,  8 Apr 2024 14:56:08 +0200
-Message-ID: <20240408125308.776659069@linuxfoundation.org>
+	Dai Ngo <dai.ngo@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 503/690] NFSD: refactoring courtesy_client_reaper to a generic low memory shrinker
+Date: Mon,  8 Apr 2024 14:56:09 +0200
+Message-ID: <20240408125417.857334279@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +59,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit d8dd9f113e16bef3b29c9dcceb584a6f144f55e4 upstream.
+[ Upstream commit a1049eb47f20b9eabf9afb218578fff16b4baca6 ]
 
-The writes to setipnum_le/be register for APLIC in MSI-mode have special
-consideration for level-triggered interrupts as-per the section "4.9.2
-Special consideration for level-sensitive interrupt sources" of the RISC-V
-AIA specification.
+Refactoring courtesy_client_reaper to generic low memory
+shrinker so it can be used for other purposes.
 
-Particularly, the below text from the RISC-V AIA specification defines
-the behaviour of writes to setipnum_le/be register for level-triggered
-interrupts:
-
-"A second option is for the interrupt service routine to write the
-APLIC’s source identity number for the interrupt to the domain’s
-setipnum register just before exiting. This will cause the interrupt’s
-pending bit to be set to one again if the source is still asserting
-an interrupt, but not if the source is not asserting an interrupt."
-
-Fix setipnum_le/be write emulation for in-kernel APLIC by implementing
-the above behaviour in aplic_write_pending() function.
-
-Cc: stable@vger.kernel.org
-Fixes: 74967aa208e2 ("RISC-V: KVM: Add in-kernel emulation of AIA APLIC")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20240321085041.1955293-2-apatel@ventanamicro.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/riscv/kvm/aia_aplic.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4state.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
-index 39e72aa016a4..5e842b92dc46 100644
---- a/arch/riscv/kvm/aia_aplic.c
-+++ b/arch/riscv/kvm/aia_aplic.c
-@@ -137,11 +137,21 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
- 	raw_spin_lock_irqsave(&irqd->lock, flags);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 524865c7211ef..34ae4a3d86f3e 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4361,7 +4361,7 @@ nfsd4_init_slabs(void)
+ }
  
- 	sm = irqd->sourcecfg & APLIC_SOURCECFG_SM_MASK;
--	if (!pending &&
--	    ((sm == APLIC_SOURCECFG_SM_LEVEL_HIGH) ||
--	     (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)))
-+	if (sm == APLIC_SOURCECFG_SM_INACTIVE)
- 		goto skip_write_pending;
+ static unsigned long
+-nfsd_courtesy_client_count(struct shrinker *shrink, struct shrink_control *sc)
++nfsd4_state_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
+ {
+ 	int cnt;
+ 	struct nfsd_net *nn = container_of(shrink,
+@@ -4374,7 +4374,7 @@ nfsd_courtesy_client_count(struct shrinker *shrink, struct shrink_control *sc)
+ }
  
-+	if (sm == APLIC_SOURCECFG_SM_LEVEL_HIGH ||
-+	    sm == APLIC_SOURCECFG_SM_LEVEL_LOW) {
-+		if (!pending)
-+			goto skip_write_pending;
-+		if ((irqd->state & APLIC_IRQ_STATE_INPUT) &&
-+		    sm == APLIC_SOURCECFG_SM_LEVEL_LOW)
-+			goto skip_write_pending;
-+		if (!(irqd->state & APLIC_IRQ_STATE_INPUT) &&
-+		    sm == APLIC_SOURCECFG_SM_LEVEL_HIGH)
-+			goto skip_write_pending;
-+	}
+ static unsigned long
+-nfsd_courtesy_client_scan(struct shrinker *shrink, struct shrink_control *sc)
++nfsd4_state_shrinker_scan(struct shrinker *shrink, struct shrink_control *sc)
+ {
+ 	return SHRINK_STOP;
+ }
+@@ -4401,8 +4401,8 @@ nfsd4_init_leases_net(struct nfsd_net *nn)
+ 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
+ 
+ 	atomic_set(&nn->nfsd_courtesy_clients, 0);
+-	nn->nfsd_client_shrinker.scan_objects = nfsd_courtesy_client_scan;
+-	nn->nfsd_client_shrinker.count_objects = nfsd_courtesy_client_count;
++	nn->nfsd_client_shrinker.scan_objects = nfsd4_state_shrinker_scan;
++	nn->nfsd_client_shrinker.count_objects = nfsd4_state_shrinker_count;
+ 	nn->nfsd_client_shrinker.seeks = DEFAULT_SEEKS;
+ 	return register_shrinker(&nn->nfsd_client_shrinker);
+ }
+@@ -6151,17 +6151,24 @@ laundromat_main(struct work_struct *laundry)
+ }
+ 
+ static void
+-courtesy_client_reaper(struct work_struct *reaper)
++courtesy_client_reaper(struct nfsd_net *nn)
+ {
+ 	struct list_head reaplist;
+-	struct delayed_work *dwork = to_delayed_work(reaper);
+-	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
+-					nfsd_shrinker_work);
+ 
+ 	nfs4_get_courtesy_client_reaplist(nn, &reaplist);
+ 	nfs4_process_client_reaplist(&reaplist);
+ }
+ 
++static void
++nfsd4_state_shrinker_worker(struct work_struct *work)
++{
++	struct delayed_work *dwork = to_delayed_work(work);
++	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
++				nfsd_shrinker_work);
 +
- 	if (pending)
- 		irqd->state |= APLIC_IRQ_STATE_PENDING;
- 	else
++	courtesy_client_reaper(nn);
++}
++
+ static inline __be32 nfs4_check_fh(struct svc_fh *fhp, struct nfs4_stid *stp)
+ {
+ 	if (!fh_match(&fhp->fh_handle, &stp->sc_file->fi_fhandle))
+@@ -7983,7 +7990,7 @@ static int nfs4_state_create_net(struct net *net)
+ 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
+ 
+ 	INIT_DELAYED_WORK(&nn->laundromat_work, laundromat_main);
+-	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, courtesy_client_reaper);
++	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
+ 	get_net(net);
+ 
+ 	return 0;
 -- 
-2.44.0
+2.43.0
 
 
 
