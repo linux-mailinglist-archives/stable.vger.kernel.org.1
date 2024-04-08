@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-37041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2878F89C34E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17E589C5E2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 695D6B2F07C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92BC11F20EEB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA697F47F;
-	Mon,  8 Apr 2024 13:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7127CF26;
+	Mon,  8 Apr 2024 14:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4JS/Iyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fG7El1lX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF3E7F476;
-	Mon,  8 Apr 2024 13:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3B67C0A9;
+	Mon,  8 Apr 2024 14:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583083; cv=none; b=vGVtuvmnaYyuXzrjFy0/KaNXxZtIM9kbZIWvj82Ee9xr1ccE/I+NDM5cMAxFbqu5DBQynP4KQ7UsAoN7fhZRDldEDoYqPQi5UVeY5UqU8A7yi5RyVLqKKhX9KnyF2zwJ5h07lHmA7T6UU6INndS9LquZeHH6+Mz//p4jpH4QTbg=
+	t=1712584879; cv=none; b=sXvhUlhqqE535ZdTPuFc8bHdoguGbVO2g9ZcKon/foEcP7SyBjLLcHlimoU+/5XA6PaYd09B4RNDJeKMBM+bMyMwsfGUnCY7SVT9wsrIvq5vKGgisB4cHSeUrygZttUKVoCdJrAYL9lV8F/dY2vkvju3w7OaoqzBEBrCHaTjfKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583083; c=relaxed/simple;
-	bh=kj5LCRFHOzom7+d9bz1pGc7WMz6+vNfwrBPBfO2QVkU=;
+	s=arc-20240116; t=1712584879; c=relaxed/simple;
+	bh=K8uCQYwHWCpLnT7mhq69tuQ7a4vl71zBdJw+EaysQyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0Hu3cpTd9Jpmj2AW8jz66K42GO4ukaIfVw/Yvb/QQ17xMkzkQnAIgVBqyFI9XDoB3UPmwRwgmtsc8xPgTrAKKVbYb5kCqZNNmZ9wj3Q2tCur/Q9qiKjTgcv6reIlh7cCEbZYYC70eWn+ANpP77gHV1Iu2HJ5p+mDSWHru0/TKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4JS/Iyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55A4C433C7;
-	Mon,  8 Apr 2024 13:31:22 +0000 (UTC)
+	 MIME-Version; b=aJCV5ODSCs4rhku3womPmZJ9zIeqj3N6LIgT87OXJ/XWJEk0tVkO/AcjOcFDhkUmjtQ6oJHjoVcCh1DkE+QAZr1Y3hubBhyk3hVVSgtFE1SwdrEmw+k9UDnnLKzRETmJGyOlJUzsXkesx5a9/XRNDUTe9ibLHftc2SlJuHOsiS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fG7El1lX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477E5C433C7;
+	Mon,  8 Apr 2024 14:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583083;
-	bh=kj5LCRFHOzom7+d9bz1pGc7WMz6+vNfwrBPBfO2QVkU=;
+	s=korg; t=1712584879;
+	bh=K8uCQYwHWCpLnT7mhq69tuQ7a4vl71zBdJw+EaysQyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4JS/IyhAROi39zOLmVzrLnWm9OPMky3aq8XYDq2tEdA+IZ4Gin9m7Vodi/8kmDQb
-	 wRdRZYeh5+vKSvvJk/LhlNQIAVGZtaC6jSHwkeE2JzFeXyVSdc8v+gtBv8Atm3m1x8
-	 LTIN1bH2kvStJUfFIMsnkV0iABM38YuaDG5GJvso=
+	b=fG7El1lX/ScaSsljBoE9GyqRL7SfzPfcW07Rof5w0SIJuHnV6oMeHt7KpQ5VWJasV
+	 8gltOyGHE6cjhh/gEx46hgWgpX7QLuzveHyLQXqnPJPJhHTRcN6sPh8qaL+IFfIlQI
+	 er5U/Owls5l3wWqjWx2pT2xf/CpVoObnOfARClxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/252] net: ravb: Always update error counters
-Date: Mon,  8 Apr 2024 14:57:34 +0200
-Message-ID: <20240408125311.470330018@linuxfoundation.org>
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 5.15 589/690] usb: dwc2: gadget: Fix exiting from clock gating
+Date: Mon,  8 Apr 2024 14:57:35 +0200
+Message-ID: <20240408125420.911268105@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-[ Upstream commit 101b76418d7163240bc74a7e06867dca0e51183e ]
+commit 31f42da31417bec88158f3cf62d19db836217f1e upstream.
 
-The error statistics should be updated each time the poll function is
-called, even if the full RX work budget has been consumed. This prevents
-the counts from becoming stuck when RX bandwidth usage is high.
+Added exiting from the clock gating mode on USB Reset Detect interrupt
+if core in the clock gating mode.
+Added new condition to check core in clock gating mode or no.
 
-This also ensures that error counters are not updated after we've
-re-enabled interrupts as that could result in a race condition.
-
-Also drop an unnecessary space.
-
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240402145305.82148-2-paul.barker.ct@bp.renesas.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9b4965d77e11 ("usb: dwc2: Add exit clock gating from session request interrupt")
+Fixes: 5d240efddc7f ("usb: dwc2: Add exit clock gating from wakeup interrupt")
+Fixes: 16c729f90bdf ("usb: dwc2: Allow exit clock gating in urb enqueue")
+Fixes: 401411bbc4e6 ("usb: dwc2: Add exit clock gating before removing driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/cbcc2ccd37e89e339130797ed68ae4597db773ac.1708938774.git.Minas.Harutyunyan@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/usb/dwc2/core_intr.c |    9 ++++++---
+ drivers/usb/dwc2/gadget.c    |    6 ++++++
+ drivers/usb/dwc2/hcd.c       |    2 +-
+ drivers/usb/dwc2/platform.c  |    2 +-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 14595d23b1903..c6897e6ea362d 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1307,6 +1307,15 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	netif_wake_subqueue(ndev, q);
- 	spin_unlock_irqrestore(&priv->lock, flags);
+--- a/drivers/usb/dwc2/core_intr.c
++++ b/drivers/usb/dwc2/core_intr.c
+@@ -327,7 +327,8 @@ static void dwc2_handle_session_req_intr
  
-+	/* Receive error message handling */
-+	priv->rx_over_errors = priv->stats[RAVB_BE].rx_over_errors;
-+	if (info->nc_queues)
-+		priv->rx_over_errors += priv->stats[RAVB_NC].rx_over_errors;
-+	if (priv->rx_over_errors != ndev->stats.rx_over_errors)
-+		ndev->stats.rx_over_errors = priv->rx_over_errors;
-+	if (priv->rx_fifo_errors != ndev->stats.rx_fifo_errors)
-+		ndev->stats.rx_fifo_errors = priv->rx_fifo_errors;
+ 			/* Exit gadget mode clock gating. */
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		}
+ 
+@@ -438,7 +439,8 @@ static void dwc2_handle_wakeup_detected_
+ 
+ 			/* Exit gadget mode clock gating. */
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		} else {
+ 			/* Change to L0 state */
+@@ -455,7 +457,8 @@ static void dwc2_handle_wakeup_detected_
+ 			}
+ 
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_host_exit_clock_gating(hsotg, 1);
+ 
+ 			/*
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -3728,6 +3728,12 @@ irq_retry:
+ 		if (hsotg->in_ppd && hsotg->lx_state == DWC2_L2)
+ 			dwc2_exit_partial_power_down(hsotg, 0, true);
+ 
++		/* Exit gadget mode clock gating. */
++		if (hsotg->params.power_down ==
++		    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++		    !hsotg->params.no_clock_gating)
++			dwc2_gadget_exit_clock_gating(hsotg, 0);
 +
- 	if (!unmask)
- 		goto out;
- 
-@@ -1323,14 +1332,6 @@ static int ravb_poll(struct napi_struct *napi, int budget)
+ 		hsotg->lx_state = DWC2_L0;
  	}
- 	spin_unlock_irqrestore(&priv->lock, flags);
  
--	/* Receive error message handling */
--	priv->rx_over_errors =  priv->stats[RAVB_BE].rx_over_errors;
--	if (info->nc_queues)
--		priv->rx_over_errors += priv->stats[RAVB_NC].rx_over_errors;
--	if (priv->rx_over_errors != ndev->stats.rx_over_errors)
--		ndev->stats.rx_over_errors = priv->rx_over_errors;
--	if (priv->rx_fifo_errors != ndev->stats.rx_fifo_errors)
--		ndev->stats.rx_fifo_errors = priv->rx_fifo_errors;
- out:
- 	return budget - quota;
- }
--- 
-2.43.0
-
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -4690,7 +4690,7 @@ static int _dwc2_hcd_urb_enqueue(struct
+ 	}
+ 
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+-	    hsotg->bus_suspended) {
++	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
+ 		if (dwc2_is_device_mode(hsotg))
+ 			dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		else
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -344,7 +344,7 @@ static int dwc2_driver_remove(struct pla
+ 
+ 	/* Exit clock gating when driver is removed. */
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+-	    hsotg->bus_suspended) {
++	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
+ 		if (dwc2_is_device_mode(hsotg))
+ 			dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		else
 
 
 
