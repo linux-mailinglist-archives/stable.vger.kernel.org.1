@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-36406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD3989BF7D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:52:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9B489C462
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B5F4B27D83
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:52:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 273672842F7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC076F08E;
-	Mon,  8 Apr 2024 12:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC74D7F476;
+	Mon,  8 Apr 2024 13:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVjzxHK2"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BE76CDA9
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 12:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7867EF06;
+	Mon,  8 Apr 2024 13:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712580767; cv=none; b=rOrkrDwnsnhygIZxxrTGphs2SDkpmQu2NwbVsyHSIic5dS7OZXplXJ6mkGqEiLyl/5lsnVveA1mJlpXOmApND1iUSsVlvextKXM2XyUIjEnGwIDPEUGVCJmX2imuBS83e5iVKoifB5LHAZDyNyd3xgfF1zENr90gfhE/khH6q1s=
+	t=1712583905; cv=none; b=DkqJEQtzi4rTt2wDo5+DYK+kT2421arS4KOMrjY4eMIVMTk5mv56gqgyfGG/gdlsp5tq2l6PsFZf+4sWmRvWMAtF5JCSTWVzQ8mkks8FqD+k9zmO8fG03pA1AhfCBvnzUNHG6f/HRfjxMYr2NmKYmTIRDbsqZ+A53W/fuq1Cqt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712580767; c=relaxed/simple;
-	bh=ilG2gdGuvb5dOp+CESfvHdBW777i9aToG29k0t/K6tA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jf79dB26rBXvZ/iUSNH4IJL4Eu/r+OGjumxClI3ZwnMuBbe6RqUuuBoTan+AOjlh/Df9qCJ+YCgV4KHt4S4BxHEQj3F5wuo0nTk1LYqy56u0AzKfzesnG80GZEUQ1bolVfZ+EHRZNVHNRk6RRsBsolqBdUITO8TS0rsNtCFi3Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id 74A622F20250; Mon,  8 Apr 2024 12:52:43 +0000 (UTC)
-X-Spam-Level: 
-Received: from shell.ipa.basealt.ru (unknown [176.12.98.74])
-	by air.basealt.ru (Postfix) with ESMTPSA id 9964C2F2024A;
-	Mon,  8 Apr 2024 12:52:38 +0000 (UTC)
-From: Alexander Ofitserov <oficerovas@altlinux.org>
-To: oficerovas@altlinux.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andy Lutomirski <luto@kernel.org>,
-	Borislav Petkov <bp@suse.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	Toshi Kani <toshi.kani@hp.com>,
-	lvc-project@linuxtesting.org,
-	dutyrok@altlinux.org,
-	kovalev@altlinux.org,
-	Ma Wupeng <mawupeng1@huawei.com>,
-	syzbot+5f488e922d047d8f00cc@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 5.10] x86/mm/pat: clear VM_PAT if copy_p4d_range failed
-Date: Mon,  8 Apr 2024 15:52:34 +0300
-Message-ID: <20240408125234.1844880-1-oficerovas@altlinux.org>
-X-Mailer: git-send-email 2.42.1
+	s=arc-20240116; t=1712583905; c=relaxed/simple;
+	bh=K2rimx0q7nUAwqSl8LMvRuEJQ+ZRukS7cKbJkHdE0aA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WNKZbKCxLsYUwU8xvTYQy+34Fkg5JLRXMwEe8O1B140nE402T/rn0DumRmGv61/Er/BbDc9JqnEefGhMQ2GAH4NiddrZjB8Q436/8cESVPdNA1tTRaHiA8aB2xCxBJsdHMglqIJyF/ysx3euOxW6AjxC/XvFY7maNRLkgy5VER4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVjzxHK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04535C433C7;
+	Mon,  8 Apr 2024 13:45:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712583905;
+	bh=K2rimx0q7nUAwqSl8LMvRuEJQ+ZRukS7cKbJkHdE0aA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=yVjzxHK2HW/kZNDRbqRMHo12O64EOZaPad5jsPtMObG9xd48eYbgwh4gq4vdEsFdm
+	 PlA/2Q4fUXKA9OkIRyG6GNJ69XU67gsL37L1zHhLsqx8HAQBahw9URez/juKNxMamj
+	 85x02nn7l3yt1/XiBGGAYYgJgmj2p4HhM5UFhf74=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 5.15 289/690] fs/lock: documentation cleanup. Replace inode->i_lock with flc_lock.
+Date: Mon,  8 Apr 2024 14:52:35 +0200
+Message-ID: <20240408125410.080346412@linuxfoundation.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,134 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ma Wupeng <mawupeng1@huawei.com>
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit d155df53f31068c3340733d586eb9b3ddfd70fc5 ]
+------------------
 
-Syzbot reports a warning in untrack_pfn().  Digging into the root we found
-that this is due to memory allocation failure in pmd_alloc_one.  And this
-failure is produced due to failslab.
+From: Dai Ngo <dai.ngo@oracle.com>
 
-In copy_page_range(), memory alloaction for pmd failed.  During the error
-handling process in copy_page_range(), mmput() is called to remove all
-vmas.  While untrack_pfn this empty pfn, warning happens.
+[ Upstream commit 9d6647762b9c6b555bc83d97d7c93be6057a990f ]
 
-Here's a simplified flow:
+Update lock usage of lock_manager_operations' functions to reflect
+the changes in commit 6109c85037e5 ("locks: add a dedicated spinlock
+to protect i_flctx lists").
 
-dup_mm
-  dup_mmap
-    copy_page_range
-      copy_p4d_range
-        copy_pud_range
-          copy_pmd_range
-            pmd_alloc
-              __pmd_alloc
-                pmd_alloc_one
-                  page = alloc_pages(gfp, 0);
-                    if (!page)
-                      return NULL;
-    mmput
-        exit_mmap
-          unmap_vmas
-            unmap_single_vma
-              untrack_pfn
-                follow_phys
-                  WARN_ON_ONCE(1);
-
-Since this vma is not generate successfully, we can clear flag VM_PAT.  In
-this case, untrack_pfn() will not be called while cleaning this vma.
-
-Function untrack_pfn_moved() has also been renamed to fit the new logic.
-
-Link: https://lkml.kernel.org/r/20230217025615.1595558-1-mawupeng1@huawei.com
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-Reported-by: <syzbot+5f488e922d047d8f00cc@syzkaller.appspotmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
-Cc: stable@vger.kernel.org
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/x86/mm/pat/memtype.c | 12 ++++++++----
- include/linux/pgtable.h   |  7 ++++---
- mm/memory.c               |  1 +
- mm/mremap.c               |  2 +-
- 4 files changed, 14 insertions(+), 8 deletions(-)
+ Documentation/filesystems/locking.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
-index f9c53a7107407..7c57001f79b83 100644
---- a/arch/x86/mm/pat/memtype.c
-+++ b/arch/x86/mm/pat/memtype.c
-@@ -1106,11 +1106,15 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
- }
+diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+index 5833cea4a16b2..e2a27bb5dc411 100644
+--- a/Documentation/filesystems/locking.rst
++++ b/Documentation/filesystems/locking.rst
+@@ -446,13 +446,13 @@ prototypes::
+ locking rules:
  
- /*
-- * untrack_pfn_moved is called, while mremapping a pfnmap for a new region,
-- * with the old vma after its pfnmap page table has been removed.  The new
-- * vma has a new pfnmap to the same pfn & cache type with VM_PAT set.
-+ * untrack_pfn_clear is called if the following situation fits:
-+ *
-+ * 1) while mremapping a pfnmap for a new region,  with the old vma after
-+ * its pfnmap page table has been removed.  The new vma has a new pfnmap
-+ * to the same pfn & cache type with VM_PAT set.
-+ * 2) while duplicating vm area, the new vma fails to copy the pgtable from
-+ * old vma.
-  */
--void untrack_pfn_moved(struct vm_area_struct *vma)
-+void untrack_pfn_clear(struct vm_area_struct *vma)
- {
- 	vma->vm_flags &= ~VM_PAT;
- }
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index f924468d84ec4..b04a675fa320e 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1048,9 +1048,10 @@ static inline void untrack_pfn(struct vm_area_struct *vma,
- }
+ ======================	=============	=================	=========
+-ops			inode->i_lock	blocked_lock_lock	may block
++ops			   flc_lock  	blocked_lock_lock	may block
+ ======================	=============	=================	=========
+-lm_notify:		yes		yes			no
++lm_notify:		no      	yes			no
+ lm_grant:		no		no			no
+ lm_break:		yes		no			no
+ lm_change		yes		no			no
+-lm_breaker_owns_lease:	no		no			no
++lm_breaker_owns_lease:	yes     	no			no
+ ======================	=============	=================	=========
  
- /*
-- * untrack_pfn_moved is called while mremapping a pfnmap for a new region.
-+ * untrack_pfn_clear is called while mremapping a pfnmap for a new region
-+ * or fails to copy pgtable during duplicate vm area.
-  */
--static inline void untrack_pfn_moved(struct vm_area_struct *vma)
-+static inline void untrack_pfn_clear(struct vm_area_struct *vma)
- {
- }
- #else
-@@ -1062,7 +1063,7 @@ extern void track_pfn_insert(struct vm_area_struct *vma, pgprot_t *prot,
- extern int track_pfn_copy(struct vm_area_struct *vma);
- extern void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
- 			unsigned long size);
--extern void untrack_pfn_moved(struct vm_area_struct *vma);
-+extern void untrack_pfn_clear(struct vm_area_struct *vma);
- #endif
- 
- #ifdef __HAVE_COLOR_ZERO_PAGE
-diff --git a/mm/memory.c b/mm/memory.c
-index fddd2e9aff245..cbd62138dfff0 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1204,6 +1204,7 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- 			continue;
- 		if (unlikely(copy_p4d_range(dst_vma, src_vma, dst_pgd, src_pgd,
- 					    addr, next))) {
-+			untrack_pfn_clear(dst_vma);
- 			ret = -ENOMEM;
- 			break;
- 		}
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 3334c40222101..af4398387b49e 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -421,7 +421,7 @@ static unsigned long move_vma(struct vm_area_struct *vma,
- 
- 	/* Tell pfnmap has moved from this vma */
- 	if (unlikely(vma->vm_flags & VM_PFNMAP))
--		untrack_pfn_moved(vma);
-+		untrack_pfn_clear(vma);
- 
- 	if (unlikely(!err && (flags & MREMAP_DONTUNMAP))) {
- 		if (vm_flags & VM_ACCOUNT) {
+ buffer_head
 -- 
-2.42.1
+2.43.0
+
+
 
 
