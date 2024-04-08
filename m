@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-36400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0083289BE24
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A64989BE2F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D361F22108
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 11:31:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 357A6284983
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 11:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDD7657C4;
-	Mon,  8 Apr 2024 11:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1546E657C5;
+	Mon,  8 Apr 2024 11:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2WEcpTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5op16r0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74D853AC;
-	Mon,  8 Apr 2024 11:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81A745940
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 11:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712575878; cv=none; b=A7MfI8EuFzrBNNLqnnLSBdpaTMFzjuYfOhnMNMxjJoza3YXLMljIYLYC7X0eWp+39wffSq1DPZRIyb8fOgrF+nJkDw5nIWTVf1ZAFRK9MmAVJ8JtQnO51MlLIx3xKhWV7+ot0uDYlMHc8w/BeZl8L2myNbheFaYMyvatEHUCL1E=
+	t=1712575974; cv=none; b=YoGU0LdI3xGHfxbhkNswGGjAgllqQ2KKapz/m+1GqDE5dxsyZczl7UV7ixTsK9f9rnw7TxRuCklofRNMOeNBLlyFIll5SddoH1I7A+WBkl1oV6crmMyZTGI+/Lt09l5LOA6CZRSOHH7OOubXazvpKOAzr0EkVNqYJxCaFoqZYRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712575878; c=relaxed/simple;
-	bh=rZgjKxMazEN8BXUaLfWU68GdlKeyxYPsbC1cLkqBHKA=;
+	s=arc-20240116; t=1712575974; c=relaxed/simple;
+	bh=VmzuN/oIVgAfQmhDb7JLOrkVWqx+M5AEzMX8qMZn+jw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aEYB8V0fFc5jpgNtpDheJuOZDxlLTuKJpvD0jTg++uc0fX4LNhpDnn4ayB7i86G7UQgWwYCjpre+aRMtfEt2dFRqJW0xpUwjEZ6R/xq92ctU1CM2MGpbcY8jLNw98Hin6SdKWEu9zHHRVCvSkYr5ZTmDRKXxo8kf/3TyaXr1pNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2WEcpTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01C4C433C7;
-	Mon,  8 Apr 2024 11:31:16 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=HL/1EMDshEYfpo9//1GP7iWojpt+l8oaVFjFOndVeBHkZCs20qhr8dHVf5auAab+CFmXRlMdi/CtdqjzJXwTPLAtuEuSXOXpW9ktTScjQT3CRwDvSAImf0qwbt95etbusfxkcpZY18RvmeNhqIIO6fwAEvbrtlAOyXTw7ln+QVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5op16r0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA900C433C7;
+	Mon,  8 Apr 2024 11:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712575877;
-	bh=rZgjKxMazEN8BXUaLfWU68GdlKeyxYPsbC1cLkqBHKA=;
+	s=korg; t=1712575974;
+	bh=VmzuN/oIVgAfQmhDb7JLOrkVWqx+M5AEzMX8qMZn+jw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p2WEcpTIQ7amMW3NjhdovTQSi3O03nl4b51WtAtJ9RuQC64gGDG6ubzXDUxwhfr54
-	 m3KYRSxZrNLi+r56FGSsowmJlrFowtlZJ0Dj87Ii1yQXSc2p9ajyx1kq2a1iu4uhs3
-	 T/qRIqno+a1XMj7Vwuay0Ek94s2/a//JBB8JIiKY=
-Date: Mon, 8 Apr 2024 13:31:14 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, stable@vger.kernel.org,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 6.6.y 3/5] selftests: mptcp: use += operator to append
- strings
-Message-ID: <2024040801-undaunted-boastful-5a01@gregkh>
-References: <2024040520-unselect-antitrust-a41b@gregkh>
- <20240405153636.958019-10-matttbe@kernel.org>
+	b=g5op16r0aIWq4YeJzab7IMtCXct1lZ6v5DKlVeBj/qvU5xAxltvw+KM2mqIbukp+l
+	 FM15vzzw6TfFGyf3RVeiSWuPMfHx7ODgKk8yU3R+kXuCFKZEx0jYffL1AQn+mj18R2
+	 bUoTaKcB1B/YCrGBuvkNWCIBHqT27+3+XcD7Knys=
+Date: Mon, 8 Apr 2024 13:32:51 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Tokunori Ikegami <ikegami.t@gmail.com>
+Cc: linux-nvme@lists.infradead.org, stable@vger.kernel.org,
+	"min15.li" <min15.li@samsung.com>,
+	Kanchan Joshi <joshi.k@samsung.com>, Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCH for 5.15.y] nvme: fix miss command type check
+Message-ID: <2024040844-papyrus-bronco-693b@gregkh>
+References: <20240407091528.5025-1-ikegami.t@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,37 +56,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240405153636.958019-10-matttbe@kernel.org>
+In-Reply-To: <20240407091528.5025-1-ikegami.t@gmail.com>
 
-On Fri, Apr 05, 2024 at 05:36:40PM +0200, Matthieu Baerts (NGI0) wrote:
-> From: Geliang Tang <tanggeliang@kylinos.cn>
+On Sun, Apr 07, 2024 at 06:15:28PM +0900, Tokunori Ikegami wrote:
+> From: "min15.li" <min15.li@samsung.com>
 > 
-> This patch uses addition assignment operator (+=) to append strings
-> instead of duplicating the variable name in mptcp_connect.sh and
-> mptcp_join.sh.
+> commit 31a5978243d24d77be4bacca56c78a0fbc43b00d upstream.
 > 
-> This can make the statements shorter.
+> In the function nvme_passthru_end(), only the value of the command
+> opcode is checked, without checking the command type (IO command or
+> Admin command). When we send a Dataset Management command (The opcode
+> of the Dataset Management command is the same as the Set Feature
+> command), kernel thinks it is a set feature command, then sets the
+> controller's keep alive interval, and calls nvme_keep_alive_work().
 > 
-> Note: in mptcp_connect.sh, add a local variable extra in do_transfer to
-> save the various extra warning logs, using += to append it. And add a
-> new variable tc_info to save various tc info, also using += to append it.
-> This can make the code more readable and prepare for the next commit.
-> 
-> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Link: https://lore.kernel.org/r/20240308-upstream-net-next-20240308-selftests-mptcp-unification-v1-8-4f42c347b653@kernel.org
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> (cherry picked from commit e7c42bf4d320affe37337aa83ae0347832b3f568)
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Signed-off-by: min15.li <min15.li@samsung.com>
+> Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Keith Busch <kbusch@kernel.org>
+> Fixes: b58da2d270db ("nvme: update keep alive interval when kato is modified")
+> Signed-off-by: Tokunori Ikegami <ikegami.t@gmail.com>
 > ---
->  .../selftests/net/mptcp/mptcp_connect.sh      | 53 ++++++++++---------
->  .../testing/selftests/net/mptcp/mptcp_join.sh | 30 +++++------
->  2 files changed, 43 insertions(+), 40 deletions(-)
+>  drivers/nvme/host/core.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-Odd, this one did not apply.
-
-All others did, thanks!
+Both now queued up, thanks.
 
 greg k-h
 
