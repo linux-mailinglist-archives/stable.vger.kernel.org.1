@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-37496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6442889C578
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C9E89C084
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73FB3B24507
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6DF71C2144D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C747B71753;
-	Mon,  8 Apr 2024 13:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B87D6FE35;
+	Mon,  8 Apr 2024 13:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNTDLktd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1PCPNxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87563524AF;
-	Mon,  8 Apr 2024 13:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC472E62C;
+	Mon,  8 Apr 2024 13:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584404; cv=none; b=orYO0f7YHGvSuGCUWnup5KNcq/atNDrYZwc3jncfn2vrwznjvhkPUBHoOtlkdlVi64rlLhhjB8qhq3m8Cddflvo9m7LA+tdW4fr0+NS5HDdRhpAKQm0nHoGoRztxhlVHiZTKWd6nfeg5pvf9h6PMBGFKyMZwOFx6Yj2bmE8u4C0=
+	t=1712581761; cv=none; b=efRUmaRf5sb+G1VPTZMcsHMXECifSEMr5MclnEA4qFxUX5ATi/DqE30tgAPU/SfiN2kxHLP/lqdECk1ue2Azkj89pGaF8L5yFAxFBkAxUhS/BvuqDF2Pmh0WGTjKRSszlFneRHYtoWzEkAXkKRwk7W0FPc0ymalkJQNyez4pSa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584404; c=relaxed/simple;
-	bh=OuI2/mbQbLdL7I8ptjNmLhzHpTME7q4SOoXXePxxeVY=;
+	s=arc-20240116; t=1712581761; c=relaxed/simple;
+	bh=5p81a0RUe+aR/okxS3ytbXPfd8fTgBhlK7dYGhv1bEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTpg+Tce73vDW8RzEVhdpImvL+AUSe72gPF0L/8F2xHZ6+ARZNpaSNIWCW414XxgRCoTjJgwnqPATM9VviRnsW4xZmjlVF0Q0oC4Nhq7s8dl5NmL6vU9qM+XjmPYPTMvw9jqtn3T8yROA0oxvjkmF7jJFS8ekaDtRR0LoVu04Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNTDLktd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB33C433F1;
-	Mon,  8 Apr 2024 13:53:23 +0000 (UTC)
+	 MIME-Version; b=CpcadPtsopy3zqhvhIm33Edd1osj6VyxDAH3dgoNBLIs8g0qqQ1p1/+gXp2/1MBojf9i2YMkq52cXVltG8jNMIFmpJj3OSaraCIwXgaxq1PK18QjItoKwobDPlXBq1HBxg2VG0NDesZaEipjpZUnXE4dj311xXd2bCAdXN4nbQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1PCPNxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EE6C433F1;
+	Mon,  8 Apr 2024 13:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584404;
-	bh=OuI2/mbQbLdL7I8ptjNmLhzHpTME7q4SOoXXePxxeVY=;
+	s=korg; t=1712581761;
+	bh=5p81a0RUe+aR/okxS3ytbXPfd8fTgBhlK7dYGhv1bEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oNTDLktdEG4cAJoqMoB03g6BMJ1mf+LhmwMzKybdfoj/D5zoAiZtSOZ7tqj9W661G
-	 ictGAg+Wf+PFIxkw9ooOMuKjeh+q4KBKI1pptX75eAXQerVMWczoqx7ssI627O2ZV9
-	 plnO7lwB8qhSXYN03bEE7U4p3sfFk2jApcrw8SNc=
+	b=Y1PCPNxIVoCkJEk3J+dm3dnijCce7O8aU9EecaOiEwoeC8MgnSnvuu/XSAdq/FUvv
+	 Iu6R5vnVmMGQv6vge2L4XQtZH6V4oZeLiwoOvDDF/zDONXng+3Fi9W+kY7RKLaYDra
+	 eU64BsEqTuc6UgRQhZ0nNXIr2y+z/FSiQahBLmr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 427/690] NFSD: Trace NFSv4 COMPOUND tags
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Naama Meir <naamax.meir@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 018/273] igc: Remove stale comment about Tx timestamping
 Date: Mon,  8 Apr 2024 14:54:53 +0200
-Message-ID: <20240408125415.061314207@linuxfoundation.org>
+Message-ID: <20240408125309.861911519@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-[ Upstream commit de29cf7e6cbbe236c3a51999c188fcd467762899 ]
+[ Upstream commit 47ce2956c7a61ff354723e28235205fa2012265b ]
 
-The Linux NFSv4 client implementation does not use COMPOUND tags,
-but the Solaris and MacOS implementations do, and so does pynfs.
-Record these eye-catchers in the server's trace buffer to annotate
-client requests while troubleshooting.
+The initial igc Tx timestamping implementation used only one register for
+retrieving Tx timestamps. Commit 3ed247e78911 ("igc: Add support for
+multiple in-flight TX timestamps") added support for utilizing all four of
+them e.g., for multiple domain support. Remove the stale comment/FIXME.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 3ed247e78911 ("igc: Add support for multiple in-flight TX timestamps")
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c |  2 +-
- fs/nfsd/trace.h    | 21 ++++++++++++++-------
- 2 files changed, 15 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 69d3013fb1b26..e4c0dc577fe35 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -2637,7 +2637,7 @@ nfsd4_proc_compound(struct svc_rqst *rqstp)
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index e447ba0370568..23bed58a9d825 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1642,10 +1642,6 @@ static netdev_tx_t igc_xmit_frame_ring(struct sk_buff *skb,
  
- 	rqstp->rq_lease_breaker = (void **)&cstate->clp;
+ 	if (unlikely(test_bit(IGC_RING_FLAG_TX_HWTSTAMP, &tx_ring->flags) &&
+ 		     skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)) {
+-		/* FIXME: add support for retrieving timestamps from
+-		 * the other timer registers before skipping the
+-		 * timestamping request.
+-		 */
+ 		unsigned long flags;
+ 		u32 tstamp_flags;
  
--	trace_nfsd_compound(rqstp, args->client_opcnt);
-+	trace_nfsd_compound(rqstp, args->tag, args->taglen, args->client_opcnt);
- 	while (!status && resp->opcnt < args->opcnt) {
- 		op = &args->ops[resp->opcnt++];
- 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 297bf9ddc5090..c5d4a258680c3 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -84,19 +84,26 @@ DEFINE_NFSD_XDR_ERR_EVENT(cant_encode);
- 		{ NFSD_MAY_64BIT_COOKIE,	"64BIT_COOKIE" })
- 
- TRACE_EVENT(nfsd_compound,
--	TP_PROTO(const struct svc_rqst *rqst,
--		 u32 args_opcnt),
--	TP_ARGS(rqst, args_opcnt),
-+	TP_PROTO(
-+		const struct svc_rqst *rqst,
-+		const char *tag,
-+		u32 taglen,
-+		u32 opcnt
-+	),
-+	TP_ARGS(rqst, tag, taglen, opcnt),
- 	TP_STRUCT__entry(
- 		__field(u32, xid)
--		__field(u32, args_opcnt)
-+		__field(u32, opcnt)
-+		__string_len(tag, tag, taglen)
- 	),
- 	TP_fast_assign(
- 		__entry->xid = be32_to_cpu(rqst->rq_xid);
--		__entry->args_opcnt = args_opcnt;
-+		__entry->opcnt = opcnt;
-+		__assign_str_len(tag, tag, taglen);
- 	),
--	TP_printk("xid=0x%08x opcnt=%u",
--		__entry->xid, __entry->args_opcnt)
-+	TP_printk("xid=0x%08x opcnt=%u tag=%s",
-+		__entry->xid, __entry->opcnt, __get_str(tag)
-+	)
- )
- 
- TRACE_EVENT(nfsd_compound_status,
 -- 
 2.43.0
 
