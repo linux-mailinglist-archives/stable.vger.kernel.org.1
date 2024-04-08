@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-36945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E110289C272
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DBD89C19A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C259282FE4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50CBF282AE6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA167C6D4;
-	Mon,  8 Apr 2024 13:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D327C0B2;
+	Mon,  8 Apr 2024 13:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehoeorfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isjtGDHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EEE768F0;
-	Mon,  8 Apr 2024 13:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9366D7F7C6;
+	Mon,  8 Apr 2024 13:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582802; cv=none; b=Wb5ktZ0v+C0VDBkOs+AwyQaZDI8Vf0RjSbL44vIw9xa157Y/fNnZh2KcMpBbK4AhUf5CUCyI1G9BiGk6giHo28El0U3m3yOTburM3HVL2iTXROIKwRvgpZUgp+XDwXaT4squzo8g1dMiJqEJNJDoePTL/00tcPXs9Ti4u/2VCYM=
+	t=1712582302; cv=none; b=fkNXBFpI3PbpNXfFMzKaq6XolhslerC0tf4y1NasXIilrq6/iSzcXpgkCHIp1h/nvIdwdzrCgV5GJCR92EKtCjbJpKSIvoFA3lp7Vh4PlSpcczRm/+7l+KZV0URBB+8h4Tiy5oikoYfn9sNzG7FX1no2pnoRZr346xQBrWAnoCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582802; c=relaxed/simple;
-	bh=Ce2wzsgrvi0irEpaiWBiPibYCP35NBY3zuIv4abL1aA=;
+	s=arc-20240116; t=1712582302; c=relaxed/simple;
+	bh=89mvpY1HKVY/RjHmw0ysPMDD7DCzjqH6uIaK8nZTY+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o17WYjL7X9yURcFnAPn0PbqkX3f0eowQXVjs8H4gUE+1EIOSa79jsTlG6fO0YA2jTBQWIVBbmtMHhCxtVy80GxKSSoisTYUxVMIxVj7dyHVtudQLBm5TKSClTuabpJGXVLLgpuNBfXnmav0HuIkqmA/lFUiCjJb0y7b8e7x9bJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehoeorfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6667CC433A6;
-	Mon,  8 Apr 2024 13:26:41 +0000 (UTC)
+	 MIME-Version; b=EV2hQsmTPngRfhqGMC3YPmcfQvhAs87F6zrJsGHulUFdmLAg/DXlJZ06cfBy8ujglGNqAcNfNgKwqsjjXoKOef2AXFp5ve+qefyAHv6tdoQ4/BX0bZMCGjNPI41sh/9CXrKPFnaUXhw62XZubKoneGDwzgtP4Oy1goHaLSjZCFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isjtGDHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED0CC433F1;
+	Mon,  8 Apr 2024 13:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582801;
-	bh=Ce2wzsgrvi0irEpaiWBiPibYCP35NBY3zuIv4abL1aA=;
+	s=korg; t=1712582302;
+	bh=89mvpY1HKVY/RjHmw0ysPMDD7DCzjqH6uIaK8nZTY+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehoeorfDJMrFnhhKLrVujW+B8OMOBFHDdpE9m6MK4Otv9mO1Jl4nuhe8TfXv5WFnG
-	 /zPu/CeVdTNTud1dVJT8bS8ycV36m7E9EbpyWkrz0R9+ByIHsiY1jvmVXmNJuq68cq
-	 eTxp4wDHzchB6mCBtQz3lkmzCH8dDulO6IU4hI64=
+	b=isjtGDHqQL3e/ISnOuO9if1miFsnVG3cvmMsk3m66ZohC0Owd/cEXUikjpNaBKT97
+	 vDZ1ghSRd+UtNm+eOND3JGYAnQJ5hm2LlaVF7ARCFTXntxfY+tYxp6kU82kKcJjLbb
+	 FlkG/0UkODTKME+j9P7wcyUdZBn5ISpSrJ0huqhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Krummsdorf <michael.krummsdorf@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 106/273] net: dsa: mv88e6xxx: fix usable ports on 88e6020
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 082/252] netfilter: nf_tables: release batch on table validation from abort path
 Date: Mon,  8 Apr 2024 14:56:21 +0200
-Message-ID: <20240408125312.598654044@linuxfoundation.org>
+Message-ID: <20240408125309.183689463@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 625aefac340f45a4fc60908da763f437599a0d6f upstream.
+commit a45e6889575c2067d3c0212b6bc1022891e65b91 upstream.
 
-The switch has 4 ports with 2 internal PHYs, but ports are numbered up
-to 6, with ports 0, 1, 5 and 6 being usable.
+Unlike early commit path stage which triggers a call to abort, an
+explicit release of the batch is required on abort, otherwise mutex is
+released and commit_list remains in place.
 
-Fixes: 71d94a432a15 ("net: dsa: mv88e6xxx: add support for MV88E6020 switch")
-Signed-off-by: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240326123655.40666-1-matthias.schiffer@ew.tq-group.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add WARN_ON_ONCE to ensure commit_list is empty from the abort path
+before releasing the mutex.
+
+After this patch, commit_list is always assumed to be empty before
+grabbing the mutex, therefore
+
+  03c1f1ef1584 ("netfilter: Cleanup nft_net->module_list from nf_tables_exit_net()")
+
+only needs to release the pending modules for registration.
+
+Cc: stable@vger.kernel.org
+Fixes: c0391b6ab810 ("netfilter: nf_tables: missing validation from the abort path")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5500,8 +5500,12 @@ static const struct mv88e6xxx_info mv88e
- 		.family = MV88E6XXX_FAMILY_6250,
- 		.name = "Marvell 88E6020",
- 		.num_databases = 64,
--		.num_ports = 4,
-+		/* Ports 2-4 are not routed to pins
-+		 * => usable ports 0, 1, 5, 6
-+		 */
-+		.num_ports = 7,
- 		.num_internal_phys = 2,
-+		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
- 		.max_vid = 4095,
- 		.port_base_addr = 0x8,
- 		.phy_base_addr = 0x0,
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10326,10 +10326,11 @@ static int __nf_tables_abort(struct net
+ 	struct nft_trans *trans, *next;
+ 	LIST_HEAD(set_update_list);
+ 	struct nft_trans_elem *te;
++	int err = 0;
+ 
+ 	if (action == NFNL_ABORT_VALIDATE &&
+ 	    nf_tables_validate(net) < 0)
+-		return -EAGAIN;
++		err = -EAGAIN;
+ 
+ 	list_for_each_entry_safe_reverse(trans, next, &nft_net->commit_list,
+ 					 list) {
+@@ -10522,7 +10523,7 @@ static int __nf_tables_abort(struct net
+ 	else
+ 		nf_tables_module_autoload_cleanup(net);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
+@@ -10535,6 +10536,9 @@ static int nf_tables_abort(struct net *n
+ 	gc_seq = nft_gc_seq_begin(nft_net);
+ 	ret = __nf_tables_abort(net, action);
+ 	nft_gc_seq_end(nft_net, gc_seq);
++
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 
+ 	return ret;
+@@ -11335,9 +11339,10 @@ static void __net_exit nf_tables_exit_ne
+ 
+ 	gc_seq = nft_gc_seq_begin(nft_net);
+ 
+-	if (!list_empty(&nft_net->commit_list) ||
+-	    !list_empty(&nft_net->module_list))
+-		__nf_tables_abort(net, NFNL_ABORT_NONE);
++	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
++
++	if (!list_empty(&nft_net->module_list))
++		nf_tables_module_autoload_cleanup(net);
+ 
+ 	__nft_release_tables(net);
+ 
 
 
 
