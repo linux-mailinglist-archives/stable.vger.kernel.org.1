@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-36758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D191989C188
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B449C89C191
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E23E1C21B6E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E65F91C21B4F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB96B7E781;
-	Mon,  8 Apr 2024 13:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 789BE7F46C;
+	Mon,  8 Apr 2024 13:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkiHctWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYuKoYEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898017D3F6;
-	Mon,  8 Apr 2024 13:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342E47EF1E;
+	Mon,  8 Apr 2024 13:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582258; cv=none; b=CoWksU73x6E6jFkRic+0VHj/v5ThKVGFtPVRF9bX9dZ1TtGRLcSr94VyUb4qwwSQxQ/67xYL3zLQl/sTvrwkTLsMKLrKucFrf9Kgl6tdMWFR4ehCPOFReK0gP6Btsk8tVRq6MFZkDAAacQWSr9WnOEn4dcQVDuER4ygYo7e1am4=
+	t=1712582273; cv=none; b=F3H8renVHm01l0/y82o3lYkyIUvV3cmU6RVDGx5pqSX8iKBW4XDWPjtPu6GM6c7/D9dZxD1tTN9zaTmzNdoaB4UktG5DYs4xayIGD3wxz1SSbOV6NGV4XbuaAZ1KwZXsKDjamOwjJ/V5OXBZKoh1a1s3wP/r6iNWo/hvx5keADY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582258; c=relaxed/simple;
-	bh=Q5/iQSa7DTFEzKZ0Fu0Hc8FFbnSMi5IwYNeWAVdZqkI=;
+	s=arc-20240116; t=1712582273; c=relaxed/simple;
+	bh=5aIkaipLaEAa7bBRdozZ1pUgGtSaSxWerUDTvTzsCK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3JTwVOqsBJlidelVZpQjlaJNm2g5WiWrR54kUxY7XhBbmEFBS2HgszrW3D+pTDJKzkIuyQgFfVXy+LswGzyr96mlwClhhlpSRhcuGNuFrY4Tlv+BoAF+DmtChAKkYI+XQ7LayfQiAwb6G5uCiifUpSEA0kyvl8VfFhRD8GIxiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkiHctWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CABC433C7;
-	Mon,  8 Apr 2024 13:17:37 +0000 (UTC)
+	 MIME-Version; b=o+nWB9xKSAEvAtGet5odJkHbTZyWd0AkmFO8OEk4/gUmpu4WT839uI/32ej9kEX8TpUnLD12WeFUHQm/QmRRAGpf72R4gO5Bqm7OQmCLzZxsCFbPgTO6xredBuuiOZexxtgfs+4y0o+KNJmCqGdk6wo2Bc+66Uxig7GDdUEBym8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYuKoYEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BD3C433F1;
+	Mon,  8 Apr 2024 13:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582258;
-	bh=Q5/iQSa7DTFEzKZ0Fu0Hc8FFbnSMi5IwYNeWAVdZqkI=;
+	s=korg; t=1712582273;
+	bh=5aIkaipLaEAa7bBRdozZ1pUgGtSaSxWerUDTvTzsCK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QkiHctWzA4+g8cwFHBws4c4y6zLFw/kMCuICa3DEku1NBYaOrVxOAK3ovrG/V6XLr
-	 g4yqZYgTb6AdAYlDxZ3Iu2Ko3k6mlcn+geOb4j/X461xMII6Xa5ySdQwuHJ6HARJFo
-	 IBelvPkinpuYJPH4eOdBLl3TgqoP3RgB2bd4HHgk=
+	b=SYuKoYElP1/kco1pQjY+0HAtWBRQ0zV7yJOVmfQdDov2uEv7OV0iykeJqwFgRfEzM
+	 Uriwo0RzwoIBPYM8fwvNl9AHOcIMrEdJQGY7INkC5a1O5jmkmGxH3dEUtEexA+1voX
+	 jkv4TfpkjBaov0vdI7dRTPi0hTZb4osyIPxJgXh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Steven Price <steven.price@arm.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/138] drivers/perf: riscv: Disable PERF_SAMPLE_BRANCH_* while not supported
-Date: Mon,  8 Apr 2024 14:58:25 +0200
-Message-ID: <20240408125259.055660230@linuxfoundation.org>
+Subject: [PATCH 6.1 092/138] drm/panfrost: fix power transition timeout warnings
+Date: Mon,  8 Apr 2024 14:58:26 +0200
+Message-ID: <20240408125259.091990955@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
 References: <20240408125256.218368873@linuxfoundation.org>
@@ -68,43 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Christian Hewitt <christianshewitt@gmail.com>
 
-[ Upstream commit ea6873118493019474abbf57d5a800da365734df ]
+[ Upstream commit 2bd02f5a0bac4bb13e0da18652dc75ba0e4958ec ]
 
-RISC-V perf driver does not yet support branch sampling. Although the
-specification is in the works [0], it is best to disable such events
-until support is available, otherwise we will get unexpected results.
-Due to this reason, two riscv bpf testcases get_branch_snapshot and
-perf_branches/perf_branches_hw fail.
+Increase the timeout value to prevent system logs on Amlogic boards flooding
+with power transition warnings:
 
-Link: https://github.com/riscv/riscv-control-transfer-records [0]
-Fixes: f5bfa23f576f ("RISC-V: Add a perf core library for pmu drivers")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20240312012053.1178140-1-pulehui@huaweicloud.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+[   13.047638] panfrost ffe40000.gpu: shader power transition timeout
+[   13.048674] panfrost ffe40000.gpu: l2 power transition timeout
+[   13.937324] panfrost ffe40000.gpu: shader power transition timeout
+[   13.938351] panfrost ffe40000.gpu: l2 power transition timeout
+...
+[39829.506904] panfrost ffe40000.gpu: shader power transition timeout
+[39829.507938] panfrost ffe40000.gpu: l2 power transition timeout
+[39949.508369] panfrost ffe40000.gpu: shader power transition timeout
+[39949.509405] panfrost ffe40000.gpu: l2 power transition timeout
+
+The 2000 value has been found through trial and error testing with devices
+using G52 and G31 GPUs.
+
+Fixes: 22aa1a209018 ("drm/panfrost: Really power off GPU cores in panfrost_gpu_power_off()")
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240322164525.2617508-1-christianshewitt@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/panfrost/panfrost_gpu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
-index 56897d4d4fd3e..2d5cf135e8a1d 100644
---- a/drivers/perf/riscv_pmu.c
-+++ b/drivers/perf/riscv_pmu.c
-@@ -246,6 +246,10 @@ static int riscv_pmu_event_init(struct perf_event *event)
- 	u64 event_config = 0;
- 	uint64_t cmask;
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+index 55d2430485168..40b6314459926 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+@@ -379,19 +379,19 @@ void panfrost_gpu_power_off(struct panfrost_device *pfdev)
  
-+	/* driver does not support branch stack sampling */
-+	if (has_branch_stack(event))
-+		return -EOPNOTSUPP;
-+
- 	hwc->flags = 0;
- 	mapped_event = rvpmu->event_map(event, &event_config);
- 	if (mapped_event < 0) {
+ 	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present);
+ 	ret = readl_relaxed_poll_timeout(pfdev->iomem + SHADER_PWRTRANS_LO,
+-					 val, !val, 1, 1000);
++					 val, !val, 1, 2000);
+ 	if (ret)
+ 		dev_err(pfdev->dev, "shader power transition timeout");
+ 
+ 	gpu_write(pfdev, TILER_PWROFF_LO, pfdev->features.tiler_present);
+ 	ret = readl_relaxed_poll_timeout(pfdev->iomem + TILER_PWRTRANS_LO,
+-					 val, !val, 1, 1000);
++					 val, !val, 1, 2000);
+ 	if (ret)
+ 		dev_err(pfdev->dev, "tiler power transition timeout");
+ 
+ 	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present);
+ 	ret = readl_poll_timeout(pfdev->iomem + L2_PWRTRANS_LO,
+-				 val, !val, 0, 1000);
++				 val, !val, 0, 2000);
+ 	if (ret)
+ 		dev_err(pfdev->dev, "l2 power transition timeout");
+ }
 -- 
 2.43.0
 
