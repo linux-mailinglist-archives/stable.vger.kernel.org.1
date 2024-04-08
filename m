@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-36524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745DB89C037
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECB089C559
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AB48284915
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30B3E1F23883
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AE76FE1A;
-	Mon,  8 Apr 2024 13:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CFC7BAF0;
+	Mon,  8 Apr 2024 13:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwbS1/yX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaWhi4hl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128792DF73;
-	Mon,  8 Apr 2024 13:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0340279955;
+	Mon,  8 Apr 2024 13:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581577; cv=none; b=Su2peHNQ+HvCN0LOMSlTAYGzMkIUN03BcOLD17cMPoLwd2j6Au9jmlhhRiUS/pSdW0TA1GZRpOvUUwmR7G27I4iRvi8pNPWJ9WVpfLEd3kPuToW4iR7MvEohd69O4NBEiYF5wuZkkAjsXMqOBQEn79A5GGEnvf3o0P/z4O6EPYw=
+	t=1712584574; cv=none; b=cqJ71L44GxluEkyBCAO2EACJFQG9OBUTDmNHK/TKSoQfnXfD2D0Xfrfq/5EyUHy52VP2DttOW7FTI3Yiv26zU7kPJavJMeUxXLvovm5G7lvqGIMmrqxTkToqUBqi7W0g/uc76FXLBe7kHWPeWHt9A9sHwiNFyMQYh4NOW046+3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581577; c=relaxed/simple;
-	bh=jQfQOf/AiWyENXeU9zM6b/wRO/Vglm1e0OLCuoBvIUM=;
+	s=arc-20240116; t=1712584574; c=relaxed/simple;
+	bh=XbP0xYplS0jvWwoYPA9CAyT/BwdUo0aV+G4hscHLPiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSFpjQ8KYXb/FEoNlJzchpxpOR4eAJgS3nr80KOcUqxpmZwRiFJSW/pTG47pOpT+a+sJMW0/7yjlqD3aG+amhvq1Ulp9Ea17osXIFFotuD6TkGIVmH3fiy3u54fNBOCSZVVX3HDWBDnaNA5EROLTqL6lDIlM5aEF/U31ECNRBao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwbS1/yX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0EEC433C7;
-	Mon,  8 Apr 2024 13:06:16 +0000 (UTC)
+	 MIME-Version; b=nMVx1wdjm9nZib4MzAHM3wJgI9dvGgRrLZk8/gxd1PH7byVXWkEbbAS9kYp4DoggizDrS7nmW0IilAgh3nZCuZ/V8OkRSSFWDAERTD4gPbesqlJUa2SKDIF9kuD0R0mYan1w9GZuJiXolB3jJLn1T67IIeUjoMuGe4Woy9g4aOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaWhi4hl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A26EC433C7;
+	Mon,  8 Apr 2024 13:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581576;
-	bh=jQfQOf/AiWyENXeU9zM6b/wRO/Vglm1e0OLCuoBvIUM=;
+	s=korg; t=1712584573;
+	bh=XbP0xYplS0jvWwoYPA9CAyT/BwdUo0aV+G4hscHLPiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwbS1/yXgF2kMBYowQNDNKvOA3McVJxGg6f2ZiNaN1zLEeaqksbHQEBAKEKMPlTkr
-	 lrDC+gzfWVOEP7/G/LgfM89Um/7d1zbzqNr/kwh+aM313UqlsMBBkCW2xRtMD6Xdfx
-	 8PVtOXHvJ3LM3UJiAGI1duNEWjKbRr2FZApjRHG0=
+	b=HaWhi4hltLsI/lUrepAy11AvztV+cVi1E1Glth9prGWgwQSN8LMsDTeVTjKrYudxs
+	 D3lgZ07oAqm+ZRvYNgVSCUdNU50MeiIMK0QY/LYrtSZk5LLqVMccE0tCj2iS7BUEvV
+	 DAKAzxE6oaJ3XoXvKmw07uri3ODq/Ctrdm0w7xG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Thorsten Winkler <twinkler@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/252] s390/qeth: handle deferred cc1
-Date: Mon,  8 Apr 2024 14:55:19 +0200
-Message-ID: <20240408125307.280406124@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 454/690] nfsd: make nfsd4_run_cb a bool return function
+Date: Mon,  8 Apr 2024 14:55:20 +0200
+Message-ID: <20240408125416.084787175@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit afb373ff3f54c9d909efc7f810dc80a9742807b2 ]
+[ Upstream commit b95239ca4954a0d48b19c09ce7e8f31b453b4216 ]
 
-The IO subsystem expects a driver to retry a ccw_device_start, when the
-subsequent interrupt response block (irb) contains a deferred
-condition code 1.
+queue_work can return false and not queue anything, if the work is
+already queued. If that happens in the case of a CB_RECALL, we'll have
+taken an extra reference to the stid that will never be put. Ensure we
+throw a warning in that case.
 
-Symptoms before this commit:
-On the read channel we always trigger the next read anyhow, so no
-different behaviour here.
-On the write channel we may experience timeout errors, because the
-expected reply will never be received without the retry.
-Other callers of qeth_send_control_data() may wrongly assume that the ccw
-was successful, which may cause problems later.
-
-Note that since
-commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-and
-commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
-deferred CC1s are much more likely to occur. See the commit message of the
-latter for more background information.
-
-Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Co-developed-by: Thorsten Winkler <twinkler@linux.ibm.com>
-Signed-off-by: Thorsten Winkler <twinkler@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240321115337.3564694-1-wintera@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/s390/net/qeth_core_main.c | 38 +++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4callback.c | 14 ++++++++++++--
+ fs/nfsd/nfs4state.c    |  5 ++---
+ fs/nfsd/state.h        |  2 +-
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
-index cd783290bde5e..1148b4ecabdde 100644
---- a/drivers/s390/net/qeth_core_main.c
-+++ b/drivers/s390/net/qeth_core_main.c
-@@ -1179,6 +1179,20 @@ static int qeth_check_irb_error(struct qeth_card *card, struct ccw_device *cdev,
- 	}
+diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
+index face8908a40b1..39989c14c8a1e 100644
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -1373,11 +1373,21 @@ void nfsd4_init_cb(struct nfsd4_callback *cb, struct nfs4_client *clp,
+ 	cb->cb_holds_slot = false;
  }
  
+-void nfsd4_run_cb(struct nfsd4_callback *cb)
 +/**
-+ * qeth_irq() - qeth interrupt handler
-+ * @cdev: ccw device
-+ * @intparm: expect pointer to iob
-+ * @irb: Interruption Response Block
++ * nfsd4_run_cb - queue up a callback job to run
++ * @cb: callback to queue
 + *
-+ * In the good path:
-+ * corresponding qeth channel is locked with last used iob as active_cmd.
-+ * But this function is also called for error interrupts.
-+ *
-+ * Caller ensures that:
-+ * Interrupts are disabled; ccw device lock is held;
-+ *
++ * Kick off a callback to do its thing. Returns false if it was already
++ * on a queue, true otherwise.
 + */
- static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
- 		struct irb *irb)
++bool nfsd4_run_cb(struct nfsd4_callback *cb)
  {
-@@ -1220,11 +1234,10 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
- 		iob = (struct qeth_cmd_buffer *) (addr_t)intparm;
- 	}
+ 	struct nfs4_client *clp = cb->cb_clp;
++	bool queued;
  
--	qeth_unlock_channel(card, channel);
--
- 	rc = qeth_check_irb_error(card, cdev, irb);
- 	if (rc) {
- 		/* IO was terminated, free its resources. */
-+		qeth_unlock_channel(card, channel);
- 		if (iob)
- 			qeth_cancel_cmd(iob, rc);
- 		return;
-@@ -1268,6 +1281,7 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
- 		rc = qeth_get_problem(card, cdev, irb);
- 		if (rc) {
- 			card->read_or_write_problem = 1;
-+			qeth_unlock_channel(card, channel);
- 			if (iob)
- 				qeth_cancel_cmd(iob, rc);
- 			qeth_clear_ipacmd_list(card);
-@@ -1276,6 +1290,26 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
- 		}
- 	}
+ 	nfsd41_cb_inflight_begin(clp);
+-	if (!nfsd4_queue_cb(cb))
++	queued = nfsd4_queue_cb(cb);
++	if (!queued)
+ 		nfsd41_cb_inflight_end(clp);
++	return queued;
+ }
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index e98306c69f424..61978ad43a0f7 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4874,14 +4874,13 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
+ 	 * we know it's safe to take a reference.
+ 	 */
+ 	refcount_inc(&dp->dl_stid.sc_count);
+-	nfsd4_run_cb(&dp->dl_recall);
++	WARN_ON_ONCE(!nfsd4_run_cb(&dp->dl_recall));
+ }
  
-+	if (scsw_cmd_is_valid_cc(&irb->scsw) && irb->scsw.cmd.cc == 1 && iob) {
-+		/* channel command hasn't started: retry.
-+		 * active_cmd is still set to last iob
-+		 */
-+		QETH_CARD_TEXT(card, 2, "irqcc1");
-+		rc = ccw_device_start_timeout(cdev, __ccw_from_cmd(iob),
-+					      (addr_t)iob, 0, 0, iob->timeout);
-+		if (rc) {
-+			QETH_DBF_MESSAGE(2,
-+					 "ccw retry on %x failed, rc = %i\n",
-+					 CARD_DEVID(card), rc);
-+			QETH_CARD_TEXT_(card, 2, " err%d", rc);
-+			qeth_unlock_channel(card, channel);
-+			qeth_cancel_cmd(iob, rc);
-+		}
-+		return;
-+	}
-+
-+	qeth_unlock_channel(card, channel);
-+
- 	if (iob) {
- 		/* sanity check: */
- 		if (irb->scsw.cmd.count > iob->length) {
+ /* Called from break_lease() with flc_lock held. */
+ static bool
+ nfsd_break_deleg_cb(struct file_lock *fl)
+ {
+-	bool ret = false;
+ 	struct nfs4_delegation *dp = (struct nfs4_delegation *)fl->fl_owner;
+ 	struct nfs4_file *fp = dp->dl_stid.sc_file;
+ 	struct nfs4_client *clp = dp->dl_stid.sc_client;
+@@ -4907,7 +4906,7 @@ nfsd_break_deleg_cb(struct file_lock *fl)
+ 	fp->fi_had_conflict = true;
+ 	nfsd_break_one_deleg(dp);
+ 	spin_unlock(&fp->fi_lock);
+-	return ret;
++	return false;
+ }
+ 
+ /**
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index b3477087a9fc3..e2daef3cc0034 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -692,7 +692,7 @@ extern void nfsd4_probe_callback_sync(struct nfs4_client *clp);
+ extern void nfsd4_change_callback(struct nfs4_client *clp, struct nfs4_cb_conn *);
+ extern void nfsd4_init_cb(struct nfsd4_callback *cb, struct nfs4_client *clp,
+ 		const struct nfsd4_callback_ops *ops, enum nfsd4_cb_op op);
+-extern void nfsd4_run_cb(struct nfsd4_callback *cb);
++extern bool nfsd4_run_cb(struct nfsd4_callback *cb);
+ extern int nfsd4_create_callback_queue(void);
+ extern void nfsd4_destroy_callback_queue(void);
+ extern void nfsd4_shutdown_callback(struct nfs4_client *);
 -- 
 2.43.0
 
