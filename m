@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5E989C4A3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A214689C4AC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C1171C216A6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E69E283EC2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBB481748;
-	Mon,  8 Apr 2024 13:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7797442A;
+	Mon,  8 Apr 2024 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuMLIy9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVwjTHm6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2943F81754;
-	Mon,  8 Apr 2024 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3236FE35;
+	Mon,  8 Apr 2024 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584075; cv=none; b=DdXthcxW8hH7m/TMzI4S98nGFIEO7lxwIcs68K8SeNu68XrepqaAfs+tfBJShLEai1aCALdUR3Fskv3IO5Gkep/R/zAKFVkCI5DZBm1Kf71BwsuoPG3zxPwkGPgCkPTjbFJo4+SepD8s0FfW6unJ34i0RerUNdhtB9DFKYTpsTg=
+	t=1712584107; cv=none; b=nwIH5d8LvIIUd7FATxfYEKv2Ra6/iaw6zjKmYldXECB96KLBvXwcGhuRV5UvD4wyekmv5pssR1s2s1/ajozNFSQparYyId5tu2o0pzgcKgF7oiY5epjhgH6Q1nNDkCY/y96/36mOxbS8btLrBYOEUKk9dHFqRjo3zgHpUuTQ7o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584075; c=relaxed/simple;
-	bh=oyDtS4OKyzxux7Zm9jFzBja0ww/UQRumeesEEnTtGtM=;
+	s=arc-20240116; t=1712584107; c=relaxed/simple;
+	bh=Gciw2LSVKgPqCj/BXFd3p5bTyQc64/c5dtawljDSrLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5ZVWB6Or/GckcRWx+S0sO+2IZXbO1X+kmf8gWc2ERnH9abaayHywrZbf3e9RiAuOXtQJxnTbn4QJ6r4g5EoyUl2SYNwjVNeKTLGwRH8r6lHt8EGlPx62OvHJtjtTfWH0d2pj/zqqb7kKUds92GQCl9WGIW0aWz45rBNgdMMCuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuMLIy9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54905C433F1;
-	Mon,  8 Apr 2024 13:47:54 +0000 (UTC)
+	 MIME-Version; b=HrX4czJvxR8XoALdhW8hHoBSkLW/5kbcOtM4QV+4eSmuktqsjKtdzupCI59kcILEWuq1WwHgIrK4saKF3vt9e71FLwsuH6GnbuC34LqzfkePJHfBsnyDa9/yv4njyb5H/QnnBBWNheDTH35xFoI4U2LoyfmB1baauZHQbVwThfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVwjTHm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BB1C433C7;
+	Mon,  8 Apr 2024 13:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584074;
-	bh=oyDtS4OKyzxux7Zm9jFzBja0ww/UQRumeesEEnTtGtM=;
+	s=korg; t=1712584106;
+	bh=Gciw2LSVKgPqCj/BXFd3p5bTyQc64/c5dtawljDSrLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LuMLIy9J9fDStmXmnqO4Z8PwfkBfiHdsFj1OAPgIyOK/aWQpUlv0EGu3jb/szWHl8
-	 hVurdgt6GYzuKTMzoxm6mTTdVLJq5TLsEJ1p9A330PDalAcgoXVIxu+fugdpkTnxIF
-	 KXvVgmVTe8bG8NGeBWQF0Cecnx/BeDD0C0WComYA=
+	b=UVwjTHm6OJnSetxSOOLZar+CMxDfVAZzC2LACtvojq1lkooPVwIc/UJwnST8kFVk8
+	 VoIIZKZaBUmzH93N6YVcUbqyDQoaC8gpT+RdTGvzeQOYYWXPwxkqyCXdaagZcI+ia6
+	 uE0GfqvOUm5bxPDseNCf/gPXaYgbXZJobE1P8iAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 316/690] NFSD: Refactor nfsd_create_setattr()
-Date: Mon,  8 Apr 2024 14:53:02 +0200
-Message-ID: <20240408125411.048901863@linuxfoundation.org>
+Subject: [PATCH 5.15 317/690] NFSD: Refactor NFSv3 CREATE
+Date: Mon,  8 Apr 2024 14:53:03 +0200
+Message-ID: <20240408125411.098301030@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,158 +66,177 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 5f46e950c395b9c14c282b53ba78c5fd46d6c256 ]
+[ Upstream commit df9606abddfb01090d5ece7dcc2441d848f690f0 ]
 
-I'd like to move do_nfsd_create() out of vfs.c. Therefore
-nfsd_create_setattr() needs to be made publicly visible.
+The NFSv3 CREATE and NFSv4 OPEN(CREATE) use cases are about to
+diverge such that it makes sense to split do_nfsd_create() into one
+version for NFSv3 and one for NFSv4.
 
-Note that both call sites in vfs.c commit both the new object and
-its parent directory, so just combine those common metadata commits
-into nfsd_create_setattr().
+As a first step, copy do_nfsd_create() to nfs3proc.c and remove
+NFSv4-specific logic.
+
+One immediate legibility benefit is that the logic for handling
+NFSv3 createhow is now quite straightforward. NFSv4 createhow
+has some subtleties that IMO do not belong in generic code.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/vfs.c | 79 +++++++++++++++++++++++++++------------------------
- fs/nfsd/vfs.h |  2 ++
- 2 files changed, 44 insertions(+), 37 deletions(-)
+ fs/nfsd/nfs3proc.c | 127 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 121 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index a46ab32216dee..e4f100a43ce52 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1189,14 +1189,26 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, u64 offset,
- 	return err;
+diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
+index 86163ecbb015d..57854ca022d18 100644
+--- a/fs/nfsd/nfs3proc.c
++++ b/fs/nfsd/nfs3proc.c
+@@ -8,6 +8,7 @@
+ #include <linux/fs.h>
+ #include <linux/ext2_fs.h>
+ #include <linux/magic.h>
++#include <linux/namei.h>
+ 
+ #include "cache.h"
+ #include "xdr3.h"
+@@ -220,10 +221,126 @@ nfsd3_proc_write(struct svc_rqst *rqstp)
  }
  
--static __be32
--nfsd_create_setattr(struct svc_rqst *rqstp, struct svc_fh *resfhp,
--			struct iattr *iap)
-+/**
-+ * nfsd_create_setattr - Set a created file's attributes
-+ * @rqstp: RPC transaction being executed
-+ * @fhp: NFS filehandle of parent directory
-+ * @resfhp: NFS filehandle of new object
-+ * @iap: requested attributes of new object
+ /*
+- * With NFSv3, CREATE processing is a lot easier than with NFSv2.
+- * At least in theory; we'll see how it fares in practice when the
+- * first reports about SunOS compatibility problems start to pour in...
++ * Implement NFSv3's unchecked, guarded, and exclusive CREATE
++ * semantics for regular files. Except for the created file,
++ * this operation is stateless on the server.
 + *
-+ * Returns nfs_ok on success, or an nfsstat in network byte order.
-+ */
-+__be32
-+nfsd_create_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
-+		    struct svc_fh *resfhp, struct iattr *iap)
- {
++ * Upon return, caller must release @fhp and @resfhp.
+  */
++static __be32
++nfsd3_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
++		  struct svc_fh *resfhp, struct nfsd3_createargs *argp)
++{
++	struct iattr *iap = &argp->attrs;
++	struct dentry *parent, *child;
++	__u32 v_mtime, v_atime;
++	struct inode *inode;
 +	__be32 status;
++	int host_err;
 +
- 	/*
--	 * Mode has already been set earlier in create:
-+	 * Mode has already been set by file creation.
- 	 */
- 	iap->ia_valid &= ~ATTR_MODE;
++	if (isdotent(argp->name, argp->len))
++		return nfserr_exist;
++	if (!(iap->ia_valid & ATTR_MODE))
++		iap->ia_mode = 0;
 +
- 	/*
- 	 * Setting uid/gid works only for root.  Irix appears to
- 	 * send along the gid on create when it tries to implement
-@@ -1204,10 +1216,31 @@ nfsd_create_setattr(struct svc_rqst *rqstp, struct svc_fh *resfhp,
- 	 */
- 	if (!uid_eq(current_fsuid(), GLOBAL_ROOT_UID))
- 		iap->ia_valid &= ~(ATTR_UID|ATTR_GID);
++	status = fh_verify(rqstp, fhp, S_IFDIR, NFSD_MAY_EXEC);
++	if (status != nfs_ok)
++		return status;
 +
-+	/*
-+	 * Callers expect new file metadata to be committed even
-+	 * if the attributes have not changed.
-+	 */
- 	if (iap->ia_valid)
--		return nfsd_setattr(rqstp, resfhp, iap, 0, (time64_t)0);
--	/* Callers expect file metadata to be committed here */
--	return nfserrno(commit_metadata(resfhp));
-+		status = nfsd_setattr(rqstp, resfhp, iap, 0, (time64_t)0);
-+	else
-+		status = nfserrno(commit_metadata(resfhp));
++	parent = fhp->fh_dentry;
++	inode = d_inode(parent);
 +
-+	/*
-+	 * Transactional filesystems had a chance to commit changes
-+	 * for both parent and child simultaneously making the
-+	 * following commit_metadata a noop in many cases.
-+	 */
-+	if (!status)
-+		status = nfserrno(commit_metadata(fhp));
++	host_err = fh_want_write(fhp);
++	if (host_err)
++		return nfserrno(host_err);
 +
-+	/*
-+	 * Update the new filehandle to pick up the new attributes.
-+	 */
-+	if (!status)
-+		status = fh_update(resfhp);
++	fh_lock_nested(fhp, I_MUTEX_PARENT);
 +
++	child = lookup_one_len(argp->name, parent, argp->len);
++	if (IS_ERR(child)) {
++		status = nfserrno(PTR_ERR(child));
++		goto out;
++	}
++
++	if (d_really_is_negative(child)) {
++		status = fh_verify(rqstp, fhp, S_IFDIR, NFSD_MAY_CREATE);
++		if (status != nfs_ok)
++			goto out;
++	}
++
++	status = fh_compose(resfhp, fhp->fh_export, child, fhp);
++	if (status != nfs_ok)
++		goto out;
++
++	v_mtime = 0;
++	v_atime = 0;
++	if (argp->createmode == NFS3_CREATE_EXCLUSIVE) {
++		u32 *verifier = (u32 *)argp->verf;
++
++		/*
++		 * Solaris 7 gets confused (bugid 4218508) if these have
++		 * the high bit set, as do xfs filesystems without the
++		 * "bigtime" feature. So just clear the high bits.
++		 */
++		v_mtime = verifier[0] & 0x7fffffff;
++		v_atime = verifier[1] & 0x7fffffff;
++	}
++
++	if (d_really_is_positive(child)) {
++		status = nfs_ok;
++
++		switch (argp->createmode) {
++		case NFS3_CREATE_UNCHECKED:
++			if (!d_is_reg(child))
++				break;
++			iap->ia_valid &= ATTR_SIZE;
++			goto set_attr;
++		case NFS3_CREATE_GUARDED:
++			status = nfserr_exist;
++			break;
++		case NFS3_CREATE_EXCLUSIVE:
++			if (d_inode(child)->i_mtime.tv_sec == v_mtime &&
++			    d_inode(child)->i_atime.tv_sec == v_atime &&
++			    d_inode(child)->i_size == 0) {
++				break;
++			}
++			status = nfserr_exist;
++		}
++		goto out;
++	}
++
++	if (!IS_POSIXACL(inode))
++		iap->ia_mode &= ~current_umask();
++
++	host_err = vfs_create(&init_user_ns, inode, child, iap->ia_mode, true);
++	if (host_err < 0) {
++		status = nfserrno(host_err);
++		goto out;
++	}
++
++	/* A newly created file already has a file size of zero. */
++	if ((iap->ia_valid & ATTR_SIZE) && (iap->ia_size == 0))
++		iap->ia_valid &= ~ATTR_SIZE;
++	if (argp->createmode == NFS3_CREATE_EXCLUSIVE) {
++		iap->ia_valid = ATTR_MTIME | ATTR_ATIME |
++				ATTR_MTIME_SET | ATTR_ATIME_SET;
++		iap->ia_mtime.tv_sec = v_mtime;
++		iap->ia_atime.tv_sec = v_atime;
++		iap->ia_mtime.tv_nsec = 0;
++		iap->ia_atime.tv_nsec = 0;
++	}
++
++set_attr:
++	status = nfsd_create_setattr(rqstp, fhp, resfhp, iap);
++
++out:
++	fh_unlock(fhp);
++	if (child && !IS_ERR(child))
++		dput(child);
++	fh_drop_write(fhp);
 +	return status;
++}
++
+ static __be32
+ nfsd3_proc_create(struct svc_rqst *rqstp)
+ {
+@@ -239,9 +356,7 @@ nfsd3_proc_create(struct svc_rqst *rqstp)
+ 	dirfhp = fh_copy(&resp->dirfh, &argp->fh);
+ 	newfhp = fh_init(&resp->fh, NFS3_FHSIZE);
+ 
+-	resp->status = do_nfsd_create(rqstp, dirfhp, argp->name, argp->len,
+-				      &argp->attrs, newfhp, argp->createmode,
+-				      (u32 *)argp->verf, NULL, NULL);
++	resp->status = nfsd3_create_file(rqstp, dirfhp, newfhp, argp);
+ 	return rpc_success;
  }
  
- /* HPUX client sometimes creates a file in mode 000, and sets size to 0.
-@@ -1234,7 +1267,6 @@ nfsd_create_locked(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	struct dentry	*dentry, *dchild;
- 	struct inode	*dirp;
- 	__be32		err;
--	__be32		err2;
- 	int		host_err;
- 
- 	dentry = fhp->fh_dentry;
-@@ -1307,22 +1339,8 @@ nfsd_create_locked(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (host_err < 0)
- 		goto out_nfserr;
- 
--	err = nfsd_create_setattr(rqstp, resfhp, iap);
-+	err = nfsd_create_setattr(rqstp, fhp, resfhp, iap);
- 
--	/*
--	 * nfsd_create_setattr already committed the child.  Transactional
--	 * filesystems had a chance to commit changes for both parent and
--	 * child simultaneously making the following commit_metadata a
--	 * noop.
--	 */
--	err2 = nfserrno(commit_metadata(fhp));
--	if (err2)
--		err = err2;
--	/*
--	 * Update the file handle to get the new inode info.
--	 */
--	if (!err)
--		err = fh_update(resfhp);
- out:
- 	dput(dchild);
- 	return err;
-@@ -1513,20 +1531,7 @@ do_nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	}
- 
-  set_attr:
--	err = nfsd_create_setattr(rqstp, resfhp, iap);
--
--	/*
--	 * nfsd_create_setattr already committed the child
--	 * (and possibly also the parent).
--	 */
--	if (!err)
--		err = nfserrno(commit_metadata(fhp));
--
--	/*
--	 * Update the filehandle to get the new inode info.
--	 */
--	if (!err)
--		err = fh_update(resfhp);
-+	err = nfsd_create_setattr(rqstp, fhp, resfhp, iap);
- 
-  out:
- 	fh_unlock(fhp);
-diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
-index ccb87b2864f64..1f32a83456b03 100644
---- a/fs/nfsd/vfs.h
-+++ b/fs/nfsd/vfs.h
-@@ -69,6 +69,8 @@ __be32		nfsd_create(struct svc_rqst *, struct svc_fh *,
- 				char *name, int len, struct iattr *attrs,
- 				int type, dev_t rdev, struct svc_fh *res);
- __be32		nfsd_access(struct svc_rqst *, struct svc_fh *, u32 *, u32 *);
-+__be32		nfsd_create_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
-+				struct svc_fh *resfhp, struct iattr *iap);
- __be32		do_nfsd_create(struct svc_rqst *, struct svc_fh *,
- 				char *name, int len, struct iattr *attrs,
- 				struct svc_fh *res, int createmode,
 -- 
 2.43.0
 
