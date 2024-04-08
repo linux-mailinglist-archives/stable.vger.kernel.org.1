@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E7589C5AE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4014089C2D2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C82D81C2220F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 724581C218B7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470697F482;
-	Mon,  8 Apr 2024 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B2485C42;
+	Mon,  8 Apr 2024 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ag12LX79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSxgDAEs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041067BB1A;
-	Mon,  8 Apr 2024 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5957D3EC;
+	Mon,  8 Apr 2024 13:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584739; cv=none; b=tNPfRTCeDpsCj9KKxrJAUjN6yeWkcq1UTHMhX6pg5KnNAJ1+lY+PVea0wk7JRJzpYLJhb8Pyp43iFMK84ikp+IPSKRpDycOvDH++fzjsUy2/N01BRBUj5Y4eSqWMf0oZcA7pmaufw9Kl1sYc06GPrEe+bDERSM5vPOom6rSQI7U=
+	t=1712583017; cv=none; b=PiDXqnCYZsVbO2f6T3qmSvDjIScTvR2GuKsDWyRgPEuDREtgydSnJKILnm3uu0dBHA8vP5/2x1FxdqhSeSJ21+ELzpdpiYxn66fWPkoYcrv4x1iC1YPD2iTaXNcosKYt+ABpeklfLBlSIso4z0HBU/oGpP0M/Okyyd7jY21vMcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584739; c=relaxed/simple;
-	bh=8AgHjP7NLWIsUT5I2UwBJKaL+dsDFZmPvGAweLNds9E=;
+	s=arc-20240116; t=1712583017; c=relaxed/simple;
+	bh=bfMVdcU0QumuTCQFaIR0aXADPSouHgQE+11RvUk4WIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLCIZlGGZ1oLvqagwTAt8ZsSSr78oupAjrPGUjtWnL6epGdzRXTIiJlG1T1ROsa0L7vxzJKWKYYdAbCtCdbleQS0VWiXNSDnH17iFDstByZiMxXS0hbXRyCsT8Hz0hB3V7dML7leaBT12cmnMBqxM1j17JpAiUgBKSf7l2bwpRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ag12LX79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81156C433F1;
-	Mon,  8 Apr 2024 13:58:58 +0000 (UTC)
+	 MIME-Version; b=hO0emHHdFUBGVhRzg3coWwrSMI4+4XOeRssauImJDkNbNqjZUEqNVhlMbot9VunlYsbe8cY05arHrI2zgryoux2S2XmpBMnOqG9RVidlxOsux/ULS5Vz63rpVnJKqHqhe+MZf0yJriguefIvCSIF983QfsElVYXfQCVsFl8ML7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSxgDAEs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E2CC433F1;
+	Mon,  8 Apr 2024 13:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584738;
-	bh=8AgHjP7NLWIsUT5I2UwBJKaL+dsDFZmPvGAweLNds9E=;
+	s=korg; t=1712583017;
+	bh=bfMVdcU0QumuTCQFaIR0aXADPSouHgQE+11RvUk4WIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ag12LX794MfDQ746oR6RhB4HWhq+DPXyFxISQ3Yq+47iPDU7wN9lSXG/t7whCcBvC
-	 T8jtrzHAiWBKnyjgvtysk29e07S4fshxJfmWccI2tuPZE5Uwrxyduoos04mQ7ncGgQ
-	 jN+QwU2t4F08dCrAbYmIcshe4P8mfBrPmuH2mXnY=
+	b=jSxgDAEssfHgdO7RsxcKds/0IICvOuVLejX0pQkg24wZVFqJRB8XKuR/QAx2RPIMj
+	 /3uhVX7j0ee6HkPrh2aaX8xJntXE44uH9Wm2aL6HZP7lh1jSe5VPeVthM815x31cE9
+	 WvptQs8SK6uXir+/yk5k2hJQJevYGTmzC/i59i6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhi Li <yieli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 540/690] nfsd: make a copy of struct iattr before calling notify_change
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.8 131/273] usb: typec: ucsi: Check for notifications after init
 Date: Mon,  8 Apr 2024 14:56:46 +0200
-Message-ID: <20240408125419.216970691@linuxfoundation.org>
+Message-ID: <20240408125313.358936582@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit d53d70084d27f56bcdf5074328f2c9ec861be596 ]
+[ Upstream commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 ]
 
-notify_change can modify the iattr structure. In particular it can
-end up setting ATTR_MODE when ATTR_KILL_SUID is already set, causing
-a BUG() if the same iattr is passed to notify_change more than once.
+The completion notification for the final SET_NOTIFICATION_ENABLE
+command during initialization can include a connector change
+notification.  However, at the time this completion notification is
+processed, the ucsi struct is not ready to handle this notification.
+As a result the notification is ignored and the controller
+never sends an interrupt again.
 
-Make a copy of the struct iattr before calling notify_change.
+Re-check CCI for a pending connector state change after
+initialization is complete. Adjust the corresponding debug
+message accordingly.
 
-Reported-by: Zhi Li <yieli@redhat.com>
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2207969
-Tested-by: Zhi Li <yieli@redhat.com>
-Fixes: 34b91dda7124 ("NFSD: Make nfsd4_setattr() wait before returning NFS4ERR_DELAY")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 10 +++++++++-
+ drivers/usb/typec/ucsi/ucsi.c | 10 +++++++++-
  1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 71788a5e4a55c..76ce19d42336f 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -533,7 +533,15 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 0bfe5e906e543..96da828f556a9 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -962,7 +962,7 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
+ 	struct ucsi_connector *con = &ucsi->connector[num - 1];
  
- 	inode_lock(inode);
- 	for (retries = 1;;) {
--		host_err = __nfsd_setattr(dentry, iap);
-+		struct iattr attrs;
+ 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
+-		dev_dbg(ucsi->dev, "Bogus connector change event\n");
++		dev_dbg(ucsi->dev, "Early connector change event\n");
+ 		return;
+ 	}
+ 
+@@ -1393,6 +1393,7 @@ static int ucsi_init(struct ucsi *ucsi)
+ {
+ 	struct ucsi_connector *con, *connector;
+ 	u64 command, ntfy;
++	u32 cci;
+ 	int ret;
+ 	int i;
+ 
+@@ -1445,6 +1446,13 @@ static int ucsi_init(struct ucsi *ucsi)
+ 
+ 	ucsi->connector = connector;
+ 	ucsi->ntfy = ntfy;
 +
-+		/*
-+		 * notify_change() can alter its iattr argument, making
-+		 * @iap unsuitable for submission multiple times. Make a
-+		 * copy for every loop iteration.
-+		 */
-+		attrs = *iap;
-+		host_err = __nfsd_setattr(dentry, &attrs);
- 		if (host_err != -EAGAIN || !retries--)
- 			break;
- 		if (!nfsd_wait_for_delegreturn(rqstp, inode))
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret)
++		return ret;
++	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
++		ucsi_connector_change(ucsi, cci);
++
+ 	return 0;
+ 
+ err_unregister:
 -- 
 2.43.0
 
