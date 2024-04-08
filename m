@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-36393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6193A89BD67
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:40:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D07C89BD74
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84BF01C21D17
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:40:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C259E1F23052
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374435FBA7;
-	Mon,  8 Apr 2024 10:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954DA59B6D;
+	Mon,  8 Apr 2024 10:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HJx5ItNa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BZzyoiEQ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717CB5FB99
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B714F60262
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712572799; cv=none; b=cx1p/zv1Yi/+Gwz8oBqrNAIJopAFbnd3R405mJk189dOvdiqdRq7rGAT+JPrijJGsQKMm94F4iBqwWnYQVD7bIWMHnq8guNct6bFKLMnbUjJVpSPEiLyYOkHq0ziHdI+08lR78ED1owXZ7cPhKsO9ynxojCAV6Trnq9Gg5d7fOc=
+	t=1712572957; cv=none; b=IdDIvUT71AY8UT2vRz3TaXDZIo7Ytb7R10ZUiTJMN2ZQ9vLDG8Rqd6N5eYRLYD3nLOV2ur41YeTojfdUcLFxVYm8HRLhgov0kNtAEhxkwUcK/64NpFYmdb8C7KEI1kHLVArp2Qv0Wvzf7cqT5edcjDKc8JifUYozu2am+7gOJjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712572799; c=relaxed/simple;
-	bh=SceVLA5HwWii61lfpDH+ZSy7B7oLb2FZ/Rg9P7O2Tq8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o12MtdUH6oIjI6Bz+GShTZ9AWqZWmpFCYYXZ15IolS6BsBePdoaBKoUZEdUss9p+W/8YgV8yg1UHb7OVO2l6bZ0SS7MPw2I3U1yebzQ7kG8thbsdwJEt5+uAo16zKR7ixXy+URyy0rH6DzQSwJePlX76DKSifkVCLxULNFwlwDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HJx5ItNa; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1712572957; c=relaxed/simple;
+	bh=ZZgZOsdnFnOOlcVSIRsHiQSOB43Z0PYmfTbcyFI2E64=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Pn5UVCJzbXm7YYIZHnrH7HiAq8VoMrL91MvUyqVbbWfxV5FvCqGEb5eNaG29k3ap/v7vmyPi2PY4fUyOy8B7RgnsZkD6X5iRzOhPXDPhOZxpJSxep7p8fw6kpFPDRUk+B13uTtNm9kw2NyymxK3HCaPKllXK5WHzTUNskucr0ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BZzyoiEQ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712572796;
+	s=mimecast20190719; t=1712572954;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VeOMZB72woNwVckuSTJ5UxHd7aL3ayjlOTTdsaKKXsw=;
-	b=HJx5ItNaA/QxrSXlPCt8ah1oBUH1jYpb6LNuvsvPMgrhmCDZCTEhB7rQkX79j2HmYyaYca
-	FnEpyPEFzWwo/rs5+cst7GWCMgqVgv9BsLFO5m7yF6TAHvh3bNwZADNl2VPdCPdXV4Qb26
-	7YGdrbLBO7z0cW2+RtnuQnCgKmbZuBk=
+	bh=OU8DPy8eWREGAhudbhtCPT9MWbGypckitwhM+TpMeaQ=;
+	b=BZzyoiEQ+Oe+8TPE3/28z34y9l1351meN5e+xDe+Z3MLyOqz6PNFtqcDs2rPhkop8C81ny
+	svvEPUIxZsNhGZ/MPU+QRx9LnI6ffP34rzAs3LynHIC2PExwm80MUrbT7IQ2oI5eMuMgLL
+	rzZmO3pACCWyfV0+DqmIFg7e+qTkBIY=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-DpbLwMf7MjWS1P-P8ZsfBA-1; Mon, 08 Apr 2024 06:39:55 -0400
-X-MC-Unique: DpbLwMf7MjWS1P-P8ZsfBA-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-415591b1500so25883945e9.3
-        for <stable@vger.kernel.org>; Mon, 08 Apr 2024 03:39:54 -0700 (PDT)
+ us-mta-588-AjxzlOl2O0OTKnxdJJv0ug-1; Mon, 08 Apr 2024 06:42:33 -0400
+X-MC-Unique: AjxzlOl2O0OTKnxdJJv0ug-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-41485831b2dso32368215e9.3
+        for <stable@vger.kernel.org>; Mon, 08 Apr 2024 03:42:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712572794; x=1713177594;
+        d=1e100.net; s=20230601; t=1712572952; x=1713177752;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VeOMZB72woNwVckuSTJ5UxHd7aL3ayjlOTTdsaKKXsw=;
-        b=Ea3ExpdAFyfyoCAh2QOpatXkm+EVPAvPEkfS1KIn8Ih26fRE1uSw9IZeFScB8K/WIX
-         7RpMHUtX44dKJf7hf/EKIEf2Rj6rEA3JkFXOGxMdP096tgPjBfPBRrnNbtOEtKSMa7ZS
-         n2h8SBfI4F/6A2aDdcIulRdDCDh2oAGfbZuvC+1Pcyz4++IBEfJQ5IV8mT76/AuS4bE3
-         EoaG/r53A93KWSiqXJ2tjdCgTdGTpAVNFUjapJUG4aV10t1/LD9eyUCILddyZEzPv7pl
-         qtrop/3p2Mmk/lih20vCAWmT6/eRchn0PeTduwLPn8qJ4CKzuuFe/BDx6h/Lo676T3ks
-         LDGg==
-X-Gm-Message-State: AOJu0YylDUab8HjmGxfxgUDR84aZzDlFS/mJpXTVdxhSlMtei3wDET69
-	6+sPXlCvAvY0ceZ467DHqpBHpa/mnmYRWPT60HtMMsRbORtnt32foJoRZ9/iQ3k7hnNh0N0xv8F
-	tbCDMJr+xY87cy+VZONVGhpS/LBwfViREfMPcE/841PyQCJisVnO32lWR0joA/antkfFq2pMzf9
-	L0YLZYcAtT0tpeOVA0itsF0HAiIEPAJKL6qQ==
-X-Received: by 2002:a05:600c:468b:b0:415:6dae:7759 with SMTP id p11-20020a05600c468b00b004156dae7759mr5526991wmo.19.1712572793840;
-        Mon, 08 Apr 2024 03:39:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJK8JG3BX4OlNlpy1Fh2w3ln6N390AEyRpC9BtLKH8ZDIZssysraEwzGw88C+A1wksF5/Akw==
-X-Received: by 2002:a05:600c:468b:b0:415:6dae:7759 with SMTP id p11-20020a05600c468b00b004156dae7759mr5526971wmo.19.1712572793299;
-        Mon, 08 Apr 2024 03:39:53 -0700 (PDT)
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OU8DPy8eWREGAhudbhtCPT9MWbGypckitwhM+TpMeaQ=;
+        b=DyvAda+Gy3uc5uvKGEmIhw/PKcCPQuM42o4U7woqT7lJQiLoQS2dsJZsUUN55j0HdU
+         N/j5A1OGtfRCPjTt/Jvwad4FZOwYozeofzDyXLpJJczLF8XkMTp1VZXJ1Ld95OvtpcVa
+         hrwMZsy2JzrH6auHFAGfuCoErPcfaVcE1mB2LMRBZTZ0k856Y5zcJ8rEjoqelkBYbwBa
+         l2FwHUgc8AVWBixU9vxlArUIH3FLmZBY+97adDGIJz+2jrCrgP0cdUK5PymtPYwImnrQ
+         ggowsgUVQcTE0/0lEhpoILnk1uCCczzhPYtCazGwQOuQGODy9kbWERRrmqmyFqnXjTw0
+         BjBw==
+X-Forwarded-Encrypted: i=1; AJvYcCWT6FomTw61rIwvF29jWb9mr0YM4c/zkV90Fk1pQZz9dwqdOgRCGVMmxI8nNd8gxNlY2rHgfjA2/Kh2iUphWV2Yq6GXevLD
+X-Gm-Message-State: AOJu0YyF26FzMdnRBTHSKcCQjOBLzoik2oo27tfLeL6kTLU7t3O568qD
+	VFpKwMW+4b4tEk5QjMJ3Rn2yj1u47bAcYu7HBw07HO/TT8YVrSssJzDNqtFFl5AsGpCjmyNn+Qb
+	HBNYGSgK2ZM/DreFig1R7vmA6mSLK3DNy29lRnFlKJs9NNwWmKZIBkQ==
+X-Received: by 2002:a05:600c:5127:b0:416:927d:a840 with SMTP id o39-20020a05600c512700b00416927da840mr204700wms.12.1712572952220;
+        Mon, 08 Apr 2024 03:42:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHgYeEuI1JxT1zUIcmdwiySdGguKOfnhS/OkjQfSaJz1jOzafrQG3SRw1URetjkF1bMgtBMDA==
+X-Received: by 2002:a05:600c:5127:b0:416:927d:a840 with SMTP id o39-20020a05600c512700b00416927da840mr204683wms.12.1712572951853;
+        Mon, 08 Apr 2024 03:42:31 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c718:1300:9860:66a2:fe4d:c379? (p200300cbc7181300986066a2fe4dc379.dip0.t-ipconnect.de. [2003:cb:c718:1300:9860:66a2:fe4d:c379])
-        by smtp.gmail.com with ESMTPSA id bg35-20020a05600c3ca300b004162020cee2sm16807129wmb.4.2024.04.08.03.39.52
+        by smtp.gmail.com with ESMTPSA id fm22-20020a05600c0c1600b004162c119b6esm14624891wmb.27.2024.04.08.03.42.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 03:39:52 -0700 (PDT)
-Message-ID: <05c72609-06ed-43bd-94a1-e32788cf5654@redhat.com>
-Date: Mon, 8 Apr 2024 12:39:51 +0200
+        Mon, 08 Apr 2024 03:42:31 -0700 (PDT)
+Message-ID: <3524e6f2-ad50-47b5-85d4-107bd9821352@redhat.com>
+Date: Mon, 8 Apr 2024 12:42:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,14 +83,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1.y] mm/secretmem: fix GUP-fast succeeding on secretmem
- folios
-To: stable@vger.kernel.org
-Cc: xingwei lee <xrivendell7@gmail.com>, yue sun <samsun1006219@gmail.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Miklos Szeredi <mszeredi@redhat.com>,
- Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>
+Subject: Re: FAILED: patch "[PATCH] mm/secretmem: fix GUP-fast succeeding on
+ secretmem folios" failed to apply to 6.1-stable tree
+To: gregkh@linuxfoundation.org, akpm@linux-foundation.org,
+ lstoakes@gmail.com, miklos@szeredi.hu, mszeredi@redhat.com, rppt@kernel.org,
+ samsun1006219@gmail.com, stable@vger.kernel.org, xrivendell7@gmail.com
 References: <2024040819-elf-bamboo-00f6@gregkh>
- <20240408103410.81848-1-david@redhat.com>
 Content-Language: en-US
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
@@ -138,47 +136,37 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240408103410.81848-1-david@redhat.com>
+In-Reply-To: <2024040819-elf-bamboo-00f6@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 08.04.24 12:34, David Hildenbrand wrote:
-> folio_is_secretmem() currently relies on secretmem folios being LRU
-> folios, to save some cycles.
+On 08.04.24 12:14, gregkh@linuxfoundation.org wrote:
 > 
-> However, folios might reside in a folio batch without the LRU flag set, or
-> temporarily have their LRU flag cleared.  Consequently, the LRU flag is
-> unreliable for this purpose.
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 > 
-> In particular, this is the case when secretmem_fault() allocates a fresh
-> page and calls filemap_add_folio()->folio_add_lru().  The folio might be
-> added to the per-cpu folio batch and won't get the LRU flag set until the
-> batch was drained using e.g., lru_add_drain().
+> To reproduce the conflict and resubmit, you may use the following commands:
 > 
-> Consequently, folio_is_secretmem() might not detect secretmem folios and
-> GUP-fast can succeed in grabbing a secretmem folio, crashing the kernel
-> when we would later try reading/writing to the folio, because the folio
-> has been unmapped from the directmap.
-> 
-> Fix it by removing that unreliable check.
-> 
-> Link: https://lkml.kernel.org/r/20240326143210.291116-2-david@redhat.com
-> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> Reported-by: xingwei lee <xrivendell7@gmail.com>
-> Reported-by: yue sun <samsun1006219@gmail.com>
-> Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
-> Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
-> Tested-by: Miklos Szeredi <mszeredi@redhat.com>
-> Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706)
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
 
-Forgot to add when cherry-picking
+Likely we want:
+  git cherry-pick -sx
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
+And then
+
+(a) If cherry-picking failed
+  # <resolve conflicts, build, test, etc.>
+  git cherry-pick --continue
+
+(b) If cherry-picking succeeded
+  # <resolve issues, build, test, etc.>
+  git commit --amend
 
 -- 
 Cheers,
