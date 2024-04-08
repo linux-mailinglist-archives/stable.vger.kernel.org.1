@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-36965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF4F989C288
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:31:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0322289C1AD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8916128333F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97AA31F21439
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984847EF0A;
-	Mon,  8 Apr 2024 13:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003EF80043;
+	Mon,  8 Apr 2024 13:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/6N03Md"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYk8PO47"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5825778285;
-	Mon,  8 Apr 2024 13:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A07E767;
+	Mon,  8 Apr 2024 13:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582860; cv=none; b=dc2oKcllF/+rfGmiGGPfP2HrHxQNwjBOV/9wTKUtmIlasFZooqIwtfrcmd57lHwcQ/bWvKoRrWTmFoHYSqMuHrPon8TxlqyqlqaWhOyM66PyFX833fyu17700JwRK4gQfBpuKI4LuCOXPAJpr1m7RHO3GztLeP0dlkPViW8LlRM=
+	t=1712582366; cv=none; b=thrPlYZP0xRGLeyORuiF4P25lMFhsflO9tNd7v6pUKaHM9EpLDZgUXc7OjEkfqjse6m/ZWNNDUXvnieRt9/8y4RtSV0f93c3DW5eu/mZwyn8sHh6M/VFe2sX0HBw95LHmfVMHZGPJsipIQgcQAuFzZ6LDrL8EWtsi/bhzK+TMe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582860; c=relaxed/simple;
-	bh=WJyeYpIES6JtQFOTvTXutyRm4jcTq+PD3PgTtyHlhA4=;
+	s=arc-20240116; t=1712582366; c=relaxed/simple;
+	bh=KAfbm5eVbd6gEdlmR8i75c3SGXg6MIzNKcPTNJr5978=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM7qlWCZnSit3yznAl/lSdpIoRbEOjZodpsEwP0tSlZqbV949qMqr4DE0hDjBlT8Mcm5jvGLzxAMz3lIGSM6yjcpdGuSxX1h20IV+BtHBiZ7Wg4qKoi11qXZlanZHLXHac0KJ5vA8jb2QZrX0rK1trBDqoFnxTb3ol3oyVpzpB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/6N03Md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2262C433C7;
-	Mon,  8 Apr 2024 13:27:39 +0000 (UTC)
+	 MIME-Version; b=KhJkR5Rz2fnGZpkXitFSo+sGyHZOVrPTUwvZvaOEHYpiOCC4Dvz5djOpNLg2ZEOyhNj0+Afwu8xVwlNXqDr4q8vhtd59DD2UG7LP3/wigRRuNCZyRSdKZfgxt6ZWkazPadQ/kJkQpBvaIPCoyaZxS+59wvRLOzeZWDQkUXO00CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYk8PO47; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DED4C433F1;
+	Mon,  8 Apr 2024 13:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582860;
-	bh=WJyeYpIES6JtQFOTvTXutyRm4jcTq+PD3PgTtyHlhA4=;
+	s=korg; t=1712582366;
+	bh=KAfbm5eVbd6gEdlmR8i75c3SGXg6MIzNKcPTNJr5978=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/6N03MdCDb1tPyknxwKvkbLliaNvgXYZ4wKbq+pak7WsEofyTa8ci0XhaJeb8ZFq
-	 rmnb9asMRv4zDsGENwAQZ3tNVoibs10SoQehkV3He+ymI8v+AcW0Cbvd8BCGxen3Xx
-	 IjYYVHQJALvwYaQUAZ+4nP8oQDB9aFQBKBXLm1qE=
+	b=iYk8PO47Z5UrrlosM5gcrbaT3vaDrishUDpkk/wLMxffPOS/wDfQEv5WnkgZNaSqU
+	 w9SkAmftUgSrBklF0IF8RJ96Yat9CjNdEgYraVvxvvYEKxaCVKKiFmpJphvuqZhHx8
+	 LDr2nJ1g9UGAitromOZOOYfxQpcD04TbDRWMKtPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 111/273] i40e: Fix VF MAC filter removal
+Subject: [PATCH 6.6 087/252] net: usb: ax88179_178a: avoid the interface always configured as random address
 Date: Mon,  8 Apr 2024 14:56:26 +0200
-Message-ID: <20240408125312.748746262@linuxfoundation.org>
+Message-ID: <20240408125309.344497489@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit ea2a1cfc3b2019bdea6324acd3c03606b60d71ad upstream.
+commit 2e91bb99b9d4f756e92e83c4453f894dda220f09 upstream.
 
-Commit 73d9629e1c8c ("i40e: Do not allow untrusted VF to remove
-administratively set MAC") fixed an issue where untrusted VF was
-allowed to remove its own MAC address although this was assigned
-administratively from PF. Unfortunately the introduced check
-is wrong because it causes that MAC filters for other MAC addresses
-including multi-cast ones are not removed.
+After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
+consecutive device resets"), reset is not executed from bind operation and
+mac address is not read from the device registers or the devicetree at that
+moment. Since the check to configure if the assigned mac address is random
+or not for the interface, happens after the bind operation from
+usbnet_probe, the interface keeps configured as random address, although the
+address is correctly read and set during open operation (the only reset
+now).
 
-<snip>
-	if (ether_addr_equal(addr, vf->default_lan_addr.addr) &&
-	    i40e_can_vf_change_mac(vf))
-		was_unimac_deleted = true;
-	else
-		continue;
+In order to keep only one reset for the device and to avoid the interface
+always configured as random address, after reset, configure correctly the
+suitable field from the driver, if the mac address is read successfully from
+the device registers or the devicetree. Take into account if a locally
+administered address (random) was previously stored.
 
-	if (i40e_del_mac_filter(vsi, al->list[i].addr)) {
-	...
-</snip>
-
-The else path with `continue` effectively skips any MAC filter
-removal except one for primary MAC addr when VF is allowed to do so.
-Fix the check condition so the `continue` is only done for primary
-MAC address.
-
-Fixes: 73d9629e1c8c ("i40e: Do not allow untrusted VF to remove administratively set MAC")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240329180638.211412-1-anthony.l.nguyen@intel.com
+cc: stable@vger.kernel.org # 6.6+
+Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
+Reported-by: Dave Stevenson  <dave.stevenson@raspberrypi.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240403132158.344838-1-jtornosm@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/usb/ax88179_178a.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3143,11 +3143,12 @@ static int i40e_vc_del_mac_addr_msg(stru
- 		/* Allow to delete VF primary MAC only if it was not set
- 		 * administratively by PF or if VF is trusted.
- 		 */
--		if (ether_addr_equal(addr, vf->default_lan_addr.addr) &&
--		    i40e_can_vf_change_mac(vf))
--			was_unimac_deleted = true;
--		else
--			continue;
-+		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
-+			if (i40e_can_vf_change_mac(vf))
-+				was_unimac_deleted = true;
-+			else
-+				continue;
-+		}
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1273,6 +1273,8 @@ static void ax88179_get_mac_addr(struct
  
- 		if (i40e_del_mac_filter(vsi, al->list[i].addr)) {
- 			ret = -EINVAL;
+ 	if (is_valid_ether_addr(mac)) {
+ 		eth_hw_addr_set(dev->net, mac);
++		if (!is_local_ether_addr(mac))
++			dev->net->addr_assign_type = NET_ADDR_PERM;
+ 	} else {
+ 		netdev_info(dev->net, "invalid MAC address, using random\n");
+ 		eth_hw_addr_random(dev->net);
 
 
 
