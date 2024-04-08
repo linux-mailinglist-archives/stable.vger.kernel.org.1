@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-36918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D94889C2D0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:34:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB92089C25E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEEA5B2C50D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09C9E1C21109
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D31685641;
-	Mon,  8 Apr 2024 13:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D396B7BAEE;
+	Mon,  8 Apr 2024 13:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHNndPLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGze11bQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADD162148;
-	Mon,  8 Apr 2024 13:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829E2745C5;
+	Mon,  8 Apr 2024 13:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582723; cv=none; b=N2aDegoTaiz1PqQaXlbNKR9nRYmlMQv/mrwmHZRmP69Wu/akvJTbGQrFy9cBm5cd6+LhnXtPRL5HSR3MmB+UZPLS30AWlr0OxJ3HY2ilAEIxWn6mjfi8ZoEyWTO6VxnHNqO1QXGXGUR1xvwV+BkrkIPCpIhBzqu89jJDHmzJW5k=
+	t=1712582737; cv=none; b=hxmchEaCIo4BGTdWPWLAZ7pQrFMT1xxInBmhAoOwnTJ0ja9zfcmxEcLDNAXjm0SbRn/kMcYac6h44QrxDakn7T9vdgGNz+/1I2gAG7uWRkDUGp8Nm+g8Oest4PC/yMs97YRq4KMQWI27l4JtFSyhYfNl5vBGkO/+/9ug3ULy/3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582723; c=relaxed/simple;
-	bh=7IQobet1tRUlGEYgD9heDjVZ+XeNFPysQYLybX28XPE=;
+	s=arc-20240116; t=1712582737; c=relaxed/simple;
+	bh=zQwqghfnku/9QXsbrf41ihowBbDNceqBUKX93AXUleA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gf44T7PESIsRvvS7rQdMn6BzYmmXIi3vb7hb0DaQtGiHuGG+8MAEiAdjd7fA9zEdSVe3xPSeV42qf5UC8lZ2zEu3zmJjZ4BeO3LspowMKzW4d/C5nMJQyu6oqTk/EDqjqlyjUKNjGTmCHDH6UqN/dfje5GqLn9gOWYtJfwouTQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHNndPLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BC3C433C7;
-	Mon,  8 Apr 2024 13:25:22 +0000 (UTC)
+	 MIME-Version; b=HuL+5l7cmH4VVrKUyj5AMDNQRkm+NjwmvPDN/ozPcPj4HIWtoLSTS9EK640/ubyNuczmVtiWJ+N6IgheNPu7RGr3NZBrgusqk5hfHc7fP9KMbZ5HZ9qBagNkKVpR6lwyK626pF3c4K+t6Spl+SSRSxigCNSKQFLHPp+b5yiSSno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGze11bQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3505C433F1;
+	Mon,  8 Apr 2024 13:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582722;
-	bh=7IQobet1tRUlGEYgD9heDjVZ+XeNFPysQYLybX28XPE=;
+	s=korg; t=1712582737;
+	bh=zQwqghfnku/9QXsbrf41ihowBbDNceqBUKX93AXUleA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHNndPLDiyS/JTV6jkgJmpq8lvVl0FuAIiw1PloFCTL/uq3eCSDi6JPyVAs4+3mcy
-	 /PlSWso2EBBMqS5F4lDp2Wax52GiwHs3+qmBtpaa5gX3NDfCccu1ny6MfDrYSjSKqx
-	 ttgKIU0L63fhEqAIywRZS/0bCcCTnnr1snvQNx8k=
+	b=mGze11bQtgG4S9luVUTzCJOhhPLpt8H4xi1iLN3mJqY++YRFIpE75jhImxPgN65NJ
+	 FG5SfzRNJ1Ltijn0YDzgFrGKVZv6OhBp6j6ebjzmP2Rg2ZhqGpZJQ4vqJui7SJFd+j
+	 vd8rsfn4Srs6Jbjcqrgz8lXkP3UYpHsnuilMZcuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Piotr Wejman <piotrwejman90@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 100/273] net/sched: fix lockdep splat in qdisc_tree_reduce_backlog()
-Date: Mon,  8 Apr 2024 14:56:15 +0200
-Message-ID: <20240408125312.417523553@linuxfoundation.org>
+Subject: [PATCH 6.8 101/273] net: stmmac: fix rx queue priority assignment
+Date: Mon,  8 Apr 2024 14:56:16 +0200
+Message-ID: <20240408125312.448489069@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -68,84 +65,140 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Piotr Wejman <piotrwejman90@gmail.com>
 
-commit 7eb322360b0266481e560d1807ee79e0cef5742b upstream.
+commit b3da86d432b7cd65b025a11f68613e333d2483db upstream.
 
-qdisc_tree_reduce_backlog() is called with the qdisc lock held,
-not RTNL.
+The driver should ensure that same priority is not mapped to multiple
+rx queues. From DesignWare Cores Ethernet Quality-of-Service
+Databook, section 17.1.29 MAC_RxQ_Ctrl2:
+"[...]The software must ensure that the content of this field is
+mutually exclusive to the PSRQ fields for other queues, that is,
+the same priority is not mapped to multiple Rx queues[...]"
 
-We must use qdisc_lookup_rcu() instead of qdisc_lookup()
+Previously rx_queue_priority() function was:
+- clearing all priorities from a queue
+- adding new priorities to that queue
+After this patch it will:
+- first assign new priorities to a queue
+- then remove those priorities from all other queues
+- keep other priorities previously assigned to that queue
 
-syzbot reported:
-
-WARNING: suspicious RCU usage
-6.1.74-syzkaller #0 Not tainted
------------------------------
-net/sched/sch_api.c:305 suspicious rcu_dereference_protected() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-3 locks held by udevd/1142:
-  #0: ffffffff87c729a0 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:306 [inline]
-  #0: ffffffff87c729a0 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:747 [inline]
-  #0: ffffffff87c729a0 (rcu_read_lock){....}-{1:2}, at: net_tx_action+0x64a/0x970 net/core/dev.c:5282
-  #1: ffff888171861108 (&sch->q.lock){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:350 [inline]
-  #1: ffff888171861108 (&sch->q.lock){+.-.}-{2:2}, at: net_tx_action+0x754/0x970 net/core/dev.c:5297
-  #2: ffffffff87c729a0 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:306 [inline]
-  #2: ffffffff87c729a0 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:747 [inline]
-  #2: ffffffff87c729a0 (rcu_read_lock){....}-{1:2}, at: qdisc_tree_reduce_backlog+0x84/0x580 net/sched/sch_api.c:792
-
-stack backtrace:
-CPU: 1 PID: 1142 Comm: udevd Not tainted 6.1.74-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-Call Trace:
- <TASK>
-  [<ffffffff85b85f14>] __dump_stack lib/dump_stack.c:88 [inline]
-  [<ffffffff85b85f14>] dump_stack_lvl+0x1b1/0x28f lib/dump_stack.c:106
-  [<ffffffff85b86007>] dump_stack+0x15/0x1e lib/dump_stack.c:113
-  [<ffffffff81802299>] lockdep_rcu_suspicious+0x1b9/0x260 kernel/locking/lockdep.c:6592
-  [<ffffffff84f0054c>] qdisc_lookup+0xac/0x6f0 net/sched/sch_api.c:305
-  [<ffffffff84f037c3>] qdisc_tree_reduce_backlog+0x243/0x580 net/sched/sch_api.c:811
-  [<ffffffff84f5b78c>] pfifo_tail_enqueue+0x32c/0x4b0 net/sched/sch_fifo.c:51
-  [<ffffffff84fbcf63>] qdisc_enqueue include/net/sch_generic.h:833 [inline]
-  [<ffffffff84fbcf63>] netem_dequeue+0xeb3/0x15d0 net/sched/sch_netem.c:723
-  [<ffffffff84eecab9>] dequeue_skb net/sched/sch_generic.c:292 [inline]
-  [<ffffffff84eecab9>] qdisc_restart net/sched/sch_generic.c:397 [inline]
-  [<ffffffff84eecab9>] __qdisc_run+0x249/0x1e60 net/sched/sch_generic.c:415
-  [<ffffffff84d7aa96>] qdisc_run+0xd6/0x260 include/net/pkt_sched.h:125
-  [<ffffffff84d85d29>] net_tx_action+0x7c9/0x970 net/core/dev.c:5313
-  [<ffffffff85e002bd>] __do_softirq+0x2bd/0x9bd kernel/softirq.c:616
-  [<ffffffff81568bca>] invoke_softirq kernel/softirq.c:447 [inline]
-  [<ffffffff81568bca>] __irq_exit_rcu+0xca/0x230 kernel/softirq.c:700
-  [<ffffffff81568ae9>] irq_exit_rcu+0x9/0x20 kernel/softirq.c:712
-  [<ffffffff85b89f52>] sysvec_apic_timer_interrupt+0x42/0x90 arch/x86/kernel/apic/apic.c:1107
-  [<ffffffff85c00ccb>] asm_sysvec_apic_timer_interrupt+0x1b/0x20 arch/x86/include/asm/idtentry.h:656
-
-Fixes: d636fc5dd692 ("net: sched: add rcu annotations around qdisc->qdisc_sleeping")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20240402134133.2352776-1-edumazet@google.com
+Fixes: a8f5102af2a7 ("net: stmmac: TX and RX queue priority configuration")
+Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
+Signed-off-by: Piotr Wejman <piotrwejman90@gmail.com>
+Link: https://lore.kernel.org/r/20240401192239.33942-1-piotrwejman90@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   |   40 +++++++++++++++-----
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   38 +++++++++++++++----
+ 2 files changed, 62 insertions(+), 16 deletions(-)
 
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -809,7 +809,7 @@ void qdisc_tree_reduce_backlog(struct Qd
- 		notify = !sch->q.qlen && !WARN_ON_ONCE(!n &&
- 						       !qdisc_is_offloaded);
- 		/* TODO: perform the search on a per txq basis */
--		sch = qdisc_lookup(qdisc_dev(sch), TC_H_MAJ(parentid));
-+		sch = qdisc_lookup_rcu(qdisc_dev(sch), TC_H_MAJ(parentid));
- 		if (sch == NULL) {
- 			WARN_ON_ONCE(parentid != TC_H_ROOT);
- 			break;
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -92,19 +92,41 @@ static void dwmac4_rx_queue_priority(str
+ 				     u32 prio, u32 queue)
+ {
+ 	void __iomem *ioaddr = hw->pcsr;
+-	u32 base_register;
+-	u32 value;
++	u32 clear_mask = 0;
++	u32 ctrl2, ctrl3;
++	int i;
+ 
+-	base_register = (queue < 4) ? GMAC_RXQ_CTRL2 : GMAC_RXQ_CTRL3;
+-	if (queue >= 4)
+-		queue -= 4;
++	ctrl2 = readl(ioaddr + GMAC_RXQ_CTRL2);
++	ctrl3 = readl(ioaddr + GMAC_RXQ_CTRL3);
++
++	/* The software must ensure that the same priority
++	 * is not mapped to multiple Rx queues
++	 */
++	for (i = 0; i < 4; i++)
++		clear_mask |= ((prio << GMAC_RXQCTRL_PSRQX_SHIFT(i)) &
++						GMAC_RXQCTRL_PSRQX_MASK(i));
+ 
+-	value = readl(ioaddr + base_register);
++	ctrl2 &= ~clear_mask;
++	ctrl3 &= ~clear_mask;
+ 
+-	value &= ~GMAC_RXQCTRL_PSRQX_MASK(queue);
+-	value |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
++	/* First assign new priorities to a queue, then
++	 * clear them from others queues
++	 */
++	if (queue < 4) {
++		ctrl2 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
+ 						GMAC_RXQCTRL_PSRQX_MASK(queue);
+-	writel(value, ioaddr + base_register);
++
++		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
++		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
++	} else {
++		queue -= 4;
++
++		ctrl3 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
++						GMAC_RXQCTRL_PSRQX_MASK(queue);
++
++		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
++		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
++	}
+ }
+ 
+ static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -105,17 +105,41 @@ static void dwxgmac2_rx_queue_prio(struc
+ 				   u32 queue)
+ {
+ 	void __iomem *ioaddr = hw->pcsr;
+-	u32 value, reg;
++	u32 clear_mask = 0;
++	u32 ctrl2, ctrl3;
++	int i;
+ 
+-	reg = (queue < 4) ? XGMAC_RXQ_CTRL2 : XGMAC_RXQ_CTRL3;
+-	if (queue >= 4)
++	ctrl2 = readl(ioaddr + XGMAC_RXQ_CTRL2);
++	ctrl3 = readl(ioaddr + XGMAC_RXQ_CTRL3);
++
++	/* The software must ensure that the same priority
++	 * is not mapped to multiple Rx queues
++	 */
++	for (i = 0; i < 4; i++)
++		clear_mask |= ((prio << XGMAC_PSRQ_SHIFT(i)) &
++						XGMAC_PSRQ(i));
++
++	ctrl2 &= ~clear_mask;
++	ctrl3 &= ~clear_mask;
++
++	/* First assign new priorities to a queue, then
++	 * clear them from others queues
++	 */
++	if (queue < 4) {
++		ctrl2 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
++						XGMAC_PSRQ(queue);
++
++		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
++		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
++	} else {
+ 		queue -= 4;
+ 
+-	value = readl(ioaddr + reg);
+-	value &= ~XGMAC_PSRQ(queue);
+-	value |= (prio << XGMAC_PSRQ_SHIFT(queue)) & XGMAC_PSRQ(queue);
++		ctrl3 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
++						XGMAC_PSRQ(queue);
+ 
+-	writel(value, ioaddr + reg);
++		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
++		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
++	}
+ }
+ 
+ static void dwxgmac2_tx_queue_prio(struct mac_device_info *hw, u32 prio,
 
 
 
