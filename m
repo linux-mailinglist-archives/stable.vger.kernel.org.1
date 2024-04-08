@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-37654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4617189C5DF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC54B89BFEA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FED01C22574
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DAE21F24CA2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A358003B;
-	Mon,  8 Apr 2024 14:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40647D080;
+	Mon,  8 Apr 2024 13:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2tk2BzK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYQ/Hicz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232B37FBC8;
-	Mon,  8 Apr 2024 14:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A826F08B;
+	Mon,  8 Apr 2024 13:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584868; cv=none; b=WlObbBHT2PzTfTToOvrFWswD+wYuO6G2HvhKJVKoinr21S/e8NjHLzCYrulphmI1JNGZRUE+8cY1wPz/2/4Q5eJ179fxSb+ilnKyKWqleobaNJBoBFWyV+S3fA5o5wyoJYJ4O2E4/uG3JqmsOTludJR4gTQJ9+37bmWsEQqoLRc=
+	t=1712581349; cv=none; b=CQ9UK1Zws7DmxIcUEUv54WbQ8+ZaVKRS8I5w3lw2cD+6ab97XZpUmrT97dSrjTX3BAH2bRpTLvOpq4/4OAd4axCC61kRS51+BcwkCO4xFmVWbQlBE3RhsgdkykuNcpi5nQtU+eBrKpf/F28nbPXXlk0jRi90bISpCJtGpo7MjA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584868; c=relaxed/simple;
-	bh=0yRo/eMJRV+dTuuqs6ir0VM/Qo0W/oM+SgYlb4+QkNI=;
+	s=arc-20240116; t=1712581349; c=relaxed/simple;
+	bh=3LiNNVZcyDaKQqpM4bKfBctEBlW985j/OtCmY/IX6aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OjOXJXQmMO8DP24JFBdtHtdXaifVUMEUw4Vz9jBT0ZmR+WKKBtafDc5PUESZvI0pf/ZpYvDT38V6t1o46z4ZAVyAWtXICBcp3lZ4dOKWUERYmN5dgl2RdhqM2/dszW/Dvmi4kwSlZtamu9PFAi/oMc37n9p4TwNO1zsLCySVhvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2tk2BzK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCBBC433C7;
-	Mon,  8 Apr 2024 14:01:07 +0000 (UTC)
+	 MIME-Version; b=SpsuPPQo2WIFSy9Alr5DlD5prew6UJlSBG/LLygRtPv7i8KRvko42NCDpN+nmhIyFLvLKAshtBNrkKpYQVa2c0rV8BmnYPVC4bZ30McMbYYJKNHhEUM5iH93RTcs3pHLAqqw4E/brKA7NLU+16K/jzyURwaAAKjYEI+N6BqXL54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYQ/Hicz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8A0C433F1;
+	Mon,  8 Apr 2024 13:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584868;
-	bh=0yRo/eMJRV+dTuuqs6ir0VM/Qo0W/oM+SgYlb4+QkNI=;
+	s=korg; t=1712581349;
+	bh=3LiNNVZcyDaKQqpM4bKfBctEBlW985j/OtCmY/IX6aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2tk2BzKyIZ67SC8EXhYXlewgdyv6B+Jd/zEXvENFcaBAioFvP7ccS7v2eINRCG8v
-	 310Nmkri+mcVQ5aOvSeaP5hYHzlje7FtarP/tp4CZYSQLbGkdVB0yANF9659n6lG5q
-	 9e+z5+sLx9NDZZ9abxIpPanTyaCwNitLp0MeL+ic=
+	b=PYQ/HiczMugNwJZjgRaqH51wb2eUruTRNtqf823pRo3GqTfvSLIIeDEDdGf8dQfSG
+	 pR7y3w1Y1vDQc5c/p4gCcRWnSAtmsBusabiCO6QB2Zp6vs/doqPk0SCBqri2c3GA8i
+	 wPrgp4WiltumJuGmLNxN7lqTyu8/1/ZV9CdhLQbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 554/690] nfsd: dont take fi_lock in nfsd_break_deleg_cb()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 006/138] ixgbe: avoid sleeping allocation in ixgbe_ipsec_vf_add_sa()
 Date: Mon,  8 Apr 2024 14:57:00 +0200
-Message-ID: <20240408125419.683589300@linuxfoundation.org>
+Message-ID: <20240408125256.423082655@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit 5ea9a7c5fe4149f165f0e3b624fe08df02b6c301 ]
+[ Upstream commit aec806fb4afba5fe80b09e29351379a4292baa43 ]
 
-A recent change to check_for_locks() changed it to take ->flc_lock while
-holding ->fi_lock.  This creates a lock inversion (reported by lockdep)
-because there is a case where ->fi_lock is taken while holding
-->flc_lock.
+Change kzalloc() flags used in ixgbe_ipsec_vf_add_sa() to GFP_ATOMIC, to
+avoid sleeping in IRQ context.
 
-->flc_lock is held across ->fl_lmops callbacks, and
-nfsd_break_deleg_cb() is one of those and does take ->fi_lock.  However
-it doesn't need to.
+Dan Carpenter, with the help of Smatch, has found following issue:
+The patch eda0333ac293: "ixgbe: add VF IPsec management" from Aug 13,
+2018 (linux-next), leads to the following Smatch static checker
+warning: drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c:917 ixgbe_ipsec_vf_add_sa()
+	warn: sleeping in IRQ context
 
-Prior to v4.17-rc1~110^2~22 ("nfsd: create a separate lease for each
-delegation") nfsd_break_deleg_cb() would walk the ->fi_delegations list
-and so needed the lock.  Since then it doesn't walk the list and doesn't
-need the lock.
+The call tree that Smatch is worried about is:
+ixgbe_msix_other() <- IRQ handler
+-> ixgbe_msg_task()
+   -> ixgbe_rcv_msg_from_vf()
+      -> ixgbe_ipsec_vf_add_sa()
 
-Two actions are performed under the lock.  One is to call
-nfsd_break_one_deleg which calls nfsd4_run_cb().  These doesn't act on
-the nfs4_file at all, so don't need the lock.
-
-The other is to set ->fi_had_conflict which is in the nfs4_file.
-This field is only ever set here (except when initialised to false)
-so there is no possible problem will multiple threads racing when
-setting it.
-
-The field is tested twice in nfs4_set_delegation().  The first test does
-not hold a lock and is documented as an opportunistic optimisation, so
-it doesn't impose any need to hold ->fi_lock while setting
-->fi_had_conflict.
-
-The second test in nfs4_set_delegation() *is* make under ->fi_lock, so
-removing the locking when ->fi_had_conflict is set could make a change.
-The change could only be interesting if ->fi_had_conflict tested as
-false even though nfsd_break_one_deleg() ran before ->fi_lock was
-unlocked.  i.e. while hash_delegation_locked() was running.
-As hash_delegation_lock() doesn't interact in any way with nfs4_run_cb()
-there can be no importance to this interaction.
-
-So this patch removes the locking from nfsd_break_one_deleg() and moves
-the final test on ->fi_had_conflict out of the locked region to make it
-clear that locking isn't important to the test.  It is still tested
-*after* vfs_setlease() has succeeded.  This might be significant and as
-vfs_setlease() takes ->flc_lock, and nfsd_break_one_deleg() is called
-under ->flc_lock this "after" is a true ordering provided by a spinlock.
-
-Fixes: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: eda0333ac293 ("ixgbe: add VF IPsec management")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/intel-wired-lan/db31a0b0-4d9f-4e6b-aed8-88266eb5665c@moroto.mountain
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 64a8567ea4c40..0f1ece95bd642 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4950,10 +4950,8 @@ nfsd_break_deleg_cb(struct file_lock *fl)
- 	 */
- 	fl->fl_break_time = 0;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
+index 774de63dd93a6..15fc2acffb871 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
+@@ -908,7 +908,13 @@ int ixgbe_ipsec_vf_add_sa(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
+ 		goto err_out;
+ 	}
  
--	spin_lock(&fp->fi_lock);
- 	fp->fi_had_conflict = true;
- 	nfsd_break_one_deleg(dp);
--	spin_unlock(&fp->fi_lock);
- 	return false;
- }
- 
-@@ -5541,12 +5539,13 @@ nfs4_set_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
- 	if (status)
- 		goto out_unlock;
- 
-+	status = -EAGAIN;
-+	if (fp->fi_had_conflict)
-+		goto out_unlock;
+-	xs = kzalloc(sizeof(*xs), GFP_KERNEL);
++	algo = xfrm_aead_get_byname(aes_gcm_name, IXGBE_IPSEC_AUTH_BITS, 1);
++	if (unlikely(!algo)) {
++		err = -ENOENT;
++		goto err_out;
++	}
 +
- 	spin_lock(&state_lock);
- 	spin_lock(&fp->fi_lock);
--	if (fp->fi_had_conflict)
--		status = -EAGAIN;
--	else
--		status = hash_delegation_locked(dp, fp);
-+	status = hash_delegation_locked(dp, fp);
- 	spin_unlock(&fp->fi_lock);
- 	spin_unlock(&state_lock);
++	xs = kzalloc(sizeof(*xs), GFP_ATOMIC);
+ 	if (unlikely(!xs)) {
+ 		err = -ENOMEM;
+ 		goto err_out;
+@@ -924,14 +930,8 @@ int ixgbe_ipsec_vf_add_sa(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
+ 		memcpy(&xs->id.daddr.a4, sam->addr, sizeof(xs->id.daddr.a4));
+ 	xs->xso.dev = adapter->netdev;
  
+-	algo = xfrm_aead_get_byname(aes_gcm_name, IXGBE_IPSEC_AUTH_BITS, 1);
+-	if (unlikely(!algo)) {
+-		err = -ENOENT;
+-		goto err_xs;
+-	}
+-
+ 	aead_len = sizeof(*xs->aead) + IXGBE_IPSEC_KEY_BITS / 8;
+-	xs->aead = kzalloc(aead_len, GFP_KERNEL);
++	xs->aead = kzalloc(aead_len, GFP_ATOMIC);
+ 	if (unlikely(!xs->aead)) {
+ 		err = -ENOMEM;
+ 		goto err_xs;
 -- 
 2.43.0
 
