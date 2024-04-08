@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-37543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9905C89C54D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C0A89C19F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBCC01C229B4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC3F1C21740
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF8978286;
-	Mon,  8 Apr 2024 13:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8503C7F7F4;
+	Mon,  8 Apr 2024 13:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nfQiGGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpZvTVzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B5C6EB72;
-	Mon,  8 Apr 2024 13:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B00768F0;
+	Mon,  8 Apr 2024 13:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584542; cv=none; b=gmh5h4/GM3B3fbT6AhQ3Cvc3smE1oWeOz16kspBZ3d/5oPx+DfpgDmOhz9E1s0Q3uxQCJo7gjAq8SBgI17pMOo2YLhFvVC9YpOWbIehz9wjpqRKSi3tT+pDLRkx824VZqBg8l7JNrueWnF3c6dtYunA0Wtt+ut1n1YXoZgEFly0=
+	t=1712582320; cv=none; b=L/pFYxnhnnPCrIrHnzC9jZcuhZz/gzMOWi3gDo3QCInBjFV9daJEd8T4BnHrf2b8c+uUh+vGh0yzdOB4wvG0gUSAR9qt/dZnCJQL+fuBUxwbZpBJ06YKQLC2zYbubRNDo7tkTjW6D6geXQhMMDYFzYsuu4XPWfwNg3UtRXsIjGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584542; c=relaxed/simple;
-	bh=LQ4sXvMpyILRMdXVrvljBdKHiF0jHsfzWUV90pUWfEc=;
+	s=arc-20240116; t=1712582320; c=relaxed/simple;
+	bh=e1Ff7Efw2dSLyGnqwNlEND7ppMA0J5nT1gBksvAYf8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWayr74Rzl9uMX2UeHyZKuJnzFnkKBbb2+F/btU5sbnU9kZ4hSa8t9AYRb6zkMFRPwRq8jdeKMNlFRsW50NxLin0TrL6rtGNWNHvDxryE4MOM9IV0mHzogSpnjGITv8M4EvI71TZhRPK0ESQ4DSgnKOboTyvpQaKSS62ERC7TBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nfQiGGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D2DC433F1;
-	Mon,  8 Apr 2024 13:55:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WIgKFI4ZRAi6MaQaHZRDwbG6rNlL1uR7s2ZK70FjdGw+vxm+glS9ttnJeaLQA63kPvkQjA8aibx9khsJW5nodDjwS8NG8mGFfLxN6sPE+gS17sC7l8tIX4KWgdwI4VJ4oi0WZiqiKiCT/yfv+ZC6cfahuXwLz5nVHkJn3GR7l3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpZvTVzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA6CC433F1;
+	Mon,  8 Apr 2024 13:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584541;
-	bh=LQ4sXvMpyILRMdXVrvljBdKHiF0jHsfzWUV90pUWfEc=;
+	s=korg; t=1712582319;
+	bh=e1Ff7Efw2dSLyGnqwNlEND7ppMA0J5nT1gBksvAYf8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nfQiGGteCEz5OM8rCQCEuPzYwPJ2hXi4PRCGOm8YdBiM9v/ysO19QxhiXQFujC2g
-	 agyWav+XeQ8pi9BfX9OvsIhFVXnNbqQTSUpJOFH7EzBKnqy7KOMqhKOGFeDKUZX/fw
-	 JhF17erHey2AF0q3VKXqgXD8q6XDotIj/DuxzeUI=
+	b=tpZvTVzKt2qEEn6ZdOVmmWVpyP2IAM/KxHAfknswh1F+LmSmhG6SJGQSWcp7Dk83+
+	 UTGbjJZLLi0mEb/55il4wkNuqfQhQ4lACKqt/91NuAuNhre9goUjM38UVOsae9T9kz
+	 JB555kPZrERkEkdArbsLJzCMKahsYTJzIgO5jjRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Tom Talpey <tom@talpey.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 473/690] nfsd: ignore requests to disable unsupported versions
-Date: Mon,  8 Apr 2024 14:55:39 +0200
-Message-ID: <20240408125416.733711443@linuxfoundation.org>
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH 6.8 065/273] RISC-V: KVM: Fix APLIC in_clrip[x] read emulation
+Date: Mon,  8 Apr 2024 14:55:40 +0200
+Message-ID: <20240408125311.320062293@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +59,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit 8e823bafff2308753d430566256c83d8085952da ]
+commit 8e936e98718f005c986be0bfa1ee6b355acf96be upstream.
 
-The kernel currently errors out if you attempt to enable or disable a
-version that it doesn't recognize. Change it to ignore attempts to
-disable an unrecognized version. If we don't support it, then there is
-no harm in doing so.
+The reads to APLIC in_clrip[x] registers returns rectified input values
+of the interrupt sources.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+A rectified input value of an interrupt source is defined by the section
+"4.5.2 Source configurations (sourcecfg[1]–sourcecfg[1023])" of the
+RISC-V AIA specification as:
+
+    rectified input value = (incoming wire value) XOR (source is inverted)
+
+Update the riscv_aplic_input() implementation to match the above.
+
+Cc: stable@vger.kernel.org
+Fixes: 74967aa208e2 ("RISC-V: KVM: Add in-kernel emulation of AIA APLIC")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20240321085041.1955293-3-apatel@ventanamicro.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/riscv/kvm/aia_aplic.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index dc74a947a440c..68ed42fd29fc8 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -601,7 +601,9 @@ static ssize_t __write_versions(struct file *file, char *buf, size_t size)
- 				}
- 				break;
- 			default:
--				return -EINVAL;
-+				/* Ignore requests to disable non-existent versions */
-+				if (cmd == NFSD_SET)
-+					return -EINVAL;
- 			}
- 			vers += len + 1;
- 		} while ((len = qword_get(&mesg, vers, size)) > 0);
--- 
-2.43.0
-
+--- a/arch/riscv/kvm/aia_aplic.c
++++ b/arch/riscv/kvm/aia_aplic.c
+@@ -197,16 +197,31 @@ static void aplic_write_enabled(struct a
+ 
+ static bool aplic_read_input(struct aplic *aplic, u32 irq)
+ {
+-	bool ret;
+-	unsigned long flags;
++	u32 sourcecfg, sm, raw_input, irq_inverted;
+ 	struct aplic_irq *irqd;
++	unsigned long flags;
++	bool ret = false;
+ 
+ 	if (!irq || aplic->nr_irqs <= irq)
+ 		return false;
+ 	irqd = &aplic->irqs[irq];
+ 
+ 	raw_spin_lock_irqsave(&irqd->lock, flags);
+-	ret = (irqd->state & APLIC_IRQ_STATE_INPUT) ? true : false;
++
++	sourcecfg = irqd->sourcecfg;
++	if (sourcecfg & APLIC_SOURCECFG_D)
++		goto skip;
++
++	sm = sourcecfg & APLIC_SOURCECFG_SM_MASK;
++	if (sm == APLIC_SOURCECFG_SM_INACTIVE)
++		goto skip;
++
++	raw_input = (irqd->state & APLIC_IRQ_STATE_INPUT) ? 1 : 0;
++	irq_inverted = (sm == APLIC_SOURCECFG_SM_LEVEL_LOW ||
++			sm == APLIC_SOURCECFG_SM_EDGE_FALL) ? 1 : 0;
++	ret = !!(raw_input ^ irq_inverted);
++
++skip:
+ 	raw_spin_unlock_irqrestore(&irqd->lock, flags);
+ 
+ 	return ret;
 
 
 
