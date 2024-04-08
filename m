@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-37221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C4489C3E8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBCB89C474
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2072B280CF5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8A81F21A41
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CD28061A;
-	Mon,  8 Apr 2024 13:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471A771B3D;
+	Mon,  8 Apr 2024 13:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2naLb8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4FvKtDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF979F0;
-	Mon,  8 Apr 2024 13:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064A579F0;
+	Mon,  8 Apr 2024 13:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583602; cv=none; b=C9tEM4HZDhb/lMbb/O7EYqJEXesZgGvf/yx1hYVX1hqgJ8hEaw3IMch054vs7m27DDryoVYoDh4PdtkdgIlYz9n810zw0PBT0F+KmnWo4QIkI4xsjdzKr+l7BXr2wcKRS8Ge8VGSi5Q9IMVdCvOyotCUWmRslW7wGYOommv3i6k=
+	t=1712583958; cv=none; b=USeGPDLSsAstlq7XJcxBcvzaChUf5j+a9ukvbnb71Of3TPpPcBgbBdGoARHMM6oH3WRl9B5ixjy2XnfELgFV0Htbn6pgX3YbYkPYstoU8tk5bHOoQZXh3F6KAVBVLAamkzlGCmYQM+yqZU9rxIaan1XgwsdF5U9r0w5huUGOco0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583602; c=relaxed/simple;
-	bh=UQDujH7IJfUKK3aiHmjTGtROBZsrnmlon+IiHGAtbLE=;
+	s=arc-20240116; t=1712583958; c=relaxed/simple;
+	bh=5j8S+x3AZ5OFa5Vjg+l3kzRs2Hc64ZxI27gJdJm9AOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFDuiGxMazPKUH+TPyuE3i5DQUJrXfQ0Yu0wtBqSGLXlIAQmSgvfTip+uFiwkTPH0g6rnUMoOzW5CupgHKjDArctunyHQvGwjVBRXYKrWKKQ2BQy9TajcEB5vZSxjwEQHimFyUqAT3CKBaK9zid/+SFt1BgkpBdDggjZzDHWthQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2naLb8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA59C433C7;
-	Mon,  8 Apr 2024 13:40:01 +0000 (UTC)
+	 MIME-Version; b=W56pCyKzosnFpsRK6O3jJ6ekWyzB2/xjTroeoArvBVvdVDPUw7nV1iqInb3vjS8/hvb1eYhvykETaOkxiIHUBdaM7kD7DcJkAlvcq/dv/+f4QTTJeKWdu6CMaXgAvRZ1+gQufhV13uyXCjgrPh5Aco1s9XQQ7Zts4LJgjp5Im1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4FvKtDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815E7C433F1;
+	Mon,  8 Apr 2024 13:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583602;
-	bh=UQDujH7IJfUKK3aiHmjTGtROBZsrnmlon+IiHGAtbLE=;
+	s=korg; t=1712583957;
+	bh=5j8S+x3AZ5OFa5Vjg+l3kzRs2Hc64ZxI27gJdJm9AOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2naLb8+MqexSEk463uoBXHnOLmlvMGoGdPwgYtmZTnLkrWq9Iwx1sSJCBUkdRagF
-	 rJ3rLHU6vFkLjbQ4x3tffj4bElbfgJkCn8CkjPU6hbkodpdbB/cqO3qBIC52Wo6bDS
-	 hGGK9pFrL044LL0whscw9qVI5YOMt5yK8zttxAbM=
+	b=I4FvKtDr1447ucjJERzRirxqT6zdJMXE8HKUuuii536DuOnZxl3SJIF4pNcrjXthf
+	 KUb71hJOFi4ofNPwpzmyNdtduIPkUlpMW+vJpD16A9P26kPXz2uPAKNNkNFNxyMDhg
+	 DHla+LgJehmlI1qvGnMZFISbpZruoVzMVesGca6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.6 214/252] driver core: Introduce device_link_wait_removal()
+	David Hildenbrand <david@redhat.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miklos Szeredi <miklos@szeredi.hu>
+Subject: [PATCH 6.8 238/273] mm/secretmem: fix GUP-fast succeeding on secretmem folios
 Date: Mon,  8 Apr 2024 14:58:33 +0200
-Message-ID: <20240408125313.304077656@linuxfoundation.org>
+Message-ID: <20240408125316.822250966@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +67,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: David Hildenbrand <david@redhat.com>
 
-commit 0462c56c290a99a7f03e817ae5b843116dfb575c upstream.
+commit 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706 upstream.
 
-The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-introduces a workqueue to release the consumer and supplier devices used
-in the devlink.
-In the job queued, devices are release and in turn, when all the
-references to these devices are dropped, the release function of the
-device itself is called.
+folio_is_secretmem() currently relies on secretmem folios being LRU
+folios, to save some cycles.
 
-Nothing is present to provide some synchronisation with this workqueue
-in order to ensure that all ongoing releasing operations are done and
-so, some other operations can be started safely.
+However, folios might reside in a folio batch without the LRU flag set, or
+temporarily have their LRU flag cleared.  Consequently, the LRU flag is
+unreliable for this purpose.
 
-For instance, in the following sequence:
-  1) of_platform_depopulate()
-  2) of_overlay_remove()
+In particular, this is the case when secretmem_fault() allocates a fresh
+page and calls filemap_add_folio()->folio_add_lru().  The folio might be
+added to the per-cpu folio batch and won't get the LRU flag set until the
+batch was drained using e.g., lru_add_drain().
 
-During the step 1, devices are released and related devlinks are removed
-(jobs pushed in the workqueue).
-During the step 2, OF nodes are destroyed but, without any
-synchronisation with devlink removal jobs, of_overlay_remove() can raise
-warnings related to missing of_node_put():
-  ERROR: memory leak, expected refcount 1 instead of 2
+Consequently, folio_is_secretmem() might not detect secretmem folios and
+GUP-fast can succeed in grabbing a secretmem folio, crashing the kernel
+when we would later try reading/writing to the folio, because the folio
+has been unmapped from the directmap.
 
-Indeed, the missing of_node_put() call is going to be done, too late,
-from the workqueue job execution.
+Fix it by removing that unreliable check.
 
-Introduce device_link_wait_removal() to offer a way to synchronize
-operations waiting for the end of devlink removals (i.e. end of
-workqueue jobs).
-Also, as a flushing operation is done on the workqueue, the workqueue
-used is moved from a system-wide workqueue to a local one.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240325152140.198219-2-herve.codina@bootlin.com
-Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lkml.kernel.org/r/20240326143210.291116-2-david@redhat.com
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
+Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
+Tested-by: Miklos Szeredi <mszeredi@redhat.com>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c    |   26 +++++++++++++++++++++++---
- include/linux/device.h |    1 +
- 2 files changed, 24 insertions(+), 3 deletions(-)
+ include/linux/secretmem.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(voi
- static void __fw_devlink_link_to_consumers(struct device *dev);
- static bool fw_devlink_drv_reg_done;
- static bool fw_devlink_best_effort;
-+static struct workqueue_struct *device_link_wq;
- 
- /**
-  * __fwnode_link_add - Create a link between two fwnode_handles.
-@@ -531,12 +532,26 @@ static void devlink_dev_release(struct d
+--- a/include/linux/secretmem.h
++++ b/include/linux/secretmem.h
+@@ -13,10 +13,10 @@ static inline bool folio_is_secretmem(st
  	/*
- 	 * It may take a while to complete this work because of the SRCU
- 	 * synchronization in device_link_release_fn() and if the consumer or
--	 * supplier devices get deleted when it runs, so put it into the "long"
--	 * workqueue.
-+	 * supplier devices get deleted when it runs, so put it into the
-+	 * dedicated workqueue.
+ 	 * Using folio_mapping() is quite slow because of the actual call
+ 	 * instruction.
+-	 * We know that secretmem pages are not compound and LRU so we can
++	 * We know that secretmem pages are not compound, so we can
+ 	 * save a couple of cycles here.
  	 */
--	queue_work(system_long_wq, &link->rm_work);
-+	queue_work(device_link_wq, &link->rm_work);
- }
+-	if (folio_test_large(folio) || !folio_test_lru(folio))
++	if (folio_test_large(folio))
+ 		return false;
  
-+/**
-+ * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
-+ */
-+void device_link_wait_removal(void)
-+{
-+	/*
-+	 * devlink removal jobs are queued in the dedicated work queue.
-+	 * To be sure that all removal jobs are terminated, ensure that any
-+	 * scheduled work has run to completion.
-+	 */
-+	flush_workqueue(device_link_wq);
-+}
-+EXPORT_SYMBOL_GPL(device_link_wait_removal);
-+
- static struct class devlink_class = {
- 	.name = "devlink",
- 	.dev_groups = devlink_groups,
-@@ -4090,9 +4105,14 @@ int __init devices_init(void)
- 	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
- 	if (!sysfs_dev_char_kobj)
- 		goto char_kobj_err;
-+	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);
-+	if (!device_link_wq)
-+		goto wq_err;
- 
- 	return 0;
- 
-+ wq_err:
-+	kobject_put(sysfs_dev_char_kobj);
-  char_kobj_err:
- 	kobject_put(sysfs_dev_block_kobj);
-  block_kobj_err:
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1250,6 +1250,7 @@ void device_link_del(struct device_link
- void device_link_remove(void *consumer, struct device *supplier);
- void device_links_supplier_sync_state_pause(void);
- void device_links_supplier_sync_state_resume(void);
-+void device_link_wait_removal(void);
- 
- /* Create alias, so I can be autoloaded. */
- #define MODULE_ALIAS_CHARDEV(major,minor) \
+ 	mapping = (struct address_space *)
 
 
 
