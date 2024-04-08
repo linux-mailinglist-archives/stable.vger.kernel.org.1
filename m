@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-37153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1297289C38C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0392F89C38E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C33F6283968
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 280D51C226B6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F061292D5;
-	Mon,  8 Apr 2024 13:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB72B129E7E;
+	Mon,  8 Apr 2024 13:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGEqzJDZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TiQ8VHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F02512838E;
-	Mon,  8 Apr 2024 13:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855F3129E7C;
+	Mon,  8 Apr 2024 13:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583401; cv=none; b=DVMayu08nYLbKIcrR2QsXHc7msVGP7QJTXgUYH1Ox0kvwByZWPMElf95vkdFFTNKNVSPwu+ZBygs0usCw6/Y3/wMHN6Tbp0BTY9q2AJF+lVi6Cm/rQSQ7QG0lx+yeiPr+yhAwogCVnVP3lEcjmxy+MreHQnDyGVkqEZ80C4ynqU=
+	t=1712583413; cv=none; b=MSQwASciDttOxFJpfwGNjdBPt3Cx585z5A/nkxvc7n2BtBVdM8iPSPVv0bb4sybRmA6DH7Y5eu5qW+B368uOFU/4JTXMJtxXAnfMyJbTBcf+AUwJ6A7Ppbsq74jtPjgUblTKOLeReAOvB9K+buDqcgsUNZZIvyis9fiYVqLei1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583401; c=relaxed/simple;
-	bh=64zU8QVoUJESKRbPvAA++R1pkGaAP3Q2sxfbADK1NjQ=;
+	s=arc-20240116; t=1712583413; c=relaxed/simple;
+	bh=JwTVEe8Fuot0oZ4Gdpv5VvbMEuiKVcOqf86n9ES3l5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOVTv0uHwSt5VpyEB6BgmxEHeLz8euGPgMLl1u2Aiy0nWmtb/EnyGQuPBIJlcbwEc7wxm77LQRnGYE8EuDW3qAqAEXGhxHjRn4t+jNS2ssMGuXdWBQOyDlw72gqD23g+VCcpKsFkkYMKCQdK2qCK5apM4fqWa8BFuN0myBRNSBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGEqzJDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16489C433F1;
-	Mon,  8 Apr 2024 13:36:40 +0000 (UTC)
+	 MIME-Version; b=hG2IQ702q9n0dQ/w2ZYoE1x6oyLcTKjLT1Em9tJLo46+WG7wf9yhB4jo6TUFrwHD4OHESOcgHbuoBSyGIVBoIUDSUCJh70/mNjeqFK57HklyvCp059QEAh+F2W57qUYnWDULAmAQ/8ZZ/lbN4vhJRKPIJoH7KVrr/maOml4lau8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TiQ8VHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA806C433C7;
+	Mon,  8 Apr 2024 13:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583401;
-	bh=64zU8QVoUJESKRbPvAA++R1pkGaAP3Q2sxfbADK1NjQ=;
+	s=korg; t=1712583413;
+	bh=JwTVEe8Fuot0oZ4Gdpv5VvbMEuiKVcOqf86n9ES3l5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oGEqzJDZ3ww2Xn5plIUZBTlB2Ffo3RE787AKcCYCO/YbfEpqpksyEXeIbU0dhgKJG
-	 T7nfHQw2QCidYXlG8vqy9AuL32mDmnvWSGufaQ9vWa9psY5T1Db2wXvD/tXMK2KsEq
-	 ZKa4GU1GS9Kb1CTaJje/QNAkNGg3MHLuGcVtRcpo=
+	b=0TiQ8VHSSq7kO3iO6FH7+0tV44SZxZB2NvjiFlsWizo78KQqgG+D6vqcTP8NT2coA
+	 XeBgI/yeR+rugxASZR3HF8Xrbnb1p2SahpIr2LuFybvdAr4TSWVptkYbaPoTFm72Ru
+	 6/VwYd/JJb36eoIEfeQdh4BRfaz/VPPlcbL7c6hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
 	Thomas Richter <tmricht@linux.ibm.com>,
+	Mete Durlu <meted@linux.ibm.com>,
 	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/252] s390/pai: cleanup event initialization
-Date: Mon,  8 Apr 2024 14:58:11 +0200
-Message-ID: <20240408125312.616073754@linuxfoundation.org>
+Subject: [PATCH 6.6 193/252] s390/pai: rework paiXXX_start and paiXXX_stop functions
+Date: Mon,  8 Apr 2024 14:58:12 +0200
+Message-ID: <20240408125312.646555044@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
 References: <20240408125306.643546457@linuxfoundation.org>
@@ -69,65 +69,152 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 4711b7b8f99583f6105a33e91f106125134beacb ]
+[ Upstream commit cb1259b7b574bd90ef22dac2c6282327cdae31c6 ]
 
-Setting event::hw.last_tag to zero is not necessary. The memory
-for each event is dynamically allocated by the kernel common code and
-initialized to zero already.  Remove this unnecessary assignment.
-Move the comment to function paicrypt_start() for clarification.
+The PAI crypto counter and PAI NNPA counters start and stop functions
+are streamlined. Move the conditions to invoke start and stop functions
+to its respective function body and call them unconditionally.
+The start and stop functions now determine how to proceed.
+No functional change.
 
-Suggested-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
 Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Mete Durlu <meted@linux.ibm.com>
 Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/perf_pai_crypto.c | 11 +++++------
- arch/s390/kernel/perf_pai_ext.c    |  1 -
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ arch/s390/kernel/perf_pai_crypto.c | 29 ++++++++++++-------------
+ arch/s390/kernel/perf_pai_ext.c    | 35 ++++++++++++++----------------
+ 2 files changed, 30 insertions(+), 34 deletions(-)
 
 diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
-index 1ac74333a78dc..270255acacb02 100644
+index 270255acacb02..65cc74ab4cdd8 100644
 --- a/arch/s390/kernel/perf_pai_crypto.c
 +++ b/arch/s390/kernel/perf_pai_crypto.c
-@@ -210,12 +210,6 @@ static int paicrypt_event_init(struct perf_event *event)
- 	if (rc)
- 		return rc;
+@@ -248,10 +248,14 @@ static void paicrypt_start(struct perf_event *event, int flags)
+ 	 * Events are added, deleted and re-added when 2 or more events
+ 	 * are active at the same time.
+ 	 */
+-	if (!event->hw.last_tag) {
+-		event->hw.last_tag = 1;
+-		sum = paicrypt_getall(event);		/* Get current value */
+-		local64_set(&event->hw.prev_count, sum);
++	if (!event->attr.sample_period) {	/* Counting */
++		if (!event->hw.last_tag) {
++			event->hw.last_tag = 1;
++			sum = paicrypt_getall(event);	/* Get current value */
++			local64_set(&event->hw.prev_count, sum);
++		}
++	} else {				/* Sampling */
++		perf_sched_cb_inc(event->pmu);
+ 	}
+ }
  
--	/* Event initialization sets last_tag to 0. When later on the events
--	 * are deleted and re-added, do not reset the event count value to zero.
--	 * Events are added, deleted and re-added when 2 or more events
--	 * are active at the same time.
--	 */
--	event->hw.last_tag = 0;
- 	event->destroy = paicrypt_event_destroy;
+@@ -266,19 +270,18 @@ static int paicrypt_add(struct perf_event *event, int flags)
+ 		__ctl_set_bit(0, 50);
+ 	}
+ 	cpump->event = event;
+-	if (flags & PERF_EF_START && !event->attr.sample_period) {
+-		/* Only counting needs initial counter value */
++	if (flags & PERF_EF_START)
+ 		paicrypt_start(event, PERF_EF_RELOAD);
+-	}
+ 	event->hw.state = 0;
+-	if (event->attr.sample_period)
+-		perf_sched_cb_inc(event->pmu);
+ 	return 0;
+ }
  
- 	if (a->sample_period) {
-@@ -249,6 +243,11 @@ static void paicrypt_start(struct perf_event *event, int flags)
+ static void paicrypt_stop(struct perf_event *event, int flags)
+ {
+-	paicrypt_read(event);
++	if (!event->attr.sample_period)	/* Counting */
++		paicrypt_read(event);
++	else				/* Sampling */
++		perf_sched_cb_dec(event->pmu);
+ 	event->hw.state = PERF_HES_STOPPED;
+ }
+ 
+@@ -286,11 +289,7 @@ static void paicrypt_del(struct perf_event *event, int flags)
+ {
+ 	struct paicrypt_map *cpump = this_cpu_ptr(&paicrypt_map);
+ 
+-	if (event->attr.sample_period)
+-		perf_sched_cb_dec(event->pmu);
+-	if (!event->attr.sample_period)
+-		/* Only counting needs to read counter */
+-		paicrypt_stop(event, PERF_EF_UPDATE);
++	paicrypt_stop(event, PERF_EF_UPDATE);
+ 	if (--cpump->active_events == 0) {
+ 		__ctl_clear_bit(0, 50);
+ 		WRITE_ONCE(S390_lowcore.ccd, 0);
+diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+index 8fddde11cfb1f..bac95261ec46d 100644
+--- a/arch/s390/kernel/perf_pai_ext.c
++++ b/arch/s390/kernel/perf_pai_ext.c
+@@ -321,11 +321,15 @@ static void paiext_start(struct perf_event *event, int flags)
  {
  	u64 sum;
  
-+	/* Event initialization sets last_tag to 0. When later on the events
-+	 * are deleted and re-added, do not reset the event count value to zero.
-+	 * Events are added, deleted and re-added when 2 or more events
-+	 * are active at the same time.
-+	 */
- 	if (!event->hw.last_tag) {
- 		event->hw.last_tag = 1;
- 		sum = paicrypt_getall(event);		/* Get current value */
-diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
-index ac32107167eac..8fddde11cfb1f 100644
---- a/arch/s390/kernel/perf_pai_ext.c
-+++ b/arch/s390/kernel/perf_pai_ext.c
-@@ -261,7 +261,6 @@ static int paiext_event_init(struct perf_event *event)
- 	rc = paiext_alloc(a, event);
- 	if (rc)
- 		return rc;
--	event->hw.last_tag = 0;
- 	event->destroy = paiext_event_destroy;
+-	if (event->hw.last_tag)
+-		return;
+-	event->hw.last_tag = 1;
+-	sum = paiext_getall(event);		/* Get current value */
+-	local64_set(&event->hw.prev_count, sum);
++	if (!event->attr.sample_period) {	/* Counting */
++		if (!event->hw.last_tag) {
++			event->hw.last_tag = 1;
++			sum = paiext_getall(event);	/* Get current value */
++			local64_set(&event->hw.prev_count, sum);
++		}
++	} else {				/* Sampling */
++		perf_sched_cb_inc(event->pmu);
++	}
+ }
  
- 	if (a->sample_period) {
+ static int paiext_add(struct perf_event *event, int flags)
+@@ -342,21 +346,19 @@ static int paiext_add(struct perf_event *event, int flags)
+ 		debug_sprintf_event(paiext_dbg, 4, "%s 1508 %llx acc %llx\n",
+ 				    __func__, S390_lowcore.aicd, pcb->acc);
+ 	}
+-	if (flags & PERF_EF_START && !event->attr.sample_period) {
+-		/* Only counting needs initial counter value */
++	cpump->event = event;
++	if (flags & PERF_EF_START)
+ 		paiext_start(event, PERF_EF_RELOAD);
+-	}
+ 	event->hw.state = 0;
+-	if (event->attr.sample_period) {
+-		cpump->event = event;
+-		perf_sched_cb_inc(event->pmu);
+-	}
+ 	return 0;
+ }
+ 
+ static void paiext_stop(struct perf_event *event, int flags)
+ {
+-	paiext_read(event);
++	if (!event->attr.sample_period)	/* Counting */
++		paiext_read(event);
++	else				/* Sampling */
++		perf_sched_cb_dec(event->pmu);
+ 	event->hw.state = PERF_HES_STOPPED;
+ }
+ 
+@@ -366,12 +368,7 @@ static void paiext_del(struct perf_event *event, int flags)
+ 	struct paiext_map *cpump = mp->mapptr;
+ 	struct paiext_cb *pcb = cpump->paiext_cb;
+ 
+-	if (event->attr.sample_period)
+-		perf_sched_cb_dec(event->pmu);
+-	if (!event->attr.sample_period) {
+-		/* Only counting needs to read counter */
+-		paiext_stop(event, PERF_EF_UPDATE);
+-	}
++	paiext_stop(event, PERF_EF_UPDATE);
+ 	if (--cpump->active_events == 0) {
+ 		/* Disable CPU instruction lookup for PAIE1 control block */
+ 		__ctl_clear_bit(0, 49);
 -- 
 2.43.0
 
