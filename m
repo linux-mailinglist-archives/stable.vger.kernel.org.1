@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE75589C538
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15EB689C107
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E062B1C22988
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5581F221A2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA77E7B3EB;
-	Mon,  8 Apr 2024 13:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EF47D414;
+	Mon,  8 Apr 2024 13:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCuVEQg4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MFJP0z4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A768242046;
-	Mon,  8 Apr 2024 13:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBE970CDA;
+	Mon,  8 Apr 2024 13:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584477; cv=none; b=mHPSvi/e21liSogFI80M3PwDTI/JX0DwMnvkFEPPVQ6LhQ7Fd+ybPnfa36Ki+h2rE2EFXK02Vpd2asKRiCck8o3sdNDhedwZw+SC0A0ZdO1Dgo9Bzro8L67K/r+QIRqhGrgnqwCGWVNMS8oTxw5Bq0HfQnFKMakf1iGT3yLWo+U=
+	t=1712581914; cv=none; b=HpgMWqNtqtZPcruaqaa7ZDPAV5MA95d6wjoSuyIoMSiDHvjF7hujtljuq93Cm8mOMBirBqlNFUbLQLyHSiUYviqtZ+UJcPGOCQ+FhY3TrOKPa4od4Tsz076FAr4kwybKsJAj07eayseE3r9Uu1QixQeQI2c7jy0BcseCqNZTbg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584477; c=relaxed/simple;
-	bh=vhzWFvrT7Ct4bcD5pvMm/99zmNKioSsCsKVXiuIwFRI=;
+	s=arc-20240116; t=1712581914; c=relaxed/simple;
+	bh=NVfFyy0YxwWT3tzFXNeXwwnX9SEvbRg8mN+qDlNtS68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/zYpstcr2wlRsh3lYU54nbPBnknKtA3haf5e4c1ObZI/P+tYL77P2ILR8WkeESko2GzwmOWaisGdzQgB2ZhyiDuty2xS4eCnmt6ubHoo24X9urpG/3pB0HOQzARbdMhzUmse0e15YeJne9XquX21sli8Ub1DUUpzadxHRzATcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCuVEQg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B018C433F1;
-	Mon,  8 Apr 2024 13:54:36 +0000 (UTC)
+	 MIME-Version; b=XkD4qWqx1MEJizJ5yLWL+pd5o6vKIK0HZqd6h17b0gmP/pL3mDYikwc3nZgILc7sKYEiVcOlks8v0VG+Nmp1TzqcVywUgWknscOG7t7FTzyPuJR9kVgv0KjXrTYlFybZ6wX0cxxKWUAJeADjzDu34FN+boS+tOG07vxfJzP5P7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MFJP0z4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B917C433F1;
+	Mon,  8 Apr 2024 13:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584477;
-	bh=vhzWFvrT7Ct4bcD5pvMm/99zmNKioSsCsKVXiuIwFRI=;
+	s=korg; t=1712581913;
+	bh=NVfFyy0YxwWT3tzFXNeXwwnX9SEvbRg8mN+qDlNtS68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCuVEQg4FdxNJ52vzaR+BYF5Mc2SbLFogXBHHhCfe1q41WFRy9tRgdtP2qeL+9Y+V
-	 nNCjeb7ExTsSt4wmUJHGq2PkdLEW9vaUe4OwujIGjkUHn4qKyuuP2U6WHoKIirxBGz
-	 WjNm2I76SFLQdguvpl2g6zT8TzmIPQ528N2KKtrQ=
+	b=0MFJP0z4XU6H7wG+gqbJNfXikdo7eKUgTeNvIZQQtWKcMd9TOBKHs7/T0U/WS2STB
+	 hrxq4jnVJI/pRcjhCOrwOUyLgP46lsMvMDwnRVxL8AalAyiyT4pgfzvCOxqAWC5ckm
+	 TtBUCS9JUqE9Qc+RQmye6qG9eEiFg87bHLd7SHrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 421/690] nfsd: Propagate some error code returned by memdup_user()
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH 6.8 012/273] wifi: iwlwifi: mvm: rfi: fix potential response leaks
 Date: Mon,  8 Apr 2024 14:54:47 +0200
-Message-ID: <20240408125414.858866891@linuxfoundation.org>
+Message-ID: <20240408125309.667810965@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 30a30fcc3fc1ad4c5d017c9fcb75dc8f59e7bdad ]
+[ Upstream commit 06a093807eb7b5c5b29b6cff49f8174a4e702341 ]
 
-Propagate the error code returned by memdup_user() instead of a hard coded
--EFAULT.
+If the rx payload length check fails, or if kmemdup() fails,
+we still need to free the command response. Fix that.
 
-Suggested-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 21254908cbe9 ("iwlwifi: mvm: add RFI-M support")
+Co-authored-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.db2fa0196aa7.I116293b132502ac68a65527330fa37799694b79c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4recover.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
-index 4edfc95806412..5d680045fa2c7 100644
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -808,7 +808,7 @@ __cld_pipe_inprogress_downcall(const struct cld_msg_v2 __user *cmsg,
- 				return -EFAULT;
- 			name.data = memdup_user(&ci->cc_name.cn_id, namelen);
- 			if (IS_ERR(name.data))
--				return -EFAULT;
-+				return PTR_ERR(name.data);
- 			name.len = namelen;
- 			get_user(princhashlen, &ci->cc_princhash.cp_len);
- 			if (princhashlen > 0) {
-@@ -817,7 +817,7 @@ __cld_pipe_inprogress_downcall(const struct cld_msg_v2 __user *cmsg,
- 						princhashlen);
- 				if (IS_ERR(princhash.data)) {
- 					kfree(name.data);
--					return -EFAULT;
-+					return PTR_ERR(princhash.data);
- 				}
- 				princhash.len = princhashlen;
- 			} else
-@@ -830,7 +830,7 @@ __cld_pipe_inprogress_downcall(const struct cld_msg_v2 __user *cmsg,
- 				return -EFAULT;
- 			name.data = memdup_user(&cnm->cn_id, namelen);
- 			if (IS_ERR(name.data))
--				return -EFAULT;
-+				return PTR_ERR(name.data);
- 			name.len = namelen;
- 		}
- 		if (name.len > 5 && memcmp(name.data, "hash:", 5) == 0) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+index 2ecd32bed752f..045c862a8fc4f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+@@ -132,14 +132,18 @@ struct iwl_rfi_freq_table_resp_cmd *iwl_rfi_get_freq_table(struct iwl_mvm *mvm)
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+-	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) != resp_size))
++	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) !=
++			 resp_size)) {
++		iwl_free_resp(&cmd);
+ 		return ERR_PTR(-EIO);
++	}
+ 
+ 	resp = kmemdup(cmd.resp_pkt->data, resp_size, GFP_KERNEL);
++	iwl_free_resp(&cmd);
++
+ 	if (!resp)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	iwl_free_resp(&cmd);
+ 	return resp;
+ }
+ 
 -- 
 2.43.0
 
