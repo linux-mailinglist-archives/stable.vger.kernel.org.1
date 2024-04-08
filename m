@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-37219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B2C89C3E6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8116689C3E9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 451B42846F7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2396C1F22FF0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F397BB17;
-	Mon,  8 Apr 2024 13:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29837BB07;
+	Mon,  8 Apr 2024 13:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkiw4b4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoSfCQZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B562F79F0;
-	Mon,  8 Apr 2024 13:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7145C79F0;
+	Mon,  8 Apr 2024 13:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583596; cv=none; b=UT4pFYlDk/HMT1uIA7P0aSOTPTsWflJTOHWO8m2JL3kEDEQdjXbe6t3zuq4DVJTYtZrNACdHXCpN6nwcYtyGA/b4olmzAlZjoD22KIqOqZnTh/Fmkv8+B/2pud89kX8GcoIHcQAptJDLRTq3Ovp+6m98iXkkIcyTu1MvG3562fg=
+	t=1712583605; cv=none; b=XvaoRtMzBL8iPWFZAuYvjYqAR7zUPWxx10eV3gTxxhUfxZ+hnTg4byjGjoky3A4iZHHO+/FoHSeVvcpCSmee7pUUhgQigfl2K8SzjM1OwoRJtkb3BpMrXVxUIsf3P1mNveRWzJeOjNt1YZf3WBV0+AQthiAIS++1OuYvY3W0xqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583596; c=relaxed/simple;
-	bh=nrrHddtPliH76o5PlCiSOJ/xZy5pFzmapj++huqJkBM=;
+	s=arc-20240116; t=1712583605; c=relaxed/simple;
+	bh=Fg+8P4Bxb04RGK196v/C3FCNf/fGvrO8nhDbdCqa2l0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAc22N9haA5BcE0vzotBB4NlmqCfYLCj3LimpWi9ASXlBghmcf9unKotSrGJ+QKj1/3kQhgPijRJiRLT0w8Hg8IMt1eHASutP7qQW67Lb5Zn+zJYiKosj7XcxFWKnvNc6U8i6k3PmSIPd1U6dMH8cnhZjVwJZyNpP7oazeDrVB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkiw4b4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0CAC433C7;
-	Mon,  8 Apr 2024 13:39:56 +0000 (UTC)
+	 MIME-Version; b=AjdWPiGGCg+8QCytmHYsSppBxMxIPb3DUG/vHyru5iPK5l47TvBBZ3u/xcCqaZIWPJi99SbV/44gVtjYPyDdsJ3C7kYGYELBTf3joHrRgyugpxCz57cYzP0OrXJ0uAmyZ0pwh4OXInLr6C8MjrEtwVpciz5H4M5lad3krlxAKzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoSfCQZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED362C433C7;
+	Mon,  8 Apr 2024 13:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583596;
-	bh=nrrHddtPliH76o5PlCiSOJ/xZy5pFzmapj++huqJkBM=;
+	s=korg; t=1712583605;
+	bh=Fg+8P4Bxb04RGK196v/C3FCNf/fGvrO8nhDbdCqa2l0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkiw4b4y7t7cR9Tih3MMecHRlh4rCTt06oqLtycNCrWMsJiZyUKhm7L3KuJbxwtCV
-	 RkqhBdy43qFjByOdIok+oOAcyKykxO4d50le9nZQ+R3jatmnsB6KkWfvRuqPffiNw6
-	 H4YtyiuutCYNuif9oGXdrGsYfJdnP7RSV1rjhcuY=
+	b=UoSfCQZKMU/gx64vXwdOFmcfWTQNsornQzXC1JC2yREwJTewY4zWOZDOqPOeQ6fkH
+	 ygreUQbtuq+c6+OMCyb7ptPQwnHgYq7c+lEqQYfgyxS3WIbdzpB3rSvLAqNV8IxZLz
+	 4jpApJXmdOyidH4JXTey2+7hbxejtVU22NUtC21E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Ma <machao2019@gmail.com>,
+	James Christopher Adduono <jc@adduono.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.8 199/273] ksmbd: validate payload size in ipc response
-Date: Mon,  8 Apr 2024 14:57:54 +0200
-Message-ID: <20240408125315.503406856@linuxfoundation.org>
+Subject: [PATCH 6.8 200/273] ksmbd: do not set SMB2_GLOBAL_CAP_ENCRYPTION for SMB 3.1.1
+Date: Mon,  8 Apr 2024 14:57:55 +0200
+Message-ID: <20240408125315.534572770@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -68,119 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit a677ebd8ca2f2632ccdecbad7b87641274e15aac upstream.
+commit 5ed11af19e56f0434ce0959376d136005745a936 upstream.
 
-If installing malicious ksmbd-tools, ksmbd.mountd can return invalid ipc
-response to ksmbd kernel server. ksmbd should validate payload size of
-ipc response from ksmbd.mountd to avoid memory overrun or
-slab-out-of-bounds. This patch validate 3 ipc response that has payload.
+SMB2_GLOBAL_CAP_ENCRYPTION flag should be used only for 3.0 and
+3.0.2 dialects. This flags set cause compatibility problems with
+other SMB clients.
 
+Reported-by: James Christopher Adduono <jc@adduono.com>
+Tested-by: James Christopher Adduono <jc@adduono.com>
 Cc: stable@vger.kernel.org
-Reported-by: Chao Ma <machao2019@gmail.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/ksmbd_netlink.h     |    3 ++-
- fs/smb/server/mgmt/share_config.c |    7 ++++++-
- fs/smb/server/transport_ipc.c     |   37 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 45 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2ops.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/smb/server/ksmbd_netlink.h
-+++ b/fs/smb/server/ksmbd_netlink.h
-@@ -166,7 +166,8 @@ struct ksmbd_share_config_response {
- 	__u16	force_uid;
- 	__u16	force_gid;
- 	__s8	share_name[KSMBD_REQ_MAX_SHARE_NAME];
--	__u32	reserved[112];		/* Reserved room */
-+	__u32	reserved[111];		/* Reserved room */
-+	__u32	payload_sz;
- 	__u32	veto_list_sz;
- 	__s8	____payload[];
- };
---- a/fs/smb/server/mgmt/share_config.c
-+++ b/fs/smb/server/mgmt/share_config.c
-@@ -158,7 +158,12 @@ static struct ksmbd_share_config *share_
- 	share->name = kstrdup(name, GFP_KERNEL);
+--- a/fs/smb/server/smb2ops.c
++++ b/fs/smb/server/smb2ops.c
+@@ -228,6 +228,11 @@ void init_smb3_0_server(struct ksmbd_con
+ 	    conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
  
- 	if (!test_share_config_flag(share, KSMBD_SHARE_FLAG_PIPE)) {
--		share->path = kstrdup(ksmbd_share_config_path(resp),
-+		int path_len = PATH_MAX;
++	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
++	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
++	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
++		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
 +
-+		if (resp->payload_sz)
-+			path_len = resp->payload_sz - resp->veto_list_sz;
-+
-+		share->path = kstrndup(ksmbd_share_config_path(resp), path_len,
- 				      GFP_KERNEL);
- 		if (share->path)
- 			share->path_sz = strlen(share->path);
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -65,6 +65,7 @@ struct ipc_msg_table_entry {
- 	struct hlist_node	ipc_table_hlist;
- 
- 	void			*response;
-+	unsigned int		msg_sz;
- };
- 
- static struct delayed_work ipc_timer_work;
-@@ -275,6 +276,7 @@ static int handle_response(int type, voi
- 		}
- 
- 		memcpy(entry->response, payload, sz);
-+		entry->msg_sz = sz;
- 		wake_up_interruptible(&entry->wait);
- 		ret = 0;
- 		break;
-@@ -453,6 +455,34 @@ out:
- 	return ret;
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
  }
+@@ -275,11 +280,6 @@ int init_smb3_11_server(struct ksmbd_con
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
+ 			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
  
-+static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
-+{
-+	unsigned int msg_sz = entry->msg_sz;
-+
-+	if (entry->type == KSMBD_EVENT_RPC_REQUEST) {
-+		struct ksmbd_rpc_command *resp = entry->response;
-+
-+		msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
-+	} else if (entry->type == KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST) {
-+		struct ksmbd_spnego_authen_response *resp = entry->response;
-+
-+		msg_sz = sizeof(struct ksmbd_spnego_authen_response) +
-+				resp->session_key_len + resp->spnego_blob_len;
-+	} else if (entry->type == KSMBD_EVENT_SHARE_CONFIG_REQUEST) {
-+		struct ksmbd_share_config_response *resp = entry->response;
-+
-+		if (resp->payload_sz) {
-+			if (resp->payload_sz < resp->veto_list_sz)
-+				return -EINVAL;
-+
-+			msg_sz = sizeof(struct ksmbd_share_config_response) +
-+					resp->payload_sz;
-+		}
-+	}
-+
-+	return entry->msg_sz != msg_sz ? -EINVAL : 0;
-+}
-+
- static void *ipc_msg_send_request(struct ksmbd_ipc_msg *msg, unsigned int handle)
- {
- 	struct ipc_msg_table_entry entry;
-@@ -477,6 +507,13 @@ static void *ipc_msg_send_request(struct
- 	ret = wait_event_interruptible_timeout(entry.wait,
- 					       entry.response != NULL,
- 					       IPC_WAIT_TIMEOUT);
-+	if (entry.response) {
-+		ret = ipc_validate_msg(&entry);
-+		if (ret) {
-+			kvfree(entry.response);
-+			entry.response = NULL;
-+		}
-+	}
- out:
- 	down_write(&ipc_msg_table_lock);
- 	hash_del(&entry.ipc_table_hlist);
+-	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
+-	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
+-	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
+-		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
+-
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
+ 
 
 
 
