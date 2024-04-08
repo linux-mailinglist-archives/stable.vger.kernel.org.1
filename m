@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-36493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAABC89C0B8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 828CB89C4ED
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00B88B2B688
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C41EDB2B5BD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E6762DA;
-	Mon,  8 Apr 2024 13:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163C87D408;
+	Mon,  8 Apr 2024 13:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFhD0tP7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq35Lcam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D83A2E405;
-	Mon,  8 Apr 2024 13:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1988612E;
+	Mon,  8 Apr 2024 13:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581486; cv=none; b=kmiEpOgY1ia0YGxjIy7My76MTmsLNakUJ9qhL9Zcp/mL0kmJMLyB4Cny5Hrfs/48BrysjAXfd2f1/EKtZtRGwSCUyI/C72+FyXLcEur9iSzhGBSSMg+PFgr1bs9ACJEYd4cSpPE8wDX8WzD6MyP4vpml8XA8IU5SJ5D3DrULgLg=
+	t=1712583334; cv=none; b=b5Gvg5ohAldzcvAS5i/d1MnN2AXjA8PFreLz/j7m3dhY7LgxPhccoopIV6w/27NCIzuZOl2ipa9fsbvQoUy8/2J0UEtQq8x4jPQb9vIght1IXKRBL4nlaJJYuPvDMV72RK2Iy1dvIxOaXMpAlLFYp10C2c7hAaXfPVmm1LPf1fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581486; c=relaxed/simple;
-	bh=2n/AXk4A0FS5Kj6BgO/Ar3+q4xs8T1l3O9VBN08WhFM=;
+	s=arc-20240116; t=1712583334; c=relaxed/simple;
+	bh=QIukKv4ugaC1uOqYK0dKvdYozhGycVYDeQJMb3TwaGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCD/V6fwgXz/bL2QQ4RynAbYYJSSuInm6aecnQ9awFWyILAlmcJOke6cvEIm7tsS3UEdMPLft+EqTGybD6SZdRZZvo3ciUw9m7TQGsxUMv1SI7t0fEKwVTGNrYmweOU3M23meSTTjItjIwLN8i4eiFT91MnBCMRHeJ6Gk/TcOcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFhD0tP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29A1C433C7;
-	Mon,  8 Apr 2024 13:04:45 +0000 (UTC)
+	 MIME-Version; b=W/MDfd7ZAjhWyxNehW430zeU55HRLc2WpXDvUOhpD51kcDXyf8m9n6RleGr3IOkEbgy2pmOkK3WwYL4dKTamyQkI10u2qgdpJtwvQMq21ve1zxbhxvqsAcM1nUkRkcjrdpILUCxH406gqzV/vrIPeuTXEbxVd4PcVpZ2jf+VsX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq35Lcam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489F6C433F1;
+	Mon,  8 Apr 2024 13:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581486;
-	bh=2n/AXk4A0FS5Kj6BgO/Ar3+q4xs8T1l3O9VBN08WhFM=;
+	s=korg; t=1712583334;
+	bh=QIukKv4ugaC1uOqYK0dKvdYozhGycVYDeQJMb3TwaGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rFhD0tP75iiy01MCbwdF14HfYvQEJUaB6LCjn2c76Y+EsRdJeG+Xkza0LS7fgzpza
-	 T2kU3fANTzmQT/DXb69jjQ2UHU8Wv8mmgXyWs6VSlO09hHfUo7yzKgMXhNpi+iH8jQ
-	 afAslX/Qy7jcv6p8N6kvoVTuz9218n5l6BVoJ2FA=
+	b=yq35Lcamvxhrr8TvYwD1DMhv1z0hyDkbaowwK9WQLL1EgdwOgalRi66rQ4rjAB/pk
+	 K7wkSTFz/TgQ+rt8ZEXP8sZi455DVs7TFUaBcVnTOgvIANIq7tCjpy6A9qREtvPRKj
+	 lwB3fiEgSIrq0LmKb4zzZ6XQfYStkbORAQzxnaPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.1 026/138] KVM: arm64: Fix host-programmed guest events in nVHE
+	Andi Shyti <andi.shyti@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 165/273] spi: s3c64xx: sort headers alphabetically
 Date: Mon,  8 Apr 2024 14:57:20 +0200
-Message-ID: <20240408125257.041337141@linuxfoundation.org>
+Message-ID: <20240408125314.392039308@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit e89c928bedd77d181edc2df01cb6672184775140 upstream.
+[ Upstream commit a77ce80f63f06d7ae933c332ed77c79136fa69b0 ]
 
-Programming PMU events in the host that count during guest execution is
-a feature supported by perf, e.g.
+Sorting headers alphabetically helps locating duplicates,
+and makes it easier to figure out where to insert new headers.
 
-  perf stat -e cpu_cycles:G ./lkvm run
-
-While this works for VHE, the guest/host event bitmaps are not carried
-through to the hypervisor in the nVHE configuration. Make
-kvm_pmu_update_vcpu_events() conditional on whether or not _hardware_
-supports PMUv3 rather than if the vCPU as vPMU enabled.
-
-Cc: stable@vger.kernel.org
-Fixes: 84d751a019a9 ("KVM: arm64: Pass pmu events to hyp via vcpu")
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240305184840.636212-3-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20240207120431.2766269-2-tudor.ambarus@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/kvm/arm_pmu.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/include/kvm/arm_pmu.h
-+++ b/include/kvm/arm_pmu.h
-@@ -85,7 +85,7 @@ void kvm_vcpu_pmu_restore_host(struct kv
-  */
- #define kvm_pmu_update_vcpu_events(vcpu)				\
- 	do {								\
--		if (!has_vhe() && kvm_vcpu_has_pmu(vcpu))		\
-+		if (!has_vhe() && kvm_arm_support_pmu_v3())		\
- 			vcpu->arch.pmu.events = *kvm_get_pmu_events();	\
- 	} while (0)
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 432ec60d35684..26d389d95af92 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -3,19 +3,18 @@
+ // Copyright (c) 2009 Samsung Electronics Co., Ltd.
+ //      Jaswinder Singh <jassi.brar@samsung.com>
  
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/interrupt.h>
+-#include <linux/delay.h>
+ #include <linux/clk.h>
++#include <linux/delay.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/platform_data/spi-s3c64xx.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+-#include <linux/of.h>
+-
+-#include <linux/platform_data/spi-s3c64xx.h>
+ 
+ #define MAX_SPI_PORTS		12
+ #define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
+-- 
+2.43.0
+
 
 
 
