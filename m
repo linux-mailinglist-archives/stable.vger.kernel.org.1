@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AF489C5E7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1778C89C575
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D0D31F216AA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D09FB2C4B5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0BC7F47A;
-	Mon,  8 Apr 2024 14:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA84F13175E;
+	Mon,  8 Apr 2024 13:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbDFbS3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmmpZXPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83947E105;
-	Mon,  8 Apr 2024 14:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DD97E58C;
+	Mon,  8 Apr 2024 13:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584898; cv=none; b=E7oeoHoiPsmjDplpFQNPzAmfK+euLcRFurwQZPnWs8BSMhA2dE4bCVHwZuBnZkjZrev/tZK/uuzY/yvW7TJS7sMECGeeuA8gUQF9KH+lo1vpjdo86r0g7Z7/5SGpHwYDO2tlF3OTIrZ9hOANkl1xPs1SDHGc/JkkxdVv0qgNiGI=
+	t=1712583508; cv=none; b=AFL6I8MIhxrOG5ooWZmh4ojoZW+KVY7WTC+cuS102+MVRWe+eWF6eL3JnGiifYlR96bfpjW8d2WFaVwdhya3nMMCaVJNn/kQVXePBu6lYBdYnChQWgu2dc9kTOdTTeT0VLp6JdwBBmvQWPT48EUNHUh9XM6Z45JSSVSRUwX179I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584898; c=relaxed/simple;
-	bh=gYJwPh+ut6vfFFO+JDteRvJheYZTojnahXDZvjRn6jw=;
+	s=arc-20240116; t=1712583508; c=relaxed/simple;
+	bh=ab5jvdAGkJ6JBAGBFHW5cIq6n+8LjgUgiK8mjwprRtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4yJotIbxdrDy+/xZcne5bvOxYwCK74qYS3+FuTVAJmTD62mkMR6vRnOjKncMlASGWHkg4k+QvUM3z2dMYJqGIyZxDZ0Rgfzx34GwFPrwBPol6cLDBTwEP/ETrn6GEoo2YUb7a0ai2Si2U98Ypjms7MlXBFuQ9c3MMw70JfFkpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbDFbS3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18CDC433C7;
-	Mon,  8 Apr 2024 14:01:37 +0000 (UTC)
+	 MIME-Version; b=BhIS9FCPoErRkROuoEmADxNGGncKLtFUKMyomYrUy5oKkHJUjCCrTm59NTeQTjQkcGd2+koChcAGC1CHF9ujDmMHqsJkmhaDoqn0Qhjrs6HfY/GN1sXJVGXwYBtpHocgtQu7k57koCBRjVqbPPJN9rIj7YZX/OLvGNHw0tMEslo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmmpZXPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED04C433F1;
+	Mon,  8 Apr 2024 13:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584898;
-	bh=gYJwPh+ut6vfFFO+JDteRvJheYZTojnahXDZvjRn6jw=;
+	s=korg; t=1712583508;
+	bh=ab5jvdAGkJ6JBAGBFHW5cIq6n+8LjgUgiK8mjwprRtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbDFbS3P7czcZu2/0cNpxymWKeCrdWfjz3NuqQHadPvl2Uy002pp5fZeAebHcKHMj
-	 JcQGpnDdcIoNRFyVyG6/sxUpprKNA52mT9q8jF/B2PPOprBkO8MU5LQLA4Oss4Ti9T
-	 EYTM1PCeO4TBTqf/3MGdtp7P2VXS0kEvQ3XsBHR8=
+	b=mmmpZXPbo3l9M5oG23IHsTJMvJ7fmInTVj7n9doGepLOBlaqip6i7cjm7VWrVL3KD
+	 M7kJ8ahOthKVoufW6tgA3ECYNkbupn4Ust+i5HzX8idRe4eUBjAjQ7pSmv/xh4wsfY
+	 qV7eeZvys1macgy35Md3K1PRbDUDH90uYGXNtG6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 595/690] scsi: qla2xxx: Fix N2N stuck connection
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 186/273] ASoC: SOF: amd: fix for false dsp interrupts
 Date: Mon,  8 Apr 2024 14:57:41 +0200
-Message-ID: <20240408125421.143137861@linuxfoundation.org>
+Message-ID: <20240408125315.067549998@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,150 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit 881eb861ca3877300570db10abbf11494e48548d upstream.
+[ Upstream commit b9846a386734e73a1414950ebfd50f04919f5e24 ]
 
-Disk failed to rediscover after chip reset error injection. The chip reset
-happens at the time when a PLOGI is being sent. This causes a flag to be
-left on which blocks the retry. Clear the blocking flag.
+Before ACP firmware loading, DSP interrupts are not expected.
+Sometimes after reboot, it's observed that before ACP firmware is loaded
+false DSP interrupt is reported.
+Registering the interrupt handler before acp initialization causing false
+interrupts sometimes on reboot as ACP reset is not applied.
+Correct the sequence by invoking acp initialization sequence prior to
+registering interrupt handler.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-3-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 738a2b5e2cc9 ("ASoC: SOF: amd: Add IPC support for ACP IP block")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://msgid.link/r/20240404041717.430545-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_gbl.h  |    2 +-
- drivers/scsi/qla2xxx/qla_iocb.c |   32 +++++++++++---------------------
- drivers/scsi/qla2xxx/qla_os.c   |    2 +-
- 3 files changed, 13 insertions(+), 23 deletions(-)
+ sound/soc/sof/amd/acp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_gbl.h
-+++ b/drivers/scsi/qla2xxx/qla_gbl.h
-@@ -44,7 +44,7 @@ extern int qla2x00_fabric_login(scsi_qla
- extern int qla2x00_local_device_login(scsi_qla_host_t *, fc_port_t *);
- 
- extern int qla24xx_els_dcmd_iocb(scsi_qla_host_t *, int, port_id_t);
--extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *, bool);
-+extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *);
- extern void qla2x00_els_dcmd2_free(scsi_qla_host_t *vha,
- 				   struct els_plogi *els_plogi);
- 
---- a/drivers/scsi/qla2xxx/qla_iocb.c
-+++ b/drivers/scsi/qla2xxx/qla_iocb.c
-@@ -3042,7 +3042,7 @@ static void qla2x00_els_dcmd2_sp_done(sr
- 
- int
- qla24xx_els_dcmd2_iocb(scsi_qla_host_t *vha, int els_opcode,
--    fc_port_t *fcport, bool wait)
-+			fc_port_t *fcport)
- {
- 	srb_t *sp;
- 	struct srb_iocb *elsio = NULL;
-@@ -3057,8 +3057,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 	if (!sp) {
- 		ql_log(ql_log_info, vha, 0x70e6,
- 		 "SRB allocation failed\n");
--		fcport->flags &= ~FCF_ASYNC_ACTIVE;
--		return -ENOMEM;
-+		goto done;
+diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
+index 4db8cdc91daae..2c242ef9f23c1 100644
+--- a/sound/soc/sof/amd/acp.c
++++ b/sound/soc/sof/amd/acp.c
+@@ -537,6 +537,10 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
+ 		goto unregister_dev;
  	}
  
- 	fcport->flags |= FCF_ASYNC_SENT;
-@@ -3067,9 +3066,6 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 	ql_dbg(ql_dbg_io, vha, 0x3073,
- 	       "%s Enter: PLOGI portid=%06x\n", __func__, fcport->d_id.b24);
++	ret = acp_init(sdev);
++	if (ret < 0)
++		goto free_smn_dev;
++
+ 	sdev->ipc_irq = pci->irq;
+ 	ret = request_threaded_irq(sdev->ipc_irq, acp_irq_handler, acp_irq_thread,
+ 				   IRQF_SHARED, "AudioDSP", sdev);
+@@ -546,10 +550,6 @@ int amd_sof_acp_probe(struct snd_sof_dev *sdev)
+ 		goto free_smn_dev;
+ 	}
  
--	if (wait)
--		sp->flags = SRB_WAKEUP_ON_COMP;
+-	ret = acp_init(sdev);
+-	if (ret < 0)
+-		goto free_ipc_irq;
 -
- 	sp->type = SRB_ELS_DCMD;
- 	sp->name = "ELS_DCMD";
- 	sp->fcport = fcport;
-@@ -3085,7 +3081,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 	sdev->dsp_box.offset = 0;
+ 	sdev->dsp_box.size = BOX_SIZE_512;
  
- 	if (!elsio->u.els_plogi.els_plogi_pyld) {
- 		rval = QLA_FUNCTION_FAILED;
--		goto out;
-+		goto done_free_sp;
- 	}
- 
- 	resp_ptr = elsio->u.els_plogi.els_resp_pyld =
-@@ -3094,7 +3090,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 
- 	if (!elsio->u.els_plogi.els_resp_pyld) {
- 		rval = QLA_FUNCTION_FAILED;
--		goto out;
-+		goto done_free_sp;
- 	}
- 
- 	ql_dbg(ql_dbg_io, vha, 0x3073, "PLOGI %p %p\n", ptr, resp_ptr);
-@@ -3109,7 +3105,6 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 
- 	if (els_opcode == ELS_DCMD_PLOGI && DBELL_ACTIVE(vha)) {
- 		struct fc_els_flogi *p = ptr;
--
- 		p->fl_csp.sp_features |= cpu_to_be16(FC_SP_FT_SEC);
- 	}
- 
-@@ -3118,10 +3113,11 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 	    (uint8_t *)elsio->u.els_plogi.els_plogi_pyld,
- 	    sizeof(*elsio->u.els_plogi.els_plogi_pyld));
- 
--	init_completion(&elsio->u.els_plogi.comp);
- 	rval = qla2x00_start_sp(sp);
- 	if (rval != QLA_SUCCESS) {
--		rval = QLA_FUNCTION_FAILED;
-+		fcport->flags |= FCF_LOGIN_NEEDED;
-+		set_bit(RELOGIN_NEEDED, &vha->dpc_flags);
-+		goto done_free_sp;
- 	} else {
- 		ql_dbg(ql_dbg_disc, vha, 0x3074,
- 		    "%s PLOGI sent, hdl=%x, loopid=%x, to port_id %06x from port_id %06x\n",
-@@ -3129,21 +3125,15 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
- 		    fcport->d_id.b24, vha->d_id.b24);
- 	}
- 
--	if (wait) {
--		wait_for_completion(&elsio->u.els_plogi.comp);
--
--		if (elsio->u.els_plogi.comp_status != CS_COMPLETE)
--			rval = QLA_FUNCTION_FAILED;
--	} else {
--		goto done;
--	}
-+	return rval;
- 
--out:
--	fcport->flags &= ~(FCF_ASYNC_SENT | FCF_ASYNC_ACTIVE);
-+done_free_sp:
- 	qla2x00_els_dcmd2_free(vha, &elsio->u.els_plogi);
- 	/* ref: INIT */
- 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
- done:
-+	fcport->flags &= ~(FCF_ASYNC_SENT | FCF_ASYNC_ACTIVE);
-+	qla2x00_set_fcport_disc_state(fcport, DSC_DELETED);
- 	return rval;
- }
- 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -5530,7 +5530,7 @@ qla2x00_do_work(struct scsi_qla_host *vh
- 			break;
- 		case QLA_EVT_ELS_PLOGI:
- 			qla24xx_els_dcmd2_iocb(vha, ELS_DCMD_PLOGI,
--			    e->u.fcport.fcport, false);
-+			    e->u.fcport.fcport);
- 			break;
- 		case QLA_EVT_SA_REPLACE:
- 			rc = qla24xx_issue_sa_replace_iocb(vha, e);
+-- 
+2.43.0
+
 
 
 
