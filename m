@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B449C89C191
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB53189C614
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E65F91C21B4F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19AF61C23C9E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 789BE7F46C;
-	Mon,  8 Apr 2024 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B728A7FBDF;
+	Mon,  8 Apr 2024 14:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYuKoYEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLHM6dXh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342E47EF1E;
-	Mon,  8 Apr 2024 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EB87D3FD;
+	Mon,  8 Apr 2024 14:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582273; cv=none; b=F3H8renVHm01l0/y82o3lYkyIUvV3cmU6RVDGx5pqSX8iKBW4XDWPjtPu6GM6c7/D9dZxD1tTN9zaTmzNdoaB4UktG5DYs4xayIGD3wxz1SSbOV6NGV4XbuaAZ1KwZXsKDjamOwjJ/V5OXBZKoh1a1s3wP/r6iNWo/hvx5keADY=
+	t=1712585034; cv=none; b=sRTIJfuWFMjTWHCJ4PsN6ScCs31hrwF/kMs98gJcuXT8maL3HVt+56WfopQylsmB7CeLDTEwOKfW6xP27TNirkUyi+LG8xmlK3V1IvqDRmwMhFnIzRHB4SNYLyQg6R2Wr62m9ZlGc3Kl5xUJrVIyqA9lbuLm5Fu7jYt2bqqQWHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582273; c=relaxed/simple;
-	bh=5aIkaipLaEAa7bBRdozZ1pUgGtSaSxWerUDTvTzsCK4=;
+	s=arc-20240116; t=1712585034; c=relaxed/simple;
+	bh=mGX2+ToTnV+NZymyioXocs2e9msMu/gdR7g79kj5XJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+nWB9xKSAEvAtGet5odJkHbTZyWd0AkmFO8OEk4/gUmpu4WT839uI/32ej9kEX8TpUnLD12WeFUHQm/QmRRAGpf72R4gO5Bqm7OQmCLzZxsCFbPgTO6xredBuuiOZexxtgfs+4y0o+KNJmCqGdk6wo2Bc+66Uxig7GDdUEBym8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYuKoYEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BD3C433F1;
-	Mon,  8 Apr 2024 13:17:52 +0000 (UTC)
+	 MIME-Version; b=gZe0Q3QuREMNAmnpalgLtaoi2Q1yjP9x5BRURzEdn/5DjME6cS+jy+iK6o+UPFsh8vzjA2P6cmEPj8FVxmsn5CdHk2cpUSE6Ea/pnCyRDgW4w5Dklu813Y5bEYN8bFwNNvrvbJtCQGlBdJVYegNiCqmwIHb+kBUBQ5sSt9f60TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLHM6dXh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2703C433F1;
+	Mon,  8 Apr 2024 14:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582273;
-	bh=5aIkaipLaEAa7bBRdozZ1pUgGtSaSxWerUDTvTzsCK4=;
+	s=korg; t=1712585034;
+	bh=mGX2+ToTnV+NZymyioXocs2e9msMu/gdR7g79kj5XJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYuKoYElP1/kco1pQjY+0HAtWBRQ0zV7yJOVmfQdDov2uEv7OV0iykeJqwFgRfEzM
-	 Uriwo0RzwoIBPYM8fwvNl9AHOcIMrEdJQGY7INkC5a1O5jmkmGxH3dEUtEexA+1voX
-	 jkv4TfpkjBaov0vdI7dRTPi0hTZb4osyIPxJgXh4=
+	b=DLHM6dXhhDyfT5QtjQ9/iILZQbQ4m/SWUOjSmH2DQpnydbQwdwvMkdijKQgAB2yCs
+	 rBqfv2Sb3c2DaJ4bEbkjkt3uliwieWfV9uSrl2EZF+YGK8GZ+l4207pM+3KLNRkDlv
+	 xn7WFcgQ9iBnEBBzrp1hFFqFIU+aJWT0E0I+t8/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Steven Price <steven.price@arm.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/138] drm/panfrost: fix power transition timeout warnings
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 5.15 640/690] vboxsf: Avoid an spurious warning if load_nls_xxx() fails
 Date: Mon,  8 Apr 2024 14:58:26 +0200
-Message-ID: <20240408125259.091990955@linuxfoundation.org>
+Message-ID: <20240408125422.851145224@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hewitt <christianshewitt@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 2bd02f5a0bac4bb13e0da18652dc75ba0e4958ec ]
+commit de3f64b738af57e2732b91a0774facc675b75b54 upstream.
 
-Increase the timeout value to prevent system logs on Amlogic boards flooding
-with power transition warnings:
+If an load_nls_xxx() function fails a few lines above, the 'sbi->bdi_id' is
+still 0.
+So, in the error handling path, we will call ida_simple_remove(..., 0)
+which is not allocated yet.
 
-[   13.047638] panfrost ffe40000.gpu: shader power transition timeout
-[   13.048674] panfrost ffe40000.gpu: l2 power transition timeout
-[   13.937324] panfrost ffe40000.gpu: shader power transition timeout
-[   13.938351] panfrost ffe40000.gpu: l2 power transition timeout
-...
-[39829.506904] panfrost ffe40000.gpu: shader power transition timeout
-[39829.507938] panfrost ffe40000.gpu: l2 power transition timeout
-[39949.508369] panfrost ffe40000.gpu: shader power transition timeout
-[39949.509405] panfrost ffe40000.gpu: l2 power transition timeout
+In order to prevent a spurious "ida_free called for id=0 which is not
+allocated." message, tweak the error handling path and add a new label.
 
-The 2000 value has been found through trial and error testing with devices
-using G52 and G31 GPUs.
-
-Fixes: 22aa1a209018 ("drm/panfrost: Really power off GPU cores in panfrost_gpu_power_off()")
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240322164525.2617508-1-christianshewitt@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0fd169576648 ("fs: Add VirtualBox guest shared folder (vboxsf) support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/d09eaaa4e2e08206c58a1a27ca9b3e81dc168773.1698835730.git.christophe.jaillet@wanadoo.fr
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_gpu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/vboxsf/super.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-index 55d2430485168..40b6314459926 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-@@ -379,19 +379,19 @@ void panfrost_gpu_power_off(struct panfrost_device *pfdev)
+--- a/fs/vboxsf/super.c
++++ b/fs/vboxsf/super.c
+@@ -151,7 +151,7 @@ static int vboxsf_fill_super(struct supe
+ 		if (!sbi->nls) {
+ 			vbg_err("vboxsf: Count not load '%s' nls\n", nls_name);
+ 			err = -EINVAL;
+-			goto fail_free;
++			goto fail_destroy_idr;
+ 		}
+ 	}
  
- 	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present);
- 	ret = readl_relaxed_poll_timeout(pfdev->iomem + SHADER_PWRTRANS_LO,
--					 val, !val, 1, 1000);
-+					 val, !val, 1, 2000);
- 	if (ret)
- 		dev_err(pfdev->dev, "shader power transition timeout");
- 
- 	gpu_write(pfdev, TILER_PWROFF_LO, pfdev->features.tiler_present);
- 	ret = readl_relaxed_poll_timeout(pfdev->iomem + TILER_PWRTRANS_LO,
--					 val, !val, 1, 1000);
-+					 val, !val, 1, 2000);
- 	if (ret)
- 		dev_err(pfdev->dev, "tiler power transition timeout");
- 
- 	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present);
- 	ret = readl_poll_timeout(pfdev->iomem + L2_PWRTRANS_LO,
--				 val, !val, 0, 1000);
-+				 val, !val, 0, 2000);
- 	if (ret)
- 		dev_err(pfdev->dev, "l2 power transition timeout");
- }
--- 
-2.43.0
-
+@@ -224,6 +224,7 @@ fail_free:
+ 		ida_simple_remove(&vboxsf_bdi_ida, sbi->bdi_id);
+ 	if (sbi->nls)
+ 		unload_nls(sbi->nls);
++fail_destroy_idr:
+ 	idr_destroy(&sbi->ino_idr);
+ 	kfree(sbi);
+ 	return err;
 
 
 
