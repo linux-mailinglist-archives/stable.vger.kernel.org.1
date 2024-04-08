@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-36571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29A889C070
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:08:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1263F89C17F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E2CB280D5A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:08:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 237C11C21D16
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0A86F08E;
-	Mon,  8 Apr 2024 13:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957C17E580;
+	Mon,  8 Apr 2024 13:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH8FCNQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tyd23kqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746D32DF73;
-	Mon,  8 Apr 2024 13:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394A67E57F;
+	Mon,  8 Apr 2024 13:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581715; cv=none; b=Ea28KHfUh92MS4cWb7nUGwuBikQg352erffXvd+QmYoJKtpz/sjpe9Fk1U0A7lu1aEZk3Yiq9QtUXbenBzkplIA6zuXiuQ4N+fHHpjRuj3fKv40++oqE/cfIu1oc0QhOUBqLeTGsSw60aOpFT4dSV91HN8rWu8RC4WzmZTgTefM=
+	t=1712582232; cv=none; b=M3LG2QR/apOgTueUv/1DOhZWsEnZv0eK7UaMB08w+7T9Vv5C1g9KpXfWXAM6fRF7y6FhOr5F66DzCjgfxTo13UEXQXgsxJAvxdIwqyXTI3RBmEdSU4M59z+aH9hC1Iq2wlrCN08rvoTW+1L7kKpaH2SCjudOE59BSJxmbqlyKnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581715; c=relaxed/simple;
-	bh=V+SQFQ3cbRnsftBKVQRqsHHmc9X4VscONc83K7lIx2Q=;
+	s=arc-20240116; t=1712582232; c=relaxed/simple;
+	bh=ET198wi5LGRCXZUxme0+u6qoA7OWQc0TP5gtEw1DO5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+KKyELbM9PooDNB1E8+OJ31tErXoWB+gUXWqVlV5hXxNhafhO0akIZq6AI2F/nOcgMymkQs/VBo3L0vl6WL/E2NBilaunR2dDwixvezGSRMT9FQwdvflIscoVKL1lkUVmbPsIpbAJ1gAeoVgzavCoU92OneRE6tLYyGNw1NrUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH8FCNQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CF9C43390;
-	Mon,  8 Apr 2024 13:08:34 +0000 (UTC)
+	 MIME-Version; b=HH8LxnbmWeS55oCuy0Kshh9DstxTnRrstFZwlukkDiIGcvpt0APXXvjMpbzkY8BodsivPsIfeL2sU7nC2oX2bql9336QbsFym+MM6AVElaWD5fFKLzW4TEeacz12Siyw+mhmPz/J51+7/seqAOugk1LospFsnUm0bpHaJWwdBjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tyd23kqQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FD0C43399;
+	Mon,  8 Apr 2024 13:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581715;
-	bh=V+SQFQ3cbRnsftBKVQRqsHHmc9X4VscONc83K7lIx2Q=;
+	s=korg; t=1712582232;
+	bh=ET198wi5LGRCXZUxme0+u6qoA7OWQc0TP5gtEw1DO5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UH8FCNQkgt2Ik6pBrqkxYg8rN5bf4eEKSKJFI31ZSahnkWR/eqaUT6F0e2i33ATq6
-	 8wFeXsUCo5OHpYW+R1sR0stYURGEIKqNnVRVsxolIQ7yclmxVIDQwa8gg5Eun/QNGU
-	 tDEVrgbjbEtGYClXj6Xg8MbwHKZxq7WHvgWw/i5w=
+	b=Tyd23kqQysW2/IFffmEKwyxxN+2VNB98CM/aCf7mk2cjZGtuAthKHjwQIixeLkRPV
+	 40dZPbj9ImLPcsnrI/I7i+oDgVYd8jcg+WT0FzyQtvL2KRmnqvcbeX/U2kRkNuU1j/
+	 O+k2tnJX1H4Afm2e9OWkTvCMvMw04X2l0zj3G7kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/252] cifs: Fix duplicate fscache cookie warnings
+Subject: [PATCH 6.8 058/273] dm integrity: fix out-of-range warning
 Date: Mon,  8 Apr 2024 14:55:33 +0200
-Message-ID: <20240408125307.702823323@linuxfoundation.org>
+Message-ID: <20240408125311.102274108@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,95 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 8876a37277cb832e1861c35f8c661825179f73f5 ]
+[ Upstream commit 8e91c2342351e0f5ef6c0a704384a7f6fc70c3b2 ]
 
-fscache emits a lot of duplicate cookie warnings with cifs because the
-index key for the fscache cookies does not include everything that the
-cifs_find_inode() function does.  The latter is used with iget5_locked() to
-distinguish between inodes in the local inode cache.
+Depending on the value of CONFIG_HZ, clang complains about a pointless
+comparison:
 
-Fix this by adding the creation time and file type to the fscache cookie
-key.
+drivers/md/dm-integrity.c:4085:12: error: result of comparison of
+                        constant 42949672950 with expression of type
+                        'unsigned int' is always false
+                        [-Werror,-Wtautological-constant-out-of-range-compare]
+                        if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
 
-Additionally, add a couple of comments to note that if one is changed the
-other must be also.
+As the check remains useful for other configurations, shut up the
+warning by adding a second type cast to uint64_t.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 468dfca38b1a ("dm integrity: add a bitmap mode")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fscache.c | 16 +++++++++++++++-
- fs/smb/client/inode.c   |  2 ++
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/md/dm-integrity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/fscache.c b/fs/smb/client/fscache.c
-index e5cad149f5a2d..a4ee801b29394 100644
---- a/fs/smb/client/fscache.c
-+++ b/fs/smb/client/fscache.c
-@@ -12,6 +12,16 @@
- #include "cifs_fs_sb.h"
- #include "cifsproto.h"
- 
-+/*
-+ * Key for fscache inode.  [!] Contents must match comparisons in cifs_find_inode().
-+ */
-+struct cifs_fscache_inode_key {
-+
-+	__le64  uniqueid;	/* server inode number */
-+	__le64  createtime;	/* creation time on server */
-+	u8	type;		/* S_IFMT file type */
-+} __packed;
-+
- static void cifs_fscache_fill_volume_coherency(
- 	struct cifs_tcon *tcon,
- 	struct cifs_fscache_volume_coherency_data *cd)
-@@ -97,15 +107,19 @@ void cifs_fscache_release_super_cookie(struct cifs_tcon *tcon)
- void cifs_fscache_get_inode_cookie(struct inode *inode)
- {
- 	struct cifs_fscache_inode_coherency_data cd;
-+	struct cifs_fscache_inode_key key;
- 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
- 	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
- 
-+	key.uniqueid	= cpu_to_le64(cifsi->uniqueid);
-+	key.createtime	= cpu_to_le64(cifsi->createtime);
-+	key.type	= (inode->i_mode & S_IFMT) >> 12;
- 	cifs_fscache_fill_coherency(&cifsi->netfs.inode, &cd);
- 
- 	cifsi->netfs.cache =
- 		fscache_acquire_cookie(tcon->fscache, 0,
--				       &cifsi->uniqueid, sizeof(cifsi->uniqueid),
-+				       &key, sizeof(key),
- 				       &cd, sizeof(cd),
- 				       i_size_read(&cifsi->netfs.inode));
- 	if (cifsi->netfs.cache)
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index cb9e719e67ae2..fa6330d586e89 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1390,6 +1390,8 @@ cifs_find_inode(struct inode *inode, void *opaque)
- {
- 	struct cifs_fattr *fattr = opaque;
- 
-+	/* [!] The compared values must be the same in struct cifs_fscache_inode_key. */
-+
- 	/* don't match inode with different uniqueid */
- 	if (CIFS_I(inode)->uniqueid != fattr->cf_uniqueid)
- 		return 0;
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index 47cf1ab34941f..3b4218a2e750d 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -4221,7 +4221,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned int argc, char **argv
+ 		} else if (sscanf(opt_string, "sectors_per_bit:%llu%c", &llval, &dummy) == 1) {
+ 			log2_sectors_per_bitmap_bit = !llval ? 0 : __ilog2_u64(llval);
+ 		} else if (sscanf(opt_string, "bitmap_flush_interval:%u%c", &val, &dummy) == 1) {
+-			if (val >= (uint64_t)UINT_MAX * 1000 / HZ) {
++			if ((uint64_t)val >= (uint64_t)UINT_MAX * 1000 / HZ) {
+ 				r = -EINVAL;
+ 				ti->error = "Invalid bitmap_flush_interval argument";
+ 				goto bad;
 -- 
 2.43.0
 
