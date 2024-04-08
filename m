@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF3A89C49E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE7A89C4A4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD94C2845CC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2B151C22526
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5550C80BFC;
-	Mon,  8 Apr 2024 13:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5054181AD2;
+	Mon,  8 Apr 2024 13:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjOhbYSE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVeGQ9tG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1222E7E0E8;
-	Mon,  8 Apr 2024 13:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE781745;
+	Mon,  8 Apr 2024 13:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584069; cv=none; b=apOUS/r/iZLMrtcxJDMRy5GI/fYmqjERNvabynVURcK74tuEBUCbuNiK7317DISIJzdNiWO1043jhSPbAcgMW3DW8PYmJHf8kPxtlG/b0WIFs4Rugf4VaxqMfbxa+uKWvCJCIOOOb8Ah4yzs1U8EknZtkNP5kDxnFsJEYKfrf6U=
+	t=1712584078; cv=none; b=IbfFC0TkorVgX0Z7x1faEd6KNCXwLCTyMPTorxT82YUAaPkOiVQKa63wpljX84KPDHkjsBkZhIItYtWK6b+dEunlRkb2ZTlQQH0YJ2vev2jxIc2VD9UajkBl6xl/q5GFXuG4JEYfoqOSVcv2flHKp29ZtDLSerbxVCYHzv56Cag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584069; c=relaxed/simple;
-	bh=UpT75ChKz0WXCJMINmy2siLSeHDT7mSTIJ8vbNPSX+4=;
+	s=arc-20240116; t=1712584078; c=relaxed/simple;
+	bh=2RmQqspAo7/FDVT/GKR1m93mdmS17KeZvP4NjtK9/9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2rf1iHIeGxOq1XkAfdW94wYyB84gxUnW62H4+JLVON0d2RkVB6H8ksAVajSNFq5s25DnxT2ZIyQxErBIOpFf2HG8/krTdC1kmQsTTOE63wQgwfSXmNQsUuCvGKWIPiBojMLRDnrLgvSihDkkTe9fyU6jEuJmQd0t/2HWQXjDrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjOhbYSE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F273C43390;
-	Mon,  8 Apr 2024 13:47:48 +0000 (UTC)
+	 MIME-Version; b=rge9esFkvxtHww3Qst4VZT36gw3/0XY06MItKHdfWnwzX5wazpI+rrmcDYstbaiv9e/HRlLVNIVq/6R37xIOuRE1MYGRrdJZtQM15Pk/1NXPymnBqvZ7PmKT/Nm/iqOx1HL3a3K81+kXWlXr+lT9S34tibXTI/ll390Ij+nEcDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVeGQ9tG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392A7C433F1;
+	Mon,  8 Apr 2024 13:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584068;
-	bh=UpT75ChKz0WXCJMINmy2siLSeHDT7mSTIJ8vbNPSX+4=;
+	s=korg; t=1712584077;
+	bh=2RmQqspAo7/FDVT/GKR1m93mdmS17KeZvP4NjtK9/9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjOhbYSEvQhp9BGm2NGWk/D2Ngehv0n09FfGLHo8cFOqY//Zr7dPbw49LOK6yRmzu
-	 1Sdl7GXPlA+6CGKZefJ1g5JOEmN6+gK1G1tFWZh7v98AFR/2i+NZ7NnLUIQO54xH7X
-	 5gS+75LGVQg2AR1YXTKZy4DllFXEyq6JszdmyajU=
+	b=pVeGQ9tGed/Kz9EnV5U54w+Lqmww2hyJ6gCMl3LIx2PXTeEWxrQHdpS7mJZ3TNsop
+	 HYeqwuDVKjECLXOpfQV90QMo9pXeBP1I/StsOGt7HlXGIHTN7DXJc5U/AT847cFW0s
+	 sa3mSImwDBTcv5yuJ7JY6c8qj2JKjVn2JOcRE4FA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 329/690] NFSD: Modernize nfsd4_release_lockowner()
-Date: Mon,  8 Apr 2024 14:53:15 +0200
-Message-ID: <20240408125411.526477648@linuxfoundation.org>
+Subject: [PATCH 5.15 330/690] NFSD: Add documenting comment for nfsd4_release_lockowner()
+Date: Mon,  8 Apr 2024 14:53:16 +0200
+Message-ID: <20240408125411.563542079@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,80 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit bd8fdb6e545f950f4654a9a10d7e819ad48146e5 ]
+[ Upstream commit 043862b09cc00273e35e6c3a6389957953a34207 ]
 
-Refactor: Use existing helpers that other lock operations use. This
-change removes several automatic variables, so re-organize the
-variable declarations for readability.
+And return explicit nfserr values that match what is documented in the
+new comment / API contract.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4state.c | 36 +++++++++++-------------------------
- 1 file changed, 11 insertions(+), 25 deletions(-)
+ fs/nfsd/nfs4state.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
 diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index d79b736019d49..2d52656095340 100644
+index 2d52656095340..08700b6acba31 100644
 --- a/fs/nfsd/nfs4state.c
 +++ b/fs/nfsd/nfs4state.c
-@@ -7548,16 +7548,13 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 			union nfsd4_op_u *u)
- {
- 	struct nfsd4_release_lockowner *rlockowner = &u->release_lockowner;
-+	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
- 	clientid_t *clid = &rlockowner->rl_clientid;
--	struct nfs4_stateowner *sop;
--	struct nfs4_lockowner *lo = NULL;
- 	struct nfs4_ol_stateid *stp;
--	struct xdr_netobj *owner = &rlockowner->rl_owner;
--	unsigned int hashval = ownerstr_hashval(owner);
--	__be32 status;
--	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
-+	struct nfs4_lockowner *lo;
- 	struct nfs4_client *clp;
--	LIST_HEAD (reaplist);
-+	LIST_HEAD(reaplist);
-+	__be32 status;
+@@ -7542,6 +7542,23 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+ 	return status;
+ }
  
- 	dprintk("nfsd4_release_lockowner clientid: (%08x/%08x):\n",
- 		clid->cl_boot, clid->cl_id);
-@@ -7565,30 +7562,19 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 	status = set_client(clid, cstate, nn);
- 	if (status)
- 		return status;
--
- 	clp = cstate->clp;
--	/* Find the matching lock stateowner */
--	spin_lock(&clp->cl_lock);
--	list_for_each_entry(sop, &clp->cl_ownerstr_hashtbl[hashval],
--			    so_strhash) {
- 
--		if (sop->so_is_open_owner || !same_owner_str(sop, owner))
--			continue;
--
--		if (atomic_read(&sop->so_count) != 1) {
--			spin_unlock(&clp->cl_lock);
--			return nfserr_locks_held;
--		}
--
--		lo = lockowner(sop);
--		nfs4_get_stateowner(sop);
--		break;
--	}
-+	spin_lock(&clp->cl_lock);
-+	lo = find_lockowner_str_locked(clp, &rlockowner->rl_owner);
++/**
++ * nfsd4_release_lockowner - process NFSv4.0 RELEASE_LOCKOWNER operations
++ * @rqstp: RPC transaction
++ * @cstate: NFSv4 COMPOUND state
++ * @u: RELEASE_LOCKOWNER arguments
++ *
++ * The lockowner's so_count is bumped when a lock record is added
++ * or when copying a conflicting lock. The latter case is brief,
++ * but can lead to fleeting false positives when looking for
++ * locks-in-use.
++ *
++ * Return values:
++ *   %nfs_ok: lockowner released or not found
++ *   %nfserr_locks_held: lockowner still in use
++ *   %nfserr_stale_clientid: clientid no longer active
++ *   %nfserr_expired: clientid not recognized
++ */
+ __be32
+ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 			struct nfsd4_compound_state *cstate,
+@@ -7568,7 +7585,7 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 	lo = find_lockowner_str_locked(clp, &rlockowner->rl_owner);
  	if (!lo) {
  		spin_unlock(&clp->cl_lock);
- 		return status;
+-		return status;
++		return nfs_ok;
  	}
+ 	if (atomic_read(&lo->lo_owner.so_count) != 2) {
+ 		spin_unlock(&clp->cl_lock);
+@@ -7584,11 +7601,11 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 		put_ol_stateid_locked(stp, &reaplist);
+ 	}
+ 	spin_unlock(&clp->cl_lock);
++
+ 	free_ol_stateid_reaplist(&reaplist);
+ 	remove_blocked_locks(lo);
+ 	nfs4_put_stateowner(&lo->lo_owner);
 -
-+	if (atomic_read(&lo->lo_owner.so_count) != 2) {
-+		spin_unlock(&clp->cl_lock);
-+		nfs4_put_stateowner(&lo->lo_owner);
-+		return nfserr_locks_held;
-+	}
- 	unhash_lockowner_locked(lo);
- 	while (!list_empty(&lo->lo_owner.so_stateids)) {
- 		stp = list_first_entry(&lo->lo_owner.so_stateids,
+-	return status;
++	return nfs_ok;
+ }
+ 
+ static inline struct nfs4_client_reclaim *
 -- 
 2.43.0
 
