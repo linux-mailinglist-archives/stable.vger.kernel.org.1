@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3817D89C51B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:53:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3505E89C0F5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A8E4B21EAA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E907F283864
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12AD839E6;
-	Mon,  8 Apr 2024 13:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22937C08B;
+	Mon,  8 Apr 2024 13:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohnWeNBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+aQ6TTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3B27C6C5;
-	Mon,  8 Apr 2024 13:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7137BB15;
+	Mon,  8 Apr 2024 13:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583241; cv=none; b=lDYbVmRfhOv9ApVLEn4dKnsq3q4Xkx3XdiHUMVr+q/vUa1PBQTwpnW9bybxf7mJjedTPLVZWTaAsS4k1TOTuJyQeK1NY3oSL9rPZ0QIopZYhpH1owF5T6pBOjlVuUQxN5mVNY7zPmJLusa8SWuHKeHp5odKHbqEvaj31JB4h0y8=
+	t=1712581867; cv=none; b=c0JqMUW7STvUAOx0sxM01Z17ayiFTfO6SLOFHG0dHP12EOlxvh/D7AWMtvNqbAeut+p9ukpqvDF35/LeLaHIHqgwLKmyjw892WWl4UBOxHW1K2VxmNhzptKRWhrHxHUFUQ/VmsdwJiQNf3+77EwFOXxI3p04bOGPJA6llneHa6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583241; c=relaxed/simple;
-	bh=cc11txN4mMeI3esiWnjCNS4HTYT/01I0LX6y3q6O0QA=;
+	s=arc-20240116; t=1712581867; c=relaxed/simple;
+	bh=ZpjEKYZWgIlUPW/O+iPnJqEQQHFRm1zsvQQvKCDFKD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtagznUfKGKSliTVkdgk4CHEnkmMwcAabOSTrjDFrubo5uJsbLYYTbRRlESRGdaCkRiC5MblcagIIu452ZXFsLff12lYj21VFEtABQ3ceFDL69I+T3guUVEihNeXFugb8rkhyQ8yQMCLQvc4eLIu8kOarGJ3WkUGfSFbSXgwPVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohnWeNBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FD8C433C7;
-	Mon,  8 Apr 2024 13:34:00 +0000 (UTC)
+	 MIME-Version; b=KtwL3AhqdJz0gS+O/AuoiAg8yIWuEveUw4DFurqjCK+YTPmkNWfawlerAq+V/d/2KBX9ozriP8tF0HiQj5aIoGJV8OZrnaDudU3AYCYTtgoRNfU3WWEIGHDszYe3t38XBHm59ibz7sdotoEgD05b5xsfJNkdid7umc0fT+YExGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+aQ6TTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD1DC433F1;
+	Mon,  8 Apr 2024 13:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583241;
-	bh=cc11txN4mMeI3esiWnjCNS4HTYT/01I0LX6y3q6O0QA=;
+	s=korg; t=1712581867;
+	bh=ZpjEKYZWgIlUPW/O+iPnJqEQQHFRm1zsvQQvKCDFKD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohnWeNBVDFxuWYQzk4VLz/apWq0/1HiCnFklgarjl4RBL3n2vzBpiIRbj7U4ya/4C
-	 1ScQIxlyrhQhyWwJ5ALJTZmxPwPyg5vneNOIRoNJ92nmC+mH3fRRBEzjpdC+yjDOqM
-	 1lTdH+fzPU0TCp1JXVLhrH/cKhF3QtahwnS0iraM=
+	b=u+aQ6TTuIcs512+763mBnD1C0ep348N3pm8VysCZBgPxtpVlFpghjoHxXDdz6y9z+
+	 T1DA7OqRi9vVuPL7srPe9+qoIqAxuVIYfe3xTfF5JIADOourUKPRlt9hrhx4XwZlMW
+	 yT32IzxCjusa3/JkHCJ94bahiMheRqtKhldzpkMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Lee <slee08177@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/252] ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 058/138] ipv6: Fix infinite recursion in fib6_dump_done().
 Date: Mon,  8 Apr 2024 14:57:52 +0200
-Message-ID: <20240408125312.028034726@linuxfoundation.org>
+Message-ID: <20240408125258.026865038@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Lee <slee08177@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit fc563aa900659a850e2ada4af26b9d7a3de6c591 ]
+commit d21d40605bca7bd5fc23ef03d4c1ca1f48bc2cae upstream.
 
-In snd_soc_info_volsw(), mask is generated by figuring out the index of
-the most significant bit set in max and converting the index to a
-bitmask through bit shift 1. Unintended wraparound occurs when max is an
-integer value with msb bit set. Since the bit shift value 1 is treated
-as an integer type, the left shift operation will wraparound and set
-mask to 0 instead of all 1's. In order to fix this, we type cast 1 as
-`1ULL` to prevent the wraparound.
+syzkaller reported infinite recursive calls of fib6_dump_done() during
+netlink socket destruction.  [1]
 
-Fixes: 7077148fb50a ("ASoC: core: Split ops out of soc-core.c")
-Signed-off-by: Stephen Lee <slee08177@gmail.com>
-Link: https://msgid.link/r/20240326010131.6211-1-slee08177@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+>From the log, syzkaller sent an AF_UNSPEC RTM_GETROUTE message, and then
+the response was generated.  The following recvmmsg() resumed the dump
+for IPv6, but the first call of inet6_dump_fib() failed at kzalloc() due
+to the fault injection.  [0]
+
+  12:01:34 executing program 3:
+  r0 = socket$nl_route(0x10, 0x3, 0x0)
+  sendmsg$nl_route(r0, ... snip ...)
+  recvmmsg(r0, ... snip ...) (fail_nth: 8)
+
+Here, fib6_dump_done() was set to nlk_sk(sk)->cb.done, and the next call
+of inet6_dump_fib() set it to nlk_sk(sk)->cb.args[3].  syzkaller stopped
+receiving the response halfway through, and finally netlink_sock_destruct()
+called nlk_sk(sk)->cb.done().
+
+fib6_dump_done() calls fib6_dump_end() and nlk_sk(sk)->cb.done() if it
+is still not NULL.  fib6_dump_end() rewrites nlk_sk(sk)->cb.done() by
+nlk_sk(sk)->cb.args[3], but it has the same function, not NULL, calling
+itself recursively and hitting the stack guard page.
+
+To avoid the issue, let's set the destructor after kzalloc().
+
+[0]:
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 0
+CPU: 1 PID: 432110 Comm: syz-executor.3 Not tainted 6.8.0-12821-g537c2e91d354-dirty #11
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl (lib/dump_stack.c:117)
+ should_fail_ex (lib/fault-inject.c:52 lib/fault-inject.c:153)
+ should_failslab (mm/slub.c:3733)
+ kmalloc_trace (mm/slub.c:3748 mm/slub.c:3827 mm/slub.c:3992)
+ inet6_dump_fib (./include/linux/slab.h:628 ./include/linux/slab.h:749 net/ipv6/ip6_fib.c:662)
+ rtnl_dump_all (net/core/rtnetlink.c:4029)
+ netlink_dump (net/netlink/af_netlink.c:2269)
+ netlink_recvmsg (net/netlink/af_netlink.c:1988)
+ ____sys_recvmsg (net/socket.c:1046 net/socket.c:2801)
+ ___sys_recvmsg (net/socket.c:2846)
+ do_recvmmsg (net/socket.c:2943)
+ __x64_sys_recvmmsg (net/socket.c:3041 net/socket.c:3034 net/socket.c:3034)
+
+[1]:
+BUG: TASK stack guard page was hit at 00000000f2fa9af1 (stack is 00000000b7912430..000000009a436beb)
+stack guard page: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 223719 Comm: kworker/1:3 Not tainted 6.8.0-12821-g537c2e91d354-dirty #11
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Workqueue: events netlink_sock_destruct_work
+RIP: 0010:fib6_dump_done (net/ipv6/ip6_fib.c:570)
+Code: 3c 24 e8 f3 e9 51 fd e9 28 fd ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 41 57 41 56 41 55 41 54 55 48 89 fd <53> 48 8d 5d 60 e8 b6 4d 07 fd 48 89 da 48 b8 00 00 00 00 00 fc ff
+RSP: 0018:ffffc9000d980000 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffffff84405990 RCX: ffffffff844059d3
+RDX: ffff8881028e0000 RSI: ffffffff84405ac2 RDI: ffff88810c02f358
+RBP: ffff88810c02f358 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000224 R12: 0000000000000000
+R13: ffff888007c82c78 R14: ffff888007c82c68 R15: ffff888007c82c68
+FS:  0000000000000000(0000) GS:ffff88811b100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc9000d97fff8 CR3: 0000000102309002 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <#DF>
+ </#DF>
+ <TASK>
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ ...
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ fib6_dump_done (net/ipv6/ip6_fib.c:572 (discriminator 1))
+ netlink_sock_destruct (net/netlink/af_netlink.c:401)
+ __sk_destruct (net/core/sock.c:2177 (discriminator 2))
+ sk_destruct (net/core/sock.c:2224)
+ __sk_free (net/core/sock.c:2235)
+ sk_free (net/core/sock.c:2246)
+ process_one_work (kernel/workqueue.c:3259)
+ worker_thread (kernel/workqueue.c:3329 kernel/workqueue.c:3416)
+ kthread (kernel/kthread.c:388)
+ ret_from_fork (arch/x86/kernel/process.c:153)
+ ret_from_fork_asm (arch/x86/entry/entry_64.S:256)
+Modules linked in:
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240401211003.25274-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ip6_fib.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index 2d25748ca7066..b27e89ff6a167 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -263,7 +263,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
- 	int max = mc->max;
- 	int min = mc->min;
- 	int sign_bit = mc->sign_bit;
--	unsigned int mask = (1 << fls(max)) - 1;
-+	unsigned int mask = (1ULL << fls(max)) - 1;
- 	unsigned int invert = mc->invert;
- 	int val;
- 	int ret;
--- 
-2.43.0
-
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -646,19 +646,19 @@ static int inet6_dump_fib(struct sk_buff
+ 	if (!w) {
+ 		/* New dump:
+ 		 *
+-		 * 1. hook callback destructor.
+-		 */
+-		cb->args[3] = (long)cb->done;
+-		cb->done = fib6_dump_done;
+-
+-		/*
+-		 * 2. allocate and initialize walker.
++		 * 1. allocate and initialize walker.
+ 		 */
+ 		w = kzalloc(sizeof(*w), GFP_ATOMIC);
+ 		if (!w)
+ 			return -ENOMEM;
+ 		w->func = fib6_dump_node;
+ 		cb->args[2] = (long)w;
++
++		/* 2. hook callback destructor.
++		 */
++		cb->args[3] = (long)cb->done;
++		cb->done = fib6_dump_done;
++
+ 	}
+ 
+ 	arg.skb = skb;
 
 
 
