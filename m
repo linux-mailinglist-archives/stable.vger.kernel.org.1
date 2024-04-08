@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-37162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14ECE89C392
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AF789C5FD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C46F7283AE3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EFB3284728
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4134812A14A;
-	Mon,  8 Apr 2024 13:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81807FBB2;
+	Mon,  8 Apr 2024 14:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLFX+Yro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjT0SHLs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25947E10B;
-	Mon,  8 Apr 2024 13:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FB87F499;
+	Mon,  8 Apr 2024 14:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583428; cv=none; b=prxgtydCWZDuzCdKS9y4OUlpgghRMIFGOQMZGY5SqKDcHBUTCvHpoThLNOMYQP8zuK8LqNryB0yNfA+NSfTv9v9b3kgWeKQzbOX/h0JIIBj+CoWbEqZWEKod7AjLzozXnkH6f1AyxBs57swdmlHFNYN9TZeuLeiFG+dke6wxKaA=
+	t=1712584967; cv=none; b=OEkeMKF+q0hkamJ0J5Dmd4y4fEzB0CiQeJdPIzYTKxFqVl6znri78C0n9dM64h57b4wL0Rm/x0K+tzLEYLtfaJzT+9YH005poxFOzFEeYOHm6/gOdWVUmm5QBJB1R7kP0sFGJhBFekAm6PbnA4+gwK1zTkkkqAYo8hDemXL638A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583428; c=relaxed/simple;
-	bh=RusXzZRj1W97bW8iBS4LVSovMvplDAy4q/AMvOB5F8I=;
+	s=arc-20240116; t=1712584967; c=relaxed/simple;
+	bh=dosxHNO6cpOl/mWc8bmZnwuivaWM30oSq8+kHkroJu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4jTeOHGJwcKro3PjKHKgD/7P6GHaoTv72Z9rR9vT9ZHjUct8PE4eGeyiah4LnVtz9gsOr17dUwZ0Rr6NICTx4OBhg9dImLQ1jwzaLl2pUCyE+ickH/hLyO9wfQYJNk9AV+POjQidUS9ylW6z0cVKFejZ1NXY5rOPJnBm84xOHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLFX+Yro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76428C433C7;
-	Mon,  8 Apr 2024 13:37:07 +0000 (UTC)
+	 MIME-Version; b=I+n79IXXyfqbNilQkqBUq+P/VBxg/xjvkfSBHRnmwELZ841YJ2DjK+Jvp9fNmRmveyTbIomNcg2kO1KvD0CXWxFOMLOEztgpy58XtCi+Pb4BB5muVtkaKMUzFEBdVNrbk8t10QBByigr0a4zSU1BJHAXM+iJTIygw03BlhI5Hz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjT0SHLs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFA8C433C7;
+	Mon,  8 Apr 2024 14:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583427;
-	bh=RusXzZRj1W97bW8iBS4LVSovMvplDAy4q/AMvOB5F8I=;
+	s=korg; t=1712584967;
+	bh=dosxHNO6cpOl/mWc8bmZnwuivaWM30oSq8+kHkroJu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLFX+Yro7ZfPDIC9BpFAuFzYYUqK0lEG1nBLrkc2RsT2guTOZQRTBQ8jeQOTC0wks
-	 pwVFArkIEPqvqbnSNhhW8u9TB0fzpDfjczT5aNjl4NC+pgmwjuczOqQuROQO5nI+4w
-	 iRF3Q09gIJ5F4Noul3BgXj9kP/tutjHYk5C0rVgc=
+	b=zjT0SHLscaSgNojTZVWU6TTeYPFnmp/3JfkIlnUDXdPiludIZ9VEdSdWkpTAU6aJ4
+	 DYd0MMKaICTZ4UiiLuCwhflr6y/cTgh0GpWo/twJvbe6LIDKHEZS7avVxjYjEe4/wE
+	 uEGN2tIeDpMAg5uZYjzLqKfIEdmqjhTcV+Sco2Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 178/273] drm/i915/dp: Fix DSC state HW readout for SST connectors
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 5.15 587/690] usb: dwc2: host: Fix hibernation flow
 Date: Mon,  8 Apr 2024 14:57:33 +0200
-Message-ID: <20240408125314.800748712@linuxfoundation.org>
+Message-ID: <20240408125420.845506481@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +60,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-[ Upstream commit d725ce9d7c78fb4e22c6c7676106e135ade14fa8 ]
+commit 3c7b9856a82227db01a20171d2e24c7ce305d59b upstream.
 
-Commit 0848814aa296 ("drm/i915/dp: Fix connector DSC HW state readout")
-moved the DSC HW state readout to a connector specific hook, however
-only added the hook for DP MST connectors, not for DP SST ones. Fix
-adding the hook for SST connectors as well.
+Added to backup/restore registers HFLBADDR, HCCHARi, HCSPLTi,
+HCTSIZi, HCDMAi and HCDMABi.
 
-This fixes the following warn on platforms where BIOS enables DSC:
-
-[   66.208601] i915 0000:00:02.0: drm_WARN_ON(!connector->dp.dsc_decompression_aux || !connector->dp.dsc_decompression_enabled)
-...
-[   66.209024] RIP: 0010:intel_dp_sink_disable_decompression+0x76/0x110 [i915]
-...
-[   66.209333]  ? intel_dp_sink_disable_decompression+0x76/0x110 [i915]
-...
-[   66.210068]  intel_disable_ddi+0x135/0x1d0 [i915]
-[   66.210302]  intel_encoders_disable+0x9b/0xc0 [i915]
-[   66.210565]  hsw_crtc_disable+0x153/0x170 [i915]
-[   66.210823]  intel_old_crtc_state_disables+0x52/0xb0 [i915]
-[   66.211107]  intel_atomic_commit_tail+0x5cf/0x1330 [i915]
-[   66.211366]  intel_atomic_commit+0x39d/0x3f0 [i915]
-[   66.211612]  ? intel_atomic_commit+0x39d/0x3f0 [i915]
-[   66.211872]  drm_atomic_commit+0x9d/0xd0 [drm]
-[   66.211921]  ? __pfx___drm_printfn_info+0x10/0x10 [drm]
-[   66.211975]  intel_initial_commit+0x1a8/0x260 [i915]
-[   66.212234]  intel_display_driver_probe+0x2a/0x80 [i915]
-[   66.212479]  i915_driver_probe+0x7c6/0xc60 [i915]
-[   66.212664]  ? drm_privacy_screen_get+0x168/0x190 [drm]
-[   66.212711]  i915_pci_probe+0xe2/0x1c0 [i915]
-
-Fixes: 0848814aa296 ("drm/i915/dp: Fix connector DSC HW state readout")
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10410
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240311145626.2454923-1-imre.deak@intel.com
-(cherry picked from commit 7a51a2aa2384ea8bee76698ae586a2bea5b8ddb5)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 58e52ff6a6c3 ("usb: dwc2: Move register save and restore functions")
+Fixes: d17ee77b3044 ("usb: dwc2: add controller hibernation support")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/c2d10ee6098b9b009a8e94191e046004747d3bdd.1708945444.git.Minas.Harutyunyan@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc2/core.h |   12 ++++++++++++
+ drivers/usb/dwc2/hcd.c  |   18 ++++++++++++++++--
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 94d2a15d8444a..820cc9d3cc0b3 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -6523,6 +6523,7 @@ intel_dp_init_connector(struct intel_digital_port *dig_port,
- 		intel_connector->get_hw_state = intel_ddi_connector_get_hw_state;
- 	else
- 		intel_connector->get_hw_state = intel_connector_get_hw_state;
-+	intel_connector->sync_state = intel_dp_connector_sync_state;
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -755,8 +755,14 @@ struct dwc2_dregs_backup {
+  * struct dwc2_hregs_backup - Holds host registers state before
+  * entering partial power down
+  * @hcfg:		Backup of HCFG register
++ * @hflbaddr:		Backup of HFLBADDR register
+  * @haintmsk:		Backup of HAINTMSK register
++ * @hcchar:		Backup of HCCHAR register
++ * @hcsplt:		Backup of HCSPLT register
+  * @hcintmsk:		Backup of HCINTMSK register
++ * @hctsiz:		Backup of HCTSIZ register
++ * @hdma:		Backup of HCDMA register
++ * @hcdmab:		Backup of HCDMAB register
+  * @hprt0:		Backup of HPTR0 register
+  * @hfir:		Backup of HFIR register
+  * @hptxfsiz:		Backup of HPTXFSIZ register
+@@ -764,8 +770,14 @@ struct dwc2_dregs_backup {
+  */
+ struct dwc2_hregs_backup {
+ 	u32 hcfg;
++	u32 hflbaddr;
+ 	u32 haintmsk;
++	u32 hcchar[MAX_EPS_CHANNELS];
++	u32 hcsplt[MAX_EPS_CHANNELS];
+ 	u32 hcintmsk[MAX_EPS_CHANNELS];
++	u32 hctsiz[MAX_EPS_CHANNELS];
++	u32 hcidma[MAX_EPS_CHANNELS];
++	u32 hcidmab[MAX_EPS_CHANNELS];
+ 	u32 hprt0;
+ 	u32 hfir;
+ 	u32 hptxfsiz;
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5437,9 +5437,16 @@ int dwc2_backup_host_registers(struct dw
+ 	/* Backup Host regs */
+ 	hr = &hsotg->hr_backup;
+ 	hr->hcfg = dwc2_readl(hsotg, HCFG);
++	hr->hflbaddr = dwc2_readl(hsotg, HFLBADDR);
+ 	hr->haintmsk = dwc2_readl(hsotg, HAINTMSK);
+-	for (i = 0; i < hsotg->params.host_channels; ++i)
++	for (i = 0; i < hsotg->params.host_channels; ++i) {
++		hr->hcchar[i] = dwc2_readl(hsotg, HCCHAR(i));
++		hr->hcsplt[i] = dwc2_readl(hsotg, HCSPLT(i));
+ 		hr->hcintmsk[i] = dwc2_readl(hsotg, HCINTMSK(i));
++		hr->hctsiz[i] = dwc2_readl(hsotg, HCTSIZ(i));
++		hr->hcidma[i] = dwc2_readl(hsotg, HCDMA(i));
++		hr->hcidmab[i] = dwc2_readl(hsotg, HCDMAB(i));
++	}
  
- 	if (!intel_edp_init_connector(intel_dp, intel_connector)) {
- 		intel_dp_aux_fini(intel_dp);
--- 
-2.43.0
-
+ 	hr->hprt0 = dwc2_read_hprt0(hsotg);
+ 	hr->hfir = dwc2_readl(hsotg, HFIR);
+@@ -5473,10 +5480,17 @@ int dwc2_restore_host_registers(struct d
+ 	hr->valid = false;
+ 
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
++	dwc2_writel(hsotg, hr->hflbaddr, HFLBADDR);
+ 	dwc2_writel(hsotg, hr->haintmsk, HAINTMSK);
+ 
+-	for (i = 0; i < hsotg->params.host_channels; ++i)
++	for (i = 0; i < hsotg->params.host_channels; ++i) {
++		dwc2_writel(hsotg, hr->hcchar[i], HCCHAR(i));
++		dwc2_writel(hsotg, hr->hcsplt[i], HCSPLT(i));
+ 		dwc2_writel(hsotg, hr->hcintmsk[i], HCINTMSK(i));
++		dwc2_writel(hsotg, hr->hctsiz[i], HCTSIZ(i));
++		dwc2_writel(hsotg, hr->hcidma[i], HCDMA(i));
++		dwc2_writel(hsotg, hr->hcidmab[i], HCDMAB(i));
++	}
+ 
+ 	dwc2_writel(hsotg, hr->hprt0, HPRT0);
+ 	dwc2_writel(hsotg, hr->hfir, HFIR);
 
 
 
