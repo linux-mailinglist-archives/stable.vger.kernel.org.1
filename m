@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D4489C5C7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CA489C2E1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1CE4282E4E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D236AB2CEC0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BFB7FBCF;
-	Mon,  8 Apr 2024 14:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88EB7EF04;
+	Mon,  8 Apr 2024 13:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/KyQWEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVs56V/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702E67FBC7;
-	Mon,  8 Apr 2024 14:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D5378286;
+	Mon,  8 Apr 2024 13:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584809; cv=none; b=OXpnqUsdRILBgKW7Yr38QW3MFCEH725da99HTyyjUJLdM+48JDTNPwVBbDp5/urUEp26t5WT6siZzUkABqbXlUOv68/KaMvBU8NsCAm0e5an3y/XO1uo4W9c/gVm70FTcOW2JAEWcDmd4RhXjPY+g4aNOyVwgq/LuPNPNWnbTcI=
+	t=1712582883; cv=none; b=XR+PpUQCKaK9KZMqb9BinZLe6bEHUVx1ifgICVRxk8YcAViAj14fizxMrI0bAhKJd3EE+phkdlorc2XOo/yiPY363rm58fiXQ69T1jANe5Rt4Ids5r9+KrGxvgwQqdX2duHpALysURaTSgphMOpx/pzBrrIcA4TANd+hpdAs59k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584809; c=relaxed/simple;
-	bh=uIwQ+b++UUZ8DUX/+1XzLdIsHdWcLqvY2riqbgDMLzA=;
+	s=arc-20240116; t=1712582883; c=relaxed/simple;
+	bh=uib07FTFtO71UsC6FYPQEGPfJQAJjRo2MnnsL60mbFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8FMmU5bGBhdbc/+xPEyRUQgF6KgbWBmxayO1ny5KL/bmHE6Kx8wXstT3FJQGJPnpPSwn7lXtcvdlma4Am10FYJOAZnrT0DXpldW0Lxf7vBrmeyAZAu2d4Wa1VeBuTfDL4LDoJtiRqHJ4LKPcDVkEOtSKMpylA9AqguKSMwbcSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/KyQWEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB67C433C7;
-	Mon,  8 Apr 2024 14:00:08 +0000 (UTC)
+	 MIME-Version; b=HIlBgN0cry8eyporeYqaBlJq3EjtJb5eEDhmOfEi39Lu8Gs4PcI/o9N6Kt4eQg8i11HbPukiNWcEYNFrLIu3BqAILtZx8jldXpDcCYOZFrzer1ySPT+S1I2KHDBUxcL7VfalK4kRwzpVreuTmQAYX2nr8eRS63UmPfGhhVN6SOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVs56V/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1049BC43390;
+	Mon,  8 Apr 2024 13:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584809;
-	bh=uIwQ+b++UUZ8DUX/+1XzLdIsHdWcLqvY2riqbgDMLzA=;
+	s=korg; t=1712582883;
+	bh=uib07FTFtO71UsC6FYPQEGPfJQAJjRo2MnnsL60mbFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/KyQWENvz/SR2bb+NMrLr4hWM1/vVRMp0rQTfkvo6l0fcUS4iJ6Gqa4z9WVDiXbu
-	 LJ2LNEhUsU3XIwviCkaq7pvfky9IDEG6iJjGVaaGG4CT2wktPqBt0p22pFBd71spRm
-	 FvfcZIMGs3KAko/p7b3KCPGKXNRda/WjnJv922hg=
+	b=ZVs56V/d+h6v0qW87VQwZPXe+35ha/BVYY/pdFyKclby9EKWAyIfn3LkDgMU0i39r
+	 mOmp1bOlnkMtTm0RCkxfnGND9MsIQ/Y+VyOWYL/snkY4LeBlIuQh76Ku6diSRgHNXL
+	 5w7McNXEjfiaDgbA7mjmq1I4jl9CZo+w8RrjZ5BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Auger <eric.auger@redhat.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 5.15 565/690] vfio/platform: Create persistent IRQ handlers
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 132/252] usb: typec: ucsi: Fix race between typec_switch and role_switch
 Date: Mon,  8 Apr 2024 14:57:11 +0200
-Message-ID: <20240408125420.100140677@linuxfoundation.org>
+Message-ID: <20240408125310.736492112@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,255 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 675daf435e9f8e5a5eab140a9864dfad6668b375 ]
+[ Upstream commit f5e9bda03aa50ffad36eccafe893d004ef213c43 ]
 
-The vfio-platform SET_IRQS ioctl currently allows loopback triggering of
-an interrupt before a signaling eventfd has been configured by the user,
-which thereby allows a NULL pointer dereference.
+When orientation switch is enabled in ucsi glink, there is a xhci
+probe failure seen when booting up in host mode in reverse
+orientation.
 
-Rather than register the IRQ relative to a valid trigger, register all
-IRQs in a disabled state in the device open path.  This allows mask
-operations on the IRQ to nest within the overall enable state governed
-by a valid eventfd signal.  This decouples @masked, protected by the
-@locked spinlock from @trigger, protected via the @igate mutex.
+During bootup the following things happen in multiple drivers:
 
-In doing so, it's guaranteed that changes to @trigger cannot race the
-IRQ handlers because the IRQ handler is synchronously disabled before
-modifying the trigger, and loopback triggering of the IRQ via ioctl is
-safe due to serialization with trigger changes via igate.
+a) DWC3 controller driver initializes the core in device mode when the
+dr_mode is set to DRD. It relies on role_switch call to change role to
+host.
 
-For compatibility, request_irq() failures are maintained to be local to
-the SET_IRQS ioctl rather than a fatal error in the open device path.
-This allows, for example, a userspace driver with polling mode support
-to continue to work regardless of moving the request_irq() call site.
-This necessarily blocks all SET_IRQS access to the failed index.
+b) QMP driver initializes the lanes to TYPEC_ORIENTATION_NORMAL as a
+normal routine. It relies on the typec_switch_set call to get notified
+of orientation changes.
 
-Cc: Eric Auger <eric.auger@redhat.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: 57f972e2b341 ("vfio/platform: trigger an interrupt via eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-7-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+c) UCSI core reads the UCSI_GET_CONNECTOR_STATUS via the glink and
+provides initial role switch to dwc3 controller.
+
+When booting up in host mode with orientation TYPEC_ORIENTATION_REVERSE,
+then we see the following things happening in order:
+
+a) UCSI gives initial role as host to dwc3 controller ucsi_register_port.
+Upon receiving this notification, the dwc3 core needs to program GCTL from
+PRTCAP_DEVICE to PRTCAP_HOST and as part of this change, it asserts GCTL
+Core soft reset and waits for it to be  completed before shifting it to
+host. Only after the reset is done will the dwc3_host_init be invoked and
+xhci is probed. DWC3 controller expects that the usb phy's are stable
+during this process i.e., the phy init is already done.
+
+b) During the 100ms wait for GCTL core soft reset, the actual notification
+from PPM is received by ucsi_glink via pmic glink for changing role to
+host. The pmic_glink_ucsi_notify routine first sends the orientation
+change to QMP and then sends role to dwc3 via ucsi framework. This is
+happening exactly at the time GCTL core soft reset is being processed.
+
+c) When QMP driver receives typec switch to TYPEC_ORIENTATION_REVERSE, it
+then re-programs the phy at the instant GCTL core soft reset has been
+asserted by dwc3 controller due to which the QMP PLL lock fails in
+qmp_combo_usb_power_on.
+
+d) After the 100ms of GCTL core soft reset is completed, the dwc3 core
+goes for initializing the host mode and invokes xhci probe. But at this
+point the QMP is non-responsive and as a result, the xhci plat probe fails
+during xhci_reset.
+
+Fix this by passing orientation switch to available ucsi instances if
+their gpio configuration is available before ucsi_register is invoked so
+that by the time, the pmic_glink_ucsi_notify provides typec_switch to QMP,
+the lane is already configured and the call would be a NOP thus not racing
+with role switch.
+
+Cc: stable@vger.kernel.org
+Fixes: c6165ed2f425 ("usb: ucsi: glink: use the connector orientation GPIO to provide switch events")
+Suggested-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240301040914.458492-1-quic_kriskura@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/platform/vfio_platform_irq.c |  101 ++++++++++++++++++++----------
- 1 file changed, 68 insertions(+), 33 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_glink.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/vfio/platform/vfio_platform_irq.c
-+++ b/drivers/vfio/platform/vfio_platform_irq.c
-@@ -136,6 +136,16 @@ static int vfio_platform_set_irq_unmask(
- 	return 0;
- }
- 
-+/*
-+ * The trigger eventfd is guaranteed valid in the interrupt path
-+ * and protected by the igate mutex when triggered via ioctl.
-+ */
-+static void vfio_send_eventfd(struct vfio_platform_irq *irq_ctx)
-+{
-+	if (likely(irq_ctx->trigger))
-+		eventfd_signal(irq_ctx->trigger, 1);
-+}
+diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+index 4853141cd10c8..894622b6556a6 100644
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -254,6 +254,20 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
+ static void pmic_glink_ucsi_register(struct work_struct *work)
+ {
+ 	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
++	int orientation;
++	int i;
 +
- static irqreturn_t vfio_automasked_irq_handler(int irq, void *dev_id)
- {
- 	struct vfio_platform_irq *irq_ctx = dev_id;
-@@ -155,7 +165,7 @@ static irqreturn_t vfio_automasked_irq_h
- 	spin_unlock_irqrestore(&irq_ctx->lock, flags);
- 
- 	if (ret == IRQ_HANDLED)
--		eventfd_signal(irq_ctx->trigger, 1);
-+		vfio_send_eventfd(irq_ctx);
- 
- 	return ret;
- }
-@@ -164,22 +174,19 @@ static irqreturn_t vfio_irq_handler(int
- {
- 	struct vfio_platform_irq *irq_ctx = dev_id;
- 
--	eventfd_signal(irq_ctx->trigger, 1);
-+	vfio_send_eventfd(irq_ctx);
- 
- 	return IRQ_HANDLED;
- }
- 
- static int vfio_set_trigger(struct vfio_platform_device *vdev, int index,
--			    int fd, irq_handler_t handler)
-+			    int fd)
- {
- 	struct vfio_platform_irq *irq = &vdev->irqs[index];
- 	struct eventfd_ctx *trigger;
--	int ret;
- 
- 	if (irq->trigger) {
--		irq_clear_status_flags(irq->hwirq, IRQ_NOAUTOEN);
--		free_irq(irq->hwirq, irq);
--		kfree(irq->name);
-+		disable_irq(irq->hwirq);
- 		eventfd_ctx_put(irq->trigger);
- 		irq->trigger = NULL;
- 	}
-@@ -187,30 +194,20 @@ static int vfio_set_trigger(struct vfio_
- 	if (fd < 0) /* Disable only */
- 		return 0;
- 
--	irq->name = kasprintf(GFP_KERNEL, "vfio-irq[%d](%s)",
--						irq->hwirq, vdev->name);
--	if (!irq->name)
--		return -ENOMEM;
--
- 	trigger = eventfd_ctx_fdget(fd);
--	if (IS_ERR(trigger)) {
--		kfree(irq->name);
-+	if (IS_ERR(trigger))
- 		return PTR_ERR(trigger);
--	}
- 
- 	irq->trigger = trigger;
- 
--	irq_set_status_flags(irq->hwirq, IRQ_NOAUTOEN);
--	ret = request_irq(irq->hwirq, handler, 0, irq->name, irq);
--	if (ret) {
--		kfree(irq->name);
--		eventfd_ctx_put(trigger);
--		irq->trigger = NULL;
--		return ret;
--	}
--
--	if (!irq->masked)
--		enable_irq(irq->hwirq);
-+	/*
-+	 * irq->masked effectively provides nested disables within the overall
-+	 * enable relative to trigger.  Specifically request_irq() is called
-+	 * with NO_AUTOEN, therefore the IRQ is initially disabled.  The user
-+	 * may only further disable the IRQ with a MASK operations because
-+	 * irq->masked is initially false.
-+	 */
-+	enable_irq(irq->hwirq);
- 
- 	return 0;
- }
-@@ -229,7 +226,7 @@ static int vfio_platform_set_irq_trigger
- 		handler = vfio_irq_handler;
- 
- 	if (!count && (flags & VFIO_IRQ_SET_DATA_NONE))
--		return vfio_set_trigger(vdev, index, -1, handler);
-+		return vfio_set_trigger(vdev, index, -1);
- 
- 	if (start != 0 || count != 1)
- 		return -EINVAL;
-@@ -237,7 +234,7 @@ static int vfio_platform_set_irq_trigger
- 	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
- 		int32_t fd = *(int32_t *)data;
- 
--		return vfio_set_trigger(vdev, index, fd, handler);
-+		return vfio_set_trigger(vdev, index, fd);
- 	}
- 
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
-@@ -261,6 +258,14 @@ int vfio_platform_set_irqs_ioctl(struct
- 		    unsigned start, unsigned count, uint32_t flags,
- 		    void *data) = NULL;
- 
-+	/*
-+	 * For compatibility, errors from request_irq() are local to the
-+	 * SET_IRQS path and reflected in the name pointer.  This allows,
-+	 * for example, polling mode fallback for an exclusive IRQ failure.
-+	 */
-+	if (IS_ERR(vdev->irqs[index].name))
-+		return PTR_ERR(vdev->irqs[index].name);
++	for (i = 0; i < PMIC_GLINK_MAX_PORTS; i++) {
++		if (!ucsi->port_orientation[i])
++			continue;
++		orientation = gpiod_get_value(ucsi->port_orientation[i]);
 +
- 	switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
- 	case VFIO_IRQ_SET_ACTION_MASK:
- 		func = vfio_platform_set_irq_mask;
-@@ -281,7 +286,7 @@ int vfio_platform_set_irqs_ioctl(struct
- 
- int vfio_platform_irq_init(struct vfio_platform_device *vdev)
- {
--	int cnt = 0, i;
-+	int cnt = 0, i, ret = 0;
- 
- 	while (vdev->get_irq(vdev, cnt) >= 0)
- 		cnt++;
-@@ -292,29 +297,54 @@ int vfio_platform_irq_init(struct vfio_p
- 
- 	for (i = 0; i < cnt; i++) {
- 		int hwirq = vdev->get_irq(vdev, i);
-+		irq_handler_t handler = vfio_irq_handler;
- 
--		if (hwirq < 0)
-+		if (hwirq < 0) {
-+			ret = -EINVAL;
- 			goto err;
-+		}
- 
- 		spin_lock_init(&vdev->irqs[i].lock);
- 
- 		vdev->irqs[i].flags = VFIO_IRQ_INFO_EVENTFD;
- 
--		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK)
-+		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK) {
- 			vdev->irqs[i].flags |= VFIO_IRQ_INFO_MASKABLE
- 						| VFIO_IRQ_INFO_AUTOMASKED;
-+			handler = vfio_automasked_irq_handler;
-+		}
- 
- 		vdev->irqs[i].count = 1;
- 		vdev->irqs[i].hwirq = hwirq;
- 		vdev->irqs[i].masked = false;
-+		vdev->irqs[i].name = kasprintf(GFP_KERNEL,
-+					       "vfio-irq[%d](%s)", hwirq,
-+					       vdev->name);
-+		if (!vdev->irqs[i].name) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+
-+		ret = request_irq(hwirq, handler, IRQF_NO_AUTOEN,
-+				  vdev->irqs[i].name, &vdev->irqs[i]);
-+		if (ret) {
-+			kfree(vdev->irqs[i].name);
-+			vdev->irqs[i].name = ERR_PTR(ret);
-+		}
- 	}
- 
- 	vdev->num_irqs = cnt;
- 
- 	return 0;
- err:
-+	for (--i; i >= 0; i--) {
-+		if (!IS_ERR(vdev->irqs[i].name)) {
-+			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
-+			kfree(vdev->irqs[i].name);
++		if (orientation >= 0) {
++			typec_switch_set(ucsi->port_switch[i],
++					 orientation ? TYPEC_ORIENTATION_REVERSE
++					     : TYPEC_ORIENTATION_NORMAL);
 +		}
 +	}
- 	kfree(vdev->irqs);
--	return -EINVAL;
-+	return ret;
+ 
+ 	ucsi_register(ucsi->ucsi);
  }
- 
- void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
-@@ -324,7 +354,12 @@ void vfio_platform_irq_cleanup(struct vf
- 	for (i = 0; i < vdev->num_irqs; i++) {
- 		vfio_virqfd_disable(&vdev->irqs[i].mask);
- 		vfio_virqfd_disable(&vdev->irqs[i].unmask);
--		vfio_set_trigger(vdev, i, -1, NULL);
-+		if (!IS_ERR(vdev->irqs[i].name)) {
-+			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
-+			if (vdev->irqs[i].trigger)
-+				eventfd_ctx_put(vdev->irqs[i].trigger);
-+			kfree(vdev->irqs[i].name);
-+		}
- 	}
- 
- 	vdev->num_irqs = 0;
+-- 
+2.43.0
+
 
 
 
