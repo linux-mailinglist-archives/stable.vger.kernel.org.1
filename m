@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-36910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A8089C252
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F4E89C1F0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1194E1F223E7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A29DF1F22857
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF108562A;
-	Mon,  8 Apr 2024 13:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7AD27C098;
+	Mon,  8 Apr 2024 13:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0K5c1GnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0LvPYjr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC1885284;
-	Mon,  8 Apr 2024 13:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627307C08F;
+	Mon,  8 Apr 2024 13:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582699; cv=none; b=nuxqCXWlSoOQDcf+3TKXUeioRkhIRvLMlHnkTjxujK16AciMZ/LK49yCs3vaOU8l02LwBv+HwqegkHRmiohiOuAubOqkcF3aVRn5gaPxmIzMG8JkyQ1GEg08d/vc7wo+DEFRZXaqHb+xRF9X0v45vVdkYoiwV8FFUlpyVBIhjEQ=
+	t=1712582451; cv=none; b=AekOEGC7mKgqdhr81B1l3qi5nAl7ZrpdWkSMq4fWLd0bvfs2BasjGa68EvPKRqSkebO1VO5dblkwvmvSHPku+Ke5GdZ9LJkoS6NSn16l/5kAl0LY4QkkWKvmP6QcQ33ChAo607Of3fTX/2J7HJGpVDHJ0nemBTCOscYnuab9XKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582699; c=relaxed/simple;
-	bh=AZJqBFkiZ7ds04KrSC4aNj8EJws8DOQsPUhRW+7oP0s=;
+	s=arc-20240116; t=1712582451; c=relaxed/simple;
+	bh=pUyfJKOnwtsriFbQgx90W/48ypcCYvqOrJTXrU/vqwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1WRUOVzU+Ik5M/lbwOV5rU1uVmgnw19Z6vnT9DTIjiJPpruMMkpmVfvJdrXp4gb2sngY1ySrsdDNJvLL6MGL6+9hS697U2EX5+h/peYWxnWHR09v1pR4ePEhRTJRlnCA0m8XOlphYCtWJkdFSOu984DbGi16vZoO0xeWpxy0fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0K5c1GnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D87C433F1;
-	Mon,  8 Apr 2024 13:24:58 +0000 (UTC)
+	 MIME-Version; b=tKoFcIvRc/xB2CjFxG5PlxelBwYhN1VrxX22NGRwZM0WF1Ws5s2RwbaFfcwEL4DPAv5auOeqXcfMcOtGvbvSpPZq09gFe6hQEsQmxkQq6otrDRYMufy8j9a9qKcxl/Neh1gBVvcobJOCKZysbiLI6zB0wKyYa0hRnHW/SrvueQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0LvPYjr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C91C433C7;
+	Mon,  8 Apr 2024 13:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582699;
-	bh=AZJqBFkiZ7ds04KrSC4aNj8EJws8DOQsPUhRW+7oP0s=;
+	s=korg; t=1712582451;
+	bh=pUyfJKOnwtsriFbQgx90W/48ypcCYvqOrJTXrU/vqwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0K5c1GnB0dS8/of7TaBjY1AkM5rkxX0OUWHELAqoCtUJ7X0Up5hPXPKmdOORw8Bty
-	 juSkOtt8Sekdz4q/FC0IflzjFvi2nUqYGPlrlWH+JAQzjWQryFbcTmePQsQiC/HbDS
-	 p3Rh63oCwqd07JnOxiVu0ga0rg1yo105AT/VxAN0=
+	b=d0LvPYjri59t+P/n+Y/2UI8Fsn6TRMcKZOCB7C0RMLlbg0J45DLF6M1bxVoNFlMVM
+	 nF2dAUGbpvFr8TfYTie1B+XAYT8BsNSlVpafzfIkPKtjr/ZouBeiVjXMFFcX73gVR9
+	 oDmbtjxZwOVuTRXCbGtePvVRGmpgl3ajy2TUaVFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
+	John Garry <john.garry@huawei.com>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 142/690] swiotlb: Fix alignment checks when both allocation and DMA masks are present
-Date: Mon,  8 Apr 2024 14:50:08 +0200
-Message-ID: <20240408125404.664613612@linuxfoundation.org>
+Subject: [PATCH 5.15 143/690] dma-mapping: add dma_opt_mapping_size()
+Date: Mon,  8 Apr 2024 14:50:09 +0200
+Message-ID: <20240408125404.695212862@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,64 +68,114 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: John Garry <john.garry@huawei.com>
 
-[ Upstream commit 51b30ecb73b481d5fac6ccf2ecb4a309c9ee3310 ]
+[ Upstream commit a229cc14f3395311b899e5e582b71efa8dd01df0 ]
 
-Nicolin reports that swiotlb buffer allocations fail for an NVME device
-behind an IOMMU using 64KiB pages. This is because we end up with a
-minimum allocation alignment of 64KiB (for the IOMMU to map the buffer
-safely) but a minimum DMA alignment mask corresponding to a 4KiB NVME
-page (i.e. preserving the 4KiB page offset from the original allocation).
-If the original address is not 4KiB-aligned, the allocation will fail
-because swiotlb_search_pool_area() erroneously compares these unmasked
-bits with the 64KiB-aligned candidate allocation.
+Streaming DMA mapping involving an IOMMU may be much slower for larger
+total mapping size. This is because every IOMMU DMA mapping requires an
+IOVA to be allocated and freed. IOVA sizes above a certain limit are not
+cached, which can have a big impact on DMA mapping performance.
 
-Tweak swiotlb_search_pool_area() so that the DMA alignment mask is
-reduced based on the required alignment of the allocation.
+Provide an API for device drivers to know this "optimal" limit, such that
+they may try to produce mapping which don't exceed it.
 
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Link: https://lore.kernel.org/r/cover.1707851466.git.nicolinc@nvidia.com
-Reported-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: John Garry <john.garry@huawei.com>
+Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: afc5aa46ed56 ("iommu/dma: Force swiotlb_max_mapping_size on an untrusted device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ Documentation/core-api/dma-api.rst | 14 ++++++++++++++
+ include/linux/dma-map-ops.h        |  1 +
+ include/linux/dma-mapping.h        |  5 +++++
+ kernel/dma/mapping.c               | 12 ++++++++++++
+ 4 files changed, 32 insertions(+)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index a9849670bdb54..5c7ed5d519424 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -469,8 +469,7 @@ static int swiotlb_find_slots(struct device *dev, phys_addr_t orig_addr,
- 	dma_addr_t tbl_dma_addr =
- 		phys_to_dma_unencrypted(dev, mem->start) & boundary_mask;
- 	unsigned long max_slots = get_max_slots(boundary_mask);
--	unsigned int iotlb_align_mask =
--		dma_get_min_align_mask(dev) & ~(IO_TLB_SIZE - 1);
-+	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
- 	unsigned int nslots = nr_slots(alloc_size), stride;
- 	unsigned int index, wrap, count = 0, i;
- 	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
-@@ -478,6 +477,14 @@ static int swiotlb_find_slots(struct device *dev, phys_addr_t orig_addr,
+diff --git a/Documentation/core-api/dma-api.rst b/Documentation/core-api/dma-api.rst
+index 6d6d0edd2d278..829f20a193cab 100644
+--- a/Documentation/core-api/dma-api.rst
++++ b/Documentation/core-api/dma-api.rst
+@@ -204,6 +204,20 @@ Returns the maximum size of a mapping for the device. The size parameter
+ of the mapping functions like dma_map_single(), dma_map_page() and
+ others should not be larger than the returned value.
  
- 	BUG_ON(!nslots);
- 
-+	/*
-+	 * Ensure that the allocation is at least slot-aligned and update
-+	 * 'iotlb_align_mask' to ignore bits that will be preserved when
-+	 * offsetting into the allocation.
-+	 */
-+	alloc_align_mask |= (IO_TLB_SIZE - 1);
-+	iotlb_align_mask &= ~alloc_align_mask;
++::
 +
- 	/*
- 	 * For mappings with an alignment requirement don't bother looping to
- 	 * unaligned slots once we found an aligned one.  For allocations of
++	size_t
++	dma_opt_mapping_size(struct device *dev);
++
++Returns the maximum optimal size of a mapping for the device.
++
++Mapping larger buffers may take much longer in certain scenarios. In
++addition, for high-rate short-lived streaming mappings, the upfront time
++spent on the mapping may account for an appreciable part of the total
++request lifetime. As such, if splitting larger requests incurs no
++significant performance penalty, then device drivers are advised to
++limit total DMA streaming mappings length to the returned value.
++
+ ::
+ 
+ 	bool
+diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+index bfffe494356ad..2ff55ec902f48 100644
+--- a/include/linux/dma-map-ops.h
++++ b/include/linux/dma-map-ops.h
+@@ -69,6 +69,7 @@ struct dma_map_ops {
+ 	int (*dma_supported)(struct device *dev, u64 mask);
+ 	u64 (*get_required_mask)(struct device *dev);
+ 	size_t (*max_mapping_size)(struct device *dev);
++	size_t (*opt_mapping_size)(void);
+ 	unsigned long (*get_merge_boundary)(struct device *dev);
+ };
+ 
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index dca2b1355bb13..fe3849434b2a2 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -144,6 +144,7 @@ int dma_set_mask(struct device *dev, u64 mask);
+ int dma_set_coherent_mask(struct device *dev, u64 mask);
+ u64 dma_get_required_mask(struct device *dev);
+ size_t dma_max_mapping_size(struct device *dev);
++size_t dma_opt_mapping_size(struct device *dev);
+ bool dma_need_sync(struct device *dev, dma_addr_t dma_addr);
+ unsigned long dma_get_merge_boundary(struct device *dev);
+ struct sg_table *dma_alloc_noncontiguous(struct device *dev, size_t size,
+@@ -266,6 +267,10 @@ static inline size_t dma_max_mapping_size(struct device *dev)
+ {
+ 	return 0;
+ }
++static inline size_t dma_opt_mapping_size(struct device *dev)
++{
++	return 0;
++}
+ static inline bool dma_need_sync(struct device *dev, dma_addr_t dma_addr)
+ {
+ 	return false;
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 9478eccd1c8e6..c9dbc8f5812b8 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -777,6 +777,18 @@ size_t dma_max_mapping_size(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(dma_max_mapping_size);
+ 
++size_t dma_opt_mapping_size(struct device *dev)
++{
++	const struct dma_map_ops *ops = get_dma_ops(dev);
++	size_t size = SIZE_MAX;
++
++	if (ops && ops->opt_mapping_size)
++		size = ops->opt_mapping_size();
++
++	return min(dma_max_mapping_size(dev), size);
++}
++EXPORT_SYMBOL_GPL(dma_opt_mapping_size);
++
+ bool dma_need_sync(struct device *dev, dma_addr_t dma_addr)
+ {
+ 	const struct dma_map_ops *ops = get_dma_ops(dev);
 -- 
 2.43.0
 
