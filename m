@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECB089C559
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B070A89C03B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30B3E1F23883
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:56:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2E341C20F4A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CFC7BAF0;
-	Mon,  8 Apr 2024 13:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CE4745C5;
+	Mon,  8 Apr 2024 13:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaWhi4hl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYfQ4St1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0340279955;
-	Mon,  8 Apr 2024 13:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05192DF73;
+	Mon,  8 Apr 2024 13:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584574; cv=none; b=cqJ71L44GxluEkyBCAO2EACJFQG9OBUTDmNHK/TKSoQfnXfD2D0Xfrfq/5EyUHy52VP2DttOW7FTI3Yiv26zU7kPJavJMeUxXLvovm5G7lvqGIMmrqxTkToqUBqi7W0g/uc76FXLBe7kHWPeWHt9A9sHwiNFyMQYh4NOW046+3k=
+	t=1712581588; cv=none; b=JCW0buP2Wkmk4OkeVw4cm0DJEv94QAMaMOMg2znl1TGp5Vv7K47rJhARquQrbCXBpCHazeqgnmYQebYW1uICiRacprf7Q3TDlFqagZs3l+zRO3AgAHrnFjh3VqDB+D9aKif6X7+PQQwYu3OPS8CauIq92XM8ogmUjrsjGzFJLWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584574; c=relaxed/simple;
-	bh=XbP0xYplS0jvWwoYPA9CAyT/BwdUo0aV+G4hscHLPiw=;
+	s=arc-20240116; t=1712581588; c=relaxed/simple;
+	bh=FyyKzLMVvZye/P5jRAvzl+FPEZM6WBIREHXb1UC4vp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMVx1wdjm9nZib4MzAHM3wJgI9dvGgRrLZk8/gxd1PH7byVXWkEbbAS9kYp4DoggizDrS7nmW0IilAgh3nZCuZ/V8OkRSSFWDAERTD4gPbesqlJUa2SKDIF9kuD0R0mYan1w9GZuJiXolB3jJLn1T67IIeUjoMuGe4Woy9g4aOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaWhi4hl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A26EC433C7;
-	Mon,  8 Apr 2024 13:56:13 +0000 (UTC)
+	 MIME-Version; b=oo9KTk5OCf5bnFehu68uCnvFWVmplTt+E1kDPFJKn+oa00xjG6beAz21O/FXfZLsvqwxuuhWajM93QONYcYbhwW9Ug3MZscQkH2e2RISLv+SgvVeyXQ356asfHzJ6JLZlq9yfGl3nTfyi2GKJ7laRMbxrtaw5GLTrUS+G7rCumI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYfQ4St1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CB6C433F1;
+	Mon,  8 Apr 2024 13:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584573;
-	bh=XbP0xYplS0jvWwoYPA9CAyT/BwdUo0aV+G4hscHLPiw=;
+	s=korg; t=1712581588;
+	bh=FyyKzLMVvZye/P5jRAvzl+FPEZM6WBIREHXb1UC4vp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HaWhi4hltLsI/lUrepAy11AvztV+cVi1E1Glth9prGWgwQSN8LMsDTeVTjKrYudxs
-	 D3lgZ07oAqm+ZRvYNgVSCUdNU50MeiIMK0QY/LYrtSZk5LLqVMccE0tCj2iS7BUEvV
-	 DAKAzxE6oaJ3XoXvKmw07uri3ODq/Ctrdm0w7xG4=
+	b=oYfQ4St1xQptJWVxgws2PwoLPtAaYn6Iiay5YSg/r4qPGcMuHWXdesarKtS73gYwd
+	 JxUelxIR2Xqe0EjNKXi6H4w+ADPDOAZQJ6jvti9MZ8isTYZuDsRAjsIlAQBqToaMR6
+	 oMj3Ro5RqoWjk4g/TqCvKsCcQIT+zVC8/nKfAn20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 454/690] nfsd: make nfsd4_run_cb a bool return function
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/252] net: hsr: hsr_slave: Fix the promiscuous mode in offload mode
 Date: Mon,  8 Apr 2024 14:55:20 +0200
-Message-ID: <20240408125416.084787175@linuxfoundation.org>
+Message-ID: <20240408125307.310551327@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Ravi Gunasekaran <r-gunasekaran@ti.com>
 
-[ Upstream commit b95239ca4954a0d48b19c09ce7e8f31b453b4216 ]
+[ Upstream commit b11c81731c810efe592e510bb0110e0db6877419 ]
 
-queue_work can return false and not queue anything, if the work is
-already queued. If that happens in the case of a CB_RECALL, we'll have
-taken an extra reference to the stid that will never be put. Ensure we
-throw a warning in that case.
+commit e748d0fd66ab ("net: hsr: Disable promiscuous mode in
+offload mode") disables promiscuous mode of slave devices
+while creating an HSR interface. But while deleting the
+HSR interface, it does not take care of it. It decreases the
+promiscuous mode count, which eventually enables promiscuous
+mode on the slave devices when creating HSR interface again.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fix this by not decrementing the promiscuous mode count while
+deleting the HSR interface when offload is enabled.
+
+Fixes: e748d0fd66ab ("net: hsr: Disable promiscuous mode in offload mode")
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240322100447.27615-1-r-gunasekaran@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4callback.c | 14 ++++++++++++--
- fs/nfsd/nfs4state.c    |  5 ++---
- fs/nfsd/state.h        |  2 +-
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ net/hsr/hsr_slave.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index face8908a40b1..39989c14c8a1e 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -1373,11 +1373,21 @@ void nfsd4_init_cb(struct nfsd4_callback *cb, struct nfs4_client *clp,
- 	cb->cb_holds_slot = false;
- }
+diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+index e5742f2a2d522..1b6457f357bdb 100644
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -220,7 +220,8 @@ void hsr_del_port(struct hsr_port *port)
+ 		netdev_update_features(master->dev);
+ 		dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
+ 		netdev_rx_handler_unregister(port->dev);
+-		dev_set_promiscuity(port->dev, -1);
++		if (!port->hsr->fwd_offloaded)
++			dev_set_promiscuity(port->dev, -1);
+ 		netdev_upper_dev_unlink(port->dev, master->dev);
+ 	}
  
--void nfsd4_run_cb(struct nfsd4_callback *cb)
-+/**
-+ * nfsd4_run_cb - queue up a callback job to run
-+ * @cb: callback to queue
-+ *
-+ * Kick off a callback to do its thing. Returns false if it was already
-+ * on a queue, true otherwise.
-+ */
-+bool nfsd4_run_cb(struct nfsd4_callback *cb)
- {
- 	struct nfs4_client *clp = cb->cb_clp;
-+	bool queued;
- 
- 	nfsd41_cb_inflight_begin(clp);
--	if (!nfsd4_queue_cb(cb))
-+	queued = nfsd4_queue_cb(cb);
-+	if (!queued)
- 		nfsd41_cb_inflight_end(clp);
-+	return queued;
- }
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index e98306c69f424..61978ad43a0f7 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4874,14 +4874,13 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
- 	 * we know it's safe to take a reference.
- 	 */
- 	refcount_inc(&dp->dl_stid.sc_count);
--	nfsd4_run_cb(&dp->dl_recall);
-+	WARN_ON_ONCE(!nfsd4_run_cb(&dp->dl_recall));
- }
- 
- /* Called from break_lease() with flc_lock held. */
- static bool
- nfsd_break_deleg_cb(struct file_lock *fl)
- {
--	bool ret = false;
- 	struct nfs4_delegation *dp = (struct nfs4_delegation *)fl->fl_owner;
- 	struct nfs4_file *fp = dp->dl_stid.sc_file;
- 	struct nfs4_client *clp = dp->dl_stid.sc_client;
-@@ -4907,7 +4906,7 @@ nfsd_break_deleg_cb(struct file_lock *fl)
- 	fp->fi_had_conflict = true;
- 	nfsd_break_one_deleg(dp);
- 	spin_unlock(&fp->fi_lock);
--	return ret;
-+	return false;
- }
- 
- /**
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index b3477087a9fc3..e2daef3cc0034 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -692,7 +692,7 @@ extern void nfsd4_probe_callback_sync(struct nfs4_client *clp);
- extern void nfsd4_change_callback(struct nfs4_client *clp, struct nfs4_cb_conn *);
- extern void nfsd4_init_cb(struct nfsd4_callback *cb, struct nfs4_client *clp,
- 		const struct nfsd4_callback_ops *ops, enum nfsd4_cb_op op);
--extern void nfsd4_run_cb(struct nfsd4_callback *cb);
-+extern bool nfsd4_run_cb(struct nfsd4_callback *cb);
- extern int nfsd4_create_callback_queue(void);
- extern void nfsd4_destroy_callback_queue(void);
- extern void nfsd4_shutdown_callback(struct nfs4_client *);
 -- 
 2.43.0
 
