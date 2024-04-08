@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-36750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10ECF89C180
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535D089C3C3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 437831C21DAA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:21:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E72581F24CCB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B437E111;
-	Mon,  8 Apr 2024 13:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3407EEF3;
+	Mon,  8 Apr 2024 13:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJQRUmUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzUVU8v8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6277B6F53D;
-	Mon,  8 Apr 2024 13:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E297D074;
+	Mon,  8 Apr 2024 13:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582235; cv=none; b=fcrTuW7k9ShtFtV9IO9G167DICcnXEj0LjaocWz6ONHGlIBNMrrapmbvSQ0SRhgKLoTbDh/J7mc5HE5ddmbyClvo1BcArnEy7Ck/rTZWViOVsxOm/aDEnjnxB05kcG4IGNpgO9F+0eH64x+prnSbEn19C6m82yKD/1tqTRGmemc=
+	t=1712583520; cv=none; b=pRrjYfLChoSiTeQOJgMJJbvviX2Rh2LfpxRpSycvsh86/sFlN3JxIYuDiRcu0SnHEBUKJ+X8GBjHUG/GriR5ZpTIH9LGsBglM7SiI+pc0/mJRzCfE/GwApJL/WGr72TG6NW96SGHtBt8h30U4CWh5hlfm7kThp5aohoX/YZzoeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582235; c=relaxed/simple;
-	bh=vu9O5lz66QrsBbTd36owBDNIYC1XU9Wb7zmDyEpQd24=;
+	s=arc-20240116; t=1712583520; c=relaxed/simple;
+	bh=yHv5mdT59vw3+AB+ZUJyz5T4+mXcTnciHILng9eHs1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gp1Tp20xoXHccFR+0rommzUuTluZza8y92obMHUwghycfYVb+/yZiKQT28ns+WF8kCOMS/fGIITeBOMtSUtSrF8CEqh8EsKGhXZ34hZhxYrsAHsRu3foskahuoGjUY1xZ2VYsA9xXtXSmK+t2yIsozcwzxuUaBDqtX+pqSbuBCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJQRUmUd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D919C433F1;
-	Mon,  8 Apr 2024 13:17:14 +0000 (UTC)
+	 MIME-Version; b=V5+4O0OjCNDZ2TaWZORcLJAFEB1CniM30LT88rpv4HKO/L1WeBRBeLz0hM9ZcJ2chHWrFoxkZyuZPi2Jv46k9AJZ6Qr8Xj0AkaCGAwVrtzlspVjjLycINCfGB77751w2J70j6Yh2mmq86fYJMpM0q1u0/uGL2YRO0UHzh5pz67o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzUVU8v8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F954C433C7;
+	Mon,  8 Apr 2024 13:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582235;
-	bh=vu9O5lz66QrsBbTd36owBDNIYC1XU9Wb7zmDyEpQd24=;
+	s=korg; t=1712583520;
+	bh=yHv5mdT59vw3+AB+ZUJyz5T4+mXcTnciHILng9eHs1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJQRUmUdXeT0QocnWwTfYnXxIzh5HuTC50RoR1KdjzF1CJojY8q9CKLdcu9fCQ2Zu
-	 EZsCopYOnvk/5zbaLW7cHahHJT7UfQWCTRtm+HojQF9dEb4fdlQNLMFebyIRE34OqB
-	 WAe+5IB2sLBH35PfPsBLoqaPAbaJ0BJrzz5D/yec=
+	b=KzUVU8v8T8Dbqj7aaz0gruWSZTt9VwYpew/ymFwB9Oku4cGT26aDtXdisYYQb8HSz
+	 wxtLioM0xIKweOKuYImCozyt4wE0OuzjW2JGqKKK4NMr5kIWzHEXOYUeBmuPN5zWHc
+	 wGXlh+qiLdzNwpfnrH5tvmdC92G+X269IsUZ7Yho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+011e4ea1da6692cf881c@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 089/138] fs/pipe: Fix lockdep false-positive in watchqueue pipe_write()
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 204/252] ksmbd: dont send oplock break if rename fails
 Date: Mon,  8 Apr 2024 14:58:23 +0200
-Message-ID: <20240408125258.992405048@linuxfoundation.org>
+Message-ID: <20240408125312.984402061@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 055ca83559912f2cfd91c9441427bac4caf3c74e ]
+commit c1832f67035dc04fb89e6b591b64e4d515843cda upstream.
 
-When you try to splice between a normal pipe and a notification pipe,
-get_pipe_info(..., true) fails, so splice() falls back to treating the
-notification pipe like a normal pipe - so we end up in
-iter_file_splice_write(), which first locks the input pipe, then calls
-vfs_iter_write(), which locks the output pipe.
+Don't send oplock break if rename fails. This patch fix
+smb2.oplock.batch20 test.
 
-Lockdep complains about that, because we're taking a pipe lock while
-already holding another pipe lock.
-
-I think this probably (?) can't actually lead to deadlocks, since you'd
-need another way to nest locking a normal pipe into locking a
-watch_queue pipe, but the lockdep annotations don't make that clear.
-
-Bail out earlier in pipe_write() for notification pipes, before taking
-the pipe lock.
-
-Reported-and-tested-by: <syzbot+011e4ea1da6692cf881c@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=011e4ea1da6692cf881c
-Fixes: c73be61cede5 ("pipe: Add general notification queue support")
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20231124150822.2121798-1-jannh@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/pipe.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ fs/smb/server/smb2pdu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/pipe.c b/fs/pipe.c
-index 9873a6030df56..aa8e6ffe1cb58 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -424,6 +424,18 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
- 	bool was_empty = false;
- 	bool wake_next_writer = false;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5631,8 +5631,9 @@ static int smb2_rename(struct ksmbd_work
+ 	if (!file_info->ReplaceIfExists)
+ 		flags = RENAME_NOREPLACE;
  
-+	/*
-+	 * Reject writing to watch queue pipes before the point where we lock
-+	 * the pipe.
-+	 * Otherwise, lockdep would be unhappy if the caller already has another
-+	 * pipe locked.
-+	 * If we had to support locking a normal pipe and a notification pipe at
-+	 * the same time, we could set up lockdep annotations for that, but
-+	 * since we don't actually need that, it's simpler to just bail here.
-+	 */
-+	if (pipe_has_watch_queue(pipe))
-+		return -EXDEV;
-+
- 	/* Null write succeeds. */
- 	if (unlikely(total_len == 0))
- 		return 0;
-@@ -436,11 +448,6 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
- 		goto out;
- 	}
- 
--	if (pipe_has_watch_queue(pipe)) {
--		ret = -EXDEV;
--		goto out;
--	}
--
- 	/*
- 	 * If it wasn't empty we try to merge new data into
- 	 * the last buffer.
--- 
-2.43.0
-
+-	smb_break_all_levII_oplock(work, fp, 0);
+ 	rc = ksmbd_vfs_rename(work, &fp->filp->f_path, new_name, flags);
++	if (!rc)
++		smb_break_all_levII_oplock(work, fp, 0);
+ out:
+ 	kfree(new_name);
+ 	return rc;
 
 
 
