@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDFD89C486
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C3F089C496
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBD182845C5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C04201F21BB7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B657D3F7;
-	Mon,  8 Apr 2024 13:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CD880603;
+	Mon,  8 Apr 2024 13:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATiHWxph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0+1EEXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674037CF34;
-	Mon,  8 Apr 2024 13:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25897E118;
+	Mon,  8 Apr 2024 13:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584010; cv=none; b=nfDcIkWLOEW4GaGIW+TYjZx0mLXu9AODZBeHXNxPiw/ww67DZeKXC+/L36qs38wk+31Rnzb0YF0haNM9QTQVRU77vvKZAkYfuWY86a+U84uKLb+FxPlCJVvI+wpmmQlulZk4IpWxBDX1BQTrXaRiT1q7Cg31g9JdWUVr5YzwGnQ=
+	t=1712584042; cv=none; b=P886oFjOa5m1fWpYP1CdcfD3BaiR7lvPEDP/LxJFpjWSCnzPYDHlL9OwZyyX8ZaO8/1NG7yt06VOwunE65bnyNLMNR9nxsdTguMlRUUJV/IONKyVZC1yW4K2po7W9mcRp/D+kk8sV9u6m0GZsTlJcd4TwWsoCdTnwME77W9W3Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584010; c=relaxed/simple;
-	bh=jrClTXj2LdREau1vVBdevwG/xtUeifzonVO28MPtDAQ=;
+	s=arc-20240116; t=1712584042; c=relaxed/simple;
+	bh=MLysgIV+uAKj94uDo/CL4kzGWc2pXnpef3nXsSRwZ7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHT4yKqGxNFDuQdq/kNyqjXudY4bAsUGGDAWVTy2k94+96FMV3chvOUmb0YyE3LpB7+6rn6qjp7bS/bZj1Tajj2IF8DJ3te87n3wE6KN/GoAUh3k9LFLeg6gyNIOAi6wmj+QmJ16X2a63jmsYJCfZTSCXtT+DDym9EJO0xZWb54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATiHWxph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E221EC433F1;
-	Mon,  8 Apr 2024 13:46:49 +0000 (UTC)
+	 MIME-Version; b=R4fFvf5J+deAwO43K8mMFsW9cU5i7wRGNFUNO1y1RggmejcEE/BCe8VzM3gB6rf/5erE0lA+Jz1IjPV2QFFljjXkiWmjAMZsyElLYFGswjtG2qdZ5u/BunhZaVPeBnfRA0c9hwft3rsPhSNRQzlhjtfOHlQ4WsmBkPU32xoOcTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0+1EEXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FB1C433C7;
+	Mon,  8 Apr 2024 13:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584010;
-	bh=jrClTXj2LdREau1vVBdevwG/xtUeifzonVO28MPtDAQ=;
+	s=korg; t=1712584042;
+	bh=MLysgIV+uAKj94uDo/CL4kzGWc2pXnpef3nXsSRwZ7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATiHWxphCRnofnbZoJJin1vEiYWi3KGlAGRaIrB6SGvrcgLEBwh3fMHaDokpzi896
-	 x5ed/DMzsFg3tbL/cV21FRdNjiwNqWQTOQNo7s5tslkQnKRpx/rZTzdpbZnRcy2mDl
-	 stn/5/OM2fno/EhxjYLZutXPl8tn8PJU+4yCN1Ig=
+	b=U0+1EEXG9m/HZMPF1fEHDs2kA6NO6C3DI4c1m3FacRIgPuv19hoO6/4/RIHGLvCFh
+	 cyGaB5lSD3de0jGpeRnk+Proe3y9sLtb++VG8bl42aA3t6S7rb30TRWVIV6DdgCMnD
+	 f76JTkxyWoQp89Yu9fpr69HdcwzNs3hkR+gDE0Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 314/690] NFSD: Clean up nfsd3_proc_create()
-Date: Mon,  8 Apr 2024 14:53:00 +0200
-Message-ID: <20240408125410.979954471@linuxfoundation.org>
+Subject: [PATCH 5.15 315/690] NFSD: Avoid calling fh_drop_write() twice in do_nfsd_create()
+Date: Mon,  8 Apr 2024 14:53:01 +0200
+Message-ID: <20240408125411.009467089@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,54 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit e61568599c9ad638fdaba150fee07d7065e31851 ]
+[ Upstream commit 14ee45b70dd0d9ae76fb066cd8c0652d657353f6 ]
 
-As near as I can tell, mode bit masking and setting S_IFREG is
-already done by do_nfsd_create() and vfs_create(). The NFSv4 path
-(do_open_lookup), for example, does not bother with this special
-processing.
+Clean up: The "out" label already invokes fh_drop_write().
+
+Note that fh_drop_write() is already careful not to invoke
+mnt_drop_write() if either it has already been done or there is
+nothing to drop. Therefore no change in behavior is expected.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs3proc.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ fs/nfsd/vfs.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
-index eaf785aec0708..86163ecbb015d 100644
---- a/fs/nfsd/nfs3proc.c
-+++ b/fs/nfsd/nfs3proc.c
-@@ -229,8 +229,7 @@ nfsd3_proc_create(struct svc_rqst *rqstp)
- {
- 	struct nfsd3_createargs *argp = rqstp->rq_argp;
- 	struct nfsd3_diropres *resp = rqstp->rq_resp;
--	svc_fh		*dirfhp, *newfhp = NULL;
--	struct iattr	*attr;
-+	svc_fh *dirfhp, *newfhp;
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 541f39ab450ce..a46ab32216dee 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1487,7 +1487,6 @@ do_nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		case NFS3_CREATE_GUARDED:
+ 			err = nfserr_exist;
+ 		}
+-		fh_drop_write(fhp);
+ 		goto out;
+ 	}
  
- 	dprintk("nfsd: CREATE(3)   %s %.*s\n",
- 				SVCFH_fmt(&argp->fh),
-@@ -239,20 +238,9 @@ nfsd3_proc_create(struct svc_rqst *rqstp)
+@@ -1495,10 +1494,8 @@ do_nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		iap->ia_mode &= ~current_umask();
  
- 	dirfhp = fh_copy(&resp->dirfh, &argp->fh);
- 	newfhp = fh_init(&resp->fh, NFS3_FHSIZE);
--	attr   = &argp->attrs;
--
--	/* Unfudge the mode bits */
--	attr->ia_mode &= ~S_IFMT;
--	if (!(attr->ia_valid & ATTR_MODE)) { 
--		attr->ia_valid |= ATTR_MODE;
--		attr->ia_mode = S_IFREG;
--	} else {
--		attr->ia_mode = (attr->ia_mode & ~S_IFMT) | S_IFREG;
+ 	host_err = vfs_create(&init_user_ns, dirp, dchild, iap->ia_mode, true);
+-	if (host_err < 0) {
+-		fh_drop_write(fhp);
++	if (host_err < 0)
+ 		goto out_nfserr;
 -	}
+ 	if (created)
+ 		*created = true;
  
--	/* Now create the file and set attributes */
- 	resp->status = do_nfsd_create(rqstp, dirfhp, argp->name, argp->len,
--				      attr, newfhp, argp->createmode,
-+				      &argp->attrs, newfhp, argp->createmode,
- 				      (u32 *)argp->verf, NULL, NULL);
- 	return rpc_success;
- }
 -- 
 2.43.0
 
