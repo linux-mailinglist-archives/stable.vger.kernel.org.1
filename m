@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989A489C436
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B7F89C4A5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3937B1F21316
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82F121F22CB4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D40385C59;
-	Mon,  8 Apr 2024 13:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345ED823DE;
+	Mon,  8 Apr 2024 13:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRzObNjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x26aO29Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD3F7D414;
-	Mon,  8 Apr 2024 13:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B1E823A8;
+	Mon,  8 Apr 2024 13:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583795; cv=none; b=FUbni7hkmwIRFef0vk9XnxF3tIsQNs7XyhZMHrsuI7VVE4dxfeZ/fgB+IfN1irBUMkSKZGj1zo2kHS4Cylul7QzV6pE4qFGsThY9Utl0TK1vSP0j8hNZS0zoW9pCerNb02GjmfUEY/eGxHVTFmdY3C7/Q+IHVlcTTB+cPeBEF2Y=
+	t=1712584081; cv=none; b=ivAzVdHuliFkEuUiwKJyI47Kps4CyDWmDfvkS7mmQfVhgn+Ap4fZnzxUxBRoMiIV23b6BZyk2EkMO3FsFGp6oFNdJ4eTAcIWK0SGEXZav1LGdevMX+lm0rFcqgh3gI1Q4kfLPGfURM652y38fw63EvrF/uN3uBKkyzFDV3RJKn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583795; c=relaxed/simple;
-	bh=MbDm9GNz0xx20jrp5tLnIXPyOVqS26BwuTJKeMLQ6Fg=;
+	s=arc-20240116; t=1712584081; c=relaxed/simple;
+	bh=wMo6FpBTf9J+JmB7orybW2Ctq9t9J4YpN9nSS+CBIzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBciqDcRvsqMjA834nlGyOaS1ldTONabWelbFjbW+nnsXhm36WH8Ku7M41MbyYUaHmhwbWWWw0XFI7q8O4ZA9zfk7jCzBbtNwjARFv9Iufw/lfL2N+CSR3dtXgZVXAGSAgX3FS1AjisSPl3KPe/YFpq9QZebkLSAhc90SNjSXD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRzObNjy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC5CC433F1;
-	Mon,  8 Apr 2024 13:43:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AVjWO+WCb8Wml8/qnVnoo17DqcqsJbD+o0GO06Bbqe0aeyg3rmTubVhygIzAAuSgMR8+721kM2Y6QfSypilGmdyWem/YEXq1gsGzq4aYyhpJHRb5SZ/wzGyu/WaWPTrv5psFLCWpCDe/Z5ka/WMaq1T8Pdxdeeg1DUR/JLPDzCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x26aO29Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1880BC43390;
+	Mon,  8 Apr 2024 13:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583795;
-	bh=MbDm9GNz0xx20jrp5tLnIXPyOVqS26BwuTJKeMLQ6Fg=;
+	s=korg; t=1712584080;
+	bh=wMo6FpBTf9J+JmB7orybW2Ctq9t9J4YpN9nSS+CBIzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRzObNjyYhaCwNbm0FAMF3EPdqLq3WUqauljSzOEcwhGgDHASF+dKY9FTY45KLxmX
-	 iJmNUCfaQzFotvFCUoE5gdUOmcSEFCY/cIGNutccjFiMlZx3MchTXQQzfNZZbgtxJ+
-	 WQVjPYVk3WfiG43VEVKlhSJKLXC3FIyKZc6uG0t8=
+	b=x26aO29Z+NxuvuocOM/e5uCQ3ZdgottHcXEJs0JgQeV4xmIJxh3ant/3WtUbCymoM
+	 pRGoUIwdMT0qRoNhPJBiA/dU9ioKVl30RRK2d2Y+ZuP3KokPK+SFlAtrvYvu3oWjYj
+	 85BqYFSDIyn+iMFe7iZXmqUiK/kj6dbOaiqqax0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 234/252] smb: client: fix potential UAF in smb2_is_valid_lease_break()
+	Uma Shankar <uma.shankar@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.8 258/273] drm/i915/mst: Limit MST+DSC to TGL+
 Date: Mon,  8 Apr 2024 14:58:53 +0200
-Message-ID: <20240408125313.917050937@linuxfoundation.org>
+Message-ID: <20240408125317.481385068@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 705c76fbf726c7a2f6ff9143d4013b18daaaebf1 upstream.
+commit 51bc63392e96ca45d7be98bc43c180b174ffca09 upstream.
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+The MST code currently assumes that glk+ already supports MST+DSC,
+which is incorrect. We need to check for TGL+ actually. ICL does
+support SST+DSC, but supposedly it can't do MST+FEC which will
+also rule out MST+DSC.
+
+Note that a straight TGL+ check doesn't work here because DSC
+support can get fused out, so we do need to also check 'has_dsc'.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: d51f25eb479a ("drm/i915: Add DSC support to MST path")
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240402135148.23011-6-ville.syrjala@linux.intel.com
+(cherry picked from commit c9c92f286dbdf872390ef3e74dbe5f0641e46f55)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2misc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/i915/display/intel_display_device.h |    1 +
+ drivers/gpu/drm/i915/display/intel_dp_mst.c         |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2misc.c
-+++ b/fs/smb/client/smb2misc.c
-@@ -622,6 +622,8 @@ smb2_is_valid_lease_break(char *buffer,
- 	/* look up tcon based on tid & uid */
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_for_each_entry(ses, &pserver->smb_ses_list, smb_ses_list) {
-+		if (cifs_ses_exiting(ses))
-+			continue;
- 		list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 			spin_lock(&tcon->open_file_lock);
- 			cifs_stats_inc(
+--- a/drivers/gpu/drm/i915/display/intel_display_device.h
++++ b/drivers/gpu/drm/i915/display/intel_display_device.h
+@@ -47,6 +47,7 @@ struct drm_printer;
+ #define HAS_DPT(i915)			(DISPLAY_VER(i915) >= 13)
+ #define HAS_DSB(i915)			(DISPLAY_INFO(i915)->has_dsb)
+ #define HAS_DSC(__i915)			(DISPLAY_RUNTIME_INFO(__i915)->has_dsc)
++#define HAS_DSC_MST(__i915)		(DISPLAY_VER(__i915) >= 12 && HAS_DSC(__i915))
+ #define HAS_FBC(i915)			(DISPLAY_RUNTIME_INFO(i915)->fbc_mask != 0)
+ #define HAS_FPGA_DBG_UNCLAIMED(i915)	(DISPLAY_INFO(i915)->has_fpga_dbg)
+ #define HAS_FW_BLC(i915)		(DISPLAY_VER(i915) >= 3)
+--- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+@@ -1338,7 +1338,7 @@ intel_dp_mst_mode_valid_ctx(struct drm_c
+ 		return 0;
+ 	}
+ 
+-	if (DISPLAY_VER(dev_priv) >= 10 &&
++	if (HAS_DSC_MST(dev_priv) &&
+ 	    drm_dp_sink_supports_dsc(intel_connector->dp.dsc_dpcd)) {
+ 		/*
+ 		 * TBD pass the connector BPC,
 
 
 
