@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-37100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62A889C352
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15A789C5F1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 911ED2834DD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58A98283828
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4D87C6E9;
-	Mon,  8 Apr 2024 13:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1745C7D3EC;
+	Mon,  8 Apr 2024 14:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjQ3BN2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwoytcoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2917C0B2;
-	Mon,  8 Apr 2024 13:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75657BB15;
+	Mon,  8 Apr 2024 14:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583250; cv=none; b=e9yeGhc4mrDWYj/zTF3VFavLdqKQ11357GBt3c8hHZXcUiq8noStS7KrvZ6dZgC1MNMqgoi7zGWlwQbiwjp10EGjQUTJxdjZNBwFiHPEEUZKCUtmfKr/jxoHaPjVkJ+r4x2btTsFwJ+UBdDFy40lEmPxFZBpukNZxk2CLaTttuI=
+	t=1712584937; cv=none; b=MSc0IWjNUwL7i9koJPCgC1h5XZUqCSjhQFnaXnYDyyIoO2kPYJdtXwDbmJZc33QhHiqVUzprW9Aa3JjH9Dsi8rA2W6wj6E8iCMvjemPOfZ5S+9YNdtM0suiKIY5X7IIXod0EVsXFKausHNz/jMwtK2bJQUtGdYAmPLRr4DBS+J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583250; c=relaxed/simple;
-	bh=Oo3MysJF7VW2QYafkBHl8sWwoOvgIYjMLAaZoPoX1DI=;
+	s=arc-20240116; t=1712584937; c=relaxed/simple;
+	bh=/iO3pfCa9DaPOYswZfHEDY68Art7tG8bb7yGnumGSWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YH7yYDyPpbdrcMuFzgM6jV1sOVB5+U/76xhOYkLYWqEGUFsinqJ3H5i9u7D52G7a/KDzL5MoQhR1Qy1Y/S14YaJrENskFTTSXGG8JsvxntoQezhwBa5GH1ksjtRXgYWt7UvAazVtUXabWqgUeAlkHU640qtut4+dZ6FOO6t694A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjQ3BN2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3B9C433F1;
-	Mon,  8 Apr 2024 13:34:09 +0000 (UTC)
+	 MIME-Version; b=iqH7vBR+4zPdzylBJCktBokuHLxx70UK5BPU++n88e6L8vAYWyjYmYHYRylGOqIXnq1iOS0Rdss6S94b6zlvo/9gkHz1TcIYUWSsWRqp6j1ufNrnc9muiR4u3GZ3Kq/7Q0hmWauwD6VbrZNAhsruygjwf9ppQaJoB/dzt13ed1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwoytcoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F631C433F1;
+	Mon,  8 Apr 2024 14:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583250;
-	bh=Oo3MysJF7VW2QYafkBHl8sWwoOvgIYjMLAaZoPoX1DI=;
+	s=korg; t=1712584937;
+	bh=/iO3pfCa9DaPOYswZfHEDY68Art7tG8bb7yGnumGSWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjQ3BN2eC+/2OjHZ1ntt6ycahQegteRC6ExIuNHwOuQv5JtO1TADFZGipk65N6bfD
-	 mxuuOg46J6LpJ8N7J4YjkKtqWaFek0Fmy/4BZsjgwo+ZdtpMkBP2i7xLvg7TV+Ta95
-	 6HYk4naFQ12iJvq87Ftu2+kd1mPGwXwyzNCJ5whQ=
+	b=VwoytcoUiAPJECIga3gEEtZWbZ1ieUnmZeVdwFSRkdbmqr9hfMuORF6UgB4I0V5l6
+	 +uLKTpuDPH8lVfEt085uQfIhfhhiZZrxpjjHsiI/8zZPeRBdTjQGkZ2BDARkdmmLt9
+	 yUsCJPYjOjB4bxtQESWNSo8DMazQYe+Ii4s4BgMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	linux-usb@vger.kernel.org,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/252] spi: s3c64xx: Extract FIFO depth calculation to a dedicated macro
+Subject: [PATCH 5.15 607/690] scsi: usb: Stop using the SCSI pointer
 Date: Mon,  8 Apr 2024 14:57:53 +0200
-Message-ID: <20240408125312.057606572@linuxfoundation.org>
+Message-ID: <20240408125421.592860359@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +67,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Protsenko <semen.protsenko@linaro.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 460efee706c2b6a4daba62ec143fea29c2e7b358 ]
+[ Upstream commit 5dfcf1ad933fe877cb44e9fb7a661dfc22190101 ]
 
-Simplify the code by extracting all cases of FIFO depth calculation into
-a dedicated macro. No functional change.
+Set scsi_host_template.cmd_size instead of using the SCSI pointer for
+storing driver-private data. Change the type of the argument of
+uas_add_work() from struct uas_cmd_info * into struct scsi_cmnd * because
+it is easier to convert a SCSI command pointer into a uas_cmd_info pointer
+than the other way around.
 
-Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://msgid.link/r/20240120170001.3356-1-semen.protsenko@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+This patch prepares for removal of the SCSI pointer from struct scsi_cmnd.
+
+Link: https://lore.kernel.org/r/20220218195117.25689-46-bvanassche@acm.org
+Cc: linux-usb@vger.kernel.org
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: cd5432c71235 ("USB: UAS: return ENODEV when submit urbs fail with device not attached")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/usb/storage/uas.c | 43 ++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 0e48ffd499b9f..432ec60d35684 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -109,6 +109,7 @@
- #define TX_FIFO_LVL(v, i) (((v) >> 6) & FIFO_LVL_MASK(i))
- #define RX_FIFO_LVL(v, i) (((v) >> (i)->port_conf->rx_lvl_offset) & \
- 					FIFO_LVL_MASK(i))
-+#define FIFO_DEPTH(i) ((FIFO_LVL_MASK(i) >> 1) + 1)
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index 774d18907f472..d11a9481f6d00 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -113,7 +113,7 @@ static void uas_do_work(struct work_struct *work)
+ 			continue;
  
- #define S3C64XX_SPI_MAX_TRAILCNT	0x3ff
- #define S3C64XX_SPI_TRAILCNT_OFF	19
-@@ -406,7 +407,7 @@ static bool s3c64xx_spi_can_dma(struct spi_controller *host,
- 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
+ 		cmnd = devinfo->cmnd[i];
+-		cmdinfo = (void *)&cmnd->SCp;
++		cmdinfo = scsi_cmd_priv(cmnd);
  
- 	if (sdd->rx_dma.ch && sdd->tx_dma.ch) {
--		return xfer->len > (FIFO_LVL_MASK(sdd) >> 1) + 1;
-+		return xfer->len > FIFO_DEPTH(sdd);
- 	} else {
- 		return false;
- 	}
-@@ -495,9 +496,7 @@ static u32 s3c64xx_spi_wait_for_timeout(struct s3c64xx_spi_driver_data *sdd,
- 	void __iomem *regs = sdd->regs;
- 	unsigned long val = 1;
- 	u32 status;
--
--	/* max fifo depth available */
--	u32 max_fifo = (FIFO_LVL_MASK(sdd) >> 1) + 1;
-+	u32 max_fifo = FIFO_DEPTH(sdd);
+ 		if (!(cmdinfo->state & IS_IN_WORK_LIST))
+ 			continue;
+@@ -139,10 +139,9 @@ static void uas_scan_work(struct work_struct *work)
+ 	dev_dbg(&devinfo->intf->dev, "scan complete\n");
+ }
  
- 	if (timeout_ms)
- 		val = msecs_to_loops(timeout_ms);
-@@ -604,7 +603,7 @@ static int s3c64xx_wait_for_pio(struct s3c64xx_spi_driver_data *sdd,
- 	 * For any size less than the fifo size the below code is
- 	 * executed atleast once.
- 	 */
--	loops = xfer->len / ((FIFO_LVL_MASK(sdd) >> 1) + 1);
-+	loops = xfer->len / FIFO_DEPTH(sdd);
- 	buf = xfer->rx_buf;
- 	do {
- 		/* wait for data to be received in the fifo */
-@@ -741,7 +740,7 @@ static int s3c64xx_spi_transfer_one(struct spi_controller *host,
- 				    struct spi_transfer *xfer)
+-static void uas_add_work(struct uas_cmd_info *cmdinfo)
++static void uas_add_work(struct scsi_cmnd *cmnd)
  {
- 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
--	const unsigned int fifo_len = (FIFO_LVL_MASK(sdd) >> 1) + 1;
-+	const unsigned int fifo_len = FIFO_DEPTH(sdd);
- 	const void *tx_buf = NULL;
- 	void *rx_buf = NULL;
- 	int target_len = 0, origin_len = 0;
-@@ -1280,7 +1279,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Targets attached\n",
- 					sdd->port_id, host->num_chipselect);
- 	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\n",
--					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1);
-+					mem_res, FIFO_DEPTH(sdd));
+-	struct scsi_pointer *scp = (void *)cmdinfo;
+-	struct scsi_cmnd *cmnd = container_of(scp, struct scsi_cmnd, SCp);
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	struct uas_dev_info *devinfo = cmnd->device->hostdata;
  
- 	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(&pdev->dev);
+ 	lockdep_assert_held(&devinfo->lock);
+@@ -163,7 +162,7 @@ static void uas_zap_pending(struct uas_dev_info *devinfo, int result)
+ 			continue;
+ 
+ 		cmnd = devinfo->cmnd[i];
+-		cmdinfo = (void *)&cmnd->SCp;
++		cmdinfo = scsi_cmd_priv(cmnd);
+ 		uas_log_cmd_state(cmnd, __func__, 0);
+ 		/* Sense urbs were killed, clear COMMAND_INFLIGHT manually */
+ 		cmdinfo->state &= ~COMMAND_INFLIGHT;
+@@ -200,15 +199,14 @@ static void uas_sense(struct urb *urb, struct scsi_cmnd *cmnd)
+ static void uas_log_cmd_state(struct scsi_cmnd *cmnd, const char *prefix,
+ 			      int status)
+ {
+-	struct uas_cmd_info *ci = (void *)&cmnd->SCp;
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *ci = scsi_cmd_priv(cmnd);
+ 
+ 	if (status == -ENODEV) /* too late */
+ 		return;
+ 
+ 	scmd_printk(KERN_INFO, cmnd,
+ 		    "%s %d uas-tag %d inflight:%s%s%s%s%s%s%s%s%s%s%s%s ",
+-		    prefix, status, cmdinfo->uas_tag,
++		    prefix, status, ci->uas_tag,
+ 		    (ci->state & SUBMIT_STATUS_URB)     ? " s-st"  : "",
+ 		    (ci->state & ALLOC_DATA_IN_URB)     ? " a-in"  : "",
+ 		    (ci->state & SUBMIT_DATA_IN_URB)    ? " s-in"  : "",
+@@ -231,7 +229,7 @@ static void uas_free_unsubmitted_urbs(struct scsi_cmnd *cmnd)
+ 	if (!cmnd)
+ 		return;
+ 
+-	cmdinfo = (void *)&cmnd->SCp;
++	cmdinfo = scsi_cmd_priv(cmnd);
+ 
+ 	if (cmdinfo->state & SUBMIT_CMD_URB)
+ 		usb_free_urb(cmdinfo->cmd_urb);
+@@ -245,7 +243,7 @@ static void uas_free_unsubmitted_urbs(struct scsi_cmnd *cmnd)
+ 
+ static int uas_try_complete(struct scsi_cmnd *cmnd, const char *caller)
+ {
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	struct uas_dev_info *devinfo = (void *)cmnd->device->hostdata;
+ 
+ 	lockdep_assert_held(&devinfo->lock);
+@@ -263,13 +261,13 @@ static int uas_try_complete(struct scsi_cmnd *cmnd, const char *caller)
+ static void uas_xfer_data(struct urb *urb, struct scsi_cmnd *cmnd,
+ 			  unsigned direction)
+ {
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	int err;
+ 
+ 	cmdinfo->state |= direction | SUBMIT_STATUS_URB;
+ 	err = uas_submit_urbs(cmnd, cmnd->device->hostdata);
+ 	if (err) {
+-		uas_add_work(cmdinfo);
++		uas_add_work(cmnd);
+ 	}
+ }
+ 
+@@ -329,7 +327,7 @@ static void uas_stat_cmplt(struct urb *urb)
+ 	}
+ 
+ 	cmnd = devinfo->cmnd[idx];
+-	cmdinfo = (void *)&cmnd->SCp;
++	cmdinfo = scsi_cmd_priv(cmnd);
+ 
+ 	if (!(cmdinfo->state & COMMAND_INFLIGHT)) {
+ 		uas_log_cmd_state(cmnd, "unexpected status cmplt", 0);
+@@ -394,7 +392,7 @@ static void uas_stat_cmplt(struct urb *urb)
+ static void uas_data_cmplt(struct urb *urb)
+ {
+ 	struct scsi_cmnd *cmnd = urb->context;
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	struct uas_dev_info *devinfo = (void *)cmnd->device->hostdata;
+ 	struct scsi_data_buffer *sdb = &cmnd->sdb;
+ 	unsigned long flags;
+@@ -446,7 +444,7 @@ static struct urb *uas_alloc_data_urb(struct uas_dev_info *devinfo, gfp_t gfp,
+ 				      enum dma_data_direction dir)
+ {
+ 	struct usb_device *udev = devinfo->udev;
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	struct urb *urb = usb_alloc_urb(0, gfp);
+ 	struct scsi_data_buffer *sdb = &cmnd->sdb;
+ 	unsigned int pipe = (dir == DMA_FROM_DEVICE)
+@@ -468,7 +466,7 @@ static struct urb *uas_alloc_sense_urb(struct uas_dev_info *devinfo, gfp_t gfp,
+ 				       struct scsi_cmnd *cmnd)
+ {
+ 	struct usb_device *udev = devinfo->udev;
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	struct urb *urb = usb_alloc_urb(0, gfp);
+ 	struct sense_iu *iu;
+ 
+@@ -496,7 +494,7 @@ static struct urb *uas_alloc_cmd_urb(struct uas_dev_info *devinfo, gfp_t gfp,
+ {
+ 	struct usb_device *udev = devinfo->udev;
+ 	struct scsi_device *sdev = cmnd->device;
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	struct urb *urb = usb_alloc_urb(0, gfp);
+ 	struct command_iu *iu;
+ 	int len;
+@@ -558,7 +556,7 @@ static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
+ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 			   struct uas_dev_info *devinfo)
+ {
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	struct urb *urb;
+ 	int err;
+ 
+@@ -638,12 +636,10 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd,
+ {
+ 	struct scsi_device *sdev = cmnd->device;
+ 	struct uas_dev_info *devinfo = sdev->hostdata;
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	unsigned long flags;
+ 	int idx, err;
+ 
+-	BUILD_BUG_ON(sizeof(struct uas_cmd_info) > sizeof(struct scsi_pointer));
+-
+ 	/* Re-check scsi_block_requests now that we've the host-lock */
+ 	if (cmnd->device->host->host_self_blocked)
+ 		return SCSI_MLQUEUE_DEVICE_BUSY;
+@@ -713,7 +709,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd,
+ 			spin_unlock_irqrestore(&devinfo->lock, flags);
+ 			return SCSI_MLQUEUE_DEVICE_BUSY;
+ 		}
+-		uas_add_work(cmdinfo);
++		uas_add_work(cmnd);
+ 	}
+ 
+ 	devinfo->cmnd[idx] = cmnd;
+@@ -731,7 +727,7 @@ static DEF_SCSI_QCMD(uas_queuecommand)
+  */
+ static int uas_eh_abort_handler(struct scsi_cmnd *cmnd)
+ {
+-	struct uas_cmd_info *cmdinfo = (void *)&cmnd->SCp;
++	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+ 	struct uas_dev_info *devinfo = (void *)cmnd->device->hostdata;
+ 	struct urb *data_in_urb = NULL;
+ 	struct urb *data_out_urb = NULL;
+@@ -911,6 +907,7 @@ static struct scsi_host_template uas_host_template = {
+ 	.this_id = -1,
+ 	.skip_settle_delay = 1,
+ 	.dma_boundary = PAGE_SIZE - 1,
++	.cmd_size = sizeof(struct uas_cmd_info),
+ };
+ 
+ #define UNUSUAL_DEV(id_vendor, id_product, bcdDeviceMin, bcdDeviceMax, \
 -- 
 2.43.0
 
