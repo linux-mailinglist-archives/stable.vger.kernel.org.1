@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-36695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2A589C145
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D2189C389
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E20601C21813
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F6BB1C222C1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A828175E;
-	Mon,  8 Apr 2024 13:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E722128392;
+	Mon,  8 Apr 2024 13:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDF77Ocq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP8PnpZy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BBB7F7CC;
-	Mon,  8 Apr 2024 13:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDBD12837F;
+	Mon,  8 Apr 2024 13:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582075; cv=none; b=dwqgyYcEHHdnTOFmS3dy+eisWQak0U4PQ9O1qK+hgMHKqT9y5KzPdDE5ZW+CkPCP7uidY8GR0u6Q2B7tcgMzrPz24Zdyqe0oU7V0Rl/ZOsomUS8pk0Z1jzRIMqJttrGV9Ql5HQ2YEfZ+HdgBaffTVE6rnz+6ZASVjvbdRXQTn7w=
+	t=1712583393; cv=none; b=ccQ7njuoWFnbInmJEvnxdTP5vC5YwD2nPmcPeSfz90vbpZgk8l4PG6mq3MKZe6Wr2cf0qjxc9Yp7Q4A1Ya9kv1B9DvwbH4tNBaw36E9kiiBM9QT7uXEypevZX/PYHXrO9qkPMXOqDMV1perVJSVT2V7s8HnKMZ2oCyq7fk5BQD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582075; c=relaxed/simple;
-	bh=OxR1Em4nZqm3OMeso8zVYvk041Sd0k3JiXT1PFsKJr8=;
+	s=arc-20240116; t=1712583393; c=relaxed/simple;
+	bh=y7I308wMdYENCbpCdBpeHopAnxgXZR7SdRtmZnqS30w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t0gf12JAJKbPghOO84oHBoBRxN5iCPHjMFvUyf0KEQCyw22U836PtYXrYC1I7PqHwGkKThHYb7l0K3TyLK+WoEZkv5SU5k3cintlXqhYX2vi+QEmRq7/qM1/Dk/iBpsL0MSHNWEWCtSyhrZvR5Kjz5xpZT85rcVrozVza5Zn02I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDF77Ocq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15ACC433F1;
-	Mon,  8 Apr 2024 13:14:34 +0000 (UTC)
+	 MIME-Version; b=D9Tgx1UA8IqYceQtd68+Bx/4Ui1ePQwmobdHl7htwAMEYJpvWO1OetV0Bs936zdJjw7rFFBPOxcjCgfgv5GW57GSxmsmxcFtXvAWgfhZm1UNY6CZn7Pc02BqxvNYUnfKzA1510RwM72xm9KNFXv1jyDbgOxyS9TgEbYxFec2P4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP8PnpZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6479EC433C7;
+	Mon,  8 Apr 2024 13:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582075;
-	bh=OxR1Em4nZqm3OMeso8zVYvk041Sd0k3JiXT1PFsKJr8=;
+	s=korg; t=1712583392;
+	bh=y7I308wMdYENCbpCdBpeHopAnxgXZR7SdRtmZnqS30w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDF77OcqxmyVWEn2C5q1c1vMfJI1uZo2krvajS9kvF73coP++R7NlfvTPOD/BY37Z
-	 wa1nd5RvqORRwgx+quVupsfHnySyywWICzN8Rc+J01kO/DpgVM1UF9VOYkgQLk3TpE
-	 CkcgyzKilpqxQqlL4udLD63xfWw3bIP66A4huUr4=
+	b=CP8PnpZyDcqA3YvGm9tkEwnthfbtBfgYrNJEjn7hr/EMLSJzHwhEqPuqtqxK0hXEa
+	 P/80lRb1UvlKFkjrHVAPgKhjjetFlTIP6vUNH6lL1nb58CeDg1LkELGJc6JsjrZu0A
+	 GgbvVKVet3+rxjBVX74dFsxVwIyNavDl09Exob58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <simon.horman@corigine.com>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/138] r8169: use spinlock to protect mac ocp register access
+Subject: [PATCH 6.6 191/252] s390/pai_crypto: remove per-cpu variable assignement in event initialization
 Date: Mon,  8 Apr 2024 14:58:10 +0200
-Message-ID: <20240408125258.590975554@linuxfoundation.org>
+Message-ID: <20240408125312.586264239@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 91c8643578a21e435c412ffbe902bb4b4773e262 ]
+[ Upstream commit aecd5a37b5ef4de4f6402dc079672e4243cc4c13 ]
 
-For disabling ASPM during NAPI poll we'll have to access mac ocp
-registers in atomic context. This could result in races because
-a mac ocp read consists of a write to register OCPDR, followed
-by a read from the same register. Therefore add a spinlock to
-protect access to mac ocp registers.
+Function paicrypt_event_init() initializes the PMU device driver
+specific details for an event. It is called once per event creation.
+The function paicrypt_event_init() is not necessarily executed on
+that CPU the event will be used for.
+When an event is activated, function paicrypt_start() is used to
+start the event on that CPU.
+The per CPU data structure struct paicrypt_map has a pointer to
+the event which is active for a particular CPU. This pointer is
+set in function paicrypt_start() to point to the currently installed
+event. There is no need to also set this pointer in function
+paicrypt_event_init() where is might be assigned to the wrong CPU.
+Therefore remove this assignment in paicrypt_event_init().
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 5e864d90b208 ("r8169: skip DASH fw status checks when DASH is disabled")
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 37 ++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 4 deletions(-)
+ arch/s390/kernel/perf_pai_crypto.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 3dbcb311dcbf2..c7dd0eb94817f 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -615,6 +615,8 @@ struct rtl8169_private {
- 		struct work_struct work;
- 	} wk;
+diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+index 0921cea849125..1ac74333a78dc 100644
+--- a/arch/s390/kernel/perf_pai_crypto.c
++++ b/arch/s390/kernel/perf_pai_crypto.c
+@@ -216,7 +216,6 @@ static int paicrypt_event_init(struct perf_event *event)
+ 	 * are active at the same time.
+ 	 */
+ 	event->hw.last_tag = 0;
+-	cpump->event = event;
+ 	event->destroy = paicrypt_event_destroy;
  
-+	spinlock_t mac_ocp_lock;
-+
- 	unsigned supports_gmii:1;
- 	unsigned aspm_manageable:1;
- 	unsigned dash_enabled:1;
-@@ -850,7 +852,7 @@ static int r8168_phy_ocp_read(struct rtl8169_private *tp, u32 reg)
- 		(RTL_R32(tp, GPHY_OCP) & 0xffff) : -ETIMEDOUT;
- }
- 
--static void r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
-+static void __r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
- {
- 	if (rtl_ocp_reg_failure(reg))
- 		return;
-@@ -858,7 +860,16 @@ static void r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
- 	RTL_W32(tp, OCPDR, OCPAR_FLAG | (reg << 15) | data);
- }
- 
--static u16 r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
-+static void r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&tp->mac_ocp_lock, flags);
-+	__r8168_mac_ocp_write(tp, reg, data);
-+	spin_unlock_irqrestore(&tp->mac_ocp_lock, flags);
-+}
-+
-+static u16 __r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
- {
- 	if (rtl_ocp_reg_failure(reg))
- 		return 0;
-@@ -868,12 +879,28 @@ static u16 r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
- 	return RTL_R32(tp, OCPDR);
- }
- 
-+static u16 r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
-+{
-+	unsigned long flags;
-+	u16 val;
-+
-+	spin_lock_irqsave(&tp->mac_ocp_lock, flags);
-+	val = __r8168_mac_ocp_read(tp, reg);
-+	spin_unlock_irqrestore(&tp->mac_ocp_lock, flags);
-+
-+	return val;
-+}
-+
- static void r8168_mac_ocp_modify(struct rtl8169_private *tp, u32 reg, u16 mask,
- 				 u16 set)
- {
--	u16 data = r8168_mac_ocp_read(tp, reg);
-+	unsigned long flags;
-+	u16 data;
- 
--	r8168_mac_ocp_write(tp, reg, (data & ~mask) | set);
-+	spin_lock_irqsave(&tp->mac_ocp_lock, flags);
-+	data = __r8168_mac_ocp_read(tp, reg);
-+	__r8168_mac_ocp_write(tp, reg, (data & ~mask) | set);
-+	spin_unlock_irqrestore(&tp->mac_ocp_lock, flags);
- }
- 
- /* Work around a hw issue with RTL8168g PHY, the quirk disables
-@@ -5232,6 +5259,8 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	tp->eee_adv = -1;
- 	tp->ocp_base = OCP_STD_PHY_BASE;
- 
-+	spin_lock_init(&tp->mac_ocp_lock);
-+
- 	dev->tstats = devm_netdev_alloc_pcpu_stats(&pdev->dev,
- 						   struct pcpu_sw_netstats);
- 	if (!dev->tstats)
+ 	if (a->sample_period) {
 -- 
 2.43.0
 
