@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6EC89C666
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:10:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1C789C241
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD83DB2A65B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F29A11F2229C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02A27D08A;
-	Mon,  8 Apr 2024 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C3881ACA;
+	Mon,  8 Apr 2024 13:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGYcBLuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8TauiRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE857A15C;
-	Mon,  8 Apr 2024 13:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9396381AC1;
+	Mon,  8 Apr 2024 13:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584630; cv=none; b=UceaKaDuKiyT0nPYssZkzFL6oYSvhT/MkpsF647v4PtoztAYMlz/kWTtqZ23pbMClL41pUH/L47bkPAabiZVgMqFG2TGbqF8JQn/l49Khz+WZjzKt/OQNZ2rmJLTIT5x2ynJQ/jB6k4aWErnChgH2ov6HZ7sa7oAG7sBG1QWN3k=
+	t=1712582664; cv=none; b=jzEEBtLOEgZKA3uF1IRIoVUiiDR2a7cyT7C2DkjbLKmw4GrIqwL9njsAW6VzIqRm6l0dBN6Dbnu3+TQM4anmv8SSwtpv1pIco8hlq/iQLaUK5QEnrQbFh4JL6OnNxIm/28St7UWdaw4bi3ejuffv9fiUmjUDdFC+6Dk2DU05agk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584630; c=relaxed/simple;
-	bh=mg1+uRuyH95TNu3B17bRv5+vdo07kqA8L+GCJHa34X8=;
+	s=arc-20240116; t=1712582664; c=relaxed/simple;
+	bh=SKd3VH/u8CmEqyypMLdf3FftggQGYyZIPKZEWBbfdYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DKHvGBUWYxcMM9Tcxxmv6KkNoPJ/iYQNOsBel2UN3+VX9bNCra5JeXhPK/pY/mgWrgbuQLj0F248xvmcqrqSyYjZr8jb3+aLpdQsH9fWSCeEdmcxgAbg8qY89bwLaV5h2Lm42O3YugUGGJgwnrA/KHSKIqR0t3RmuKE7FvGc/Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGYcBLuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9897C433C7;
-	Mon,  8 Apr 2024 13:57:08 +0000 (UTC)
+	 MIME-Version; b=tAGHkj/3ZIQgO3Ta2WYZgViRoDhquRGaF3L8TdfNjDYOHbtUcLmevBOuo9HuQ5rWkAoSrmpt0zu5MAsJ7FOu34i46rKKsniF03PfoOuPYFXVpq/8NCKl04JK06XU9ZA7Mmv0tbFXIkmF9aHxYhjI5Omy44+Iwf01DARNWk7rkXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8TauiRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC66FC433C7;
+	Mon,  8 Apr 2024 13:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584629;
-	bh=mg1+uRuyH95TNu3B17bRv5+vdo07kqA8L+GCJHa34X8=;
+	s=korg; t=1712582664;
+	bh=SKd3VH/u8CmEqyypMLdf3FftggQGYyZIPKZEWBbfdYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGYcBLuCD5V7+IEQl+d5bqeCBroNkISBkxnj5TSBeBVjUqEvWOg7ZvnvSfw8GSDbd
-	 0BXfnEBRiq4XRepjC2FPQYrUCOkY28BxTjeWpvbl+6QovQ/pPCgs3Jl5pPnno4WpNL
-	 3kunW4H/jdrmHLl7z+RIILeyy4b/1XMIIaLQ5aIU=
+	b=d8TauiRpJelVCreV4JlQif73mL6xrtyyw81ogBRefOZjgwkCStiAJZzVA504RyXKh
+	 +xmEvjNeLfnOYvp8PftAGMi5g35jXr5Gj/+Qqf4kLnOMgkh5/uiPW5Bf5G8TzwOx6c
+	 TveqHziYuPG2E1du7NApEIISsop55TMJv0AaFR2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 503/690] NFSD: refactoring courtesy_client_reaper to a generic low memory shrinker
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 094/273] mptcp: prevent BPF accessing lowat from a subflow socket.
 Date: Mon,  8 Apr 2024 14:56:09 +0200
-Message-ID: <20240408125417.857334279@linuxfoundation.org>
+Message-ID: <20240408125312.219734618@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit a1049eb47f20b9eabf9afb218578fff16b4baca6 ]
+commit fcf4692fa39e86a590c14a4af2de704e1d20a3b5 upstream.
 
-Refactoring courtesy_client_reaper to generic low memory
-shrinker so it can be used for other purposes.
+Alexei reported the following splat:
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+ WARNING: CPU: 32 PID: 3276 at net/mptcp/subflow.c:1430 subflow_data_ready+0x147/0x1c0
+ Modules linked in: dummy bpf_testmod(O) [last unloaded: bpf_test_no_cfi(O)]
+ CPU: 32 PID: 3276 Comm: test_progs Tainted: GO       6.8.0-12873-g2c43c33bfd23
+ Call Trace:
+  <TASK>
+  mptcp_set_rcvlowat+0x79/0x1d0
+  sk_setsockopt+0x6c0/0x1540
+  __bpf_setsockopt+0x6f/0x90
+  bpf_sock_ops_setsockopt+0x3c/0x90
+  bpf_prog_509ce5db2c7f9981_bpf_test_sockopt_int+0xb4/0x11b
+  bpf_prog_dce07e362d941d2b_bpf_test_socket_sockopt+0x12b/0x132
+  bpf_prog_348c9b5faaf10092_skops_sockopt+0x954/0xe86
+  __cgroup_bpf_run_filter_sock_ops+0xbc/0x250
+  tcp_connect+0x879/0x1160
+  tcp_v6_connect+0x50c/0x870
+  mptcp_connect+0x129/0x280
+  __inet_stream_connect+0xce/0x370
+  inet_stream_connect+0x36/0x50
+  bpf_trampoline_6442491565+0x49/0xef
+  inet_stream_connect+0x5/0x50
+  __sys_connect+0x63/0x90
+  __x64_sys_connect+0x14/0x20
+
+The root cause of the issue is that bpf allows accessing mptcp-level
+proto_ops from a tcp subflow scope.
+
+Fix the issue detecting the problematic call and preventing any action.
+
+Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/482
+Fixes: 5684ab1a0eff ("mptcp: give rcvlowat some love")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/d8cb7d8476d66cb0812a6e29cd1e626869d9d53e.1711738080.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ net/mptcp/sockopt.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 524865c7211ef..34ae4a3d86f3e 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4361,7 +4361,7 @@ nfsd4_init_slabs(void)
- }
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1500,6 +1500,10 @@ int mptcp_set_rcvlowat(struct sock *sk,
+ 	struct mptcp_subflow_context *subflow;
+ 	int space, cap;
  
- static unsigned long
--nfsd_courtesy_client_count(struct shrinker *shrink, struct shrink_control *sc)
-+nfsd4_state_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
- {
- 	int cnt;
- 	struct nfsd_net *nn = container_of(shrink,
-@@ -4374,7 +4374,7 @@ nfsd_courtesy_client_count(struct shrinker *shrink, struct shrink_control *sc)
- }
- 
- static unsigned long
--nfsd_courtesy_client_scan(struct shrinker *shrink, struct shrink_control *sc)
-+nfsd4_state_shrinker_scan(struct shrinker *shrink, struct shrink_control *sc)
- {
- 	return SHRINK_STOP;
- }
-@@ -4401,8 +4401,8 @@ nfsd4_init_leases_net(struct nfsd_net *nn)
- 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
- 
- 	atomic_set(&nn->nfsd_courtesy_clients, 0);
--	nn->nfsd_client_shrinker.scan_objects = nfsd_courtesy_client_scan;
--	nn->nfsd_client_shrinker.count_objects = nfsd_courtesy_client_count;
-+	nn->nfsd_client_shrinker.scan_objects = nfsd4_state_shrinker_scan;
-+	nn->nfsd_client_shrinker.count_objects = nfsd4_state_shrinker_count;
- 	nn->nfsd_client_shrinker.seeks = DEFAULT_SEEKS;
- 	return register_shrinker(&nn->nfsd_client_shrinker);
- }
-@@ -6151,17 +6151,24 @@ laundromat_main(struct work_struct *laundry)
- }
- 
- static void
--courtesy_client_reaper(struct work_struct *reaper)
-+courtesy_client_reaper(struct nfsd_net *nn)
- {
- 	struct list_head reaplist;
--	struct delayed_work *dwork = to_delayed_work(reaper);
--	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
--					nfsd_shrinker_work);
- 
- 	nfs4_get_courtesy_client_reaplist(nn, &reaplist);
- 	nfs4_process_client_reaplist(&reaplist);
- }
- 
-+static void
-+nfsd4_state_shrinker_worker(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
-+				nfsd_shrinker_work);
++	/* bpf can land here with a wrong sk type */
++	if (sk->sk_protocol == IPPROTO_TCP)
++		return -EINVAL;
 +
-+	courtesy_client_reaper(nn);
-+}
-+
- static inline __be32 nfs4_check_fh(struct svc_fh *fhp, struct nfs4_stid *stp)
- {
- 	if (!fh_match(&fhp->fh_handle, &stp->sc_file->fi_fhandle))
-@@ -7983,7 +7990,7 @@ static int nfs4_state_create_net(struct net *net)
- 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
- 
- 	INIT_DELAYED_WORK(&nn->laundromat_work, laundromat_main);
--	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, courtesy_client_reaper);
-+	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
- 	get_net(net);
- 
- 	return 0;
--- 
-2.43.0
-
+ 	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
+ 		cap = sk->sk_rcvbuf >> 1;
+ 	else
 
 
 
