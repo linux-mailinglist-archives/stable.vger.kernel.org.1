@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-36669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3409889C18F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:22:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394CD89C130
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C5ABB2A27D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:18:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5DD1C21BBE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E8E7FBD7;
-	Mon,  8 Apr 2024 13:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4196A80034;
+	Mon,  8 Apr 2024 13:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bflZEyp1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPABBSpl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842F57F465;
-	Mon,  8 Apr 2024 13:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34F077F1B;
+	Mon,  8 Apr 2024 13:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581999; cv=none; b=rVJCkktxoL+fiQkPQx+rG2hD6AP0w2MR5jc7OBHTqN4jMfEReslS3etMQHKKbpIjjqTti36+VtyIk/G+lnoQ2bc3JSxj+fWYrX9e7bY3QOtgIOtFmPaAyk6uxeU9UeRXazLtb1eEWalz7/XBXFbX73au6GYQ48TaqZFBIrRZPW0=
+	t=1712582014; cv=none; b=L4RVsLB/hPlV3K5Mhheglg1OAU7f50vd01wsaLbEvdJrIWZwCbkKc5Y/sI0ccE1WKP0oWdz0/O5QCeetSuuX/IpBVbThdg0Mibegb+iGoZHtjp9kTOLsjJu09i8m9Xa5ligtpdXiuuLX0P6pGeJi+Ks5o1YcagQBqmXCLJulWdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581999; c=relaxed/simple;
-	bh=otvRA00S5e8zQFnBTH9saAuS8E8uxNmxDIoP298utZ0=;
+	s=arc-20240116; t=1712582014; c=relaxed/simple;
+	bh=WQRUDgrJtiVurlZjtxnP/YehHUgAUIfnHsyrLN3QAiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXyDmpli9QeJAiJlK+JwNQWJy+ABai8V2oxPajzvr0alRggC5lUKcmMWDwpPWDX/llQF9r+ugpsKpuZ4bMCBV0DKxQFOZf7bjxrmYIJDrukZdkd5Co5VNeSXDmxfzW90dsI4gGbgom54bhz/pQBnu19J0WHqI5HFtuKHyhxo4lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bflZEyp1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A00C433F1;
-	Mon,  8 Apr 2024 13:13:18 +0000 (UTC)
+	 MIME-Version; b=LWJ5no/JwVYXwqEuBd8NYP+JItKwNJ3bB0IYGSuDm5+xvEQ2UVDbToQ4QJWlRwdtaCYv5nemaJq9AlA39mM3XNjkFGMMxLKViCkXqbBh6S9/T6yi3nPYzt08hmCQ2rGcMIEmfvduwSrNO6ySAxexKsIug1jk9DecLnIoeKOLmpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPABBSpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E65C433C7;
+	Mon,  8 Apr 2024 13:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581999;
-	bh=otvRA00S5e8zQFnBTH9saAuS8E8uxNmxDIoP298utZ0=;
+	s=korg; t=1712582013;
+	bh=WQRUDgrJtiVurlZjtxnP/YehHUgAUIfnHsyrLN3QAiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bflZEyp1lOKnNo29NyAyGVERf/6NZGG6Ib9IRnIry1l0xYisJLWTwQr98vRG08Ies
-	 ccoYJkwLx+H5Ff4TVZuMvRwTEB7pYvxA9Cl/sHJmhnVrcqQXeTz6BtAHq7aVuZEgzz
-	 bpzoCwqkC0Oi1P0JdviXMlsD4Ia/NCFOPuEdBqXY=
+	b=QPABBSplCjcZm8VZGJVyojvy/88hXp+eA7XJ0cyRdVYjMzQWObm6phW8XlGmnNst+
+	 iBXJ5MUP2OTZgW7GMEPaesCsKYfGZnHOFUQ2HYLAe8ppA+oWz6Al7sKOJrTgwRjVI5
+	 T/fbRTIbrM4gy5Sl47T49azyg7G9fwF4F1n/F3Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	"Christoph Lameter (Ampere)" <cl@linux.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/690] cpufreq: dt: always allocate zeroed cpumask
-Date: Mon,  8 Apr 2024 14:49:29 +0200
-Message-ID: <20240408125403.231752040@linuxfoundation.org>
+Subject: [PATCH 5.15 104/690] x86/CPU/AMD: Update the Zenbleed microcode revisions
+Date: Mon,  8 Apr 2024 14:49:30 +0200
+Message-ID: <20240408125403.263580431@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,44 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit d2399501c2c081eac703ca9597ceb83c7875a537 ]
+[ Upstream commit 5c84b051bd4e777cf37aaff983277e58c99618d5 ]
 
-Commit 0499a78369ad ("ARM64: Dynamically allocate cpumasks and increase
-supported CPUs to 512") changed the handling of cpumasks on ARM 64bit,
-what resulted in the strange issues and warnings during cpufreq-dt
-initialization on some big.LITTLE platforms.
+Update them to the correct revision numbers.
 
-This was caused by mixing OPPs between big and LITTLE cores, because
-OPP-sharing information between big and LITTLE cores is computed on
-cpumask, which in turn was not zeroed on allocation. Fix this by
-switching to zalloc_cpumask_var() call.
-
-Fixes: dc279ac6e5b4 ("cpufreq: dt: Refactor initialization to handle probe deferral properly")
-CC: stable@vger.kernel.org # v5.10+
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Christoph Lameter (Ampere) <cl@linux.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq-dt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
-index 8fcaba541539b..1bfdfa7e25c17 100644
---- a/drivers/cpufreq/cpufreq-dt.c
-+++ b/drivers/cpufreq/cpufreq-dt.c
-@@ -208,7 +208,7 @@ static int dt_cpufreq_early_init(struct device *dev, int cpu)
- 	if (!priv)
- 		return -ENOMEM;
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index dba7fe7ecea91..9fb890574f36b 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1021,11 +1021,11 @@ static bool cpu_has_zenbleed_microcode(void)
+ 	u32 good_rev = 0;
  
--	if (!alloc_cpumask_var(&priv->cpus, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&priv->cpus, GFP_KERNEL))
- 		return -ENOMEM;
+ 	switch (boot_cpu_data.x86_model) {
+-	case 0x30 ... 0x3f: good_rev = 0x0830107a; break;
+-	case 0x60 ... 0x67: good_rev = 0x0860010b; break;
+-	case 0x68 ... 0x6f: good_rev = 0x08608105; break;
+-	case 0x70 ... 0x7f: good_rev = 0x08701032; break;
+-	case 0xa0 ... 0xaf: good_rev = 0x08a00008; break;
++	case 0x30 ... 0x3f: good_rev = 0x0830107b; break;
++	case 0x60 ... 0x67: good_rev = 0x0860010c; break;
++	case 0x68 ... 0x6f: good_rev = 0x08608107; break;
++	case 0x70 ... 0x7f: good_rev = 0x08701033; break;
++	case 0xa0 ... 0xaf: good_rev = 0x08a00009; break;
  
- 	cpumask_set_cpu(cpu, priv->cpus);
+ 	default:
+ 		return false;
 -- 
 2.43.0
 
