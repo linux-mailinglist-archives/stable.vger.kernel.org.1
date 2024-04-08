@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-36579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 005F789C07B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5E889C370
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF071F22550
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDFFA283AD5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0405F6FE1A;
-	Mon,  8 Apr 2024 13:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC63785C5D;
+	Mon,  8 Apr 2024 13:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDaFn71u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiUpAp5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B0C2DF73;
-	Mon,  8 Apr 2024 13:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1747CF29;
+	Mon,  8 Apr 2024 13:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581738; cv=none; b=T8CZvcPOAsn3F1+5icVfWxvmi3serhw/kqVgaJI0DifOvrZMYNnRPwOkJU7pNDkVurr98lfSDSAcDtr9A1fCQQ0ZavWCKtutGuKYlWaHjOU16g91A8zPTUxf1HWeV1t7Vo7R1CRcrqwgngyaxo1CVr8uHIIruIoQSu45QC9kZ6o=
+	t=1712583317; cv=none; b=u2FVtNMORhy2LuLd2Cxmf8e9h3a6e+3GoHovKWwJoJ45wTEsIXQbETUKV4vONd3a1bK9l1Lpug0BUDlqxmIjHjLK4w9YCotwd08eCnKlj9HS+UmvRnyDC7ZFgSwSzQ6HqK7FzjSbiKfll8sYb0R6DzRwieACWQqB9hugZUZaZNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581738; c=relaxed/simple;
-	bh=f5rILZfLm67DWYFFq2fMszQw0oVhzgzAXPFH0+meqbU=;
+	s=arc-20240116; t=1712583317; c=relaxed/simple;
+	bh=8+xeJDpg/WNC9wqfC5wG/yO26Mfgxy9ita7WS6dRHCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gL6QUpNmPODzhDfrs4gh/o6JRjCj9gov16HmjexMJQFubHyq3gxhOIehcMRRsG6Rx4UXRSh/uIazVlXJ2wU4rFqp71EoZmxscr5xYzLOZorCIBLRH/jCw0qUCxfPEk/yHe0b2haRud4YxTMuExpev8Ha2Ad/ohdGp/ZLvUyGBZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDaFn71u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24693C433C7;
-	Mon,  8 Apr 2024 13:08:57 +0000 (UTC)
+	 MIME-Version; b=QeEuPZ09tWqNN7T1h2kJkAVzU+vEjb70zW/9usXSl6ZjnIIWotULS5H4PhIlYYcui3W5DQgg7lZF4newEHeTvVtHP7X5edVs6MJTrwbI+DZ3lXT9kn1Oxkcf9lMc2nbdoOErWbdRbJm9Zqw3iAQdYQWP5j7mQiuOAOC2eivuULk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiUpAp5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0227C433C7;
+	Mon,  8 Apr 2024 13:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581738;
-	bh=f5rILZfLm67DWYFFq2fMszQw0oVhzgzAXPFH0+meqbU=;
+	s=korg; t=1712583317;
+	bh=8+xeJDpg/WNC9wqfC5wG/yO26Mfgxy9ita7WS6dRHCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tDaFn71uqCihlH/CxbJbe7NwzX89nS9COzBXE1cvPF55siCQnepMZZLx+x/a1dbVr
-	 qAuV9t3kMzHZ3ZvaYzBHXGAAjad1fw9S6SENLAg+YVAR8re+J4kbLslqpmETnROXWn
-	 IwdtfXxt/qTi5uavW7L7RigW04c1UBeKxPTz8hEU=
+	b=UiUpAp5AVLO579Ndc54k4Qcf2bzTlpIfXvUQLrD3ktZYItEh02Hdb5Mwm08x6Qwa4
+	 ziEhEhZzwT4F1iukrG67l5hoGg99i15f56j0J8RkDD1a0gzVAneQfYdAtKbMvkWIlT
+	 q3+FhtaH9LVNytL4b2i2+dc1Fp4ly7Af3shjBrLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piotr Wejman <piotrwejman90@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 048/138] net: stmmac: fix rx queue priority assignment
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 163/252] regmap: maple: Fix cache corruption in regcache_maple_drop()
 Date: Mon,  8 Apr 2024 14:57:42 +0200
-Message-ID: <20240408125257.722485710@linuxfoundation.org>
+Message-ID: <20240408125311.710379904@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,144 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Wejman <piotrwejman90@gmail.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit b3da86d432b7cd65b025a11f68613e333d2483db upstream.
+[ Upstream commit 00bb549d7d63a21532e76e4a334d7807a54d9f31 ]
 
-The driver should ensure that same priority is not mapped to multiple
-rx queues. From DesignWare Cores Ethernet Quality-of-Service
-Databook, section 17.1.29 MAC_RxQ_Ctrl2:
-"[...]The software must ensure that the content of this field is
-mutually exclusive to the PSRQ fields for other queues, that is,
-the same priority is not mapped to multiple Rx queues[...]"
+When keeping the upper end of a cache block entry, the entry[] array
+must be indexed by the offset from the base register of the block,
+i.e. max - mas.index.
 
-Previously rx_queue_priority() function was:
-- clearing all priorities from a queue
-- adding new priorities to that queue
-After this patch it will:
-- first assign new priorities to a queue
-- then remove those priorities from all other queues
-- keep other priorities previously assigned to that queue
+The code was indexing entry[] by only the register address, leading
+to an out-of-bounds access that copied some part of the kernel
+memory over the cache contents.
 
-Fixes: a8f5102af2a7 ("net: stmmac: TX and RX queue priority configuration")
-Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
-Signed-off-by: Piotr Wejman <piotrwejman90@gmail.com>
-Link: https://lore.kernel.org/r/20240401192239.33942-1-piotrwejman90@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This bug was not detected by the regmap KUnit test because it only
+tests with a block of registers starting at 0, so mas.index == 0.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: f033c26de5a5 ("regmap: Add maple tree based register cache")
+Link: https://msgid.link/r/20240327114406.976986-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   |   40 +++++++++++++++-----
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   38 +++++++++++++++----
- 2 files changed, 62 insertions(+), 16 deletions(-)
+ drivers/base/regmap/regcache-maple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -87,19 +87,41 @@ static void dwmac4_rx_queue_priority(str
- 				     u32 prio, u32 queue)
- {
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 base_register;
--	u32 value;
-+	u32 clear_mask = 0;
-+	u32 ctrl2, ctrl3;
-+	int i;
+diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
+index 41edd6a430eb4..c1776127a5724 100644
+--- a/drivers/base/regmap/regcache-maple.c
++++ b/drivers/base/regmap/regcache-maple.c
+@@ -145,7 +145,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
+ 			upper_index = max + 1;
+ 			upper_last = mas.last;
  
--	base_register = (queue < 4) ? GMAC_RXQ_CTRL2 : GMAC_RXQ_CTRL3;
--	if (queue >= 4)
--		queue -= 4;
-+	ctrl2 = readl(ioaddr + GMAC_RXQ_CTRL2);
-+	ctrl3 = readl(ioaddr + GMAC_RXQ_CTRL3);
-+
-+	/* The software must ensure that the same priority
-+	 * is not mapped to multiple Rx queues
-+	 */
-+	for (i = 0; i < 4; i++)
-+		clear_mask |= ((prio << GMAC_RXQCTRL_PSRQX_SHIFT(i)) &
-+						GMAC_RXQCTRL_PSRQX_MASK(i));
- 
--	value = readl(ioaddr + base_register);
-+	ctrl2 &= ~clear_mask;
-+	ctrl3 &= ~clear_mask;
- 
--	value &= ~GMAC_RXQCTRL_PSRQX_MASK(queue);
--	value |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
-+	/* First assign new priorities to a queue, then
-+	 * clear them from others queues
-+	 */
-+	if (queue < 4) {
-+		ctrl2 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
- 						GMAC_RXQCTRL_PSRQX_MASK(queue);
--	writel(value, ioaddr + base_register);
-+
-+		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
-+		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
-+	} else {
-+		queue -= 4;
-+
-+		ctrl3 |= (prio << GMAC_RXQCTRL_PSRQX_SHIFT(queue)) &
-+						GMAC_RXQCTRL_PSRQX_MASK(queue);
-+
-+		writel(ctrl3, ioaddr + GMAC_RXQ_CTRL3);
-+		writel(ctrl2, ioaddr + GMAC_RXQ_CTRL2);
-+	}
- }
- 
- static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -97,17 +97,41 @@ static void dwxgmac2_rx_queue_prio(struc
- 				   u32 queue)
- {
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 value, reg;
-+	u32 clear_mask = 0;
-+	u32 ctrl2, ctrl3;
-+	int i;
- 
--	reg = (queue < 4) ? XGMAC_RXQ_CTRL2 : XGMAC_RXQ_CTRL3;
--	if (queue >= 4)
-+	ctrl2 = readl(ioaddr + XGMAC_RXQ_CTRL2);
-+	ctrl3 = readl(ioaddr + XGMAC_RXQ_CTRL3);
-+
-+	/* The software must ensure that the same priority
-+	 * is not mapped to multiple Rx queues
-+	 */
-+	for (i = 0; i < 4; i++)
-+		clear_mask |= ((prio << XGMAC_PSRQ_SHIFT(i)) &
-+						XGMAC_PSRQ(i));
-+
-+	ctrl2 &= ~clear_mask;
-+	ctrl3 &= ~clear_mask;
-+
-+	/* First assign new priorities to a queue, then
-+	 * clear them from others queues
-+	 */
-+	if (queue < 4) {
-+		ctrl2 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
-+						XGMAC_PSRQ(queue);
-+
-+		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
-+		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
-+	} else {
- 		queue -= 4;
- 
--	value = readl(ioaddr + reg);
--	value &= ~XGMAC_PSRQ(queue);
--	value |= (prio << XGMAC_PSRQ_SHIFT(queue)) & XGMAC_PSRQ(queue);
-+		ctrl3 |= (prio << XGMAC_PSRQ_SHIFT(queue)) &
-+						XGMAC_PSRQ(queue);
- 
--	writel(value, ioaddr + reg);
-+		writel(ctrl3, ioaddr + XGMAC_RXQ_CTRL3);
-+		writel(ctrl2, ioaddr + XGMAC_RXQ_CTRL2);
-+	}
- }
- 
- static void dwxgmac2_tx_queue_prio(struct mac_device_info *hw, u32 prio,
+-			upper = kmemdup(&entry[max + 1],
++			upper = kmemdup(&entry[max - mas.index + 1],
+ 					((mas.last - max) *
+ 					 sizeof(unsigned long)),
+ 					map->alloc_flags);
+-- 
+2.43.0
+
 
 
 
