@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-36863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC3289C212
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3173389C147
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819F41C21E24
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 637F41C21C3A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753A77E116;
-	Mon,  8 Apr 2024 13:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C36D81749;
+	Mon,  8 Apr 2024 13:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdF1ErYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mmV68E5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CA32E405;
-	Mon,  8 Apr 2024 13:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C237F7CC;
+	Mon,  8 Apr 2024 13:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582562; cv=none; b=rXxxOh1qHZyqyJI4+Zpt7AT3q8MJ8MkcepUvWM5n0uwWPXuP/BiUiR3kVjE56d24eLH0LI3O9uKCRz3/HcjcZJe26LqD93VQJnU4Z7ratGnbVDOFtGD4eno0QOdDkebCwegXSCFjaQ6Q7bduRcbjH/5KE0h0pxZPC9O/c3lf7o4=
+	t=1712582081; cv=none; b=aSMzKHNHFRTSfm025ZkD0VHdZ3Za14R9uVGuE1PUsMYPp4r3W7o3WJNWCM+orKkFA9Jw9Qsz8phz18LX4mCQCuu0+wYQDjSFAsP7IpYM02FynLayLzjhSAP/5WOaDCk65YzgKowj5x9LByUo787lkZa0TrLNYYfpWVUhoKLISx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582562; c=relaxed/simple;
-	bh=qYEKK/VewrCka+PKobrmFC5Rbe0TjDwioGDSkzwi6us=;
+	s=arc-20240116; t=1712582081; c=relaxed/simple;
+	bh=/RSCyDEfje7c6CRzogOVYhY8YKs5tJIHhrM3nV5pyhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZTd68PNAWibG/7bk67hypl4k6dfKiVZkPh7XlFvIEV4WTow4kU+3v41MGX+q+I3P256OTIJBxCkcaQ2pZ+YqD3DgspruHALbqwERX/rYdr4QEKb9OqB36YbGvT0+tgQFT7R5oWzuSHapZPj75+64UkasQaaF9EXbqwVx45XOC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdF1ErYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9F9C433F1;
-	Mon,  8 Apr 2024 13:22:41 +0000 (UTC)
+	 MIME-Version; b=oxFEJlskVQc7iQG7Y/zJ6s6P1851twcHRCOpTrF9n9mj++nXcoSteJCvhCKTDLlQJEAt7S1aGNKxwDxG5QKW/lnQdjssEGB9TF6n3Y9xQkXJLrmdG8epWlHVixbtWYo4aDYaHT5c7shAnz2HoMeWwV5qEjLS5BETO0XvCs2jUqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mmV68E5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D4DC43390;
+	Mon,  8 Apr 2024 13:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582562;
-	bh=qYEKK/VewrCka+PKobrmFC5Rbe0TjDwioGDSkzwi6us=;
+	s=korg; t=1712582081;
+	bh=/RSCyDEfje7c6CRzogOVYhY8YKs5tJIHhrM3nV5pyhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdF1ErYhLg4BboKMBantf13x8zUf1VK7FCxjYnVhXGpw6+z79z2RDhpBjCP7z77zm
-	 sFWp7QgjEM7yH7MH2k//m84e1IKfO5V3saxzjFtNtTKP1L918Px7mH34ETIhYzo5P3
-	 mjlx0v0xsTYgGDT5oBq0mRWoZO7h9v0kP/xDDRsA=
+	b=0mmV68E5spZmbNvJtnFS/8LJ+iI2vQolJpdS3TrTLfumSkTNHkVwNoaK98y/brh8x
+	 KlNUjXGwqYBJ5u+3RxvWPuR5YZFvm+w5TR63Vf3UG26t3P3ALDnI1YsdezYUDgkUKv
+	 H1tkokuaoZkd6bYQGoyYgGQsHvrYCgzrhdTGj8QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@vge.kernel.org,
-	Marco Pinna <marco.pinn95@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 086/273] vsock/virtio: fix packet delivery to tap device
+	Brian Gerst <brgerst@gmail.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 062/252] x86/CPU/AMD: Add X86_FEATURE_ZEN1
 Date: Mon,  8 Apr 2024 14:56:01 +0200
-Message-ID: <20240408125311.968911212@linuxfoundation.org>
+Message-ID: <20240408125308.564384573@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Pinna <marco.pinn95@gmail.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit b32a09ea7c38849ff925489a6bf5bd8914bc45df upstream.
+[ Upstream commit 232afb557835d6f6859c73bf610bad308c96b131 ]
 
-Commit 82dfb540aeb2 ("VSOCK: Add virtio vsock vsockmon hooks") added
-virtio_transport_deliver_tap_pkt() for handing packets to the
-vsockmon device. However, in virtio_transport_send_pkt_work(),
-the function is called before actually sending the packet (i.e.
-before placing it in the virtqueue with virtqueue_add_sgs() and checking
-whether it returned successfully).
-Queuing the packet in the virtqueue can fail even multiple times.
-However, in virtio_transport_deliver_tap_pkt() we deliver the packet
-to the monitoring tap interface only the first time we call it.
-This certainly avoids seeing the same packet replicated multiple times
-in the monitoring interface, but it can show the packet sent with the
-wrong timestamp or even before we succeed to queue it in the virtqueue.
+Add a synthetic feature flag specifically for first generation Zen
+machines. There's need to have a generic flag for all Zen generations so
+make X86_FEATURE_ZEN be that flag.
 
-Move virtio_transport_deliver_tap_pkt() after calling virtqueue_add_sgs()
-and making sure it returned successfully.
-
-Fixes: 82dfb540aeb2 ("VSOCK: Add virtio vsock vsockmon hooks")
-Cc: stable@vge.kernel.org
-Signed-off-by: Marco Pinna <marco.pinn95@gmail.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/20240329161259.411751-1-marco.pinn95@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 30fa92832f40 ("x86/CPU/AMD: Add ZenX generations flags")
+Suggested-by: Brian Gerst <brgerst@gmail.com>
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/dc3835e3-0731-4230-bbb9-336bbe3d042b@amd.com
+Stable-dep-of: c7b2edd8377b ("perf/x86/amd/core: Update and fix stalled-cycles-* events for Zen 2 and later")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/cpufeatures.h       |  3 ++-
+ arch/x86/kernel/cpu/amd.c                | 11 ++++++-----
+ tools/arch/x86/include/asm/cpufeatures.h |  2 +-
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -120,7 +120,6 @@ virtio_transport_send_pkt_work(struct wo
- 		if (!skb)
- 			break;
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 1f9db287165ac..bc66aec9139ea 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -218,7 +218,7 @@
+ #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
+ #define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
+ #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
+-#define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU based on Zen microarchitecture */
++#define X86_FEATURE_ZEN			( 7*32+28) /* "" Generic flag for all Zen and newer */
+ #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
+ #define X86_FEATURE_IBRS_ENHANCED	( 7*32+30) /* Enhanced IBRS */
+ #define X86_FEATURE_MSR_IA32_FEAT_CTL	( 7*32+31) /* "" MSR IA32_FEAT_CTL configured */
+@@ -315,6 +315,7 @@
+ #define X86_FEATURE_ZEN2		(11*32+28) /* "" CPU based on Zen2 microarchitecture */
+ #define X86_FEATURE_ZEN3		(11*32+29) /* "" CPU based on Zen3 microarchitecture */
+ #define X86_FEATURE_ZEN4		(11*32+30) /* "" CPU based on Zen4 microarchitecture */
++#define X86_FEATURE_ZEN1		(11*32+31) /* "" CPU based on Zen1 microarchitecture */
  
--		virtio_transport_deliver_tap_pkt(skb);
- 		reply = virtio_vsock_skb_reply(skb);
- 		sgs = vsock->out_sgs;
- 		sg_init_one(sgs[out_sg], virtio_vsock_hdr(skb),
-@@ -170,6 +169,8 @@ virtio_transport_send_pkt_work(struct wo
+ /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
+ #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 98fa23ef97df2..9fd91022d92d0 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -613,7 +613,7 @@ static void bsp_init_amd(struct cpuinfo_x86 *c)
+ 		switch (c->x86_model) {
+ 		case 0x00 ... 0x2f:
+ 		case 0x50 ... 0x5f:
+-			setup_force_cpu_cap(X86_FEATURE_ZEN);
++			setup_force_cpu_cap(X86_FEATURE_ZEN1);
  			break;
- 		}
+ 		case 0x30 ... 0x4f:
+ 		case 0x60 ... 0x7f:
+@@ -1011,12 +1011,13 @@ void init_spectral_chicken(struct cpuinfo_x86 *c)
  
-+		virtio_transport_deliver_tap_pkt(skb);
-+
- 		if (reply) {
- 			struct virtqueue *rx_vq = vsock->vqs[VSOCK_VQ_RX];
- 			int val;
+ static void init_amd_zn(struct cpuinfo_x86 *c)
+ {
++	setup_force_cpu_cap(X86_FEATURE_ZEN);
+ #ifdef CONFIG_NUMA
+ 	node_reclaim_distance = 32;
+ #endif
+ }
+ 
+-static void init_amd_zen(struct cpuinfo_x86 *c)
++static void init_amd_zen1(struct cpuinfo_x86 *c)
+ {
+ 	fix_erratum_1386(c);
+ 
+@@ -1130,8 +1131,8 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	case 0x19: init_amd_zn(c); break;
+ 	}
+ 
+-	if (boot_cpu_has(X86_FEATURE_ZEN))
+-		init_amd_zen(c);
++	if (boot_cpu_has(X86_FEATURE_ZEN1))
++		init_amd_zen1(c);
+ 	else if (boot_cpu_has(X86_FEATURE_ZEN2))
+ 		init_amd_zen2(c);
+ 	else if (boot_cpu_has(X86_FEATURE_ZEN3))
+@@ -1190,7 +1191,7 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	 * Counter May Be Inaccurate".
+ 	 */
+ 	if (cpu_has(c, X86_FEATURE_IRPERF) &&
+-	    (boot_cpu_has(X86_FEATURE_ZEN) && c->x86_model > 0x2f))
++	    (boot_cpu_has(X86_FEATURE_ZEN1) && c->x86_model > 0x2f))
+ 		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
+ 
+ 	check_null_seg_clears_base(c);
+diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
+index 798e60b5454b7..845a4023ba44e 100644
+--- a/tools/arch/x86/include/asm/cpufeatures.h
++++ b/tools/arch/x86/include/asm/cpufeatures.h
+@@ -219,7 +219,7 @@
+ #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
+ #define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
+ #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
+-#define X86_FEATURE_ZEN			(7*32+28) /* "" CPU based on Zen microarchitecture */
++#define X86_FEATURE_ZEN			( 7*32+28) /* "" Generic flag for all Zen and newer */
+ #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
+ #define X86_FEATURE_IBRS_ENHANCED	( 7*32+30) /* Enhanced IBRS */
+ #define X86_FEATURE_MSR_IA32_FEAT_CTL	( 7*32+31) /* "" MSR IA32_FEAT_CTL configured */
+-- 
+2.43.0
+
 
 
 
