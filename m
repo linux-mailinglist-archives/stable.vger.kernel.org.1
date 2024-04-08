@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E56489C613
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C898F89C3BD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D733B26159
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410AB1F24A50
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4917F465;
-	Mon,  8 Apr 2024 14:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E61F130E3E;
+	Mon,  8 Apr 2024 13:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwr1bp1k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuY6EY9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7D07EF14;
-	Mon,  8 Apr 2024 14:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2857E58C;
+	Mon,  8 Apr 2024 13:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584895; cv=none; b=TMQCfvHYHgvxnOeG8A0xQTFJTT3/bWTfABDOtNlRlyxXhQGpSDM/0cGwdlIq4Srx8gb5DZywQP0//RTZKoatiOKsSqIbROb7+WB11cUfrv1Q+XSkptoRV4YXF9ldOUXgNMHDCV7nWOIIuq+/abmW9ioa7nmE96NxD4rMcYHG4as=
+	t=1712583497; cv=none; b=ncpZAA24BBmCs1P4Ic+ZOisu0hjRRnX3+DhKJnC6Dq6lbO36aJuv3Ymk5bprEy6Bts+MQVgRDwE+1S1VYg+o7o0JVS4vI3cPrQWKlSo8NBdCOEnH9FsxLJb/2A5Jzva0U8SaSEzhZ0NwgNsFwA0KeOcZNgJ4ulfM+Gz5Hqx1qBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584895; c=relaxed/simple;
-	bh=7Xq9nfBIm5wvVZgEgavrXSnldBFS0Zj6iN9GpK3GDBI=;
+	s=arc-20240116; t=1712583497; c=relaxed/simple;
+	bh=DkcflPtoNw7oPGbbbtKm9b73DbU8HCs8A7TaPoTxf68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+xr3KpZ6Xkf6b9foFHOw+FLfYsnU9/EghZmpl6ggX7bykYKTmoQGmF/F0xtz2rBwK0m5pr1otp42ToRwXoHIhvn4toArNEBalkZCLnNNdT5MKEI0ELdOZaS5C/ntFKbaXjSDjtaV81ikz1QqBd5TZLi7ZpsSU+1jvF241p3/Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwr1bp1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA96C433C7;
-	Mon,  8 Apr 2024 14:01:34 +0000 (UTC)
+	 MIME-Version; b=iH3nBLq/4O04PLlX0e/+r+R6Sv7pk3ynL8dM/7wXtXUq98bjLF63hdhx5Ib1be8vW40lV/lwmFf07G9i3n9+8NCLjrnJgMiMgN3fHd/Amj3bUe9yz6xwcWMK6oqmhsUiD/EIDyYscA5nXzjmJXJJdQgy2y8rbdq6DetRW1Pwrfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuY6EY9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670FAC43390;
+	Mon,  8 Apr 2024 13:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584894;
-	bh=7Xq9nfBIm5wvVZgEgavrXSnldBFS0Zj6iN9GpK3GDBI=;
+	s=korg; t=1712583496;
+	bh=DkcflPtoNw7oPGbbbtKm9b73DbU8HCs8A7TaPoTxf68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uwr1bp1kPtf1QC9hdIxzqpw07z27aWLc4gEfuK730ZjBs5422UfWsUU/Wr+KGYWZx
-	 TbQrreh8g2np+PoEw4s90zq2WXGo/P0uFJ7j77Di55r8zKiXd0tAlBFMvwBYolcdK7
-	 l+8tGtnBD04av2mAOD/S8ACFPKONsZY7WC4d8zhI=
+	b=iuY6EY9nXxwtrh8sh6nX+tcPxHPhQqShAe2jNs219PySMQXOvE7GpVk7GqqF8axSl
+	 7D2FmXQxrmM4RF8dD/4D4/G2ZsB10H6J9HkeIUhfCt33aPhCG7bJUdfytKXzP/DVXQ
+	 CpLGqV8mYTv3cPC6/AshgHXu2tn79zLrMxxwBIcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 594/690] scsi: qla2xxx: Prevent command send on chip reset
+	Arnd Bergmann <arnd@arndb.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 185/273] ata: sata_mv: Fix PCI device ID table declaration compilation warning
 Date: Mon,  8 Apr 2024 14:57:40 +0200
-Message-ID: <20240408125421.110670135@linuxfoundation.org>
+Message-ID: <20240408125315.037061017@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 4895009c4bb72f71f2e682f1e7d2c2d96e482087 upstream.
+[ Upstream commit 3137b83a90646917c90951d66489db466b4ae106 ]
 
-Currently IOCBs are allowed to push through while chip reset could be in
-progress. During chip reset the outstanding_cmds array is cleared
-twice. Once when any command on this array is returned as failed and
-secondly when the array is initialize to zero. If a command is inserted on
-to the array between these intervals, then the command will be lost.  Check
-for chip reset before sending IOCB.
+Building with W=1 shows a warning for an unused variable when CONFIG_PCI
+is diabled:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-2-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/ata/sata_mv.c:790:35: error: unused variable 'mv_pci_tbl' [-Werror,-Wunused-const-variable]
+static const struct pci_device_id mv_pci_tbl[] = {
+
+Move the table into the same block that containsn the pci_driver
+definition.
+
+Fixes: 7bb3c5290ca0 ("sata_mv: Remove PCI dependency")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    8 ++++++--
- drivers/scsi/qla2xxx/qla_iocb.c |   33 +++++++++++++++++++++++++++++++--
- 2 files changed, 37 insertions(+), 4 deletions(-)
+ drivers/ata/sata_mv.c | 63 +++++++++++++++++++++----------------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -1188,8 +1188,12 @@ int qla24xx_async_gnl(struct scsi_qla_ho
- 	return rval;
+diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+index e82786c63fbd7..9bec0aee92e04 100644
+--- a/drivers/ata/sata_mv.c
++++ b/drivers/ata/sata_mv.c
+@@ -787,37 +787,6 @@ static const struct ata_port_info mv_port_info[] = {
+ 	},
+ };
  
- done_free_sp:
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+	/*
-+	 * use qla24xx_async_gnl_sp_done to purge all pending gnl request.
-+	 * kref_put is call behind the scene.
-+	 */
-+	sp->u.iocb_cmd.u.mbx.in_mb[0] = MBS_COMMAND_ERROR;
-+	qla24xx_async_gnl_sp_done(sp, QLA_COMMAND_ERROR);
- 	fcport->flags &= ~(FCF_ASYNC_SENT);
- done:
- 	fcport->flags &= ~(FCF_ASYNC_ACTIVE);
---- a/drivers/scsi/qla2xxx/qla_iocb.c
-+++ b/drivers/scsi/qla2xxx/qla_iocb.c
-@@ -2588,6 +2588,33 @@ void
- qla2x00_sp_release(struct kref *kref)
- {
- 	struct srb *sp = container_of(kref, struct srb, cmd_kref);
-+	struct scsi_qla_host *vha = sp->vha;
+-static const struct pci_device_id mv_pci_tbl[] = {
+-	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
+-	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
+-	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
+-	/* RocketRAID 1720/174x have different identifiers */
+-	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
+-	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
+-
+-	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
+-	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
+-	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
+-	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
+-
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
+-
+-	/* Adaptec 1430SA */
+-	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
+-
+-	/* Marvell 7042 support */
+-	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
+-
+-	/* Highpoint RocketRAID PCIe series */
+-	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
+-	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
+-
+-	{ }			/* terminate list */
+-};
+-
+ static const struct mv_hw_ops mv5xxx_ops = {
+ 	.phy_errata		= mv5_phy_errata,
+ 	.enable_leds		= mv5_enable_leds,
+@@ -4303,6 +4272,36 @@ static int mv_pci_init_one(struct pci_dev *pdev,
+ static int mv_pci_device_resume(struct pci_dev *pdev);
+ #endif
+ 
++static const struct pci_device_id mv_pci_tbl[] = {
++	{ PCI_VDEVICE(MARVELL, 0x5040), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5041), chip_504x },
++	{ PCI_VDEVICE(MARVELL, 0x5080), chip_5080 },
++	{ PCI_VDEVICE(MARVELL, 0x5081), chip_508x },
++	/* RocketRAID 1720/174x have different identifiers */
++	{ PCI_VDEVICE(TTI, 0x1720), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1740), chip_6042 },
++	{ PCI_VDEVICE(TTI, 0x1742), chip_6042 },
 +
-+	switch (sp->type) {
-+	case SRB_CT_PTHRU_CMD:
-+		/* GPSC & GFPNID use fcport->ct_desc.ct_sns for both req & rsp */
-+		if (sp->u.iocb_cmd.u.ctarg.req &&
-+			(!sp->fcport ||
-+			 sp->u.iocb_cmd.u.ctarg.req != sp->fcport->ct_desc.ct_sns)) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.req,
-+			    sp->u.iocb_cmd.u.ctarg.req_dma);
-+			sp->u.iocb_cmd.u.ctarg.req = NULL;
-+		}
-+		if (sp->u.iocb_cmd.u.ctarg.rsp &&
-+			(!sp->fcport ||
-+			 sp->u.iocb_cmd.u.ctarg.rsp != sp->fcport->ct_desc.ct_sns)) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.rsp,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
-+			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
++	{ PCI_VDEVICE(MARVELL, 0x6040), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6041), chip_604x },
++	{ PCI_VDEVICE(MARVELL, 0x6042), chip_6042 },
++	{ PCI_VDEVICE(MARVELL, 0x6080), chip_608x },
++	{ PCI_VDEVICE(MARVELL, 0x6081), chip_608x },
++
++	{ PCI_VDEVICE(ADAPTEC2, 0x0241), chip_604x },
++
++	/* Adaptec 1430SA */
++	{ PCI_VDEVICE(ADAPTEC2, 0x0243), chip_7042 },
++
++	/* Marvell 7042 support */
++	{ PCI_VDEVICE(MARVELL, 0x7042), chip_7042 },
++
++	/* Highpoint RocketRAID PCIe series */
++	{ PCI_VDEVICE(TTI, 0x2300), chip_7042 },
++	{ PCI_VDEVICE(TTI, 0x2310), chip_7042 },
++
++	{ }			/* terminate list */
++};
  
- 	sp->free(sp);
- }
-@@ -2693,7 +2720,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	 */
- 	sp = qla2x00_get_sp(vha, fcport, GFP_KERNEL);
- 	if (!sp) {
--		kfree(fcport);
-+		qla2x00_free_fcport(fcport);
- 		ql_log(ql_log_info, vha, 0x70e6,
- 		 "SRB allocation failed\n");
- 		return -ENOMEM;
-@@ -2748,6 +2775,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	if (rval != QLA_SUCCESS) {
- 		/* ref: INIT */
- 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		qla2x00_free_fcport(fcport);
- 		return QLA_FUNCTION_FAILED;
- 	}
+ static struct pci_driver mv_pci_driver = {
+ 	.name			= DRV_NAME,
+@@ -4315,6 +4314,7 @@ static struct pci_driver mv_pci_driver = {
+ #endif
  
-@@ -2757,6 +2785,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
+ };
++MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
  
- 	wait_for_completion(&elsio->u.els_logo.comp);
-+	qla2x00_free_fcport(fcport);
+ /**
+  *      mv_print_info - Dump key info to kernel log for perusal.
+@@ -4487,7 +4487,6 @@ static void __exit mv_exit(void)
+ MODULE_AUTHOR("Brett Russ");
+ MODULE_DESCRIPTION("SCSI low-level driver for Marvell SATA controllers");
+ MODULE_LICENSE("GPL v2");
+-MODULE_DEVICE_TABLE(pci, mv_pci_tbl);
+ MODULE_VERSION(DRV_VERSION);
+ MODULE_ALIAS("platform:" DRV_NAME);
  
- 	/* ref: INIT */
- 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-@@ -3916,7 +3945,7 @@ qla2x00_start_sp(srb_t *sp)
- 		return -EAGAIN;
- 	}
- 
--	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
-+	pkt = qla2x00_alloc_iocbs_ready(sp->qpair, sp);
- 	if (!pkt) {
- 		rval = -EAGAIN;
- 		ql_log(ql_log_warn, vha, 0x700c,
+-- 
+2.43.0
+
 
 
 
