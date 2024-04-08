@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-36441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C1489BFE7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5399E89BFE9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7AB284F4A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85BE41C22501
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2037CF39;
-	Mon,  8 Apr 2024 13:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F217D075;
+	Mon,  8 Apr 2024 13:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFhEqmeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNmROGmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C267CF25;
-	Mon,  8 Apr 2024 13:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97B52E405;
+	Mon,  8 Apr 2024 13:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581335; cv=none; b=qOl+l2AgV8YvajraUw30LMkQEYb1VPK590TKzTymMA+YBY19B0PD3V/5BcDKlShwGPvi+v6DIJRQE+q1QGpi7yg0OHpTGQWoXueBHfcnU4hVy0lJLCsorRyWbLhhUTH/MGwUZhrVn8100OWTqvXf6/N4PiD2S6ZPZ6sjPpHhdZI=
+	t=1712581340; cv=none; b=LVYkEJjTAEVJcHZecHsnXOhFGIz95zKxAd/rVoCjSpBTPyj0Uhv4b7hUvGEE9Poaz/v93UOFsa3cX0maoqoh1NgWo2jfgVw5yiP7D3dFFguTCzLesvm8n80cbWfMYrDspnb6bjjNfi73EGaoVkAgmmIvEkFgz0IEE2A5l1AFAUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581335; c=relaxed/simple;
-	bh=HqTyyEjIJlEDNh37qmKAtEyQJQgv8BNxpHvnPH/VFcQ=;
+	s=arc-20240116; t=1712581340; c=relaxed/simple;
+	bh=FhvtkwyQAxbTHVN7wSwVU/CZblCJyoDRnMgs7eN+M6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6N9O7bVA3pwwB5k1fefqI5/1URna33QKA3LUohq4nrIb23i7IDy1AVuv6MUZjXiEBCeU1+dnyORqrSRdZLZBLXRmQqc1zNVa/XGdIpnksf7CtPhysF0X/PcOlF61i1CEJ/MNhAxH1+YWPauf9meRJrxMI+RIKIATpsSkx0O25A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFhEqmeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED4AC433C7;
-	Mon,  8 Apr 2024 13:02:14 +0000 (UTC)
+	 MIME-Version; b=AoWOglrWiuCAZTmKTeh8l1my9iw0KgNhGnLcEz7Eo+NRqw6Gqc8h2xZyAmBUjOGvecTztdPGCERfUgrjF1rPC6UQ8k8cRsmAwrizUIcj3mV3XtrJ/rgydWXDhjwz3dTM5GZ+L5VZHZwFUYmjuQ8PtXJqoWZLNjKb4sLnVFCm6Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNmROGmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E49EC433F1;
+	Mon,  8 Apr 2024 13:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581334;
-	bh=HqTyyEjIJlEDNh37qmKAtEyQJQgv8BNxpHvnPH/VFcQ=;
+	s=korg; t=1712581340;
+	bh=FhvtkwyQAxbTHVN7wSwVU/CZblCJyoDRnMgs7eN+M6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFhEqmeXAgfcx3fXzFp0k+2ISpPjK959SnWFyR1Fh3PqjkW/e+mUnRMMl4Q2pBKF3
-	 WykiMctvQAxpngpD1kuE26qLkyRKuJAgtrhZvNnNxiymsWmCunFpHZFjLlmwQh1+My
-	 PMEKbRtzoBwQK2qQSq0AgOio/nI/4ioZDTkwbP8w=
+	b=XNmROGmFTTNdvuHQ7HvuwMZbPW7hKzREe3tJ5maDGD5MMogUFNultEKVn93VxOSe9
+	 LH44DtETfW7u/bYdIDActAs7hGY8cJExJM/hfe1A3O34XrD9vqSMOCUzkPhGu0fuoq
+	 0W7BV0bBYWYbWBlQDfE61U+VRxWfbgcVnH/OdWvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stable@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/690] mtd: rawnand: meson: fix scrambling mode value in command macro
-Date: Mon,  8 Apr 2024 14:48:20 +0200
-Message-ID: <20240408125400.778451355@linuxfoundation.org>
+Subject: [PATCH 5.15 035/690] parisc: Avoid clobbering the C/B bits in the PSW with tophys and tovirt macros
+Date: Mon,  8 Apr 2024 14:48:21 +0200
+Message-ID: <20240408125400.818205196@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,37 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: John David Anglin <dave.anglin@bell.net>
 
-[ Upstream commit ef6f463599e16924cdd02ce5056ab52879dc008c ]
+[ Upstream commit 4603fbaa76b5e703b38ac8cc718102834eb6e330 ]
 
-Scrambling mode is enabled by value (1 << 19). NFC_CMD_SCRAMBLER_ENABLE
-is already (1 << 19), so there is no need to shift it again in CMDRWGEN
-macro.
+Use add,l to avoid clobbering the C/B bits in the PSW.
 
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: <Stable@vger.kernel.org>
-Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240210214551.441610-1-avkrasnov@salutedevices.com
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.10+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/meson_nand.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/include/asm/assembly.h | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/meson_nand.c b/drivers/mtd/nand/raw/meson_nand.c
-index 9d441965321ad..9198d54cb34ee 100644
---- a/drivers/mtd/nand/raw/meson_nand.c
-+++ b/drivers/mtd/nand/raw/meson_nand.c
-@@ -59,7 +59,7 @@
- #define CMDRWGEN(cmd_dir, ran, bch, short_mode, page_size, pages)	\
- 	(								\
- 		(cmd_dir)			|			\
--		((ran) << 19)			|			\
-+		(ran)				|			\
- 		((bch) << 14)			|			\
- 		((short_mode) << 13)		|			\
- 		(((page_size) & 0x7f) << 6)	|			\
+diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/assembly.h
+index fd8c1ebd27470..12b9236effbc4 100644
+--- a/arch/parisc/include/asm/assembly.h
++++ b/arch/parisc/include/asm/assembly.h
+@@ -79,26 +79,28 @@
+ 	 * version takes two arguments: a src and destination register.
+ 	 * However, the source and destination registers can not be
+ 	 * the same register.
++	 *
++	 * We use add,l to avoid clobbering the C/B bits in the PSW.
+ 	 */
+ 
+ 	.macro  tophys  grvirt, grphys
+-	ldil    L%(__PAGE_OFFSET), \grphys
+-	sub     \grvirt, \grphys, \grphys
++	ldil    L%(-__PAGE_OFFSET), \grphys
++	addl    \grvirt, \grphys, \grphys
+ 	.endm
+-	
++
+ 	.macro  tovirt  grphys, grvirt
+ 	ldil    L%(__PAGE_OFFSET), \grvirt
+-	add     \grphys, \grvirt, \grvirt
++	addl    \grphys, \grvirt, \grvirt
+ 	.endm
+ 
+ 	.macro  tophys_r1  gr
+-	ldil    L%(__PAGE_OFFSET), %r1
+-	sub     \gr, %r1, \gr
++	ldil    L%(-__PAGE_OFFSET), %r1
++	addl    \gr, %r1, \gr
+ 	.endm
+-	
++
+ 	.macro  tovirt_r1  gr
+ 	ldil    L%(__PAGE_OFFSET), %r1
+-	add     \gr, %r1, \gr
++	addl    \gr, %r1, \gr
+ 	.endm
+ 
+ 	.macro delay value
 -- 
 2.43.0
 
