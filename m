@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-37085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8719289C33F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5166D89C343
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F32F61F214D8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C5CD282787
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA4D7C080;
-	Mon,  8 Apr 2024 13:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D2D7C098;
+	Mon,  8 Apr 2024 13:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFt8CJsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDDnr5+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B52876058;
-	Mon,  8 Apr 2024 13:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBFF6FE1A;
+	Mon,  8 Apr 2024 13:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583207; cv=none; b=Zv3BD9FuqjvEAo0P0dAOS//m5XYU4Ii0JtcTRdKUvDwN+VVf7/UjzZaOXXyZz4ssAWRbRzvvRR0C8lrQIAiGwyc9AgPKcp64MQO5ecUXYofZjMX51FepVAmIXL/uh5bZwVXOe/mVSmvsx7qfsZecBC3zb0NwU2bEaCrDtFqvxsY=
+	t=1712583215; cv=none; b=GAlwBvLkjwVdeEMXC5E0Mj7bCsdrQTlQDjbvttvDDT7433bw7DEKrLVaalprqxFlFjWKpaGG7h+SVJZlPZXpHg2zVdkgoJ4WwNGaVoNmJXrIh4ftL7Y8W9UnWXU18Etf97jjQzycrme5ELcoHFyoF/uLEE2PYEXSbIgerhXFbnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583207; c=relaxed/simple;
-	bh=nxVcDaaWdrS0XXwXmO933JKciSDYB5TzvODsER5ZYro=;
+	s=arc-20240116; t=1712583215; c=relaxed/simple;
+	bh=fD+atUKnKzViPHRoCZ5083IfwubLVsSi2T0fJqH6xA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/cyrFzuvVVMa7y+QuXLVB61y2d8YvTBfpiaG44M3T8Nvodi09J5WA2DL1740k0iPmL2zKncULSLroVjXJahYIgpSG/RGphMVogF3W7jdF1yabL3qy1I2/88VXY+VFtYD2XEbzb3RqybTYbv6/Hf0ZcKZ1ROHWAqyhh5DbwyJMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFt8CJsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27053C433B1;
-	Mon,  8 Apr 2024 13:33:25 +0000 (UTC)
+	 MIME-Version; b=IAJY0uazzj4dRyCaB2Gip9zpJiGPsNAdoQJyifgNnV39m4MrFjI+8M9KVcI0jmP42W2466DAebd4g5R610sb39GeP4oQ3AOJSiKuiPC1BU8aLwDw3cjXRk1gg3ynYmq4j4CuzCXQbJ1km5WKgo9A44GZD6Xctcvi55g6HfK4i/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDDnr5+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0B5C433F1;
+	Mon,  8 Apr 2024 13:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583206;
-	bh=nxVcDaaWdrS0XXwXmO933JKciSDYB5TzvODsER5ZYro=;
+	s=korg; t=1712583215;
+	bh=fD+atUKnKzViPHRoCZ5083IfwubLVsSi2T0fJqH6xA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qFt8CJsdLb+1xidknLsugieMP5S+sA6s6ZyR2GfTQr0pDG+YDrCQ33Dgqv3uQl289
-	 tXt91GXeU7mlLXE3Pbo+xFvy/YGlnjxRA2NAcwlitfsHOQmEum0C9rLxsrZnB3hHQO
-	 L8eEOMOKnbS7nKO3zvQ/9uzlRx0DpxFnEghQ32Lw=
+	b=cDDnr5+sqwf8uScRG9ORaog/UdXDUKA92wn56PNc6BGo80TuPfLaOzY4acOXy/hJs
+	 kiFxeuyn8YAKg6Uf1rh5KAQ2cNsf1Qrl8StyjU6B3GeI6JDTJ22+VUMB7aPJHYO2h2
+	 OB5p9jRZ4MfFrQPW2HyVHJHPGlLaL6JrA/KPx02I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Amir Goldstein <amir73il@gmail.com>,
 	Jan Kara <jack@suse.cz>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 222/690] fanotify: report old and/or new parent+name in FAN_RENAME event
-Date: Mon,  8 Apr 2024 14:51:28 +0200
-Message-ID: <20240408125407.587974233@linuxfoundation.org>
+Subject: [PATCH 5.15 223/690] fanotify: wire up FAN_RENAME event
+Date: Mon,  8 Apr 2024 14:51:29 +0200
+Message-ID: <20240408125407.624287720@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,202 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 7326e382c21e9c23c89c88369afdc90b82a14da8 ]
+[ Upstream commit 8cc3b1ccd930fe6971e1527f0c4f1bdc8cb56026 ]
 
-In the special case of FAN_RENAME event, we report old or new or both
-old and new parent+name.
+FAN_RENAME is the successor of FAN_MOVED_FROM and FAN_MOVED_TO
+and can be used to get the old and new parent+name information in
+a single event.
 
-A single info record will be reported if either the old or new dir
-is watched and two records will be reported if both old and new dir
-(or their filesystem) are watched.
+FAN_MOVED_FROM and FAN_MOVED_TO are still supported for backward
+compatibility, but it makes little sense to use them together with
+FAN_RENAME in the same group.
 
-The old and new parent+name are reported using new info record types
-FAN_EVENT_INFO_TYPE_{OLD,NEW}_DFID_NAME, so if a single info record
-is reported, it is clear to the application, to which dir entry the
-fid+name info is referring to.
+FAN_RENAME uses special info type records to report the old and
+new parent+name, so reporting only old and new parent id is less
+useful and was not implemented.
+Therefore, FAN_REANAME requires a group with flag FAN_REPORT_NAME.
 
-Link: https://lore.kernel.org/r/20211129201537.1932819-11-amir73il@gmail.com
+Link: https://lore.kernel.org/r/20211129201537.1932819-12-amir73il@gmail.com
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fanotify/fanotify.c      |  7 ++++
- fs/notify/fanotify/fanotify.h      | 18 +++++++++++
- fs/notify/fanotify/fanotify_user.c | 52 +++++++++++++++++++++++++++---
- include/uapi/linux/fanotify.h      |  6 ++++
- 4 files changed, 78 insertions(+), 5 deletions(-)
+ fs/notify/fanotify/fanotify.c      | 2 +-
+ fs/notify/fanotify/fanotify_user.c | 8 ++++++++
+ include/linux/fanotify.h           | 3 ++-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index 14bc0f12cc9f3..0da305b6f3e2f 100644
+index 0da305b6f3e2f..985e995d2a398 100644
 --- a/fs/notify/fanotify/fanotify.c
 +++ b/fs/notify/fanotify/fanotify.c
-@@ -153,6 +153,13 @@ static bool fanotify_should_merge(struct fanotify_event *old,
- 	if ((old->mask & FS_ISDIR) != (new->mask & FS_ISDIR))
- 		return false;
+@@ -930,7 +930,7 @@ static int fanotify_handle_event(struct fsnotify_group *group, u32 mask,
+ 	BUILD_BUG_ON(FAN_FS_ERROR != FS_ERROR);
+ 	BUILD_BUG_ON(FAN_RENAME != FS_RENAME);
  
-+	/*
-+	 * FAN_RENAME event is reported with special info record types,
-+	 * so we cannot merge it with other events.
-+	 */
-+	if ((old->mask & FAN_RENAME) != (new->mask & FAN_RENAME))
-+		return false;
-+
- 	switch (old->type) {
- 	case FANOTIFY_EVENT_TYPE_PATH:
- 		return fanotify_path_equal(fanotify_event_path(old),
-diff --git a/fs/notify/fanotify/fanotify.h b/fs/notify/fanotify/fanotify.h
-index 8fa3bc0effd45..a3d5b751cac5b 100644
---- a/fs/notify/fanotify/fanotify.h
-+++ b/fs/notify/fanotify/fanotify.h
-@@ -373,6 +373,13 @@ static inline int fanotify_event_dir_fh_len(struct fanotify_event *event)
- 	return info ? fanotify_info_dir_fh_len(info) : 0;
- }
+-	BUILD_BUG_ON(HWEIGHT32(ALL_FANOTIFY_EVENT_BITS) != 20);
++	BUILD_BUG_ON(HWEIGHT32(ALL_FANOTIFY_EVENT_BITS) != 21);
  
-+static inline int fanotify_event_dir2_fh_len(struct fanotify_event *event)
-+{
-+	struct fanotify_info *info = fanotify_event_info(event);
-+
-+	return info ? fanotify_info_dir2_fh_len(info) : 0;
-+}
-+
- static inline bool fanotify_event_has_object_fh(struct fanotify_event *event)
- {
- 	/* For error events, even zeroed fh are reported. */
-@@ -386,6 +393,17 @@ static inline bool fanotify_event_has_dir_fh(struct fanotify_event *event)
- 	return fanotify_event_dir_fh_len(event) > 0;
- }
- 
-+static inline bool fanotify_event_has_dir2_fh(struct fanotify_event *event)
-+{
-+	return fanotify_event_dir2_fh_len(event) > 0;
-+}
-+
-+static inline bool fanotify_event_has_any_dir_fh(struct fanotify_event *event)
-+{
-+	return fanotify_event_has_dir_fh(event) ||
-+		fanotify_event_has_dir2_fh(event);
-+}
-+
- struct fanotify_path_event {
- 	struct fanotify_event fae;
- 	struct path path;
+ 	mask = fanotify_group_event_mask(group, iter_info, &match_mask,
+ 					 mask, data, data_type, dir);
 diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 526e3b5a98f34..b3ac2d877e1ee 100644
+index b3ac2d877e1ee..ce84eb8443b10 100644
 --- a/fs/notify/fanotify/fanotify_user.c
 +++ b/fs/notify/fanotify/fanotify_user.c
-@@ -129,12 +129,29 @@ static int fanotify_fid_info_len(int fh_len, int name_len)
- 		       FANOTIFY_EVENT_ALIGN);
- }
+@@ -1604,6 +1604,14 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
+ 	    (!fid_mode || mark_type == FAN_MARK_MOUNT))
+ 		goto fput_and_out;
  
-+/* FAN_RENAME may have one or two dir+name info records */
-+static int fanotify_dir_name_info_len(struct fanotify_event *event)
-+{
-+	struct fanotify_info *info = fanotify_event_info(event);
-+	int dir_fh_len = fanotify_event_dir_fh_len(event);
-+	int dir2_fh_len = fanotify_event_dir2_fh_len(event);
-+	int info_len = 0;
++	/*
++	 * FAN_RENAME uses special info type records to report the old and
++	 * new parent+name.  Reporting only old and new parent id is less
++	 * useful and was not implemented.
++	 */
++	if (mask & FAN_RENAME && !(fid_mode & FAN_REPORT_NAME))
++		goto fput_and_out;
 +
-+	if (dir_fh_len)
-+		info_len += fanotify_fid_info_len(dir_fh_len,
-+						  info->name_len);
-+	if (dir2_fh_len)
-+		info_len += fanotify_fid_info_len(dir2_fh_len,
-+						  info->name2_len);
-+
-+	return info_len;
-+}
-+
- static size_t fanotify_event_len(unsigned int info_mode,
- 				 struct fanotify_event *event)
- {
- 	size_t event_len = FAN_EVENT_METADATA_LEN;
- 	struct fanotify_info *info;
--	int dir_fh_len;
- 	int fh_len;
- 	int dot_len = 0;
+ 	if (flags & FAN_MARK_FLUSH) {
+ 		ret = 0;
+ 		if (mark_type == FAN_MARK_MOUNT)
+diff --git a/include/linux/fanotify.h b/include/linux/fanotify.h
+index 376e050e6f384..3afdf339d53c9 100644
+--- a/include/linux/fanotify.h
++++ b/include/linux/fanotify.h
+@@ -82,7 +82,8 @@ extern struct ctl_table fanotify_table[]; /* for sysctl */
+  * Directory entry modification events - reported only to directory
+  * where entry is modified and not to a watching parent.
+  */
+-#define FANOTIFY_DIRENT_EVENTS	(FAN_MOVE | FAN_CREATE | FAN_DELETE)
++#define FANOTIFY_DIRENT_EVENTS	(FAN_MOVE | FAN_CREATE | FAN_DELETE | \
++				 FAN_RENAME)
  
-@@ -146,9 +163,8 @@ static size_t fanotify_event_len(unsigned int info_mode,
- 
- 	info = fanotify_event_info(event);
- 
--	if (fanotify_event_has_dir_fh(event)) {
--		dir_fh_len = fanotify_event_dir_fh_len(event);
--		event_len += fanotify_fid_info_len(dir_fh_len, info->name_len);
-+	if (fanotify_event_has_any_dir_fh(event)) {
-+		event_len += fanotify_dir_name_info_len(event);
- 	} else if ((info_mode & FAN_REPORT_NAME) &&
- 		   (event->mask & FAN_ONDIR)) {
- 		/*
-@@ -379,6 +395,8 @@ static int copy_fid_info_to_user(__kernel_fsid_t *fsid, struct fanotify_fh *fh,
- 			return -EFAULT;
- 		break;
- 	case FAN_EVENT_INFO_TYPE_DFID_NAME:
-+	case FAN_EVENT_INFO_TYPE_OLD_DFID_NAME:
-+	case FAN_EVENT_INFO_TYPE_NEW_DFID_NAME:
- 		if (WARN_ON_ONCE(!name || !name_len))
- 			return -EFAULT;
- 		break;
-@@ -478,11 +496,19 @@ static int copy_info_records_to_user(struct fanotify_event *event,
- 	unsigned int pidfd_mode = info_mode & FAN_REPORT_PIDFD;
- 
- 	/*
--	 * Event info records order is as follows: dir fid + name, child fid.
-+	 * Event info records order is as follows:
-+	 * 1. dir fid + name
-+	 * 2. (optional) new dir fid + new name
-+	 * 3. (optional) child fid
- 	 */
- 	if (fanotify_event_has_dir_fh(event)) {
- 		info_type = info->name_len ? FAN_EVENT_INFO_TYPE_DFID_NAME :
- 					     FAN_EVENT_INFO_TYPE_DFID;
-+
-+		/* FAN_RENAME uses special info types */
-+		if (event->mask & FAN_RENAME)
-+			info_type = FAN_EVENT_INFO_TYPE_OLD_DFID_NAME;
-+
- 		ret = copy_fid_info_to_user(fanotify_event_fsid(event),
- 					    fanotify_info_dir_fh(info),
- 					    info_type,
-@@ -496,6 +522,22 @@ static int copy_info_records_to_user(struct fanotify_event *event,
- 		total_bytes += ret;
- 	}
- 
-+	/* New dir fid+name may be reported in addition to old dir fid+name */
-+	if (fanotify_event_has_dir2_fh(event)) {
-+		info_type = FAN_EVENT_INFO_TYPE_NEW_DFID_NAME;
-+		ret = copy_fid_info_to_user(fanotify_event_fsid(event),
-+					    fanotify_info_dir2_fh(info),
-+					    info_type,
-+					    fanotify_info_name2(info),
-+					    info->name2_len, buf, count);
-+		if (ret < 0)
-+			return ret;
-+
-+		buf += ret;
-+		count -= ret;
-+		total_bytes += ret;
-+	}
-+
- 	if (fanotify_event_has_object_fh(event)) {
- 		const char *dot = NULL;
- 		int dot_len = 0;
-diff --git a/include/uapi/linux/fanotify.h b/include/uapi/linux/fanotify.h
-index 9d0e2dc5767b5..e8ac38cc2fd6d 100644
---- a/include/uapi/linux/fanotify.h
-+++ b/include/uapi/linux/fanotify.h
-@@ -134,6 +134,12 @@ struct fanotify_event_metadata {
- #define FAN_EVENT_INFO_TYPE_PIDFD	4
- #define FAN_EVENT_INFO_TYPE_ERROR	5
- 
-+/* Special info types for FAN_RENAME */
-+#define FAN_EVENT_INFO_TYPE_OLD_DFID_NAME	10
-+/* Reserved for FAN_EVENT_INFO_TYPE_OLD_DFID	11 */
-+#define FAN_EVENT_INFO_TYPE_NEW_DFID_NAME	12
-+/* Reserved for FAN_EVENT_INFO_TYPE_NEW_DFID	13 */
-+
- /* Variable length info record following event metadata */
- struct fanotify_event_info_header {
- 	__u8 info_type;
+ /* Events that can be reported with event->fd */
+ #define FANOTIFY_FD_EVENTS (FANOTIFY_PATH_EVENTS | FANOTIFY_PERM_EVENTS)
 -- 
 2.43.0
 
