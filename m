@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5F089C5F5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A546389C0FE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E8F1C23CE0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456811F213B5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5467D7F464;
-	Mon,  8 Apr 2024 14:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DABB7CF34;
+	Mon,  8 Apr 2024 13:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cK+5WvUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCgx8QnD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B767C0BF;
-	Mon,  8 Apr 2024 14:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED007CF17;
+	Mon,  8 Apr 2024 13:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584941; cv=none; b=f52BUhfvc0JKmG0wws7Il5rjaZM5HnrGQQXvXPxym4PfAT8HfkhyFN3TRHdxogscm2oJ66QbdzyiG1KDBDpZvXmLDCocf5QIaPIBZfQnSyUoacEU10TiuUThBuJEh2XT1Wbkjoh8aiGk19zQzSYKwZfZ6yd6s80EhpKQlEbP9ZE=
+	t=1712581894; cv=none; b=WFXv6e626MaKg3f8jtEe+HQOG6o7mLXkRvGfzRdidfVBo6uRVCgf+mHZfB0XSLDwY6jBoAC0FOqn/wv03a8c/1kM3A2h2TkyDrss6G2pdRaQMGz+nPgaoTnDxme5O+EIfuUC5NX7Ec+WrkxBSEMb0gG6ExQ86QkQV0Ex6mXbE3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584941; c=relaxed/simple;
-	bh=UCU/0+rZjHTjl5qo7VpnCKMigNec5CJzf7GKduTDqLI=;
+	s=arc-20240116; t=1712581894; c=relaxed/simple;
+	bh=V3xQqMMz721X7T6Cq+kRzZ1IfXbaTvDCUTWo/2/rdSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyC/bGhQ3tLqq9zkLUxitagqsOlUd+pCMigys1rWTF6oALyJcAIxJUiX0H/TSHU/8gUyaef3r9T+tV2C7G902DTaSDZ+JhlCRXcRW9lDfpnLi1OTgS0isqSMB3hFG556Po5ZdSBZeTew4C9ulG8k/lt2zzTo2106okRaeSmXlq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cK+5WvUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39780C433F1;
-	Mon,  8 Apr 2024 14:02:20 +0000 (UTC)
+	 MIME-Version; b=smf1AEyD+eP334KAzi4/SviCicsIIC0fCz9EDGmJDyfHKeAVo0qYnN2pL6t+vFV8w6VFcLGGttESc7I0D6yCNGRUWUqV2tAo8l51WoonhqDs7JYQqTzGq+8RiY9EVujgCiCXhUqda8HIX1GWxdKjz+sJz2Kdy5feoaKsM7QVag0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCgx8QnD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C567C433F1;
+	Mon,  8 Apr 2024 13:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584940;
-	bh=UCU/0+rZjHTjl5qo7VpnCKMigNec5CJzf7GKduTDqLI=;
+	s=korg; t=1712581893;
+	bh=V3xQqMMz721X7T6Cq+kRzZ1IfXbaTvDCUTWo/2/rdSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cK+5WvUjrvDK5oUbv7QYZV4piNZvuAKnZF7ElG1RDO5R26UdyHqvZP4s5eelRH5Dp
-	 7A9WmLE/L7BZhiZ83pomB+2VuTUVfG1lZpGNeEzcAL4TO2E6zexzEaFYcyY5Fvf3GV
-	 hpFumlhGjQ7dU5i/pKLgO47pIGL5MFhcXs0lZUpA=
+	b=eCgx8QnDW3q2bM+uM709HVH1guyX+S1kJUOrnRwD9XyP7q41T7pK5ZObbs8YJw+Ot
+	 7uwi+xhGywF3daTerXz5Ja6UXYONfMGaxrJYzONt1yBNyGb73gL/nVxTu53up3Deab
+	 xaRcR5EiprOLfNAxp7IvduKQM9Xgx+R1FUn/Xjco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 608/690] USB: UAS: return ENODEV when submit urbs fail with device not attached
+	Atlas Yu <atlas.yu@canonical.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 060/138] r8169: skip DASH fw status checks when DASH is disabled
 Date: Mon,  8 Apr 2024 14:57:54 +0200
-Message-ID: <20240408125421.628480370@linuxfoundation.org>
+Message-ID: <20240408125258.088500262@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+From: Atlas Yu <atlas.yu@canonical.com>
 
-[ Upstream commit cd5432c712351a3d5f82512908f5febfca946ca6 ]
+commit 5e864d90b20803edf6bd44a99fb9afa7171785f2 upstream.
 
-In the scenario of entering hibernation with udisk in the system, if the
-udisk was gone or resume fail in the thaw phase of hibernation. Its state
-will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
-and can't not handle disconnect event. Next, in the poweroff phase of
-hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
-when poweroff this scsi device, which will cause uas_submit_urbs to be
-called to submit URB for sense/data/cmd pipe. However, these URBs will
-submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
-will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
-the SCSI layer go into an ugly loop and system fail to go into hibernation.
+On devices that support DASH, the current code in the "rtl_loop_wait" function
+raises false alarms when DASH is disabled. This occurs because the function
+attempts to wait for the DASH firmware to be ready, even though it's not
+relevant in this case.
 
-On the other hand, when we specially check for -ENODEV in function
-uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
-poweroff fail and system shutdown instead of entering hibernation.
+r8169 0000:0c:00.0 eth0: RTL8168ep/8111ep, 38:7c:76:49:08:d9, XID 502, IRQ 86
+r8169 0000:0c:00.0 eth0: jumbo features [frames: 9194 bytes, tx checksumming: ko]
+r8169 0000:0c:00.0 eth0: DASH disabled
+...
+r8169 0000:0c:00.0 eth0: rtl_ep_ocp_read_cond == 0 (loop: 30, delay: 10000).
 
-To fix this issue, let uas_submit_urbs to return original generic error
-when submitting URB failed. At the same time, we need to translate -ENODEV
-to DID_NOT_CONNECT for the SCSI layer.
+This patch modifies the driver start/stop functions to skip checking the DASH
+firmware status when DASH is explicitly disabled. This prevents unnecessary
+delays and false alarms.
 
-Suggested-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Link: https://lore.kernel.org/r/20240306180814.4897-1-WeitaoWang-oc@zhaoxin.com
+The patch has been tested on several ThinkStation P8/PX workstations.
+
+Fixes: 0ab0c45d8aae ("r8169: add handling DASH when DASH is disabled")
+Signed-off-by: Atlas Yu <atlas.yu@canonical.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20240328055152.18443-1-atlas.yu@canonical.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/uas.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |   31 ++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index d11a9481f6d00..11a551a9cd057 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -533,7 +533,7 @@ static struct urb *uas_alloc_cmd_urb(struct uas_dev_info *devinfo, gfp_t gfp,
-  * daft to me.
-  */
- 
--static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
-+static int uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
- {
- 	struct uas_dev_info *devinfo = cmnd->device->hostdata;
- 	struct urb *urb;
-@@ -541,30 +541,28 @@ static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
- 
- 	urb = uas_alloc_sense_urb(devinfo, gfp, cmnd);
- 	if (!urb)
--		return NULL;
-+		return -ENOMEM;
- 	usb_anchor_urb(urb, &devinfo->sense_urbs);
- 	err = usb_submit_urb(urb, gfp);
- 	if (err) {
- 		usb_unanchor_urb(urb);
- 		uas_log_cmd_state(cmnd, "sense submit err", err);
- 		usb_free_urb(urb);
--		return NULL;
- 	}
--	return urb;
-+	return err;
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -1135,17 +1135,40 @@ static void rtl8168ep_stop_cmac(struct r
+ 	RTL_W8(tp, IBCR0, RTL_R8(tp, IBCR0) & ~0x01);
  }
  
- static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 			   struct uas_dev_info *devinfo)
++static void rtl_dash_loop_wait(struct rtl8169_private *tp,
++			       const struct rtl_cond *c,
++			       unsigned long usecs, int n, bool high)
++{
++	if (!tp->dash_enabled)
++		return;
++	rtl_loop_wait(tp, c, usecs, n, high);
++}
++
++static void rtl_dash_loop_wait_high(struct rtl8169_private *tp,
++				    const struct rtl_cond *c,
++				    unsigned long d, int n)
++{
++	rtl_dash_loop_wait(tp, c, d, n, true);
++}
++
++static void rtl_dash_loop_wait_low(struct rtl8169_private *tp,
++				   const struct rtl_cond *c,
++				   unsigned long d, int n)
++{
++	rtl_dash_loop_wait(tp, c, d, n, false);
++}
++
+ static void rtl8168dp_driver_start(struct rtl8169_private *tp)
  {
- 	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
--	struct urb *urb;
- 	int err;
+ 	r8168dp_oob_notify(tp, OOB_CMD_DRIVER_START);
+-	rtl_loop_wait_high(tp, &rtl_dp_ocp_read_cond, 10000, 10);
++	rtl_dash_loop_wait_high(tp, &rtl_dp_ocp_read_cond, 10000, 10);
+ }
  
- 	lockdep_assert_held(&devinfo->lock);
- 	if (cmdinfo->state & SUBMIT_STATUS_URB) {
--		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
--		if (!urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
-+		if (err)
-+			return err;
- 		cmdinfo->state &= ~SUBMIT_STATUS_URB;
- 	}
+ static void rtl8168ep_driver_start(struct rtl8169_private *tp)
+ {
+ 	r8168ep_ocp_write(tp, 0x01, 0x180, OOB_CMD_DRIVER_START);
+ 	r8168ep_ocp_write(tp, 0x01, 0x30, r8168ep_ocp_read(tp, 0x30) | 0x01);
+-	rtl_loop_wait_high(tp, &rtl_ep_ocp_read_cond, 10000, 30);
++	rtl_dash_loop_wait_high(tp, &rtl_ep_ocp_read_cond, 10000, 30);
+ }
  
-@@ -572,7 +570,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
- 							cmnd, DMA_FROM_DEVICE);
- 		if (!cmdinfo->data_in_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
- 	}
+ static void rtl8168_driver_start(struct rtl8169_private *tp)
+@@ -1159,7 +1182,7 @@ static void rtl8168_driver_start(struct
+ static void rtl8168dp_driver_stop(struct rtl8169_private *tp)
+ {
+ 	r8168dp_oob_notify(tp, OOB_CMD_DRIVER_STOP);
+-	rtl_loop_wait_low(tp, &rtl_dp_ocp_read_cond, 10000, 10);
++	rtl_dash_loop_wait_low(tp, &rtl_dp_ocp_read_cond, 10000, 10);
+ }
  
-@@ -582,7 +580,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->data_in_urb);
- 			uas_log_cmd_state(cmnd, "data in submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
- 		cmdinfo->state |= DATA_IN_URB_INFLIGHT;
-@@ -592,7 +590,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		cmdinfo->data_out_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
- 							cmnd, DMA_TO_DEVICE);
- 		if (!cmdinfo->data_out_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_DATA_OUT_URB;
- 	}
+ static void rtl8168ep_driver_stop(struct rtl8169_private *tp)
+@@ -1167,7 +1190,7 @@ static void rtl8168ep_driver_stop(struct
+ 	rtl8168ep_stop_cmac(tp);
+ 	r8168ep_ocp_write(tp, 0x01, 0x180, OOB_CMD_DRIVER_STOP);
+ 	r8168ep_ocp_write(tp, 0x01, 0x30, r8168ep_ocp_read(tp, 0x30) | 0x01);
+-	rtl_loop_wait_low(tp, &rtl_ep_ocp_read_cond, 10000, 10);
++	rtl_dash_loop_wait_low(tp, &rtl_ep_ocp_read_cond, 10000, 10);
+ }
  
-@@ -602,7 +600,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->data_out_urb);
- 			uas_log_cmd_state(cmnd, "data out submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
- 		cmdinfo->state |= DATA_OUT_URB_INFLIGHT;
-@@ -611,7 +609,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 	if (cmdinfo->state & ALLOC_CMD_URB) {
- 		cmdinfo->cmd_urb = uas_alloc_cmd_urb(devinfo, GFP_ATOMIC, cmnd);
- 		if (!cmdinfo->cmd_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_CMD_URB;
- 	}
- 
-@@ -621,7 +619,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->cmd_urb);
- 			uas_log_cmd_state(cmnd, "cmd submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->cmd_urb = NULL;
- 		cmdinfo->state &= ~SUBMIT_CMD_URB;
-@@ -699,7 +697,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd,
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
--		set_host_byte(cmnd, DID_ERROR);
-+		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
- 	}
--- 
-2.43.0
-
+ static void rtl8168_driver_stop(struct rtl8169_private *tp)
 
 
 
