@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-37332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A38589C469
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4C589C3DD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8DE4280F18
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 871B2282AE5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220C17F493;
-	Mon,  8 Apr 2024 13:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943A080025;
+	Mon,  8 Apr 2024 13:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QF81C0xa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcygb/2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D486D745D6;
-	Mon,  8 Apr 2024 13:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E677E0F3;
+	Mon,  8 Apr 2024 13:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583922; cv=none; b=VUqL8yVebVuVn29nZmPpTY2s//M9jUf8yJBPKQd0WAA9d/+ZYLcZ3x/L6skGouQdnmFOSM0oh0LW4ZYra3rn2NmRgUzoTc6HVct4UxRA7PnnHlfg9DrfckmkiHcFd8dRHJx6WGuu/EbrkjCS+H+40R8zzvG3NkVr2ioV7zJ3AIM=
+	t=1712583579; cv=none; b=Tm+0VnFN0MzMGmNuwPyDbajz54POGi8Lo3Tmh+EdUUyy7Y09Iv6OzKSn2hiddz+iR3Jmbs4l3SjzxR2sz+svLj1mI7cOzrFxBx8G077Kfppi4dowmdmdKIJh5pcw4asHKcEde743ZQyugHpywr/kOsf4wWJ1z/Lynh0MmJSIY4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583922; c=relaxed/simple;
-	bh=8BA+CxJ7twa7wDmzc+yzrcAMpNPiiucsGEJ80hO7y1M=;
+	s=arc-20240116; t=1712583579; c=relaxed/simple;
+	bh=cfeGW69u5B2sxVNRYIsmPz8ZhKZ8g+hD3fqozSUFOHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STtWUMia/WfrIU5IHHJ6MyYMcFJZZ5dQQVx/36MMVVzqKsq0r/3wyksjMAOSncnFUqxVM1/E9llFcIJT5cEZrkex0lKkrqUIUGAFZo0WsvBDfdIicHz0Z/uKdZkc7JHIhq6mH9YVNV4YS4+I27rIps9Bz05lfaXM8B3x+Lc0yL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QF81C0xa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B436C433C7;
-	Mon,  8 Apr 2024 13:45:22 +0000 (UTC)
+	 MIME-Version; b=bzfhn37EXis9GGm8QG3i3F6ZQiA1+q9+9e8vXanKsfveoVl3HgSiyLjUh8AXbhoPEFWM/eLpBXKgkIezJSHuSOvsC+J0xW/bEA0+JQHlVWOnGDKDoO+yACQX8+lJyUWaaRa0vKFebrhcxMF2i8/FtG12TN6EaqmrCDJPtCxXsII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcygb/2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44C8C433F1;
+	Mon,  8 Apr 2024 13:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583922;
-	bh=8BA+CxJ7twa7wDmzc+yzrcAMpNPiiucsGEJ80hO7y1M=;
+	s=korg; t=1712583579;
+	bh=cfeGW69u5B2sxVNRYIsmPz8ZhKZ8g+hD3fqozSUFOHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QF81C0xaVhoB4YaOtU2HiLTIu8bX2MckVJAbuWwuPJ9jO+ROVHivMFvDfMXB76h6F
-	 UoGxtpCxyjl8D8s/JbKdyYRlZbxC+FIAHhsUvXrs8WOpauFZnZRUAm8odwXQFLmiFt
-	 2vYsZgNm1dEF24emuPkkHzeg+/QZGuOfKGMbVDEM=
+	b=qcygb/2Kzs+UDPARyYHFHn41kpQ/cRDBNUBfVBnKO1+tpDuY821X8LRGwxil5ZQ67
+	 O2B6QiInrsOP8Ls+9BPZTXaU2YOY99Akq3wIRutmA6Bfjr5lXw0GvpZKWST+VkVCwQ
+	 KQUKVKULrR1rut+9u0eBIqaB+TpSgbmqWPCx4gyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephane Eranian <eranian@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.8 234/273] perf/x86/intel/ds: Dont clear ->pebs_data_cfg for the last PEBS event
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 210/252] io_uring/kbuf: get rid of bl->is_ready
 Date: Mon,  8 Apr 2024 14:58:29 +0200
-Message-ID: <20240408125316.698571560@linuxfoundation.org>
+Message-ID: <20240408125313.170906862@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 312be9fc2234c8acfb8148a9f4c358b70d358dee upstream.
+commit 3b80cff5a4d117c53d38ce805823084eaeffbde6 upstream.
 
-The MSR_PEBS_DATA_CFG MSR register is used to configure which data groups
-should be generated into a PEBS record, and it's shared among all counters.
+Now that xarray is being exclusively used for the buffer_list lookup,
+this check is no longer needed. Get rid of it and the is_ready member.
 
-If there are different configurations among counters, perf combines all the
-configurations.
-
-The first perf command as below requires a complete PEBS record
-(including memory info, GPRs, XMMs, and LBRs). The second perf command
-only requires a basic group. However, after the second perf command is
-running, the MSR_PEBS_DATA_CFG register is cleared. Only a basic group is
-generated in a PEBS record, which is wrong. The required information
-for the first perf command is missed.
-
- $ perf record --intr-regs=AX,SP,XMM0 -a -C 8 -b -W -d -c 100000003 -o /dev/null -e cpu/event=0xd0,umask=0x81/upp &
- $ sleep 5
- $ perf record  --per-thread  -c 1  -e cycles:pp --no-timestamp --no-tid taskset -c 8 ./noploop 1000
-
-The first PEBS event is a system-wide PEBS event. The second PEBS event
-is a per-thread event. When the thread is scheduled out, the
-intel_pmu_pebs_del() function is invoked to update the PEBS state.
-Since the system-wide event is still available, the cpuc->n_pebs is 1.
-The cpuc->pebs_data_cfg is cleared. The data configuration for the
-system-wide PEBS event is lost.
-
-The (cpuc->n_pebs == 1) check was introduced in commit:
-
-  b6a32f023fcc ("perf/x86: Fix PEBS threshold initialization")
-
-At that time, it indeed didn't hurt whether the state was updated
-during the removal, because only the threshold is updated.
-
-The calculation of the threshold takes the last PEBS event into
-account.
-
-However, since commit:
-
-  b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
-
-we delay the threshold update, and clear the PEBS data config, which triggers
-the bug.
-
-The PEBS data config update scope should not be shrunk during removal.
-
-[ mingo: Improved the changelog & comments. ]
-
-Fixes: b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240401133320.703971-1-kan.liang@linux.intel.com
+Cc: stable@vger.kernel.org # v6.4+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/ds.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ io_uring/kbuf.c |    8 --------
+ io_uring/kbuf.h |    2 --
+ 2 files changed, 10 deletions(-)
 
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1236,11 +1236,11 @@ pebs_update_state(bool needed_cb, struct
- 	struct pmu *pmu = event->pmu;
- 
- 	/*
--	 * Make sure we get updated with the first PEBS
--	 * event. It will trigger also during removal, but
--	 * that does not hurt:
-+	 * Make sure we get updated with the first PEBS event.
-+	 * During removal, ->pebs_data_cfg is still valid for
-+	 * the last PEBS event. Don't clear it.
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -59,7 +59,6 @@ static int io_buffer_add_list(struct io_
+ 	 * always under the ->uring_lock, but the RCU lookup from mmap does.
  	 */
--	if (cpuc->n_pebs == 1)
-+	if ((cpuc->n_pebs == 1) && add)
- 		cpuc->pebs_data_cfg = PEBS_UPDATE_DS_SW;
+ 	bl->bgid = bgid;
+-	smp_store_release(&bl->is_ready, 1);
+ 	return xa_err(xa_store(&ctx->io_bl_xa, bgid, bl, GFP_KERNEL));
+ }
  
- 	if (needed_cb != pebs_needs_sched_cb(cpuc)) {
+@@ -691,13 +690,6 @@ void *io_pbuf_get_address(struct io_ring
+ 
+ 	if (!bl || !bl->is_mmap)
+ 		return NULL;
+-	/*
+-	 * Ensure the list is fully setup. Only strictly needed for RCU lookup
+-	 * via mmap, and in that case only for the array indexed groups. For
+-	 * the xarray lookups, it's either visible and ready, or not at all.
+-	 */
+-	if (!smp_load_acquire(&bl->is_ready))
+-		return NULL;
+ 
+ 	return bl->buf_ring;
+ }
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -29,8 +29,6 @@ struct io_buffer_list {
+ 	__u8 is_mapped;
+ 	/* ring mapped provided buffers, but mmap'ed by application */
+ 	__u8 is_mmap;
+-	/* bl is visible from an RCU point of view for lookup */
+-	__u8 is_ready;
+ };
+ 
+ struct io_buffer {
 
 
 
