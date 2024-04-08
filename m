@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-37590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA3789C5CF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3668989C10A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:16:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C69CB2AD28
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66D84B24908
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB89D7C6C9;
-	Mon,  8 Apr 2024 13:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93677CF2B;
+	Mon,  8 Apr 2024 13:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwohdbcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pD68NY0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F2279F0;
-	Mon,  8 Apr 2024 13:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672747C0BE;
+	Mon,  8 Apr 2024 13:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584679; cv=none; b=GFXjEu1cR9rld5Myx5z8JLx4zyeTaNAh2Khvy60gF556sBtz1mfnOEqw0aGGerAFkM3aBRVTk7EMCqTaMiqz8sT7d2k50KWmJa+w+RXhswRpwi/XP5tKeaQWe+HUkssJn6PvkHcfPN/pIp6yMWO1/z1sj19PMsLCT3MI+fDTZcg=
+	t=1712581896; cv=none; b=eTsBn7Knelh84qsGJ5SNHAoTJZ/2Ywq7UHm1Zt7MpmRMbGxcjMszOdbLbFuBZb/EKpdNEb2x0m+CYQFa/3r8UUS50hpFS35huYZvKQ0qNS3kVmVv/IUJ8PxOyWq5qMYp3tBxxPzg+x453hKh2KsLLcFWP9mwTI5VZMJy8Q0ks/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584679; c=relaxed/simple;
-	bh=iDMOR+1l/ZrAvADaQbtXIhGF8Uo8DuWVOMewzhSTx/c=;
+	s=arc-20240116; t=1712581896; c=relaxed/simple;
+	bh=IaQlqgZmoruSz/ZpwZtKZW1lkQzm/fio3km6PDSAkK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/NQ2+nNr/cUeOKB8tcGBOaXNRdfgdtniKKneSDp58E/ZOvPnI84XQA4cHAs/6CvmEp4e92ODa0moHVxpe4XjvXCvG9Rt/MI8jGKYfPiC7+Rf3UiHuqGriYe7pMmO2otlJvfB3CWb62tiruLBS6Ubx2hC/pfhs4Eq76XNQHKYA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwohdbcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC26C433F1;
-	Mon,  8 Apr 2024 13:57:58 +0000 (UTC)
+	 MIME-Version; b=cxC5OHsA8/vWGVWgdq7zIoLuhjNfV1B7tZpAY+Y+6BAaamZokqavDoiE2B6N1eqJaFCvhyNUq2gpPDxn0kjli7h1kk/JbGBQV+Xic9D0TcjfaUCDpGZKJAvXwN6+OGNNANM98CBbDvXUDOVkhcZU0lIWE7V2M4V+1DGZmAmgH3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pD68NY0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13C3C433F1;
+	Mon,  8 Apr 2024 13:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584679;
-	bh=iDMOR+1l/ZrAvADaQbtXIhGF8Uo8DuWVOMewzhSTx/c=;
+	s=korg; t=1712581896;
+	bh=IaQlqgZmoruSz/ZpwZtKZW1lkQzm/fio3km6PDSAkK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zwohdbcwfFQc2bBUbD6vuzKUEdKLF2aHWEfrbcOwPQLxgwKCT1ASBhDiTJOSN5e/t
-	 Mnn0TSMTYyTvDWJRm3+OSPlCND+bsz354j3NlSNmDBVUtIrWgnR8tQwEyDAzuAlLY1
-	 9+n+S0gEe7H1Kbt/+hoyftXqGeX6sTubDIPPVqYI=
+	b=pD68NY0hiXuTXvjMs9BjthkfcKohlYHmm1T5cX80QAnn77dbV2eeD5maloOVZyfga
+	 pWMdASkc0vRr6wBGn+XbSHmic/mHkpeGWzVV3LqdlZukwAyjeUtsrQ99OW1+pLbFvd
+	 p4sIaH8pH2+0U/2iTvZxssGmI9tsec7JSiGWUQAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neilb@suse.de>
-Subject: [PATCH 5.15 481/690] NFSD: Clean up nfs4_preprocess_stateid_op() call sites
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 048/252] drm/i915/mtl: Update workaround 14016712196
 Date: Mon,  8 Apr 2024 14:55:47 +0200
-Message-ID: <20240408125417.046113843@linuxfoundation.org>
+Message-ID: <20240408125308.128219188@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-[ Upstream commit eeff73f7c1c583f79a401284f46c619294859310 ]
+[ Upstream commit 7467e1da906468bcbd311023b30708193103ecf9 ]
 
-Remove the lame-duck dprintk()s around nfs4_preprocess_stateid_op()
-call sites.
+Now this workaround is permanent workaround on MTL and DG2,
+earlier we used to apply on MTL A0 step only.
+VLK-45480
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: d922b80b1010 ("drm/i915/gt: Add workaround 14016712196")
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Acked-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230828063450.2642748-1-tejas.upadhyay@intel.com
+Stable-dep-of: 186bce682772 ("drm/i915/mtl: Update workaround 14018575942")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c | 31 +++++++------------------------
- 1 file changed, 7 insertions(+), 24 deletions(-)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 6ed0baa119433..92d4eb1032ff9 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -943,12 +943,7 @@ nfsd4_read(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	status = nfs4_preprocess_stateid_op(rqstp, cstate, &cstate->current_fh,
- 					&read->rd_stateid, RD_STATE,
- 					&read->rd_nf, NULL);
--	if (status) {
--		dprintk("NFSD: nfsd4_read: couldn't process stateid!\n");
--		goto out;
--	}
--	status = nfs_ok;
--out:
-+
- 	read->rd_rqstp = rqstp;
- 	read->rd_fhp = &cstate->current_fh;
- 	return status;
-@@ -1117,10 +1112,8 @@ nfsd4_setattr(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		status = nfs4_preprocess_stateid_op(rqstp, cstate,
- 				&cstate->current_fh, &setattr->sa_stateid,
- 				WR_STATE, NULL, NULL);
--		if (status) {
--			dprintk("NFSD: nfsd4_setattr: couldn't process stateid!\n");
-+		if (status)
- 			return status;
--		}
- 	}
- 	err = fh_want_write(&cstate->current_fh);
- 	if (err)
-@@ -1168,10 +1161,8 @@ nfsd4_write(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 			       write->wr_offset, cnt);
- 	status = nfs4_preprocess_stateid_op(rqstp, cstate, &cstate->current_fh,
- 						stateid, WR_STATE, &nf, NULL);
--	if (status) {
--		dprintk("NFSD: nfsd4_write: couldn't process stateid!\n");
-+	if (status)
- 		return status;
--	}
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index 3ac3e12d9c524..ba4c2422b3402 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -226,8 +226,8 @@ u32 *gen12_emit_aux_table_inv(struct intel_engine_cs *engine, u32 *cs)
+ static int mtl_dummy_pipe_control(struct i915_request *rq)
+ {
+ 	/* Wa_14016712196 */
+-	if (IS_GFX_GT_IP_STEP(rq->engine->gt, IP_VER(12, 70), STEP_A0, STEP_B0) ||
+-	    IS_GFX_GT_IP_STEP(rq->engine->gt, IP_VER(12, 71), STEP_A0, STEP_B0)) {
++	if (IS_GFX_GT_IP_RANGE(rq->engine->gt, IP_VER(12, 70), IP_VER(12, 71)) ||
++	    IS_DG2(rq->i915)) {
+ 		u32 *cs;
  
- 	write->wr_how_written = write->wr_stable_how;
+ 		/* dummy PIPE_CONTROL + depth flush */
+@@ -819,8 +819,7 @@ u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs)
+ 		     PIPE_CONTROL_FLUSH_ENABLE);
  
-@@ -1202,17 +1193,13 @@ nfsd4_verify_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 
- 	status = nfs4_preprocess_stateid_op(rqstp, cstate, &cstate->save_fh,
- 					    src_stateid, RD_STATE, src, NULL);
--	if (status) {
--		dprintk("NFSD: %s: couldn't process src stateid!\n", __func__);
-+	if (status)
- 		goto out;
--	}
- 
- 	status = nfs4_preprocess_stateid_op(rqstp, cstate, &cstate->current_fh,
- 					    dst_stateid, WR_STATE, dst, NULL);
--	if (status) {
--		dprintk("NFSD: %s: couldn't process dst stateid!\n", __func__);
-+	if (status)
- 		goto out_put_src;
--	}
- 
- 	/* fix up for NFS-specific error code */
- 	if (!S_ISREG(file_inode((*src)->nf_file)->i_mode) ||
-@@ -1951,10 +1938,8 @@ nfsd4_fallocate(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	status = nfs4_preprocess_stateid_op(rqstp, cstate, &cstate->current_fh,
- 					    &fallocate->falloc_stateid,
- 					    WR_STATE, &nf, NULL);
--	if (status != nfs_ok) {
--		dprintk("NFSD: nfsd4_fallocate: couldn't process stateid!\n");
-+	if (status != nfs_ok)
- 		return status;
--	}
- 
- 	status = nfsd4_vfs_fallocate(rqstp, &cstate->current_fh, nf->nf_file,
- 				     fallocate->falloc_offset,
-@@ -2010,10 +1995,8 @@ nfsd4_seek(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	status = nfs4_preprocess_stateid_op(rqstp, cstate, &cstate->current_fh,
- 					    &seek->seek_stateid,
- 					    RD_STATE, &nf, NULL);
--	if (status) {
--		dprintk("NFSD: nfsd4_seek: couldn't process stateid!\n");
-+	if (status)
- 		return status;
--	}
- 
- 	switch (seek->seek_whence) {
- 	case NFS4_CONTENT_DATA:
+ 	/* Wa_14016712196 */
+-	if (IS_GFX_GT_IP_STEP(gt, IP_VER(12, 70), STEP_A0, STEP_B0) ||
+-	    IS_GFX_GT_IP_STEP(gt, IP_VER(12, 71), STEP_A0, STEP_B0))
++	if (IS_GFX_GT_IP_RANGE(gt, IP_VER(12, 70), IP_VER(12, 71)) || IS_DG2(i915))
+ 		/* dummy PIPE_CONTROL + depth flush */
+ 		cs = gen12_emit_pipe_control(cs, 0,
+ 					     PIPE_CONTROL_DEPTH_CACHE_FLUSH, 0);
 -- 
 2.43.0
 
