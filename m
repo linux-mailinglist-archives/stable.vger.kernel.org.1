@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-36892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1028589C27E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:30:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77E189C2E9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A67D3B29407
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99126280F5D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5576C74C09;
-	Mon,  8 Apr 2024 13:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D808A7E111;
+	Mon,  8 Apr 2024 13:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uec3cwzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZRMtQrD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101EA81741;
-	Mon,  8 Apr 2024 13:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C1B12DD85;
+	Mon,  8 Apr 2024 13:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582647; cv=none; b=KnVhM/yfOgwFvtzJKpzon0pIyP0onl8MYwvPnpZvsKRuF9I5CnekX1v0IQHB9XL9pg2GCb3ffTuoO/0Gx6HsDV0k6WjgyhMU8n4A6clL0D1+nbEDgDoBPpkrTfuPZPdFuAdW3rDBFPMV+gXQsxYvQTQUQapr0q8+hEmehPY3Ldo=
+	t=1712583038; cv=none; b=bbyE9usDlW9/9qVCeHzssLqlNmo/5b5iF8HqQx9VSIbSFVZ49pDLWWk45qtu15VFrWpsFWNt7WhM1jJ2selHCzj/NE6LNDVBSuDCtubCpfe377AP1MzwlWUob8r+AnWQ5i5RmpPb9L6ZtS7ukIykCqYHHreI7NO2Bxa03h187aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582647; c=relaxed/simple;
-	bh=XSlTcuegJI/BQZdFpj1QO8UtMaux801wXGIDR52qFQ8=;
+	s=arc-20240116; t=1712583038; c=relaxed/simple;
+	bh=sqe1EP9C83MFnujduD8c1Bg2ABtu1IkHmzMG/O+rbAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hd8dMmYMVDttgCetisugzOJnNiWG2yJlPDkec9Qd3dWnUW4gFXju4becad/QDHhWx8hgLRYDu8rj4eKR4HQTam/GKk8Q1aAivsQgDU0A4AgR1pyIjO2D5HmPTY7Dn2DYrzOUtR/op4uODNn9j7k6lpYSp+YT4Az5yuXOk5pCaik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uec3cwzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A83FC433F1;
-	Mon,  8 Apr 2024 13:24:06 +0000 (UTC)
+	 MIME-Version; b=B0vr4+vYnFRuKGUqZVBHJNkf3tC69U5FTdQYDVazLVXocWYeNdG+A6/mHTqnFxveDq1bWPIV8aRo/6bPgwy2LozHRqwGGGb2F6TQFOi2Y3+tJ1h/AQZY9OAFo1aXphCBB4Vi5u1r0xzalcDGLcOI26oWhUeNjn7JLVHyoJTAZLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZRMtQrD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E00FC433C7;
+	Mon,  8 Apr 2024 13:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582646;
-	bh=XSlTcuegJI/BQZdFpj1QO8UtMaux801wXGIDR52qFQ8=;
+	s=korg; t=1712583038;
+	bh=sqe1EP9C83MFnujduD8c1Bg2ABtu1IkHmzMG/O+rbAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uec3cwzzr7k9fKJbrEQML7CtAMpTW/gMHmVDsXvWqO74yGLglyqi5QT4ZuPt56cga
-	 mbsOmzDntc8qh61n3NUay40hAI3twfkE/CCtEnsTX+LKRDqdXuS8WTUlenYGKdhaTv
-	 LyXt+EDQt8WIipMOdVXKJsGM2Av9Ch4V7DVWr45Q=
+	b=AZRMtQrDMDxAZSGUC2QyPo+qmQgWlqauDrTFzkq0xwkJdrPLaS/eNbsakhmrJ2Jnc
+	 8punm5zjBRoBa9KGbDv/DqD/0W2gxdnUj8q5wu8ABUwgdimCDXwKbO3iYjkeidpmc0
+	 eNJZbXeL4sT4YIdeDv2CGo3mA7PYAFraPnI+em68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 109/252] net: fec: Set mac_managed_pm during probe
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Naama Meir <naamax.meir@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 133/273] e1000e: Minor flow correction in e1000_shutdown function
 Date: Mon,  8 Apr 2024 14:56:48 +0200
-Message-ID: <20240408125310.023644817@linuxfoundation.org>
+Message-ID: <20240408125313.426810750@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-commit cbc17e7802f5de37c7c262204baadfad3f7f99e5 upstream.
+[ Upstream commit 662200e324daebe6859c1f0f3ea1538b0561425a ]
 
-Setting mac_managed_pm during interface up is too late.
+Add curly braces to avoid entering to an if statement where it is not
+always required in e1000_shutdown function.
+This improves code readability and might prevent non-deterministic
+behaviour in the future.
 
-In situations where the link is not brought up yet and the system suspends
-the regular PHY power management will run. Since the FEC ETHEREN control
-bit is cleared (automatically) on suspend the controller is off in resume.
-When the regular PHY power management resume path runs in this context it
-will write to the MII_DATA register but nothing will be transmitted on the
-MDIO bus.
-
-This can be observed by the following log:
-
-    fec 5b040000.ethernet eth0: MDIO read timeout
-    Microchip LAN87xx T1 5b040000.ethernet-1:04: PM: dpm_run_callback(): mdio_bus_phy_resume+0x0/0xc8 returns -110
-    Microchip LAN87xx T1 5b040000.ethernet-1:04: PM: failed to resume: error -110
-
-The data written will however remain in the MII_DATA register.
-
-When the link later is set to administrative up it will trigger a call to
-fec_restart() which will restore the MII_SPEED register. This triggers the
-quirk explained in f166f890c8f0 ("net: ethernet: fec: Replace interrupt
-driven MDIO with polled IO") causing an extra MII_EVENT.
-
-This extra event desynchronizes all the MDIO register reads, causing them
-to complete too early. Leading all reads to read as 0 because
-fec_enet_mdio_wait() returns too early.
-
-When a Microchip LAN8700R PHY is connected to the FEC, the 0 reads causes
-the PHY to be initialized incorrectly and the PHY will not transmit any
-ethernet signal in this state. It cannot be brought out of this state
-without a power cycle of the PHY.
-
-Fixes: 557d5dc83f68 ("net: fec: use mac-managed PHY PM")
-Closes: https://lore.kernel.org/netdev/1f45bdbe-eab1-4e59-8f24-add177590d27@actia.se/
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-[jernberg: commit message]
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://lore.kernel.org/r/20240328155909.59613-2-john.ernberg@actia.se
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240301184806.2634508-5-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 861e8086029e ("e1000e: move force SMBUS from enable ulp function to avoid PHY loss issue")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2381,8 +2381,6 @@ static int fec_enet_mii_probe(struct net
- 	fep->link = 0;
- 	fep->full_duplex = 0;
- 
--	phy_dev->mac_managed_pm = true;
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index af5d9d97a0d6c..cc8c531ec3dff 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -6688,14 +6688,14 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 	if (adapter->hw.phy.type == e1000_phy_igp_3) {
+ 		e1000e_igp3_phy_powerdown_workaround_ich8lan(&adapter->hw);
+ 	} else if (hw->mac.type >= e1000_pch_lpt) {
+-		if (wufc && !(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC)))
++		if (wufc && !(wufc & (E1000_WUFC_EX | E1000_WUFC_MC | E1000_WUFC_BC))) {
+ 			/* ULP does not support wake from unicast, multicast
+ 			 * or broadcast.
+ 			 */
+ 			retval = e1000_enable_ulp_lpt_lp(hw, !runtime);
 -
- 	phy_attached_info(phy_dev);
+-		if (retval)
+-			return retval;
++			if (retval)
++				return retval;
++		}
+ 	}
  
- 	return 0;
-@@ -2394,10 +2392,12 @@ static int fec_enet_mii_init(struct plat
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	bool suppress_preamble = false;
-+	struct phy_device *phydev;
- 	struct device_node *node;
- 	int err = -ENXIO;
- 	u32 mii_speed, holdtime;
- 	u32 bus_freq;
-+	int addr;
- 
- 	/*
- 	 * The i.MX28 dual fec interfaces are not equal.
-@@ -2511,6 +2511,13 @@ static int fec_enet_mii_init(struct plat
- 		goto err_out_free_mdiobus;
- 	of_node_put(node);
- 
-+	/* find all the PHY devices on the bus and set mac_managed_pm to true */
-+	for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
-+		phydev = mdiobus_get_phy(fep->mii_bus, addr);
-+		if (phydev)
-+			phydev->mac_managed_pm = true;
-+	}
-+
- 	mii_cnt++;
- 
- 	/* save fec0 mii_bus */
+ 	/* Ensure that the appropriate bits are set in LPI_CTRL
+-- 
+2.43.0
+
 
 
 
