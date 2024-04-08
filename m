@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-37323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0B389C45F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26CE189C464
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FBC11C210C1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5943B1C22638
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160207F467;
-	Mon,  8 Apr 2024 13:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF847F47C;
+	Mon,  8 Apr 2024 13:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKnCOMd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FM5g+jvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F047E59F;
-	Mon,  8 Apr 2024 13:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F41952F7D;
+	Mon,  8 Apr 2024 13:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583896; cv=none; b=OBKj416G9YwhAbBKB99BLddOlJjxJE2EgjH3Mso85GiU0dGuVLSKO3CQYuKgo3+gHWALswpkntQzO3TLaptytg3BeFUTt+S/zP86JnXwrlrsjZMIbPxpaMjmIQuS8HpOCdpjioZUDyIppiQ9brFDMccczowZ/NkoJk+e8MLiZ2Y=
+	t=1712583908; cv=none; b=InTQzjIuXQ1BndlSz7E8nPPNi8hcmp6OFZCqQswiqfsItJY+hJKAaW19DBJErnoNCSsz+0YegYKzEvYJxz9s5V1cXJnc8SlywkVuvsKjVZEcm91PrepWuwCv7PaRkuzR9LMhr09U0hSCmF3i/8Cq0NHDMlISGWwyaad5F9WLbOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583896; c=relaxed/simple;
-	bh=ZhkQivp2y1t5jRBTjc+HWKf2TzTLSTO9XDt8YEGcyBw=;
+	s=arc-20240116; t=1712583908; c=relaxed/simple;
+	bh=DI3We5MnRcV16THW/aMJvGwlXmSb+i8HefLagXR+nPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftxFh4i//SNX2GBwIsBZFvwTvc7lHG536LULQX0NCsGE6iMeNi190kN7F1Osp26CXV6I1NNwcaNVhsgpZkplUS532VTTmRxuneo9d3mfe6zlPwGxVFjry6pp1gleq5/feG+6OQTTvn5hrii0AHu4Dchaib60+plE4VWwH+Odem0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKnCOMd6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BDBC433F1;
-	Mon,  8 Apr 2024 13:44:56 +0000 (UTC)
+	 MIME-Version; b=occiKm8TN/rUrirFsndGqPY6ro+md8majnOxWFgsHc/WWtTcEGDSNM1M9+tTN0IasMRB1maW+JTXx8EcCzXgG7UOwXohYPAm34dAl38F5pfPnl89rCwcN9f+674jaTVzEEX57NzlqaGTH6IsbecWHhzpG6o6ijwR4gQgshmR35s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FM5g+jvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9531C433F1;
+	Mon,  8 Apr 2024 13:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583896;
-	bh=ZhkQivp2y1t5jRBTjc+HWKf2TzTLSTO9XDt8YEGcyBw=;
+	s=korg; t=1712583908;
+	bh=DI3We5MnRcV16THW/aMJvGwlXmSb+i8HefLagXR+nPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kKnCOMd6Gyx8GF1kAo6tVmRLFeX7QjJomHtFdcJawFmEb90VmwbrQ8JXDHzJaKFUC
-	 uUej4rWxy3qmJqGZFAePUg5svgZR0+eaq+e4Q3Ll+P2CyQx7TgQ5oyLwYY0ohzbPrI
-	 h/RPDEFK9ociWXkzg8nghBy0tIj7s+esQg3QBkuU=
+	b=FM5g+jvGJON/JA4GfxG7MQtwQtQVXy7uRZ+iaUma2n5yNGSsZxM0sHSxn+R3KY942
+	 jaWjJ+t/MDS1BAXe4OATPyWdqktMW6UQsDiUTcTByLFI5AZMCkauKUmJQXEXiYGN5k
+	 kiqi6K4tf3O9A5+OyAFmLxwGRBHA2PpV2Jy5D2eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
 	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 300/690] fanotify: implement "evictable" inode marks
-Date: Mon,  8 Apr 2024 14:52:46 +0200
-Message-ID: <20240408125410.465600912@linuxfoundation.org>
+Subject: [PATCH 5.15 301/690] fanotify: use fsnotify group lock helpers
+Date: Mon,  8 Apr 2024 14:52:47 +0200
+Message-ID: <20240408125410.504645219@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,155 +68,108 @@ Content-Transfer-Encoding: 8bit
 
 From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 7d5e005d982527e4029b0139823d179986e34cdc ]
+[ Upstream commit e79719a2ca5c61912c0493bc1367db52759cf6fd ]
 
-When an inode mark is created with flag FAN_MARK_EVICTABLE, it will not
-pin the marked inode to inode cache, so when inode is evicted from cache
-due to memory pressure, the mark will be lost.
+Direct reclaim from fanotify mark allocation context may try to evict
+inodes with evictable marks of the same group and hit this deadlock:
 
-When an inode mark with flag FAN_MARK_EVICATBLE is updated without using
-this flag, the marked inode is pinned to inode cache.
+[<0>] fsnotify_destroy_mark+0x1f/0x3a
+[<0>] fsnotify_destroy_marks+0x71/0xd9
+[<0>] __destroy_inode+0x24/0x7e
+[<0>] destroy_inode+0x2c/0x67
+[<0>] dispose_list+0x49/0x68
+[<0>] prune_icache_sb+0x5b/0x79
+[<0>] super_cache_scan+0x11c/0x16f
+[<0>] shrink_slab.constprop.0+0x23e/0x40f
+[<0>] shrink_node+0x218/0x3e7
+[<0>] do_try_to_free_pages+0x12a/0x2d2
+[<0>] try_to_free_pages+0x166/0x242
+[<0>] __alloc_pages_slowpath.constprop.0+0x30c/0x903
+[<0>] __alloc_pages+0xeb/0x1c7
+[<0>] cache_grow_begin+0x6f/0x31e
+[<0>] fallback_alloc+0xe0/0x12d
+[<0>] ____cache_alloc_node+0x15a/0x17e
+[<0>] kmem_cache_alloc_trace+0xa1/0x143
+[<0>] fanotify_add_mark+0xd5/0x2b2
+[<0>] do_fanotify_mark+0x566/0x5eb
+[<0>] __x64_sys_fanotify_mark+0x21/0x24
+[<0>] do_syscall_64+0x6d/0x80
+[<0>] entry_SYSCALL_64_after_hwframe+0x44/0xae
 
-When an inode mark is updated with flag FAN_MARK_EVICTABLE but an
-existing mark already has the inode pinned, the mark update fails with
-error EEXIST.
+Set the FSNOTIFY_GROUP_NOFS flag to prevent going into direct reclaim
+from allocations under fanotify group lock and use the safe group lock
+helpers.
 
-Evictable inode marks can be used to setup inode marks with ignored mask
-to suppress events from uninteresting files or directories in a lazy
-manner, upon receiving the first event, without having to iterate all
-the uninteresting files or directories before hand.
-
-The evictbale inode mark feature allows performing this lazy marks setup
-without exhausting the system memory with pinned inodes.
-
-This change does not enable the feature yet.
-
-Link: https://lore.kernel.org/linux-fsdevel/CAOQ4uxiRDpuS=2uA6+ZUM7yG9vVU-u212tkunBmSnP_u=mkv=Q@mail.gmail.com/
-Link: https://lore.kernel.org/r/20220422120327.3459282-15-amir73il@gmail.com
+Link: https://lore.kernel.org/r/20220422120327.3459282-16-amir73il@gmail.com
+Suggested-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20220321112310.vpr7oxro2xkz5llh@quack3.lan/
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fanotify/fanotify.h      |  2 ++
- fs/notify/fanotify/fanotify_user.c | 38 ++++++++++++++++++++++++++++--
- include/uapi/linux/fanotify.h      |  1 +
- 3 files changed, 39 insertions(+), 2 deletions(-)
+ fs/notify/fanotify/fanotify_user.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify.h b/fs/notify/fanotify/fanotify.h
-index 87142bc0131a4..80e0ec95b1131 100644
---- a/fs/notify/fanotify/fanotify.h
-+++ b/fs/notify/fanotify/fanotify.h
-@@ -497,6 +497,8 @@ static inline unsigned int fanotify_mark_user_flags(struct fsnotify_mark *mark)
- 
- 	if (mark->flags & FSNOTIFY_MARK_FLAG_IGNORED_SURV_MODIFY)
- 		mflags |= FAN_MARK_IGNORED_SURV_MODIFY;
-+	if (mark->flags & FSNOTIFY_MARK_FLAG_NO_IREF)
-+		mflags |= FAN_MARK_EVICTABLE;
- 
- 	return mflags;
- }
 diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 0ea0047c6340a..9bb182dc3f9b3 100644
+index 9bb182dc3f9b3..b4d16caa98d80 100644
 --- a/fs/notify/fanotify/fanotify_user.c
 +++ b/fs/notify/fanotify/fanotify_user.c
-@@ -1080,6 +1080,7 @@ static int fanotify_remove_inode_mark(struct fsnotify_group *group,
- static bool fanotify_mark_update_flags(struct fsnotify_mark *fsn_mark,
- 				       unsigned int fan_flags)
- {
-+	bool want_iref = !(fan_flags & FAN_MARK_EVICTABLE);
- 	bool recalc = false;
+@@ -1031,10 +1031,10 @@ static int fanotify_remove_mark(struct fsnotify_group *group,
+ 	__u32 removed;
+ 	int destroy_mark;
  
- 	/*
-@@ -1095,7 +1096,18 @@ static bool fanotify_mark_update_flags(struct fsnotify_mark *fsn_mark,
- 			recalc = true;
- 	}
- 
--	return recalc;
-+	if (fsn_mark->connector->type != FSNOTIFY_OBJ_TYPE_INODE ||
-+	    want_iref == !(fsn_mark->flags & FSNOTIFY_MARK_FLAG_NO_IREF))
-+		return recalc;
-+
-+	/*
-+	 * NO_IREF may be removed from a mark, but not added.
-+	 * When removed, fsnotify_recalc_mask() will take the inode ref.
-+	 */
-+	WARN_ON_ONCE(!want_iref);
-+	fsn_mark->flags &= ~FSNOTIFY_MARK_FLAG_NO_IREF;
-+
-+	return true;
- }
- 
- static bool fanotify_mark_add_to_mask(struct fsnotify_mark *fsn_mark,
-@@ -1121,6 +1133,7 @@ static bool fanotify_mark_add_to_mask(struct fsnotify_mark *fsn_mark,
- static struct fsnotify_mark *fanotify_add_new_mark(struct fsnotify_group *group,
- 						   fsnotify_connp_t *connp,
- 						   unsigned int obj_type,
-+						   unsigned int fan_flags,
- 						   __kernel_fsid_t *fsid)
- {
- 	struct ucounts *ucounts = group->fanotify_data.ucounts;
-@@ -1143,6 +1156,9 @@ static struct fsnotify_mark *fanotify_add_new_mark(struct fsnotify_group *group,
- 	}
- 
- 	fsnotify_init_mark(mark, group);
-+	if (fan_flags & FAN_MARK_EVICTABLE)
-+		mark->flags |= FSNOTIFY_MARK_FLAG_NO_IREF;
-+
- 	ret = fsnotify_add_mark_locked(mark, connp, obj_type, 0, fsid);
- 	if (ret) {
- 		fsnotify_put_mark(mark);
-@@ -1179,13 +1195,23 @@ static int fanotify_add_mark(struct fsnotify_group *group,
- 	mutex_lock(&group->mark_mutex);
+-	mutex_lock(&group->mark_mutex);
++	fsnotify_group_lock(group);
  	fsn_mark = fsnotify_find_mark(connp, group);
  	if (!fsn_mark) {
--		fsn_mark = fanotify_add_new_mark(group, connp, obj_type, fsid);
-+		fsn_mark = fanotify_add_new_mark(group, connp, obj_type,
-+						 fan_flags, fsid);
+-		mutex_unlock(&group->mark_mutex);
++		fsnotify_group_unlock(group);
+ 		return -ENOENT;
+ 	}
+ 
+@@ -1044,7 +1044,7 @@ static int fanotify_remove_mark(struct fsnotify_group *group,
+ 		fsnotify_recalc_mask(fsn_mark->connector);
+ 	if (destroy_mark)
+ 		fsnotify_detach_mark(fsn_mark);
+-	mutex_unlock(&group->mark_mutex);
++	fsnotify_group_unlock(group);
+ 	if (destroy_mark)
+ 		fsnotify_free_mark(fsn_mark);
+ 
+@@ -1192,13 +1192,13 @@ static int fanotify_add_mark(struct fsnotify_group *group,
+ 	bool recalc;
+ 	int ret = 0;
+ 
+-	mutex_lock(&group->mark_mutex);
++	fsnotify_group_lock(group);
+ 	fsn_mark = fsnotify_find_mark(connp, group);
+ 	if (!fsn_mark) {
+ 		fsn_mark = fanotify_add_new_mark(group, connp, obj_type,
+ 						 fan_flags, fsid);
  		if (IS_ERR(fsn_mark)) {
- 			mutex_unlock(&group->mark_mutex);
+-			mutex_unlock(&group->mark_mutex);
++			fsnotify_group_unlock(group);
  			return PTR_ERR(fsn_mark);
  		}
  	}
+@@ -1227,7 +1227,7 @@ static int fanotify_add_mark(struct fsnotify_group *group,
+ 		fsnotify_recalc_mask(fsn_mark->connector);
  
-+	/*
-+	 * Non evictable mark cannot be downgraded to evictable mark.
-+	 */
-+	if (fan_flags & FAN_MARK_EVICTABLE &&
-+	    !(fsn_mark->flags & FSNOTIFY_MARK_FLAG_NO_IREF)) {
-+		ret = -EEXIST;
-+		goto out;
-+	}
-+
- 	/*
- 	 * Error events are pre-allocated per group, only if strictly
- 	 * needed (i.e. FAN_FS_ERROR was requested).
-@@ -1615,6 +1641,14 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
- 	    mark_type != FAN_MARK_FILESYSTEM)
- 		goto fput_and_out;
+ out:
+-	mutex_unlock(&group->mark_mutex);
++	fsnotify_group_unlock(group);
  
-+	/*
-+	 * Evictable is only relevant for inode marks, because only inode object
-+	 * can be evicted on memory pressure.
-+	 */
-+	if (flags & FAN_MARK_EVICTABLE &&
-+	     mark_type != FAN_MARK_INODE)
-+		goto fput_and_out;
-+
- 	/*
- 	 * Events that do not carry enough information to report
- 	 * event->fd require a group that supports reporting fid.  Those
-diff --git a/include/uapi/linux/fanotify.h b/include/uapi/linux/fanotify.h
-index e8ac38cc2fd6d..f1f89132d60e2 100644
---- a/include/uapi/linux/fanotify.h
-+++ b/include/uapi/linux/fanotify.h
-@@ -82,6 +82,7 @@
- #define FAN_MARK_IGNORED_SURV_MODIFY	0x00000040
- #define FAN_MARK_FLUSH		0x00000080
- /* FAN_MARK_FILESYSTEM is	0x00000100 */
-+#define FAN_MARK_EVICTABLE	0x00000200
+ 	fsnotify_put_mark(fsn_mark);
+ 	return ret;
+@@ -1381,7 +1381,7 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
  
- /* These are NOT bitwise flags.  Both bits can be used togther.  */
- #define FAN_MARK_INODE		0x00000000
+ 	/* fsnotify_alloc_group takes a ref.  Dropped in fanotify_release */
+ 	group = fsnotify_alloc_group(&fanotify_fsnotify_ops,
+-				     FSNOTIFY_GROUP_USER);
++				     FSNOTIFY_GROUP_USER | FSNOTIFY_GROUP_NOFS);
+ 	if (IS_ERR(group)) {
+ 		return PTR_ERR(group);
+ 	}
 -- 
 2.43.0
 
