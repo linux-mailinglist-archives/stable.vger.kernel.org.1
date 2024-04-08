@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDAA89C375
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C4989C6B2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:17:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F340E1C221ED
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EF21B293C7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C05A7D3F7;
-	Mon,  8 Apr 2024 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE257F470;
+	Mon,  8 Apr 2024 14:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM2u4Gau"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1G87qjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845085C6C;
-	Mon,  8 Apr 2024 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870D47D3FD;
+	Mon,  8 Apr 2024 14:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583329; cv=none; b=XKyzOcEyBj9VbX9v5K5AjDZ8w5MtlbdkagdEmMOHqaifikpA/Nc5T42KlNFs0ZnfGmmMkeYMPz2OR1oyZd1v/VvcjDvv4dbj0yJ86L4mSByntwr4y1swBtNOgXAGli95Wma1d/r5hxUU1BSM5LZyBhU17Nd2INYxJ6XCIdJFg34=
+	t=1712585040; cv=none; b=a0/32kcklQPFOkmZtNlPwg+nzfGqdAgbCdh9RtUEgxmj6iuQLCVbJRHfyq8a7I79j2109KYdKllkOuUTX13QfZGDaf+D9pzzhZbmeB0iFMaAV8M2VzCgG+e+aNYqnv7QyUEZ8idZ4mOiBo4+K9RN6sGpzEe5+pgSZbyO6DANlYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583329; c=relaxed/simple;
-	bh=txEtT6kt2rbURRHmbTTNja6eRIiM2QzeVJ+tm0MSfq4=;
+	s=arc-20240116; t=1712585040; c=relaxed/simple;
+	bh=p1XYna4yt54+tnj1UqzD6NFauw59SELPZK9n3u2sBTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntNCdBBPygBfsbF2h9HLoEu1pokcQ9htHNhalwWKWBLtqIwzHQAeQy3kRZAQFUzh9XOkcmgb9jCSQAk1uwQY3ptqYmzXIlm0viZoSqMRlF8vZjqJpmEbghuPdggyPJom2lM9etpxqLrwn+b24oJBnCo3WhoVhcjqitQkJGtPCUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM2u4Gau; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869EBC433C7;
-	Mon,  8 Apr 2024 13:35:28 +0000 (UTC)
+	 MIME-Version; b=fuk/zFiWI+Y1t46S3ZkhT4sKwZEzkbJvY5+DLymOWjie2ys1jLRgqF/mxiuQo6yNiFBfxU3pInv3g9uSCn3uLTnsijno91k83S8Dqu/Ia0xBgXspavjzBFmt4aLECGMonWI4BtvZbypcYSWTfiwSPU+hTgKyuRonYp141zqZurQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1G87qjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32A4C433C7;
+	Mon,  8 Apr 2024 14:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583328;
-	bh=txEtT6kt2rbURRHmbTTNja6eRIiM2QzeVJ+tm0MSfq4=;
+	s=korg; t=1712585040;
+	bh=p1XYna4yt54+tnj1UqzD6NFauw59SELPZK9n3u2sBTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tM2u4GauwimWvy/n4zx6v7JjHw1tB4dLy5/vi7hwAV57Oh00OBdbtJ4yIfdzeNin0
-	 wXhzZ2OyVgZL4hLoyCcgwacrWP4DWIh9Jg29SRXOZQszASz/rUopauBSEg8/MmwGuy
-	 WO6ywIkKM7STSwyxRStmb78anyvYXPz7NLMKZzTc=
+	b=Z1G87qjf17sl2yc8UGuX3TA6GOSIcETwOPY7XhF/UrizFl5/NBRsBe5mdT/lGqkyv
+	 nYvhN+1S2yoDMSs2svflRqKBKE/DqoHdkdRyM/xF0MxMqquWZwM+mHyX69Wc6Y1wEd
+	 3RPR4SQ8pmDTMTnZsxcVUFQwNZbKQr+eymdUbWWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/252] ASoC: amd: acp: fix for acp_init function error handling
+Subject: [PATCH 5.15 615/690] tcp: properly terminate timers for kernel sockets
 Date: Mon,  8 Apr 2024 14:58:01 +0200
-Message-ID: <20240408125312.314768629@linuxfoundation.org>
+Message-ID: <20240408125421.890638129@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2c603a4947a1247102ccb008d5eb6f37a4043c98 ]
+[ Upstream commit 151c9c724d05d5b0dd8acd3e11cb69ef1f2dbada ]
 
-If acp_init() fails, acp pci driver probe should return error.
-Add acp_init() function return value check logic.
+We had various syzbot reports about tcp timers firing after
+the corresponding netns has been dismantled.
 
-Fixes: e61b415515d3 ("ASoC: amd: acp: refactor the acp init and de-init sequence")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://lore.kernel.org/r/20240329053815.2373979-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fortunately Josef Bacik could trigger the issue more often,
+and could test a patch I wrote two years ago.
+
+When TCP sockets are closed, we call inet_csk_clear_xmit_timers()
+to 'stop' the timers.
+
+inet_csk_clear_xmit_timers() can be called from any context,
+including when socket lock is held.
+This is the reason it uses sk_stop_timer(), aka del_timer().
+This means that ongoing timers might finish much later.
+
+For user sockets, this is fine because each running timer
+holds a reference on the socket, and the user socket holds
+a reference on the netns.
+
+For kernel sockets, we risk that the netns is freed before
+timer can complete, because kernel sockets do not hold
+reference on the netns.
+
+This patch adds inet_csk_clear_xmit_timers_sync() function
+that using sk_stop_timer_sync() to make sure all timers
+are terminated before the kernel socket is released.
+Modules using kernel sockets close them in their netns exit()
+handler.
+
+Also add sock_not_owned_by_me() helper to get LOCKDEP
+support : inet_csk_clear_xmit_timers_sync() must not be called
+while socket lock is held.
+
+It is very possible we can revert in the future commit
+3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
+which attempted to solve the issue in rds only.
+(net/smc/af_smc.c and net/mptcp/subflow.c have similar code)
+
+We probably can remove the check_net() tests from
+tcp_out_of_resources() and __tcp_close() in the future.
+
+Reported-by: Josef Bacik <josef@toxicpanda.com>
+Closes: https://lore.kernel.org/netdev/20240314210740.GA2823176@perftesting/
+Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
+Fixes: 8a68173691f0 ("net: sk_clone_lock() should only do get_net() if the parent is not a kernel socket")
+Link: https://lore.kernel.org/bpf/CANn89i+484ffqb93aQm1N-tjxxvb3WDKX0EbD7318RwRgsatjw@mail.gmail.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Josef Bacik <josef@toxicpanda.com>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/20240322135732.1535772-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-pci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/net/inet_connection_sock.h |  1 +
+ include/net/sock.h                 |  7 +++++++
+ net/ipv4/inet_connection_sock.c    | 14 ++++++++++++++
+ net/ipv4/tcp.c                     |  2 ++
+ 4 files changed, 24 insertions(+)
 
-diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
-index a32c14a109b77..223238f662f83 100644
---- a/sound/soc/amd/acp/acp-pci.c
-+++ b/sound/soc/amd/acp/acp-pci.c
-@@ -107,7 +107,10 @@ static int acp_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id
- 		goto unregister_dmic_dev;
- 	}
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 798aad21694e2..b6b7e210f9d7a 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -169,6 +169,7 @@ void inet_csk_init_xmit_timers(struct sock *sk,
+ 			       void (*delack_handler)(struct timer_list *),
+ 			       void (*keepalive_handler)(struct timer_list *));
+ void inet_csk_clear_xmit_timers(struct sock *sk);
++void inet_csk_clear_xmit_timers_sync(struct sock *sk);
  
--	acp_init(chip);
-+	ret = acp_init(chip);
-+	if (ret)
-+		goto unregister_dmic_dev;
+ static inline void inet_csk_schedule_ack(struct sock *sk)
+ {
+diff --git a/include/net/sock.h b/include/net/sock.h
+index e19eebaf59f73..44ebec3fdda64 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1751,6 +1751,13 @@ static inline void sock_owned_by_me(const struct sock *sk)
+ #endif
+ }
+ 
++static inline void sock_not_owned_by_me(const struct sock *sk)
++{
++#ifdef CONFIG_LOCKDEP
++	WARN_ON_ONCE(lockdep_sock_is_held(sk) && debug_locks);
++#endif
++}
 +
- 	res = devm_kcalloc(&pci->dev, num_res, sizeof(struct resource), GFP_KERNEL);
- 	if (!res) {
- 		ret = -ENOMEM;
+ static inline bool sock_owned_by_user(const struct sock *sk)
+ {
+ 	sock_owned_by_me(sk);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index da43957a58438..27975a44d1f9d 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -589,6 +589,20 @@ void inet_csk_clear_xmit_timers(struct sock *sk)
+ }
+ EXPORT_SYMBOL(inet_csk_clear_xmit_timers);
+ 
++void inet_csk_clear_xmit_timers_sync(struct sock *sk)
++{
++	struct inet_connection_sock *icsk = inet_csk(sk);
++
++	/* ongoing timer handlers need to acquire socket lock. */
++	sock_not_owned_by_me(sk);
++
++	icsk->icsk_pending = icsk->icsk_ack.pending = 0;
++
++	sk_stop_timer_sync(sk, &icsk->icsk_retransmit_timer);
++	sk_stop_timer_sync(sk, &icsk->icsk_delack_timer);
++	sk_stop_timer_sync(sk, &sk->sk_timer);
++}
++
+ void inet_csk_delete_keepalive_timer(struct sock *sk)
+ {
+ 	sk_stop_timer(sk, &sk->sk_timer);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 521c15962c719..16fd3da68e9f6 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2916,6 +2916,8 @@ void tcp_close(struct sock *sk, long timeout)
+ 	lock_sock(sk);
+ 	__tcp_close(sk, timeout);
+ 	release_sock(sk);
++	if (!sk->sk_net_refcnt)
++		inet_csk_clear_xmit_timers_sync(sk);
+ 	sock_put(sk);
+ }
+ EXPORT_SYMBOL(tcp_close);
 -- 
 2.43.0
 
