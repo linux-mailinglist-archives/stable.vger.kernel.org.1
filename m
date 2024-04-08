@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-36541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E1D89C04C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14ECE89C392
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45731F244D6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C46F7283AE3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD906A352;
-	Mon,  8 Apr 2024 13:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4134812A14A;
+	Mon,  8 Apr 2024 13:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrGCWYMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLFX+Yro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECFF2DF73;
-	Mon,  8 Apr 2024 13:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25947E10B;
+	Mon,  8 Apr 2024 13:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581627; cv=none; b=Dr6ZFFsmw+FdDLVssir6Y0VPnD6EP0Z5Eiu3hcu2hEGvesx94VmONPhwI+1uT/mYShdU51BFGxssLakhQ7UHxQcY8u1jzzxCYDVOrxCdQ1xij+vC/7q/6De7ReF0graqZb0G3Atual8gEeDXSKf+jvP6lVZujgZstchuMLB0TXI=
+	t=1712583428; cv=none; b=prxgtydCWZDuzCdKS9y4OUlpgghRMIFGOQMZGY5SqKDcHBUTCvHpoThLNOMYQP8zuK8LqNryB0yNfA+NSfTv9v9b3kgWeKQzbOX/h0JIIBj+CoWbEqZWEKod7AjLzozXnkH6f1AyxBs57swdmlHFNYN9TZeuLeiFG+dke6wxKaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581627; c=relaxed/simple;
-	bh=nbeRvAYO1CjPWz0d4afKdaeGxPfGQOfbAXNKNjlU7as=;
+	s=arc-20240116; t=1712583428; c=relaxed/simple;
+	bh=RusXzZRj1W97bW8iBS4LVSovMvplDAy4q/AMvOB5F8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OuNFmu8qnCEVdTPDCBuvZk/rLuofXDwhq3MIyXgDkH6LFegvkpBd3kSK3SU+sj/OTAIo/dFIKDO5IJEPhy3pt6HoxKwzCYTvDFu5JouQ/iv7JL+SNV0ZpaNeKg2fCfq5C/9XUo1ejN80KojsNZaZ4Ar3ZjMUwrC/rjw2LGjdrqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrGCWYMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D38C433F1;
-	Mon,  8 Apr 2024 13:07:06 +0000 (UTC)
+	 MIME-Version; b=n4jTeOHGJwcKro3PjKHKgD/7P6GHaoTv72Z9rR9vT9ZHjUct8PE4eGeyiah4LnVtz9gsOr17dUwZ0Rr6NICTx4OBhg9dImLQ1jwzaLl2pUCyE+ickH/hLyO9wfQYJNk9AV+POjQidUS9ylW6z0cVKFejZ1NXY5rOPJnBm84xOHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLFX+Yro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76428C433C7;
+	Mon,  8 Apr 2024 13:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581626;
-	bh=nbeRvAYO1CjPWz0d4afKdaeGxPfGQOfbAXNKNjlU7as=;
+	s=korg; t=1712583427;
+	bh=RusXzZRj1W97bW8iBS4LVSovMvplDAy4q/AMvOB5F8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrGCWYMkFtTdhaf+Z6p2Up3whZccq95QdSjfnd/vEOwO64AVlyreIQTJwZYh9C8L5
-	 DMM+HjTPfgaqI8FseQxKHmK79RxiPqf6CWEwW3VfGaUynq/eZ9Oh4O6XwGu3Jl103D
-	 BxFdx4UC9dCZRMmOx/5GAZD3WvOkG+F7w7ZFqvc4=
+	b=qLFX+Yro7ZfPDIC9BpFAuFzYYUqK0lEG1nBLrkc2RsT2guTOZQRTBQ8jeQOTC0wks
+	 pwVFArkIEPqvqbnSNhhW8u9TB0fzpDfjczT5aNjl4NC+pgmwjuczOqQuROQO5nI+4w
+	 iRF3Q09gIJ5F4Noul3BgXj9kP/tutjHYk5C0rVgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Russ Anderson <rja@hpe.com>,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.1 039/138] Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 178/273] drm/i915/dp: Fix DSC state HW readout for SST connectors
 Date: Mon,  8 Apr 2024 14:57:33 +0200
-Message-ID: <20240408125257.440200695@linuxfoundation.org>
+Message-ID: <20240408125314.800748712@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ingo Molnar <mingo@kernel.org>
+From: Imre Deak <imre.deak@intel.com>
 
-commit c567f2948f57bdc03ed03403ae0234085f376b7d upstream.
+[ Upstream commit d725ce9d7c78fb4e22c6c7676106e135ade14fa8 ]
 
-This reverts commit d794734c9bbfe22f86686dc2909c25f5ffe1a572.
+Commit 0848814aa296 ("drm/i915/dp: Fix connector DSC HW state readout")
+moved the DSC HW state readout to a connector specific hook, however
+only added the hook for DP MST connectors, not for DP SST ones. Fix
+adding the hook for SST connectors as well.
 
-While the original change tries to fix a bug, it also unintentionally broke
-existing systems, see the regressions reported at:
+This fixes the following warn on platforms where BIOS enables DSC:
 
-  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+[   66.208601] i915 0000:00:02.0: drm_WARN_ON(!connector->dp.dsc_decompression_aux || !connector->dp.dsc_decompression_enabled)
+...
+[   66.209024] RIP: 0010:intel_dp_sink_disable_decompression+0x76/0x110 [i915]
+...
+[   66.209333]  ? intel_dp_sink_disable_decompression+0x76/0x110 [i915]
+...
+[   66.210068]  intel_disable_ddi+0x135/0x1d0 [i915]
+[   66.210302]  intel_encoders_disable+0x9b/0xc0 [i915]
+[   66.210565]  hsw_crtc_disable+0x153/0x170 [i915]
+[   66.210823]  intel_old_crtc_state_disables+0x52/0xb0 [i915]
+[   66.211107]  intel_atomic_commit_tail+0x5cf/0x1330 [i915]
+[   66.211366]  intel_atomic_commit+0x39d/0x3f0 [i915]
+[   66.211612]  ? intel_atomic_commit+0x39d/0x3f0 [i915]
+[   66.211872]  drm_atomic_commit+0x9d/0xd0 [drm]
+[   66.211921]  ? __pfx___drm_printfn_info+0x10/0x10 [drm]
+[   66.211975]  intel_initial_commit+0x1a8/0x260 [i915]
+[   66.212234]  intel_display_driver_probe+0x2a/0x80 [i915]
+[   66.212479]  i915_driver_probe+0x7c6/0xc60 [i915]
+[   66.212664]  ? drm_privacy_screen_get+0x168/0x190 [drm]
+[   66.212711]  i915_pci_probe+0xe2/0x1c0 [i915]
 
-Since d794734c9bbf was also marked for -stable, let's back it out before
-causing more damage.
-
-Note that due to another upstream change the revert was not 100% automatic:
-
-  0a845e0f6348 mm/treewide: replace pud_large() with pud_leaf()
-
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Russ Anderson <rja@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0848814aa296 ("drm/i915/dp: Fix connector DSC HW state readout")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10410
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240311145626.2454923-1-imre.deak@intel.com
+(cherry picked from commit 7a51a2aa2384ea8bee76698ae586a2bea5b8ddb5)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/ident_map.c |   23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,31 +26,18 @@ static int ident_pud_init(struct x86_map
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
--		bool use_gbpage;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 94d2a15d8444a..820cc9d3cc0b3 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -6523,6 +6523,7 @@ intel_dp_init_connector(struct intel_digital_port *dig_port,
+ 		intel_connector->get_hw_state = intel_ddi_connector_get_hw_state;
+ 	else
+ 		intel_connector->get_hw_state = intel_connector_get_hw_state;
++	intel_connector->sync_state = intel_dp_connector_sync_state;
  
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
- 
--		/* if this is already a gbpage, this portion is already mapped */
--		if (pud_large(*pud))
--			continue;
--
--		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
--
--		/* Don't use gbpage if it maps more than the requested region. */
--		/* at the begining: */
--		use_gbpage &= ((addr & ~PUD_MASK) == 0);
--		/* ... or at the end: */
--		use_gbpage &= ((next & ~PUD_MASK) == 0);
--
--		/* Never overwrite existing mappings */
--		use_gbpage &= !pud_present(*pud);
--
--		if (use_gbpage) {
-+		if (info->direct_gbpages) {
- 			pud_t pudval;
- 
-+			if (pud_present(*pud))
-+				continue;
-+
-+			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+ 	if (!intel_edp_init_connector(intel_dp, intel_connector)) {
+ 		intel_dp_aux_fini(intel_dp);
+-- 
+2.43.0
+
 
 
 
