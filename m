@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA0B89C60C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76FB89C441
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 297A6284D32
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67CFF1F211F9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506AC7F494;
-	Mon,  8 Apr 2024 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F93126F2A;
+	Mon,  8 Apr 2024 13:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjlSM8Tq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfVhOdJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5AB7EF1F;
-	Mon,  8 Apr 2024 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037AF126F0A;
+	Mon,  8 Apr 2024 13:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585014; cv=none; b=UOpJDf/rNYsvWrJEx4BxJXQDZ8q0pJcvfmZ20i5lxIGKvJoEfT0PRX6L+ODJxIuk45RxkG/4bIZl9gE75ATs0RxpV2ce0hlN+s6qrSYg8u4AnMozONfx4yh1lVinxZBBFLtMtiVFcdp3n713ecScUytWhn4G9I/Rr8KFV2Vm3mA=
+	t=1712583827; cv=none; b=fGmplQ6LVq38rRqQ2eI2Sn7+VFpKbk/5XDCcx7cxv6llJkByXdZjzVWsY3Qk/ZQsvs9oegadSgL3GZvLPU4b+Tuo3hKeDqSW2oQkmND6GtbgyxS2n/K2L+wsxgzbjrnWfS/zOG5q+TrvDMy53ocg+/1rnfg495uudFFodPpIqPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585014; c=relaxed/simple;
-	bh=mHgwzNl1mDBzVS7Ws3WzGk3106X3OB8/1cJ0aZtfmTo=;
+	s=arc-20240116; t=1712583827; c=relaxed/simple;
+	bh=HB7J9mEouAcbej7Aw6miYIUMt6kmLD7KePhd6ht19WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jjhiXKTSguUCRLXeHHxdFkLkakhyhN/AR6HDGI+nGEVTDfFwQX0FIrIuhafSOYwxAJWuGHPDTyiCJHuHe1/toP0/fPNSYE1t/B6zIeZTMdOXJp5zgT0U14ZwjXn3GXPHa4srCJh/sv+raaOHRs6NOfsmfagluB41i9C1gF/FrUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjlSM8Tq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1F4C433C7;
-	Mon,  8 Apr 2024 14:03:33 +0000 (UTC)
+	 MIME-Version; b=BBrf6LKdvA5eGU8/ZSquNMUPEFM4/YaNEAuLbPfMVEYjh3TR7V0MaBF8W+OKHu+YADc8OarRjoeqJSLpJK5TzAYZDLsBgBNq8csYZjdtIFfaa/e6n7TzkIn9VBWko0KmZEoCIoSr2cfLr0sfizOuQuOPwb+Ml+QzgdKB/xiiEBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfVhOdJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838DFC433C7;
+	Mon,  8 Apr 2024 13:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585013;
-	bh=mHgwzNl1mDBzVS7Ws3WzGk3106X3OB8/1cJ0aZtfmTo=;
+	s=korg; t=1712583826;
+	bh=HB7J9mEouAcbej7Aw6miYIUMt6kmLD7KePhd6ht19WI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjlSM8TqyNFikc202/YIyWZ234JEoI7Szh7GIGcJ4KZSjXx4YSV1nuQgo90joKkrA
-	 /GC+xSr2EAz3+1zmuHBWzBH97yb6LKgOS98ImuBBe0xvr+EyV0tMs9WMaC9HCzA7v9
-	 evqb4sCuKSVMhgRCBZowDrHVVdK+ZHlkWLti4H8Y=
+	b=bfVhOdJ8fG7DSadIDdb7+17ngXoF3QeXw6quPyL7qdCQgxWflV8nRCJ6lTvhKOTVz
+	 dFwvnOIEeBBNxKN9EzrJp/0Z1oocma3kPcDRsXMqTk+T0M9GgAgWzoHkNPe8vqy+XW
+	 EOJzGHS6E+00DYGdJPKXLBsVKTm205gmp8gXIRSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Zhang <ye.zhang@rock-chips.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 633/690] thermal: devfreq_cooling: Fix perf state when calculate dfc res_util
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 224/273] ASoC: SOF: ipc4-pcm: Invalidate the stream_start_offset in PAUSED state
 Date: Mon,  8 Apr 2024 14:58:19 +0200
-Message-ID: <20240408125422.599873364@linuxfoundation.org>
+Message-ID: <20240408125316.365103618@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Zhang <ye.zhang@rock-chips.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit a26de34b3c77ae3a969654d94be49e433c947e3b upstream.
+commit 3ce3bc36d91510389955b47e36ea4c4e94fcbdd3 upstream.
 
-The issue occurs when the devfreq cooling device uses the EM power model
-and the get_real_power() callback is provided by the driver.
+When the final state is SOF_IPC4_PIPE_PAUSED, it is possible that the
+stream will be restarted (resume or start) in which case we need to update
+the offset from the firmware.
 
-The EM power table is sorted ascending，can't index the table by cooling
-device state，so convert cooling state to performance state by
-dfc->max_state - dfc->capped_state.
-
-Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
-Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
-Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+Cc: stable@vger.kernel.org # 6.8
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240321130814.4412-14-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/devfreq_cooling.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/ipc4-pcm.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/thermal/devfreq_cooling.c
-+++ b/drivers/thermal/devfreq_cooling.c
-@@ -199,7 +199,7 @@ static int devfreq_cooling_get_requested
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -420,8 +420,19 @@ static int sof_ipc4_trigger_pipelines(st
+ 	}
  
- 		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
- 		if (!res) {
--			state = dfc->capped_state;
-+			state = dfc->max_state - dfc->capped_state;
- 			dfc->res_util = dfc->em_pd->table[state].power;
- 			dfc->res_util *= SCALE_ERROR_MITIGATION;
- 
+ 	/* return if this is the final state */
+-	if (state == SOF_IPC4_PIPE_PAUSED)
++	if (state == SOF_IPC4_PIPE_PAUSED) {
++		struct sof_ipc4_timestamp_info *time_info;
++
++		/*
++		 * Invalidate the stream_start_offset to make sure that it is
++		 * going to be updated if the stream resumes
++		 */
++		time_info = spcm->stream[substream->stream].private;
++		if (time_info)
++			time_info->stream_start_offset = SOF_IPC4_INVALID_STREAM_POSITION;
++
+ 		goto free;
++	}
+ skip_pause_transition:
+ 	/* else set the RUNNING/RESET state in the DSP */
+ 	ret = sof_ipc4_set_multi_pipeline_state(sdev, state, trigger_list);
 
 
 
