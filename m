@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-36591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7C289C088
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:09:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6527A89C51F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83C43281508
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ECB02840C7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0576FE35;
-	Mon,  8 Apr 2024 13:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F61E74BE5;
+	Mon,  8 Apr 2024 13:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5CPyhyR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/Z/afKl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAA12E62C;
-	Mon,  8 Apr 2024 13:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2B56EB72;
+	Mon,  8 Apr 2024 13:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581773; cv=none; b=jtXLftMvoRAivyqEu9oWiooo7MdYx1QbSBfzcU4Amb41jXgGzjmVAjyPPL0zj3BVYsLtNF6xk+bdejIctbLmRVctu5OK1glhrZqoNxveYUG0/E/YWyJbJmY0tuLTrOOL+3dcGGDMtIHpcsf3Jsv6B4nDea8Ta8aLCk0Jgm7e5qA=
+	t=1712584410; cv=none; b=dKHj8Nm/YiTx1bm7DyF79qrD5/z7mnWs3x5sWtiM0Mn6OLqtRwl8Bh5E76QU7yJuU7PURLKXAp2CTlW+fM0tZ+DhbAtu/FvfYv6pcruS+aX0F0L+HNEks9DFZIYr5dimZieiKevUBAOXw2wefLIbWzERyyUazGe9Y2Ot+aK5yAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581773; c=relaxed/simple;
-	bh=mN/7eVPKnNP5nlhRT6fAB7m1zWiRmxxEHpqAJV5LIhY=;
+	s=arc-20240116; t=1712584410; c=relaxed/simple;
+	bh=taLhaOU4tF+R17HE4kzeYFMLLuRayI7MYwPfS0faN1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QNcCkV4HPIN02HY3MTuKMEvkC4FqcqoGvc7b2573Qz+e6jA9GrfurVOmsHokppqax2uKbXqUi75IdeTijqybPezL0r4600bGqLUqg+2WfZLu5mmuhVJp2Uj/zfKcv5+CGq/xS+lxZM92VTj2IVU4Ikos6dBrusRHT26R07l7HIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5CPyhyR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D345C433F1;
-	Mon,  8 Apr 2024 13:09:32 +0000 (UTC)
+	 MIME-Version; b=A7UM8bYpttkeDOWlpfdkSEWhTXbQxjHmoiDjArspf0Bt1AvsP1tkQYciNM1urskjufc508vTKiM4ASYxCp6W6GppdUrlbJfxtM0J0CjhS45qU4hvMoLpAtIQbCTxvY5GAxjV1G7wkYNMTnjA0N+baHJgdeBj8eqtNB5EcMV879c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/Z/afKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC60C433C7;
+	Mon,  8 Apr 2024 13:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581773;
-	bh=mN/7eVPKnNP5nlhRT6fAB7m1zWiRmxxEHpqAJV5LIhY=;
+	s=korg; t=1712584410;
+	bh=taLhaOU4tF+R17HE4kzeYFMLLuRayI7MYwPfS0faN1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5CPyhyRXWToNyYL4lKU6k+rrAQo7tThKm61hoVxZAsYESTnc8BZOnvQpupwpN8Cy
-	 SQ1D3rKfEc2yjeiLll3s53IxUF2fjSz1l1NTToMdzPMjmWabWWEOaUxJvwfqmnlwty
-	 dH4xWZoS/Jqj2kLy0Et3Fzvd7+JAhYcKvDfqYaeY=
+	b=O/Z/afKlO4rgoy9Mwv5bUlk0IsMBXbvv3Y6BrkfPomjtHgGoTMnfpKxQiY/CC22rx
+	 8j3RkrhmVSv4Hkyl9QHn3cwsDdvkC9EUuYpcu2rBv3zoscvW7K+caXeQNEY/dZvFcu
+	 8U72rRUy8nM7wcBVryrpqRsdkmbP2Ri5usZoFRCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 019/273] drm/xe: Remove unused xe_bo->props struct
-Date: Mon,  8 Apr 2024 14:54:54 +0200
-Message-ID: <20240408125309.891281897@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 429/690] NFSD: Add a mechanism to wait for a DELEGRETURN
+Date: Mon,  8 Apr 2024 14:54:55 +0200
+Message-ID: <20240408125415.135625578@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,180 +59,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit fd00fe8cdbb241644131ece133a2eb1c3951f21e ]
+[ Upstream commit c035362eb935fe9381d9d1cc453bc2a37460e24c ]
 
-Property struct is not being used so remove it and related dead code.
+Subsequent patches will use this mechanism to wake up an operation
+that is waiting for a client to return a delegation.
 
-Fixes: ddfa2d6a846a ("drm/xe/uapi: Kill VM_MADVISE IOCTL")
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: intel-xe@lists.freedesktop.org
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240311151159.10036-1-nirmoy.das@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 002d8f0b4f76aabbf8e00c538a124b91625d7260)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The new tracepoint records whether the wait timed out or was
+properly awoken by the expected DELEGRETURN:
+
+            nfsd-1155  [002] 83799.493199: nfsd_delegret_wakeup: xid=0x14b7d6ef fh_hash=0xf6826792 (timed out)
+
+Suggested-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/gpu/drm/xe/xe_bo.c       | 59 +++++---------------------------
- drivers/gpu/drm/xe/xe_bo_types.h | 19 ----------
- 2 files changed, 9 insertions(+), 69 deletions(-)
+ fs/nfsd/nfs4state.c | 30 ++++++++++++++++++++++++++++++
+ fs/nfsd/nfsd.h      |  7 +++++++
+ fs/nfsd/trace.h     | 23 +++++++++++++++++++++++
+ 3 files changed, 60 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index 4d3b80ec906d0..eb2c44a328278 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -140,9 +140,6 @@ static void try_add_system(struct xe_device *xe, struct xe_bo *bo,
- 			.mem_type = XE_PL_TT,
- 		};
- 		*c += 1;
--
--		if (bo->props.preferred_mem_type == XE_BO_PROPS_INVALID)
--			bo->props.preferred_mem_type = XE_PL_TT;
- 	}
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index a0c5658599ead..6cb654e308787 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4734,6 +4734,35 @@ nfs4_share_conflict(struct svc_fh *current_fh, unsigned int deny_type)
+ 	return ret;
  }
  
-@@ -177,25 +174,15 @@ static void add_vram(struct xe_device *xe, struct xe_bo *bo,
- 	}
- 	places[*c] = place;
- 	*c += 1;
--
--	if (bo->props.preferred_mem_type == XE_BO_PROPS_INVALID)
--		bo->props.preferred_mem_type = mem_type;
- }
- 
- static void try_add_vram(struct xe_device *xe, struct xe_bo *bo,
- 			 u32 bo_flags, u32 *c)
++static bool nfsd4_deleg_present(const struct inode *inode)
++{
++	struct file_lock_context *ctx = smp_load_acquire(&inode->i_flctx);
++
++	return ctx && !list_empty_careful(&ctx->flc_lease);
++}
++
++/**
++ * nfsd_wait_for_delegreturn - wait for delegations to be returned
++ * @rqstp: the RPC transaction being executed
++ * @inode: in-core inode of the file being waited for
++ *
++ * The timeout prevents deadlock if all nfsd threads happen to be
++ * tied up waiting for returning delegations.
++ *
++ * Return values:
++ *   %true: delegation was returned
++ *   %false: timed out waiting for delegreturn
++ */
++bool nfsd_wait_for_delegreturn(struct svc_rqst *rqstp, struct inode *inode)
++{
++	long __maybe_unused timeo;
++
++	timeo = wait_var_event_timeout(inode, !nfsd4_deleg_present(inode),
++				       NFSD_DELEGRETURN_TIMEOUT);
++	trace_nfsd_delegret_wakeup(rqstp, inode, timeo);
++	return timeo > 0;
++}
++
+ static void nfsd4_cb_recall_prepare(struct nfsd4_callback *cb)
  {
--	if (bo->props.preferred_gt == XE_GT1) {
--		if (bo_flags & XE_BO_CREATE_VRAM1_BIT)
--			add_vram(xe, bo, bo->placements, bo_flags, XE_PL_VRAM1, c);
--		if (bo_flags & XE_BO_CREATE_VRAM0_BIT)
--			add_vram(xe, bo, bo->placements, bo_flags, XE_PL_VRAM0, c);
--	} else {
--		if (bo_flags & XE_BO_CREATE_VRAM0_BIT)
--			add_vram(xe, bo, bo->placements, bo_flags, XE_PL_VRAM0, c);
--		if (bo_flags & XE_BO_CREATE_VRAM1_BIT)
--			add_vram(xe, bo, bo->placements, bo_flags, XE_PL_VRAM1, c);
--	}
-+	if (bo_flags & XE_BO_CREATE_VRAM0_BIT)
-+		add_vram(xe, bo, bo->placements, bo_flags, XE_PL_VRAM0, c);
-+	if (bo_flags & XE_BO_CREATE_VRAM1_BIT)
-+		add_vram(xe, bo, bo->placements, bo_flags, XE_PL_VRAM1, c);
+ 	struct nfs4_delegation *dp = cb_to_delegation(cb);
+@@ -6797,6 +6826,7 @@ nfsd4_delegreturn(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	if (status)
+ 		goto put_stateid;
+ 
++	wake_up_var(d_inode(cstate->current_fh.fh_dentry));
+ 	destroy_delegation(dp);
+ put_stateid:
+ 	nfs4_put_stid(&dp->dl_stid);
+diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
+index 57a468ed85c35..6ab4ad41ae84e 100644
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -164,6 +164,7 @@ char * nfs4_recoverydir(void);
+ bool nfsd4_spo_must_allow(struct svc_rqst *rqstp);
+ int nfsd4_create_laundry_wq(void);
+ void nfsd4_destroy_laundry_wq(void);
++bool nfsd_wait_for_delegreturn(struct svc_rqst *rqstp, struct inode *inode);
+ #else
+ static inline int nfsd4_init_slabs(void) { return 0; }
+ static inline void nfsd4_free_slabs(void) { }
+@@ -179,6 +180,11 @@ static inline bool nfsd4_spo_must_allow(struct svc_rqst *rqstp)
  }
- 
- static void try_add_stolen(struct xe_device *xe, struct xe_bo *bo,
-@@ -219,17 +206,8 @@ static int __xe_bo_placement_for_flags(struct xe_device *xe, struct xe_bo *bo,
- {
- 	u32 c = 0;
- 
--	bo->props.preferred_mem_type = XE_BO_PROPS_INVALID;
--
--	/* The order of placements should indicate preferred location */
--
--	if (bo->props.preferred_mem_class == DRM_XE_MEM_REGION_CLASS_SYSMEM) {
--		try_add_system(xe, bo, bo_flags, &c);
--		try_add_vram(xe, bo, bo_flags, &c);
--	} else {
--		try_add_vram(xe, bo, bo_flags, &c);
--		try_add_system(xe, bo, bo_flags, &c);
--	}
-+	try_add_vram(xe, bo, bo_flags, &c);
-+	try_add_system(xe, bo, bo_flags, &c);
- 	try_add_stolen(xe, bo, bo_flags, &c);
- 
- 	if (!c)
-@@ -1106,19 +1084,12 @@ static void xe_gem_object_close(struct drm_gem_object *obj,
- 	}
- }
- 
--static bool should_migrate_to_system(struct xe_bo *bo)
--{
--	struct xe_device *xe = xe_bo_device(bo);
--
--	return xe_device_in_fault_mode(xe) && bo->props.cpu_atomic;
--}
--
- static vm_fault_t xe_gem_fault(struct vm_fault *vmf)
- {
- 	struct ttm_buffer_object *tbo = vmf->vma->vm_private_data;
- 	struct drm_device *ddev = tbo->base.dev;
- 	vm_fault_t ret;
--	int idx, r = 0;
-+	int idx;
- 
- 	ret = ttm_bo_vm_reserve(tbo, vmf);
- 	if (ret)
-@@ -1129,17 +1100,8 @@ static vm_fault_t xe_gem_fault(struct vm_fault *vmf)
- 
- 		trace_xe_bo_cpu_fault(bo);
- 
--		if (should_migrate_to_system(bo)) {
--			r = xe_bo_migrate(bo, XE_PL_TT);
--			if (r == -EBUSY || r == -ERESTARTSYS || r == -EINTR)
--				ret = VM_FAULT_NOPAGE;
--			else if (r)
--				ret = VM_FAULT_SIGBUS;
--		}
--		if (!ret)
--			ret = ttm_bo_vm_fault_reserved(vmf,
--						       vmf->vma->vm_page_prot,
--						       TTM_BO_VM_NUM_PREFAULT);
-+		ret = ttm_bo_vm_fault_reserved(vmf, vmf->vma->vm_page_prot,
-+					       TTM_BO_VM_NUM_PREFAULT);
- 		drm_dev_exit(idx);
- 	} else {
- 		ret = ttm_bo_vm_dummy_page(vmf, vmf->vma->vm_page_prot);
-@@ -1253,9 +1215,6 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
- 	bo->flags = flags;
- 	bo->cpu_caching = cpu_caching;
- 	bo->ttm.base.funcs = &xe_gem_object_funcs;
--	bo->props.preferred_mem_class = XE_BO_PROPS_INVALID;
--	bo->props.preferred_gt = XE_BO_PROPS_INVALID;
--	bo->props.preferred_mem_type = XE_BO_PROPS_INVALID;
- 	bo->ttm.priority = XE_BO_PRIORITY_NORMAL;
- 	INIT_LIST_HEAD(&bo->pinned_link);
- #ifdef CONFIG_PROC_FS
-diff --git a/drivers/gpu/drm/xe/xe_bo_types.h b/drivers/gpu/drm/xe/xe_bo_types.h
-index 64c2249a4e407..81dca15315d5c 100644
---- a/drivers/gpu/drm/xe/xe_bo_types.h
-+++ b/drivers/gpu/drm/xe/xe_bo_types.h
-@@ -56,25 +56,6 @@ struct xe_bo {
- 	 */
- 	struct list_head client_link;
+ static inline int nfsd4_create_laundry_wq(void) { return 0; };
+ static inline void nfsd4_destroy_laundry_wq(void) {};
++static inline bool nfsd_wait_for_delegreturn(struct svc_rqst *rqstp,
++					      struct inode *inode)
++{
++	return false;
++}
  #endif
--	/** @props: BO user controlled properties */
--	struct {
--		/** @preferred_mem: preferred memory class for this BO */
--		s16 preferred_mem_class;
--		/** @prefered_gt: preferred GT for this BO */
--		s16 preferred_gt;
--		/** @preferred_mem_type: preferred memory type */
--		s32 preferred_mem_type;
--		/**
--		 * @cpu_atomic: the CPU expects to do atomics operations to
--		 * this BO
--		 */
--		bool cpu_atomic;
--		/**
--		 * @device_atomic: the device expects to do atomics operations
--		 * to this BO
--		 */
--		bool device_atomic;
--	} props;
- 	/** @freed: List node for delayed put. */
- 	struct llist_node freed;
- 	/** @created: Whether the bo has passed initial creation */
+ 
+ /*
+@@ -343,6 +349,7 @@ void		nfsd_lockd_shutdown(void);
+ #define	NFSD_COURTESY_CLIENT_TIMEOUT	(24 * 60 * 60)	/* seconds */
+ #define	NFSD_CLIENT_MAX_TRIM_PER_RUN	128
+ #define	NFS4_CLIENTS_PER_GB		1024
++#define NFSD_DELEGRETURN_TIMEOUT	(HZ / 34)	/* 30ms */
+ 
+ /*
+  * The following attributes are currently not supported by the NFSv4 server:
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index d832429e575e4..1229502b6e9e0 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -538,6 +538,29 @@ DEFINE_NFSD_COPY_ERR_EVENT(clone_file_range_err);
+ #include "filecache.h"
+ #include "vfs.h"
+ 
++TRACE_EVENT(nfsd_delegret_wakeup,
++	TP_PROTO(
++		const struct svc_rqst *rqstp,
++		const struct inode *inode,
++		long timeo
++	),
++	TP_ARGS(rqstp, inode, timeo),
++	TP_STRUCT__entry(
++		__field(u32, xid)
++		__field(const void *, inode)
++		__field(long, timeo)
++	),
++	TP_fast_assign(
++		__entry->xid = be32_to_cpu(rqstp->rq_xid);
++		__entry->inode = inode;
++		__entry->timeo = timeo;
++	),
++	TP_printk("xid=0x%08x inode=%p%s",
++		  __entry->xid, __entry->inode,
++		  __entry->timeo == 0 ? " (timed out)" : ""
++	)
++);
++
+ DECLARE_EVENT_CLASS(nfsd_stateid_class,
+ 	TP_PROTO(stateid_t *stp),
+ 	TP_ARGS(stp),
 -- 
 2.43.0
 
