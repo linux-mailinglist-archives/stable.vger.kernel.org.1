@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-37248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920B789C402
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F99289C406
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF93C1C223C8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 522161C2232F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E49A7CF25;
-	Mon,  8 Apr 2024 13:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478557D062;
+	Mon,  8 Apr 2024 13:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5XLVH3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYrrSETa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B907C6C8;
-	Mon,  8 Apr 2024 13:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BC8524AF;
+	Mon,  8 Apr 2024 13:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583681; cv=none; b=kiSy4QKTTAAVtbaE3AN2X0lOeIGKhS/+BP8mgre2KVc6zP5o/79oSfe0RLe+eli+IGbClGgo7WND69MxCSXuQ0p7vCo8EyEPdtZEnhZvukwjnoNEDSjpNAt9UJ2tnggT5tdQDesfkk0G7DG176p4wrbEJaT4Mdxx5Va9X+b7PNY=
+	t=1712583693; cv=none; b=aPafFCi6sk5I3S+Jw7Yk6bmQfdNoPQr3WdcnCCF5yiNu2JmEK3CNTqmpKgobWRBCkrVDVl2NXw+pEkpwfw3UhM6NR7QjbQfgMALJVNs/Dax0Qh6iNWiwOfVPTH3SsAyr4/vKoVPYTJAOWr/YoYvyswm22NuDyk4YiQ2QOf1hREM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583681; c=relaxed/simple;
-	bh=KmoPHWARIQSdTVwCHwRB6I+2Dzs6XcZ47xMryaxnrj4=;
+	s=arc-20240116; t=1712583693; c=relaxed/simple;
+	bh=X6FuGkPkTuGQ0fbnQUvOUW+aaJyS2cLgtVkTLR80b3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6eG6o0a66E3jF2PgUxcSBmdGOM635DYPLinspjIL8VEUNzmTrJwehtoYVQPYLyYc6Jg29GXsSikYjnyV75uZwbpSHqczbxYMrjxYU64G5UuDsIuf3S0OauSrZYDTzJaMfJ2I9kl4OgoOGKrUj5jVuFstsvS+DJGJGoIZuB9JPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5XLVH3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A6FC433F1;
-	Mon,  8 Apr 2024 13:41:20 +0000 (UTC)
+	 MIME-Version; b=ZAfgQOI0ipemcjtoVS3gzLEN979znp5cKRCqZG351zWHQIzyM6sQEiGqzkZfNbYB8JR48dY+wAdWQaEqBs/QxpCC415FdB7GM8YR4/a9Htb8qVv7z04N7IJBDKbe/qSTmSTy06NX5HAEWVhICdoh8ysZY8vmCfiIIYaURTcnnmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYrrSETa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0AFC433C7;
+	Mon,  8 Apr 2024 13:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583681;
-	bh=KmoPHWARIQSdTVwCHwRB6I+2Dzs6XcZ47xMryaxnrj4=;
+	s=korg; t=1712583692;
+	bh=X6FuGkPkTuGQ0fbnQUvOUW+aaJyS2cLgtVkTLR80b3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5XLVH3BEyxNLdBKTxU1Xp9tYqqDRb3hLqh1f5sAJOGDbG+GFfb6tid499zJIxJIF
-	 6bjT8KBU7t6Sbac8qDPHPckisVJNsYczbiwmMnQOpcAgtYxgqaE4LGZAvVIU+NC8y3
-	 RC+XuiP+Ei9R91FYid1v9HojO8uqZQOwRrICcnEM=
+	b=LYrrSETahRWvKXyxWiD6f7XRRtU1Ezt+YIuiSOjcabzncoXlAACvZwuF3bgd44P6+
+	 9cZOAsaZDBY+zzXwi+n2Y5xR1pc0nHNw2AxbDJNdNm7OHsGf4aRyZZEwawejE7ioIP
+	 EktqRzvfWzFQm0/Gm96J6wZQSuG/xlJVtBfZ4jGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 208/273] io_uring/kbuf: protect io_buffer_list teardown with a reference
-Date: Mon,  8 Apr 2024 14:58:03 +0200
-Message-ID: <20240408125315.808075795@linuxfoundation.org>
+Subject: [PATCH 6.8 209/273] io_uring/rw: dont allow multishot reads without NOWAIT support
+Date: Mon,  8 Apr 2024 14:58:04 +0200
+Message-ID: <20240408125315.848752367@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
 References: <20240408125309.280181634@linuxfoundation.org>
@@ -66,76 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Jens Axboe <axboe@kernel.dk>
 
-commit 6b69c4ab4f685327d9e10caf0d84217ba23a8c4b upstream.
+commit 2a975d426c82ff05ec1f0b773798d909fe4a3105 upstream.
 
-No functional changes in this patch, just in preparation for being able
-to keep the buffer list alive outside of the ctx->uring_lock.
+Supporting multishot reads requires support for NOWAIT, as the
+alternative would be always having io-wq execute the work item whenever
+the poll readiness triggered. Any fast file type will have NOWAIT
+support (eg it understands both O_NONBLOCK and IOCB_NOWAIT). If the
+given file type does not, then simply resort to single shot execution.
 
-Cc: stable@vger.kernel.org # v6.4+
+Cc: stable@vger.kernel.org
+Fixes: fc68fcda04910 ("io_uring/rw: add support for IORING_OP_READ_MULTISHOT")
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/kbuf.c |   15 +++++++++++----
- io_uring/kbuf.h |    2 ++
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ io_uring/rw.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -61,6 +61,7 @@ static int io_buffer_add_list(struct io_
- 	 * always under the ->uring_lock, but the RCU lookup from mmap does.
- 	 */
- 	bl->bgid = bgid;
-+	atomic_set(&bl->refs, 1);
- 	return xa_err(xa_store(&ctx->io_bl_xa, bgid, bl, GFP_KERNEL));
- }
- 
-@@ -274,6 +275,14 @@ static int __io_remove_buffers(struct io
- 	return i;
- }
- 
-+static void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
-+{
-+	if (atomic_dec_and_test(&bl->refs)) {
-+		__io_remove_buffers(ctx, bl, -1U);
-+		kfree_rcu(bl, rcu);
-+	}
-+}
-+
- void io_destroy_buffers(struct io_ring_ctx *ctx)
- {
- 	struct io_buffer_list *bl;
-@@ -283,8 +292,7 @@ void io_destroy_buffers(struct io_ring_c
- 
- 	xa_for_each(&ctx->io_bl_xa, index, bl) {
- 		xa_erase(&ctx->io_bl_xa, bl->bgid);
--		__io_remove_buffers(ctx, bl, -1U);
--		kfree_rcu(bl, rcu);
-+		io_put_bl(ctx, bl);
- 	}
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -938,6 +938,13 @@ int io_read_mshot(struct io_kiocb *req,
+ 	ret = __io_read(req, issue_flags);
  
  	/*
-@@ -689,9 +697,8 @@ int io_unregister_pbuf_ring(struct io_ri
- 	if (!bl->is_mapped)
- 		return -EINVAL;
- 
--	__io_remove_buffers(ctx, bl, -1U);
- 	xa_erase(&ctx->io_bl_xa, bl->bgid);
--	kfree_rcu(bl, rcu);
-+	io_put_bl(ctx, bl);
- 	return 0;
- }
- 
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -25,6 +25,8 @@ struct io_buffer_list {
- 	__u16 head;
- 	__u16 mask;
- 
-+	atomic_t refs;
++	 * If the file doesn't support proper NOWAIT, then disable multishot
++	 * and stay in single shot mode.
++	 */
++	if (!io_file_supports_nowait(req))
++		req->flags &= ~REQ_F_APOLL_MULTISHOT;
 +
- 	/* ring mapped provided buffers */
- 	__u8 is_mapped;
- 	/* ring mapped provided buffers, but mmap'ed by application */
++	/*
+ 	 * If we get -EAGAIN, recycle our buffer and just let normal poll
+ 	 * handling arm it.
+ 	 */
+@@ -956,7 +963,7 @@ int io_read_mshot(struct io_kiocb *req,
+ 	/*
+ 	 * Any successful return value will keep the multishot read armed.
+ 	 */
+-	if (ret > 0) {
++	if (ret > 0 && req->flags & REQ_F_APOLL_MULTISHOT) {
+ 		/*
+ 		 * Put our buffer and post a CQE. If we fail to post a CQE, then
+ 		 * jump to the termination path. This request is then done.
 
 
 
