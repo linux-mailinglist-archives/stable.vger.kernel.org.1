@@ -1,129 +1,140 @@
-Return-Path: <stable+bounces-37785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6162089C9EC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 18:41:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346A989CA73
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 19:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 938FD1C247EC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:41:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670DF1C2421D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 17:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF32B142E93;
-	Mon,  8 Apr 2024 16:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209B3143888;
+	Mon,  8 Apr 2024 17:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cifxUkDf"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uKa3+5XH"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D9F14264D;
-	Mon,  8 Apr 2024 16:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D515143867
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 17:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712594488; cv=none; b=KMtWSvraPs/adEmdXFV8f1kRlCAyUQuZaNgZtSy1OUWpZCX9QNegMRqmX3CpGeBWb6zKNOUD6HiX9A0wyAstOIByAF7xDHQ3ulPAOrrFmNTrfrs1EeMuHlKE14wHmx+sdxKI/e1OhEA2lcrMGu2V0OMWXIEFk4LT9C/zUMsboZQ=
+	t=1712596248; cv=none; b=Y5aK4lUwla2XyP/PVyCmpasMD170QM1JfTy/W2m4GZrjijrxmjk+e9HfxROvDIXjk74BuKmPIZ06N0VyrpwMZOzy7K7/VWAMmZhYvz/uob1aiS8zGVRUeJAI0NzYx9LqS6WBywVqIs4B/wdEKXPOvOuxFtG/tVcRmjkG+De133Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712594488; c=relaxed/simple;
-	bh=TjLTzA6JDfXXdlz0RREi2DNgQIkZGNpTQemJBXI3JFM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XuzVwHMMV3ri5hyERW5EtheizRUwii/NFf6SVlH02xIMB7qrx/SmAh9UaG9VaUvgosv9u35uJbOxtObMokvg3TmLqzFcuin/9YczGK2w1H7I7pc+qFGAEylQbmeSEZSXR15w6571CCAtcnqI2oiJzIUMsoU+lq6EuiD55b1hdsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cifxUkDf; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 438AfWuH019862;
-	Mon, 8 Apr 2024 16:41:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=TdhNvuTHq7dEziJFTqEsp6X+46JLjpqwWk7ezu+cHOc=; b=ci
-	fxUkDfBmVemqO42SbMBEl7jyYeYtFtcPSOqwPnwdY5T5xmeuRDijxXlzsBSC3lyu
-	tBmw4rl7p8aY6qz8WpDamKx7IrEK4N2mRtUFHMDxJoIlMbCLOa3HlfxsFnBjrsay
-	IR7lXr+cjAaXOPhS0VtpdlcnZYAvsti2o/WywnsM1oip/o9KumoF+6Z5smx7dOry
-	gVXym0kD+ag62WBbOZ9igxCho9k0ftsT/jpSHoGvib2mKesmOGZs8vt2y48q4ffR
-	FZJVxgiYxpayRnZLHs0btK+d/886vWNML4hPZAr/wJI87Aiu+1G4cAIyRF51jxwb
-	5pHDLWedHH89Fpks6oGQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xcbg39d0h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Apr 2024 16:41:17 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 438GfHSJ025275
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 8 Apr 2024 16:41:17 GMT
-Received: from [10.71.109.81] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 8 Apr 2024
- 09:41:16 -0700
-Message-ID: <23986455-9e35-0106-8835-6bd67bd90b7c@quicinc.com>
-Date: Mon, 8 Apr 2024 09:41:15 -0700
+	s=arc-20240116; t=1712596248; c=relaxed/simple;
+	bh=cylWH1nnV2bxqs+WbEQuW213MzLnqSLV8ZuKW654Nsc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kq2TkxlsFt4G1CCJPjzgz2aAcfH31Io8FMgRmYURGyh01iY1V5JoBNS+xa2SP05VrersrYKf/q1063mDcpkZPcGWPo8f0+Dcm0yMPfu/lzuGH9y5WiCMMWZY3LaBg+JWwp7Tpbu4LkXgTi0L493wJtRZDW8076cAGoq8pUqnoKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uKa3+5XH; arc=none smtp.client-ip=209.85.217.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-479de65e08fso830715137.1
+        for <stable@vger.kernel.org>; Mon, 08 Apr 2024 10:10:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712596245; x=1713201045; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dgNLDg69yxbLlzA2rtbGSv5XoBTDQC7WuQwQX8jNXm4=;
+        b=uKa3+5XH9/wqnndhQovMxVcKGitMuVXwcJbN41BDJpfFUJrYqQ6CXYNVYRIV7jjABC
+         enBwsUBy0qpqqzHZ8O0Yvzpx2RIxx5adVAG/oNiBsilolZwzopxpwL+fvCXe07Y0OyXN
+         whh61H4HZ0JKpx9ehnWd9eHd47aiD6Rrv5uU3fn8ht6OPh0oG9FqHlg+rpePYu2DIdhJ
+         45K4itBOC7V6DhoHyHbXbQ+NWiy53q91Umk4MgsBPbbulwD3Q/nxZwB9W5D3uLGheg00
+         LrVtZoBNH7gT25BturHv/WEAB8qAnFatS/V2OmSIqNSCoDZXlD7hwx+LETdUhpSmU2PG
+         JxiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712596245; x=1713201045;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dgNLDg69yxbLlzA2rtbGSv5XoBTDQC7WuQwQX8jNXm4=;
+        b=S6szCGer70H6wMilggkWL5QITWlX9ZctNZuxroMvtZR6oFtquKb/qeVmnjQPb5EHai
+         61bT8t9LGoQaKyQyWPQVz54fAPfYyheRkyWOTclP2XkNfD213QW7L3aE5Fsxr9fn/oYE
+         Z/x0+41Ar9960If2Nl4Bmk3+Zn5mDHcGDkJIZiJNr+Zv5yvr7oxvgGc0sHRIsA+pjdDW
+         1jtJe5YVXvAXZdh2h/F/LY2rMGq6rTnz8/qyQYKC0d3G7BiUX8K8vVwjbHZof+Q6ssw3
+         Xs0xweMmblKK1tQqf21lcTMO4oLMPx4FPApJIRGmThS726nvb7EwS4iPQrOl9Ny7vQqS
+         0lww==
+X-Gm-Message-State: AOJu0Yy0X0TpM1n7TK/I9Y6FPo91oN3Dfgjdsr3Kh4P6gtUjiLhQCHI6
+	TVlk2DHZ+3IyRgax/Lw++SWF1BhrTf+KKLWo1KGiDof5ZBKdMiB2Jo3LAMuCPvcFDBzQtYHTnmF
+	9BPDvYEwj9Cod5jolDZTPVOot8BoLrWa3IEHHvg==
+X-Google-Smtp-Source: AGHT+IE4rZuhK6L+sff4J6NG4CwRQVKSfgKAx18voJzxhLCWPvTOZ87xJxM9RoHsSuBANnjuKv9ClsQST7QStSFG6TU=
+X-Received: by 2002:a1f:eec2:0:b0:4da:9aa1:dd5e with SMTP id
+ m185-20020a1feec2000000b004da9aa1dd5emr6423714vkh.10.1712596245531; Mon, 08
+ Apr 2024 10:10:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] phy: qcom: qmp-combo: fix VCO div offset on v5_5nm and v6
-Content-Language: en-US
-To: Johan Hovold <johan+linaro@kernel.org>, Vinod Koul <vkoul@kernel.org>
-CC: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konrad.dybcio@linaro.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Neil
- Armstrong <neil.armstrong@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-phy@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Dmitry
- Baryshkov <dmitry.baryshkov@linaro.org>
-References: <20240408093023.506-1-johan+linaro@kernel.org>
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20240408093023.506-1-johan+linaro@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 16U9_4TI00xjALNLzjMCNoRm_alnWFxu
-X-Proofpoint-ORIG-GUID: 16U9_4TI00xjALNLzjMCNoRm_alnWFxu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-08_15,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 mlxscore=0 suspectscore=0 impostorscore=0 bulkscore=0
- clxscore=1011 malwarescore=0 spamscore=0 phishscore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404080129
+References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 8 Apr 2024 22:40:34 +0530
+Message-ID: <CA+G9fYvt2MTfghC9OtdV-bFF+dN9sY3MzgpcQ608tSTt3XUBNQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/138] 6.1.85-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Thomas Richter <tmricht@linux.ibm.com>, 
+	Sumanth Korikkar <sumanthk@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+
+On Mon, 8 Apr 2024 at 18:30, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.85 release.
+> There are 138 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 10 Apr 2024 12:52:23 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.85-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+
+The s390 defconfig build failed with gcc-13 and clang-17 due following
+build warning / errors on Linux stable-rc linux-6.1.y.
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Build error:
+--------
+arch/s390/kernel/perf_pai_crypto.c:40:26: error: field 'mode' has
+incomplete type
+   40 |         enum paievt_mode mode;          /* Type of event */
+      |                          ^~~~
 
 
+Commit detail,
+  s390/pai: rework pai_crypto mapped buffer reference count
+  [ Upstream commit d3db4ac3c761def3d3a8e5ea6d05d1636c44c2ba ]
 
-On 4/8/2024 2:30 AM, Johan Hovold wrote:
-> Commit 5abed58a8bde ("phy: qcom: qmp-combo: Fix VCO div offset on v3")
-> fixed a regression introduced in 6.5 by making sure that the correct
-> offset is used for the DP_PHY_VCO_DIV register on v3 hardware.
-> 
-> Unfortunately, that fix instead broke DisplayPort on v5_5nm and v6
-> hardware as it failed to add the corresponding offsets also to those
-> register tables.
-> 
-> Fixes: 815891eee668 ("phy: qcom-qmp-combo: Introduce orientation variable")
-> Fixes: 5abed58a8bde ("phy: qcom: qmp-combo: Fix VCO div offset on v3")
-> Cc: stable@vger.kernel.org	# 6.5: 5abed58a8bde
-> Cc: Stephen Boyd <swboyd@chromium.org>
-> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->   drivers/phy/qualcomm/phy-qcom-qmp-combo.c     | 2 ++
->   drivers/phy/qualcomm/phy-qcom-qmp-dp-phy-v5.h | 1 +
->   drivers/phy/qualcomm/phy-qcom-qmp-dp-phy-v6.h | 1 +
->   3 files changed, 4 insertions(+)
-> 
+Steps to reproduce:
+# tuxmake --runtime podman --target-arch s390 --toolchain gcc-13
+--kconfig defconfig
 
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+
+Links:
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.84-139-g76e1877fe563/testrun/23349327/suite/build/test/gcc-13-defconfig/log
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.84-139-g76e1877fe563/testrun/23349327/suite/build/test/gcc-13-defconfig/details/
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
