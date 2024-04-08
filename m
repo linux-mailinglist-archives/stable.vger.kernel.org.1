@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-37134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15ADA89C379
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920B789C402
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAD7C1F21DE4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF93C1C223C8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF75286AC2;
-	Mon,  8 Apr 2024 13:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E49A7CF25;
+	Mon,  8 Apr 2024 13:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1q1pjyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5XLVH3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCC17D401;
-	Mon,  8 Apr 2024 13:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B907C6C8;
+	Mon,  8 Apr 2024 13:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583346; cv=none; b=dx+mgpIH5HgzdCMfQRq4qakqVCo/+RKhdRJnQ1lVfMPBVuuy060+Rpf3tRMJ3fqn+GP5cd+Dlom/5fjF2uOMBTorpwpCF0N+5C5IuHmqhcGvjT5VUqXkV6PqolNMpDmipWZVGQs7lXPJYhqBMBDKKFVgoAbz28SbBYgogY08pOs=
+	t=1712583681; cv=none; b=kiSy4QKTTAAVtbaE3AN2X0lOeIGKhS/+BP8mgre2KVc6zP5o/79oSfe0RLe+eli+IGbClGgo7WND69MxCSXuQ0p7vCo8EyEPdtZEnhZvukwjnoNEDSjpNAt9UJ2tnggT5tdQDesfkk0G7DG176p4wrbEJaT4Mdxx5Va9X+b7PNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583346; c=relaxed/simple;
-	bh=g3IxR/V1WRB+ObeqX3zOi+My7XYKIzN14RrrdMyfKXE=;
+	s=arc-20240116; t=1712583681; c=relaxed/simple;
+	bh=KmoPHWARIQSdTVwCHwRB6I+2Dzs6XcZ47xMryaxnrj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqVhsMnrCzrcdKNTD/cVRqsZvUc3jzFi/aCgmZ4pr3RIAgTX5Hdvx7bZhbT39zdNLnrvu2bpL1m/y3hiQPL9fcql2ddiF2Mwx57rbbFvJy04yaG6I79B1EnC0kG+KPUX2xuNpeYgq+KNzgJ6qQssdzUCsdsbRlL5TSvqZ3ZARNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1q1pjyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C3FC433F1;
-	Mon,  8 Apr 2024 13:35:45 +0000 (UTC)
+	 MIME-Version; b=o6eG6o0a66E3jF2PgUxcSBmdGOM635DYPLinspjIL8VEUNzmTrJwehtoYVQPYLyYc6Jg29GXsSikYjnyV75uZwbpSHqczbxYMrjxYU64G5UuDsIuf3S0OauSrZYDTzJaMfJ2I9kl4OgoOGKrUj5jVuFstsvS+DJGJGoIZuB9JPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5XLVH3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A6FC433F1;
+	Mon,  8 Apr 2024 13:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583346;
-	bh=g3IxR/V1WRB+ObeqX3zOi+My7XYKIzN14RrrdMyfKXE=;
+	s=korg; t=1712583681;
+	bh=KmoPHWARIQSdTVwCHwRB6I+2Dzs6XcZ47xMryaxnrj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1q1pjyhBGNPoaysHr3Df0vInH2g6ZV4z6dLazDYu/G+XQmsHCIkM8dUHHF3bxF2h
-	 oVDE2ko1tBb+MsTgma3gZOaKd8+UiATpeSX2xHla/AuauevWLxzgmqDPFpgvMYNAGx
-	 5Ujele0hp0r/e2qQgjARXGCTeQ8jrQ+eN+WnySOY=
+	b=X5XLVH3BEyxNLdBKTxU1Xp9tYqqDRb3hLqh1f5sAJOGDbG+GFfb6tid499zJIxJIF
+	 6bjT8KBU7t6Sbac8qDPHPckisVJNsYczbiwmMnQOpcAgtYxgqaE4LGZAvVIU+NC8y3
+	 RC+XuiP+Ei9R91FYid1v9HojO8uqZQOwRrICcnEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/252] ata: sata_sx4: fix pdc20621_get_from_dimm() on 64-bit
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.8 208/273] io_uring/kbuf: protect io_buffer_list teardown with a reference
 Date: Mon,  8 Apr 2024 14:58:03 +0200
-Message-ID: <20240408125312.375958017@linuxfoundation.org>
+Message-ID: <20240408125315.808075795@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +60,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 52f80bb181a9a1530ade30bc18991900bbb9697f ]
+commit 6b69c4ab4f685327d9e10caf0d84217ba23a8c4b upstream.
 
-gcc warns about a memcpy() with overlapping pointers because of an
-incorrect size calculation:
+No functional changes in this patch, just in preparation for being able
+to keep the buffer list alive outside of the ctx->uring_lock.
 
-In file included from include/linux/string.h:369,
-                 from drivers/ata/sata_sx4.c:66:
-In function 'memcpy_fromio',
-    inlined from 'pdc20621_get_from_dimm.constprop' at drivers/ata/sata_sx4.c:962:2:
-include/linux/fortify-string.h:97:33: error: '__builtin_memcpy' accessing 4294934464 bytes at offsets 0 and [16, 16400] overlaps 6442385281 bytes at offset -2147450817 [-Werror=restrict]
-   97 | #define __underlying_memcpy     __builtin_memcpy
-      |                                 ^
-include/linux/fortify-string.h:620:9: note: in expansion of macro '__underlying_memcpy'
-  620 |         __underlying_##op(p, q, __fortify_size);                        \
-      |         ^~~~~~~~~~~~~
-include/linux/fortify-string.h:665:26: note: in expansion of macro '__fortify_memcpy_chk'
-  665 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
-      |                          ^~~~~~~~~~~~~~~~~~~~
-include/asm-generic/io.h:1184:9: note: in expansion of macro 'memcpy'
- 1184 |         memcpy(buffer, __io_virt(addr), size);
-      |         ^~~~~~
-
-The problem here is the overflow of an unsigned 32-bit number to a
-negative that gets converted into a signed 'long', keeping a large
-positive number.
-
-Replace the complex calculation with a more readable min() variant
-that avoids the warning.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.4+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/sata_sx4.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ io_uring/kbuf.c |   15 +++++++++++----
+ io_uring/kbuf.h |    2 ++
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
-index b51d7a9d0d90c..a482741eb181f 100644
---- a/drivers/ata/sata_sx4.c
-+++ b/drivers/ata/sata_sx4.c
-@@ -957,8 +957,7 @@ static void pdc20621_get_from_dimm(struct ata_host *host, void *psource,
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -61,6 +61,7 @@ static int io_buffer_add_list(struct io_
+ 	 * always under the ->uring_lock, but the RCU lookup from mmap does.
+ 	 */
+ 	bl->bgid = bgid;
++	atomic_set(&bl->refs, 1);
+ 	return xa_err(xa_store(&ctx->io_bl_xa, bgid, bl, GFP_KERNEL));
+ }
  
- 	offset -= (idx * window_size);
- 	idx++;
--	dist = ((long) (window_size - (offset + size))) >= 0 ? size :
--		(long) (window_size - offset);
-+	dist = min(size, window_size - offset);
- 	memcpy_fromio(psource, dimm_mmio + offset / 4, dist);
+@@ -274,6 +275,14 @@ static int __io_remove_buffers(struct io
+ 	return i;
+ }
  
- 	psource += dist;
-@@ -1005,8 +1004,7 @@ static void pdc20621_put_to_dimm(struct ata_host *host, void *psource,
- 	readl(mmio + PDC_DIMM_WINDOW_CTLR);
- 	offset -= (idx * window_size);
- 	idx++;
--	dist = ((long)(s32)(window_size - (offset + size))) >= 0 ? size :
--		(long) (window_size - offset);
-+	dist = min(size, window_size - offset);
- 	memcpy_toio(dimm_mmio + offset / 4, psource, dist);
- 	writel(0x01, mmio + PDC_GENERAL_CTLR);
- 	readl(mmio + PDC_GENERAL_CTLR);
--- 
-2.43.0
-
++static void io_put_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
++{
++	if (atomic_dec_and_test(&bl->refs)) {
++		__io_remove_buffers(ctx, bl, -1U);
++		kfree_rcu(bl, rcu);
++	}
++}
++
+ void io_destroy_buffers(struct io_ring_ctx *ctx)
+ {
+ 	struct io_buffer_list *bl;
+@@ -283,8 +292,7 @@ void io_destroy_buffers(struct io_ring_c
+ 
+ 	xa_for_each(&ctx->io_bl_xa, index, bl) {
+ 		xa_erase(&ctx->io_bl_xa, bl->bgid);
+-		__io_remove_buffers(ctx, bl, -1U);
+-		kfree_rcu(bl, rcu);
++		io_put_bl(ctx, bl);
+ 	}
+ 
+ 	/*
+@@ -689,9 +697,8 @@ int io_unregister_pbuf_ring(struct io_ri
+ 	if (!bl->is_mapped)
+ 		return -EINVAL;
+ 
+-	__io_remove_buffers(ctx, bl, -1U);
+ 	xa_erase(&ctx->io_bl_xa, bl->bgid);
+-	kfree_rcu(bl, rcu);
++	io_put_bl(ctx, bl);
+ 	return 0;
+ }
+ 
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -25,6 +25,8 @@ struct io_buffer_list {
+ 	__u16 head;
+ 	__u16 mask;
+ 
++	atomic_t refs;
++
+ 	/* ring mapped provided buffers */
+ 	__u8 is_mapped;
+ 	/* ring mapped provided buffers, but mmap'ed by application */
 
 
 
