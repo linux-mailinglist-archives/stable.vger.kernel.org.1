@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-37615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF2789C5B2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 486A189C24C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF2FC1C21523
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD40D1F21A1C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80637C0BF;
-	Mon,  8 Apr 2024 13:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3CD7BAF4;
+	Mon,  8 Apr 2024 13:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kj49y8+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJohPAV9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FCB7BB1A;
-	Mon,  8 Apr 2024 13:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE56780620;
+	Mon,  8 Apr 2024 13:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584753; cv=none; b=BaIR0VfJ3gOi7uDa0BXbWxW0ksP4jMeQVoz+Bm0UQeDBxnWcEtvBl3UUqRMDTU+LuRX8NI9Ye7wvDnQ6n9EnOoReTf+qb23q1uO54fA/6wbDyPItGPcHBcer66KHtTgkaOq8ER7b3nj5Ys2CT4d9XaneMioA8omkjPvCvke4a38=
+	t=1712582684; cv=none; b=aa23uNCyiJwVjha+IyzRLtocGB+NgSG4TuRbzDEbEuoKnp9pAGXv+Ar2CazI1k48RAWEBlLGlXBM9JnUwf8puwc4kb4VucYuk9eKXmV/OEjUNlnh1O34PoomrZWc+7TZXQ1/PKjYphOWpBAUgPN29W93jZheNQps1epVkp91VeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584753; c=relaxed/simple;
-	bh=I0LXOwe597XfoCLFFBc2DGy62Ws68OctWS0hfxYMH6c=;
+	s=arc-20240116; t=1712582684; c=relaxed/simple;
+	bh=xSys25Oo3PUto6m1MopX8d+BY3RR9fOfHaR8fQxd6zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOFttWFIdpyNdhsPRlScCuQY5+Uvm6Er/XW2PPEnX8b2ag1a4d14P4crfXjX7cI4ZgNmcV6eEr8Id74ih+DPDA4j+6WQFrO36aVCWbsHKkyN/haSC0b1cK74nCHU+mX1b0Jnmlid7JaU+59Tmrl06tjKOSHKdpBT0KychafruCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kj49y8+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DC4C43390;
-	Mon,  8 Apr 2024 13:59:12 +0000 (UTC)
+	 MIME-Version; b=R8y5sGM+ZNJwvA+O3HgrLq8HNJ6fisPW5a3Ylrttb5+n5J01/oxRyONKRfhKTCqD7bLBxfI1Le9u8D3Bc2SdyiJCRw5267d+r0tDBKKE/oCyUBkImuBTpksIOVbmtLAdZgtoK3jvoo2yZfdZQIWMBMivNqzNSv4s85Fgdcur4Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJohPAV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412A3C433C7;
+	Mon,  8 Apr 2024 13:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584753;
-	bh=I0LXOwe597XfoCLFFBc2DGy62Ws68OctWS0hfxYMH6c=;
+	s=korg; t=1712582684;
+	bh=xSys25Oo3PUto6m1MopX8d+BY3RR9fOfHaR8fQxd6zI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kj49y8+2mUSIdQdl1CcoL6nkoxjKTgunIW2SY2HNm3KVZWzHKMmcQYk6vboadtyzB
-	 7XzJelj2TU3k4WES0ZIuyweUK28RcLdyTGxharuu+fDrjCdpJFl3+L/r/JCQiUsRcG
-	 aK7Z6ZVXd+l9/H0B9orDdnhSUkJy+Fj6CPvT4bk0=
+	b=lJohPAV9g6DQlEdP8cra/2iVdkWYyqEkjp7V+75WvKngP8pG83Qz140g72MGxYaQ2
+	 IHMPx/DlvHYCvsW+SCepnsg1fyY4UmCZJj37V4bqbPWhVcRmIQoEch745rwqrRhXhE
+	 r/8z9kw5/3Srvn9SRNu/1RAqq7ngGWqQjkCZdrus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tavian Barnes <tavianator@tavianator.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 544/690] nfsd: Fix creation time serialization order
-Date: Mon,  8 Apr 2024 14:56:50 +0200
-Message-ID: <20240408125419.358165628@linuxfoundation.org>
+	Antoine Tenart <atenart@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 112/252] selftests: net: gro fwd: update vxlan GRO test expectations
+Date: Mon,  8 Apr 2024 14:56:51 +0200
+Message-ID: <20240408125310.113443539@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tavian Barnes <tavianator@tavianator.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit d7dbed457c2ef83709a2a2723a2d58de43623449 ]
+commit 0fb101be97ca27850c5ecdbd1269423ce4d1f607 upstream.
 
-In nfsd4_encode_fattr(), TIME_CREATE was being written out after all
-other times.  However, they should be written out in an order that
-matches the bit flags in bmval1, which in this case are
+UDP tunnel packets can't be GRO in-between their endpoints as this
+causes different issues. The UDP GRO fwd vxlan tests were relying on
+this and their expectations have to be fixed.
 
-    #define FATTR4_WORD1_TIME_ACCESS        (1UL << 15)
-    #define FATTR4_WORD1_TIME_CREATE        (1UL << 18)
-    #define FATTR4_WORD1_TIME_DELTA         (1UL << 19)
-    #define FATTR4_WORD1_TIME_METADATA      (1UL << 20)
-    #define FATTR4_WORD1_TIME_MODIFY        (1UL << 21)
+We keep both vxlan tests and expected no GRO from happening. The vxlan
+UDP GRO bench test was removed as it's not providing any valuable
+information now.
 
-so TIME_CREATE should come second.
-
-I noticed this on a FreeBSD NFSv4.2 client, which supports creation
-times.  On this client, file times were weirdly permuted.  With this
-patch applied on the server, times looked normal on the client.
-
-Fixes: e377a3e698fb ("nfsd: Add support for the birth time attribute")
-Link: https://unix.stackexchange.com/q/749605/56202
-Signed-off-by: Tavian Barnes <tavianator@tavianator.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/udpgro_fwd.sh |   10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index c40876daf60c0..5b95499a1f344 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3365,6 +3365,11 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
- 		if (status)
- 			goto out;
- 	}
-+	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
-+		status = nfsd4_encode_nfstime4(xdr, &stat.btime);
-+		if (status)
-+			goto out;
-+	}
- 	if (bmval1 & FATTR4_WORD1_TIME_DELTA) {
- 		p = xdr_reserve_space(xdr, 12);
- 		if (!p)
-@@ -3381,11 +3386,6 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
- 		if (status)
- 			goto out;
- 	}
--	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
--		status = nfsd4_encode_nfstime4(xdr, &stat.btime);
--		if (status)
--			goto out;
--	}
- 	if (bmval1 & FATTR4_WORD1_MOUNTED_ON_FILEID) {
- 		u64 ino = stat.ino;
+--- a/tools/testing/selftests/net/udpgro_fwd.sh
++++ b/tools/testing/selftests/net/udpgro_fwd.sh
+@@ -241,7 +241,7 @@ for family in 4 6; do
  
--- 
-2.43.0
-
+ 	create_vxlan_pair
+ 	ip netns exec $NS_DST ethtool -K veth$DST rx-gro-list on
+-	run_test "GRO frag list over UDP tunnel" $OL_NET$DST 1 1
++	run_test "GRO frag list over UDP tunnel" $OL_NET$DST 10 10
+ 	cleanup
+ 
+ 	# use NAT to circumvent GRO FWD check
+@@ -254,13 +254,7 @@ for family in 4 6; do
+ 	# load arp cache before running the test to reduce the amount of
+ 	# stray traffic on top of the UDP tunnel
+ 	ip netns exec $NS_SRC $PING -q -c 1 $OL_NET$DST_NAT >/dev/null
+-	run_test "GRO fwd over UDP tunnel" $OL_NET$DST_NAT 1 1 $OL_NET$DST
+-	cleanup
+-
+-	create_vxlan_pair
+-	run_bench "UDP tunnel fwd perf" $OL_NET$DST
+-	ip netns exec $NS_DST ethtool -K veth$DST rx-udp-gro-forwarding on
+-	run_bench "UDP tunnel GRO fwd perf" $OL_NET$DST
++	run_test "GRO fwd over UDP tunnel" $OL_NET$DST_NAT 10 10 $OL_NET$DST
+ 	cleanup
+ done
+ 
 
 
 
