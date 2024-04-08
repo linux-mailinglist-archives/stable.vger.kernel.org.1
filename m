@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BF989C1C0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F051D89C63D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5641F21B60
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E4191C22A46
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA4381726;
-	Mon,  8 Apr 2024 13:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A28081216;
+	Mon,  8 Apr 2024 14:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ17MxbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqOFIvRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6336F08E;
-	Mon,  8 Apr 2024 13:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169AE80BFC;
+	Mon,  8 Apr 2024 14:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582402; cv=none; b=gqGfEeX2ojEd7H8lGU/6WkrnKeZtnTFksUPJFAHziaYBKKvnQA/LB/wCmbf3ecOvkadbMhsT7qTOSIsU+a4oPmoLfVttFvGfJIPQHc3tyVyWCStr82bFp/W0fHA2eYRidYJvFgI68YcRA6e3DQkgIXdB2aKDvHN+cEcZURC2zeE=
+	t=1712585151; cv=none; b=YDjKHgi8ET2MjewraIJ8wIQnx0EhC2gW7rEIEq1YPRZeq0I/oHAeX6sJppvCLAH9G6e8kOafkEcjqLhKu6Rv7An2eHXg5Qk6AVvl4TJVYJNmzxaocjdRQnqhXJbZ3Yjck3sdPGQC3QmM7HHfy4pe1em7KexelYaBaGHFdvbLROo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582402; c=relaxed/simple;
-	bh=7LIMZ7coKxjCn/D48AiCmROpN9kjVapI8MxnGYO/+zE=;
+	s=arc-20240116; t=1712585151; c=relaxed/simple;
+	bh=pnT9XAQcWnhl4XusK6VoVo5m0l8h63JBY0J3OQTCTmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSzgTulno6fyHxIEJ4s+xYbBWEd/pnXKLPL3iAICXres74fI1jCA6AzTwt8Gb8YtKJ+T3GTRhzMoisfxuTpWULpGRnGjN7cZx8lwtgNUPIX/ynG5XuELsGwWdYHeZwfxXrrERYn+XCemz3xzl5BS1ms/Sdl6Vpry5a91/y7N1TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ17MxbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B87C433F1;
-	Mon,  8 Apr 2024 13:20:00 +0000 (UTC)
+	 MIME-Version; b=pYcdQY0NRFnBiu89vRFlbIr/NAgCntMfpxZS3hApSY2YZ6JatnkRZiwKYKWTmPGC1DzYherCdBT+uNai6iRroeMEoh7KSrGOa9AkhLv7BpDFI/n8anmSkTXBAWvYruCc4p2XQfr5MzXcpeXVeLJS0HShtmBQWy4Kyn+AMWSvdl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqOFIvRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB2BC433F1;
+	Mon,  8 Apr 2024 14:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582401;
-	bh=7LIMZ7coKxjCn/D48AiCmROpN9kjVapI8MxnGYO/+zE=;
+	s=korg; t=1712585151;
+	bh=pnT9XAQcWnhl4XusK6VoVo5m0l8h63JBY0J3OQTCTmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQ17MxbTZuzWwg01n9YFpkAUF9nreRxKmGk3NOWd0rAnmsu3DhRTAfDnYE9hYNXzJ
-	 GUG8HUTe1CoTWnyu/QSvluYekqqxSFs/KlF6s81SpeEg28/9aRO8N2/T+TlO3krVFm
-	 HQuo6LdFc7qnvA2ESRI1F0MFPvsqhj15xThqTv/k=
+	b=OqOFIvRqtRM9958XaLqi2zwgqXLpb5gwOklVUWwokBod8ZSdQuSIKeL/3sqQTkkPI
+	 cqp6gZtpb0awUrSHF1mhnTY3oHJukicKBNXCILT0xwZSvxnWvi8cCHWqR6+Qcvs+18
+	 tIs3nDDhaMLKe4V564yrUPi0gwJSej+4teIX5kjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/138] s390/pai: rename structure member users to active_events
+	Antoine Tenart <atenart@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 650/690] udp: do not transition UDP GRO fraglist partial checksums to unnecessary
 Date: Mon,  8 Apr 2024 14:58:36 +0200
-Message-ID: <20240408125259.404630852@linuxfoundation.org>
+Message-ID: <20240408125423.188017000@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 58354c7d35d35dd119ada18ff84a6686ccc8743f ]
+commit f0b8c30345565344df2e33a8417a27503589247d upstream.
 
-Rename structure member users to active_events to make it consistent
-with PMU pai_ext. Also use the same prefix syntax for increment and
-decrement operators in both PMUs.
+UDP GRO validates checksums and in udp4/6_gro_complete fraglist packets
+are converted to CHECKSUM_UNNECESSARY to avoid later checks. However
+this is an issue for CHECKSUM_PARTIAL packets as they can be looped in
+an egress path and then their partial checksums are not fixed.
 
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Different issues can be observed, from invalid checksum on packets to
+traces like:
+
+  gen01: hw csum failure
+  skb len=3008 headroom=160 headlen=1376 tailroom=0
+  mac=(106,14) net=(120,40) trans=160
+  shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
+  csum(0xffff232e ip_summed=2 complete_sw=0 valid=0 level=0)
+  hash(0x77e3d716 sw=1 l4=1) proto=0x86dd pkttype=0 iif=12
+  ...
+
+Fix this by only converting CHECKSUM_NONE packets to
+CHECKSUM_UNNECESSARY by reusing __skb_incr_checksum_unnecessary. All
+other checksum types are kept as-is, including CHECKSUM_COMPLETE as
+fraglist packets being segmented back would have their skb->csum valid.
+
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_pai_crypto.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/ipv4/udp_offload.c |    8 +-------
+ net/ipv6/udp_offload.c |    8 +-------
+ 2 files changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
-index 68a6132937f3e..a7e815563f411 100644
---- a/arch/s390/kernel/perf_pai_crypto.c
-+++ b/arch/s390/kernel/perf_pai_crypto.c
-@@ -35,7 +35,7 @@ struct pai_userdata {
- struct paicrypt_map {
- 	unsigned long *page;		/* Page for CPU to store counters */
- 	struct pai_userdata *save;	/* Page to store no-zero counters */
--	unsigned int users;		/* # of PAI crypto users */
-+	unsigned int active_events;	/* # of PAI crypto users */
- 	unsigned int refcnt;		/* Reference count mapped buffers */
- 	enum paievt_mode mode;		/* Type of event */
- 	struct perf_event *event;	/* Perf event for sampling */
-@@ -58,8 +58,8 @@ static void paicrypt_event_destroy(struct perf_event *event)
- 	mutex_lock(&pai_reserve_mutex);
- 	debug_sprintf_event(cfm_dbg, 5, "%s event %#llx cpu %d users %d"
- 			    " mode %d refcnt %d\n", __func__,
--			    event->attr.config, event->cpu, cpump->users,
--			    cpump->mode, cpump->refcnt);
-+			    event->attr.config, event->cpu,
-+			    cpump->active_events, cpump->mode, cpump->refcnt);
- 	if (!--cpump->refcnt) {
- 		debug_sprintf_event(cfm_dbg, 4, "%s page %#lx save %p\n",
- 				    __func__, (unsigned long)cpump->page,
-@@ -174,7 +174,7 @@ static int paicrypt_busy(struct perf_event_attr *a, struct paicrypt_map *cpump)
- 	}
- 	debug_sprintf_event(cfm_dbg, 5, "%s sample_period %#llx users %d"
- 			    " mode %d refcnt %d page %#lx save %p rc %d\n",
--			    __func__, a->sample_period, cpump->users,
-+			    __func__, a->sample_period, cpump->active_events,
- 			    cpump->mode, cpump->refcnt,
- 			    (unsigned long)cpump->page, cpump->save, rc);
- 	mutex_unlock(&pai_reserve_mutex);
-@@ -260,7 +260,7 @@ static int paicrypt_add(struct perf_event *event, int flags)
- 	struct paicrypt_map *cpump = this_cpu_ptr(&paicrypt_map);
- 	unsigned long ccd;
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -685,13 +685,7 @@ INDIRECT_CALLABLE_SCOPE int udp4_gro_com
+ 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
+ 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
  
--	if (cpump->users++ == 0) {
-+	if (++cpump->active_events == 1) {
- 		ccd = virt_to_phys(cpump->page) | PAI_CRYPTO_KERNEL_OFFSET;
- 		WRITE_ONCE(S390_lowcore.ccd, ccd);
- 		__ctl_set_bit(0, 50);
-@@ -291,7 +291,7 @@ static void paicrypt_del(struct perf_event *event, int flags)
- 	if (!event->attr.sample_period)
- 		/* Only counting needs to read counter */
- 		paicrypt_stop(event, PERF_EF_UPDATE);
--	if (cpump->users-- == 1) {
-+	if (--cpump->active_events == 0) {
- 		__ctl_clear_bit(0, 50);
- 		WRITE_ONCE(S390_lowcore.ccd, 0);
+-		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
+-			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
+-				skb->csum_level++;
+-		} else {
+-			skb->ip_summed = CHECKSUM_UNNECESSARY;
+-			skb->csum_level = 0;
+-		}
++		__skb_incr_checksum_unnecessary(skb);
+ 
+ 		return 0;
  	}
--- 
-2.43.0
-
+--- a/net/ipv6/udp_offload.c
++++ b/net/ipv6/udp_offload.c
+@@ -170,13 +170,7 @@ INDIRECT_CALLABLE_SCOPE int udp6_gro_com
+ 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
+ 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
+ 
+-		if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
+-			if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
+-				skb->csum_level++;
+-		} else {
+-			skb->ip_summed = CHECKSUM_UNNECESSARY;
+-			skb->csum_level = 0;
+-		}
++		__skb_incr_checksum_unnecessary(skb);
+ 
+ 		return 0;
+ 	}
 
 
 
