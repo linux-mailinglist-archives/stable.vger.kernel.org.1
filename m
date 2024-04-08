@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA9E89C57E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC3F89C17A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4E721F2116A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4BDAB286DD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4DB6FE1A;
-	Mon,  8 Apr 2024 13:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00957BAF5;
+	Mon,  8 Apr 2024 13:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FF5m6hti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jR1JwJ3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABC17BAFE;
-	Mon,  8 Apr 2024 13:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0AB7BAE7;
+	Mon,  8 Apr 2024 13:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584623; cv=none; b=oMxah97AAgUmfFFWWM+qAnXrHPPsktgngqz39j5KH0RgkBWrXWljbhIgYCXTU8YKsFHakqR1qUDK4coKJTKyoalWhhPdT+C0648qD23A751PZyRw0T1innL53gkxGd/6g/G7ee6D59EzhX38fmMVIyHjLDYW5md0TG3x+0btMgo=
+	t=1712582156; cv=none; b=ehzWqL4pl9u9os+SEnjsEf10zzM13HB4AnxK3q2V5LTlql5ROn0jJquCpJo26MXoNeL6grYE6po/w9r8qzfh3YB6HvXNUZhI2J4SjgtGgFAb3s/30SzVtz48g+3IfuZNnu0vxHBTQrxrgRHb3wfeDUO2fCVWFQtHIE5wejrVbLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584623; c=relaxed/simple;
-	bh=rMj+tYBoCSqX8l+0/igWeTEQg8pKn0V9C5YXppJUOSw=;
+	s=arc-20240116; t=1712582156; c=relaxed/simple;
+	bh=saR6ED4fDaM1istcXEmH99JGv/3Zpp17j5CMcblAQIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKEDn45lrRAc3Ij62cq//R+PVfDzNSj1q6furBmt2/ZyF9zoU5Lrb08li+/qEtx4B9NovaELuy/OnvzKEM+yPnJS/qxvproIwxhyZFm1vMOHKwy57mK5FeVHncguvbtWFxo3tssbzdGHMe9sG7QjqWC3jf1QMj2/eQAL/8CwogY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FF5m6hti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D59C433F1;
-	Mon,  8 Apr 2024 13:57:02 +0000 (UTC)
+	 MIME-Version; b=Tof93yvmqqnfyqVhOKyp1tGcT+QLPZfzquts9d9ajhOt2KmRaMbz3B+kVePjjm/Die/ST+GohCrlg0bhZ36yPGQ9QRJudb92UPEXy5/uZ2lCBBo54U602eVQsxs7RSicpCrisP4ry0FeeA/sdIaAke2/IYk76yNRxOyYUdiGF4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jR1JwJ3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A83C433C7;
+	Mon,  8 Apr 2024 13:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584623;
-	bh=rMj+tYBoCSqX8l+0/igWeTEQg8pKn0V9C5YXppJUOSw=;
+	s=korg; t=1712582156;
+	bh=saR6ED4fDaM1istcXEmH99JGv/3Zpp17j5CMcblAQIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FF5m6htinvlXqmtjHI4MdjmgMDytzmwdRKHggi7GbR9njJHpu180kDWlLvxN8enfj
-	 cuCejgb/zZjEnwlQwQ/13Fj5ODw69ngJMhhEnIT5lucJcFHROimGC/Us2cSFcuO5lA
-	 YNNEon+bfDIp+O5J9DTSeYekcS80U+WBAUlFOySY=
+	b=jR1JwJ3uZ39aBPM28kRVJ7MDXjMhW4COcmKcmNR2FFKqc+UBGTCYwnbBUtT3E+GrA
+	 /UpZiJxjkVQyhOsbDGOPbF6TcTUejODcLQWIuGsuFSqXam6UnzJ5+we546wQsN78ce
+	 D5du6b0gCjA0U4lBm2k/mTUBchA26gyJGyXGpYII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 501/690] lockd: fix file selection in nlmsvc_cancel_blocked
+	Stefan Wahren <wahrenst@gmx.net>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>
+Subject: [PATCH 6.6 068/252] gpio: cdev: sanitize the label before requesting the interrupt
 Date: Mon,  8 Apr 2024 14:56:07 +0200
-Message-ID: <20240408125417.790384633@linuxfoundation.org>
+Message-ID: <20240408125308.747253681@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 9f27783b4dd235ef3c8dbf69fc6322777450323c ]
+commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
 
-We currently do a lock_to_openmode call based on the arguments from the
-NLM_UNLOCK call, but that will always set the fl_type of the lock to
-F_UNLCK, and the O_RDONLY descriptor is always chosen.
+When an interrupt is requested, a procfs directory is created under
+"/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
+the request_irq() variants.
 
-Fix it to use the file_lock from the block instead.
+What follows is that the string must not contain the "/" character or
+the procfs mkdir operation will fail. We don't have such constraints for
+GPIO consumer labels which are used verbatim as interrupt labels for
+GPIO irqs. We must therefore sanitize the consumer string before
+requesting the interrupt.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Let's replace all "/" with ":".
+
+Cc: stable@vger.kernel.org
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Kent Gibson <warthog618@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/svclock.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index 9eae99e08e699..4e30f3c509701 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -699,9 +699,10 @@ nlmsvc_cancel_blocked(struct net *net, struct nlm_file *file, struct nlm_lock *l
- 	block = nlmsvc_lookup_block(file, lock);
- 	mutex_unlock(&file->f_mutex);
- 	if (block != NULL) {
--		mode = lock_to_openmode(&lock->fl);
--		vfs_cancel_lock(block->b_file->f_file[mode],
--				&block->b_call->a_args.lock.fl);
-+		struct file_lock *fl = &block->b_call->a_args.lock.fl;
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1010,10 +1010,20 @@ static u32 gpio_v2_line_config_debounce_
+ 	return 0;
+ }
+ 
++static inline char *make_irq_label(const char *orig)
++{
++	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
++}
 +
-+		mode = lock_to_openmode(fl);
-+		vfs_cancel_lock(block->b_file->f_file[mode], fl);
- 		status = nlmsvc_unlink_block(block);
- 		nlmsvc_release_block(block);
++static inline void free_irq_label(const char *label)
++{
++	kfree(label);
++}
++
+ static void edge_detector_stop(struct line *line)
+ {
+ 	if (line->irq) {
+-		free_irq(line->irq, line);
++		free_irq_label(free_irq(line->irq, line));
+ 		line->irq = 0;
  	}
--- 
-2.43.0
-
+ 
+@@ -1038,6 +1048,7 @@ static int edge_detector_setup(struct li
+ 	unsigned long irqflags = 0;
+ 	u64 eflags;
+ 	int irq, ret;
++	char *label;
+ 
+ 	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
+ 	if (eflags && !kfifo_initialized(&line->req->events)) {
+@@ -1074,11 +1085,17 @@ static int edge_detector_setup(struct li
+ 			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
+ 	irqflags |= IRQF_ONESHOT;
+ 
++	label = make_irq_label(line->req->label);
++	if (!label)
++		return -ENOMEM;
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+-				   irqflags, line->req->label, line);
+-	if (ret)
++				   irqflags, label, line);
++	if (ret) {
++		free_irq_label(label);
+ 		return ret;
++	}
+ 
+ 	line->irq = irq;
+ 	return 0;
+@@ -1943,7 +1960,7 @@ static void lineevent_free(struct lineev
+ 		blocking_notifier_chain_unregister(&le->gdev->device_notifier,
+ 						   &le->device_unregistered_nb);
+ 	if (le->irq)
+-		free_irq(le->irq, le);
++		free_irq_label(free_irq(le->irq, le));
+ 	if (le->desc)
+ 		gpiod_free(le->desc);
+ 	kfree(le->label);
+@@ -2091,6 +2108,7 @@ static int lineevent_create(struct gpio_
+ 	int fd;
+ 	int ret;
+ 	int irq, irqflags = 0;
++	char *label;
+ 
+ 	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
+ 		return -EFAULT;
+@@ -2175,15 +2193,23 @@ static int lineevent_create(struct gpio_
+ 	if (ret)
+ 		goto out_free_le;
+ 
++	label = make_irq_label(le->label);
++	if (!label) {
++		ret = -ENOMEM;
++		goto out_free_le;
++	}
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq,
+ 				   lineevent_irq_handler,
+ 				   lineevent_irq_thread,
+ 				   irqflags,
+-				   le->label,
++				   label,
+ 				   le);
+-	if (ret)
++	if (ret) {
++		free_irq_label(label);
+ 		goto out_free_le;
++	}
+ 
+ 	le->irq = irq;
+ 
 
 
 
