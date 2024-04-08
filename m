@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B215289C58E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:58:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9CF89C1DE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE1E1B28048
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 470C5B28571
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE297867D;
-	Mon,  8 Apr 2024 13:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38C37F7E5;
+	Mon,  8 Apr 2024 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQfhgThQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhCXfVdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7776EB72;
-	Mon,  8 Apr 2024 13:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825587E799;
+	Mon,  8 Apr 2024 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584539; cv=none; b=feYyl1obAim+g9p1jxM7i1W7XvhtdmSe/3ifV/R6taIli9qOhswB4LHPiJASVWgH3Pj8F4iktG4JlPKTsyzevTClFY5wExb3UISPpTT021M6RsOTUVfzxjD1whwhvzOb3jC7Yjzi5xDWsrg0ZC1c+/f4qPv5HqNaMbcEHn2kQPk=
+	t=1712582296; cv=none; b=lv3zxXal9kEAFmkF9YSiJIeLJasPpFe++ZlXzXi10AC86as75uICtSlcjP6WN4Qmzfif2S7mU5ueUwMzgbw9OYkSk9OkofgCPr38sMt4IzZMEFAJCjm1cDbOBmeaQz7y+v0VGE9jWMhrcQ1Wro/Y+eRRtG0Y54TxY70wxu1lrzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584539; c=relaxed/simple;
-	bh=EPdeUnJ2a8e1BgDO9ErqsZFuF+RMdFx5Tc7uufLTl7U=;
+	s=arc-20240116; t=1712582296; c=relaxed/simple;
+	bh=Zvsw6dADyqFGrYlbQ3JW3x7d0pfOMrhSyBFcnDN0iCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoL4zVTH7WVQCFo/f6nKmhWKeFAY1bwCaLUi2uWq/8e115q3XKU9zES2JPxq0LLaZbL72wvLYhJRNMe9hXBcQRHPlByvJVaqficMD/EYuB6wADfjq7r2G8v+g2iT0g5wVIVpwSi5js0guRwk6kfq4ktX8Zwgg3K6rg3cb/boyF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQfhgThQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2CEC433F1;
-	Mon,  8 Apr 2024 13:55:38 +0000 (UTC)
+	 MIME-Version; b=e62FoIFtODa8IclAAIF0BbDqofUjlzXlkK97yfchTP8LDToiZi8zmvdP30Xu8xPcXRcvwh47mLUs3cTtZIJuiu1Bhd6n/OvEuCzbBktMGbVx4dIHqG87OwrCojj6Ii6dvEy3i3GXup9VxU3nKsHOhyfzBY2qsyZzmcHPpVtJA0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhCXfVdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078CBC433F1;
+	Mon,  8 Apr 2024 13:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584538;
-	bh=EPdeUnJ2a8e1BgDO9ErqsZFuF+RMdFx5Tc7uufLTl7U=;
+	s=korg; t=1712582296;
+	bh=Zvsw6dADyqFGrYlbQ3JW3x7d0pfOMrhSyBFcnDN0iCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQfhgThQUVpvB46wgOJdTtX7scYBx/H+46pSXC4x80O4ygndhrrR/UYtba9EBYmz5
-	 /hgtHYOYWQ1rs648ZWrh6BXhfS+ChegGwR4jVV5PnuQvaTDuS3enqq4xURAAtSKsoR
-	 jKkN/9GE9WM/mLs2NpqkNokmsu1bBgYL4CE22OBQ=
+	b=dhCXfVdXG337/hFGEvOc2RDT5osqYGShGHKoiCHG+lYtQv3hKnJFMQUnlHKl3Y5Hc
+	 Iw0AXbcX+1YiTsijOnkxvBODmiiUWG8MgB1i+gLQ8hGvRMzZbFpA5K0dbkpsQEavOB
+	 rLMvSuLzQafhyg4f0hH35LFkJiEOZTLjsxEHdULk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 472/690] NFSD: Finish converting the NFSv3 GETACL result encoder
+	Stefan Wahren <wahrenst@gmx.net>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>
+Subject: [PATCH 6.8 063/273] gpio: cdev: sanitize the label before requesting the interrupt
 Date: Mon,  8 Apr 2024 14:55:38 +0200
-Message-ID: <20240408125416.702131260@linuxfoundation.org>
+Message-ID: <20240408125311.259815208@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 841fd0a3cb490eae5dfd262eccb8c8b11d57f8b8 ]
+commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
 
-For some reason, the NFSv2 GETACL result encoder was fully converted
-to use the new nfs_stream_encode_acl(), but the NFSv3 equivalent was
-not similarly converted.
+When an interrupt is requested, a procfs directory is created under
+"/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
+the request_irq() variants.
 
-Fixes: 20798dfe249a ("NFSD: Update the NFSv3 GETACL result encoder to use struct xdr_stream")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+What follows is that the string must not contain the "/" character or
+the procfs mkdir operation will fail. We don't have such constraints for
+GPIO consumer labels which are used verbatim as interrupt labels for
+GPIO irqs. We must therefore sanitize the consumer string before
+requesting the interrupt.
+
+Let's replace all "/" with ":".
+
+Cc: stable@vger.kernel.org
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Kent Gibson <warthog618@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs3acl.c | 30 ++++++------------------------
- 1 file changed, 6 insertions(+), 24 deletions(-)
+ drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfsd/nfs3acl.c b/fs/nfsd/nfs3acl.c
-index 2fb9ee3564558..a34a22e272ad5 100644
---- a/fs/nfsd/nfs3acl.c
-+++ b/fs/nfsd/nfs3acl.c
-@@ -171,11 +171,7 @@ nfs3svc_encode_getaclres(struct svc_rqst *rqstp, struct xdr_stream *xdr)
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1089,10 +1089,20 @@ static u32 gpio_v2_line_config_debounce_
+ 	return 0;
+ }
+ 
++static inline char *make_irq_label(const char *orig)
++{
++	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
++}
++
++static inline void free_irq_label(const char *label)
++{
++	kfree(label);
++}
++
+ static void edge_detector_stop(struct line *line)
  {
- 	struct nfsd3_getaclres *resp = rqstp->rq_resp;
- 	struct dentry *dentry = resp->fh.fh_dentry;
--	struct kvec *head = rqstp->rq_res.head;
- 	struct inode *inode;
--	unsigned int base;
--	int n;
--	int w;
+ 	if (line->irq) {
+-		free_irq(line->irq, line);
++		free_irq_label(free_irq(line->irq, line));
+ 		line->irq = 0;
+ 	}
  
- 	if (!svcxdr_encode_nfsstat3(xdr, resp->status))
- 		return false;
-@@ -187,26 +183,12 @@ nfs3svc_encode_getaclres(struct svc_rqst *rqstp, struct xdr_stream *xdr)
- 		if (xdr_stream_encode_u32(xdr, resp->mask) < 0)
- 			return false;
+@@ -1116,6 +1126,7 @@ static int edge_detector_setup(struct li
+ 	unsigned long irqflags = 0;
+ 	u64 eflags;
+ 	int irq, ret;
++	char *label;
  
--		base = (char *)xdr->p - (char *)head->iov_base;
--
--		rqstp->rq_res.page_len = w = nfsacl_size(
--			(resp->mask & NFS_ACL)   ? resp->acl_access  : NULL,
--			(resp->mask & NFS_DFACL) ? resp->acl_default : NULL);
--		while (w > 0) {
--			if (!*(rqstp->rq_next_page++))
--				return false;
--			w -= PAGE_SIZE;
--		}
--
--		n = nfsacl_encode(&rqstp->rq_res, base, inode,
--				  resp->acl_access,
--				  resp->mask & NFS_ACL, 0);
--		if (n > 0)
--			n = nfsacl_encode(&rqstp->rq_res, base + n, inode,
--					  resp->acl_default,
--					  resp->mask & NFS_DFACL,
--					  NFS_ACL_DEFAULT);
--		if (n <= 0)
-+		if (!nfs_stream_encode_acl(xdr, inode, resp->acl_access,
-+					   resp->mask & NFS_ACL, 0))
-+			return false;
-+		if (!nfs_stream_encode_acl(xdr, inode, resp->acl_default,
-+					   resp->mask & NFS_DFACL,
-+					   NFS_ACL_DEFAULT))
- 			return false;
- 		break;
- 	default:
--- 
-2.43.0
-
+ 	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
+ 	if (eflags && !kfifo_initialized(&line->req->events)) {
+@@ -1152,11 +1163,17 @@ static int edge_detector_setup(struct li
+ 			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
+ 	irqflags |= IRQF_ONESHOT;
+ 
++	label = make_irq_label(line->req->label);
++	if (!label)
++		return -ENOMEM;
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+-				   irqflags, line->req->label, line);
+-	if (ret)
++				   irqflags, label, line);
++	if (ret) {
++		free_irq_label(label);
+ 		return ret;
++	}
+ 
+ 	line->irq = irq;
+ 	return 0;
+@@ -1979,7 +1996,7 @@ static void lineevent_free(struct lineev
+ 		blocking_notifier_chain_unregister(&le->gdev->device_notifier,
+ 						   &le->device_unregistered_nb);
+ 	if (le->irq)
+-		free_irq(le->irq, le);
++		free_irq_label(free_irq(le->irq, le));
+ 	if (le->desc)
+ 		gpiod_free(le->desc);
+ 	kfree(le->label);
+@@ -2120,6 +2137,7 @@ static int lineevent_create(struct gpio_
+ 	int fd;
+ 	int ret;
+ 	int irq, irqflags = 0;
++	char *label;
+ 
+ 	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
+ 		return -EFAULT;
+@@ -2204,15 +2222,23 @@ static int lineevent_create(struct gpio_
+ 	if (ret)
+ 		goto out_free_le;
+ 
++	label = make_irq_label(le->label);
++	if (!label) {
++		ret = -ENOMEM;
++		goto out_free_le;
++	}
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq,
+ 				   lineevent_irq_handler,
+ 				   lineevent_irq_thread,
+ 				   irqflags,
+-				   le->label,
++				   label,
+ 				   le);
+-	if (ret)
++	if (ret) {
++		free_irq_label(label);
+ 		goto out_free_le;
++	}
+ 
+ 	le->irq = irq;
+ 
 
 
 
