@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-36871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BE989C21A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BACF189C22C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8C792826B4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71AEF28353D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F9D7D3F8;
-	Mon,  8 Apr 2024 13:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3313B80022;
+	Mon,  8 Apr 2024 13:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oShPykf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkpV5rRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E20A2E405;
-	Mon,  8 Apr 2024 13:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B6B7E580;
+	Mon,  8 Apr 2024 13:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582585; cv=none; b=fnJAhZtTBfibWj6046t1tcPPvf2HG8cka4Y6yBpyHKii5UeWPO71/sVsu6aLqiuZ0H/8A7HSHXThhhtTQa19Xdr+cHZXxjU6ltQtD0uPdGgF98OmhhwOc12uDL1Tnqz3dis4fzO2zirX+mbtjAtq8lLBgelSbh8IbHH8oSYAC9g=
+	t=1712582597; cv=none; b=DFpb+sqNxXIn73OCo8Dss9z0BhNGPwiCpSac+RYxyQf0IgKRgBoJ077A/4sSecZn3j4597CmM4AQSeHRA07NpXe4qY4xTaaOhjPkI072ewnylGI+wU+xmmg/J4cwncI/QMhZYZMD97Y98UfoPLEQ0R2vqDKOASTe3VuAAIOvVUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582585; c=relaxed/simple;
-	bh=ghaWSDY3ROEoUpnvEguwo2Wo25L7V8NVTHHKMuzKMWM=;
+	s=arc-20240116; t=1712582597; c=relaxed/simple;
+	bh=rpEpBYwYtIzVF9BbfRsZ3B2kpFmvXAVcbleN5HzjF+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5M+m/KdamCtFGOHFk1NGzQGwfTEQle/KqEx0KrUnQXyGZ0E/ZtsuzZlGoIXkYwCxN32zT53SrFSucaqEL7r3Vb6yLhSE2wsIv/iUSmfA/Ab+otPV31uOIqi3dbtMyWQRT365Ril8azaPo18Gokg9ybw9clx11pgsQfT7E1pj+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oShPykf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC93C433F1;
-	Mon,  8 Apr 2024 13:23:04 +0000 (UTC)
+	 MIME-Version; b=RODH1+u8kKWun8rZy1u7rH+pb5GtIFtOFGZ5SsLnptFJqZeNE3NCFOab9sTLRAyKS6VB1qLxHjpYW4sV3VtlvPF7ESgHI4ttPt4BSdiuK/LOfCRCEwdiUQ/g2GQiWHBfX8cbyKC1PNV0pRbNp+YL3eBgN8kj6Hk4+90uYGG9TzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkpV5rRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE82C433C7;
+	Mon,  8 Apr 2024 13:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582585;
-	bh=ghaWSDY3ROEoUpnvEguwo2Wo25L7V8NVTHHKMuzKMWM=;
+	s=korg; t=1712582596;
+	bh=rpEpBYwYtIzVF9BbfRsZ3B2kpFmvXAVcbleN5HzjF+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oShPykf+jgbe5+byheFSo6Cxg0EgmYiUQ7W6Fv/6RAsvhKCeXoWwms/qm8cBaItFl
-	 mnrJjAPEy+yJHMHKoOKIm5ns1UBBVvGAsgvs2pDOPQA9WUmRnr27AfHdxsPB/4WWiA
-	 TGKfD5jZ3XCVrCArZcBnPE8TcX5aB786wCEvld48=
+	b=LkpV5rRvKxPdpiZNtYxms3CmgqKVa4v4xTk6DFCJVJia4F93S9jAuhgyP4ZhCqE7P
+	 d6M7nQFi6AZFaKuVzqX5uPeMiU8Js+uCNzzwKkz/SAxfB+LJsseXrcNzNw7Uk6OtId
+	 eHjdoZD24KpwA0ZfSndmsZLESwNyGzMISn/8WAZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.15 157/690] x86/mmio: Disable KVM mitigation when X86_FEATURE_CLEAR_CPU_BUF is set
-Date: Mon,  8 Apr 2024 14:50:23 +0200
-Message-ID: <20240408125405.216788425@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 5.15 158/690] Documentation/hw-vuln: Add documentation for RFDS
+Date: Mon,  8 Apr 2024 14:50:24 +0200
+Message-ID: <20240408125405.254704070@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,56 +69,137 @@ Content-Transfer-Encoding: 8bit
 
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit e95df4ec0c0c9791941f112db699fae794b9862a upstream.
+commit 4e42765d1be01111df0c0275bbaf1db1acef346e upstream.
 
-Currently MMIO Stale Data mitigation for CPUs not affected by MDS/TAA is
-to only deploy VERW at VMentry by enabling mmio_stale_data_clear static
-branch. No mitigation is needed for kernel->user transitions. If such
-CPUs are also affected by RFDS, its mitigation may set
-X86_FEATURE_CLEAR_CPU_BUF to deploy VERW at kernel->user and VMentry.
-This could result in duplicate VERW at VMentry.
+Add the documentation for transient execution vulnerability Register
+File Data Sampling (RFDS) that affects Intel Atom CPUs.
 
-Fix this by disabling mmio_stale_data_clear static branch when
-X86_FEATURE_CLEAR_CPU_BUF is enabled.
+  [ pawan: s/ATOM_GRACEMONT/ALDERLAKE_N/ ]
 
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/hw-vuln/index.rst                  |    1 
+ Documentation/admin-guide/hw-vuln/reg-file-data-sampling.rst |  104 +++++++++++
+ 2 files changed, 105 insertions(+)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -428,6 +428,13 @@ static void __init mmio_select_mitigatio
- 	if (boot_cpu_has_bug(X86_BUG_MDS) || (boot_cpu_has_bug(X86_BUG_TAA) &&
- 					      boot_cpu_has(X86_FEATURE_RTM)))
- 		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
+--- a/Documentation/admin-guide/hw-vuln/index.rst
++++ b/Documentation/admin-guide/hw-vuln/index.rst
+@@ -21,3 +21,4 @@ are configurable at compile, boot or run
+    cross-thread-rsb.rst
+    gather_data_sampling.rst
+    srso
++   reg-file-data-sampling
+--- /dev/null
++++ b/Documentation/admin-guide/hw-vuln/reg-file-data-sampling.rst
+@@ -0,0 +1,104 @@
++==================================
++Register File Data Sampling (RFDS)
++==================================
 +
-+	/*
-+	 * X86_FEATURE_CLEAR_CPU_BUF could be enabled by other VERW based
-+	 * mitigations, disable KVM-only mitigation in that case.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_CLEAR_CPU_BUF))
-+		static_branch_disable(&mmio_stale_data_clear);
- 	else
- 		static_branch_enable(&mmio_stale_data_clear);
- 
-@@ -504,8 +511,11 @@ static void __init md_clear_update_mitig
- 		taa_mitigation = TAA_MITIGATION_VERW;
- 		taa_select_mitigation();
- 	}
--	if (mmio_mitigation == MMIO_MITIGATION_OFF &&
--	    boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA)) {
-+	/*
-+	 * MMIO_MITIGATION_OFF is not checked here so that mmio_stale_data_clear
-+	 * gets updated correctly as per X86_FEATURE_CLEAR_CPU_BUF state.
-+	 */
-+	if (boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA)) {
- 		mmio_mitigation = MMIO_MITIGATION_VERW;
- 		mmio_select_mitigation();
- 	}
++Register File Data Sampling (RFDS) is a microarchitectural vulnerability that
++only affects Intel Atom parts(also branded as E-cores). RFDS may allow
++a malicious actor to infer data values previously used in floating point
++registers, vector registers, or integer registers. RFDS does not provide the
++ability to choose which data is inferred. CVE-2023-28746 is assigned to RFDS.
++
++Affected Processors
++===================
++Below is the list of affected Intel processors [#f1]_:
++
++   ===================  ============
++   Common name          Family_Model
++   ===================  ============
++   ATOM_GOLDMONT           06_5CH
++   ATOM_GOLDMONT_D         06_5FH
++   ATOM_GOLDMONT_PLUS      06_7AH
++   ATOM_TREMONT_D          06_86H
++   ATOM_TREMONT            06_96H
++   ALDERLAKE               06_97H
++   ALDERLAKE_L             06_9AH
++   ATOM_TREMONT_L          06_9CH
++   RAPTORLAKE              06_B7H
++   RAPTORLAKE_P            06_BAH
++   ALDERLAKE_N             06_BEH
++   RAPTORLAKE_S            06_BFH
++   ===================  ============
++
++As an exception to this table, Intel Xeon E family parts ALDERLAKE(06_97H) and
++RAPTORLAKE(06_B7H) codenamed Catlow are not affected. They are reported as
++vulnerable in Linux because they share the same family/model with an affected
++part. Unlike their affected counterparts, they do not enumerate RFDS_CLEAR or
++CPUID.HYBRID. This information could be used to distinguish between the
++affected and unaffected parts, but it is deemed not worth adding complexity as
++the reporting is fixed automatically when these parts enumerate RFDS_NO.
++
++Mitigation
++==========
++Intel released a microcode update that enables software to clear sensitive
++information using the VERW instruction. Like MDS, RFDS deploys the same
++mitigation strategy to force the CPU to clear the affected buffers before an
++attacker can extract the secrets. This is achieved by using the otherwise
++unused and obsolete VERW instruction in combination with a microcode update.
++The microcode clears the affected CPU buffers when the VERW instruction is
++executed.
++
++Mitigation points
++-----------------
++VERW is executed by the kernel before returning to user space, and by KVM
++before VMentry. None of the affected cores support SMT, so VERW is not required
++at C-state transitions.
++
++New bits in IA32_ARCH_CAPABILITIES
++----------------------------------
++Newer processors and microcode update on existing affected processors added new
++bits to IA32_ARCH_CAPABILITIES MSR. These bits can be used to enumerate
++vulnerability and mitigation capability:
++
++- Bit 27 - RFDS_NO - When set, processor is not affected by RFDS.
++- Bit 28 - RFDS_CLEAR - When set, processor is affected by RFDS, and has the
++  microcode that clears the affected buffers on VERW execution.
++
++Mitigation control on the kernel command line
++---------------------------------------------
++The kernel command line allows to control RFDS mitigation at boot time with the
++parameter "reg_file_data_sampling=". The valid arguments are:
++
++  ==========  =================================================================
++  on          If the CPU is vulnerable, enable mitigation; CPU buffer clearing
++              on exit to userspace and before entering a VM.
++  off         Disables mitigation.
++  ==========  =================================================================
++
++Mitigation default is selected by CONFIG_MITIGATION_RFDS.
++
++Mitigation status information
++-----------------------------
++The Linux kernel provides a sysfs interface to enumerate the current
++vulnerability status of the system: whether the system is vulnerable, and
++which mitigations are active. The relevant sysfs file is:
++
++	/sys/devices/system/cpu/vulnerabilities/reg_file_data_sampling
++
++The possible values in this file are:
++
++  .. list-table::
++
++     * - 'Not affected'
++       - The processor is not vulnerable
++     * - 'Vulnerable'
++       - The processor is vulnerable, but no mitigation enabled
++     * - 'Vulnerable: No microcode'
++       - The processor is vulnerable but microcode is not updated.
++     * - 'Mitigation: Clear Register File'
++       - The processor is vulnerable and the CPU buffer clearing mitigation is
++	 enabled.
++
++References
++----------
++.. [#f1] Affected Processors
++   https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/processors-affected-consolidated-product-cpu-model.html
 
 
 
