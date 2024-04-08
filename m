@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-37657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7E389C5E1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:02:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E0789C3C6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B7A1F21946
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:02:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935131F24E9E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235507CF39;
-	Mon,  8 Apr 2024 14:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692107F476;
+	Mon,  8 Apr 2024 13:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z39U/yxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2GqTOyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DC97C0A9;
-	Mon,  8 Apr 2024 14:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276057F46C;
+	Mon,  8 Apr 2024 13:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584876; cv=none; b=PBMMgVJ/isNeUjn2WUZRqURqwzYha7zsvXbgCFaqbGvgjzoPjBmtsc5U3O4JZ9UpCHt17px9zJIFyPBtDF6yh3aWtZi7krI9x0JqAoiqmvkEq71cquBMRS/p2vzq1a4H7laBEW2uvKYNQKfcm9Uhta91ILSUK0EDfSzzA6BrlqM=
+	t=1712583535; cv=none; b=gTm1PSCiogLOudK+vDf//QkLL6jQM/BDoCUPW4yiyywakr6kwiSLAmH+UQp6yGkLiEQIKCL351aDUpnBrV50sb30s2gjeg2j2yvJkUL44YD9VBJ2SwuRnSyS1yW+vPx34H6H9M3j87X7g9TPqYPJxjARMH4FyoYp2IuZKZi7zKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584876; c=relaxed/simple;
-	bh=ONy8Fga3sfCZ80k26kR2N22cyeRpfPHMOrrIcgK4a0s=;
+	s=arc-20240116; t=1712583535; c=relaxed/simple;
+	bh=I1IV8Gltq0gDW5VMmKNA22eliO2z3Rh/ULesY8kP4oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ti9IimSbO29OJscSym0rYI1n67DJum///sCTXwGhYSLfAThZ3i0ypCLsWKYp9n5fb+k+Z5snm60EJl7yIw+snbCJPd/2DIaDmQxkNPF4by3uXCV2xaQ8KciblfzKpGPlgRlKCI+zzvHWu/Vi1KhNgVr5TpmvjYg/Lzkzo11CzB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z39U/yxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E982C43390;
-	Mon,  8 Apr 2024 14:01:16 +0000 (UTC)
+	 MIME-Version; b=BRCu6TURDD5wFKywZISVRlQ9L41F8meA9EF5BCpRwopQzaVklaWDRLyz8r4xWxWalqAaRMXU0QpRFOBHbMhTeauOU+655o/B3+8qaHOEeYwfGxnE4b1zmS3N+/5KQ280FmaftM409UTmc9S3XRPHWa65K208+YIYKyyT7hncReo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2GqTOyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF8AC433C7;
+	Mon,  8 Apr 2024 13:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584876;
-	bh=ONy8Fga3sfCZ80k26kR2N22cyeRpfPHMOrrIcgK4a0s=;
+	s=korg; t=1712583535;
+	bh=I1IV8Gltq0gDW5VMmKNA22eliO2z3Rh/ULesY8kP4oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z39U/yxA025exXW1Vuz/v3UBUszmOv8NT7yxqj6G7Jawt6u5ZuGd40zdzE16w1U4r
-	 YFue9QSyBhZtWCrupA99gZx46iUptGV2QjpACB5scpjchblK5ngSI5L8z8ceV5PSFT
-	 RpHLnzMZ74n1OH3+n0EUycBWQLLN2ttDfYADaFWk=
+	b=f2GqTOyFdE+wdkGXG8PeseS5LhgFUxqN1NHUakLSEL9Mizz1aMVzjtk00HXjjLuxt
+	 p8YCAJHS+fkRVnHMB+9BXf6wuXk4dEd/eCJZXTcbuKqbavKTlrDb/VUqoOQRYQSSgW
+	 9RLH1VxUhtYiFk0nOxSPKBPamLaNlxFfYc6VWXEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Jaewon Kim <jaewon02.kim@samsung.com>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 580/690] drm/amd/display: Preserve original aspect ratio in create stream
+Subject: [PATCH 6.8 171/273] spi: s3c64xx: Use DMA mode from fifo size
 Date: Mon,  8 Apr 2024 14:57:26 +0200
-Message-ID: <20240408125420.610252290@linuxfoundation.org>
+Message-ID: <20240408125314.571430495@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Jaewon Kim <jaewon02.kim@samsung.com>
 
-[ Upstream commit 79f3e38f60e5b2416ba99804d83d22e69ae592a3 ]
+[ Upstream commit a3d3eab627bbbb0cb175910cf8d0f7022628a642 ]
 
-[Why]
-The original picture aspect ratio in mode struct may have chance be
-overwritten with wrong aspect ratio data in create_stream_for_sink().
-It will create a different VIC output and cause HDMI compliance test
-failed.
+If the SPI data size is smaller than FIFO, it operates in PIO mode,
+and if it is larger than FIFO size, it oerates in DMA mode.
 
-[How]
-Preserve the original picture aspect ratio data during create the
-stream.
+If the SPI data size is equal to fifo, it operates in PIO mode and it is
+separated to 2 transfers. To prevent it, it must operate in DMA mode
+from the case where the data size and the fifo size are the same.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 1ee806718d5e ("spi: s3c64xx: support interrupt based pio mode")
+Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
+Link: https://lore.kernel.org/r/20240329085840.65856-1-jaewon02.kim@samsung.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-s3c64xx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 9356decd14513..b7b8a2d77da67 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6334,7 +6334,9 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 		if (recalculate_timing) {
- 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
- 			drm_mode_copy(&saved_mode, &mode);
-+			saved_mode.picture_aspect_ratio = mode.picture_aspect_ratio;
- 			drm_mode_copy(&mode, freesync_mode);
-+			mode.picture_aspect_ratio = saved_mode.picture_aspect_ratio;
- 		} else {
- 			decide_crtc_timing_for_drm_display_mode(
- 				&mode, preferred_mode, scale);
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index e059fb9db1da1..652eadbefe24c 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -424,7 +424,7 @@ static bool s3c64xx_spi_can_dma(struct spi_controller *host,
+ 	struct s3c64xx_spi_driver_data *sdd = spi_controller_get_devdata(host);
+ 
+ 	if (sdd->rx_dma.ch && sdd->tx_dma.ch)
+-		return xfer->len > sdd->fifo_depth;
++		return xfer->len >= sdd->fifo_depth;
+ 
+ 	return false;
+ }
+@@ -783,10 +783,9 @@ static int s3c64xx_spi_transfer_one(struct spi_controller *host,
+ 			return status;
+ 	}
+ 
+-	if (!is_polling(sdd) && (xfer->len > fifo_len) &&
++	if (!is_polling(sdd) && xfer->len >= fifo_len &&
+ 	    sdd->rx_dma.ch && sdd->tx_dma.ch) {
+ 		use_dma = 1;
+-
+ 	} else if (xfer->len >= fifo_len) {
+ 		tx_buf = xfer->tx_buf;
+ 		rx_buf = xfer->rx_buf;
 -- 
 2.43.0
 
