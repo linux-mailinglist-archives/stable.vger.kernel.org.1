@@ -1,124 +1,149 @@
-Return-Path: <stable+bounces-37759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970F389C648
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD1289C125
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9C5D1C22BF5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:06:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FDFF1F2222F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839D78121F;
-	Mon,  8 Apr 2024 14:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0715E7F7FE;
+	Mon,  8 Apr 2024 13:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hfu4dW7M"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SbAvpY6G"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415FB8063B;
-	Mon,  8 Apr 2024 14:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316457F7F4;
+	Mon,  8 Apr 2024 13:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585177; cv=none; b=YXK+ciZ6g8Rrw8GsNZ21n7zziHeX2ZxSZ6z6CTr4ysSDyKZ9yElBFnXa75c18Gwg5Enxn4VQhP1MOWZDsvxFoYJKrfr7BCh4cnqNYXq8z5JTdwJ8GJa6Tz4uY+ry17MnOSjrSJwaGZBGfM7qZabcQabpfa9Y9xVofzhncTGb2wo=
+	t=1712581983; cv=none; b=j4qVs8meEzXJyYEc5yugwfh8AQgbi6/9iqPzFUaoObN1BAiiDEMcpQP7aDhFCkxf3XJRpXwQQdTrrs4dasIyM9Nf1s3E+aVFA/t8miUevvRLFFyobcBPA/jgINs7sKgt8G3+VoI7n6B2yJ8o34HsT0Bft21GCetXUFhJmAjbAd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585177; c=relaxed/simple;
-	bh=pzFZPEf0sJJqIY3Ts+EK4JrKCtea31Kjk04UH+QxUlA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyPKEeTznhghboRLqrA3Oq1QMCkcBTFv7dUAImYV+vdDQ7Qmzza3wgTmb5DUJoCXTtKMfyO5dskmrYUtwJFpx2U4ttHvqKJGOQ1LZ8L5wBKcdu8F6Em2tHifMBKf+GuYoW23g+fTZp5bvZQHdpmKmerDMlpZOwvZQxJmj5IDG5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hfu4dW7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE13C433C7;
-	Mon,  8 Apr 2024 14:06:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585177;
-	bh=pzFZPEf0sJJqIY3Ts+EK4JrKCtea31Kjk04UH+QxUlA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hfu4dW7MlcJNtpjeepxYfh6p6KT9888ppx1GybZ6ifA+D1WQv/rdrgmPUr3L2COwz
-	 2L5DItIpUArW3+J5kFeGUGHstj15dNhsP3ZklcGJ2LVbSK1ZK0TdeA51hnztf6q3ab
-	 LGQWVUqbjbaxcrIVbhcnxTXT1r3+Z4CYI1bMWcDE=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	"min15.li" <min15.li@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Tokunori Ikegami <ikegami.t@gmail.com>
-Subject: [PATCH 5.15 690/690] nvme: fix miss command type check
-Date: Mon,  8 Apr 2024 14:59:16 +0200
-Message-ID: <20240408125424.719628041@linuxfoundation.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1712581983; c=relaxed/simple;
+	bh=7RkPM/B3kyuIbM7d4ylNyUS9GTpKxgWSh/D/2nwJB98=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=De8ISP9uhO9YbY0kGI8pbiIs7t+kEUhLv5vpRN638TCEmPcvjBBEkOEfDouKoDyt//RhiZ/TsEeFiBa9NVw0CvYulwUCbFQI6/Lf7vm8ixiwf9Pa77Mt4ubyNiQdkqFpn8vpoYiTmk1A1x/UPR1sy9hV/pBE46tMtwccjpGuS9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SbAvpY6G; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 387722000E;
+	Mon,  8 Apr 2024 13:12:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1712581979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L4sGAvmu2WBKS9a+UuFTscURHh9GQY36xbMpg8VE/qc=;
+	b=SbAvpY6GdmVqtZm5zIx/MJnsKYTBK80BbSFPrRKsf8rOFXc1oMQNf57pDfMHtnvpglsmUV
+	inR/QwyzN/FYbONPm7jSXTf2+r/LcJ5/FJxPEBDHvsj/c3TUv6678/svHAzhs/U/MtWm+p
+	67kv5aYW+6m3QoUEZcFP70nABj61YgnlecopboIetW6NIYdPBvjlzTpgEgcX44shEbiHE9
+	zWZHpyRJQ/wRrx+Ov2BCWV7XuZ6SS1/xomPw1cwqUkswa3azEdI0sfrrm6dMxmUxPQNrQS
+	3dulRr1e59hbrVyUzJlH8x/nmH495ChGooqWHSEu4/ZIpLAy18tx7kke1MAA5A==
+Date: Mon, 8 Apr 2024 15:12:56 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, Richard Weinberger
+ <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Michael Walle
+ <michael@walle.cc>, linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] mtd: limit OTP NVMEM Cell parse to non Nand devices
+Message-ID: <20240408151256.11d4e69c@xps-13>
+In-Reply-To: <20240402212331.27328-1-ansuelsmth@gmail.com>
+References: <20240402212331.27328-1-ansuelsmth@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+Hi Christian,
 
-------------------
+ansuelsmth@gmail.com wrote on Tue,  2 Apr 2024 23:23:19 +0200:
 
-From: min15.li <min15.li@samsung.com>
+> MTD OTP logic is very fragile on parsing NVMEM Cell and can be
+> problematic with some specific kind of devices.
+>=20
+> The problem was discovered by e87161321a40 ("mtd: rawnand: macronix:
+> OTP access for MX30LFxG18AC") where OTP support was added to a NAND
+> device. With the case of NAND devices, it does require a node where ECC
+> info are declared and all the fixed partitions, and this cause the OTP
+> codepath to parse this node as OTP NVMEM Cells, making probe fail and
+> the NAND device registration fail.
+>=20
+> MTD OTP parsing should have been limited to always using compatible to
+> prevent this error by using node with compatible "otp-user" or
+> "otp-factory".
+>=20
+> NVMEM across the years had various iteration on how Cells could be
+> declared in DT, in some old implementation, no_of_node should have been
+> enabled but now add_legacy_fixed_of_cells should be used to disable
+> NVMEM to parse child node as NVMEM Cell.
+>=20
+> To fix this and limit any regression with other MTD that makes use of
+> declaring OTP as direct child of the dev node, disable
+> add_legacy_fixed_of_cells if we detect the MTD type is Nand.
+>=20
+> With the following logic, the OTP NVMEM entry is correctly created with
+> no Cells and the MTD Nand is correctly probed and partitions are
+> correctly exposed.
+>=20
+> Fixes: 4b361cfa8624 ("mtd: core: add OTP nvmem provider support")
+> Cc: <stable@vger.kernel.org> # v6.7+
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-commit 31a5978243d24d77be4bacca56c78a0fbc43b00d upstream.
+Feels okay to me, but I'd like to get validation from Rafa=C5=82 as well who
+extensively worked on this aspect and must have a sharpened eyed for
+this kind of issue :-)
 
-In the function nvme_passthru_end(), only the value of the command
-opcode is checked, without checking the command type (IO command or
-Admin command). When we send a Dataset Management command (The opcode
-of the Dataset Management command is the same as the Set Feature
-command), kernel thinks it is a set feature command, then sets the
-controller's keep alive interval, and calls nvme_keep_alive_work().
-
-Signed-off-by: min15.li <min15.li@samsung.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Fixes: b58da2d270db ("nvme: update keep alive interval when kato is modified")
-Signed-off-by: Tokunori Ikegami <ikegami.t@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/nvme/host/core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1185,7 +1185,7 @@ static u32 nvme_passthru_start(struct nv
- 	return effects;
- }
- 
--static void nvme_passthru_end(struct nvme_ctrl *ctrl, u32 effects,
-+static void nvme_passthru_end(struct nvme_ctrl *ctrl, struct nvme_ns *ns, u32 effects,
- 			      struct nvme_command *cmd, int status)
- {
- 	if (effects & NVME_CMD_EFFECTS_CSE_MASK) {
-@@ -1201,6 +1201,8 @@ static void nvme_passthru_end(struct nvm
- 		nvme_queue_scan(ctrl);
- 		flush_work(&ctrl->scan_work);
- 	}
-+	if (ns)
-+		return;
- 
- 	switch (cmd->common.opcode) {
- 	case nvme_admin_set_features:
-@@ -1235,7 +1237,7 @@ int nvme_execute_passthru_rq(struct requ
- 	effects = nvme_passthru_start(ctrl, ns, cmd->common.opcode);
- 	ret = nvme_execute_rq(disk, rq, false);
- 	if (effects) /* nothing to be done for zero cmd effects */
--		nvme_passthru_end(ctrl, effects, cmd, ret);
-+		nvme_passthru_end(ctrl, ns, effects, cmd, ret);
- 
- 	return ret;
- }
+> ---
+>=20
+> To backport this to v6.6 and previous,
+>=20
+> config.no_of_node =3D mtd_type_is_nand(mtd);
+>=20
+> should be used as it does pose the same usage of
+> add_legacy_fixed_of_cells.
+>=20
+> Changes v4:
+> - Add info on how to backport this to previous kernel
+> - Fix Fixes tag
+> - Reformat commit description as it was unprecise and
+>   had false statement
+> Changes v3:
+> - Fix commit description
+> Changes v2:
+> - Use mtd_type_is_nand instead of node name check
+>=20
+>  drivers/mtd/mtdcore.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
+> index 5887feb347a4..0de87bc63840 100644
+> --- a/drivers/mtd/mtdcore.c
+> +++ b/drivers/mtd/mtdcore.c
+> @@ -900,7 +900,7 @@ static struct nvmem_device
+> *mtd_otp_nvmem_register(struct mtd_info *mtd, config.name =3D
+> compatible; config.id =3D NVMEM_DEVID_AUTO;
+>  	config.owner =3D THIS_MODULE;
+> -	config.add_legacy_fixed_of_cells =3D true;
+> +	config.add_legacy_fixed_of_cells =3D !mtd_type_is_nand(mtd);
+>  	config.type =3D NVMEM_TYPE_OTP;
+>  	config.root_only =3D true;
+>  	config.ignore_wp =3D true;
 
 
+Thanks,
+Miqu=C3=A8l
 
