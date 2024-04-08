@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-36981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FED89C294
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 913D989C2D6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56FAF1F23B74
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D9F2B2C631
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157D280027;
-	Mon,  8 Apr 2024 13:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A405480034;
+	Mon,  8 Apr 2024 13:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6wEfR1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ac27UoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58A180022;
-	Mon,  8 Apr 2024 13:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6101176413;
+	Mon,  8 Apr 2024 13:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582906; cv=none; b=OWkiRbCrBOC3N1QdIwTknujsidfyWu8yJxI5QlrncbNj3DDQnxeC1/sdz4tCA1j+6TjlsGr1Y+M+lurRDnwazf6uZem+tbzR4Zzutdf1EV37bRbdHHQD23zY5BLqIUu4O1EVldghWXR1LlGK4dtgXMaaKraK0asFb5OjbIu9OIg=
+	t=1712582915; cv=none; b=HM493hzOAIjEKrh3PRBE8ylIC9S2SsRR2jw8Oxuf7NP5stmLDbCWwXJyuGkVrJr60oqP1QMGApjtHzVap6YTJxaOPaC0KW6v/0I9lJi7a6pFyiVvI2sWJLNIzDevqG8xaT0HjjnpBFsEpWsqLkRXVDbB2kEnTi60VTpaB6+xf4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582906; c=relaxed/simple;
-	bh=vLeB5i8DcxG13OfYaUZPkdb+EOPiDRemO13doRJcO9Q=;
+	s=arc-20240116; t=1712582915; c=relaxed/simple;
+	bh=nrQ+yQYOPK5xGtv9Zj4pW6o+3zSV7mrFw6CihPEZOb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6J0EAnXXYH53h7XCQ+EMWPdlXMQYBBoowsz8Z8CQYgY0lufItLnDiD+WuwFn3LdGLS1wXCepJ4iEvhvO3WLO3BSN9423gtHcVB0v4uhGWj4WWXiR6wS364rxS0SYRKMksLcibqQH6/F2oixMu/Rpl/N+8FwQ1uMV5r5gMxxRA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6wEfR1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43546C433F1;
-	Mon,  8 Apr 2024 13:28:26 +0000 (UTC)
+	 MIME-Version; b=fJU43/p5Dha20zweRIhkTGikjyd0nFwsVG/oQIfl0gVoHPG1TRe1GaMdErBCfTfSo1jWWmS6OFstYyp7RuWXJyjvPiRcILeq0AGWYx+qoGTR2/cwUWVMbGAHXnnnhqO+F42bwHlzDnDNa242cP6ttVdbcPBgj4z7mimB7QnW1ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ac27UoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED7AC433C7;
+	Mon,  8 Apr 2024 13:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582906;
-	bh=vLeB5i8DcxG13OfYaUZPkdb+EOPiDRemO13doRJcO9Q=;
+	s=korg; t=1712582915;
+	bh=nrQ+yQYOPK5xGtv9Zj4pW6o+3zSV7mrFw6CihPEZOb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6wEfR1GjYk5eHDA7BBDOwgEwkvs2/GiF/JIF/1Ii2igvMIFMFSu/ob2nZ9/XFOb7
-	 eWA67UksPzO5YJHK8uG+MriWW7CQdkkXe9/WIURH7mDV119QdeHR/54gmnoLa1R1jc
-	 ftP4pkvhoWPGwzGjOyhX2N5+FQeJVgq14SZjDw9I=
+	b=0Ac27UoUbc865+dmklqGGdy3yHvO9yuTuQdvGUUw1knQ4BAInrXymg/H7g61uB38K
+	 PBk0T1xaIu080jU9lGztJWk9OL1jgougGmtIF6e/c02nMPP/tqL7uE3/ekPsnPzZok
+	 U/FxMNAOjP6SZmwN+TvNTgpxeIdX3Bu3ut+q2ayY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
 	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
 	Gabriel Krisman Bertazi <krisman@collabora.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 186/690] fanotify: Support merging of error events
-Date: Mon,  8 Apr 2024 14:50:52 +0200
-Message-ID: <20240408125406.293496259@linuxfoundation.org>
+Subject: [PATCH 5.15 187/690] fanotify: Wrap object_fh inline space in a creator macro
+Date: Mon,  8 Apr 2024 14:50:53 +0200
+Message-ID: <20240408125406.326589680@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,118 +69,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-[ Upstream commit 8a6ae64132fd27a944faed7bc38484827609eb76 ]
+[ Upstream commit 2c5069433a3adc01ff9c5673567961bb7f138074 ]
 
-Error events (FAN_FS_ERROR) against the same file system can be merged
-by simply iterating the error count.  The hash is taken from the fsid,
-without considering the FH.  This means that only the first error object
-is reported.
+fanotify_error_event would duplicate this sequence of declarations that
+already exist elsewhere with a slight different size.  Create a helper
+macro to avoid code duplication.
 
-Link: https://lore.kernel.org/r/20211025192746.66445-22-krisman@collabora.com
+Link: https://lore.kernel.org/r/20211025192746.66445-23-krisman@collabora.com
+Suggested-by: Jan Kara <jack@suse.cz>
 Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/notify/fanotify/fanotify.c | 26 ++++++++++++++++++++++++--
- fs/notify/fanotify/fanotify.h |  4 +++-
- 2 files changed, 27 insertions(+), 3 deletions(-)
+ fs/notify/fanotify/fanotify.h | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index 1f195c95dfcd0..cedcb15468043 100644
---- a/fs/notify/fanotify/fanotify.c
-+++ b/fs/notify/fanotify/fanotify.c
-@@ -111,6 +111,16 @@ static bool fanotify_name_event_equal(struct fanotify_name_event *fne1,
- 	return fanotify_info_equal(info1, info2);
- }
- 
-+static bool fanotify_error_event_equal(struct fanotify_error_event *fee1,
-+				       struct fanotify_error_event *fee2)
-+{
-+	/* Error events against the same file system are always merged. */
-+	if (!fanotify_fsid_equal(&fee1->fsid, &fee2->fsid))
-+		return false;
-+
-+	return true;
-+}
-+
- static bool fanotify_should_merge(struct fanotify_event *old,
- 				  struct fanotify_event *new)
- {
-@@ -141,6 +151,9 @@ static bool fanotify_should_merge(struct fanotify_event *old,
- 	case FANOTIFY_EVENT_TYPE_FID_NAME:
- 		return fanotify_name_event_equal(FANOTIFY_NE(old),
- 						 FANOTIFY_NE(new));
-+	case FANOTIFY_EVENT_TYPE_FS_ERROR:
-+		return fanotify_error_event_equal(FANOTIFY_EE(old),
-+						  FANOTIFY_EE(new));
- 	default:
- 		WARN_ON_ONCE(1);
- 	}
-@@ -176,6 +189,10 @@ static int fanotify_merge(struct fsnotify_group *group,
- 			break;
- 		if (fanotify_should_merge(old, new)) {
- 			old->mask |= new->mask;
-+
-+			if (fanotify_is_error_event(old->mask))
-+				FANOTIFY_EE(old)->err_count++;
-+
- 			return 1;
- 		}
- 	}
-@@ -577,7 +594,8 @@ static struct fanotify_event *fanotify_alloc_name_event(struct inode *id,
- static struct fanotify_event *fanotify_alloc_error_event(
- 						struct fsnotify_group *group,
- 						__kernel_fsid_t *fsid,
--						const void *data, int data_type)
-+						const void *data, int data_type,
-+						unsigned int *hash)
- {
- 	struct fs_error_report *report =
- 			fsnotify_data_error_report(data, data_type);
-@@ -591,6 +609,10 @@ static struct fanotify_event *fanotify_alloc_error_event(
- 		return NULL;
- 
- 	fee->fae.type = FANOTIFY_EVENT_TYPE_FS_ERROR;
-+	fee->err_count = 1;
-+	fee->fsid = *fsid;
-+
-+	*hash ^= fanotify_hash_fsid(fsid);
- 
- 	return &fee->fae;
- }
-@@ -664,7 +686,7 @@ static struct fanotify_event *fanotify_alloc_event(struct fsnotify_group *group,
- 		event = fanotify_alloc_perm_event(path, gfp);
- 	} else if (fanotify_is_error_event(mask)) {
- 		event = fanotify_alloc_error_event(group, fsid, data,
--						   data_type);
-+						   data_type, &hash);
- 	} else if (name_event && (file_name || child)) {
- 		event = fanotify_alloc_name_event(id, fsid, file_name, child,
- 						  &hash, gfp);
 diff --git a/fs/notify/fanotify/fanotify.h b/fs/notify/fanotify/fanotify.h
-index ebef952481fa0..2b032b79d5b06 100644
+index 2b032b79d5b06..3510d06654ed0 100644
 --- a/fs/notify/fanotify/fanotify.h
 +++ b/fs/notify/fanotify/fanotify.h
-@@ -199,6 +199,9 @@ FANOTIFY_NE(struct fanotify_event *event)
- 
- struct fanotify_error_event {
- 	struct fanotify_event fae;
-+	u32 err_count; /* Suppressed errors count */
-+
-+	__kernel_fsid_t fsid; /* FSID this error refers to. */
- };
- 
- static inline struct fanotify_error_event *
-@@ -332,7 +335,6 @@ static inline struct path *fanotify_event_path(struct fanotify_event *event)
- static inline bool fanotify_is_hashed_event(u32 mask)
- {
- 	return !(fanotify_is_perm_event(mask) ||
--		 fanotify_is_error_event(mask) ||
- 		 fsnotify_is_overflow_event(mask));
+@@ -171,12 +171,18 @@ static inline void fanotify_init_event(struct fanotify_event *event,
+ 	event->pid = NULL;
  }
  
++#define FANOTIFY_INLINE_FH(name, size)					\
++struct {								\
++	struct fanotify_fh (name);					\
++	/* Space for object_fh.buf[] - access with fanotify_fh_buf() */	\
++	unsigned char _inline_fh_buf[(size)];				\
++}
++
+ struct fanotify_fid_event {
+ 	struct fanotify_event fae;
+ 	__kernel_fsid_t fsid;
+-	struct fanotify_fh object_fh;
+-	/* Reserve space in object_fh.buf[] - access with fanotify_fh_buf() */
+-	unsigned char _inline_fh_buf[FANOTIFY_INLINE_FH_LEN];
++
++	FANOTIFY_INLINE_FH(object_fh, FANOTIFY_INLINE_FH_LEN);
+ };
+ 
+ static inline struct fanotify_fid_event *
 -- 
 2.43.0
 
