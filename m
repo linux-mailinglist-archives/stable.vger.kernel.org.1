@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0322289C1AD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE5489C5B8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97AA31F21439
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280C5282411
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003EF80043;
-	Mon,  8 Apr 2024 13:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4677C08C;
+	Mon,  8 Apr 2024 13:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYk8PO47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWp8nEbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A07E767;
-	Mon,  8 Apr 2024 13:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066EA3A1C7;
+	Mon,  8 Apr 2024 13:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582366; cv=none; b=thrPlYZP0xRGLeyORuiF4P25lMFhsflO9tNd7v6pUKaHM9EpLDZgUXc7OjEkfqjse6m/ZWNNDUXvnieRt9/8y4RtSV0f93c3DW5eu/mZwyn8sHh6M/VFe2sX0HBw95LHmfVMHZGPJsipIQgcQAuFzZ6LDrL8EWtsi/bhzK+TMe0=
+	t=1712584768; cv=none; b=FEol43WD/tfY53vylV6AIDmvbW1aDJ/FFHao/wj7/vbA9N8cK3OfIQ9K4EVEk71l6W+cYZc/bimkkbhXeXIoOuOCN8whvwJR8eZCMDkYRgp57MMoAvCGrmW0x55SPHQ5Me4v1JcKI98xR0dDNU+r7FwdufLWwevUWd1lwBaz2NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582366; c=relaxed/simple;
-	bh=KAfbm5eVbd6gEdlmR8i75c3SGXg6MIzNKcPTNJr5978=;
+	s=arc-20240116; t=1712584768; c=relaxed/simple;
+	bh=awCUgaLxusFNQ3x6Wv7fz6IiILHF30U1xYXWa99iIsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhJkR5Rz2fnGZpkXitFSo+sGyHZOVrPTUwvZvaOEHYpiOCC4Dvz5djOpNLg2ZEOyhNj0+Afwu8xVwlNXqDr4q8vhtd59DD2UG7LP3/wigRRuNCZyRSdKZfgxt6ZWkazPadQ/kJkQpBvaIPCoyaZxS+59wvRLOzeZWDQkUXO00CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYk8PO47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DED4C433F1;
-	Mon,  8 Apr 2024 13:19:26 +0000 (UTC)
+	 MIME-Version; b=WG1yAj95sJx50+CFoG+HXIGcmfs1nuJ/l6XyaC8hV3uA79Heu6+7aeBdLfszFIkkGbEXznurXBSNwRbdblj0rTYGBS0KGkdKQmN2PrT78cJs0ryB/VDbg1AQ2UqeiQyb4+QidQPAvGCDADWL5T0Sw/+6tqVrHw+W//KLSdoMc1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWp8nEbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8082FC433C7;
+	Mon,  8 Apr 2024 13:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582366;
-	bh=KAfbm5eVbd6gEdlmR8i75c3SGXg6MIzNKcPTNJr5978=;
+	s=korg; t=1712584767;
+	bh=awCUgaLxusFNQ3x6Wv7fz6IiILHF30U1xYXWa99iIsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iYk8PO47Z5UrrlosM5gcrbaT3vaDrishUDpkk/wLMxffPOS/wDfQEv5WnkgZNaSqU
-	 w9SkAmftUgSrBklF0IF8RJ96Yat9CjNdEgYraVvxvvYEKxaCVKKiFmpJphvuqZhHx8
-	 LDr2nJ1g9UGAitromOZOOYfxQpcD04TbDRWMKtPg=
+	b=wWp8nEbmrYqhbUDlPwPMp3GsvJgjgaddJlHLU4S8d4rqppqaSYR0C8qp56xXmPN/v
+	 nHIiFHICPT9QE0tgaczmVzlmaFPSQiZgsWDIbr66jX7s/UJBA7ewP3zdzRPzQE9N1T
+	 uLvRxTktwrQFYidEa7S2tvKq/+165eOtcHmqNaWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 087/252] net: usb: ax88179_178a: avoid the interface always configured as random address
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 520/690] NFSD: fix leaked reference count of nfsd4_ssc_umount_item
 Date: Mon,  8 Apr 2024 14:56:26 +0200
-Message-ID: <20240408125309.344497489@linuxfoundation.org>
+Message-ID: <20240408125418.486456966@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit 2e91bb99b9d4f756e92e83c4453f894dda220f09 upstream.
+[ Upstream commit 34e8f9ec4c9ac235f917747b23a200a5e0ec857b ]
 
-After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
-consecutive device resets"), reset is not executed from bind operation and
-mac address is not read from the device registers or the devicetree at that
-moment. Since the check to configure if the assigned mac address is random
-or not for the interface, happens after the bind operation from
-usbnet_probe, the interface keeps configured as random address, although the
-address is correctly read and set during open operation (the only reset
-now).
+The reference count of nfsd4_ssc_umount_item is not decremented
+on error conditions. This prevents the laundromat from unmounting
+the vfsmount of the source file.
 
-In order to keep only one reset for the device and to avoid the interface
-always configured as random address, after reset, configure correctly the
-suitable field from the driver, if the mac address is read successfully from
-the device registers or the devicetree. Take into account if a locally
-administered address (random) was previously stored.
+This patch decrements the reference count of nfsd4_ssc_umount_item
+on error.
 
-cc: stable@vger.kernel.org # 6.6+
-Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
-Reported-by: Dave Stevenson  <dave.stevenson@raspberrypi.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240403132158.344838-1-jtornosm@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/usb/ax88179_178a.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfs4proc.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1273,6 +1273,8 @@ static void ax88179_get_mac_addr(struct
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index ada46ef5a093d..c95e7ec5fb530 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1813,13 +1813,17 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	release_copy_files(copy);
+ 	return status;
+ out_err:
++	if (nfsd4_ssc_is_inter(copy)) {
++		/*
++		 * Source's vfsmount of inter-copy will be unmounted
++		 * by the laundromat. Use copy instead of async_copy
++		 * since async_copy->ss_nsui might not be set yet.
++		 */
++		refcount_dec(&copy->ss_nsui->nsui_refcnt);
++	}
+ 	if (async_copy)
+ 		cleanup_async_copy(async_copy);
+ 	status = nfserrno(-ENOMEM);
+-	/*
+-	 * source's vfsmount of inter-copy will be unmounted
+-	 * by the laundromat
+-	 */
+ 	goto out;
+ }
  
- 	if (is_valid_ether_addr(mac)) {
- 		eth_hw_addr_set(dev->net, mac);
-+		if (!is_local_ether_addr(mac))
-+			dev->net->addr_assign_type = NET_ADDR_PERM;
- 	} else {
- 		netdev_info(dev->net, "invalid MAC address, using random\n");
- 		eth_hw_addr_random(dev->net);
+-- 
+2.43.0
+
 
 
 
