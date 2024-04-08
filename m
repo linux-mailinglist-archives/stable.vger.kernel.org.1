@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-36791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AF289C1A9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:23:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B28F489C1DA
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A0CA1C217D6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D28DBB2B375
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ACB80027;
-	Mon,  8 Apr 2024 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92AD8004B;
+	Mon,  8 Apr 2024 13:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaNpSo7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwduV6cd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CFF7E0E4;
-	Mon,  8 Apr 2024 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A116D62148;
+	Mon,  8 Apr 2024 13:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582355; cv=none; b=uFZe2M7p4Zrt0xNdi6s+MvZDEd3X9kaSjaF9uuZYQp9k/AGOkMtbe9JgfN0RWm9h3PaodwM5WWTHCl7GpuSeG1oDuwSPt4WFaiyvuI85yoQ7tshl5njup59rERP8V7tmwIGO3rKHUo1+ZQwzk6gaJnCvk55cqhq5L9rKNqKAzLo=
+	t=1712582369; cv=none; b=iud2csFYetM9RQa3nbPJ/uVeLH+5anJ0aDEdhBynr6qQQcmfVevEVq4x4WjBY1MEgC20Bz0VoyZtrWQPWfX4EPGfwQtuoOoX+JSBnB1uxH7Oj7Rt1BA/dRKq51sS59uLmTj3auLU6zxQh/x3tEFxFmdD+JmRB3hKUSx+VwR1ozg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582355; c=relaxed/simple;
-	bh=fP06mTCRRo+X2Q8rO1kWK/Vjk7ig4McT+GY14vlZSKk=;
+	s=arc-20240116; t=1712582369; c=relaxed/simple;
+	bh=oTwLBR8aEsWqgmf3NTA+K7Vqbo5muT+r96GEYn78J3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5GRtuCF5XrNyqtZyaym+c4CZIGQb6ZSarnujlVLhg7hse8bZq7m/qaFbpbuvSyuHTACGAqxxlE770U3Y1SaQOOfXyg77XUSVpUFDMlg0cxETQXt60GTOpFzv5yhWVJaAOjc8W01YXITV8Ge66pnXQwS4zHH23GDfm2aHyh0HNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaNpSo7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A1AC433F1;
-	Mon,  8 Apr 2024 13:19:14 +0000 (UTC)
+	 MIME-Version; b=RwVuJy+7lC7Otk30y7MHx2Psf9sEKPp1zWl6w7b4AeAhyI9w5KTCFjxAToStubc6iPKOtXLLv8K66TmoU5g42Wgj1T9pzByq+UdSC3UqB2cx0V0sjioQXsD8p7ftn7o+ZDaqhKXFpgaow7eTmrvyn1YhqliHUAOR/H+rtk0Ksag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwduV6cd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3BAC43390;
+	Mon,  8 Apr 2024 13:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582355;
-	bh=fP06mTCRRo+X2Q8rO1kWK/Vjk7ig4McT+GY14vlZSKk=;
+	s=korg; t=1712582369;
+	bh=oTwLBR8aEsWqgmf3NTA+K7Vqbo5muT+r96GEYn78J3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VaNpSo7HANLvM6buCrkEvqXcrur9xGI6c3ybDyHWCFY+QeMTYIZAUilcmbxmjOlXS
-	 FGS1eks4B1DPoulRKPgj6p1O0+j4ZTJzz614Q1KigQikJl/FkZFpvNq7BMYpz9gDH1
-	 Tf9SRVAY9lbrPdY7lJLUKc+MsYpv6rQlIOiUxVos=
+	b=vwduV6cdvv9QpvkcyuhFTySGVTQ5cDmdU1EWPnIYBE/hVhQ4LuxbdYYND5Mq/w2FZ
+	 2IRw52n4M+dPqs4BVYHnna813zbCesBUikNG+iAf/cs1JwAiomVH5Kb8bOELFgVUku
+	 4fB3/6Ys/43jxc/hI7gp1rVLAbXSFwU/1XQZpSBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Sumit Garg <sumit.garg@linaro.org>,
-	Jens Wiklander <jens.wiklander@linaro.org>
-Subject: [PATCH 5.15 135/690] tee: optee: Fix kernel panic caused by incorrect error handling
-Date: Mon,  8 Apr 2024 14:50:01 +0200
-Message-ID: <20240408125404.417318374@linuxfoundation.org>
+	Andi Shyti <andi.shyti@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH 5.15 136/690] i2c: i801: Avoid potential double call to gpiod_remove_lookup_table
+Date: Mon,  8 Apr 2024 14:50:02 +0200
+Message-ID: <20240408125404.450770732@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -66,60 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sumit Garg <sumit.garg@linaro.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 95915ba4b987cf2b222b0f251280228a1ff977ac upstream.
+commit ceb013b2d9a2946035de5e1827624edc85ae9484 upstream.
 
-The error path while failing to register devices on the TEE bus has a
-bug leading to kernel panic as follows:
+If registering the platform device fails, the lookup table is
+removed in the error path. On module removal we would try to
+remove the lookup table again. Fix this by setting priv->lookup
+only if registering the platform device was successful.
+In addition free the memory allocated for the lookup table in
+the error path.
 
-[   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
-[   15.406913] Mem abort info:
-[   15.409722]   ESR = 0x0000000096000005
-[   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   15.418814]   SET = 0, FnV = 0
-[   15.421878]   EA = 0, S1PTW = 0
-[   15.425031]   FSC = 0x05: level 1 translation fault
-[   15.429922] Data abort info:
-[   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
-[   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
-[   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-
-Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
-lead to the introduction of this bug. So fix it appropriately.
-
-Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
-Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+Fixes: d308dfbf62ef ("i2c: mux/i801: Switch to use descriptor passing")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tee/optee/device.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-i801.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tee/optee/device.c
-+++ b/drivers/tee/optee/device.c
-@@ -90,13 +90,14 @@ static int optee_register_device(const u
- 	if (rc) {
- 		pr_err("device registration failed, err: %d\n", rc);
- 		put_device(&optee_device->dev);
-+		return rc;
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1416,7 +1416,6 @@ static int i801_add_mux(struct i801_priv
+ 				    mux_config->gpios[i], "mux", 0);
+ 	}
+ 	gpiod_add_lookup_table(lookup);
+-	priv->lookup = lookup;
+ 
+ 	/*
+ 	 * Register the mux device, we use PLATFORM_DEVID_NONE here
+@@ -1430,7 +1429,10 @@ static int i801_add_mux(struct i801_priv
+ 				sizeof(struct i2c_mux_gpio_platform_data));
+ 	if (IS_ERR(priv->mux_pdev)) {
+ 		gpiod_remove_lookup_table(lookup);
++		devm_kfree(dev, lookup);
+ 		dev_err(dev, "Failed to register i2c-mux-gpio device\n");
++	} else {
++		priv->lookup = lookup;
  	}
  
- 	if (func == PTA_CMD_GET_DEVICES_SUPP)
- 		device_create_file(&optee_device->dev,
- 				   &dev_attr_need_supplicant);
- 
--	return rc;
-+	return 0;
- }
- 
- static int __optee_enumerate_devices(u32 func)
+ 	return PTR_ERR_OR_ZERO(priv->mux_pdev);
 
 
 
