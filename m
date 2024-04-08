@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-36913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03FBE89C255
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B130289C4B4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1984282F95
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C3602840B9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E98185635;
-	Mon,  8 Apr 2024 13:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7599C7BAF0;
+	Mon,  8 Apr 2024 13:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5hEMWDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byXG8O87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCA18563D;
-	Mon,  8 Apr 2024 13:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C9D79F0;
+	Mon,  8 Apr 2024 13:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582708; cv=none; b=S5s/m5NT4on8GjDN4XEBXhGZXI+P45lHdx2SGZsmi/SfQB/8VXBmP7azWXgt3XjCzP06m/cEXGFf58bUjOEfVAQEhRecemrN9rVSjx9U6yFYXDmVY/VqDQpMvfT97SCH2M+Lzw0LXIZVaRlmkYkvS6Z9sYYTm8fY9b6zsheYGSo=
+	t=1712584130; cv=none; b=JaJzPIWfITPmiGDKaKVgMNedh17JZx0JFHhA/68xSfuH4f20FHsKUaQQOPAjaCrhIB4u9vDhdBELBA6br46ljCMOnixEG+ue0960QQvsK3uaiR+gPAPbHFtdyurlCrKYvCKZVe8iZhQDBmvqs3dnviCICGADN+t6gudS6+wXiHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582708; c=relaxed/simple;
-	bh=6bA21LoycxpA3S5Cn7AIjAQHJJ8U+iUU4UjhF/EHqdM=;
+	s=arc-20240116; t=1712584130; c=relaxed/simple;
+	bh=/6o7Hr9LrNFzsd741WCZVFLJ0xZKSGNrkzFP6TRKtFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcl+i7CKiPaSPr1HovujkCk88bhulJUNpeFrBz6myyZvZ7HUED6/BOODr2TOgxlzRbOpXGBw92UqAlBediAO0BvkH+zZ84qcvNiDRxlQrHG/yW6uWdO5cNLpecqKGnELaPGaUx8b/bLqb+aCyDrvosTh1fihsAyM1vnHFpcpEYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5hEMWDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BD6C433F1;
-	Mon,  8 Apr 2024 13:25:07 +0000 (UTC)
+	 MIME-Version; b=k8Uub+cWKBqQrj/hIbNtYqlHYNUhMiY+nYaNTYZZFd+ssFcirvAuuXMlBnIN1Yqz3UyZXEz680tyk6fdGFe7SAIKJK23vlvq1gxea0soIJG1yzS3CL9Q5jApN7qtiYAVhXM0XaNUPMg32ds7cEenTORhBeI382QtDR5m6pD37NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byXG8O87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1609C433C7;
+	Mon,  8 Apr 2024 13:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582708;
-	bh=6bA21LoycxpA3S5Cn7AIjAQHJJ8U+iUU4UjhF/EHqdM=;
+	s=korg; t=1712584130;
+	bh=/6o7Hr9LrNFzsd741WCZVFLJ0xZKSGNrkzFP6TRKtFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5hEMWDpqAwiIVnft7tHDUegroLIxiWCcjCsBwZ0/3gWcGenR9USJ9awdyhEfpA+F
-	 RllGz0yABN3bWxqsKSlcTqh4XZydCy0Z8kEP8iK4WU0EqRPQeW+XGpIfNX4y3LMaIB
-	 0FH8oRgajYmiTRUBEq2lByxtKCl6wUqKhEwmjRQw=
+	b=byXG8O873f6M9Iu/qMZTU/+abE8ql3+RkG2N7q8+RFatMT8NSY6/fQF0Er2FE/rwY
+	 wIC4gsmAkcDI4by+ujmhHD1tO0IgTzJ2fdQAsl4gYMYT46gAQrB1QesfbjvE1jE1X/
+	 N/UKdLRefeIGP5X+k4xKxILMRiwkM67n0Zcl2WYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 127/138] smb: client: fix potential UAF in cifs_stats_proc_write()
+	Wolfgang Walter <linux@stwm.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 266/273] Revert "x86/mpparse: Register APIC address only once"
 Date: Mon,  8 Apr 2024 14:59:01 +0200
-Message-ID: <20240408125300.182596240@linuxfoundation.org>
+Message-ID: <20240408125317.757730311@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit d3da25c5ac84430f89875ca7485a3828150a7e0a upstream.
+This reverts commit 3428faa0d675f6a6284331731b762dc041011b3c which is
+commit f2208aa12c27bfada3c15c550c03ca81d42dcac2 upstream.
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+It is reported to cause problems in the stable branches, so revert it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lore.kernel.org/r/899b7c1419a064a2b721b78eade06659@stwm.de
+Reported-by: Wolfgang Walter <linux@stwm.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/mpparse.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -568,6 +568,8 @@ static ssize_t cifs_stats_proc_write(str
- 			}
- #endif /* CONFIG_CIFS_STATS2 */
- 			list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+				if (cifs_ses_exiting(ses))
-+					continue;
- 				list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 					atomic_set(&tcon->num_smbs_sent, 0);
- 					spin_lock(&tcon->stat_lock);
+--- a/arch/x86/kernel/mpparse.c
++++ b/arch/x86/kernel/mpparse.c
+@@ -196,12 +196,12 @@ static int __init smp_read_mpc(struct mp
+ 	if (!smp_check_mpc(mpc, oem, str))
+ 		return 0;
+ 
+-	if (early) {
+-		/* Initialize the lapic mapping */
+-		if (!acpi_lapic)
+-			register_lapic_address(mpc->lapic);
++	/* Initialize the lapic mapping */
++	if (!acpi_lapic)
++		register_lapic_address(mpc->lapic);
++
++	if (early)
+ 		return 1;
+-	}
+ 
+ 	/* Now process the configuration blocks. */
+ 	while (count < mpc->length) {
 
 
 
