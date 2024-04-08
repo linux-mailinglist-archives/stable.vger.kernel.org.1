@@ -1,306 +1,351 @@
-Return-Path: <stable+bounces-36342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B45689BBDA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 11:36:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC7089BBF7
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 11:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F3E51C21F06
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 09:35:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00F341F23011
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 09:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C491547F65;
-	Mon,  8 Apr 2024 09:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A20D374D1;
+	Mon,  8 Apr 2024 09:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1ZZ72B6"
+	dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com header.b="7b9bEx/y";
+	dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com header.b="7b9bEx/y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2044.outbound.protection.outlook.com [40.107.15.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B4A45958
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 09:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712568954; cv=none; b=BpFR+5mu6Qs/Nb4Oug1Oms0oo8gXYcfID7yq0zxALP2PZfK5Mm0UEwYm5dxx5UXHppH3Ca3EI1yz2EzsOf8udaQ1l2LoylDwISAo0t2aTfAtfvdPJiuAJ/kRWgfSq3Yv9NOTujZ2rwuHr1CT99uBJG6+QWUL0r0VKEmtd6VupVs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712568954; c=relaxed/simple;
-	bh=DSaOTCRTPUQ6bIjPeLE1tF/6mlW6qXYpgIW2Y4THdB4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hqJU6f2Hke2qdC8u3qgcwUo/GbY7QviyBj/GVRJFhkmNxxXkkxaaPc80yA69YGSUbA7HvCJtQ4FSm2rjuXdqcA0F/WLBfMqwKHYR2Qb6YETyownbzTkLstsOJjD38I8Gyn5CTmyXmsUi3lQHfxeMTNRA78fFCSrUgTHEx7cuNTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1ZZ72B6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9325CC433C7;
-	Mon,  8 Apr 2024 09:35:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712568954;
-	bh=DSaOTCRTPUQ6bIjPeLE1tF/6mlW6qXYpgIW2Y4THdB4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=D1ZZ72B6HctcSRr2JmuhVO5gg3eJ51e21ezx4HzC+pwCD4tdoP7r3sC5Hw6iBgeoG
-	 K7PYE/CywM2tC61Hl/8s70dS+VIfZe+M3Ssw0ZUMKeZ1GBWoTuTfBqLDcmcMzVjGh5
-	 jUetXnOijbY+vzIu2zisb1o8YbfVfOi8WzKOZV1I=
-Subject: FAILED: patch "[PATCH] x86/mm/pat: fix VM_PAT handling in COW mappings" failed to apply to 5.15-stable tree
-To: david@redhat.com,akpm@linux-foundation.org,bp@alien8.de,dave.hansen@linux.intel.com,hpa@zytor.com,luto@kernel.org,mawupeng1@huawei.com,mingo@kernel.org,peterz@infradead.org,stable@vger.kernel.org,tglx@linutronix.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 08 Apr 2024 11:35:50 +0200
-Message-ID: <2024040850-wildly-gyration-12ff@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F8928370;
+	Mon,  8 Apr 2024 09:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.44
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712569127; cv=fail; b=dgbN6eEmrCDWp6qFYwysoe/dEnZvfha6tVIrDgTu+FeULAReUiVMpewRKqLJVSqcbFU57kgJ4QaFUEdeWzJ/AL9JhWBuVPwALNuRakfTDdWQj84P4ixJHrBPN4FI1+3dpdKohIDnaKvfAtxV77oquHUUUGYRrIFKbi84SHJIEVM=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712569127; c=relaxed/simple;
+	bh=ZbMUu9j05UEeUq9kkz+Yi0LziYwtlONwfmE1RrZF6mw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BnEHomgA3EhADo/JuzwdxKNOBE90Y7Ex4slsABMCFNd9dEAus8eVNi/qSYwiKG+d4bhIRWduZheJdHHrEGEvtSzN/XgoSYEx+9g4MkdggfWJ9vrEOUoG7Az6T8v9AUfz6wzoJeRxhctd8HEO0GxMyLwmPnCbEamQdQL9ECr59js=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com header.b=7b9bEx/y; dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com header.b=7b9bEx/y; arc=fail smtp.client-ip=40.107.15.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=pass;
+ b=YMROZNlrXK2enC22EUAqpppcMNsOqGP3c6pUtBjpR07O7qpW1P7ylVMJ0Zac1LVT4d8wHnEnXPJvVqxqHnrteYJ/yPnr7SsMlUqho/BLYTOr9/1a16b0N2fTMi2Ds9SKAa562C8Vc+bQg9STiMBDZ+VUtomkQrvjtIoo42JjochSkypfVBPKGC9rKxI7e4AhjcfqCSyi/6itDGZ2CoJ0HNLxaFk8FrKY6ku+PeYccvGBFq3aetr8lPJhzL3bRA8Y8N6jZg60Cg97XYKwzNiVe7wqCHiGHbDrdgy7ppN6whbj+yDRIPiz3Y6m5Rsj1C6oadgFDCensvbPkA1dB8pvQw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UI5ySwDKYygqGznq6FpvfGn0WdSLsvDiwcOjynefKZg=;
+ b=MxpZfWFMTpGM8W2VUIiHmYnjQ67taA2FyDRGDpZ+r1raZOq8JMd/Bt8oauNJyrRcUs5Bmg1y+ttMIMiOlwdAg2EwBeXDz2BvW/PsTU+R9upOTtvQIZmGg3OIkqUPgHZY9dZEXykBMgK/53OcHb0vF4POX79knjnhJ9HyrKhjtZ0Y7gm5aInZlC+Ci+PzbVhN1wMKxSFA9O5m8sQ6myan658FSP/Ts19GsqHkcWEvZnIK3oFBrLZ/tQpt3aAs4WHu7vqP3XdFqhIp7LT3l2MJ0/BAh+v+GxwqTPszdSlOfnntZu136iBAvMBrTj6UfK6VuU6pLjFNQXWeFCDk91qy2g==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 63.35.35.123) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=armh.onmicrosoft.com; arc=pass (0
+ oda=1 ltdi=1 spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UI5ySwDKYygqGznq6FpvfGn0WdSLsvDiwcOjynefKZg=;
+ b=7b9bEx/yv+jMWz2/MMVE2hMfryAi5DU/27k1isayLVd+YzLkSMc+OlrEPOVZwxnIdU9QbpGUeYmjTBEGRUsxGCYPR7bKublYsd5zcjr6yYAKMmayJ4VMhE+lKYoQDpwuDZX3UYFpdQC8BonuRS71UwI3VDzvRqTOdLSWTCFenbg=
+Received: from DUZP191CA0043.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:4f8::26)
+ by AS4PR08MB7735.eurprd08.prod.outlook.com (2603:10a6:20b:512::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 8 Apr
+ 2024 09:38:22 +0000
+Received: from DU2PEPF00028D01.eurprd03.prod.outlook.com
+ (2603:10a6:10:4f8:cafe::9e) by DUZP191CA0043.outlook.office365.com
+ (2603:10a6:10:4f8::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.30 via Frontend
+ Transport; Mon, 8 Apr 2024 09:38:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=armh.onmicrosoft.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
+ client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
+ pr=C
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ DU2PEPF00028D01.mail.protection.outlook.com (10.167.242.185) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.7452.22
+ via Frontend Transport; Mon, 8 Apr 2024 09:38:22 +0000
+Received: ("Tessian outbound ff4e98f65004:v300"); Mon, 08 Apr 2024 09:38:22 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: 2cad97313a622f74
+X-CR-MTA-TID: 64aa7808
+Received: from d7f8426bcc4f.2
+	by 64aa7808-outbound-1.mta.getcheckrecipient.com id B2B241E5-C535-47D7-87C1-65856E8EA2E5.1;
+	Mon, 08 Apr 2024 09:38:11 +0000
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id d7f8426bcc4f.2
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Mon, 08 Apr 2024 09:38:11 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ITvXaiuA4dMdgmxW8hfjfkdW7/izvpk3CZd+DIUKpztuAVFkM5fMHpC87gxIYX3Iagiqq++gnUtFuf9jiEI7ilmsSmv+u2K07fAfB232GYcE7ThRO1g4ozDFBblC1Zj+t4r+1cM9HFFJGmO8kWId3vX3p1pYcdPHecITBwt6vfo49Xr8gr4h+9cT5U2KMly56nsE5VHJMFtC25kfG3QIuMVAUTqXKN0YXWhVl8XK/rpj5F2xMohUoyhBTxyFG/Bt3o7EtQ4Q0JAZ2eLB5hK7CsJWkyi98D08U68RVzkGNmqV9gyg2K+gz7qtEPFcsMsCypmLGScVXuF+ekQoZBCnnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UI5ySwDKYygqGznq6FpvfGn0WdSLsvDiwcOjynefKZg=;
+ b=gFsVbsVp0P5cTTA/jNbvrGmhiEAkQXts5Teb/mPKCHe+KNWsBKR9BU/jqowolYXuVo73CVd8HBKoTScBpcYW5u3bhEg/Eb8kgvZaq58EtpTCP9Arye+GVKgtEAhpxro84jtvNxFGWo0h/9rkjVwzVBpKXYgGBR3+jE7WsVQR5n+nX4grBDe4hDbUPWCylmIMD5PzosGfii0Wl+Encjr8detmI3spMbT4dlpLYwJ6uz8MRXQSV1I+1Ptk95VQgT73w1twECi/psPjlnOt+o0JVcCLXYeRRkpc9UZrqP/Q3rSI2CtikplinjoRLYsB8ehA3ikc/xvcHqi/DiLagJthhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UI5ySwDKYygqGznq6FpvfGn0WdSLsvDiwcOjynefKZg=;
+ b=7b9bEx/yv+jMWz2/MMVE2hMfryAi5DU/27k1isayLVd+YzLkSMc+OlrEPOVZwxnIdU9QbpGUeYmjTBEGRUsxGCYPR7bKublYsd5zcjr6yYAKMmayJ4VMhE+lKYoQDpwuDZX3UYFpdQC8BonuRS71UwI3VDzvRqTOdLSWTCFenbg=
+Received: from AM0PR08MB4289.eurprd08.prod.outlook.com (2603:10a6:208:148::12)
+ by GVXPR08MB7680.eurprd08.prod.outlook.com (2603:10a6:150:6e::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 8 Apr
+ 2024 09:38:06 +0000
+Received: from AM0PR08MB4289.eurprd08.prod.outlook.com
+ ([fe80::4a5d:48:bf49:a524]) by AM0PR08MB4289.eurprd08.prod.outlook.com
+ ([fe80::4a5d:48:bf49:a524%7]) with mapi id 15.20.7409.042; Mon, 8 Apr 2024
+ 09:38:05 +0000
+From: Yeo Reum Yun <YeoReum.Yun@arm.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar
+	<mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Steven Rostedt
+	<rostedt@goodmis.org>, Vincent Guittot <vincent.guittot@linaro.org>, Juri
+ Lelli <juri.lelli@redhat.com>, Dietmar Eggemann <Dietmar.Eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Daniel Bristot
+ de Oliveira <bristot@redhat.com>, Valentin Schneider <vschneid@redhat.com>,
+	Catalin Marinas <Catalin.Marinas@arm.com>, Mark Rutland
+	<Mark.Rutland@arm.com>, Will Deacon <will@kernel.org>, Aaron Lu
+	<aaron.lu@intel.com>
+Subject: Re: [PATCH] sched: Add missing memory barrier in switch_mm_cid
+Thread-Topic: [PATCH] sched: Add missing memory barrier in switch_mm_cid
+Thread-Index: AQHacWpg4RzUFZ0isEaP3JURG6Kl97E+2mIUgB9zq54=
+Date: Mon, 8 Apr 2024 09:38:05 +0000
+Message-ID:
+ <AM0PR08MB428921B21B38D517A8A61FC4FB002@AM0PR08MB4289.eurprd08.prod.outlook.com>
+References: <20240308150719.676738-1-mathieu.desnoyers@efficios.com>
+ <AM0PR08MB42895432478A020E2C5B6C5FFB2C2@AM0PR08MB4289.eurprd08.prod.outlook.com>
+In-Reply-To:
+ <AM0PR08MB42895432478A020E2C5B6C5FFB2C2@AM0PR08MB4289.eurprd08.prod.outlook.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-traffictypediagnostic:
+	AM0PR08MB4289:EE_|GVXPR08MB7680:EE_|DU2PEPF00028D01:EE_|AS4PR08MB7735:EE_
+x-checkrecipientrouted: true
+nodisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:
+ HM7LmNYRJ77sDz9mwYzXEnyDVoM1TAmZLjwhD46os4qPVk6tfqLNCVnzkdn3JkKyNIhzKAx0UHHyPHT1INo7wn1Wh4EgYOzacmvgYOYDQgGb5ppgRX5lpJ3vv/RFlWjBPWNd0Oz4VgHfq8WEKMVOV1JvOucdRwaM4I1koQAzG7uhV05CgpCkAs82pMuGl5N90aYcThmTFdrV8WZKqUE4xxeshDtPhq92moAGMYPfh4/Skva7OMCDuq2JoHXOp54fRvqQTaiTFtDl/+GpLZ1Zo7GhsE253yr29chI+S1fLrtyYZLgD1CL20d6P/O31vfw9XTCffetjqvduXA+HZSWm8o4HqO5aC35Nj6ivvikrTG53/ew/3pHevry1jyyn62o3QEJXJgTr6smj9WQVDALFeS7QSIby4cr2b5yiH/vHMgny37ByDWu/8XqtPSUMF4TlovjTJ3UOFHpddLp41bDDaUPdmwgE3fJ9KuWbRijTQsMcxkTV7e4cPRYeEaMHySLFfcxUzS44lBywzlpweK9m+kCdqOO1ipndch7qwHjeJAG1/5Bl3gdO9v85R3NQnZd+ZJt7rORms9SmlcTds2UFHY6VLxlxonqbsXcXfCNmQ4=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB4289.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(366007)(376005)(1800799015);DIR:OUT;SFP:1102;
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR08MB7680
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU2PEPF00028D01.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 895f9def-60d9-4f8f-1bb5-08dc57afa1e7
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	bxEZKjTGwRJ9yam1rno9PCXykpm2i1Ja5vDjxGskLjEKpW3kUQmc2YrHVxz9GqCPouSzPPqk6HL5jBUza3GH9P+W6TxykIMHzNfTkRzRNgHYBLCfstz135FwMm5ssyzFP1QcQ9DJrOEfCNUv/xDrXVzCaRlL6f8vEudx3+3uuh01QGIN2P97Khyvm5KNz2GkX5R5yznbTYT2jb7yxpGlWA5rgmKglZF4R/te4YgpdIQLrx0sQ68k/aL2ZbyAGfPFsYnBBEfnec1hpKghiOZ+nVzYR3+gva5RKJ4yuJh512ymLnzkKc4TNAuWcn+v+HjDUXiC5NKsOHi9aY1ows9PWUuxhlIsg8irI8Q8wGQgIFn/LdSG3QjHvs8JA9aSnVYZJumPU07tXLjOXmTzL0br2z5/7B8IohCf8PrOFk42lhCbhU3GNFpcAgjgCGTx6JqJrWUqikOvhqI4mfGUEqzR3qTQpvLjG9guKvX8KqOPqII8A66LrbHIOzZrc46n17dkFr/oLTlT0tF/EvrZ+I3dGvkq3iFIVnAm1Nk2aD2VY4OpCuxRvk6Nxohwxx15X0uTcMO9kPn3XrcpU6JiqpUV+yM/WrjikyOEyUaFJr9q9BDOCeFVxEmjs9/ORcGW+8wTch0JMeeyieGDHspRe96luYL13g+oOSG7wG0DJoaLv0RGQ8qP1M1Bnsl8N0G6yvNo7L4DxPIOzERlv0JbqE7r9g==
+X-Forefront-Antispam-Report:
+	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(13230031)(376005)(36860700004)(82310400014)(1800799015);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2024 09:38:22.6938
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 895f9def-60d9-4f8f-1bb5-08dc57afa1e7
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028D01.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB7735
 
+Gentle ping...
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+________________________________________
+From: Yeo Reum Yun <YeoReum.Yun@arm.com>
+Sent: 19 March 2024 09:20
+To: Mathieu Desnoyers; Ingo Molnar; Peter Zijlstra
+Cc: linux-kernel@vger.kernel.org; stable@vger.kernel.org; Steven Rostedt; V=
+incent Guittot; Juri Lelli; Dietmar Eggemann; Ben Segall; Mel Gorman; Danie=
+l Bristot de Oliveira; Valentin Schneider; Catalin Marinas; Mark Rutland; W=
+ill Deacon; Aaron Lu
+Subject: Re: [PATCH] sched: Add missing memory barrier in switch_mm_cid
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Gentle ping.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 04c35ab3bdae7fefbd7c7a7355f29fa03a035221
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040850-wildly-gyration-12ff@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+________________________________________
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Sent: 08 March 2024 15:07
+To: Ingo Molnar; Peter Zijlstra
+Cc: linux-kernel@vger.kernel.org; Mathieu Desnoyers; Yeo Reum Yun; stable@v=
+ger.kernel.org; Steven Rostedt; Vincent Guittot; Juri Lelli; Dietmar Eggema=
+nn; Ben Segall; Mel Gorman; Daniel Bristot de Oliveira; Valentin Schneider;=
+ Catalin Marinas; Mark Rutland; Will Deacon; Aaron Lu
+Subject: [PATCH] sched: Add missing memory barrier in switch_mm_cid
 
-Possible dependencies:
+Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
+which the core scheduler code has depended upon since commit:
 
-04c35ab3bdae ("x86/mm/pat: fix VM_PAT handling in COW mappings")
+    commit 223baf9d17f25 ("sched: Fix performance regression introduced by =
+mm_cid")
 
-thanks,
+If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
+unset the actively used cid when it fails to observe active task after it
+sets lazy_put.
 
-greg k-h
+There *is* a memory barrier between storing to rq->curr and _return to
+userspace_ (as required by membarrier), but the rseq mm_cid has stricter
+requirements: the barrier needs to be issued between store to rq->curr
+and switch_mm_cid(), which happens earlier than:
 
------------------- original commit in Linus's tree ------------------
+- spin_unlock(),
+- switch_to().
 
-From 04c35ab3bdae7fefbd7c7a7355f29fa03a035221 Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Wed, 3 Apr 2024 23:21:30 +0200
-Subject: [PATCH] x86/mm/pat: fix VM_PAT handling in COW mappings
+So it's fine when the architecture switch_mm happens to have that barrier
+already, but less so when the architecture only provides the full barrier
+in switch_to() or spin_unlock().
 
-PAT handling won't do the right thing in COW mappings: the first PTE (or,
-in fact, all PTEs) can be replaced during write faults to point at anon
-folios.  Reliably recovering the correct PFN and cachemode using
-follow_phys() from PTEs will not work in COW mappings.
+It is a bug in the rseq switch_mm_cid() implementation. All architectures
+that don't have memory barriers in switch_mm(), but rather have the full
+barrier either in finish_lock_switch() or switch_to() have them too late
+for the needs of switch_mm_cid().
 
-Using follow_phys(), we might just get the address+protection of the anon
-folio (which is very wrong), or fail on swap/nonswap entries, failing
-follow_phys() and triggering a WARN_ON_ONCE() in untrack_pfn() and
-track_pfn_copy(), not properly calling free_pfn_range().
+Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
+generic barrier.h header, and use it in switch_mm_cid() for scheduler
+transitions where switch_mm() is expected to provide a memory barrier.
 
-In free_pfn_range(), we either wouldn't call memtype_free() or would call
-it with the wrong range, possibly leaking memory.
+Architectures can override smp_mb__after_switch_mm() if their
+switch_mm() implementation provides an implicit memory barrier.
+Override it with a no-op on x86 which implicitly provide this memory
+barrier by writing to CR3.
 
-To fix that, let's update follow_phys() to refuse returning anon folios,
-and fallback to using the stored PFN inside vma->vm_pgoff for COW mappings
-if we run into that.
-
-We will now properly handle untrack_pfn() with COW mappings, where we
-don't need the cachemode.  We'll have to fail fork()->track_pfn_copy() if
-the first page was replaced by an anon folio, though: we'd have to store
-the cachemode in the VMA to make this work, likely growing the VMA size.
-
-For now, lets keep it simple and let track_pfn_copy() just fail in that
-case: it would have failed in the past with swap/nonswap entries already,
-and it would have done the wrong thing with anon folios.
-
-Simple reproducer to trigger the WARN_ON_ONCE() in untrack_pfn():
-
-<--- C reproducer --->
- #include <stdio.h>
- #include <sys/mman.h>
- #include <unistd.h>
- #include <liburing.h>
-
- int main(void)
- {
-         struct io_uring_params p = {};
-         int ring_fd;
-         size_t size;
-         char *map;
-
-         ring_fd = io_uring_setup(1, &p);
-         if (ring_fd < 0) {
-                 perror("io_uring_setup");
-                 return 1;
-         }
-         size = p.sq_off.array + p.sq_entries * sizeof(unsigned);
-
-         /* Map the submission queue ring MAP_PRIVATE */
-         map = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE,
-                    ring_fd, IORING_OFF_SQ_RING);
-         if (map == MAP_FAILED) {
-                 perror("mmap");
-                 return 1;
-         }
-
-         /* We have at least one page. Let's COW it. */
-         *map = 0;
-         pause();
-         return 0;
- }
-<--- C reproducer --->
-
-On a system with 16 GiB RAM and swap configured:
- # ./iouring &
- # memhog 16G
- # killall iouring
-[  301.552930] ------------[ cut here ]------------
-[  301.553285] WARNING: CPU: 7 PID: 1402 at arch/x86/mm/pat/memtype.c:1060 untrack_pfn+0xf4/0x100
-[  301.553989] Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_g
-[  301.558232] CPU: 7 PID: 1402 Comm: iouring Not tainted 6.7.5-100.fc38.x86_64 #1
-[  301.558772] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebu4
-[  301.559569] RIP: 0010:untrack_pfn+0xf4/0x100
-[  301.559893] Code: 75 c4 eb cf 48 8b 43 10 8b a8 e8 00 00 00 3b 6b 28 74 b8 48 8b 7b 30 e8 ea 1a f7 000
-[  301.561189] RSP: 0018:ffffba2c0377fab8 EFLAGS: 00010282
-[  301.561590] RAX: 00000000ffffffea RBX: ffff9208c8ce9cc0 RCX: 000000010455e047
-[  301.562105] RDX: 07fffffff0eb1e0a RSI: 0000000000000000 RDI: ffff9208c391d200
-[  301.562628] RBP: 0000000000000000 R08: ffffba2c0377fab8 R09: 0000000000000000
-[  301.563145] R10: ffff9208d2292d50 R11: 0000000000000002 R12: 00007fea890e0000
-[  301.563669] R13: 0000000000000000 R14: ffffba2c0377fc08 R15: 0000000000000000
-[  301.564186] FS:  0000000000000000(0000) GS:ffff920c2fbc0000(0000) knlGS:0000000000000000
-[  301.564773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  301.565197] CR2: 00007fea88ee8a20 CR3: 00000001033a8000 CR4: 0000000000750ef0
-[  301.565725] PKRU: 55555554
-[  301.565944] Call Trace:
-[  301.566148]  <TASK>
-[  301.566325]  ? untrack_pfn+0xf4/0x100
-[  301.566618]  ? __warn+0x81/0x130
-[  301.566876]  ? untrack_pfn+0xf4/0x100
-[  301.567163]  ? report_bug+0x171/0x1a0
-[  301.567466]  ? handle_bug+0x3c/0x80
-[  301.567743]  ? exc_invalid_op+0x17/0x70
-[  301.568038]  ? asm_exc_invalid_op+0x1a/0x20
-[  301.568363]  ? untrack_pfn+0xf4/0x100
-[  301.568660]  ? untrack_pfn+0x65/0x100
-[  301.568947]  unmap_single_vma+0xa6/0xe0
-[  301.569247]  unmap_vmas+0xb5/0x190
-[  301.569532]  exit_mmap+0xec/0x340
-[  301.569801]  __mmput+0x3e/0x130
-[  301.570051]  do_exit+0x305/0xaf0
-...
-
-Link: https://lkml.kernel.org/r/20240403212131.929421-3-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Wupeng Ma <mawupeng1@huawei.com>
-Closes: https://lkml.kernel.org/r/20240227122814.3781907-1-mawupeng1@huawei.com
-Fixes: b1a86e15dc03 ("x86, pat: remove the dependency on 'vm_pgoff' in track/untrack pfn vma routines")
-Fixes: 5899329b1910 ("x86: PAT: implement track/untrack of pfnmap regions for x86 - v3")
-Acked-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/lkml/20240305145335.2696125-1-yeoreum.yun@arm=
+.com/
+Reported-by: levi.yun <yeoreum.yun@arm.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_ci=
+d")
+Cc: <stable@vger.kernel.org> # 6.4.x
+Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: levi.yun <yeoreum.yun@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Aaron Lu <aaron.lu@intel.com>
+---
+ arch/x86/include/asm/barrier.h |  3 +++
+ include/asm-generic/barrier.h  |  8 ++++++++
+ kernel/sched/sched.h           | 20 ++++++++++++++------
+ 3 files changed, 25 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
-index 0d72183b5dd0..36b603d0cdde 100644
---- a/arch/x86/mm/pat/memtype.c
-+++ b/arch/x86/mm/pat/memtype.c
-@@ -947,6 +947,38 @@ static void free_pfn_range(u64 paddr, unsigned long size)
- 		memtype_free(paddr, paddr + size);
- }
- 
-+static int get_pat_info(struct vm_area_struct *vma, resource_size_t *paddr,
-+		pgprot_t *pgprot)
-+{
-+	unsigned long prot;
+diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.=
+h
+index 35389b2af88e..0d5e54201eb2 100644
+--- a/arch/x86/include/asm/barrier.h
++++ b/arch/x86/include/asm/barrier.h
+@@ -79,6 +79,9 @@ do {                                                     =
+             \
+ #define __smp_mb__before_atomic()      do { } while (0)
+ #define __smp_mb__after_atomic()       do { } while (0)
+
++/* Writing to CR3 provides a full memory barrier in switch_mm(). */
++#define smp_mb__after_switch_mm()      do { } while (0)
 +
-+	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_PAT));
-+
-+	/*
-+	 * We need the starting PFN and cachemode used for track_pfn_remap()
-+	 * that covered the whole VMA. For most mappings, we can obtain that
-+	 * information from the page tables. For COW mappings, we might now
-+	 * suddenly have anon folios mapped and follow_phys() will fail.
-+	 *
-+	 * Fallback to using vma->vm_pgoff, see remap_pfn_range_notrack(), to
-+	 * detect the PFN. If we need the cachemode as well, we're out of luck
-+	 * for now and have to fail fork().
-+	 */
-+	if (!follow_phys(vma, vma->vm_start, 0, &prot, paddr)) {
-+		if (pgprot)
-+			*pgprot = __pgprot(prot);
-+		return 0;
-+	}
-+	if (is_cow_mapping(vma->vm_flags)) {
-+		if (pgprot)
-+			return -EINVAL;
-+		*paddr = (resource_size_t)vma->vm_pgoff << PAGE_SHIFT;
-+		return 0;
-+	}
-+	WARN_ON_ONCE(1);
-+	return -EINVAL;
-+}
-+
+ #include <asm-generic/barrier.h>
+
  /*
-  * track_pfn_copy is called when vma that is covering the pfnmap gets
-  * copied through copy_page_range().
-@@ -957,20 +989,13 @@ static void free_pfn_range(u64 paddr, unsigned long size)
- int track_pfn_copy(struct vm_area_struct *vma)
- {
- 	resource_size_t paddr;
--	unsigned long prot;
- 	unsigned long vma_size = vma->vm_end - vma->vm_start;
- 	pgprot_t pgprot;
- 
- 	if (vma->vm_flags & VM_PAT) {
--		/*
--		 * reserve the whole chunk covered by vma. We need the
--		 * starting address and protection from pte.
--		 */
--		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
--			WARN_ON_ONCE(1);
-+		if (get_pat_info(vma, &paddr, &pgprot))
- 			return -EINVAL;
--		}
--		pgprot = __pgprot(prot);
-+		/* reserve the whole chunk covered by vma. */
- 		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
- 	}
- 
-@@ -1045,7 +1070,6 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
- 		 unsigned long size, bool mm_wr_locked)
- {
- 	resource_size_t paddr;
--	unsigned long prot;
- 
- 	if (vma && !(vma->vm_flags & VM_PAT))
- 		return;
-@@ -1053,11 +1077,8 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
- 	/* free the chunk starting from pfn or the whole chunk */
- 	paddr = (resource_size_t)pfn << PAGE_SHIFT;
- 	if (!paddr && !size) {
--		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
--			WARN_ON_ONCE(1);
-+		if (get_pat_info(vma, &paddr, NULL))
- 			return;
--		}
--
- 		size = vma->vm_end - vma->vm_start;
- 	}
- 	free_pfn_range(paddr, size);
-diff --git a/mm/memory.c b/mm/memory.c
-index 904f70b99498..d2155ced45f8 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5973,6 +5973,10 @@ int follow_phys(struct vm_area_struct *vma,
- 		goto out;
- 	pte = ptep_get(ptep);
- 
-+	/* Never return PFNs of anon folios in COW mappings. */
-+	if (vm_normal_folio(vma, address, pte))
-+		goto unlock;
-+
- 	if ((flags & FOLL_WRITE) && !pte_write(pte))
- 		goto unlock;
- 
+diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
+index 961f4d88f9ef..5a6c94d7a598 100644
+--- a/include/asm-generic/barrier.h
++++ b/include/asm-generic/barrier.h
+@@ -296,5 +296,13 @@ do {                                                  =
+                     \
+ #define io_stop_wc() do { } while (0)
+ #endif
 
++/*
++ * Architectures that guarantee an implicit smp_mb() in switch_mm()
++ * can override smp_mb__after_switch_mm.
++ */
++#ifndef smp_mb__after_switch_mm
++#define smp_mb__after_switch_mm()      smp_mb()
++#endif
++
+ #endif /* !__ASSEMBLY__ */
+ #endif /* __ASM_GENERIC_BARRIER_H */
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 2e5a95486a42..044d842c696c 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -79,6 +79,8 @@
+ # include <asm/paravirt_api_clock.h>
+ #endif
+
++#include <asm/barrier.h>
++
+ #include "cpupri.h"
+ #include "cpudeadline.h"
+
+@@ -3481,13 +3483,19 @@ static inline void switch_mm_cid(struct rq *rq,
+                 * between rq->curr store and load of {prev,next}->mm->pcpu=
+_cid[cpu].
+                 * Provide it here.
+                 */
+-               if (!prev->mm)                          // from kernel
++               if (!prev->mm) {                        // from kernel
+                        smp_mb();
+-               /*
+-                * user -> user transition guarantees a memory barrier thro=
+ugh
+-                * switch_mm() when current->mm changes. If current->mm is
+-                * unchanged, no barrier is needed.
+-                */
++               } else {                                // from user
++                       /*
++                        * user -> user transition relies on an implicit
++                        * memory barrier in switch_mm() when
++                        * current->mm changes. If the architecture
++                        * switch_mm() does not have an implicit memory
++                        * barrier, it is emitted here.  If current->mm
++                        * is unchanged, no barrier is needed.
++                        */
++                       smp_mb__after_switch_mm();
++               }
+        }
+        if (prev->mm_cid_active) {
+                mm_cid_snapshot_time(rq, prev->mm);
+--
+2.39.2
+
+IMPORTANT NOTICE: The contents of this email and any attachments are confid=
+ential and may also be privileged. If you are not the intended recipient, p=
+lease notify the sender immediately and do not disclose the contents to any=
+ other person, use it for any purpose, or store or copy the information in =
+any medium. Thank you.
 
