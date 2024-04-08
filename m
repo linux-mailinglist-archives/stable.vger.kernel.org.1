@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-36387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A4889BD54
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:34:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20F389BD62
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1478B1F21ACC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:34:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C54528311C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C7857335;
-	Mon,  8 Apr 2024 10:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3195D90B;
+	Mon,  8 Apr 2024 10:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PkZZ2rXt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OeUWNnbv"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC9857332
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7295BAF0
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712572463; cv=none; b=NjRswy9eNdRsyQvrBJ7ZXjF0NwvsvUDj9TNex4T1zfOenEUi/LKvAR34WdIsBMMe1VoGO+R2MZn8OKXPA7oSxmncDKIRaH1dT4T+LWP6Lr9f/z8pXXYZ2jw1jBiStmYh7LdkwhnBOcL37jjxSXXqQnTHO28PGMQmLCVSCCvRGAI=
+	t=1712572672; cv=none; b=EK3PhAjZuFjs+ihYuuyaEtrLnx/eOHX5yqga7nPOpOghQfm4mD+O+OH7rtMrZF0NKTvXC8iZrDJnCrrvo0TRXMZO4N9t1HShUzzvGLQ4IiFl3xbyM/nglCpEZRd93BWZ7jAcS7R/jbbmC4NSgTbJ5gytTr5FcqP6+vsxdfIB398=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712572463; c=relaxed/simple;
-	bh=wBzcMzYmf/E3R0SoOz4T9QpESzPluUvG6Qnd2Eny+w4=;
+	s=arc-20240116; t=1712572672; c=relaxed/simple;
+	bh=Tl5QhODOeVdDZv9sZ6ix4ouVPJAOySQ26WnztsFVbl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2iNvNwWcmjyfow0/yybH0qwjo1qzwJ1detE169XRVe9zMPMkx/QNsZNUVv3yBMF1BFQghXZOvOKAqyZ4SwVLoLJA0MGHxsvfl9PDw2DN9XjBx2pwEzc1ANHetmFoiFkvdQ1ZCFXQ4noVXzKJ9p5K7SIqp5HOXrx3KZZTzoiyKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PkZZ2rXt; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=laPtk0vAreNv/4zd7zmq/Mcg9imbkWMxMQpq7dreEbgF2qtqKVd+1awxHTW8qxk5ZiPUjwphhrorVRjOEdX5VdZMdnLMRtIkBKRnduRuhEpygx5KlGhDsz8zGpf/+ZggPKUqipyt/IC6wK7SwZkJCSJ0uDaFAbuzsgCipJVcy50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OeUWNnbv; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712572461;
+	s=mimecast20190719; t=1712572670;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n9AJ4U9oaBoBQvnYz7AdAXHAnORjknt1R1NXjey9qxA=;
-	b=PkZZ2rXtzhKTOytQiZ7AcqSycq2AASzd6TEhP7Y5UHBkUdmbnKl6+8OPIF/vDwLiOrP2Wh
-	eOLhi4DKHATGH362c41FmEpXPp/E2ZhatxTyzIICahnuZ1pGKQoH3mwQeDFQSDVaPyayVY
-	nOY1fmZIte5yk85fnEOW+cHkLff41Os=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-79lNRfetP-eXZGo8kgj2aw-1; Mon,
- 08 Apr 2024 06:34:17 -0400
-X-MC-Unique: 79lNRfetP-eXZGo8kgj2aw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	bh=nW2pKvwGTZg6E4DTgFqw9UH7euxhi+itw2Bw0XJf1kY=;
+	b=OeUWNnbvj1HGJ9rc+Ys9jKZBdpeGkpALTuWjgCBiOBdtUXB/PhBtEPSlReR4vMFEucOg/q
+	3Aeo4yFAfTXJu9uU+Mj4cyBoQoGTrjyQI/U2RaoE7TQiorEqdBg/xyEnPJwYUVW4xj67Vm
+	HqbSo/dil+sPARlolgjDngbPYHiP+Fw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-L1laYOePNKGxYwODNG67sA-1; Mon, 08 Apr 2024 06:37:46 -0400
+X-MC-Unique: L1laYOePNKGxYwODNG67sA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 51F8A29AA2CC;
-	Mon,  8 Apr 2024 10:34:17 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6A22880021A;
+	Mon,  8 Apr 2024 10:37:46 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.194.18])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 110B41C06668;
-	Mon,  8 Apr 2024 10:34:14 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 7469B40F178;
+	Mon,  8 Apr 2024 10:37:44 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: stable@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -64,11 +64,11 @@ Cc: David Hildenbrand <david@redhat.com>,
 	Miklos Szeredi <mszeredi@redhat.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Lorenzo Stoakes <lstoakes@gmail.com>
-Subject: [PATCH 6.1.y] mm/secretmem: fix GUP-fast succeeding on secretmem folios
-Date: Mon,  8 Apr 2024 12:34:10 +0200
-Message-ID: <20240408103410.81848-1-david@redhat.com>
-In-Reply-To: <2024040819-elf-bamboo-00f6@gregkh>
-References: <2024040819-elf-bamboo-00f6@gregkh>
+Subject: [PATCH 5.15.y] mm/secretmem: fix GUP-fast succeeding on secretmem folios
+Date: Mon,  8 Apr 2024 12:37:39 +0200
+Message-ID: <20240408103739.100897-1-david@redhat.com>
+In-Reply-To: <2024040823-spilt-marsupial-8d2f@gregkh>
+References: <2024040823-spilt-marsupial-8d2f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,7 +76,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
 folio_is_secretmem() currently relies on secretmem folios being LRU
 folios, to save some cycles.
@@ -110,6 +110,7 @@ Cc: Lorenzo Stoakes <lstoakes@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 (cherry picked from commit 65291dcfcf8936e1b23cfd7718fdfde7cfaf7706)
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
  include/linux/secretmem.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
