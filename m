@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-36894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810CF89C23E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC86F89C5BB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D243283653
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 554F4B2611F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E77081AAA;
-	Mon,  8 Apr 2024 13:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E99C762DA;
+	Mon,  8 Apr 2024 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoandXEp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXfavVaa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E027981749;
-	Mon,  8 Apr 2024 13:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AEF3A1C7;
+	Mon,  8 Apr 2024 13:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582653; cv=none; b=i6bwDIThtFhWZ1LRRpK0dfcf9xyGTCuREY1OKqTA91WXi5JD1Xx0MukEPvH+HM2Lw+OS0oXkX6Ed2I5wQaRMHsYLbdrgVH9Rjlbls7XUg6lVBez+p4Y2NPq3V3wTvRMGVva/+GMQ2iOFx3YQdcueoYFTSu6DENd0Gnxxc6SBvo8=
+	t=1712584626; cv=none; b=k84nhYTyr1HP2lXE0CltHC21qCq45hwhx7cvVWQbQ8v674hdMdMR8UDIHkj8f9z1XsFZwdtuItbthKCjMtYIKo/0wo8pYBTla+tzlPEVBefkfZ8wzf3Swvb5DNhLQuvcTWQRVvD0udRlSTN9apEOMIWeau/4zMRn77vgYX9dTq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582653; c=relaxed/simple;
-	bh=vRH42ZCmFi1gmn2QjDYr1nvzM7cmhqbDlXtVxmjAhfk=;
+	s=arc-20240116; t=1712584626; c=relaxed/simple;
+	bh=/jKoPCst/MzWXCktYnYSP1wrvYZ4g4rZu/VSrTyltMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecvyzZxqxjzCaUOYTv+JEmxLdlS4dcOX64IdkW3QnqYjPoyBqr6u69mK08WM6DGqDEv9ObF4Zuu4ryUEfGlu/bqL2B/SqB5Prt9opN5qyN51+o0zqVuu4CNwT3CO8tpwecSJXDdJ+n9Hjkj+Jslj/lI5ciyJjzIXvKUnYkaCdfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoandXEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6740FC433C7;
-	Mon,  8 Apr 2024 13:24:12 +0000 (UTC)
+	 MIME-Version; b=C7Iyfqyf98Q88CD1zzbK3kEqVgUBFzGIrzpj18xjebpS9lFu404Xvf3sg56ycXaNNJ6d0fJrOW4EHs0msyZZMTZwM8mDtlXFA8JDL4YCGX0nF6eapIcTwfH0WbT/8jL/4wQV7k5HKSeAh0bb0Rjj2TJAvnIrGGfpZnAZ1XWRQjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXfavVaa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076EDC433F1;
+	Mon,  8 Apr 2024 13:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582652;
-	bh=vRH42ZCmFi1gmn2QjDYr1nvzM7cmhqbDlXtVxmjAhfk=;
+	s=korg; t=1712584626;
+	bh=/jKoPCst/MzWXCktYnYSP1wrvYZ4g4rZu/VSrTyltMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aoandXEpve80FXPQGcdjuAbltHGhD6tZG4scqzmq6Ve/z6mq6EGae/33CqQudCCRj
-	 2g3l4oUPRSmJssrdZbcMUhQdZzWx5ru/OhlRKVyU9S4S2MgA/eKBpP/NPZApwDaCWE
-	 3iZzQdiMEZT2Q7JwtJrxIAQB0zXMrxPubk86F6L0=
+	b=DXfavVaaDinj1O+Z2/d5wJYvgZydeLgmg3bDikY/0wrYYcrC6TqzOPNCPVh3oYKxO
+	 x8nuF8eO0u2XhVrtApJ5iTimT+THr++DDDvb6MSwMwc58K0H7Y7SuTc8OG+BFBw7te
+	 dFWqHwZ6xOPkqNZ1iEP67OnASGCykAJtefdOcSmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	yue sun <samsun1006219@gmail.com>,
-	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
-	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH 6.8 093/273] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
+	Chuck Lever <chuck.lever@oracle.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 5.15 502/690] trace: Relocate event helper files
 Date: Mon,  8 Apr 2024 14:56:08 +0200
-Message-ID: <20240408125312.189097959@linuxfoundation.org>
+Message-ID: <20240408125417.827960911@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +63,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Sitnicki <jakub@cloudflare.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
+[ Upstream commit 247c01ff5f8d66e62a404c91733be52fecb8b7f6 ]
 
-syzkaller started using corpuses where a BPF tracing program deletes
-elements from a sockmap/sockhash map. Because BPF tracing programs can be
-invoked from any interrupt context, locks taken during a map_delete_elem
-operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
-is possible, as reported by lockdep:
+Steven Rostedt says:
+> The include/trace/events/ directory should only hold files that
+> are to create events, not headers that hold helper functions.
+>
+> Can you please move them out of include/trace/events/ as that
+> directory is "special" in the creation of events.
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(&htab->buckets[i].lock);
-                               local_irq_disable();
-                               lock(&host->lock);
-                               lock(&htab->buckets[i].lock);
-  <Interrupt>
-    lock(&host->lock);
-
-Locks in sockmap are hardirq-unsafe by design. We expects elements to be
-deleted from sockmap/sockhash only in task (normal) context with interrupts
-enabled, or in softirq context.
-
-Detect when map_delete_elem operation is invoked from a context which is
-_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
-error.
-
-Note that map updates are not affected by this issue. BPF verifier does not
-allow updating sockmap/sockhash from a BPF tracing program today.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
-Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
-Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
-Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Acked-by: Leon Romanovsky <leonro@nvidia.com>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Stable-dep-of: 638593be55c0 ("NFSD: add CB_RECALL_ANY tracepoints")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/core/sock_map.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ MAINTAINERS                                           | 7 +++++++
+ drivers/infiniband/core/cm_trace.h                    | 2 +-
+ drivers/infiniband/core/cma_trace.h                   | 2 +-
+ fs/nfs/nfs4trace.h                                    | 6 +++---
+ fs/nfs/nfstrace.h                                     | 6 +++---
+ include/trace/events/rpcgss.h                         | 2 +-
+ include/trace/events/rpcrdma.h                        | 4 ++--
+ include/trace/events/sunrpc.h                         | 2 +-
+ include/trace/{events => misc}/fs.h                   | 0
+ include/trace/{events => misc}/nfs.h                  | 0
+ include/trace/{events => misc}/rdma.h                 | 0
+ include/trace/{events/sunrpc_base.h => misc/sunrpc.h} | 0
+ 12 files changed, 19 insertions(+), 12 deletions(-)
+ rename include/trace/{events => misc}/fs.h (100%)
+ rename include/trace/{events => misc}/nfs.h (100%)
+ rename include/trace/{events => misc}/rdma.h (100%)
+ rename include/trace/{events/sunrpc_base.h => misc/sunrpc.h} (100%)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -411,6 +411,9 @@ static int __sock_map_delete(struct bpf_
- 	struct sock *sk;
- 	int err = 0;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9216b9c85ce92..6bfc75861c8c0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9200,6 +9200,7 @@ F:	drivers/infiniband/
+ F:	include/rdma/
+ F:	include/trace/events/ib_mad.h
+ F:	include/trace/events/ib_umad.h
++F:	include/trace/misc/rdma.h
+ F:	include/uapi/linux/if_infiniband.h
+ F:	include/uapi/rdma/
+ F:	samples/bpf/ibumad_kern.c
+@@ -10181,6 +10182,12 @@ F:	fs/nfs_common/
+ F:	fs/nfsd/
+ F:	include/linux/lockd/
+ F:	include/linux/sunrpc/
++F:	include/trace/events/rpcgss.h
++F:	include/trace/events/rpcrdma.h
++F:	include/trace/events/sunrpc.h
++F:	include/trace/misc/fs.h
++F:	include/trace/misc/nfs.h
++F:	include/trace/misc/sunrpc.h
+ F:	include/uapi/linux/nfsd/
+ F:	include/uapi/linux/sunrpc/
+ F:	net/sunrpc/
+diff --git a/drivers/infiniband/core/cm_trace.h b/drivers/infiniband/core/cm_trace.h
+index e9d282679ef15..944d9071245d2 100644
+--- a/drivers/infiniband/core/cm_trace.h
++++ b/drivers/infiniband/core/cm_trace.h
+@@ -16,7 +16,7 @@
  
-+	if (irqs_disabled())
-+		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
-+
- 	spin_lock_bh(&stab->lock);
- 	sk = *psk;
- 	if (!sk_test || sk_test == sk)
-@@ -933,6 +936,9 @@ static long sock_hash_delete_elem(struct
- 	struct bpf_shtab_elem *elem;
- 	int ret = -ENOENT;
+ #include <linux/tracepoint.h>
+ #include <rdma/ib_cm.h>
+-#include <trace/events/rdma.h>
++#include <trace/misc/rdma.h>
  
-+	if (irqs_disabled())
-+		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
-+
- 	hash = sock_hash_bucket_hash(key, key_size);
- 	bucket = sock_hash_select_bucket(htab, hash);
+ /*
+  * enum ib_cm_state, from include/rdma/ib_cm.h
+diff --git a/drivers/infiniband/core/cma_trace.h b/drivers/infiniband/core/cma_trace.h
+index e45264267bcc9..47f3c6e4be893 100644
+--- a/drivers/infiniband/core/cma_trace.h
++++ b/drivers/infiniband/core/cma_trace.h
+@@ -15,7 +15,7 @@
+ #define _TRACE_RDMA_CMA_H
  
+ #include <linux/tracepoint.h>
+-#include <trace/events/rdma.h>
++#include <trace/misc/rdma.h>
+ 
+ 
+ DECLARE_EVENT_CLASS(cma_fsm_class,
+diff --git a/fs/nfs/nfs4trace.h b/fs/nfs/nfs4trace.h
+index 635f13a8d44aa..8565fa654f59a 100644
+--- a/fs/nfs/nfs4trace.h
++++ b/fs/nfs/nfs4trace.h
+@@ -9,10 +9,10 @@
+ #define _TRACE_NFS4_H
+ 
+ #include <linux/tracepoint.h>
+-#include <trace/events/sunrpc_base.h>
++#include <trace/misc/sunrpc.h>
+ 
+-#include <trace/events/fs.h>
+-#include <trace/events/nfs.h>
++#include <trace/misc/fs.h>
++#include <trace/misc/nfs.h>
+ 
+ #define show_nfs_fattr_flags(valid) \
+ 	__print_flags((unsigned long)valid, "|", \
+diff --git a/fs/nfs/nfstrace.h b/fs/nfs/nfstrace.h
+index f6013d3b110b8..6804ca2efbf99 100644
+--- a/fs/nfs/nfstrace.h
++++ b/fs/nfs/nfstrace.h
+@@ -11,9 +11,9 @@
+ #include <linux/tracepoint.h>
+ #include <linux/iversion.h>
+ 
+-#include <trace/events/fs.h>
+-#include <trace/events/nfs.h>
+-#include <trace/events/sunrpc_base.h>
++#include <trace/misc/fs.h>
++#include <trace/misc/nfs.h>
++#include <trace/misc/sunrpc.h>
+ 
+ #define nfs_show_cache_validity(v) \
+ 	__print_flags(v, "|", \
+diff --git a/include/trace/events/rpcgss.h b/include/trace/events/rpcgss.h
+index 3ba63319af3cd..b8fd13303ee7e 100644
+--- a/include/trace/events/rpcgss.h
++++ b/include/trace/events/rpcgss.h
+@@ -13,7 +13,7 @@
+ 
+ #include <linux/tracepoint.h>
+ 
+-#include <trace/events/sunrpc_base.h>
++#include <trace/misc/sunrpc.h>
+ 
+ /**
+  ** GSS-API related trace events
+diff --git a/include/trace/events/rpcrdma.h b/include/trace/events/rpcrdma.h
+index 28ea73bba4e78..513c09774e4f3 100644
+--- a/include/trace/events/rpcrdma.h
++++ b/include/trace/events/rpcrdma.h
+@@ -15,8 +15,8 @@
+ #include <linux/tracepoint.h>
+ #include <rdma/ib_cm.h>
+ 
+-#include <trace/events/rdma.h>
+-#include <trace/events/sunrpc_base.h>
++#include <trace/misc/rdma.h>
++#include <trace/misc/sunrpc.h>
+ 
+ /**
+  ** Event classes
+diff --git a/include/trace/events/sunrpc.h b/include/trace/events/sunrpc.h
+index 68ae89c9a1c20..e8eb83315f4f2 100644
+--- a/include/trace/events/sunrpc.h
++++ b/include/trace/events/sunrpc.h
+@@ -14,7 +14,7 @@
+ #include <linux/net.h>
+ #include <linux/tracepoint.h>
+ 
+-#include <trace/events/sunrpc_base.h>
++#include <trace/misc/sunrpc.h>
+ 
+ TRACE_DEFINE_ENUM(SOCK_STREAM);
+ TRACE_DEFINE_ENUM(SOCK_DGRAM);
+diff --git a/include/trace/events/fs.h b/include/trace/misc/fs.h
+similarity index 100%
+rename from include/trace/events/fs.h
+rename to include/trace/misc/fs.h
+diff --git a/include/trace/events/nfs.h b/include/trace/misc/nfs.h
+similarity index 100%
+rename from include/trace/events/nfs.h
+rename to include/trace/misc/nfs.h
+diff --git a/include/trace/events/rdma.h b/include/trace/misc/rdma.h
+similarity index 100%
+rename from include/trace/events/rdma.h
+rename to include/trace/misc/rdma.h
+diff --git a/include/trace/events/sunrpc_base.h b/include/trace/misc/sunrpc.h
+similarity index 100%
+rename from include/trace/events/sunrpc_base.h
+rename to include/trace/misc/sunrpc.h
+-- 
+2.43.0
+
 
 
 
