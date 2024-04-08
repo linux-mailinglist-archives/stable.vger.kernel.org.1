@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7580D89C490
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B3889C410
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1668C1F22BCF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32A661F222B5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991B68002F;
-	Mon,  8 Apr 2024 13:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E9E7D3E6;
+	Mon,  8 Apr 2024 13:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8+0ypZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCBYiPDG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566967EEF2;
-	Mon,  8 Apr 2024 13:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A687BAE7;
+	Mon,  8 Apr 2024 13:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584028; cv=none; b=kO5FDKJd2+Pf30fknB3VVTmJUkzY0lVBvdytzZJD8ZldXlVWIF00a9tMuNNmw7n5k/bOI5kTKfUoYWqILlWSLZ/9gABd/xVd0vD977/p6M+riIDh40dxfd3WxYpjUd+R+ulhihaXKWCMLZeJ9G3tquG4WdhsnLtZBTPoDmp26gM=
+	t=1712583716; cv=none; b=ZNNzjfAe2OBhTGYVCFfXztzJl1DZneoyulF5Yxa3jj6nUURYdGPppVu72PhKJsfq4+nX0pLCTCgwFw+U0XdHVbtc7HsP8CUr24t4C17h+Yu+5ZP0LlHX+JT2WkxfISWIyrADlrWvz3ldsiJXx8d6gLkCDZtoEfjWEoysW/rxiCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584028; c=relaxed/simple;
-	bh=ZwUILrMwVKJz2KujSalkHUXphMabkP/AZ4+n/OaZMv4=;
+	s=arc-20240116; t=1712583716; c=relaxed/simple;
+	bh=wNlBOqvB5mBl/it/gMI/wbDvV+ZJY2JTGbobo4OzRiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUC398/AgvPPaaC0sXPSghAgR9HKS7PiFo8SV284SYlTPMwcDrE5QrfRIH/cEV+zTWEbsfQdg6J+4X98bXILtIHGxiZubYlhLOCH+2Ge9NgznyuvSyVOf3Jiri8E8/p6K3170hYedbVNzl1RkrnkLF6G40HnonUXBkCXmeYqHSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8+0ypZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B05C433C7;
-	Mon,  8 Apr 2024 13:47:07 +0000 (UTC)
+	 MIME-Version; b=Wd+JUcbiKpJ5bSiJiMoLc04AFkf2/4ho1DGZujpRWlYsxC7zMY9Z+l9rNhgg7uxbNNc7sy3PgBPNtlrmEs4fRW17zbIwn+qG6HftcaKK4WaN16YYU+QvJN/hRM9X3qioIZyRfX1UGei74H7WBBDt7U1JEEEJ5OlFipG72fNn9sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCBYiPDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB22DC433C7;
+	Mon,  8 Apr 2024 13:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584027;
-	bh=ZwUILrMwVKJz2KujSalkHUXphMabkP/AZ4+n/OaZMv4=;
+	s=korg; t=1712583716;
+	bh=wNlBOqvB5mBl/it/gMI/wbDvV+ZJY2JTGbobo4OzRiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8+0ypZ6cV8qs3+uzoKBxla3i+rFT5/cPLdjaVpMdy3BTfKolAJxstCHTgZRO2eZy
-	 WDEISdH/YnsEZwUHqyI/aW7ujZ9PqpwEjn6T/2pNLiwqA/H9AhxECjJVIU4hpxbbOg
-	 x1bzPJJ2Lwc2jBj00jHXkLKWfHaxQZpT+s/TW9Vw=
+	b=tCBYiPDGgMGm6BgKR7HAOF51F+Tz3VDoB1GQvjMGw6Is57rfSWO3e0iw98PitHYio
+	 5KI1H8eL3e09Xw80/3mHSI5ikeR826MJBU4kYTv8Kt3Dxu4x/mpDo5CMB6NFiq/lD0
+	 KZDzH+QZHDdS22vWOMM9vpB5U823pU4yMeDESHaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	kernel test robot <lkp@intel.com>,
 	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.8 250/273] smb: client: fix potential UAF in cifs_stats_proc_write()
+Subject: [PATCH 6.6 226/252] smb: client: handle DFS tcons in cifs_construct_tcon()
 Date: Mon,  8 Apr 2024 14:58:45 +0200
-Message-ID: <20240408125317.214388145@linuxfoundation.org>
+Message-ID: <20240408125313.670611348@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Paulo Alcantara <pc@manguebit.com>
 
-commit d3da25c5ac84430f89875ca7485a3828150a7e0a upstream.
+commit 4a5ba0e0bfe552ac7451f57e304f6343c3d87f89 upstream.
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+The tcons created by cifs_construct_tcon() on multiuser mounts must
+also be able to failover and refresh DFS referrals, so set the
+appropriate fields in order to get a full DFS tcon.  They could be
+shared among different superblocks later, too.
 
-Cc: stable@vger.kernel.org
+Cc: stable@vger.kernel.org # 6.4+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404021518.3Xu2VU4s-lkp@intel.com/
 Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/connect.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -658,6 +658,8 @@ static ssize_t cifs_stats_proc_write(str
- 			}
- #endif /* CONFIG_CIFS_STATS2 */
- 			list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+				if (cifs_ses_exiting(ses))
-+					continue;
- 				list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 					atomic_set(&tcon->num_smbs_sent, 0);
- 					spin_lock(&tcon->stat_lock);
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3988,6 +3988,7 @@ cifs_construct_tcon(struct cifs_sb_info
+ 	struct cifs_ses *ses;
+ 	struct cifs_tcon *tcon = NULL;
+ 	struct smb3_fs_context *ctx;
++	char *origin_fullpath = NULL;
+ 
+ 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+ 	if (ctx == NULL)
+@@ -4011,6 +4012,7 @@ cifs_construct_tcon(struct cifs_sb_info
+ 	ctx->sign = master_tcon->ses->sign;
+ 	ctx->seal = master_tcon->seal;
+ 	ctx->witness = master_tcon->use_witness;
++	ctx->dfs_root_ses = master_tcon->ses->dfs_root_ses;
+ 
+ 	rc = cifs_set_vol_auth(ctx, master_tcon->ses);
+ 	if (rc) {
+@@ -4030,12 +4032,39 @@ cifs_construct_tcon(struct cifs_sb_info
+ 		goto out;
+ 	}
+ 
++#ifdef CONFIG_CIFS_DFS_UPCALL
++	spin_lock(&master_tcon->tc_lock);
++	if (master_tcon->origin_fullpath) {
++		spin_unlock(&master_tcon->tc_lock);
++		origin_fullpath = dfs_get_path(cifs_sb, cifs_sb->ctx->source);
++		if (IS_ERR(origin_fullpath)) {
++			tcon = ERR_CAST(origin_fullpath);
++			origin_fullpath = NULL;
++			cifs_put_smb_ses(ses);
++			goto out;
++		}
++	} else {
++		spin_unlock(&master_tcon->tc_lock);
++	}
++#endif
++
+ 	tcon = cifs_get_tcon(ses, ctx);
+ 	if (IS_ERR(tcon)) {
+ 		cifs_put_smb_ses(ses);
+ 		goto out;
+ 	}
+ 
++#ifdef CONFIG_CIFS_DFS_UPCALL
++	if (origin_fullpath) {
++		spin_lock(&tcon->tc_lock);
++		tcon->origin_fullpath = origin_fullpath;
++		spin_unlock(&tcon->tc_lock);
++		origin_fullpath = NULL;
++		queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
++				   dfs_cache_get_ttl() * HZ);
++	}
++#endif
++
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ 	if (cap_unix(ses))
+ 		reset_cifs_unix_caps(0, tcon, NULL, ctx);
+@@ -4044,6 +4073,7 @@ cifs_construct_tcon(struct cifs_sb_info
+ out:
+ 	kfree(ctx->username);
+ 	kfree_sensitive(ctx->password);
++	kfree(origin_fullpath);
+ 	kfree(ctx);
+ 
+ 	return tcon;
 
 
 
