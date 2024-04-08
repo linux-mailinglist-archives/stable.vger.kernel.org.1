@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-37390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64AB89C4B2
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E176889C46D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41D6DB26537
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:49:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC8128278F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96DB79955;
-	Mon,  8 Apr 2024 13:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B488E7F7C5;
+	Mon,  8 Apr 2024 13:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10WHhml4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EL9QhUvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CA574C09;
-	Mon,  8 Apr 2024 13:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737687BB11;
+	Mon,  8 Apr 2024 13:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584092; cv=none; b=sndx3XhA+Oo0rpOjRMsS5P6rzqy0O8PDyk7lHYuwNzCwQu01eoHFsYQ6thS9bK/zR0yr9ceDmitaTYt1isOonAjZ094oepxBOhl5cb4ZLxyp2k4ocP9Z0rMi6l2lQT3qQfXzifVZHTrxTDb/zUxtipGyy9O+Kxe96HrRW3Ec5Vc=
+	t=1712583937; cv=none; b=fxn0ATKSXb5CksUH+Imuo4daLveFHl5rpyLpbV7z6avMBn/3LhD8TmcSpfGXlk70LueivGiuSLmZZU/2xAG7w8KqXvGrnHIpo69danXvqBKFqdg48zeT0zUgnUt2Ktku878tLE5DG9qFQs7r3z88cm/yrX+vYq+QdwnzUEIDY3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584092; c=relaxed/simple;
-	bh=uAOepB3I9Yyh4ONCho3/oPyvYnNDJZtLQnp2i+N2HTk=;
+	s=arc-20240116; t=1712583937; c=relaxed/simple;
+	bh=KWxUKeNLYb+X3/UV0Yt9IY21zIxFDM4Ta2Xw9pl+E5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6WmQiTBtxF1LjWwYXSSs6eRIU2j4WRMSeyj848KpgRVhFIrFs/ugcrMwPEDU1KymiwncyfKHVOjpwVklZJGhihdVTI0C7u95f+/PF4uMgHHPCrormaRvP4J1ISp/78cPLnxeL2UVHXJo6A3kzvuujLTbKG4WJ36eno3VVaW1yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10WHhml4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09D2C43394;
-	Mon,  8 Apr 2024 13:48:11 +0000 (UTC)
+	 MIME-Version; b=VF+lYvr8NRik81ilVTln9+OXIylMYRxEJNBmyGz0H4nd+pRcNMhXgMWnH1Pu+PmSHSKydMf80N/F0lSBBbZsgaQRfnGNln8AUjjMtWCLGRCzMKUj1Mh/qB2DZg0Zy7Hzg3O6lxtT3N/Rs/CZdBX1ZJU1hjRhqGvQIQpF/RovXpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EL9QhUvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07CBC433C7;
+	Mon,  8 Apr 2024 13:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584092;
-	bh=uAOepB3I9Yyh4ONCho3/oPyvYnNDJZtLQnp2i+N2HTk=;
+	s=korg; t=1712583937;
+	bh=KWxUKeNLYb+X3/UV0Yt9IY21zIxFDM4Ta2Xw9pl+E5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10WHhml4ryVMgPtRfdeXJB6KFr1U9c62+oJhW3GzzUZznlCJLnXljt127E8JUJhLH
-	 wH+n+5J+RF1CSv6Xs9Dj8PX4Zb8r1S9lJYmAE5wR6gym4SG+ndR3i5rm72O063AMFm
-	 JWSDqZv8ioWm8RL1VhXP96O6A6q+V0kfy5NZw30o=
+	b=EL9QhUvp67PU0MRH2RLsD5rAMIAg/NKUi/DmyzA6JEtAl2Iyc8scR+7vWLK+0EdwR
+	 q/931hKamWuAsMOVpEHM3s6qmDh9wDRrtMQYmJaptTn4Xrwfbl3ZihIiw51Nivmmup
+	 FmDPUuvxvBzmszPa83pImbK/rkZ+hIx7qOgJ0I4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.8 260/273] drm/i915/dp: Fix the computation for compressed_bpp for DISPLAY < 13
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 236/252] smb: client: fix potential UAF in smb2_is_network_name_deleted()
 Date: Mon,  8 Apr 2024 14:58:55 +0200
-Message-ID: <20240408125317.553547993@linuxfoundation.org>
+Message-ID: <20240408125313.976895194@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit f7caddfd558e32db0ae944256e623a259538b357 upstream.
+commit 63981561ffd2d4987807df4126f96a11e18b0c1d upstream.
 
-For DISPLAY < 13, compressed bpp is chosen from a list of
-supported compressed bpps. Fix the condition to choose the
-appropriate compressed bpp from the list.
+Skip sessions that are being teared down (status == SES_EXITING) to
+avoid UAF.
 
-Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best compressed bpp")
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.7+
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10162
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240305054443.2489895-1-ankit.k.nautiyal@intel.com
-(cherry picked from commit 5a1da42b50f3594e18738885c2f23ed36629dd00)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2ops.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -1916,8 +1916,9 @@ icl_dsc_compute_link_config(struct intel
- 	dsc_max_bpp = min(dsc_max_bpp, pipe_bpp - 1);
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -2430,6 +2430,8 @@ smb2_is_network_name_deleted(char *buf,
  
- 	for (i = 0; i < ARRAY_SIZE(valid_dsc_bpp); i++) {
--		if (valid_dsc_bpp[i] < dsc_min_bpp ||
--		    valid_dsc_bpp[i] > dsc_max_bpp)
-+		if (valid_dsc_bpp[i] < dsc_min_bpp)
+ 	spin_lock(&cifs_tcp_ses_lock);
+ 	list_for_each_entry(ses, &pserver->smb_ses_list, smb_ses_list) {
++		if (cifs_ses_exiting(ses))
 +			continue;
-+		if (valid_dsc_bpp[i] > dsc_max_bpp)
- 			break;
- 
- 		ret = dsc_compute_link_config(intel_dp,
+ 		list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
+ 			if (tcon->tid == le32_to_cpu(shdr->Id.SyncId.TreeId)) {
+ 				spin_lock(&tcon->tc_lock);
 
 
 
