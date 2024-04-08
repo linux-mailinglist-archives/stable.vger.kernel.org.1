@@ -1,123 +1,126 @@
-Return-Path: <stable+bounces-36345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9034C89BC2A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 11:44:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E628689BCBC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 12:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C25861C21638
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 09:44:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 870E71F2256F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 10:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAF21E48C;
-	Mon,  8 Apr 2024 09:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B1352F62;
+	Mon,  8 Apr 2024 10:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUW5CaXl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UERHJSgu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B384EB23
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 09:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F975524C3
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 10:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712569459; cv=none; b=jYnM/Df1u+XQ11IlmYYoYb+L+gWguLVrdIBWPDW/GYnD4EPBa0JNOrFfSVMQGxMep36jmZPR9GBpfWUd/mXi3dxorMgU8Y2UF0eRnxJXSvx8f4b9zppXacmOUP6EJZM+L8f+aBnBub57U5QOsF5T5YO0gERE/3AUom4dzrYXqDE=
+	t=1712571192; cv=none; b=AiHc96Ce+0gNTQqavlZuaJ15ovXdLJQDB+hpCPHt7Bc3c+ihlI/834FEPPD7Lm9q7xBXTa1sUT1v3sAUOFPGr50KikLJzIFAzPZZbRDR4HMIPkiqJVeLFsmG1/96Fa5hQMMv+Jlp4q1p7a129K11DMUkTfZTSNxskIuDMdpk74o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712569459; c=relaxed/simple;
-	bh=+asVKsp69S/t3r0iq9KqbAX24rLXboa9/tfWyZn1Ewg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDlwq1fPpSwRtHT67/C1W+TBJVXfW8fsSQGSlyKNFn6NSorLu1t4MLFvARkma8rAKW2fT58hVEQGnAJO+d8cgQ8OU1Dwx3zsDjyZjnKlo/oa95ieGHD+8YwT26Ge9qJkHBUv/T1cVZAeJ5U1vud3qC5RZ91Wdy4ZEU+PUfBOPbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUW5CaXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E3FC433C7;
-	Mon,  8 Apr 2024 09:44:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712569459;
-	bh=+asVKsp69S/t3r0iq9KqbAX24rLXboa9/tfWyZn1Ewg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUW5CaXl+R8Y84sYF9ZnliI9LNtSd45BILg/4uiBr+b/BpijGZnjDqL9j5fL+CK9V
-	 4TNa8V6CI0plwEZfKfQrrP1OalbWilW0zH8TfQi9B5HIxFS/fFdRXR3eP1MvLBMJlq
-	 YIRBQj9yCODJwOJby3d5BZyfZYU1Zrw5f9cGphlXIxaII43XgxxdX3/r5qW9ygWKNL
-	 TLn4gQAtr18hidzPURi6hPXJi4VTuaQjSf+/TSOdLKhxdum0nA+LwwZneguChmH5JU
-	 AcPA3Wybx8b2LlEZ67Rrima2d64HKxqSbUMjHUMnYshQYED0F58erpbvlnvBo+UF1x
-	 lhYplv7La/AWw==
-From: Antoine Tenart <atenart@kernel.org>
-To: stable@vger.kernel.org
-Cc: Antoine Tenart <atenart@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15.y] gro: fix ownership transfer
-Date: Mon,  8 Apr 2024 11:44:16 +0200
-Message-ID: <20240408094416.68848-1-atenart@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <2024040543-backdrop-sequester-2458@gregkh>
-References: <2024040543-backdrop-sequester-2458@gregkh>
+	s=arc-20240116; t=1712571192; c=relaxed/simple;
+	bh=zRzAGpjrWuZ9EFZvedjukv2D1hIx1Y8GLMnbDytAIZ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C3SU3NRp5eG0amcnraV0DfA1K0HQ1zDvl2hEBl1UpNoE6v8gy+E8kIrkR/blwJ2zL0dLu9bz8nHqPPvGar+ZyZRfjrvuRag9b+0vr9tepedEa68Daq76+5iuk22wSGkLLpha0Jr4FqShV67q16CDfijTa2w4zIPtc4SuWApEDO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UERHJSgu; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712571191; x=1744107191;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zRzAGpjrWuZ9EFZvedjukv2D1hIx1Y8GLMnbDytAIZ8=;
+  b=UERHJSgu24SpJRC8tJpZWqCvek7kZqkuX36HVtRrzjQoLEGk4/n7xMTD
+   RKx380+wUA7Mk6WVPJuJzE0rtWJmAPM+XN0NLY0sk0riCSNjH5Fq0JtFb
+   qMFXoBaKNFh03Xe7EZ2FSBPTNePyB0vt/NIFnSIAS3gXiO4kGYx/0A26U
+   E4PrsO9Q/+iI4wK3tmtkNZaT/lSHJ0ZAyQv/nwL9rVQx7SrL4mM5/lrUH
+   Vg63dXwxl4Yp7L8j4glhIG+D3dLWIVsPCyE36I9aC3SrLBEs+PTnWNBxS
+   WRjaRVwj0/VODL3pvxHLRyVrsXVZLnWZpDQ96C5+hifOVgkb7k3jYojnF
+   A==;
+X-CSE-ConnectionGUID: reG9YKjHSQS6TwczLvWqBg==
+X-CSE-MsgGUID: M4rFN0jER/+Q+7oOZ/PSoQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11037"; a="30333622"
+X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; 
+   d="scan'208";a="30333622"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 03:13:11 -0700
+X-CSE-ConnectionGUID: WnwEhwRvTpa5HAsgaxFviw==
+X-CSE-MsgGUID: DidAYF2lSJah1XOXCsatHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; 
+   d="scan'208";a="20402414"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.246.36.15]) ([10.246.36.15])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 03:13:08 -0700
+Message-ID: <c86e90ef-5bee-4638-9dcd-2666bb7f6e51@linux.intel.com>
+Date: Mon, 8 Apr 2024 12:13:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/xe: Fix bo leak in intel_fb_bo_framebuffer_init
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+References: <20240404090302.68422-1-maarten.lankhorst@linux.intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20240404090302.68422-1-maarten.lankhorst@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit ed4cccef64c1d0d5b91e69f7a8a6697c3a865486 upstream.
 
-If packets are GROed with fraglist they might be segmented later on and
-continue their journey in the stack. In skb_segment_list those skbs can
-be reused as-is. This is an issue as their destructor was removed in
-skb_gro_receive_list but not the reference to their socket, and then
-they can't be orphaned. Fix this by also removing the reference to the
-socket.
-
-For example this could be observed,
-
-  kernel BUG at include/linux/skbuff.h:3131!  (skb_orphan)
-  RIP: 0010:ip6_rcv_core+0x11bc/0x19a0
-  Call Trace:
-   ipv6_list_rcv+0x250/0x3f0
-   __netif_receive_skb_list_core+0x49d/0x8f0
-   netif_receive_skb_list_internal+0x634/0xd40
-   napi_complete_done+0x1d2/0x7d0
-   gro_cell_poll+0x118/0x1f0
-
-A similar construction is found in skb_gro_receive, apply the same
-change there.
-
-Fixes: 5e10da5385d2 ("skbuff: allow 'slow_gro' for skb carring sock reference")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
----
- net/core/skbuff.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 7090844af499..789aa493a8b5 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3976,8 +3976,9 @@ int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
- 	NAPI_GRO_CB(p)->count++;
- 	p->data_len += skb->len;
- 
--	/* sk owenrship - if any - completely transferred to the aggregated packet */
-+	/* sk ownership - if any - completely transferred to the aggregated packet */
- 	skb->destructor = NULL;
-+	skb->sk = NULL;
- 	p->truesize += skb->truesize;
- 	p->len += skb->len;
- 
-@@ -4424,8 +4425,9 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
- 	}
- 
- merge:
--	/* sk owenrship - if any - completely transferred to the aggregated packet */
-+	/* sk ownership - if any - completely transferred to the aggregated packet */
- 	skb->destructor = NULL;
-+	skb->sk = NULL;
- 	delta_truesize = skb->truesize;
- 	if (offset > headlen) {
- 		unsigned int eat = offset - headlen;
--- 
-2.44.0
-
+On 4/4/2024 11:03 AM, Maarten Lankhorst wrote:
+> Add a unreference bo in the error path, to prevent leaking a bo ref.
+>
+> Return 0 on success to clarify the success path.
+>
+> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+> Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   drivers/gpu/drm/xe/display/intel_fb_bo.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/xe/display/intel_fb_bo.c b/drivers/gpu/drm/xe/display/intel_fb_bo.c
+> index dba327f53ac5..e18521acc516 100644
+> --- a/drivers/gpu/drm/xe/display/intel_fb_bo.c
+> +++ b/drivers/gpu/drm/xe/display/intel_fb_bo.c
+> @@ -31,7 +31,7 @@ int intel_fb_bo_framebuffer_init(struct intel_framebuffer *intel_fb,
+>   
+>   	ret = ttm_bo_reserve(&bo->ttm, true, false, NULL);
+>   	if (ret)
+> -		return ret;
+> +		goto err;
+>   
+>   	if (!(bo->flags & XE_BO_FLAG_SCANOUT)) {
+>   		/*
+> @@ -42,12 +42,16 @@ int intel_fb_bo_framebuffer_init(struct intel_framebuffer *intel_fb,
+>   		 */
+>   		if (XE_IOCTL_DBG(i915, !list_empty(&bo->ttm.base.gpuva.list))) {
+>   			ttm_bo_unreserve(&bo->ttm);
+> -			return -EINVAL;
+> +			ret = -EINVAL;
+> +			goto err;
+>   		}
+>   		bo->flags |= XE_BO_FLAG_SCANOUT;
+>   	}
+>   	ttm_bo_unreserve(&bo->ttm);
+> +	return 0;
+>   
+> +err:
+> +	xe_bo_put(bo);
+>   	return ret;
+>   }
+>   
 
