@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19D889C570
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:57:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD3F89C0B1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D98F8B2656A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:53:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6177E1F226F8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FE774BE5;
-	Mon,  8 Apr 2024 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FFC7CF17;
+	Mon,  8 Apr 2024 13:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7MJyl/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Hby+mHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184CC6EB72;
-	Mon,  8 Apr 2024 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3277C0BE;
+	Mon,  8 Apr 2024 13:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584419; cv=none; b=SqEbhRbF/8f7o3hng844mkGkckMM3f95Q1/OnTRCH8/6BPZ4d6pRsg5xB8rmbJXmnqwwXIPSJb+E8wQ7iC5DZYBWuGWsqm5S99pYAIVXgyfzWjy49UEivspZCLJ03X3hRoaQgakTwl0vT0KLlbvhOvF5K0qAR8Zc5quLbFMzqBA=
+	t=1712581838; cv=none; b=V//uSL73Ey92/RH+RhFY+rfXqUwjgQve7BO1vX5jIpPCPRq/NK3uYivOVLdg2qlFFcXVqcqZC9D47aYCX+35k4GWEA981Yye/VqpNz9LiUl2qm0d3B7m0tAHcoLmBXMGykHmANZ1Sfrart9ts1tSnTHhgiMKHcaK+mgJ28biar8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584419; c=relaxed/simple;
-	bh=+Yo7IZBN+X3STyszytDXXF/aTbJawbxJ1u30A29Ip/Y=;
+	s=arc-20240116; t=1712581838; c=relaxed/simple;
+	bh=WSDB9ym0v8BnIXPsMY1CU7QzZKVVht3vd2V80oB5n4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQJzdBgEh0bgeyvDY5Jml59PrDvHozlV2IEF0WQh5NpgjCOhhtxypJhS8I/LjID0IeJDC5nK3MPzU0KvvmtOGLyz6TNY+WlJlNfgRQ3mRCETL1+DMRiKA7lD1FG+5UYVKyYA7tlduaGnpj0mAwXv0O+MGo5BVVYYSoehpsC1dPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7MJyl/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4C7C433F1;
-	Mon,  8 Apr 2024 13:53:38 +0000 (UTC)
+	 MIME-Version; b=AGtk+UqMaIbJ5lJasKglUVLA0LdtMRNPPAyNUlb9JdWjy5+LyWXIWGTMvvxSfA+gLwpV+xJEGsmYo+kSPrXWBCtImGBhd1uBIfxQMyZ9ZTVGg6C+GWxZGiGTnPAbplZeQ/8eo5KuJ6aXg2b5VfVub0yRAKxXy3AiCBi++XAqjpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Hby+mHx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C062FC433A6;
+	Mon,  8 Apr 2024 13:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584418;
-	bh=+Yo7IZBN+X3STyszytDXXF/aTbJawbxJ1u30A29Ip/Y=;
+	s=korg; t=1712581838;
+	bh=WSDB9ym0v8BnIXPsMY1CU7QzZKVVht3vd2V80oB5n4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7MJyl/UyNKU3r6o8BszNyA8DTiFq6Yiuslxk1xh1zn5Z7xLapRc+T99ihRRE/we+
-	 kKb2PJMRbLDS7ifX9V1QHQp8yLAYsqHCNfTIfUukmUi6fzHDVFWEEL78gMBAG+eYZe
-	 PvkOdYisjbnivwwp/JI8EllzT7kCJjx4CCsux7Fc=
+	b=2Hby+mHxZh4DpMDX3Yah6/s2y21l40JIq4WjvZcjg+BAHKs8JdgU9FicVaPGUQBGc
+	 fc/B2esXaT6YT6GYzC0H29Hba5m67mVsVUJQrzKB4bLpY16Wq2SCPk14Z5oFKHoQ8R
+	 nMGB+13+b3LJGyb5zo2J9QCdNDX3nOIXABkZSatM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Mammedov <imammedo@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 432/690] NFSD: Make nfsd4_rename() wait before returning NFS4ERR_DELAY
-Date: Mon,  8 Apr 2024 14:54:58 +0200
-Message-ID: <20240408125415.255540385@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 024/273] drm/xe/device: fix XE_MAX_TILES_PER_DEVICE check
+Date: Mon,  8 Apr 2024 14:54:59 +0200
+Message-ID: <20240408125310.043345419@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 68c522afd0b1936b48a03a4c8b81261e7597c62d ]
+[ Upstream commit b45f20fa69cedb6038fdaec31bd600c273c865a5 ]
 
-nfsd_rename() can kick off a CB_RECALL (via
-vfs_rename() -> leases_conflict()) if a delegation is present.
-Before returning NFS4ERR_DELAY, give the client holding that
-delegation a chance to return it and then retry the nfsd_rename()
-again, once.
+Here XE_MAX_TILES_PER_DEVICE is the gt array size, therefore the gt
+index should always be less than.
 
-This version of the patch handles renaming an existing file,
-but does not deal with renaming onto an existing file. That
-case will still always trigger an NFS4ERR_DELAY.
+v2 (Lucas):
+  - Add fixes tag.
 
-Link: https://bugzilla.linux-nfs.org/show_bug.cgi?id=354
-Tested-by: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Acked-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318180532.57522-6-matthew.auld@intel.com
+(cherry picked from commit a96cd71ec7be0790f9fc4039ad21be8d214b03a4)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_device.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index e8329051dde01..4c5cc142562b2 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1698,7 +1698,15 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
- 			.new_dir	= tdir,
- 			.new_dentry	= ndentry,
- 		};
--		host_err = vfs_rename(&rd);
-+		int retries;
-+
-+		for (retries = 1;;) {
-+			host_err = vfs_rename(&rd);
-+			if (host_err != -EAGAIN || !retries--)
-+				break;
-+			if (!nfsd_wait_for_delegreturn(rqstp, d_inode(odentry)))
-+				break;
-+		}
- 		if (!host_err) {
- 			host_err = commit_metadata(tfhp);
- 			if (!host_err)
+diff --git a/drivers/gpu/drm/xe/xe_device.h b/drivers/gpu/drm/xe/xe_device.h
+index ee8be4c6b59b1..bf8efb44edf60 100644
+--- a/drivers/gpu/drm/xe/xe_device.h
++++ b/drivers/gpu/drm/xe/xe_device.h
+@@ -79,7 +79,7 @@ static inline struct xe_gt *xe_device_get_gt(struct xe_device *xe, u8 gt_id)
+ 	if (MEDIA_VER(xe) >= 13) {
+ 		gt = xe_tile_get_gt(root_tile, gt_id);
+ 	} else {
+-		if (drm_WARN_ON(&xe->drm, gt_id > XE_MAX_TILES_PER_DEVICE))
++		if (drm_WARN_ON(&xe->drm, gt_id >= XE_MAX_TILES_PER_DEVICE))
+ 			gt_id = 0;
+ 
+ 		gt = xe->tiles[gt_id].primary_gt;
 -- 
 2.43.0
 
