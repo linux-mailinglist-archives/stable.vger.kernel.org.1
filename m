@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-37322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83FDE89C45E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 348CF89C615
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38C54282BB1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 663061C225FB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF1B7EF1B;
-	Mon,  8 Apr 2024 13:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F052180022;
+	Mon,  8 Apr 2024 14:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzac+1Ul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bzd47SZL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED66E7E59F;
-	Mon,  8 Apr 2024 13:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED4A7D3FD;
+	Mon,  8 Apr 2024 14:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583894; cv=none; b=ZbjlaXtVD7HnWLhqqartDMkuW7tkgBb0D13vKra3R0FwIvyU9iom9o6mKdnlxu9EOj5TKDkmRxuLph55HNlgIcYjdtQLLSP8v/N2Yn1h+9+t4fb/Z8WNCSx+SzQD2HM9MACJ0H1p+z04a8dBQKumhE4aOec+JvM54lOn2X7hrDw=
+	t=1712585037; cv=none; b=JXWR/9UQEG1apatH4w7AtM85iJ4v3nvL3dWftGHFh/wYpAvo5IPE9Uo6I2qrhH72eeHZKhyv07V3RSHmv+RX886L5MCAFnQrsaqOG4POdl4Ys3wuaaKHSxwpIevMeCFldJ8AqtNejbftfAJzIw6T25WHZarkzJrPrdudjcUGb40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583894; c=relaxed/simple;
-	bh=w2c1yK4g0aH3EQ3SaU+fUOCSy+KhXwG90ZQl+xZRwc8=;
+	s=arc-20240116; t=1712585037; c=relaxed/simple;
+	bh=B7Vynkpedk3YatoeNcu/mX4JYfoEUfSqJY6JWkY5rtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGIyDWp0pvRjxfQfplWur60RIEBWDwo1Vn89GseTvQSSQS4LldWS8bBoGBhEVZWm8tVx2UBqjQ6/7QKtl28QT7fYCpdAtZrpcMSLaBxIRUQpW+nDYgRaAX9kSonKQZ9qHz7Xwh9O7LSPYaugWacd4Jh+nwvMtNT3CXJoQp+YIdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzac+1Ul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67538C433F1;
-	Mon,  8 Apr 2024 13:44:53 +0000 (UTC)
+	 MIME-Version; b=jztKsIYe0FAnz9ccg3+7rDuJaLF2dG0+dFwrOtDbZjBL+kaO2QkYOOkV/haAwvx2cDv0vkUrEjv9pb/cP6HYs7QhRykszpc4pN2ZZgy9vyVKWtaauUC8FfIBDkJ97cNdJoh3Y+dZLkrTj1tWAByvrfpioszL9ivExbsCU+HKXik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bzd47SZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC0BC433C7;
+	Mon,  8 Apr 2024 14:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583893;
-	bh=w2c1yK4g0aH3EQ3SaU+fUOCSy+KhXwG90ZQl+xZRwc8=;
+	s=korg; t=1712585037;
+	bh=B7Vynkpedk3YatoeNcu/mX4JYfoEUfSqJY6JWkY5rtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzac+1UlnjPnPossQm9h4efdnGVbaRjTyGffZF90cGEvKqQMtehLk2UEcsDq3RooR
-	 NHPZfrDsIDj5a1MUpVIxSxRE8P9P6q2SZkFtOb7RVY+O8HALEX/h520y+iRr4hL9t8
-	 V3geqwZhH6Tb8RgvIBT/S7YJg93jKUBq6FNQVy8I=
+	b=Bzd47SZLIVeaqIhpARhKeiTBAroa7F/wljsoh5Tn+cPxERDLpYBtG0QN/xks72yKA
+	 PuUWFj3RHg0dNR/ViiZbMf0E1revtuPg39P+VdUgVYXYO2w0G5wRPKOVYc7nnitFNu
+	 NFH7SrecDnX/1VbN2E0WQB54cLIXxjHPBkXV/eR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 231/273] x86/mm/pat: fix VM_PAT handling in COW mappings
-Date: Mon,  8 Apr 2024 14:58:26 +0200
-Message-ID: <20240408125316.598889032@linuxfoundation.org>
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com,
+	syzbot+d4066896495db380182e@syzkaller.appspotmail.com,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: [PATCH 5.15 641/690] bpf, sockmap: Prevent lock inversion deadlock in map delete elem
+Date: Mon,  8 Apr 2024 14:58:27 +0200
+Message-ID: <20240408125422.889168998@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,234 +66,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Jakub Sitnicki <jakub@cloudflare.com>
 
-commit 04c35ab3bdae7fefbd7c7a7355f29fa03a035221 upstream.
+commit ff91059932401894e6c86341915615c5eb0eca48 upstream.
 
-PAT handling won't do the right thing in COW mappings: the first PTE (or,
-in fact, all PTEs) can be replaced during write faults to point at anon
-folios.  Reliably recovering the correct PFN and cachemode using
-follow_phys() from PTEs will not work in COW mappings.
+syzkaller started using corpuses where a BPF tracing program deletes
+elements from a sockmap/sockhash map. Because BPF tracing programs can be
+invoked from any interrupt context, locks taken during a map_delete_elem
+operation must be hardirq-safe. Otherwise a deadlock due to lock inversion
+is possible, as reported by lockdep:
 
-Using follow_phys(), we might just get the address+protection of the anon
-folio (which is very wrong), or fail on swap/nonswap entries, failing
-follow_phys() and triggering a WARN_ON_ONCE() in untrack_pfn() and
-track_pfn_copy(), not properly calling free_pfn_range().
+       CPU0                    CPU1
+       ----                    ----
+  lock(&htab->buckets[i].lock);
+                               local_irq_disable();
+                               lock(&host->lock);
+                               lock(&htab->buckets[i].lock);
+  <Interrupt>
+    lock(&host->lock);
 
-In free_pfn_range(), we either wouldn't call memtype_free() or would call
-it with the wrong range, possibly leaking memory.
+Locks in sockmap are hardirq-unsafe by design. We expects elements to be
+deleted from sockmap/sockhash only in task (normal) context with interrupts
+enabled, or in softirq context.
 
-To fix that, let's update follow_phys() to refuse returning anon folios,
-and fallback to using the stored PFN inside vma->vm_pgoff for COW mappings
-if we run into that.
+Detect when map_delete_elem operation is invoked from a context which is
+_not_ hardirq-unsafe, that is interrupts are disabled, and bail out with an
+error.
 
-We will now properly handle untrack_pfn() with COW mappings, where we
-don't need the cachemode.  We'll have to fail fork()->track_pfn_copy() if
-the first page was replaced by an anon folio, though: we'd have to store
-the cachemode in the VMA to make this work, likely growing the VMA size.
+Note that map updates are not affected by this issue. BPF verifier does not
+allow updating sockmap/sockhash from a BPF tracing program today.
 
-For now, lets keep it simple and let track_pfn_copy() just fail in that
-case: it would have failed in the past with swap/nonswap entries already,
-and it would have done the wrong thing with anon folios.
-
-Simple reproducer to trigger the WARN_ON_ONCE() in untrack_pfn():
-
-<--- C reproducer --->
- #include <stdio.h>
- #include <sys/mman.h>
- #include <unistd.h>
- #include <liburing.h>
-
- int main(void)
- {
-         struct io_uring_params p = {};
-         int ring_fd;
-         size_t size;
-         char *map;
-
-         ring_fd = io_uring_setup(1, &p);
-         if (ring_fd < 0) {
-                 perror("io_uring_setup");
-                 return 1;
-         }
-         size = p.sq_off.array + p.sq_entries * sizeof(unsigned);
-
-         /* Map the submission queue ring MAP_PRIVATE */
-         map = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE,
-                    ring_fd, IORING_OFF_SQ_RING);
-         if (map == MAP_FAILED) {
-                 perror("mmap");
-                 return 1;
-         }
-
-         /* We have at least one page. Let's COW it. */
-         *map = 0;
-         pause();
-         return 0;
- }
-<--- C reproducer --->
-
-On a system with 16 GiB RAM and swap configured:
- # ./iouring &
- # memhog 16G
- # killall iouring
-[  301.552930] ------------[ cut here ]------------
-[  301.553285] WARNING: CPU: 7 PID: 1402 at arch/x86/mm/pat/memtype.c:1060 untrack_pfn+0xf4/0x100
-[  301.553989] Modules linked in: binfmt_misc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_g
-[  301.558232] CPU: 7 PID: 1402 Comm: iouring Not tainted 6.7.5-100.fc38.x86_64 #1
-[  301.558772] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebu4
-[  301.559569] RIP: 0010:untrack_pfn+0xf4/0x100
-[  301.559893] Code: 75 c4 eb cf 48 8b 43 10 8b a8 e8 00 00 00 3b 6b 28 74 b8 48 8b 7b 30 e8 ea 1a f7 000
-[  301.561189] RSP: 0018:ffffba2c0377fab8 EFLAGS: 00010282
-[  301.561590] RAX: 00000000ffffffea RBX: ffff9208c8ce9cc0 RCX: 000000010455e047
-[  301.562105] RDX: 07fffffff0eb1e0a RSI: 0000000000000000 RDI: ffff9208c391d200
-[  301.562628] RBP: 0000000000000000 R08: ffffba2c0377fab8 R09: 0000000000000000
-[  301.563145] R10: ffff9208d2292d50 R11: 0000000000000002 R12: 00007fea890e0000
-[  301.563669] R13: 0000000000000000 R14: ffffba2c0377fc08 R15: 0000000000000000
-[  301.564186] FS:  0000000000000000(0000) GS:ffff920c2fbc0000(0000) knlGS:0000000000000000
-[  301.564773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  301.565197] CR2: 00007fea88ee8a20 CR3: 00000001033a8000 CR4: 0000000000750ef0
-[  301.565725] PKRU: 55555554
-[  301.565944] Call Trace:
-[  301.566148]  <TASK>
-[  301.566325]  ? untrack_pfn+0xf4/0x100
-[  301.566618]  ? __warn+0x81/0x130
-[  301.566876]  ? untrack_pfn+0xf4/0x100
-[  301.567163]  ? report_bug+0x171/0x1a0
-[  301.567466]  ? handle_bug+0x3c/0x80
-[  301.567743]  ? exc_invalid_op+0x17/0x70
-[  301.568038]  ? asm_exc_invalid_op+0x1a/0x20
-[  301.568363]  ? untrack_pfn+0xf4/0x100
-[  301.568660]  ? untrack_pfn+0x65/0x100
-[  301.568947]  unmap_single_vma+0xa6/0xe0
-[  301.569247]  unmap_vmas+0xb5/0x190
-[  301.569532]  exit_mmap+0xec/0x340
-[  301.569801]  __mmput+0x3e/0x130
-[  301.570051]  do_exit+0x305/0xaf0
-...
-
-Link: https://lkml.kernel.org/r/20240403212131.929421-3-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Wupeng Ma <mawupeng1@huawei.com>
-Closes: https://lkml.kernel.org/r/20240227122814.3781907-1-mawupeng1@huawei.com
-Fixes: b1a86e15dc03 ("x86, pat: remove the dependency on 'vm_pgoff' in track/untrack pfn vma routines")
-Fixes: 5899329b1910 ("x86: PAT: implement track/untrack of pfnmap regions for x86 - v3")
-Acked-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Reported-by: syzbot+bc922f476bd65abbd466@syzkaller.appspotmail.com
+Reported-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+d4066896495db380182e@syzkaller.appspotmail.com
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=d4066896495db380182e
+Closes: https://syzkaller.appspot.com/bug?extid=bc922f476bd65abbd466
+Link: https://lore.kernel.org/bpf/20240402104621.1050319-1-jakub@cloudflare.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/pat/memtype.c |   49 ++++++++++++++++++++++++++++++++--------------
- mm/memory.c               |    4 +++
- 2 files changed, 39 insertions(+), 14 deletions(-)
+ net/core/sock_map.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/x86/mm/pat/memtype.c
-+++ b/arch/x86/mm/pat/memtype.c
-@@ -950,6 +950,38 @@ static void free_pfn_range(u64 paddr, un
- 		memtype_free(paddr, paddr + size);
- }
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -413,6 +413,9 @@ static int __sock_map_delete(struct bpf_
+ 	struct sock *sk;
+ 	int err = 0;
  
-+static int get_pat_info(struct vm_area_struct *vma, resource_size_t *paddr,
-+		pgprot_t *pgprot)
-+{
-+	unsigned long prot;
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
 +
-+	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_PAT));
+ 	raw_spin_lock_bh(&stab->lock);
+ 	sk = *psk;
+ 	if (!sk_test || sk_test == sk)
+@@ -931,6 +934,9 @@ static int sock_hash_delete_elem(struct
+ 	struct bpf_shtab_elem *elem;
+ 	int ret = -ENOENT;
+ 
++	if (irqs_disabled())
++		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
 +
-+	/*
-+	 * We need the starting PFN and cachemode used for track_pfn_remap()
-+	 * that covered the whole VMA. For most mappings, we can obtain that
-+	 * information from the page tables. For COW mappings, we might now
-+	 * suddenly have anon folios mapped and follow_phys() will fail.
-+	 *
-+	 * Fallback to using vma->vm_pgoff, see remap_pfn_range_notrack(), to
-+	 * detect the PFN. If we need the cachemode as well, we're out of luck
-+	 * for now and have to fail fork().
-+	 */
-+	if (!follow_phys(vma, vma->vm_start, 0, &prot, paddr)) {
-+		if (pgprot)
-+			*pgprot = __pgprot(prot);
-+		return 0;
-+	}
-+	if (is_cow_mapping(vma->vm_flags)) {
-+		if (pgprot)
-+			return -EINVAL;
-+		*paddr = (resource_size_t)vma->vm_pgoff << PAGE_SHIFT;
-+		return 0;
-+	}
-+	WARN_ON_ONCE(1);
-+	return -EINVAL;
-+}
-+
- /*
-  * track_pfn_copy is called when vma that is covering the pfnmap gets
-  * copied through copy_page_range().
-@@ -960,20 +992,13 @@ static void free_pfn_range(u64 paddr, un
- int track_pfn_copy(struct vm_area_struct *vma)
- {
- 	resource_size_t paddr;
--	unsigned long prot;
- 	unsigned long vma_size = vma->vm_end - vma->vm_start;
- 	pgprot_t pgprot;
- 
- 	if (vma->vm_flags & VM_PAT) {
--		/*
--		 * reserve the whole chunk covered by vma. We need the
--		 * starting address and protection from pte.
--		 */
--		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
--			WARN_ON_ONCE(1);
-+		if (get_pat_info(vma, &paddr, &pgprot))
- 			return -EINVAL;
--		}
--		pgprot = __pgprot(prot);
-+		/* reserve the whole chunk covered by vma. */
- 		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
- 	}
- 
-@@ -1048,7 +1073,6 @@ void untrack_pfn(struct vm_area_struct *
- 		 unsigned long size, bool mm_wr_locked)
- {
- 	resource_size_t paddr;
--	unsigned long prot;
- 
- 	if (vma && !(vma->vm_flags & VM_PAT))
- 		return;
-@@ -1056,11 +1080,8 @@ void untrack_pfn(struct vm_area_struct *
- 	/* free the chunk starting from pfn or the whole chunk */
- 	paddr = (resource_size_t)pfn << PAGE_SHIFT;
- 	if (!paddr && !size) {
--		if (follow_phys(vma, vma->vm_start, 0, &prot, &paddr)) {
--			WARN_ON_ONCE(1);
-+		if (get_pat_info(vma, &paddr, NULL))
- 			return;
--		}
--
- 		size = vma->vm_end - vma->vm_start;
- 	}
- 	free_pfn_range(paddr, size);
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5837,6 +5837,10 @@ int follow_phys(struct vm_area_struct *v
- 		goto out;
- 	pte = ptep_get(ptep);
- 
-+	/* Never return PFNs of anon folios in COW mappings. */
-+	if (vm_normal_folio(vma, address, pte))
-+		goto unlock;
-+
- 	if ((flags & FOLL_WRITE) && !pte_write(pte))
- 		goto unlock;
+ 	hash = sock_hash_bucket_hash(key, key_size);
+ 	bucket = sock_hash_select_bucket(htab, hash);
  
 
 
