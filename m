@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-37432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E0689C4D1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7851989C4DB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4E4F1C225D5
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18B361F2316D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D174774438;
-	Mon,  8 Apr 2024 13:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF5B74BE8;
+	Mon,  8 Apr 2024 13:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnnYGk5V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgAYHEm3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F44A6A342;
-	Mon,  8 Apr 2024 13:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00D36A342;
+	Mon,  8 Apr 2024 13:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584215; cv=none; b=aVOvPPRZbTENViwSQXOHhkERUxG7M/gKzQdGs6rxFCry12zC8nvgDNG8Ho0ovZWwzCHWFltbtS1HZynlmmfJzg1YDLHXsJ9L7olhX/q2thQlaiqScTYZ3x6hJbD0AP7x90pUBd/umghjZ3CFWSdfV7gyrH8mySzcLYyX3SGBBQo=
+	t=1712584248; cv=none; b=hDxsvTh9zlUmV7gyJjgQfv66TLCWaKbv/9T4qB8VQVb+DRR3Gk7cmwNdZqt6uBgpyRmeS/yfw1SKBbv1lSB2K9fnOdzV317nwfEnXUIK27ZrLf805LlWXczMbTOpxrGM7AY6oRFtaGxNKgfimdjdpv6dg5JCYLiLWgeYv4T88no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584215; c=relaxed/simple;
-	bh=rUnNuN0lwDoQKbI2L+oyQuiK1nuSxWAjAFXsR8cZHck=;
+	s=arc-20240116; t=1712584248; c=relaxed/simple;
+	bh=mxq/uzf61xKjh9Q1Kk/57+yrDk5R6H7mUdDBVltwoyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uz0kl1A3npeTv4RxXGpwhniJKowu4LpPcFPJrkHKJQCEnBhgZbq7WHvZwY4BUgA6cNk2i3bCn+ahzbf/8kdJPU62Bdd+rItO44Y3umENsxqpUOA+6+qb4KLVzvXeK9yw/0bd6OeqSTixqd5r6B1RXpqVqaTSIAgEagMg9/JmzbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnnYGk5V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1883EC433C7;
-	Mon,  8 Apr 2024 13:50:14 +0000 (UTC)
+	 MIME-Version; b=p3Qp69RQ2NlE/t8YjPQxeu0BSdJH7Dy4QSoI1a77lmmkwpGdYpi4qUKg2O/fVRFqvUojcC9/RypeNpLRu7Uz/aEyqTzSFz5nHyxNQBodUHCzWQJIflKndLMTCirYTkZccMA0w1v1mg0Q0gpbogflDfpNAldn6F3f5R2KPrzWWHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgAYHEm3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA8AC433F1;
+	Mon,  8 Apr 2024 13:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584215;
-	bh=rUnNuN0lwDoQKbI2L+oyQuiK1nuSxWAjAFXsR8cZHck=;
+	s=korg; t=1712584247;
+	bh=mxq/uzf61xKjh9Q1Kk/57+yrDk5R6H7mUdDBVltwoyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnnYGk5VOAiU2P2hXM0N+lA7ucN2ADwgVVoHfHk2QxalQ4A5AQdDrdo5vCrwr1NXN
-	 oIx09i8ITTPuPQKtkf2w+jPxv4bRRi9LEX7IurzrJiIsdgyaEg1F1boXxHlj4zAxVD
-	 +0nJLXjQAtqAVuaZ4/X4sfVUVRdVF1nRSqML9sWU=
+	b=mgAYHEm3rMD/qlTkZ7YnoiDHEIj4RUCNxMh+2fW7WswsM9+Zyet9pWpNqRrOmRRhR
+	 znGG+kp8PFfGv5ZgOl3BAzQlLePCAFU/rfVVdKkjK8t0QpaRIgTaogYa1m14C2BDkN
+	 V3RSvkt10KChQpiIm0cRTaH3SERhHcGcqeXWtDao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 345/690] NFSD: Demote a WARN to a pr_warn()
-Date: Mon,  8 Apr 2024 14:53:31 +0200
-Message-ID: <20240408125412.097343192@linuxfoundation.org>
+Subject: [PATCH 5.15 346/690] NFSD: Report filecache LRU size
+Date: Mon,  8 Apr 2024 14:53:32 +0200
+Message-ID: <20240408125412.126219024@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,33 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit ca3f9acb6d3faf78da2b63324f7c737dbddf7f69 ]
+[ Upstream commit 0fd244c115f0321fc5e34ad2291f2a572508e3f7 ]
 
-The call trace doesn't add much value, but it sure is noisy.
+Surface the NFSD filecache's LRU list length to help field
+troubleshooters monitor filecache issues.
 
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4proc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/filecache.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index d70c4e78f0b3f..15991eb9b8d8c 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -630,9 +630,9 @@ nfsd4_open(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	}
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 1d3d13b78be0e..377d8211200ff 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -1047,7 +1047,7 @@ nfsd_file_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ static int nfsd_file_cache_stats_show(struct seq_file *m, void *v)
+ {
+ 	unsigned int i, count = 0, longest = 0;
+-	unsigned long hits = 0;
++	unsigned long lru = 0, hits = 0;
  
- 	status = nfsd4_process_open2(rqstp, resfh, open);
--	WARN(status && open->op_created,
--	     "nfsd4_process_open2 failed to open newly-created file! status=%u\n",
--	     be32_to_cpu(status));
-+	if (status && open->op_created)
-+		pr_warn("nfsd4_process_open2 failed to open newly-created file: status=%u\n",
-+			be32_to_cpu(status));
- 	if (reclaim && !status)
- 		nn->somebody_reclaimed = true;
- out:
+ 	/*
+ 	 * No need for spinlocks here since we're not terribly interested in
+@@ -1060,6 +1060,7 @@ static int nfsd_file_cache_stats_show(struct seq_file *m, void *v)
+ 			count += nfsd_file_hashtbl[i].nfb_count;
+ 			longest = max(longest, nfsd_file_hashtbl[i].nfb_count);
+ 		}
++		lru = list_lru_count(&nfsd_file_lru);
+ 	}
+ 	mutex_unlock(&nfsd_mutex);
+ 
+@@ -1068,6 +1069,7 @@ static int nfsd_file_cache_stats_show(struct seq_file *m, void *v)
+ 
+ 	seq_printf(m, "total entries: %u\n", count);
+ 	seq_printf(m, "longest chain: %u\n", longest);
++	seq_printf(m, "lru entries:   %lu\n", lru);
+ 	seq_printf(m, "cache hits:    %lu\n", hits);
+ 	return 0;
+ }
 -- 
 2.43.0
 
