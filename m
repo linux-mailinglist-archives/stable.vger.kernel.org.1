@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C3789C13C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B6389C20C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA6A61F218FE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D75441C21DD0
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA3B8121B;
-	Mon,  8 Apr 2024 13:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F117E101;
+	Mon,  8 Apr 2024 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7426h8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITspUhEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3636FE35;
-	Mon,  8 Apr 2024 13:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970D9768EA;
+	Mon,  8 Apr 2024 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582054; cv=none; b=OHXQxeE073hljaX5B6RGW7I/xQ/RrU0UB6cVdLIQvZwjp6ja0Giz5R2TIXDazAtE24qtEs+5J5LDGmaxhhvoOk+XdOGsjPitPOxWm3Fwb24JqUitPCW3AF/ohh1Z8pMYV77af3IcMNrBImTMwVRoOf6smFzw+E80+InObbKccXs=
+	t=1712582550; cv=none; b=FhhHliC/sWUOvburgOfNbyg/YtR197IvmEDC8FHeufcNkfBiI/RW+gP2KqOUQr3ANplc0bJRNCVcB+9YmVbx8YgNjthC6SVxAq+MA9o6NiLk26JpZUS2h9aiDY2mVLhgt+pTZu3IqVwHhpmdRdEaw3jRoaz7VgprmLpVp0Fyan4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582054; c=relaxed/simple;
-	bh=UtAsA4TKW+/icmU659cg0QFdcy3hdYhcZ07NY/k0f1M=;
+	s=arc-20240116; t=1712582550; c=relaxed/simple;
+	bh=NBnrXbNauukYCGSxgKdM1vkJaWy/pj8MWyMiz0JGSNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrVFI+aHVn6uws4izOpIa3CIlqFyFp4PCeEhU9TrBi67yKE8051c6P+DW2eSLIXyABkBc3fCHOuy/RUvSCx89sc4be0PVTPsNwQNfHzr9Jg0Wh/kWIIMMUd3+UXxB/VFn+xyWHIkZp2u6NiDd970kIrEJautUb//eQIA/VKugTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7426h8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23955C43390;
-	Mon,  8 Apr 2024 13:14:13 +0000 (UTC)
+	 MIME-Version; b=prQiz5A1NEsmRfBrXjRX0QvXyhfGFeYtH9apEUVyVx2VqgOsoz1+YtAsDYFY1QdzoAhdV61oaoW9erFDcEA5wBL3VlnWlXGPQ7wtHTw3J1ol3aVQvBkdOO7FDck5xr+tLS/3Z0sG+L3iPrb7szf9hm1jEhxvgFsttKoVu0ANupY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITspUhEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20873C433F1;
+	Mon,  8 Apr 2024 13:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582054;
-	bh=UtAsA4TKW+/icmU659cg0QFdcy3hdYhcZ07NY/k0f1M=;
+	s=korg; t=1712582550;
+	bh=NBnrXbNauukYCGSxgKdM1vkJaWy/pj8MWyMiz0JGSNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7426h8QJMhFDJwHf4luiCQL1FwEvmZ0kw6PBWkBTGrc67tM8Lgu1BK1kKE0/dfsk
-	 cty2TZcW2+1B+GLZ22y9VQIRjq60Ft0DPC3akPHJgPJ/A+rtGa04ayUt6Cntd6GIjC
-	 PaJIgcOng9LhldM07qZNCvKZFmhY6R0ai9FsVoN8=
+	b=ITspUhEMNN1dCpluxlHCH/eKomq1MCau5KvVrwA8jhlZHnyXZHFp2DlwCarRR89Lv
+	 Tz0g/D+JUYnJ+3n6a9SQFb2wizdbmCsmyhsAmI2IiEdhDiObC0lsbW3NiY3JUOTBDi
+	 vZp/YcAhIBYFQbvHGA5OERDdSyNxiQOuys4hsYdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/252] x86/CPU/AMD: Move the DIV0 bug detection to the Zen1 init function
-Date: Mon,  8 Apr 2024 14:55:59 +0200
-Message-ID: <20240408125308.501026151@linuxfoundation.org>
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.8 085/273] net: mana: Fix Rx DMA datasize and skb_over_panic
+Date: Mon,  8 Apr 2024 14:56:00 +0200
+Message-ID: <20240408125311.939291166@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit bfff3c6692ce64fa9d86eb829d18229c307a0855 ]
+commit c0de6ab920aafb56feab56058e46b688e694a246 upstream.
 
-No functional changes.
+mana_get_rxbuf_cfg() aligns the RX buffer's DMA datasize to be
+multiple of 64. So a packet slightly bigger than mtu+14, say 1536,
+can be received and cause skb_over_panic.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: http://lore.kernel.org/r/20231120104152.13740-9-bp@alien8.de
-Stable-dep-of: c7b2edd8377b ("perf/x86/amd/core: Update and fix stalled-cycles-* events for Zen 2 and later")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Sample dmesg:
+[ 5325.237162] skbuff: skb_over_panic: text:ffffffffc043277a len:1536 put:1536 head:ff1100018b517000 data:ff1100018b517100 tail:0x700 end:0x6ea dev:<NULL>
+[ 5325.243689] ------------[ cut here ]------------
+[ 5325.245748] kernel BUG at net/core/skbuff.c:192!
+[ 5325.247838] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[ 5325.258374] RIP: 0010:skb_panic+0x4f/0x60
+[ 5325.302941] Call Trace:
+[ 5325.304389]  <IRQ>
+[ 5325.315794]  ? skb_panic+0x4f/0x60
+[ 5325.317457]  ? asm_exc_invalid_op+0x1f/0x30
+[ 5325.319490]  ? skb_panic+0x4f/0x60
+[ 5325.321161]  skb_put+0x4e/0x50
+[ 5325.322670]  mana_poll+0x6fa/0xb50 [mana]
+[ 5325.324578]  __napi_poll+0x33/0x1e0
+[ 5325.326328]  net_rx_action+0x12e/0x280
+
+As discussed internally, this alignment is not necessary. To fix
+this bug, remove it from the code. So oversized packets will be
+marked as CQE_RX_TRUNCATED by NIC, and dropped.
+
+Cc: stable@vger.kernel.org
+Fixes: 2fbbd712baf1 ("net: mana: Enable RX path to handle various MTU sizes")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Link: https://lore.kernel.org/r/1712087316-20886-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |    2 +-
+ include/net/mana/mana.h                       |    1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index d8a0dc01a7db2..f4373530c7de0 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -70,10 +70,6 @@ static const int amd_erratum_383[] =
- static const int amd_erratum_1054[] =
- 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0, 0, 0x2f, 0xf));
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -601,7 +601,7 @@ static void mana_get_rxbuf_cfg(int mtu,
  
--static const int amd_div0[] =
--	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x00, 0x0, 0x2f, 0xf),
--			   AMD_MODEL_RANGE(0x17, 0x50, 0x0, 0x5f, 0xf));
--
- static const int amd_erratum_1485[] =
- 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x19, 0x10, 0x0, 0x1f, 0xf),
- 			   AMD_MODEL_RANGE(0x19, 0x60, 0x0, 0xaf, 0xf));
-@@ -1043,6 +1039,9 @@ static void init_amd_zen(struct cpuinfo_x86 *c)
- 		if (c->x86 == 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
- 			set_cpu_cap(c, X86_FEATURE_BTC_NO);
- 	}
-+
-+	pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protection.\n");
-+	setup_force_cpu_bug(X86_BUG_DIV0);
+ 	*alloc_size = mtu + MANA_RXBUF_PAD + *headroom;
+ 
+-	*datasize = ALIGN(mtu + ETH_HLEN, MANA_RX_DATA_ALIGN);
++	*datasize = mtu + ETH_HLEN;
  }
  
- static bool cpu_has_zenbleed_microcode(void)
-@@ -1211,11 +1210,6 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	    cpu_has(c, X86_FEATURE_AUTOIBRS))
- 		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS));
+ static int mana_pre_alloc_rxbufs(struct mana_port_context *mpc, int new_mtu)
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -39,7 +39,6 @@ enum TRI_STATE {
+ #define COMP_ENTRY_SIZE 64
  
--	if (cpu_has_amd_erratum(c, amd_div0)) {
--		pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protection.\n");
--		setup_force_cpu_bug(X86_BUG_DIV0);
--	}
--
- 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
- 	     cpu_has_amd_erratum(c, amd_erratum_1485))
- 		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
--- 
-2.43.0
-
+ #define RX_BUFFERS_PER_QUEUE 512
+-#define MANA_RX_DATA_ALIGN 64
+ 
+ #define MAX_SEND_BUFFERS_PER_QUEUE 256
+ 
 
 
 
