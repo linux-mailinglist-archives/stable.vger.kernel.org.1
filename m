@@ -1,71 +1,82 @@
-Return-Path: <stable+bounces-37776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F9F89C884
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 17:38:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A7689C918
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 17:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 265F6B2314E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:38:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25B181F21A00
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40C91420D0;
-	Mon,  8 Apr 2024 15:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4D41422A7;
+	Mon,  8 Apr 2024 15:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dW7uc67/"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="SFqy9yCM"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB82561F
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 15:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022061420D0
+	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 15:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712590702; cv=none; b=HWeewh6KqhZdTfCtIoKYpKxPXa4gHcsmdvqD1UWMINX+QB1uDMgdSfilRVXg7vFglBEPdwkkLAoP2xGAWjqreWPcaY3QT1ITlr8AGoVzhFhQdQrVbHH+saP84ziozlEhGRcfdpfCWL7eyFbidfCSVxS/1jTlDaVKLo04sASFFM8=
+	t=1712591773; cv=none; b=gK8SZhhZT4QjQhVpn7LuqGLtdfngXUw1ANF4VbplHdsW8luS2Cb/L0b/ZpLws3zRoV5JI9PcdY0ACRmgyDn9nJvHjprHcOofhUfrXEsktEIjLt4jsitwRn9ew8IutQKiKSw9sC0PFSsZW4FnQnHfOk6kXUgwhP1ToinRYF8CAws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712590702; c=relaxed/simple;
-	bh=6IXLTjcd6JqGOQbMDKa8PWG/UBTHXWFqxs/wZfO8js8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oy9snKSnHYSh2xxKtpRL2OF18njLupubmMMqoJT7LBBuXArUFyhCKrWREar2/I0L8DxkbNZqGui24sJcNGh7Fuj5STPPBSRmZc9q8aWqrhiAPwwPKdF3CGkLy9xivbtX7KcaZhoDxkPnTHxYueB+8nvKabpuqNv46v31fEOT2Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dW7uc67/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712590700;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6IXLTjcd6JqGOQbMDKa8PWG/UBTHXWFqxs/wZfO8js8=;
-	b=dW7uc67/MDohw5FjXKnHaOnxe8F5mc9AwN0mXnN+3cMBzC7sOKNS54eTZawksewgpSGMst
-	1KnYx5HP6h5TGjqvSxKhL9acsUZHOmfD/CqOUHZ2DPVHb2QvvNCJQ810yHQJFI08ldfYEe
-	FaIfPevvErTiR60WpALNqaXtW7/MWXg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-139-x-K6YrKdNeuyXnMuSmr1WA-1; Mon, 08 Apr 2024 11:38:16 -0400
-X-MC-Unique: x-K6YrKdNeuyXnMuSmr1WA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D935800219;
-	Mon,  8 Apr 2024 15:38:16 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.193.114])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 0012F492BC7;
-	Mon,  8 Apr 2024 15:38:14 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: jarkko.palviainen@gmail.com
-Cc: jtornosm@redhat.com,
-	linux-usb@vger.kernel.org,
-	regressions@lists.linux.dev,
+	s=arc-20240116; t=1712591773; c=relaxed/simple;
+	bh=vjjTYogJRZ/cNJXchl4GhHqilSsjZWJ6M7hg9rSsNCk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Bx9WMyU52wDal6vHpfEx+YloudIibi2jpDtpjwBM2tjR3vF0V7XBzErEeSQZeqCYOiwRhrWkOciW5SnrxDz4cYBATIwKNNJ5Ntbass3r8judpyjPnu9gCdhvqtXbTQg77X+yaLq3ITIJ4cwWFOvn5A2Ad+sTctnuoQjNc5CRg0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=SFqy9yCM; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6ed267f2936so1009547b3a.3
+        for <stable@vger.kernel.org>; Mon, 08 Apr 2024 08:56:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1712591771; x=1713196571; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A3S+sayV8Xb4fBOHSM111duhifwyMfUVXCb44YuSt5A=;
+        b=SFqy9yCMU11Y/NOlXu4XY3CFKOEZ8WkcdkYXKYakmRU4B6aTeGV3fmpLFgBXiPmaZJ
+         uWF2u4uvxR+e6ldINRP5LBMNld8Zn1J+IZ+tYZYv+1FX9fDenRvxtA5rLmjr2rJlZ7RS
+         rsLKY/DhEPLanfGC++OnquK3nCoYl/Qf14yYs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712591771; x=1713196571;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A3S+sayV8Xb4fBOHSM111duhifwyMfUVXCb44YuSt5A=;
+        b=qig94/2EJTKrIfH317sF7P8M9uJjtgevj26kV479Vgw6njCpQLYKK1+m57NyfNkRL7
+         8AqAOA1yuQZ6U5/qi1lyOiKD08rqF1qfG6Bt/ieSyrzyss4yaymAypkodZnKtKElKRd0
+         BRBU2iVnAhPJdwQBbpkbs0hu7D9saWHZgM7YB5TIRv/2XXQqEIbqkTjZ7oyl/VwUU2Ye
+         CQ9wCt+ElJ7XdgnNF3nSziPlGYOMcWofyaXix/1ENC495qgEiQhKEglKvgVam8RMCwcq
+         Gtia1Zgzh7n/wcG3PGMdmatbuSiK4Si9L5fTQDPfLQo68ymUFeLXYPl9/kNr4kGjx3xW
+         ZizA==
+X-Forwarded-Encrypted: i=1; AJvYcCURF0qK2z9npFMAQ/SfRVGTxKbr0hKg4QaPNqlwuKdzelDbUY7y91Dy26H2pTNwRNBAk0Ogeypj9hVgqdCdprPH5uQ+9oro
+X-Gm-Message-State: AOJu0YxdQLESutON2+u/CUhgOeI9YIz/bwEPDHIvedwSYUF7xwwyqmab
+	0xu18+joyWBCY2nAil0lKZTBNnVdXMNCdGuoZIHtQVYux2CX00++q5TNXkUwyw==
+X-Google-Smtp-Source: AGHT+IFSU94hghksr4pU6DSn3YL0aeuWM0Ki29quuWZaYCGHog3UR5UilX0eyDeTOKdJQAO2AB9Zrg==
+X-Received: by 2002:a05:6a20:c889:b0:1a7:a067:63f9 with SMTP id hb9-20020a056a20c88900b001a7a06763f9mr38586pzb.33.1712591771221;
+        Mon, 08 Apr 2024 08:56:11 -0700 (PDT)
+Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id i4-20020aa787c4000000b006e64c9bc2b3sm6912402pfo.11.2024.04.08.08.56.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Apr 2024 08:56:10 -0700 (PDT)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	ian.forbes@broadcom.com,
+	martin.krastev@broadcom.com,
+	maaz.mombasawala@broadcom.com,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [REGRESSION] ax88179_178a assigns the same MAC address to all USB network interfaces
-Date: Mon,  8 Apr 2024 17:38:08 +0200
-Message-ID: <20240408153809.620467-1-jtornosm@redhat.com>
-In-Reply-To: <ZhFl6xueHnuVHKdp@nuc>
-References: <ZhFl6xueHnuVHKdp@nuc>
+Subject: [PATCH] drm/ttm: Print the memory decryption status just once
+Date: Mon,  8 Apr 2024 11:56:05 -0400
+Message-Id: <20240408155605.1398631-1-zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,18 +85,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-Hello Jarkko,
+Stop printing the TT memory decryption status info each time tt is created
+and instead print it just once.
 
-So, you are using two (or more) devices in the same machine and they are
-not getting the specific one and even they are getting the same locally
-administered address (random).
-It is strange that the second reset is affecting, because the read and
-previosuly stored address should be the same with one reset or with two.
-As the author of the commented commit, let me analyze it to try to fix it.
+Reduces the spam in the system logs when running guests with SEV enabled.
 
-Best regards
-José Ignacio
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 71ce046327cf ("drm/ttm: Make sure the mapped tt pages are decrypted when needed")
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v5.14+
+---
+ drivers/gpu/drm/ttm/ttm_tt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/ttm/ttm_tt.c b/drivers/gpu/drm/ttm/ttm_tt.c
+index 578a7c37f00b..d776e3f87064 100644
+--- a/drivers/gpu/drm/ttm/ttm_tt.c
++++ b/drivers/gpu/drm/ttm/ttm_tt.c
+@@ -92,7 +92,7 @@ int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
+ 	 */
+ 	if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
+ 		page_flags |= TTM_TT_FLAG_DECRYPTED;
+-		drm_info(ddev, "TT memory decryption enabled.");
++		drm_info_once(ddev, "TT memory decryption enabled.");
+ 	}
+ 
+ 	bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
+-- 
+2.40.1
 
 
