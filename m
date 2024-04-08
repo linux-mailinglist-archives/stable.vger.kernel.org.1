@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-37005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DDF89C36A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D6689C5D2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1148B2D3A4
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AD981F2208E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E81745C5;
-	Mon,  8 Apr 2024 13:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AFD7EF14;
+	Mon,  8 Apr 2024 14:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ne1dYlA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLloZIvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85784481A6;
-	Mon,  8 Apr 2024 13:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B1D7E0FF;
+	Mon,  8 Apr 2024 14:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582976; cv=none; b=eCUitaAIf91/WWUUsGgueD0LVFfor7BDOG7/1Y0+5UknTIDsiEqjcbvOCfgXfz6qhATjK0gOq4eUJ746L47CJmHxI72UapE0lQdYwe3MJ4KerSijVanxvS8yrPfhDhKv6FGih6HK/P3U4UGLlDwNPJzas7FgS7IqAZ815HGVVhQ=
+	t=1712584850; cv=none; b=rwKwkZdQif09PaRGJ7pOD4rSQj6Du2l5UXEhLAkGtSO1o/5O88L6/xnui1TKOP7EdaYxHN1S7apNgMIqZF3fffch3kpS8EGe/6+sdfW5KBMQA1fwtwY3EJY5y0zgwdP/90mpK0hm1JXTanRr/SEyjya9PKJ0C+LzHoe/16iH6EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582976; c=relaxed/simple;
-	bh=40tCne+Vum/hZREoJ+CAKf1M+GxUNNTCUpDJdu3PzhU=;
+	s=arc-20240116; t=1712584850; c=relaxed/simple;
+	bh=wJH8wjMO/1kss7287BZjk8+hgaXyVock33xHY82he3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BkWdcJUuqYbtyTEQjfaQs5NfT5EffCUuXdBQdvxvqB1O9h5Jut5l6xcd29VDtiBoNPmHTW/I0BXpXA4G5SC88G4+F0zxHmfneyGzVsKAVoeJoVopDLvTghweaUZpbezpPgyuMCVYWOe62KrDSlXsNtdudGyh+MCaV08cqeFdns4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ne1dYlA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E804C433C7;
-	Mon,  8 Apr 2024 13:29:35 +0000 (UTC)
+	 MIME-Version; b=AkIQUOVvGOvYUhyNeP4IPCSGS8X57KsG+D6zE2JQcNFj9zIxlBGokz//og0SqmEnCQ+rBgtus/09+TFk3IKrGPG5hSDQ42w0xu283BE16zMWBbIVIgZ2R2DTjO7KFlsL4lo2tGw1HmAYg/UeEUpLAdxKK9KTeH3CCVPu+xxbcXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLloZIvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185F4C433C7;
+	Mon,  8 Apr 2024 14:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582976;
-	bh=40tCne+Vum/hZREoJ+CAKf1M+GxUNNTCUpDJdu3PzhU=;
+	s=korg; t=1712584850;
+	bh=wJH8wjMO/1kss7287BZjk8+hgaXyVock33xHY82he3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ne1dYlA893tegCsdrDKNaGKY1BUUO9SIlWCdyoE9tefIh4Mlx/WtSaTvrB03p1+c8
-	 DHAeyPI1RPFBZ37IECs1isKvnVmgm4MRcaol9w1DyVkRJ7WckjtNAsWncEC3H6yi4J
-	 THfmK6szLHIGMUDFTbfTTFW4OZCETq3u4klJcpTY=
+	b=oLloZIvZe32rhnhwuG9LjwZQ7hcTxkA73h9eMf+MdUkww1Bg+M9rA2QmcddgspHWQ
+	 lhQPhBbBbjqoibA6CBHjqf1K6pD/DUlDkfJgxj8+d8WKaUVwllExWE65mtGl3XpzRd
+	 yTCTTVOC+D6A/7fXFkcr8Qsw67PZkZ/nK/1ajol8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.6 144/252] i40e: Simplify memory allocation functions
+	Chris Wilson <chris@chris-wilson.co.uk>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH 5.15 577/690] drm/i915/gt: Reset queue_priority_hint on parking
 Date: Mon,  8 Apr 2024 14:57:23 +0200
-Message-ID: <20240408125311.121592103@linuxfoundation.org>
+Message-ID: <20240408125420.500922792@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,232 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-[ Upstream commit d3276f928a1d2dfebc41a82e967cd0dffeb540f8 ]
+commit 4a3859ea5240365d21f6053ee219bb240d520895 upstream.
 
-Enum i40e_memory_type enum is unused in i40e_allocate_dma_mem() thus
-can be safely removed. Useless macros in i40e_alloc.h can be removed
-as well.
+Originally, with strict in order execution, we could complete execution
+only when the queue was empty. Preempt-to-busy allows replacement of an
+active request that may complete before the preemption is processed by
+HW. If that happens, the request is retired from the queue, but the
+queue_priority_hint remains set, preventing direct submission until
+after the next CS interrupt is processed.
 
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This preempt-to-busy race can be triggered by the heartbeat, which will
+also act as the power-management barrier and upon completion allow us to
+idle the HW. We may process the completion of the heartbeat, and begin
+parking the engine before the CS event that restores the
+queue_priority_hint, causing us to fail the assertion that it is MIN.
+
+<3>[  166.210729] __engine_park:283 GEM_BUG_ON(engine->sched_engine->queue_priority_hint != (-((int)(~0U >> 1)) - 1))
+<0>[  166.210781] Dumping ftrace buffer:
+<0>[  166.210795] ---------------------------------
+...
+<0>[  167.302811] drm_fdin-1097      2..s1. 165741070us : trace_ports: 0000:00:02.0 rcs0: promote { ccid:20 1217:2 prio 0 }
+<0>[  167.302861] drm_fdin-1097      2d.s2. 165741072us : execlists_submission_tasklet: 0000:00:02.0 rcs0: preempting last=1217:2, prio=0, hint=2147483646
+<0>[  167.302928] drm_fdin-1097      2d.s2. 165741072us : __i915_request_unsubmit: 0000:00:02.0 rcs0: fence 1217:2, current 0
+<0>[  167.302992] drm_fdin-1097      2d.s2. 165741073us : __i915_request_submit: 0000:00:02.0 rcs0: fence 3:4660, current 4659
+<0>[  167.303044] drm_fdin-1097      2d.s1. 165741076us : execlists_submission_tasklet: 0000:00:02.0 rcs0: context:3 schedule-in, ccid:40
+<0>[  167.303095] drm_fdin-1097      2d.s1. 165741077us : trace_ports: 0000:00:02.0 rcs0: submit { ccid:40 3:4660* prio 2147483646 }
+<0>[  167.303159] kworker/-89       11..... 165741139us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence c90:2, current 2
+<0>[  167.303208] kworker/-89       11..... 165741148us : __intel_context_do_unpin: 0000:00:02.0 rcs0: context:c90 unpin
+<0>[  167.303272] kworker/-89       11..... 165741159us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence 1217:2, current 2
+<0>[  167.303321] kworker/-89       11..... 165741166us : __intel_context_do_unpin: 0000:00:02.0 rcs0: context:1217 unpin
+<0>[  167.303384] kworker/-89       11..... 165741170us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence 3:4660, current 4660
+<0>[  167.303434] kworker/-89       11d..1. 165741172us : __intel_context_retire: 0000:00:02.0 rcs0: context:1216 retire runtime: { total:56028ns, avg:56028ns }
+<0>[  167.303484] kworker/-89       11..... 165741198us : __engine_park: 0000:00:02.0 rcs0: parked
+<0>[  167.303534]   <idle>-0         5d.H3. 165741207us : execlists_irq_handler: 0000:00:02.0 rcs0: semaphore yield: 00000040
+<0>[  167.303583] kworker/-89       11..... 165741397us : __intel_context_retire: 0000:00:02.0 rcs0: context:1217 retire runtime: { total:325575ns, avg:0ns }
+<0>[  167.303756] kworker/-89       11..... 165741777us : __intel_context_retire: 0000:00:02.0 rcs0: context:c90 retire runtime: { total:0ns, avg:0ns }
+<0>[  167.303806] kworker/-89       11..... 165742017us : __engine_park: __engine_park:283 GEM_BUG_ON(engine->sched_engine->queue_priority_hint != (-((int)(~0U >> 1)) - 1))
+<0>[  167.303811] ---------------------------------
+<4>[  167.304722] ------------[ cut here ]------------
+<2>[  167.304725] kernel BUG at drivers/gpu/drm/i915/gt/intel_engine_pm.c:283!
+<4>[  167.304731] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+<4>[  167.304734] CPU: 11 PID: 89 Comm: kworker/11:1 Tainted: G        W          6.8.0-rc2-CI_DRM_14193-gc655e0fd2804+ #1
+<4>[  167.304736] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
+<4>[  167.304738] Workqueue: i915-unordered retire_work_handler [i915]
+<4>[  167.304839] RIP: 0010:__engine_park+0x3fd/0x680 [i915]
+<4>[  167.304937] Code: 00 48 c7 c2 b0 e5 86 a0 48 8d 3d 00 00 00 00 e8 79 48 d4 e0 bf 01 00 00 00 e8 ef 0a d4 e0 31 f6 bf 09 00 00 00 e8 03 49 c0 e0 <0f> 0b 0f 0b be 01 00 00 00 e8 f5 61 fd ff 31 c0 e9 34 fd ff ff 48
+<4>[  167.304940] RSP: 0018:ffffc9000059fce0 EFLAGS: 00010246
+<4>[  167.304942] RAX: 0000000000000200 RBX: 0000000000000000 RCX: 0000000000000006
+<4>[  167.304944] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000009
+<4>[  167.304946] RBP: ffff8881330ca1b0 R08: 0000000000000001 R09: 0000000000000001
+<4>[  167.304947] R10: 0000000000000001 R11: 0000000000000001 R12: ffff8881330ca000
+<4>[  167.304948] R13: ffff888110f02aa0 R14: ffff88812d1d0205 R15: ffff88811277d4f0
+<4>[  167.304950] FS:  0000000000000000(0000) GS:ffff88844f780000(0000) knlGS:0000000000000000
+<4>[  167.304952] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4>[  167.304953] CR2: 00007fc362200c40 CR3: 000000013306e003 CR4: 0000000000770ef0
+<4>[  167.304955] PKRU: 55555554
+<4>[  167.304957] Call Trace:
+<4>[  167.304958]  <TASK>
+<4>[  167.305573]  ____intel_wakeref_put_last+0x1d/0x80 [i915]
+<4>[  167.305685]  i915_request_retire.part.0+0x34f/0x600 [i915]
+<4>[  167.305800]  retire_requests+0x51/0x80 [i915]
+<4>[  167.305892]  intel_gt_retire_requests_timeout+0x27f/0x700 [i915]
+<4>[  167.305985]  process_scheduled_works+0x2db/0x530
+<4>[  167.305990]  worker_thread+0x18c/0x350
+<4>[  167.305993]  kthread+0xfe/0x130
+<4>[  167.305997]  ret_from_fork+0x2c/0x50
+<4>[  167.306001]  ret_from_fork_asm+0x1b/0x30
+<4>[  167.306004]  </TASK>
+
+It is necessary for the queue_priority_hint to be lower than the next
+request submission upon waking up, as we rely on the hint to decide when
+to kick the tasklet to submit that first request.
+
+Fixes: 22b7a426bbe1 ("drm/i915/execlists: Preempt-to-busy")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/10154
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.4+
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240318135906.716055-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 98850e96cf811dc2d0a7d0af491caff9f5d49c1e)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_adminq.c |  4 ----
- drivers/net/ethernet/intel/i40e/i40e_alloc.h  | 14 -------------
- drivers/net/ethernet/intel/i40e/i40e_hmc.c    | 12 ++++-------
- drivers/net/ethernet/intel/i40e/i40e_main.c   | 20 +++++++++----------
- drivers/net/ethernet/intel/i40e/i40e_osdep.h  |  7 -------
- 5 files changed, 14 insertions(+), 43 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_engine_pm.c            |    3 ---
+ drivers/gpu/drm/i915/gt/intel_execlists_submission.c |    3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_adminq.c b/drivers/net/ethernet/intel/i40e/i40e_adminq.c
-index 100eb77b8dfe6..e72cfe587c89e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_adminq.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_adminq.c
-@@ -51,7 +51,6 @@ static int i40e_alloc_adminq_asq_ring(struct i40e_hw *hw)
- 	int ret_code;
+--- a/drivers/gpu/drm/i915/gt/intel_engine_pm.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_pm.c
+@@ -274,9 +274,6 @@ static int __engine_park(struct intel_wa
+ 	intel_engine_park_heartbeat(engine);
+ 	intel_breadcrumbs_park(engine->breadcrumbs);
  
- 	ret_code = i40e_allocate_dma_mem(hw, &hw->aq.asq.desc_buf,
--					 i40e_mem_atq_ring,
- 					 (hw->aq.num_asq_entries *
- 					 sizeof(struct i40e_aq_desc)),
- 					 I40E_ADMINQ_DESC_ALIGNMENT);
-@@ -78,7 +77,6 @@ static int i40e_alloc_adminq_arq_ring(struct i40e_hw *hw)
- 	int ret_code;
- 
- 	ret_code = i40e_allocate_dma_mem(hw, &hw->aq.arq.desc_buf,
--					 i40e_mem_arq_ring,
- 					 (hw->aq.num_arq_entries *
- 					 sizeof(struct i40e_aq_desc)),
- 					 I40E_ADMINQ_DESC_ALIGNMENT);
-@@ -136,7 +134,6 @@ static int i40e_alloc_arq_bufs(struct i40e_hw *hw)
- 	for (i = 0; i < hw->aq.num_arq_entries; i++) {
- 		bi = &hw->aq.arq.r.arq_bi[i];
- 		ret_code = i40e_allocate_dma_mem(hw, bi,
--						 i40e_mem_arq_buf,
- 						 hw->aq.arq_buf_size,
- 						 I40E_ADMINQ_DESC_ALIGNMENT);
- 		if (ret_code)
-@@ -198,7 +195,6 @@ static int i40e_alloc_asq_bufs(struct i40e_hw *hw)
- 	for (i = 0; i < hw->aq.num_asq_entries; i++) {
- 		bi = &hw->aq.asq.r.asq_bi[i];
- 		ret_code = i40e_allocate_dma_mem(hw, bi,
--						 i40e_mem_asq_buf,
- 						 hw->aq.asq_buf_size,
- 						 I40E_ADMINQ_DESC_ALIGNMENT);
- 		if (ret_code)
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_alloc.h b/drivers/net/ethernet/intel/i40e/i40e_alloc.h
-index a6c9a9e343d11..4b2d8da048c64 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_alloc.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_alloc.h
-@@ -6,23 +6,9 @@
- 
- struct i40e_hw;
- 
--/* Memory allocation types */
--enum i40e_memory_type {
--	i40e_mem_arq_buf = 0,		/* ARQ indirect command buffer */
--	i40e_mem_asq_buf = 1,
--	i40e_mem_atq_buf = 2,		/* ATQ indirect command buffer */
--	i40e_mem_arq_ring = 3,		/* ARQ descriptor ring */
--	i40e_mem_atq_ring = 4,		/* ATQ descriptor ring */
--	i40e_mem_pd = 5,		/* Page Descriptor */
--	i40e_mem_bp = 6,		/* Backing Page - 4KB */
--	i40e_mem_bp_jumbo = 7,		/* Backing Page - > 4KB */
--	i40e_mem_reserved
--};
+-	/* Must be reset upon idling, or we may miss the busy wakeup. */
+-	GEM_BUG_ON(engine->sched_engine->queue_priority_hint != INT_MIN);
 -
- /* prototype for functions used for dynamic memory allocation */
- int i40e_allocate_dma_mem(struct i40e_hw *hw,
- 			  struct i40e_dma_mem *mem,
--			  enum i40e_memory_type type,
- 			  u64 size, u32 alignment);
- int i40e_free_dma_mem(struct i40e_hw *hw,
- 		      struct i40e_dma_mem *mem);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_hmc.c b/drivers/net/ethernet/intel/i40e/i40e_hmc.c
-index 96ee63aca7a10..7451d346ae83f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_hmc.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_hmc.c
-@@ -22,7 +22,6 @@ int i40e_add_sd_table_entry(struct i40e_hw *hw,
- 			    enum i40e_sd_entry_type type,
- 			    u64 direct_mode_sz)
+ 	if (engine->park)
+ 		engine->park(engine);
+ 
+--- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
++++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+@@ -3188,6 +3188,9 @@ static void execlists_park(struct intel_
  {
--	enum i40e_memory_type mem_type __attribute__((unused));
- 	struct i40e_hmc_sd_entry *sd_entry;
- 	bool dma_mem_alloc_done = false;
- 	struct i40e_dma_mem mem;
-@@ -43,16 +42,13 @@ int i40e_add_sd_table_entry(struct i40e_hw *hw,
- 
- 	sd_entry = &hmc_info->sd_table.sd_entry[sd_index];
- 	if (!sd_entry->valid) {
--		if (I40E_SD_TYPE_PAGED == type) {
--			mem_type = i40e_mem_pd;
-+		if (type == I40E_SD_TYPE_PAGED)
- 			alloc_len = I40E_HMC_PAGED_BP_SIZE;
--		} else {
--			mem_type = i40e_mem_bp_jumbo;
-+		else
- 			alloc_len = direct_mode_sz;
--		}
- 
- 		/* allocate a 4K pd page or 2M backing page */
--		ret_code = i40e_allocate_dma_mem(hw, &mem, mem_type, alloc_len,
-+		ret_code = i40e_allocate_dma_mem(hw, &mem, alloc_len,
- 						 I40E_HMC_PD_BP_BUF_ALIGNMENT);
- 		if (ret_code)
- 			goto exit;
-@@ -140,7 +136,7 @@ int i40e_add_pd_table_entry(struct i40e_hw *hw,
- 			page = rsrc_pg;
- 		} else {
- 			/* allocate a 4K backing page */
--			ret_code = i40e_allocate_dma_mem(hw, page, i40e_mem_bp,
-+			ret_code = i40e_allocate_dma_mem(hw, page,
- 						I40E_HMC_PAGED_BP_SIZE,
- 						I40E_HMC_PD_BP_BUF_ALIGNMENT);
- 			if (ret_code)
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 17ab6a1c53971..46b7a428808a8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -137,14 +137,14 @@ struct device *i40e_hw_to_dev(struct i40e_hw *hw)
+ 	cancel_timer(&engine->execlists.timer);
+ 	cancel_timer(&engine->execlists.preempt);
++
++	/* Reset upon idling, or we may delay the busy wakeup. */
++	WRITE_ONCE(engine->sched_engine->queue_priority_hint, INT_MIN);
  }
  
- /**
-- * i40e_allocate_dma_mem_d - OS specific memory alloc for shared code
-+ * i40e_allocate_dma_mem - OS specific memory alloc for shared code
-  * @hw:   pointer to the HW structure
-  * @mem:  ptr to mem struct to fill out
-  * @size: size of memory requested
-  * @alignment: what to align the allocation to
-  **/
--int i40e_allocate_dma_mem_d(struct i40e_hw *hw, struct i40e_dma_mem *mem,
--			    u64 size, u32 alignment)
-+int i40e_allocate_dma_mem(struct i40e_hw *hw, struct i40e_dma_mem *mem,
-+			  u64 size, u32 alignment)
- {
- 	struct i40e_pf *pf = i40e_hw_to_pf(hw);
- 
-@@ -158,11 +158,11 @@ int i40e_allocate_dma_mem_d(struct i40e_hw *hw, struct i40e_dma_mem *mem,
- }
- 
- /**
-- * i40e_free_dma_mem_d - OS specific memory free for shared code
-+ * i40e_free_dma_mem - OS specific memory free for shared code
-  * @hw:   pointer to the HW structure
-  * @mem:  ptr to mem struct to free
-  **/
--int i40e_free_dma_mem_d(struct i40e_hw *hw, struct i40e_dma_mem *mem)
-+int i40e_free_dma_mem(struct i40e_hw *hw, struct i40e_dma_mem *mem)
- {
- 	struct i40e_pf *pf = i40e_hw_to_pf(hw);
- 
-@@ -175,13 +175,13 @@ int i40e_free_dma_mem_d(struct i40e_hw *hw, struct i40e_dma_mem *mem)
- }
- 
- /**
-- * i40e_allocate_virt_mem_d - OS specific memory alloc for shared code
-+ * i40e_allocate_virt_mem - OS specific memory alloc for shared code
-  * @hw:   pointer to the HW structure
-  * @mem:  ptr to mem struct to fill out
-  * @size: size of memory requested
-  **/
--int i40e_allocate_virt_mem_d(struct i40e_hw *hw, struct i40e_virt_mem *mem,
--			     u32 size)
-+int i40e_allocate_virt_mem(struct i40e_hw *hw, struct i40e_virt_mem *mem,
-+			   u32 size)
- {
- 	mem->size = size;
- 	mem->va = kzalloc(size, GFP_KERNEL);
-@@ -193,11 +193,11 @@ int i40e_allocate_virt_mem_d(struct i40e_hw *hw, struct i40e_virt_mem *mem,
- }
- 
- /**
-- * i40e_free_virt_mem_d - OS specific memory free for shared code
-+ * i40e_free_virt_mem - OS specific memory free for shared code
-  * @hw:   pointer to the HW structure
-  * @mem:  ptr to mem struct to free
-  **/
--int i40e_free_virt_mem_d(struct i40e_hw *hw, struct i40e_virt_mem *mem)
-+int i40e_free_virt_mem(struct i40e_hw *hw, struct i40e_virt_mem *mem)
- {
- 	/* it's ok to kfree a NULL pointer */
- 	kfree(mem->va);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_osdep.h b/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-index 997569a4ad57b..70cac3bb31ec3 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_osdep.h
-@@ -36,18 +36,11 @@ struct i40e_dma_mem {
- 	u32 size;
- };
- 
--#define i40e_allocate_dma_mem(h, m, unused, s, a) \
--			i40e_allocate_dma_mem_d(h, m, s, a)
--#define i40e_free_dma_mem(h, m) i40e_free_dma_mem_d(h, m)
--
- struct i40e_virt_mem {
- 	void *va;
- 	u32 size;
- };
- 
--#define i40e_allocate_virt_mem(h, m, s) i40e_allocate_virt_mem_d(h, m, s)
--#define i40e_free_virt_mem(h, m) i40e_free_virt_mem_d(h, m)
--
- #define i40e_debug(h, m, s, ...)				\
- do {								\
- 	if (((m) & (h)->debug_mask))				\
--- 
-2.43.0
-
+ static void add_to_engine(struct i915_request *rq)
 
 
 
