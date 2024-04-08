@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-37205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9889289C3CD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB9A89C32D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 393C31F24C49
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ECB01F21BD9
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0220F7B3EB;
-	Mon,  8 Apr 2024 13:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C048061A;
+	Mon,  8 Apr 2024 13:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1F4QNjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9nKXJc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47C070CCB;
-	Mon,  8 Apr 2024 13:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AC37BB15;
+	Mon,  8 Apr 2024 13:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583555; cv=none; b=eXUU9VM/stX1Ikn2evGJPhJluhvpoSAelo2sx9qrwFrS35fPK6kLUJ5eMowuFZWkeRMCDPNzlNluWpBVl6FI4GgmoPPz2NKXFqad1A2Vc81nGImZPAIHSQqup5IxCGvpK549VihuFxZfSQnfW15L3mTuxJ/ScZaD6mEF/ZPkbWM=
+	t=1712583183; cv=none; b=UbUXXXkxtKMMN5Olu6obIr8hgEAQuSBlkapfSuaH9VEumm4aEa9loZYFhivXPBpGmJsoZnm+Cf98EZkmKkDAR/N/ZCSb3jyI0CZatuOzmnYxVTzqmEDbIeB5BjedM/Kdx4ijGSpL7cv44as7aNKRWH3zb1ADp+aGku52QCMb3GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583555; c=relaxed/simple;
-	bh=AxqKgJh8wGFEXdiDhYYcvaXfrx2zG/K/1wTZ0+r46rw=;
+	s=arc-20240116; t=1712583183; c=relaxed/simple;
+	bh=Eueu/bweULtXvbFJ6fge3m12UFv5OIQIjlKosWICp4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVl5U0Y96XzSrnnruZFlqfySl+Bvzerbagjhq3+TTkrZ0h1YXXC8YR0itHsx9ry8NCXM5ylTheUNL9qL0ok4upzKzhBlUPVAqPwPgKIaG1VwU/mg9a9H52jA9Wk165ZzfXcIoLfBB4ViDUNZaOwrzAw1Tt6g0f7nxPxW0rht88k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1F4QNjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAFDC43390;
-	Mon,  8 Apr 2024 13:39:15 +0000 (UTC)
+	 MIME-Version; b=pG1N34x5vjmA0rIJOhmgzNzPS8IdZkYeawd4t39j9WjRhzvZXHYynDGG99YDSkBVnA3Oy4MeqQsF80FEQo0ewEUx4sZGGJ+1WPlgZjxznhi70rykG2BA4lmswfsiMALMoK+ugngXrAv4YsVMZZG61v/pWQCj5SE5SAj5tlQ3a+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9nKXJc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4F3C433C7;
+	Mon,  8 Apr 2024 13:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583555;
-	bh=AxqKgJh8wGFEXdiDhYYcvaXfrx2zG/K/1wTZ0+r46rw=;
+	s=korg; t=1712583183;
+	bh=Eueu/bweULtXvbFJ6fge3m12UFv5OIQIjlKosWICp4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1F4QNjVRozEzU+Y0AuU/gFJgJ0xrh2rSNW/PwzTRZEXTPb/spSAyGjn9B8t8UVXQ
-	 ZXnxikTGSr7a7RH5czExS/Jyacl4gahQNlJeYhHv5AizuIBfQc5RwmXuio0Ody6Cnc
-	 P0cu4BuRk8uU6X6ycbPAtBhssUuSEIh5IsbM3zQk=
+	b=A9nKXJc4HOAPxirt9yksRPZW/gAJczqWqQdmopBYBV4LV/Te8lGz5UZw3Ak/tU4e+
+	 H8m3fgtRnvqpw3/PIa0y06V1VPYoHzVmeC4r6iju/tqg0GX4jEcTqRNg2KGkU/PcKi
+	 6Tir4U+8eoKAUXsVd2v3KYghQa3RMb1DDakdZPas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Benes <vbenes@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Dominik Behr <dbehr@chromium.org>,
+	Rob Clark <robdclark@chromium.org>,
+	Simon Ser <contact@emersion.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 191/273] nfsd: hold a lighter-weight client reference over CB_RECALL_ANY
+Subject: [PATCH 6.6 167/252] drm/prime: Unbreak virtgpu dma-buf export
 Date: Mon,  8 Apr 2024 14:57:46 +0200
-Message-ID: <20240408125315.237854390@linuxfoundation.org>
+Message-ID: <20240408125311.846284438@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 10396f4df8b75ff6ab0aa2cd74296565466f2c8d ]
+[ Upstream commit a4ec240f6b7c21cf846d10017c3ce423a0eae92c ]
 
-Currently the CB_RECALL_ANY job takes a cl_rpc_users reference to the
-client. While a callback job is technically an RPC that counter is
-really more for client-driven RPCs, and this has the effect of
-preventing the client from being unhashed until the callback completes.
+virtgpu "vram" GEM objects do not implement obj->get_sg_table().  But
+they also don't use drm_gem_map_dma_buf().  In fact they may not even
+have guest visible pages.  But it is perfectly fine to export and share
+with other virtual devices.
 
-If nfsd decides to send a CB_RECALL_ANY just as the client reboots, we
-can end up in a situation where the callback can't complete on the (now
-dead) callback channel, but the new client can't connect because the old
-client can't be unhashed. This usually manifests as a NFS4ERR_DELAY
-return on the CREATE_SESSION operation.
-
-The job is only holding a reference to the client so it can clear a flag
-after the RPC completes. Fix this by having CB_RECALL_ANY instead hold a
-reference to the cl_nfsdfs.cl_ref. Typically we only take that sort of
-reference when dealing with the nfsdfs info files, but it should work
-appropriately here to ensure that the nfs4_client doesn't disappear.
-
-Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
-Reported-by: Vladimir Benes <vbenes@redhat.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: Dominik Behr <dbehr@chromium.org>
+Fixes: 207395da5a97 ("drm/prime: reject DMA-BUF attach when get_sg_table is missing")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Simon Ser <contact@emersion.fr>
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240322214801.319975-1-robdclark@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_prime.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 7d6c657e0409d..692ede488254a 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -2888,12 +2888,9 @@ static void
- nfsd4_cb_recall_any_release(struct nfsd4_callback *cb)
+diff --git a/drivers/gpu/drm/drm_prime.c b/drivers/gpu/drm/drm_prime.c
+index 7352bde299d54..03bd3c7bd0dc2 100644
+--- a/drivers/gpu/drm/drm_prime.c
++++ b/drivers/gpu/drm/drm_prime.c
+@@ -582,7 +582,12 @@ int drm_gem_map_attach(struct dma_buf *dma_buf,
  {
- 	struct nfs4_client *clp = cb->cb_clp;
--	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
+ 	struct drm_gem_object *obj = dma_buf->priv;
  
--	spin_lock(&nn->client_lock);
- 	clear_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
--	put_client_renew_locked(clp);
--	spin_unlock(&nn->client_lock);
-+	drop_client(clp);
- }
+-	if (!obj->funcs->get_sg_table)
++	/*
++	 * drm_gem_map_dma_buf() requires obj->get_sg_table(), but drivers
++	 * that implement their own ->map_dma_buf() do not.
++	 */
++	if (dma_buf->ops->map_dma_buf == drm_gem_map_dma_buf &&
++	    !obj->funcs->get_sg_table)
+ 		return -ENOSYS;
  
- static const struct nfsd4_callback_ops nfsd4_cb_recall_any_ops = {
-@@ -6274,7 +6271,7 @@ deleg_reaper(struct nfsd_net *nn)
- 		list_add(&clp->cl_ra_cblist, &cblist);
- 
- 		/* release in nfsd4_cb_recall_any_release */
--		atomic_inc(&clp->cl_rpc_users);
-+		kref_get(&clp->cl_nfsdfs.cl_ref);
- 		set_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
- 		clp->cl_ra_time = ktime_get_boottime_seconds();
- 	}
+ 	return drm_gem_pin(obj);
 -- 
 2.43.0
 
