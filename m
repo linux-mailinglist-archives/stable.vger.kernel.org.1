@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-36408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094E589BFE0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036E789BFE4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E87EDB28EAD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:00:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 356C81C2184B
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E695C79955;
-	Mon,  8 Apr 2024 12:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE3D7C6C8;
+	Mon,  8 Apr 2024 13:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzOvAHzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svGk60Ad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9979577F13;
-	Mon,  8 Apr 2024 12:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0237867D;
+	Mon,  8 Apr 2024 13:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581196; cv=none; b=sAOHBJvtrEbkOlvf2hPcjWIjDREzabEsMMXnZhAJEzBGdSyS69jv9WOnzjuWTxPCHtPt+Ws+Q28lOEfvBaeo6/rOd11Oqi5iOTVugOcQtg+uf3GmxQQSjlQUINLztouAyaBtfPjYfVMoXwmH5P5BnmZKc34DTm81X9YB0PJx62c=
+	t=1712581320; cv=none; b=DaMXaIpFg8sV5QjrHPFxII7CLJGrloWTh9PLGjyNVNQPnd5e1PSQdu6z6D347OHhCoQqCuF/TH2L6L+fDZ7o9ZYidocpcGPNcAiYuMU/bUbxYflN6nP4GW7ccr/ZYW01H1rr0JbS/x86xyks8Uqt7eXoute0Abg8bFTl0y0NnoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581196; c=relaxed/simple;
-	bh=bieLhPbK4H1l05XdYBNSe6gWd2Nw1Q7B1Ct2u6/tB/k=;
+	s=arc-20240116; t=1712581320; c=relaxed/simple;
+	bh=8Zf+nOSYXZtqjhz3RyWL9yCOGU1dHirKw45bo+IXEsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6NzYHVXXlp8KVb/OQ47qZHmtnz5tVaOB9XEoLUCnD61q1Rkbdpu1i96vc5cTsmYwEB71CIpKGkxSbhBthDy3ZgTGQzZWm4zCjxx5musJM636Q1bgI4Q+fGHdofmx/qf5mjwoG+jli+ARibYr9GHEmxentEj7LsZrM1fClysDTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzOvAHzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3999C433F1;
-	Mon,  8 Apr 2024 12:59:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dWF6wsw8S4M5urTLPHIVuzdN4m0qqyLUFJ0H2LRUNP0y15T8UE/G3wjS66fc9Z1MiRrFlzedlMg4hdOAanjhErxoZ/mYX+QaKKvF9TbPYe9X/xpn/r9IAZoIRjBpdcNcv3BultJCFmk4XxPZoJ23TSCFH0h76gJ74RiQAANnBOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svGk60Ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB574C433C7;
+	Mon,  8 Apr 2024 13:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581196;
-	bh=bieLhPbK4H1l05XdYBNSe6gWd2Nw1Q7B1Ct2u6/tB/k=;
+	s=korg; t=1712581320;
+	bh=8Zf+nOSYXZtqjhz3RyWL9yCOGU1dHirKw45bo+IXEsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzOvAHzmNMzyhD1pWVQW6tmq7dTSEgCOLckRkfIeS+2Di+9riCJHNiljpFFFbeol7
-	 PIZ97VY6/oGMPfENNOccHJcl5TUVFp/HDD66lOtZAOKJbpyirm77u9v0jm1bbY5EAF
-	 n5K+6prlw/0XPTGQrbR1+n3qsUhEnegOgK3N4KiE=
+	b=svGk60AdvFEN0jIJNF769EIaxk+mc8CETCWAD/fKVg0Gexu3Z8Hn3udHx7xnMm0+b
+	 yAlpHTPQO55dD2DsYarSpAKnhHhTkJ8Dx+DjnuCZ6sYAv9JwAVuV21smz9l28e3iNe
+	 n/z+2aR3boo05ZfuOlIV+F5cJ/SYVrAL6dps7mY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Hofmann <mhofmann@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alejandro Colomar <alx@kernel.org>,
+	Pavel Sakharov <p.sakharov@ispras.ru>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/138] scripts/bpf_doc: Use silent mode when exec make cmd
-Date: Mon,  8 Apr 2024 14:56:55 +0200
-Message-ID: <20240408125256.267850659@linuxfoundation.org>
+Subject: [PATCH 6.1 002/138] dma-buf: Fix NULL pointer dereference in sanitycheck()
+Date: Mon,  8 Apr 2024 14:56:56 +0200
+Message-ID: <20240408125256.298701236@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
 References: <20240408125256.218368873@linuxfoundation.org>
@@ -63,64 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Pavel Sakharov <p.sakharov@ispras.ru>
 
-[ Upstream commit 5384cc0d1a88c27448a6a4e65b8abe6486de8012 ]
+[ Upstream commit 2295bd846765c766701e666ed2e4b35396be25e6 ]
 
-When getting kernel version via make, the result may be polluted by other
-output, like directory change info. e.g.
+If due to a memory allocation failure mock_chain() returns NULL, it is
+passed to dma_fence_enable_sw_signaling() resulting in NULL pointer
+dereference there.
 
-  $ export MAKEFLAGS="-w"
-  $ make kernelversion
-  make: Entering directory '/home/net'
-  6.8.0
-  make: Leaving directory '/home/net'
+Call dma_fence_enable_sw_signaling() only if mock_chain() succeeds.
 
-This will distort the reStructuredText output and make latter rst2man
-failed like:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  [...]
-  bpf-helpers.rst:20: (WARNING/2) Field list ends without a blank line; unexpected unindent.
-  [...]
-
-Using silent mode would help. e.g.
-
-  $ make -s --no-print-directory kernelversion
-  6.8.0
-
-Fixes: fd0a38f9c37d ("scripts/bpf: Set version attribute for bpf-helpers(7) man page")
-Signed-off-by: Michael Hofmann <mhofmann@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Acked-by: Alejandro Colomar <alx@kernel.org>
-Link: https://lore.kernel.org/bpf/20240315023443.2364442-1-liuhangbin@gmail.com
+Fixes: d62c43a953ce ("dma-buf: Enable signaling on fence for selftests")
+Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240319231527.1821372-1-p.sakharov@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/bpf_doc.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma-buf/st-dma-fence-chain.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/bpf_doc.py b/scripts/bpf_doc.py
-index 4de98b7bbea95..c2da6ed32104f 100755
---- a/scripts/bpf_doc.py
-+++ b/scripts/bpf_doc.py
-@@ -396,8 +396,8 @@ class PrinterRST(Printer):
-             version = version.stdout.decode().rstrip()
-         except:
-             try:
--                version = subprocess.run(['make', 'kernelversion'], cwd=linuxRoot,
--                                         capture_output=True, check=True)
-+                version = subprocess.run(['make', '-s', '--no-print-directory', 'kernelversion'],
-+                                         cwd=linuxRoot, capture_output=True, check=True)
-                 version = version.stdout.decode().rstrip()
-             except:
-                 return 'Linux'
+diff --git a/drivers/dma-buf/st-dma-fence-chain.c b/drivers/dma-buf/st-dma-fence-chain.c
+index 0a9b099d05187..d90479d830fc3 100644
+--- a/drivers/dma-buf/st-dma-fence-chain.c
++++ b/drivers/dma-buf/st-dma-fence-chain.c
+@@ -84,11 +84,11 @@ static int sanitycheck(void *arg)
+ 		return -ENOMEM;
+ 
+ 	chain = mock_chain(NULL, f, 1);
+-	if (!chain)
++	if (chain)
++		dma_fence_enable_sw_signaling(chain);
++	else
+ 		err = -ENOMEM;
+ 
+-	dma_fence_enable_sw_signaling(chain);
+-
+ 	dma_fence_signal(f);
+ 	dma_fence_put(f);
+ 
 -- 
 2.43.0
 
