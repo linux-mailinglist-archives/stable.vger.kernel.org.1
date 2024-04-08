@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-36905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486A189C24C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E1589C317
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD40D1F21A1C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BE3CB2978A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3CD7BAF4;
-	Mon,  8 Apr 2024 13:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42A07EF06;
+	Mon,  8 Apr 2024 13:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJohPAV9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGvmOV7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE56780620;
-	Mon,  8 Apr 2024 13:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7798F7E0E4;
+	Mon,  8 Apr 2024 13:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582684; cv=none; b=aa23uNCyiJwVjha+IyzRLtocGB+NgSG4TuRbzDEbEuoKnp9pAGXv+Ar2CazI1k48RAWEBlLGlXBM9JnUwf8puwc4kb4VucYuk9eKXmV/OEjUNlnh1O34PoomrZWc+7TZXQ1/PKjYphOWpBAUgPN29W93jZheNQps1epVkp91VeM=
+	t=1712583068; cv=none; b=RCt8fJAPMzMDE/RWQGYSuCjuWysuNWpA4taxHkeV1tEPGG+xd1PbsnOIT86XARwrYLWylBc/rd93KWgEPNN1clWjxMfSdgLQdoPKD3icNR22a5mhH7sgbZB37Orr87a/XbqNhgVOcJo1UCKwPwOk9xs2YR97jeFTvVqH/vOeBRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582684; c=relaxed/simple;
-	bh=xSys25Oo3PUto6m1MopX8d+BY3RR9fOfHaR8fQxd6zI=;
+	s=arc-20240116; t=1712583068; c=relaxed/simple;
+	bh=qlVTU1ugldFSiIC8ZJXrznrg4voNOD8hGcFhI81DJ04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8y5sGM+ZNJwvA+O3HgrLq8HNJ6fisPW5a3Ylrttb5+n5J01/oxRyONKRfhKTCqD7bLBxfI1Le9u8D3Bc2SdyiJCRw5267d+r0tDBKKE/oCyUBkImuBTpksIOVbmtLAdZgtoK3jvoo2yZfdZQIWMBMivNqzNSv4s85Fgdcur4Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJohPAV9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412A3C433C7;
-	Mon,  8 Apr 2024 13:24:44 +0000 (UTC)
+	 MIME-Version; b=k+6EO1RUMfjvgByjNI9JiBg7V5slMhU0mchN5zE6DHL0GM1GNU16lBngf1EIrS1w10zsmzBI9VOgw/Da0EClvBV2S0KFhJwYH+u7RzFCrq0KUryoOSGI/x/HYN5eo+c3g53s26fJYDKOEweg0U+WlaP3Z0/L2YnY4BbZdeEEpH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGvmOV7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4B5C433C7;
+	Mon,  8 Apr 2024 13:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582684;
-	bh=xSys25Oo3PUto6m1MopX8d+BY3RR9fOfHaR8fQxd6zI=;
+	s=korg; t=1712583068;
+	bh=qlVTU1ugldFSiIC8ZJXrznrg4voNOD8hGcFhI81DJ04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJohPAV9g6DQlEdP8cra/2iVdkWYyqEkjp7V+75WvKngP8pG83Qz140g72MGxYaQ2
-	 IHMPx/DlvHYCvsW+SCepnsg1fyY4UmCZJj37V4bqbPWhVcRmIQoEch745rwqrRhXhE
-	 r/8z9kw5/3Srvn9SRNu/1RAqq7ngGWqQjkCZdrus=
+	b=RGvmOV7uZrPsme1E/Co+7/TNGxcTWx+ovqm0Ar/5GjHHiNYoLuwSA+mQH8Jzc584j
+	 tfbWKFp2DVEi+hNRiVGM243ArjQT/JCIjZtoamAAiYSBz5q0cvODO6KFabYEbQS742
+	 QblIYDqZb4dtoknZp11bm+ZYWO1ai4kWWa1uR35I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 112/252] selftests: net: gro fwd: update vxlan GRO test expectations
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 136/273] net: ravb: Let IP-specific receive function to interrogate descriptors
 Date: Mon,  8 Apr 2024 14:56:51 +0200
-Message-ID: <20240408125310.113443539@linuxfoundation.org>
+Message-ID: <20240408125313.515509830@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 0fb101be97ca27850c5ecdbd1269423ce4d1f607 upstream.
+[ Upstream commit 2b993bfdb47b3aaafd8fe9cd5038b5e297b18ee1 ]
 
-UDP tunnel packets can't be GRO in-between their endpoints as this
-causes different issues. The UDP GRO fwd vxlan tests were relying on
-this and their expectations have to be fixed.
+ravb_poll() initial code used to interrogate the first descriptor of the
+RX queue in case gPTP is false to determine if ravb_rx() should be called.
+This is done for non-gPTP IPs. For gPTP IPs the driver PTP-specific
+information was used to determine if receive function should be called. As
+every IP has its own receive function that interrogates the RX descriptors
+list in the same way the ravb_poll() was doing there is no need to double
+check this in ravb_poll(). Removing the code from ravb_poll() leads to a
+cleaner code.
 
-We keep both vxlan tests and expected no GRO from happening. The vxlan
-UDP GRO bench test was removed as it's not providing any valuable
-information now.
-
-Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 596a4254915f ("net: ravb: Always process TX descriptor ring")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/udpgro_fwd.sh |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---- a/tools/testing/selftests/net/udpgro_fwd.sh
-+++ b/tools/testing/selftests/net/udpgro_fwd.sh
-@@ -241,7 +241,7 @@ for family in 4 6; do
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index f7566cfa45ca3..266ed984a98fa 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1284,25 +1284,16 @@ static int ravb_poll(struct napi_struct *napi, int budget)
+ 	struct net_device *ndev = napi->dev;
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *info = priv->info;
+-	bool gptp = info->gptp || info->ccc_gac;
+-	struct ravb_rx_desc *desc;
+ 	unsigned long flags;
+ 	int q = napi - priv->napi;
+ 	int mask = BIT(q);
+ 	int quota = budget;
+-	unsigned int entry;
  
- 	create_vxlan_pair
- 	ip netns exec $NS_DST ethtool -K veth$DST rx-gro-list on
--	run_test "GRO frag list over UDP tunnel" $OL_NET$DST 1 1
-+	run_test "GRO frag list over UDP tunnel" $OL_NET$DST 10 10
- 	cleanup
+-	if (!gptp) {
+-		entry = priv->cur_rx[q] % priv->num_rx_ring[q];
+-		desc = &priv->gbeth_rx_ring[entry];
+-	}
+ 	/* Processing RX Descriptor Ring */
+ 	/* Clear RX interrupt */
+ 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
+-	if (gptp || desc->die_dt != DT_FEMPTY) {
+-		if (ravb_rx(ndev, &quota, q))
+-			goto out;
+-	}
++	if (ravb_rx(ndev, &quota, q))
++		goto out;
  
- 	# use NAT to circumvent GRO FWD check
-@@ -254,13 +254,7 @@ for family in 4 6; do
- 	# load arp cache before running the test to reduce the amount of
- 	# stray traffic on top of the UDP tunnel
- 	ip netns exec $NS_SRC $PING -q -c 1 $OL_NET$DST_NAT >/dev/null
--	run_test "GRO fwd over UDP tunnel" $OL_NET$DST_NAT 1 1 $OL_NET$DST
--	cleanup
--
--	create_vxlan_pair
--	run_bench "UDP tunnel fwd perf" $OL_NET$DST
--	ip netns exec $NS_DST ethtool -K veth$DST rx-udp-gro-forwarding on
--	run_bench "UDP tunnel GRO fwd perf" $OL_NET$DST
-+	run_test "GRO fwd over UDP tunnel" $OL_NET$DST_NAT 10 10 $OL_NET$DST
- 	cleanup
- done
- 
+ 	/* Processing TX Descriptor Ring */
+ 	spin_lock_irqsave(&priv->lock, flags);
+-- 
+2.43.0
+
 
 
 
