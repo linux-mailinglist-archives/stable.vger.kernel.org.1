@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-37084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B1D89C33B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:40:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2651189C3DC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8793F1F221C8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:40:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9681F240FB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3A081AD2;
-	Mon,  8 Apr 2024 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECDB78285;
+	Mon,  8 Apr 2024 13:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6vu5sXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWnNnXTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B45471753;
-	Mon,  8 Apr 2024 13:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE237C0AB;
+	Mon,  8 Apr 2024 13:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583205; cv=none; b=FXK6EqSwax3Z/3hvz0ZuArfPDx3cggIc/IkRT6wzfYFtaMgdDut68CzVBOpcAz7iEcWVc301iiAoFS32DA8/AOsDspCN20MPokelKBtVaQ8t08MB2/O+/j3J9+BX2JDMc3s0SgWlMafDUlG1Dn9VPSXMmmcU7AKQusG0jIqiay0=
+	t=1712583576; cv=none; b=dGIbZHbl5ojcF+uXfhz4/uGjQyVDGBoZb0nctfKeVbB5jVL4UKlVQX3m3YvQ+A3Zw4wgVpOdi3a5r154BRaSyL2Jst3/HZWsaeaGVDqxGguExhZ8v9N/9xGy0lpSnTeXeoxAsrAuTG83M08zH7KbnwVnjhUc40Z5CzZDswZ8jq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583205; c=relaxed/simple;
-	bh=F45qppFRIwIbzP/wB6s2kZVOIpgiRw86yyroc49fcfc=;
+	s=arc-20240116; t=1712583576; c=relaxed/simple;
+	bh=V3JpCMa86AIj6qslayMHkbMwuJR/cAHVta0EDLlXT5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMzULLJWeeN7LYEo4sy4WHWcw9DJ3FcppwEmcYOktoI0345NbVgDYbnOAVykDxL7AYj/qSe0f16KJfHpCy7jZ50FjAZml1IWIJDjg5GYsMHH8Y9c+epIuFKAXN2Nmd3f+gYDne37id0MEYn+0kWgeiLOKaiQSaaELDVQNVGggwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6vu5sXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FECC43390;
-	Mon,  8 Apr 2024 13:33:23 +0000 (UTC)
+	 MIME-Version; b=o6CYwVGxb+RysZ3yqcU+PHbxGwTLD4wk3vhA9Zfx0gR6TZc43fuGT71w0Vv5ksrgVN3TK67uKQviYmo208agppQ1NWmKzJh38garxhTXbK9SSZLdrO05GGa2BmnPM6gdgA6jVZmRZRlIeIznyq0MrRGFPjPJ5qgtGnqYO1pUhxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWnNnXTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F2CC43390;
+	Mon,  8 Apr 2024 13:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583203;
-	bh=F45qppFRIwIbzP/wB6s2kZVOIpgiRw86yyroc49fcfc=;
+	s=korg; t=1712583576;
+	bh=V3JpCMa86AIj6qslayMHkbMwuJR/cAHVta0EDLlXT5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6vu5sXWb/oeg3H7CphJ3NmTN7RGSp8DfgkQXH4vQXusCC7ac3s6F8ggIRo6ax4tK
-	 pG5lgAeD9R8eWT+424IE+t/xmQX86mqe4bLVXEsqW+fX4EG4NE1yMGJSH8S4xTYGWQ
-	 cCPGnMKdwczFpNrD8HHDhwQ3QbU/EaK7W7sYItuM=
+	b=pWnNnXTve9nsG2w9ozIPSTpNti7vv68PwpoX1BuwwOrTrsBgQpIDgYX4Ti7rwx0yb
+	 dMH1hWk2C4Tfesq7YSLb8Ff60KdOkRWar1Z2dYouDvWd/TIM1XgGdkEHGk/uXriOX3
+	 1CQuSuymbStXCo/E/6On86fimuN0OKmAC7VrjWv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Chao Song <chao.song@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Peter Collingbourne <pcc@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Omar Sandoval <osandov@fb.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/252] ASoC: rt711-sdca: fix locking sequence
+Subject: [PATCH 6.8 193/273] stackdepot: rename pool_index to pool_index_plus_1
 Date: Mon,  8 Apr 2024 14:57:48 +0200
-Message-ID: <20240408125311.906808642@linuxfoundation.org>
+Message-ID: <20240408125315.310219564@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +69,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Peter Collingbourne <pcc@google.com>
 
-[ Upstream commit ee287771644394d071e6a331951ee8079b64f9a7 ]
+[ Upstream commit a6c1d9cb9a68bfa4512248419c4f4d880d19fe90 ]
 
-The disable_irq_lock protects the 'disable_irq' value, we need to lock
-before testing it.
+Commit 3ee34eabac2a ("lib/stackdepot: fix first entry having a 0-handle")
+changed the meaning of the pool_index field to mean "the pool index plus
+1".  This made the code accessing this field less self-documenting, as
+well as causing debuggers such as drgn to not be able to easily remain
+compatible with both old and new kernels, because they typically do that
+by testing for presence of the new field.  Because stackdepot is a
+debugging tool, we should make sure that it is debugger friendly.
+Therefore, give the field a different name to improve readability as well
+as enabling debugger backwards compatibility.
 
-Fixes: 23adeb7056ac ("ASoC: rt711-sdca: fix for JD event handling in ClockStop Mode0")
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Chao Song <chao.song@linux.intel.com>
-Link: https://msgid.link/r/20240325221817.206465-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is needed in 6.9, which would otherwise become an odd release with
+the new semantics and old name so debuggers wouldn't recognize the new
+semantics there.
+
+Fixes: 3ee34eabac2a ("lib/stackdepot: fix first entry having a 0-handle")
+Link: https://lkml.kernel.org/r/20240402001500.53533-1-pcc@google.com
+Link: https://linux-review.googlesource.com/id/Ib3e70c36c1d230dd0a118dc22649b33e768b9f88
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Acked-by: Marco Elver <elver@google.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Omar Sandoval <osandov@fb.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt711-sdca-sdw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/stackdepot.h | 7 +++----
+ lib/stackdepot.c           | 4 ++--
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/rt711-sdca-sdw.c b/sound/soc/codecs/rt711-sdca-sdw.c
-index 935e597022d32..b8471b2d8f4f1 100644
---- a/sound/soc/codecs/rt711-sdca-sdw.c
-+++ b/sound/soc/codecs/rt711-sdca-sdw.c
-@@ -438,13 +438,13 @@ static int __maybe_unused rt711_sdca_dev_resume(struct device *dev)
- 		return 0;
+diff --git a/include/linux/stackdepot.h b/include/linux/stackdepot.h
+index c4b5ad57c0660..bf0136891a0f2 100644
+--- a/include/linux/stackdepot.h
++++ b/include/linux/stackdepot.h
+@@ -44,10 +44,9 @@ typedef u32 depot_stack_handle_t;
+ union handle_parts {
+ 	depot_stack_handle_t handle;
+ 	struct {
+-		/* pool_index is offset by 1 */
+-		u32 pool_index	: DEPOT_POOL_INDEX_BITS;
+-		u32 offset	: DEPOT_OFFSET_BITS;
+-		u32 extra	: STACK_DEPOT_EXTRA_BITS;
++		u32 pool_index_plus_1	: DEPOT_POOL_INDEX_BITS;
++		u32 offset		: DEPOT_OFFSET_BITS;
++		u32 extra		: STACK_DEPOT_EXTRA_BITS;
+ 	};
+ };
  
- 	if (!slave->unattach_request) {
-+		mutex_lock(&rt711->disable_irq_lock);
- 		if (rt711->disable_irq == true) {
--			mutex_lock(&rt711->disable_irq_lock);
- 			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK1, SDW_SCP_SDCA_INTMASK_SDCA_0);
- 			sdw_write_no_pm(slave, SDW_SCP_SDCA_INTMASK2, SDW_SCP_SDCA_INTMASK_SDCA_8);
- 			rt711->disable_irq = false;
--			mutex_unlock(&rt711->disable_irq_lock);
- 		}
-+		mutex_unlock(&rt711->disable_irq_lock);
- 		goto regmap_sync;
- 	}
+diff --git a/lib/stackdepot.c b/lib/stackdepot.c
+index ee4bbe6513aa4..ee830f14afb78 100644
+--- a/lib/stackdepot.c
++++ b/lib/stackdepot.c
+@@ -330,7 +330,7 @@ static struct stack_record *depot_pop_free_pool(void **prealloc, size_t size)
+ 	stack = current_pool + pool_offset;
+ 
+ 	/* Pre-initialize handle once. */
+-	stack->handle.pool_index = pool_index + 1;
++	stack->handle.pool_index_plus_1 = pool_index + 1;
+ 	stack->handle.offset = pool_offset >> DEPOT_STACK_ALIGN;
+ 	stack->handle.extra = 0;
+ 	INIT_LIST_HEAD(&stack->hash_list);
+@@ -441,7 +441,7 @@ static struct stack_record *depot_fetch_stack(depot_stack_handle_t handle)
+ 	const int pools_num_cached = READ_ONCE(pools_num);
+ 	union handle_parts parts = { .handle = handle };
+ 	void *pool;
+-	u32 pool_index = parts.pool_index - 1;
++	u32 pool_index = parts.pool_index_plus_1 - 1;
+ 	size_t offset = parts.offset << DEPOT_STACK_ALIGN;
+ 	struct stack_record *stack;
  
 -- 
 2.43.0
