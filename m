@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2A389C5F9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BB389C3EF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BF121C23E15
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 867E61F2160E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF71C7F482;
-	Mon,  8 Apr 2024 14:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3F38061F;
+	Mon,  8 Apr 2024 13:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjUBnLFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ru+gFwd8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD5C7BB15;
-	Mon,  8 Apr 2024 14:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4A379F0;
+	Mon,  8 Apr 2024 13:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584952; cv=none; b=eBzzI6r8trnzWoXHr75QkkgBN/YYGJmXjf9Crd+ijyG4P3B5U4AbDTU90yGZJEcc1rZo+lm2lU4e1NXCPhIbBdSFVG+DPuoONpLnab1oytJFdtMwQRvGiKQ43qkqu0Wv/VKF8+AoxHY5JmYZH0fVXEM4iE9SB50dUYnfTksKOfY=
+	t=1712583622; cv=none; b=eP3LMAfWAG/j02yaNk83Ol2iTdbY87op8n+gwDtoXRuww6ZkAb5IPY5dXBj33UnzW0GqMPczmUmbicD3M4STwRj7e5Vv1gKpp+6dKlK/4CmK/Ab7XZ6sMwOq1dG+abFRzuSnbPqJ5SYsdoHht/4Dk5oBcT3ZQ8p5ZNiWA4g2sAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584952; c=relaxed/simple;
-	bh=Z0n5p4lopmJpkFf9/AOTCs1SEh6M9Js9G5JFdQ+UiiA=;
+	s=arc-20240116; t=1712583622; c=relaxed/simple;
+	bh=XuezbCvt1ruLuGs3N4clcLn90765vSzkbQ3HkIOfuog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIQeWrRwlwmYsDaJoFRQ/vjsdKWji+cv52znl6Es786rBcYwPOQoImrg+EYoMUCVqlhd84fA3PgbtxeS39xKgUVgfZimjYl6M8bjsEKyZT3nDoUwhDM943J1KMZk5Jb7ySkVIdYxqAAlZ77yxvUQDSvxI3bpgMldB8+K5AfQ35I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjUBnLFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D55C433C7;
-	Mon,  8 Apr 2024 14:02:31 +0000 (UTC)
+	 MIME-Version; b=QAmlPv9CM4Q96rVmWU2eDpCEX9XER9PJd5z2dupsq/guYEo4GIZnmzwg/gBgWP3L1aI3SjbF3cSbRhNBaRbI6EbSCC5Er69iFmeCAo2VUoABuquZh4rhEYYH1SgKOF//PrKYFuCBnhWp9PwT5odTyL36BRLGty6y4RVMzvHQgCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ru+gFwd8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628A0C433F1;
+	Mon,  8 Apr 2024 13:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584952;
-	bh=Z0n5p4lopmJpkFf9/AOTCs1SEh6M9Js9G5JFdQ+UiiA=;
+	s=korg; t=1712583622;
+	bh=XuezbCvt1ruLuGs3N4clcLn90765vSzkbQ3HkIOfuog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VjUBnLFNQ/hAuGS+p6bYHydJfeRZ4kIDHGCnNGScdClh1Hf/+v5O4YuAoZiaBASXL
-	 hrpZ/GKTs76UXn76dQE6MhlrPfHSHfqnsb+h0p5pm9KEPK7pPy+6kHQFeKwn/GAeFI
-	 hcYrUeT+geoPy1Kcyd92oBYweKVNnJwRMDnj+IMw=
+	b=Ru+gFwd80+DocAk/pTDW/6CvSdDVDZGGNEz7pVEBG6Ap53vnO/HqoE3KxU4I4MgGP
+	 KTw+X9k9amPveEU4FVT+13DKw0p5lVnfw1DQuJdl/IwRSw8DsVUjTifNEyZ9REKqi7
+	 pPMN0lFlnw6J7HmXN0tUIGI+Yw18fuhxz2bB8hlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bixuan Cui <cuibixuan@linux.alibaba.com>,
-	Luca Coelho <luciano.coelho@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 611/690] iwlwifi: mvm: rfi: use kmemdup() to replace kzalloc + memcpy
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.8 202/273] ALSA: hda/realtek - Fix inactive headset mic jack
 Date: Mon,  8 Apr 2024 14:57:57 +0200
-Message-ID: <20240408125421.735586835@linuxfoundation.org>
+Message-ID: <20240408125315.597727953@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bixuan Cui <cuibixuan@linux.alibaba.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-[ Upstream commit 08186e2501eec554cde8bae53b1d1de4d54abdf4 ]
+commit daf6c4681a74034d5723e2fb761e0d7f3a1ca18f upstream.
 
-Fix memdup.cocci warning:
-./drivers/net/wireless/intel/iwlwifi/mvm/rfi.c:110:8-15: WARNING
-opportunity for kmemdup
+This patch adds the existing fixup to certain TF platforms implementing
+the ALC274 codec with a headset jack. It fixes/activates the inactive
+microphone of the headset.
 
-Signed-off-by: Bixuan Cui <cuibixuan@linux.alibaba.com>
-Link: https://lore.kernel.org/r/1635317920-84725-1-git-send-email-cuibixuan@linux.alibaba.com
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Stable-dep-of: 06a093807eb7 ("wifi: iwlwifi: mvm: rfi: fix potential response leaks")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Message-ID: <20240328102757.50310-1-wse@tuxedocomputers.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rfi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
-index 44344216a1a90..1954b4cdb90b4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
-@@ -107,12 +107,10 @@ struct iwl_rfi_freq_table_resp_cmd *iwl_rfi_get_freq_table(struct iwl_mvm *mvm)
- 	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) != resp_size))
- 		return ERR_PTR(-EIO);
- 
--	resp = kzalloc(resp_size, GFP_KERNEL);
-+	resp = kmemdup(cmd.resp_pkt->data, resp_size, GFP_KERNEL);
- 	if (!resp)
- 		return ERR_PTR(-ENOMEM);
- 
--	memcpy(resp, cmd.resp_pkt->data, resp_size);
--
- 	iwl_free_resp(&cmd);
- 	return resp;
- }
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10427,6 +10427,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d05, 0x1147, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
+ 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
+ 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
++	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
 
 
 
