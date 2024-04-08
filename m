@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-37215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AC289C3DF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6EE889C384
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CCF51C22218
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD1DA1C21114
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4038002E;
-	Mon,  8 Apr 2024 13:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FA87E0F6;
+	Mon,  8 Apr 2024 13:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxKgjWlC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaQKM2b+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1939279F0;
-	Mon,  8 Apr 2024 13:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CE3768EA;
+	Mon,  8 Apr 2024 13:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583585; cv=none; b=GWvL2wy6ZTk/kEyQCu6NZ6BCCfakPkMFaQcn1A3XlI6IvNd4h0sbz9g/DdR7s1CZZE9uv5I1BdSQZkhyI/+ZOKjO1nkHE1rO+Dtng/EZLi785OCU946b++At52TanVkokj/cMFPho/CIF58pcxyhronJ6dJQKzMskIxxONZO2aE=
+	t=1712583378; cv=none; b=Yz3W5JKATgWu2hmb7s+SreVLka6x6WR9Y3b4Q0Wg+pqcgsOV1n1C0r4KncS87QP9nQSzfIvPxZoSD1BaKvWGwgRmSkfATvK14FE8YG6pxOWKgW0iD36bMxr59xCKLUP2rrdNwNA+I4jO97+9YUzvozEkso7yShhIs8Qyw8yaT1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583585; c=relaxed/simple;
-	bh=eR1t7MyofSe57AHmwtJxGa+QZwY4b7YmZR9JKSJyDBY=;
+	s=arc-20240116; t=1712583378; c=relaxed/simple;
+	bh=Kgn6zkLEnRTN1pnKd4guJOcFCEGKqKEBksJwS7iNivE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZY7p9dhyW+npfobyqSiaBpY8Lpv6r1dgPqCfSrmQAyySvKl0bWaliAa+MZkReKZbO/3NYxOzl5+Mpt/V1nllVUc1KDQmivSwJaCZoH80oE+maA153UXevA29Y6miPxT/sGf2DelW/7oWPXzeZmYBjw4N7Th6i72wrOtcdrfPB+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxKgjWlC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949E2C433C7;
-	Mon,  8 Apr 2024 13:39:44 +0000 (UTC)
+	 MIME-Version; b=UvFC/rTCB+mghcfjnhWCca6RGTBVaR/vL3ASiuQq+9nqaexxhjg7aCq3kW0lEOkJ+lYWC4tAF3d91BfE3larvMV8znSwZwMk44odI0yfBpR3Qrk5vGTtx4PmEBE+7e4unI/0cFDVGodMVCkYqNFf3P8z9wuNB8WbOFUqezeMM8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaQKM2b+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA6AC433F1;
+	Mon,  8 Apr 2024 13:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583585;
-	bh=eR1t7MyofSe57AHmwtJxGa+QZwY4b7YmZR9JKSJyDBY=;
+	s=korg; t=1712583378;
+	bh=Kgn6zkLEnRTN1pnKd4guJOcFCEGKqKEBksJwS7iNivE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxKgjWlCew1/oa8AtHyMZrBYPgLXWsATeeNtCUd5YJj/ah5Tq2ILc4mFEWW/n1yNC
-	 nSTrIE1ampsUmSss7cb1vUsk/FsQTXlh3bPuM6dO3lA8IivY1cxxuHeeXYU4ve/2dt
-	 QLJlov0lyhFvfbcXOPRQv6q831412KrM5e5fgA8w=
+	b=WaQKM2b+JVomhHIYj/VlGisY78PY8Cjx97CwrUNEXjr4zuIf7TvK8R2Q69/I5l6FS
+	 PFw86g9YqdK5zwHbpoWike4HnyWpCvIjpQtBoHyOQU8oPIPjO8j2OtHeIp2xeRjJcB
+	 651WCHtnxayUgRQd4Ahw5ckCY/qidw7NvdEX/SHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	NeilBrown <neilb@suse.de>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 240/690] lockd: introduce lockd_put()
-Date: Mon,  8 Apr 2024 14:51:46 +0200
-Message-ID: <20240408125408.336238821@linuxfoundation.org>
+Subject: [PATCH 5.15 241/690] lockd: rename lockd_create_svc() to lockd_get()
+Date: Mon,  8 Apr 2024 14:51:47 +0200
+Message-ID: <20240408125408.385243112@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,122 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 865b674069e05e5779fcf8cf7a166d2acb7e930b ]
+[ Upstream commit ecd3ad68d2c6d3ae178a63a2d9a02c392904fd36 ]
 
-There is some cleanup that is duplicated in lockd_down() and the failure
-path of lockd_up().
-Factor these out into a new lockd_put() and call it from both places.
+lockd_create_svc() already does an svc_get() if the service already
+exists, so it is more like a "get" than a "create".
 
-lockd_put() does *not* take the mutex - that must be held by the caller.
-It decrements nlmsvc_users and if that reaches zero, it cleans up.
+So:
+ - Move the increment of nlmsvc_users into the function as well
+ - rename to lockd_get().
+
+It is now the inverse of lockd_put().
 
 Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/lockd/svc.c | 64 +++++++++++++++++++++-----------------------------
- 1 file changed, 27 insertions(+), 37 deletions(-)
+ fs/lockd/svc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
-index 9aa499a761591..7f12c280fd30d 100644
+index 7f12c280fd30d..1a7c11118b320 100644
 --- a/fs/lockd/svc.c
 +++ b/fs/lockd/svc.c
-@@ -351,14 +351,6 @@ static struct notifier_block lockd_inet6addr_notifier = {
+@@ -396,16 +396,14 @@ static const struct svc_serv_ops lockd_sv_ops = {
+ 	.svo_enqueue_xprt	= svc_xprt_do_enqueue,
  };
- #endif
  
--static void lockd_unregister_notifiers(void)
--{
--	unregister_inetaddr_notifier(&lockd_inetaddr_notifier);
--#if IS_ENABLED(CONFIG_IPV6)
--	unregister_inet6addr_notifier(&lockd_inet6addr_notifier);
--#endif
--}
--
- static int lockd_start_svc(struct svc_serv *serv)
+-static int lockd_create_svc(void)
++static int lockd_get(void)
  {
+ 	struct svc_serv *serv;
  	int error;
-@@ -450,6 +442,27 @@ static int lockd_create_svc(void)
+ 
+-	/*
+-	 * Check whether we're already up and running.
+-	 */
+ 	if (nlmsvc_serv) {
+ 		svc_get(nlmsvc_serv);
++		nlmsvc_users++;
+ 		return 0;
+ 	}
+ 
+@@ -439,6 +437,7 @@ static int lockd_create_svc(void)
+ 	register_inet6addr_notifier(&lockd_inet6addr_notifier);
+ #endif
+ 	dprintk("lockd_up: service created\n");
++	nlmsvc_users++;
  	return 0;
  }
  
-+static void lockd_put(void)
-+{
-+	if (WARN(nlmsvc_users <= 0, "lockd_down: no users!\n"))
-+		return;
-+	if (--nlmsvc_users)
-+		return;
-+
-+	unregister_inetaddr_notifier(&lockd_inetaddr_notifier);
-+#if IS_ENABLED(CONFIG_IPV6)
-+	unregister_inet6addr_notifier(&lockd_inet6addr_notifier);
-+#endif
-+
-+	if (nlmsvc_task) {
-+		kthread_stop(nlmsvc_task);
-+		dprintk("lockd_down: service stopped\n");
-+		nlmsvc_task = NULL;
-+	}
-+	nlmsvc_serv = NULL;
-+	dprintk("lockd_down: service destroyed\n");
-+}
-+
- /*
-  * Bring up the lockd process if it's not already up.
-  */
-@@ -461,21 +474,16 @@ int lockd_up(struct net *net, const struct cred *cred)
+@@ -472,10 +471,9 @@ int lockd_up(struct net *net, const struct cred *cred)
  
- 	error = lockd_create_svc();
+ 	mutex_lock(&nlmsvc_mutex);
+ 
+-	error = lockd_create_svc();
++	error = lockd_get();
  	if (error)
--		goto err_create;
-+		goto err;
-+	nlmsvc_users++;
+ 		goto err;
+-	nlmsvc_users++;
  
  	error = lockd_up_net(nlmsvc_serv, net, cred);
  	if (error < 0) {
--		goto err_put;
-+		lockd_put();
-+		goto err;
- 	}
- 
--	nlmsvc_users++;
--err_put:
--	if (nlmsvc_users == 0) {
--		lockd_unregister_notifiers();
--		kthread_stop(nlmsvc_task);
--		nlmsvc_serv = NULL;
--	}
--err_create:
-+err:
- 	mutex_unlock(&nlmsvc_mutex);
- 	return error;
- }
-@@ -489,25 +497,7 @@ lockd_down(struct net *net)
- {
- 	mutex_lock(&nlmsvc_mutex);
- 	lockd_down_net(nlmsvc_serv, net);
--	if (nlmsvc_users) {
--		if (--nlmsvc_users)
--			goto out;
--	} else {
--		printk(KERN_ERR "lockd_down: no users! task=%p\n",
--			nlmsvc_task);
--		BUG();
--	}
--
--	if (!nlmsvc_task) {
--		printk(KERN_ERR "lockd_down: no lockd running.\n");
--		BUG();
--	}
--	lockd_unregister_notifiers();
--	kthread_stop(nlmsvc_task);
--	dprintk("lockd_down: service destroyed\n");
--	nlmsvc_serv = NULL;
--	nlmsvc_task = NULL;
--out:
-+	lockd_put();
- 	mutex_unlock(&nlmsvc_mutex);
- }
- EXPORT_SYMBOL_GPL(lockd_down);
 -- 
 2.43.0
 
