@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFFDF89C425
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB4B89C209
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C302283F61
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09D4E1C21D19
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87028563C;
-	Mon,  8 Apr 2024 13:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4038A7E0E9;
+	Mon,  8 Apr 2024 13:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwU6w95N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyOoDFli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C2F7E0EB;
-	Mon,  8 Apr 2024 13:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33BF7D414;
+	Mon,  8 Apr 2024 13:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583746; cv=none; b=b92zuFYWExklDrsCSUgH/pWAa9wswS9hSxShgiPnDCAi88YfGyahBE5CPaDUs1rSjEfIX+LPhnHjeotJpilFumMzK7bODGlzCkHd5wtbyJeiC7kkxUZ4fgH0021uHaLut5MBaBGhQ5z87KfC9Zwp2P8IuvdaVpf1H8VlP1dst+0=
+	t=1712582539; cv=none; b=iZFZQRcckFa6SnnPu7W7w00WZrBsjqeYYErlKUlVhNV1SSANeOQW1qAjXjkI1ilixVvOey5E5T8XE/qHQXE65ybP1rl7wjvp3Y6wjhx+0gUjYIrM4GTOs4KS2P1rDEkNWBoF4oqVR4xDIDKwp4TnWa51iSY+brEh050tZqzqJ1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583746; c=relaxed/simple;
-	bh=6ehRmKgZhoAfB6cjv6bd9cGi6I7Ba5iOUINWErNgako=;
+	s=arc-20240116; t=1712582539; c=relaxed/simple;
+	bh=upGIt6UPip2wRhsGXqCgjVM+TKMZOCSJ3hlximIimdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VF1KgGr7K/RP/u3AiEXzSVeg8LW1+BpXOnWzXjg49UK+k5bic76G3R6XxH013VCFgiNKg7groBSHX8JnuRqIAssN4uY3r83CB8ANP07fLv2Ro5wnXKxDmQws1G6VWcQfeWVSudzy/4mcRsJIxqHL+F4/wDs0bZq45WTYqp5YJcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwU6w95N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4E6C433C7;
-	Mon,  8 Apr 2024 13:42:24 +0000 (UTC)
+	 MIME-Version; b=DYyGnoxYt+otHWIBJWJNz8Z5FCk/leweYR2ENeI+snXdtT1icfMmRO7poCATydrZN2T5mv4cdITJ63wm1YQTDRBWmyYbyxhAgyOHx1hXw+5unt1oy6/5Vnn4HSVHEdkDVB5MQoAwB8jZbCtE+Uu0sgJbw4mvOrI2LRMmJCC3HC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyOoDFli; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C32EC433C7;
+	Mon,  8 Apr 2024 13:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583745;
-	bh=6ehRmKgZhoAfB6cjv6bd9cGi6I7Ba5iOUINWErNgako=;
+	s=korg; t=1712582538;
+	bh=upGIt6UPip2wRhsGXqCgjVM+TKMZOCSJ3hlximIimdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwU6w95N4sw3HRgIUbK3b6SnBQdII8kaSFZ2FwzK5kSDRh9+jJKuSRErDZVNr1fXu
-	 2WkadsBz14plEKVQ8a9XnnOXLX2P2pmGz0rJwTVpO/Q7PoR1GEloKioFG9Lb68XztP
-	 qog9a1Y2m4ci6oxBvANLYZcvCDREtdIHkR7/ehC0=
+	b=KyOoDFliwGV0VE4Hp1Z79VTiX/pnjTNg/7QShTyO7DMT37dY05+yXR+qZOL5evs5E
+	 SVv3SVreTlrnrPd27EKC4kOn+bksDpwmveehyy9bkQLyA+a2sfBYViQzFKGrVmgYz1
+	 hFRlWLUDfDmY0jDl3GGh2aVU6J98GghkoUxDMJlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	James Christopher Adduono <jc@adduono.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 229/252] smb: client: fix potential UAF in cifs_debug_files_proc_show()
+Subject: [PATCH 6.1 114/138] ksmbd: do not set SMB2_GLOBAL_CAP_ENCRYPTION for SMB 3.1.1
 Date: Mon,  8 Apr 2024 14:58:48 +0200
-Message-ID: <20240408125313.763454547@linuxfoundation.org>
+Message-ID: <20240408125259.776275313@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit ca545b7f0823f19db0f1148d59bc5e1a56634502 upstream.
+commit 5ed11af19e56f0434ce0959376d136005745a936 upstream.
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+SMB2_GLOBAL_CAP_ENCRYPTION flag should be used only for 3.0 and
+3.0.2 dialects. This flags set cause compatibility problems with
+other SMB clients.
 
+Reported-by: James Christopher Adduono <jc@adduono.com>
+Tested-by: James Christopher Adduono <jc@adduono.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |    2 ++
- fs/smb/client/cifsglob.h   |   10 ++++++++++
- 2 files changed, 12 insertions(+)
+ fs/smb/server/smb2ops.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -250,6 +250,8 @@ static int cifs_debug_files_proc_show(st
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+			if (cifs_ses_exiting(ses))
-+				continue;
- 			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 				spin_lock(&tcon->open_file_lock);
- 				list_for_each_entry(cfile, &tcon->openFileList, tlist) {
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -2281,4 +2281,14 @@ struct smb2_compound_vars {
- 	struct smb2_file_link_info link_info;
- };
+--- a/fs/smb/server/smb2ops.c
++++ b/fs/smb/server/smb2ops.c
+@@ -228,6 +228,11 @@ void init_smb3_0_server(struct ksmbd_con
+ 	    conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
  
-+static inline bool cifs_ses_exiting(struct cifs_ses *ses)
-+{
-+	bool ret;
++	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
++	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
++	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
++		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
 +
-+	spin_lock(&ses->ses_lock);
-+	ret = ses->ses_status == SES_EXITING;
-+	spin_unlock(&ses->ses_lock);
-+	return ret;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
+ }
+@@ -275,11 +280,6 @@ int init_smb3_11_server(struct ksmbd_con
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
+ 			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
+ 
+-	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
+-	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
+-	     conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION))
+-		conn->vals->capabilities |= SMB2_GLOBAL_CAP_ENCRYPTION;
+-
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL)
+ 		conn->vals->capabilities |= SMB2_GLOBAL_CAP_MULTI_CHANNEL;
+ 
 
 
 
