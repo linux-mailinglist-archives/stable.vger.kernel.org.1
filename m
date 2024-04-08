@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-37039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B5689C2FD
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:38:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9B389C29D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A03901F21899
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:38:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 455081C21949
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B760D13A267;
-	Mon,  8 Apr 2024 13:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B3680604;
+	Mon,  8 Apr 2024 13:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDj184hS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wu7oEGq8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756AD7F476;
-	Mon,  8 Apr 2024 13:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC66C79F0;
+	Mon,  8 Apr 2024 13:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583077; cv=none; b=r17fZrowkeXzldrRNM5hiR34hxn1YsnxF0on441p9g0jUlcnPqvFDVS3BY9k9jsvcGZat2ls5WhBOnfibjDkmy/o1kUTcPhlfpYx6JGrnYkQ1bR3Twev0Ge7fXW3xpbFsBeFahu3zjxPHBf8awr1QA3USsd+sRHfV2W0E8ZIH24=
+	t=1712582933; cv=none; b=rfjs84r4RmSiDUAEIjjSSsBHtW/mLxOthw8psZQdoUcASZ430no3cfk6akdHduTQ7UasnQ84c0AokTwCm2hpN8s5ot+rn88AAfYh2IetOrtOb5CGDBR2YLaR7FB09mK0hCn9p7z++L69s6WHHLDWFOaTDspdvK+0aHFLQEGHwQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583077; c=relaxed/simple;
-	bh=fswDvvbPOwx+HrIBrvA4QzTy83EWfVc76IC94Wwj3Jo=;
+	s=arc-20240116; t=1712582933; c=relaxed/simple;
+	bh=904XqTgLBm95N27F7oZmjRTe/yRrKHOjAO0aods+2Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGLCCywlQdeBujKiqQBq+8PQaKmGtFZeURTiDst32hKc/lrMDzuu6oIQDEYUXl/70oGr66NjgUBzjlGX9+/GPEJRk87IgPGOziW8ELZDbub0JLBhkUyaFKWFDlcq06zKerP+o13kIxwpAD8W8NhBeQvSdzrh/LQ+3Vb0sL41ne0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDj184hS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08FAC43390;
-	Mon,  8 Apr 2024 13:31:16 +0000 (UTC)
+	 MIME-Version; b=Kd6MC++C/mer2sh1FgNbsxSZO+9vJ+n7MPo8mW2kHNQCEoJvyk+ENMLHbEkzJYys6aCapigvYeCB6n3HcSRFbOyxs83uWkRyJs84NkVvzku4Itu7A3vEWJC5+k1Xpvh2+g+wPTjyR+9WHxEAjxNbfBJrxSomsQHRy+1K0mOUcQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wu7oEGq8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715D7C433C7;
+	Mon,  8 Apr 2024 13:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583077;
-	bh=fswDvvbPOwx+HrIBrvA4QzTy83EWfVc76IC94Wwj3Jo=;
+	s=korg; t=1712582932;
+	bh=904XqTgLBm95N27F7oZmjRTe/yRrKHOjAO0aods+2Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDj184hS8SmzeQ5G7gPBs+tTqdYu91VBhO59WyhXw2QD9fW5fA/tdQkgVlsxb0Nww
-	 NEBhj4YGbokALIEVNDCo0ga44kJ25Hg9IqS4skReJ3XYqgMyZZ+UMvEY6H1QWV58s+
-	 I4UkZoqhz4u+D2/b3pwjWEnL8GG4QB2HOsOmzmRE=
+	b=Wu7oEGq8VFiOMLNFIelibPnPxZ+CHPvk+LZqLY/DB7FwEaQrXxZ3CmjL5q0+rBAG8
+	 AfeYFJK+gOvOlKjvWzvHLzxCDiEOYb7BLwg7fO1FuSG2luxy7DpPcCdyL4GKPFl7gY
+	 8gkUNN/i5szSOxFK4oIKN6hBPMRrS8LIFK12wlGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 137/273] net: ravb: Always process TX descriptor ring
+	Antoine Tenart <atenart@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 113/252] gro: fix ownership transfer
 Date: Mon,  8 Apr 2024 14:56:52 +0200
-Message-ID: <20240408125313.544724489@linuxfoundation.org>
+Message-ID: <20240408125310.143550801@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 596a4254915f94c927217fe09c33a6828f33fb25 ]
+commit ed4cccef64c1d0d5b91e69f7a8a6697c3a865486 upstream.
 
-The TX queue should be serviced each time the poll function is called,
-even if the full RX work budget has been consumed. This prevents
-starvation of the TX queue when RX bandwidth usage is high.
+If packets are GROed with fraglist they might be segmented later on and
+continue their journey in the stack. In skb_segment_list those skbs can
+be reused as-is. This is an issue as their destructor was removed in
+skb_gro_receive_list but not the reference to their socket, and then
+they can't be orphaned. Fix this by also removing the reference to the
+socket.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240402145305.82148-1-paul.barker.ct@bp.renesas.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example this could be observed,
+
+  kernel BUG at include/linux/skbuff.h:3131!  (skb_orphan)
+  RIP: 0010:ip6_rcv_core+0x11bc/0x19a0
+  Call Trace:
+   ipv6_list_rcv+0x250/0x3f0
+   __netif_receive_skb_list_core+0x49d/0x8f0
+   netif_receive_skb_list_internal+0x634/0xd40
+   napi_complete_done+0x1d2/0x7d0
+   gro_cell_poll+0x118/0x1f0
+
+A similar construction is found in skb_gro_receive, apply the same
+change there.
+
+Fixes: 5e10da5385d2 ("skbuff: allow 'slow_gro' for skb carring sock reference")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/core/gro.c         |    3 ++-
+ net/ipv4/udp_offload.c |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 266ed984a98fa..03c49bec6ee0b 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1288,12 +1288,12 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	int q = napi - priv->napi;
- 	int mask = BIT(q);
- 	int quota = budget;
-+	bool unmask;
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -195,8 +195,9 @@ int skb_gro_receive(struct sk_buff *p, s
+ 	}
  
- 	/* Processing RX Descriptor Ring */
- 	/* Clear RX interrupt */
- 	ravb_write(ndev, ~(mask | RIS0_RESERVED), RIS0);
--	if (ravb_rx(ndev, &quota, q))
--		goto out;
-+	unmask = !ravb_rx(ndev, &quota, q);
+ merge:
+-	/* sk owenrship - if any - completely transferred to the aggregated packet */
++	/* sk ownership - if any - completely transferred to the aggregated packet */
+ 	skb->destructor = NULL;
++	skb->sk = NULL;
+ 	delta_truesize = skb->truesize;
+ 	if (offset > headlen) {
+ 		unsigned int eat = offset - headlen;
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -449,8 +449,9 @@ static int skb_gro_receive_list(struct s
+ 	NAPI_GRO_CB(p)->count++;
+ 	p->data_len += skb->len;
  
- 	/* Processing TX Descriptor Ring */
- 	spin_lock_irqsave(&priv->lock, flags);
-@@ -1303,6 +1303,9 @@ static int ravb_poll(struct napi_struct *napi, int budget)
- 	netif_wake_subqueue(ndev, q);
- 	spin_unlock_irqrestore(&priv->lock, flags);
+-	/* sk owenrship - if any - completely transferred to the aggregated packet */
++	/* sk ownership - if any - completely transferred to the aggregated packet */
+ 	skb->destructor = NULL;
++	skb->sk = NULL;
+ 	p->truesize += skb->truesize;
+ 	p->len += skb->len;
  
-+	if (!unmask)
-+		goto out;
-+
- 	napi_complete(napi);
- 
- 	/* Re-enable RX/TX interrupts */
--- 
-2.43.0
-
 
 
 
