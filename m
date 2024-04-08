@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-37637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FD289C5CA
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A09689C293
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8914128338E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF26A1F23AB6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DA87F481;
-	Mon,  8 Apr 2024 14:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE617FBDF;
+	Mon,  8 Apr 2024 13:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbt0Mu3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ijqLBID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523527BAF5;
-	Mon,  8 Apr 2024 14:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE05076413;
+	Mon,  8 Apr 2024 13:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584818; cv=none; b=g5E3CFUQihfmIKRuwEKxT+g88ywIf8lAdTUkfRaZC34UdUNLZoMdJNHBYBeqhAlIvIwUq5M9k6m11m92tT0BdwYNLVyeWRKVkp8aJrtTeUAQDAex0+woaGifjHViBiT2Q9/syR08Ue4Pelm/m4Jb8zHzYlVVF83vHo1Hng+rIlQ=
+	t=1712582904; cv=none; b=XAvG7RDNCy0u3OO2S2DdUptndlU+TjBM3yo79fhf6crg27Y0Wjulq+bjAHPOJ3LimvEdvpI/XceBr6rtWDG0qWiHeYjA60kueQr1zF85BcYK4ACuajUq9jTpjobkUeBOCFrgcqBgaKuhzSJ/zd+4fbEJgvGH2nCle5sIra1lK3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584818; c=relaxed/simple;
-	bh=s9c9LcLqKLKXM4Cpa3Wp3iVkP2Q5CJmz1bSaW76zqFA=;
+	s=arc-20240116; t=1712582904; c=relaxed/simple;
+	bh=g68e4f0gTDvrUCTPfLJrcSzedP3a9lJTAi41QmDfFR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLIQICC0bF0T1SFuUItKdOQLfKab1HnAd82BoQnOnaiRTgO8EIkCmpWIr4CLQ+VgUb6eeAyArzueHEkOvR7ihvQIqCuYW0BWfE1K+HgvKxkSFeNh0x49WsRHqowcvYT3yM9R+wFve38p0xKfvZeNhwjUKEZ4Ypd0g+zGiCJDUJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbt0Mu3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC990C433F1;
-	Mon,  8 Apr 2024 14:00:17 +0000 (UTC)
+	 MIME-Version; b=IkMAD4nmDymQYJXhLTXC/ViJjOKpABxFmqlE7nE14GTwQ1bNVSOGU5YCwiIKSR6d5SBms7wY1yz2RcQNIX8lto/uDVCTzYeva6hIdx9YImRaYUuvfbVI8n9ZLXlQMC/51AXm5DZsuKHgUh55MmLeJ4nsKNmJA1uCmssUHK2SFJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ijqLBID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B49DC433C7;
+	Mon,  8 Apr 2024 13:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584818;
-	bh=s9c9LcLqKLKXM4Cpa3Wp3iVkP2Q5CJmz1bSaW76zqFA=;
+	s=korg; t=1712582903;
+	bh=g68e4f0gTDvrUCTPfLJrcSzedP3a9lJTAi41QmDfFR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbt0Mu3yuqdIz/SqUe3u7s63ujyeMpsA6Z30C9uYwzEXUQI6YXgcESh0fW3ho4/be
-	 QereHIRmhkirZpepcnNhqeSjgkOzG/adTEqw1krxQVgl2hTAJu12Wy1F0gwk2eAs9I
-	 F9cUC/6isaHzEQVKWqyLTLlg9sxf1L9zjUOPWKYA=
+	b=0ijqLBID1EFAjqOVX8AHRP+VUc31O0/8k3hyGv5hi+DEsw7xsuXf3CpuZzfK8hxc0
+	 YgW0KWAdZ0Kjm8EpkqwUWRP/no8sUrH/KCqAY7oqyckNWbhCWIPHphv9X0RczF8gnF
+	 if1MmzdOZwM0Upo8mxld6qmitNSrgXadBeHkF1x0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	"GONG, Ruiqi" <gongruiqi1@huawei.com>, GONG@web.codeaurora.org
-Subject: [PATCH 5.15 567/690] serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for FIFO
+	patches@lists.linux.dev,
+	Charlene Liu <charlene.liu@amd.com>,
+	Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Miess <daniel.miess@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 134/252] drm/amd/display: Fix DPSTREAM CLK on and off sequence
 Date: Mon,  8 Apr 2024 14:57:13 +0200
-Message-ID: <20240408125420.164826371@linuxfoundation.org>
+Message-ID: <20240408125310.797267043@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
 
-commit dbf4ab821804df071c8b566d9813083125e6d97b upstream.
+[ Upstream commit e8d131285c98927554cd007f47cedc4694bfedde ]
 
-The SC16IS7XX IC supports a burst mode to access the FIFOs where the
-initial register address is sent ($00), followed by all the FIFO data
-without having to resend the register address each time. In this mode, the
-IC doesn't increment the register address for each R/W byte.
+[Why]
+Secondary DP2 display fails to light up in some instances
 
-The regmap_raw_read() and regmap_raw_write() are functions which can
-perform IO over multiple registers. They are currently used to read/write
-from/to the FIFO, and although they operate correctly in this burst mode on
-the SPI bus, they would corrupt the regmap cache if it was not disabled
-manually. The reason is that when the R/W size is more than 1 byte, these
-functions assume that the register address is incremented and handle the
-cache accordingly.
+[How]
+Clock needs to be on when DPSTREAMCLK*_EN =1. This change
+moves dtbclk_p enable/disable point to make sure this is
+the case
 
-Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
-remove the manual cache control which was a workaround when using the
-_raw_ versions. FIFO registers are properly declared as volatile so
-cache will not be used/updated for FIFO accesses.
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
-Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Reviewed-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Signed-off-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 72d72e8fddbc ("drm/amd/display: Prevent crash when disable stream")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ .../drm/amd/display/dc/dce110/dce110_hw_sequencer.c   |  2 +-
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c    | 11 +++++------
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -376,9 +376,7 @@ static void sc16is7xx_fifo_read(struct u
- 	const u8 line = sc16is7xx_line(port);
- 	u8 addr = (SC16IS7XX_RHR_REG << SC16IS7XX_REG_SHIFT) | line;
+diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
+index 251dd800a2a66..2ac41c2a7238c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
+@@ -1179,9 +1179,9 @@ void dce110_disable_stream(struct pipe_ctx *pipe_ctx)
+ 		dto_params.timing = &pipe_ctx->stream->timing;
+ 		dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
+ 		if (dccg) {
+-			dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
+ 			dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
+ 			dccg->funcs->set_dpstreamclk(dccg, REFCLK, tg->inst, dp_hpo_inst);
++			dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
+ 		}
+ 	} else if (dccg && dccg->funcs->disable_symclk_se) {
+ 		dccg->funcs->disable_symclk_se(dccg, stream_enc->stream_enc_inst,
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+index 1e3803739ae61..12af2859002f7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -2728,18 +2728,17 @@ void dcn20_enable_stream(struct pipe_ctx *pipe_ctx)
+ 	}
  
--	regcache_cache_bypass(s->regmap, true);
--	regmap_raw_read(s->regmap, addr, s->buf, rxlen);
--	regcache_cache_bypass(s->regmap, false);
-+	regmap_noinc_read(s->regmap, addr, s->buf, rxlen);
- }
- 
- static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
-@@ -394,9 +392,7 @@ static void sc16is7xx_fifo_write(struct
- 	if (unlikely(!to_send))
- 		return;
- 
--	regcache_cache_bypass(s->regmap, true);
--	regmap_raw_write(s->regmap, addr, s->buf, to_send);
--	regcache_cache_bypass(s->regmap, false);
-+	regmap_noinc_write(s->regmap, addr, s->buf, to_send);
- }
- 
- static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
-@@ -489,6 +485,11 @@ static bool sc16is7xx_regmap_precious(st
- 	return false;
- }
- 
-+static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
-+{
-+	return reg == SC16IS7XX_RHR_REG;
-+}
+ 	if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx)) {
+-		dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
+-		dccg->funcs->set_dpstreamclk(dccg, DTBCLK0, tg->inst, dp_hpo_inst);
+-
+-		phyd32clk = get_phyd32clk_src(link);
+-		dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
+-
+ 		dto_params.otg_inst = tg->inst;
+ 		dto_params.pixclk_khz = pipe_ctx->stream->timing.pix_clk_100hz / 10;
+ 		dto_params.num_odm_segments = get_odm_segment_count(pipe_ctx);
+ 		dto_params.timing = &pipe_ctx->stream->timing;
+ 		dto_params.ref_dtbclk_khz = dc->clk_mgr->funcs->get_dtb_ref_clk_frequency(dc->clk_mgr);
+ 		dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
++		dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
++		dccg->funcs->set_dpstreamclk(dccg, DTBCLK0, tg->inst, dp_hpo_inst);
 +
- static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- {
- 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-@@ -1439,6 +1440,8 @@ static struct regmap_config regcfg = {
- 	.cache_type = REGCACHE_RBTREE,
- 	.volatile_reg = sc16is7xx_regmap_volatile,
- 	.precious_reg = sc16is7xx_regmap_precious,
-+	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
-+	.readable_noinc_reg = sc16is7xx_regmap_noinc,
- };
- 
- #ifdef CONFIG_SERIAL_SC16IS7XX_SPI
++		phyd32clk = get_phyd32clk_src(link);
++		dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
+ 	} else {
+ 		}
+ 	if (hws->funcs.calculate_dccg_k1_k2_values && dc->res_pool->dccg->funcs->set_pixel_rate_div) {
+-- 
+2.43.0
+
 
 
 
