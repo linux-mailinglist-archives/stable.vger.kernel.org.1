@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-37795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C23389CCCC
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 22:07:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7525E89CCCE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 22:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C021D1C21C44
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 20:07:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2097B1F2562E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 20:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA261465B7;
-	Mon,  8 Apr 2024 20:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E5A1465B5;
+	Mon,  8 Apr 2024 20:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="JcfcUPfs"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="JFs9ax2s"
 X-Original-To: stable@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29E014600B;
-	Mon,  8 Apr 2024 20:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCEA14600B;
+	Mon,  8 Apr 2024 20:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712606817; cv=none; b=d1v7MUnOe+WGZteviiq7Ht5zdza+xF3T5R8XfannVMEYc/nybkVcsWjfArgBb4wBPqcg9yj/R7fgQrlba3kTCGH5JkKp1LMrltwG9vDSq6Kdlvb9M6YlEP6nlo1zt82Z81vHQ6SaIXxfY10eEFpACON2veydTIxVNuV0Q6vjZic=
+	t=1712606844; cv=none; b=nl/t2bgMDcHKrJnBGzBQK99otTYF0bgEnSDyHbH47J1GQa5mE2jmnBhKvvaHoOzz1ebiDG8dPOsFyYDa5T5xkNZ/KhR0zODFuMu3WfZsP/QGQm+6UpfcZbWT2P5Lhcz02hEO3MDw1R9jpqSATkBv7HsUIwAws8CiAj/hIvIbxaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712606817; c=relaxed/simple;
-	bh=uP8p+u907i0fX21wYEXgRHvCgXzf0/e4KsgBCY2n9Rs=;
+	s=arc-20240116; t=1712606844; c=relaxed/simple;
+	bh=WltlHLDq8LjdpWjch2/J8wP5JU1xpBITzt0AMqnStb4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DuHB36nKRGDQrYlBZN6hIs4ISaAe77ZUgtZJxrdka7gpx6ISjxYgeZcN0wsfLda3Phr9hVqLDGOdWYFSDVcnM5lIZtTiXiSAD8GX7JUZx4+x07ohCgxBd4otIIN53VBM2XMJ/IjLP4DBDucEPuL9dauGuB1+aVg6srIuV69YsS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=JcfcUPfs; arc=none smtp.client-ip=13.77.154.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=aREUYzVvpyr0ymPzP8IEJrGgXnVGTUxX0kraG2+FPpO2g/mTI5swS3l1l8UWPJzRjuMU16bFqY7eJtBUIFEY9IWvl+v4sfYmf1ATayOCFJGMhQfFU4/ZHZEExm8vLeUccU7Clk3J01DLm8k7xN/+Oh8z+/NDPy71uAv86pv9fcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=JFs9ax2s; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: by linux.microsoft.com (Postfix, from userid 1131)
-	id 703AC20EA447; Mon,  8 Apr 2024 13:06:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 703AC20EA447
+	id 0BE4520EA447; Mon,  8 Apr 2024 13:07:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0BE4520EA447
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1712606815;
-	bh=xBr69HjT/zSd9c72AkS35t6i4F3bTZq50jzsNrhgI3I=;
+	s=default; t=1712606843;
+	bh=/aSrf1DAISt0waV7+s3IpY74Ne1v7uCVuxm1tptDBv8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JcfcUPfsQaJEylqoFo5J0kA6eRR+FWcY6sL1ws2uT/M2Bna+APb0eKCfZcIN1XMdH
-	 VtFQfKrBUJJeZ5NqPXnBfrBBZHMJI3W/NzcAmY0xxIJ5e04/75U+/h/JacmnSkoDCc
-	 hjnnAE5GgcbUm8wRzg2QdG5kqtLPCKzXQucq/CGw=
-Date: Mon, 8 Apr 2024 13:06:55 -0700
+	b=JFs9ax2siOb+i8mnnZVVm9CxwV9b8MDWbYRc+eS2bv8u6eFb9IzplJY0NPcj5mGJ5
+	 eRTi8bQJgX0xWXY0KTHJzVQzZsURWKFJXhX2GfyQh6oBNUGXUiRRh2I9C4zgwySvM+
+	 1SaCZ1bXwsmY9rHfjxRO9kXKn0AaiKKMHvnjIzWs=
+Date: Mon, 8 Apr 2024 13:07:23 -0700
 From: Kelsey Steele <kelseysteele@linux.microsoft.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -49,9 +49,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.15 000/690] 5.15.154-rc1 review
-Message-ID: <20240408200655.GA4018@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20240408125359.506372836@linuxfoundation.org>
+Subject: Re: [PATCH 6.1 000/138] 6.1.85-rc1 review
+Message-ID: <20240408200723.GB4018@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20240408125256.218368873@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,18 +60,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Mon, Apr 08, 2024 at 02:47:46PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.154 release.
-> There are 690 patches in this series, all will be posted as a response
+On Mon, Apr 08, 2024 at 02:56:54PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.85 release.
+> There are 138 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
 > Responses should be made by Wed, 10 Apr 2024 12:52:23 +0000.
 > Anything received after that time might be too late.
-
+> 
 No regressions found on WSL (x86 and arm64).
 
 Built, booted, and reviewed dmesg.
