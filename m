@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F381489C645
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C282389C040
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3724DB2D52B
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634D61F23CB3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B597F49F;
-	Mon,  8 Apr 2024 14:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A60C7173E;
+	Mon,  8 Apr 2024 13:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxmy2epc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AcQT1Iga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7A37F46E;
-	Mon,  8 Apr 2024 14:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033132DF73;
+	Mon,  8 Apr 2024 13:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584961; cv=none; b=dyYan3LbuUjA0sUJt3OkwOF086ea9uXs5onCm9iYQ4okmyokoFFGlR5HaWceNcKQ4WNLtlWQMeIncZdYyCK500HK0hN3Hvgnt/k+eAYExHY5AGP7pz2VWGaNPoqnLQ+36YIBGR6L9XjUY26Lg9m9xIY3FazPuPN8JK+V8xhAgG8=
+	t=1712581601; cv=none; b=HYCVaj8iHXYrZVCTJuPEDk/oUNePf9YkbVuM9MyjUeVi/sW6PmA4Hu++eQhfpjuzKLAhywSAOz07fB+Kjkh0M95bbQXvAFCaiuGODMEVMKYikHFbfWIX3V98m/+MdVnu0NNzhzrZe5Povj1P7ITPa++lDiY75nY5IRl5wai59Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584961; c=relaxed/simple;
-	bh=V0T2h/maAa/2pRcg9Hl0i1g+HX3HZwBMqEK0qekDI4M=;
+	s=arc-20240116; t=1712581601; c=relaxed/simple;
+	bh=x1orwebO4HkvMaaJg9wtz/ruKAM8p23WBBXp28qjyPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJeHFH7cvcbHq6TUH5xnXh7988MhZAN0Q3rzYoIb+7sb/g5ejJR54+5RqvzRB4UJGedwqPJZj5adiKJxTlbabtpa0Qz6DZByU3gTPRU7STcQmJXxcKBynbgUtDV+1k8RqJa6V5VgYP1aRVSau7G2EyuUxssAzkCZcWChzHbyrlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxmy2epc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDBDC433C7;
-	Mon,  8 Apr 2024 14:02:40 +0000 (UTC)
+	 MIME-Version; b=kPxT/HDA8xc29EIKE+6G/A+zemum3Rb2anPN1bKJYMLBbqMNCr89qKo/wB7J9Nr+/WHPc0hJ1jrPCErpVYI9iK9Vw8gPTX1tezo95sYvMHSSp0sMwTJtf4780Ftx+6i+hZYFqjmjOyuMR7oqoXi/ErporOV25UXQNIymCbdetGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AcQT1Iga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D2DC433F1;
+	Mon,  8 Apr 2024 13:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584961;
-	bh=V0T2h/maAa/2pRcg9Hl0i1g+HX3HZwBMqEK0qekDI4M=;
+	s=korg; t=1712581600;
+	bh=x1orwebO4HkvMaaJg9wtz/ruKAM8p23WBBXp28qjyPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxmy2epcNb+jHwjkZZ4o1TomGHfQFRAMS7BavnZR8phct1X6cHf27oWZDjLXv/Iyq
-	 BLcb+k8fh0OlUXQeps+oyyW0Jz6C/5i89IVa8otmm6ZAMvGDSFLHXLl4wwyU+6qrBN
-	 FGmOF9WiltqWM+S64wRBUQwZ/VQbjXuc0C5g8rT8=
+	b=AcQT1Iga6GBJnkbnrp8D6UTStSx7/t5uyrsG2yXNxPc++20XIPMOoyn6RyDq9kqde
+	 U9dS2og2vM8ailfVUC2R/dg738PzicA3lj95swRZWVMx/63OdI8AJ4JgPxpxZqBEoi
+	 rHggPsLz2UwFzqkSwyoMdVE5FDu91q3nky3B1dgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 585/690] USB: core: Add hub_get() and hub_put() routines
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 037/138] net: usb: ax88179_178a: avoid the interface always configured as random address
 Date: Mon,  8 Apr 2024 14:57:31 +0200
-Message-ID: <20240408125420.773800219@linuxfoundation.org>
+Message-ID: <20240408125257.378387182@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit ee113b860aa169e9a4d2c167c95d0f1961c6e1b8 upstream.
+commit 2e91bb99b9d4f756e92e83c4453f894dda220f09 upstream.
 
-Create hub_get() and hub_put() routines to encapsulate the kref_get()
-and kref_put() calls in hub.c.  The new routines will be used by the
-next patch in this series.
+After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
+consecutive device resets"), reset is not executed from bind operation and
+mac address is not read from the device registers or the devicetree at that
+moment. Since the check to configure if the assigned mac address is random
+or not for the interface, happens after the bind operation from
+usbnet_probe, the interface keeps configured as random address, although the
+address is correctly read and set during open operation (the only reset
+now).
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/604da420-ae8a-4a9e-91a4-2d511ff404fb@rowland.harvard.edu
-Cc: stable <stable@kernel.org>
+In order to keep only one reset for the device and to avoid the interface
+always configured as random address, after reset, configure correctly the
+suitable field from the driver, if the mac address is read successfully from
+the device registers or the devicetree. Take into account if a locally
+administered address (random) was previously stored.
+
+cc: stable@vger.kernel.org # 6.6+
+Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
+Reported-by: Dave Stevenson  <dave.stevenson@raspberrypi.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240403132158.344838-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   23 ++++++++++++++++-------
- drivers/usb/core/hub.h |    2 ++
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ drivers/net/usb/ax88179_178a.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -116,7 +116,6 @@ EXPORT_SYMBOL_GPL(ehci_cf_port_reset_rws
- #define HUB_DEBOUNCE_STEP	  25
- #define HUB_DEBOUNCE_STABLE	 100
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1273,6 +1273,8 @@ static void ax88179_get_mac_addr(struct
  
--static void hub_release(struct kref *kref);
- static int usb_reset_and_verify_device(struct usb_device *udev);
- static int hub_port_disable(struct usb_hub *hub, int port1, int set_state);
- static bool hub_port_warm_reset_required(struct usb_hub *hub, int port1,
-@@ -678,14 +677,14 @@ static void kick_hub_wq(struct usb_hub *
- 	 */
- 	intf = to_usb_interface(hub->intfdev);
- 	usb_autopm_get_interface_no_resume(intf);
--	kref_get(&hub->kref);
-+	hub_get(hub);
- 
- 	if (queue_work(hub_wq, &hub->events))
- 		return;
- 
- 	/* the work has already been scheduled */
- 	usb_autopm_put_interface_async(intf);
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
- 
- void usb_kick_hub_wq(struct usb_device *hdev)
-@@ -1053,7 +1052,7 @@ static void hub_activate(struct usb_hub
- 			goto init2;
- 		goto init3;
- 	}
--	kref_get(&hub->kref);
-+	hub_get(hub);
- 
- 	/* The superspeed hub except for root hub has to use Hub Depth
- 	 * value as an offset into the route string to locate the bits
-@@ -1301,7 +1300,7 @@ static void hub_activate(struct usb_hub
- 		device_unlock(&hdev->dev);
- 	}
- 
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
- 
- /* Implement the continuations for the delays above */
-@@ -1717,6 +1716,16 @@ static void hub_release(struct kref *kre
- 	kfree(hub);
- }
- 
-+void hub_get(struct usb_hub *hub)
-+{
-+	kref_get(&hub->kref);
-+}
-+
-+void hub_put(struct usb_hub *hub)
-+{
-+	kref_put(&hub->kref, hub_release);
-+}
-+
- static unsigned highspeed_hubs;
- 
- static void hub_disconnect(struct usb_interface *intf)
-@@ -1763,7 +1772,7 @@ static void hub_disconnect(struct usb_in
- 	if (hub->quirk_disable_autosuspend)
- 		usb_autopm_put_interface(intf);
- 
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- }
- 
- static bool hub_descriptor_is_sane(struct usb_host_interface *desc)
-@@ -5853,7 +5862,7 @@ out_hdev_lock:
- 
- 	/* Balance the stuff in kick_hub_wq() and allow autosuspend */
- 	usb_autopm_put_interface(intf);
--	kref_put(&hub->kref, hub_release);
-+	hub_put(hub);
- 
- 	kcov_remote_stop();
- }
---- a/drivers/usb/core/hub.h
-+++ b/drivers/usb/core/hub.h
-@@ -117,6 +117,8 @@ extern void usb_hub_remove_port_device(s
- extern int usb_hub_set_port_power(struct usb_device *hdev, struct usb_hub *hub,
- 		int port1, bool set);
- extern struct usb_hub *usb_hub_to_struct_hub(struct usb_device *hdev);
-+extern void hub_get(struct usb_hub *hub);
-+extern void hub_put(struct usb_hub *hub);
- extern int hub_port_debounce(struct usb_hub *hub, int port1,
- 		bool must_be_connected);
- extern int usb_clear_port_feature(struct usb_device *hdev,
+ 	if (is_valid_ether_addr(mac)) {
+ 		eth_hw_addr_set(dev->net, mac);
++		if (!is_local_ether_addr(mac))
++			dev->net->addr_assign_type = NET_ADDR_PERM;
+ 	} else {
+ 		netdev_info(dev->net, "invalid MAC address, using random\n");
+ 		eth_hw_addr_random(dev->net);
 
 
 
