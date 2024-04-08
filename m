@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-36897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07ACE89C240
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:28:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E2E89C248
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4296283210
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:28:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F10E51F22308
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBB881AC8;
-	Mon,  8 Apr 2024 13:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4337782D9C;
+	Mon,  8 Apr 2024 13:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbFXQOY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBUhyqOD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD5C81AC1;
-	Mon,  8 Apr 2024 13:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009EE80620;
+	Mon,  8 Apr 2024 13:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582661; cv=none; b=MUQcU3ZYEv9eAY5jjT3di/n2PdU61yIcJPErXVyDwff1FpYcBLZNJ5C8dDwfGvQYzbjA1Xuv5l8ouCcCT/uJ+VV2VYLxfKIIWd7Nm0KyKXssv67JZPCKhF243e3rS+7XvBP7QlshYx3FSCelNNxuRGxb9AOtTojyhFulCEiM/RA=
+	t=1712582673; cv=none; b=r1ZV1gYWxX6Es9IPwZmbEE45HF4AtEc10IhmsAx7lSOJl4rOnEYlvQZqIUNdA3ViDOzHV0/zmkJK8g597WEDjE1Fp4PfBnQCYDkk31IEXjfViSwoZhiZfQuzScUFo/+knax4mVbe2WktT6hsqiQaYcvgaghelckA1kZ+KBSLPEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582661; c=relaxed/simple;
-	bh=Z/fKzRHHkGx+DsHKaN6qwIPn3cGSoje1sB3HvNT8/GY=;
+	s=arc-20240116; t=1712582673; c=relaxed/simple;
+	bh=V+ZpE6bHR9U6K1wJcAiAj1VNeR0KxsM66bb6YDz2EvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAAdy+1mPgxT0WWpQzp2CP0b8/QaSXM+JX9wuWtLc1dOqETWg3HJPZMdKfBaepyIxXGK4YUg8Ubri8uCJWLEamlZiCdvHGsyy2oDfAIuRNpsg3E0/5K6FFTCUOXJI8mppsn+ihDQA3uo/R1tKuL1mnGiYYzc5zZiBPHQgwXysPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbFXQOY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC12DC433F1;
-	Mon,  8 Apr 2024 13:24:20 +0000 (UTC)
+	 MIME-Version; b=SvPOtHjBntAjWsf4E3tlAfXr0BFo9+kqCgY+Ilb5Y7r6cb5J0jH2RdNgdA4W4p8XUMC+A61hjbJXPJFeUTGI48OgbCaaY39Zmkvx0nCW59RUqmp5boP1/mPeaTL76TCPKjUBtQf6AU+KqPocBx+ew5+VQSp542G6Q3Pln2z4iog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBUhyqOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C36EC433C7;
+	Mon,  8 Apr 2024 13:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582661;
-	bh=Z/fKzRHHkGx+DsHKaN6qwIPn3cGSoje1sB3HvNT8/GY=;
+	s=korg; t=1712582672;
+	bh=V+ZpE6bHR9U6K1wJcAiAj1VNeR0KxsM66bb6YDz2EvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbFXQOY6IauAnoVlMW3iwEP1zKeIYl4x30x1CJMEMAv5LGydzLIfEIle8AF7tADd8
-	 Jn9FcpERO9yV38HoflXPam1acRMR7YMgtDQ4D2XnKKUP0IUcW7H5qZZZTlSJ7ZP/uY
-	 75cJr2JmmJMUXdXC+/+FMk0wM7kDA6YfhpjNRdlE=
+	b=NBUhyqODQwNxn/0dXLzh4IywrH4gL2mKoSQEGXNVgpuXzvuZVNFjz6funVYyyCgwW
+	 KkniGMKMqVuFDBPaDD3EAR32xdXjvbYSyXL9llt/AhRFD10YiSPUdBQT1KINmHNf4S
+	 vB+lG6XjcldwPxoHgMu1vmc5lCF1S0SWQK5RwyZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ingo Molnar <mingo@kernel.org>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 163/690] x86/alternatives: Introduce int3_emulate_jcc()
-Date: Mon,  8 Apr 2024 14:50:29 +0200
-Message-ID: <20240408125405.465779771@linuxfoundation.org>
+Subject: [PATCH 5.15 164/690] x86/alternatives: Teach text_poke_bp() to patch Jcc.d32 instructions
+Date: Mon,  8 Apr 2024 14:50:30 +0200
+Message-ID: <20240408125405.498354344@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -69,130 +69,173 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Zijlstra <peterz@infradead.org>
 
-commit db7adcfd1cec4e95155e37bc066fddab302c6340 upstream.
+commit ac0ee0a9560c97fa5fe1409e450c2425d4ebd17a upstream.
 
-Move the kprobe Jcc emulation into int3_emulate_jcc() so it can be
-used by more code -- specifically static_call() will need this.
+In order to re-write Jcc.d32 instructions text_poke_bp() needs to be
+taught about them.
 
+The biggest hurdle is that the whole machinery is currently made for 5
+byte instructions and extending this would grow struct text_poke_loc
+which is currently a nice 16 bytes and used in an array.
+
+However, since text_poke_loc contains a full copy of the (s32)
+displacement, it is possible to map the Jcc.d32 2 byte opcodes to
+Jcc.d8 1 byte opcode for the int3 emulation.
+
+This then leaves the replacement bytes; fudge that by only storing the
+last 5 bytes and adding the rule that 'length == 6' instruction will
+be prefixed with a 0x0f byte.
+
+Change-Id: Ie3f72c6b92f865d287c8940e5a87e59d41cfaa27
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20230123210607.057678245@infradead.org
+Link: https://lore.kernel.org/r/20230123210607.115718513@infradead.org
+[cascardo: there is no emit_call_track_retpoline]
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/text-patching.h |   31 ++++++++++++++++++++++++++++
- arch/x86/kernel/kprobes/core.c       |   38 +++++++----------------------------
- 2 files changed, 39 insertions(+), 30 deletions(-)
+ arch/x86/kernel/alternative.c |   56 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 47 insertions(+), 9 deletions(-)
 
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -181,6 +181,37 @@ void int3_emulate_ret(struct pt_regs *re
- 	unsigned long ip = int3_emulate_pop(regs);
- 	int3_emulate_jmp(regs, ip);
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -351,6 +351,12 @@ next:
+ 	kasan_enable_current();
  }
-+
-+static __always_inline
-+void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigned long disp)
+ 
++static inline bool is_jcc32(struct insn *insn)
 +{
-+	static const unsigned long jcc_mask[6] = {
-+		[0] = X86_EFLAGS_OF,
-+		[1] = X86_EFLAGS_CF,
-+		[2] = X86_EFLAGS_ZF,
-+		[3] = X86_EFLAGS_CF | X86_EFLAGS_ZF,
-+		[4] = X86_EFLAGS_SF,
-+		[5] = X86_EFLAGS_PF,
-+	};
-+
-+	bool invert = cc & 1;
-+	bool match;
-+
-+	if (cc < 0xc) {
-+		match = regs->flags & jcc_mask[cc >> 1];
-+	} else {
-+		match = ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
-+			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
-+		if (cc >= 0xe)
-+			match = match || (regs->flags & X86_EFLAGS_ZF);
-+	}
-+
-+	if ((match && !invert) || (!match && invert))
-+		ip += disp;
-+
-+	int3_emulate_jmp(regs, ip);
++	/* Jcc.d32 second opcode byte is in the range: 0x80-0x8f */
++	return insn->opcode.bytes[0] == 0x0f && (insn->opcode.bytes[1] & 0xf0) == 0x80;
 +}
 +
- #endif /* !CONFIG_UML_X86 */
+ #if defined(CONFIG_RETPOLINE) && defined(CONFIG_STACK_VALIDATION)
  
- #endif /* _ASM_X86_TEXT_PATCHING_H */
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -463,50 +463,26 @@ static void kprobe_emulate_call(struct k
+ /*
+@@ -1201,6 +1207,11 @@ void text_poke_sync(void)
+ 	on_each_cpu(do_sync_core, NULL, 1);
  }
- NOKPROBE_SYMBOL(kprobe_emulate_call);
  
--static nokprobe_inline
--void __kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs, bool cond)
-+static void kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs)
++/*
++ * NOTE: crazy scheme to allow patching Jcc.d32 but not increase the size of
++ * this thing. When len == 6 everything is prefixed with 0x0f and we map
++ * opcode to Jcc.d8, using len to distinguish.
++ */
+ struct text_poke_loc {
+ 	/* addr := _stext + rel_addr */
+ 	s32 rel_addr;
+@@ -1322,6 +1333,10 @@ noinstr int poke_int3_handler(struct pt_
+ 		int3_emulate_jmp(regs, (long)ip + tp->disp);
+ 		break;
+ 
++	case 0x70 ... 0x7f: /* Jcc */
++		int3_emulate_jcc(regs, tp->opcode & 0xf, (long)ip, tp->disp);
++		break;
++
+ 	default:
+ 		BUG();
+ 	}
+@@ -1395,16 +1410,26 @@ static void text_poke_bp_batch(struct te
+ 	 * Second step: update all but the first byte of the patched range.
+ 	 */
+ 	for (do_sync = 0, i = 0; i < nr_entries; i++) {
+-		u8 old[POKE_MAX_OPCODE_SIZE] = { tp[i].old, };
++		u8 old[POKE_MAX_OPCODE_SIZE+1] = { tp[i].old, };
++		u8 _new[POKE_MAX_OPCODE_SIZE+1];
++		const u8 *new = tp[i].text;
+ 		int len = tp[i].len;
+ 
+ 		if (len - INT3_INSN_SIZE > 0) {
+ 			memcpy(old + INT3_INSN_SIZE,
+ 			       text_poke_addr(&tp[i]) + INT3_INSN_SIZE,
+ 			       len - INT3_INSN_SIZE);
++
++			if (len == 6) {
++				_new[0] = 0x0f;
++				memcpy(_new + 1, new, 5);
++				new = _new;
++			}
++
+ 			text_poke(text_poke_addr(&tp[i]) + INT3_INSN_SIZE,
+-				  (const char *)tp[i].text + INT3_INSN_SIZE,
++				  new + INT3_INSN_SIZE,
+ 				  len - INT3_INSN_SIZE);
++
+ 			do_sync++;
+ 		}
+ 
+@@ -1432,8 +1457,7 @@ static void text_poke_bp_batch(struct te
+ 		 * The old instruction is recorded so that the event can be
+ 		 * processed forwards or backwards.
+ 		 */
+-		perf_event_text_poke(text_poke_addr(&tp[i]), old, len,
+-				     tp[i].text, len);
++		perf_event_text_poke(text_poke_addr(&tp[i]), old, len, new, len);
+ 	}
+ 
+ 	if (do_sync) {
+@@ -1450,10 +1474,15 @@ static void text_poke_bp_batch(struct te
+ 	 * replacing opcode.
+ 	 */
+ 	for (do_sync = 0, i = 0; i < nr_entries; i++) {
+-		if (tp[i].text[0] == INT3_INSN_OPCODE)
++		u8 byte = tp[i].text[0];
++
++		if (tp[i].len == 6)
++			byte = 0x0f;
++
++		if (byte == INT3_INSN_OPCODE)
+ 			continue;
+ 
+-		text_poke(text_poke_addr(&tp[i]), tp[i].text, INT3_INSN_SIZE);
++		text_poke(text_poke_addr(&tp[i]), &byte, INT3_INSN_SIZE);
+ 		do_sync++;
+ 	}
+ 
+@@ -1471,9 +1500,11 @@ static void text_poke_loc_init(struct te
+ 			       const void *opcode, size_t len, const void *emulate)
  {
- 	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
+ 	struct insn insn;
+-	int ret, i;
++	int ret, i = 0;
  
--	if (cond)
--		ip += p->ainsn.rel32;
-+	ip += p->ainsn.rel32;
- 	int3_emulate_jmp(regs, ip);
- }
+-	memcpy((void *)tp->text, opcode, len);
++	if (len == 6)
++		i = 1;
++	memcpy((void *)tp->text, opcode+i, len-i);
+ 	if (!emulate)
+ 		emulate = opcode;
+ 
+@@ -1484,6 +1515,13 @@ static void text_poke_loc_init(struct te
+ 	tp->len = len;
+ 	tp->opcode = insn.opcode.bytes[0];
+ 
++	if (is_jcc32(&insn)) {
++		/*
++		 * Map Jcc.d32 onto Jcc.d8 and use len to distinguish.
++		 */
++		tp->opcode = insn.opcode.bytes[1] - 0x10;
++	}
++
+ 	switch (tp->opcode) {
+ 	case RET_INSN_OPCODE:
+ 	case JMP32_INSN_OPCODE:
+@@ -1500,7 +1538,6 @@ static void text_poke_loc_init(struct te
+ 		BUG_ON(len != insn.length);
+ 	};
+ 
 -
--static void kprobe_emulate_jmp(struct kprobe *p, struct pt_regs *regs)
--{
--	__kprobe_emulate_jmp(p, regs, true);
--}
- NOKPROBE_SYMBOL(kprobe_emulate_jmp);
- 
--static const unsigned long jcc_mask[6] = {
--	[0] = X86_EFLAGS_OF,
--	[1] = X86_EFLAGS_CF,
--	[2] = X86_EFLAGS_ZF,
--	[3] = X86_EFLAGS_CF | X86_EFLAGS_ZF,
--	[4] = X86_EFLAGS_SF,
--	[5] = X86_EFLAGS_PF,
--};
--
- static void kprobe_emulate_jcc(struct kprobe *p, struct pt_regs *regs)
- {
--	bool invert = p->ainsn.jcc.type & 1;
--	bool match;
-+	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
- 
--	if (p->ainsn.jcc.type < 0xc) {
--		match = regs->flags & jcc_mask[p->ainsn.jcc.type >> 1];
--	} else {
--		match = ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
--			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
--		if (p->ainsn.jcc.type >= 0xe)
--			match = match || (regs->flags & X86_EFLAGS_ZF);
--	}
--	__kprobe_emulate_jmp(p, regs, (match && !invert) || (!match && invert));
-+	int3_emulate_jcc(regs, p->ainsn.jcc.type, ip, p->ainsn.rel32);
- }
- NOKPROBE_SYMBOL(kprobe_emulate_jcc);
- 
- static void kprobe_emulate_loop(struct kprobe *p, struct pt_regs *regs)
- {
-+	unsigned long ip = regs->ip - INT3_INSN_SIZE + p->ainsn.size;
- 	bool match;
- 
- 	if (p->ainsn.loop.type != 3) {	/* LOOP* */
-@@ -534,7 +510,9 @@ static void kprobe_emulate_loop(struct k
- 	else if (p->ainsn.loop.type == 1)	/* LOOPE */
- 		match = match && (regs->flags & X86_EFLAGS_ZF);
- 
--	__kprobe_emulate_jmp(p, regs, match);
-+	if (match)
-+		ip += p->ainsn.rel32;
-+	int3_emulate_jmp(regs, ip);
- }
- NOKPROBE_SYMBOL(kprobe_emulate_loop);
+ 	switch (tp->opcode) {
+ 	case INT3_INSN_OPCODE:
+ 	case RET_INSN_OPCODE:
+@@ -1509,6 +1546,7 @@ static void text_poke_loc_init(struct te
+ 	case CALL_INSN_OPCODE:
+ 	case JMP32_INSN_OPCODE:
+ 	case JMP8_INSN_OPCODE:
++	case 0x70 ... 0x7f: /* Jcc */
+ 		tp->disp = insn.immediate.value;
+ 		break;
  
 
 
