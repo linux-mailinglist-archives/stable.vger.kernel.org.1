@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-37585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1DA89C68F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:13:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DA789C1F1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD6B6B25481
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:59:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3792F28274E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED667D408;
-	Mon,  8 Apr 2024 13:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7979C7C0B0;
+	Mon,  8 Apr 2024 13:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjgpUhSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5kEGrj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFF5768F0;
-	Mon,  8 Apr 2024 13:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362282DF73;
+	Mon,  8 Apr 2024 13:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584665; cv=none; b=se+fLrws6SAuzEuSdEle6iIQXZao666ydioaQX1ymdMpw+9iH32oWgdQIaWk2Gwad6qSSKo/tdNFPpVuGsZjpMW11w4wYRZ8zMk4o/R5zXgZxRed6WXNMFRaTY+9PWoZNff25JC2WMJXj+elng9LP5V2q6LHyOjcq4hFW5Au5v0=
+	t=1712582460; cv=none; b=sZuLbbG5FwfNZBPEwysIHEepmTzBYIwyBQre0UrWrvSUgBCsyzzeUw2gFeCt9Ty1TUZSlBk6x/yAm1rkrJpI9tpd1GyinLCzmdw4VJKC5y+yiw4pF/JnpeWV6enjiAlg80fQ70lKezwlRELT8wuEnYd580qYFfsPCsXj9dbkEhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584665; c=relaxed/simple;
-	bh=FZ37+8H9VoHUmUYwJgytdPd0nwxy5/UD6AwVi28Qj8g=;
+	s=arc-20240116; t=1712582460; c=relaxed/simple;
+	bh=DAWfp3pVypxaYaTxJIkRW0sheVno3zg9DVClXrmXneg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlhzlFTV2zZUtaZTypldTnqUqKwc55DK642Ubu3fLboyFZcuygUI3LHz83iZoEbAHpX2trXvCVYcqoSvqtm4nBBZtmtl7+CfnJWnYdO81IUdzLfOzVS6WCTukoVb/6OguR1gQYMjNTNWtXnosauyWYF9ocn8Up2aWSiOys/5thY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjgpUhSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79119C433F1;
-	Mon,  8 Apr 2024 13:57:44 +0000 (UTC)
+	 MIME-Version; b=UfHUiNcOYitUDKzsHdQSc2PPpM4FBl5oxEMrycjQvgC53YYeXv9ppzC145TYRcm5wan4oNJ18E44QN6IsArXwnUbhKS0erDFQvKrZoNh4t/1tLPDefel67lvpdaiYAyFGEKPqxmkQiHRSfl34O6KUjKd9aVhrR1gAjD6fPSUJUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5kEGrj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60BFC433C7;
+	Mon,  8 Apr 2024 13:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584664;
-	bh=FZ37+8H9VoHUmUYwJgytdPd0nwxy5/UD6AwVi28Qj8g=;
+	s=korg; t=1712582460;
+	bh=DAWfp3pVypxaYaTxJIkRW0sheVno3zg9DVClXrmXneg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjgpUhSI+xU7CRbGS3+U4smTD7JTdTAvjNmf0UzyVdTi4OEJBPztKLOUaPfj1jbXp
-	 ig4kuEJ+m8DiZ7Dnypka243pcNQXSbEZlFG9rJRwvXyhT73tZiIzAwKdUWMBKAkKwA
-	 6ytggQFLnvbIopieWkc9zWqDMpmvNQ61sksp7800=
+	b=o5kEGrj/zHQwYWDZiDnFdHowuKiGrSZG79yNihbzivupZP6yDONjpDnmOSs8QJ249
+	 q4S6u3VzY62FoPtDpcacmhXMhk6zFMtEuQFKpIPmbsVdXPxGD9FppzMzF39C6kx6u7
+	 9kbl3hgid1J/6UIaxqQ6QuosHvj8FfJTusXwh6Cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 5.15 486/690] NFSD: Clean up nfsd4_init_file()
-Date: Mon,  8 Apr 2024 14:55:52 +0200
-Message-ID: <20240408125417.245233094@linuxfoundation.org>
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Bastien Nocera <hadess@hadess.net>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.8 078/273] Bluetooth: Fix TOCTOU in HCI debugfs implementation
+Date: Mon,  8 Apr 2024 14:55:53 +0200
+Message-ID: <20240408125311.726244335@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Bastien Nocera <hadess@hadess.net>
 
-[ Upstream commit 81a21fa3e7fdecb3c5b97014f0fc5a17d5806cae ]
+commit 7835fcfd132eb88b87e8eb901f88436f63ab60f7 upstream.
 
-Name this function more consistently. I'm going to use nfsd4_file_
-and nfsd4_file_hash_ for these helpers.
+struct hci_dev members conn_info_max_age, conn_info_min_age,
+le_conn_max_interval, le_conn_min_interval, le_adv_max_interval,
+and le_adv_min_interval can be modified from the HCI core code, as well
+through debugfs.
 
-Change the @fh parameter to be const pointer for better type safety.
+The debugfs implementation, that's only available to privileged users,
+will check for boundaries, making sure that the minimum value being set
+is strictly above the maximum value that already exists, and vice-versa.
 
-Finally, move the hash insertion operation to the caller. This is
-typical for most other "init_object" type helpers, and it is where
-most of the other nfs4_file hash table operations are located.
+However, as both minimum and maximum values can be changed concurrently
+to us modifying them, we need to make sure that the value we check is
+the value we end up using.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+For example, with ->conn_info_max_age set to 10, conn_info_min_age_set()
+gets called from vfs handlers to set conn_info_min_age to 8.
+
+In conn_info_min_age_set(), this goes through:
+	if (val == 0 || val > hdev->conn_info_max_age)
+		return -EINVAL;
+
+Concurrently, conn_info_max_age_set() gets called to set to set the
+conn_info_max_age to 7:
+	if (val == 0 || val > hdev->conn_info_max_age)
+		return -EINVAL;
+That check will also pass because we used the old value (10) for
+conn_info_max_age.
+
+After those checks that both passed, the struct hci_dev access
+is mutex-locked, disabling concurrent access, but that does not matter
+because the invalid value checks both passed, and we'll end up with
+conn_info_min_age = 8 and conn_info_max_age = 7
+
+To fix this problem, we need to lock the structure access before so the
+check and assignment are not interrupted.
+
+This fix was originally devised by the BassCheck[1] team, and
+considered the problem to be an atomicity one. This isn't the case as
+there aren't any concerns about the variable changing while we check it,
+but rather after we check it parallel to another change.
+
+This patch fixes CVE-2024-24858 and CVE-2024-24857.
+
+[1] https://sites.google.com/view/basscheck/
+
+Co-developed-by: Gui-Dong Han <2045gemini@gmail.com>
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Link: https://lore.kernel.org/linux-bluetooth/20231222161317.6255-1-2045gemini@gmail.com/
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-24858
+Link: https://lore.kernel.org/linux-bluetooth/20231222162931.6553-1-2045gemini@gmail.com/
+Link: https://lore.kernel.org/linux-bluetooth/20231222162310.6461-1-2045gemini@gmail.com/
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-24857
+Fixes: 31ad169148df ("Bluetooth: Add conn info lifetime parameters to debugfs")
+Fixes: 729a1051da6f ("Bluetooth: Expose default LE advertising interval via debugfs")
+Fixes: 71c3b60ec6d2 ("Bluetooth: Move BR/EDR debugfs file creation into hci_debugfs.c")
+Signed-off-by: Bastien Nocera <hadess@hadess.net>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/bluetooth/hci_debugfs.c |   48 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index aa7374933de77..1cb3ea90eb4ca 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4277,11 +4277,9 @@ static struct nfs4_file *nfsd4_alloc_file(void)
- }
+--- a/net/bluetooth/hci_debugfs.c
++++ b/net/bluetooth/hci_debugfs.c
+@@ -218,10 +218,12 @@ static int conn_info_min_age_set(void *d
+ {
+ 	struct hci_dev *hdev = data;
  
- /* OPEN Share state helper functions */
--static void nfsd4_init_file(struct svc_fh *fh, unsigned int hashval,
--				struct nfs4_file *fp)
--{
--	lockdep_assert_held(&state_lock);
+-	if (val == 0 || val > hdev->conn_info_max_age)
++	hci_dev_lock(hdev);
++	if (val == 0 || val > hdev->conn_info_max_age) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
  
-+static void nfsd4_file_init(const struct svc_fh *fh, struct nfs4_file *fp)
-+{
- 	refcount_set(&fp->fi_ref, 1);
- 	spin_lock_init(&fp->fi_lock);
- 	INIT_LIST_HEAD(&fp->fi_stateids);
-@@ -4299,7 +4297,6 @@ static void nfsd4_init_file(struct svc_fh *fh, unsigned int hashval,
- 	INIT_LIST_HEAD(&fp->fi_lo_states);
- 	atomic_set(&fp->fi_lo_recalls, 0);
- #endif
--	hlist_add_head_rcu(&fp->fi_hash, &file_hashtbl[hashval]);
- }
+-	hci_dev_lock(hdev);
+ 	hdev->conn_info_min_age = val;
+ 	hci_dev_unlock(hdev);
  
- void
-@@ -4717,7 +4714,8 @@ static struct nfs4_file *insert_file(struct nfs4_file *new, struct svc_fh *fh,
- 			fp->fi_aliased = alias_found = true;
- 	}
- 	if (likely(ret == NULL)) {
--		nfsd4_init_file(fh, hashval, new);
-+		nfsd4_file_init(fh, new);
-+		hlist_add_head_rcu(&new->fi_hash, &file_hashtbl[hashval]);
- 		new->fi_aliased = alias_found;
- 		ret = new;
- 	}
--- 
-2.43.0
-
+@@ -246,10 +248,12 @@ static int conn_info_max_age_set(void *d
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val == 0 || val < hdev->conn_info_min_age)
++	hci_dev_lock(hdev);
++	if (val == 0 || val < hdev->conn_info_min_age) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->conn_info_max_age = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -567,10 +571,12 @@ static int sniff_min_interval_set(void *
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
++	hci_dev_lock(hdev);
++	if (val == 0 || val % 2 || val > hdev->sniff_max_interval) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->sniff_min_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -595,10 +601,12 @@ static int sniff_max_interval_set(void *
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
++	hci_dev_lock(hdev);
++	if (val == 0 || val % 2 || val < hdev->sniff_min_interval) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->sniff_max_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -850,10 +858,12 @@ static int conn_min_interval_set(void *d
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval)
++	hci_dev_lock(hdev);
++	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_conn_min_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -878,10 +888,12 @@ static int conn_max_interval_set(void *d
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval)
++	hci_dev_lock(hdev);
++	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_conn_max_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -990,10 +1002,12 @@ static int adv_min_interval_set(void *da
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval)
++	hci_dev_lock(hdev);
++	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_adv_min_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -1018,10 +1032,12 @@ static int adv_max_interval_set(void *da
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval)
++	hci_dev_lock(hdev);
++	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_adv_max_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
 
 
 
