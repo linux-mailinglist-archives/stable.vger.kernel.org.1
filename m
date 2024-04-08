@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-37708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644BD89C611
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F108789C458
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:48:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 960C21C23C8D
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 911A91F21824
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64D97F7F8;
-	Mon,  8 Apr 2024 14:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E7378286;
+	Mon,  8 Apr 2024 13:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnfKFrTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlPEl3cj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29217D074;
-	Mon,  8 Apr 2024 14:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883244D5AB;
+	Mon,  8 Apr 2024 13:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585028; cv=none; b=ZjuKP7Uj77gSsyOADX9ZfD4Uh66gXblk1e7TSO6HMB5tQ2ThjZO9u/hLrRGj54WG5yNfy81JHBS2pUKD6ItKrjmtP6lFjqw1OodU/mtTTImfcZq0K80zIkhtXEZXv5GQNGzV00XImThCDmvEctmgq5Lc3+ATsspJWxqVLzoiwK0=
+	t=1712583876; cv=none; b=s9ui38R2E5yUO00N3m/B10CTw5Fk4jeV863JEaL/ovS5SOVAXVtqOQcocjq+Dv3Zf8FhvaXmTIROpw4vcQDknEpfuSONDsc+/51oXXJWyfLbHNV4WmFCgk+2m30seSxn5lqW6UQL+6at/D0rhnVGDGAjZc1gXhd6VZpHEwOR864=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585028; c=relaxed/simple;
-	bh=JWwKCml/gfwENVLIv0pKhMKCvJaDyPxnxggBftA9qvQ=;
+	s=arc-20240116; t=1712583876; c=relaxed/simple;
+	bh=6sBBISFeuMCRkU43hFjnC508FJkgl4Gczk541J2DImA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDcM/QMENMKvBoi2pyQLc23NDo2U9bmUX56M5RCzcDpaIDebxWL6k4EGcsMo2j1o3msk3bDpEs62+b04hkv2hLwQ2VI3j2hY8GMy/sx1peFu5zuItBs4PBFl6Ghakn5QOPagicqSnx8Xso0uH4pZu6ZwDSdgnyxGIL2dyL0prGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnfKFrTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEB9C433C7;
-	Mon,  8 Apr 2024 14:03:47 +0000 (UTC)
+	 MIME-Version; b=GCyuINVARHCPrqk24dJCIXKrN1LygbknjjouGFVTIk80T3Xmr0/N1oo0/8Ah8sJdDKEWLOy4blSD+D4ohJYWeZLRmoMpyv6aexDxn5Jj6dWbBT6UL+fpqaUAOtiEzQeTOtYZkUr+ZBs0sb6maQevggDT0WWV7PC5ap4Ch/8ro40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlPEl3cj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB96C433C7;
+	Mon,  8 Apr 2024 13:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585028;
-	bh=JWwKCml/gfwENVLIv0pKhMKCvJaDyPxnxggBftA9qvQ=;
+	s=korg; t=1712583876;
+	bh=6sBBISFeuMCRkU43hFjnC508FJkgl4Gczk541J2DImA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnfKFrTRkYWI9+Fjm9H9mpkOHKZUWuZ+uHcgyLRxbIZcah02s2EHo0WsdmrJsWLQ6
-	 SRQTmCPzl66V0/FJMrBQkg2+SwoGghOH2xvpEGfVyNarOLAdWRJze3dGAErdTki/sO
-	 BWQsdisd0TakwwqoZcxgT04c9UOcCDgoHHzD5VWQ=
+	b=SlPEl3cjNexq4LgjTYXrAiZ1tBhoXjlKrqMKhpv2rb6uyAMcxOTP2RHvWcWKh5GrI
+	 I7NreO6+q6vbKs4WZueuZhC32lWMJoGGChyA0JG2vDvYgBlUv6KbMYgnMVPByOHIeP
+	 s+FHRUQ6gB1D6F6L7s1yYc4zd8wrG6oh8RnLL4V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Xuan <william.xuanziyang@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 638/690] netfilter: nf_tables: Fix potential data-race in __nft_flowtable_type_get()
+	Herve Codina <herve.codina@bootlin.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Rob Herring <robh@kernel.org>
+Subject: [PATCH 6.8 229/273] of: dynamic: Synchronize of_changeset_destroy() with the devlink removals
 Date: Mon,  8 Apr 2024 14:58:24 +0200
-Message-ID: <20240408125422.782282732@linuxfoundation.org>
+Message-ID: <20240408125316.530414429@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 24225011d81b471acc0e1e315b7d9905459a6304 upstream.
+commit 8917e7385346bd6584890ed362985c219fe6ae84 upstream.
 
-nft_unregister_flowtable_type() within nf_flow_inet_module_exit() can
-concurrent with __nft_flowtable_type_get() within nf_tables_newflowtable().
-And thhere is not any protection when iterate over nf_tables_flowtables
-list in __nft_flowtable_type_get(). Therefore, there is pertential
-data-race of nf_tables_flowtables list entry.
+In the following sequence:
+  1) of_platform_depopulate()
+  2) of_overlay_remove()
 
-Use list_for_each_entry_rcu() to iterate over nf_tables_flowtables list
-in __nft_flowtable_type_get(), and use rcu_read_lock() in the caller
-nft_flowtable_type_get() to protect the entire type query process.
+During the step 1, devices are destroyed and devlinks are removed.
+During the step 2, OF nodes are destroyed but
+__of_changeset_entry_destroy() can raise warnings related to missing
+of_node_put():
+  ERROR: memory leak, expected refcount 1 instead of 2 ...
 
-Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Indeed, during the devlink removals performed at step 1, the removal
+itself releasing the device (and the attached of_node) is done by a job
+queued in a workqueue and so, it is done asynchronously with respect to
+function calls.
+When the warning is present, of_node_put() will be called but wrongly
+too late from the workqueue job.
+
+In order to be sure that any ongoing devlink removals are done before
+the of_node destruction, synchronize the of_changeset_destroy() with the
+devlink removals.
+
+Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240325152140.198219-3-herve.codina@bootlin.com
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/of/dynamic.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7693,11 +7693,12 @@ static int nft_flowtable_parse_hook(cons
- 	return err;
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -9,6 +9,7 @@
+ 
+ #define pr_fmt(fmt)	"OF: " fmt
+ 
++#include <linux/device.h>
+ #include <linux/of.h>
+ #include <linux/spinlock.h>
+ #include <linux/slab.h>
+@@ -667,6 +668,17 @@ void of_changeset_destroy(struct of_chan
+ {
+ 	struct of_changeset_entry *ce, *cen;
+ 
++	/*
++	 * When a device is deleted, the device links to/from it are also queued
++	 * for deletion. Until these device links are freed, the devices
++	 * themselves aren't freed. If the device being deleted is due to an
++	 * overlay change, this device might be holding a reference to a device
++	 * node that will be freed. So, wait until all already pending device
++	 * links are deleted before freeing a device node. This ensures we don't
++	 * free any device node that has a non-zero reference count.
++	 */
++	device_link_wait_removal();
++
+ 	list_for_each_entry_safe_reverse(ce, cen, &ocs->entries, node)
+ 		__of_changeset_entry_destroy(ce);
  }
- 
-+/* call under rcu_read_lock */
- static const struct nf_flowtable_type *__nft_flowtable_type_get(u8 family)
- {
- 	const struct nf_flowtable_type *type;
- 
--	list_for_each_entry(type, &nf_tables_flowtables, list) {
-+	list_for_each_entry_rcu(type, &nf_tables_flowtables, list) {
- 		if (family == type->family)
- 			return type;
- 	}
-@@ -7709,9 +7710,13 @@ nft_flowtable_type_get(struct net *net,
- {
- 	const struct nf_flowtable_type *type;
- 
-+	rcu_read_lock();
- 	type = __nft_flowtable_type_get(family);
--	if (type != NULL && try_module_get(type->owner))
-+	if (type != NULL && try_module_get(type->owner)) {
-+		rcu_read_unlock();
- 		return type;
-+	}
-+	rcu_read_unlock();
- 
- 	lockdep_nfnl_nft_mutex_not_held();
- #ifdef CONFIG_MODULES
 
 
 
