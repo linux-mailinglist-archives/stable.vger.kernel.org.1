@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-36548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0A589C054
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F28289C05A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97201281B18
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2037E1F212A6
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323E76CDA8;
-	Mon,  8 Apr 2024 13:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEDB70CDA;
+	Mon,  8 Apr 2024 13:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etNUasZU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvUF28T+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CD82E62C;
-	Mon,  8 Apr 2024 13:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D782DF73;
+	Mon,  8 Apr 2024 13:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581648; cv=none; b=KeJrudqcWJhrMQai5mNvLJVtApOLhKjfhYJHfDf2AavKGtMIk23fzWvPgfcJOeCro3sbqr1LnUimN+5qIx0s0i4VCUYbQ76HJYGI1jOqbOhTu34VbONQaUZisWkmKr74XWZGrsdBtD3Lo8wSP9fQwrDSXbVPId8/kVn8noZ6EK4=
+	t=1712581662; cv=none; b=Hr7BId38hvxK3S/yyizo9oEtTOTMB1fAoFs94lLnSCencgENDyqV/S/gbzXZzO12RGp2LbPgKhQJ72jSrSf2EtzuGpP+3vaN89nXqOC2NrwQIn1gAHKairSVv+niRUNe1bMjP240YuY2iacNCiFVJax+kkt0lPYYAyi63X1ByG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581648; c=relaxed/simple;
-	bh=T9Gekoz+NXHhQB4rnrRvgIIByV+a5VkAWaMtx9dZZ8o=;
+	s=arc-20240116; t=1712581662; c=relaxed/simple;
+	bh=RAbQW4PvDT8Hr+6UNtacFEER65GiaNyZx4nS5H87ul4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCHNQJrdRsDh8XFfa35u8grpRuLu1sByjyHYmTTjT4m2GaRM5/p9Huc4VYAoPj6CsPUWuaX+WgW5iOMJdwByEhyJ0U+W9v2m/WmQJF5QriqNWm53JiuRn/+7HAM8nvhtEJdlNatE5enA0jyMAdz+9kxgtke9kNzUvNK3VvWFlaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etNUasZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D696C433F1;
-	Mon,  8 Apr 2024 13:07:27 +0000 (UTC)
+	 MIME-Version; b=t51oILWP9KelCIv8NmAV6Eui1813FaxT82Qf847ZsOoU8B5hH4+SolSgPsPghEPpT9mEe+IPH3jjTh3+xnwJXvRMHlO8tg9jZ1QYarcFZgEz05atMbiwcBe/+pdq9iJORGVaZIf7vM8FwCC96ZBeipctKHi16zv1S8qKHIL92Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvUF28T+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4902FC43141;
+	Mon,  8 Apr 2024 13:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581647;
-	bh=T9Gekoz+NXHhQB4rnrRvgIIByV+a5VkAWaMtx9dZZ8o=;
+	s=korg; t=1712581662;
+	bh=RAbQW4PvDT8Hr+6UNtacFEER65GiaNyZx4nS5H87ul4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etNUasZUR9yoDmeh+HHF8sR6FHLI7TEZjjtFjI1P/qjBWtvkJwOdClAZGyAlMTHqZ
-	 1rxKRlYXp+ILIUsWBqvY4vRLJOWOuVJfdIHKGcNcAwJB7VE4XuYDwnTCbmTTuh/gLu
-	 Sp4UisndSSSdqBZ+20vN9nPteiGiwKOGgITOk1ZY=
+	b=CvUF28T+MDFWpy9TU6bWVSRQALSawRMuUwK5DgbV4BUuIkc4Norgo3jvb00dX1mo6
+	 yAsmSZRFtxHiUrp/RJ7MUh7PQktn9C8PRnEuaMWhcVohAHYz0GrnPPZdu5pIuyJfms
+	 JtSPRtho1GFza9q5ht93i9f7YSlNdilNO6hDZQEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge@foundries.io>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/690] mmc: core: Fix switch on gp3 partition
-Date: Mon,  8 Apr 2024 14:48:56 +0200
-Message-ID: <20240408125402.051273661@linuxfoundation.org>
+Subject: [PATCH 5.15 071/690] drm/etnaviv: Restore some id values
+Date: Mon,  8 Apr 2024 14:48:57 +0200
+Message-ID: <20240408125402.090400436@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -68,84 +67,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-[ Upstream commit 4af59a8df5ea930038cd3355e822f5eedf4accc1 ]
+[ Upstream commit b735ee173f84d5d0d0733c53946a83c12d770d05 ]
 
-Commit e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB
-partitions.") added a mask check for 'part_type', but the mask used was
-wrong leading to the code intended for rpmb also being executed for GP3.
+The hwdb selection logic as a feature that allows it to mark some fields
+as 'don't care'. If we match with such a field we memcpy(..)
+the current etnaviv_chip_identity into ident.
 
-On some MMCs (but not all) this would make gp3 partition inaccessible:
-armadillo:~# head -c 1 < /dev/mmcblk2gp3
-head: standard input: I/O error
-armadillo:~# dmesg -c
-[  422.976583] mmc2: running CQE recovery
-[  423.058182] mmc2: running CQE recovery
-[  423.137607] mmc2: running CQE recovery
-[  423.137802] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 4 prio class 0
-[  423.237125] mmc2: running CQE recovery
-[  423.318206] mmc2: running CQE recovery
-[  423.397680] mmc2: running CQE recovery
-[  423.397837] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
-[  423.408287] Buffer I/O error on dev mmcblk2gp3, logical block 0, async page read
+This step can overwrite some id values read from the GPU with the
+'don't care' value.
 
-the part_type values of interest here are defined as follow:
-main  0
-boot0 1
-boot1 2
-rpmb  3
-gp0   4
-gp1   5
-gp2   6
-gp3   7
+Fix this issue by restoring the affected values after the memcpy(..).
 
-so mask with EXT_CSD_PART_CONFIG_ACC_MASK (7) to correctly identify rpmb
+As this is crucial for user space to know when this feature works as
+expected increment the minor version too.
 
-Fixes: e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB partitions.")
+Fixes: 4078a1186dd3 ("drm/etnaviv: update hwdb selection logic")
 Cc: stable@vger.kernel.org
-Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_drv.c  | 2 +-
+ drivers/gpu/drm/etnaviv/etnaviv_hwdb.c | 9 +++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index c3202e2e99e82..281794a50d463 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -862,10 +862,11 @@ static const struct block_device_operations mmc_bdops = {
- static int mmc_blk_part_switch_pre(struct mmc_card *card,
- 				   unsigned int part_type)
- {
--	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
-+	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+index 7dcc6392792df..c45e5158fdff9 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+@@ -488,7 +488,7 @@ static const struct drm_driver etnaviv_drm_driver = {
+ 	.desc               = "etnaviv DRM",
+ 	.date               = "20151214",
+ 	.major              = 1,
+-	.minor              = 3,
++	.minor              = 4,
+ };
  
--	if ((part_type & mask) == mask) {
-+	if ((part_type & mask) == rpmb) {
- 		if (card->ext_csd.cmdq_en) {
- 			ret = mmc_cmdq_disable(card);
- 			if (ret)
-@@ -880,10 +881,11 @@ static int mmc_blk_part_switch_pre(struct mmc_card *card,
- static int mmc_blk_part_switch_post(struct mmc_card *card,
- 				    unsigned int part_type)
+ /*
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
+index f2fc645c79569..212e7050c4ba6 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
+@@ -135,6 +135,9 @@ static const struct etnaviv_chip_identity etnaviv_chip_identities[] = {
+ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
  {
--	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
-+	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+ 	struct etnaviv_chip_identity *ident = &gpu->identity;
++	const u32 product_id = ident->product_id;
++	const u32 customer_id = ident->customer_id;
++	const u32 eco_id = ident->eco_id;
+ 	int i;
  
--	if ((part_type & mask) == mask) {
-+	if ((part_type & mask) == rpmb) {
- 		mmc_retune_unpause(card->host);
- 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
- 			ret = mmc_cmdq_enable(card);
+ 	for (i = 0; i < ARRAY_SIZE(etnaviv_chip_identities); i++) {
+@@ -148,6 +151,12 @@ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
+ 			 etnaviv_chip_identities[i].eco_id == ~0U)) {
+ 			memcpy(ident, &etnaviv_chip_identities[i],
+ 			       sizeof(*ident));
++
++			/* Restore some id values as ~0U aka 'don't care' might been used. */
++			ident->product_id = product_id;
++			ident->customer_id = customer_id;
++			ident->eco_id = eco_id;
++
+ 			return true;
+ 		}
+ 	}
 -- 
 2.43.0
 
