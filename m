@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-36556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A044689C05E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:07:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB7289C533
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 396791F21415
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:07:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC8D1283CEE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF306CDA8;
-	Mon,  8 Apr 2024 13:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413207C089;
+	Mon,  8 Apr 2024 13:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtxqpExB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBJ4+z8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE032DF73;
-	Mon,  8 Apr 2024 13:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B257BB1A;
+	Mon,  8 Apr 2024 13:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581671; cv=none; b=s02NMuV5OaD6w5+S8haHixaoWkucZuvwXkHjJrbKqHCuO+sFUKzza7BYWMPFpUMaFWebCNrMeueIU0mwUOWViaiKxqEmrrMB5AWUUtiZrNx/0rR/FFNSTR/jy9RznaETS43POhPNSOJU01hSXOLI1a/YePgTbEigDFQRNLuHH/I=
+	t=1712584460; cv=none; b=Qg5IQ2ysqtVShKBmioDN8BiW1mIfkUj1IAzNMVoGB84QGMbejUrPu2Q8VsWhwEtD3Gz0p3qLI7PvdNS5lYfQrzYDMGqKseCCvrKr1D6b2mV//6/YESHWUT0U25bggSCVymhkgNZmYw2PxCH00WpBkIiHx93+0SE8EI2i+Bh2z1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581671; c=relaxed/simple;
-	bh=sWYASfj13JmfSWVT/IcI0Jl6JJePFkCHRXFIO+qi6bg=;
+	s=arc-20240116; t=1712584460; c=relaxed/simple;
+	bh=Hq84RSrJYMln1VwAWP6IrDaM3ouH0Efv9tTqJNjGIgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEl/JbFFjqs8iSZjGBCzPklPEZcx/t0JvZYU+Ygy7fEmWupfy5cWmjGtnU83mzr7JQBSgzqWBhWIyxz4yiYgyU+TpOpn0SEiVJrj/LUJ5lBVTg71o/NSNMpDeQaT0xirXodtSJUGCq//ikoTeeRnCi9XeMyetXALRcEGC377RiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtxqpExB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038C0C433F1;
-	Mon,  8 Apr 2024 13:07:50 +0000 (UTC)
+	 MIME-Version; b=tz2sENnz9ola014AfxxUeqqFlCvqFQbNu4FGugwq4Z7vWNzaXSwPLeBgBHgmn6yDUyK/0o+DI2sDsmrpsEu2FgHLzo0GS1KplsWxE8Ib7f2j5guusURracLzRNNGiCb9a/wp001ANDvhIlxqFQBYUi4v41IT+LaOmpc1O1z9nTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBJ4+z8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A502C433C7;
+	Mon,  8 Apr 2024 13:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581671;
-	bh=sWYASfj13JmfSWVT/IcI0Jl6JJePFkCHRXFIO+qi6bg=;
+	s=korg; t=1712584459;
+	bh=Hq84RSrJYMln1VwAWP6IrDaM3ouH0Efv9tTqJNjGIgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtxqpExB7mNMtBZrNWK7BIuhRCrmo310odXi6Op/w0q65LGN6CB0ELNi4AfNImP4P
-	 bwPDvwzaNXpUAuuZjKOdzA+TR06zOPYl/THAvKfUlaTfz/A+uD4Mu2H/i+Y5rri027
-	 JwTQYtf90KkZdopuQNuuSZa5/RJJ0YEyPJiw3mAs=
+	b=QBJ4+z8CucuL/ar7pWcY52e+mRRZIyetPbIJIffIqKuEcue8pms1ex8FrqhzBMNLO
+	 WG+TyT16qUyTZo6ul2vPxKSkmcsWLdsfdqTcMiw6hYf2zSN4yyifwgSfrkDsO6iim2
+	 rjnnYj5vRG4B4NLSCwuxUshDnOq+90Ox5BUhG7k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 009/273] tools: ynl: fix setting presence bits in simple nests
+	Olga Kornievskaia <kolga@netapp.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 418/690] NFSD enforce filehandle check for source file in COPY
 Date: Mon,  8 Apr 2024 14:54:44 +0200
-Message-ID: <20240408125309.576157068@linuxfoundation.org>
+Message-ID: <20240408125414.754986402@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit f6c8f5e8694c7a78c94e408b628afa6255cc428a ]
+[ Upstream commit 754035ff79a14886e68c0c9f6fa80adb21f12b53 ]
 
-When we set members of simple nested structures in requests
-we need to set "presence" bits for all the nesting layers
-below. This has nothing to do with the presence type of
-the last layer.
+If the passed in filehandle for the source file in the COPY operation
+is not a regular file, the server MUST return NFS4ERR_WRONG_TYPE.
 
-Fixes: be5bea1cc0bf ("net: add basic C code generators for Netlink")
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240321020214.1250202-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[ cel: adjusted to apply to v5.15.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- tools/net/ynl/ynl-gen-c.py | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4proc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
-index 7fc1aa788f6f5..c19dec2394915 100755
---- a/tools/net/ynl/ynl-gen-c.py
-+++ b/tools/net/ynl/ynl-gen-c.py
-@@ -243,8 +243,11 @@ class Type(SpecAttr):
-         presence = ''
-         for i in range(0, len(ref)):
-             presence = f"{var}->{'.'.join(ref[:i] + [''])}_present.{ref[i]}"
--            if self.presence_type() == 'bit':
--                code.append(presence + ' = 1;')
-+            # Every layer below last is a nest, so we know it uses bit presence
-+            # last layer is "self" and may be a complex type
-+            if i == len(ref) - 1 and self.presence_type() != 'bit':
-+                continue
-+            code.append(presence + ' = 1;')
-         code += self._setter_lines(ri, member, presence)
- 
-         func_name = f"{op_prefix(ri, direction, deref=deref)}_set_{'_'.join(ref)}"
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index b2e6fa962f7d9..b2bfe540c1cb0 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1760,7 +1760,13 @@ static int nfsd4_do_async_copy(void *data)
+ 		filp = nfs42_ssc_open(copy->ss_mnt, &copy->c_fh,
+ 				      &copy->stateid);
+ 		if (IS_ERR(filp)) {
+-			nfserr = nfserr_offload_denied;
++			switch (PTR_ERR(filp)) {
++			case -EBADF:
++				nfserr = nfserr_wrong_type;
++				break;
++			default:
++				nfserr = nfserr_offload_denied;
++			}
+ 			/* ss_mnt will be unmounted by the laundromat */
+ 			goto do_callback;
+ 		}
 -- 
 2.43.0
 
