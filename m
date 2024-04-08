@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-37537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F8189C545
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:55:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3212E89C132
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AFEF1F235F7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:55:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 639C01C21BA2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4BE7B3EB;
-	Mon,  8 Apr 2024 13:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E9A8061A;
+	Mon,  8 Apr 2024 13:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgdL8zR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aD8qUvSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C7D762E5;
-	Mon,  8 Apr 2024 13:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A6980045;
+	Mon,  8 Apr 2024 13:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584524; cv=none; b=gDd5YOX27ArgsxEnm4JogXzOhZR9jRu3OWJICvCtp/FAhwBX4Nrswt03P+kAsg/g8kFMwVjVaC3x5ZsyptpiGqTH5AybtyUVJMchn4+9Mz6g2qj5qBPkZvpbilzRNpoSjCDrniabGcBjByMpfNG2t5+YOFGAh3eQj8AjwrxXg8A=
+	t=1712582031; cv=none; b=WBvGDf7WtWr3iXJxfNQLiqNeK6H9d/mv4E2DfT1NzG3RE9ak6aKrq4NGBkxoBIGygigoLxTZrdmLGCAxOvE1KTSXH+EAi7BGuv4b+0RpvcoUzxSZIiyF55sbF855GDVMIkLc5qzxZGIitsx4QuUdQlmG2V7npUmXXBohkdOjXsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584524; c=relaxed/simple;
-	bh=J6GvcPSdzi61aqAp2fkea2n5gzYL9f9Rri1nZQKLMdA=;
+	s=arc-20240116; t=1712582031; c=relaxed/simple;
+	bh=ebCXqAqj/85FU2Y2jIzYrBEw6RD9YZXEFnzm69qNw48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwqOzLPSizchfYzYlqO4EUS3fl+Cgi3ZgnuC4yApuEjF0c2NZWPeovHt4eFCfN58oWAmH/1WRWNu27HpKgEdawyAzPTP27FdNZ4MAVsU4+yCo50mtGSuCRqNQt3CqbnrI0jUChQAlaXDm9V2sDSKG2WMBk4qN5YxnatkGPA4Ac8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgdL8zR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F77C433C7;
-	Mon,  8 Apr 2024 13:55:23 +0000 (UTC)
+	 MIME-Version; b=LrgNRSzVUTmvwLPGuELlEo6kEILZ0SvnyqD3Lovd4oYwA9A8b8VUfYBu1Ey+kHhsTNHw/HHtF0yv0zR3oUjX9eTSw6rPdxF3rtDIN85HK4T2YTS65qb9DHiPQakuCwUihl2roQsbKDp3dxFTqD3X6la6fpghQeh4K5vmlJHi1K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aD8qUvSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96D8C433C7;
+	Mon,  8 Apr 2024 13:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584524;
-	bh=J6GvcPSdzi61aqAp2fkea2n5gzYL9f9Rri1nZQKLMdA=;
+	s=korg; t=1712582031;
+	bh=ebCXqAqj/85FU2Y2jIzYrBEw6RD9YZXEFnzm69qNw48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgdL8zR7gD59EN2+xFhbk2mbNqsFsNYL/0asW25VIL1HdTZauMGnw/j+mtYMXm3js
-	 pv2J/V5C4zHfzPjmoRFVbQDcVp+Noh7CyCaE3k2L2N4Mrtkw4xsUzkfhoMjK2+cw9T
-	 3GMhR9+8zUeUxL6T89Whnw0qHjm7DQjlvOYH6F84=
+	b=aD8qUvSgk1p6wOk3N/C0k+daYnq4uUXGglTcrysZr1fTJfUVpWBXEX8YsF6+od+DZ
+	 kxEA08j/LpSp3d5cdwwj0NS7I5f4afKwP4eOnSPdxjhfGlXIqIvhbFrZXWjkfu3N09
+	 XdSQIgyOTv4wOMdBT8onL80yHPlOECgMcjD0ocD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 450/690] NFSD: Rename the fields in copy_stateid_t
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 041/273] drm/amd/display: Update P010 scaling cap
 Date: Mon,  8 Apr 2024 14:55:16 +0200
-Message-ID: <20240408125415.964245143@linuxfoundation.org>
+Message-ID: <20240408125310.566702685@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,171 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Charlene Liu <charlene.liu@amd.com>
 
-[ Upstream commit 781fde1a2ba2391f31142f46f964cf1148ca1791 ]
+[ Upstream commit 038c532346418fb5ab09c8fc6d650283d9a02966 ]
 
-Code maintenance: The name of the copy_stateid_t::sc_count field
-collides with the sc_count field in struct nfs4_stid, making the
-latter difficult to grep for when auditing stateid reference
-counting.
+[Why]
+Keep the same as previous APU and also insert clock dump
 
-No behavior change expected.
-
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Charlene Liu <charlene.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: f341055b10bd ("drm/amd/display: Send DTBCLK disable message on first commit")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c  |  6 +++---
- fs/nfsd/nfs4state.c | 30 +++++++++++++++---------------
- fs/nfsd/state.h     |  6 +++---
- 3 files changed, 21 insertions(+), 21 deletions(-)
+ .../display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c  | 25 +++++++++----------
+ .../dc/resource/dcn35/dcn35_resource.c        |  2 +-
+ 2 files changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index c8d299bc9e55a..59f675f194ebb 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1820,7 +1820,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		if (!nfs4_init_copy_state(nn, copy))
- 			goto out_err;
- 		refcount_set(&async_copy->refcount, 1);
--		memcpy(&copy->cp_res.cb_stateid, &copy->cp_stateid.stid,
-+		memcpy(&copy->cp_res.cb_stateid, &copy->cp_stateid.cs_stid,
- 			sizeof(copy->cp_res.cb_stateid));
- 		dup_copy_fields(copy, async_copy);
- 		async_copy->copy_task = kthread_create(nfsd4_do_async_copy,
-@@ -1858,7 +1858,7 @@ find_async_copy(struct nfs4_client *clp, stateid_t *stateid)
- 
- 	spin_lock(&clp->async_lock);
- 	list_for_each_entry(copy, &clp->async_copies, copies) {
--		if (memcmp(&copy->cp_stateid.stid, stateid, NFS4_STATEID_SIZE))
-+		if (memcmp(&copy->cp_stateid.cs_stid, stateid, NFS4_STATEID_SIZE))
- 			continue;
- 		refcount_inc(&copy->refcount);
- 		spin_unlock(&clp->async_lock);
-@@ -1912,7 +1912,7 @@ nfsd4_copy_notify(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	cps = nfs4_alloc_init_cpntf_state(nn, stid);
- 	if (!cps)
- 		goto out;
--	memcpy(&cn->cpn_cnr_stateid, &cps->cp_stateid.stid, sizeof(stateid_t));
-+	memcpy(&cn->cpn_cnr_stateid, &cps->cp_stateid.cs_stid, sizeof(stateid_t));
- 	memcpy(&cps->cp_p_stateid, &stid->sc_stateid, sizeof(stateid_t));
- 	memcpy(&cps->cp_p_clid, &clp->cl_clientid, sizeof(clientid_t));
- 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index cc258f2988c73..f427f95ab934e 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -985,19 +985,19 @@ struct nfs4_stid *nfs4_alloc_stid(struct nfs4_client *cl, struct kmem_cache *sla
-  * Create a unique stateid_t to represent each COPY.
-  */
- static int nfs4_init_cp_state(struct nfsd_net *nn, copy_stateid_t *stid,
--			      unsigned char sc_type)
-+			      unsigned char cs_type)
- {
- 	int new_id;
- 
--	stid->stid.si_opaque.so_clid.cl_boot = (u32)nn->boot_time;
--	stid->stid.si_opaque.so_clid.cl_id = nn->s2s_cp_cl_id;
--	stid->sc_type = sc_type;
-+	stid->cs_stid.si_opaque.so_clid.cl_boot = (u32)nn->boot_time;
-+	stid->cs_stid.si_opaque.so_clid.cl_id = nn->s2s_cp_cl_id;
-+	stid->cs_type = cs_type;
- 
- 	idr_preload(GFP_KERNEL);
- 	spin_lock(&nn->s2s_cp_lock);
- 	new_id = idr_alloc_cyclic(&nn->s2s_cp_stateids, stid, 0, 0, GFP_NOWAIT);
--	stid->stid.si_opaque.so_id = new_id;
--	stid->stid.si_generation = 1;
-+	stid->cs_stid.si_opaque.so_id = new_id;
-+	stid->cs_stid.si_generation = 1;
- 	spin_unlock(&nn->s2s_cp_lock);
- 	idr_preload_end();
- 	if (new_id < 0)
-@@ -1019,7 +1019,7 @@ struct nfs4_cpntf_state *nfs4_alloc_init_cpntf_state(struct nfsd_net *nn,
- 	if (!cps)
- 		return NULL;
- 	cps->cpntf_time = ktime_get_boottime_seconds();
--	refcount_set(&cps->cp_stateid.sc_count, 1);
-+	refcount_set(&cps->cp_stateid.cs_count, 1);
- 	if (!nfs4_init_cp_state(nn, &cps->cp_stateid, NFS4_COPYNOTIFY_STID))
- 		goto out_free;
- 	spin_lock(&nn->s2s_cp_lock);
-@@ -1035,11 +1035,11 @@ void nfs4_free_copy_state(struct nfsd4_copy *copy)
- {
- 	struct nfsd_net *nn;
- 
--	WARN_ON_ONCE(copy->cp_stateid.sc_type != NFS4_COPY_STID);
-+	WARN_ON_ONCE(copy->cp_stateid.cs_type != NFS4_COPY_STID);
- 	nn = net_generic(copy->cp_clp->net, nfsd_net_id);
- 	spin_lock(&nn->s2s_cp_lock);
- 	idr_remove(&nn->s2s_cp_stateids,
--		   copy->cp_stateid.stid.si_opaque.so_id);
-+		   copy->cp_stateid.cs_stid.si_opaque.so_id);
- 	spin_unlock(&nn->s2s_cp_lock);
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 3db46bdc71a35..9cbab880c6233 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -384,19 +384,6 @@ static void dcn35_enable_pme_wa(struct clk_mgr *clk_mgr_base)
+ 	dcn35_smu_enable_pme_wa(clk_mgr);
  }
  
-@@ -6044,7 +6044,7 @@ nfs4_laundromat(struct nfsd_net *nn)
- 	spin_lock(&nn->s2s_cp_lock);
- 	idr_for_each_entry(&nn->s2s_cp_stateids, cps_t, i) {
- 		cps = container_of(cps_t, struct nfs4_cpntf_state, cp_stateid);
--		if (cps->cp_stateid.sc_type == NFS4_COPYNOTIFY_STID &&
-+		if (cps->cp_stateid.cs_type == NFS4_COPYNOTIFY_STID &&
- 				state_expired(&lt, cps->cpntf_time))
- 			_free_cpntf_state_locked(nn, cps);
- 	}
-@@ -6374,12 +6374,12 @@ nfs4_check_file(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfs4_stid *s,
- static void
- _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps)
+-void dcn35_init_clocks(struct clk_mgr *clk_mgr)
+-{
+-	uint32_t ref_dtbclk = clk_mgr->clks.ref_dtbclk_khz;
+-
+-	memset(&(clk_mgr->clks), 0, sizeof(struct dc_clocks));
+-
+-	// Assumption is that boot state always supports pstate
+-	clk_mgr->clks.ref_dtbclk_khz = ref_dtbclk;	// restore ref_dtbclk
+-	clk_mgr->clks.p_state_change_support = true;
+-	clk_mgr->clks.prev_p_state_change_support = true;
+-	clk_mgr->clks.pwr_state = DCN_PWR_STATE_UNKNOWN;
+-	clk_mgr->clks.zstate_support = DCN_ZSTATE_SUPPORT_UNKNOWN;
+-}
+ 
+ bool dcn35_are_clock_states_equal(struct dc_clocks *a,
+ 		struct dc_clocks *b)
+@@ -421,7 +408,19 @@ static void dcn35_dump_clk_registers(struct clk_state_registers_and_bypass *regs
+ 		struct clk_mgr_dcn35 *clk_mgr)
  {
--	WARN_ON_ONCE(cps->cp_stateid.sc_type != NFS4_COPYNOTIFY_STID);
--	if (!refcount_dec_and_test(&cps->cp_stateid.sc_count))
-+	WARN_ON_ONCE(cps->cp_stateid.cs_type != NFS4_COPYNOTIFY_STID);
-+	if (!refcount_dec_and_test(&cps->cp_stateid.cs_count))
- 		return;
- 	list_del(&cps->cp_list);
- 	idr_remove(&nn->s2s_cp_stateids,
--		   cps->cp_stateid.stid.si_opaque.so_id);
-+		   cps->cp_stateid.cs_stid.si_opaque.so_id);
- 	kfree(cps);
  }
- /*
-@@ -6401,12 +6401,12 @@ __be32 manage_cpntf_state(struct nfsd_net *nn, stateid_t *st,
- 	if (cps_t) {
- 		state = container_of(cps_t, struct nfs4_cpntf_state,
- 				     cp_stateid);
--		if (state->cp_stateid.sc_type != NFS4_COPYNOTIFY_STID) {
-+		if (state->cp_stateid.cs_type != NFS4_COPYNOTIFY_STID) {
- 			state = NULL;
- 			goto unlock;
- 		}
- 		if (!clp)
--			refcount_inc(&state->cp_stateid.sc_count);
-+			refcount_inc(&state->cp_stateid.cs_count);
- 		else
- 			_free_cpntf_state_locked(nn, state);
- 	}
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index 4155be65d8069..b3477087a9fc3 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -57,11 +57,11 @@ typedef struct {
- } stateid_t;
++void dcn35_init_clocks(struct clk_mgr *clk_mgr)
++{
++	uint32_t ref_dtbclk = clk_mgr->clks.ref_dtbclk_khz;
  
- typedef struct {
--	stateid_t		stid;
-+	stateid_t		cs_stid;
- #define NFS4_COPY_STID 1
- #define NFS4_COPYNOTIFY_STID 2
--	unsigned char		sc_type;
--	refcount_t		sc_count;
-+	unsigned char		cs_type;
-+	refcount_t		cs_count;
- } copy_stateid_t;
++	memset(&(clk_mgr->clks), 0, sizeof(struct dc_clocks));
++
++	// Assumption is that boot state always supports pstate
++	clk_mgr->clks.ref_dtbclk_khz = ref_dtbclk;	// restore ref_dtbclk
++	clk_mgr->clks.p_state_change_support = true;
++	clk_mgr->clks.prev_p_state_change_support = true;
++	clk_mgr->clks.pwr_state = DCN_PWR_STATE_UNKNOWN;
++	clk_mgr->clks.zstate_support = DCN_ZSTATE_SUPPORT_UNKNOWN;
++}
+ static struct clk_bw_params dcn35_bw_params = {
+ 	.vram_type = Ddr4MemType,
+ 	.num_channels = 1,
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+index 5fdcda8f86026..04d230aa8861f 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+@@ -701,7 +701,7 @@ static const struct dc_plane_cap plane_cap = {
  
- struct nfsd4_callback {
+ 	// 6:1 downscaling ratio: 1000/6 = 166.666
+ 	.max_downscale_factor = {
+-			.argb8888 = 167,
++			.argb8888 = 250,
+ 			.nv12 = 167,
+ 			.fp16 = 167
+ 	},
 -- 
 2.43.0
 
