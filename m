@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-36653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887F989C14C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:19:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1448E89C52F
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E68A5B24AC6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:17:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4661D1C227DE
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC85E7EF14;
-	Mon,  8 Apr 2024 13:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586447BAE3;
+	Mon,  8 Apr 2024 13:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcRV9N4K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3ze11jX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B24D7E575;
-	Mon,  8 Apr 2024 13:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F8278286;
+	Mon,  8 Apr 2024 13:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581955; cv=none; b=B5MI46ggmjo+rjU3wkZzrHaTWYTwVKBf3fP1jkBAiGN1mlJI4cW887A2KCBzyL0h1kPogONdfZgw0B/QKIhWyctWBkuxT8FFC2TRQFig6MKX/HjAJ6UB4KuyDdn+nrRQyZtgSfsXtDoWGotGqBsUXA0oOKe9QHY4Ykx2FyJ5Hpk=
+	t=1712584457; cv=none; b=EQaMdfDSjL8IlylAb7uh247gHZ2fXKvTqafCTrVtYqTwAYOlBUTwv/rgXE0UfYxziP4PBN4C6WZJ7jz3EMYRVdBcCMGpK8yIvwkaTb4r64AA1pR1Qj07qMtjVmm3fd+DG+V5ZR0J8hXXeeUiH461AVp9pA1CfgX58vP/sV0Chl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581955; c=relaxed/simple;
-	bh=iogT51VmWM8z56Gkg/Q1yuwpsDQPVbyTojvtAfgEiNM=;
+	s=arc-20240116; t=1712584457; c=relaxed/simple;
+	bh=Li+ilXs9n2LQYMyGjFXbF5jXQuAtyH+YeG594nL+Iog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5n/ZOZASXXL8duvsOUH/Sx3Cw8k5ydjTfDbfI9nfhG6z5jhlmiEW12KkzewaEWvdClt9vungcOPeeCr+l48yw0X//KNm52imbxleG9nhGMcr1OsP5bDJJ/oBTcCwC2pXsOtLWA3OpeNqx46zRkkWP1tVXDFXCH505eaSbDfFAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcRV9N4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B707AC433F1;
-	Mon,  8 Apr 2024 13:12:34 +0000 (UTC)
+	 MIME-Version; b=VRR7YTn/UNgFbQk9mFM897h/ru7m/eHCaKIwo05c0odYMLm/D1Yl/dG5IUpzKQajANW06dttjleNiJW+WtrGXE1guDxZiNzdhyLMFPtiTgurgIemjxIni2uJ2HX8DEG2/9cAG7tDaSXTrjNjihVXQL6YNTlOSY1CNHYdwcct4cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3ze11jX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90678C43394;
+	Mon,  8 Apr 2024 13:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581955;
-	bh=iogT51VmWM8z56Gkg/Q1yuwpsDQPVbyTojvtAfgEiNM=;
+	s=korg; t=1712584457;
+	bh=Li+ilXs9n2LQYMyGjFXbF5jXQuAtyH+YeG594nL+Iog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UcRV9N4KCFH7PIk0Hhf1yOTMENpv174mJr62UskzE03W6i3+nm5HTvUodAl0dvR/E
-	 mBptQOJf2fxd83k+2hIX7Ek/Vz2JCa/hiTdONb2+3MQeiPLMtabPTYcrP7H01p4ikq
-	 HYXnOCJ8+SbgF4FO0lPGIUWQHerwXyb0lvbtek6Y=
+	b=X3ze11jXNbDNNY2IKMgpwEzUtr7kZyT23XYvoWm6jJgu4YvpRYLTLRL17EEk3MvOZ
+	 WJQk/rp1aYwG7xZaR5YLB4Qbl4NwKy9Fsb1jxHe5TwQwHSpiGJD7zKY37BdFvJT2R4
+	 6dYhynh2dgzqzgxxukjPqbSTnBeGTtwUERsDLx2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 035/273] net: hns3: fix kernel crash when devlink reload during pf initialization
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 444/690] NFSD: Pack struct nfsd4_compoundres
 Date: Mon,  8 Apr 2024 14:55:10 +0200
-Message-ID: <20240408125310.385086086@linuxfoundation.org>
+Message-ID: <20240408125415.728702645@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +60,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 93305b77ffcb042f1538ecc383505e87d95aa05a ]
+[ Upstream commit 9f553e61bd36c1048543ac2f6945103dd2f742be ]
 
-The devlink reload process will access the hardware resources,
-but the register operation is done before the hardware is initialized.
-So, processing the devlink reload during initialization may lead to kernel
-crash. This patch fixes this by taking devl_lock during initialization.
+Remove a couple of 4-byte holes on platforms with 64-bit pointers.
 
-Fixes: b741269b2759 ("net: hns3: add support for registering devlink for PF")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfsd/xdr4.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 609d3799d7738..a3b7723a97bb1 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11613,6 +11613,8 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 	if (ret)
- 		goto err_pci_uninit;
+diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
+index b2bc85421b507..0eb00105d845b 100644
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -732,8 +732,8 @@ struct nfsd4_compoundres {
+ 	struct svc_rqst *		rqstp;
  
-+	devl_lock(hdev->devlink);
-+
- 	/* Firmware command queue initialize */
- 	ret = hclge_comm_cmd_queue_init(hdev->pdev, &hdev->hw.hw);
- 	if (ret)
-@@ -11792,6 +11794,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 	__be32				*statusp;
+-	u32				taglen;
+ 	char *				tag;
++	u32				taglen;
+ 	u32				opcnt;
  
- 	hclge_task_schedule(hdev, round_jiffies_relative(HZ));
- 
-+	devl_unlock(hdev->devlink);
- 	return 0;
- 
- err_mdiobus_unreg:
-@@ -11804,6 +11807,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- err_cmd_uninit:
- 	hclge_comm_cmd_uninit(hdev->ae_dev, &hdev->hw.hw);
- err_devlink_uninit:
-+	devl_unlock(hdev->devlink);
- 	hclge_devlink_uninit(hdev);
- err_pci_uninit:
- 	pcim_iounmap(pdev, hdev->hw.hw.io_base);
+ 	struct nfsd4_compound_state	cstate;
 -- 
 2.43.0
 
