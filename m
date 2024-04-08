@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-36467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D40789BFF9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C78B589C004
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C4C61F23E08
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 678D71F223AD
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC2A78285;
-	Mon,  8 Apr 2024 13:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398E770CCB;
+	Mon,  8 Apr 2024 13:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byJ/VOXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkODEshO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B13F2DF73;
-	Mon,  8 Apr 2024 13:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6ED2E62C;
+	Mon,  8 Apr 2024 13:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581411; cv=none; b=OZzK8StW3HtpLPLjz0G9m4Eob9PW7ov/ke6X4yVeT47sHeGCIOqJsO12VXRCmJyT+v0Aq2JnCT/+snZGAGoVBTfEwTe7qJYqnIqE8Cc4NEzxF7kEAw7wmVaWT1HhDR8kArXXJ+jePmA5HlsMeBa7AIZYJHu1BG6TCwAMdIHG8GU=
+	t=1712581443; cv=none; b=SIZ4+WOtoVOu/ZNovUGtyW60QuEshgg8xpLAl7r8i0yxcNJ3q2sRbbHo2hPgxxKNaSEkwG/gVcnrHJGUuR/C4EbDxrVQuSJAnTEUpdbda6BCmj0D5qU0/nmkxvJ6h1O7JcMwkekjiRd4kKnNbIRwZVedBkARVWN0KVss/wTEWzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581411; c=relaxed/simple;
-	bh=rZVxrlFVjs/ztqOLm521AdJulvo4waFCUmjd8G5K9Oo=;
+	s=arc-20240116; t=1712581443; c=relaxed/simple;
+	bh=QwphQmeUoj4SArJT2eKVySVvRttUbF0UIAYuQwjh7PM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2RXdUx+yH/Ek8a7K0a8RT6hgez8zAkkg7ZB3yXJvS0wYHX2sS6iJ56HbStOdkLcUSt4eSvElsycTu9wdjRrZeWoc5ZsQoGfrCNRR16wXglrQOd+lp5pI8sVtZvjcY918kDEuw22SU/qzymXmCwqwffXZ5Y4pLrX/6/4jOMAEVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byJ/VOXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E43C433F1;
-	Mon,  8 Apr 2024 13:03:30 +0000 (UTC)
+	 MIME-Version; b=W/OOd++6EIi9OMOMX6T9ARJtBHB9Zqlq4DPgt4sf/oIbkU+Kx7NWWPowLT8XQZC2IXnrQ6yF8x0Gtyv+/QdjihL5rnQdzXcH8B8ABjoHkGU/f/U8eSLwTrv/enuL3o0U5w7wfPAZq/47U1dgHKTPgfczNJIDZbSke2vHEtXjM+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkODEshO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720C2C433C7;
+	Mon,  8 Apr 2024 13:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581411;
-	bh=rZVxrlFVjs/ztqOLm521AdJulvo4waFCUmjd8G5K9Oo=;
+	s=korg; t=1712581442;
+	bh=QwphQmeUoj4SArJT2eKVySVvRttUbF0UIAYuQwjh7PM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byJ/VOXm0xI4OT8KlkSJShoDHWJFyyP3fbSgidkwy3Yj/CfgZT6APDD+qMeLAoYQS
-	 h3+J6lTxGGY9olPyh+UKhfqfmNlOlkqnM1Y3hzaHqz0b0VqlvGMg0FNvsWZYc0ssU0
-	 vyo/4p4ej8xAActY6e762lBvLx2xo5DhewzWt8c0=
+	b=bkODEshONiiFi8Jju+chUML4UuVKgAkkg6mCzNi/7Ij3mpGa46BOgYtl8koqGOg/w
+	 THPA4k2v8FRbFVcXrxtdbjvyKzknhY/9+JE+TlRtACZVCvoq0TsqLEekw4ML5lNcg0
+	 HOinzhaD1V4pnbiRaEWIWkl6LiC6jj/T6n1qYqFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	yangerkun <yangerkun@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/690] ext4: correct best extent lstart adjustment logic
-Date: Mon,  8 Apr 2024 14:48:11 +0200
-Message-ID: <20240408125400.486810462@linuxfoundation.org>
+Subject: [PATCH 5.15 026/690] block: Clear zone limits for a non-zoned stacked queue
+Date: Mon,  8 Apr 2024 14:48:12 +0200
+Message-ID: <20240408125400.517137604@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -70,93 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 4fbf8bc733d14bceb16dda46a3f5e19c6a9621c5 ]
+[ Upstream commit c8f6f88d25929ad2f290b428efcae3b526f3eab0 ]
 
-When yangerkun review commit 93cdf49f6eca ("ext4: Fix best extent lstart
-adjustment logic in ext4_mb_new_inode_pa()"), it was found that the best
-extent did not completely cover the original request after adjusting the
-best extent lstart in ext4_mb_new_inode_pa() as follows:
+Device mapper may create a non-zoned mapped device out of a zoned device
+(e.g., the dm-zoned target). In such case, some queue limit such as the
+max_zone_append_sectors and zone_write_granularity endup being non zero
+values for a block device that is not zoned. Avoid this by clearing
+these limits in blk_stack_limits() when the stacked zoned limit is
+false.
 
-  original request: 2/10(8)
-  normalized request: 0/64(64)
-  best extent: 0/9(9)
-
-When we check if best ex can be kept at start of goal, ac_o_ex.fe_logical
-is 2 less than the adjusted best extent logical end 9, so we think the
-adjustment is done. But obviously 0/9(9) doesn't cover 2/10(8), so we
-should determine here if the original request logical end is less than or
-equal to the adjusted best extent logical end.
-
-In addition, add a comment stating when adjusted best_ex will not cover
-the original request, and remove the duplicate assertion because adjusting
-lstart makes no change to b_ex.fe_len.
-
-Link: https://lore.kernel.org/r/3630fa7f-b432-7afd-5f79-781bc3b2c5ea@huawei.com
-Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
-Cc:  <stable@kernel.org>
-Signed-off-by: yangerkun <yangerkun@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240201141845.1879253-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 3093a479727b ("block: inherit the zoned characteristics in blk_stack_limits")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240222131724.1803520-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ block/blk-settings.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index a254c2ba03576..d13d669f90fd5 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4696,10 +4696,16 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 			.fe_len = ac->ac_g_ex.fe_len,
- 		};
- 		loff_t orig_goal_end = extent_logical_end(sbi, &ex);
-+		loff_t o_ex_end = extent_logical_end(sbi, &ac->ac_o_ex);
- 
--		/* we can't allocate as much as normalizer wants.
--		 * so, found space must get proper lstart
--		 * to cover original request */
-+		/*
-+		 * We can't allocate as much as normalizer wants, so we try
-+		 * to get proper lstart to cover the original request, except
-+		 * when the goal doesn't cover the original request as below:
-+		 *
-+		 * orig_ex:2045/2055(10), isize:8417280 -> normalized:0/2048
-+		 * best_ex:0/200(200) -> adjusted: 1848/2048(200)
-+		 */
- 		BUG_ON(ac->ac_g_ex.fe_logical > ac->ac_o_ex.fe_logical);
- 		BUG_ON(ac->ac_g_ex.fe_len < ac->ac_o_ex.fe_len);
- 
-@@ -4711,7 +4717,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 		 * 1. Check if best ex can be kept at end of goal and still
- 		 *    cover original start
- 		 * 2. Else, check if best ex can be kept at start of goal and
--		 *    still cover original start
-+		 *    still cover original end
- 		 * 3. Else, keep the best ex at start of original request.
- 		 */
- 		ex.fe_len = ac->ac_b_ex.fe_len;
-@@ -4721,7 +4727,7 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 			goto adjust_bex;
- 
- 		ex.fe_logical = ac->ac_g_ex.fe_logical;
--		if (ac->ac_o_ex.fe_logical < extent_logical_end(sbi, &ex))
-+		if (o_ex_end <= extent_logical_end(sbi, &ex))
- 			goto adjust_bex;
- 
- 		ex.fe_logical = ac->ac_o_ex.fe_logical;
-@@ -4729,7 +4735,6 @@ ext4_mb_new_inode_pa(struct ext4_allocation_context *ac)
- 		ac->ac_b_ex.fe_logical = ex.fe_logical;
- 
- 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
--		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
- 		BUG_ON(extent_logical_end(sbi, &ex) > orig_goal_end);
- 	}
- 
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 959b5c1e6d3b7..1b92e66249518 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -647,6 +647,10 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 	t->zone_write_granularity = max(t->zone_write_granularity,
+ 					b->zone_write_granularity);
+ 	t->zoned = max(t->zoned, b->zoned);
++	if (!t->zoned) {
++		t->zone_write_granularity = 0;
++		t->max_zone_append_sectors = 0;
++	}
+ 	return ret;
+ }
+ EXPORT_SYMBOL(blk_stack_limits);
 -- 
 2.43.0
 
