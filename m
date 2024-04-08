@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D20989C489
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:49:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4D389C622
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E9951C21C0A
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:48:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF0DB285A67
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8697F7C9;
-	Mon,  8 Apr 2024 13:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD2E7F7F8;
+	Mon,  8 Apr 2024 14:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ii4m5JOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BI2WB9w9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8357D095;
-	Mon,  8 Apr 2024 13:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADD27F474;
+	Mon,  8 Apr 2024 14:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584022; cv=none; b=txs/XhH10jRB0nUY2EOx5qrx9SM0/qrHthmIAHQWtidvViXMSeKYknjYwgWMnLgpYKQ1zEZWqH1BFCtbGnIv9Lm8tqOXLDGMMKMbdMpPZpM5TapLG8MzvB3cT3T+OkJJNRWLNK1k1zlO30bYF8lkSY1d1YI3iYPS3fQ6ttEqyPY=
+	t=1712585084; cv=none; b=Ut0xYl+23YZKHDzJX05U25M/vWvw/W/Z2TuOy9aZTAutbOrrtMKmaJF2TxJO3P67SJp4tiqhihmpgffxxPiPD9ig4DQNhehP6j/ME41d2E3YgE8ITKBZMwiDGSLCmIJmAIhxiOjVk8pQkah+q37NnAOPL5fD65nrvNo2J76Uyfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584022; c=relaxed/simple;
-	bh=789yApSdIxZvx1Pf//iCH2UOYcYjWrV+CXySEGLIURM=;
+	s=arc-20240116; t=1712585084; c=relaxed/simple;
+	bh=OjQ/tsNgPBWm67L2u9zaWTXe0UFFWh0GSVWTR51jPtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2898/RACsACIhhuSIXyemBa1ahG6wPjqPUcoVmx8pvSwhRpx/AXWDH+pMgHrzANvVCV1/W3WxBqpwhP/lCLiSe6n4RKBaPcrULidnPPuHD7rEyKgiLtuBYid89RlBzGnn6dcVZXVSoC+72eOyRh8ExuoCAg21+hac2dYXWcBiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ii4m5JOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0D1C433F1;
-	Mon,  8 Apr 2024 13:47:01 +0000 (UTC)
+	 MIME-Version; b=aasBLe/a7fET7iJb9KIiiSGBeYSr3cnfOLyR7rTHgcWh9qhOMHI+TG/SOFXAaxttQWcPaWHig2g0ktUQZEH7QG9oeHzh26gM9DnqLfjTg6v+b2oI8cC6sl4acekM6LBHc0w+RjNl/ck0EzBbc46REFUW6kf9KQh7MBAa69oi9vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BI2WB9w9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E669C433F1;
+	Mon,  8 Apr 2024 14:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584022;
-	bh=789yApSdIxZvx1Pf//iCH2UOYcYjWrV+CXySEGLIURM=;
+	s=korg; t=1712585084;
+	bh=OjQ/tsNgPBWm67L2u9zaWTXe0UFFWh0GSVWTR51jPtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ii4m5JOus05TZIBIwa00ptP26p3rNtrut7htvWb4m8hroIt+aeMGeZfVwrmUa4t+V
-	 19eJO9KHLp83iKvO1bmM3K+VKtEDAsONWjllM0TFkTypsEewIkCSidGe42Bb1ck42z
-	 WctmlLySsENdOuu4XjCw71bdjRfoIQXqkpoWtxg8=
+	b=BI2WB9w9Mp3BpJrRnMKOsbv17l6IGmeP8Hgp45mOOMe5NWAjeihzbHJtGor7f7tGc
+	 V/PmcKNZKPqmoBczj+escu1cvUHxLeKmc/EPoD8pduHUfgXGA5aeQwI2bzrZoX1hP8
+	 pq1p4ZNRn3GrsoCrE4D/+yLRHNaTZhPRBp1iDfLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.8 249/273] smb: client: fix potential UAF in cifs_debug_files_proc_show()
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	stable <stable@kernel.org>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 658/690] Revert "usb: phy: generic: Get the vbus supply"
 Date: Mon,  8 Apr 2024 14:58:44 +0200
-Message-ID: <20240408125317.183948734@linuxfoundation.org>
+Message-ID: <20240408125423.506459406@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit ca545b7f0823f19db0f1148d59bc5e1a56634502 upstream.
+[ Upstream commit fdada0db0b2ae2addef4ccafe50937874dbeeebe ]
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+This reverts commit 75fd6485cccef269ac9eb3b71cf56753341195ef.
+This patch was applied twice by accident, causing probe failures.
+Revert the accident.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Fixes: 75fd6485ccce ("usb: phy: generic: Get the vbus supply")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Link: https://lore.kernel.org/r/20240314092628.1869414-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifs_debug.c |    2 ++
- fs/smb/client/cifsglob.h   |   10 ++++++++++
- 2 files changed, 12 insertions(+)
+ drivers/usb/phy/phy-generic.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -250,6 +250,8 @@ static int cifs_debug_files_proc_show(st
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+			if (cifs_ses_exiting(ses))
-+				continue;
- 			list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 				spin_lock(&tcon->open_file_lock);
- 				list_for_each_entry(cfile, &tcon->openFileList, tlist) {
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -2295,4 +2295,14 @@ struct smb2_compound_vars {
- 	struct smb2_file_link_info link_info;
- };
+diff --git a/drivers/usb/phy/phy-generic.c b/drivers/usb/phy/phy-generic.c
+index 34b9f81401871..661a229c105dd 100644
+--- a/drivers/usb/phy/phy-generic.c
++++ b/drivers/usb/phy/phy-generic.c
+@@ -268,13 +268,6 @@ int usb_phy_gen_create_phy(struct device *dev, struct usb_phy_generic *nop)
+ 			return -EPROBE_DEFER;
+ 	}
  
-+static inline bool cifs_ses_exiting(struct cifs_ses *ses)
-+{
-+	bool ret;
-+
-+	spin_lock(&ses->ses_lock);
-+	ret = ses->ses_status == SES_EXITING;
-+	spin_unlock(&ses->ses_lock);
-+	return ret;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
+-	nop->vbus_draw = devm_regulator_get_exclusive(dev, "vbus");
+-	if (PTR_ERR(nop->vbus_draw) == -ENODEV)
+-		nop->vbus_draw = NULL;
+-	if (IS_ERR(nop->vbus_draw))
+-		return dev_err_probe(dev, PTR_ERR(nop->vbus_draw),
+-				     "could not get vbus regulator\n");
+-
+ 	nop->dev		= dev;
+ 	nop->phy.dev		= nop->dev;
+ 	nop->phy.label		= "nop-xceiv";
+-- 
+2.43.0
+
 
 
 
