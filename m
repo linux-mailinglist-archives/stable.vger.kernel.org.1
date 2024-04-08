@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-37180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE6E89C3A9
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:43:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA4589C3BB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C63A2839BE
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:43:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA1931C21A45
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0218E12D219;
-	Mon,  8 Apr 2024 13:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F88D13A876;
+	Mon,  8 Apr 2024 13:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNfdIecq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnwN3NcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE62612D1FF;
-	Mon,  8 Apr 2024 13:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C69213A41E;
+	Mon,  8 Apr 2024 13:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583481; cv=none; b=X6lDsUD22vd9Ltww6PYPobY/IfUTa9qVTH3HrF/oYn7qQUh7BH3mloxos2+u2QPkTS5vhNqIxQHNeACa/P65PaEud3VQpEoFOLU5qXE2bOyADz9QNeOdlaPQDACX76hMVlgvjzI0QTrS70odBHzBWDFL+8wCBdjWVuw3mi/pSbY=
+	t=1712583491; cv=none; b=CKOYY9khIkCyHpT9xnDwIO2oL+uDRz0kHqmmgIwQYKOoporvLBrslM8zSsOJFGNoaXsiaY/dbtf+RlOhX0drkh/kkE+U937BzeKga7TeQvESzyMjS0vbwhRCdzqV2NoULQea7eP6l3Pg+w1csNONTTMnXjhQnoUIOHpyLEsLnz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583481; c=relaxed/simple;
-	bh=X3C7VIoeTLFfwPgkc6YaB9zLKDJ/QskwXh0zyv4L3YE=;
+	s=arc-20240116; t=1712583491; c=relaxed/simple;
+	bh=TdEM4eqwrumtRy5lbzaY0GVwZlqwln5fuT015KGQNf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRj8xqUaJQ5KXmNKlngUY2kYgZG/4U3B2IQPa2Yie4NbyhBP8UT7TaYuLaYMcvVuFSp0+EIL1js578a1og7tsYixYFL5LVJNtKTzyH7Gtczg4ysKb7FxVFHLEaR0/yBhNXIE1FJoZz69RAasjMlEFebeCnwIEWpZI1ff6sfcPM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNfdIecq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DB0C43390;
-	Mon,  8 Apr 2024 13:38:01 +0000 (UTC)
+	 MIME-Version; b=LrHCJ/37iHDEgpujuRMM6FRweEII1R3eECUr95JdEv+uh5e2VBI6qXlhPj5Y7p28UAMzdm9oR3G9hj3BY/uQrS4OPPae1ZiEciM4+9avsVzwi3U22TSVn7q3ebxeUA/d9HJ4NNuCRkffpzku8Eu199+6swYKLArx9E3gAAti/jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnwN3NcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96333C433F1;
+	Mon,  8 Apr 2024 13:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583481;
-	bh=X3C7VIoeTLFfwPgkc6YaB9zLKDJ/QskwXh0zyv4L3YE=;
+	s=korg; t=1712583491;
+	bh=TdEM4eqwrumtRy5lbzaY0GVwZlqwln5fuT015KGQNf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNfdIecq3XVBbb6anW9gBvUDIqZ7kBJbelZkDjw4WKumrdxrLxV7Q7B8QGPvOjzax
-	 qc2Qx/CE3JyTX3cBaAOF57J6LY6e3zskgwSCbMfV0KoXYtSnu0fkYyoxoAQLx4rMGO
-	 nw7hst6MRtVDCHHNY/zC1bB49YbCpgrF0Cp2R120=
+	b=HnwN3NcThEK2gUXigL/hgaZZJuDESbi74bVfJqfgi1kdzDrrW9UySClTsIM4KZCw8
+	 34sI3vdMw3wTdnXrn+jl6XqTb7s4ET/H+DNsHfRWKRQo4MttyTM8e3JMLvxFlDwcJK
+	 JKfnpPXL7+0e3xF/vFjkpto6FsFq3Ey6ZAWLuXLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 200/252] ice: fix typo in assignment
-Date: Mon,  8 Apr 2024 14:58:19 +0200
-Message-ID: <20240408125312.858935939@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 201/252] x86/retpoline: Add NOENDBR annotation to the SRSO dummy return thunk
+Date: Mon,  8 Apr 2024 14:58:20 +0200
+Message-ID: <20240408125312.892778893@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
 References: <20240408125306.643546457@linuxfoundation.org>
@@ -67,34 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jesse Brandeburg <jesse.brandeburg@intel.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 6c5b6ca7642f2992502a22dbd8b80927de174b67 upstream.
+commit b377c66ae3509ccea596512d6afb4777711c4870 upstream.
 
-Fix an obviously incorrect assignment, created with a typo or cut-n-paste
-error.
+srso_alias_untrain_ret() is special code, even if it is a dummy
+which is called in the !SRSO case, so annotate it like its real
+counterpart, to address the following objtool splat:
 
-Fixes: 5995ef88e3a8 ("ice: realloc VSI stats arrays")
-Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+  vmlinux.o: warning: objtool: .export_symbol+0x2b290: data relocation to !ENDBR: srso_alias_untrain_ret+0x0
+
+Fixes: 4535e1a4174c ("x86/bugs: Fix the SRSO mitigation on Zen3/4")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240405144637.17908-1-bp@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/lib/retpoline.S |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3111,7 +3111,7 @@ ice_vsi_realloc_stat_arrays(struct ice_v
- 		}
- 	}
- 
--	tx_ring_stats = vsi_stat->rx_ring_stats;
-+	tx_ring_stats = vsi_stat->tx_ring_stats;
- 	vsi_stat->tx_ring_stats =
- 		krealloc_array(vsi_stat->tx_ring_stats, req_txq,
- 			       sizeof(*vsi_stat->tx_ring_stats),
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -223,6 +223,7 @@ SYM_CODE_END(srso_return_thunk)
+ /* Dummy for the alternative in CALL_UNTRAIN_RET. */
+ SYM_CODE_START(srso_alias_untrain_ret)
+ 	ANNOTATE_UNRET_SAFE
++	ANNOTATE_NOENDBR
+ 	ret
+ 	int3
+ SYM_FUNC_END(srso_alias_untrain_ret)
 
 
 
