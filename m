@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-37174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD6F89C3A1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4392589C3A5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CA391F22567
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90C91F222AC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1A212BEAC;
-	Mon,  8 Apr 2024 13:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAE012C53F;
+	Mon,  8 Apr 2024 13:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4EHCYET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCiJDyq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29347E111;
-	Mon,  8 Apr 2024 13:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE717D414;
+	Mon,  8 Apr 2024 13:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583464; cv=none; b=rUV1PdmFPkQQkYWRc+F2ec/gvwRrFQNH/bMv7Llh/rQ1HCodj2TuCVziUdgYJDOGB3QlT9iYDojvocdrfS7YuK083Re2PYsz6BEIyhGOIrmhf3uMePOfpmneO/tJQRx8J0BLxEHOKp+nNKa2BCbVnjYGtmDl7IdNIxFiEymcUac=
+	t=1712583475; cv=none; b=msBVNB8ulpyHLnXqU+0vUvQAP6l4GPAm12JKmxDDzRC4ZndBLpdZ3yV1vNVYD2aWClTDRgL6vmZDCM7dVOGqHaM+Hpg1Ukl+HjCIuWMdtyaL3LOqca/0VoY0u+t2VTDl59hP7Inqke0gJ1roqaMhnNr41YqVzPgRrdvotwaZMss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583464; c=relaxed/simple;
-	bh=1i18xejKdyUni0ljU+IHQuId+CQyub2GKi/vAaJtAHA=;
+	s=arc-20240116; t=1712583475; c=relaxed/simple;
+	bh=ppGydzDhScoYE8wu5DfZqQhOR8r2hDlnEXluG0eOzh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNlIP5G8Lcy/092eSQ5lqkde6f8PS7zU11GkvCaMNkP62xMyssec+IrD2dzzY5Bc+2XwVjISoLeFJWghaTLT7tEZJ7RcQJTb3ul+GhbFa2MlV83pKN0sWsdcIDDhcWQYogJiJNGyGh7kKJk1QWyZ8fY5jNIoBYSAeYGfzbhhACs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4EHCYET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BEBC433F1;
-	Mon,  8 Apr 2024 13:37:43 +0000 (UTC)
+	 MIME-Version; b=YTrm/4JP4BkMDP5LBPMegf9v0hOcB+N/2+Me4EmvB+rdJDcC+rQ0dsD4N0u9u5zGpjVPZonvdBqlpaV3QPyQjiKXk4Q/m14d8qAzVzrY99J16ag4T01ftCHjvD35JSfmLsVYYXNPwLLjdlF9aPU4eXRUazrsmbo95C4rm7pdbwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCiJDyq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D24C43390;
+	Mon,  8 Apr 2024 13:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583463;
-	bh=1i18xejKdyUni0ljU+IHQuId+CQyub2GKi/vAaJtAHA=;
+	s=korg; t=1712583475;
+	bh=ppGydzDhScoYE8wu5DfZqQhOR8r2hDlnEXluG0eOzh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4EHCYETbO71A8KHUqjG6ywRkp5dOyiXhnxjW9s1TyBTDqJm0t9t0ymPHZ0hgSDIU
-	 5TPbgZgXTWZXb9eatuXdFkeflxMEmw5EmyCyXpydK4ohAE3iB9WyUDKf0qApNSvqdj
-	 BysCqFa5HVdfCkUTKptEouqgZIJ06gvs4fCvod4s=
+	b=iCiJDyq+TfTzProAmqClZ2w7ZDjOxGg7BtQ4GUp9WRlaP0is8C5l+p4ftcwhBqp+O
+	 MKKiOv+Px5SLobsB/Hh5zn2n3FQJ262/oyrYeukYfZNAben4rAmCRyWWp5faaA1KmV
+	 wZJVz5LVkzR5dJ8uN7CImZ/kZpL75Xf0UjP7919I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"J. Bruce Fields" <bfields@redhat.com>,
+	Trond Myklebust <trondmy@hammerspace.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 250/690] nfsd: improve stateid access bitmask documentation
-Date: Mon,  8 Apr 2024 14:51:56 +0200
-Message-ID: <20240408125408.664494430@linuxfoundation.org>
+Subject: [PATCH 5.15 251/690] NFSD: De-duplicate nfsd4_decode_bitmap4()
+Date: Mon,  8 Apr 2024 14:51:57 +0200
+Message-ID: <20240408125408.695729755@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -65,70 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: J. Bruce Fields <bfields@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 3dcd1d8aab00c5d3a0a3725253c86440b1a0f5a7 ]
+[ Upstream commit cd2e999c7c394ae916d8be741418b3c6c1dddea8 ]
 
-The use of the bitmaps is confusing.  Add a cross-reference to make it
-easier to find the existing comment.  Add an updated reference with URL
-to make it quicker to look up.  And a bit more editorializing about the
-value of this.
+Clean up. Trond points out that xdr_stream_decode_uint32_array()
+does the same thing as nfsd4_decode_bitmap4().
 
-Signed-off-by: J. Bruce Fields <bfields@redhat.com>
+Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- fs/nfsd/nfs4state.c | 14 ++++++++++----
- fs/nfsd/state.h     |  4 ++++
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs4xdr.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index e14b38d6751d8..f7e2beded6d7f 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -360,11 +360,13 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
-  * st_{access,deny}_bmap field of the stateid, in order to track not
-  * only what share bits are currently in force, but also what
-  * combinations of share bits previous opens have used.  This allows us
-- * to enforce the recommendation of rfc 3530 14.2.19 that the server
-- * return an error if the client attempt to downgrade to a combination
-- * of share bits not explicable by closing some of its previous opens.
-+ * to enforce the recommendation in
-+ * https://datatracker.ietf.org/doc/html/rfc7530#section-16.19.4 that
-+ * the server return an error if the client attempt to downgrade to a
-+ * combination of share bits not explicable by closing some of its
-+ * previous opens.
-  *
-- * XXX: This enforcement is actually incomplete, since we don't keep
-+ * This enforcement is arguably incomplete, since we don't keep
-  * track of access/deny bit combinations; so, e.g., we allow:
-  *
-  *	OPEN allow read, deny write
-@@ -372,6 +374,10 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
-  *	DOWNGRADE allow read, deny none
-  *
-  * which we should reject.
-+ *
-+ * But you could also argue that our current code is already overkill,
-+ * since it only exists to return NFS4ERR_INVAL on incorrect client
-+ * behavior.
-  */
- static unsigned int
- bmap_to_share_mode(unsigned long bmap)
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index e73bdbb1634ab..6eb3c7157214b 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -568,6 +568,10 @@ struct nfs4_ol_stateid {
- 	struct list_head		st_locks;
- 	struct nfs4_stateowner		*st_stateowner;
- 	struct nfs4_clnt_odstate	*st_clnt_odstate;
-+/*
-+ * These bitmasks use 3 separate bits for READ, ALLOW, and BOTH; see the
-+ * comment above bmap_to_share_mode() for explanation:
-+ */
- 	unsigned char			st_access_bmap;
- 	unsigned char			st_deny_bmap;
- 	struct nfs4_ol_stateid		*st_openstp;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 506ecfca2338b..4459722259fb2 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -277,21 +277,10 @@ nfsd4_decode_verifier4(struct nfsd4_compoundargs *argp, nfs4_verifier *verf)
+ static __be32
+ nfsd4_decode_bitmap4(struct nfsd4_compoundargs *argp, u32 *bmval, u32 bmlen)
+ {
+-	u32 i, count;
+-	__be32 *p;
+-
+-	if (xdr_stream_decode_u32(argp->xdr, &count) < 0)
+-		return nfserr_bad_xdr;
+-	/* request sanity */
+-	if (count > 1000)
+-		return nfserr_bad_xdr;
+-	p = xdr_inline_decode(argp->xdr, count << 2);
+-	if (!p)
+-		return nfserr_bad_xdr;
+-	for (i = 0; i < bmlen; i++)
+-		bmval[i] = (i < count) ? be32_to_cpup(p++) : 0;
++	ssize_t status;
+ 
+-	return nfs_ok;
++	status = xdr_stream_decode_uint32_array(argp->xdr, bmval, bmlen);
++	return status == -EBADMSG ? nfserr_bad_xdr : nfs_ok;
+ }
+ 
+ static __be32
 -- 
 2.43.0
 
