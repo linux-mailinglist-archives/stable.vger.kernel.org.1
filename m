@@ -1,207 +1,229 @@
-Return-Path: <stable+bounces-37791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F0889CC1E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 20:59:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EC989CC6D
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 21:30:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C514C1C22013
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 18:59:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D19E61F25046
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 19:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CD1144D03;
-	Mon,  8 Apr 2024 18:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3CA145B17;
+	Mon,  8 Apr 2024 19:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XTJ2KYAH"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fSAGcUIr"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6470E1448C1
-	for <stable@vger.kernel.org>; Mon,  8 Apr 2024 18:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C815A1448E2;
+	Mon,  8 Apr 2024 19:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712602750; cv=none; b=eLt+YmvF/tuh10gBYW6wwAtcHJcg4XfDMGqvRVqNABBqqEK8iGnQbx7xSkcB+Y/ymQTrsEfU3JeUoS41QbitIxzrAHoAu1aUm+TJvI8I5nPfwIac0U8n8L//FWXfsI2T4YGR6wxjOmHaaCL0aN2mejI25UVWIoHCIe8fSWQfSPE=
+	t=1712604604; cv=none; b=nL7wc0s93EFMMChPnLATPB0eO8NA3WPb3IvQxzhLkpJ0UcbO6YdjqhOpS99gLXoomBU+F0bVvULAtHqh6PvvEfyH8N4tE3ydwG2fCwUjzyjO07wp5Sgz2sJubGjeTe6phPbQalmq2uCVqEhZchIiphT4gvhOgnmYAB7nkQuZTK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712602750; c=relaxed/simple;
-	bh=+BUWPN1WpCcgVrSl6neuRs2Z7L+KLJo4aD7sdqxPa7Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m+X2NN8+MCGHQNQ0IMffzGbzfTUUV22k8TiH63e0GaiObPew1LajFmM0NNqlTU2IkFoUVrc5YrV3liDLMW3r+wz87igt48na2cW2EcO1WnWZZ1YPvm0FepkTcjDVTovtauI5PrBn1tEC3zLTku0z551WZgv4MsFm4VVQquU4m7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XTJ2KYAH; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712602747;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HLlehq8eX/AKOXAxO8vMhUMQdq5MPavS8gzQo/pUnfo=;
-	b=XTJ2KYAH/KD2XojbD69Dz1WcsTh4oLwurIxkcUhP4+inXX1mM4D6/1GQAm0Hm/ZC+HPmGs
-	jMLjRd06Ke5nrbXPiOBqtrs+hFy6gxz+wIS1v0ePNhWXe2+Yyfa8fpRYO8r2FmsCLMxC8w
-	gRSv72u9U6+cb2wulOpF3amb2A69zM0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-RM8WoB8VNOS8W8XiQw5AOQ-1; Mon, 08 Apr 2024 14:59:05 -0400
-X-MC-Unique: RM8WoB8VNOS8W8XiQw5AOQ-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4163e766c59so9513285e9.3
-        for <stable@vger.kernel.org>; Mon, 08 Apr 2024 11:59:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712602745; x=1713207545;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HLlehq8eX/AKOXAxO8vMhUMQdq5MPavS8gzQo/pUnfo=;
-        b=iyFv6keb70B3DwOz0Xwpr3i/Or/jMqyax8CKHykzuxE+UcyNtkMY7PJrA40QF/AIy3
-         SMBHcLKzE9QctGzzp1ZH34M1Euu2p7o747L2tulF8IrVqiQsTg/idhZio8vC1GHjNx7r
-         BDKkHbpjjsc3qgxHDZctsGnPP8/080g3HfWOxBs2Fgr2f6gWvZl4Czf3fcSTjt293Mcu
-         WMO3qiwx8z/S2Mzt0bAMac7v7dsDJ7vJh6TSz0V/uu/WVRHLt+XXhp3RHl9OUldVzsWt
-         YnxRu5B6pXt223shMVi8dAZtA5FrRksUppNFnQh0Sk5WRT+GMa57vl5AuscJEw/qWk7M
-         kz7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXCW8yKb/FQr2xKSzgMLbEQemUQB4cvqxK2U/pfj/VEY5xxX0Z5VgsfX+2Qfbn+Cg4yPKbf8azzEcBS+11KitZOe/cGNaZw
-X-Gm-Message-State: AOJu0YxhtiWBc7tKoNo+nRWDQ+kUzH8JxemjFCFWj2ju5mPWdVKiUdVt
-	lcA5fFI9X43JtOhZ2AZwVivm5yH9wYlq6jYG5INSHcVr6CiblAnYxg/QB/9KN0gaOmydn4dLHYE
-	RftNPh6IJxwVAygxIwjD/Ex4vCpTtHjtFJ3ift4GUP7akD6oEmw++Jw==
-X-Received: by 2002:a05:600c:45c3:b0:416:2a3e:27dc with SMTP id s3-20020a05600c45c300b004162a3e27dcmr7453630wmo.24.1712602744806;
-        Mon, 08 Apr 2024 11:59:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGRYt3+DHWy3JZbAs7+BGVGjRqPd5InKGOGWir9Cs/yPprNrKaLB4w7nELpCUe5Z0E+WYVrDQ==
-X-Received: by 2002:a05:600c:45c3:b0:416:2a3e:27dc with SMTP id s3-20020a05600c45c300b004162a3e27dcmr7453621wmo.24.1712602744440;
-        Mon, 08 Apr 2024 11:59:04 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c718:1300:9860:66a2:fe4d:c379? (p200300cbc7181300986066a2fe4dc379.dip0.t-ipconnect.de. [2003:cb:c718:1300:9860:66a2:fe4d:c379])
-        by smtp.gmail.com with ESMTPSA id i6-20020adffc06000000b003455e5d2569sm5999681wrr.0.2024.04.08.11.59.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 11:59:04 -0700 (PDT)
-Message-ID: <151c1981-f2ed-43fd-bec3-5ed63efe1c13@redhat.com>
-Date: Mon, 8 Apr 2024 20:59:03 +0200
+	s=arc-20240116; t=1712604604; c=relaxed/simple;
+	bh=xX128ydMsg0JrC/Hg3WvWKD0QwN7gJ26CnmWwtEW2vw=;
+	h=Date:To:From:Subject:Message-Id; b=I1xFmX1KJ8AZtYlUcqrHYkgdy6Splc/NSjslxaNQ4SdRwREX/DRig4q29Odcf/hRmpX4dA8m21x819eU0nklMqmH0WecfOt9cZokluERMY6B4CfRqMfc8Nvc1RdMGPCcB+6bKhCCqrLP6zdbNjwE3b0wCOoU9qPkmjBtqOIrL9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fSAGcUIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C547C433C7;
+	Mon,  8 Apr 2024 19:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1712604604;
+	bh=xX128ydMsg0JrC/Hg3WvWKD0QwN7gJ26CnmWwtEW2vw=;
+	h=Date:To:From:Subject:From;
+	b=fSAGcUIrrbdmeo4R2oiO+z7kOxg21dE3smjB1KGKNjFi7JaKtuiAc6Rkw5IvQ2cVo
+	 Vizdt3SyvfHEeU2OipLfAX4gEE5/3dXnVhSo5lJeMQIG3A/4b1A2XE3hxoZ4CfLE71
+	 8zbVsqmuxyTmtpmefftdc6t4EVOI1Esz5NRg4NWk=
+Date: Mon, 08 Apr 2024 12:30:03 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,naoya.horiguchi@nec.com,linmiaohe@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240408193004.7C547C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/userfaultfd: Allow hugetlb change protection upon
- poison entry
-To: peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>,
- linux-stable <stable@vger.kernel.org>,
- syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
-References: <20240405231920.1772199-1-peterx@redhat.com>
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240405231920.1772199-1-peterx@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 06.04.24 01:19, peterx@redhat.com wrote:
-> From: Peter Xu <peterx@redhat.com>
-> 
-> After UFFDIO_POISON, there can be two kinds of hugetlb pte markers, either
-> the POISON one or UFFD_WP one.
-> 
-> Allow change protection to run on a poisoned marker just like !hugetlb
-> cases, ignoring the marker irrelevant of the permission.
-> 
-> Here the two bits are mutual exclusive. For example, when install a
-> poisoned entry it must not be UFFD_WP already (by checking pte_none()
-> before such install).  And it also means if UFFD_WP is set there must have
-> no POISON bit set.  It makes sense because UFFD_WP is a bit to reflect
-> permission, and permissions do not apply if the pte is poisoned and
-> destined to sigbus.
-> 
-> So here we simply check uffd_wp bit set first, do nothing otherwise.
-> 
-> Attach the Fixes to UFFDIO_POISON work, as before that it should not be
-> possible to have poison entry for hugetlb (e.g., hugetlb doesn't do swap,
-> so no chance of swapin errors).
-> 
-> Cc: Axel Rasmussen <axelrasmussen@google.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: linux-stable <stable@vger.kernel.org> # 6.6+
-> Link: https://lore.kernel.org/r/000000000000920d5e0615602dd1@google.com
-> Reported-by: syzbot+b07c8ac8eee3d4d8440f@syzkaller.appspotmail.com
-> Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->   mm/hugetlb.c | 10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 8267e221ca5d..ba7162441adf 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6960,9 +6960,13 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->   			if (!pte_same(pte, newpte))
->   				set_huge_pte_at(mm, address, ptep, newpte, psize);
->   		} else if (unlikely(is_pte_marker(pte))) {
-> -			/* No other markers apply for now. */
-> -			WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
-> -			if (uffd_wp_resolve)
-> +			/*
-> +			 * Do nothing on a poison marker; page is
-> +			 * corrupted, permissons do not apply.  Here
-> +			 * pte_marker_uffd_wp()==true implies !poison
-> +			 * because they're mutual exclusive.
-> +			 */
-> +			if (pte_marker_uffd_wp(pte) && uffd_wp_resolve)
->   				/* Safe to modify directly (non-present->none). */
->   				huge_pte_clear(mm, address, ptep, psize);
->   		} else if (!huge_pte_none(pte)) {
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+The patch titled
+     Subject: mm/memory-failure: fix deadlock when hugetlb_optimize_vmemmap is enabled
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled.patch
 
--- 
-Cheers,
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled.patch
 
-David / dhildenb
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: mm/memory-failure: fix deadlock when hugetlb_optimize_vmemmap is enabled
+Date: Sun, 7 Apr 2024 16:54:56 +0800
+
+When I did hard offline test with hugetlb pages, below deadlock occurs:
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.8.0-11409-gf6cef5f8c37f #1 Not tainted
+------------------------------------------------------
+bash/46904 is trying to acquire lock:
+ffffffffabe68910 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_slow_dec+0x16/0x60
+
+but task is already holding lock:
+ffffffffabf92ea8 (pcp_batch_high_lock){+.+.}-{3:3}, at: zone_pcp_disable+0x16/0x40
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (pcp_batch_high_lock){+.+.}-{3:3}:
+       __mutex_lock+0x6c/0x770
+       page_alloc_cpu_online+0x3c/0x70
+       cpuhp_invoke_callback+0x397/0x5f0
+       __cpuhp_invoke_callback_range+0x71/0xe0
+       _cpu_up+0xeb/0x210
+       cpu_up+0x91/0xe0
+       cpuhp_bringup_mask+0x49/0xb0
+       bringup_nonboot_cpus+0xb7/0xe0
+       smp_init+0x25/0xa0
+       kernel_init_freeable+0x15f/0x3e0
+       kernel_init+0x15/0x1b0
+       ret_from_fork+0x2f/0x50
+       ret_from_fork_asm+0x1a/0x30
+
+-> #0 (cpu_hotplug_lock){++++}-{0:0}:
+       __lock_acquire+0x1298/0x1cd0
+       lock_acquire+0xc0/0x2b0
+       cpus_read_lock+0x2a/0xc0
+       static_key_slow_dec+0x16/0x60
+       __hugetlb_vmemmap_restore_folio+0x1b9/0x200
+       dissolve_free_huge_page+0x211/0x260
+       __page_handle_poison+0x45/0xc0
+       memory_failure+0x65e/0xc70
+       hard_offline_page_store+0x55/0xa0
+       kernfs_fop_write_iter+0x12c/0x1d0
+       vfs_write+0x387/0x550
+       ksys_write+0x64/0xe0
+       do_syscall_64+0xca/0x1e0
+       entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(pcp_batch_high_lock);
+                               lock(cpu_hotplug_lock);
+                               lock(pcp_batch_high_lock);
+  rlock(cpu_hotplug_lock);
+
+ *** DEADLOCK ***
+
+5 locks held by bash/46904:
+ #0: ffff98f6c3bb23f0 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x64/0xe0
+ #1: ffff98f6c328e488 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0xf8/0x1d0
+ #2: ffff98ef83b31890 (kn->active#113){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x100/0x1d0
+ #3: ffffffffabf9db48 (mf_mutex){+.+.}-{3:3}, at: memory_failure+0x44/0xc70
+ #4: ffffffffabf92ea8 (pcp_batch_high_lock){+.+.}-{3:3}, at: zone_pcp_disable+0x16/0x40
+
+stack backtrace:
+CPU: 10 PID: 46904 Comm: bash Kdump: loaded Not tainted 6.8.0-11409-gf6cef5f8c37f #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x68/0xa0
+ check_noncircular+0x129/0x140
+ __lock_acquire+0x1298/0x1cd0
+ lock_acquire+0xc0/0x2b0
+ cpus_read_lock+0x2a/0xc0
+ static_key_slow_dec+0x16/0x60
+ __hugetlb_vmemmap_restore_folio+0x1b9/0x200
+ dissolve_free_huge_page+0x211/0x260
+ __page_handle_poison+0x45/0xc0
+ memory_failure+0x65e/0xc70
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x387/0x550
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xca/0x1e0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+RIP: 0033:0x7fc862314887
+Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+RSP: 002b:00007fff19311268 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007fc862314887
+RDX: 000000000000000c RSI: 000056405645fe10 RDI: 0000000000000001
+RBP: 000056405645fe10 R08: 00007fc8623d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007fc86241b780 R14: 00007fc862417600 R15: 00007fc862416a00
+
+In short, below scene breaks the lock dependency chain:
+
+ memory_failure
+  __page_handle_poison
+   zone_pcp_disable -- lock(pcp_batch_high_lock)
+   dissolve_free_huge_page
+    __hugetlb_vmemmap_restore_folio
+     static_key_slow_dec
+      cpus_read_lock -- rlock(cpu_hotplug_lock)
+
+Fix this by calling drain_all_pages() instead.
+
+Link: https://lkml.kernel.org/r/20240407085456.2798193-1-linmiaohe@huawei.com
+Fixes: 510d25c92ec4a ("mm/hwpoison: disable pcp for page_handle_poison()")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory-failure.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+--- a/mm/memory-failure.c~mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled
++++ a/mm/memory-failure.c
+@@ -154,11 +154,17 @@ static int __page_handle_poison(struct p
+ {
+ 	int ret;
+ 
+-	zone_pcp_disable(page_zone(page));
++	/*
++	 * zone_pcp_disable() can't be used here. It will hold pcp_batch_high_lock and
++	 * dissolve_free_huge_page() might hold cpu_hotplug_lock via static_key_slow_dec()
++	 * when hugetlb vmemmap optimization is enabled. This will break current lock
++	 * dependency chain and leads to deadlock.
++	 */
+ 	ret = dissolve_free_huge_page(page);
+-	if (!ret)
++	if (!ret) {
++		drain_all_pages(page_zone(page));
+ 		ret = take_page_off_buddy(page);
+-	zone_pcp_enable(page_zone(page));
++	}
+ 
+ 	return ret;
+ }
+_
+
+Patches currently in -mm which might be from linmiaohe@huawei.com are
+
+mm-memory-failure-fix-deadlock-when-hugetlb_optimize_vmemmap-is-enabled.patch
 
 
