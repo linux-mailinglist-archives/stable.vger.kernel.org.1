@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-36463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15B389BFF7
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3D989C5C4
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:01:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CE48282D85
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0542928325C
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99B1763F1;
-	Mon,  8 Apr 2024 13:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE477FBAA;
+	Mon,  8 Apr 2024 14:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZtDzup9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WD68KZ/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AC26FE1A;
-	Mon,  8 Apr 2024 13:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BA37FBAF;
+	Mon,  8 Apr 2024 14:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581399; cv=none; b=RwY9ePs+Ev6TnJ4DQg4GYm0qHKcgarMNQlS1jEEbcnKPcHEh/1IdQrBeWH01Sc3m6UeOJGFKZvp1Q9GRwDBtmEC31j3dduXGOwzu4OC8flUswfMYIFVN6QG7/u43X/3tE5kO5iutBhoTD5anqJaMI1ctLLj0kB2Y01MXn/EnUU8=
+	t=1712584800; cv=none; b=Lo6x4mFEqFY6BZkLPpoc4olY9rPAD/qilSt+YI8eDvYj2IWX45Zti8njgJonI/C8Cqg5qeL0EmL034VSJuopuXADbkQJsTAi9TNZgvAjK5/GG8Rcv2BD7u6EuZuzfrsqUtkkJriNtfx7WGSWL/Lmd6q9KpAyqUuNEVUAKcJpLNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581399; c=relaxed/simple;
-	bh=doRiEzG7ocErcAySZhbXfoXxTXlYQXDuYfegwpzfrNc=;
+	s=arc-20240116; t=1712584800; c=relaxed/simple;
+	bh=q8sMp8kGQH1QPa+IvpAyYesEQUSNfYfKNh9MGYdLWnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtRU4c257mRB+d7uXQrdhUD5Zimv8yNrdzA4tjvs1cJiQbnI4qfVuSmCLzvgpVDMUUZNZMAwaNVxzOX24z8weOtKeK4LyVjwiDz906A6ved+JuTQvYOrVHd+2ERC75Iaz2KMMBmoiXNzuGgRRUupsBWLWh7iMngOea+PAdVYz6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZtDzup9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01507C433F1;
-	Mon,  8 Apr 2024 13:03:18 +0000 (UTC)
+	 MIME-Version; b=tgBIV4MvMXGUuqhDSDZA9SbB91W10yhxDU+AcwTaKOiFcxPBEyC54cTOJAmRwA6/KgBvN+53/G0/AW7mwIJqQcVD7+1yKtSbcwl9lNGwug8rBn2MvJWt1BDqTMz+NBMVcgq1PRw5dG088eNOyWZZGu2LVdECekmB+OQaCJ+uUBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WD68KZ/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A8BC433F1;
+	Mon,  8 Apr 2024 13:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581399;
-	bh=doRiEzG7ocErcAySZhbXfoXxTXlYQXDuYfegwpzfrNc=;
+	s=korg; t=1712584800;
+	bh=q8sMp8kGQH1QPa+IvpAyYesEQUSNfYfKNh9MGYdLWnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZtDzup9dqeHSJgYDg7BkFyJvBleSQFEkXR6UDnKpKjDoLibyEDpYtnX0lj4/Ff/E
-	 CR2+FfZZFPAhZ8JPlCHYJN5Mbix+53xlNDv7VAxfs8USmJCFOig1jmv4xH6PTpR+ko
-	 6KD9+3JrfT3reRlVSVR90rTMCRn/fT2QkleWiSuI=
+	b=WD68KZ/9ym+SORWLlt5hV/skwKWzcCnVSmj+oQLJjPIeFJk6Ot90kqq3RUDyWyHZm
+	 Ln1Veotzu4EYeX0pjs3T98tdaVkB4yviCXIkFUwAxv99XnPdDAntDBMsqaSOyLny4d
+	 I9gFkvmK1fcOcuHOtz+Cdard13Belp1zG1uEfbyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/138] tls: recv: process_rx_list shouldnt use an offset with kvec
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.15 562/690] vfio/pci: Lock external INTx masking ops
 Date: Mon,  8 Apr 2024 14:57:08 +0200
-Message-ID: <20240408125256.674467195@linuxfoundation.org>
+Message-ID: <20240408125419.999234256@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 7608a971fdeb4c3eefa522d1bfe8d4bc6b2481cc ]
+[ Upstream commit 810cd4bb53456d0503cc4e7934e063835152c1b7 ]
 
-Only MSG_PEEK needs to copy from an offset during the final
-process_rx_list call, because the bytes we copied at the beginning of
-tls_sw_recvmsg were left on the rx_list. In the KVEC case, we removed
-data from the rx_list as we were copying it, so there's no need to use
-an offset, just like in the normal case.
+Mask operations through config space changes to DisINTx may race INTx
+configuration changes via ioctl.  Create wrappers that add locking for
+paths outside of the core interrupt code.
 
-Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/e5487514f828e0347d2b92ca40002c62b58af73d.1711120964.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In particular, irq_type is updated holding igate, therefore testing
+is_intx() requires holding igate.  For example clearing DisINTx from
+config space can otherwise race changes of the interrupt configuration.
+
+This aligns interfaces which may trigger the INTx eventfd into two
+camps, one side serialized by igate and the other only enabled while
+INTx is configured.  A subsequent patch introduces synchronization for
+the latter flows.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+Reported-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-3-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vfio/pci/vfio_pci_intrs.c |   30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index bdb5153f3788a..e40f6ed65e6a2 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2238,7 +2238,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 		}
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -33,11 +33,13 @@ static void vfio_send_intx_eventfd(void
+ 		eventfd_signal(vdev->ctx[0].trigger, 1);
+ }
  
- 		/* Drain records from the rx_list & copy if required */
--		if (is_peek || is_kvec)
-+		if (is_peek)
- 			err = process_rx_list(ctx, msg, &control, copied + peeked,
- 					      decrypted - peeked, is_peek, NULL);
- 		else
--- 
-2.43.0
-
+-void vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
++static void __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
+ {
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	unsigned long flags;
+ 
++	lockdep_assert_held(&vdev->igate);
++
+ 	spin_lock_irqsave(&vdev->irqlock, flags);
+ 
+ 	/*
+@@ -65,6 +67,13 @@ void vfio_pci_intx_mask(struct vfio_pci_
+ 	spin_unlock_irqrestore(&vdev->irqlock, flags);
+ }
+ 
++void vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
++{
++	mutex_lock(&vdev->igate);
++	__vfio_pci_intx_mask(vdev);
++	mutex_unlock(&vdev->igate);
++}
++
+ /*
+  * If this is triggered by an eventfd, we can't call eventfd_signal
+  * or else we'll deadlock on the eventfd wait queue.  Return >0 when
+@@ -107,12 +116,21 @@ static int vfio_pci_intx_unmask_handler(
+ 	return ret;
+ }
+ 
+-void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
++static void __vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
+ {
++	lockdep_assert_held(&vdev->igate);
++
+ 	if (vfio_pci_intx_unmask_handler(vdev, NULL) > 0)
+ 		vfio_send_intx_eventfd(vdev, NULL);
+ }
+ 
++void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev)
++{
++	mutex_lock(&vdev->igate);
++	__vfio_pci_intx_unmask(vdev);
++	mutex_unlock(&vdev->igate);
++}
++
+ static irqreturn_t vfio_intx_handler(int irq, void *dev_id)
+ {
+ 	struct vfio_pci_core_device *vdev = dev_id;
+@@ -428,11 +446,11 @@ static int vfio_pci_set_intx_unmask(stru
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_pci_intx_unmask(vdev);
++		__vfio_pci_intx_unmask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t unmask = *(uint8_t *)data;
+ 		if (unmask)
+-			vfio_pci_intx_unmask(vdev);
++			__vfio_pci_intx_unmask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		int32_t fd = *(int32_t *)data;
+ 		if (fd >= 0)
+@@ -455,11 +473,11 @@ static int vfio_pci_set_intx_mask(struct
+ 		return -EINVAL;
+ 
+ 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+-		vfio_pci_intx_mask(vdev);
++		__vfio_pci_intx_mask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
+ 		uint8_t mask = *(uint8_t *)data;
+ 		if (mask)
+-			vfio_pci_intx_mask(vdev);
++			__vfio_pci_intx_mask(vdev);
+ 	} else if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+ 		return -ENOTTY; /* XXX implement me */
+ 	}
 
 
 
