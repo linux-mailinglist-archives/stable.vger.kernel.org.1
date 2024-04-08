@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C8589C535
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:54:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C2189C124
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 097B81F23628
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07AE1C21735
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2792C7BAE4;
-	Mon,  8 Apr 2024 13:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B94129E8C;
+	Mon,  8 Apr 2024 13:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LlsIVYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqNFYsZ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95B474438;
-	Mon,  8 Apr 2024 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D502B7D07E;
+	Mon,  8 Apr 2024 13:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584465; cv=none; b=pb+A01A0ezoARWaOWUmI/RBDVf4bBUSI31/ev+yF11XAVOxCk0pU0ZdMUYyWESmEVKgjzZSNPZnaQjEXqQ0Au2j71o9p1qADNy7yY/ROx+TJCIW87hSTnwtECanfds0FFuUThdOUmrDknghv/S3C+SBQXJYvfO31HgDEgOPlPZ4=
+	t=1712581981; cv=none; b=fvY7btqtcj/6KMPMWUQyvX5GSo0N1hXBN+akqlfd1ChH716DDpLwFzhfVPcHu/jIVcabnIkgbLmF3ZhrXoBdp02cr5mYKTJNVY6Y3Mr2RVR5XoTtLZeAsN+NnxKtla4dA7ArgR+zQtVZO4CMxsHS+4s/3xrErivTLByZ6zSN7fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584465; c=relaxed/simple;
-	bh=6qUVCdzn6nfwJTG/qVv4BUYceqGFbJpDW2TTAriusZ8=;
+	s=arc-20240116; t=1712581981; c=relaxed/simple;
+	bh=1phaoDC9R8WaQ9nFvj36SqosWLSQnKjZiIUi/6jXR1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KflQTJ8tYkjJCn4aqF01p4MDSgagtJ46PX75kX2rWWy4/F2iV6BC6xK5b2wQ2E56rWWSsVbX2koH2H3pA4KGtjamnsV7o/LDTEivl+kaKkHeX9T+sZGekaMD9CvHJttTYSp0vi+vuWhja7P5SUD1a/VbhVZGcJqdfOyEhOKTyCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LlsIVYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58788C433C7;
-	Mon,  8 Apr 2024 13:54:25 +0000 (UTC)
+	 MIME-Version; b=jTjzYe5LxAgora2vPIchzWVSOTQ7FG2jztqxWtV4dJRGEJkGDvTWFENbO2H5nj3CVfNEhYW6AkakXliyb9KBnKb3i2VXStNXebKcLLEUASIFYmrS+8SWMIXp6e1wGoBSnmeRlQFs58CDJQFGun89Nk0lK+itcf59YLeSpGt6G/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqNFYsZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E61CC433F1;
+	Mon,  8 Apr 2024 13:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584465;
-	bh=6qUVCdzn6nfwJTG/qVv4BUYceqGFbJpDW2TTAriusZ8=;
+	s=korg; t=1712581981;
+	bh=1phaoDC9R8WaQ9nFvj36SqosWLSQnKjZiIUi/6jXR1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LlsIVYDk+RNex6dMyf+ySb7iSiPATFMK9RLpf+pPT08TtxjQk1+iI3q1giyJ3qfu
-	 FpGZNU83Lk7tER7CrWUBHbmvmpFY9Qke/XpkJN0aZnYl6WzIX7J4R1+zvwstqPpRxw
-	 VTHzvyIwlUmON3mPnJtYuHrpWIx8Vgy761ZzAl1c=
+	b=rqNFYsZ53GFfkft+KBn15rbemrMYU4+A/XdREB3RS/HVZ8dO/y0t/m3e7FwNcDgXV
+	 gUVE6XDovvxx5+eDNH52gcp8aeGHvBuGp+dYi6nf8gD9F4KUXb0VRCXiLVplh+PwEq
+	 cBPB3MmCG9nZWcfP6cBGCr17w0iYgR6Aolqv00DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong2@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 446/690] nfsd: use DEFINE_SHOW_ATTRIBUTE to define export_features_fops and supported_enctypes_fops
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 037/273] tls: recv: process_rx_list shouldnt use an offset with kvec
 Date: Mon,  8 Apr 2024 14:55:12 +0200
-Message-ID: <20240408125415.808899572@linuxfoundation.org>
+Message-ID: <20240408125310.443926552@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong2@huawei.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 9beeaab8e05d353d709103cafa1941714b4d5d94 ]
+[ Upstream commit 7608a971fdeb4c3eefa522d1bfe8d4bc6b2481cc ]
 
-Use DEFINE_SHOW_ATTRIBUTE helper macro to simplify the code.
+Only MSG_PEEK needs to copy from an offset during the final
+process_rx_list call, because the bytes we copied at the beginning of
+tls_sw_recvmsg were left on the rx_list. In the KVEC case, we removed
+data from the rx_list as we were copying it, so there's no need to use
+an offset, just like in the normal case.
 
-Signed-off-by: ChenXiaoSong <chenxiaosong2@huawei.com>
-[ cel: reduce line length ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/e5487514f828e0347d2b92ca40002c62b58af73d.1711120964.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c | 29 +++++------------------------
- 1 file changed, 5 insertions(+), 24 deletions(-)
+ net/tls/tls_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 597a26ad4183f..3ed0cfdb0c0b5 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -185,17 +185,7 @@ static int export_features_show(struct seq_file *m, void *v)
- 	return 0;
- }
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 211f57164cb61..3cdc6bc9fba69 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2152,7 +2152,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		}
  
--static int export_features_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, export_features_show, NULL);
--}
--
--static const struct file_operations export_features_operations = {
--	.open		= export_features_open,
--	.read		= seq_read,
--	.llseek		= seq_lseek,
--	.release	= single_release,
--};
-+DEFINE_SHOW_ATTRIBUTE(export_features);
- 
- #if defined(CONFIG_SUNRPC_GSS) || defined(CONFIG_SUNRPC_GSS_MODULE)
- static int supported_enctypes_show(struct seq_file *m, void *v)
-@@ -204,17 +194,7 @@ static int supported_enctypes_show(struct seq_file *m, void *v)
- 	return 0;
- }
- 
--static int supported_enctypes_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, supported_enctypes_show, NULL);
--}
--
--static const struct file_operations supported_enctypes_ops = {
--	.open		= supported_enctypes_open,
--	.read		= seq_read,
--	.llseek		= seq_lseek,
--	.release	= single_release,
--};
-+DEFINE_SHOW_ATTRIBUTE(supported_enctypes);
- #endif /* CONFIG_SUNRPC_GSS or CONFIG_SUNRPC_GSS_MODULE */
- 
- static const struct file_operations pool_stats_operations = {
-@@ -1365,7 +1345,7 @@ static int nfsd_fill_super(struct super_block *sb, struct fs_context *fc)
- 		/* Per-export io stats use same ops as exports file */
- 		[NFSD_Export_Stats] = {"export_stats", &exports_nfsd_operations, S_IRUGO},
- 		[NFSD_Export_features] = {"export_features",
--					&export_features_operations, S_IRUGO},
-+					&export_features_fops, S_IRUGO},
- 		[NFSD_FO_UnlockIP] = {"unlock_ip",
- 					&transaction_ops, S_IWUSR|S_IRUSR},
- 		[NFSD_FO_UnlockFS] = {"unlock_filesystem",
-@@ -1381,7 +1361,8 @@ static int nfsd_fill_super(struct super_block *sb, struct fs_context *fc)
- 		[NFSD_MaxConnections] = {"max_connections", &transaction_ops, S_IWUSR|S_IRUGO},
- 		[NFSD_Filecache] = {"filecache", &filecache_ops, S_IRUGO},
- #if defined(CONFIG_SUNRPC_GSS) || defined(CONFIG_SUNRPC_GSS_MODULE)
--		[NFSD_SupportedEnctypes] = {"supported_krb5_enctypes", &supported_enctypes_ops, S_IRUGO},
-+		[NFSD_SupportedEnctypes] = {"supported_krb5_enctypes",
-+					&supported_enctypes_fops, S_IRUGO},
- #endif /* CONFIG_SUNRPC_GSS or CONFIG_SUNRPC_GSS_MODULE */
- #ifdef CONFIG_NFSD_V4
- 		[NFSD_Leasetime] = {"nfsv4leasetime", &transaction_ops, S_IWUSR|S_IRUSR},
+ 		/* Drain records from the rx_list & copy if required */
+-		if (is_peek || is_kvec)
++		if (is_peek)
+ 			err = process_rx_list(ctx, msg, &control, copied + peeked,
+ 					      decrypted - peeked, is_peek, NULL);
+ 		else
 -- 
 2.43.0
 
