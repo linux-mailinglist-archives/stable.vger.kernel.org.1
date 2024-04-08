@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-36909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A9C89C251
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:29:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024C489C4C3
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:50:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB2D52838E6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:29:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11782813D5
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D787585627;
-	Mon,  8 Apr 2024 13:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2287D091;
+	Mon,  8 Apr 2024 13:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mC/udfm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLFZ4k9a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F16839E6;
-	Mon,  8 Apr 2024 13:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892C22DF73;
+	Mon,  8 Apr 2024 13:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582696; cv=none; b=TzAqmb4pI8llUaWMfCpFD6Tn/T/qFdl2AWgKmQLJ08mlLOqiXQ9kP9LgTgsluLZNLtsbpIC/QTKB0liDewHrl2vNRr1uUPTkGLnWmLQ78JjdTgV2Y3dwCFckB1qMwFeIx3XzG+CL4Qa3vSmUiYtI1CaaPBKVzanghkRcdQ22N8Q=
+	t=1712584171; cv=none; b=lcXwrW0L/a0kR7kMY/JyP7X1GYDtk+cocVxWUKVXBoIkyzmazTbnqKF5fzEANeMro0iCbcZGq/88PYAOclYsrB20ii25fB4PbhF1/+yrMbPSF69gTMl35bYJOJjnlKWQ2eQQUu+lH6G9Nby7e95KCXGWOukvMfw+vroJotkdS34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582696; c=relaxed/simple;
-	bh=okIcUjaj+/uD6BSTtyDrNGX/9bvSvfnhcaq/tB3FDk0=;
+	s=arc-20240116; t=1712584171; c=relaxed/simple;
+	bh=l406DONaeMHUoMUQAyLTgm2hqUTAdf/E5ovYI1qvxM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MrSRyRQOsbXlW+RpWgG1BEkk1KzsYyj/kScfMXz83qiThga9/pITCFpY/2XgZkJc6S60XkK31IiOUZbtMg6nSGx5l4GYNEr+vKrNIOUDkwly5nYx3ANSpT8McyQ62ID+dsQPOyUTOXz4v/0o5vsvlbFTiDN7K/lrmDbnvKNh7Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mC/udfm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB40C433C7;
-	Mon,  8 Apr 2024 13:24:55 +0000 (UTC)
+	 MIME-Version; b=nex6e/sJiMJpYOvTxpilplDEUjlHcftjVti5gsAghSW0hTRSyu0O7MFX83wv5UPBdgmt34R16CFAI1eAc2r2EOhLxEfguHyIpDMUw3cpc4xccoCWPN4+ruLWBm0kUjLPaKhBJajTeliy2u/EAWJsLZ2ZY5Yy/t7CBgQ1XnYm0xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLFZ4k9a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14286C433F1;
+	Mon,  8 Apr 2024 13:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582696;
-	bh=okIcUjaj+/uD6BSTtyDrNGX/9bvSvfnhcaq/tB3FDk0=;
+	s=korg; t=1712584171;
+	bh=l406DONaeMHUoMUQAyLTgm2hqUTAdf/E5ovYI1qvxM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mC/udfm04eKUhAwqNsDkVnddjD9yoRvyfaeBDNiw5M+TOAZXw6zdnJXhOfrZ5+GxL
-	 B/FzutCx6s12ECN3trTg4FKozhVFo3F2R0sLDnGzPSdgLT0XxwnlGmhWsY6wleuppL
-	 XbuP5YwSP4kBjtnEP/rXrzq5YVqeShEv6IusTABQ=
+	b=nLFZ4k9aY9bql0qN6R2opcOYgTyDiYwtf0f8opmcrP8yR19F6TU/W1oIt0u5sdERC
+	 KyMTLOMhw1zDbk6X0HY2tfX6bfaC83UEeNsTXEa53YlgRnyBMf4/lFtAMskSg4lIyD
+	 kMA++xpd0x6my2gskrNI4DvCW0vNgtI3W5E2+0vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Mete Durlu <meted@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/138] s390/pai: rework paiXXX_start and paiXXX_stop functions
+	kernel test robot <lkp@intel.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.8 246/273] smb: client: handle DFS tcons in cifs_construct_tcon()
 Date: Mon,  8 Apr 2024 14:58:41 +0200
-Message-ID: <20240408125259.559249203@linuxfoundation.org>
+Message-ID: <20240408125317.081690256@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,161 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit cb1259b7b574bd90ef22dac2c6282327cdae31c6 ]
+commit 4a5ba0e0bfe552ac7451f57e304f6343c3d87f89 upstream.
 
-The PAI crypto counter and PAI NNPA counters start and stop functions
-are streamlined. Move the conditions to invoke start and stop functions
-to its respective function body and call them unconditionally.
-The start and stop functions now determine how to proceed.
-No functional change.
+The tcons created by cifs_construct_tcon() on multiuser mounts must
+also be able to failover and refresh DFS referrals, so set the
+appropriate fields in order to get a full DFS tcon.  They could be
+shared among different superblocks later, too.
 
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Mete Durlu <meted@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: e9f3af02f639 ("s390/pai: fix sampling event removal for PMU device driver")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.4+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404021518.3Xu2VU4s-lkp@intel.com/
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_pai_crypto.c | 29 ++++++++++++-------------
- arch/s390/kernel/perf_pai_ext.c    | 35 ++++++++++++++----------------
- 2 files changed, 30 insertions(+), 34 deletions(-)
+ fs/smb/client/connect.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
-index 3758e972bb5f9..ba2d2e61df747 100644
---- a/arch/s390/kernel/perf_pai_crypto.c
-+++ b/arch/s390/kernel/perf_pai_crypto.c
-@@ -245,10 +245,14 @@ static void paicrypt_start(struct perf_event *event, int flags)
- 	 * Events are added, deleted and re-added when 2 or more events
- 	 * are active at the same time.
- 	 */
--	if (!event->hw.last_tag) {
--		event->hw.last_tag = 1;
--		sum = paicrypt_getall(event);		/* Get current value */
--		local64_set(&event->hw.prev_count, sum);
-+	if (!event->attr.sample_period) {	/* Counting */
-+		if (!event->hw.last_tag) {
-+			event->hw.last_tag = 1;
-+			sum = paicrypt_getall(event);	/* Get current value */
-+			local64_set(&event->hw.prev_count, sum);
-+		}
-+	} else {				/* Sampling */
-+		perf_sched_cb_inc(event->pmu);
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3996,6 +3996,7 @@ cifs_construct_tcon(struct cifs_sb_info
+ 	struct cifs_ses *ses;
+ 	struct cifs_tcon *tcon = NULL;
+ 	struct smb3_fs_context *ctx;
++	char *origin_fullpath = NULL;
+ 
+ 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+ 	if (ctx == NULL)
+@@ -4019,6 +4020,7 @@ cifs_construct_tcon(struct cifs_sb_info
+ 	ctx->sign = master_tcon->ses->sign;
+ 	ctx->seal = master_tcon->seal;
+ 	ctx->witness = master_tcon->use_witness;
++	ctx->dfs_root_ses = master_tcon->ses->dfs_root_ses;
+ 
+ 	rc = cifs_set_vol_auth(ctx, master_tcon->ses);
+ 	if (rc) {
+@@ -4038,12 +4040,39 @@ cifs_construct_tcon(struct cifs_sb_info
+ 		goto out;
  	}
- }
  
-@@ -263,19 +267,18 @@ static int paicrypt_add(struct perf_event *event, int flags)
- 		__ctl_set_bit(0, 50);
- 	}
- 	cpump->event = event;
--	if (flags & PERF_EF_START && !event->attr.sample_period) {
--		/* Only counting needs initial counter value */
-+	if (flags & PERF_EF_START)
- 		paicrypt_start(event, PERF_EF_RELOAD);
--	}
- 	event->hw.state = 0;
--	if (event->attr.sample_period)
--		perf_sched_cb_inc(event->pmu);
- 	return 0;
- }
- 
- static void paicrypt_stop(struct perf_event *event, int flags)
- {
--	paicrypt_read(event);
-+	if (!event->attr.sample_period)	/* Counting */
-+		paicrypt_read(event);
-+	else				/* Sampling */
-+		perf_sched_cb_dec(event->pmu);
- 	event->hw.state = PERF_HES_STOPPED;
- }
- 
-@@ -283,11 +286,7 @@ static void paicrypt_del(struct perf_event *event, int flags)
- {
- 	struct paicrypt_map *cpump = this_cpu_ptr(&paicrypt_map);
- 
--	if (event->attr.sample_period)
--		perf_sched_cb_dec(event->pmu);
--	if (!event->attr.sample_period)
--		/* Only counting needs to read counter */
--		paicrypt_stop(event, PERF_EF_UPDATE);
-+	paicrypt_stop(event, PERF_EF_UPDATE);
- 	if (--cpump->active_events == 0) {
- 		__ctl_clear_bit(0, 50);
- 		WRITE_ONCE(S390_lowcore.ccd, 0);
-diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
-index 53915401c3f63..09aebfcf679df 100644
---- a/arch/s390/kernel/perf_pai_ext.c
-+++ b/arch/s390/kernel/perf_pai_ext.c
-@@ -327,11 +327,15 @@ static void paiext_start(struct perf_event *event, int flags)
- {
- 	u64 sum;
- 
--	if (event->hw.last_tag)
--		return;
--	event->hw.last_tag = 1;
--	sum = paiext_getall(event);		/* Get current value */
--	local64_set(&event->hw.prev_count, sum);
-+	if (!event->attr.sample_period) {	/* Counting */
-+		if (!event->hw.last_tag) {
-+			event->hw.last_tag = 1;
-+			sum = paiext_getall(event);	/* Get current value */
-+			local64_set(&event->hw.prev_count, sum);
++#ifdef CONFIG_CIFS_DFS_UPCALL
++	spin_lock(&master_tcon->tc_lock);
++	if (master_tcon->origin_fullpath) {
++		spin_unlock(&master_tcon->tc_lock);
++		origin_fullpath = dfs_get_path(cifs_sb, cifs_sb->ctx->source);
++		if (IS_ERR(origin_fullpath)) {
++			tcon = ERR_CAST(origin_fullpath);
++			origin_fullpath = NULL;
++			cifs_put_smb_ses(ses);
++			goto out;
 +		}
-+	} else {				/* Sampling */
-+		perf_sched_cb_inc(event->pmu);
++	} else {
++		spin_unlock(&master_tcon->tc_lock);
 +	}
- }
- 
- static int paiext_add(struct perf_event *event, int flags)
-@@ -348,21 +352,19 @@ static int paiext_add(struct perf_event *event, int flags)
- 		debug_sprintf_event(paiext_dbg, 4, "%s 1508 %llx acc %llx\n",
- 				    __func__, S390_lowcore.aicd, pcb->acc);
++#endif
++
+ 	tcon = cifs_get_tcon(ses, ctx);
+ 	if (IS_ERR(tcon)) {
+ 		cifs_put_smb_ses(ses);
+ 		goto out;
  	}
--	if (flags & PERF_EF_START && !event->attr.sample_period) {
--		/* Only counting needs initial counter value */
-+	cpump->event = event;
-+	if (flags & PERF_EF_START)
- 		paiext_start(event, PERF_EF_RELOAD);
--	}
- 	event->hw.state = 0;
--	if (event->attr.sample_period) {
--		cpump->event = event;
--		perf_sched_cb_inc(event->pmu);
--	}
- 	return 0;
- }
  
- static void paiext_stop(struct perf_event *event, int flags)
- {
--	paiext_read(event);
-+	if (!event->attr.sample_period)	/* Counting */
-+		paiext_read(event);
-+	else				/* Sampling */
-+		perf_sched_cb_dec(event->pmu);
- 	event->hw.state = PERF_HES_STOPPED;
- }
++#ifdef CONFIG_CIFS_DFS_UPCALL
++	if (origin_fullpath) {
++		spin_lock(&tcon->tc_lock);
++		tcon->origin_fullpath = origin_fullpath;
++		spin_unlock(&tcon->tc_lock);
++		origin_fullpath = NULL;
++		queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
++				   dfs_cache_get_ttl() * HZ);
++	}
++#endif
++
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ 	if (cap_unix(ses))
+ 		reset_cifs_unix_caps(0, tcon, NULL, ctx);
+@@ -4052,6 +4081,7 @@ cifs_construct_tcon(struct cifs_sb_info
+ out:
+ 	kfree(ctx->username);
+ 	kfree_sensitive(ctx->password);
++	kfree(origin_fullpath);
+ 	kfree(ctx);
  
-@@ -372,12 +374,7 @@ static void paiext_del(struct perf_event *event, int flags)
- 	struct paiext_map *cpump = mp->mapptr;
- 	struct paiext_cb *pcb = cpump->paiext_cb;
- 
--	if (event->attr.sample_period)
--		perf_sched_cb_dec(event->pmu);
--	if (!event->attr.sample_period) {
--		/* Only counting needs to read counter */
--		paiext_stop(event, PERF_EF_UPDATE);
--	}
-+	paiext_stop(event, PERF_EF_UPDATE);
- 	if (--cpump->active_events == 0) {
- 		/* Disable CPU instruction lookup for PAIE1 control block */
- 		__ctl_clear_bit(0, 49);
--- 
-2.43.0
-
+ 	return tcon;
 
 
 
