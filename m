@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-36462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4191D89BFF6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC2F89BFF8
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D69F41F236DF
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2C311F23C6E
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D9D76058;
-	Mon,  8 Apr 2024 13:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B3A76413;
+	Mon,  8 Apr 2024 13:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxvJ2ZWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBKhkEyT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C702DF73;
-	Mon,  8 Apr 2024 13:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640D62DF73;
+	Mon,  8 Apr 2024 13:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712581396; cv=none; b=eQ0rnSW1sMCRQzZiWafiIJp+mRbpM5J7dxOySQFNtfXilTqM5058vOpxmWOXG6bNjt/g9fEYxg39HYyjNpe8tg/2Z0UGeiQdTTbEgDTeyc3TnHgSZ+rkbyfUlsFjpxU6mBHiCERSnAP59xWa38PUmZi72oc7VzKtYyY8HMMvD6w=
+	t=1712581402; cv=none; b=k6zvxbHsVlzpEiw/OU8/GLGwuSjm0swOX+9ig5QdXnDTbQNWJ2SQYUj68RU7bQdRdAerHs+JT9gwiYI/ewZrMHd+NU6WjloCuILWQbuWfEmVS4cZpewXby/ignXDjdgqWtk0JX99P5oNocMAqMej10KODU3Pm3wtoTLudjKOznc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712581396; c=relaxed/simple;
-	bh=dr6xY1tk9EeYc+sc+51zqQi8MRBIhoF6us6I9re7fzI=;
+	s=arc-20240116; t=1712581402; c=relaxed/simple;
+	bh=nq55zSlykl5n5Pd6USumRM8AY501BrOskwBXn+Ofn5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2xudljM6BivhVl6dipgN8OdaFcApD0Jn9p1A4zFd7AeOiGJrUY0qmwIR1Jt1W+L/+UXBSHXTIcpXpxvfr9kyRYGg2t8HFhRE1eazu09r0a6zebiiAcYmbHPOaj4CqqprkGHeowyWygZ04mi3wWv5ypwclxgG6iJEbdAFDyhkCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxvJ2ZWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B38C433F1;
-	Mon,  8 Apr 2024 13:03:15 +0000 (UTC)
+	 MIME-Version; b=iAit6r+88+LUSuDY5cM9BbhG1a1sg5tVYotFsG2RE7UKP29Fg7cHilSHnXTEtf/nnJE5IOpnIgUkfrsNwh5LsmXh726WEk5BrOmVDQjdYM74LdK6R/QFiWSwJg0X8PoIOza25izcaWHHKmIBwP7cqIUrhvB+yV1LYPk8jkMccmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBKhkEyT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBB4C433C7;
+	Mon,  8 Apr 2024 13:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712581396;
-	bh=dr6xY1tk9EeYc+sc+51zqQi8MRBIhoF6us6I9re7fzI=;
+	s=korg; t=1712581402;
+	bh=nq55zSlykl5n5Pd6USumRM8AY501BrOskwBXn+Ofn5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxvJ2ZWN13djhuuqR70wBkIG+xzXXxs4YQJG9X7NaZxh1M2uxhKqWx6/ZvqasKlcf
-	 0qd+499RQdEtTi04LElDGm1ectqqY+L2oR0f14F9xdRITIumZXHoJa996/D3//A9jt
-	 OzPhZljcpCDY2Yq3tOgm3aLC9xXCqTHCSq2q4uh4=
+	b=XBKhkEyTSMrLsdQqFMHmntSwORaxwtnFDqf5BrA+jlhH1GkSeSkbuqk7/uHCk7VSM
+	 YpFEzPYUPVmj1a7cRldmlSHpaI/kSUMl+9zpAdaei63ISuIivlKGYdXKjMutydBkG6
+	 Uw2565Wy2oVcFtxrgAnGzrVjINYJwJ+cTpdowjsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Prashanth K <quic_prashk@quicinc.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 044/690] clk: qcom: mmcc-msm8974: fix terminating of frequency table arrays
-Date: Mon,  8 Apr 2024 14:48:30 +0200
-Message-ID: <20240408125401.121149535@linuxfoundation.org>
+Subject: [PATCH 5.15 045/690] usb: xhci: Add error handling in xhci_map_urb_for_dma
+Date: Mon,  8 Apr 2024 14:48:31 +0200
+Message-ID: <20240408125401.159843243@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
 References: <20240408125359.506372836@linuxfoundation.org>
@@ -67,49 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-[ Upstream commit e2c02a85bf53ae86d79b5fccf0a75ac0b78e0c96 ]
+[ Upstream commit be95cc6d71dfd0cba66e3621c65413321b398052 ]
 
-The frequency table arrays are supposed to be terminated with an
-empty element. Add such entry to the end of the arrays where it
-is missing in order to avoid possible out-of-bound access when
-the table is traversed by functions like qcom_find_freq() or
-qcom_find_freq_floor().
+Currently xhci_map_urb_for_dma() creates a temporary buffer and copies
+the SG list to the new linear buffer. But if the kzalloc_node() fails,
+then the following sg_pcopy_to_buffer() can lead to crash since it
+tries to memcpy to NULL pointer.
 
-Only compile tested.
+So return -ENOMEM if kzalloc returns null pointer.
 
-Fixes: d8b212014e69 ("clk: qcom: Add support for MSM8974's multimedia clock controller (MMCC)")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240229-freq-table-terminator-v1-7-074334f0905c@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: stable@vger.kernel.org # 5.11
+Fixes: 2017a1e58472 ("usb: xhci: Use temporary buffer to consolidate SG")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240229141438.619372-10-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8974.c | 2 ++
+ drivers/usb/host/xhci.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
-index a1552b6771bc6..26509bcd4f802 100644
---- a/drivers/clk/qcom/mmcc-msm8974.c
-+++ b/drivers/clk/qcom/mmcc-msm8974.c
-@@ -267,6 +267,7 @@ static struct freq_tbl ftbl_mmss_axi_clk[] = {
- 	F(291750000, P_MMPLL1, 4, 0, 0),
- 	F(400000000, P_MMPLL0, 2, 0, 0),
- 	F(466800000, P_MMPLL1, 2.5, 0, 0),
-+	{ }
- };
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 5c9d3be136d2c..2539d97b90c31 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -1324,6 +1324,8 @@ static int xhci_map_temp_buffer(struct usb_hcd *hcd, struct urb *urb)
  
- static struct clk_rcg2 mmss_axi_clk_src = {
-@@ -291,6 +292,7 @@ static struct freq_tbl ftbl_ocmemnoc_clk[] = {
- 	F(150000000, P_GPLL0, 4, 0, 0),
- 	F(291750000, P_MMPLL1, 4, 0, 0),
- 	F(400000000, P_MMPLL0, 2, 0, 0),
-+	{ }
- };
+ 	temp = kzalloc_node(buf_len, GFP_ATOMIC,
+ 			    dev_to_node(hcd->self.sysdev));
++	if (!temp)
++		return -ENOMEM;
  
- static struct clk_rcg2 ocmemnoc_clk_src = {
+ 	if (usb_urb_dir_out(urb))
+ 		sg_pcopy_to_buffer(urb->sg, urb->num_sgs,
 -- 
 2.43.0
 
