@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-37518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAAB289C653
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:06:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF55E89C026
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 445F3B28CE6
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:54:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1FC51C21722
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32171763F1;
-	Mon,  8 Apr 2024 13:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9CD71B3D;
+	Mon,  8 Apr 2024 13:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOGYheDq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hg+Vpuqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A6D42046;
-	Mon,  8 Apr 2024 13:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4032E62C;
+	Mon,  8 Apr 2024 13:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712584469; cv=none; b=kuvsUyCtgI98UkfxvHBhQLTYDpPGuCiiWBeqKYLLTI3Ydw6LMGbDrD6fi3xXh23ZLayx/ViJK8EYWELUvLZkVHLnxYtqPJ6TV9Ue/jkSq7lqWL6wqgR8rQ2Wdjm+XTwhvtK78G+i8dWUkdZ+Lf73DVm6kpTHdb7ML2+BRjk1qI4=
+	t=1712581518; cv=none; b=GYkeaZvAuz+WDdSvCX5sWnf7aoa6N4XqU4qDI9rI5LBRRM3kpBDHgqBp5Q/VDz/NAaIeYrqLhtb2BfPnp3lMZE+64P6bpYFTtCI5F5TTSG8MMxif8rI3KIJT/YI+FgQkxOZU7JquWeAIlZsA6KfUhv4v5VdJZrwICDD/jvR32hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712584469; c=relaxed/simple;
-	bh=313xyx46Vy4DkI2B0fbGr/NDIjwY3Rz0fjs3IPO28lY=;
+	s=arc-20240116; t=1712581518; c=relaxed/simple;
+	bh=WuCuWYeUJVcipiRFKSjSgwQRdbHBcFywO7TU/yp63zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFW/2llSHDah/GlChTD+dcMu0+NEn6FnczxB5W9mKF5bx+Na/XBPj2cV7/MQ6yhjs3Kwz5qnONK3i6GiRVNejUPRHdbwk2Cy0hV57UYFs+6rPoQtHF8zCzxeuw1ITaWQOZieSA78Z7Glv2WpEd8AhIBavTwbIsdH7tXTM9m2KDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOGYheDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E19EC433F1;
-	Mon,  8 Apr 2024 13:54:28 +0000 (UTC)
+	 MIME-Version; b=UZJwPfqeYhC+Jp9/z+buMHkO6Gf38JfGOkLXkrc9o7FrgM5m5gCbOl7mbZrqY4d5ag7XKMy6TWyG/OZimsjq+HGWKuy0Rg7eT4dhKfs2roKcIX1tztToGkbPVyhMcZEDvNnYFpltUeIIzFmJP4Okvw0L2fmtF3Xq3x3rtvc82M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hg+Vpuqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1111CC433C7;
+	Mon,  8 Apr 2024 13:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712584468;
-	bh=313xyx46Vy4DkI2B0fbGr/NDIjwY3Rz0fjs3IPO28lY=;
+	s=korg; t=1712581518;
+	bh=WuCuWYeUJVcipiRFKSjSgwQRdbHBcFywO7TU/yp63zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xOGYheDq+cWXWb6g4QHogR1LEdHtJRCDBmpW9EV94rOpQq8ZVCAJmvxunln0F5dd4
-	 OpKAEd6n84mUGawl8LbM18Ntg60J8w3tN/GYUG4yT+GVeBa7D974vgxKYGCCOWdigs
-	 Sbg9WlAdLbkTyyvZCG5Ewdpxb3Tj3j9vyiFItKnI=
+	b=Hg+Vpuqnx+0pL0jHNvfGmKs+pVu0xFj3GhZRlrYkBkbq0jrs+4c1sRKGmxJiuy6S7
+	 R0yWEmMoeUgTojPWSvNZ2HCPiUEQgsaEti2PH3wphJxjsRMqfUiWyvtsX4DMsw7R4g
+	 hddQ/vVEU0k1OIET4Cq6zEV0ECIgvRf7wHlY0vTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong2@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 447/690] nfsd: use DEFINE_SHOW_ATTRIBUTE to define client_info_fops
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 014/252] ALSA: hda: cs35l56: Set the init_done flag before component_add()
 Date: Mon,  8 Apr 2024 14:55:13 +0200
-Message-ID: <20240408125415.839246844@linuxfoundation.org>
+Message-ID: <20240408125307.091495341@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong2@huawei.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit 1d7f6b302b75ff7acb9eb3cab0c631b10cfa7542 ]
+[ Upstream commit cafe9c6a72cf1ffe96d2561d988a141cb5c093db ]
 
-Use DEFINE_SHOW_ATTRIBUTE helper macro to simplify the code.
+Initialization is completed before adding the component as that can
+start the process of the device binding and trigger actions that check
+init_done.
 
-inode is converted from seq_file->file instead of seq_file->private in
-client_info_show().
-
-Signed-off-by: ChenXiaoSong <chenxiaosong2@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
+Message-ID: <20240325145510.328378-1-rf@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ sound/pci/hda/cs35l56_hda.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 8cbb66b07d519..cc258f2988c73 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -2503,7 +2503,7 @@ static const char *cb_state2str(int state)
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index 7adc1d373d65c..27848d6469636 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -978,14 +978,14 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int id)
+ 	pm_runtime_mark_last_busy(cs35l56->base.dev);
+ 	pm_runtime_enable(cs35l56->base.dev);
  
- static int client_info_show(struct seq_file *m, void *v)
- {
--	struct inode *inode = m->private;
-+	struct inode *inode = file_inode(m->file);
- 	struct nfs4_client *clp;
- 	u64 clid;
++	cs35l56->base.init_done = true;
++
+ 	ret = component_add(cs35l56->base.dev, &cs35l56_hda_comp_ops);
+ 	if (ret) {
+ 		dev_err(cs35l56->base.dev, "Register component failed: %d\n", ret);
+ 		goto pm_err;
+ 	}
  
-@@ -2543,17 +2543,7 @@ static int client_info_show(struct seq_file *m, void *v)
- 	return 0;
- }
- 
--static int client_info_open(struct inode *inode, struct file *file)
--{
--	return single_open(file, client_info_show, inode);
--}
+-	cs35l56->base.init_done = true;
 -
--static const struct file_operations client_info_fops = {
--	.open		= client_info_open,
--	.read		= seq_read,
--	.llseek		= seq_lseek,
--	.release	= single_release,
--};
-+DEFINE_SHOW_ATTRIBUTE(client_info);
+ 	return 0;
  
- static void *states_start(struct seq_file *s, loff_t *pos)
- 	__acquires(&clp->cl_lock)
+ pm_err:
 -- 
 2.43.0
 
