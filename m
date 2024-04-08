@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D98789C20E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:26:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8041589C429
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEC47283147
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:26:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2076D1F20594
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A8B7D3E5;
-	Mon,  8 Apr 2024 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93958564F;
+	Mon,  8 Apr 2024 13:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amFFXSYx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQqqTMVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8385F768EA;
-	Mon,  8 Apr 2024 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885202DF73;
+	Mon,  8 Apr 2024 13:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582553; cv=none; b=d91A4cLF2o/ySiOoLNybDK6CdU3HBe0neqwz0tKMR6uM2WbFQb6b2ZAMcjv9Bb+6vVgmjySIp0qjohQjfVfqiZaCnmn3W1Tnhtn4NcV6f5Kpc5mywsx+gElb7eYNHPzPDaJnikd0Q3VOe6uohqqc5k5UlNwNUd47JKoiIZ0imkE=
+	t=1712583757; cv=none; b=pzGeGReAXGtXfqXYgx8bHlNSs/ae+64XMAS9Tzq18OgvhrW/vJxUybHyT7T/e4BXvYt4WuMdCEF1Eav7kTNtX17eEAqc3F01TOr7m4rzNd2nSqeROqPT5fyO2nEBx9YoaUqTbRXOcnearjIxN5zM9qka0VNlLJozrILJyms1xRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582553; c=relaxed/simple;
-	bh=ZHAOTJJVgd/K+714pnObaIGlqgdS2uC+ohdceg+feIc=;
+	s=arc-20240116; t=1712583757; c=relaxed/simple;
+	bh=RBh5aMIbaLhFTsS93lJ3Uo/K7X3VdCYEU8s3mbEEw0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6qHrboa9a9uuaodIt9aoAMF+SNsKqPdiCbtH/kpjEIFzOMDxieBCqIEe7c98B56Napr+6qjxWgdevnLE8pXUAO1IgyH/V3TqMlKrWr3dAZw49P8LS8mOD16UiUaz3B7fd7NCJc95YgUU5V472omIHSqSRTFGxCT9f6YTYpTAJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amFFXSYx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09629C433C7;
-	Mon,  8 Apr 2024 13:22:32 +0000 (UTC)
+	 MIME-Version; b=mCkvc5SBBYdfAjEl5SOWuipgD6MfOXH6p0qgIXGp0zkW1TZf+CCEK2hozaxa6QHVeUtXPU2RYdix4sUmiEVz8+Jv1zCi0rpyUYgI78km7HBE/aNGA16k+REiOLBY4CiEk/WbBOU2A1+HEUH8/cHDqK/kB4hzgpF+Pz+ZUJDUDi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQqqTMVK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E91DC433C7;
+	Mon,  8 Apr 2024 13:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582553;
-	bh=ZHAOTJJVgd/K+714pnObaIGlqgdS2uC+ohdceg+feIc=;
+	s=korg; t=1712583757;
+	bh=RBh5aMIbaLhFTsS93lJ3Uo/K7X3VdCYEU8s3mbEEw0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amFFXSYxdm0c70nt3BtJ9pz14P6Ej6p3J+RT+JxfGmnliEkJfEq2bOR0DqIl6tfhI
-	 t+d8xrvXetTlFaJdtDLtvnVDcDYphTxiybfdLF2HHWoOOHxDD5HIPhvkaTuwDAP+RB
-	 W3lVlPz7GDdSx50sUK56ilmk8X6g+vBUuus89J+s=
+	b=NQqqTMVKZNXk+pptcH5NHXgDvcEk80M98MdPlKaMHcRFLDMpG68N735qxBgLX+SbV
+	 QmJR1gNd0Qk6/jk/msQQ+5Z1ij/QhJuh49bp0q78blFzY9VMujGxrDFLrBNcXTEqzU
+	 eJlqguVSrowGj8s5ugde8YHOi6TpcSmZWeI00bwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 115/138] ALSA: hda/realtek - Fix inactive headset mic jack
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 230/252] smb: client: fix potential UAF in cifs_stats_proc_write()
 Date: Mon,  8 Apr 2024 14:58:49 +0200
-Message-ID: <20240408125259.807709025@linuxfoundation.org>
+Message-ID: <20240408125313.794154575@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
-References: <20240408125256.218368873@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit daf6c4681a74034d5723e2fb761e0d7f3a1ca18f upstream.
+commit d3da25c5ac84430f89875ca7485a3828150a7e0a upstream.
 
-This patch adds the existing fixup to certain TF platforms implementing
-the ALC274 codec with a headset jack. It fixes/activates the inactive
-microphone of the headset.
+Skip sessions that are being teared down (status == SES_EXITING) to
+avoid UAF.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: <stable@vger.kernel.org>
-Message-ID: <20240328102757.50310-1-wse@tuxedocomputers.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/cifs_debug.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10121,6 +10121,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d05, 0x1147, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
-+	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -656,6 +656,8 @@ static ssize_t cifs_stats_proc_write(str
+ 			}
+ #endif /* CONFIG_CIFS_STATS2 */
+ 			list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
++				if (cifs_ses_exiting(ses))
++					continue;
+ 				list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
+ 					atomic_set(&tcon->num_smbs_sent, 0);
+ 					spin_lock(&tcon->stat_lock);
 
 
 
