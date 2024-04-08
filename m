@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-36950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F49489C28C
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:31:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DCA89C5C2
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1980EB265F0
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:30:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88A8C1C22044
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20F77CF34;
-	Mon,  8 Apr 2024 13:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915137F7F6;
+	Mon,  8 Apr 2024 13:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLXrkWGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkvHUOyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60836768EA;
-	Mon,  8 Apr 2024 13:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCF47F7CF;
+	Mon,  8 Apr 2024 13:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712582816; cv=none; b=GllVgRL62upGoRB+F3rWKj8nNiqLDpX0v4SqKjtuYXZ9HIKdbk8a/ZPRAWLWRIHP1+D7zAZbGJxFuexNfwYcMFlgjOjZIDHABhGAKjUAzDsdPmRcW2kso6WCl0vwxZZpweNud+Qjq/KcoLbZc3d1qEB9DkcHbP4mRp0W6CVaqLU=
+	t=1712584791; cv=none; b=hHiI7pvpYsY5db8mzhptMsgDzINQU5ykud8wX4rYpVx4E7OcNB1L8IGggA6ozIMJNCie1JV1bBjg9sEbFBMJSHJNTpXhiPcbijKwzCREOtjWpU6pAzGxB6R2zbmkIO9aQ4pAaiibxmuo53a1+Qigpo0H/GSGGzSWONOVZPQIzEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712582816; c=relaxed/simple;
-	bh=/hcf/0MCxa9EiylIMdXOjpcYZOmiTElGjYyiZOQc4xY=;
+	s=arc-20240116; t=1712584791; c=relaxed/simple;
+	bh=TJQROmOsmJJtepvnSMSUOewH9bFooKnbgBUf7je9l9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZyF+/PiNNWNbcxS+9DgCtem4H5goG44Q4RoVPkF3wc+eBw6wk+5Nf2JTMfAWpJsWOvofEiwaDwk5SjT77GtLUiNpRCxsJMm8OUa9e4nU2qpH4Biz9xhupdvtxjJrYP668/1rJ5XWeLp3WTn1n53B+3PDjYfzzT4YHOVTli29Xh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLXrkWGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A65C433F1;
-	Mon,  8 Apr 2024 13:26:55 +0000 (UTC)
+	 MIME-Version; b=EWbH2siCuDy3nkCsEVflDhHY6hdwFjdOyGcoAOi6hce81Q5/xliztlfCQtbLhIxVrFM+8ZvVGA+A2cXjAOGm64Ls9DtnjBxU36i8arkcsqrR7hYhiMVsSCTG0gcKKRpZOj3xY2XOhygSFT7tMTzenPq2k3QfYWM5TSqnM73qXvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkvHUOyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB8CC433F1;
+	Mon,  8 Apr 2024 13:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712582816;
-	bh=/hcf/0MCxa9EiylIMdXOjpcYZOmiTElGjYyiZOQc4xY=;
+	s=korg; t=1712584791;
+	bh=TJQROmOsmJJtepvnSMSUOewH9bFooKnbgBUf7je9l9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLXrkWGccbrbmMNV6bL4sQfacQeeOQea+vc6iDqoskKnhzUoPN1J24zhLPzDnX8pN
-	 aEH8izB5SjolNywFEM77wj/iDJxpYAXvE7kEw9jfIjWsGmhzJqXqz4Ml2Imv9AJ8PO
-	 eHd2CmNxU87opmKJdMHhadrrYUzeNCAPP3qXCntA=
+	b=ZkvHUOyLbwSjrIykhp2crq8H0nNY7sABux5pRnyFKBh+7K0KBJTh3FbI0/MIJBD10
+	 YLu275IB5AtmtveLbhTs7SsLIY884VcOfLiUpcM7Y4d58TVHWFfuEuNA+X0cfrlg7B
+	 8apwyV7TygJFl1HwxH1LJDUD/PilrWHgNx3All3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 126/252] octeontx2-af: Fix issue with loading coalesced KPU profiles
+	Nathan Chancellor <nathan@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.15 559/690] powerpc: xor_vmx: Add -mhard-float to CFLAGS
 Date: Mon,  8 Apr 2024 14:57:05 +0200
-Message-ID: <20240408125310.534865685@linuxfoundation.org>
+Message-ID: <20240408125419.878064507@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 0ba80d96585662299d4ea4624043759ce9015421 upstream.
+commit 35f20786c481d5ced9283ff42de5c69b65e5ed13 upstream.
 
-The current implementation for loading coalesced KPU profiles has
-a limitation.  The "offset" field, which is used to locate profiles
-within the profile is restricted to a u16.
+arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
+powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
+error when building with clang after a recent change in main:
 
-This restricts the number of profiles that can be loaded. This patch
-addresses this limitation by increasing the size of the "offset" field.
+  error: option '-msoft-float' cannot be specified with '-maltivec'
+  make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
 
-Fixes: 11c730bfbf5b ("octeontx2-af: support for coalescing KPU profiles")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
+to override the previous inclusion of '-msoft-float' (as the last option
+wins), which matches how other areas of the kernel use '-maltivec', such
+as AMDGPU.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
+Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org
+[nathan: Fixed conflicts due to lack of 04e85bbf71c9 in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c |    2 +-
+ arch/powerpc/lib/Makefile |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -1669,7 +1669,7 @@ static int npc_fwdb_detect_load_prfl_img
- 	struct npc_coalesced_kpu_prfl *img_data = NULL;
- 	int i = 0, rc = -EINVAL;
- 	void __iomem *kpu_prfl_addr;
--	u16 offset;
-+	u32 offset;
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -67,6 +67,6 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
+ obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
  
- 	img_data = (struct npc_coalesced_kpu_prfl __force *)rvu->kpu_prfl_addr;
- 	if (le64_to_cpu(img_data->signature) == KPU_SIGN &&
+ obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
+-CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
++CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
+ 
+ obj-$(CONFIG_PPC64) += $(obj64-y)
 
 
 
