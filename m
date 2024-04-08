@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-37140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A959C89C37F
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7996589BFEC
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64892283B9E
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A28D1F24CDF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2BD126F2C;
-	Mon,  8 Apr 2024 13:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A02870CCB;
+	Mon,  8 Apr 2024 13:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQfPGwmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeYZOtOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2AD7D09F;
-	Mon,  8 Apr 2024 13:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5C96F08B;
+	Mon,  8 Apr 2024 13:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583364; cv=none; b=lZmtP7NrUN5In77yN1HcH/3G/QzjHtP2OVMdOvwkkKcfmmKJc3dB1fyNbNdwS6clomq5TB0cQUrXF2H+vFQyU5VD2FbwknVUtr/aTHtKx5O7BBhRNu0YIMBXw6d8oiEs7YhEInuhHTfPpDSo9mFUsNQw9WF7gX4Zx5xU+8Ikt50=
+	t=1712581356; cv=none; b=ZBrPmAg6BUudQTy+hvNFvZBPTRlh9HcNTafcU694m3DDHFKwcp5Od/LRkLZExEDGTrlO8SH2QYMk8CNcVkxRc3/MRY5waIyhQmsjjl04iicDXWQbV+vCiS531rUjLXWyOPQeMUE+L5a0MbEava/MO6ot6KdankCsykXCtX0XOLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583364; c=relaxed/simple;
-	bh=7j8y1FivxC/F/+W/jMUbxSviluFhnl2BayQQsa4DEvI=;
+	s=arc-20240116; t=1712581356; c=relaxed/simple;
+	bh=he+zHfL3tDShvQ7q0MNP0c2Oprn9hdhxEArWpSGCW5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOexylpo6V/daeZ96GfPlPRxQwDiHDyQ3ioI/1eaqqWQuDBqB3OH+bzUlXQyHdBCovxalmU6VXtemjEwMZA3ZR4XmwtBvt5h3KXPIoK2hl87hvjzJTDBFzWTMbb9yUlPlpd5IzYmYp9zhpmzbuvKGzoJo/HB8P0i7fCf2bKKEGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQfPGwmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6720FC433C7;
-	Mon,  8 Apr 2024 13:36:03 +0000 (UTC)
+	 MIME-Version; b=snplA6Pt/220zIX9KcI0o2wVd2seiIWNtYOaCTpDTDxksgW8YBMZWRB139Mled6KWwCjkv2RZ8qfTI0zBzSqC1Llx9Us9vQpXvcDeOKGXIvPJeeCZE3JRIyMaeJJhkwzQtwwkxNjeNDhmefVHqVa8+B06CDs71RlKmA4GeJmEjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeYZOtOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D171C433C7;
+	Mon,  8 Apr 2024 13:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583363;
-	bh=7j8y1FivxC/F/+W/jMUbxSviluFhnl2BayQQsa4DEvI=;
+	s=korg; t=1712581355;
+	bh=he+zHfL3tDShvQ7q0MNP0c2Oprn9hdhxEArWpSGCW5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQfPGwmXQkuDoS3xzKIY9/r+pRRoBvhesIqwfF5/4xHwnMdA0rNE7vbecGoeoM7fF
-	 FyyRe2R1id2CmT7RJFMqAMCxT/PeTdyXbn2XkC8hAYtIsIghHS9NSGm8kh16/MoYEm
-	 eLjg9oHyitzk6UuZYSPURgwUzFtGV0ZQAUOP2Gck=
+	b=JeYZOtObYLl89H265qeYI1P4fAgCzckgOjhm6ADhyreh2qqkpVFN8zhLsUUd91jpT
+	 1Ywu5NayYv2Ger93CL0NT+9Ht2doxPam2NVHk6Q9a3dUbJrKVJDl0RNvYIVl+ldInQ
+	 qho4ufDus+ILl59+l5+kHGfoIQpnuKdyMorwJqgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Thorsten Winkler <twinkler@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 146/273] ASoC: cs42l43: Correct extraction of data pointer in suspend/resume
+Subject: [PATCH 6.1 007/138] s390/qeth: handle deferred cc1
 Date: Mon,  8 Apr 2024 14:57:01 +0200
-Message-ID: <20240408125313.821692997@linuxfoundation.org>
+Message-ID: <20240408125256.455719289@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit 56ebbd19c2989f7450341f581e2724a149d0f08e ]
+[ Upstream commit afb373ff3f54c9d909efc7f810dc80a9742807b2 ]
 
-The current code is pulling the wrong pointer causing it to disable the
-wrong IRQ. Correct the code to pull the correct cs42l43 core data
-pointer.
+The IO subsystem expects a driver to retry a ccw_device_start, when the
+subsequent interrupt response block (irb) contains a deferred
+condition code 1.
 
-Fixes: 64353af49fec ("ASoC: cs42l43: Add system suspend ops to disable IRQ")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://msgid.link/r/20240326105434.852907-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Symptoms before this commit:
+On the read channel we always trigger the next read anyhow, so no
+different behaviour here.
+On the write channel we may experience timeout errors, because the
+expected reply will never be received without the retry.
+Other callers of qeth_send_control_data() may wrongly assume that the ccw
+was successful, which may cause problems later.
+
+Note that since
+commit 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+and
+commit 5ef1dc40ffa6 ("s390/cio: fix invalid -EBUSY on ccw_device_start")
+deferred CC1s are much more likely to occur. See the commit message of the
+latter for more background information.
+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Co-developed-by: Thorsten Winkler <twinkler@linux.ibm.com>
+Signed-off-by: Thorsten Winkler <twinkler@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240321115337.3564694-1-wintera@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs42l43.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/s390/net/qeth_core_main.c | 38 +++++++++++++++++++++++++++++--
+ 1 file changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs42l43.c b/sound/soc/codecs/cs42l43.c
-index a97ccb512deba..a24b52c9dda6b 100644
---- a/sound/soc/codecs/cs42l43.c
-+++ b/sound/soc/codecs/cs42l43.c
-@@ -2338,7 +2338,8 @@ static int cs42l43_codec_runtime_resume(struct device *dev)
+diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
+index ae4b6d24bc902..1e6340e2c2588 100644
+--- a/drivers/s390/net/qeth_core_main.c
++++ b/drivers/s390/net/qeth_core_main.c
+@@ -1179,6 +1179,20 @@ static int qeth_check_irb_error(struct qeth_card *card, struct ccw_device *cdev,
+ 	}
+ }
  
- static int cs42l43_codec_suspend(struct device *dev)
++/**
++ * qeth_irq() - qeth interrupt handler
++ * @cdev: ccw device
++ * @intparm: expect pointer to iob
++ * @irb: Interruption Response Block
++ *
++ * In the good path:
++ * corresponding qeth channel is locked with last used iob as active_cmd.
++ * But this function is also called for error interrupts.
++ *
++ * Caller ensures that:
++ * Interrupts are disabled; ccw device lock is held;
++ *
++ */
+ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
+ 		struct irb *irb)
  {
--	struct cs42l43 *cs42l43 = dev_get_drvdata(dev);
-+	struct cs42l43_codec *priv = dev_get_drvdata(dev);
-+	struct cs42l43 *cs42l43 = priv->core;
+@@ -1220,11 +1234,10 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
+ 		iob = (struct qeth_cmd_buffer *) (addr_t)intparm;
+ 	}
  
- 	disable_irq(cs42l43->irq);
+-	qeth_unlock_channel(card, channel);
+-
+ 	rc = qeth_check_irb_error(card, cdev, irb);
+ 	if (rc) {
+ 		/* IO was terminated, free its resources. */
++		qeth_unlock_channel(card, channel);
+ 		if (iob)
+ 			qeth_cancel_cmd(iob, rc);
+ 		return;
+@@ -1268,6 +1281,7 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
+ 		rc = qeth_get_problem(card, cdev, irb);
+ 		if (rc) {
+ 			card->read_or_write_problem = 1;
++			qeth_unlock_channel(card, channel);
+ 			if (iob)
+ 				qeth_cancel_cmd(iob, rc);
+ 			qeth_clear_ipacmd_list(card);
+@@ -1276,6 +1290,26 @@ static void qeth_irq(struct ccw_device *cdev, unsigned long intparm,
+ 		}
+ 	}
  
-@@ -2347,7 +2348,8 @@ static int cs42l43_codec_suspend(struct device *dev)
- 
- static int cs42l43_codec_suspend_noirq(struct device *dev)
- {
--	struct cs42l43 *cs42l43 = dev_get_drvdata(dev);
-+	struct cs42l43_codec *priv = dev_get_drvdata(dev);
-+	struct cs42l43 *cs42l43 = priv->core;
- 
- 	enable_irq(cs42l43->irq);
- 
-@@ -2356,7 +2358,8 @@ static int cs42l43_codec_suspend_noirq(struct device *dev)
- 
- static int cs42l43_codec_resume(struct device *dev)
- {
--	struct cs42l43 *cs42l43 = dev_get_drvdata(dev);
-+	struct cs42l43_codec *priv = dev_get_drvdata(dev);
-+	struct cs42l43 *cs42l43 = priv->core;
- 
- 	enable_irq(cs42l43->irq);
- 
-@@ -2365,7 +2368,8 @@ static int cs42l43_codec_resume(struct device *dev)
- 
- static int cs42l43_codec_resume_noirq(struct device *dev)
- {
--	struct cs42l43 *cs42l43 = dev_get_drvdata(dev);
-+	struct cs42l43_codec *priv = dev_get_drvdata(dev);
-+	struct cs42l43 *cs42l43 = priv->core;
- 
- 	disable_irq(cs42l43->irq);
- 
++	if (scsw_cmd_is_valid_cc(&irb->scsw) && irb->scsw.cmd.cc == 1 && iob) {
++		/* channel command hasn't started: retry.
++		 * active_cmd is still set to last iob
++		 */
++		QETH_CARD_TEXT(card, 2, "irqcc1");
++		rc = ccw_device_start_timeout(cdev, __ccw_from_cmd(iob),
++					      (addr_t)iob, 0, 0, iob->timeout);
++		if (rc) {
++			QETH_DBF_MESSAGE(2,
++					 "ccw retry on %x failed, rc = %i\n",
++					 CARD_DEVID(card), rc);
++			QETH_CARD_TEXT_(card, 2, " err%d", rc);
++			qeth_unlock_channel(card, channel);
++			qeth_cancel_cmd(iob, rc);
++		}
++		return;
++	}
++
++	qeth_unlock_channel(card, channel);
++
+ 	if (iob) {
+ 		/* sanity check: */
+ 		if (irb->scsw.cmd.count > iob->length) {
 -- 
 2.43.0
 
