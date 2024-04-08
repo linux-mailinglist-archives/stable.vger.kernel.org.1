@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-37154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B6189C4E8
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:51:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD78089C1D1
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:24:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9E1EB26ED1
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4069B20958
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB53E1292DC;
-	Mon,  8 Apr 2024 13:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027C98004E;
+	Mon,  8 Apr 2024 13:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+r5DgHz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gT/5USW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6527129A7B;
-	Mon,  8 Apr 2024 13:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D6780045;
+	Mon,  8 Apr 2024 13:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583404; cv=none; b=kwFAoydLJZXJURQm71vrNcxAfy4cklsoAcXIC40g7CIzKa8BJrwVnkG3IW3POHfWfd2AJfBRIfW3E2yb+0+IFI9uYPykeiQdZ1XsqPIX2qwdSsaZuRTk3+89/oajtfUOk/S7ivjeVf805Yr75XI90Drph3wTtI3aiCjMS0w5JvU=
+	t=1712582022; cv=none; b=s0eyFilp+9agSDH/r6mBvsh0CyuaTK/tZ/HIGVnt9YH6uc3zebahu0D0H1FNhF16CGgwFxMV8tY2JcikCuT9Yu+278cSdYpmfYHxpITErV2s4dYYzJbNy/9pNMD9W3hQrk/E0wUgtFkAoNdUUnfR+N9ev6bAhEROccc4kiHcj40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583404; c=relaxed/simple;
-	bh=AGzH/QzAEsZogNHFWSqWuKHwoqmgkUvxT1R8+VY1yEk=;
+	s=arc-20240116; t=1712582022; c=relaxed/simple;
+	bh=rQsknRAikpkXAnd5Z7MKuiZ+m1ukK7nOjaKQeFxhAkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYfaI4Gk06clyhREjdmyNrdeEWVfQ+V1FgkKD8Byg+eQRDVNE1X/tf4VsGwDO7DBT7Njg9ufRfdrm1jcrR36bsUVfDpS5IsH+DfdZRDbW1vAyngKGapFHCnDcDJpddve+54yEomnI8VbLHfHZfogoaSS2/GWpUlsDstY50lUK8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+r5DgHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F297AC433C7;
-	Mon,  8 Apr 2024 13:36:43 +0000 (UTC)
+	 MIME-Version; b=jY6l+K9kfKWRZJ+MiLw0NgBKFm3Xx3lz4uViA7fL2cZrhNQu42LCf/sFeI/b+hr4dg7y7ozvb2ZZ7Qx0edWzi2LbiTCyZe5gnJ83BnT9CUd3gocp5tCTjznj4onr4RqhRvHQl8XqIggwfpPscY7yGhHZuPUPqtBswgJWLKtUinU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gT/5USW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AB6C43390;
+	Mon,  8 Apr 2024 13:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583404;
-	bh=AGzH/QzAEsZogNHFWSqWuKHwoqmgkUvxT1R8+VY1yEk=;
+	s=korg; t=1712582022;
+	bh=rQsknRAikpkXAnd5Z7MKuiZ+m1ukK7nOjaKQeFxhAkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+r5DgHzR2uzSILt63U32ucdwUeQffwwqCpwA3B4ITQMdyzS5od3DXigbwPVbfloY
-	 MLFu50COKt+TlWKSHccJfqsFHMMxToOrKPv2wFoApCB6IDfNPBoOSmXd4rzRy4Wxb2
-	 N/O/48XjmdF/RwhgWM2xnKWN8882G60iFcTcIcPM=
+	b=gT/5USW4T92ztUHI/NcI/qL63rzeLPBM9zyleMrfP2VAvhqwiOoQvHg0IqwUsaYev
+	 gbbBrFmT0PtREYIF+ve3rSaCqCRdqMnEr9aTl7PfGaK5RSZUxSr2SlAC4OuOXj+BOL
+	 TWsEUbpcVUDJtFYFn19p7vz/R/gFDWVrM0TebrmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Yu Kuai <yukuai3@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/252] scsi: sd: Unregister device if device_add_disk() failed in sd_probe()
-Date: Mon,  8 Apr 2024 14:58:05 +0200
-Message-ID: <20240408125312.436410530@linuxfoundation.org>
+Subject: [PATCH 6.1 072/138] drm/amd: Flush GFXOFF requests in prepare stage
+Date: Mon,  8 Apr 2024 14:58:06 +0200
+Message-ID: <20240408125258.462641054@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
-References: <20240408125306.643546457@linuxfoundation.org>
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 0296bea01cfa6526be6bd2d16dc83b4e7f1af91f ]
+[ Upstream commit ca299b4512d4b4f516732a48ce9aa19d91f4473e ]
 
-"if device_add() succeeds, you should call device_del() when you want to
-get rid of it."
+If the system hasn't entered GFXOFF when suspend starts it can cause
+hangs accessing GC and RLC during the suspend stage.
 
-In sd_probe(), device_add_disk() fails when device_add() has already
-succeeded, so change put_device() to device_unregister() to ensure device
-resources are released.
-
-Fixes: 2a7a891f4c40 ("scsi: sd: Add error handling support for add_disk()")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Link: https://lore.kernel.org/r/20231208082335.1754205-1-linan666@huaweicloud.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: <stable@vger.kernel.org> # 6.1.y: 5095d5418193 ("drm/amd: Evict resources during PM ops prepare() callback")
+Cc: <stable@vger.kernel.org> # 6.1.y: cb11ca3233aa ("drm/amd: Add concept of running prepare_suspend() sequence for IP blocks")
+Cc: <stable@vger.kernel.org> # 6.1.y: 2ceec37b0e3d ("drm/amd: Add missing kernel doc for prepare_suspend()")
+Cc: <stable@vger.kernel.org> # 6.1.y: 3a9626c816db ("drm/amd: Stop evicting resources on APUs in suspend")
+Cc: <stable@vger.kernel.org> # 6.6.y: 5095d5418193 ("drm/amd: Evict resources during PM ops prepare() callback")
+Cc: <stable@vger.kernel.org> # 6.6.y: cb11ca3233aa ("drm/amd: Add concept of running prepare_suspend() sequence for IP blocks")
+Cc: <stable@vger.kernel.org> # 6.6.y: 2ceec37b0e3d ("drm/amd: Add missing kernel doc for prepare_suspend()")
+Cc: <stable@vger.kernel.org> # 6.6.y: 3a9626c816db ("drm/amd: Stop evicting resources on APUs in suspend")
+Cc: <stable@vger.kernel.org> # 6.1+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3132
+Fixes: ab4750332dbe ("drm/amdgpu/sdma5.2: add begin/end_use ring callbacks")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index e80c33cdad2b9..c62f677084b4c 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3754,7 +3754,7 @@ static int sd_probe(struct device *dev)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 77e35b919b064..b11690a816e73 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4190,6 +4190,8 @@ int amdgpu_device_prepare(struct drm_device *dev)
+ 	if (r)
+ 		return r;
  
- 	error = device_add_disk(dev, gd, NULL);
- 	if (error) {
--		put_device(&sdkp->disk_dev);
-+		device_unregister(&sdkp->disk_dev);
- 		put_disk(gd);
- 		goto out;
- 	}
++	flush_delayed_work(&adev->gfx.gfx_off_delay_work);
++
+ 	for (i = 0; i < adev->num_ip_blocks; i++) {
+ 		if (!adev->ip_blocks[i].status.valid)
+ 			continue;
 -- 
 2.43.0
 
