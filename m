@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-37718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957C089C619
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:04:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E5E89C40A
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5103C285808
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:04:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841E01F21554
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508BE7F482;
-	Mon,  8 Apr 2024 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3817CF34;
+	Mon,  8 Apr 2024 13:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6burZQ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNH6g6FO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1F77D3FD;
-	Mon,  8 Apr 2024 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61016A35A;
+	Mon,  8 Apr 2024 13:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585058; cv=none; b=sul4P+pd+4HmpHZorrRym+n2JUz86SqoHNAnTzAnKNuT61RN2MUwHARtg4n6R2byfTpXW+Oj2WYau8MRryc/IYrnS+DKit73f41T3TyL3bCfM5pWYkY6A2hpSEegFhoGg8TX5EoRS32RaRrFEu1RTgHNEOnC8eKrgv+X8j+ru2Q=
+	t=1712583702; cv=none; b=GaRPPUam6pSivtUl0JxzhgXvKTC2OYXgZwZKFpDQ6lYUSTzE5dMC2ACKH7PNw/94GOReoykzUbG178C78EmkwY/pbRBiY3STigKSkPDuRTiZPp93fN0uz87bC1hZqbRbLi7qoHS7bdo9sZMg0n38V6ijK93a+IaICH1z8O0Y8gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585058; c=relaxed/simple;
-	bh=pSG8KXFQl1UPjmo6F1O0MBARC89pDTLxo4p6LPGTS8E=;
+	s=arc-20240116; t=1712583702; c=relaxed/simple;
+	bh=lmewIyPsIK4EfW8XAJNHI4nHGHGWIHZNWUXhUa+AL14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rl+r0kVbne87DBfpHRu4YJfSGcyD3KNXMaTvzILlOCBsr+XvwJjtwiigKRWZMTZ1IVq5Ltm4GboJJl3kFPHVAxP+SrjiZjxUvcXAmrWA5KLEdIsVmRHw8oF602xj8Uw8fS5lksHn7a8ChKMJSnzGUiAG7Bl6Ztn3hUR/WRaC2+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6burZQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884CDC433C7;
-	Mon,  8 Apr 2024 14:04:17 +0000 (UTC)
+	 MIME-Version; b=hOpRu8avvetky6iVYQekcIjgMeh556iVpWL+A22ZQHhM9Rp2uTMJGNJWdySRj6g4QLiyox6DqpRkc07wGwvNDrXiVF00p/cnZuwf/isJ1mPUC7wBwHbWjGeXfiNjDLHr32r+Uvwmtv5R4DJ2QfZ05rg4c7LR0Qn3yk4qq4ym+HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNH6g6FO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365BBC433F1;
+	Mon,  8 Apr 2024 13:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712585057;
-	bh=pSG8KXFQl1UPjmo6F1O0MBARC89pDTLxo4p6LPGTS8E=;
+	s=korg; t=1712583701;
+	bh=lmewIyPsIK4EfW8XAJNHI4nHGHGWIHZNWUXhUa+AL14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6burZQ8PoXhldDeiwBj6gJcHXFY90RWSP4Va1nX4GRWGnM/UX+RiFYbFqMCNeVeH
-	 Odhh8XiuPBSKcoT8Z5bfdXTjmw2LQJazSAkAjWg+1FHQjN+VV9eNUUPXkI1n/LPb6H
-	 U3uR7SOjYzQQVdIzxTSUb14ZfUKm/rNKnn+A5CrU=
+	b=LNH6g6FOwMe6rUPcn3zjs2QJjr6d1BY6hBe26UvD+A5Y5wbwvpitxGuK/mE2PtOeC
+	 8JEU+eLN197QlweyIw8Hu44pnBJ/dO4vh/xqky3nHuEbqI87LYmGdY0/Ee2qOSSlSG
+	 wPTB04XXTAwNH1bSfk17BhVo/20ATQfdhAkVkdK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+33f4297b5f927648741a@syzkaller.appspotmail.com,
-	syzbot+aafd0513053a1cbf52ef@syzkaller.appspotmail.com,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Andrei Matei <andreimatei1@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 618/690] bpf: Protect against int overflow for stack access size
-Date: Mon,  8 Apr 2024 14:58:04 +0200
-Message-ID: <20240408125422.005473365@linuxfoundation.org>
+	Rasmus Karlsson <rasmus.karlsson@pajlada.com>,
+	Iskren Chernev <me@iskren.info>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.8 210/273] io_uring: use private workqueue for exit work
+Date: Mon,  8 Apr 2024 14:58:05 +0200
+Message-ID: <20240408125315.880074381@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
-References: <20240408125359.506372836@linuxfoundation.org>
+In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
+References: <20240408125309.280181634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Matei <andreimatei1@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit ecc6a2101840177e57c925c102d2d29f260d37c8 ]
+commit 73eaa2b583493b680c6f426531d6736c39643bfb upstream.
 
-This patch re-introduces protection against the size of access to stack
-memory being negative; the access size can appear negative as a result
-of overflowing its signed int representation. This should not actually
-happen, as there are other protections along the way, but we should
-protect against it anyway. One code path was missing such protections
-(fixed in the previous patch in the series), causing out-of-bounds array
-accesses in check_stack_range_initialized(). This patch causes the
-verification of a program with such a non-sensical access size to fail.
+Rather than use the system unbound event workqueue, use an io_uring
+specific one. This avoids dependencies with the tty, which also uses
+the system_unbound_wq, and issues flushes of said workqueue from inside
+its poll handling.
 
-This check used to exist in a more indirect way, but was inadvertendly
-removed in a833a17aeac7.
-
-Fixes: a833a17aeac7 ("bpf: Fix verification of indirect var-off stack access")
-Reported-by: syzbot+33f4297b5f927648741a@syzkaller.appspotmail.com
-Reported-by: syzbot+aafd0513053a1cbf52ef@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/CAADnVQLORV5PT0iTAhRER+iLBTkByCYNBYyvBSgjN1T31K+gOw@mail.gmail.com/
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
-Link: https://lore.kernel.org/r/20240327024245.318299-3-andreimatei1@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Rasmus Karlsson <rasmus.karlsson@pajlada.com>
+Tested-by: Rasmus Karlsson <rasmus.karlsson@pajlada.com>
+Tested-by: Iskren Chernev <me@iskren.info>
+Link: https://github.com/axboe/liburing/issues/1113
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ io_uring/io_uring.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index f099c5481b662..008ddb694c8a1 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4320,6 +4320,11 @@ static int check_stack_access_within_bounds(
- 	err = check_stack_slot_within_bounds(min_off, state, type);
- 	if (!err && max_off > 0)
- 		err = -EINVAL; /* out of stack access into non-negative offsets */
-+	if (!err && access_size < 0)
-+		/* access_size should not be negative (or overflow an int); others checks
-+		 * along the way should have prevented such an access.
-+		 */
-+		err = -EFAULT; /* invalid negative access size; integer overflow? */
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -152,6 +152,7 @@ static bool io_uring_try_cancel_requests
+ static void io_queue_sqe(struct io_kiocb *req);
  
- 	if (err) {
- 		if (tnum_is_const(reg->var_off)) {
--- 
-2.43.0
-
+ struct kmem_cache *req_cachep;
++static struct workqueue_struct *iou_wq __ro_after_init;
+ 
+ static int __read_mostly sysctl_io_uring_disabled;
+ static int __read_mostly sysctl_io_uring_group = -1;
+@@ -3139,7 +3140,7 @@ static __cold void io_ring_ctx_wait_and_
+ 	 * noise and overhead, there's no discernable change in runtime
+ 	 * over using system_wq.
+ 	 */
+-	queue_work(system_unbound_wq, &ctx->exit_work);
++	queue_work(iou_wq, &ctx->exit_work);
+ }
+ 
+ static int io_uring_release(struct inode *inode, struct file *file)
+@@ -4164,6 +4165,8 @@ static int __init io_uring_init(void)
+ 					  SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT,
+ 					  NULL);
+ 
++	iou_wq = alloc_workqueue("iou_exit", WQ_UNBOUND, 64);
++
+ #ifdef CONFIG_SYSCTL
+ 	register_sysctl_init("kernel", kernel_io_uring_disabled_table);
+ #endif
 
 
 
