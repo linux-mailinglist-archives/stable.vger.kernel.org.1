@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-37232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9C989C3F3
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:45:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341B289C368
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:41:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C78D1F22742
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:45:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE7FD2838DF
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE60762E5;
-	Mon,  8 Apr 2024 13:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1005F7D094;
+	Mon,  8 Apr 2024 13:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYd38rsu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVh0kXbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DEF7317D;
-	Mon,  8 Apr 2024 13:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEB07CF39;
+	Mon,  8 Apr 2024 13:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583634; cv=none; b=rCdTKq2JzPd+a66LCa6NhfuDkZnWbvz1n2Ks/1/7Vm29U5cQTbewE1oA6UUUntZkkzihxdtRv4BIYamhm42aYwFc8dgY8D5COG2tQe/j+NIHu/QO0MqaQDqavPTmiBxm7Co61aZG9BYYl+Z4IAe79pT8Wu2sArfC0EGDecDTB7A=
+	t=1712583299; cv=none; b=LlW45/XbXZQkK2d7z80A6COODy7DLLFNNSV4AU4vhdyXBNCzRqkNemVxE9NrzCEuwn+6hOpTHnbGljjfGPjvDy4/9lyYrMMKwqHBNO2vfEx0QwB16O03+BEFehDoUOOHInBgeX0Qvcxw8NBkEuj7ppC3x1pHMCfvgK5mG8TQcQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583634; c=relaxed/simple;
-	bh=vCRK9WzUeCCoykNQTc6cXnfyFl4kik/2ltD94iUHeDM=;
+	s=arc-20240116; t=1712583299; c=relaxed/simple;
+	bh=5M0mv19YUyxQ0C8kTJ9dSWNai5PtlCot+IqAL++E2/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrMm8gKC/rTp05kiry++D1OWmqcd7XXvYuyBhV5tENiKzjUCyNS6MDJR02MAPTBElZuggm8DEkPjYz9dNKvbV+Dt59U1XCORL0f9MkPK1/rqCFPmqkfeH8qELAb+zFUBLz/4S2Rrh9E9Dh6RaoEaj75MzExC2fq1HdXCq0Nf3+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYd38rsu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FEBC433C7;
-	Mon,  8 Apr 2024 13:40:33 +0000 (UTC)
+	 MIME-Version; b=XyHzMl7ckm7/yXC3dK1cvvkkATp+Dw7e8yw+DFI+YQRsScrMf/1PLZLuqV2RT6SU/qtmjQX/5Tq8MJjeC4yBV8qiSA3ZIhoxV3U6Qc2OvOd5P/AAyGKuBClE6lRxtYAlgH1Rt9UX4nv/8HZYq2VbeRZqfpW6ptt4WEvsk6rA1VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVh0kXbx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D52C433F1;
+	Mon,  8 Apr 2024 13:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583634;
-	bh=vCRK9WzUeCCoykNQTc6cXnfyFl4kik/2ltD94iUHeDM=;
+	s=korg; t=1712583299;
+	bh=5M0mv19YUyxQ0C8kTJ9dSWNai5PtlCot+IqAL++E2/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYd38rsui2yAV+4QpJ3Y64y29HZewmHJDQcS1PPwUWCYedmV9bo8GsaoN6BHe9tNs
-	 Bq37G6oX8j3T0nJYwPk8emOcdeHus/MbZzywVq5dkJfVkWZyoMAP5Qpe1CajhGcvpt
-	 XGdmZfO5N4n+NcjuStFJfC6UHufhPMz0FeaywJWQ=
+	b=iVh0kXbxAlDau0NmZSs7x0wYLxDuX3ZiCLMbGfENk1caX3NxJSlwSULvRve1JOWu/
+	 DBRNRM+eCYwjPO5jRc+VLkGZAKh27ucp5E+rJUq7NpxIOniNWi6joatuOV0oxgGt6e
+	 kD5woSZi+KxmYC5yAZhXDSlLfXyxSJhm77/Uzgr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Bendiksen <christian@bendiksen.me>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.8 203/273] ALSA: hda/realtek: Add sound quirks for Lenovo Legion slim 7 16ARHA7 models
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 179/252] spi: s3c64xx: allow full FIFO masks
 Date: Mon,  8 Apr 2024 14:57:58 +0200
-Message-ID: <20240408125315.638338037@linuxfoundation.org>
+Message-ID: <20240408125312.214388047@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125306.643546457@linuxfoundation.org>
+References: <20240408125306.643546457@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Bendiksen <christian@bendiksen.me>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit b67a7dc418aabbddec41c752ac29b6fa0250d0a8 upstream.
+[ Upstream commit d6911cf27e5c8491cbfedd4ae2d1ee74a3e685b4 ]
 
-This fixes the sound not working from internal speakers on
-Lenovo Legion Slim 7 16ARHA7 models. The correct subsystem ID
-have been added to cs35l41_hda_property.c and patch_realtek.c.
+The driver is wrong because is using partial register field masks for the
+SPI_STATUS.{RX, TX}_FIFO_LVL register fields.
 
-Signed-off-by: Christian Bendiksen <christian@bendiksen.me>
-Cc: <stable@vger.kernel.org>
-Message-ID: <20240401122603.6634-1-christian@bendiksen.me>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We see s3c64xx_spi_port_config.fifo_lvl_mask with different values for
+different instances of the same IP. Take s5pv210_spi_port_config for
+example, it defines:
+	.fifo_lvl_mask  = { 0x1ff, 0x7F },
+
+fifo_lvl_mask is used to determine the FIFO depth of the instance of the
+IP. In this case, the integrator uses a 256 bytes FIFO for the first SPI
+instance of the IP, and a 64 bytes FIFO for the second instance. While
+the first mask reflects the SPI_STATUS.{RX, TX}_FIFO_LVL register
+fields, the second one is two bits short. Using partial field masks is
+misleading and can hide problems of the driver's logic.
+
+Allow platforms to specify the full FIFO mask, regardless of the FIFO
+depth.
+
+Introduce {rx, tx}_fifomask to represent the SPI_STATUS.{RX, TX}_FIFO_LVL
+register fields. It's a shifted mask defining the field's length and
+position. We'll be able to deprecate the use of @rx_lvl_offset, as the
+shift value can be determined from the mask. The existing compatibles
+shall start using {rx, tx}_fifomask so that they use the full field mask
+and to avoid shifting the mask to position, and then shifting it back to
+zero in the {TX, RX}_FIFO_LVL macros.
+
+@rx_lvl_offset will be deprecated in a further patch, after we have the
+infrastructure to deprecate @fifo_lvl_mask as well.
+
+No functional change intended.
+
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://msgid.link/r/20240216070555.2483977-4-tudor.ambarus@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a3d3eab627bb ("spi: s3c64xx: Use DMA mode from fifo size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l41_hda_property.c |    4 ++++
- sound/pci/hda/patch_realtek.c        |    2 ++
- 2 files changed, 6 insertions(+)
+ drivers/spi/spi-s3c64xx.c | 40 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 36 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/cs35l41_hda_property.c
-+++ b/sound/pci/hda/cs35l41_hda_property.c
-@@ -98,6 +98,8 @@ static const struct cs35l41_config cs35l
- 	{ "10431F1F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, -1, 0, 0, 0, 0 },
- 	{ "10431F62", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 0, 0, 0 },
- 	{ "17AA386F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
-+	{ "17AA3877", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
-+	{ "17AA3878", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
- 	{ "17AA38A9", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
- 	{ "17AA38AB", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
- 	{ "17AA38B4", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
-@@ -435,6 +437,8 @@ static const struct cs35l41_prop_model c
- 	{ "CSC3551", "10431F1F", generic_dsd_config },
- 	{ "CSC3551", "10431F62", generic_dsd_config },
- 	{ "CSC3551", "17AA386F", generic_dsd_config },
-+	{ "CSC3551", "17AA3877", generic_dsd_config },
-+	{ "CSC3551", "17AA3878", generic_dsd_config },
- 	{ "CSC3551", "17AA38A9", generic_dsd_config },
- 	{ "CSC3551", "17AA38AB", generic_dsd_config },
- 	{ "CSC3551", "17AA38B4", generic_dsd_config },
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10361,6 +10361,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x386f, "Legion 7i 16IAX7", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x3870, "Lenovo Yoga 7 14ARB7", ALC287_FIXUP_YOGA7_14ARB7_I2C),
-+	SND_PCI_QUIRK(0x17aa, 0x3877, "Lenovo Legion 7 Slim 16ARHA7", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x3878, "Lenovo Legion 7 Slim 16ARHA7", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x387d, "Yoga S780-16 pro Quad AAC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual power mode2 YC", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 3da940e6299f0..688b8fad9e2fd 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -3,6 +3,7 @@
+ // Copyright (c) 2009 Samsung Electronics Co., Ltd.
+ //      Jaswinder Singh <jassi.brar@samsung.com>
+ 
++#include <linux/bitops.h>
+ #include <linux/bits.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+@@ -107,10 +108,10 @@
+ #define FIFO_LVL_MASK(i) ((i)->port_conf->fifo_lvl_mask[i->port_id])
+ #define S3C64XX_SPI_ST_TX_DONE(v, i) (((v) & \
+ 				(1 << (i)->port_conf->tx_st_done)) ? 1 : 0)
+-#define TX_FIFO_LVL(v, i) (((v) >> S3C64XX_SPI_ST_TX_FIFO_LVL_SHIFT) &	\
+-			   FIFO_LVL_MASK(i))
+-#define RX_FIFO_LVL(v, i) (((v) >> (i)->port_conf->rx_lvl_offset) & \
+-					FIFO_LVL_MASK(i))
++#define TX_FIFO_LVL(v, sdd)	(((v) & (sdd)->tx_fifomask) >>		\
++				 __ffs((sdd)->tx_fifomask))
++#define RX_FIFO_LVL(v, sdd)	(((v) & (sdd)->rx_fifomask) >>		\
++				 __ffs((sdd)->rx_fifomask))
+ #define FIFO_DEPTH(i) ((FIFO_LVL_MASK(i) >> 1) + 1)
+ 
+ #define S3C64XX_SPI_MAX_TRAILCNT	0x3ff
+@@ -136,6 +137,10 @@ struct s3c64xx_spi_dma_data {
+  * struct s3c64xx_spi_port_config - SPI Controller hardware info
+  * @fifo_lvl_mask: Bit-mask for {TX|RX}_FIFO_LVL bits in SPI_STATUS register.
+  * @rx_lvl_offset: Bit offset of RX_FIFO_LVL bits in SPI_STATUS regiter.
++ * @rx_fifomask: SPI_STATUS.RX_FIFO_LVL mask. Shifted mask defining the field's
++ *               length and position.
++ * @tx_fifomask: SPI_STATUS.TX_FIFO_LVL mask. Shifted mask defining the field's
++ *               length and position.
+  * @tx_st_done: Bit offset of TX_DONE bit in SPI_STATUS regiter.
+  * @clk_div: Internal clock divider
+  * @quirks: Bitmask of known quirks
+@@ -153,6 +158,8 @@ struct s3c64xx_spi_dma_data {
+ struct s3c64xx_spi_port_config {
+ 	int	fifo_lvl_mask[MAX_SPI_PORTS];
+ 	int	rx_lvl_offset;
++	u32	rx_fifomask;
++	u32	tx_fifomask;
+ 	int	tx_st_done;
+ 	int	quirks;
+ 	int	clk_div;
+@@ -182,6 +189,10 @@ struct s3c64xx_spi_port_config {
+  * @tx_dma: Local transmit DMA data (e.g. chan and direction)
+  * @port_conf: Local SPI port configuartion data
+  * @port_id: Port identification number
++ * @rx_fifomask: SPI_STATUS.RX_FIFO_LVL mask. Shifted mask defining the field's
++ *               length and position.
++ * @tx_fifomask: SPI_STATUS.TX_FIFO_LVL mask. Shifted mask defining the field's
++ *               length and position.
+  */
+ struct s3c64xx_spi_driver_data {
+ 	void __iomem                    *regs;
+@@ -201,6 +212,8 @@ struct s3c64xx_spi_driver_data {
+ 	struct s3c64xx_spi_dma_data	tx_dma;
+ 	const struct s3c64xx_spi_port_config	*port_conf;
+ 	unsigned int			port_id;
++	u32				rx_fifomask;
++	u32				tx_fifomask;
+ };
+ 
+ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+@@ -1145,6 +1158,23 @@ static inline const struct s3c64xx_spi_port_config *s3c64xx_spi_get_port_config(
+ 	return (const struct s3c64xx_spi_port_config *)platform_get_device_id(pdev)->driver_data;
+ }
+ 
++static void s3c64xx_spi_set_fifomask(struct s3c64xx_spi_driver_data *sdd)
++{
++	const struct s3c64xx_spi_port_config *port_conf = sdd->port_conf;
++
++	if (port_conf->rx_fifomask)
++		sdd->rx_fifomask = port_conf->rx_fifomask;
++	else
++		sdd->rx_fifomask = FIFO_LVL_MASK(sdd) <<
++			port_conf->rx_lvl_offset;
++
++	if (port_conf->tx_fifomask)
++		sdd->tx_fifomask = port_conf->tx_fifomask;
++	else
++		sdd->tx_fifomask = FIFO_LVL_MASK(sdd) <<
++			S3C64XX_SPI_ST_TX_FIFO_LVL_SHIFT;
++}
++
+ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource	*mem_res;
+@@ -1190,6 +1220,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 		sdd->port_id = pdev->id;
+ 	}
+ 
++	s3c64xx_spi_set_fifomask(sdd);
++
+ 	sdd->cur_bpw = 8;
+ 
+ 	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
+-- 
+2.43.0
+
 
 
 
