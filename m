@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-37159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-37686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D56989C390
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 15:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B40F89C5FB
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 16:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31A161C22998
-	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 13:42:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D0141C23F12
+	for <lists+stable@lfdr.de>; Mon,  8 Apr 2024 14:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8462F129E95;
-	Mon,  8 Apr 2024 13:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4A47F7CB;
+	Mon,  8 Apr 2024 14:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QREoXyvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMYNCQTO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40092129E7C;
-	Mon,  8 Apr 2024 13:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A26C7E772;
+	Mon,  8 Apr 2024 14:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712583419; cv=none; b=RttDnsRxcJ0TUEACm9NLT0C9fwYqvwnLaR0jV/b99nosIGHbXQF5TIGiPOdo2VQOofb5mikkfRi7hIWEYrvXunujzFgsIEVIt7Dehb4ns9Lmqcuh+W0eECNnP1oRt/LSslHpuiZMqYYjM14JbpDLxkV7dIak3gdBQ0md0C93364=
+	t=1712584964; cv=none; b=GBo56iuAqW5+GDaK60XQMRkD4Q4wwLrdyN+85Bct7onlHXbZPH5joyPu/KLBpatYP+rQNZkF5Bby4frl3bMY88jHpE/40IbVaWjYy5zdoYsrv2EZv23lz7TiNV9U/uVBfoJovA41Ja2Bp3F2f30HLofim93y+mt5DDyilUk9wf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712583419; c=relaxed/simple;
-	bh=8JZMUflGhjGbBMY1dHcB2Jttc6q9et8DLm0Xhy5iO/M=;
+	s=arc-20240116; t=1712584964; c=relaxed/simple;
+	bh=dyt+3vvB9nqBDbMYT7X+Btkn2MtiLhFMNb+s7/Zfegc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9rON4cqhos+xe0iNMEch29o0Siooa6D2BTj2yEBWjBz7yyjCIcWe2CvUYQ6n0QIKLKQ03OsCjb22HvGaqE+KPTPOv1syu0UCBU0rK7YjrqjtDenaxrtWuL8jxVxP1YvoLnR4bBacdpeBefSFB6l2EFwb4a8aE29jsv8x9KuaLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QREoXyvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D52C433C7;
-	Mon,  8 Apr 2024 13:36:58 +0000 (UTC)
+	 MIME-Version; b=pBmo/rNBLqqJc9V68dRbccZxyPF4Bj8BuQ52m7VxSknp6aL+YqSVLvUMe/I0exmmqdYKXyeF7PUnAmKmoDm+gwFFTXlxCna97JOjwbjLiCZKciCb7UFo8Fr5ziwK/pR/CvpToxKHCvU8wjA2D5+lmA1aeOJZ8gAkHuC0ER5j4XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMYNCQTO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10793C433F1;
+	Mon,  8 Apr 2024 14:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712583419;
-	bh=8JZMUflGhjGbBMY1dHcB2Jttc6q9et8DLm0Xhy5iO/M=;
+	s=korg; t=1712584964;
+	bh=dyt+3vvB9nqBDbMYT7X+Btkn2MtiLhFMNb+s7/Zfegc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QREoXyvErMMsvO+sHvpA0K26b/uFjNz0UJmW1z97P+l2rhMFZgLmYc3dZ7uILt38o
-	 tE1254mZdmh1aPjcEYBY33Kz60dEZn8TU3ZASrMLiCfm+naME2QZuXzENCVSfpjD+v
-	 xvmxnfj7McsH5qw2LlIdKATzCNaO4nddwlpBj5wg=
+	b=hMYNCQTOl/cWLiT7iQCJ1Hog//lQp2ZWOaoGp8WVUpaMEYaaPrHK/hU+lft5PzrR/
+	 5xyhaPyV5nj5KBtr8HqTvRvL4hY3m9G33C7NlmCxMOv+1ccGFiYXYxblvidNF8MqQD
+	 QJhKAP6Xrapox7qEQ7K1MPzCcnsLyk8WVkzGjUig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 177/273] Revert "ALSA: emu10k1: fix synthesizer sample playback position and caching"
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 5.15 586/690] usb: dwc2: host: Fix remote wakeup from hibernation
 Date: Mon,  8 Apr 2024 14:57:32 +0200
-Message-ID: <20240408125314.767302265@linuxfoundation.org>
+Message-ID: <20240408125420.806881380@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240408125309.280181634@linuxfoundation.org>
-References: <20240408125309.280181634@linuxfoundation.org>
+In-Reply-To: <20240408125359.506372836@linuxfoundation.org>
+References: <20240408125359.506372836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-[ Upstream commit 03f56ed4ead162551ac596c9e3076ff01f1c5836 ]
+commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
 
-As already anticipated in the original commit, playback was broken for
-very short samples. I just didn't expect it to be an actual problem,
-because we're talking about less than 1.5 milliseconds here. But clearly
-such wavetable samples do actually exist.
+Starting from core v4.30a changed order of programming
+GPWRDN_PMUACTV to 0 in case of exit from hibernation on
+remote wakeup signaling from device.
 
-The problem was that for such short samples we'd set the current
-position beyond the end of the loop, so we'd run off the end of the
-sample and play garbage.
-This is a bigger (more audible) problem than the original one, which was
-that we'd start playback with garbage (whatever was still in the cache),
-which would be mostly masked by the note's attack phase.
-
-So revert to the old behavior for now. We'll subsequently fix it
-properly with a bigger patch series.
-Note that this isn't a full revert - the dead code is not re-introduced,
-because that would be silly.
-
-Fixes: df335e9a8bcb ("ALSA: emu10k1: fix synthesizer sample playback position and caching")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218625
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Message-ID: <20240401145805.528794-1-oswald.buddenhagen@gmx.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/emu10k1/emu10k1_callback.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/usb/dwc2/core.h |    1 +
+ drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/emu10k1/emu10k1_callback.c b/sound/pci/emu10k1/emu10k1_callback.c
-index d36234b88fb42..941bfbf812ed3 100644
---- a/sound/pci/emu10k1/emu10k1_callback.c
-+++ b/sound/pci/emu10k1/emu10k1_callback.c
-@@ -255,7 +255,7 @@ lookup_voices(struct snd_emux *emu, struct snd_emu10k1 *hw,
- 		/* check if sample is finished playing (non-looping only) */
- 		if (bp != best + V_OFF && bp != best + V_FREE &&
- 		    (vp->reg.sample_mode & SNDRV_SFNT_SAMPLE_SINGLESHOT)) {
--			val = snd_emu10k1_ptr_read(hw, CCCA_CURRADDR, vp->ch) - 64;
-+			val = snd_emu10k1_ptr_read(hw, CCCA_CURRADDR, vp->ch);
- 			if (val >= vp->reg.loopstart)
- 				bp = best + V_OFF;
- 		}
-@@ -362,7 +362,7 @@ start_voice(struct snd_emux_voice *vp)
+--- a/drivers/usb/dwc2/core.h
++++ b/drivers/usb/dwc2/core.h
+@@ -1107,6 +1107,7 @@ struct dwc2_hsotg {
+ 	bool needs_byte_swap;
  
- 	map = (hw->silent_page.addr << hw->address_mode) | (hw->address_mode ? MAP_PTI_MASK1 : MAP_PTI_MASK0);
+ 	/* DWC OTG HW Release versions */
++#define DWC2_CORE_REV_4_30a	0x4f54430a
+ #define DWC2_CORE_REV_2_71a	0x4f54271a
+ #define DWC2_CORE_REV_2_72a     0x4f54272a
+ #define DWC2_CORE_REV_2_80a	0x4f54280a
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -5641,10 +5641,12 @@ int dwc2_host_exit_hibernation(struct dw
+ 	dwc2_writel(hsotg, hr->hcfg, HCFG);
  
--	addr = vp->reg.start + 64;
-+	addr = vp->reg.start;
- 	temp = vp->reg.parm.filterQ;
- 	ccca = (temp << 28) | addr;
- 	if (vp->apitch < 0xe400)
-@@ -430,9 +430,6 @@ start_voice(struct snd_emux_voice *vp)
- 		/* Q & current address (Q 4bit value, MSB) */
- 		CCCA, ccca,
+ 	/* De-assert Wakeup Logic */
+-	gpwrdn = dwc2_readl(hsotg, GPWRDN);
+-	gpwrdn &= ~GPWRDN_PMUACTV;
+-	dwc2_writel(hsotg, gpwrdn, GPWRDN);
+-	udelay(10);
++	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++		gpwrdn = dwc2_readl(hsotg, GPWRDN);
++		gpwrdn &= ~GPWRDN_PMUACTV;
++		dwc2_writel(hsotg, gpwrdn, GPWRDN);
++		udelay(10);
++	}
  
--		/* cache */
--		CCR, REG_VAL_PUT(CCR_CACHEINVALIDSIZE, 64),
--
- 		/* reset volume */
- 		VTFT, vtarget | vp->ftarget,
- 		CVCF, vtarget | CVCF_CURRENTFILTER_MASK,
--- 
-2.43.0
-
+ 	hprt0 = hr->hprt0;
+ 	hprt0 |= HPRT0_PWR;
+@@ -5669,6 +5671,13 @@ int dwc2_host_exit_hibernation(struct dw
+ 		hprt0 |= HPRT0_RES;
+ 		dwc2_writel(hsotg, hprt0, HPRT0);
+ 
++		/* De-assert Wakeup Logic */
++		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
++			gpwrdn = dwc2_readl(hsotg, GPWRDN);
++			gpwrdn &= ~GPWRDN_PMUACTV;
++			dwc2_writel(hsotg, gpwrdn, GPWRDN);
++			udelay(10);
++		}
+ 		/* Wait for Resume time and then program HPRT again */
+ 		mdelay(100);
+ 		hprt0 &= ~HPRT0_RES;
 
 
 
